@@ -9,24 +9,23 @@
 #ifndef STRLIB_H
 #define STRLIB_H
 
-#include <windows.h>
+#include <assert.h>
 #include <iostream>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string>
-#include <stdio.h>
-#include <assert.h>
+#include <windows.h>
 
 using namespace std;
 
 // general functions
-bool readAsciiData(HANDLE hFile, double *pData, unsigned int numValues, unsigned char decimalSeperator, unsigned char columnSeparator);
+bool readAsciiData(HANDLE hFile, double* pData, unsigned int numValues, unsigned char decimalSeperator, unsigned char columnSeparator);
 
-class MyString
-{
+class MyString {
 private:
     // variables
-    WCHAR *strW = nullptr;
-    char *strA = nullptr;
+    WCHAR* strW = nullptr;
+    char* strA = nullptr;
     size_t length = 0;
     size_t reserved = 0;
 
@@ -35,14 +34,14 @@ private:
 public:
     // functions
     MyString();
-    MyString(const char *cStr);
-    MyString(const WCHAR *cStr);
+    MyString(const char* cStr);
+    MyString(const WCHAR* cStr);
     ~MyString();
 
-    const char *c_strA();
-    const WCHAR *c_strW();
-    MyString &assign(const char *cStr);
-    MyString &assign(const WCHAR *cStr);
+    const char* c_strA();
+    const WCHAR* c_strW();
+    MyString& assign(const char* cStr);
+    MyString& assign(const WCHAR* cStr);
 
     static int hiBit(unsigned int n);
 };

@@ -20,8 +20,8 @@
 
 #include "gameview.h"
 
-GameView::GameView(QWidget *parent) :
-    QGraphicsView(parent)
+GameView::GameView(QWidget* parent)
+    : QGraphicsView(parent)
 {
     Q_UNUSED(parent)
 }
@@ -69,7 +69,7 @@ void GameView::mirror()
 
 void GameView::turnRight()
 {
-     // The view must be rotated 90 degree clockwise
+    // The view must be rotated 90 degree clockwise
     /*  Don't use the scale method. 
         After the view is mirrored or flipped, its steering will be reversed
      *  The rotation matrix is
@@ -98,10 +98,8 @@ void GameView::turnLeft()
     setTransform(transform() * QTransform(0, -1, 1, 0, 0, 0));
 }
 
-
-void GameView::resizeEvent(QResizeEvent *event)
+void GameView::resizeEvent(QResizeEvent* event)
 {
     QGraphicsView::resizeEvent(event);
     fitInView(sceneRect(), Qt::KeepAspectRatio);
 }
-

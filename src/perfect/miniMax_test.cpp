@@ -10,7 +10,7 @@
 
 //-----------------------------------------------------------------------------
 // testLayer()
-// 
+//
 //-----------------------------------------------------------------------------
 bool MiniMax::testLayer(unsigned int layerNumber)
 {
@@ -25,7 +25,8 @@ bool MiniMax::testLayer(unsigned int layerNumber)
     }
 
     // output
-    PRINT(1, this, endl << "*** Test each state in layer: " << layerNumber << " ***");
+    PRINT(1, this, endl
+            << "*** Test each state in layer: " << layerNumber << " ***");
     PRINT(1, this, (getOutputInformation(layerNumber)));
 
     // prepare parameters for multithreading
@@ -34,7 +35,7 @@ bool MiniMax::testLayer(unsigned int layerNumber)
     numStatesProcessed = 0;
     curCalculatedLayer = layerNumber;
     curCalculationActionId = MM_ACTION_TESTING_LAYER;
-    TestLayersVars *tlVars = new TestLayersVars[threadManager.getNumThreads()];
+    TestLayersVars* tlVars = new TestLayersVars[threadManager.getNumThreads()];
 
     for (curThreadNo = 0; curThreadNo < threadManager.getNumThreads(); curThreadNo++) {
         tlVars[curThreadNo].curThreadNo = curThreadNo;
@@ -47,7 +48,7 @@ bool MiniMax::testLayer(unsigned int layerNumber)
     }
 
     // process each state in the current layer
-    returnValue = threadManager.executeParallelLoop(testLayerThreadProc, (void *)tlVars, sizeof(TestLayersVars), TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
+    returnValue = threadManager.executeParallelLoop(testLayerThreadProc, (void*)tlVars, sizeof(TestLayersVars), TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
     switch (returnValue) {
     case TM_RETURN_VALUE_OK:
     case TM_RETURN_VALUE_EXECUTION_CANCELLED:
@@ -78,26 +79,26 @@ bool MiniMax::testLayer(unsigned int layerNumber)
         // layer is ok
     } else {
         PRINT(1, this, " TEST PASSED !" << endl
-              << endl);
+                                        << endl);
         return true;
     }
 }
 
 //-----------------------------------------------------------------------------
 // testLayerThreadProc()
-// 
+//
 //-----------------------------------------------------------------------------
-DWORD MiniMax::testLayerThreadProc(void *pParameter, unsigned index)
+DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
 {
     // locals
-    TestLayersVars *tlVars = (TestLayersVars *)pParameter;
-    MiniMax *m = tlVars->pMiniMax;
+    TestLayersVars* tlVars = (TestLayersVars*)pParameter;
+    MiniMax* m = tlVars->pMiniMax;
     unsigned int layerNumber = tlVars->layerNumber;
     unsigned int stateNumber = index;
     unsigned int threadNo = tlVars->curThreadNo;
-    TwoBit *subValueInDatabase = tlVars->subValueInDatabase;
-    PlyInfoVarType *subPlyInfos = tlVars->subPlyInfos;
-    bool *hasCurPlayerChanged = tlVars->hasCurPlayerChanged;
+    TwoBit* subValueInDatabase = tlVars->subValueInDatabase;
+    PlyInfoVarType* subPlyInfos = tlVars->subPlyInfos;
+    bool* hasCurPlayerChanged = tlVars->hasCurPlayerChanged;
     TwoBit shortValueInDatabase;
     PlyInfoVarType numPliesTillCurState;
     TwoBit shortValueInGame;
@@ -106,9 +107,9 @@ DWORD MiniMax::testLayerThreadProc(void *pParameter, unsigned index)
     unsigned int numPossibilities;
     unsigned int i, j;
     unsigned int tmpStateNumber, tmpLayerNumber;
-    unsigned int *idPossibility;
-    void *pPossibilities;
-    void *pBackup;
+    unsigned int* idPossibility;
+    void* pPossibilities;
+    void* pBackup;
     bool isOpponentLevel;
     bool invalidLayerOrStateNumber;
     bool layerInDatabaseAndCompleted;
@@ -313,7 +314,7 @@ errorInDatabase:
 
 //-----------------------------------------------------------------------------
 // testState()
-// 
+//
 //-----------------------------------------------------------------------------
 bool MiniMax::testState(unsigned int layerNumber, unsigned int stateNumber)
 {
@@ -342,7 +343,7 @@ bool MiniMax::testState(unsigned int layerNumber, unsigned int stateNumber)
 
 //-----------------------------------------------------------------------------
 // testSetSituationAndGetPoss()
-// 
+//
 //-----------------------------------------------------------------------------
 bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 {
@@ -351,13 +352,14 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
     unsigned int returnValue;
 
     // output
-    PRINT(1, this, endl << "*** Test each state in layer: " << layerNumber << " ***");
+    PRINT(1, this, endl
+            << "*** Test each state in layer: " << layerNumber << " ***");
     PRINT(1, this, (getOutputInformation(layerNumber)));
 
     // prepare parameters for multithreading
     numStatesProcessed = 0;
     curCalculationActionId = MM_ACTION_TESTING_LAYER;
-    TestLayersVars *tlVars = new TestLayersVars[threadManager.getNumThreads()];
+    TestLayersVars* tlVars = new TestLayersVars[threadManager.getNumThreads()];
 
     for (curThreadNo = 0; curThreadNo < threadManager.getNumThreads(); curThreadNo++) {
         tlVars[curThreadNo].curThreadNo = curThreadNo;
@@ -370,7 +372,7 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
     }
 
     // process each state in the current layer
-    returnValue = threadManager.executeParallelLoop(testSetSituationThreadProc, (void *)tlVars, sizeof(TestLayersVars), TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
+    returnValue = threadManager.executeParallelLoop(testSetSituationThreadProc, (void*)tlVars, sizeof(TestLayersVars), TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
 
     switch (returnValue) {
     case TM_RETURN_VALUE_OK:
@@ -402,23 +404,23 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
         // layer is ok
     } else {
         PRINT(1, this, " TEST PASSED !" << endl
-              << endl);
+                                        << endl);
         return true;
     }
 }
 
 //-----------------------------------------------------------------------------
 // testSetSituationThreadProc()
-// 
+//
 //-----------------------------------------------------------------------------
-DWORD MiniMax::testSetSituationThreadProc(void *pParameter, unsigned int index)
+DWORD MiniMax::testSetSituationThreadProc(void* pParameter, unsigned int index)
 {
     // locals
-    TestLayersVars *tlVars = (TestLayersVars *)pParameter;
-    MiniMax *m = tlVars->pMiniMax;
-    unsigned int *idPossibility;
-    void *pPossibilities;
-    void *pBackup;
+    TestLayersVars* tlVars = (TestLayersVars*)pParameter;
+    MiniMax* m = tlVars->pMiniMax;
+    unsigned int* idPossibility;
+    void* pPossibilities;
+    void* pBackup;
     unsigned int curPoss;
     float floatValue;
     StateAdress curState;
@@ -492,7 +494,7 @@ DWORD MiniMax::testSetSituationThreadProc(void *pParameter, unsigned int index)
 
 //-----------------------------------------------------------------------------
 // testIfSymStatesHaveSameValue()
-// 
+//
 //-----------------------------------------------------------------------------
 bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
 {
@@ -503,7 +505,7 @@ bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
     PlyInfoVarType numPliesTillCurState;
     PlyInfoVarType numPliesTillSymState;
     unsigned int stateNumber = 0;
-    unsigned int *symStateNumbers = nullptr;
+    unsigned int* symStateNumbers = nullptr;
     unsigned int numSymmetricStates;
     unsigned int i;
 
@@ -522,7 +524,8 @@ bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
     }
 
     // test if each state has symmetric states with the same value
-    PRINT(1, this, endl << "testIfSymmetricStatesHaveSameValue - TEST EACH STATE IN LAYER: " << layerNumber);
+    PRINT(1, this, endl
+            << "testIfSymmetricStatesHaveSameValue - TEST EACH STATE IN LAYER: " << layerNumber);
     PRINT(1, this, (getOutputInformation(layerNumber)));
     skvfHeader.completed = false;
 

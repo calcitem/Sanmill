@@ -63,10 +63,10 @@ MiniMax::MiniMax()
     // PL_TO_MOVE_UNCHANGED means that the player to move is still the one who shall move.
     unsigned char skvPerspectiveMatrixTmp[4][2] = {
         //  PL_TO_MOVE_UNCHANGED    PL_TO_MOVE_CHANGED
-        SKV_VALUE_INVALID, SKV_VALUE_INVALID,		// SKV_VALUE_INVALID
-        SKV_VALUE_GAME_WON, SKV_VALUE_GAME_LOST,	// SKV_VALUE_GAME_LOST
+        SKV_VALUE_INVALID, SKV_VALUE_INVALID, // SKV_VALUE_INVALID
+        SKV_VALUE_GAME_WON, SKV_VALUE_GAME_LOST, // SKV_VALUE_GAME_LOST
         SKV_VALUE_GAME_DRAWN, SKV_VALUE_GAME_DRAWN, // SKV_VALUE_GAME_DRAWN
-        SKV_VALUE_GAME_LOST, SKV_VALUE_GAME_WON		// SKV_VALUE_GAME_WON
+        SKV_VALUE_GAME_LOST, SKV_VALUE_GAME_WON // SKV_VALUE_GAME_WON
     };
 
     memcpy(skvPerspectiveMatrix, skvPerspectiveMatrixTmp, 4 * 2);
@@ -85,7 +85,7 @@ MiniMax::~MiniMax()
 
 //-----------------------------------------------------------------------------
 // falseOrStop()
-// 
+//
 //-----------------------------------------------------------------------------
 bool MiniMax::falseOrStop()
 {
@@ -97,10 +97,10 @@ bool MiniMax::falseOrStop()
 
 //-----------------------------------------------------------------------------
 // getBestChoice()
-// Returns the best choice if the database has been opened and 
+// Returns the best choice if the database has been opened and
 // calculates the best choice for that if database is not open.
 //-----------------------------------------------------------------------------
-void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsigned int maximumNumberOfBranches)
+void* MiniMax::getBestChoice(unsigned int tilLevel, unsigned int* choice, unsigned int maximumNumberOfBranches)
 {
     // set global vars
     depthOfFullTree = tilLevel;
@@ -164,8 +164,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
                 continue;
 
             // don't calculate if neither the layer nor the partner layer has any knots
-            if (layerStats[curCalculatedLayer].knotsInLayer == 0 && 
-                layerStats[layerStats[curCalculatedLayer].partnerLayer].knotsInLayer == 0)
+            if (layerStats[curCalculatedLayer].knotsInLayer == 0 && layerStats[layerStats[curCalculatedLayer].partnerLayer].knotsInLayer == 0)
                 continue;
 
             // calculate
@@ -192,7 +191,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
 
         if (!abortCalculation) {
             // calculate layer statistics
-            calcLayerStatistics((char *)"statistics.txt");
+            calcLayerStatistics((char*)"statistics.txt");
 
             // save header
             skvfHeader.completed = true;
@@ -217,7 +216,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
 
 //-----------------------------------------------------------------------------
 // calcLayer()
-// 
+//
 //-----------------------------------------------------------------------------
 bool MiniMax::calcLayer(unsigned int layerNumber)
 {
@@ -274,7 +273,7 @@ bool MiniMax::calcLayer(unsigned int layerNumber)
 
 //-----------------------------------------------------------------------------
 // pauseDatabaseCalculation()
-// 
+//
 //-----------------------------------------------------------------------------
 void MiniMax::pauseDatabaseCalculation()
 {
@@ -283,7 +282,7 @@ void MiniMax::pauseDatabaseCalculation()
 
 //-----------------------------------------------------------------------------
 // cancelDatabaseCalculation()
-// 
+//
 //-----------------------------------------------------------------------------
 void MiniMax::cancelDatabaseCalculation()
 {
@@ -293,7 +292,7 @@ void MiniMax::cancelDatabaseCalculation()
 
 //-----------------------------------------------------------------------------
 // wasDatabaseCalculationCancelled()
-// 
+//
 //-----------------------------------------------------------------------------
 bool MiniMax::wasDatabaseCalculationCancelled()
 {

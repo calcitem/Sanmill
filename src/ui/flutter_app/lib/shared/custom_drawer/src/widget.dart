@@ -163,24 +163,22 @@ class _CustomDrawerState extends State<CustomDrawer>
       ),
     );
 
-    // TODO: [Leptopdoa] should the gesture also apply to the drawer?
-    return Stack(
-      children: <Widget>[
-        _drawer,
-        GestureDetector(
-          onHorizontalDragStart:
-              widget.disabledGestures ? null : _handleDragStart,
-          onHorizontalDragUpdate:
-              widget.disabledGestures ? null : _handleDragUpdate,
-          onHorizontalDragEnd: widget.disabledGestures ? null : _handleDragEnd,
-          onHorizontalDragCancel:
-              widget.disabledGestures ? null : _handleDragCancel,
-          child: DrawerIcon(
+    return GestureDetector(
+      onHorizontalDragStart: widget.disabledGestures ? null : _handleDragStart,
+      onHorizontalDragUpdate:
+          widget.disabledGestures ? null : _handleDragUpdate,
+      onHorizontalDragEnd: widget.disabledGestures ? null : _handleDragEnd,
+      onHorizontalDragCancel:
+          widget.disabledGestures ? null : _handleDragCancel,
+      child: Stack(
+        children: <Widget>[
+          _drawer,
+          DrawerIcon(
             icon: _drawerOverlay,
             child: _mainView,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

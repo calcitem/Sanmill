@@ -26,16 +26,15 @@
 
 class BoardItem;
 
-class GameScene : public QGraphicsScene
-{
+class GameScene : public QGraphicsScene {
     Q_OBJECT
 public:
-    explicit GameScene(QObject *parent = nullptr);
+    explicit GameScene(QObject* parent = nullptr);
     ~GameScene() override;
 
     QPointF polar2pos(File file, Rank rank);
 
-    bool pos2polar(QPointF pos, File &file, Rank &rank);
+    bool pos2polar(QPointF pos, File& file, Rank& rank);
 
     void setDiagonal(bool arg = true);
 
@@ -47,9 +46,9 @@ public:
 
 protected:
     //void keyPressEvent(QKeyEvent *keyEvent);
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
 
 signals:
     void mouseReleased(QPointF);
@@ -57,8 +56,7 @@ signals:
 public slots:
 
 private:
-    BoardItem *board {nullptr};
-
+    BoardItem* board { nullptr };
 };
 
 #endif // GAMESCENE_H

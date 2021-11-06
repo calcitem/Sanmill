@@ -38,18 +38,18 @@
 /// -DUSE_PEXT    | Add runtime support for use of pext asm-instruction. Works
 ///               | only in 64-bit mode and requires hardware with pext support.
 
+#include <algorithm>
 #include <cassert>
 #include <cctype>
 #include <climits>
 #include <cstdint>
 #include <cstdlib>
-#include <algorithm>
 
 #if defined(_MSC_VER)
 // Disable some silly and noisy warning from MSVC compiler
-#pragma warning(disable: 4127) // Conditional expression is constant
-#pragma warning(disable: 4146) // Unary minus operator applied to unsigned type
-#pragma warning(disable: 4800) // Forcing value to bool 'true' or 'false'
+#pragma warning(disable : 4127) // Conditional expression is constant
+#pragma warning(disable : 4146) // Unary minus operator applied to unsigned type
+#pragma warning(disable : 4800) // Forcing value to bool 'true' or 'false'
 #endif
 
 /// Predefined macros hell:
@@ -60,30 +60,30 @@
 /// _WIN32             Building on Windows (any)
 /// _WIN64             Building on Windows 64 bit
 
-#if defined(__GNUC__ ) && (__GNUC__ < 9 || (__GNUC__ == 9 && __GNUC_MINOR__ <= 2)) && defined(_WIN32) && !defined(__clang__)
+#if defined(__GNUC__) && (__GNUC__ < 9 || (__GNUC__ == 9 && __GNUC_MINOR__ <= 2)) && defined(_WIN32) && !defined(__clang__)
 #define ALIGNAS_ON_STACK_VARIABLES_BROKEN
 #endif
 
 #define ASSERT_ALIGNED(ptr, alignment) assert(reinterpret_cast<uintptr_t>(ptr) % alignment == 0)
 
 #if defined(_WIN64) && defined(_MSC_VER) // No Makefile used
-#  include <intrin.h> // Microsoft header for _BitScanForward64()
-#  define IS_64BIT
+#include <intrin.h> // Microsoft header for _BitScanForward64()
+#define IS_64BIT
 #endif
 
 #if defined(USE_POPCNT) && (defined(__INTEL_COMPILER) || defined(_MSC_VER))
-#  include <nmmintrin.h> // Intel and Microsoft header for _mm_popcnt_u64()
+#include <nmmintrin.h> // Intel and Microsoft header for _mm_popcnt_u64()
 #endif
 
 #if !defined(NO_PREFETCH) && (defined(__INTEL_COMPILER) || defined(_MSC_VER))
-#  include <xmmintrin.h> // Intel and Microsoft header for _mm_prefetch()
+#include <xmmintrin.h> // Intel and Microsoft header for _mm_prefetch()
 #endif
 
 #if defined(USE_PEXT)
-#  include <immintrin.h> // Header for _pext_u64() intrinsic
-#  define pext(b, m) _pext_u64(b, m)
+#include <immintrin.h> // Header for _pext_u64() intrinsic
+#define pext(b, m) _pext_u64(b, m)
 #else
-#  define pext(b, m) 0
+#define pext(b, m) 0
 #endif
 
 #ifdef USE_POPCNT
@@ -112,24 +112,21 @@ typedef uint32_t Key;
 
 typedef uint32_t Bitboard;
 
-constexpr int MAX_MOVES = 72;   // (24 - 4 - 3) * 4 = 68
+constexpr int MAX_MOVES = 72; // (24 - 4 - 3) * 4 = 68
 constexpr int MAX_PLY = 48;
 
-enum Move : int32_t
-{
+enum Move : int32_t {
     MOVE_NONE,
     MOVE_NULL = 65
 };
 
-enum MoveType
-{
+enum MoveType {
     MOVETYPE_PLACE,
     MOVETYPE_MOVE,
     MOVETYPE_REMOVE
 };
 
-enum Color : uint8_t
-{
+enum Color : uint8_t {
     NOCOLOR = 0,
     WHITE = 1,
     BLACK = 2,
@@ -138,13 +135,12 @@ enum Color : uint8_t
     NOBODY = 8
 };
 
-enum class Phase : uint16_t
-{
+enum class Phase : uint16_t {
     none,
     ready,
-    placing,    // Placing men on vacant points
-    moving,     // Moving men to adjacent points or
-                // (optional) Moving men to any vacant point when the player has been reduced to three men
+    placing, // Placing men on vacant points
+    moving, // Moving men to adjacent points or
+    // (optional) Moving men to any vacant point when the player has been reduced to three men
     gameOver
 };
 
@@ -157,16 +153,14 @@ enum class Phase : uint16_t
 //       - 'Jump' a piece to any empty location if the player has less than
 //         three or four pieces and mayFly is |true|;
 //   - Remove an opponent's piece after successfully closing a mill.
-enum class Action : uint16_t
-{
+enum class Action : uint16_t {
     none,
     select,
     place,
     remove
 };
 
-enum class GameOverReason
-{
+enum class GameOverReason {
     noReason,
 
     // A player wins by reducing the opponent to two pieces
@@ -185,16 +179,14 @@ enum class GameOverReason
     drawReasonBoardIsFull,
 };
 
-enum Bound : uint8_t
-{
+enum Bound : uint8_t {
     BOUND_NONE,
     BOUND_UPPER,
     BOUND_LOWER,
     BOUND_EXACT = BOUND_UPPER | BOUND_LOWER
 };
 
-enum Value : int8_t
-{
+enum Value : int8_t {
     VALUE_ZERO = 0,
     VALUE_DRAW = 0,
 #ifdef ENDGAME_LEARNING
@@ -225,8 +217,7 @@ enum Value : int8_t
     VALUE_MOVING_WINDOW = VALUE_EACH_PIECE_MOVING_NEEDREMOVE + 1,
 };
 
-enum Rating : int8_t
-{
+enum Rating : int8_t {
     RATING_ZERO = 0,
 
     RATING_BLOCK_ONE_MILL = 10,
@@ -252,8 +243,7 @@ enum Rating : int8_t
     RATING_MAX = INT8_MAX,
 };
 
-enum PieceType : uint16_t
-{
+enum PieceType : uint16_t {
     NO_PIECE_TYPE = 0,
     WHITE_STONE = 1,
     BLACK_STONE = 2,
@@ -265,8 +255,7 @@ enum PieceType : uint16_t
     ON_BOARD = 0x20,
 };
 
-enum Piece : uint8_t
-{
+enum Piece : uint8_t {
     NO_PIECE = 0x00,
     BAN_STONE = 0x0F,
 
@@ -298,35 +287,89 @@ enum Piece : uint8_t
     B_STONE_11 = 0x2B,
     B_STONE_12 = 0x2C,
 
-    PIECE_NB = 64,  // Fix overflow
+    PIECE_NB = 64, // Fix overflow
 };
 
 constexpr Value PieceValue = StoneValue;
 
 using Depth = int8_t;
 
-enum : int
-{
+enum : int {
     DEPTH_NONE = 0,
     DEPTH_OFFSET = DEPTH_NONE
 };
 
-enum Square : int
-{
-    SQ_0 = 0, SQ_1 = 1, SQ_2 = 2, SQ_3 = 3, SQ_4 = 4, SQ_5 = 5, SQ_6 = 6, SQ_7 = 7,
-    SQ_8 = 8, SQ_9 = 9, SQ_10 = 10, SQ_11 = 11, SQ_12 = 12, SQ_13 = 13, SQ_14 = 14, SQ_15 = 15,
-    SQ_16 = 16, SQ_17 = 17, SQ_18 = 18, SQ_19 = 19, SQ_20 = 20, SQ_21 = 21, SQ_22 = 22, SQ_23 = 23,
-    SQ_24 = 24, SQ_25 = 25, SQ_26 = 26, SQ_27 = 27, SQ_28 = 28, SQ_29 = 29, SQ_30 = 30, SQ_31 = 31,
+enum Square : int {
+    SQ_0 = 0,
+    SQ_1 = 1,
+    SQ_2 = 2,
+    SQ_3 = 3,
+    SQ_4 = 4,
+    SQ_5 = 5,
+    SQ_6 = 6,
+    SQ_7 = 7,
+    SQ_8 = 8,
+    SQ_9 = 9,
+    SQ_10 = 10,
+    SQ_11 = 11,
+    SQ_12 = 12,
+    SQ_13 = 13,
+    SQ_14 = 14,
+    SQ_15 = 15,
+    SQ_16 = 16,
+    SQ_17 = 17,
+    SQ_18 = 18,
+    SQ_19 = 19,
+    SQ_20 = 20,
+    SQ_21 = 21,
+    SQ_22 = 22,
+    SQ_23 = 23,
+    SQ_24 = 24,
+    SQ_25 = 25,
+    SQ_26 = 26,
+    SQ_27 = 27,
+    SQ_28 = 28,
+    SQ_29 = 29,
+    SQ_30 = 30,
+    SQ_31 = 31,
 
-    SQ_A1 = 8, SQ_A2 = 9, SQ_A3 = 10, SQ_A4 = 11, SQ_A5 = 12, SQ_A6 = 13, SQ_A7 = 14, SQ_A8 = 15,
-    SQ_B1 = 16, SQ_B2 = 17, SQ_B3 = 18, SQ_B4 = 19, SQ_B5 = 20, SQ_B6 = 21, SQ_B7 = 22, SQ_B8 = 23,
-    SQ_C1 = 24, SQ_C2 = 25, SQ_C3 = 26, SQ_C4 = 27, SQ_C5 = 28, SQ_C6 = 29, SQ_C7 = 30, SQ_C8 = 31,
+    SQ_A1 = 8,
+    SQ_A2 = 9,
+    SQ_A3 = 10,
+    SQ_A4 = 11,
+    SQ_A5 = 12,
+    SQ_A6 = 13,
+    SQ_A7 = 14,
+    SQ_A8 = 15,
+    SQ_B1 = 16,
+    SQ_B2 = 17,
+    SQ_B3 = 18,
+    SQ_B4 = 19,
+    SQ_B5 = 20,
+    SQ_B6 = 21,
+    SQ_B7 = 22,
+    SQ_B8 = 23,
+    SQ_C1 = 24,
+    SQ_C2 = 25,
+    SQ_C3 = 26,
+    SQ_C4 = 27,
+    SQ_C5 = 28,
+    SQ_C6 = 29,
+    SQ_C7 = 30,
+    SQ_C8 = 31,
 
-    SQ_32 = 32, SQ_33 = 33, SQ_34 = 34, SQ_35 = 35, SQ_36 = 36, SQ_37 = 37, SQ_38 = 38, SQ_39 = 39,
+    SQ_32 = 32,
+    SQ_33 = 33,
+    SQ_34 = 34,
+    SQ_35 = 35,
+    SQ_36 = 36,
+    SQ_37 = 37,
+    SQ_38 = 38,
+    SQ_39 = 39,
 
     SQ_NONE = 0,
 
-    EFFECTIVE_SQUARE_NB = 24,   // The board consists of a grid with twenty-four intersections or points.
+    EFFECTIVE_SQUARE_NB = 24, // The board consists of a grid with twenty-four intersections or points.
 
     SQUARE_ZERO = 0,
     SQUARE_NB = 40,
@@ -335,8 +378,7 @@ enum Square : int
     SQ_END = SQ_32
 };
 
-enum MoveDirection : int
-{
+enum MoveDirection : int {
     MD_CLOCKWISE = 0,
     MD_BEGIN = MD_CLOCKWISE,
     MD_ANTICLOCKWISE = 1,
@@ -345,43 +387,51 @@ enum MoveDirection : int
     MD_NB = 4
 };
 
-enum LineDirection : int
-{
+enum LineDirection : int {
     LD_HORIZONTAL = 0,
     LD_VERTICAL = 1,
     LD_SLASH = 2,
     LD_NB = 3
 };
 
-enum File : int
-{
-    FILE_A = 1, FILE_B, FILE_C, FILE_NB = 3
+enum File : int {
+    FILE_A = 1,
+    FILE_B,
+    FILE_C,
+    FILE_NB = 3
 };
 
-enum Rank : int
-{
-    RANK_1 = 1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8, RANK_NB = 8
+enum Rank : int {
+    RANK_1 = 1,
+    RANK_2,
+    RANK_3,
+    RANK_4,
+    RANK_5,
+    RANK_6,
+    RANK_7,
+    RANK_8,
+    RANK_NB = 8
 };
 
-#define ENABLE_BASE_OPERATORS_ON(T)                                \
-constexpr T operator+(T d1, int d2) { return T(int(d1) + d2); }    \
-constexpr T operator-(T d1, int d2) { return T(int(d1) - d2); }    \
-constexpr T operator-(T d) { return T(-int(d)); }                  \
-inline T& operator+=(T& d1, int d2) { return d1 = d1 + d2; }       \
-inline T& operator-=(T& d1, int d2) { return d1 = d1 - d2; }
+#define ENABLE_BASE_OPERATORS_ON(T)                                 \
+    constexpr T operator+(T d1, int d2) { return T(int(d1) + d2); } \
+    constexpr T operator-(T d1, int d2) { return T(int(d1) - d2); } \
+    constexpr T operator-(T d) { return T(-int(d)); }               \
+    inline T& operator+=(T& d1, int d2) { return d1 = d1 + d2; }    \
+    inline T& operator-=(T& d1, int d2) { return d1 = d1 - d2; }
 
-#define ENABLE_INCR_OPERATORS_ON(T)                                \
-inline T& operator++(T& d) { return d = T(int(d) + 1); }           \
-inline T& operator--(T& d) { return d = T(int(d) - 1); }
+#define ENABLE_INCR_OPERATORS_ON(T)                          \
+    inline T& operator++(T& d) { return d = T(int(d) + 1); } \
+    inline T& operator--(T& d) { return d = T(int(d) - 1); }
 
-#define ENABLE_FULL_OPERATORS_ON(T)                                \
-ENABLE_BASE_OPERATORS_ON(T)                                        \
-constexpr T operator*(int i, T d) noexcept { return T(i * int(d)); }        \
-constexpr T operator*(T d, int i) noexcept { return T(int(d) * i); }        \
-constexpr T operator/(T d, int i) noexcept { return T(int(d) / i); }        \
-constexpr int operator/(T d1, T d2) noexcept { return int(d1) / int(d2); }  \
-inline T& operator*=(T& d, int i) noexcept { return d = T(int(d) * i); }    \
-inline T& operator/=(T& d, int i) noexcept { return d = T(int(d) / i); }
+#define ENABLE_FULL_OPERATORS_ON(T)                                            \
+    ENABLE_BASE_OPERATORS_ON(T)                                                \
+    constexpr T operator*(int i, T d) noexcept { return T(i * int(d)); }       \
+    constexpr T operator*(T d, int i) noexcept { return T(int(d) * i); }       \
+    constexpr T operator/(T d, int i) noexcept { return T(int(d) / i); }       \
+    constexpr int operator/(T d1, T d2) noexcept { return int(d1) / int(d2); } \
+    inline T& operator*=(T& d, int i) noexcept { return d = T(int(d) * i); }   \
+    inline T& operator/=(T& d, int i) noexcept { return d = T(int(d) / i); }
 
 ENABLE_FULL_OPERATORS_ON(Value)
 
@@ -485,7 +535,7 @@ constexpr MoveType type_of(Move m)
         return MOVETYPE_MOVE;
     }
 
-    return MOVETYPE_PLACE;  // m & 0x00ff
+    return MOVETYPE_PLACE; // m & 0x00ff
 }
 
 constexpr Move make_move(Square from, Square to)
@@ -504,7 +554,8 @@ constexpr bool is_ok(Move m)
 }
 
 /// Based on a congruential pseudo random number generator
-constexpr Key make_key(uint64_t seed) {
+constexpr Key make_key(uint64_t seed)
+{
     return Key(seed * 6364136223846793005ULL + 1442695040888963407ULL);
 }
 

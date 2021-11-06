@@ -8,8 +8,8 @@
 
 #include "miniMax.h"
 
-#pragma warning(disable: 4127)
-#pragma warning(disable: 4706)
+#pragma warning(disable : 4127)
+#pragma warning(disable : 4706)
 
 //-----------------------------------------------------------------------------
 // ~MiniMax()
@@ -36,11 +36,11 @@ void MiniMax::closeDatabase()
 
 //-----------------------------------------------------------------------------
 // unloadPlyInfo()
-// 
+//
 //-----------------------------------------------------------------------------
 void MiniMax::unloadPlyInfo(unsigned int layerNumber)
 {
-    PlyInfo *myPis = &plyInfos[layerNumber];
+    PlyInfo* myPis = &plyInfos[layerNumber];
     memoryUsed2 -= myPis->sizeInBytes;
     arrayInfos.removeArray(layerNumber, ArrayInfo::arrayType_plyInfos, myPis->sizeInBytes, 0);
     SAFE_DELETE_ARRAY(myPis->plyInfo);
@@ -49,11 +49,11 @@ void MiniMax::unloadPlyInfo(unsigned int layerNumber)
 
 //-----------------------------------------------------------------------------
 // unloadLayer()
-// 
+//
 //-----------------------------------------------------------------------------
 void MiniMax::unloadLayer(unsigned int layerNumber)
 {
-    LayerStats *myLss = &layerStats[layerNumber];
+    LayerStats* myLss = &layerStats[layerNumber];
     SAFE_DELETE_ARRAY(myLss->shortKnotValueByte);
     memoryUsed2 -= myLss->sizeInBytes;
     arrayInfos.removeArray(layerNumber, ArrayInfo::arrayType_layerStats, myLss->sizeInBytes, 0);
@@ -62,7 +62,7 @@ void MiniMax::unloadLayer(unsigned int layerNumber)
 
 //-----------------------------------------------------------------------------
 // unloadAllPlyInfos()
-// 
+//
 //-----------------------------------------------------------------------------
 void MiniMax::unloadAllPlyInfos()
 {
@@ -73,7 +73,7 @@ void MiniMax::unloadAllPlyInfos()
 
 //-----------------------------------------------------------------------------
 // unloadAllLayers()
-// 
+//
 //-----------------------------------------------------------------------------
 void MiniMax::unloadAllLayers()
 {
@@ -84,14 +84,14 @@ void MiniMax::unloadAllLayers()
 
 //-----------------------------------------------------------------------------
 // saveBytesToFile()
-// 
+//
 //-----------------------------------------------------------------------------
-void MiniMax::saveBytesToFile(HANDLE hFile, long long offset, unsigned int numBytes, void *pBytes)
+void MiniMax::saveBytesToFile(HANDLE hFile, long long offset, unsigned int numBytes, void* pBytes)
 {
     DWORD dwBytesWritten;
     LARGE_INTEGER liDistanceToMove;
     unsigned int restingBytes = numBytes;
-    void *myPointer = pBytes;
+    void* myPointer = pBytes;
     bool errorPrint = false;
 
     liDistanceToMove.QuadPart = offset;
@@ -104,7 +104,7 @@ void MiniMax::saveBytesToFile(HANDLE hFile, long long offset, unsigned int numBy
     while (restingBytes > 0) {
         if (WriteFile(hFile, myPointer, restingBytes, &dwBytesWritten, nullptr) == TRUE) {
             restingBytes -= dwBytesWritten;
-            myPointer = (void *)(((unsigned char *)myPointer) + dwBytesWritten);
+            myPointer = (void*)(((unsigned char*)myPointer) + dwBytesWritten);
             if (restingBytes > 0)
                 PRINT(2, this, "Still " << restingBytes << " to write!");
         } else {
@@ -117,14 +117,14 @@ void MiniMax::saveBytesToFile(HANDLE hFile, long long offset, unsigned int numBy
 
 //-----------------------------------------------------------------------------
 // loadBytesFromFile()
-// 
+//
 //-----------------------------------------------------------------------------
-void MiniMax::loadBytesFromFile(HANDLE hFile, long long offset, unsigned int numBytes, void *pBytes)
+void MiniMax::loadBytesFromFile(HANDLE hFile, long long offset, unsigned int numBytes, void* pBytes)
 {
     DWORD dwBytesRead;
     LARGE_INTEGER liDistanceToMove;
     unsigned int restingBytes = numBytes;
-    void *myPointer = pBytes;
+    void* myPointer = pBytes;
     bool errorPrint = false;
 
     liDistanceToMove.QuadPart = offset;
@@ -137,7 +137,7 @@ void MiniMax::loadBytesFromFile(HANDLE hFile, long long offset, unsigned int num
     while (restingBytes > 0) {
         if (ReadFile(hFile, pBytes, restingBytes, &dwBytesRead, nullptr) == TRUE) {
             restingBytes -= dwBytesRead;
-            myPointer = (void *)(((unsigned char *)myPointer) + dwBytesRead);
+            myPointer = (void*)(((unsigned char*)myPointer) + dwBytesRead);
             if (restingBytes > 0) {
                 PRINT(2, this, "Still " << restingBytes << " bytes to read!");
             }
@@ -151,7 +151,7 @@ void MiniMax::loadBytesFromFile(HANDLE hFile, long long offset, unsigned int num
 
 //-----------------------------------------------------------------------------
 // isCurrentStateInDatabase()
-// 
+//
 //-----------------------------------------------------------------------------
 bool MiniMax::isCurrentStateInDatabase(unsigned int threadNo)
 {
@@ -167,9 +167,9 @@ bool MiniMax::isCurrentStateInDatabase(unsigned int threadNo)
 
 //-----------------------------------------------------------------------------
 // saveHeader()
-// 
+//
 //-----------------------------------------------------------------------------
-void MiniMax::saveHeader(SkvFileHeader *dbH, LayerStats *lStats)
+void MiniMax::saveHeader(SkvFileHeader* dbH, LayerStats* lStats)
 {
     DWORD dwBytesWritten;
     SetFilePointer(hFileShortKnotValues, 0, nullptr, FILE_BEGIN);
@@ -179,9 +179,9 @@ void MiniMax::saveHeader(SkvFileHeader *dbH, LayerStats *lStats)
 
 //-----------------------------------------------------------------------------
 // saveHeader()
-// 
+//
 //-----------------------------------------------------------------------------
-void MiniMax::saveHeader(PlyInfoFileHeader *piH, PlyInfo *pInfo)
+void MiniMax::saveHeader(PlyInfoFileHeader* piH, PlyInfo* pInfo)
 {
     DWORD dwBytesWritten;
     SetFilePointer(hFilePlyInfo, 0, nullptr, FILE_BEGIN);
@@ -191,9 +191,9 @@ void MiniMax::saveHeader(PlyInfoFileHeader *piH, PlyInfo *pInfo)
 
 //-----------------------------------------------------------------------------
 // openDatabase()
-// 
+//
 //-----------------------------------------------------------------------------
-bool MiniMax::openDatabase(const char *directory, unsigned int maximumNumberOfBranches)
+bool MiniMax::openDatabase(const char* directory, unsigned int maximumNumberOfBranches)
 {
     if (strlen(directory) && !PathFileExistsA(directory)) {
         PRINT(0, this, "ERROR: Database path " << directory << " not valid!");
@@ -206,9 +206,9 @@ bool MiniMax::openDatabase(const char *directory, unsigned int maximumNumberOfBr
 
 //-----------------------------------------------------------------------------
 // openSkvFile()
-// 
+//
 //-----------------------------------------------------------------------------
-void MiniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBranches)
+void MiniMax::openSkvFile(const char* directory, unsigned int maximumNumberOfBranches)
 {
     // locals
     stringstream ssDatabaseFile;
@@ -238,7 +238,8 @@ void MiniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBra
     maxNumBranches = maximumNumberOfBranches;
 
     // database complete ?
-    if (!ReadFile(hFileShortKnotValues, &skvfHeader, sizeof(SkvFileHeader), &dwBytesRead, nullptr)) return;
+    if (!ReadFile(hFileShortKnotValues, &skvfHeader, sizeof(SkvFileHeader), &dwBytesRead, nullptr))
+        return;
 
     // invalid file ?
     if (dwBytesRead != sizeof(SkvFileHeader) || skvfHeader.headerCode != SKV_FILE_HEADER_CODE) {
@@ -276,7 +277,8 @@ void MiniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBra
         // read layer stats
     } else {
         layerStats = new LayerStats[skvfHeader.numLayers];
-        if (!ReadFile(hFileShortKnotValues, layerStats, sizeof(LayerStats) * skvfHeader.numLayers, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFileShortKnotValues, layerStats, sizeof(LayerStats) * skvfHeader.numLayers, &dwBytesRead, nullptr))
+            return;
         for (i = 0; i < skvfHeader.numLayers; i++) {
             layerStats[i].shortKnotValueByte = nullptr;
             layerStats[i].skvCompressed = nullptr;
@@ -286,9 +288,9 @@ void MiniMax::openSkvFile(const char *directory, unsigned int maximumNumberOfBra
 
 //-----------------------------------------------------------------------------
 // openPlyInfoFile()
-// 
+//
 //-----------------------------------------------------------------------------
-void MiniMax::openPlyInfoFile(const char *directory)
+void MiniMax::openPlyInfoFile(const char* directory)
 {
     // locals
     stringstream ssFile;
@@ -302,7 +304,7 @@ void MiniMax::openPlyInfoFile(const char *directory)
     // remember directory name
     ssFile << directory << (strlen(directory) ? "\\" : "") << "plyInfo.dat";
     PRINT(2, this, "Open ply info file: " << ssFile.str() << endl
-          << endl);
+                                          << endl);
 
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
     hFilePlyInfo = CreateFileA(ssFile.str().c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -317,7 +319,8 @@ void MiniMax::openPlyInfoFile(const char *directory)
     plyInfoHeader.headerCode = 0;
 
     // database complete ?
-    if (!ReadFile(hFilePlyInfo, &plyInfoHeader, sizeof(plyInfoHeader), &dwBytesRead, nullptr)) return;
+    if (!ReadFile(hFilePlyInfo, &plyInfoHeader, sizeof(plyInfoHeader), &dwBytesRead, nullptr))
+        return;
 
     // invalid file ?
     if (dwBytesRead != sizeof(plyInfoHeader) || plyInfoHeader.headerCode != PLYINFO_HEADER_CODE) {
@@ -348,7 +351,8 @@ void MiniMax::openPlyInfoFile(const char *directory)
         // read layer stats
     } else {
         plyInfos = new PlyInfo[plyInfoHeader.numLayers];
-        if (!ReadFile(hFilePlyInfo, plyInfos, sizeof(PlyInfo) * plyInfoHeader.numLayers, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePlyInfo, plyInfos, sizeof(PlyInfo) * plyInfoHeader.numLayers, &dwBytesRead, nullptr))
+            return;
         for (i = 0; i < plyInfoHeader.numLayers; i++) {
             plyInfos[i].plyInfo = nullptr;
             plyInfos[i].plyInfoCompressed = nullptr;
@@ -358,13 +362,13 @@ void MiniMax::openPlyInfoFile(const char *directory)
 
 //-----------------------------------------------------------------------------
 // saveLayerToFile()
-// 
+//
 //-----------------------------------------------------------------------------
 void MiniMax::saveLayerToFile(unsigned int layerNumber)
 {
     // don't save layer and header when only preparing layers
-    PlyInfo *myPis = &plyInfos[layerNumber];
-    LayerStats *myLss = &layerStats[layerNumber];
+    PlyInfo* myPis = &plyInfos[layerNumber];
+    LayerStats* myLss = &layerStats[layerNumber];
 
     if (onlyPrepareLayer)
         return;
@@ -385,9 +389,9 @@ void MiniMax::saveLayerToFile(unsigned int layerNumber)
 
 //-----------------------------------------------------------------------------
 // measureIops()
-// 
+//
 //-----------------------------------------------------------------------------
-inline void MiniMax::measureIops(long long &numOperations, LARGE_INTEGER &interval, LARGE_INTEGER &curTimeBefore, char text[])
+inline void MiniMax::measureIops(long long& numOperations, LARGE_INTEGER& interval, LARGE_INTEGER& curTimeBefore, char text[])
 {
     // locals
     LARGE_INTEGER curTimeAfter;
@@ -399,12 +403,12 @@ inline void MiniMax::measureIops(long long &numOperations, LARGE_INTEGER &interv
     // only the time for the io-operation is considered and accumulated
     if (MEASURE_ONLY_IO) {
         QueryPerformanceCounter(&curTimeAfter);
-        interval.QuadPart += curTimeAfter.QuadPart - curTimeBefore.QuadPart;   // ... not thread-safe !!!
+        interval.QuadPart += curTimeAfter.QuadPart - curTimeBefore.QuadPart; // ... not thread-safe !!!
         double totalTimeGone = (double)interval.QuadPart / frequency.QuadPart; // ... not thread-safe !!!
         if (totalTimeGone >= 5.0) {
             PRINT(0, this, text << "operations per second for last interval: " << (int)(numOperations / totalTimeGone));
             interval.QuadPart = 0; // ... not thread-safe !!!
-            numOperations = 0;	   // ... not thread-safe !!!
+            numOperations = 0; // ... not thread-safe !!!
         }
         // the whole time passed since the beginning of the interval is considered
     } else if (numOperations >= MEASURE_TIME_FREQUENCY) {
@@ -412,21 +416,21 @@ inline void MiniMax::measureIops(long long &numOperations, LARGE_INTEGER &interv
         double totalTimeGone = (double)(curTimeAfter.QuadPart - interval.QuadPart) / frequency.QuadPart; // ... not thread-safe !!!
         PRINT(0, this, text << "operations per second for last interval: " << numOperations / totalTimeGone);
         interval.QuadPart = curTimeAfter.QuadPart; // ... not thread-safe !!!
-        numOperations = 0;						   // ... not thread-safe !!!
+        numOperations = 0; // ... not thread-safe !!!
     }
 }
 
 //-----------------------------------------------------------------------------
 // readKnotValueFromDatabase()
-// 
+//
 //-----------------------------------------------------------------------------
-void MiniMax::readKnotValueFromDatabase(unsigned int threadNo, unsigned int &layerNumber, unsigned int &stateNumber, TwoBit &knotValue, bool &invalidLayerOrStateNumber, bool &layerInDatabaseAndCompleted)
+void MiniMax::readKnotValueFromDatabase(unsigned int threadNo, unsigned int& layerNumber, unsigned int& stateNumber, TwoBit& knotValue, bool& invalidLayerOrStateNumber, bool& layerInDatabaseAndCompleted)
 {
     // get state number, since this is the address, where the value is saved
     getLayerAndStateNumber(threadNo, layerNumber, stateNumber);
 
     // layer in database and completed ?
-    LayerStats *myLss = &layerStats[layerNumber];
+    LayerStats* myLss = &layerStats[layerNumber];
     layerInDatabaseAndCompleted = myLss->layerIsCompletedAndInFile;
 
     // valid state and layer number ?
@@ -447,15 +451,15 @@ void MiniMax::readKnotValueFromDatabase(unsigned int threadNo, unsigned int &lay
 
 //-----------------------------------------------------------------------------
 // readKnotValueFromDatabase()
-// 
+//
 //-----------------------------------------------------------------------------
-void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int stateNumber, TwoBit &knotValue)
+void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int stateNumber, TwoBit& knotValue)
 {
     // locals
     TwoBit databaseByte;
     long long bytesAllocated;
     //TwoBit defValue = SKV_WHOLE_BYTE_IS_INVALID;
-    LayerStats *myLss = &layerStats[layerNumber];
+    LayerStats* myLss = &layerStats[layerNumber];
 
     // valid state and layer number ?
     if (layerNumber > skvfHeader.numLayers || stateNumber > myLss->knotsInLayer) {
@@ -506,7 +510,7 @@ void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int s
         databaseByte = myLss->shortKnotValueByte[stateNumber / 4];
 
         // measure io-operations per second
-        measureIops(numReadSkvOperations, readSkvInterval, curTimeBefore, (char *)"Read  knot value ");
+        measureIops(numReadSkvOperations, readSkvInterval, curTimeBefore, (char*)"Read  knot value ");
     }
 
     // make half byte
@@ -515,15 +519,15 @@ void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int s
 
 //-----------------------------------------------------------------------------
 // readPlyInfoFromDatabase()
-// 
+//
 //-----------------------------------------------------------------------------
-void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int stateNumber, PlyInfoVarType &value)
+void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int stateNumber, PlyInfoVarType& value)
 {
     // locals
     unsigned int curKnot;
     PlyInfoVarType defValue = PLYINFO_VALUE_UNCALCULATED;
     long long bytesAllocated;
-    PlyInfo *myPis = &plyInfos[layerNumber];
+    PlyInfo* myPis = &plyInfos[layerNumber];
 
     // valid state and layer number ?
     if (layerNumber > plyInfoHeader.numLayers || stateNumber > myPis->knotsInLayer) {
@@ -570,20 +574,20 @@ void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int sta
         value = myPis->plyInfo[stateNumber];
 
         // measure io-operations per second
-        measureIops(numReadPlyOperations, readPlyInterval, curTimeBefore, (char *)"Read  ply info   ");
+        measureIops(numReadPlyOperations, readPlyInterval, curTimeBefore, (char*)"Read  ply info   ");
     }
 }
 
 //-----------------------------------------------------------------------------
 // saveKnotValueInDatabase()
-// 
+//
 //-----------------------------------------------------------------------------
 void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int stateNumber, TwoBit knotValue)
 {
     // locals
     long long bytesAllocated;
     //TwoBit defValue = SKV_WHOLE_BYTE_IS_INVALID;
-    LayerStats *myLss = &layerStats[layerNumber];
+    LayerStats* myLss = &layerStats[layerNumber];
 
     // valid state and layer number ?
     if (layerNumber > skvfHeader.numLayers || stateNumber > myLss->knotsInLayer) {
@@ -622,7 +626,7 @@ void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int sta
     }
 
     // set value
-    long *pShortKnotValue = ((long *)myLss->shortKnotValueByte) + stateNumber / ((sizeof(long) * 8) / 2);
+    long* pShortKnotValue = ((long*)myLss->shortKnotValueByte) + stateNumber / ((sizeof(long) * 8) / 2);
     long numBitsToShift = 2 * (stateNumber % ((sizeof(long) * 8) / 2)); // little-endian byte-order
     long mask = 0x00000003 << numBitsToShift;
     long curShortKnotValueLong, newShortKnotValueLong;
@@ -633,12 +637,12 @@ void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int sta
     } while (InterlockedCompareExchange(pShortKnotValue, newShortKnotValueLong, curShortKnotValueLong) != curShortKnotValueLong);
 
     // measure io-operations per second
-    measureIops(numWriteSkvOperations, writeSkvInterval, curTimeBefore, (char *)"Write knot value ");
+    measureIops(numWriteSkvOperations, writeSkvInterval, curTimeBefore, (char*)"Write knot value ");
 }
 
 //-----------------------------------------------------------------------------
 // savePlyInfoInDatabase()
-// 
+//
 //-----------------------------------------------------------------------------
 void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber, unsigned int stateNumber, PlyInfoVarType value)
 {
@@ -646,7 +650,7 @@ void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber, unsigned int state
     unsigned int curKnot;
     PlyInfoVarType defValue = PLYINFO_VALUE_UNCALCULATED;
     long long bytesAllocated;
-    PlyInfo *myPis = &plyInfos[layerNumber];
+    PlyInfo* myPis = &plyInfos[layerNumber];
 
     // valid state and layer number ?
     if (layerNumber > plyInfoHeader.numLayers || stateNumber > myPis->knotsInLayer) {
@@ -692,5 +696,5 @@ void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber, unsigned int state
     myPis->plyInfo[stateNumber] = value;
 
     // measure io-operations per second
-    measureIops(numWritePlyOperations, writePlyInterval, curTimeBefore, (char *)"Write ply info   ");
+    measureIops(numWritePlyOperations, writePlyInterval, curTimeBefore, (char*)"Write ply info   ");
 }

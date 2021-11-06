@@ -18,18 +18,16 @@
 
 #include "evaluate.h"
 #include "thread.h"
-//#include "uci.h"
-
 #include "endgame.h"
 #include "option.h"
 
-using std::string;
 using Eval::evaluate;
+using std::string;
 using namespace Search;
 
-Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove);
+Value MTDF(Position* pos, Sanmill::Stack<Position>& ss, Value firstguess, Depth depth, Depth originDepth, Move& bestMove);
 
-Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move &bestMove);
+Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move& bestMove);
 
 bool is_timeout(TimePoint startTime);
 
@@ -39,7 +37,6 @@ void Search::init() noexcept
 {
     return;
 }
-
 
 /// Search::clear() resets search state to its initial value
 
@@ -52,7 +49,6 @@ void Search::clear()
 #endif
     Threads.clear();
 }
-
 
 /// Thread::search() is the main iterative deepening loop. It calls search()
 /// repeatedly with increasing depth until the allocated thinking time has been
@@ -68,14 +64,14 @@ int Thread::search()
     if (gameOptions.getAiIsLazy()) {
 
         int np = bestvalue / VALUE_EACH_PIECE;
-        if (np > 1) { 
+        if (np > 1) {
             if (d < 4) {
                 originDepth = 1;
                 sync_cout << "Lazy Mode: depth = " << originDepth << sync_endl;
             } else {
                 originDepth = 4;
                 sync_cout << "Lazy Mode: depth = " << originDepth << sync_endl;
-            }            
+            }
         } else {
             originDepth = d;
         }
@@ -101,15 +97,12 @@ int Thread::search()
             return 50;
         }
 
-        if (rule.endgameNMoveRule < rule.nMoveRule &&
-            rootPos->is_three_endgame() &&
-            posKeyHistory.size() >= rule.endgameNMoveRule) {
+        if (rule.endgameNMoveRule < rule.nMoveRule && rootPos->is_three_endgame() && posKeyHistory.size() >= rule.endgameNMoveRule) {
             return 10;
         }
 #endif // RULE_50
 
-        if (rule.threefoldRepetitionRule &&
-            rootPos->has_game_cycle()) {
+        if (rule.threefoldRepetitionRule && rootPos->has_game_cycle()) {
             return 3;
         }
 
@@ -122,7 +115,6 @@ int Thread::search()
     } else if (rootPos->get_phase() == Phase::moving) {
         rootPos->st.rule50 = (unsigned int)posKeyHistory.size();
     }
-
 
     MoveList<LEGAL>::shuffle();
 
@@ -211,14 +203,13 @@ out:
     return 0;
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
 
 extern ThreadPool Threads;
 
 vector<Key> posKeyHistory;
 
-Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move &bestMove)
+Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move& bestMove)
 {
     Value value = VALUE_ZERO;
     Value bestValue = -VALUE_INFINITE;
@@ -226,10 +217,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
     Depth epsilon;
 
 #ifdef RULE_50
-    if ((pos->rule50_count() > rule.nMoveRule) ||
-        (rule.endgameNMoveRule < rule.nMoveRule &&
-         pos->is_three_endgame() &&
-         pos->rule50_count() >= rule.endgameNMoveRule)) {
+    if ((pos->rule50_count() > rule.nMoveRule) || (rule.endgameNMoveRule < rule.nMoveRule && pos->is_three_endgame() && pos->rule50_count() >= rule.endgameNMoveRule)) {
         alpha = VALUE_DRAW;
         if (alpha >= beta) {
             return alpha;
@@ -241,8 +229,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
     // Check if we have an upcoming move which draws by repetition, or
     // if the opponent had an alternative move earlier to this position.
     if (/* alpha < VALUE_DRAW && */
-        depth != originDepth &&
-        pos->has_repeated(ss)) {
+        depth != originDepth && pos->has_repeated(ss)) {
         alpha = VALUE_DRAW;
         if (alpha >= beta) {
             return alpha;
@@ -256,16 +243,14 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
 
     // Transposition table lookup
 
-#if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
+#if defined(TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
     const Key posKey = pos->key();
 #endif
 
 #ifdef ENDGAME_LEARNING
     Endgame endgame;
 
-    if (gameOptions.isEndgameLearningEnabled() &&
-        posKey &&
-        Thread::probeEndgameHash(posKey, endgame)) {
+    if (gameOptions.isEndgameLearningEnabled() && posKey && Thread::probeEndgameHash(posKey, endgame)) {
         switch (endgame.type) {
         case EndGameType::whiteWin:
             bestValue = VALUE_MATE;
@@ -287,13 +272,14 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
 
     // check transposition-table
 
-    const Value oldAlpha = alpha;   // To flag BOUND_EXACT when eval above alpha and no available moves
+    const Value oldAlpha = alpha; // To flag BOUND_EXACT when eval above alpha and no available moves
 
     Bound type = BOUND_NONE;
 
     const Value probeVal = TranspositionTable::probe(posKey, depth, alpha, beta, type
 #ifdef TT_MOVE_ENABLE
-                                               , ttMove
+        ,
+        ttMove
 #endif // TT_MOVE_ENABLE
     );
 
@@ -318,9 +304,8 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
 
     // Check for aborted search
     // TODO: and immediate draw
-    if (unlikely(pos->phase == Phase::gameOver) ||   // TODO: Deal with hash
-        depth <= 0 ||
-        Threads.stop.load(std::memory_order_relaxed)) {
+    if (unlikely(pos->phase == Phase::gameOver) || // TODO: Deal with hash
+        depth <= 0 || Threads.stop.load(std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
 
         // For win quickly
@@ -337,13 +322,12 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
     // to pick a move and can't simply return VALUE_DRAW) then check to
     // see if the position is a repeat. if so, we can assume that
     // this line is a draw and return VALUE_DRAW.
-    if (rule.threefoldRepetitionRule &&
-        depth != originDepth && pos->has_repeated(ss)) {
+    if (rule.threefoldRepetitionRule && depth != originDepth && pos->has_repeated(ss)) {
         return VALUE_DRAW;
     }
 
     // Initialize a MovePicker object for the current position, and prepare
-    // to search the moves. 
+    // to search the moves.
     MovePicker mp(*pos);
     Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
@@ -465,11 +449,12 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     TranspositionTable::save(bestValue,
-                             depth,
-                             TranspositionTable::boundType(bestValue, oldAlpha, beta),
-                             posKey
+        depth,
+        TranspositionTable::boundType(bestValue, oldAlpha, beta),
+        posKey
 #ifdef TT_MOVE_ENABLE
-                             , bestMove
+        ,
+        bestMove
 #endif // TT_MOVE_ENABLE
     );
 #endif /* TRANSPOSITION_TABLE_ENABLE */
@@ -479,7 +464,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
     return bestValue;
 }
 
-Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove)
+Value MTDF(Position* pos, Sanmill::Stack<Position>& ss, Value firstguess, Depth depth, Depth originDepth, Move& bestMove)
 {
     Value g = firstguess;
     Value lowerbound = -VALUE_INFINITE;
@@ -496,9 +481,9 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth 
         g = qsearch(pos, ss, depth, originDepth, beta - VALUE_MTDF_WINDOW, beta, bestMove);
 
         if (g < beta) {
-            upperbound = g;    // fail low
+            upperbound = g; // fail low
         } else {
-            lowerbound = g;    // fail high
+            lowerbound = g; // fail high
         }
     }
 

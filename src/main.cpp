@@ -28,23 +28,24 @@
 
 #ifndef QT_GUI_LIB
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
 
-  std::cout << engine_info() << std::endl;
+    std::cout << engine_info() << std::endl;
 
 #ifdef FLUTTER_UI
-  println("uciok");
+    println("uciok");
 #endif
 
-  UCI::init(Options);
-  Bitboards::init();
-  Position::init();
-  Threads.set(size_t(Options["Threads"]));
-  Search::clear(); // After threads are up
+    UCI::init(Options);
+    Bitboards::init();
+    Position::init();
+    Threads.set(size_t(Options["Threads"]));
+    Search::clear(); // After threads are up
 
-  UCI::loop(argc, argv);
+    UCI::loop(argc, argv);
 
-  Threads.set(0);
-  return 0;
+    Threads.set(0);
+    return 0;
 }
 #endif

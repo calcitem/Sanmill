@@ -71,7 +71,7 @@ ThreadManager::~ThreadManager()
 
 //-----------------------------------------------------------------------------
 // waitForOtherThreads()
-// 
+//
 //-----------------------------------------------------------------------------
 void ThreadManager::waitForOtherThreads(unsigned int threadNo)
 {
@@ -115,7 +115,7 @@ void ThreadManager::waitForOtherThreads(unsigned int threadNo)
 
 //-----------------------------------------------------------------------------
 // getNumThreads()
-// 
+//
 //-----------------------------------------------------------------------------
 unsigned int ThreadManager::getNumThreads()
 {
@@ -124,7 +124,7 @@ unsigned int ThreadManager::getNumThreads()
 
 //-----------------------------------------------------------------------------
 // setNumThreads()
-// 
+//
 //-----------------------------------------------------------------------------
 bool ThreadManager::setNumThreads(unsigned int newNumThreads)
 {
@@ -155,7 +155,7 @@ bool ThreadManager::setNumThreads(unsigned int newNumThreads)
 
 //-----------------------------------------------------------------------------
 // pauseExecution()
-// 
+//
 //-----------------------------------------------------------------------------
 void ThreadManager::pauseExecution()
 {
@@ -189,7 +189,7 @@ void ThreadManager::cancelExecution()
 
 //-----------------------------------------------------------------------------
 // unCancelExecution()
-// 
+//
 //-----------------------------------------------------------------------------
 void ThreadManager::unCancelExecution()
 {
@@ -198,7 +198,7 @@ void ThreadManager::unCancelExecution()
 
 //-----------------------------------------------------------------------------
 // wasExecutionCancelled()
-// 
+//
 //-----------------------------------------------------------------------------
 bool ThreadManager::wasExecutionCancelled()
 {
@@ -228,7 +228,7 @@ unsigned int ThreadManager::getThreadNumber()
 // executeInParallel()
 // lpParameter is an array of size numThreads.
 //-----------------------------------------------------------------------------
-unsigned int ThreadManager::executeInParallel(DWORD threadProc(void *pParameter), void *pParameter, unsigned int parameterStructSize)
+unsigned int ThreadManager::executeInParallel(DWORD threadProc(void* pParameter), void* pParameter, unsigned int parameterStructSize)
 {
     // locals
     unsigned int curThreadNo;
@@ -244,8 +244,8 @@ unsigned int ThreadManager::executeInParallel(DWORD threadProc(void *pParameter)
     // create threads
     for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
 
-        hThread[curThreadNo] = CreateThread(nullptr, dwStackSize, (LPTHREAD_START_ROUTINE)threadProc, (void *)(((char *)pParameter) + curThreadNo * parameterStructSize), CREATE_SUSPENDED, &threadId[curThreadNo]);
-        
+        hThread[curThreadNo] = CreateThread(nullptr, dwStackSize, (LPTHREAD_START_ROUTINE)threadProc, (void*)(((char*)pParameter) + curThreadNo * parameterStructSize), CREATE_SUSPENDED, &threadId[curThreadNo]);
+
         if (hThread[curThreadNo] != nullptr) {
             SetThreadPriority(hThread[curThreadNo], THREAD_PRIORITY_BELOW_NORMAL);
         }
@@ -285,17 +285,17 @@ unsigned int ThreadManager::executeInParallel(DWORD threadProc(void *pParameter)
 
 //-----------------------------------------------------------------------------
 // executeInParallel()
-// 
+//
 // lpParameter - an array of size numThreads
 // finalValue  - this value is part of the iteration, meaning that index ranges from initialValue to finalValue including both border values
 //-----------------------------------------------------------------------------
-unsigned int ThreadManager::executeParallelLoop(DWORD threadProc(void *pParameter, unsigned index),
-                                                void *pParameter,
-                                                unsigned int parameterStructSize,
-                                                unsigned int scheduleType,
-                                                int initialValue,
-                                                int finalValue,
-                                                int inkrement)
+unsigned int ThreadManager::executeParallelLoop(DWORD threadProc(void* pParameter, unsigned index),
+    void* pParameter,
+    unsigned int parameterStructSize,
+    unsigned int scheduleType,
+    int initialValue,
+    int finalValue,
+    int inkrement)
 {
     // parameters ok?
     if (executionCancelled == true)
@@ -314,18 +314,18 @@ unsigned int ThreadManager::executeParallelLoop(DWORD threadProc(void *pParamete
         return TM_RETURN_VALUE_INVALID_PARAM;
 
     // locals
-    unsigned int curThreadNo;										 // the threads are enumerated from 0 to numThreads-1
+    unsigned int curThreadNo; // the threads are enumerated from 0 to numThreads-1
     int numIterations = (finalValue - initialValue) / inkrement + 1; // total number of iterations
-    int chunkSize = 0;												 // number of iterations per chunk
-    SIZE_T dwStackSize = 0;											 // initital stack size of each thread. 0 means default size ~1MB
-    ForLoop *forLoopParameters = new ForLoop[numThreads];			 //
+    int chunkSize = 0; // number of iterations per chunk
+    SIZE_T dwStackSize = 0; // initital stack size of each thread. 0 means default size ~1MB
+    ForLoop* forLoopParameters = new ForLoop[numThreads]; //
 
     // globals
     termineAllThreads = false;
 
     // create threads
     for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
-        forLoopParameters[curThreadNo].pParameter = (pParameter != nullptr ? (void *)(((char *)pParameter) + curThreadNo * parameterStructSize) : nullptr);
+        forLoopParameters[curThreadNo].pParameter = (pParameter != nullptr ? (void*)(((char*)pParameter) + curThreadNo * parameterStructSize) : nullptr);
         forLoopParameters[curThreadNo].threadManager = this;
         forLoopParameters[curThreadNo].threadProc = threadProc;
         forLoopParameters[curThreadNo].inkrement = inkrement;
@@ -333,7 +333,7 @@ unsigned int ThreadManager::executeParallelLoop(DWORD threadProc(void *pParamete
 
         switch (scheduleType) {
         case TM_SCHEDULE_STATIC:
-            chunkSize = numIterations / numThreads + (curThreadNo < numIterations %numThreads ? 1 : 0);
+            chunkSize = numIterations / numThreads + (curThreadNo < numIterations % numThreads ? 1 : 0);
             if (curThreadNo == 0) {
                 forLoopParameters[curThreadNo].initialValue = initialValue;
             } else {
@@ -399,12 +399,12 @@ unsigned int ThreadManager::executeParallelLoop(DWORD threadProc(void *pParamete
 
 //-----------------------------------------------------------------------------
 // threadForLoop()
-// 
+//
 //-----------------------------------------------------------------------------
 DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParameter)
 {
     // locals
-    ForLoop *forLoopParameters = (ForLoop *)lpParameter;
+    ForLoop* forLoopParameters = (ForLoop*)lpParameter;
     int index;
 
     switch (forLoopParameters->scheduleType) {

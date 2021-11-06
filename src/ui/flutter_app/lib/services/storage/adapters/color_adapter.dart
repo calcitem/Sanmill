@@ -23,7 +23,7 @@ import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
 /// Color Adapter
 ///
 /// This adapter provides helper functions to be used with [JsonSerializable]
-/// and is a general [TypeAdapter] to be used with Hive [Box]ses
+/// and is a general [TypeAdapter] to be used with Hive [Box]es
 class ColorAdapter extends TypeAdapter<Color> {
   @override
   final typeId = 6;

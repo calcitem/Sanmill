@@ -21,18 +21,18 @@
 
 #include <cassert>
 #include <chrono>
+#include <cstdint>
 #include <ostream>
 #include <string>
 #include <vector>
-#include <cstdint>
 
 #include "types.h"
 
 const std::string engine_info(bool to_uci = false);
 const std::string compiler_info();
-void prefetch(void *addr);
-void prefetch_range(void *addr, size_t len);
-void start_logger(const std::string &fname);
+void prefetch(void* addr);
+void prefetch_range(void* addr, size_t len);
+void start_logger(const std::string& fname);
 void* std_aligned_alloc(size_t alignment, size_t size);
 void std_aligned_free(void* ptr);
 #ifdef ALIGNED_LARGE_PAGES
@@ -51,14 +51,12 @@ static_assert(sizeof(TimePoint) == sizeof(int64_t), "TimePoint should be 64 bits
 
 inline TimePoint now()
 {
-    return std::chrono::duration_cast<std::chrono::milliseconds>
-        (std::chrono::steady_clock::now().time_since_epoch()).count();
+    return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 }
 
-template<class Entry, int Size>
-struct HashTable
-{
-    Entry *operator[](Key key)
+template <class Entry, int Size>
+struct HashTable {
+    Entry* operator[](Key key)
     {
         return &table[(uint32_t)key & (Size - 1)];
     }
@@ -67,16 +65,16 @@ private:
     std::vector<Entry> table = std::vector<Entry>(Size); // Allocate on the heap
 };
 
-
-enum SyncCout
-{
-    IO_LOCK, IO_UNLOCK
+enum SyncCout {
+    IO_LOCK,
+    IO_UNLOCK
 };
 
-std::ostream &operator<<(std::ostream &, SyncCout);
+std::ostream& operator<<(std::ostream&, SyncCout);
 
 #define sync_cout std::cout << IO_LOCK
-#define sync_endl std::endl << IO_UNLOCK
+#define sync_endl std::endl \
+    << IO_UNLOCK
 
 // `ptr` must point to an array of size at least
 // `sizeof(T) * N + alignment` bytes, where `N` is the
@@ -105,8 +103,7 @@ T* align_ptr_up(T* ptr)
 /// For further analysis see
 ///   <http://vigna.di.unimi.it/ftp/papers/xorshift.pdf>
 
-class PRNG
-{
+class PRNG {
     uint64_t s;
 
     uint64_t rand64()
@@ -116,25 +113,27 @@ class PRNG
     }
 
 public:
-    explicit PRNG(uint64_t seed) : s(seed)
+    explicit PRNG(uint64_t seed)
+        : s(seed)
     {
         assert(seed);
     }
 
-    template<typename T> T rand()
+    template <typename T> T rand()
     {
         return T(rand64());
     }
 
     /// Special generator used to fast init magic numbers.
     /// Output values only have 1/8th of their bits set on average.
-    template<typename T> T sparse_rand()
+    template <typename T> T sparse_rand()
     {
         return T(rand64() & rand64() & rand64());
     }
 };
 
-constexpr uint64_t mul_hi64(uint64_t a, uint64_t b) {
+constexpr uint64_t mul_hi64(uint64_t a, uint64_t b)
+{
 #if defined(__GNUC__) && defined(IS_64BIT)
     __extension__ typedef unsigned __int128 uint128;
     return ((uint128)a * (uint128)b) >> 64;
@@ -155,14 +154,14 @@ constexpr uint64_t mul_hi64(uint64_t a, uint64_t b) {
 /// Peter Ã–sterlund.
 
 namespace WinProcGroup {
-    void bindThisThread(size_t idx);
+void bindThisThread(size_t idx);
 }
 
 namespace CommandLine {
-    void init(int argc, char* argv[]);
+void init(int argc, char* argv[]);
 
-    extern std::string binaryDirectory;  // path of the executable directory
-    extern std::string workingDirectory; // path of the working directory
+extern std::string binaryDirectory; // path of the executable directory
+extern std::string workingDirectory; // path of the working directory
 }
 
 #endif // #ifndef MISC_H_INCLUDED

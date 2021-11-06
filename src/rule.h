@@ -22,8 +22,7 @@
 #include "types.h"
 
 // The rule struct manages the various variants of the rules.
-struct Rule
-{
+struct Rule {
     const char name[32];
 
     const char description[512];

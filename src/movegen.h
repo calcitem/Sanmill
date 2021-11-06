@@ -26,16 +26,14 @@
 
 class Position;
 
-enum GenType
-{
+enum GenType {
     PLACE,
     MOVE,
     REMOVE,
     LEGAL
 };
 
-struct ExtMove
-{
+struct ExtMove {
     Move move;
     int value;
 
@@ -54,29 +52,29 @@ struct ExtMove
     operator float() const = delete;
 };
 
-inline bool operator<(const ExtMove &f, const ExtMove &s) noexcept
+inline bool operator<(const ExtMove& f, const ExtMove& s) noexcept
 {
     return f.value < s.value;
 }
 
-template<GenType>
-ExtMove *generate(Position &pos, ExtMove *moveList);
+template <GenType>
+ExtMove* generate(Position& pos, ExtMove* moveList);
 
 /// The MoveList struct is a simple wrapper around generate(). It sometimes comes
 /// in handy to use this class instead of the low level generate() function.
-template<GenType T>
-struct MoveList
-{
-    explicit MoveList(Position &pos) : last(generate<T>(pos, moveList))
+template <GenType T>
+struct MoveList {
+    explicit MoveList(Position& pos)
+        : last(generate<T>(pos, moveList))
     {
     }
 
-    const ExtMove *begin() const
+    const ExtMove* begin() const
     {
         return moveList;
     }
 
-    const ExtMove *end() const
+    const ExtMove* end() const
     {
         return last;
     }
@@ -95,18 +93,18 @@ struct MoveList
     static void shuffle();
 
     inline static std::array<Square, EFFECTIVE_SQUARE_NB> movePriorityList {
-        SQ_16, SQ_18, SQ_20, SQ_22 ,
-        SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 ,
+        SQ_16, SQ_18, SQ_20, SQ_22,
+        SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14,
         SQ_17, SQ_19, SQ_21, SQ_23,
         SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15
     };
 
-    inline static Square adjacentSquares[SQUARE_NB][MD_NB] = { {SQ_NONE} };
+    inline static Square adjacentSquares[SQUARE_NB][MD_NB] = { { SQ_NONE } };
     inline static Bitboard adjacentSquaresBB[SQUARE_NB] = { 0 };
 
 private:
-    ExtMove moveList[MAX_MOVES] { {MOVE_NONE, 0} };
-    ExtMove *last {nullptr};
+    ExtMove moveList[MAX_MOVES] { { MOVE_NONE, 0 } };
+    ExtMove* last { nullptr };
 };
 
 #endif // #ifndef MOVEGEN_H_INCLUDED

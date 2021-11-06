@@ -12,7 +12,7 @@
 // CyclicArray()
 // Creates a cyclic array. The passed file is used as temporary data buffer for the cyclic array.
 //-----------------------------F------------------------------------------------
-CyclicArray::CyclicArray(unsigned int blockSizeInBytes, unsigned int numberOfBlocks, const char *fileName)
+CyclicArray::CyclicArray(unsigned int blockSizeInBytes, unsigned int numberOfBlocks, const char* fileName)
 {
     // Init blocks
     blockSize = blockSizeInBytes;
@@ -26,9 +26,9 @@ CyclicArray::CyclicArray(unsigned int blockSizeInBytes, unsigned int numberOfBlo
     curWritingBlock = 0;
 
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
-    hFile = CreateFileA(fileName, 
-                        GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, 
-                        nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+    hFile = CreateFileA(fileName,
+        GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
+        nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
     // opened file successfully
     if (hFile == INVALID_HANDLE_VALUE) {
@@ -56,7 +56,7 @@ CyclicArray::~CyclicArray()
 // writeDataToFile()
 // Writes 'sizeInBytes'-bytes to the position 'offset' to the file.
 //-----------------------------------------------------------------------------
-void CyclicArray::writeDataToFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void *pData)
+void CyclicArray::writeDataToFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void* pData)
 {
     DWORD dwBytesWritten;
     LARGE_INTEGER liDistanceToMove;
@@ -66,18 +66,18 @@ void CyclicArray::writeDataToFile(HANDLE fd, long long offset, unsigned int size
 
     while (!SetFilePointerEx(fd, liDistanceToMove, nullptr, FILE_BEGIN))
         cout << endl
-        << "SetFilePointerEx  failed!";
+             << "SetFilePointerEx  failed!";
 
     while (restingBytes > 0) {
         if (WriteFile(fd, pData, sizeInBytes, &dwBytesWritten, nullptr) == TRUE) {
             restingBytes -= dwBytesWritten;
-            pData = (void *)(((unsigned char *)pData) + dwBytesWritten);
+            pData = (void*)(((unsigned char*)pData) + dwBytesWritten);
             if (restingBytes > 0)
                 cout << endl
-                << "Still " << restingBytes << " to write!";
+                     << "Still " << restingBytes << " to write!";
         } else {
             cout << endl
-                << "WriteFile Failed!";
+                 << "WriteFile Failed!";
         }
     }
 }
@@ -86,7 +86,7 @@ void CyclicArray::writeDataToFile(HANDLE fd, long long offset, unsigned int size
 // readDataFromFile()
 // Reads 'sizeInBytes'-bytes from the position 'offset' of the file.
 //-----------------------------------------------------------------------------
-void CyclicArray::readDataFromFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void *pData)
+void CyclicArray::readDataFromFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void* pData)
 {
     DWORD dwBytesRead;
     LARGE_INTEGER liDistanceToMove;
@@ -96,18 +96,18 @@ void CyclicArray::readDataFromFile(HANDLE fd, long long offset, unsigned int siz
 
     while (!SetFilePointerEx(fd, liDistanceToMove, nullptr, FILE_BEGIN))
         cout << endl
-        << "SetFilePointerEx failed!";
+             << "SetFilePointerEx failed!";
 
     while (restingBytes > 0) {
         if (ReadFile(fd, pData, sizeInBytes, &dwBytesRead, nullptr) == TRUE) {
             restingBytes -= dwBytesRead;
-            pData = (void *)(((unsigned char *)pData) + dwBytesRead);
+            pData = (void*)(((unsigned char*)pData) + dwBytesRead);
             if (restingBytes > 0)
                 cout << endl
-                << "Still " << restingBytes << " to read!";
+                     << "Still " << restingBytes << " to read!";
         } else {
             cout << endl
-                << "ReadFile Failed!";
+                 << "ReadFile Failed!";
         }
     }
 }
@@ -117,7 +117,7 @@ void CyclicArray::readDataFromFile(HANDLE fd, long long offset, unsigned int siz
 // Add the passed data to the cyclic array. If the writing pointer reaches the end of a block,
 //       the data of the whole block is written to the file and the next block is considered for writing.
 //-----------------------------------------------------------------------------
-bool CyclicArray::addBytes(unsigned int numBytes, unsigned char *pData)
+bool CyclicArray::addBytes(unsigned int numBytes, unsigned char* pData)
 {
     // locals
     unsigned int bytesWritten = 0;
@@ -162,7 +162,7 @@ bool CyclicArray::addBytes(unsigned int numBytes, unsigned char *pData)
 
 //-----------------------------------------------------------------------------
 // bytesAvailable()
-// 
+//
 //-----------------------------------------------------------------------------
 bool CyclicArray::bytesAvailable()
 {
@@ -177,7 +177,7 @@ bool CyclicArray::bytesAvailable()
 // Load data from the cyclic array. If the reading pointer reaches the end of a block,
 //       the data of the next whole block is read from the file.
 //-----------------------------------------------------------------------------
-bool CyclicArray::takeBytes(unsigned int numBytes, unsigned char *pData)
+bool CyclicArray::takeBytes(unsigned int numBytes, unsigned char* pData)
 {
     // locals
     unsigned int bytesRead = 0;
@@ -224,11 +224,11 @@ bool CyclicArray::takeBytes(unsigned int numBytes, unsigned char *pData)
 // Load the passed file into the cyclic array.
 //       The passed filename must be different than the passed filename to the constructor cyclicarray().
 //-----------------------------------------------------------------------------
-bool CyclicArray::loadFile(const char *fileName, LONGLONG &numBytesLoaded)
+bool CyclicArray::loadFile(const char* fileName, LONGLONG& numBytesLoaded)
 {
     // locals
     HANDLE hLoadFile;
-    unsigned char *dataInFile;
+    unsigned char* dataInFile;
     LARGE_INTEGER largeInt;
     LONGLONG maxFileSize = ((LONGLONG)blockSize) * ((LONGLONG)numBlocks);
     LONGLONG curOffset = 0;
@@ -242,8 +242,8 @@ bool CyclicArray::loadFile(const char *fileName, LONGLONG &numBytesLoaded)
         return false;
 
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
-    hLoadFile = CreateFileA(fileName, 
-                            GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+    hLoadFile = CreateFileA(fileName,
+        GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
     // opened file successfully
     if (hLoadFile == INVALID_HANDLE_VALUE) {
@@ -295,15 +295,15 @@ bool CyclicArray::loadFile(const char *fileName, LONGLONG &numBytesLoaded)
 // Writes the whole current content of the cyclic array to the passed file.
 //       The passed filename must be different than the passed filename to the constructor cyclicarray().
 //-----------------------------------------------------------------------------
-bool CyclicArray::saveFile(const char *fileName)
+bool CyclicArray::saveFile(const char* fileName)
 {
     // locals
-    unsigned char *dataInFile;
+    unsigned char* dataInFile;
     HANDLE hSaveFile;
     LONGLONG curOffset;
     unsigned int curBlock;
     unsigned int bytesToWrite;
-    void *pointer;
+    void* pointer;
 
     // cyclic array file must be open
     if (hFile == nullptr) {
@@ -311,8 +311,8 @@ bool CyclicArray::saveFile(const char *fileName)
     }
 
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH | FILE_FLAG_RANDOM_ACCESS)
-    hSaveFile = CreateFileA(fileName, 
-                            GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+    hSaveFile = CreateFileA(fileName,
+        GENERIC_WRITE, FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
     // opened file successfully
     if (hSaveFile == INVALID_HANDLE_VALUE) {

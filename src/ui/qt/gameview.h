@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GRAPHICSVIEW_H
-#define GRAPHICSVIEW_H
+#ifndef GAME_VIEW_H
+#define GAME_VIEW_H
 
 #include <QGraphicsView>
 
@@ -25,12 +25,11 @@
 
 // This class is mainly derived to make the view adapt to
 // the scene size and image rotation mirror operation
-class GameView : public QGraphicsView
-{
+class GameView : public QGraphicsView {
     Q_OBJECT
 
 public:
-    explicit GameView(QWidget *parent);
+    explicit GameView(QWidget* parent);
     ~GameView() override;
 
 public slots:
@@ -40,7 +39,7 @@ public slots:
     void turnLeft();
 
 protected:
-    void resizeEvent(QResizeEvent *event) override;
+    void resizeEvent(QResizeEvent* event) override;
 };
 
-#endif // GRAPHICSVIEW_H
+#endif // GAME_VIEW_H

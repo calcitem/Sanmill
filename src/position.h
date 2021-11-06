@@ -25,24 +25,22 @@
 #include <string>
 #include <vector>
 
-#include "types.h"
 #include "rule.h"
 #include "stack.h"
+#include "types.h"
 
 /// StateInfo struct stores information needed to restore a Position object to
 /// its previous state when we retract a move. Whenever a move is made on the
 /// board (by calling Position::do_move), a StateInfo object must be passed.
 
-struct StateInfo
-{
+struct StateInfo {
     // Copied when making a move
-    unsigned int rule50 {0};
+    unsigned int rule50 { 0 };
     int pliesFromNull;
 
     // Not copied when making a move (will be recomputed anyhow)
     Key key;
 };
-
 
 /// Position class stores information regarding the board representation as
 /// pieces, side to move, hash keys, castling info, etc. Important methods are
@@ -50,25 +48,24 @@ struct StateInfo
 /// traversing the search tree.
 class Thread;
 
-class Position
-{
+class Position {
 public:
     static void init();
 
     Position();
 
-    Position(const Position &) = delete;
-    Position &operator=(const Position &) = delete;
+    Position(const Position&) = delete;
+    Position& operator=(const Position&) = delete;
 
     // FEN string input/output
-    Position &set(const std::string &fenStr, Thread *th);
+    Position& set(const std::string& fenStr, Thread* th);
     const std::string fen() const;
 
     // Position representation
     Piece piece_on(Square s) const;
     Color color_on(Square s) const;
     bool empty(Square s) const;
-    template<PieceType Pt> int count(Color c) const;
+    template <PieceType Pt> int count(Color c) const;
 
     // Properties of moves
     bool legal(Move m) const;
@@ -76,7 +73,7 @@ public:
 
     // Doing and undoing moves
     void do_move(Move m);
-    void undo_move(Sanmill::Stack<Position> &ss);
+    void undo_move(Sanmill::Stack<Position>& ss);
 
     // Accessing hash keys
     Key key() const noexcept;
@@ -89,24 +86,23 @@ public:
     // Other properties of the position
     Color side_to_move() const;
     int game_ply() const;
-    Thread *this_thread() const;
+    Thread* this_thread() const;
     bool has_game_cycle() const;
-    bool has_repeated(Sanmill::Stack<Position> &ss) const;
+    bool has_repeated(Sanmill::Stack<Position>& ss) const;
     unsigned int rule50_count() const;
-
 
     /// Mill Game
 
-    Piece *get_board() noexcept;
+    Piece* get_board() noexcept;
     Square current_square() const;
     enum Phase get_phase() const;
     enum Action get_action() const;
-    const char *get_record() const;
+    const char* get_record() const;
 
     bool reset();
     bool start();
     bool resign(Color loser);
-    bool command(const char *cmd);
+    bool command(const char* cmd);
     void update_score();
     bool check_if_game_is_over();
     void remove_ban_stones();
@@ -116,9 +112,9 @@ public:
     Color get_winner() const noexcept;
     void set_gameover(Color w, GameOverReason reason);
 
-    void mirror(std::vector <std::string> &moveHistory, bool cmdChange = true);
-    void turn(std::vector <std::string> &moveHistory, bool cmdChange = true);
-    void rotate(std::vector <std::string> &moveHistory, int degrees, bool cmdChange = true);
+    void mirror(std::vector<std::string>& moveHistory, bool cmdChange = true);
+    void turn(std::vector<std::string>& moveHistory, bool cmdChange = true);
+    void rotate(std::vector<std::string>& moveHistory, int degrees, bool cmdChange = true);
 
     void reset_bb();
 
@@ -129,10 +125,11 @@ public:
     int potential_mills_count(Square to, Color c, Square from = SQ_0);
     bool is_all_in_mills(Color c);
 
-    void surrounded_pieces_count(Square s, int &ourPieceCount, int &theirPieceCount, int &bannedCount, int &emptyCount);
+    void surrounded_pieces_count(Square s, int& ourPieceCount, int& theirPieceCount, int& bannedCount, int& emptyCount);
     bool is_all_surrounded(Color c
 #ifdef MADWEASEL_MUEHLE_RULE
-                           , Square from = SQ_0, Square to = SQ_0
+        ,
+        Square from = SQ_0, Square to = SQ_0
 #endif // MADWEASEL_MUEHLE_RULE
     ) const;
 
@@ -174,11 +171,11 @@ public:
     Bitboard byColorBB[COLOR_NB];
     int pieceInHandCount[COLOR_NB] { 0, 9, 9 };
     int pieceOnBoardCount[COLOR_NB] { 0, 0, 0 };
-    int pieceToRemoveCount{ 0 };
+    int pieceToRemoveCount { 0 };
     int mobilityDiff { 0 };
     int gamePly { 0 };
     Color sideToMove { NOCOLOR };
-    Thread *thisThread {nullptr};
+    Thread* thisThread { nullptr };
     StateInfo st;
 
     /// Mill Game
@@ -186,7 +183,7 @@ public:
     Color winner;
     GameOverReason gameOverReason { GameOverReason::noReason };
 
-    enum Phase phase {Phase::none};
+    enum Phase phase { Phase::none };
     enum Action action;
 
     int score[COLOR_NB] { 0 };
@@ -204,7 +201,7 @@ public:
     Move move { MOVE_NONE };
 };
 
-extern std::ostream &operator<<(std::ostream &os, const Position &pos);
+extern std::ostream& operator<<(std::ostream& os, const Position& pos);
 
 inline Color Position::side_to_move() const
 {
@@ -227,7 +224,7 @@ inline Piece Position::moved_piece(Move m) const
     return piece_on(from_sq(m));
 }
 
-template<PieceType Pt> inline int Position::count(Color c) const
+template <PieceType Pt> inline int Position::count(Color c) const
 {
     if (Pt == ON_BOARD) {
         return pieceOnBoardCount[c];
@@ -258,7 +255,7 @@ inline unsigned int Position::rule50_count() const
     return st.rule50;
 }
 
-inline Thread *Position::this_thread() const
+inline Thread* Position::this_thread() const
 {
     return thisThread;
 }
@@ -305,12 +302,11 @@ inline bool Position::move_piece(Square from, Square to)
     return false;
 }
 
-
 /// Mill Game
 
-inline Piece *Position::get_board() noexcept
+inline Piece* Position::get_board() noexcept
 {
-    return static_cast<Piece *>(board);
+    return static_cast<Piece*>(board);
 }
 
 inline Square Position::current_square() const
@@ -328,7 +324,7 @@ inline enum Action Position::get_action() const
     return action;
 }
 
-inline const char *Position::get_record() const
+inline const char* Position::get_record() const
 {
     return record;
 }

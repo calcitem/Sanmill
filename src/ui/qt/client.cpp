@@ -20,13 +20,13 @@
 
 #ifdef NET_FIGHT_SUPPORT
 
-#include <QtWidgets>
 #include <QtNetwork>
+#include <QtWidgets>
 
 #include "client.h"
 #include "thread.h"
 
-Client::Client(QWidget *parent, uint16_t port)
+Client::Client(QWidget* parent, uint16_t port)
     : QDialog(parent)
     , hostCombo(new QComboBox)
     , portLineEdit(new QLineEdit)
@@ -60,17 +60,17 @@ Client::Client(QWidget *parent, uint16_t port)
     in.setVersion(QDataStream::Qt_4_0);
 
     connect(hostCombo, &QComboBox::editTextChanged,
-            this, &Client::enableGetActionButton);
+        this, &Client::enableGetActionButton);
     connect(portLineEdit, &QLineEdit::textChanged,
-            this, &Client::enableGetActionButton);
+        this, &Client::enableGetActionButton);
     connect(getActionButton, &QAbstractButton::clicked,
-            this, &Client::requestNewAction);
+        this, &Client::requestNewAction);
     connect(quitButton, &QAbstractButton::clicked, this, &QWidget::close);
     connect(tcpSocket, &QIODevice::readyRead, this, &Client::readAction);
     connect(tcpSocket, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error),
-            this, &Client::displayError);
+        this, &Client::displayError);
 
-    QGridLayout *mainLayout = nullptr;
+    QGridLayout* mainLayout = nullptr;
     if (QGuiApplication::styleHints()->showIsFullScreen() || QGuiApplication::styleHints()->showIsMaximized()) {
         auto outerVerticalLayout = new QVBoxLayout(this);
         outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
@@ -108,8 +108,7 @@ Client::Client(QWidget *parent, uint16_t port)
 
         // If the saved network configuration is not currently discovered use the system default
         QNetworkConfiguration config = manager.configurationFromIdentifier(id);
-        if ((config.state() & QNetworkConfiguration::Discovered) !=
-            QNetworkConfiguration::Discovered) {
+        if ((config.state() & QNetworkConfiguration::Discovered) != QNetworkConfiguration::Discovered) {
             config = manager.defaultConfiguration();
         }
 
@@ -127,7 +126,7 @@ void Client::requestNewAction()
     getActionButton->setEnabled(false);
     tcpSocket->abort();
     tcpSocket->connectToHost(hostCombo->currentText(),
-                             portLineEdit->text().toUShort());
+        portLineEdit->text().toUShort());
 }
 
 void Client::readAction()
@@ -155,20 +154,20 @@ void Client::displayError(QAbstractSocket::SocketError socketError)
         break;
     case QAbstractSocket::HostNotFoundError:
         QMessageBox::information(this, tr("Client"),
-                                 tr("The host was not found. Please check the "
-                                    "host name and port settings."));
+            tr("The host was not found. Please check the "
+               "host name and port settings."));
         break;
     case QAbstractSocket::ConnectionRefusedError:
         QMessageBox::information(this, tr("Client"),
-                                 tr("The connection was refused by the peer. "
-                                    "Make sure the server is running, "
-                                    "and check that the host name and port "
-                                    "settings are correct."));
+            tr("The connection was refused by the peer. "
+               "Make sure the server is running, "
+               "and check that the host name and port "
+               "settings are correct."));
         break;
     default:
         QMessageBox::information(this, tr("Client"),
-                                 tr("The following error occurred: %1.")
-                                 .arg(tcpSocket->errorString()));
+            tr("The following error occurred: %1.")
+                .arg(tcpSocket->errorString()));
     }
 
     getActionButton->setEnabled(true);
@@ -176,10 +175,7 @@ void Client::displayError(QAbstractSocket::SocketError socketError)
 
 void Client::enableGetActionButton()
 {
-    getActionButton->setEnabled((!networkSession || networkSession->isOpen()) &&
-                                 !hostCombo->currentText().isEmpty() &&
-                                 !portLineEdit->text().isEmpty());
-
+    getActionButton->setEnabled((!networkSession || networkSession->isOpen()) && !hostCombo->currentText().isEmpty() && !portLineEdit->text().isEmpty());
 }
 
 void Client::sessionOpened()

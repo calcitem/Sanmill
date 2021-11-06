@@ -29,14 +29,12 @@
 
 using namespace std;
 
-namespace Search
-{
+namespace Search {
 
 void init() noexcept;
 void clear();
 
 } // namespace Search
-
 
 #include "tt.h"
 

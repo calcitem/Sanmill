@@ -18,7 +18,7 @@
 
 #ifdef _WIN32
 #if _WIN32_WINNT < 0x0601
-#undef  _WIN32_WINNT
+#undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0601 // Force to include needed API prototypes
 #endif
 
@@ -32,19 +32,19 @@
 // the calls at compile time), try to load them at runtime. To do this we need
 // first to define the corresponding function pointers.
 extern "C" {
-    typedef bool(*fun1_t)(LOGICAL_PROCESSOR_RELATIONSHIP,
-                          PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, PDWORD);
-    typedef bool(*fun2_t)(USHORT, PGROUP_AFFINITY);
-    typedef bool(*fun3_t)(HANDLE, CONST GROUP_AFFINITY *, PGROUP_AFFINITY);
+typedef bool (*fun1_t)(LOGICAL_PROCESSOR_RELATIONSHIP,
+    PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, PDWORD);
+typedef bool (*fun2_t)(USHORT, PGROUP_AFFINITY);
+typedef bool (*fun3_t)(HANDLE, CONST GROUP_AFFINITY*, PGROUP_AFFINITY);
 }
 #endif
 
+#include <cstdlib>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <cstdlib>
 
 #if defined(__linux__) && !defined(__ANDROID__)
 #include <stdlib.h>
@@ -61,8 +61,7 @@ extern "C" {
 
 using namespace std;
 
-namespace
-{
+namespace {
 
 /// Version number. If Version is left empty, then compile date in the format
 /// DD-MM-YY and show in engine_info.
@@ -74,11 +73,12 @@ const string Version = "";
 /// usual I/O functionality, all without changing a single line of code!
 /// Idea from http://groups.google.com/group/comp.lang.c++/msg/1d941c0f26ea0d81
 
-struct Tie : public streambuf
-{
+struct Tie : public streambuf {
     // MSVC requires split streambuf for cin and cout
 
-    Tie(streambuf *b, streambuf *l) : buf(b), logBuf(l)
+    Tie(streambuf* b, streambuf* l)
+        : buf(b)
+        , logBuf(l)
     {
     }
 
@@ -104,7 +104,7 @@ struct Tie : public streambuf
 
     streambuf *buf, *logBuf;
 
-    int log(int c, const char *prefix)
+    int log(int c, const char* prefix)
     {
         static int last = '\n'; // Single log file
 
@@ -115,9 +115,10 @@ struct Tie : public streambuf
     }
 };
 
-class Logger
-{
-    Logger() : in(cin.rdbuf(), file.rdbuf()), out(cout.rdbuf(), file.rdbuf())
+class Logger {
+    Logger()
+        : in(cin.rdbuf(), file.rdbuf())
+        , out(cout.rdbuf(), file.rdbuf())
     {
     }
 
@@ -130,7 +131,7 @@ class Logger
     Tie in, out;
 
 public:
-    static void start(const std::string &fname)
+    static void start(const std::string& fname)
     {
         static Logger l;
 
@@ -153,7 +154,6 @@ public:
 };
 
 } // namespace
-
 
 /// engine_info() returns the full name of the current Sanmill version. This
 /// will be either "Sanmill <Tag> DD-MM-YY" (where DD-MM-YY is the date when
@@ -178,7 +178,6 @@ const string engine_info(bool to_uci)
 
     return ss.str();
 }
-
 
 /// compiler_info() returns a string trying to describe the compiler we use
 
@@ -283,41 +282,43 @@ const std::string compiler_info()
     return compiler;
 }
 
-
 /// Debug functions used mainly to collect run-time statistics
 static std::atomic<int64_t> hits[2], means[2];
 
 void dbg_hit_on(bool b) noexcept
 {
-    ++hits[0]; if (b) ++hits[1];
+    ++hits[0];
+    if (b)
+        ++hits[1];
 }
 
 void dbg_hit_on(bool c, bool b) noexcept
 {
-    if (c) dbg_hit_on(b);
+    if (c)
+        dbg_hit_on(b);
 }
 
 void dbg_mean_of(int v) noexcept
 {
-    ++means[0]; means[1] += v;
+    ++means[0];
+    means[1] += v;
 }
 
 void dbg_print()
 {
     if (hits[0])
         cerr << "Total " << hits[0] << " Hits " << hits[1]
-        << " hit rate (%) " << 100 * hits[1] / hits[0] << endl;
+             << " hit rate (%) " << 100 * hits[1] / hits[0] << endl;
 
     if (means[0])
         cerr << "Total " << means[0] << " Mean "
-        << (double)means[1] / means[0] << endl;
+             << (double)means[1] / means[0] << endl;
 }
-
 
 /// Used to serialize access to std::cout to avoid multiple threads writing at
 /// the same time.
 
-std::ostream &operator<<(std::ostream &os, SyncCout sc)
+std::ostream& operator<<(std::ostream& os, SyncCout sc)
 {
     static std::mutex m;
 
@@ -330,68 +331,65 @@ std::ostream &operator<<(std::ostream &os, SyncCout sc)
     return os;
 }
 
-
 /// Trampoline helper to avoid moving Logger to misc.h
-void start_logger(const std::string &fname)
+void start_logger(const std::string& fname)
 {
     Logger::start(fname);
 }
-
 
 /// prefetch() preloads the given address in L1/L2 cache. This is a non-blocking
 /// function that doesn't stall the CPU waiting for data to be loaded from memory,
 /// which can be quite slow.
 #ifdef NO_PREFETCH
 
-void prefetch(void *)
+void prefetch(void*)
 {
 }
 
 #else
 
-void prefetch(void *addr)
+void prefetch(void* addr)
 {
-#  if defined(__INTEL_COMPILER)
+#if defined(__INTEL_COMPILER)
     // This hack prevents prefetches from being optimized away by
     // Intel compiler. Both MSVC and gcc seem not be affected by this.
     __asm__("");
-#  endif
+#endif
 
-#  if defined(__INTEL_COMPILER) || defined(_MSC_VER)
-    _mm_prefetch((char *)addr, _MM_HINT_T0);
-#  else
+#if defined(__INTEL_COMPILER) || defined(_MSC_VER)
+    _mm_prefetch((char*)addr, _MM_HINT_T0);
+#else
     __builtin_prefetch(addr);
-#  endif
+#endif
 }
 
 #ifndef PREFETCH_STRIDE
 /* L1 cache line size */
-#define L1_CACHE_SHIFT	7
-#define L1_CACHE_BYTES	(1 << L1_CACHE_SHIFT)
+#define L1_CACHE_SHIFT 7
+#define L1_CACHE_BYTES (1 << L1_CACHE_SHIFT)
 
 #define PREFETCH_STRIDE (4 * L1_CACHE_BYTES)
 #endif
 
-void prefetch_range(void *addr, size_t len)
+void prefetch_range(void* addr, size_t len)
 {
-    char *cp = nullptr;
-    const char *end = (char *)addr + len;
+    char* cp = nullptr;
+    const char* end = (char*)addr + len;
 
-    for (cp = (char *)addr; cp < end; cp += PREFETCH_STRIDE)
+    for (cp = (char*)addr; cp < end; cp += PREFETCH_STRIDE)
         prefetch(cp);
 }
 
 #endif
 
-
 /// std_aligned_alloc() is our wrapper for systems where the c++17 implementation
 /// does not guarantee the availability of aligned_alloc(). Memory allocated with
 /// std_aligned_alloc() must be freed with std_aligned_free().
 
-void *std_aligned_alloc(size_t alignment, size_t size)
+void* std_aligned_alloc(size_t alignment, size_t size)
 {
 #if defined(POSIXALIGNEDALLOC)
-    void *mem;
+    void* mem;
     return posix_memalign(&mem, alignment, size) ? nullptr : mem;
 #elif defined(_WIN32)
     return _mm_malloc(size, alignment);
@@ -400,7 +398,7 @@ void *std_aligned_alloc(size_t alignment, size_t size)
 #endif
 }
 
-void std_aligned_free(void *ptr)
+void std_aligned_free(void* ptr)
 {
 #if defined(POSIXALIGNEDALLOC)
     free(ptr);
@@ -417,11 +415,11 @@ void std_aligned_free(void *ptr)
 
 #if defined(_WIN32)
 
-static void *aligned_large_pages_alloc_win(size_t allocSize)
+static void* aligned_large_pages_alloc_win(size_t allocSize)
 {
-    HANDLE hProcessToken{ };
-    LUID luid{ };
-    void *mem = nullptr;
+    HANDLE hProcessToken {};
+    LUID luid {};
+    void* mem = nullptr;
 
     const size_t largePageSize = GetLargePageMinimum();
     if (!largePageSize)
@@ -432,8 +430,8 @@ static void *aligned_large_pages_alloc_win(size_t allocSize)
         return nullptr;
 
     if (LookupPrivilegeValue(NULL, SE_LOCK_MEMORY_NAME, &luid)) {
-        TOKEN_PRIVILEGES tp{ };
-        TOKEN_PRIVILEGES prevTp{ };
+        TOKEN_PRIVILEGES tp {};
+        TOKEN_PRIVILEGES prevTp {};
         DWORD prevTpLen = 0;
 
         tp.PrivilegeCount = 1;
@@ -443,8 +441,8 @@ static void *aligned_large_pages_alloc_win(size_t allocSize)
         // Try to enable SeLockMemoryPrivilege. Note that even if AdjustTokenPrivileges() succeeds,
         // we still need to query GetLastError() to ensure that the privileges were actually obtained.
         if (AdjustTokenPrivileges(
-            hProcessToken, FALSE, &tp, sizeof(TOKEN_PRIVILEGES), &prevTp, &prevTpLen) &&
-            GetLastError() == ERROR_SUCCESS) {
+                hProcessToken, FALSE, &tp, sizeof(TOKEN_PRIVILEGES), &prevTp, &prevTpLen)
+            && GetLastError() == ERROR_SUCCESS) {
             // Round up size to full pages and allocate
             allocSize = (allocSize + largePageSize - 1) & ~size_t(largePageSize - 1);
             mem = VirtualAlloc(
@@ -460,10 +458,10 @@ static void *aligned_large_pages_alloc_win(size_t allocSize)
     return mem;
 }
 
-void *aligned_large_pages_alloc(size_t allocSize)
+void* aligned_large_pages_alloc(size_t allocSize)
 {
     // Try to allocate large pages
-    void *mem = aligned_large_pages_alloc_win(allocSize);
+    void* mem = aligned_large_pages_alloc_win(allocSize);
 
     // Fall back to regular, page aligned, allocation if necessary
     if (!mem)
@@ -474,7 +472,7 @@ void *aligned_large_pages_alloc(size_t allocSize)
 
 #else
 
-void *aligned_large_pages_alloc(size_t allocSize)
+void* aligned_large_pages_alloc(size_t allocSize)
 {
 #if defined(__linux__)
     constexpr size_t alignment = 2 * 1024 * 1024; // assumed 2MB page size
@@ -482,9 +480,9 @@ void *aligned_large_pages_alloc(size_t allocSize)
     constexpr size_t alignment = 4096; // assumed small page size
 #endif
 
-  // round up to multiples of alignment
+    // round up to multiples of alignment
     size_t size = ((allocSize + alignment - 1) / alignment) * alignment;
-    void *mem = std_aligned_alloc(alignment, size);
+    void* mem = std_aligned_alloc(alignment, size);
 #if defined(MADV_HUGEPAGE)
     madvise(mem, size, MADV_HUGEPAGE);
 #endif
@@ -493,24 +491,22 @@ void *aligned_large_pages_alloc(size_t allocSize)
 
 #endif
 
-
 /// aligned_large_pages_free() will free the previously allocated ttmem
 
 #if defined(_WIN32)
 
-void aligned_large_pages_free(void *mem)
+void aligned_large_pages_free(void* mem)
 {
     if (mem && !VirtualFree(mem, 0, MEM_RELEASE)) {
         DWORD err = GetLastError();
-        std::cerr << "Failed to free transposition table. Error code: 0x" <<
-            std::hex << err << std::dec << std::endl;
+        std::cerr << "Failed to free transposition table. Error code: 0x" << std::hex << err << std::dec << std::endl;
         exit(EXIT_FAILURE);
     }
 }
 
 #else
 
-void aligned_large_pages_free(void *mem)
+void aligned_large_pages_free(void* mem)
 {
     std_aligned_free(mem);
 }
@@ -518,8 +514,7 @@ void aligned_large_pages_free(void *mem)
 #endif
 #endif // ALIGNED_LARGE_PAGES
 
-namespace WinProcGroup
-{
+namespace WinProcGroup {
 
 #ifndef _WIN32
 
@@ -545,7 +540,7 @@ int best_group(size_t idx)
     HMODULE k32 = GetModuleHandle(L"Kernel32.dll");
     if (k32 == nullptr)
         return -1;
-    auto fun1 = (fun1_t)(void(*)())GetProcAddress(k32, "GetLogicalProcessorInformationEx");
+    auto fun1 = (fun1_t)(void (*)())GetProcAddress(k32, "GetLogicalProcessorInformationEx");
     if (!fun1)
         return -1;
 
@@ -555,7 +550,7 @@ int best_group(size_t idx)
 
     // Once we know returnLength, allocate the buffer
     SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX *buffer, *ptr;
-    ptr = buffer = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX *)malloc(returnLength);
+    ptr = buffer = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)malloc(returnLength);
 
     if (ptr == nullptr)
         return -1;
@@ -577,7 +572,7 @@ int best_group(size_t idx)
 
         assert(ptr->Size);
         byteOffset += ptr->Size;
-        ptr = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX *)(((char *)ptr) + ptr->Size);
+        ptr = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)(((char*)ptr) + ptr->Size);
     }
 
     free(buffer);
@@ -601,7 +596,6 @@ int best_group(size_t idx)
     return idx < groups.size() ? groups[idx] : -1;
 }
 
-
 /// bindThisThread() set the group affinity of the current thread
 
 void bindThisThread(size_t idx)
@@ -616,8 +610,8 @@ void bindThisThread(size_t idx)
     HMODULE k32 = GetModuleHandle(L"Kernel32.dll");
     if (k32 == nullptr)
         return;
-    auto fun2 = (fun2_t)(void(*)())GetProcAddress(k32, "GetNumaNodeProcessorMaskEx");
-    auto fun3 = (fun3_t)(void(*)())GetProcAddress(k32, "SetThreadGroupAffinity");
+    auto fun2 = (fun2_t)(void (*)())GetProcAddress(k32, "GetNumaNodeProcessorMaskEx");
+    auto fun3 = (fun3_t)(void (*)())GetProcAddress(k32, "SetThreadGroupAffinity");
 
     if (!fun2 || !fun3)
         return;
@@ -639,14 +633,13 @@ void bindThisThread(size_t idx)
 #define GETCWD getcwd
 #endif
 
-namespace CommandLine
-{
+namespace CommandLine {
 
-string argv0;            // path+name of the executable binary, as given by argv[0]
-string binaryDirectory;  // path of the executable directory
+string argv0; // path+name of the executable binary, as given by argv[0]
+string binaryDirectory; // path of the executable directory
 string workingDirectory; // path of the working directory
 
-void init(int argc, const char *argv[])
+void init(int argc, const char* argv[])
 {
     (void)argc;
     string pathSeparator;
@@ -659,7 +652,7 @@ void init(int argc, const char *argv[])
 #ifdef _MSC_VER
     // Under windows argv[0] may not have the extension. Also _get_pgmptr() had
     // issues in some windows 10 versions, so check returned values carefully.
-    char *pgmptr = nullptr;
+    char* pgmptr = nullptr;
     if (!_get_pgmptr(&pgmptr) && pgmptr != nullptr && *pgmptr)
         argv0 = pgmptr;
 #endif
@@ -670,7 +663,7 @@ void init(int argc, const char *argv[])
     // extract the working directory
     workingDirectory = "";
     char buff[40000];
-    const char *cwd = GETCWD(buff, 40000);
+    const char* cwd = GETCWD(buff, 40000);
     if (cwd)
         workingDirectory = cwd;
 
@@ -686,6 +679,5 @@ void init(int argc, const char *argv[])
     if (binaryDirectory.find("." + pathSeparator) == 0)
         binaryDirectory.replace(0, 1, workingDirectory);
 }
-
 
 } // namespace CommandLine

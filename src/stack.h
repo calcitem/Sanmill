@@ -19,19 +19,17 @@
 #ifndef STACK_H
 #define STACK_H
 
-namespace Sanmill
-{
+namespace Sanmill {
 
 template <typename T, size_t capacity = 128>
-class Stack
-{
+class Stack {
 public:
     Stack()
     {
         arr = new T[capacity];
     }
 
-    Stack(const Stack &other)
+    Stack(const Stack& other)
     {
         *this = other;
     }
@@ -41,30 +39,29 @@ public:
         delete[] arr;
     }
 
-    Stack &operator= (const Stack &other)
+    Stack& operator=(const Stack& other)
     {
         memcpy(arr, other.arr, length());
         p = other.p;
         return *this;
     }
 
-    bool operator== (const T &other) const
+    bool operator==(const T& other) const
     {
-        return (p == other.p &&
-                memcmp(arr, other.arr, size()));
+        return (p == other.p && memcmp(arr, other.arr, size()));
     }
 
-    T &operator[](int i)
-    {
-        return arr[i];
-    }
-
-    const T &operator[](int i) const
+    T& operator[](int i)
     {
         return arr[i];
     }
 
-    inline void push(const T &obj)
+    const T& operator[](int i) const
+    {
+        return arr[i];
+    }
+
+    inline void push(const T& obj)
     {
         p++;
         memcpy(arr + p, &obj, sizeof(T));
@@ -72,7 +69,7 @@ public:
         assert(p < capacity);
     }
 
-    inline void push_back(const T &obj)
+    inline void push_back(const T& obj)
     {
         p++;
         arr[p] = obj;
@@ -85,7 +82,7 @@ public:
         p--;
     }
 
-    inline T *top()
+    inline T* top()
     {
         return &(arr[p]);
     }
@@ -100,12 +97,12 @@ public:
         return (sizeof(T) * size());
     }
 
-    inline T *begin()
+    inline T* begin()
     {
         return &arr[0];
     }
 
-    inline T *end()
+    inline T* end()
     {
         return &arr[p + 1];
     }
@@ -130,7 +127,7 @@ public:
     }
 
 private:
-    T *arr;
+    T* arr;
     int p { -1 };
 };
 

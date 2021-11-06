@@ -17,19 +17,18 @@
 */
 
 #include <QBuffer>
-#include <QUuid>
 #include <QDataStream>
 #include <QString>
 #include <QThread>
-#include <QtWidgets>
+#include <QUuid>
 #include <QtCore>
+#include <QtWidgets>
 #include <random>
 
+#include "config.h"
 #include "misc.h"
 #include "option.h"
 #include "test.h"
-
-#include "config.h"
 
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI
 #include "perfect/perfect.h"
@@ -43,7 +42,7 @@ QString getAppFileName();
 
 extern QString APP_FILENAME_DEFAULT;
 
-Test::Test(QWidget *parent, QString k)
+Test::Test(QWidget* parent, QString k)
     : QDialog(parent)
     , keyCombo(new QComboBox)
     , startButton(new QPushButton(tr("Start")))
@@ -102,7 +101,7 @@ Test::Test(QWidget *parent, QString k)
     connect(stopButton, &QAbstractButton::clicked, this, &Test::stopAction);
     connect(closeButton, &QAbstractButton::clicked, this, &QWidget::close);
 
-    QGridLayout *mainLayout = nullptr;
+    QGridLayout* mainLayout = nullptr;
     if (QGuiApplication::styleHints()->showIsFullScreen() || QGuiApplication::styleHints()->showIsMaximized()) {
         auto outerVerticalLayout = new QVBoxLayout(this);
         outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
@@ -152,7 +151,7 @@ void Test::attach()
         }
     }
 
-    to = (char *)sharedMemory.data();
+    to = (char*)sharedMemory.data();
 
     uuid = createUuidString();
     uuidSize = uuid.size();
@@ -164,12 +163,12 @@ void Test::detach()
 {
     if (sharedMemory.isAttached()) {
         if (sharedMemory.detach()) {
-            loggerDebug("Detached shared memory segment.\n");            
+            loggerDebug("Detached shared memory segment.\n");
         }
     }
 }
 
-void Test::writeToMemory(const QString &record)
+void Test::writeToMemory(const QString& record)
 {
     if (!isTestMode) {
         return;

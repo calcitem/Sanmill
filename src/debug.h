@@ -19,13 +19,13 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
+#include "config.h"
+
 #include <cstdio>
 
 #ifdef QT_GUI_LIB
 #include <QDebug>
 #endif
-
-#include "config.h"
 
 //#define QT_NO_DEBUG_OUTPUT
 
