@@ -156,7 +156,7 @@ inline int popcount(Bitboard b) noexcept
 
 #elif defined(_MSC_VER) || defined(__INTEL_COMPILER)
 
-    return (int)_mm_popcnt_u32(b);
+    return static_cast<int>(_mm_popcnt_u32(b));
 
 #else // Assumed gcc or compatible compiler
 

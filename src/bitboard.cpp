@@ -48,7 +48,7 @@ const std::string Bitboards::pretty(Bitboard b)
 void Bitboards::init() noexcept
 {
     for (unsigned i = 0; i < (1 << 16); ++i)
-        PopCnt16[i] = (uint8_t)std::bitset<16>(i).count();
+        PopCnt16[i] = static_cast<uint8_t>(std::bitset<16>(i).count());
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s)
         SquareBB[s] = (1UL << s);

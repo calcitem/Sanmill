@@ -420,7 +420,7 @@ enum Rank : int {
     inline T& operator+=(T& d1, int d2) { return d1 = d1 + d2; }    \
     inline T& operator-=(T& d1, int d2) { return d1 = d1 - d2; }
 
-#define ENABLE_INCR_OPERATORS_ON(T)                          \
+#define ENABLE_INCR_OPERATORS_ON(T)                                   \
     inline T& operator++(T& d) noexcept { return d = T(int(d) + 1); } \
     inline T& operator--(T& d) noexcept { return d = T(int(d) - 1); }
 
@@ -448,17 +448,17 @@ ENABLE_INCR_OPERATORS_ON(MoveDirection)
 
 constexpr Color operator~(Color c)
 {
-    return Color(c ^ 3); // Toggle color
+    return static_cast<Color>(c ^ 3); // Toggle color
 }
 
 constexpr Square make_square(File f, Rank r)
 {
-    return Square((f << 3) + r - 1);
+    return static_cast<Square>((f << 3) + r - 1);
 }
 
 constexpr Piece make_piece(Color c)
 {
-    return Piece(c << 4);
+    return static_cast<Piece>(c << 4);
 }
 
 constexpr Piece make_piece(Color c, PieceType pt)
@@ -476,7 +476,7 @@ constexpr Piece make_piece(Color c, PieceType pt)
 
 constexpr Color color_of(Piece pc)
 {
-    return Color(pc >> 4);
+    return static_cast<Color>(pc >> 4);
 }
 
 constexpr PieceType type_of(Piece pc)
@@ -503,7 +503,7 @@ constexpr bool is_ok(Square s)
 
 constexpr File file_of(Square s)
 {
-    return File(s >> 3);
+    return static_cast<File>(s >> 3);
 }
 
 constexpr Rank rank_of(Square s)
@@ -514,7 +514,7 @@ constexpr Rank rank_of(Square s)
 constexpr Square from_sq(Move m)
 {
     if (m < 0)
-        m = (Move)-m;
+        m = static_cast<Move>(-m);
 
     return static_cast<Square>(m >> 8);
 }
@@ -522,9 +522,9 @@ constexpr Square from_sq(Move m)
 constexpr Square to_sq(Move m)
 {
     if (m < 0)
-        m = (Move)-m;
+        m = static_cast<Move>(-m);
 
-    return Square(m & 0x00FF);
+    return static_cast<Square>(m & 0x00FF);
 }
 
 constexpr MoveType type_of(Move m)
@@ -540,7 +540,7 @@ constexpr MoveType type_of(Move m)
 
 constexpr Move make_move(Square from, Square to)
 {
-    return Move((from << 8) + to);
+    return static_cast<Move>((from << 8) + to);
 }
 
 constexpr Move reverse_move(Move m)
@@ -556,7 +556,7 @@ constexpr bool is_ok(Move m)
 /// Based on a congruential pseudo random number generator
 constexpr Key make_key(uint64_t seed)
 {
-    return Key(seed * 6364136223846793005ULL + 1442695040888963407ULL);
+    return static_cast<Key>(seed * 6364136223846793005ULL + 1442695040888963407ULL);
 }
 
 #endif // #ifndef TYPES_H_INCLUDED
