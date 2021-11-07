@@ -16,7 +16,7 @@ name: Lint Code Base
 #############################
 on:
   push:
-    branches-ignore: [dev]
+    branches-ignore: [master, dev]
     # Remove the line above to run when pushing to master
   pull_request:
     branches: [master, dev]
@@ -54,4 +54,4 @@ jobs:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ERROR_ON_MISSING_EXEC_BIT: true
-          IGNORE_GITIGNORED_FILES: true    
+          IGNORE_GITIGNORED_FILES: true
