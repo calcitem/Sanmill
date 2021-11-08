@@ -219,7 +219,7 @@ Future<void> _launchFeedback(UserFeedback feedback) async {
     subject: Constants.feedbackSubjectPrefix +
         _version +
         Constants.feedbackSubjectSuffix,
-    recipients: [Constants.recipients],
+    recipients: Constants.recipients,
     attachmentPaths: [screenshotFilePath],
   );
   await FlutterEmailSender.send(email);

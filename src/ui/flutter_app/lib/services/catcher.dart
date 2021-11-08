@@ -34,12 +34,11 @@ Future<void> _initCatcher(Catcher catcher) async {
   }
   final String path = "$externalDirStr/${Constants.crashLogsFileName}";
   debugPrint("[env] ExternalStorageDirectory: $externalDirStr");
-  const String recipients = Constants.recipients;
 
   final CatcherOptions debugOptions = CatcherOptions(PageReportMode(), [
     ConsoleHandler(),
     FileHandler(File(path), printLogs: true),
-    EmailManualHandler([recipients], printLogs: true)
+    EmailManualHandler(Constants.recipients, printLogs: true)
   ]);
 
   /// Release configuration.
@@ -47,13 +46,13 @@ Future<void> _initCatcher(Catcher catcher) async {
   /// user will be prompted to send email with crash to support.
   final CatcherOptions releaseOptions = CatcherOptions(PageReportMode(), [
     FileHandler(File(path), printLogs: true),
-    EmailManualHandler([recipients], printLogs: true)
+    EmailManualHandler(Constants.recipients, printLogs: true)
   ]);
 
   final CatcherOptions profileOptions = CatcherOptions(PageReportMode(), [
     ConsoleHandler(),
     FileHandler(File(path), printLogs: true),
-    EmailManualHandler([recipients], printLogs: true)
+    EmailManualHandler(Constants.recipients, printLogs: true)
   ]);
 
   /// Pass root widget (MyApp) along with Catcher configuration:

@@ -24,7 +24,7 @@ class Constants {
   static const String authorAccount = "calcitem";
   static const String projectName = "Sanmill";
   static String projectNameLower = projectName.toLowerCase();
-  static const String recipients = "$authorAccount@outlook.com";
+  static const List<String> recipients = ["$authorAccount@outlook.com"];
 
   static String settingsFilename = "${projectNameLower}_settings.json";
   static const String crashLogsFileName = "$projectName-crash-logs.txt";
