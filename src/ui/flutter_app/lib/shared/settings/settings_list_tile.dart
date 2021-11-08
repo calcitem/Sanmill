@@ -40,6 +40,26 @@ class SettingsListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool ltr = Directionality.of(context) == TextDirection.ltr;
 
+    final Widget trailing;
+    if (trailingColor != null) {
+      trailing = Text(
+        trailingColor!.value.toRadixString(16),
+        style: TextStyle(backgroundColor: trailingColor),
+      );
+    } else if (trailingString != null) {
+      trailing = Text(
+        trailingString!,
+        style: AppTheme.listTileSubtitleStyle,
+      );
+    } else {
+      trailing = Icon(
+        ltr
+            ? FluentIcons.chevron_right_24_regular
+            : FluentIcons.chevron_left_24_regular,
+        color: AppTheme.listTileSubtitleColor,
+      );
+    }
+
     return ListTile(
       title: Text(
         titleString,
@@ -48,22 +68,7 @@ class SettingsListTile extends StatelessWidget {
       subtitle: subtitleString != null
           ? Text(subtitleString!, style: AppTheme.listTileSubtitleStyle)
           : null,
-      // TODO: [Leptopoda] fix the trailing widget
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(
-            trailingColor?.value.toRadixString(16) ?? trailingString ?? '',
-            style: TextStyle(backgroundColor: trailingColor),
-          ),
-          Icon(
-            ltr
-                ? FluentIcons.chevron_right_24_regular
-                : FluentIcons.chevron_left_24_regular,
-            color: AppTheme.listTileSubtitleColor,
-          )
-        ],
-      ),
+      trailing: trailing,
       onTap: onTap,
     );
   }
