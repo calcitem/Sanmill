@@ -104,7 +104,7 @@ class Game {
         isAi[PieceColor.white] = isAi[PieceColor.black] = true;
         break;
       default:
-        break;
+        assert(false);
     }
 
     debugPrint(
