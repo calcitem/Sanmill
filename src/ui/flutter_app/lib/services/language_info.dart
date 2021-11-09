@@ -121,7 +121,6 @@ void setSpecialCountryAndRegion(BuildContext context) {
       break;
     default:
       specialCountryAndRegion = "";
-      break;
   }
 
   debugPrint("Set Special Country and Region to $specialCountryAndRegion.");

@@ -116,6 +116,7 @@ class _GamePageState extends State<GamePage>
           case Phase.moving:
             return _showTip(S.of(context).tipMove);
           default:
+            assert(false);
         }
         break;
       default:
@@ -805,7 +806,7 @@ class _GamePageState extends State<GamePage>
     final GameResult result = _getGameResult(winner);
     gameInstance.position.result = result;
 
-    final String dialogTitle;
+    late final String dialogTitle;
     switch (result) {
       case GameResult.win:
         dialogTitle = widget.engineType == EngineType.humanVsAi
@@ -819,7 +820,7 @@ class _GamePageState extends State<GamePage>
         dialogTitle = S.of(context).isDraw;
         break;
       default:
-        return;
+        assert(false);
     }
 
     final bool isTopLevel =
@@ -1029,6 +1030,7 @@ class _GamePageState extends State<GamePage>
         buffer.write(S.of(context).movingPhase);
         break;
       default:
+        assert(false);
     }
 
     if (LocalDatabaseService.preferences.screenReaderSupport) {

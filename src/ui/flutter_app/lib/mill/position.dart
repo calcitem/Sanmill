@@ -206,7 +206,6 @@ class Position {
         break;
       default:
         buffer.write("?");
-        break;
     }
 
     buffer.write(" ");
@@ -224,7 +223,6 @@ class Position {
         break;
       default:
         buffer.write("?");
-        break;
     }
 
     buffer.write(" ");
@@ -334,7 +332,6 @@ class Position {
         break;
       default:
         assert(false);
-        break;
     }
 
     if (!ret) {
