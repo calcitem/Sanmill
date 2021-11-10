@@ -405,10 +405,9 @@ class _GamePageState extends State<GamePage>
 
       debugPrint("[engineToGo] Engine response type: ${response.type}");
 
-      // TODO: [Leptopoda] make enum¿?
       switch (response.type) {
-        case "move":
-          final Move mv = response.value as Move;
+        case EngineResponseType.move:
+          final Move mv = response.value!;
           final Move move = Move(mv.move);
 
           await gameInstance.doMove(move.move);
@@ -420,9 +419,9 @@ class _GamePageState extends State<GamePage>
             showSnackBar(context, "${S.of(context).ai}: ${move.notation}");
           }
           break;
-        case "timeout":
+        case EngineResponseType.timeout:
           return _showTip(S.of(context).timeout, snackBar: true);
-        default:
+        case EngineResponseType.nobestmove:
           _showTip(S.of(context).error(response.type));
       }
 

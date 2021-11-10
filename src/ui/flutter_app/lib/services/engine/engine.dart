@@ -19,6 +19,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:sanmill/mill/position.dart';
+import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
 enum EngineType {
@@ -80,10 +81,12 @@ extension EngineTypeExtensiont on EngineType {
   }
 }
 
+enum EngineResponseType { move, timeout, nobestmove }
+
 class EngineResponse {
-  // TODO: [Leptopoda] make enum
-  final String type;
-  final dynamic value;
+  // TODO: extract the value as it is only needed by the move
+  final EngineResponseType type;
+  final Move? value;
   EngineResponse(this.type, {this.value});
 }
 

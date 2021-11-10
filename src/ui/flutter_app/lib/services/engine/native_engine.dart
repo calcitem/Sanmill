@@ -93,14 +93,14 @@ class NativeEngine extends Engine {
       final pos = best.indexOf(" ");
       if (pos > -1) best = best.substring(0, pos);
 
-      return EngineResponse("move", value: Move.set(best));
+      return EngineResponse(EngineResponseType.move, value: Move.set(best));
     }
 
     if (response.startsWith("nobestmove")) {
-      return EngineResponse("nobestmove");
+      return EngineResponse(EngineResponseType.nobestmove);
     }
 
-    return EngineResponse("timeout");
+    return EngineResponse(EngineResponseType.timeout);
   }
 
   Future<String> waitResponse(
