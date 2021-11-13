@@ -59,7 +59,6 @@ int Thread::search()
     Depth d = get_depth();
 
     if (gameOptions.getAiIsLazy()) {
-
         int np = bestvalue / VALUE_EACH_PIECE;
         if (np > 1) {
             if (d < 4) {

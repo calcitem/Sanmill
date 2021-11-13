@@ -260,7 +260,6 @@ void UCI::loop(int argc, char* argv[])
             sync_cout << compiler_info() << sync_endl;
         else
             sync_cout << "Unknown command: " << cmd << sync_endl;
-
     } while (token != "quit" && argc == 1); // Command line args are one-shot
 
     delete pos;

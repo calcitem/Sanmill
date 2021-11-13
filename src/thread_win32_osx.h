@@ -41,7 +41,6 @@ void* start_routine(void* ptr)
 }
 
 class NativeThread {
-
     pthread_t thread;
 
 public:

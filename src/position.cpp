@@ -706,7 +706,6 @@ bool Position::put_piece(Square s, bool updateRecord)
         }
 
     } else if (phase == Phase::moving) {
-
 #ifdef MADWEASEL_MUEHLE_RULE
         if (is_all_surrounded(~sideToMove, currentSquare, s)) {
             set_gameover(sideToMove, GameOverReason::loseReasonNoWay);
@@ -1126,7 +1125,6 @@ bool Position::bitboard_is_ok()
     Bitboard blackBB = byColorBB[BLACK];
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
-
         if (empty(s)) {
             if (whiteBB & (1 << s)) {
                 return false;

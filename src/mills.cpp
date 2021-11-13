@@ -460,7 +460,6 @@ Depth get_search_depth(const Position* pos)
 
     if (!gameOptions.getDeveloperMode()) {
         if (pos->phase == Phase::placing) {
-
             if (!gameOptions.getDrawOnHumanExperience()) {
                 return (Depth)level;
             }
