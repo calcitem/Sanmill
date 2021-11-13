@@ -24,5 +24,6 @@ mkdir -p "$ENV_FILE_PATH" || true
 touch "$ENV_FILE"
 export >"$ENV_FILE"
 
+flutter pub global deactivate build_runner
 flutter pub global activate build_runner
 flutter pub run build_runner build --delete-conflicting-outputs
