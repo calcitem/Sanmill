@@ -52,7 +52,7 @@ template <typename K, typename V, typename F = std::key<K>>
 #endif
 class HashMap {
 public:
-    HashMap(hashFn hashSize_ = HASH_SIZE_DEFAULT)
+    explicit HashMap(hashFn hashSize_ = HASH_SIZE_DEFAULT)
         : hashSize(hashSize_)
     {
 #ifdef DISABLE_HASHBUCKET
