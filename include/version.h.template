@@ -4,9 +4,9 @@
  * WARNING! All changes made in this file will be lost!
  ****************************************************************************/
 
-#ifndef VERSION_H
-#define VERSION_H
+#ifndef VERSION_H_INCLUDED
+#define VERSION_H_INCLUDED
 
 static const char *versionNumber = "$FULL_VERSION";
 
-#endif /*  VERSION_H */
+#endif /*  VERSION_H_INCLUDED */

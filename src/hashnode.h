@@ -1,26 +1,25 @@
-/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef HASH_NODE_H_INCLUDED
 #define HASH_NODE_H_INCLUDED
 
 #include "config.h"
 
+#include <mutex>
 #include <shared_mutex>
 
 namespace CTSL // Concurrent Thread Safe Library
@@ -59,6 +58,7 @@ public:
 #ifndef DISABLE_HASHBUCKET
     HashNode* next; // Pointer to the next node in the same bucket
 #endif
+
 private:
     K key { 0 }; // the key key
     V value; // the value corresponding to the key
@@ -211,6 +211,6 @@ private:
     HashNode<K, V>* head; //The head node of the bucket
     mutable std::shared_timed_mutex mutex_; //The mutex for this bucket
 };
-}
+} // namespace CTSL
 
 #endif // HASH_NODE_H_INCLUDED

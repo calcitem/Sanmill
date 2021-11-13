@@ -1,29 +1,26 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+// This file is part of Sanmill.
+// Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-#include "evaluate.h"
-#include "thread.h"
 #include "endgame.h"
+#include "evaluate.h"
 #include "option.h"
+#include "thread.h"
 
 using Eval::evaluate;
 using std::string;
-using namespace Search;
 
 Value MTDF(Position* pos, Sanmill::Stack<Position>& ss, Value firstguess, Depth depth, Depth originDepth, Move& bestMove);
 
@@ -62,7 +59,6 @@ int Thread::search()
     Depth d = get_depth();
 
     if (gameOptions.getAiIsLazy()) {
-
         int np = bestvalue / VALUE_EACH_PIECE;
         if (np > 1) {
             if (d < 4) {
@@ -119,7 +115,7 @@ int Thread::search()
     MoveList<LEGAL>::shuffle();
 
 #if 0
-    // TODO: Only NMM
+    // TODO(calcitem): Only NMM
     if (rootPos->piece_on_board_count(WHITE) + rootPos->piece_on_board_count(BLACK) <= 1 &&
         !rule.hasDiagonalLines && gameOptions.getShufflingEnabled()) {
         const uint32_t seed = static_cast<uint32_t>(now());
@@ -293,7 +289,7 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
         return bestValue;
     }
 #ifdef TRANSPOSITION_TABLE_DEBUG
-    else {
+    if (probeVal == VALUE_UNKNOWN) {
         Threads.main()->ttMissCount++;
     }
 #endif
@@ -303,8 +299,8 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
     // process leaves
 
     // Check for aborted search
-    // TODO: and immediate draw
-    if (unlikely(pos->phase == Phase::gameOver) || // TODO: Deal with hash
+    // TODO(calcitem): and immediate draw
+    if (unlikely(pos->phase == Phase::gameOver) || // TODO(calcitem): Deal with hash
         depth <= 0 || Threads.stop.load(std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
 
@@ -339,10 +335,10 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
     }
 
 #if 0
-    // TODO: Weak
+    // TODO(calcitem): Weak
     if (bestMove != MOVE_NONE) {
         for (int i = 0; i < moveCount; i++) {
-            if (mp.moves[i].move == bestMove) {    // TODO: need to write value?
+            if (mp.moves[i].move == bestMove) {    // TODO(calcitem): need to write value?
                 std::swap(mp.moves[0], mp.moves[i]);
                 break;
             }
@@ -437,9 +433,9 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
                     bestMove = move;
                 }
 
-                if (value < beta) // Update alpha! Always alpha < beta
+                if (value < beta) { // Update alpha! Always alpha < beta
                     alpha = value;
-                else {
+                } else {
                     assert(value >= beta); // Fail high
                     break; // Fail high
                 }

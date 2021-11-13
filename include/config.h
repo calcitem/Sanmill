@@ -1,23 +1,21 @@
-/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+// This file is part of Sanmill.
+// Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef CONFIG_H_INCLUDED
+#define CONFIG_H_INCLUDED
 
 #include "debug.h"
 
@@ -51,7 +49,7 @@
 #define UCI_AUTO_RE_GO
 #endif
 
-// Play via network (TODO: Port to Qt 6)
+// Play via network (TODO(calcitem): Port to Qt 6)
 //#define NET_FIGHT_SUPPORT
 
 /// Qt simple GUI like a mobile app (WIP)
@@ -160,4 +158,4 @@
 #include "base.h"
 #endif // FLUTTER_UI
 
-#endif // CONFIG_H
+#endif // CONFIG_H_INCLUDED

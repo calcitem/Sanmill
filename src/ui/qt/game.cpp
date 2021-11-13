@@ -1,22 +1,22 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+// This file is part of Sanmill.
+// Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+#include <iomanip>
 #include <map>
+#include <string>
 
 #include <QAbstractButton>
 #include <QApplication>
@@ -31,7 +31,6 @@
 #include <QSoundEffect>
 #include <QThread>
 #include <QTimer>
-#include <iomanip>
 
 #include "boarditem.h"
 #include "client.h"
@@ -44,7 +43,7 @@
 #include "perfect/perfect.h"
 #endif
 
-using namespace std;
+using std::to_string;
 
 Game::Game(
     GameScene& scene,
@@ -97,7 +96,7 @@ Game::Game(
 #endif // QT_GUI_LIB
 
 #ifdef NET_FIGHT_SUPPORT
-    server = new Server(nullptr, 30001); // TODO: WARNING: ThreadSanitizer: data race
+    server = new Server(nullptr, 30001); // TODO(calcitem): WARNING: ThreadSanitizer: data race
     uint16_t clientPort = server->getPort() == 30001 ? 30002 : 30001;
     client = new Client(nullptr, clientPort);
 
@@ -369,11 +368,11 @@ void Game::setInvert(bool arg)
     }
 }
 
-void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= 0 TODO: Unused */)
+void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= 0 TODO(calcitem): Unused */)
 {
     rule.nMoveRule = stepLimited;
 
-    // TODO
+    // TODO(calcitem)
 
     // Update the rule, the original time limit and step limit remain unchanged
     if (ruleNo < 0 || ruleNo >= N_RULES)
@@ -560,7 +559,7 @@ void Game::playSound(GameSound soundType, Color c)
     default:
         filename = "";
         break;
-    };
+    }
 
 #ifndef DO_NOT_PLAY_SOUND
     QString soundPath = QString::fromStdString(soundDir + filename);
@@ -869,17 +868,15 @@ void Game::timerEvent(QTimerEvent* event)
 #if 0
     int ti = time.elapsed();
     static QTime t;
-    if (ti < 0)
+    if (ti < 0) {
         ti += 86400; // Prevent the time error caused by 24:00, plus the total number of seconds in a day
-    if (timeWho == 1)
-    {
+    }
+    if (timeWho == 1) {
         time1 = ti - time2;
         // A temporary variable used to display the time. The extra 50 ms is used to eliminate the beat caused by the timer error
         t = QTime(0, 0, 0, 50).addMSecs(time1);
         emit time1Changed(t.toString("hh:mm:ss"));
-    }
-    else if (timeWho == 2)
-    {
+    } else if (timeWho == 2) {
         time2 = ti - time1;
         // A temporary variable used to display the time. The extra 50 ms is used to eliminate the beat caused by the timer error
         t = QTime(0, 0, 0, 50).addMSecs(time2);
@@ -935,7 +932,6 @@ bool Game::actionPiece(QPointF p)
 
             // If you regret the game, restart the timing
             if (position.get_winner() == NOBODY) {
-
                 // Restart timing
                 timeID = startTimer(100);
 
@@ -1047,9 +1043,7 @@ bool Game::actionPiece(QPointF p)
         // If it's not decided yet
         if (position.get_winner() == NOBODY) {
             resumeAiThreads(position.sideToMove);
-        }
-        // If it's decided
-        else {
+        } else {  // If it's decided
             if (gameOptions.getAutoRestart()) {
                 saveScore();
 
@@ -1177,9 +1171,7 @@ bool Game::command(const string& cmd, bool update /* = true */)
         manualListModel.insertRow(0);
         manualListModel.setData(manualListModel.index(0), position.get_record());
         currentRow = 0;
-    }
-    // For the current position
-    else {
+    } else { // For the current position
         currentRow = manualListModel.rowCount() - 1;
         // Skip the added rows. The iterator does not support the + operator and can only skip one by one++
         auto i = (move_hostory()->begin());
@@ -1206,9 +1198,7 @@ bool Game::command(const string& cmd, bool update /* = true */)
     // If it's not decided yet
     if (position.get_winner() == NOBODY) {
         resumeAiThreads(position.sideToMove);
-    }
-    // If it's decided
-    else {
+    } else { // If it's decided
         pauseThreads();
 
         gameEndTime = now();
@@ -1312,7 +1302,7 @@ bool Game::command(const string& cmd, bool update /* = true */)
 
     const auto flags = cout.flags();
     cout << "Score: " << position.score[WHITE] << " : " << position.score[BLACK] << " : " << position.score_draw << "\ttotal: " << total << endl;
-    cout << fixed << setprecision(2) << blackWinRate << "% : " << whiteWinRate << "% : " << drawRate << "%" << endl;
+    cout << fixed << std::setprecision(2) << blackWinRate << "% : " << whiteWinRate << "% : " << drawRate << "%" << endl;
     cout.flags(flags);
 
     return true;
@@ -1384,7 +1374,6 @@ bool Game::updateScene(Position& p)
             if (board[j] == key) {
                 pos = scene.polar2pos(File(j / RANK_NB), Rank(j % RANK_NB + 1));
                 if (piece->pos() != pos) {
-
                     // Let the moving pieces be at the top level
                     piece->setZValue(1);
 
@@ -1596,9 +1585,9 @@ inline char Game::color_to_char(Color color)
 inline std::string Game::char_to_string(char ch)
 {
     if (ch == '1') {
-        return "白方";
+        return "White";
     } else {
-        return "黑方";
+        return "Black";
     }
 }
 
@@ -1661,38 +1650,38 @@ void Game::setTips()
 
     switch (p.phase) {
     case Phase::ready:
-        tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.pieceInHandCount[WHITE]) + "子" + "  比分 " + to_string(p.score[WHITE]) + ":" + to_string(p.score[BLACK]) + ", 和棋 " + to_string(p.score_draw);
+        tips = turnStr + " to place, " + std::to_string(p.pieceInHandCount[WHITE]) + " pieces are unplaced." + "  Score " + to_string(p.score[WHITE]) + ":" + to_string(p.score[BLACK]) + ", Draw " + to_string(p.score_draw);
         break;
 
     case Phase::placing:
         if (p.action == Action::place) {
-            tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.pieceInHandCount[p.sideToMove]) + "子";
+            tips = turnStr + " to place, " + std::to_string(p.pieceInHandCount[p.sideToMove]) + " pieces are unplaced.";
         } else if (p.action == Action::remove) {
-            tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p.pieceToRemoveCount) + "子";
+            tips = "Mill! " + turnStr + " to remove, " + std::to_string(p.pieceToRemoveCount) + " pieces to remove.";
         }
         break;
 
     case Phase::moving:
         if (p.action == Action::place || p.action == Action::select) {
-            tips = "轮到" + turnStr + "选子移动";
+            tips = turnStr + " to move.";
         } else if (p.action == Action::remove) {
-            tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p.pieceToRemoveCount) + "子";
+            tips = "Mill " + turnStr + " to remove, " + std::to_string(p.pieceToRemoveCount) + " pieces to remove.";
         }
         break;
 
     case Phase::gameOver:
         appendGameOverReasonToMoveHistory();
 
-        scoreStr = "比分 " + to_string(p.score[WHITE]) + " : " + to_string(p.score[BLACK]) + ", 和棋 " + to_string(p.score_draw);
+        scoreStr = "Score " + to_string(p.score[WHITE]) + " : " + to_string(p.score[BLACK]) + ", Draw " + to_string(p.score_draw);
 
         switch (p.winner) {
         case WHITE:
         case BLACK:
             winnerStr = char_to_string(color_to_char(p.winner));
-            resultStr = winnerStr + "获胜！";
+            resultStr = winnerStr + " won! ";
             break;
         case DRAW:
-            resultStr = "双方平局！";
+            resultStr = "Draw! ";
             break;
         default:
             break;
@@ -1709,25 +1698,25 @@ void Game::setTips()
                 turnStr = char_to_string(color_to_char(p.sideToMove));
             }
 #endif
-            reasonStr = turnStr + "无子可走被闷。";
+            reasonStr = turnStr + " is blocked.";
             break;
         case GameOverReason::loseReasonResign:
-            reasonStr = turnStr + "投子认负。";
+            reasonStr = turnStr + " resigned.";
             break;
         case GameOverReason::loseReasonTimeOver:
-            reasonStr = turnStr + "超时判负。";
+            reasonStr = "Time over." + turnStr + " lost.";
             break;
         case GameOverReason::drawReasonThreefoldRepetition:
-            reasonStr = "三次重复局面判和。";
+            reasonStr = "Draw because of threefold repetition.";
             break;
         case GameOverReason::drawReasonRule50:
-            reasonStr = "连续50回合无吃子判和。";
+            reasonStr = "Draw because of rule 50.";
             break;
         case GameOverReason::drawReasonEndgameRule50:
-            reasonStr = "残局中连续50回合无吃子判和。";
+            reasonStr = "Draw because of endgame rule 50.";
             break;
         case GameOverReason::drawReasonBoardIsFull:
-            reasonStr = "棋盘满判和。";
+            reasonStr = "Draw because of board is full.";
             break;
         default:
             break;

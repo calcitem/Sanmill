@@ -1,21 +1,20 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+// This file is part of Sanmill.
+// Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+#include <algorithm>
 #include <iomanip>
 #include <sstream>
 
@@ -621,7 +620,7 @@ bool Position::put_piece(Square s, bool updateRecord)
 
         const Piece pc = board[s] = piece;
         byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
-        byColorBB[color_of(pc)] |= s; // TODO: Put ban?
+        byColorBB[color_of(pc)] |= s; // TODO(calcitem): Put ban?
 
         update_key(s);
 
@@ -707,7 +706,6 @@ bool Position::put_piece(Square s, bool updateRecord)
         }
 
     } else if (phase == Phase::moving) {
-
 #ifdef MADWEASEL_MUEHLE_RULE
         if (is_all_surrounded(~sideToMove, currentSquare, s)) {
             set_gameover(sideToMove, GameOverReason::loseReasonNoWay);
@@ -806,7 +804,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     Piece pc = board[s];
 
-    CLEAR_BIT(byTypeBB[type_of(pc)], s); // TODO: rule.hasBannedLocations and placing need?
+    CLEAR_BIT(byTypeBB[type_of(pc)], s); // TODO(calcitem): rule.hasBannedLocations and placing need?
     CLEAR_BIT(byColorBB[color_of(pc)], s);
 
     updateMobility(MOVETYPE_REMOVE, s);
@@ -824,7 +822,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     if (updateRecord) {
         snprintf(record, RECORD_LEN_MAX, "-(%1u,%1u)", file_of(s), rank_of(s));
-        st.rule50 = 0; // TODO: Need to move out?
+        st.rule50 = 0; // TODO(calcitem): Need to move out?
     }
 
     pieceOnBoardCount[them]--;
@@ -1012,7 +1010,7 @@ bool Position::check_if_game_is_over()
             set_gameover(~sideToMove, GameOverReason::loseReasonNoWay);
             return true;
         } else {
-            change_side_to_move(); // TODO: Need?
+            change_side_to_move(); // TODO(calcitem): Need?
             return false;
         }
     }
@@ -1022,7 +1020,7 @@ bool Position::check_if_game_is_over()
 
 int Position::calculate_mobility_diff()
 {
-    // TODO: Deal with rule is no ban location
+    // TODO(calcitem): Deal with rule is no ban location
     int mobilityWhite = 0;
     int mobilityBlack = 0;
 
@@ -1127,7 +1125,6 @@ bool Position::bitboard_is_ok()
     Bitboard blackBB = byColorBB[BLACK];
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
-
         if (empty(s)) {
             if (whiteBB & (1 << s)) {
                 return false;
