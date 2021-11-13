@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef BOARDITEM_H
-#define BOARDITEM_H
+#ifndef BOARDITEM_H_INCLUDED
+#define BOARDITEM_H_INCLUDED
 
 #include <QGraphicsItem>
 
@@ -70,4 +70,4 @@ private:
     bool hasDiagonalLine { false };
 };
 
-#endif // BOARDITEM_H
+#endif // BOARDITEM_H_INCLUDED

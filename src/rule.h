@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef RULE_H
-#define RULE_H
+#ifndef RULE_H_INCLUDED
+#define RULE_H_INCLUDED
 
 #include "types.h"
 
@@ -87,4 +87,4 @@ extern const struct Rule RULES[N_RULES];
 extern struct Rule rule;
 extern bool set_rule(int ruleIdx) noexcept;
 
-#endif /* RULE_H */
+#endif /* RULE_H_INCLUDED */

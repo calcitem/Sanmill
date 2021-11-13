@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef PIECE_ITEM_H
-#define PIECE_ITEM_H
+#ifndef PIECE_ITEM_H_INCLUDED
+#define PIECE_ITEM_H_INCLUDED
 
 #include <QGraphicsItem>
 #include <QObject>
@@ -127,4 +127,4 @@ private:
     QColor removeLineColor;
 };
 
-#endif // PIECE_ITEM_H
+#endif // PIECE_ITEM_H_INCLUDED

@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GAMESCENE_H
-#define GAMESCENE_H
+#ifndef GAMESCENE_H_INCLUDED
+#define GAMESCENE_H_INCLUDED
 
 #include <QGraphicsScene>
 
@@ -59,4 +59,4 @@ private:
     BoardItem* board { nullptr };
 };
 
-#endif // GAMESCENE_H
+#endif // GAMESCENE_H_INCLUDED

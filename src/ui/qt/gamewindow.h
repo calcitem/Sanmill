@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GAMEWINDOW_H
-#define GAMEWINDOW_H
+#ifndef GAMEWINDOW_H_INCLUDED
+#define GAMEWINDOW_H_INCLUDED
 
 #include <vector>
 
@@ -126,4 +126,4 @@ private:
 #endif
 };
 
-#endif // GAMEWINDOW_H
+#endif // GAMEWINDOW_H_INCLUDED

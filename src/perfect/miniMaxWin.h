@@ -6,8 +6,8 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef MINIMAXWIN_H
-#define MINIMAXWIN_H
+#ifndef MINIMAXWIN_H_INCLUDED
+#define MINIMAXWIN_H_INCLUDED
 
 // Windows Header Files:
 #include "miniMax.h"
@@ -156,4 +156,4 @@ public:
     };
 };
 
-#endif
+#endif // MINIMAXWIN_H_INCLUDED

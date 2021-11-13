@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef HASH_NODE_H_
-#define HASH_NODE_H_
+#ifndef HASH_NODE_H_INCLUDED
+#define HASH_NODE_H_INCLUDED
 
 #include "config.h"
 
@@ -213,4 +213,4 @@ private:
 };
 }
 
-#endif // HASH_NODE_H_
+#endif // HASH_NODE_H_INCLUDED

@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MANUAL_LIST_VIEW_H
-#define MANUAL_LIST_VIEW_H
+#ifndef MANUAL_LIST_VIEW_H_INCLUDED
+#define MANUAL_LIST_VIEW_H_INCLUDED
 
 #include <QListView>
 #include <QMouseEvent>
@@ -106,4 +106,4 @@ private:
     bool newEmptyRow { false };
 };
 
-#endif // MANUAL_LIST_VIEW_H
+#endif // MANUAL_LIST_VIEW_H_INCLUDED

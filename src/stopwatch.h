@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef STOPWATCH_H_
-#define STOPWATCH_H_
+#ifndef STOPWATCH_H_INCLUDED
+#define STOPWATCH_H_INCLUDED
 
 #include <algorithm>
 #include <array>
@@ -113,4 +113,4 @@ auto sample(Func&& function) -> std::array<typename Clock::duration, N>
 }
 } /* namespace stopwatch */
 
-#endif // STOPWATCH_H_
+#endif // STOPWATCH_H_INCLUDED

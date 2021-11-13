@@ -6,8 +6,8 @@
     https://github.com/madweasel/Muehle
 ***************************************************************************************************************************/
 
-#ifndef MINIMAX_H
-#define MINIMAX_H
+#ifndef MINIMAX_H_INCLUDED
+#define MINIMAX_H_INCLUDED
 
 #include "Shlwapi.h"
 #include "bufferedFile.h"
@@ -827,4 +827,4 @@ private:
     bool falseOrStop();
 };
 
-#endif
+#endif // MINIMAX_H_INCLUDED

@@ -1,5 +1,5 @@
-#ifndef PERFECT_H
-#define PERFECT_H
+#ifndef PERFECT_H_INCLUDED
+#define PERFECT_H_INCLUDED
 
 #include "mill.h"
 #include "perfectAI.h"
@@ -22,4 +22,4 @@ Move perfect_search();
 bool perfect_do_move(Move move);
 bool perfect_command(const char* cmd);
 
-#endif
+#endif // PERFECT_H_INCLUDED

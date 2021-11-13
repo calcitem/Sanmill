@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
@@ -24,8 +24,8 @@
  * But it doesn't look good to use one scene class to do so many control module operations
  */
 
-#ifndef GAME_H
-#define GAME_H
+#ifndef GAME_H_INCLUDED
+#define GAME_H_INCLUDED
 
 #include <map>
 #include <vector>
@@ -548,4 +548,4 @@ inline void Game::set_start_time(int time)
     startTime = time;
 }
 
-#endif // GAME_H
+#endif // GAME_H_INCLUDED

@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GAME_VIEW_H
-#define GAME_VIEW_H
+#ifndef GAME_VIEW_H_INCLUDED
+#define GAME_VIEW_H_INCLUDED
 
 #include <QGraphicsView>
 
@@ -42,4 +42,4 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
 };
 
-#endif // GAME_VIEW_H
+#endif // GAME_VIEW_H_INCLUDED

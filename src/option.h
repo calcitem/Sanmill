@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef OPTION_H
-#define OPTION_H
+#ifndef OPTION_H_INCLUDED
+#define OPTION_H_INCLUDED
 
 #include "config.h"
 
@@ -305,4 +305,4 @@ private:
 
 extern GameOptions gameOptions;
 
-#endif /* OPTION_H */
+#endif /* OPTION_H_INCLUDED */

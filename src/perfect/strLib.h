@@ -6,8 +6,8 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef STRLIB_H
-#define STRLIB_H
+#ifndef STRLIB_H_INCLUDED
+#define STRLIB_H_INCLUDED
 
 #include <assert.h>
 #include <iostream>
@@ -46,4 +46,4 @@ public:
     static int hiBit(unsigned int n);
 };
 
-#endif
+#endif // STRLIB_H_INCLUDED

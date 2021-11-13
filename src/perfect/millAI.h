@@ -6,8 +6,8 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef MUEHLE_AI_H
-#define MUEHLE_AI_H
+#ifndef MUEHLE_AI_H_INCLUDED
+#define MUEHLE_AI_H_INCLUDED
 
 #include <cstdio>
 #include <iostream>
@@ -111,4 +111,4 @@ public:
     virtual void play(fieldStruct* theField, unsigned int* pushFrom, unsigned int* pushTo) = 0;
 };
 
-#endif
+#endif // MUEHLE_AI_H_INCLUDED

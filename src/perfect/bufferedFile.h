@@ -6,8 +6,8 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef BUFFERED_FILE_H
-#define BUFFERED_FILE_H
+#ifndef BUFFERED_FILE_H_INCLUDED
+#define BUFFERED_FILE_H_INCLUDED
 
 #include <iostream>
 #include <string>
@@ -48,4 +48,4 @@ public:
     long long getFileSize();
 };
 
-#endif
+#endif // BUFFERED_FILE_H_INCLUDED

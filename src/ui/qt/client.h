@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifndef CLIENT_H_INCLUDED
+#define CLIENT_H_INCLUDED
 
 #include "config.h"
 
@@ -83,4 +83,4 @@ private:
 
 #endif // NET_FIGHT_SUPPORT
 
-#endif // CLIENT_H
+#endif // CLIENT_H_INCLUDED
