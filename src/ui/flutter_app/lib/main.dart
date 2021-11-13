@@ -51,7 +51,7 @@ Future<void> main() async {
 
   _initUI();
 
-  if (EnvironmentConfig.catcher) {
+  if (EnvironmentConfig.catcher && !Platform.isWindows) {
     final catcher = Catcher(
       rootWidget: const SanmillApp(),
       ensureInitialized: true,
