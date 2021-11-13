@@ -277,7 +277,6 @@ public:
         return developerMode;
     }
 
-protected:
 private:
     int skillLevel { 1 };
     int moveTime { 1 };

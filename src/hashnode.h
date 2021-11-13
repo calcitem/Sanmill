@@ -57,6 +57,7 @@ public:
 #ifndef DISABLE_HASHBUCKET
     HashNode* next; // Pointer to the next node in the same bucket
 #endif
+
 private:
     K key { 0 }; // the key key
     V value; // the value corresponding to the key
