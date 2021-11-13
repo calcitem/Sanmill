@@ -14,10 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "evaluate.h"
-#include "thread.h"
 #include "endgame.h"
+#include "evaluate.h"
 #include "option.h"
+#include "thread.h"
 
 using Eval::evaluate;
 using std::string;
@@ -289,7 +289,7 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
         return bestValue;
     }
 #ifdef TRANSPOSITION_TABLE_DEBUG
-    else {
+    if (probeVal == VALUE_UNKNOWN) {
         Threads.main()->ttMissCount++;
     }
 #endif
@@ -433,9 +433,9 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
                     bestMove = move;
                 }
 
-                if (value < beta) // Update alpha! Always alpha < beta
+                if (value < beta) { // Update alpha! Always alpha < beta
                     alpha = value;
-                else {
+                } else {
                     assert(value >= beta); // Fail high
                     break; // Fail high
                 }

@@ -232,7 +232,7 @@ public:
             setMtdfAlgorithm(false);
             setPerfectAiEnabled(true);
             break;
-        };
+        }
 #endif
     }
 

@@ -308,13 +308,13 @@ void Thread::analyze(Color c)
     case Phase::gameOver:
         if (p->get_winner() == DRAW) {
             cout << "Draw" << endl;
-            nDraw += 0.5; // TODO
+            nDraw += 0.5; // TODO(calcitem)
         } else if (p->get_winner() == WHITE) {
             cout << "White wins" << endl;
-            nBlackWin += 0.5; // TODO
+            nBlackWin += 0.5; // TODO(calcitem)
         } else if (p->get_winner() == BLACK) {
             cout << "Black wins" << endl;
-            nWhiteWin += 0.5; // TODO
+            nWhiteWin += 0.5; // TODO(calcitem)
         }
         goto out;
         break;

@@ -193,7 +193,7 @@ public:
     Square currentSquare;
     int gamesPlayedCount { 0 };
 
-    const static int RECORD_LEN_MAX = 64;
+    static const int RECORD_LEN_MAX = 64;
     char record[RECORD_LEN_MAX] { '\0' };
 
     Move move { MOVE_NONE };

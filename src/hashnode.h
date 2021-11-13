@@ -210,6 +210,6 @@ private:
     HashNode<K, V>* head; //The head node of the bucket
     mutable std::shared_timed_mutex mutex_; //The mutex for this bucket
 };
-}
+} // namespace CTSL
 
 #endif // HASH_NODE_H_INCLUDED

@@ -18,6 +18,7 @@
 #include <random>
 
 #include "bitboard.h"
+#include "mills.h"
 #include "misc.h"
 #include "movegen.h"
 #include "option.h"
@@ -637,7 +638,7 @@ Depth get_search_depth(const Position* pos)
     }
 
     // Do not too weak
-    if (depthLimit == 30 && d <= 4) {   // TODO
+    if (depthLimit == 30 && d <= 4) {   // TODO(calcaitem)
         d = 4;
     }
 #endif
@@ -662,4 +663,4 @@ Depth get_search_depth(const Position* pos)
     return d;
 }
 
-}
+} // namespace Mills

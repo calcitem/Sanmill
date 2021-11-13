@@ -63,11 +63,13 @@ void position(Position* pos, istringstream& is)
     if (token == "startpos") {
         fen = StartFEN;
         is >> token; // Consume "moves" token if any
-    } else if (token == "fen")
-        while (is >> token && token != "moves")
+    } else if (token == "fen") {
+        while (is >> token && token != "moves") {
             fen += token + " ";
-    else
+        }
+    } else {
         return;
+    }
 
     repetition = 0;
     posKeyHistory.clear();
@@ -127,7 +129,7 @@ begin:
 
     if (pos->get_phase() == Phase::gameOver) {
 #ifdef UCI_AUTO_RESTART
-        // TODO
+        // TODO(calcitem)
         while (true) {
             if (Threads.main()->searching == true) {
                 continue;

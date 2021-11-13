@@ -129,6 +129,6 @@ private:
     int p { -1 };
 };
 
-}
+} // namespace Sanmill
 
 #endif // STACK_H_INCLUDED

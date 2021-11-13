@@ -73,9 +73,7 @@ void MovePicker::score()
                 // placing phrase, check if place sq can block their close mill
                 theirMillsCount = pos.potential_mills_count(to, ~pos.side_to_move());
                 cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
-            }
-#if 1
-            else if (pos.get_phase() == Phase::moving) {
+            } else if (pos.get_phase() == Phase::moving) {
                 // moving phrase, check if place sq can block their close mill
                 theirMillsCount = pos.potential_mills_count(to, ~pos.side_to_move());
 
@@ -91,7 +89,6 @@ void MovePicker::score()
                     }
                 }
             }
-#endif
 
             //cur->value += bannedCount;  // placing phrase, place nearby ban point
 

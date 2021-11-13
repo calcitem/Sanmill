@@ -570,10 +570,9 @@ int best_group(size_t idx)
     }
 
     while (byteOffset < returnLength) {
-        if (ptr->Relationship == RelationNumaNode)
+        if (ptr->Relationship == RelationNumaNode) {
             nodes++;
-
-        else if (ptr->Relationship == RelationProcessorCore) {
+        } else if (ptr->Relationship == RelationProcessorCore) {
             cores++;
             threads += (ptr->Processor.Flags == LTP_PC_SMT) ? 2 : 1;
         }
