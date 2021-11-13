@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef GRAPHICSCONST
-#define GRAPHICSCONST
+#ifndef GRAPHICSCONST_H_INCLUDED
+#define GRAPHICSCONST_H_INCLUDED
 
 #include "config.h"
 
@@ -32,4 +32,4 @@ constexpr short PIECE_SIZE = 56;
 constexpr short LINE_INTERVAL = 72;
 constexpr short LINE_WEIGHT = 3;
 
-#endif // GRAPHICSCONST
+#endif // GRAPHICSCONST_H_INCLUDED

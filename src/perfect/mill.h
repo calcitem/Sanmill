@@ -6,8 +6,8 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef MILL_H
-#define MILL_H
+#ifndef MILL_H_INCLUDED
+#define MILL_H_INCLUDED
 
 #include "millAI.h"
 #include <cstdio>
@@ -145,4 +145,4 @@ public:
     }
 };
 
-#endif
+#endif // MILL_H_INCLUDED

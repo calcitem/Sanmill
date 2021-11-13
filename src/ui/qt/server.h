@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef SERVER_H_INCLUDED
+#define SERVER_H_INCLUDED
 
 #include "config.h"
 
@@ -68,4 +68,4 @@ private:
 
 #endif // NET_FIGHT_SUPPORT
 
-#endif // SERVER_H
+#endif // SERVER_H_INCLUDED

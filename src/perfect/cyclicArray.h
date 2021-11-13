@@ -6,8 +6,8 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef CYLCIC_ARRAY_H
-#define CYLCIC_ARRAY_H
+#ifndef CYLCIC_ARRAY_H_INCLUDED
+#define CYLCIC_ARRAY_H_INCLUDED
 
 #include <iostream>
 #include <string>
@@ -46,4 +46,4 @@ public:
     bool bytesAvailable();
 };
 
-#endif
+#endif // CYLCIC_ARRAY_H_INCLUDED

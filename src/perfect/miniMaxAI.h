@@ -6,8 +6,8 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef MINIMAX_AI_H
-#define MINIMAX_AI_H
+#ifndef MINIMAX_AI_H_INCLUDED
+#define MINIMAX_AI_H_INCLUDED
 
 #include "millAI.h"
 #include "miniMax.h"
@@ -142,4 +142,4 @@ public:
     void setSearchDepth(unsigned int depth);
 };
 
-#endif
+#endif // MINIMAX_AI_H_INCLUDED

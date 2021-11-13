@@ -6,6 +6,9 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#ifndef MINIMAX_RETROANALYSIS_H_INCLUDED
+#define MINIMAX_RETROANALYSIS_H_INCLUDED
+
 #include "miniMax.h"
 
 struct RetroAnalysisQueueState {
@@ -66,3 +69,5 @@ struct AddNumSucceedersVars {
     RetroAnalysisVars* retroVars;
     RetroAnalysisPredVars* predVars;
 };
+
+#endif // MINIMAX_RETROANALYSIS_H_INCLUDED

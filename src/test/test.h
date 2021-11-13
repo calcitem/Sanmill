@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef TEST_H
-#define TEST_H
+#ifndef TEST_H_INCLUDED
+#define TEST_H_INCLUDED
 
 #include <QBuffer>
 #include <QComboBox>
@@ -85,4 +85,4 @@ private:
     QTimer* readMemoryTimer;
 };
 
-#endif // TEST_H
+#endif // TEST_H_INCLUDED

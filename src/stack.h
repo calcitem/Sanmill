@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef STACK_H
-#define STACK_H
+#ifndef STACK_H_INCLUDED
+#define STACK_H_INCLUDED
 
 namespace Sanmill {
 
@@ -133,4 +133,4 @@ private:
 
 }
 
-#endif // STACK_H
+#endif // STACK_H_INCLUDED

@@ -6,8 +6,8 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef PERFECT_AI_H
-#define PERFECT_AI_H
+#ifndef PERFECT_AI_H_INCLUDED
+#define PERFECT_AI_H_INCLUDED
 
 #include "millAI.h"
 #include "miniMax.h"
@@ -233,4 +233,4 @@ public:
     bool testLayers(unsigned int startTestFromLayer, unsigned int endTestAtLayer);
 };
 
-#endif
+#endif // PERFECT_AI_H_INCLUDED

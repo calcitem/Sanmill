@@ -1,4 +1,4 @@
-﻿/*
+/*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 
@@ -16,8 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DEBUG_H
-#define DEBUG_H
+#ifndef DEBUG_H_INCLUDED
+#define DEBUG_H_INCLUDED
 
 #include "config.h"
 
@@ -39,4 +39,4 @@
 #endif
 #endif /* CSTYLE_DEBUG_OUTPUT */
 
-#endif /* DEBUG_H */
+#endif /* DEBUG_H_INCLUDED */

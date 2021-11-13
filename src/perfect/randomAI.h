@@ -6,8 +6,8 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef RANDOM_AI_H
-#define RANDOM_AI_H
+#ifndef RANDOM_AI_H_INCLUDED
+#define RANDOM_AI_H_INCLUDED
 
 #include "millAI.h"
 #include <stdlib.h>
@@ -23,4 +23,4 @@ public:
     void play(fieldStruct* theField, unsigned int* pushFrom, unsigned int* pushTo);
 };
 
-#endif
+#endif // RANDOM_AI_H_INCLUDED

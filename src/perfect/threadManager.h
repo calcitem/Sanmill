@@ -6,8 +6,8 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef THREADMANAGER_H
-#define THREADMANAGER_H
+#ifndef THREADMANAGER_H_INCLUDED
+#define THREADMANAGER_H_INCLUDED
 
 // standard library & win32 api
 #include <cstdio>
@@ -139,4 +139,4 @@ public:
     unsigned int executeParallelLoop(DWORD threadProc(void* pParameter, unsigned int index), void* pParameter, unsigned int parameterStructSize, unsigned int scheduleType, int initialValue, int finalValue, int inkrement);
 };
 
-#endif
+#endif // THREADMANAGER_H_INCLUDED
