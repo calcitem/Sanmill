@@ -20,7 +20,7 @@
 #include "hashmap.h"
 #include "types.h"
 
-using namespace CTSL;
+using CTSL::HashMap;
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 

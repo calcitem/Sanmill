@@ -30,17 +30,21 @@
 #include "engine_main.h"
 #endif
 
-ThreadPool Threads; // Global object
-
 #ifdef OPENING_BOOK
 #include <deque>
-using namespace std;
 #endif
+
+using std::cout;
+using std::endl;
+using std::fixed;
+using std::setprecision;
 
 #if _MSC_VER >= 1600
 #pragma warning(disable : 4695)
 #pragma execution_character_set("ANSI")
 #endif
+
+ThreadPool Threads; // Global object
 
 /// Thread constructor launches the thread and waits until it goes to sleep
 /// in idle_loop(). Note that 'searching' and 'exit' should be already set.

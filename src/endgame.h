@@ -21,13 +21,10 @@
 
 #ifdef ENDGAME_LEARNING
 
-#include <vector>
-
 #include "hashmap.h"
 #include "types.h"
 
-using namespace std;
-using namespace CTSL;
+using CTSL::HashMap;
 
 static const int SAVE_ENDGAME_EVERY_N_GAMES = 256;
 

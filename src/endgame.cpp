@@ -17,6 +17,8 @@
 #include <string>
 #include "endgame.h"
 
+using std::string;
+
 #ifdef ENDGAME_LEARNING
 static constexpr int endgameHashSize = 0x1000000; // 16M
 HashMap<Key, Endgame> endgameHashMap(endgameHashSize);

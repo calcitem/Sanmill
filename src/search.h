@@ -25,7 +25,7 @@
 #include "stopwatch.h"
 #endif
 
-using namespace std;
+using std::vector;
 
 namespace Search {
 

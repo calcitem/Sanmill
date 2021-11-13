@@ -57,7 +57,17 @@ typedef bool (*fun3_t)(HANDLE, CONST GROUP_AFFINITY*, PGROUP_AFFINITY);
 #include "misc.h"
 #include "thread.h"
 
-using namespace std;
+using std::cerr;
+using std::cin;
+using std::cout;
+using std::endl;
+using std::ifstream;
+using std::iostream;
+using std::ofstream;
+using std::setfill;
+using std::setw;
+using std::streambuf;
+using std::stringstream;
 
 namespace {
 
@@ -524,7 +534,7 @@ void bindThisThread(size_t)
 
 /// best_group() retrieves logical processor information using Windows specific
 /// API and returns the best group id for the thread with index idx. Original
-/// code from Texel by Peter Ã–sterlund.
+/// code from Texel by Peter A-terlund.
 
 int best_group(size_t idx)
 {
