@@ -17,7 +17,6 @@
 #ifndef THREAD_WIN32_OSX_H_INCLUDED
 #define THREAD_WIN32_OSX_H_INCLUDED
 
-#include <thread>
 #include <utility>
 
 /// On OSX threads other than the main thread are created with a reduced stack

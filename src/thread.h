@@ -20,8 +20,6 @@
 #include "config.h"
 
 #include <atomic>
-#include <condition_variable>
-#include <mutex>
 #include <string>
 #include <vector>
 

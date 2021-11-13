@@ -24,7 +24,6 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
-#include <mutex>
 #include <string>
 
 #include "hashnode.h"
