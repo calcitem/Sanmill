@@ -95,7 +95,7 @@ Game::Game(
 #endif // QT_GUI_LIB
 
 #ifdef NET_FIGHT_SUPPORT
-    server = new Server(nullptr, 30001); // TODO: WARNING: ThreadSanitizer: data race
+    server = new Server(nullptr, 30001); // TODO(calcitem): WARNING: ThreadSanitizer: data race
     uint16_t clientPort = server->getPort() == 30001 ? 30002 : 30001;
     client = new Client(nullptr, clientPort);
 
@@ -367,7 +367,7 @@ void Game::setInvert(bool arg)
     }
 }
 
-void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= 0 TODO: Unused */)
+void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= 0 TODO(calcitem): Unused */)
 {
     rule.nMoveRule = stepLimited;
 

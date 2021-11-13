@@ -25,7 +25,13 @@
 #include "command_channel.h"
 #endif
 
-using namespace std;
+using std::cin;
+using std::istream;
+using std::istringstream;
+using std::skipws;
+using std::string;
+using std::stringstream;
+using std::vector;
 
 extern vector<string> setup_bench(Position*, istream&);
 
@@ -78,7 +84,7 @@ void position(Position* pos, istringstream& is)
         }
     }
 
-    // TODO: Stockfish does not have this
+    // TODO(calcitem): Stockfish does not have this
     Threads.main()->us = pos->sideToMove;
 }
 

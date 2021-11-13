@@ -21,7 +21,6 @@
 
 using Eval::evaluate;
 using std::string;
-using namespace Search;
 
 Value MTDF(Position* pos, Sanmill::Stack<Position>& ss, Value firstguess, Depth depth, Depth originDepth, Move& bestMove);
 
@@ -117,7 +116,7 @@ int Thread::search()
     MoveList<LEGAL>::shuffle();
 
 #if 0
-    // TODO: Only NMM
+    // TODO(calcitem): Only NMM
     if (rootPos->piece_on_board_count(WHITE) + rootPos->piece_on_board_count(BLACK) <= 1 &&
         !rule.hasDiagonalLines && gameOptions.getShufflingEnabled()) {
         const uint32_t seed = static_cast<uint32_t>(now());
@@ -301,8 +300,8 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
     // process leaves
 
     // Check for aborted search
-    // TODO: and immediate draw
-    if (unlikely(pos->phase == Phase::gameOver) || // TODO: Deal with hash
+    // TODO(calcitem): and immediate draw
+    if (unlikely(pos->phase == Phase::gameOver) || // TODO(calcitem): Deal with hash
         depth <= 0 || Threads.stop.load(std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
 
@@ -337,10 +336,10 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
     }
 
 #if 0
-    // TODO: Weak
+    // TODO(calcitem): Weak
     if (bestMove != MOVE_NONE) {
         for (int i = 0; i < moveCount; i++) {
-            if (mp.moves[i].move == bestMove) {    // TODO: need to write value?
+            if (mp.moves[i].move == bestMove) {    // TODO(calcitem): need to write value?
                 std::swap(mp.moves[0], mp.moves[i]);
                 break;
             }

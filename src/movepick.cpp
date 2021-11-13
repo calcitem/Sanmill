@@ -64,7 +64,7 @@ void MovePicker::score()
         ourMillsCount = pos.potential_mills_count(to, pos.side_to_move(), from);
 
 #ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
-        // TODO: rule.mayRemoveMultiple adapt other rules
+        // TODO(calcitem): rule.mayRemoveMultiple adapt other rules
         if (type_of(m) != MOVETYPE_REMOVE) {
             // all phrase, check if place sq can close mill
             if (ourMillsCount > 0) {

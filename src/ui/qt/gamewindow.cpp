@@ -550,7 +550,7 @@ void MillGameWindow::on_actionLimited_T_triggered()
 
     label_step->setText(tr("N-Move Rule:"));
 
-    // TODO: Save settings
+    // TODO(calcitem): Save settings
     //comboBox_step->addItem(tr("Infinite"), 0);
     comboBox_step->addItem(tr("10 Moves"), 10);
     comboBox_step->addItem(tr("30 Moves"), 30);
@@ -587,7 +587,7 @@ void MillGameWindow::on_actionLimited_T_triggered()
         int dStep = comboBox_step->currentData().toInt();
         int dTime = comboBox_time->currentData().toInt();
         if (gStep != dStep || gTime != dTime) {
-            game->setRule(ruleNo, static_cast<int>(dStep), dTime); // TODO: Remove dTime
+            game->setRule(ruleNo, static_cast<int>(dStep), dTime); // TODO(calcitem): Remove dTime
             game->setMoveTime(dTime);
         }
     }

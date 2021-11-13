@@ -373,7 +373,7 @@ void mill_table_init()
 void move_priority_list_shuffle()
 {
     if (gameOptions.getSkillLevel() == 1) {
-        for (auto i = 8; i < 32; i++) { // TODO: SQ_BEGIN & SQ_END
+        for (auto i = 8; i < 32; i++) { // TODO(calcitem): SQ_BEGIN & SQ_END
             MoveList<LEGAL>::movePriorityList[i - int(SQ_BEGIN)] = (Square)i;
         }
         if (gameOptions.getShufflingEnabled()) {

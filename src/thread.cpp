@@ -83,7 +83,7 @@ Thread::~Thread()
 
 void Thread::clear() noexcept
 {
-    // TODO: Reset histories
+    // TODO(calcitem): Reset histories
     return;
 }
 
@@ -428,7 +428,7 @@ string Thread::next_move()
         if (bestvalue <= -VALUE_KNOWN_WIN) {
             Endgame endgame;
             endgame.type = rootPos->side_to_move() == WHITE ? EndGameType::blackWin : EndGameType::whiteWin;
-            Key endgameHash = rootPos->key(); // TODO: Do not generate hash repeatedly
+            Key endgameHash = rootPos->key(); // TODO(calcitem): Do not generate hash repeatedly
             saveEndgameHash(endgameHash, endgame);
         }
     }

@@ -73,7 +73,7 @@ private:
     QDataStream in;
     QString currentAction;
 
-    // TODO: 'QNetworkSession': was declared deprecated
+    // TODO(calcitem): 'QNetworkSession': was declared deprecated
     QNetworkSession* networkSession = nullptr;
 
     uint16_t port {};

@@ -159,7 +159,7 @@ void Server::sessionOpened()
 
 void Server::setAction(const QString& a)
 {
-    // TODO: WAR
+    // TODO(calcitem): WAR
     if (actions.size() > 256) {
         while (!actions.empty()) {
             actions.pop();

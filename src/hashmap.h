@@ -160,7 +160,7 @@ public:
 
     void resize(size_t size)
     {
-        // TODO: Resize
+        // TODO(calcitem): Resize
         if (size < 0x1000000) {
             // New size is too small, do not resize
             return;

@@ -136,7 +136,7 @@ Value Evaluation::value()
             piece_on_board_count_future_white -= pos.piece_to_remove_count();
         }
 
-        // TODO: flyPieceCount?
+        // TODO(calcitem): flyPieceCount?
         if (piece_on_board_count_future_black == 3 || piece_on_board_count_future_white == 3) {
             if (abs(value) < VALUE_KNOWN_WIN) {
                 value = VALUE_DRAW;

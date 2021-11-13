@@ -49,7 +49,7 @@
 #define UCI_AUTO_RE_GO
 #endif
 
-// Play via network (TODO: Port to Qt 6)
+// Play via network (TODO(calcitem): Port to Qt 6)
 //#define NET_FIGHT_SUPPORT
 
 /// Qt simple GUI like a mobile app (WIP)
