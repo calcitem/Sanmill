@@ -45,7 +45,10 @@
 #include "test.h"
 #include "thread.h"
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::fixed;
+using std::map;
 
 enum class GameSound {
     none,

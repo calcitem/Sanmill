@@ -26,6 +26,7 @@ class BoardItem;
 
 class GameScene : public QGraphicsScene {
     Q_OBJECT
+
 public:
     explicit GameScene(QObject* parent = nullptr);
     ~GameScene() override;

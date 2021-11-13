@@ -32,7 +32,7 @@
 #include "client.h"
 #include "server.h"
 
-using namespace std;
+using std::vector;
 
 class GameScene;
 class Game;
@@ -41,7 +41,7 @@ class MillGameWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    MillGameWindow(QWidget* parent = nullptr);
+    explicit MillGameWindow(QWidget* parent = nullptr);
     ~MillGameWindow() override;
 
 protected:

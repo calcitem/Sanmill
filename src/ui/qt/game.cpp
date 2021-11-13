@@ -14,7 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <iomanip>
 #include <map>
+#include <string>
 
 #include <QAbstractButton>
 #include <QApplication>
@@ -29,7 +31,6 @@
 #include <QSoundEffect>
 #include <QThread>
 #include <QTimer>
-#include <iomanip>
 
 #include "boarditem.h"
 #include "client.h"
@@ -42,7 +43,7 @@
 #include "perfect/perfect.h"
 #endif
 
-using namespace std;
+using std::to_string;
 
 Game::Game(
     GameScene& scene,
@@ -371,7 +372,7 @@ void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= 0 T
 {
     rule.nMoveRule = stepLimited;
 
-    // TODO
+    // TODO(calcitem)
 
     // Update the rule, the original time limit and step limit remain unchanged
     if (ruleNo < 0 || ruleNo >= N_RULES)
@@ -558,7 +559,7 @@ void Game::playSound(GameSound soundType, Color c)
     default:
         filename = "";
         break;
-    };
+    }
 
 #ifndef DO_NOT_PLAY_SOUND
     QString soundPath = QString::fromStdString(soundDir + filename);
@@ -867,17 +868,15 @@ void Game::timerEvent(QTimerEvent* event)
 #if 0
     int ti = time.elapsed();
     static QTime t;
-    if (ti < 0)
+    if (ti < 0) {
         ti += 86400; // Prevent the time error caused by 24:00, plus the total number of seconds in a day
-    if (timeWho == 1)
-    {
+    }
+    if (timeWho == 1) {
         time1 = ti - time2;
         // A temporary variable used to display the time. The extra 50 ms is used to eliminate the beat caused by the timer error
         t = QTime(0, 0, 0, 50).addMSecs(time1);
         emit time1Changed(t.toString("hh:mm:ss"));
-    }
-    else if (timeWho == 2)
-    {
+    } else if (timeWho == 2) {
         time2 = ti - time1;
         // A temporary variable used to display the time. The extra 50 ms is used to eliminate the beat caused by the timer error
         t = QTime(0, 0, 0, 50).addMSecs(time2);
@@ -933,7 +932,6 @@ bool Game::actionPiece(QPointF p)
 
             // If you regret the game, restart the timing
             if (position.get_winner() == NOBODY) {
-
                 // Restart timing
                 timeID = startTimer(100);
 
@@ -1045,9 +1043,7 @@ bool Game::actionPiece(QPointF p)
         // If it's not decided yet
         if (position.get_winner() == NOBODY) {
             resumeAiThreads(position.sideToMove);
-        }
-        // If it's decided
-        else {
+        } else {  // If it's decided
             if (gameOptions.getAutoRestart()) {
                 saveScore();
 
@@ -1175,9 +1171,7 @@ bool Game::command(const string& cmd, bool update /* = true */)
         manualListModel.insertRow(0);
         manualListModel.setData(manualListModel.index(0), position.get_record());
         currentRow = 0;
-    }
-    // For the current position
-    else {
+    } else { // For the current position
         currentRow = manualListModel.rowCount() - 1;
         // Skip the added rows. The iterator does not support the + operator and can only skip one by one++
         auto i = (move_hostory()->begin());
@@ -1204,9 +1198,7 @@ bool Game::command(const string& cmd, bool update /* = true */)
     // If it's not decided yet
     if (position.get_winner() == NOBODY) {
         resumeAiThreads(position.sideToMove);
-    }
-    // If it's decided
-    else {
+    } else { // If it's decided
         pauseThreads();
 
         gameEndTime = now();
@@ -1310,7 +1302,7 @@ bool Game::command(const string& cmd, bool update /* = true */)
 
     const auto flags = cout.flags();
     cout << "Score: " << position.score[WHITE] << " : " << position.score[BLACK] << " : " << position.score_draw << "\ttotal: " << total << endl;
-    cout << fixed << setprecision(2) << blackWinRate << "% : " << whiteWinRate << "% : " << drawRate << "%" << endl;
+    cout << fixed << std::setprecision(2) << blackWinRate << "% : " << whiteWinRate << "% : " << drawRate << "%" << endl;
     cout.flags(flags);
 
     return true;
@@ -1382,7 +1374,6 @@ bool Game::updateScene(Position& p)
             if (board[j] == key) {
                 pos = scene.polar2pos(File(j / RANK_NB), Rank(j % RANK_NB + 1));
                 if (piece->pos() != pos) {
-
                     // Let the moving pieces be at the top level
                     piece->setZValue(1);
 

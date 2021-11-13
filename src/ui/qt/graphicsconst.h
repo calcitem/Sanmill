@@ -20,14 +20,14 @@
 #include "config.h"
 
 #ifdef QT_MOBILE_APP_UI
-constexpr short BOARD_SIZE = 500;
+constexpr int16 BOARD_SIZE = 500;
 #else
-constexpr short BOARD_SIZE = 550;
+constexpr int16_t BOARD_SIZE = 550;
 #endif /* QT_MOBILE_APP_UI */
 
-constexpr short BOARD_MINISIZE = 150; // Minimum width and height, i.e. 1 / 4 Size
-constexpr short PIECE_SIZE = 56;
-constexpr short LINE_INTERVAL = 72;
-constexpr short LINE_WEIGHT = 3;
+constexpr int16_t BOARD_MINISIZE = 150; // Minimum width and height, i.e. 1 / 4 Size
+constexpr int16_t PIECE_SIZE = 56;
+constexpr int16_t LINE_INTERVAL = 72;
+constexpr int16_t LINE_WEIGHT = 3;
 
 #endif // GRAPHICSCONST_H_INCLUDED

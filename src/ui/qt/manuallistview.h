@@ -36,7 +36,7 @@ class ManualListView : public QListView {
     Q_OBJECT
 
 public:
-    ManualListView(QWidget* parent = nullptr) noexcept
+    explicit ManualListView(QWidget* parent = nullptr) noexcept
         : QListView(parent)
     {
         Q_UNUSED(parent)
