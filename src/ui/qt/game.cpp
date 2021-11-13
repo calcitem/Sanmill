@@ -1,20 +1,18 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <map>
 
@@ -1596,9 +1594,9 @@ inline char Game::color_to_char(Color color)
 inline std::string Game::char_to_string(char ch)
 {
     if (ch == '1') {
-        return "白方";
+        return "White";
     } else {
-        return "黑方";
+        return "Black";
     }
 }
 
@@ -1661,38 +1659,38 @@ void Game::setTips()
 
     switch (p.phase) {
     case Phase::ready:
-        tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.pieceInHandCount[WHITE]) + "子" + "  比分 " + to_string(p.score[WHITE]) + ":" + to_string(p.score[BLACK]) + ", 和棋 " + to_string(p.score_draw);
+        tips = turnStr + " to place, " + std::to_string(p.pieceInHandCount[WHITE]) + " pieces are unplaced." + "  Score " + to_string(p.score[WHITE]) + ":" + to_string(p.score[BLACK]) + ", Draw " + to_string(p.score_draw);
         break;
 
     case Phase::placing:
         if (p.action == Action::place) {
-            tips = "轮到" + turnStr + "落子，剩余" + std::to_string(p.pieceInHandCount[p.sideToMove]) + "子";
+            tips = turnStr + " to place, " + std::to_string(p.pieceInHandCount[p.sideToMove]) + " pieces are unplaced.";
         } else if (p.action == Action::remove) {
-            tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p.pieceToRemoveCount) + "子";
+            tips = "Mill! " + turnStr + " to remove, " + std::to_string(p.pieceToRemoveCount) + " pieces to remove.";
         }
         break;
 
     case Phase::moving:
         if (p.action == Action::place || p.action == Action::select) {
-            tips = "轮到" + turnStr + "选子移动";
+            tips = turnStr + " to move.";
         } else if (p.action == Action::remove) {
-            tips = "成三！轮到" + turnStr + "去子，需去" + std::to_string(p.pieceToRemoveCount) + "子";
+            tips = "Mill " + turnStr + " to remove, " + std::to_string(p.pieceToRemoveCount) + " pieces to remove.";
         }
         break;
 
     case Phase::gameOver:
         appendGameOverReasonToMoveHistory();
 
-        scoreStr = "比分 " + to_string(p.score[WHITE]) + " : " + to_string(p.score[BLACK]) + ", 和棋 " + to_string(p.score_draw);
+        scoreStr = "Score " + to_string(p.score[WHITE]) + " : " + to_string(p.score[BLACK]) + ", Draw " + to_string(p.score_draw);
 
         switch (p.winner) {
         case WHITE:
         case BLACK:
             winnerStr = char_to_string(color_to_char(p.winner));
-            resultStr = winnerStr + "获胜！";
+            resultStr = winnerStr + " won! ";
             break;
         case DRAW:
-            resultStr = "双方平局！";
+            resultStr = "Draw! ";
             break;
         default:
             break;
@@ -1709,25 +1707,25 @@ void Game::setTips()
                 turnStr = char_to_string(color_to_char(p.sideToMove));
             }
 #endif
-            reasonStr = turnStr + "无子可走被闷。";
+            reasonStr = turnStr + " is blocked.";
             break;
         case GameOverReason::loseReasonResign:
-            reasonStr = turnStr + "投子认负。";
+            reasonStr = turnStr + " resigned.";
             break;
         case GameOverReason::loseReasonTimeOver:
-            reasonStr = turnStr + "超时判负。";
+            reasonStr = "Time over." + turnStr + " lost.";
             break;
         case GameOverReason::drawReasonThreefoldRepetition:
-            reasonStr = "三次重复局面判和。";
+            reasonStr = "Draw because of threefold repetition.";
             break;
         case GameOverReason::drawReasonRule50:
-            reasonStr = "连续50回合无吃子判和。";
+            reasonStr = "Draw because of rule 50.";
             break;
         case GameOverReason::drawReasonEndgameRule50:
-            reasonStr = "残局中连续50回合无吃子判和。";
+            reasonStr = "Draw because of endgame rule 50.";
             break;
         case GameOverReason::drawReasonBoardIsFull:
-            reasonStr = "棋盘满判和。";
+            reasonStr = "Draw because of board is full.";
             break;
         default:
             break;
