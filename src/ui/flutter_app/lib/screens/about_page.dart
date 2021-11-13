@@ -59,7 +59,7 @@ class AboutPage extends StatelessWidget {
           if (!data.hasData) {
             _version = '';
           } else {
-            final packageInfo = data.data!;
+            final PackageInfo packageInfo = data.data!;
             if (Platform.isWindows) {
               _version = packageInfo.version; // TODO
 
@@ -139,9 +139,7 @@ class AboutPage extends StatelessWidget {
   Future<void> _launchFeedback() async {
     String? locale = "en_US";
 
-    if (!Platform.isWindows) {
-      locale = await Devicelocale.currentLocale;
-    }
+    locale = await Devicelocale.currentLocale;
 
     debugPrint("$_tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {

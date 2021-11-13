@@ -173,13 +173,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
       ),
-      CustomDrawerItem<_DrawerIndex>(
-        value: _DrawerIndex.feedback,
-        title: S.of(context).feedback,
-        icon: const Icon(FluentIcons.chat_warning_24_regular),
-        groupValue: _drawerIndex,
-        onChanged: _changeIndex,
-      ),
+      if (Platform.isAndroid || Platform.isIOS)
+        CustomDrawerItem<_DrawerIndex>(
+          value: _DrawerIndex.feedback,
+          title: S.of(context).feedback,
+          icon: const Icon(FluentIcons.chat_warning_24_regular),
+          groupValue: _drawerIndex,
+          onChanged: _changeIndex,
+        ),
       CustomDrawerItem<_DrawerIndex>(
         value: _DrawerIndex.Help,
         title: S.of(context).help,
