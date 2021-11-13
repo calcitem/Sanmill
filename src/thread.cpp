@@ -1,22 +1,21 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iomanip>
+#include <utility>
 
 #include "mills.h"
 #include "option.h"
@@ -31,17 +30,21 @@
 #include "engine_main.h"
 #endif
 
-ThreadPool Threads; // Global object
-
 #ifdef OPENING_BOOK
 #include <deque>
-using namespace std;
 #endif
+
+using std::cout;
+using std::endl;
+using std::fixed;
+using std::setprecision;
 
 #if _MSC_VER >= 1600
 #pragma warning(disable : 4695)
 #pragma execution_character_set("ANSI")
 #endif
+
+ThreadPool Threads; // Global object
 
 /// Thread constructor launches the thread and waits until it goes to sleep
 /// in idle_loop(). Note that 'searching' and 'exit' should be already set.
@@ -80,7 +83,7 @@ Thread::~Thread()
 
 void Thread::clear() noexcept
 {
-    // TODO: Reset histories
+    // TODO(calcitem): Reset histories
     return;
 }
 
@@ -305,13 +308,13 @@ void Thread::analyze(Color c)
     case Phase::gameOver:
         if (p->get_winner() == DRAW) {
             cout << "Draw" << endl;
-            nDraw += 0.5; // TODO
+            nDraw += 0.5; // TODO(calcitem)
         } else if (p->get_winner() == WHITE) {
             cout << "White wins" << endl;
-            nBlackWin += 0.5; // TODO
+            nBlackWin += 0.5; // TODO(calcitem)
         } else if (p->get_winner() == BLACK) {
             cout << "Black wins" << endl;
-            nWhiteWin += 0.5; // TODO
+            nWhiteWin += 0.5; // TODO(calcitem)
         }
         goto out;
         break;
@@ -425,7 +428,7 @@ string Thread::next_move()
         if (bestvalue <= -VALUE_KNOWN_WIN) {
             Endgame endgame;
             endgame.type = rootPos->side_to_move() == WHITE ? EndGameType::blackWin : EndGameType::whiteWin;
-            Key endgameHash = rootPos->key(); // TODO: Do not generate hash repeatedly
+            Key endgameHash = rootPos->key(); // TODO(calcitem): Do not generate hash repeatedly
             saveEndgameHash(endgameHash, endgame);
         }
     }

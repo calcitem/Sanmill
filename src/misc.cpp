@@ -1,20 +1,18 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifdef _WIN32
 #if _WIN32_WINNT < 0x0601
@@ -59,7 +57,17 @@ typedef bool (*fun3_t)(HANDLE, CONST GROUP_AFFINITY*, PGROUP_AFFINITY);
 #include "misc.h"
 #include "thread.h"
 
-using namespace std;
+using std::cerr;
+using std::cin;
+using std::cout;
+using std::endl;
+using std::ifstream;
+using std::iostream;
+using std::ofstream;
+using std::setfill;
+using std::setw;
+using std::streambuf;
+using std::stringstream;
 
 namespace {
 
@@ -526,7 +534,7 @@ void bindThisThread(size_t)
 
 /// best_group() retrieves logical processor information using Windows specific
 /// API and returns the best group id for the thread with index idx. Original
-/// code from Texel by Peter Ã–sterlund.
+/// code from Texel by Peter A-terlund.
 
 int best_group(size_t idx)
 {
@@ -562,10 +570,9 @@ int best_group(size_t idx)
     }
 
     while (byteOffset < returnLength) {
-        if (ptr->Relationship == RelationNumaNode)
+        if (ptr->Relationship == RelationNumaNode) {
             nodes++;
-
-        else if (ptr->Relationship == RelationProcessorCore) {
+        } else if (ptr->Relationship == RelationProcessorCore) {
             cores++;
             threads += (ptr->Processor.Flags == LTP_PC_SMT) ? 2 : 1;
         }

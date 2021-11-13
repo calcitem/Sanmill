@@ -1,22 +1,21 @@
-/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <sstream>
+#include <vector>
 
 #include "thread.h"
 #include "uci.h"
@@ -26,7 +25,13 @@
 #include "command_channel.h"
 #endif
 
-using namespace std;
+using std::cin;
+using std::istream;
+using std::istringstream;
+using std::skipws;
+using std::string;
+using std::stringstream;
+using std::vector;
 
 extern vector<string> setup_bench(Position*, istream&);
 
@@ -58,11 +63,13 @@ void position(Position* pos, istringstream& is)
     if (token == "startpos") {
         fen = StartFEN;
         is >> token; // Consume "moves" token if any
-    } else if (token == "fen")
-        while (is >> token && token != "moves")
+    } else if (token == "fen") {
+        while (is >> token && token != "moves") {
             fen += token + " ";
-    else
+        }
+    } else {
         return;
+    }
 
     repetition = 0;
     posKeyHistory.clear();
@@ -79,7 +86,7 @@ void position(Position* pos, istringstream& is)
         }
     }
 
-    // TODO: Stockfish does not have this
+    // TODO(calcitem): Stockfish does not have this
     Threads.main()->us = pos->sideToMove;
 }
 
@@ -122,7 +129,7 @@ begin:
 
     if (pos->get_phase() == Phase::gameOver) {
 #ifdef UCI_AUTO_RESTART
-        // TODO
+        // TODO(calcitem)
         while (true) {
             if (Threads.main()->searching == true) {
                 continue;
@@ -255,7 +262,6 @@ void UCI::loop(int argc, char* argv[])
             sync_cout << compiler_info() << sync_endl;
         else
             sync_cout << "Unknown command: " << cmd << sync_endl;
-
     } while (token != "quit" && argc == 1); // Command line args are one-shot
 
     delete pos;

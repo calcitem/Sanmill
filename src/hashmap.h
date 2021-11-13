@@ -1,20 +1,18 @@
-/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef HASH_MAP_H_INCLUDED
 #define HASH_MAP_H_INCLUDED
@@ -26,7 +24,7 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
-#include <mutex>
+#include <string>
 
 #include "hashnode.h"
 #include "misc.h"
@@ -49,34 +47,34 @@ namespace CTSL // Concurrent Thread Safe Library
 #ifdef HASH_KEY_DISABLE
 #define hashFn Key
 template <typename K, typename V>
-#else
+#else // HASH_KEY_DISABLE
 template <typename K, typename V, typename F = std::key<K>>
-#endif
+#endif // HASH_KEY_DISABLE
 class HashMap {
 public:
-    HashMap(hashFn hashSize_ = HASH_SIZE_DEFAULT)
+    explicit HashMap(hashFn hashSize_ = HASH_SIZE_DEFAULT)
         : hashSize(hashSize_)
     {
 #ifdef DISABLE_HASHBUCKET
 #ifdef ALIGNED_LARGE_PAGES
         hashTable = (HashNode<K, V>*)aligned_large_pages_alloc(sizeof(HashNode<K, V>) * hashSize);
-#else
+#else // ALIGNED_LARGE_PAGES
         hashTable = new HashNode<K, V>[hashSize]; // Create the key table as an array of key nodes
 #endif // ALIGNED_LARGE_PAGES
 
         memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
-#else
+#else // DISABLE_HASHBUCKET
         hashTable = new HashBucket<K, V>[hashSize]; //create the key table as an array of key buckets
-#endif
+#endif // DISABLE_HASHBUCKET
     }
 
     ~HashMap()
     {
 #ifdef ALIGNED_LARGE_PAGES
         aligned_large_pages_free(hashTable);
-#else
+#else // ALIGNED_LARGE_PAGES
         delete[] hashTable;
-#endif
+#endif // ALIGNED_LARGE_PAGES
     }
     // Copy and Move of the HashMap are not supported at this moment
     HashMap(const HashMap&) = delete;
@@ -102,9 +100,9 @@ public:
         }
 
         return false;
-#else
+#else // DISABLE_HASHBUCKET
         return hashTable[hashValue].find(key, value);
-#endif
+#endif // DISABLE_HASHBUCKET
     }
 
     void prefetchValue(const K& key)
@@ -126,9 +124,9 @@ public:
 #endif /* HASHMAP_NOLOCK */
         hashTable[hashValue].setKey(key);
         hashTable[hashValue].setValue(value);
-#else
+#else // DISABLE_HASHBUCKET
         hashTable[hashValue].insert(key, value);
-#endif
+#endif // DISABLE_HASHBUCKET
         return hashValue;
     }
 
@@ -136,15 +134,15 @@ public:
     void erase(
 #ifndef DISABLE_HASHBUCKET
         const K& key
-#endif
+#endif // DISABLE_HASHBUCKET
     )
     {
 #ifdef DISABLE_HASHBUCKET
         // std::unique_lock<std::shared_timed_mutex> lock(mutex_);
-#else
+#else // DISABLE_HASHBUCKET
         size_t hashValue = hashFn(key) & (hashSize - 1);
         hashTable[hashValue].erase(key);
-#endif
+#endif // DISABLE_HASHBUCKET
     }
 
     // Function to clean up the hasp map, i.e., remove all entries from it
@@ -152,16 +150,16 @@ public:
     {
 #ifdef DISABLE_HASHBUCKET
         memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
-#else
+#else // DISABLE_HASHBUCKET
         for (size_t i = 0; i < hashSize; i++) {
             (hashTable[i]).clear();
         }
-#endif
+#endif // DISABLE_HASHBUCKET
     }
 
     void resize(size_t size)
     {
-        // TODO: Resize
+        // TODO(calcitem): Resize
         if (size < 0x1000000) {
             // New size is too small, do not resize
             return;
@@ -169,7 +167,7 @@ public:
 
 #ifdef TRANSPOSITION_TABLE_64BIT_KEY
         hashSize = size;
-#else
+#else // TRANSPOSITION_TABLE_64BIT_KEY
         hashSize = (uint32_t)size;
 #endif // TRANSPOSITION_TABLE_64BIT_KEY
         return;
@@ -183,7 +181,7 @@ public:
         file.open(filename, std::ios::out);
         file.write((char*)(hashTable), sizeof(HashNode<K, V>) * hashSize);
         file.close();
-#endif
+#endif // DISABLE_HASHBUCKET
     }
 
     //Function to load the key map from file
@@ -196,7 +194,7 @@ public:
         file.close();
 
         stat();
-#endif
+#endif // DISABLE_HASHBUCKET
     }
 
     void merge(const HashMap& other)
@@ -267,13 +265,13 @@ public:
 private:
 #ifdef DISABLE_HASHBUCKET
     HashNode<K, V>* hashTable;
-#else
+#else // DISABLE_HASHBUCKET
     HashBucket<K, V>* hashTable;
-#endif
+#endif // DISABLE_HASHBUCKET
 #ifdef HASH_KEY_DISABLE
-#else
+#else // HASH_KEY_DISABLE
     F hashFn;
-#endif
+#endif // HASH_KEY_DISABLE
     hashFn hashSize;
 #ifdef DISABLE_HASHBUCKET
 #ifndef HASHMAP_NOLOCK
@@ -281,5 +279,5 @@ private:
 #endif /* HASHMAP_NOLOCK */
 #endif
 };
-}
+} // namespace CTSL
 #endif // HASH_MAP_H_INCLUDED

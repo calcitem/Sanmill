@@ -1,25 +1,24 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <cstring>
 #include <random>
 
 #include "bitboard.h"
+#include "mills.h"
 #include "misc.h"
 #include "movegen.h"
 #include "option.h"
@@ -375,7 +374,7 @@ void mill_table_init()
 void move_priority_list_shuffle()
 {
     if (gameOptions.getSkillLevel() == 1) {
-        for (auto i = 8; i < 32; i++) { // TODO: SQ_BEGIN & SQ_END
+        for (auto i = 8; i < 32; i++) { // TODO(calcitem): SQ_BEGIN & SQ_END
             MoveList<LEGAL>::movePriorityList[i - int(SQ_BEGIN)] = (Square)i;
         }
         if (gameOptions.getShufflingEnabled()) {
@@ -462,7 +461,6 @@ Depth get_search_depth(const Position* pos)
 
     if (!gameOptions.getDeveloperMode()) {
         if (pos->phase == Phase::placing) {
-
             if (!gameOptions.getDrawOnHumanExperience()) {
                 return (Depth)level;
             }
@@ -640,7 +638,7 @@ Depth get_search_depth(const Position* pos)
     }
 
     // Do not too weak
-    if (depthLimit == 30 && d <= 4) {   // TODO
+    if (depthLimit == 30 && d <= 4) {   // TODO(calcitem)
         d = 4;
     }
 #endif
@@ -665,4 +663,4 @@ Depth get_search_depth(const Position* pos)
     return d;
 }
 
-}
+} // namespace Mills

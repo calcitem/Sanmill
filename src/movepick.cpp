@@ -1,20 +1,18 @@
-/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "movepick.h"
 
@@ -66,7 +64,7 @@ void MovePicker::score()
         ourMillsCount = pos.potential_mills_count(to, pos.side_to_move(), from);
 
 #ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
-        // TODO: rule.mayRemoveMultiple adapt other rules
+        // TODO(calcitem): rule.mayRemoveMultiple adapt other rules
         if (type_of(m) != MOVETYPE_REMOVE) {
             // all phrase, check if place sq can close mill
             if (ourMillsCount > 0) {
@@ -75,9 +73,7 @@ void MovePicker::score()
                 // placing phrase, check if place sq can block their close mill
                 theirMillsCount = pos.potential_mills_count(to, ~pos.side_to_move());
                 cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
-            }
-#if 1
-            else if (pos.get_phase() == Phase::moving) {
+            } else if (pos.get_phase() == Phase::moving) {
                 // moving phrase, check if place sq can block their close mill
                 theirMillsCount = pos.potential_mills_count(to, ~pos.side_to_move());
 
@@ -93,7 +89,6 @@ void MovePicker::score()
                     }
                 }
             }
-#endif
 
             //cur->value += bannedCount;  // placing phrase, place nearby ban point
 
