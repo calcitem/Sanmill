@@ -136,10 +136,18 @@ class AboutPage extends StatelessWidget {
     await launch(url);
   }
 
-  Future<void> _launchFeedback() async {
+  Future<String?> _getCurrentLocale() async {
     String? locale = "en_US";
 
-    locale = await Devicelocale.currentLocale;
+    if (!Platform.isWindows) {
+      locale = await Devicelocale.currentLocale;
+    }
+
+    return locale;
+  }
+
+  Future<void> _launchFeedback() async {
+    final String? locale = await _getCurrentLocale();
 
     debugPrint("$_tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
@@ -150,11 +158,7 @@ class AboutPage extends StatelessWidget {
   }
 
   Future<void> _launchEULA() async {
-    String? locale = "en_US";
-
-    if (!Platform.isWindows) {
-      locale = await Devicelocale.currentLocale;
-    }
+    final String? locale = await _getCurrentLocale();
 
     debugPrint("$_tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
@@ -165,11 +169,7 @@ class AboutPage extends StatelessWidget {
   }
 
   Future<void> _launchSourceCode() async {
-    String? locale = "en_US";
-
-    if (!Platform.isWindows) {
-      locale = await Devicelocale.currentLocale;
-    }
+    final String? locale = await _getCurrentLocale();
 
     debugPrint("$_tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
@@ -180,11 +180,7 @@ class AboutPage extends StatelessWidget {
   }
 
   Future<void> _launchPrivacyPolicy() async {
-    String? locale = "en_US";
-
-    if (!Platform.isWindows) {
-      locale = await Devicelocale.currentLocale;
-    }
+    final String? locale = await _getCurrentLocale();
 
     debugPrint("$_tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
@@ -195,11 +191,7 @@ class AboutPage extends StatelessWidget {
   }
 
   Future<void> _launchHelpImproveTranslate() async {
-    String? locale = "en_US";
-
-    if (!Platform.isWindows) {
-      locale = await Devicelocale.currentLocale;
-    }
+    final String? locale = await _getCurrentLocale();
 
     debugPrint("$_tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
@@ -210,11 +202,7 @@ class AboutPage extends StatelessWidget {
   }
 
   Future<void> _launchThanks() async {
-    String? locale = "en_US";
-
-    if (!Platform.isWindows) {
-      locale = await Devicelocale.currentLocale;
-    }
+    final String? locale = await _getCurrentLocale();
 
     debugPrint("$_tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
