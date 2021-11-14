@@ -14,7 +14,6 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ master ]
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ master ]
@@ -53,12 +52,12 @@ jobs:
     #- name: Auto build
     #  uses: github/codeql-action/autobuild@v1
 
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 https://git.io/JvXDl
+    # Command-line programs to run using the OS shell.
+    # https://git.io/JvXDl
 
-    # ✏️ If the Auto build fails above, remove it and uncomment the following three lines
-    #    and modify them (or add more) to build your code if your project
-    #    uses a compiled language
+    # If the Auto build fails above, remove it and uncomment the following three lines
+    # and modify them (or add more) to build your code if your project
+    # uses a compiled language
 
     - run: |
        sed -i '/QT_UI/d' include/config.h
