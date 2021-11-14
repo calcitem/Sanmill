@@ -6,6 +6,10 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "miniMax.h"
 
 //-----------------------------------------------------------------------------
@@ -585,3 +589,5 @@ errorInDatabase:
 
     return falseOrStop();
 }
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

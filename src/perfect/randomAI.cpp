@@ -6,6 +6,10 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "randomAI.h"
 
 //-----------------------------------------------------------------------------
@@ -81,3 +85,5 @@ void RandomAI::play(fieldStruct* theField, unsigned int* pushFrom, unsigned int*
     *pushFrom = from;
     *pushTo = to;
 }
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

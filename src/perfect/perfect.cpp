@@ -1,6 +1,9 @@
 #include "config.h"
-#include "perfect.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "misc.h"
+#include "perfect.h"
 #include "position.h"
 
 // Perfect AI
@@ -253,3 +256,5 @@ bool perfect_command(const char* cmd)
 
 // mill->getWinner() == 0
 // mill->getCurrentPlayer() == fieldStruct::playerTwo
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

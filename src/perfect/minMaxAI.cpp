@@ -6,6 +6,10 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "miniMaxAI.h"
 
 //-----------------------------------------------------------------------------
@@ -621,3 +625,5 @@ void MiniMaxAI::printMoveInformation(unsigned int threadNo, unsigned int idPossi
     else
         cout << "move from " << (char)(tmpPossibility->from[idPossibility] + 97) << " to " << (char)(tmpPossibility->to[idPossibility] + 97);
 }
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

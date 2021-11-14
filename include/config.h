@@ -143,15 +143,15 @@
 
 //#define ALIGNED_LARGE_PAGES
 
-#ifndef  __GNUC__
-#define __builtin_expect(expr, n)    (expr)
+#ifndef __GNUC__
+#define __builtin_expect(expr, n) (expr)
 #endif
 
-#define likely(expr)    (__builtin_expect(!!(expr), 1))
-#define unlikely(expr)  (__builtin_expect(!!(expr), 0))
+#define likely(expr) (__builtin_expect(!!(expr), 1))
+#define unlikely(expr) (__builtin_expect(!!(expr), 0))
 
 #ifdef _MSC_VER
-#define sscanf  sscanf_s
+#define sscanf sscanf_s
 #endif
 
 #ifdef FLUTTER_UI
