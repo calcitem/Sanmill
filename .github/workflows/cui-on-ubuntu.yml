@@ -1,0 +1,33 @@
+name: CUI on Ubuntu
+
+on:
+  push:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Export environment valuables
+        run: export
+
+      - name: Print g++ version
+        run: g++ -v
+
+      - name: Create App version
+        run: git fetch --tags; git tag; git log -n1; bash -x ./version.sh
+
+      # Build
+      - name: Build CUI
+        run: cd src; make -j build ARCH=x86-64
+
+      # Archive apk
+      - name: Archive CUI
+        uses: actions/upload-artifact@v2
+        with:
+          name: sanmill-for-linux
+          path: src/sanmill
