@@ -155,11 +155,4 @@ namespace WinProcGroup {
 void bindThisThread(size_t idx);
 }
 
-namespace CommandLine {
-void init(int argc, char* argv[]);
-
-extern std::string binaryDirectory; // path of the executable directory
-extern std::string workingDirectory; // path of the working directory
-}
-
 #endif // #ifndef MISC_H_INCLUDED
