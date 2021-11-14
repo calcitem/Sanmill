@@ -120,7 +120,7 @@ void Game::loadSettings()
 
     QFileInfo file(SETTINGS_FILE);
     if (!file.exists()) {
-        cout << SETTINGS_FILE.toStdString() << " is not exists, create it." << endl;
+        cout << SETTINGS_FILE.toStdString() << " is not exists, create it." << std::endl;
         empty = true;
     }
 
@@ -1043,7 +1043,7 @@ bool Game::actionPiece(QPointF p)
         // If it's not decided yet
         if (position.get_winner() == NOBODY) {
             resumeAiThreads(position.sideToMove);
-        } else {  // If it's decided
+        } else { // If it's decided
             if (gameOptions.getAutoRestart()) {
                 saveScore();
 
@@ -1301,8 +1301,8 @@ bool Game::command(const string& cmd, bool update /* = true */)
     }
 
     const auto flags = cout.flags();
-    cout << "Score: " << position.score[WHITE] << " : " << position.score[BLACK] << " : " << position.score_draw << "\ttotal: " << total << endl;
-    cout << fixed << std::setprecision(2) << blackWinRate << "% : " << whiteWinRate << "% : " << drawRate << "%" << endl;
+    cout << "Score: " << position.score[WHITE] << " : " << position.score[BLACK] << " : " << position.score_draw << "\ttotal: " << total << std::endl;
+    cout << fixed << std::setprecision(2) << blackWinRate << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
     cout.flags(flags);
 
     return true;

@@ -6,6 +6,10 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "threadManager.h"
 
 //-----------------------------------------------------------------------------
@@ -441,3 +445,5 @@ DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParameter)
 - Restriction to 'int' can lead to overflow if there are more states in a layer.
      ==> Maybe work with class templates
 *********************************************************************************************/
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

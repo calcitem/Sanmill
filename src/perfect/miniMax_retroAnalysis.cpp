@@ -6,6 +6,10 @@
     https://github.com/madweasel/Muehle
 s\*********************************************************************/
 
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "miniMax.h"
 
 //-----------------------------------------------------------------------------
@@ -792,3 +796,5 @@ bool MiniMax::addStateToProcessQueue(retroAnalysisGlobalVars& retroVars, RetroAn
 
     return true;
 }
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

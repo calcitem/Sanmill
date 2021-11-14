@@ -6,6 +6,10 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "mill.h"
 #include <cassert>
 
@@ -879,3 +883,5 @@ void Mill::calcNumberOfRestingStones(int& numWhiteStonesResting, int& numBlackSt
         numBlackStonesResting = fieldStruct::numStonesPerPlayer - field.curPlayer->numStonesMissing - field.curPlayer->numStones;
     }
 }
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

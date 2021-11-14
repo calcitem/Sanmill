@@ -6,6 +6,10 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "strLib.h"
 
 //-----------------------------------------------------------------------------
@@ -399,3 +403,5 @@ bool readAsciiData(HANDLE hFile, double* pData, unsigned int numValues, unsigned
     // quit
     return true;
 }
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

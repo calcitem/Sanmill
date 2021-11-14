@@ -6,6 +6,10 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "perfectAI.h"
 #include <cassert>
 
@@ -2836,3 +2840,5 @@ bool PerfectAI::checkGetPredThanGetPoss()
   Since the size was previously unknown, a table must be produced. Possible class name "compressedCyclicArray (blockSize, numBlocks, numArrays, filePath)".
 - Implement initFileReader
 ***************************************************/
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

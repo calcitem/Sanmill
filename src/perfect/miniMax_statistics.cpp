@@ -6,6 +6,10 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "miniMax.h"
 
 //-----------------------------------------------------------------------------
@@ -436,3 +440,5 @@ void MiniMax::ArrayInfoContainer::updateArray(unsigned int layerNumber, unsigned
         LeaveCriticalSection(&c->csOsPrint);
     }
 }
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

@@ -6,6 +6,10 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "millAI.h"
 
 using namespace std;
@@ -265,3 +269,5 @@ inline void fieldStruct::setNeighbour(unsigned int index,
     neighbour[index][1][0] = firstNeighbour1;
     neighbour[index][1][1] = secondNeighbour1;
 }
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

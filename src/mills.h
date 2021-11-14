@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef MILL_H_INCLUDED
-#define MILL_H_INCLUDED
+#ifndef MILLS_H_INCLUDED
+#define MILLS_H_INCLUDED
 
 #include "config.h"
 #include "position.h"
@@ -40,4 +40,4 @@ Depth get_search_depth(const Position* pos);
 
 }
 
-#endif // #ifndef MILL_H_INCLUDED
+#endif // #ifndef MILLS_H_INCLUDED

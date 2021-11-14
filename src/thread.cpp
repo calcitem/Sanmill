@@ -35,7 +35,6 @@
 #endif
 
 using std::cout;
-using std::endl;
 using std::fixed;
 using std::setprecision;
 
@@ -295,101 +294,101 @@ void Thread::analyze(Color c)
 
     const Position* p = rootPos;
 
-    cout << *p << endl;
+    cout << *p << std::endl;
     cout << std::dec;
 
     switch (p->get_phase()) {
     case Phase::placing:
-        cout << "Placing phrase" << endl;
+        cout << "Placing phrase" << std::endl;
         break;
     case Phase::moving:
-        cout << "Moving phase" << endl;
+        cout << "Moving phase" << std::endl;
         break;
     case Phase::gameOver:
         if (p->get_winner() == DRAW) {
-            cout << "Draw" << endl;
+            cout << "Draw" << std::endl;
             nDraw += 0.5; // TODO(calcitem)
         } else if (p->get_winner() == WHITE) {
-            cout << "White wins" << endl;
+            cout << "White wins" << std::endl;
             nBlackWin += 0.5; // TODO(calcitem)
         } else if (p->get_winner() == BLACK) {
-            cout << "Black wins" << endl;
+            cout << "Black wins" << std::endl;
             nWhiteWin += 0.5; // TODO(calcitem)
         }
         goto out;
         break;
     case Phase::none:
-        cout << "None phase" << endl;
+        cout << "None phase" << std::endl;
         break;
     default:
-        cout << "Known phase" << endl;
+        cout << "Known phase" << std::endl;
     }
 
     if (v == VALUE_UNIQUE) {
-        cout << "Unique move" << endl
-             << endl
-             << endl;
+        cout << "Unique move" << std::endl
+             << std::endl
+             << std::endl;
         return;
     }
 
     if (lv < -VALUE_EACH_PIECE && v == 0) {
-        cout << strThem << " made a bad move, " << strUs << " pulled back the balance of power!" << endl;
+        cout << strThem << " made a bad move, " << strUs << " pulled back the balance of power!" << std::endl;
     }
 
     if (lv < 0 && v > 0) {
-        cout << strThem << " made a bad move, " << strUs << " reversed the situation!" << endl;
+        cout << strThem << " made a bad move, " << strUs << " reversed the situation!" << std::endl;
     }
 
     if (lv == 0 && v > VALUE_EACH_PIECE) {
-        cout << strThem << "Bad move!" << endl;
+        cout << strThem << "Bad move!" << std::endl;
     }
 
     if (lv > VALUE_EACH_PIECE && v == 0) {
-        cout << strThem << "made a good move, pulled back the balance of power" << endl;
+        cout << strThem << "made a good move, pulled back the balance of power" << std::endl;
     }
 
     if (lv > 0 && v < 0) {
-        cout << strThem << "made a good move, reversed the situation!" << endl;
+        cout << strThem << "made a good move, reversed the situation!" << std::endl;
     }
 
     if (lv == 0 && v < -VALUE_EACH_PIECE) {
-        cout << strThem << " made a good move!" << endl;
+        cout << strThem << " made a good move!" << std::endl;
     }
 
     if (lv != v) {
         if (lv < 0 && v < 0) {
             if (abs(lv) < abs(v)) {
-                cout << strThem << " has expanded its lead" << endl;
+                cout << strThem << " has expanded its lead" << std::endl;
             } else if (abs(lv) > abs(v)) {
-                cout << strThem << " has narrowed its lead" << endl;
+                cout << strThem << " has narrowed its lead" << std::endl;
             }
         }
 
         if (lv > 0 && v > 0) {
             if (abs(lv) < abs(v)) {
-                cout << strThem << " has expanded its lead" << endl;
+                cout << strThem << " has expanded its lead" << std::endl;
             } else if (abs(lv) > abs(v)) {
-                cout << strThem << " has narrowed its backwardness" << endl;
+                cout << strThem << " has narrowed its backwardness" << std::endl;
             }
         }
     }
 
     if (win) {
-        cout << strThem << " will lose in " << d << " moves!" << endl;
+        cout << strThem << " will lose in " << d << " moves!" << std::endl;
     } else if (lose) {
-        cout << strThem << " will win in " << d << " moves!" << endl;
+        cout << strThem << " will win in " << d << " moves!" << std::endl;
     } else if (np == 0) {
-        cout << "The two sides will maintain a balance of power after " << d << " moves" << endl;
+        cout << "The two sides will maintain a balance of power after " << d << " moves" << std::endl;
     } else if (np > 0) {
-        cout << strThem << " after " << d << " moves will backward " << np << " pieces" << endl;
+        cout << strThem << " after " << d << " moves will backward " << np << " pieces" << std::endl;
     } else if (np < 0) {
-        cout << strThem << " after " << d << " moves will lead " << -np << " pieces" << endl;
+        cout << strThem << " after " << d << " moves will lead " << -np << " pieces" << std::endl;
     }
 
     if (p->side_to_move() == WHITE) {
-        cout << "White to move" << endl;
+        cout << "White to move" << std::endl;
     } else {
-        cout << "Black to move" << endl;
+        cout << "Black to move" << std::endl;
     }
 
 #ifndef QT_GUI_LIB
@@ -405,14 +404,14 @@ void Thread::analyze(Color c)
         drawRate = (float)nDraw * 100 / total;
     }
 
-    cout << "Score: " << (int)nBlackWin << " : " << (int)nWhiteWin << " : " << (int)nDraw << "\ttotal: " << (int)total << endl;
-    cout << fixed << setprecision(2) << blackWinRate << "% : " << whiteWinRate << "% : " << drawRate << "%" << endl;
+    cout << "Score: " << (int)nBlackWin << " : " << (int)nWhiteWin << " : " << (int)nDraw << "\ttotal: " << (int)total << std::endl;
+    cout << fixed << setprecision(2) << blackWinRate << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
     cout.flags(flags);
 #endif // !QT_GUI_LIB
 
 out:
-    cout << endl
-         << endl;
+    cout << std::endl
+         << std::endl;
 }
 
 Depth Thread::get_depth()

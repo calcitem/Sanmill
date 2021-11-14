@@ -6,6 +6,10 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "bufferedFile.h"
 
 //-----------------------------------------------------------------------------
@@ -258,3 +262,5 @@ bool BufferedFile::readBytes(unsigned int threadNo,
     // everything ok
     return true;
 }
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

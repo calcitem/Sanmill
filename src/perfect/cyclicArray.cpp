@@ -6,6 +6,10 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "cyclicArray.h"
 
 //-----------------------------------------------------------------------------
@@ -358,3 +362,5 @@ bool CyclicArray::saveFile(const char* fileName)
     CloseHandle(hSaveFile);
     return true;
 }
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

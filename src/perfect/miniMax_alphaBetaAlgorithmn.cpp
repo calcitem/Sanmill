@@ -6,6 +6,10 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "miniMax.h"
 
 //-----------------------------------------------------------------------------
@@ -736,3 +740,5 @@ void MiniMax::alphaBetaChooseBestMove(Knot* knot, RunAlphaBetaVars* rabVars, uns
     knot->bestBranch = maxBranch;
     SAFE_DELETE_ARRAY(bestBranches);
 }
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

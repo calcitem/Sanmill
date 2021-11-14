@@ -1,3 +1,7 @@
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "mill.h"
 #include "miniMaxAI.h"
 #include "perfect.h"
@@ -7,7 +11,6 @@
 #include <iostream>
 #include <windows.h>
 
-#include "config.h"
 #include "rule.h"
 
 using namespace std;
@@ -179,3 +182,5 @@ int perfect_main(void)
 
     return 0;
 }
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

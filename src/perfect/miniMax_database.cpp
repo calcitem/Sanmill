@@ -6,6 +6,10 @@
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "miniMax.h"
 
 #pragma warning(disable : 4127)
@@ -698,3 +702,5 @@ void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber, unsigned int state
     // measure io-operations per second
     measureIops(numWritePlyOperations, writePlyInterval, curTimeBefore, (char*)"Write ply info   ");
 }
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI
