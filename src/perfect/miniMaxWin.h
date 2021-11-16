@@ -18,11 +18,11 @@
 
 class MiniMaxGuiField {
 public:
-    virtual void setAlignment(wildWeasel::alignment& newAlignment) {};
+    virtual void setAlignment(wildWeasel::alignment& newAlignment) {}
 
-    virtual void setVisibility(bool visible) {};
+    virtual void setVisibility(bool visible) {}
 
-    virtual void setState(unsigned int curShowedLayer, MiniMax::StateNumberVarType curShowedState) {};
+    virtual void setState(unsigned int curShowedLayer, MiniMax::StateNumberVarType curShowedState) {}
 };
 
 /*------------------------------------------------------------------------------------

@@ -18,10 +18,10 @@
 #include <QDataStream>
 #include <QString>
 #include <QThread>
-#include <QUuid>
-#include <QtCore>
 #include <QtWidgets>
 #include <random>
+
+#include <QtCore>
 
 #include "config.h"
 #include "misc.h"

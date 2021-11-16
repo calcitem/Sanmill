@@ -16,7 +16,8 @@
 #include <string>
 #include <windows.h>
 
-using namespace std;
+using std::cout;
+using std::string;
 
 // general functions
 bool readAsciiData(HANDLE hFile, double* pData, unsigned int numValues, unsigned char decimalSeperator, unsigned char columnSeparator);
@@ -34,8 +35,8 @@ private:
 public:
     // functions
     MyString();
-    MyString(const char* cStr);
-    MyString(const WCHAR* cStr);
+    explicit MyString(const char* cStr);
+    explicit MyString(const WCHAR* cStr);
     ~MyString();
 
     const char* c_strA();

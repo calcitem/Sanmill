@@ -179,7 +179,7 @@ void ThreadManager::pauseExecution()
 //-----------------------------------------------------------------------------
 // cancelExecution()
 // Stops executeParallelLoop() before the next iteration.
-//	     When executeInParallel() was called, user has to handle cancellation by himself.
+//     When executeInParallel() was called, user has to handle cancellation by himself.
 //-----------------------------------------------------------------------------
 void ThreadManager::cancelExecution()
 {
@@ -247,7 +247,6 @@ unsigned int ThreadManager::executeInParallel(DWORD threadProc(void* pParameter)
 
     // create threads
     for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
-
         hThread[curThreadNo] = CreateThread(nullptr, dwStackSize, (LPTHREAD_START_ROUTINE)threadProc, (void*)(((char*)pParameter) + curThreadNo * parameterStructSize), CREATE_SUSPENDED, &threadId[curThreadNo]);
 
         if (hThread[curThreadNo] != nullptr) {

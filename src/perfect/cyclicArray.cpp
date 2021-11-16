@@ -60,7 +60,7 @@ CyclicArray::~CyclicArray()
 // writeDataToFile()
 // Writes 'sizeInBytes'-bytes to the position 'offset' to the file.
 //-----------------------------------------------------------------------------
-void CyclicArray::writeDataToFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void* pData)
+void CyclicArray::writeDataToFile(HANDLE fd, int64_t offset, unsigned int sizeInBytes, void* pData)
 {
     DWORD dwBytesWritten;
     LARGE_INTEGER liDistanceToMove;
@@ -69,7 +69,7 @@ void CyclicArray::writeDataToFile(HANDLE fd, long long offset, unsigned int size
     liDistanceToMove.QuadPart = offset;
 
     while (!SetFilePointerEx(fd, liDistanceToMove, nullptr, FILE_BEGIN))
-        cout << endl
+        cout << std::endl
              << "SetFilePointerEx  failed!";
 
     while (restingBytes > 0) {
@@ -77,10 +77,10 @@ void CyclicArray::writeDataToFile(HANDLE fd, long long offset, unsigned int size
             restingBytes -= dwBytesWritten;
             pData = (void*)(((unsigned char*)pData) + dwBytesWritten);
             if (restingBytes > 0)
-                cout << endl
+                cout << std::endl
                      << "Still " << restingBytes << " to write!";
         } else {
-            cout << endl
+            cout << std::endl
                  << "WriteFile Failed!";
         }
     }
@@ -90,7 +90,7 @@ void CyclicArray::writeDataToFile(HANDLE fd, long long offset, unsigned int size
 // readDataFromFile()
 // Reads 'sizeInBytes'-bytes from the position 'offset' of the file.
 //-----------------------------------------------------------------------------
-void CyclicArray::readDataFromFile(HANDLE fd, long long offset, unsigned int sizeInBytes, void* pData)
+void CyclicArray::readDataFromFile(HANDLE fd, int64_t offset, unsigned int sizeInBytes, void* pData)
 {
     DWORD dwBytesRead;
     LARGE_INTEGER liDistanceToMove;
@@ -99,7 +99,7 @@ void CyclicArray::readDataFromFile(HANDLE fd, long long offset, unsigned int siz
     liDistanceToMove.QuadPart = offset;
 
     while (!SetFilePointerEx(fd, liDistanceToMove, nullptr, FILE_BEGIN))
-        cout << endl
+        cout << std::endl
              << "SetFilePointerEx failed!";
 
     while (restingBytes > 0) {
@@ -107,10 +107,10 @@ void CyclicArray::readDataFromFile(HANDLE fd, long long offset, unsigned int siz
             restingBytes -= dwBytesRead;
             pData = (void*)(((unsigned char*)pData) + dwBytesRead);
             if (restingBytes > 0)
-                cout << endl
+                cout << std::endl
                      << "Still " << restingBytes << " to read!";
         } else {
-            cout << endl
+            cout << std::endl
                  << "ReadFile Failed!";
         }
     }
@@ -128,7 +128,6 @@ bool CyclicArray::addBytes(unsigned int numBytes, unsigned char* pData)
 
     // write each byte
     while (bytesWritten < numBytes) {
-
         // store byte in current reading block
         *curWritingPointer = *pData;
         curWritingPointer++;
@@ -137,7 +136,6 @@ bool CyclicArray::addBytes(unsigned int numBytes, unsigned char* pData)
 
         // when block is full then save current one to file and begin new one
         if (curWritingPointer == writingBlock + blockSize) {
-
             // copy data into reading block?
             if (curReadingBlock == curWritingBlock) {
                 memcpy(readingBlock, writingBlock, blockSize);
@@ -149,7 +147,7 @@ bool CyclicArray::addBytes(unsigned int numBytes, unsigned char* pData)
                 return false;
 
             // store bock in file
-            writeDataToFile(hFile, ((long long)blockSize) * ((long long)curWritingBlock), blockSize, writingBlock);
+            writeDataToFile(hFile, ((int64_t)blockSize) * ((int64_t)curWritingBlock), blockSize, writingBlock);
 
             // set pointer to beginning of writing block
             curWritingPointer = writingBlock;
@@ -188,7 +186,6 @@ bool CyclicArray::takeBytes(unsigned int numBytes, unsigned char* pData)
 
     // read each byte
     while (bytesRead < numBytes) {
-
         // was current reading byte already written ?
         if (curReadingBlock == curWritingBlock && curReadingPointer == curWritingPointer && readWriteInSameRound)
             return false;
@@ -214,7 +211,7 @@ bool CyclicArray::takeBytes(unsigned int numBytes, unsigned char* pData)
                 curReadingPointer = readingBlock;
 
                 // read whole block from file
-                readDataFromFile(hFile, ((long long)blockSize) * ((long long)curReadingBlock), blockSize, readingBlock);
+                readDataFromFile(hFile, ((int64_t)blockSize) * ((int64_t)curReadingBlock), blockSize, readingBlock);
             }
         }
     }
@@ -340,7 +337,7 @@ bool CyclicArray::saveFile(const char* fileName)
             pointer = curReadingPointer;
             bytesToWrite = blockSize - (unsigned int)(curReadingPointer - readingBlock);
         } else {
-            readDataFromFile(hFile, ((long long)curBlock) * ((long long)blockSize), blockSize, dataInFile);
+            readDataFromFile(hFile, ((int64_t)curBlock) * ((int64_t)blockSize), blockSize, dataInFile);
             pointer = dataInFile;
             bytesToWrite = blockSize;
         }
@@ -354,7 +351,6 @@ bool CyclicArray::saveFile(const char* fileName)
             break;
         else
             curBlock = (curBlock + 1) % numBlocks;
-
     } while (true);
 
     // everything ok

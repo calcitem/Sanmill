@@ -124,7 +124,7 @@ freeMem:
 //-----------------------------------------------------------------------------
 bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars& retroVars)
 {
-#ifndef __clang__ // TODO
+#ifndef __clang__ // TODO(calcitem)
     // locals
     unsigned int curLayerId; // current processed layer within 'layersToCalculate'
     unsigned int layerNumber; // layer number of the current process layer
@@ -333,7 +333,6 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars& retroVars)
 
         // else calculate number of succedding states
     } else {
-
         // Set default value 0
         for (curLayer = 0; curLayer < retroVars.layersToCalculate.size(); curLayer++) {
             numKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
@@ -371,7 +370,7 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars& retroVars)
 //-----------------------------------------------------------------------------
 bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars& retroVars)
 {
-#ifndef __clang__ // TODO
+#ifndef __clang__ // TODO(calcitem)
     // locals
     unsigned int curLayerId; // current processed layer within 'layersToCalculate'
     unsigned int layerNumber; // layer number of the current process layer
@@ -381,14 +380,12 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars& retroVars)
 
     // process each layer
     for (curLayerId = 0; curLayerId < retroVars.layersToCalculate.size(); curLayerId++) {
-
         // set current processed layer number
         layerNumber = retroVars.layersToCalculate[curLayerId];
         PRINT(0, this, "  *** Calculate number of succeeding states for each state of layer " << layerNumber << " ***");
 
         // process layer ...
         if (!succCalculated[layerNumber]) {
-
             // prepare parameters for multithreading
             succCalculated[layerNumber] = true;
             numStatesProcessed = 0;
@@ -419,7 +416,6 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars& retroVars)
 
         // ... and process succeeding layers
         for (curState.layerNumber = 0; curState.layerNumber < layerStats[layerNumber].numSuccLayers; curState.layerNumber++) {
-
             // get current pred. layer
             succState.layerNumber = layerStats[layerNumber].succLayers[curState.layerNumber];
 
@@ -626,8 +622,8 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void* pParameter)
     unsigned int amountOfPred; // total numbers of predecessors and current considered one
     unsigned int curPred;
     unsigned int threadCounter;
-    long long numStatesProcessed;
-    long long totalNumStatesToProcess;
+    int64_t numStatesProcessed;
+    int64_t totalNumStatesToProcess;
     PlyInfoVarType curNumPlies;
     PlyInfoVarType numPliesTillCurState;
     PlyInfoVarType numPliesTillPredState;
@@ -638,7 +634,6 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void* pParameter)
     RetroAnalysisPredVars predVars[MAX_NUM_PREDECESSORS];
 
     for (numStatesProcessed = 0, curNumPlies = 0; curNumPlies < threadVars->statesToProcess.size(); curNumPlies++) {
-
         // skip empty and uninitialized cyclic arrays
         if (threadVars->statesToProcess[curNumPlies] != nullptr) {
             if (threadNo == 0) {

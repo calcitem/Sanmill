@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef CONFIG_H_INCLUDED
-#define CONFIG_H_INCLUDED
+#ifndef INCLUDE_CONFIG_H_
+#define INCLUDE_CONFIG_H_
 
 #include "debug.h"
 
@@ -25,16 +25,16 @@
 
 /// If Qt is used and QT += GUI is included in the configuration, QT_GUI_LIB will be defined automatically.
 /// If Qt is not used, QT_GUI_LIB is defined by Visual C++ .vcxproj file.
-//#undef QT_GUI_LIB
+// #undef QT_GUI_LIB
 
 /// In UCI, do move when the opponent has done moving, usually for the test.
-//#define UCI_AUTO_RE_GO
+// #define UCI_AUTO_RE_GO
 
 /// In UCI, restart the game when the game is over, usually for the test.
-//#define UCI_AUTO_RESTART
+// #define UCI_AUTO_RESTART
 
 /// In UCI, AI will do the best move when the best move is searched.
-//#define UCI_DO_BEST_MOVE
+// #define UCI_DO_BEST_MOVE
 
 /// Print position analysis information.
 #define ANALYZE_POSITION
@@ -50,19 +50,19 @@
 #endif
 
 // Play via network (TODO(calcitem): Port to Qt 6)
-//#define NET_FIGHT_SUPPORT
+// #define NET_FIGHT_SUPPORT
 
 /// Qt simple GUI like a mobile app (WIP)
-//#define QT_MOBILE_APP_UI
+// #define QT_MOBILE_APP_UI
 
-//#define QT_UI_TEST_MODE
+// #define QT_UI_TEST_MODE
 
-//#define UCT_DEMO
+// #define UCT_DEMO
 
 #ifndef DISABLE_PERFECT_AI
 #ifdef _MSC_VER
 #ifndef __clang__
-//#define MADWEASEL_MUEHLE_PERFECT_AI
+// #define MADWEASEL_MUEHLE_PERFECT_AI
 #endif
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI
 #define MADWEASEL_MUEHLE_RULE
@@ -70,33 +70,33 @@
 #endif
 #endif
 
-//#define MADWEASEL_MUEHLE_PERFECT_AI_TEST
+// #define MADWEASEL_MUEHLE_PERFECT_AI_TEST
 
-//#define DEBUG_MODE
+// #define DEBUG_MODE
 
 #define DEFAULT_RULE_NUMBER 2
 
 #define DEPTH_ADJUST (0)
 
-//#define TIME_STAT
-//#define CYCLE_STAT
+// #define TIME_STAT
+// #define CYCLE_STAT
 
-//#define SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
+// #define SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
 
 #define TRANSPOSITION_TABLE_ENABLE
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #define CLEAR_TRANSPOSITION_TABLE
 #define TRANSPOSITION_TABLE_FAKE_CLEAN
-//#define TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
-//#define TRANSPOSITION_TABLE_64BIT_KEY
-//#define TT_MOVE_ENABLE
-//#define TRANSPOSITION_TABLE_DEBUG
+// #define TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
+// #define TRANSPOSITION_TABLE_64BIT_KEY
+// #define TT_MOVE_ENABLE
+// #define TRANSPOSITION_TABLE_DEBUG
 #endif
 
-//#define DISABLE_PREFETCH
+// #define DISABLE_PREFETCH
 
-//#define BITBOARD_DEBUG
+// #define BITBOARD_DEBUG
 #ifndef USE_POPCNT
 #define USE_POPCNT
 #endif
@@ -106,22 +106,22 @@
 #endif
 
 /// Opening book (WIP)
-//#define OPENING_BOOK
+// #define OPENING_BOOK
 
 /// Endgame learning (WIP)
-//#define ENDGAME_LEARNING
-//#define ENDGAME_LEARNING_FORCE
+// #define ENDGAME_LEARNING
+// #define ENDGAME_LEARNING_FORCE
 
 /// The game is drawn if there has been no removal in a specific number of moves.
 #define RULE_50
 
-//#define MESSAGE_BOX_ENABLE
+// #define MESSAGE_BOX_ENABLE
 
 #ifdef DEBUG_MODE
 #define DO_NOT_PLAY_SOUND
 #endif
 
-//#define DO_NOT_PLAY_SOUND
+// #define DO_NOT_PLAY_SOUND
 
 #ifdef DEBUG_MODE
 #define PLAYER_DRAW_SEAT_NUMBER
@@ -131,17 +131,17 @@
 #define SAVE_GAME_BOOK_WHEN_ACTION_NEW_TRIGGERED
 #endif
 
-//#define DO_NOT_PLAY_WIN_SOUND
+// #define DO_NOT_PLAY_WIN_SOUND
 
-//#define GAME_PLACING_SHOW_REMOVED_PIECES
+// #define GAME_PLACING_SHOW_REMOVED_PIECES
 
-//#define SHOW_MAXIMIZED_ON_LOAD
+// #define SHOW_MAXIMIZED_ON_LOAD
 
 #define DISABLE_HASHBUCKET
 
 #define HASHMAP_NOLOCK
 
-//#define ALIGNED_LARGE_PAGES
+// #define ALIGNED_LARGE_PAGES
 
 #ifndef __GNUC__
 #define __builtin_expect(expr, n) (expr)
@@ -156,6 +156,6 @@
 
 #ifdef FLUTTER_UI
 #include "base.h"
-#endif // FLUTTER_UI
+#endif  // FLUTTER_UI
 
-#endif // CONFIG_H_INCLUDED
+#endif  // INCLUDE_CONFIG_H_

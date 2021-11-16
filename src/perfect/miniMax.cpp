@@ -162,7 +162,6 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
 
         // calculate layer after layer, beginning with the last one
         for (curCalculatedLayer = 0; curCalculatedLayer < skvfHeader.numLayers; curCalculatedLayer++) {
-
             // layer already calculated?
             if (layerStats[curCalculatedLayer].layerIsCompletedAndInFile)
                 continue;
