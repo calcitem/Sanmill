@@ -131,7 +131,6 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
 
     // prepare the situation
     if (!m->setSituation(threadNo, layerNumber, stateNumber)) {
-
         // when situation cannot be constructed then state must be marked as invalid in database
         if (shortValueInDatabase != SKV_VALUE_INVALID || numPliesTillCurState != PLYINFO_VALUE_INVALID) {
             PRINT(0, m, "ERROR: DATABASE ERROR IN LAYER " << layerNumber << " AND STATE " << stateNumber << ": Could not set situation, but value is not invalid.");
@@ -153,7 +152,6 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
 
     // unable to move
     if (numPossibilities == 0) {
-
         // get ingame value
         m->getValueOfSituation(threadNo, floatValueInGame, shortValueInGame);
 
@@ -169,7 +167,6 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
     } else {
         // check each possible move
         for (i = 0; i < numPossibilities; i++) {
-
             // move
             m->move(threadNo, idPossibility[i], isOpponentLevel, &pBackup, pPossibilities);
 
@@ -190,7 +187,7 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
                 goto errorInDatabase;
             }
             // BUG: Does not work because, layer 101 is calculated before 105, although removing a stone does need this jump.
-            // if (!layerInDatabaseAndCompleted)										{ PRINT(0,m, "ERROR: DATABASE ERROR IN LAYER " << layerNumber << " AND STATE " << stateNumber << ": Succeeding state " << tmpStateNumber << " in an uncalculated layer " << tmpLayerNumber << "! Calc layer first!"); goto errorInDatabase; }
+            // if (!layerInDatabaseAndCompleted) { PRINT(0,m, "ERROR: DATABASE ERROR IN LAYER " << layerNumber << " AND STATE " << stateNumber << ": Succeeding state " << tmpStateNumber << " in an uncalculated layer " << tmpLayerNumber << "! Calc layer first!"); goto errorInDatabase; }
 
             // undo move
             m->undo(threadNo, idPossibility[i], isOpponentLevel, pBackup, pPossibilities);
@@ -237,7 +234,7 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
         case SKV_VALUE_GAME_WON:
             // at least one possible move must be lost for the opponent or won for the current player
             for (i = 0; i < numPossibilities; i++) {
-                // if (subValueInDatabase[i] == SKV_VALUE_INVALID)                                                      { PRINT(0,m, "DATABASE ERROR IN LAYER " << layerNumber << " AND STATE " << stateNumber << ": At least one possible move must be lost for the opponent or won for the current player. But subValueInDatabase[i] == SKV_VALUE_INVALID.");	goto errorInDatabase; }
+                // if (subValueInDatabase[i] == SKV_VALUE_INVALID) { PRINT(0,m, "DATABASE ERROR IN LAYER " << layerNumber << " AND STATE " << stateNumber << ": At least one possible move must be lost for the opponent or won for the current player. But subValueInDatabase[i] == SKV_VALUE_INVALID."); goto errorInDatabase; }
                 if (subValueInDatabase[i] == ((hasCurPlayerChanged[i]) ? SKV_VALUE_GAME_LOST : SKV_VALUE_GAME_WON))
                     i = numPossibilities;
             }
@@ -467,7 +464,6 @@ DWORD MiniMax::testSetSituationThreadProc(void* pParameter, unsigned int index)
 
         // check each possibility
         for (curPoss = 0; curPoss < knot.numPossibilities; curPoss++) {
-
             // move
             m->move(tlVars->curThreadNo, idPossibility[curPoss], knot.isOpponentLevel, &pBackup, pPossibilities);
 
@@ -544,7 +540,6 @@ bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
 
         // prepare the situation
         if (!setSituation(threadNo, layerNumber, stateNumber)) {
-
             // when situation cannot be constructed then state must be marked as invalid in database
             if (shortValueInDatabase != SKV_VALUE_INVALID || numPliesTillCurState != PLYINFO_VALUE_INVALID)
                 goto errorInDatabase;
@@ -561,7 +556,6 @@ bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
             readPlyInfoFromDatabase(layerNumber, symStateNumbers[i], numPliesTillSymState);
 
             if (shortValueOfSymState != shortValueInDatabase || numPliesTillCurState != numPliesTillSymState) {
-
                 PRINT(2, this, "current tested state " << stateNumber << " has value " << (int)shortValueInDatabase);
                 setSituation(threadNo, layerNumber, stateNumber);
                 printBoard(threadNo, shortValueInDatabase);

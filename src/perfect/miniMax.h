@@ -30,7 +30,7 @@
 
 #pragma intrinsic(_rotl8, _rotr8) // for shifting bits
 
-using namespace std; // use standard library namespace
+using std::iostream; // use standard library namespace
 
 /*** Wiki ***************************************************************************************************************************
 player:
@@ -72,7 +72,7 @@ database:				The database contains the arrays with the short knot values and the
 #define MAX_NUM_PREDECESSORS 10000 // maximum number of predecessors. important for array sizes
 #define FILE_BUFFER_SIZE 1000000 // size in bytes
 
-#define PL_TO_MOVE_CHANGED 1 // player to move changed			- second index of the 2D-array skvPerspectiveMatrix[][]
+#define PL_TO_MOVE_CHANGED 1 // player to move changed - second index of the 2D-array skvPerspectiveMatrix[][]
 #define PL_TO_MOVE_UNCHANGED 0 // player to move is still the same - second index of the 2D-array skvPerspectiveMatrix[][]
 
 #define MEASURE_TIME_FREQUENCY 100000 // for io operations per second: measure time every n-th operations
@@ -152,18 +152,18 @@ public:
     {
         bool plyInfoIsLoaded; // the array plyInfo[] exists in memory. does not necessary mean that it contains only valid values
         bool plyInfoIsCompletedAndInFile; // the array plyInfo[] contains only fully calculated valid values
-        long long layerOffset; // position of this struct in the ply info file
+        int64_t layerOffset; // position of this struct in the ply info file
         unsigned int sizeInBytes; // size of this struct plus the array plyInfo[]
         StateNumberVarType knotsInLayer; // number of knots of the corresponding layer
         PlyInfoVarType* plyInfo; // array of size [knotsInLayer] containing the ply info for each knot in this layer
-        // compressorClass::compressedArrayClass *	plyInfoCompressed;		// compressed array containing the ply info for each knot in this layer
+        // compressorClass::compressedArrayClass* plyInfoCompressed; // compressed array containing the ply info for each knot in this layer
         void* plyInfoCompressed; // dummy pointer for padding
     };
 
     struct LayerStats {
         bool layerIsLoaded; // the array shortKnotValueByte[] exists in memory. does not necessary mean that it contains only valid values
         bool layerIsCompletedAndInFile; // the array shortKnotValueByte[] contains only fully calculated valid values
-        long long layerOffset; // position of this struct in the short knot value file
+        int64_t layerOffset; // position of this struct in the short knot value file
         unsigned int numSuccLayers; // number of succeeding layers. states of other layers are connected by a move of a player
         unsigned int succLayers[MAX_NUM_PRED_LAYERS]; // array containing the layer ids of the succeeding layers
         unsigned int partnerLayer; // layer id relevant when switching current and opponent player
@@ -174,7 +174,7 @@ public:
         StateNumberVarType numInvalidStates; // number of invalid states in this layer
         unsigned int sizeInBytes; // (knotsInLayer + 3) / 4
         TwoBit* shortKnotValueByte; // array of size [sizeInBytes] containing the short knot values
-        //compressorClass::compressedArrayClass *	skvCompressed;			// compressed array containing the short knot values
+        //compressorClass::compressedArrayClass* skvCompressed; // compressed array containing the short knot values
         void* skvCompressed; // dummy pointer for padding
     };
 
@@ -203,8 +203,8 @@ public:
 
     struct ArrayInfo {
         unsigned int type; //
-        long long sizeInBytes; //
-        long long compressedSizeInBytes; //
+        int64_t sizeInBytes; //
+        int64_t compressedSizeInBytes; //
         unsigned int belongsToLayer; //
         unsigned int updateCounter;
 
@@ -229,8 +229,8 @@ public:
         list<ArrayInfo> listArrays; // [itemIndex]
         vector<list<ArrayInfo>::iterator> vectorArrays; // [layerNumber*ArrayInfo::numArrayTypes + type]
 
-        void addArray(unsigned int layerNumber, unsigned int type, long long size, long long compressedSize);
-        void removeArray(unsigned int layerNumber, unsigned int type, long long size, long long compressedSize);
+        void addArray(unsigned int layerNumber, unsigned int type, int64_t size, int64_t compressedSize);
+        void removeArray(unsigned int layerNumber, unsigned int type, int64_t size, int64_t compressedSize);
         void updateArray(unsigned int layerNumber, unsigned int type);
     };
 
@@ -257,7 +257,7 @@ public:
     StateNumberVarType getNumDrawnStates(unsigned int layerNum);
     StateNumberVarType getNumInvalidStates(unsigned int layerNum);
     bool isLayerInDatabase(unsigned int layerNum);
-    long long getLayerSizeInBytes(unsigned int layerNum);
+    int64_t getLayerSizeInBytes(unsigned int layerNum);
     void setOutputStream(ostream* theStream, void (*printFunc)(void* pUserData), void* pUserData);
     bool anyArrayInfoToUpdate();
     ArrayInfoChange getArrayInfoForUpdate();
@@ -281,8 +281,8 @@ public:
     // Virtual Functions
     virtual void prepareBestChoiceCalculation()
     {
-        while (true)
-            ;
+        while (true) {
+        }
     }; // is called once before building the tree
 
     virtual unsigned int* getPossibilities(unsigned int threadNo,
@@ -290,15 +290,15 @@ public:
         bool* opponentsMove,
         void** pPossibilities)
     {
-        while (true)
-            ;
+        while (true) {
+        }
         return 0;
     }; // returns a pointer to the possibility-IDs
 
     virtual void deletePossibilities(unsigned int threadNo, void* pPossibilities)
     {
-        while (true)
-            ;
+        while (true) {
+        }
     };
 
     virtual void storeValueOfMove(unsigned int threadNo,
@@ -306,7 +306,7 @@ public:
         void* pPossibilities,
         TwoBit value,
         unsigned int* freqValuesSubMoves,
-        PlyInfoVarType plyInfo) {};
+        PlyInfoVarType plyInfo) {}
 
     virtual void move(unsigned int threadNo,
         unsigned int idPossibility,
@@ -314,8 +314,8 @@ public:
         void** pBackup,
         void* pPossibilities)
     {
-        while (true)
-            ;
+        while (true) {
+        }
     };
 
     virtual void undo(unsigned int threadNo,
@@ -324,8 +324,8 @@ public:
         void* pBackup,
         void* pPossibilities)
     {
-        while (true)
-            ;
+        while (true) {
+        }
     };
 
     virtual bool shallRetroAnalysisBeUsed(unsigned int layerNum)
@@ -335,61 +335,61 @@ public:
 
     virtual unsigned int getNumberOfLayers()
     {
-        while (true)
-            ;
+        while (true) {
+        }
         return 0;
     };
 
     virtual unsigned int getNumberOfKnotsInLayer(unsigned int layerNum)
     {
-        while (true)
-            ;
+        while (true) {
+        }
         return 0;
     };
 
     virtual void getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers, unsigned int* succLayers)
     {
-        while (true)
-            ;
+        while (true) {
+        }
     };
 
     virtual unsigned int getPartnerLayer(unsigned int layerNum)
     {
-        while (true)
-            ;
+        while (true) {
+        }
         return 0;
     };
 
     virtual string getOutputInformation(unsigned int layerNum)
     {
-        while (true)
-            ;
+        while (true) {
+        }
         return string("");
     };
 
     virtual void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel)
     {
-        while (true)
-            ;
+        while (true) {
+        }
     };
 
     virtual bool setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber)
     {
-        while (true)
-            ;
+        while (true) {
+        }
         return false;
     };
 
     virtual void getValueOfSituation(unsigned int threadNo, float& floatValue, TwoBit& shortValue)
     {
-        while (true)
-            ;
+        while (true) {
+        }
     }; // value of situation for the initial current player
 
     virtual bool getOpponentLevel(unsigned int threadNo)
     {
-        while (true)
-            ;
+        while (true) {
+        }
         return false;
     };
 
@@ -397,14 +397,14 @@ public:
         unsigned int& layerNum,
         unsigned int& stateNumber)
     {
-        while (true)
-            ;
+        while (true) {
+        }
         return 0;
     };
     virtual unsigned int getLayerNumber(unsigned int threadNo)
     {
-        while (true)
-            ;
+        while (true) {
+        }
         return 0;
     };
 
@@ -412,38 +412,38 @@ public:
         unsigned int* numSymmetricStates,
         unsigned int** symStateNumbers)
     {
-        while (true)
-            ;
+        while (true) {
+        }
     };
 
     virtual void getPredecessors(unsigned int threadNo, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars)
     {
-        while (true)
-            ;
+        while (true) {
+        }
     };
 
     virtual void printBoard(unsigned int threadNo, unsigned char value)
     {
-        while (true)
-            ;
+        while (true) {
+        }
     };
 
     virtual void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities)
     {
-        while (true)
-            ;
+        while (true) {
+        }
     };
 
     virtual void prepareDatabaseCalculation()
     {
-        while (true)
-            ;
+        while (true) {
+        }
     };
 
     virtual void wrapUpDatabaseCalculation(bool calculationAborted)
     {
-        while (true)
-            ;
+        while (true) {
+        }
     };
 
 private:
@@ -463,15 +463,15 @@ private:
 
     struct AlphaBetaThreadVars // thread specific variables for each thread in the alpha beta algorithm
     {
-        long long numStatesToProcess; // Number of states in 'statesToProcess' which have to be processed
+        int64_t numStatesToProcess; // Number of states in 'statesToProcess' which have to be processed
         unsigned int threadNo;
     };
 
     struct AlphaBetaGlobalVars // constant during calculation
     {
         unsigned int layerNumber; // layer number of the current process layer
-        long long totalNumKnots; // total numbers of knots which have to be stored in memory
-        long long numKnotsToCalc; // number of knots of all layers to be calculated
+        int64_t totalNumKnots; // total numbers of knots which have to be stored in memory
+        int64_t numKnotsToCalc; // number of knots of all layers to be calculated
         vector<AlphaBetaThreadVars> thread;
         unsigned int statsValueCounter[SKV_NUM_VALUES];
         MiniMax* pMiniMax;
@@ -503,7 +503,7 @@ private:
         LONGLONG statesProcessed;
         unsigned int statsValueCounter[SKV_NUM_VALUES];
 
-        AlphaBetaDefaultThreadVars() {};
+        AlphaBetaDefaultThreadVars() {}
 
         AlphaBetaDefaultThreadVars(MiniMax* pMiniMax, AlphaBetaGlobalVars* alphaBetaVars, unsigned int layerNumber)
         {
@@ -529,7 +529,7 @@ private:
         BufferedFile* bufferedFile;
         bool initAlreadyDone;
 
-        InitAlphaBetaVars() {};
+        InitAlphaBetaVars() {}
 
         InitAlphaBetaVars(MiniMax* pMiniMax,
             AlphaBetaGlobalVars* alphaBetaVars,
@@ -558,7 +558,7 @@ private:
         unsigned int* freqValuesSubMovesBranchWon = nullptr; // ...
         unsigned int freqValuesSubMoves[4]; // ...
 
-        RunAlphaBetaVars() {};
+        RunAlphaBetaVars() {}
 
         RunAlphaBetaVars(MiniMax* pMiniMax,
             AlphaBetaGlobalVars* alphaBetaVars,
@@ -598,7 +598,7 @@ private:
     {
         vector<CyclicArray*> statesToProcess; // vector-queue containing the states, whose short knot value are known for sure. they have to be processed. if processed the state will be removed from list. indexing: [threadNo][plyNumber]
         vector<vector<RetroAnalysisQueueState>> stateQueue; // Queue containing states, whose 'count value' shall be increased by one. Before writing 'count value' to 'count array' the writing positions are sorted for faster processing.
-        long long numStatesToProcess; // Number of states in 'statesToProcess' which have to be processed
+        int64_t numStatesToProcess; // Number of states in 'statesToProcess' which have to be processed
         unsigned int threadNo;
     };
 
@@ -607,8 +607,8 @@ private:
         vector<CountArrayVarType*> countArrays; // One count array for each layer in 'layersToCalculate'. (For the nine men's morris game two layers have to considered at once.)
         vector<bool> layerInitialized; //
         vector<unsigned int> layersToCalculate; // layers which shall be calculated
-        long long totalNumKnots; // total numbers of knots which have to be stored in memory
-        long long numKnotsToCalc; // number of knots of all layers to be calculated
+        int64_t totalNumKnots; // total numbers of knots which have to be stored in memory
+        int64_t numKnotsToCalc; // number of knots of all layers to be calculated
         vector<RetroAnalysisThreadVars> thread;
         unsigned int statsValueCounter[SKV_NUM_VALUES];
         MiniMax* pMiniMax;
@@ -621,7 +621,7 @@ private:
         LONGLONG statesProcessed;
         unsigned int statsValueCounter[SKV_NUM_VALUES];
 
-        RetroAnalysisDefaultThreadVars() {};
+        RetroAnalysisDefaultThreadVars() {}
 
         RetroAnalysisDefaultThreadVars(MiniMax* pMiniMax, retroAnalysisGlobalVars* retroVars, unsigned int layerNumber)
         {
@@ -647,7 +647,7 @@ private:
         BufferedFile* bufferedFile;
         bool initAlreadyDone;
 
-        InitRetroAnalysisVars() {};
+        InitRetroAnalysisVars() {}
 
         InitRetroAnalysisVars(MiniMax* pMiniMax,
             retroAnalysisGlobalVars* retroVars,
@@ -674,12 +674,14 @@ private:
     struct AddNumSucceedersVars : public ThreadManager::ThreadVarsArrayItem, public RetroAnalysisDefaultThreadVars {
         RetroAnalysisPredVars predVars[MAX_NUM_PREDECESSORS];
 
-        AddNumSucceedersVars() {};
+        AddNumSucceedersVars() {}
 
         AddNumSucceedersVars(MiniMax* pMiniMax,
             retroAnalysisGlobalVars* retroVars,
             unsigned int layerNumber)
-            : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber) {};
+            : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
+        {
+        }
 
         void initializeElement(AddNumSucceedersVars& master)
         {
@@ -728,14 +730,14 @@ private:
     PlyInfo* plyInfos = nullptr; // array of size [] containing ply information
 
     // variables concerning the compression of the database
-    // compressorClass		*	compressor						= nullptr;
-    // unsigned int			compressionAlgorithmnId			= 0;			// 0 or one of the COMPRESSOR_ALG_... constants
+    // compressorClass* compressor = nullptr;
+    // unsigned int compressionAlgorithmnId = 0; // 0 or one of the COMPRESSOR_ALG_... constants
 
     // database I/O operations per second
-    long long numReadSkvOperations = 0; // number of read operations done since start of the program
-    long long numWriteSkvOperations = 0; // number of write operations done since start of the program
-    long long numReadPlyOperations = 0; // number of read operations done since start of the program
-    long long numWritePlyOperations = 0; // number of write operations done since start of the program
+    int64_t numReadSkvOperations = 0; // number of read operations done since start of the program
+    int64_t numWriteSkvOperations = 0; // number of write operations done since start of the program
+    int64_t numReadPlyOperations = 0; // number of read operations done since start of the program
+    int64_t numWritePlyOperations = 0; // number of write operations done since start of the program
     LARGE_INTEGER readSkvInterval; // time of interval for read operations
     LARGE_INTEGER writeSkvInterval; //  ''
     LARGE_INTEGER readPlyInterval; //  ''
@@ -762,10 +764,10 @@ private:
     void readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int stateNumber, PlyInfoVarType& value);
     void saveKnotValueInDatabase(unsigned int layerNumber, unsigned int stateNumber, TwoBit knotValue);
     void savePlyInfoInDatabase(unsigned int layerNumber, unsigned int stateNumber, PlyInfoVarType value);
-    void loadBytesFromFile(HANDLE hFile, long long offset, unsigned int numBytes, void* pBytes);
-    void saveBytesToFile(HANDLE hFile, long long offset, unsigned int numBytes, void* pBytes);
+    void loadBytesFromFile(HANDLE hFile, int64_t offset, unsigned int numBytes, void* pBytes);
+    void saveBytesToFile(HANDLE hFile, int64_t offset, unsigned int numBytes, void* pBytes);
     void saveLayerToFile(unsigned int layerNumber);
-    inline void measureIops(long long& numOperations, LARGE_INTEGER& interval, LARGE_INTEGER& curTimeBefore, char text[]);
+    inline void measureIops(int64_t& numOperations, LARGE_INTEGER& interval, LARGE_INTEGER& curTimeBefore, char text[]);
 
     // Testing functions
     static DWORD testLayerThreadProc(void* pParameter, unsigned int index);

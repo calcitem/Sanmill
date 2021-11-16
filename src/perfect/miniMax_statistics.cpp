@@ -56,11 +56,11 @@ bool MiniMax::isLayerInDatabase(unsigned int layerNum)
 // getLayerSizeInBytes()
 //
 //-----------------------------------------------------------------------------
-long long MiniMax::getLayerSizeInBytes(unsigned int layerNum)
+int64_t MiniMax::getLayerSizeInBytes(unsigned int layerNum)
 {
     if (plyInfos == nullptr || layerStats == nullptr)
         return 0;
-    return (long long)layerStats[layerNum].sizeInBytes + (long long)plyInfos[layerNum].sizeInBytes;
+    return (int64_t)layerStats[layerNum].sizeInBytes + (int64_t)plyInfos[layerNum].sizeInBytes;
 }
 
 //-----------------------------------------------------------------------------
@@ -227,7 +227,6 @@ bool MiniMax::calcLayerStatistics(char* statisticsFileName)
 
     // calc and show statistics
     for (layerInDatabase = false, curState.layerNumber = 0; curState.layerNumber < skvfHeader.numLayers; curState.layerNumber++) {
-
         // status output
         PRINT(0, this, "Calculating statistics of layer: " << (int)curState.layerNumber);
 
@@ -240,7 +239,6 @@ bool MiniMax::calcLayerStatistics(char* statisticsFileName)
         // only calc stats of completed layers
         if (layerStats[curState.layerNumber].layerIsCompletedAndInFile) {
             for (curState.stateNumber = 0; curState.stateNumber < layerStats[curState.layerNumber].knotsInLayer; curState.stateNumber++) {
-
                 // get state value
                 readKnotValueFromDatabase(curState.layerNumber, curState.stateNumber, curStateValue);
                 statsValueCounter[4 * curState.layerNumber + curStateValue]++;
@@ -344,7 +342,7 @@ void MiniMax::getCurrentCalculatedLayer(vector<unsigned int>& layers)
 // Caution: layerNumber and type must be a unique pair!
 //       called by single CALCULATION-thread
 //-----------------------------------------------------------------------------
-void MiniMax::ArrayInfoContainer::addArray(unsigned int layerNumber, unsigned int type, long long size, long long compressedSize)
+void MiniMax::ArrayInfoContainer::addArray(unsigned int layerNumber, unsigned int type, int64_t size, int64_t compressedSize)
 {
     // create new info object and add to list
     EnterCriticalSection(&c->csOsPrint);
@@ -378,7 +376,7 @@ void MiniMax::ArrayInfoContainer::addArray(unsigned int layerNumber, unsigned in
 // ArrayInfoContainer::removeArray()
 // called by single CALCULATION-thread
 //-----------------------------------------------------------------------------
-void MiniMax::ArrayInfoContainer::removeArray(unsigned int layerNumber, unsigned int type, long long size, long long compressedSize)
+void MiniMax::ArrayInfoContainer::removeArray(unsigned int layerNumber, unsigned int type, int64_t size, int64_t compressedSize)
 {
     // find info object in list
     EnterCriticalSection(&c->csOsPrint);
@@ -386,7 +384,6 @@ void MiniMax::ArrayInfoContainer::removeArray(unsigned int layerNumber, unsigned
     if (vectorArrays.size() > layerNumber * ArrayInfo::numArrayTypes + type) {
         list<ArrayInfo>::iterator itr = vectorArrays[layerNumber * ArrayInfo::numArrayTypes + type];
         if (itr != listArrays.end()) {
-
             // does sizes fit?
             if (itr->belongsToLayer != layerNumber || itr->type != type || itr->sizeInBytes != size || itr->compressedSizeInBytes != compressedSize) {
                 c->falseOrStop();
@@ -422,7 +419,6 @@ void MiniMax::ArrayInfoContainer::updateArray(unsigned int layerNumber, unsigned
 
     itr->updateCounter++;
     if (itr->updateCounter > ArrayInfo::updateCounterThreshold) {
-
         // notify change
         EnterCriticalSection(&c->csOsPrint);
 

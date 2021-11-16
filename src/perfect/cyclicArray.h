@@ -13,16 +13,17 @@
 #include <string>
 #include <windows.h>
 
-using namespace std;
+using std::cout;
+using std::string;
 
 class CyclicArray {
 private:
     // Variables
     HANDLE hFile; // Handle of the file
     unsigned char* readingBlock; // Array of size [blockSize] containing the data of the block, where reading is taking place
-    unsigned char* writingBlock; //			''
+    unsigned char* writingBlock; // ''
     unsigned char* curReadingPointer; // pointer to the byte which is currently read
-    unsigned char* curWritingPointer; //			''
+    unsigned char* curWritingPointer; // ''
     unsigned int blockSize; // size in bytes of a block
     unsigned int curReadingBlock; // index of the block, where reading is taking place
     unsigned int curWritingBlock; // index of the block, where writing is taking place
@@ -30,8 +31,8 @@ private:
     bool readWriteInSameRound; // true if curReadingBlock > curWritingBlock, false otherwise
 
     // Functions
-    void writeDataToFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void* pData);
-    void readDataFromFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void* pData);
+    void writeDataToFile(HANDLE hFile, int64_t offset, unsigned int sizeInBytes, void* pData);
+    void readDataFromFile(HANDLE hFile, int64_t offset, unsigned int sizeInBytes, void* pData);
 
 public:
     // Constructor / destructor

@@ -1,3 +1,11 @@
+/*********************************************************************\
+    PerfectAI.h
+    Copyright (c) Thomas Weber. All rights reserved.
+    Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
+    Licensed under the GPLv3 License.
+    https://github.com/madweasel/Muehle
+\*********************************************************************/
+
 #include "config.h"
 
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI
@@ -13,7 +21,7 @@
 
 #include "rule.h"
 
-using namespace std;
+using std::iostream;
 
 extern Mill* mill;
 extern PerfectAI* ai;
@@ -74,7 +82,6 @@ int perfect_main(void)
         ai->testLayers(startTestFromLayer, endTestAtLayer);
 
     } else {
-
 #ifdef SELF_PLAY
         int moveCount = 0;
 #else
@@ -112,7 +119,6 @@ int perfect_main(void)
 
             // Human
             if ((mill->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman) || (mill->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)) {
-
                 do {
                     // Show text
                     if (mill->mustStoneBeRemoved())
@@ -151,7 +157,6 @@ int perfect_main(void)
                         // reprint board
                         break;
                     }
-
                 } while (mill->doMove(from, to) == false);
 
                 // Computer
@@ -159,7 +164,6 @@ int perfect_main(void)
                 cout << "\n";
                 mill->doMove(from, to);
             }
-
         } while (mill->getWinner() == 0);
 
         // end

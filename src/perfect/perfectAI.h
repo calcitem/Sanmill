@@ -184,7 +184,7 @@ protected:
     // database functions
     unsigned int getNumberOfLayers();
     unsigned int getNumberOfKnotsInLayer(unsigned int layerNum);
-    long long mOverN_Function(unsigned int m, unsigned int n);
+    int64_t mOverN_Function(unsigned int m, unsigned int n);
     void applySymmetryOperationOnField(unsigned char symmetryOperationNumber, unsigned int* sourceField, unsigned int* destField);
     bool isSymOperationInvariantOnGroupCD(unsigned int symmetryOperation, int* theField);
     bool shallRetroAnalysisBeUsed(unsigned int layerNum);
@@ -219,7 +219,7 @@ protected:
 
 public:
     // Constructor / destructor
-    PerfectAI(const char* directory);
+    explicit PerfectAI(const char* directory);
     ~PerfectAI();
 
     // Functions

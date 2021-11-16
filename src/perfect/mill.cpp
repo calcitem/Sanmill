@@ -129,7 +129,6 @@ void Mill::setUpCalcPossibleMoves(Player* player)
 
     for (player->numPossibleMoves = 0, i = 0; i < fieldStruct::size; i++) {
         for (j = 0; j < fieldStruct::size; j++) {
-
             // is stone from player ?
             if (field.board[i] != player->id)
                 continue;
@@ -140,7 +139,6 @@ void Mill::setUpCalcPossibleMoves(Player* player)
 
             // when current player has only 3 stones he is allowed to spring his stone
             if (player->numStones > 3 || field.settingPhase) {
-
                 // determine moving direction
                 for (k = 0, movingDirection = 4; k < 4; k++)
                     if (field.connectedSquare[i][k] == j)
@@ -168,7 +166,6 @@ void Mill::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbou
 
     // mill closed ?
     if (rowOwner != field.squareIsFree && field.board[firstNeighbour] == rowOwner && field.board[secondNeighbour] == rowOwner) {
-
         field.stonePartOfMill[stone]++;
         field.stonePartOfMill[firstNeighbour]++;
         field.stonePartOfMill[secondNeighbour]++;
@@ -434,7 +431,6 @@ bool Mill::isNormalMovePossible(unsigned int from, unsigned int to, Player* play
 
     // when current player has only 3 stones he is allowed to spring his stone
     if (player->numStones > 3 || field.settingPhase) {
-
         // determine moving direction
         for (i = 0, movingDirection = 4; i < 4; i++)
             if (field.connectedSquare[from][i] == to)
@@ -501,7 +497,6 @@ void Mill::setWarningAndMill(unsigned int stone,
 
     // mill closed ?
     if (rowOwner != field.squareIsFree && field.board[firstNeighbour] == rowOwner && field.board[secondNeighbour] == rowOwner) {
-
         field.stonePartOfMill[stone]++;
         field.stonePartOfMill[firstNeighbour]++;
         field.stonePartOfMill[secondNeighbour]++;
@@ -538,7 +533,6 @@ void Mill::updateMillsAndWarnings(unsigned int newStone)
 
     // go in every direction
     for (i = 0; i < field.size; i++) {
-
         setWarningAndMill(i, field.neighbour[i][0][0], field.neighbour[i][0][1], i == newStone);
         setWarningAndMill(i, field.neighbour[i][1][0], field.neighbour[i][1][1], i == newStone);
     }
@@ -571,7 +565,6 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
 
     // handle the remove of a stone
     if (field.stoneMustBeRemoved) {
-
         // parameter ok ?
         if (pushFrom >= field.size)
             return false;
@@ -617,7 +610,6 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
 
         // handle setting phase
     } else if (field.settingPhase) {
-
         // parameter ok ?
         if (pushTo >= field.size)
             return false;
@@ -658,7 +650,6 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
 
         // normal move
     } else {
-
         // is move possible ?
         if (!isNormalMovePossible(pushFrom, pushTo, field.curPlayer))
             return false;
@@ -723,49 +714,49 @@ bool Mill::compareWithField(fieldStruct* compareField)
     bool ret = true;
 
     if (!comparePlayers(field.curPlayer, compareField->curPlayer)) {
-        cout << "error - curPlayer differs!" << endl;
+        cout << "error - curPlayer differs!" << std::endl;
         ret = false;
     }
 
     if (!comparePlayers(field.oppPlayer, compareField->oppPlayer)) {
-        cout << "error - oppPlayer differs!" << endl;
+        cout << "error - oppPlayer differs!" << std::endl;
         ret = false;
     }
 
     if (field.stonesSet != compareField->stonesSet) {
-        cout << "error - stonesSet differs!" << endl;
+        cout << "error - stonesSet differs!" << std::endl;
         ret = false;
     }
 
     if (field.settingPhase != compareField->settingPhase) {
-        cout << "error - settingPhase differs!" << endl;
+        cout << "error - settingPhase differs!" << std::endl;
         ret = false;
     }
 
     if (field.stoneMustBeRemoved != compareField->stoneMustBeRemoved) {
-        cout << "error - stoneMustBeRemoved differs!" << endl;
+        cout << "error - stoneMustBeRemoved differs!" << std::endl;
         ret = false;
     }
 
     for (i = 0; i < field.size; i++) {
         if (field.board[i] != compareField->board[i]) {
-            cout << "error - board[] differs!" << endl;
+            cout << "error - board[] differs!" << std::endl;
             ret = false;
         }
 
         if (field.warnings[i] != compareField->warnings[i]) {
-            cout << "error - warnings[] differs!" << endl;
+            cout << "error - warnings[] differs!" << std::endl;
             ret = false;
         }
 
         if (field.stonePartOfMill[i] != compareField->stonePartOfMill[i]) {
-            cout << "error - stonePart[] differs!" << endl;
+            cout << "error - stonePart[] differs!" << std::endl;
             ret = false;
         }
 
         for (j = 0; j < 4; j++) {
             if (field.connectedSquare[i][j] != compareField->connectedSquare[i][j]) {
-                cout << "error - connectedSquare[] differs!" << endl;
+                cout << "error - connectedSquare[] differs!" << std::endl;
                 ret = false;
             }
 
@@ -773,7 +764,7 @@ bool Mill::compareWithField(fieldStruct* compareField)
             //     { cout << "error - stoneMoveAble differs!" << endl; ret = false; }
 
             if (field.neighbour[i][j / 2][j % 2] != compareField->neighbour[i][j / 2][j % 2]) {
-                cout << "error - neighbour differs!" << endl;
+                cout << "error - neighbour differs!" << std::endl;
                 ret = false;
             }
         }
@@ -788,36 +779,36 @@ bool Mill::compareWithField(fieldStruct* compareField)
 //-----------------------------------------------------------------------------
 bool Mill::comparePlayers(Player* playerA, Player* playerB)
 {
-    //	unsigned int i;
+    // unsigned int i;
     bool ret = true;
 
     if (playerA->numStonesMissing != playerB->numStonesMissing) {
-        cout << "error - numStonesMissing differs!" << endl;
+        cout << "error - numStonesMissing differs!" << std::endl;
         ret = false;
     }
 
     if (playerA->numStones != playerB->numStones) {
-        cout << "error - numStones differs!" << endl;
+        cout << "error - numStones differs!" << std::endl;
         ret = false;
     }
 
     if (playerA->id != playerB->id) {
-        cout << "error - id differs!" << endl;
+        cout << "error - id differs!" << std::endl;
         ret = false;
     }
 
     if (playerA->warning != playerB->warning) {
-        cout << "error - warning differs!" << endl;
+        cout << "error - warning differs!" << std::endl;
         ret = false;
     }
 
     if (playerA->numPossibleMoves != playerB->numPossibleMoves) {
-        cout << "error - numPossibleMoves differs!" << endl;
+        cout << "error - numPossibleMoves differs!" << std::endl;
         ret = false;
     }
 
-    //	for (i=0; i<MAX_NUM_POS_MOVES; i++) if (playerA->posFrom[i]	= playerB->posFrom[i]) return false;
-    //	for (i=0; i<MAX_NUM_POS_MOVES; i++) if (playerA->posTo  [i]	= playerB->posTo  [i]) return false;
+    // for (i = 0; i < MAX_NUM_POS_MOVES; i++) if (playerA->posFrom[i] = playerB->posFrom[i]) return false;
+    // for (i = 0; i < MAX_NUM_POS_MOVES; i++) if (playerA->posTo[i] = playerB->posTo[i]) return false;
 
     return ret;
 }
@@ -846,7 +837,6 @@ void Mill::undoMove(void)
 
     // at least one move must be done
     if (movesDone) {
-
         // make backup of log
         for (i = 0; i < movesDone; i++) {
             moveLogFrom_bak[i] = moveLogFrom[i];

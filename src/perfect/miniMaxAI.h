@@ -88,7 +88,7 @@ protected:
         return 0;
     };
 
-    void getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers, unsigned int* succLayers) {};
+    void getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers, unsigned int* succLayers) {}
 
     unsigned int getPartnerLayer(unsigned int layerNum)
     {
@@ -100,7 +100,7 @@ protected:
         return string("");
     };
 
-    void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel) {};
+    void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel) {}
 
     bool setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber)
     {
@@ -122,15 +122,15 @@ protected:
         return 0;
     };
 
-    void getSymStateNumWithDoubles(unsigned int threadNo, unsigned int* numSymmetricStates, unsigned int** symStateNumbers) {};
+    void getSymStateNumWithDoubles(unsigned int threadNo, unsigned int* numSymmetricStates, unsigned int** symStateNumbers) {}
 
-    void getPredecessors(unsigned int threadNo, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars) {};
+    void getPredecessors(unsigned int threadNo, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars) {}
 
-    void printBoard(unsigned int threadNo, unsigned char value) {};
+    void printBoard(unsigned int threadNo, unsigned char value) {}
 
-    void prepareDatabaseCalculation() {};
+    void prepareDatabaseCalculation() {}
 
-    void wrapUpDatabaseCalculation(bool calculationAborted) {};
+    void wrapUpDatabaseCalculation(bool calculationAborted) {}
 
 public:
     // Constructor / destructor

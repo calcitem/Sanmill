@@ -90,7 +90,7 @@ void MiniMax::unloadAllLayers()
 // saveBytesToFile()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::saveBytesToFile(HANDLE hFile, long long offset, unsigned int numBytes, void* pBytes)
+void MiniMax::saveBytesToFile(HANDLE hFile, int64_t offset, unsigned int numBytes, void* pBytes)
 {
     DWORD dwBytesWritten;
     LARGE_INTEGER liDistanceToMove;
@@ -123,7 +123,7 @@ void MiniMax::saveBytesToFile(HANDLE hFile, long long offset, unsigned int numBy
 // loadBytesFromFile()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::loadBytesFromFile(HANDLE hFile, long long offset, unsigned int numBytes, void* pBytes)
+void MiniMax::loadBytesFromFile(HANDLE hFile, int64_t offset, unsigned int numBytes, void* pBytes)
 {
     DWORD dwBytesRead;
     LARGE_INTEGER liDistanceToMove;
@@ -247,7 +247,6 @@ void MiniMax::openSkvFile(const char* directory, unsigned int maximumNumberOfBra
 
     // invalid file ?
     if (dwBytesRead != sizeof(SkvFileHeader) || skvfHeader.headerCode != SKV_FILE_HEADER_CODE) {
-
         // create default header
         skvfHeader.completed = false;
         skvfHeader.numLayers = getNumberOfLayers();
@@ -379,7 +378,6 @@ void MiniMax::saveLayerToFile(unsigned int layerNumber)
 
     // save layer if there are any states
     if (myLss->sizeInBytes) {
-
         // short knot values & ply info
         curCalculationActionId = MM_ACTION_SAVING_LAYER_TO_FILE;
         saveBytesToFile(hFileShortKnotValues, skvfHeader.headerAndStatsSize + myLss->layerOffset, myLss->sizeInBytes, myLss->shortKnotValueByte);
@@ -395,7 +393,7 @@ void MiniMax::saveLayerToFile(unsigned int layerNumber)
 // measureIops()
 //
 //-----------------------------------------------------------------------------
-inline void MiniMax::measureIops(long long& numOperations, LARGE_INTEGER& interval, LARGE_INTEGER& curTimeBefore, char text[])
+inline void MiniMax::measureIops(int64_t& numOperations, LARGE_INTEGER& interval, LARGE_INTEGER& curTimeBefore, char text[])
 {
     // locals
     LARGE_INTEGER curTimeAfter;
@@ -461,7 +459,7 @@ void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int s
 {
     // locals
     TwoBit databaseByte;
-    long long bytesAllocated;
+    int64_t bytesAllocated;
     //TwoBit defValue = SKV_WHOLE_BYTE_IS_INVALID;
     LayerStats* myLss = &layerStats[layerNumber];
 
@@ -478,10 +476,8 @@ void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber, unsigned int s
         loadBytesFromFile(hFileShortKnotValues, skvfHeader.headerAndStatsSize + myLss->layerOffset + stateNumber / 4, 1, &databaseByte);
         LeaveCriticalSection(&csDatabase);
     } else {
-
         // is layer already loaded
         if (!myLss->layerIsLoaded) {
-
             EnterCriticalSection(&csDatabase);
 
             if (!myLss->layerIsLoaded) {
@@ -530,7 +526,7 @@ void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int sta
     // locals
     unsigned int curKnot;
     PlyInfoVarType defValue = PLYINFO_VALUE_UNCALCULATED;
-    long long bytesAllocated;
+    int64_t bytesAllocated;
     PlyInfo* myPis = &plyInfos[layerNumber];
 
     // valid state and layer number ?
@@ -589,7 +585,7 @@ void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber, unsigned int sta
 void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber, unsigned int stateNumber, TwoBit knotValue)
 {
     // locals
-    long long bytesAllocated;
+    int64_t bytesAllocated;
     //TwoBit defValue = SKV_WHOLE_BYTE_IS_INVALID;
     LayerStats* myLss = &layerStats[layerNumber];
 
@@ -653,7 +649,7 @@ void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber, unsigned int state
     // locals
     unsigned int curKnot;
     PlyInfoVarType defValue = PLYINFO_VALUE_UNCALCULATED;
-    long long bytesAllocated;
+    int64_t bytesAllocated;
     PlyInfo* myPis = &plyInfos[layerNumber];
 
     // valid state and layer number ?

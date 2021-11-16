@@ -78,7 +78,6 @@ void RandomAI::play(fieldStruct* theField, unsigned int* pushFrom, unsigned int*
                     to = theField->connectedSquare[from][direction];
                 } while (to == theField->size);
             }
-
         } while (theField->board[to] != theField->squareIsFree);
     }
 

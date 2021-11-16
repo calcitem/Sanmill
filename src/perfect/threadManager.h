@@ -14,7 +14,7 @@
 #include <iostream>
 #include <windows.h>
 
-using namespace std; // use standard library namespace
+using std::iostream; // use standard library namespace
 
 #define TM_SCHEDULE_USER_DEFINED 0
 #define TM_SCHEDULE_STATIC 1
@@ -67,11 +67,11 @@ public:
     public:
         unsigned int curThreadNo;
 
-        virtual void initializeElement() {};
+        virtual void initializeElement() {}
 
-        virtual void destroyElement() {};
+        virtual void destroyElement() {}
 
-        virtual void reduce() {};
+        virtual void reduce() {}
     };
 
     template <class varType>
@@ -131,8 +131,8 @@ public:
     void pauseExecution(); // un-/suspend all threads
     void cancelExecution(); // termineAllThreads auf true
     bool wasExecutionCancelled();
-    void unCancelExecution(); // sets executionCancelled	to false, otherwise executeParallelLoop returns immediately
-        //... void					setCallBackFunction				(void userFunction(void* pUser), void* pUser, DWORD milliseconds);		// a user function which is called every x-milliseconds during execution between two iterations
+    void unCancelExecution(); // sets executionCancelled to false, otherwise executeParallelLoop returns immediately
+        //... void setCallBackFunction (void userFunction(void* pUser), void* pUser, DWORD milliseconds); // a user function which is called every x-milliseconds during execution between two iterations
 
     // execute
     unsigned int executeInParallel(DWORD threadProc(void* pParameter), void* pParameter, unsigned int parameterStructSize);

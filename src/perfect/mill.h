@@ -17,7 +17,8 @@
 
 #include "../types.h"
 
-using namespace std;
+using std::cout;
+using std::iostream;
 
 #define MAX_NUM_MOVES 10000
 

@@ -97,13 +97,11 @@ void fieldStruct::copyBoard(fieldStruct* destination)
     destination->stoneMustBeRemoved = this->stoneMustBeRemoved;
 
     for (i = 0; i < this->size; i++) {
-
         destination->board[i] = this->board[i];
         destination->warnings[i] = this->warnings[i];
         destination->stonePartOfMill[i] = this->stonePartOfMill[i];
 
         for (j = 0; j < 4; j++) {
-
             destination->connectedSquare[i][j] = this->connectedSquare[i][j];
             destination->stoneMoveAble[i][j] = this->stoneMoveAble[i][j];
             destination->neighbour[i][j / 2][j % 2] = this->neighbour[i][j / 2][j % 2];

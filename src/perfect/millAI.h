@@ -86,7 +86,7 @@ private:
         unsigned int secondNeighbour1);
 };
 
-#ifdef __clang__ // TODO
+#ifdef __clang__ // TODO(calcitem)
 class MillAI
 #else
 class MillAI abstract

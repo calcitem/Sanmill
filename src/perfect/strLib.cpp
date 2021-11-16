@@ -350,10 +350,9 @@ bool readAsciiData(HANDLE hFile, double* pData, unsigned int numValues, unsigned
                 decimalPlace = true;
                 exponent = false;
             } else if (*curByte == columnSeparator) {
-
                 // everything ok?
                 if (decimalPos > 8) {
-                    cout << "ERROR in function readAsciiData(): Too many digits on decimal place. Maximum is 8 !" << endl;
+                    cout << "ERROR in function readAsciiData(): Too many digits on decimal place. Maximum is 8 !" << std::endl;
                     return false;
                 }
 
@@ -397,7 +396,6 @@ bool readAsciiData(HANDLE hFile, double* pData, unsigned int numValues, unsigned
         // buffer overrun?
         if (curBufferPos >= actualBufferSize)
             return false;
-
     } while (curReadValue < numValues);
 
     // quit

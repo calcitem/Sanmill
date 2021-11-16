@@ -62,9 +62,10 @@ void MiniMax::alphaBetaSaveInDatabase(unsigned int threadNo,
     unsigned int i;
 
     // invert value ?
-    if (knotValue > SKV_VALUE_GAME_WON)
-        while (true)
-            ;
+    if (knotValue > SKV_VALUE_GAME_WON) {
+        while (true) {
+        }
+    }
     if (invertValue)
         knotValue = skvPerspectiveMatrix[knotValue][PL_TO_MOVE_UNCHANGED];
 
@@ -77,7 +78,6 @@ void MiniMax::alphaBetaSaveInDatabase(unsigned int threadNo,
 
     // save value for all symmetric states
     for (i = 0; i < numSymmetricStates; i++) {
-
         // get state number
         sysStateNumber = symStateNumbers[i];
 
@@ -97,7 +97,7 @@ void MiniMax::alphaBetaSaveInDatabase(unsigned int threadNo,
 //-----------------------------------------------------------------------------
 bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars& alphaBetaVars)
 {
-#ifndef __clang__ // TODO
+#ifndef __clang__ // TODO(calcitem)
     // locals
     BufferedFile* invalidArray; //
     bool initAlreadyDone = false; // true if the initialization information is already available in a file
@@ -257,7 +257,7 @@ DWORD MiniMax::initAlphaBetaThreadProc(void* pParameter, unsigned int index)
 //-----------------------------------------------------------------------------
 bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars& alphaBetaVars)
 {
-#ifndef __clang__ // TODO
+#ifndef __clang__ // TODO(calcitem)
     // prepare parameters
     PRINT(1, this, "  Calculate layer " << alphaBetaVars.layerNumber << " with function letTheTreeGrow():");
     numStatesProcessed = 0;
@@ -339,7 +339,6 @@ DWORD MiniMax::runAlphaBetaThreadProc(void* pParameter, unsigned int index)
 
     // set current selected situation
     if (m->setSituation(rabVars->curThreadNo, curState.layerNumber, curState.stateNumber)) {
-
         // calc value of situation
         m->letTheTreeGrow(&root, rabVars, m->depthOfFullTree, SKV_VALUE_GAME_LOST, SKV_VALUE_GAME_WON);
     } else {
@@ -386,7 +385,6 @@ void MiniMax::letTheTreeGrow(Knot* knot, RunAlphaBetaVars* rabVars, unsigned int
         }
         // investigate branches
     } else {
-
         // get layer and state number of current state and look if short knot value can be found in database or in an array
         if (alphaBetaTryDataBase(knot, rabVars, tilLevel, layerNumber, stateNumber))
             return;
@@ -491,7 +489,6 @@ bool MiniMax::alphaBetaTryDataBase(Knot* knot,
 
         // when knot value is valid then return best branch
         if ((calcDatabase && tilLevel < depthOfFullTree && shortKnotValue != SKV_VALUE_INVALID && plyInfo != PLYINFO_VALUE_UNCALCULATED) || (!calcDatabase && tilLevel < depthOfFullTree - 1 && shortKnotValue != SKV_VALUE_INVALID)) {
-
             // switch if is not opponent level
             if (knot->isOpponentLevel)
                 knot->shortValue = skvPerspectiveMatrix[shortKnotValue][PL_TO_MOVE_UNCHANGED];
@@ -636,7 +633,6 @@ void MiniMax::alphaBetaCalcPlyInfo(Knot* knot)
     } else if (knot->shortValue == SKV_VALUE_INVALID) {
         knot->plyInfo = PLYINFO_VALUE_INVALID;
     } else {
-
         // calculate value of knot
         shortKnotValue = (knot->isOpponentLevel) ? skvPerspectiveMatrix[knot->shortValue][PL_TO_MOVE_UNCHANGED] : knot->shortValue;
         maxPlyInfo = (shortKnotValue == SKV_VALUE_GAME_WON) ? PLYINFO_VALUE_DRAWN : 0;
@@ -645,7 +641,6 @@ void MiniMax::alphaBetaCalcPlyInfo(Knot* knot)
         // when current knot is a won state
         if (shortKnotValue == SKV_VALUE_GAME_WON) {
             for (i = 0; i < knot->numPossibilities; i++) {
-
                 // invert knot value if necessary
                 shortKnotValue = (knot->branches[i].isOpponentLevel) ? skvPerspectiveMatrix[knot->branches[i].shortValue][PL_TO_MOVE_UNCHANGED] : knot->branches[i].shortValue;
 
@@ -654,7 +649,6 @@ void MiniMax::alphaBetaCalcPlyInfo(Knot* knot)
 
                     // after this move the same player will continue, so take the minimum of the won states
                     || (knot->branches[i].plyInfo < maxPlyInfo && shortKnotValue == SKV_VALUE_GAME_WON && knot->isOpponentLevel == knot->branches[i].isOpponentLevel)) {
-
                     maxPlyInfo = knot->branches[i].plyInfo;
                     maxBranch = i;
                 }
@@ -671,7 +665,6 @@ void MiniMax::alphaBetaCalcPlyInfo(Knot* knot)
 
                     // take the maximum of the won states, since that's the longest path
                     || (knot->branches[i].plyInfo > maxPlyInfo && shortKnotValue == SKV_VALUE_GAME_LOST && knot->isOpponentLevel == knot->branches[i].isOpponentLevel)) {
-
                     maxPlyInfo = knot->branches[i].plyInfo;
                     maxBranch = i;
                 }
@@ -700,13 +693,10 @@ void MiniMax::alphaBetaChooseBestMove(Knot* knot, RunAlphaBetaVars* rabVars, uns
     if (tilLevel == depthOfFullTree && !calcDatabase) {
         // check every possible move
         for (numBestChoices = 0, i = 0; i < knot->numPossibilities; i++) {
-
             // use information in database
             if (layerInDatabase && hFileShortKnotValues != nullptr) {
-
                 // selected move with equal knot value
                 if (knot->branches[i].shortValue == knot->shortValue) {
-
                     // best move lead to drawn state
                     if (knot->shortValue == SKV_VALUE_GAME_DRAWN) {
                         if (maxWonfreqValuesSubMoves == rabVars->freqValuesSubMovesBranchWon[i]) {
