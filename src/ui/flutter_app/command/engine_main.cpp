@@ -43,7 +43,4 @@ void println(const char* str, ...)
     }
 }
 
-int engineMain(void)
-{
-    return main(1, 0);
-}
+int engineMain(void) { return main(1, 0); }

@@ -15,7 +15,7 @@
 #include <iostream>
 #include <math.h>
 
-//using namespace std;
+// using namespace std;
 
 #define VALUE_GAME_LOST -1000.0f
 #define VALUE_GAME_WON 1000.0f
@@ -51,80 +51,87 @@ protected:
 
     int ownId; // id of the player who called the play()-function
     unsigned int curSearchDepth; // current level
-    unsigned int depthOfFullTree; // search depth where the whole tree is explored
-    unsigned int* idPossibilities; // returned pointer of getPossibilities()-function
+    unsigned int
+        depthOfFullTree; // search depth where the whole tree is explored
+    unsigned int*
+        idPossibilities; // returned pointer of getPossibilities()-function
     Backup* oldStates; // for undo()-function
     Possibility* possibilities; // for getPossNormalMove()-function
 
     // Functions
-    unsigned int* getPossSettingPhase(unsigned int* numPossibilities, void** pPossibilities);
-    unsigned int* getPossNormalMove(unsigned int* numPossibilities, void** pPossibilities);
-    unsigned int* getPossStoneRemove(unsigned int* numPossibilities, void** pPossibilities);
+    unsigned int* getPossSettingPhase(
+        unsigned int* numPossibilities, void** pPossibilities);
+    unsigned int* getPossNormalMove(
+        unsigned int* numPossibilities, void** pPossibilities);
+    unsigned int* getPossStoneRemove(
+        unsigned int* numPossibilities, void** pPossibilities);
 
     // move functions
-    inline void updatePossibleMoves(unsigned int stone, Player* stoneOwner, bool stoneRemoved, unsigned int ignoreStone);
-    inline void updateWarning(unsigned int firstStone, unsigned int secondStone);
-    inline void setWarning(unsigned int stoneOne, unsigned int stoneTwo, unsigned int stoneThree);
+    inline void updatePossibleMoves(unsigned int stone, Player* stoneOwner,
+        bool stoneRemoved, unsigned int ignoreStone);
+    inline void updateWarning(
+        unsigned int firstStone, unsigned int secondStone);
+    inline void setWarning(
+        unsigned int stoneOne, unsigned int stoneTwo, unsigned int stoneThree);
     inline void removeStone(unsigned int from, Backup* backup);
     inline void setStone(unsigned int to, Backup* backup);
     inline void normalMove(unsigned int from, unsigned int to, Backup* backup);
 
     // Virtual Functions
     void prepareBestChoiceCalculation();
-    unsigned int* getPossibilities(unsigned int threadNo, unsigned int* numPossibilities, bool* opponentsMove, void** pPossibilities);
+    unsigned int* getPossibilities(unsigned int threadNo,
+        unsigned int* numPossibilities, bool* opponentsMove,
+        void** pPossibilities);
     void deletePossibilities(unsigned int threadNo, void* pPossibilities);
-    void move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void** pBackup, void* pPossibilities);
-    void undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void* pBackup, void* pPossibilities);
-    void getValueOfSituation(unsigned int threadNo, float& floatValue, TwoBit& shortValue);
-    void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities);
+    void move(unsigned int threadNo, unsigned int idPossibility,
+        bool opponentsMove, void** pBackup, void* pPossibilities);
+    void undo(unsigned int threadNo, unsigned int idPossibility,
+        bool opponentsMove, void* pBackup, void* pPossibilities);
+    void getValueOfSituation(
+        unsigned int threadNo, float& floatValue, TwoBit& shortValue);
+    void printMoveInformation(unsigned int threadNo, unsigned int idPossibility,
+        void* pPossibilities);
 
-    unsigned int getNumberOfLayers()
+    unsigned int getNumberOfLayers() { return 0; }
+
+    unsigned int getNumberOfKnotsInLayer(unsigned int layerNum) { return 0; }
+
+    void getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers,
+        unsigned int* succLayers)
     {
-        return 0;
-    };
+    }
 
-    unsigned int getNumberOfKnotsInLayer(unsigned int layerNum)
-    {
-        return 0;
-    };
+    unsigned int getPartnerLayer(unsigned int layerNum) { return 0; }
 
-    void getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers, unsigned int* succLayers) {}
-
-    unsigned int getPartnerLayer(unsigned int layerNum)
-    {
-        return 0;
-    };
-
-    string getOutputInformation(unsigned int layerNum)
-    {
-        return string("");
-    };
+    string getOutputInformation(unsigned int layerNum) { return string(""); }
 
     void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel) {}
 
-    bool setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber)
+    bool setSituation(
+        unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber)
     {
         return false;
     };
 
-    bool getOpponentLevel(unsigned int threadNo)
-    {
-        return false;
-    };
+    bool getOpponentLevel(unsigned int threadNo) { return false; }
 
-    unsigned int getLayerAndStateNumber(unsigned int threadNo, unsigned int& layerNum, unsigned int& stateNumber)
+    unsigned int getLayerAndStateNumber(unsigned int threadNo,
+        unsigned int& layerNum, unsigned int& stateNumber)
     {
         return 0;
     };
 
-    unsigned int getLayerNumber(unsigned int threadNo)
+    unsigned int getLayerNumber(unsigned int threadNo) { return 0; }
+
+    void getSymStateNumWithDoubles(unsigned int threadNo,
+        unsigned int* numSymmetricStates, unsigned int** symStateNumbers)
     {
-        return 0;
-    };
+    }
 
-    void getSymStateNumWithDoubles(unsigned int threadNo, unsigned int* numSymmetricStates, unsigned int** symStateNumbers) {}
-
-    void getPredecessors(unsigned int threadNo, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars) {}
+    void getPredecessors(unsigned int threadNo, unsigned int* amountOfPred,
+        RetroAnalysisPredVars* predVars)
+    {
+    }
 
     void printBoard(unsigned int threadNo, unsigned char value) {}
 
@@ -138,7 +145,8 @@ public:
     ~MiniMaxAI();
 
     // Functions
-    void play(fieldStruct* theField, unsigned int* pushFrom, unsigned int* pushTo);
+    void play(
+        fieldStruct* theField, unsigned int* pushFrom, unsigned int* pushTo);
     void setSearchDepth(unsigned int depth);
 };
 

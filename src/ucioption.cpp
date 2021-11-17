@@ -29,10 +29,7 @@ extern struct Rule rule;
 namespace UCI {
 
 /// 'On change' actions, triggered by an option's value change
-void on_clear_hash(const Option&)
-{
-    Search::clear();
-}
+void on_clear_hash(const Option&) { Search::clear(); }
 
 void on_hash_size(const Option& o)
 {
@@ -41,40 +38,22 @@ void on_hash_size(const Option& o)
 #endif
 }
 
-void on_logger(const Option& o)
-{
-    start_logger(o);
-}
+void on_logger(const Option& o) { start_logger(o); }
 
-void on_threads(const Option& o)
-{
-    Threads.set((size_t)o);
-}
+void on_threads(const Option& o) { Threads.set((size_t)o); }
 
-void on_skill_level(const Option& o)
-{
-    gameOptions.setSkillLevel((int)o);
-}
+void on_skill_level(const Option& o) { gameOptions.setSkillLevel((int)o); }
 
-void on_move_time(const Option& o)
-{
-    gameOptions.setMoveTime((int)o);
-}
+void on_move_time(const Option& o) { gameOptions.setMoveTime((int)o); }
 
-void on_aiIsLazy(const Option& o)
-{
-    gameOptions.setAiIsLazy((bool)o);
-}
+void on_aiIsLazy(const Option& o) { gameOptions.setAiIsLazy((bool)o); }
 
 void on_random_move(const Option& o)
 {
     gameOptions.setShufflingEnabled((bool)o);
 }
 
-void on_algorithm(const Option& o)
-{
-    gameOptions.setAlgorithm((int)o);
-}
+void on_algorithm(const Option& o) { gameOptions.setAlgorithm((int)o); }
 
 void on_drawOnHumanExperience(const Option& o)
 {
@@ -93,25 +72,16 @@ void on_developerMode(const Option& o)
 
 // Rules
 
-void on_piecesCount(const Option& o)
-{
-    rule.piecesCount = (int)o;
-}
+void on_piecesCount(const Option& o) { rule.piecesCount = (int)o; }
 
-void on_flyPieceCount(const Option& o)
-{
-    rule.flyPieceCount = (int)o;
-}
+void on_flyPieceCount(const Option& o) { rule.flyPieceCount = (int)o; }
 
 void on_piecesAtLeastCount(const Option& o)
 {
     rule.piecesAtLeastCount = (int)o;
 }
 
-void on_hasDiagonalLines(const Option& o)
-{
-    rule.hasDiagonalLines = (bool)o;
-}
+void on_hasDiagonalLines(const Option& o) { rule.hasDiagonalLines = (bool)o; }
 
 void on_hasBannedLocations(const Option& o)
 {
@@ -128,10 +98,7 @@ void on_isDefenderMoveFirst(const Option& o)
     rule.isDefenderMoveFirst = (bool)o;
 }
 
-void on_mayRemoveMultiple(const Option& o)
-{
-    rule.mayRemoveMultiple = (bool)o;
-}
+void on_mayRemoveMultiple(const Option& o) { rule.mayRemoveMultiple = (bool)o; }
 
 void on_mayRemoveFromMillsAlways(const Option& o)
 {
@@ -153,15 +120,9 @@ void on_isLoseButNotChangeSideWhenNoWay(const Option& o)
     rule.isLoseButNotChangeSideWhenNoWay = (bool)o;
 }
 
-void on_mayFly(const Option& o)
-{
-    rule.mayFly = (bool)o;
-}
+void on_mayFly(const Option& o) { rule.mayFly = (bool)o; }
 
-void on_nMoveRule(const Option& o)
-{
-    rule.nMoveRule = (unsigned int)o;
-}
+void on_nMoveRule(const Option& o) { rule.nMoveRule = (unsigned int)o; }
 
 void on_endgameNMoveRule(const Option& o)
 {
@@ -176,7 +137,8 @@ void on_threefoldRepetitionRule(const Option& o)
 /// Our case insensitive less() function as required by UCI protocol
 bool CaseInsensitiveLess::operator()(const string& s1, const string& s2) const
 {
-    return std::lexicographical_compare(s1.begin(), s1.end(), s2.begin(), s2.end(),
+    return std::lexicographical_compare(s1.begin(), s1.end(), s2.begin(),
+        s2.end(),
         [](char c1, char c2) noexcept { return tolower(c1) < tolower(c2); });
 }
 
@@ -188,7 +150,8 @@ void init(OptionsMap& o)
 
     o["Debug Log File"] << Option("", on_logger);
     o["Contempt"] << Option(24, -100, 100);
-    o["Analysis Contempt"] << Option("Both var Off var White var Black var Both", "Both");
+    o["Analysis Contempt"] << Option(
+        "Both var Off var White var Black var Both", "Both");
     o["Threads"] << Option(1, 1, 512, on_threads);
     o["Hash"] << Option(16, 1, MaxHashMB, on_hash_size);
     o["Clear Hash"] << Option(on_clear_hash);
@@ -220,17 +183,21 @@ void init(OptionsMap& o)
     o["IsDefenderMoveFirst"] << Option(false, on_isDefenderMoveFirst);
     o["MayRemoveMultiple"] << Option(false, on_mayRemoveMultiple);
     o["MayRemoveFromMillsAlways"] << Option(false, on_mayRemoveFromMillsAlways);
-    o["MayOnlyRemoveUnplacedPieceInPlacingPhase"] << Option(false, on_mayOnlyRemoveUnplacedPieceInPlacingPhase);
-    o["IsWhiteLoseButNotDrawWhenBoardFull"] << Option(true, on_isWhiteLoseButNotDrawWhenBoardFull);
-    o["IsLoseButNotChangeSideWhenNoWay"] << Option(true, on_isLoseButNotChangeSideWhenNoWay);
+    o["MayOnlyRemoveUnplacedPieceInPlacingPhase"]
+        << Option(false, on_mayOnlyRemoveUnplacedPieceInPlacingPhase);
+    o["IsWhiteLoseButNotDrawWhenBoardFull"]
+        << Option(true, on_isWhiteLoseButNotDrawWhenBoardFull);
+    o["IsLoseButNotChangeSideWhenNoWay"]
+        << Option(true, on_isLoseButNotChangeSideWhenNoWay);
     o["MayFly"] << Option(true, on_mayFly);
     o["NMoveRule"] << Option(100, 10, 200, on_nMoveRule);
     o["EndgameNMoveRule"] << Option(100, 5, 200, on_endgameNMoveRule);
     o["ThreefoldRepetitionRule"] << Option(true, on_threefoldRepetitionRule);
 }
 
-/// operator<<() is used to print all the options default values in chronological
-/// insertion order (the idx field) and in the format defined by the UCI protocol.
+/// operator<<() is used to print all the options default values in
+/// chronological insertion order (the idx field) and in the format defined by
+/// the UCI protocol.
 
 std::ostream& operator<<(std::ostream& os, const OptionsMap& om)
 {
@@ -240,13 +207,13 @@ std::ostream& operator<<(std::ostream& os, const OptionsMap& om)
                 const Option& o = it.second;
                 os << "\noption name " << it.first << " type " << o.type;
 
-                if (o.type == "string" || o.type == "check" || o.type == "combo")
+                if (o.type == "string" || o.type == "check"
+                    || o.type == "combo")
                     os << " default " << o.defaultValue;
 
                 if (o.type == "spin")
-                    os << " default " << int(stof(o.defaultValue))
-                       << " min " << o.min
-                       << " max " << o.max;
+                    os << " default " << int(stof(o.defaultValue)) << " min "
+                       << o.min << " max " << o.max;
 
                 break;
             }

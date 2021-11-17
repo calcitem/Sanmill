@@ -20,7 +20,8 @@ using std::cout;
 using std::string;
 
 // general functions
-bool readAsciiData(HANDLE hFile, double* pData, unsigned int numValues, unsigned char decimalSeperator, unsigned char columnSeparator);
+bool readAsciiData(HANDLE hFile, double* pData, unsigned int numValues,
+    unsigned char decimalSeperator, unsigned char columnSeparator);
 
 class MyString {
 private:

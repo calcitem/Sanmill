@@ -23,7 +23,8 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-/// If Qt is used and QT += GUI is included in the configuration, QT_GUI_LIB will be defined automatically.
+/// If Qt is used and QT += GUI is included in the configuration,
+/// QT_GUI_LIB will be defined automatically.
 /// If Qt is not used, QT_GUI_LIB is defined by Visual C++ .vcxproj file.
 // #undef QT_GUI_LIB
 
@@ -112,7 +113,8 @@
 // #define ENDGAME_LEARNING
 // #define ENDGAME_LEARNING_FORCE
 
-/// The game is drawn if there has been no removal in a specific number of moves.
+/// The game is drawn if there has been no removal
+/// in a specific number of moves.
 #define RULE_50
 
 // #define MESSAGE_BOX_ENABLE
@@ -156,6 +158,6 @@
 
 #ifdef FLUTTER_UI
 #include "base.h"
-#endif  // FLUTTER_UI
+#endif
 
-#endif  // INCLUDE_CONFIG_H_
+#endif // INCLUDE_CONFIG_H_

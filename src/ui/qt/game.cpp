@@ -45,9 +45,7 @@
 
 using std::to_string;
 
-Game::Game(
-    GameScene& scene,
-    QObject* parent)
+Game::Game(GameScene& scene, QObject* parent)
     : QObject(parent)
     , scene(scene)
     , currentPiece(nullptr)
@@ -65,15 +63,16 @@ Game::Game(
     , timeLimit(gameOptions.getMoveTime())
     , stepsLimit(100)
 {
-    // The background has been added to the style sheet of view, but not to scene
-    // The difference is that the background in view does not change with the view transformation,
-    // and the background in scene changes with the view transformation
-    //scene.setBackgroundBrush(QPixmap(":/image/resources/image/background.png"));
+    // The background has been added to the style sheet of view, but not to
+    // scene The difference is that the background in view does not change with
+    // the view transformation, and the background in scene changes with the
+    // view transformation
+    // scene.setBackgroundBrush(QPixmap(":/image/resources/image/background.png"));
 #ifdef QT_MOBILE_APP_UI
     scene.setBackgroundBrush(QColor(239, 239, 239));
 #endif /* QT_MOBILE_APP_UI */
 
-    //resetAiPlayers();
+    // resetAiPlayers();
     createAiThreads();
 
     loadSettings();
@@ -86,23 +85,24 @@ Game::Game(
 
 #ifdef QT_GUI_LIB
     // The command line of AI and controller
-    connect(aiThread[WHITE], SIGNAL(command(const string&, bool)),
-        this, SLOT(command(const string&, bool)));
-    connect(aiThread[BLACK], SIGNAL(command(const string&, bool)),
-        this, SLOT(command(const string&, bool)));
+    connect(aiThread[WHITE], SIGNAL(command(const string&, bool)), this,
+        SLOT(command(const string&, bool)));
+    connect(aiThread[BLACK], SIGNAL(command(const string&, bool)), this,
+        SLOT(command(const string&, bool)));
 
-    connect(this->gameTest, SIGNAL(command(const string&, bool)),
-        this, SLOT(command(const string&, bool)));
+    connect(this->gameTest, SIGNAL(command(const string&, bool)), this,
+        SLOT(command(const string&, bool)));
 #endif // QT_GUI_LIB
 
 #ifdef NET_FIGHT_SUPPORT
-    server = new Server(nullptr, 30001); // TODO(calcitem): WARNING: ThreadSanitizer: data race
+    server = new Server(
+        nullptr, 30001); // TODO(calcitem): WARNING: ThreadSanitizer: data race
     uint16_t clientPort = server->getPort() == 30001 ? 30002 : 30001;
     client = new Client(nullptr, clientPort);
 
     // The command line of AI and network
-    connect(getClient(), SIGNAL(command(const string&, bool)),
-        this, SLOT(command(const string&, bool)));
+    connect(getClient(), SIGNAL(command(const string&, bool)), this,
+        SLOT(command(const string&, bool)));
 #endif // NET_FIGHT_SUPPORT
 
 #ifdef ENDGAME_LEARNING_FORCE
@@ -120,35 +120,52 @@ void Game::loadSettings()
 
     QFileInfo file(SETTINGS_FILE);
     if (!file.exists()) {
-        cout << SETTINGS_FILE.toStdString() << " is not exists, create it." << std::endl;
+        cout << SETTINGS_FILE.toStdString() << " is not exists, create it."
+             << std::endl;
         empty = true;
     }
 
     settings = new QSettings(SETTINGS_FILE, QSettings::IniFormat);
 
-    setEngineWhite(empty ? false : settings->value("Options/WhiteIsAiPlayer").toBool());
-    setEngineBlack(empty ? true : settings->value("Options/BlackIsAiPlayer").toBool());
-    setFixWindowSize(empty ? false : settings->value("Options/FixWindowSize").toBool());
+    setEngineWhite(
+        empty ? false : settings->value("Options/WhiteIsAiPlayer").toBool());
+    setEngineBlack(
+        empty ? true : settings->value("Options/BlackIsAiPlayer").toBool());
+    setFixWindowSize(
+        empty ? false : settings->value("Options/FixWindowSize").toBool());
     setSound(empty ? true : settings->value("Options/Sound").toBool());
     setAnimation(empty ? true : settings->value("Options/Animation").toBool());
     setSkillLevel(empty ? 1 : settings->value("Options/SkillLevel").toInt());
     setMoveTime(empty ? 1 : settings->value("Options/MoveTime").toInt());
     setAlgorithm(empty ? 2 : settings->value("Options/Algorithm").toInt());
-    setDrawOnHumanExperience(empty ? true : settings->value("Options/DrawOnHumanExperience").toBool());
-    setConsiderMobility(empty ? true : settings->value("Options/ConsiderMobility").toBool());
+    setDrawOnHumanExperience(empty
+            ? true
+            : settings->value("Options/DrawOnHumanExperience").toBool());
+    setConsiderMobility(
+        empty ? true : settings->value("Options/ConsiderMobility").toBool());
     setAiIsLazy(empty ? false : settings->value("Options/AiIsLazy").toBool());
     setShuffling(empty ? true : settings->value("Options/Shuffling").toBool());
-    setResignIfMostLose(empty ? false : settings->value("Options/ResignIfMostLose").toBool());
-    setOpeningBook(empty ? false : settings->value("Options/OpeningBook").toBool());
-    setLearnEndgame(empty ? false : settings->value("Options/LearnEndgameEnabled").toBool());
+    setResignIfMostLose(
+        empty ? false : settings->value("Options/ResignIfMostLose").toBool());
+    setOpeningBook(
+        empty ? false : settings->value("Options/OpeningBook").toBool());
+    setLearnEndgame(empty
+            ? false
+            : settings->value("Options/LearnEndgameEnabled").toBool());
     setPerfectAi(empty ? false : settings->value("Options/PerfectAI").toBool());
     setIDS(empty ? false : settings->value("Options/IDS").toBool());
-    setDepthExtension(empty ? true : settings->value("Options/DepthExtension").toBool());
-    setAutoRestart(empty ? false : settings->value("Options/AutoRestart").toBool());
-    setAutoChangeFirstMove(empty ? false : settings->value("Options/AutoChangeFirstMove").toBool());
-    setDeveloperMode(empty ? false : settings->value("Options/DeveloperMode").toBool());
+    setDepthExtension(
+        empty ? true : settings->value("Options/DepthExtension").toBool());
+    setAutoRestart(
+        empty ? false : settings->value("Options/AutoRestart").toBool());
+    setAutoChangeFirstMove(empty
+            ? false
+            : settings->value("Options/AutoChangeFirstMove").toBool());
+    setDeveloperMode(
+        empty ? false : settings->value("Options/DeveloperMode").toBool());
 
-    setRule(empty ? DEFAULT_RULE_NUMBER : settings->value("Options/RuleNo").toInt());
+    setRule(empty ? DEFAULT_RULE_NUMBER
+                  : settings->value("Options/RuleNo").toInt());
 }
 
 Game::~Game()
@@ -179,7 +196,8 @@ const map<int, QStringList> Game::getActions()
     map<int, QStringList> actions;
 
     for (int i = 0; i < N_RULES; i++) {
-        //The key of map stores int index value, and value stores rule name and rule prompt
+        // The key of map stores int index value, and value stores rule name and
+        // rule prompt
         QStringList strlist;
         strlist.append(tr(RULES[i].name));
         strlist.append(tr(RULES[i].description));
@@ -196,7 +214,7 @@ extern deque<int> openingBookDequeBak;
 
 void Game::gameStart()
 {
-    //moveHistory.clear();
+    // moveHistory.clear();
     position.start();
     startTime = time(nullptr);
 
@@ -251,7 +269,7 @@ void Game::gameReset()
     // Stop threads
     if (!gameOptions.getAutoRestart()) {
         pauseThreads();
-        //resetAiPlayers();
+        // resetAiPlayers();
     }
 
     // Clear pieces
@@ -263,14 +281,15 @@ void Game::gameReset()
     scene.setDiagonal(rule.hasDiagonalLines);
 
     // Draw all the pieces and put them in the starting position
-    // 0: the first piece in the first hand; 1: the first piece in the second hand
-    // 2: the first second piece; 3: the second piece
+    // 0: the first piece in the first hand; 1: the first piece in the second
+    // hand 2: the first second piece; 3: the second piece
     // ......
     PieceItem::Models md;
 
     for (int i = 0; i < rule.piecesCount; i++) {
         // The first piece
-        md = isInverted ? PieceItem::Models::blackPiece : PieceItem::Models::whitePiece;
+        md = isInverted ? PieceItem::Models::blackPiece
+                        : PieceItem::Models::whitePiece;
         PieceItem* newP = new PieceItem;
         newP->setModel(md);
         newP->setPos(scene.pos_p1);
@@ -281,7 +300,8 @@ void Game::gameReset()
         scene.addItem(newP);
 
         // Backhand piece
-        md = isInverted ? PieceItem::Models::whitePiece : PieceItem::Models::blackPiece;
+        md = isInverted ? PieceItem::Models::whitePiece
+                        : PieceItem::Models::blackPiece;
         newP = new PieceItem;
         newP->setModel(md);
         newP->setPos(scene.pos_p2);
@@ -294,7 +314,8 @@ void Game::gameReset()
 
     timeLimit = gameOptions.getMoveTime();
 
-    // If the rule does not require timing, time1 and time2 represent the time used
+    // If the rule does not require timing, time1 and time2 represent the time
+    // used
     if (timeLimit <= 0) {
         // Clear the player's used time
         remainingTime[WHITE] = remainingTime[BLACK] = 0;
@@ -310,7 +331,8 @@ void Game::gameReset()
     currentRow = 0;
 
     // Signal the main window to update the LCD display
-    const QTime qtime = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[WHITE]));
+    const QTime qtime
+        = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[WHITE]));
     emit time1Changed(qtime.toString("hh:mm:ss"));
     emit time2Changed(qtime.toString("hh:mm:ss"));
 
@@ -326,12 +348,16 @@ void Game::gameReset()
     emit scoreDrawChanged(QString::number(position.score_draw, 10));
 
     // Update winning rate LCD display
-    position.gamesPlayedCount = position.score[WHITE] + position.score[BLACK] + position.score_draw;
+    position.gamesPlayedCount
+        = position.score[WHITE] + position.score[BLACK] + position.score_draw;
     int winningRate_1 = 0, winningRate_2 = 0, winningRate_draw = 0;
     if (position.gamesPlayedCount != 0) {
-        winningRate_1 = position.score[WHITE] * 10000 / position.gamesPlayedCount;
-        winningRate_2 = position.score[BLACK] * 10000 / position.gamesPlayedCount;
-        winningRate_draw = position.score_draw * 10000 / position.gamesPlayedCount;
+        winningRate_1
+            = position.score[WHITE] * 10000 / position.gamesPlayedCount;
+        winningRate_2
+            = position.score[BLACK] * 10000 / position.gamesPlayedCount;
+        winningRate_draw
+            = position.score_draw * 10000 / position.gamesPlayedCount;
     }
 
     emit winningRate1Changed(QString::number(winningRate_1, 10));
@@ -339,13 +365,10 @@ void Game::gameReset()
     emit winningRateDrawChanged(QString::number(winningRate_draw, 10));
 
     // Sound effects play
-    //playSound(":/sound/resources/sound/newgame.wav");
+    // playSound(":/sound/resources/sound/newgame.wav");
 }
 
-void Game::setEditing(bool arg) noexcept
-{
-    isEditing = arg;
-}
+void Game::setEditing(bool arg) noexcept { isEditing = arg; }
 
 void Game::setInvert(bool arg)
 {
@@ -368,7 +391,8 @@ void Game::setInvert(bool arg)
     }
 }
 
-void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= 0 TODO(calcitem): Unused */)
+void Game::setRule(int ruleNo, int stepLimited /*= -1*/,
+    int timeLimited /*= 0 TODO(calcitem): Unused */)
 {
     rule.nMoveRule = stepLimited;
 
@@ -393,7 +417,9 @@ void Game::setRule(int ruleNo, int stepLimited /*= -1*/, int timeLimited /*= 0 T
     elapsedSeconds[WHITE] = elapsedSeconds[BLACK] = 0;
 
     char record[64] = { 0 };
-    if (snprintf(record, Position::RECORD_LEN_MAX, "r%1d s%03u t%02d", r + 1, rule.nMoveRule, 0) <= 0) {
+    if (snprintf(record, Position::RECORD_LEN_MAX, "r%1d s%03u t%02d", r + 1,
+            rule.nMoveRule, 0)
+        <= 0) {
         assert(0);
     }
     string cmd(record);
@@ -816,7 +842,8 @@ void Game::updateTime()
 
     if (timePoint >= *ourSeconds) {
         *ourSeconds = timePoint;
-        startTime = currentTime - (elapsedSeconds[WHITE] + elapsedSeconds[BLACK]);
+        startTime
+            = currentTime - (elapsedSeconds[WHITE] + elapsedSeconds[BLACK]);
     } else {
         *ourSeconds = currentTime - startTime - theirSeconds;
     }
@@ -869,28 +896,32 @@ void Game::timerEvent(QTimerEvent* event)
     int ti = time.elapsed();
     static QTime t;
     if (ti < 0) {
-        ti += 86400; // Prevent the time error caused by 24:00, plus the total number of seconds in a day
+        // Prevent the time error caused by 24:00,
+        // plus the total number of seconds in a day
+        ti += 86400;
     }
     if (timeWho == 1) {
         time1 = ti - time2;
-        // A temporary variable used to display the time. The extra 50 ms is used to eliminate the beat caused by the timer error
+        // A temporary variable used to display the time.
+        // The extra 50 ms is used to eliminate the beat caused
+        // by the timer error
         t = QTime(0, 0, 0, 50).addMSecs(time1);
         emit time1Changed(t.toString("hh:mm:ss"));
     } else if (timeWho == 2) {
         time2 = ti - time1;
-        // A temporary variable used to display the time. The extra 50 ms is used to eliminate the beat caused by the timer error
+        // A temporary variable used to display the time.
+        // The extra 50 ms is used to eliminate the beat
+        // caused by the timer error
         t = QTime(0, 0, 0, 50).addMSecs(time2);
         emit time2Changed(t.toString("hh:mm:ss"));
     }
 #endif
 }
 
-bool Game::isAIsTurn()
-{
-    return isAiPlayer[sideToMove];
-}
+bool Game::isAIsTurn() { return isAiPlayer[sideToMove]; }
 
-// Key slot function, according to the signal and state of qgraphics scene to select, drop or remove sub
+// Key slot function, according to the signal and state of qgraphics scene to
+// select, drop or remove sub
 bool Game::actionPiece(QPointF p)
 {
     // Click non drop point, do not execute
@@ -902,11 +933,13 @@ bool Game::actionPiece(QPointF p)
     }
 
     // When the computer is playing or searching, the click is invalid
-    if (isAIsTurn() || aiThread[WHITE]->searching || aiThread[BLACK]->searching) {
+    if (isAIsTurn() || aiThread[WHITE]->searching
+        || aiThread[BLACK]->searching) {
         return false;
     }
 
-    // When you click the board while browsing the history, it is considered repentance
+    // When you click the board while browsing the history, it is considered
+    // repentance
     if (currentRow != manualListModel.rowCount() - 1) {
 #ifndef QT_MOBILE_APP_UI
         // Define new dialog box
@@ -924,7 +957,8 @@ bool Game::actionPiece(QPointF p)
 #endif /* !QT_MOBILE_APP_UI */
             const int rowCount = manualListModel.rowCount();
             const int removeCount = rowCount - currentRow - 1;
-            manualListModel.removeRows(currentRow + 1, rowCount - currentRow - 1);
+            manualListModel.removeRows(
+                currentRow + 1, rowCount - currentRow - 1);
 
             for (int i = 0; i < removeCount; i++) {
                 moveHistory.pop_back();
@@ -970,7 +1004,8 @@ bool Game::actionPiece(QPointF p)
             break;
         }
 
-        // If the moving is not successful, try to reselect. There is no break here
+        // If the moving is not successful, try to reselect. There is no break
+        // here
         [[fallthrough]];
 
     case Action::select:
@@ -1029,13 +1064,17 @@ bool Game::actionPiece(QPointF p)
             if (k++ <= currentRow)
                 continue;
             manualListModel.insertRow(++currentRow);
-            manualListModel.setData(manualListModel.index(currentRow), i.c_str());
+            manualListModel.setData(
+                manualListModel.index(currentRow), i.c_str());
         }
 
         // Play win or lose sound
 #ifndef DO_NOT_PLAY_WIN_SOUND
         const Color winner = position.get_winner();
-        if (winner != NOBODY && (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over."))
+        if (winner != NOBODY
+            && (manualListModel.data(manualListModel.index(currentRow - 1)))
+                   .toString()
+                   .contains("Time over."))
             playSound(GameSound::win, winner);
 #endif
 
@@ -1095,7 +1134,8 @@ bool Game::resign()
     return result;
 }
 
-// Key slot function, command line execution of score, independent of actionPiece
+// Key slot function, command line execution of score, independent of
+// actionPiece
 bool Game::command(const string& cmd, bool update /* = true */)
 {
     int total = 0;
@@ -1151,7 +1191,8 @@ bool Game::command(const string& cmd, bool update /* = true */)
 
     sideToMove = position.side_to_move();
 
-    if (soundType == GameSound::drag && position.get_action() == Action::remove) {
+    if (soundType == GameSound::drag
+        && position.get_action() == Action::remove) {
         soundType = GameSound::mill;
     }
 
@@ -1169,11 +1210,13 @@ bool Game::command(const string& cmd, bool update /* = true */)
     if (move_hostory()->size() <= 1) {
         manualListModel.removeRows(0, manualListModel.rowCount());
         manualListModel.insertRow(0);
-        manualListModel.setData(manualListModel.index(0), position.get_record());
+        manualListModel.setData(
+            manualListModel.index(0), position.get_record());
         currentRow = 0;
     } else { // For the current position
         currentRow = manualListModel.rowCount() - 1;
-        // Skip the added rows. The iterator does not support the + operator and can only skip one by one++
+        // Skip the added rows. The iterator does not support the + operator and
+        // can only skip one by one++
         auto i = (move_hostory()->begin());
         for (int r = 0; i != (move_hostory())->end(); i++) {
             if (r++ > currentRow)
@@ -1182,14 +1225,18 @@ bool Game::command(const string& cmd, bool update /* = true */)
         // Insert the new score line into list model
         while (i != move_hostory()->end()) {
             manualListModel.insertRow(++currentRow);
-            manualListModel.setData(manualListModel.index(currentRow), (*i++).c_str());
+            manualListModel.setData(
+                manualListModel.index(currentRow), (*i++).c_str());
         }
     }
 
     // Play win or lose sound
 #ifndef DO_NOT_PLAY_WIN_SOUND
     const Color winner = position.get_winner();
-    if (winner != NOBODY && (manualListModel.data(manualListModel.index(currentRow - 1))).toString().contains("Time over.")) {
+    if (winner != NOBODY
+        && (manualListModel.data(manualListModel.index(currentRow - 1)))
+               .toString()
+               .contains("Time over.")) {
         playSound(GameSound::win, winner);
     }
 #endif
@@ -1215,8 +1262,8 @@ bool Game::command(const string& cmd, bool update /* = true */)
         aiThread[WHITE]->sortTime = aiThread[BLACK]->sortTime = 0;
 #endif // TIME_STAT
 #ifdef CYCLE_STAT
-        loggerDebug("Sort Cycle: %ld + %ld = %ld\n",
-            aiThread[WHITE]->sortCycle, aiThread[BLACK]->sortCycle,
+        loggerDebug("Sort Cycle: %ld + %ld = %ld\n", aiThread[WHITE]->sortCycle,
+            aiThread[BLACK]->sortCycle,
             (aiThread[WHITE]->sortCycle + aiThread[BLACK]->sortCycle));
         aiThread[WHITE]->sortCycle = aiThread[BLACK]->sortCycle = 0;
 #endif // CYCLE_STAT
@@ -1229,26 +1276,30 @@ bool Game::command(const string& cmd, bool update /* = true */)
 #endif
 
 #ifdef TRANSPOSITION_TABLE_DEBUG
-        size_t hashProbeCount_1 = aiThread[WHITE]->ttHitCount + aiThread[WHITE]->ttMissCount;
-        size_t hashProbeCount_2 = aiThread[BLACK]->ttHitCount + aiThread[BLACK]->ttMissCount;
+        size_t hashProbeCount_1
+            = aiThread[WHITE]->ttHitCount + aiThread[WHITE]->ttMissCount;
+        size_t hashProbeCount_2
+            = aiThread[BLACK]->ttHitCount + aiThread[BLACK]->ttMissCount;
 
-        loggerDebug("[key 1] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
-            hashProbeCount_1,
-            aiThread[WHITE]->ttHitCount,
+        loggerDebug(
+            "[key 1] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+            hashProbeCount_1, aiThread[WHITE]->ttHitCount,
             aiThread[WHITE]->ttMissCount,
             aiThread[WHITE]->ttHitCount * 100 / hashProbeCount_1);
 
-        loggerDebug("[key 2] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
-            hashProbeCount_2,
-            aiThread[BLACK]->ttHitCount,
+        loggerDebug(
+            "[key 2] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+            hashProbeCount_2, aiThread[BLACK]->ttHitCount,
             aiThread[BLACK]->ttMissCount,
             aiThread[BLACK]->ttHitCount * 100 / hashProbeCount_2);
 
-        loggerDebug("[key +] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+        loggerDebug(
+            "[key +] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
             hashProbeCount_1 + hashProbeCount_2,
             aiThread[WHITE]->ttHitCount + aiThread[BLACK]->ttHitCount,
             aiThread[WHITE]->ttMissCount + aiThread[BLACK]->ttMissCount,
-            (aiThread[WHITE]->ttHitCount + aiThread[BLACK]->ttHitCount) * 100 / (hashProbeCount_1 + hashProbeCount_2));
+            (aiThread[WHITE]->ttHitCount + aiThread[BLACK]->ttHitCount) * 100
+                / (hashProbeCount_1 + hashProbeCount_2));
 #endif // TRANSPOSITION_TABLE_DEBUG
 
         if (gameOptions.getAutoRestart()) {
@@ -1301,14 +1352,17 @@ bool Game::command(const string& cmd, bool update /* = true */)
     }
 
     const auto flags = cout.flags();
-    cout << "Score: " << position.score[WHITE] << " : " << position.score[BLACK] << " : " << position.score_draw << "\ttotal: " << total << std::endl;
-    cout << fixed << std::setprecision(2) << blackWinRate << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
+    cout << "Score: " << position.score[WHITE] << " : " << position.score[BLACK]
+         << " : " << position.score_draw << "\ttotal: " << total << std::endl;
+    cout << fixed << std::setprecision(2) << blackWinRate
+         << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
     cout.flags(flags);
 
     return true;
 }
 
-// Browse the historical situation and refresh the situation display through the command function
+// Browse the historical situation and refresh the situation display through the
+// command function
 bool Game::phaseChange(int row, bool forceUpdate)
 {
     // If row is the currently viewed score line, there is no need to refresh it
@@ -1336,10 +1390,7 @@ bool Game::phaseChange(int row, bool forceUpdate)
     return true;
 }
 
-bool Game::updateScene()
-{
-    return updateScene(position);
-}
+bool Game::updateScene() { return updateScene(position); }
 
 bool Game::updateScene(Position& p)
 {
@@ -1378,7 +1429,8 @@ bool Game::updateScene(Position& p)
                     piece->setZValue(1);
 
                     // Pieces movement animation
-                    QPropertyAnimation* animation = new QPropertyAnimation(piece, "pos");
+                    QPropertyAnimation* animation
+                        = new QPropertyAnimation(piece, "pos");
                     animation->setDuration(durationTime);
                     animation->setStartValue(piece->pos());
                     animation->setEndValue(pos);
@@ -1396,19 +1448,25 @@ bool Game::updateScene(Position& p)
         if (j == (RANK_NB) * (FILE_NB + 1)) {
             // Judge whether it is a removing seed or an unplaced one
             if (key & W_STONE) {
-                pos = (key - 0x11 < nTotalPieces / 2 - p.count<IN_HAND>(WHITE)) ? scene.pos_p2_g : scene.pos_p1;
+                pos = (key - 0x11 < nTotalPieces / 2 - p.count<IN_HAND>(WHITE))
+                    ? scene.pos_p2_g
+                    : scene.pos_p1;
             } else {
-                pos = (key - 0x21 < nTotalPieces / 2 - p.count<IN_HAND>(BLACK)) ? scene.pos_p1_g : scene.pos_p2;
+                pos = (key - 0x21 < nTotalPieces / 2 - p.count<IN_HAND>(BLACK))
+                    ? scene.pos_p1_g
+                    : scene.pos_p2;
             }
 
             if (piece->pos() != pos) {
-                // In order to prepare for the selection of the recently removed pieces
+                // In order to prepare for the selection of the recently removed
+                // pieces
                 deletedPiece = piece;
 
 #ifdef GAME_PLACING_SHOW_REMOVED_PIECES
                 if (position.get_phase() == Phase::moving) {
 #endif
-                    QPropertyAnimation* animation = new QPropertyAnimation(piece, "pos");
+                    QPropertyAnimation* animation
+                        = new QPropertyAnimation(piece, "pos");
                     animation->setDuration(durationTime);
                     animation->setStartValue(piece->pos());
                     animation->setEndValue(pos);
@@ -1429,7 +1487,8 @@ bool Game::updateScene(Position& p)
             if (board[j] == BAN_STONE) {
                 pos = scene.polar2pos(File(j / RANK_NB), Rank(j % RANK_NB + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
-                    pieceList.at(static_cast<size_t>(nTotalPieces++))->setPos(pos);
+                    pieceList.at(static_cast<size_t>(nTotalPieces++))
+                        ->setPos(pos);
                 } else {
                     auto* newP = new PieceItem;
                     newP->setDeleted();
@@ -1454,7 +1513,8 @@ bool Game::updateScene(Position& p)
     int ipos = p.current_square();
     if (ipos) {
         key = board[p.current_square()];
-        ipos = (key & W_STONE) ? (key - W_STONE_1) * 2 : (key - B_STONE_1) * 2 + 1;
+        ipos = (key & W_STONE) ? (key - W_STONE_1) * 2
+                               : (key - B_STONE_1) * 2 + 1;
         if (ipos >= 0 && ipos < nTotalPieces) {
             currentPiece = pieceList.at(static_cast<size_t>(ipos));
             currentPiece->setSelected(true);
@@ -1474,12 +1534,16 @@ bool Game::updateScene(Position& p)
     emit scoreDrawChanged(QString::number(p.score_draw, 10));
 
     // Update winning rate LCD display
-    position.gamesPlayedCount = position.score[WHITE] + position.score[BLACK] + position.score_draw;
+    position.gamesPlayedCount
+        = position.score[WHITE] + position.score[BLACK] + position.score_draw;
     int winningRate_1 = 0, winningRate_2 = 0, winningRate_draw = 0;
     if (position.gamesPlayedCount != 0) {
-        winningRate_1 = position.score[WHITE] * 10000 / position.gamesPlayedCount;
-        winningRate_2 = position.score[BLACK] * 10000 / position.gamesPlayedCount;
-        winningRate_draw = position.score_draw * 10000 / position.gamesPlayedCount;
+        winningRate_1
+            = position.score[WHITE] * 10000 / position.gamesPlayedCount;
+        winningRate_2
+            = position.score[BLACK] * 10000 / position.gamesPlayedCount;
+        winningRate_draw
+            = position.score_draw * 10000 / position.gamesPlayedCount;
     }
 
     emit winningRate1Changed(QString::number(winningRate_1, 10));
@@ -1499,10 +1563,7 @@ void Game::showNetworkWindow()
 }
 #endif
 
-void Game::showTestWindow()
-{
-    gameTest->show();
-}
+void Game::showTestWindow() { gameTest->show(); }
 
 void Game::humanResign()
 {
@@ -1516,11 +1577,8 @@ void Game::saveScore()
     QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
     qint64 pid = QCoreApplication::applicationPid();
 
-    QString path = QDir::currentPath()
-        + "/" + tr("Score-MillGame_")
-        + strDate + "_"
-        + QString::number(pid)
-        + ".txt";
+    QString path = QDir::currentPath() + "/" + tr("Score-MillGame_") + strDate
+        + "_" + QString::number(pid) + ".txt";
 
     QFile file;
 
@@ -1561,16 +1619,26 @@ void Game::saveScore()
     textStream << ""
                << "\n";
 
-    position.gamesPlayedCount = position.score[WHITE] + position.score[BLACK] + position.score_draw;
+    position.gamesPlayedCount
+        = position.score[WHITE] + position.score[BLACK] + position.score_draw;
 
     if (position.gamesPlayedCount == 0) {
         goto out;
     }
 
     textStream << "Sum\t" + QString::number(position.gamesPlayedCount) << "\n";
-    textStream << "White\t" + QString::number(position.score[WHITE]) + "\t" + QString::number(position.score[WHITE] * 10000 / position.gamesPlayedCount) << "\n";
-    textStream << "Black\t" + QString::number(position.score[BLACK]) + "\t" + QString::number(position.score[BLACK] * 10000 / position.gamesPlayedCount) << "\n";
-    textStream << "Draw\t" + QString::number(position.score_draw) + "\t" + QString::number(position.score_draw * 10000 / position.gamesPlayedCount) << "\n";
+    textStream << "White\t" + QString::number(position.score[WHITE]) + "\t"
+            + QString::number(
+                position.score[WHITE] * 10000 / position.gamesPlayedCount)
+               << "\n";
+    textStream << "Black\t" + QString::number(position.score[BLACK]) + "\t"
+            + QString::number(
+                position.score[BLACK] * 10000 / position.gamesPlayedCount)
+               << "\n";
+    textStream << "Draw\t" + QString::number(position.score_draw) + "\t"
+            + QString::number(
+                position.score_draw * 10000 / position.gamesPlayedCount)
+               << "\n";
 
 out:
     file.flush();
@@ -1600,13 +1668,16 @@ void Game::appendGameOverReasonToMoveHistory()
     char record[64] = { 0 };
     switch (position.gameOverReason) {
     case GameOverReason::loseReasonNoWay:
-        snprintf(record, Position::RECORD_LEN_MAX, loseReasonNoWayStr, position.sideToMove, position.winner);
+        snprintf(record, Position::RECORD_LEN_MAX, loseReasonNoWayStr,
+            position.sideToMove, position.winner);
         break;
     case GameOverReason::loseReasonTimeOver:
-        snprintf(record, Position::RECORD_LEN_MAX, loseReasonTimeOverStr, position.winner);
+        snprintf(record, Position::RECORD_LEN_MAX, loseReasonTimeOverStr,
+            position.winner);
         break;
     case GameOverReason::drawReasonThreefoldRepetition:
-        snprintf(record, Position::RECORD_LEN_MAX, drawReasonThreefoldRepetitionStr);
+        snprintf(
+            record, Position::RECORD_LEN_MAX, drawReasonThreefoldRepetitionStr);
         break;
     case GameOverReason::drawReasonRule50:
         snprintf(record, Position::RECORD_LEN_MAX, drawReasonRule50Str);
@@ -1621,10 +1692,12 @@ void Game::appendGameOverReasonToMoveHistory()
         snprintf(record, Position::RECORD_LEN_MAX, drawReasonBoardIsFullStr);
         break;
     case GameOverReason::loseReasonlessThanThree:
-        snprintf(record, Position::RECORD_LEN_MAX, loseReasonlessThanThreeStr, position.winner);
+        snprintf(record, Position::RECORD_LEN_MAX, loseReasonlessThanThreeStr,
+            position.winner);
         break;
     case GameOverReason::loseReasonResign:
-        snprintf(record, Position::RECORD_LEN_MAX, loseReasonResignStr, ~position.winner);
+        snprintf(record, Position::RECORD_LEN_MAX, loseReasonResignStr,
+            ~position.winner);
         break;
     default:
         loggerDebug("No Game Over Reason");
@@ -1650,14 +1723,21 @@ void Game::setTips()
 
     switch (p.phase) {
     case Phase::ready:
-        tips = turnStr + " to place, " + std::to_string(p.pieceInHandCount[WHITE]) + " pieces are unplaced." + "  Score " + to_string(p.score[WHITE]) + ":" + to_string(p.score[BLACK]) + ", Draw " + to_string(p.score_draw);
+        tips = turnStr + " to place, "
+            + std::to_string(p.pieceInHandCount[WHITE])
+            + " pieces are unplaced." + "  Score " + to_string(p.score[WHITE])
+            + ":" + to_string(p.score[BLACK]) + ", Draw "
+            + to_string(p.score_draw);
         break;
 
     case Phase::placing:
         if (p.action == Action::place) {
-            tips = turnStr + " to place, " + std::to_string(p.pieceInHandCount[p.sideToMove]) + " pieces are unplaced.";
+            tips = turnStr + " to place, "
+                + std::to_string(p.pieceInHandCount[p.sideToMove])
+                + " pieces are unplaced.";
         } else if (p.action == Action::remove) {
-            tips = "Mill! " + turnStr + " to remove, " + std::to_string(p.pieceToRemoveCount) + " pieces to remove.";
+            tips = "Mill! " + turnStr + " to remove, "
+                + std::to_string(p.pieceToRemoveCount) + " pieces to remove.";
         }
         break;
 
@@ -1665,14 +1745,16 @@ void Game::setTips()
         if (p.action == Action::place || p.action == Action::select) {
             tips = turnStr + " to move.";
         } else if (p.action == Action::remove) {
-            tips = "Mill " + turnStr + " to remove, " + std::to_string(p.pieceToRemoveCount) + " pieces to remove.";
+            tips = "Mill " + turnStr + " to remove, "
+                + std::to_string(p.pieceToRemoveCount) + " pieces to remove.";
         }
         break;
 
     case Phase::gameOver:
         appendGameOverReasonToMoveHistory();
 
-        scoreStr = "Score " + to_string(p.score[WHITE]) + " : " + to_string(p.score[BLACK]) + ", Draw " + to_string(p.score_draw);
+        scoreStr = "Score " + to_string(p.score[WHITE]) + " : "
+            + to_string(p.score[BLACK]) + ", Draw " + to_string(p.score_draw);
 
         switch (p.winner) {
         case WHITE:
@@ -1730,7 +1812,4 @@ void Game::setTips()
     }
 }
 
-time_t Game::get_elapsed_time(int us)
-{
-    return elapsedSeconds[us];
-}
+time_t Game::get_elapsed_time(int us) { return elapsedSeconds[us]; }

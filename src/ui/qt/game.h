@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-/* 
+/*
  * This class deals with the scene object QGraphicsScene
  * It is the only control module in MVC model of this program
- * It doesn't do any operation on the controls in the main window, only signals the main window
- * You could have overloaded QGraphicsScene to implement it and saved the trouble of writing event filters
- * But it doesn't look good to use one scene class to do so many control module operations
+ * It doesn't do any operation on the controls in the main window, only signals
+ * the main window You could have overloaded QGraphicsScene to implement it and
+ * saved the trouble of writing event filters But it doesn't look good to use
+ * one scene class to do so many control module operations
  */
 
 #ifndef GAME_H_INCLUDED
@@ -82,58 +83,32 @@ class Game : public QObject {
     Q_OBJECT
 
 public:
-    explicit Game(
-        GameScene& scene,
-        QObject* parent = nullptr);
+    explicit Game(GameScene& scene, QObject* parent = nullptr);
     ~Game() override;
 
     //  Main window menu bar details
     const map<int, QStringList> getActions();
 
-    int getRuleIndex() noexcept
-    {
-        return ruleIndex;
-    }
+    int getRuleIndex() noexcept { return ruleIndex; }
 
-    int getTimeLimit() noexcept
-    {
-        return timeLimit;
-    }
+    int getTimeLimit() noexcept { return timeLimit; }
 
-    int getStepsLimit() noexcept
-    {
-        return stepsLimit;
-    }
+    int getStepsLimit() noexcept { return stepsLimit; }
 
-    bool isAnimation() noexcept
-    {
-        return hasAnimation;
-    }
+    bool isAnimation() noexcept { return hasAnimation; }
 
-    void setDurationTime(int i) noexcept
-    {
-        durationTime = i;
-    }
+    void setDurationTime(int i) noexcept { durationTime = i; }
 
-    int getDurationTime()
-    {
-        return durationTime;
-    }
+    int getDurationTime() { return durationTime; }
 
-    QStringListModel* getManualListModel()
-    {
-        return &manualListModel;
-    }
+    QStringListModel* getManualListModel() { return &manualListModel; }
 
     void setAiDepthTime(int time1, int time2);
     void getAiDepthTime(int& time1, int& time2);
 
     void humanResign();
 
-    Position* getPosition() noexcept
-    {
-        return &position;
-    }
+    Position* getPosition() noexcept { return &position; }
 
     char color_to_char(Color color);
     std::string char_to_string(char ch);
@@ -154,15 +129,9 @@ public:
     Server* server;
     Client* client;
 
-    Server* getServer()
-    {
-        return server;
-    }
+    Server* getServer() { return server; }
 
-    Client* getClient()
-    {
-        return client;
-    }
+    Client* getClient() { return client; }
 #endif
 
 signals:
@@ -200,7 +169,9 @@ signals:
 public slots:
 
     // Set rules
-    void setRule(int ruleNo, int stepLimited = std::numeric_limits<uint16_t>::max(), int timeLimited = 0);
+    void setRule(int ruleNo,
+        int stepLimited = std::numeric_limits<uint16_t>::max(),
+        int timeLimited = 0);
 
     // The game begins
     void gameStart();
@@ -214,7 +185,8 @@ public slots:
     // Set white and black inversion state
     void setInvert(bool arg = true);
 
-    // If Id is 1, let the computer take the lead; if Id is 2, let the computer take the second place
+    // If Id is 1, let the computer take the lead; if Id is 2, let the computer
+    // take the second place
     void setEngine(Color color, bool enabled = true);
     void setEngineWhite(bool enabled);
     void setEngineBlack(bool enabled);
@@ -288,7 +260,7 @@ public slots:
     // Left and right mirror images
     void mirror();
 
-    // The view must be rotated 90 ° clockwise
+    // The view must be rotated 90 degree clockwise
     void turnRight();
 
     // View rotated 90 degree counterclockwise
@@ -371,7 +343,8 @@ public slots:
         delete aiThread[BLACK];
     }
 
-    // According to the signal and state of qgraphics scene, select, drop or delete the sub objects
+    // According to the signal and state of qgraphics scene, select, drop or
+    // delete the sub objects
     bool actionPiece(QPointF p);
 
     // Admit defeat
@@ -383,7 +356,8 @@ public slots:
     // Historical situation and situation change
     bool phaseChange(int row, bool forceUpdate = false);
 
-    // Update the game display. Only after each step can the situation be refreshed
+    // Update the game display. Only after each step can the situation be
+    // refreshed
     bool updateScene();
     bool updateScene(Position& p);
 
@@ -397,10 +371,7 @@ public slots:
 
     void saveScore();
 
-    Test* getTest()
-    {
-        return gameTest;
-    }
+    Test* getTest() { return gameTest; }
 
 protected:
     // bool eventFilter(QObject * watched, QEvent * event);
@@ -444,28 +415,16 @@ public:
 
     void loadSettings();
 
-    bool fixWindowSizeEnabled()
-    {
-        return fixWindowSize;
-    }
+    bool fixWindowSizeEnabled() { return fixWindowSize; }
 
-    bool soundEnabled()
-    {
-        return hasSound;
-    }
+    bool soundEnabled() { return hasSound; }
 
-    bool animationEnabled()
-    {
-        return hasAnimation;
-    }
+    bool animationEnabled() { return hasAnimation; }
 
     // True when the computer takes the lead
     bool isAiPlayer[COLOR_NB];
 
-    string getTips()
-    {
-        return tips;
-    }
+    string getTips() { return tips; }
 
 private:
     // Fix Windows Size
@@ -539,14 +498,8 @@ private:
     std::vector<std::string> moveHistory;
 };
 
-inline time_t Game::start_timeb() const
-{
-    return startTime;
-}
+inline time_t Game::start_timeb() const { return startTime; }
 
-inline void Game::set_start_time(int time)
-{
-    startTime = time;
-}
+inline void Game::set_start_time(int time) { startTime = time; }
 
 #endif // GAME_H_INCLUDED

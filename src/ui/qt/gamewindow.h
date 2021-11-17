@@ -67,7 +67,8 @@ private slots:
     void onAutoRunTimeOut(QPrivateSignal signal);
 
     // The slot function for each action
-    // Remove functions have been connected in UI manager or main window initialization function
+    // Remove functions have been connected in UI manager or main window
+    // initialization function
     void on_actionNew_N_triggered();
     void on_actionOpen_O_triggered();
     void on_actionSave_S_triggered();
@@ -85,7 +86,7 @@ private slots:
     void on_actionInvert_I_toggled(bool arg1);
     void on_actionRowChange();
     void on_actionAutoRun_A_toggled(bool arg1);
-    //void on_actionResign_G_triggered();
+    // void on_actionResign_G_triggered();
     void on_actionLimited_T_triggered();
     void on_actionLocal_L_triggered();
     void on_actionEngineFight_E_triggered();

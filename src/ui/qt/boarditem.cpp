@@ -30,8 +30,9 @@ BoardItem::BoardItem(QGraphicsItem* parent)
 
     // Initialize 24 points
     for (int r = 0; r < FILE_NB; r++) {
-        // The first position is the 12 o'clock direction of the inner ring, which is sorted clockwise
-        // Then there is the middle ring and the outer ring
+        // The first position is the 12 o'clock direction of the inner ring,
+        // which is sorted clockwise Then there is the middle ring and the outer
+        // ring
         int a = (r + 1) * LINE_INTERVAL;
 
         position[r * RANK_NB + 0].rx() = 0;
@@ -81,9 +82,8 @@ void BoardItem::setDiagonal(bool arg)
     update(boundingRect());
 }
 
-void BoardItem::paint(QPainter* painter,
-    const QStyleOptionGraphicsItem* option,
-    QWidget* widget)
+void BoardItem::paint(
+    QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
@@ -107,9 +107,11 @@ void BoardItem::paint(QPainter* painter,
 
     // Solid line brush
 #ifdef QT_MOBILE_APP_UI
-    QPen pen(QBrush(QColor(241, 156, 159)), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+    QPen pen(QBrush(QColor(241, 156, 159)), LINE_WEIGHT, Qt::SolidLine,
+        Qt::SquareCap, Qt::BevelJoin);
 #else
-    QPen pen(QBrush(QColor(178, 34, 34)), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+    QPen pen(QBrush(QColor(178, 34, 34)), LINE_WEIGHT, Qt::SolidLine,
+        Qt::SquareCap, Qt::BevelJoin);
 #endif
     painter->setPen(pen);
 
@@ -129,13 +131,15 @@ void BoardItem::paint(QPainter* painter,
     if (hasDiagonalLine) {
         // Draw 4 diagonal lines
         for (int i = 1; i < RANK_NB; i += 2) {
-            painter->drawLine(position[i], position[(FILE_NB - 1) * RANK_NB + i]);
+            painter->drawLine(
+                position[i], position[(FILE_NB - 1) * RANK_NB + i]);
         }
     }
 
 #ifdef PLAYER_DRAW_SEAT_NUMBER
     // Draw the seat number
-    QPen fontPen(QBrush(Qt::white), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+    QPen fontPen(QBrush(Qt::white), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap,
+        Qt::BevelJoin);
     painter->setPen(fontPen);
     QFont font;
     font.setPointSize(4);
@@ -158,7 +162,8 @@ QPointF BoardItem::nearestPosition(QPointF const pos)
 
     // Look for the nearest spot
     for (auto i : position) {
-        // If the distance between the mouse point and the falling point is within the radius of the piece
+        // If the distance between the mouse point and the falling point is
+        // within the radius of the piece
         if (QLineF(pos, i).length() < PIECE_SIZE / 2) {
             nearestPos = i;
             break;

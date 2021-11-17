@@ -16,9 +16,9 @@
 
 #include <cstring>
 
+#include "config.h"
 #include "base.h"
 #include "command_queue.h"
-#include "config.h"
 
 CommandQueue::CommandQueue()
 {
@@ -64,10 +64,12 @@ bool CommandQueue::read(char* dest)
     }
 
 #ifdef _MSC_VER
-    strncpy_s(dest, 4096, (char const*)commands[readIndex], 4096); // See  uci.cpp LINE_INPUT_MAX_CHAR
+    strncpy_s(dest, 4096, (char const*)commands[readIndex],
+        4096); // See  uci.cpp LINE_INPUT_MAX_CHAR
     strncpy_s(commands[readIndex], 4096, "", COMMAND_LENGTH);
 #else
-    strncpy(dest, commands[readIndex], 4096); // See  uci.cpp LINE_INPUT_MAX_CHAR
+    strncpy(
+        dest, commands[readIndex], 4096); // See  uci.cpp LINE_INPUT_MAX_CHAR
     strncpy(commands[readIndex], "", COMMAND_LENGTH);
 #endif
 

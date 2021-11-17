@@ -20,7 +20,8 @@ public:
     ~RandomAI();
 
     // Functions
-    void play(fieldStruct* theField, unsigned int* pushFrom, unsigned int* pushTo);
+    void play(
+        fieldStruct* theField, unsigned int* pushFrom, unsigned int* pushTo);
 };
 
 #endif // RANDOM_AI_H_INCLUDED

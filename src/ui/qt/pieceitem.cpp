@@ -33,10 +33,10 @@ PieceItem::PieceItem(QGraphicsItem* parent)
 
     setCursor(Qt::OpenHandCursor);
 
-    //setAcceptedMouseButtons(Qt::LeftButton);
+    // setAcceptedMouseButtons(Qt::LeftButton);
 
     setAcceptedMouseButtons(Qt::MouseButtons());
-    //setAcceptHoverEvents(true);
+    // setAcceptHoverEvents(true);
 
     model = Models::noPiece;
 
@@ -70,9 +70,8 @@ QPainterPath PieceItem::shape() const
     return path;
 }
 
-void PieceItem::paint(QPainter* painter,
-    const QStyleOptionGraphicsItem* option,
-    QWidget* widget)
+void PieceItem::paint(
+    QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
@@ -126,7 +125,8 @@ void PieceItem::paint(QPainter* painter,
 
     // If the model is selected, draw four small right angles
     if (isSelected()) {
-        QPen pen(selectLineColor, selectLineWeight, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+        QPen pen(selectLineColor, selectLineWeight, Qt::SolidLine,
+            Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
         const int xy = (size - selectLineWeight) / 2;
 
@@ -142,7 +142,8 @@ void PieceItem::paint(QPainter* painter,
 
     // If the model is deleted, cross it
     if (deleted) {
-        QPen pen(removeLineColor, removeLineWeight, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+        QPen pen(removeLineColor, removeLineWeight, Qt::SolidLine,
+            Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
 
         painter->drawLine(-size / 3, -size / 3, size / 3, size / 3);

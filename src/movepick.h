@@ -34,8 +34,8 @@ void partial_insertion_sort(ExtMove* begin, const ExtMove* end, int limit);
 /// current position. The most important method is next_move(), which returns a
 /// new pseudo legal move each time it is called, until there are no moves left,
 /// when MOVE_NONE is returned. In order to improve the efficiency of the alpha
-/// beta algorithm, MovePicker attempts to return the moves which are most likely
-/// to get a cut-off first.
+/// beta algorithm, MovePicker attempts to return the moves which are most
+/// likely to get a cut-off first.
 class MovePicker {
 public:
     MovePicker(const MovePicker&) = delete;
@@ -46,15 +46,9 @@ public:
 
     template <GenType> void score();
 
-    ExtMove* begin() noexcept
-    {
-        return cur;
-    }
+    ExtMove* begin() noexcept { return cur; }
 
-    ExtMove* end() noexcept
-    {
-        return endMoves;
-    }
+    ExtMove* end() noexcept { return endMoves; }
 
     Position& pos;
     Move ttMove { MOVE_NONE };
@@ -64,10 +58,7 @@ public:
 
     int moveCount { 0 };
 
-    int move_count() const noexcept
-    {
-        return moveCount;
-    }
+    int move_count() const noexcept { return moveCount; }
 };
 
 #endif // #ifndef MOVEPICK_H_INCLUDED

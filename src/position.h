@@ -112,7 +112,8 @@ public:
 
     void mirror(std::vector<std::string>& moveHistory, bool cmdChange = true);
     void turn(std::vector<std::string>& moveHistory, bool cmdChange = true);
-    void rotate(std::vector<std::string>& moveHistory, int degrees, bool cmdChange = true);
+    void rotate(std::vector<std::string>& moveHistory, int degrees,
+        bool cmdChange = true);
 
     void reset_bb();
 
@@ -123,7 +124,8 @@ public:
     int potential_mills_count(Square to, Color c, Square from = SQ_0);
     bool is_all_in_mills(Color c);
 
-    void surrounded_pieces_count(Square s, int& ourPieceCount, int& theirPieceCount, int& bannedCount, int& emptyCount);
+    void surrounded_pieces_count(Square s, int& ourPieceCount,
+        int& theirPieceCount, int& bannedCount, int& emptyCount);
     bool is_all_surrounded(Color c
 #ifdef MADWEASEL_MUEHLE_RULE
         ,
@@ -140,7 +142,7 @@ public:
 
     int get_mobility_diff() const;
     void updateMobility(MoveType mt, Square s);
-    //template <typename Mt> void updateMobility(Square from, Square to);
+    // template <typename Mt> void updateMobility(Square from, Square to);
     int calculate_mobility_diff();
 
     bool is_three_endgame() const;
@@ -201,10 +203,7 @@ public:
 
 extern std::ostream& operator<<(std::ostream& os, const Position& pos);
 
-inline Color Position::side_to_move() const
-{
-    return sideToMove;
-}
+inline Color Position::side_to_move() const { return sideToMove; }
 
 inline Piece Position::piece_on(Square s) const
 {
@@ -212,10 +211,7 @@ inline Piece Position::piece_on(Square s) const
     return board[s];
 }
 
-inline bool Position::empty(Square s) const
-{
-    return piece_on(s) == NO_PIECE;
-}
+inline bool Position::empty(Square s) const { return piece_on(s) == NO_PIECE; }
 
 inline Piece Position::moved_piece(Move m) const
 {
@@ -233,30 +229,15 @@ template <PieceType Pt> inline int Position::count(Color c) const
     return 0;
 }
 
-inline Key Position::key() const noexcept
-{
-    return st.key;
-}
+inline Key Position::key() const noexcept { return st.key; }
 
-inline void Position::construct_key()
-{
-    st.key = 0;
-}
+inline void Position::construct_key() { st.key = 0; }
 
-inline int Position::game_ply() const
-{
-    return gamePly;
-}
+inline int Position::game_ply() const { return gamePly; }
 
-inline unsigned int Position::rule50_count() const
-{
-    return st.rule50;
-}
+inline unsigned int Position::rule50_count() const { return st.rule50; }
 
-inline Thread* Position::this_thread() const
-{
-    return thisThread;
-}
+inline Thread* Position::this_thread() const { return thisThread; }
 
 inline bool Position::select_piece(File f, Rank r)
 {
@@ -307,25 +288,13 @@ inline Piece* Position::get_board() noexcept
     return static_cast<Piece*>(board);
 }
 
-inline Square Position::current_square() const
-{
-    return currentSquare;
-}
+inline Square Position::current_square() const { return currentSquare; }
 
-inline enum Phase Position::get_phase() const
-{
-    return phase;
-}
+inline enum Phase Position::get_phase() const { return phase; }
 
-inline enum Action Position::get_action() const
-{
-    return action;
-}
+inline enum Action Position::get_action() const { return action; }
 
-inline const char* Position::get_record() const
-{
-    return record;
-}
+inline const char* Position::get_record() const { return record; }
 
 inline int Position::piece_on_board_count(Color c) const
 {
@@ -342,10 +311,7 @@ inline int Position::piece_to_remove_count() const
     return pieceToRemoveCount;
 }
 
-inline int Position::get_mobility_diff() const
-{
-    return mobilityDiff;
-}
+inline int Position::get_mobility_diff() const { return mobilityDiff; }
 
 inline bool Position::is_three_endgame() const
 {

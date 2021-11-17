@@ -18,12 +18,12 @@
 #define BASE2_H
 
 #ifdef _WIN32
-  #include <windows.h>
+#include <windows.h>
 #else
-  #include <pthread.h>
-  #include <stdlib.h>
-  #include <unistd.h>
-#endif  // _WIN32
+#include <pthread.h>
+#include <stdlib.h>
+#include <unistd.h>
+#endif // _WIN32
 
 #include <string.h>
 
@@ -32,29 +32,25 @@
 #endif // __ANDROID__
 
 #ifdef _WIN32
-inline void Idle(void) {
-  Sleep(1);
-}
+inline void Idle(void) { Sleep(1); }
 #else
-inline void Idle(void) {
-  usleep(1000);
-}
-#endif  // _WIN32
+inline void Idle(void) { usleep(1000); }
+#endif // _WIN32
 
-#define LOG_TAG   "MillEngine"
+#define LOG_TAG "MillEngine"
 
 #ifdef _WIN32
-#define LOGD(...)  printf(__VA_ARGS__)
-#define LOGI(...)  printf(__VA_ARGS__)
-#define LOGW(...)  printf(__VA_ARGS__)
-#define LOGE(...)  printf(__VA_ARGS__)
-#define LOGF(...)  printf(__VA_ARGS__)
+#define LOGD(...) printf(__VA_ARGS__)
+#define LOGI(...) printf(__VA_ARGS__)
+#define LOGW(...) printf(__VA_ARGS__)
+#define LOGE(...) printf(__VA_ARGS__)
+#define LOGF(...) printf(__VA_ARGS__)
 #else
-#define LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
-#define LOGI(...)  __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
-#define LOGW(...)  __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
-#define LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
-#define LOGF(...)  __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, __VA_ARGS__)
-#endif  // _WIN32
+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
+#define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
+#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
+#define LOGF(...) __android_log_print(ANDROID_LOG_FATAL, LOG_TAG, __VA_ARGS__)
+#endif // _WIN32
 
-#endif  // BASE2_H
+#endif // BASE2_H

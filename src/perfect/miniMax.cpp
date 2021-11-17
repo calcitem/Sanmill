@@ -63,8 +63,9 @@ MiniMax::MiniMax()
 
     // The algorithm assumes that each player does only one move.
     // That means closing a mill and removing a stone should be one move.
-    // PL_TO_MOVE_CHANGED   means that in the predecessor state the player to move has changed to the other player.
-    // PL_TO_MOVE_UNCHANGED means that the player to move is still the one who shall move.
+    // PL_TO_MOVE_CHANGED   means that in the predecessor state the player to
+    // move has changed to the other player. PL_TO_MOVE_UNCHANGED means that the
+    // player to move is still the one who shall move.
     unsigned char skvPerspectiveMatrixTmp[4][2] = {
         //  PL_TO_MOVE_UNCHANGED    PL_TO_MOVE_CHANGED
         SKV_VALUE_INVALID, SKV_VALUE_INVALID, // SKV_VALUE_INVALID
@@ -104,7 +105,8 @@ bool MiniMax::falseOrStop()
 // Returns the best choice if the database has been opened and
 // calculates the best choice for that if database is not open.
 //-----------------------------------------------------------------------------
-void* MiniMax::getBestChoice(unsigned int tilLevel, unsigned int* choice, unsigned int maximumNumberOfBranches)
+void* MiniMax::getBestChoice(unsigned int tilLevel, unsigned int* choice,
+    unsigned int maximumNumberOfBranches)
 {
     // set global vars
     depthOfFullTree = tilLevel;
@@ -123,7 +125,8 @@ void* MiniMax::getBestChoice(unsigned int tilLevel, unsigned int* choice, unsign
     prepareBestChoiceCalculation();
 
     // First make a tree until the desired level
-    letTheTreeGrow(&root, &tva, depthOfFullTree, FPKV_MIN_VALUE, FPKV_MAX_VALUE);
+    letTheTreeGrow(
+        &root, &tva, depthOfFullTree, FPKV_MIN_VALUE, FPKV_MAX_VALUE);
 
     // pass best choice and close database
     *choice = root.bestMoveId;
@@ -158,16 +161,23 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
         layerInDatabase = false;
         calcDatabase = true;
         threadManager.unCancelExecution();
-        arrayInfos.vectorArrays.resize(ArrayInfo::numArrayTypes * skvfHeader.numLayers, arrayInfos.listArrays.end());
+        arrayInfos.vectorArrays.resize(
+            ArrayInfo::numArrayTypes * skvfHeader.numLayers,
+            arrayInfos.listArrays.end());
 
         // calculate layer after layer, beginning with the last one
-        for (curCalculatedLayer = 0; curCalculatedLayer < skvfHeader.numLayers; curCalculatedLayer++) {
+        for (curCalculatedLayer = 0; curCalculatedLayer < skvfHeader.numLayers;
+             curCalculatedLayer++) {
             // layer already calculated?
             if (layerStats[curCalculatedLayer].layerIsCompletedAndInFile)
                 continue;
 
-            // don't calculate if neither the layer nor the partner layer has any knots
-            if (layerStats[curCalculatedLayer].knotsInLayer == 0 && layerStats[layerStats[curCalculatedLayer].partnerLayer].knotsInLayer == 0)
+            // don't calculate if neither the layer nor the partner layer has
+            // any knots
+            if (layerStats[curCalculatedLayer].knotsInLayer == 0
+                && layerStats[layerStats[curCalculatedLayer].partnerLayer]
+                        .knotsInLayer
+                    == 0)
                 continue;
 
             // calculate
@@ -256,16 +266,19 @@ bool MiniMax::calcLayer(unsigned int layerNumber)
     }
 
     // test partner layer if retro-analysis has been used
-    if (shallRetroAnalysisBeUsed(layerNumber) && layerStats[layerNumber].partnerLayer != layerNumber) {
+    if (shallRetroAnalysisBeUsed(layerNumber)
+        && layerStats[layerNumber].partnerLayer != layerNumber) {
         if (!testLayer(layerStats[layerNumber].partnerLayer)) {
-            PRINT(0, this, "ERROR: Layer calculation cancelled or failed!" << endl);
+            PRINT(0, this,
+                "ERROR: Layer calculation cancelled or failed!" << endl);
             return false;
         }
     }
 
     // update output information
     EnterCriticalSection(&csOsPrint);
-    if (shallRetroAnalysisBeUsed(layerNumber) && layerNumber != layerStats[layerNumber].partnerLayer) {
+    if (shallRetroAnalysisBeUsed(layerNumber)
+        && layerNumber != layerStats[layerNumber].partnerLayer) {
         lastCalculatedLayer.push_back(layerStats[layerNumber].partnerLayer);
     }
     lastCalculatedLayer.push_back(layerNumber);
@@ -278,10 +291,7 @@ bool MiniMax::calcLayer(unsigned int layerNumber)
 // pauseDatabaseCalculation()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::pauseDatabaseCalculation()
-{
-    threadManager.pauseExecution();
-}
+void MiniMax::pauseDatabaseCalculation() { threadManager.pauseExecution(); }
 
 //-----------------------------------------------------------------------------
 // cancelDatabaseCalculation()
@@ -289,7 +299,8 @@ void MiniMax::pauseDatabaseCalculation()
 //-----------------------------------------------------------------------------
 void MiniMax::cancelDatabaseCalculation()
 {
-    // when returning from executeParallelLoop() all function shall quit immediately up to calculateDatabase()
+    // when returning from executeParallelLoop() all function shall quit
+    // immediately up to calculateDatabase()
     threadManager.cancelExecution();
 }
 

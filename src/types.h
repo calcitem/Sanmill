@@ -19,19 +19,21 @@
 
 #include "config.h"
 
-/// When compiling with provided Makefile (e.g. for Linux and OSX), configuration
-/// is done automatically. To get started type 'make help'.
+/// When compiling with provided Makefile (e.g. for Linux and OSX),
+/// configuration is done automatically. To get started type 'make help'.
 ///
 /// When Makefile is not used (e.g. with Microsoft Visual Studio) some switches
 /// need to be set manually:
 ///
 /// -DNDEBUG      | Disable debugging mode. Always use this for release.
 ///
-/// -DNO_PREFETCH | Disable use of prefetch asm-instruction. You may need this to
+/// -DNO_PREFETCH | Disable use of prefetch asm-instruction. You may need this
+/// to
 ///               | run on some very old machines.
 ///
 /// -DUSE_POPCNT  | Add runtime support for use of popcnt asm-instruction. Works
-///               | only in 64-bit mode and requires hardware with popcnt support.
+///               | only in 64-bit mode and requires hardware with popcnt
+///               support.
 ///
 /// -DUSE_PEXT    | Add runtime support for use of pext asm-instruction. Works
 ///               | only in 64-bit mode and requires hardware with pext support.
@@ -58,11 +60,14 @@
 /// _WIN32             Building on Windows (any)
 /// _WIN64             Building on Windows 64 bit
 
-#if defined(__GNUC__) && (__GNUC__ < 9 || (__GNUC__ == 9 && __GNUC_MINOR__ <= 2)) && defined(_WIN32) && !defined(__clang__)
+#if defined(__GNUC__)                                                          \
+    && (__GNUC__ < 9 || (__GNUC__ == 9 && __GNUC_MINOR__ <= 2))                \
+    && defined(_WIN32) && !defined(__clang__)
 #define ALIGNAS_ON_STACK_VARIABLES_BROKEN
 #endif
 
-#define ASSERT_ALIGNED(ptr, alignment) assert(reinterpret_cast<uintptr_t>(ptr) % alignment == 0)
+#define ASSERT_ALIGNED(ptr, alignment)                                         \
+    assert(reinterpret_cast<uintptr_t>(ptr) % alignment == 0)
 
 #if defined(_WIN64) && defined(_MSC_VER) // No Makefile used
 #include <intrin.h> // Microsoft header for _BitScanForward64()
@@ -113,16 +118,9 @@ typedef uint32_t Bitboard;
 constexpr int MAX_MOVES = 72; // (24 - 4 - 3) * 4 = 68
 constexpr int MAX_PLY = 48;
 
-enum Move : int32_t {
-    MOVE_NONE,
-    MOVE_NULL = 65
-};
+enum Move : int32_t { MOVE_NONE, MOVE_NULL = 65 };
 
-enum MoveType {
-    MOVETYPE_PLACE,
-    MOVETYPE_MOVE,
-    MOVETYPE_REMOVE
-};
+enum MoveType { MOVETYPE_PLACE, MOVETYPE_MOVE, MOVETYPE_REMOVE };
 
 enum Color : uint8_t {
     NOCOLOR = 0,
@@ -138,7 +136,8 @@ enum class Phase : uint16_t {
     ready,
     placing, // Placing men on vacant points
     moving, // Moving men to adjacent points or
-    // (optional) Moving men to any vacant point when the player has been reduced to three men
+    // (optional) Moving men to any vacant point when the player has been
+    // reduced to three men
     gameOver
 };
 
@@ -151,12 +150,7 @@ enum class Phase : uint16_t {
 //       - 'Jump' a piece to any empty location if the player has less than
 //         three or four pieces and mayFly is |true|;
 //   - Remove an opponent's piece after successfully closing a mill.
-enum class Action : uint16_t {
-    none,
-    select,
-    place,
-    remove
-};
+enum class Action : uint16_t { none, select, place, remove };
 
 enum class GameOverReason {
     noReason,
@@ -211,7 +205,8 @@ enum Value : int8_t {
     VALUE_MTDF_WINDOW = VALUE_EACH_PIECE,
     VALUE_PVS_WINDOW = VALUE_EACH_PIECE,
 
-    VALUE_PLACING_WINDOW = VALUE_EACH_PIECE_PLACING_NEEDREMOVE + (VALUE_EACH_PIECE_ONBOARD - VALUE_EACH_PIECE_INHAND) + 1,
+    VALUE_PLACING_WINDOW = VALUE_EACH_PIECE_PLACING_NEEDREMOVE
+        + (VALUE_EACH_PIECE_ONBOARD - VALUE_EACH_PIECE_INHAND) + 1,
     VALUE_MOVING_WINDOW = VALUE_EACH_PIECE_MOVING_NEEDREMOVE + 1,
 };
 
@@ -292,10 +287,7 @@ constexpr Value PieceValue = StoneValue;
 
 using Depth = int8_t;
 
-enum : int {
-    DEPTH_NONE = 0,
-    DEPTH_OFFSET = DEPTH_NONE
-};
+enum : int { DEPTH_NONE = 0, DEPTH_OFFSET = DEPTH_NONE };
 
 enum Square : int {
     SQ_0 = 0,
@@ -367,7 +359,8 @@ enum Square : int {
 
     SQ_NONE = 0,
 
-    EFFECTIVE_SQUARE_NB = 24, // The board consists of a grid with twenty-four intersections or points.
+    EFFECTIVE_SQUARE_NB = 24, // The board consists of a grid with twenty-four
+                              // intersections or points.
 
     SQUARE_ZERO = 0,
     SQUARE_NB = 40,
@@ -392,12 +385,7 @@ enum LineDirection : int {
     LD_NB = 3
 };
 
-enum File : int {
-    FILE_A = 1,
-    FILE_B,
-    FILE_C,
-    FILE_NB = 3
-};
+enum File : int { FILE_A = 1, FILE_B, FILE_C, FILE_NB = 3 };
 
 enum Rank : int {
     RANK_1 = 1,
@@ -411,15 +399,15 @@ enum Rank : int {
     RANK_NB = 8
 };
 
-#define ENABLE_BASE_OPERATORS_ON(T)                                 \
-    constexpr T operator+(T d1, int d2) { return T(int(d1) + d2); } \
-    constexpr T operator-(T d1, int d2) { return T(int(d1) - d2); } \
-    constexpr T operator-(T d) { return T(-int(d)); }               \
-    inline T& operator+=(T& d1, int d2) { return d1 = d1 + d2; }    \
+#define ENABLE_BASE_OPERATORS_ON(T)                                            \
+    constexpr T operator+(T d1, int d2) { return T(int(d1) + d2); }            \
+    constexpr T operator-(T d1, int d2) { return T(int(d1) - d2); }            \
+    constexpr T operator-(T d) { return T(-int(d)); }                          \
+    inline T& operator+=(T& d1, int d2) { return d1 = d1 + d2; }               \
     inline T& operator-=(T& d1, int d2) { return d1 = d1 - d2; }
 
-#define ENABLE_INCR_OPERATORS_ON(T)                          \
-    inline T& operator++(T& d) { return d = T(int(d) + 1); } \
+#define ENABLE_INCR_OPERATORS_ON(T)                                            \
+    inline T& operator++(T& d) { return d = T(int(d) + 1); }                   \
     inline T& operator--(T& d) { return d = T(int(d) - 1); }
 
 #define ENABLE_FULL_OPERATORS_ON(T)                                            \
@@ -454,10 +442,7 @@ constexpr Square make_square(File f, Rank r)
     return Square((f << 3) + r - 1);
 }
 
-constexpr Piece make_piece(Color c)
-{
-    return Piece(c << 4);
-}
+constexpr Piece make_piece(Color c) { return Piece(c << 4); }
 
 constexpr Piece make_piece(Color c, PieceType pt)
 {
@@ -472,10 +457,7 @@ constexpr Piece make_piece(Color c, PieceType pt)
     return NO_PIECE;
 }
 
-constexpr Color color_of(Piece pc)
-{
-    return Color(pc >> 4);
-}
+constexpr Color color_of(Piece pc) { return Color(pc >> 4); }
 
 constexpr PieceType type_of(Piece pc)
 {
@@ -499,15 +481,9 @@ constexpr bool is_ok(Square s)
     return s == SQ_NONE || (s >= SQ_BEGIN && s < SQ_END);
 }
 
-constexpr File file_of(Square s)
-{
-    return File(s >> 3);
-}
+constexpr File file_of(Square s) { return File(s >> 3); }
 
-constexpr Rank rank_of(Square s)
-{
-    return Rank((s & 0x07) + 1);
-}
+constexpr Rank rank_of(Square s) { return Rank((s & 0x07) + 1); }
 
 constexpr Square from_sq(Move m)
 {
@@ -541,10 +517,7 @@ constexpr Move make_move(Square from, Square to)
     return Move((from << 8) + to);
 }
 
-constexpr Move reverse_move(Move m)
-{
-    return make_move(to_sq(m), from_sq(m));
-}
+constexpr Move reverse_move(Move m) { return make_move(to_sq(m), from_sq(m)); }
 
 constexpr bool is_ok(Move m)
 {

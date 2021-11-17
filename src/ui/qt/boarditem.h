@@ -34,16 +34,13 @@ public:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
         QWidget* widget = nullptr) override;
 
-    // Use UserType + 1 to represent mill pieces, and determines whether it is an object of the boarditem class
-    // Another way is to put the class name in the 0key position of data, SetData(0, "BoardItem"), and then use data(0) to judge
-    enum {
-        Type = UserType + 1
-    };
+    // Use UserType + 1 to represent mill pieces, and determines whether it is
+    // an object of the boarditem class Another way is to put the class name in
+    // the 0key position of data, SetData(0, "BoardItem"), and then use data(0)
+    // to judge
+    enum { Type = UserType + 1 };
 
-    int type() const noexcept override
-    {
-        return Type;
-    }
+    int type() const noexcept override { return Type; }
 
     // Set with or without diagonal
     void setDiagonal(bool arg = true);
@@ -51,10 +48,12 @@ public:
     // Return to the nearest placing point
     QPointF nearestPosition(QPointF pos);
 
-    // The circle and position of the model are transformed into the point coordinates
+    // The circle and position of the model are transformed into the point
+    // coordinates
     QPointF polar2pos(File file, Rank rank);
 
-    // The coordinates of the falling point are transformed into circles and positions for the model
+    // The coordinates of the falling point are transformed into circles and
+    // positions for the model
     bool pos2polar(QPointF pos, File& file, Rank& rank);
 
     static const uint8_t FILE_NB = 3;

@@ -53,15 +53,9 @@ private slots:
     void enableGetActionButton();
     void sessionOpened();
 
-    void setPort(uint16_t p) noexcept
-    {
-        this->port = p;
-    }
+    void setPort(uint16_t p) noexcept { this->port = p; }
 
-    uint16_t getPort() noexcept
-    {
-        return port;
-    }
+    uint16_t getPort() noexcept { return port; }
 
 private:
     QComboBox* hostCombo = nullptr;

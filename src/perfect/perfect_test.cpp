@@ -52,8 +52,7 @@ int perfect_main(void)
     // intro
     cout << "*************************" << endl;
     cout << "* Muehle                *" << endl;
-    cout << "*************************" << endl
-         << endl;
+    cout << "*************************" << endl << endl;
 
     ai->setDatabasePath(databaseDirectory);
 
@@ -61,7 +60,8 @@ int perfect_main(void)
 #ifdef SELF_PLAY
     mill->beginNewGame(ai, ai, fieldStruct::playerOne);
 #else
-    mill->beginNewGame(ai, ai, (rand() % 2) ? fieldStruct::playerOne : fieldStruct::playerTwo);
+    mill->beginNewGame(
+        ai, ai, (rand() % 2) ? fieldStruct::playerOne : fieldStruct::playerTwo);
 #endif // SELF_PLAY
 
     if (calculateDatabase) {
@@ -69,13 +69,11 @@ int perfect_main(void)
         ai->calculateDatabase(MAX_DEPTH_OF_TREE, false);
 
         // test database
-        cout << endl
-             << "Begin test starting from layer: ";
+        cout << endl << "Begin test starting from layer: ";
 
         startTestFromLayer;
 
-        cout << endl
-             << "End test at layer: ";
+        cout << endl << "End test at layer: ";
 
         endTestAtLayer;
 
@@ -106,7 +104,9 @@ int perfect_main(void)
             cout << "\n\n\n";
             mill->getComputersChoice(&from, &to);
             cout << "\n\n";
-            cout << "\nlast move was from " << (char)(mill->getLastMoveFrom() + 'a') << " to " << (char)(mill->getLastMoveTo() + 'a') << "\n\n";
+            cout << "\nlast move was from "
+                 << (char)(mill->getLastMoveFrom() + 'a') << " to "
+                 << (char)(mill->getLastMoveTo() + 'a') << "\n\n";
 
 #ifdef SELF_PLAY
             moveCount++;
@@ -118,11 +118,15 @@ int perfect_main(void)
             mill->printBoard();
 
             // Human
-            if ((mill->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman) || (mill->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)) {
+            if ((mill->getCurrentPlayer() == fieldStruct::playerOne
+                    && playerOneHuman)
+                || (mill->getCurrentPlayer() == fieldStruct::playerTwo
+                    && playerTwoHuman)) {
                 do {
                     // Show text
                     if (mill->mustStoneBeRemoved())
-                        cout << "\n   Which stone do you want to remove? [a-x]: \n\n\n";
+                        cout << "\n   Which stone do you want to remove? "
+                                "[a-x]: \n\n\n";
                     else if (mill->inSettingPhase())
                         cout << "\n   Where are you going? [a-x]: \n\n\n";
                     else
@@ -148,11 +152,17 @@ int perfect_main(void)
                     }
 
                     // undo
-                    if (ch[0] == 'u' && ch[1] == 'n' && ch[2] == 'd' && ch[3] == 'o') {
+                    if (ch[0] == 'u' && ch[1] == 'n' && ch[2] == 'd'
+                        && ch[3] == 'o') {
                         // undo moves until a human player shall move
                         do {
                             mill->undoMove();
-                        } while (!((mill->getCurrentPlayer() == fieldStruct::playerOne && playerOneHuman) || (mill->getCurrentPlayer() == fieldStruct::playerTwo && playerTwoHuman)));
+                        } while (!(
+                            (mill->getCurrentPlayer() == fieldStruct::playerOne
+                                && playerOneHuman)
+                            || (mill->getCurrentPlayer()
+                                    == fieldStruct::playerTwo
+                                && playerTwoHuman)));
 
                         // reprint board
                         break;
@@ -172,9 +182,11 @@ int perfect_main(void)
         mill->printBoard();
 
         if (mill->getWinner() == fieldStruct::playerOne)
-            cout << "\n   Player 1 (o) won after " << mill->getMovesDone() << " move.\n\n";
+            cout << "\n   Player 1 (o) won after " << mill->getMovesDone()
+                 << " move.\n\n";
         else if (mill->getWinner() == fieldStruct::playerTwo)
-            cout << "\n   Player 2 (x) won after " << mill->getMovesDone() << " move.\n\n";
+            cout << "\n   Player 2 (x) won after " << mill->getMovesDone()
+                 << " move.\n\n";
         else if (mill->getWinner() == fieldStruct::gameDrawn)
             cout << "\n   Draw!\n\n";
         else

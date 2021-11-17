@@ -15,7 +15,7 @@
 #include <iostream>
 #include <math.h>
 
-//using namespace std;
+// using namespace std;
 
 // values of states/situations
 #define VALUE_GAME_LOST -1000.0f
@@ -88,8 +88,10 @@ protected:
         unsigned int numWhiteStones;
         unsigned int numBlackStones;
         unsigned int numSubLayers;
-        unsigned int subLayerIndexAB[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
-        unsigned int subLayerIndexCD[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
+        unsigned int subLayerIndexAB[NUM_STONES_PER_PLAYER_PLUS_ONE]
+                                    [NUM_STONES_PER_PLAYER_PLUS_ONE];
+        unsigned int subLayerIndexCD[NUM_STONES_PER_PLAYER_PLUS_ONE]
+                                    [NUM_STONES_PER_PLAYER_PLUS_ONE];
         SubLayer subLayer[MAX_NUM_SUB_LAYERS];
     };
 
@@ -121,23 +123,48 @@ protected:
 
     // constant variables for state addressing in the database
     Layer layer[NUM_LAYERS]; // the layers
-    unsigned int layerIndex[2][NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE]; // indices of layer [moving/setting phase][number of white stones][number of black stones]
-    unsigned int numPositionsCD[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
-    unsigned int numPositionsAB[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
+    unsigned int layerIndex
+        [2][NUM_STONES_PER_PLAYER_PLUS_ONE]
+        [NUM_STONES_PER_PLAYER_PLUS_ONE]; // indices of layer [moving/setting
+                                          // phase][number of white
+                                          // stones][number of black stones]
+    unsigned int numPositionsCD[NUM_STONES_PER_PLAYER_PLUS_ONE]
+                               [NUM_STONES_PER_PLAYER_PLUS_ONE];
+    unsigned int numPositionsAB[NUM_STONES_PER_PLAYER_PLUS_ONE]
+                               [NUM_STONES_PER_PLAYER_PLUS_ONE];
     unsigned int indexAB[MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B];
     unsigned int indexCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D];
-    unsigned char symmetryOperationCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D]; // index of symmetry operation used to get from the original state to the current one
-    unsigned int powerOfThree[numSquaresGroupC + numSquaresGroupD]; // 3^0, 3^1, 3^2, ...
-    unsigned int symmetryOperationTable[NUM_SYM_OPERATIONS][fieldStruct::size]; // Matrix used for application of the symmetry operations
-    unsigned int* originalStateCD[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
-    unsigned int* originalStateAB[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
-    unsigned int reverseSymOperation[NUM_SYM_OPERATIONS]; // index of the reverse symmetry operation
-    unsigned int concSymOperation[NUM_SYM_OPERATIONS][NUM_SYM_OPERATIONS]; // symmetry operation, which is identical to applying those two in the index
-    unsigned int mOverN[fieldStruct::size + 1][fieldStruct::size + 1]; // m over n
-    unsigned char valueOfMove[fieldStruct::size * fieldStruct::size]; // contains the value of the situation, which will be achieved by that move
-    unsigned short plyInfoForOutput[fieldStruct::size * fieldStruct::size]; // contains the value of the situation, which will be achieved by that move
-    unsigned int incidencesValuesSubMoves[fieldStruct::size * fieldStruct::size][4]; // contains the number of ...
-    unsigned int symmetricStateNumberArray[NUM_SYM_OPERATIONS]; // array for state numbers
+    unsigned char symmetryOperationCD[MAX_ANZ_POSITION_C
+        * MAX_ANZ_POSITION_D]; // index of symmetry operation used to get from
+                               // the original state to the current one
+    unsigned int
+        powerOfThree[numSquaresGroupC + numSquaresGroupD]; // 3^0, 3^1, 3^2, ...
+    unsigned int symmetryOperationTable[NUM_SYM_OPERATIONS][fieldStruct::
+            size]; // Matrix used for application of the symmetry operations
+    unsigned int* originalStateCD[NUM_STONES_PER_PLAYER_PLUS_ONE]
+                                 [NUM_STONES_PER_PLAYER_PLUS_ONE];
+    unsigned int* originalStateAB[NUM_STONES_PER_PLAYER_PLUS_ONE]
+                                 [NUM_STONES_PER_PLAYER_PLUS_ONE];
+    unsigned int
+        reverseSymOperation[NUM_SYM_OPERATIONS]; // index of the reverse
+                                                 // symmetry operation
+    unsigned int
+        concSymOperation[NUM_SYM_OPERATIONS]
+                        [NUM_SYM_OPERATIONS]; // symmetry operation, which is
+                                              // identical to applying those two
+                                              // in the index
+    unsigned int mOverN[fieldStruct::size + 1]
+                       [fieldStruct::size + 1]; // m over n
+    unsigned char valueOfMove[fieldStruct::size
+        * fieldStruct::size]; // contains the value of the situation, which will
+                              // be achieved by that move
+    unsigned short plyInfoForOutput[fieldStruct::size
+        * fieldStruct::size]; // contains the value of the situation, which will
+                              // be achieved by that move
+    unsigned int incidencesValuesSubMoves[fieldStruct::size * fieldStruct::size]
+                                         [4]; // contains the number of ...
+    unsigned int symmetricStateNumberArray[NUM_SYM_OPERATIONS]; // array for
+                                                                // state numbers
     string databaseDirectory; // directory containing the database files
 
     // Variables used individually by each single thread
@@ -149,8 +176,10 @@ protected:
         bool gameHasFinished; // someone has won or current board is full
         int ownId; // id of the player who called the play()-function
         unsigned int curSearchDepth; // current level
-        unsigned int depthOfFullTree; // search depth where the whole tree is explored
-        unsigned int* idPossibilities; // returned pointer of getPossibilities()-function
+        unsigned int
+            depthOfFullTree; // search depth where the whole tree is explored
+        unsigned int*
+            idPossibilities; // returned pointer of getPossibilities()-function
         Backup* oldStates; // for undo()-function
         Possibility* possibilities; // for getPossNormalMove()-function
         PerfectAI* parent; //
@@ -159,24 +188,37 @@ protected:
         ThreadVars();
 
         // Functions
-        unsigned int* getPossSettingPhase(unsigned int* numPossibilities, void** pPossibilities);
-        unsigned int* getPossNormalMove(unsigned int* numPossibilities, void** pPossibilities);
-        unsigned int* getPossStoneRemove(unsigned int* numPossibilities, void** pPossibilities);
+        unsigned int* getPossSettingPhase(
+            unsigned int* numPossibilities, void** pPossibilities);
+        unsigned int* getPossNormalMove(
+            unsigned int* numPossibilities, void** pPossibilities);
+        unsigned int* getPossStoneRemove(
+            unsigned int* numPossibilities, void** pPossibilities);
 
         // move functions
-        inline void updatePossibleMoves(unsigned int stone, Player* stoneOwner, bool stoneRemoved, unsigned int ignoreStone);
-        inline void updateWarning(unsigned int firstStone, unsigned int secondStone);
-        inline void setWarning(unsigned int stoneOne, unsigned int stoneTwo, unsigned int stoneThree);
+        inline void updatePossibleMoves(unsigned int stone, Player* stoneOwner,
+            bool stoneRemoved, unsigned int ignoreStone);
+        inline void updateWarning(
+            unsigned int firstStone, unsigned int secondStone);
+        inline void setWarning(unsigned int stoneOne, unsigned int stoneTwo,
+            unsigned int stoneThree);
         inline void removeStone(unsigned int from, Backup* backup);
         inline void setStone(unsigned int to, Backup* backup);
-        inline void normalMove(unsigned int from, unsigned int to, Backup* backup);
+        inline void normalMove(
+            unsigned int from, unsigned int to, Backup* backup);
 
         // database functions
-        unsigned int getLayerAndStateNumber(unsigned int& layerNum, unsigned int& stateNumber);
-        void setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour);
-        bool fieldIntegrityOK(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, bool aStoneCanBeRemovedFromCurPlayer);
+        unsigned int getLayerAndStateNumber(
+            unsigned int& layerNum, unsigned int& stateNumber);
+        void setWarningAndMill(unsigned int stone, unsigned int firstNeighbour,
+            unsigned int secondNeighbour);
+        bool fieldIntegrityOK(unsigned int numberOfMillsCurrentPlayer,
+            unsigned int numberOfMillsOpponentPlayer,
+            bool aStoneCanBeRemovedFromCurPlayer);
         void calcPossibleMoves(Player* player);
-        void storePredecessor(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars);
+        void storePredecessor(unsigned int numberOfMillsCurrentPlayer,
+            unsigned int numberOfMillsOpponentPlayer,
+            unsigned int* amountOfPred, RetroAnalysisPredVars* predVars);
     };
 
     ThreadVars* threadVars;
@@ -185,14 +227,20 @@ protected:
     unsigned int getNumberOfLayers();
     unsigned int getNumberOfKnotsInLayer(unsigned int layerNum);
     int64_t mOverN_Function(unsigned int m, unsigned int n);
-    void applySymmetryOperationOnField(unsigned char symmetryOperationNumber, unsigned int* sourceField, unsigned int* destField);
-    bool isSymOperationInvariantOnGroupCD(unsigned int symmetryOperation, int* theField);
+    void applySymmetryOperationOnField(unsigned char symmetryOperationNumber,
+        unsigned int* sourceField, unsigned int* destField);
+    bool isSymOperationInvariantOnGroupCD(
+        unsigned int symmetryOperation, int* theField);
     bool shallRetroAnalysisBeUsed(unsigned int layerNum);
-    void getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers, unsigned int* succLayers);
-    void getPredecessors(unsigned int threadNo, unsigned int* amountOfPred, RetroAnalysisPredVars* predVars);
-    bool setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber);
+    void getSuccLayers(unsigned int layerNum, unsigned int* amountOfSuccLayers,
+        unsigned int* succLayers);
+    void getPredecessors(unsigned int threadNo, unsigned int* amountOfPred,
+        RetroAnalysisPredVars* predVars);
+    bool setSituation(
+        unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber);
     unsigned int getLayerNumber(unsigned int threadNo);
-    unsigned int getLayerAndStateNumber(unsigned int threadNo, unsigned int& layerNum, unsigned int& stateNumber);
+    unsigned int getLayerAndStateNumber(unsigned int threadNo,
+        unsigned int& layerNum, unsigned int& stateNumber);
 
     // integrity test functions
     bool checkMoveAndSetSituation();
@@ -201,16 +249,25 @@ protected:
 
     // Virtual Functions
     void prepareBestChoiceCalculation();
-    void getValueOfSituation(unsigned int threadNo, float& floatValue, TwoBit& shortValue);
+    void getValueOfSituation(
+        unsigned int threadNo, float& floatValue, TwoBit& shortValue);
     void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel);
     bool getOpponentLevel(unsigned int threadNo);
     void deletePossibilities(unsigned int threadNo, void* pPossibilities);
-    unsigned int* getPossibilities(unsigned int threadNo, unsigned int* numPossibilities, bool* opponentsMove, void** pPossibilities);
-    void undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void* pBackup, void* pPossibilities);
-    void move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void** pBackup, void* pPossibilities);
-    void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities);
-    void storeValueOfMove(unsigned int threadNo, unsigned int idPossibility, void* pPossibilities, unsigned char value, unsigned int* freqValuesSubMoves, PlyInfoVarType plyInfo);
-    void getSymStateNumWithDoubles(unsigned int threadNo, unsigned int* numSymmetricStates, unsigned int** symStateNumbers);
+    unsigned int* getPossibilities(unsigned int threadNo,
+        unsigned int* numPossibilities, bool* opponentsMove,
+        void** pPossibilities);
+    void undo(unsigned int threadNo, unsigned int idPossibility,
+        bool opponentsMove, void* pBackup, void* pPossibilities);
+    void move(unsigned int threadNo, unsigned int idPossibility,
+        bool opponentsMove, void** pBackup, void* pPossibilities);
+    void printMoveInformation(unsigned int threadNo, unsigned int idPossibility,
+        void* pPossibilities);
+    void storeValueOfMove(unsigned int threadNo, unsigned int idPossibility,
+        void* pPossibilities, unsigned char value,
+        unsigned int* freqValuesSubMoves, PlyInfoVarType plyInfo);
+    void getSymStateNumWithDoubles(unsigned int threadNo,
+        unsigned int* numSymmetricStates, unsigned int** symStateNumbers);
     void printBoard(unsigned int threadNo, unsigned char value);
     string getOutputInformation(unsigned int layerNum);
     unsigned int getPartnerLayer(unsigned int layerNum);
@@ -224,13 +281,20 @@ public:
 
     // Functions
     bool setDatabasePath(const char* directory);
-    void play(fieldStruct* theField, unsigned int* pushFrom, unsigned int* pushTo);
-    void getValueOfMoves(unsigned char* moveValue, unsigned int* freqValuesSubMoves, PlyInfoVarType* plyInfo, unsigned int* moveQuality, unsigned char& knotValue, PlyInfoVarType& bestAmountOfPlies);
-    void getField(unsigned int layerNum, unsigned int stateNumber, fieldStruct* field, bool* gameHasFinished);
-    void getLayerAndStateNumber(unsigned int& layerNum, unsigned int& stateNumber);
+    void play(
+        fieldStruct* theField, unsigned int* pushFrom, unsigned int* pushTo);
+    void getValueOfMoves(unsigned char* moveValue,
+        unsigned int* freqValuesSubMoves, PlyInfoVarType* plyInfo,
+        unsigned int* moveQuality, unsigned char& knotValue,
+        PlyInfoVarType& bestAmountOfPlies);
+    void getField(unsigned int layerNum, unsigned int stateNumber,
+        fieldStruct* field, bool* gameHasFinished);
+    void getLayerAndStateNumber(
+        unsigned int& layerNum, unsigned int& stateNumber);
 
     // Testing functions
-    bool testLayers(unsigned int startTestFromLayer, unsigned int endTestAtLayer);
+    bool testLayers(
+        unsigned int startTestFromLayer, unsigned int endTestAtLayer);
 };
 
 #endif // PERFECT_AI_H_INCLUDED

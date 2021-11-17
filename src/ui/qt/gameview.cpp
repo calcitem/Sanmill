@@ -30,34 +30,30 @@ void GameView::flip()
 {
     // Flip view up and down
     /* The following uses a lot of knowledge about graphic transformation matrix
-     * Do not use the scale method, QT graphics transformation is for the coordinate system
-     * Scale matrix to
-     *    sx  0  0
-     * S = 0 sy  0
-     *     0  0  1
-     * The up and down flip should be multiplied by the following matrix on the basis of the original transformation matrix:
-     * 1  0  0
-     * 0 -1  0
-     * 0  0  1
+     * Do not use the scale method, QT graphics transformation is for the
+     * coordinate system Scale matrix to sx  0  0 S = 0 sy  0 0  0  1 The up and
+     * down flip should be multiplied by the following matrix on the basis of
+     * the original transformation matrix: 1  0  0 0 -1  0 0  0  1
      */
 
-    // Method 1: directly multiply the original transformation matrix by the above matrix
-    // QMatrix only assigns values to the first two columns of the transformation matrix
+    // Method 1: directly multiply the original transformation matrix by the
+    // above matrix QMatrix only assigns values to the first two columns of the
+    // transformation matrix
     setTransform(transform() * QTransform(1, 0, 0, -1, 0, 0));
 
-    /* Method 2: manually calculate the new transformation matrix and then assign a value to the scene
-     * The efficiency of this method is not necessarily high, and manual calculation is needed
-    QMatrix mt = matrix();
-    mt.setMatrix(-mt.m11(), mt.m12(), -mt.m21(), mt.m22(), -mt.dx(), mt.dy());
-    setMatrix(mt);
+    /* Method 2: manually calculate the new transformation matrix and then
+    assign a value to the scene
+     * The efficiency of this method is not necessarily high, and manual
+    calculation is needed QMatrix mt = matrix(); mt.setMatrix(-mt.m11(),
+    mt.m12(), -mt.m21(), mt.m22(), -mt.dx(), mt.dy()); setMatrix(mt);
      */
 }
 
 void GameView::mirror()
 {
     // Left and right mirror of view
-    /* The left and right mirror images shall be multiplied by the following matrix
-       on the basis of the original transformation matrix:
+    /* The left and right mirror images shall be multiplied by the following
+     matrix on the basis of the original transformation matrix:
      * -1  0  0
      *  0  1  0
      *  0  0  1
@@ -68,7 +64,7 @@ void GameView::mirror()
 void GameView::turnRight()
 {
     // The view must be rotated 90 degree clockwise
-    /*  Don't use the scale method. 
+    /*  Don't use the scale method.
         After the view is mirrored or flipped, its steering will be reversed
      *  The rotation matrix is
      *     cos(a)  sin(a)  0
@@ -86,7 +82,7 @@ void GameView::turnRight()
 void GameView::turnLeft()
 {
     // View rotated 90 degree counterclockwise
-    /* When the view is rotated 90 degree counterclockwise, 
+    /* When the view is rotated 90 degree counterclockwise,
      * it should be multiplied by the following matrix
      * on the basis of the original transformation matrix:
      * 0 -1  0

@@ -37,15 +37,9 @@ public:
     explicit Test(QWidget* parent = nullptr, QString k = "Key0");
     ~Test();
 
-    void setKey(QString k) noexcept
-    {
-        key = k;
-    }
+    void setKey(QString k) noexcept { key = k; }
 
-    QString getKey() noexcept
-    {
-        return key;
-    }
+    QString getKey() noexcept { return key; }
 
     void stop();
 

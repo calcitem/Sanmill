@@ -28,7 +28,8 @@ struct Rule {
     // The number of pieces each player has
     int piecesCount;
 
-    // When a player is reduced to N pieces, his pieces are free to move to any unoccupied point
+    // When a player is reduced to N pieces, his pieces are free to move to any
+    // unoccupied point
     int flyPieceCount;
 
     int piecesAtLeastCount; // Default is 3
@@ -36,32 +37,35 @@ struct Rule {
     // Add four diagonal lines to the board.
     bool hasDiagonalLines;
 
-    // In the placing phase, the points of removed pieces will no longer be able to place.
+    // In the placing phase, the points of removed pieces will no longer be able
+    // to place.
     bool hasBannedLocations;
 
     // The pieces can move in the placing phase.
     bool mayMoveInPlacingPhase;
 
-    // The player who moves second in the placing phrase moves first in the moving phrase.
+    // The player who moves second in the placing phrase moves first in the
+    // moving phrase.
     bool isDefenderMoveFirst;
 
     // If a player close more than one mill at once,
     // she will be able to remove the number of mills she closed.
     bool mayRemoveMultiple;
 
-    // By default, players must remove any other pieces first before removing a piece from a formed mill.
-    // Enable this option to disable the limitation.
+    // By default, players must remove any other pieces first before removing a
+    // piece from a formed mill. Enable this option to disable the limitation.
     bool mayRemoveFromMillsAlways;
 
-    // If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move.
+    // If a player forms the mill in the placing phase, she will remove the
+    // opponent's unplaced piece and continue to make a move.
     bool mayOnlyRemoveUnplacedPieceInPlacingPhase;
 
     // At the end of the placing phase, when the board is full,
     // the side that places first loses the game, otherwise, the game is a draw.
     bool isWhiteLoseButNotDrawWhenBoardFull;
 
-    // The player will lose if his opponent blocks them so that they cannot be moved.
-    // Change side to move if this option is disabled.
+    // The player will lose if his opponent blocks them so that they cannot be
+    // moved. Change side to move if this option is disabled.
     bool isLoseButNotChangeSideWhenNoWay;
 
     // Player may fly if he is down to three or four (configurable) pieces.
@@ -69,14 +73,16 @@ struct Rule {
     // she is allowed to move the piece to any free point.
     bool mayFly;
 
-    // The N-move rule in Mill states that if no remove has been made in the last N moves.
+    // The N-move rule in Mill states that if no remove has been made in the
+    // last N moves.
     unsigned int nMoveRule;
 
-    // If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn.
+    // If either player has only three pieces and neither player removes a piece
+    // within a specific moves, the game is drawn.
     unsigned int endgameNMoveRule;
 
-    // The threefold repetition rule (also known as repetition of position) states that
-    // the game is drawn if the same position occurs three times.
+    // The threefold repetition rule (also known as repetition of position)
+    // states that the game is drawn if the same position occurs three times.
     bool threefoldRepetitionRule;
 };
 

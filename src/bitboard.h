@@ -26,8 +26,12 @@
 
 #define S2(a, b) (square_bb(SQ_##a) | square_bb(SQ_##b))
 #define S3(a, b, c) (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c))
-#define S4(a, b, c, d) (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | square_bb(SQ_##d))
-#define S4(a, b, c, d) (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | square_bb(SQ_##d))
+#define S4(a, b, c, d)                                                         \
+    (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c)                 \
+        | square_bb(SQ_##d))
+#define S4(a, b, c, d)                                                         \
+    (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c)                 \
+        | square_bb(SQ_##d))
 
 namespace Bitboards {
 
@@ -91,53 +95,29 @@ inline Bitboard& operator^=(Bitboard& b, Square s) noexcept
     return b ^= square_bb(s);
 }
 
-inline Bitboard operator&(Square s, Bitboard b) noexcept
-{
-    return b & s;
-}
+inline Bitboard operator&(Square s, Bitboard b) noexcept { return b & s; }
 
-inline Bitboard operator|(Square s, Bitboard b) noexcept
-{
-    return b | s;
-}
+inline Bitboard operator|(Square s, Bitboard b) noexcept { return b | s; }
 
-inline Bitboard operator^(Square s, Bitboard b) noexcept
-{
-    return b ^ s;
-}
+inline Bitboard operator^(Square s, Bitboard b) noexcept { return b ^ s; }
 
 inline Bitboard operator|(Square s1, Square s2) noexcept
 {
     return square_bb(s1) | s2;
 }
 
-constexpr bool more_than_one(Bitboard b)
-{
-    return b & (b - 1);
-}
+constexpr bool more_than_one(Bitboard b) { return b & (b - 1); }
 
 /// rank_bb() and file_bb() return a bitboard representing all the squares on
 /// the given file or rank.
 
-constexpr Bitboard rank_bb(Rank r) noexcept
-{
-    return Rank1BB << (r - 1);
-}
+constexpr Bitboard rank_bb(Rank r) noexcept { return Rank1BB << (r - 1); }
 
-constexpr Bitboard rank_bb(Square s)
-{
-    return rank_bb(rank_of(s));
-}
+constexpr Bitboard rank_bb(Square s) { return rank_bb(rank_of(s)); }
 
-constexpr Bitboard file_bb(File f) noexcept
-{
-    return FileABB << (f - 1);
-}
+constexpr Bitboard file_bb(File f) noexcept { return FileABB << (f - 1); }
 
-constexpr Bitboard file_bb(Square s)
-{
-    return file_bb(file_of(s));
-}
+constexpr Bitboard file_bb(Square s) { return file_bb(file_of(s)); }
 
 /// popcount() counts the number of non-zero bits in a bitboard
 

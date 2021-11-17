@@ -20,8 +20,7 @@
 
 /// generate<MOVE> generates all moves.
 /// Returns a pointer to the end of the move moves.
-template <>
-ExtMove* generate<MOVE>(Position& pos, ExtMove* moveList)
+template <> ExtMove* generate<MOVE>(Position& pos, ExtMove* moveList)
 {
     Square from = SQ_0, to = SQ_0;
     ExtMove* cur = moveList;
@@ -34,8 +33,11 @@ ExtMove* generate<MOVE>(Position& pos, ExtMove* moveList)
             continue;
         }
 
-        if (rule.mayFly && pos.piece_on_board_count(pos.side_to_move()) <= rule.flyPieceCount) {
-            // piece count < 3 or 4 and allow fly, if is empty point, that's ok, do not need in move list
+        if (rule.mayFly
+            && pos.piece_on_board_count(pos.side_to_move())
+                <= rule.flyPieceCount) {
+            // piece count < 3 or 4 and allow fly, if is empty point, that's ok,
+            // do not need in move list
             for (to = SQ_BEGIN; to < SQ_END; ++to) {
                 if (!pos.get_board()[to]) {
                     *cur++ = make_move(from, to);
@@ -43,7 +45,8 @@ ExtMove* generate<MOVE>(Position& pos, ExtMove* moveList)
             }
         } else {
             for (auto direction = MD_BEGIN; direction < MD_NB; ++direction) {
-                to = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[from][direction]);
+                to = static_cast<Square>(
+                    MoveList<LEGAL>::adjacentSquares[from][direction]);
                 if (to && !pos.get_board()[to]) {
                     *cur++ = make_move(from, to);
                 }
@@ -56,8 +59,7 @@ ExtMove* generate<MOVE>(Position& pos, ExtMove* moveList)
 
 /// generate<PLACE> generates all places.
 /// Returns a pointer to the end of the move list.
-template <>
-ExtMove* generate<PLACE>(Position& pos, ExtMove* moveList)
+template <> ExtMove* generate<PLACE>(Position& pos, ExtMove* moveList)
 {
     ExtMove* cur = moveList;
 
@@ -72,8 +74,7 @@ ExtMove* generate<PLACE>(Position& pos, ExtMove* moveList)
 
 /// generate<REMOVE> generates all removes.
 /// Returns a pointer to the end of the move moves.
-template <>
-ExtMove* generate<REMOVE>(Position& pos, ExtMove* moveList)
+template <> ExtMove* generate<REMOVE>(Position& pos, ExtMove* moveList)
 {
     Square s;
 
@@ -98,7 +99,8 @@ ExtMove* generate<REMOVE>(Position& pos, ExtMove* moveList)
     for (auto i = EFFECTIVE_SQUARE_NB - 1; i >= 0; i--) {
         s = MoveList<LEGAL>::movePriorityList[i];
         if (pos.get_board()[s] & make_piece(them)) {
-            if (rule.mayRemoveFromMillsAlways || !pos.potential_mills_count(s, NOBODY)) {
+            if (rule.mayRemoveFromMillsAlways
+                || !pos.potential_mills_count(s, NOBODY)) {
                 *cur++ = (Move)-s;
             }
         }
@@ -109,15 +111,15 @@ ExtMove* generate<REMOVE>(Position& pos, ExtMove* moveList)
 
 /// generate<LEGAL> generates all the legal moves in the given position
 
-template <>
-ExtMove* generate<LEGAL>(Position& pos, ExtMove* moveList)
+template <> ExtMove* generate<LEGAL>(Position& pos, ExtMove* moveList)
 {
     ExtMove* cur = moveList;
 
     switch (pos.get_action()) {
     case Action::select:
     case Action::place:
-        if (pos.get_phase() == Phase::placing || pos.get_phase() == Phase::ready) {
+        if (pos.get_phase() == Phase::placing
+            || pos.get_phase() == Phase::ready) {
             return generate<PLACE>(pos, moveList);
         }
 
@@ -141,14 +143,9 @@ ExtMove* generate<LEGAL>(Position& pos, ExtMove* moveList)
     return cur;
 }
 
-template <>
-void MoveList<LEGAL>::create()
-{
-    Mills::adjacent_squares_init();
-}
+template <> void MoveList<LEGAL>::create() { Mills::adjacent_squares_init(); }
 
-template <>
-void MoveList<LEGAL>::shuffle()
+template <> void MoveList<LEGAL>::shuffle()
 {
     Mills::move_priority_list_shuffle();
 }

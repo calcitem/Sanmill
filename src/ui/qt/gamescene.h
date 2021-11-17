@@ -44,7 +44,7 @@ public:
     const QPointF pos_p2, pos_p2_g;
 
 protected:
-    //void keyPressEvent(QKeyEvent *keyEvent);
+    // void keyPressEvent(QKeyEvent *keyEvent);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
     void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent) override;

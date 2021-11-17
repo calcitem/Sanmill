@@ -32,26 +32,14 @@ using CTSL::HashMap;
 /// age                 8 bit
 
 struct TTEntry {
-    Value value() const noexcept
-    {
-        return (Value)value8;
-    }
+    Value value() const noexcept { return (Value)value8; }
 
-    Depth depth() const noexcept
-    {
-        return (Depth)depth8 + DEPTH_OFFSET;
-    }
+    Depth depth() const noexcept { return (Depth)depth8 + DEPTH_OFFSET; }
 
-    Bound bound() const noexcept
-    {
-        return (Bound)(genBound8);
-    }
+    Bound bound() const noexcept { return (Bound)(genBound8); }
 
 #ifdef TT_MOVE_ENABLE
-    Move tt_move() const noexcept
-    {
-        return (Move)(ttMove);
-    }
+    Move tt_move() const noexcept { return (Move)(ttMove); }
 #endif // TT_MOVE_ENABLE
 
 private:
@@ -72,20 +60,15 @@ class TranspositionTable {
 public:
     static bool search(const Key& key, TTEntry& tte);
 
-    static Value probe(const Key& key,
-        const Depth& depth,
-        const Value& alpha,
-        const Value& beta,
-        Bound& type
+    static Value probe(const Key& key, const Depth& depth, const Value& alpha,
+        const Value& beta, Bound& type
 #ifdef TT_MOVE_ENABLE
         ,
         Move& ttMove
 #endif // TT_MOVE_ENABLE
     );
 
-    static int save(const Value& value,
-        const Depth& depth,
-        const Bound& type,
+    static int save(const Value& value, const Depth& depth, const Bound& type,
         const Key& key
 #ifdef TT_MOVE_ENABLE
         ,

@@ -100,17 +100,23 @@ Test::Test(QWidget* parent, QString k)
     connect(closeButton, &QAbstractButton::clicked, this, &QWidget::close);
 
     QGridLayout* mainLayout = nullptr;
-    if (QGuiApplication::styleHints()->showIsFullScreen() || QGuiApplication::styleHints()->showIsMaximized()) {
+    if (QGuiApplication::styleHints()->showIsFullScreen()
+        || QGuiApplication::styleHints()->showIsMaximized()) {
         auto outerVerticalLayout = new QVBoxLayout(this);
-        outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
+        outerVerticalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
         auto outerHorizontalLayout = new QHBoxLayout;
-        outerHorizontalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
-        auto groupBox = new QGroupBox(QGuiApplication::applicationDisplayName());
+        outerHorizontalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
+        auto groupBox
+            = new QGroupBox(QGuiApplication::applicationDisplayName());
         mainLayout = new QGridLayout(groupBox);
         outerHorizontalLayout->addWidget(groupBox);
-        outerHorizontalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
+        outerHorizontalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
         outerVerticalLayout->addLayout(outerHorizontalLayout);
-        outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
+        outerVerticalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
     } else {
         mainLayout = new QGridLayout(this);
     }
@@ -230,10 +236,7 @@ void Test::readFromMemory()
     }
 }
 
-QString Test::createUuidString()
-{
-    return QUuid::createUuid().toString();
-}
+QString Test::createUuidString() { return QUuid::createUuid().toString(); }
 
 void Test::startAction()
 {
@@ -257,7 +260,4 @@ void Test::stopAction()
     stopButton->setEnabled(false);
 }
 
-void Test::onTimeOut()
-{
-    readFromMemory();
-}
+void Test::onTimeOut() { readFromMemory(); }

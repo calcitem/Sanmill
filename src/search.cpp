@@ -22,18 +22,17 @@
 using Eval::evaluate;
 using std::string;
 
-Value MTDF(Position* pos, Sanmill::Stack<Position>& ss, Value firstguess, Depth depth, Depth originDepth, Move& bestMove);
+Value MTDF(Position* pos, Sanmill::Stack<Position>& ss, Value firstguess,
+    Depth depth, Depth originDepth, Move& bestMove);
 
-Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move& bestMove);
+Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth,
+    Depth originDepth, Value alpha, Value beta, Move& bestMove);
 
 bool is_timeout(TimePoint startTime);
 
 /// Search::init() is called at startup
 
-void Search::init() noexcept
-{
-    return;
-}
+void Search::init() noexcept { return; }
 
 /// Search::clear() resets search state to its initial value
 
@@ -93,7 +92,9 @@ int Thread::search()
             return 50;
         }
 
-        if (rule.endgameNMoveRule < rule.nMoveRule && rootPos->is_three_endgame() && posKeyHistory.size() >= rule.endgameNMoveRule) {
+        if (rule.endgameNMoveRule < rule.nMoveRule
+            && rootPos->is_three_endgame()
+            && posKeyHistory.size() >= rule.endgameNMoveRule) {
             return 10;
         }
 #endif // RULE_50
@@ -116,10 +117,14 @@ int Thread::search()
 
 #if 0
     // TODO(calcitem): Only NMM
-    if (rootPos->piece_on_board_count(WHITE) + rootPos->piece_on_board_count(BLACK) <= 1 &&
-        !rule.hasDiagonalLines && gameOptions.getShufflingEnabled()) {
+    if (rootPos->piece_on_board_count(WHITE)
+                + rootPos->piece_on_board_count(BLACK)
+            <= 1
+        && !rule.hasDiagonalLines && gameOptions.getShufflingEnabled()) {
         const uint32_t seed = static_cast<uint32_t>(now());
-        std::shuffle(MoveList<LEGAL>::movePriorityList.begin(), MoveList<LEGAL>::movePriorityList.end(), std::default_random_engine(seed));
+        std::shuffle(MoveList<LEGAL>::movePriorityList.begin(),
+            MoveList<LEGAL>::movePriorityList.end(),
+            std::default_random_engine(seed));
     }
 #endif
 
@@ -147,7 +152,7 @@ int Thread::search()
 #endif
 
             if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
-                //loggerDebug("Algorithm: MTD(f).\n");
+                // loggerDebug("Algorithm: MTD(f).\n");
                 value = MTDF(rootPos, ss, value, i, i, bestMove);
             } else {
                 value = qsearch(rootPos, ss, i, i, alpha, beta, bestMove);
@@ -165,7 +170,9 @@ int Thread::search()
 
 #ifdef TIME_STAT
         timeEnd = chrono::steady_clock::now();
-        loggerDebug("\nIDS Time: %llds\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
+        loggerDebug("\nIDS Time: %llds\n",
+            chrono::duration_cast<chrono::seconds>(timeEnd - timeStart)
+                .count());
 #endif
     }
 
@@ -175,7 +182,8 @@ int Thread::search()
 #endif
 #endif
 
-    if (gameOptions.getAlgorithm() != 2 /* !MTD(f) */ && gameOptions.getIDSEnabled()) {
+    if (gameOptions.getAlgorithm() != 2 /* !MTD(f) */
+        && gameOptions.getIDSEnabled()) {
         alpha = -VALUE_INFINITE;
         beta = VALUE_INFINITE;
     }
@@ -190,7 +198,8 @@ out:
 
 #ifdef TIME_STAT
     timeEnd = chrono::steady_clock::now();
-    loggerDebug("Total Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
+    loggerDebug("Total Time: %llus\n",
+        chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
 #endif
 
     lastvalue = bestvalue;
@@ -205,7 +214,8 @@ extern ThreadPool Threads;
 
 vector<Key> posKeyHistory;
 
-Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move& bestMove)
+Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth,
+    Depth originDepth, Value alpha, Value beta, Move& bestMove)
 {
     Value value = VALUE_ZERO;
     Value bestValue = -VALUE_INFINITE;
@@ -213,7 +223,9 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
     Depth epsilon;
 
 #ifdef RULE_50
-    if ((pos->rule50_count() > rule.nMoveRule) || (rule.endgameNMoveRule < rule.nMoveRule && pos->is_three_endgame() && pos->rule50_count() >= rule.endgameNMoveRule)) {
+    if ((pos->rule50_count() > rule.nMoveRule)
+        || (rule.endgameNMoveRule < rule.nMoveRule && pos->is_three_endgame()
+            && pos->rule50_count() >= rule.endgameNMoveRule)) {
         alpha = VALUE_DRAW;
         if (alpha >= beta) {
             return alpha;
@@ -246,7 +258,8 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
 #ifdef ENDGAME_LEARNING
     Endgame endgame;
 
-    if (gameOptions.isEndgameLearningEnabled() && posKey && Thread::probeEndgameHash(posKey, endgame)) {
+    if (gameOptions.isEndgameLearningEnabled() && posKey
+        && Thread::probeEndgameHash(posKey, endgame)) {
         switch (endgame.type) {
         case EndGameType::whiteWin:
             bestValue = VALUE_MATE;
@@ -268,16 +281,18 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
 
     // check transposition-table
 
-    const Value oldAlpha = alpha; // To flag BOUND_EXACT when eval above alpha and no available moves
+    const Value oldAlpha = alpha; // To flag BOUND_EXACT when eval above alpha
+                                  // and no available moves
 
     Bound type = BOUND_NONE;
 
-    const Value probeVal = TranspositionTable::probe(posKey, depth, alpha, beta, type
+    const Value probeVal
+        = TranspositionTable::probe(posKey, depth, alpha, beta, type
 #ifdef TT_MOVE_ENABLE
-        ,
-        ttMove
+            ,
+            ttMove
 #endif // TT_MOVE_ENABLE
-    );
+        );
 
     if (probeVal != VALUE_UNKNOWN) {
 #ifdef TRANSPOSITION_TABLE_DEBUG
@@ -300,7 +315,8 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
 
     // Check for aborted search
     // TODO(calcitem): and immediate draw
-    if (unlikely(pos->phase == Phase::gameOver) || // TODO(calcitem): Deal with hash
+    if (unlikely(pos->phase == Phase::gameOver)
+        || // TODO(calcitem): Deal with hash
         depth <= 0 || Threads.stop.load(std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
 
@@ -318,7 +334,8 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
     // to pick a move and can't simply return VALUE_DRAW) then check to
     // see if the position is a repeat. if so, we can assume that
     // this line is a draw and return VALUE_DRAW.
-    if (rule.threefoldRepetitionRule && depth != originDepth && pos->has_repeated(ss)) {
+    if (rule.threefoldRepetitionRule && depth != originDepth
+        && pos->has_repeated(ss)) {
         return VALUE_DRAW;
     }
 
@@ -338,7 +355,8 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
     // TODO(calcitem): Weak
     if (bestMove != MOVE_NONE) {
         for (int i = 0; i < moveCount; i++) {
-            if (mp.moves[i].move == bestMove) {    // TODO(calcitem): need to write value?
+            if (mp.moves[i].move == bestMove) {
+                // TODO(calcitem): need to write value?
                 std::swap(mp.moves[0], mp.moves[i]);
                 break;
             }
@@ -376,47 +394,55 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
             epsilon = 0;
         }
 
-        //epsilon += pos->piece_to_remove_count();
+        // epsilon += pos->piece_to_remove_count();
 
         if (gameOptions.getAlgorithm() == 1 /* PVS */) {
-            //loggerDebug("Algorithm: PVS.\n");
+            // loggerDebug("Algorithm: PVS.\n");
 
             if (i == 0) {
                 if (after != before) {
-                    value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -beta, -alpha, bestMove);
+                    value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth,
+                        -beta, -alpha, bestMove);
                 } else {
-                    value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta, bestMove);
+                    value = qsearch(pos, ss, depth - 1 + epsilon, originDepth,
+                        alpha, beta, bestMove);
                 }
             } else {
                 if (after != before) {
-                    value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -alpha - VALUE_PVS_WINDOW, -alpha, bestMove);
+                    value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth,
+                        -alpha - VALUE_PVS_WINDOW, -alpha, bestMove);
 
                     if (value > alpha && value < beta) {
-                        value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -beta, -alpha, bestMove);
-                        //assert(value >= alpha && value <= beta);
+                        value = -qsearch(pos, ss, depth - 1 + epsilon,
+                            originDepth, -beta, -alpha, bestMove);
+                        // assert(value >= alpha && value <= beta);
                     }
                 } else {
-                    value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, alpha + VALUE_PVS_WINDOW, bestMove);
+                    value = qsearch(pos, ss, depth - 1 + epsilon, originDepth,
+                        alpha, alpha + VALUE_PVS_WINDOW, bestMove);
 
                     if (value > alpha && value < beta) {
-                        value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta, bestMove);
-                        //assert(value >= alpha && value <= beta);
+                        value = qsearch(pos, ss, depth - 1 + epsilon,
+                            originDepth, alpha, beta, bestMove);
+                        // assert(value >= alpha && value <= beta);
                     }
                 }
             }
         } else {
-            //loggerDebug("Algorithm: Alpha-Beta.\n");
+            // loggerDebug("Algorithm: Alpha-Beta.\n");
 
             if (after != before) {
-                value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -beta, -alpha, bestMove);
+                value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth,
+                    -beta, -alpha, bestMove);
             } else {
-                value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta, bestMove);
+                value = qsearch(pos, ss, depth - 1 + epsilon, originDepth,
+                    alpha, beta, bestMove);
             }
         }
 
         pos->undo_move(ss);
 
-        //assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
+        // assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
 
         // Check for a new best move
         // Finished searching the move. If a stop occurred, the return value of
@@ -444,10 +470,8 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
     }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    TranspositionTable::save(bestValue,
-        depth,
-        TranspositionTable::boundType(bestValue, oldAlpha, beta),
-        posKey
+    TranspositionTable::save(bestValue, depth,
+        TranspositionTable::boundType(bestValue, oldAlpha, beta), posKey
 #ifdef TT_MOVE_ENABLE
         ,
         bestMove
@@ -455,12 +479,13 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth, Depth or
     );
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
-    //assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
+    // assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
 
     return bestValue;
 }
 
-Value MTDF(Position* pos, Sanmill::Stack<Position>& ss, Value firstguess, Depth depth, Depth originDepth, Move& bestMove)
+Value MTDF(Position* pos, Sanmill::Stack<Position>& ss, Value firstguess,
+    Depth depth, Depth originDepth, Move& bestMove)
 {
     Value g = firstguess;
     Value lowerbound = -VALUE_INFINITE;
@@ -474,7 +499,8 @@ Value MTDF(Position* pos, Sanmill::Stack<Position>& ss, Value firstguess, Depth 
             beta = g;
         }
 
-        g = qsearch(pos, ss, depth, originDepth, beta - VALUE_MTDF_WINDOW, beta, bestMove);
+        g = qsearch(pos, ss, depth, originDepth, beta - VALUE_MTDF_WINDOW, beta,
+            bestMove);
 
         if (g < beta) {
             upperbound = g; // fail low

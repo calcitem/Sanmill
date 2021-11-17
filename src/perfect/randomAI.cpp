@@ -35,7 +35,8 @@ RandomAI::~RandomAI()
 // play()
 //
 //-----------------------------------------------------------------------------
-void RandomAI::play(fieldStruct* theField, unsigned int* pushFrom, unsigned int* pushTo)
+void RandomAI::play(
+    fieldStruct* theField, unsigned int* pushFrom, unsigned int* pushTo)
 {
     // locals
     unsigned int from, to, direction;
@@ -47,7 +48,8 @@ void RandomAI::play(fieldStruct* theField, unsigned int* pushFrom, unsigned int*
         do {
             from = rand() % theField->size;
             to = theField->size;
-        } while (theField->board[from] != theField->oppPlayer->id || theField->stonePartOfMill[from]);
+        } while (theField->board[from] != theField->oppPlayer->id
+            || theField->stonePartOfMill[from]);
 
         // still in setting phase ?
     } else if (theField->settingPhase) {

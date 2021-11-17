@@ -37,10 +37,7 @@ GameScene::GameScene(QObject* parent)
     addItem(board);
 }
 
-GameScene::~GameScene()
-{
-    delete board;
-}
+GameScene::~GameScene() { delete board; }
 
 void GameScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
