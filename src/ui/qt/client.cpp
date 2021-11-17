@@ -57,29 +57,36 @@ Client::Client(QWidget* parent, uint16_t port)
     in.setDevice(tcpSocket);
     in.setVersion(QDataStream::Qt_4_0);
 
-    connect(hostCombo, &QComboBox::editTextChanged,
-        this, &Client::enableGetActionButton);
-    connect(portLineEdit, &QLineEdit::textChanged,
-        this, &Client::enableGetActionButton);
-    connect(getActionButton, &QAbstractButton::clicked,
-        this, &Client::requestNewAction);
+    connect(hostCombo, &QComboBox::editTextChanged, this,
+        &Client::enableGetActionButton);
+    connect(portLineEdit, &QLineEdit::textChanged, this,
+        &Client::enableGetActionButton);
+    connect(getActionButton, &QAbstractButton::clicked, this,
+        &Client::requestNewAction);
     connect(quitButton, &QAbstractButton::clicked, this, &QWidget::close);
     connect(tcpSocket, &QIODevice::readyRead, this, &Client::readAction);
-    connect(tcpSocket, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error),
+    connect(tcpSocket,
+        QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error),
         this, &Client::displayError);
 
     QGridLayout* mainLayout = nullptr;
-    if (QGuiApplication::styleHints()->showIsFullScreen() || QGuiApplication::styleHints()->showIsMaximized()) {
+    if (QGuiApplication::styleHints()->showIsFullScreen()
+        || QGuiApplication::styleHints()->showIsMaximized()) {
         auto outerVerticalLayout = new QVBoxLayout(this);
-        outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
+        outerVerticalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
         auto outerHorizontalLayout = new QHBoxLayout;
-        outerHorizontalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
-        auto groupBox = new QGroupBox(QGuiApplication::applicationDisplayName());
+        outerHorizontalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
+        auto groupBox
+            = new QGroupBox(QGuiApplication::applicationDisplayName());
         mainLayout = new QGridLayout(groupBox);
         outerHorizontalLayout->addWidget(groupBox);
-        outerHorizontalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
+        outerHorizontalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
         outerVerticalLayout->addLayout(outerHorizontalLayout);
-        outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
+        outerVerticalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
     } else {
         mainLayout = new QGridLayout(this);
     }
@@ -97,21 +104,27 @@ Client::Client(QWidget* parent, uint16_t port)
 
     QNetworkConfigurationManager manager;
 
-    if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired) {
+    if (manager.capabilities()
+        & QNetworkConfigurationManager::NetworkSessionRequired) {
         // Get saved network configuration
         QSettings settings(QSettings::UserScope, QLatin1String("QtProject"));
         settings.beginGroup(QLatin1String("QtNetwork"));
-        const QString id = settings.value(QLatin1String("DefaultNetworkConfiguration")).toString();
+        const QString id
+            = settings.value(QLatin1String("DefaultNetworkConfiguration"))
+                  .toString();
         settings.endGroup();
 
-        // If the saved network configuration is not currently discovered use the system default
+        // If the saved network configuration is not currently discovered use
+        // the system default
         QNetworkConfiguration config = manager.configurationFromIdentifier(id);
-        if ((config.state() & QNetworkConfiguration::Discovered) != QNetworkConfiguration::Discovered) {
+        if ((config.state() & QNetworkConfiguration::Discovered)
+            != QNetworkConfiguration::Discovered) {
             config = manager.defaultConfiguration();
         }
 
         networkSession = new QNetworkSession(config, this);
-        connect(networkSession, &QNetworkSession::opened, this, &Client::sessionOpened);
+        connect(networkSession, &QNetworkSession::opened, this,
+            &Client::sessionOpened);
 
         getActionButton->setEnabled(false);
         statusLabel->setText(tr("Opening network session."));
@@ -123,8 +136,8 @@ void Client::requestNewAction()
 {
     getActionButton->setEnabled(false);
     tcpSocket->abort();
-    tcpSocket->connectToHost(hostCombo->currentText(),
-        portLineEdit->text().toUShort());
+    tcpSocket->connectToHost(
+        hostCombo->currentText(), portLineEdit->text().toUShort());
 }
 
 void Client::readAction()
@@ -173,7 +186,9 @@ void Client::displayError(QAbstractSocket::SocketError socketError)
 
 void Client::enableGetActionButton()
 {
-    getActionButton->setEnabled((!networkSession || networkSession->isOpen()) && !hostCombo->currentText().isEmpty() && !portLineEdit->text().isEmpty());
+    getActionButton->setEnabled((!networkSession || networkSession->isOpen())
+        && !hostCombo->currentText().isEmpty()
+        && !portLineEdit->text().isEmpty());
 }
 
 void Client::sessionOpened()
@@ -182,7 +197,9 @@ void Client::sessionOpened()
     QNetworkConfiguration config = networkSession->configuration();
     QString id;
     if (config.type() == QNetworkConfiguration::UserChoice)
-        id = networkSession->sessionProperty(QLatin1String("UserChoiceConfiguration")).toString();
+        id = networkSession
+                 ->sessionProperty(QLatin1String("UserChoiceConfiguration"))
+                 .toString();
     else
         id = config.identifier();
 

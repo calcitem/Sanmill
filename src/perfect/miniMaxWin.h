@@ -22,38 +22,58 @@ public:
 
     virtual void setVisibility(bool visible) {}
 
-    virtual void setState(unsigned int curShowedLayer, MiniMax::StateNumberVarType curShowedState) {}
+    virtual void setState(
+        unsigned int curShowedLayer, MiniMax::StateNumberVarType curShowedState)
+    {
+    }
 };
 
 /*------------------------------------------------------------------------------------
 
-|	-------------------------------------		---------------------------------	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|		pTreeViewInspect			|		|		MiniMaxGuiField			|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	-------------------------------------		---------------------------------	|
-|																					|
+|	-------------------------------------
+---------------------------------	| |	|
+|		| |	| |	|
+|		| |	| |	|		pTreeViewInspect
+|		|		MiniMaxGuiField			|	| |
+|									|
+|								|	| |
+|									|
+|								|	| |
+|									|
+|								|	| |
+|									|
+|								|	| |
+|									|
+|								|	| |
+|									|
+|								|	| |
+|									|
+|								|	| |
+|									|
+|								|	| |
+|									|
+|								|	| |
+|									|
+|								|	| |
+|									|
+|								|	| |
+|									|
+|								|	| |
+|									|
+|								|	| |
+|									|
+|								|	| |
+|									|
+|								|	| |
+------------------------------------- ---------------------------------	| |
+|
 -----------------------------------------------------------------------------------*/
 
 class MiniMaxWinInspectDb {
 protected:
     // General Variables
-    MiniMax* pMiniMax = nullptr; // pointer to perfect AI class granting the access to the database
+    MiniMax* pMiniMax = nullptr; // pointer to perfect AI class granting the
+                                 // access to the database
     MiniMaxGuiField* pGuiField = nullptr;
     bool showingInspectionControls = false;
     unsigned int curShowedLayer = 0; // current showed layer
@@ -62,7 +82,9 @@ protected:
 
 public:
     // Constructor / destructor
-    MiniMaxWinInspectDb(wildWeasel::masterMind* ww, MiniMax* pMiniMax, wildWeasel::alignment& amInspectDb, wildWeasel::font2D* font, wildWeasel::texture* textureLine, MiniMaxGuiField& guiField);
+    MiniMaxWinInspectDb(wildWeasel::masterMind* ww, MiniMax* pMiniMax,
+        wildWeasel::alignment& amInspectDb, wildWeasel::font2D* font,
+        wildWeasel::texture* textureLine, MiniMaxGuiField& guiField);
     ~MiniMaxWinInspectDb();
 
     // Generals Functions
@@ -72,40 +94,49 @@ public:
 };
 
 /*------------------------------------------------------------------------------------
-|	-----------------------------------------------------------------------------	|
-|	|																			|	|
-|	|																			|	|
-|	|		hListViewLayer														|	|
-|	|																			|	|
-|	|																			|	|
-|	|																			|	|
-|	|																			|	|
-|	-----------------------------------------------------------------------------	|
-|																					|
-|	-------------------------------------		---------------------------------	|
-|	|									|		|								|	|
-|	|									|		|		hEditOutputBox			|	|
-|	|		hListViewArray				|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	|									|		|								|	|
-|	-------------------------------------		---------------------------------	|
-|																					|
-|	hLabelCalculationRunning	hLabelCalculatingLayer	hLabelCalculationAction		|
-|																					|
-|	-------------------  -----------------  ----------------  ---------------		|
-|	hButtonCalcContinue	 hButtonCalcCancel  hButtonCalcPause  hButtonCalcTest		|
-|	-------------------  -----------------  ----------------  ---------------		|
+|
+-----------------------------------------------------------------------------
+| |	|
+|	| |	|
+|	| |	|		hListViewLayer
+|	| |	|
+|	| |	|
+|	| |	|
+|	| |	|
+|	| |
+-----------------------------------------------------------------------------
+| |
+| |	-------------------------------------
+---------------------------------	| |	|
+|		| |	| |	|
+|		|		hEditOutputBox			|	| |
+|		hListViewArray				| |
+|	|
+|	|
+|		| |	| |	|
+|		| |	| |	|
+|		| |	| |	|
+|		| |	| |	-------------------------------------
+---------------------------------	| |
+| |	hLabelCalculationRunning	hLabelCalculatingLayer
+hLabelCalculationAction		| |
+| |	-------------------  -----------------  ---------------- ---------------
+| |	hButtonCalcContinue	 hButtonCalcCancel  hButtonCalcPause
+hButtonCalcTest		| |	-------------------  -----------------
+----------------  ---------------		|
 -----------------------------------------------------------------------------------*/
 
 class MiniMaxWinCalcDb {
 protected:
     // Calculation variables
     wildWeasel::masterMind* ww = nullptr; // pointer to engine
-    MiniMax* pMiniMax = nullptr; // pointer to perfect AI class granting the access to the database
-    ostream* outputStream = nullptr; // pointer to a stream for the console output of the calculation done by the class MiniMax
-    stringbuf outputStringBuf; // buffer linked to the stream, for reading out of the stream into the buffer
+    MiniMax* pMiniMax = nullptr; // pointer to perfect AI class granting the
+                                 // access to the database
+    ostream* outputStream
+        = nullptr; // pointer to a stream for the console output of the
+                   // calculation done by the class MiniMax
+    stringbuf outputStringBuf; // buffer linked to the stream, for reading out
+                               // of the stream into the buffer
     locale myLocale; // for formatting the output
     queue<unsigned int> layersToTest; // layer numbers to be tested
     thread hThreadSolve;
@@ -129,7 +160,8 @@ protected:
     void buttonFuncCalcTest();
     void buttonFuncCalcTestAll(void* pUser);
     void buttonFuncCalcTestLayer(void* pUser);
-    void lvSelectedLayerChanged(unsigned int row, unsigned int col, wildWeasel::guiElemEvFol* guiElem, void* pUser);
+    void lvSelectedLayerChanged(unsigned int row, unsigned int col,
+        wildWeasel::guiElemEvFol* guiElem, void* pUser);
     static void updateOutputControls(void* pUser);
     void updateListItemLayer(unsigned int layerNumber);
     void updateListItemArray(MiniMax::ArrayInfoChange infoChange);
@@ -138,7 +170,9 @@ protected:
 
 public:
     // Constructor / destructor
-    MiniMaxWinCalcDb(wildWeasel::masterMind* ww, MiniMax* pMiniMax, wildWeasel::alignment& amCalculation, wildWeasel::font2D* font, wildWeasel::texture* textureLine);
+    MiniMaxWinCalcDb(wildWeasel::masterMind* ww, MiniMax* pMiniMax,
+        wildWeasel::alignment& amCalculation, wildWeasel::font2D* font,
+        wildWeasel::texture* textureLine);
     ~MiniMaxWinCalcDb();
 
     // Generals Functions
@@ -146,10 +180,7 @@ public:
     void resize(wildWeasel::alignment& amNewArea);
     bool showControls(bool visible);
     bool isCalculationOngoing();
-    MiniMax* getMinimaxPointer()
-    {
-        return pMiniMax;
-    };
+    MiniMax* getMinimaxPointer() { return pMiniMax; }
     CRITICAL_SECTION* getCriticalSectionOutput()
     {
         return &pMiniMax->csOsPrint;

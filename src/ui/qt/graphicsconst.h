@@ -25,7 +25,8 @@ constexpr int16 BOARD_SIZE = 500;
 constexpr int16_t BOARD_SIZE = 550;
 #endif /* QT_MOBILE_APP_UI */
 
-constexpr int16_t BOARD_MINISIZE = 150; // Minimum width and height, i.e. 1 / 4 Size
+constexpr int16_t BOARD_MINISIZE
+    = 150; // Minimum width and height, i.e. 1 / 4 Size
 constexpr int16_t PIECE_SIZE = 56;
 constexpr int16_t LINE_INTERVAL = 72;
 constexpr int16_t LINE_WEIGHT = 3;

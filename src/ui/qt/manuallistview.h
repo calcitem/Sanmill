@@ -25,12 +25,12 @@
 /*
  * QListView derived class
  * The reason for deriving this class is to overload the sizeHint function
- * Just to make the docking bar(parent window) not too wide and ugly at the beginning
- * QDockWidget does not have a good way to control the initial size, and the reset function has no effect
- * If you don't use derived classes, you can use a fixed width, as shown below
- * ui.listView->setFixedWidth(108);
- * But it doesn't look good after adjusting the width of the dock
-*/
+ * Just to make the docking bar(parent window) not too wide and ugly at the
+ * beginning QDockWidget does not have a good way to control the initial size,
+ * and the reset function has no effect If you don't use derived classes, you
+ * can use a fixed width, as shown below ui.listView->setFixedWidth(108); But it
+ * doesn't look good after adjusting the width of the dock
+ */
 
 class ManualListView : public QListView {
     Q_OBJECT
@@ -55,7 +55,8 @@ public:
 signals:
     // A currentChanged signal is required, but not by default.
     // This slot needs to be transformed into a signal
-    void currentChangedSignal(const QModelIndex& current, const QModelIndex& previous);
+    void currentChangedSignal(
+        const QModelIndex& current, const QModelIndex& previous);
 
 protected slots:
     // Block double-click editing feature
@@ -80,7 +81,8 @@ protected slots:
         QListView::dataChanged(topLeft, bottomRight, roles);
 
         if (model()) {
-            const QModelIndex square = model()->index(model()->rowCount() - 1, 0);
+            const QModelIndex square
+                = model()->index(model()->rowCount() - 1, 0);
             if (square == bottomRight && newEmptyRow) {
                 setCurrentIndex(square);
                 QAbstractItemView::scrollToBottom();
@@ -93,7 +95,8 @@ protected slots:
     // This slot needs to be transformed into a signal
     // The activated signal needs to press enter to send out,
     // and the selectedChanged and clicked signals are not appropriate
-    void currentChanged(const QModelIndex& current, const QModelIndex& previous) override
+    void currentChanged(
+        const QModelIndex& current, const QModelIndex& previous) override
     {
         QListView::currentChanged(current, previous);
         emit currentChangedSignal(current, previous);

@@ -36,8 +36,8 @@ const char* loseReasonResignStr = "Player%d give up!";
 
 namespace Mills {
 
-// Morris boards have concentric square rings joined by edges and an empty middle.
-// Morris games are typically played on the vertices not the cells.
+// Morris boards have concentric square rings joined by edges and an empty
+// middle. Morris games are typically played on the vertices not the cells.
 
 /*
     31 ----- 24 ----- 25
@@ -244,11 +244,15 @@ void adjacent_squares_init() noexcept
     };
 
     if (rule.hasDiagonalLines) {
-        memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares_diagonal, sizeof(MoveList<LEGAL>::adjacentSquares));
-        memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB_diagonal, sizeof(MoveList<LEGAL>::adjacentSquaresBB));
+        memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares_diagonal,
+            sizeof(MoveList<LEGAL>::adjacentSquares));
+        memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB_diagonal,
+            sizeof(MoveList<LEGAL>::adjacentSquaresBB));
     } else {
-        memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares, sizeof(MoveList<LEGAL>::adjacentSquares));
-        memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB, sizeof(MoveList<LEGAL>::adjacentSquaresBB));
+        memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares,
+            sizeof(MoveList<LEGAL>::adjacentSquares));
+        memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB,
+            sizeof(MoveList<LEGAL>::adjacentSquaresBB));
     }
 
 #ifdef DEBUG_MODE
@@ -365,9 +369,11 @@ void mill_table_init()
     };
 
     if (rule.hasDiagonalLines) {
-        memcpy(Position::millTableBB, millTableBB_diagonal, sizeof(Position::millTableBB));
+        memcpy(Position::millTableBB, millTableBB_diagonal,
+            sizeof(Position::millTableBB));
     } else {
-        memcpy(Position::millTableBB, millTableBB, sizeof(Position::millTableBB));
+        memcpy(
+            Position::millTableBB, millTableBB, sizeof(Position::millTableBB));
     }
 }
 
@@ -380,7 +386,8 @@ void move_priority_list_shuffle()
         if (gameOptions.getShufflingEnabled()) {
             const uint32_t seed = static_cast<uint32_t>(now());
 
-            std::shuffle(MoveList<LEGAL>::movePriorityList.begin(), MoveList<LEGAL>::movePriorityList.end(),
+            std::shuffle(MoveList<LEGAL>::movePriorityList.begin(),
+                MoveList<LEGAL>::movePriorityList.end(),
                 std::default_random_engine(seed));
         }
         return;
@@ -393,23 +400,31 @@ void move_priority_list_shuffle()
 
     if (!rule.hasDiagonalLines) {
         movePriorityList0 = { SQ_16, SQ_18, SQ_20, SQ_22 };
-        movePriorityList1 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
+        movePriorityList1
+            = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
         movePriorityList2 = { SQ_17, SQ_19, SQ_21, SQ_23 };
-        movePriorityList3 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
+        movePriorityList3
+            = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
     } else if (rule.hasDiagonalLines) {
         movePriorityList0 = { SQ_17, SQ_19, SQ_21, SQ_23 };
-        movePriorityList1 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
+        movePriorityList1
+            = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
         movePriorityList2 = { SQ_16, SQ_18, SQ_20, SQ_22 };
-        movePriorityList3 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
+        movePriorityList3
+            = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
     }
 
     if (gameOptions.getShufflingEnabled()) {
         const uint32_t seed = static_cast<uint32_t>(now());
 
-        std::shuffle(movePriorityList0.begin(), movePriorityList0.end(), std::default_random_engine(seed));
-        std::shuffle(movePriorityList1.begin(), movePriorityList1.end(), std::default_random_engine(seed));
-        std::shuffle(movePriorityList2.begin(), movePriorityList2.end(), std::default_random_engine(seed));
-        std::shuffle(movePriorityList3.begin(), movePriorityList3.end(), std::default_random_engine(seed));
+        std::shuffle(movePriorityList0.begin(), movePriorityList0.end(),
+            std::default_random_engine(seed));
+        std::shuffle(movePriorityList1.begin(), movePriorityList1.end(),
+            std::default_random_engine(seed));
+        std::shuffle(movePriorityList2.begin(), movePriorityList2.end(),
+            std::default_random_engine(seed));
+        std::shuffle(movePriorityList3.begin(), movePriorityList3.end(),
+            std::default_random_engine(seed));
     }
 
     for (size_t i = 0; i < 4; i++) {
@@ -430,7 +445,9 @@ void move_priority_list_shuffle()
 #if 0
     if (!rule.hasDiagonalLines && gameOptions.getShufflingEnabled()) {
         const uint32_t seed = static_cast<uint32_t>(now());
-        std::shuffle(MoveList<LEGAL>::movePriorityList.begin(), MoveList<LEGAL>::movePriorityList.end(), std::default_random_engine(seed));
+        std::shuffle(MoveList<LEGAL>::movePriorityList.begin(),
+                     MoveList<LEGAL>::movePriorityList.end(),
+                     std::default_random_engine(seed));
     }
 #endif
 }
@@ -440,9 +457,11 @@ bool is_star_squares_full(Position* pos)
     bool ret = false;
 
     if (rule.hasDiagonalLines) {
-        ret = (pos->get_board()[SQ_17] && pos->get_board()[SQ_19] && pos->get_board()[SQ_21] && pos->get_board()[SQ_23]);
+        ret = (pos->get_board()[SQ_17] && pos->get_board()[SQ_19]
+            && pos->get_board()[SQ_21] && pos->get_board()[SQ_23]);
     } else {
-        ret = (pos->get_board()[SQ_16] && pos->get_board()[SQ_18] && pos->get_board()[SQ_20] && pos->get_board()[SQ_22]);
+        ret = (pos->get_board()[SQ_16] && pos->get_board()[SQ_18]
+            && pos->get_board()[SQ_20] && pos->get_board()[SQ_22]);
     }
 
     return ret;
@@ -485,7 +504,8 @@ Depth get_search_depth(const Position* pos)
                 +0 /* 24 */
             };
 
-            const int index = rule.piecesCount * 2 - pos->count<IN_HAND>(WHITE) - pos->count<IN_HAND>(BLACK);
+            const int index = rule.piecesCount * 2 - pos->count<IN_HAND>(WHITE)
+                - pos->count<IN_HAND>(BLACK);
 
             if (rule.hasDiagonalLines) {
                 d = placingDepthTable12[index];
@@ -577,7 +597,8 @@ Depth get_search_depth(const Position* pos)
     constexpr Depth flyingDepth = 9;
 
     if (pos->phase == Phase::placing) {
-        const int index = rule.piecesCount * 2 - pos->count<IN_HAND>(WHITE) - pos->count<IN_HAND>(BLACK);
+        const int index = rule.piecesCount * 2 - pos->count<IN_HAND>(WHITE)
+            - pos->count<IN_HAND>(BLACK);
 
         if (rule.piecesCount == 9) {
             assert(0 <= index && index <= 19);

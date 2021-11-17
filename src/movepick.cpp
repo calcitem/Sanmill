@@ -40,8 +40,7 @@ MovePicker::MovePicker(Position& p) noexcept
 
 /// MovePicker::score() assigns a numerical value to each move in a list, used
 /// for sorting.
-template <GenType Type>
-void MovePicker::score()
+template <GenType Type> void MovePicker::score()
 {
     cur = moves;
     Square from = SQ_0, to = SQ_0;
@@ -60,7 +59,8 @@ void MovePicker::score()
         to = to_sq(m);
         from = from_sq(m);
 
-        // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but no mill, so need |from| to judge
+        // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but
+        // no mill, so need |from| to judge
         ourMillsCount = pos.potential_mills_count(to, pos.side_to_move(), from);
 
 #ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
@@ -71,40 +71,49 @@ void MovePicker::score()
                 cur->value += RATING_ONE_MILL * ourMillsCount;
             } else if (pos.get_phase() == Phase::placing) {
                 // placing phrase, check if place sq can block their close mill
-                theirMillsCount = pos.potential_mills_count(to, ~pos.side_to_move());
+                theirMillsCount
+                    = pos.potential_mills_count(to, ~pos.side_to_move());
                 cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
             } else if (pos.get_phase() == Phase::moving) {
                 // moving phrase, check if place sq can block their close mill
-                theirMillsCount = pos.potential_mills_count(to, ~pos.side_to_move());
+                theirMillsCount
+                    = pos.potential_mills_count(to, ~pos.side_to_move());
 
                 if (theirMillsCount) {
-                    ourPieceCount = theirPiecesCount = bannedCount = emptyCount = 0;
+                    ourPieceCount = theirPiecesCount = bannedCount = emptyCount
+                        = 0;
 
-                    pos.surrounded_pieces_count(to, ourPieceCount, theirPiecesCount, bannedCount, emptyCount);
+                    pos.surrounded_pieces_count(to, ourPieceCount,
+                        theirPiecesCount, bannedCount, emptyCount);
 
                     if (to % 2 == 0 && theirPiecesCount == 3) {
                         cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
-                    } else if (to % 2 == 1 && theirPiecesCount == 2 && rule.hasDiagonalLines) {
+                    } else if (to % 2 == 1 && theirPiecesCount == 2
+                        && rule.hasDiagonalLines) {
                         cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
                     }
                 }
             }
 
-            //cur->value += bannedCount;  // placing phrase, place nearby ban point
+            // cur->value += bannedCount;  // placing phrase, place nearby ban
+            // point
 
-            // If has Diagonal Lines, black 2nd move place star point is as important as close mill (TODO)
-            if (rule.hasDiagonalLines && pos.count<ON_BOARD>(BLACK) < 2 && // patch: only when black 2nd move
+            // If has Diagonal Lines, black 2nd move place star point is as
+            // important as close mill (TODO)
+            if (rule.hasDiagonalLines && pos.count<ON_BOARD>(BLACK) < 2
+                && // patch: only when black 2nd move
                 Position::is_star_square(static_cast<Square>(m))) {
                 cur->value += RATING_STAR_SQUARE;
             }
         } else { // Remove
             ourPieceCount = theirPiecesCount = bannedCount = emptyCount = 0;
 
-            pos.surrounded_pieces_count(to, ourPieceCount, theirPiecesCount, bannedCount, emptyCount);
+            pos.surrounded_pieces_count(
+                to, ourPieceCount, theirPiecesCount, bannedCount, emptyCount);
 
             if (ourMillsCount > 0) {
                 // remove point is in our mill
-                //cur->value += RATING_REMOVE_ONE_MILL * ourMillsCount;
+                // cur->value += RATING_REMOVE_ONE_MILL * ourMillsCount;
 
                 if (theirPiecesCount == 0) {
                     // if remove point nearby has no their stone, preferred.
@@ -117,7 +126,8 @@ void MovePicker::score()
             }
 
             // remove point is in their mill
-            theirMillsCount = pos.potential_mills_count(to, ~pos.side_to_move());
+            theirMillsCount
+                = pos.potential_mills_count(to, ~pos.side_to_move());
             if (theirMillsCount) {
                 if (theirPiecesCount >= 2) {
                     // if nearby their piece, prefer do not remove
@@ -137,9 +147,10 @@ void MovePicker::score()
     }
 }
 
-/// MovePicker::next_move() is the most important method of the MovePicker class. It
-/// returns a new pseudo legal move every time it is called until there are no more
-/// moves left, picking the move with the highest score from a list of generated moves.
+/// MovePicker::next_move() is the most important method of the MovePicker
+/// class. It returns a new pseudo legal move every time it is called until
+/// there are no more moves left, picking the move with the highest score from a
+/// list of generated moves.
 Move MovePicker::next_move()
 {
     endMoves = generate<LEGAL>(pos, moves);

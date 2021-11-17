@@ -27,12 +27,18 @@ void fieldStruct::printBoard()
     for (index = 0; index < fieldStruct::size; index++)
         c[index] = GetCharFromStone(this->board[index]);
 
-    cout << "current player          : " << GetCharFromStone(this->curPlayer->id) << " has " << this->curPlayer->numStones << " stones\n";
-    cout << "opponent player         : " << GetCharFromStone(this->oppPlayer->id) << " has " << this->oppPlayer->numStones << " stones\n";
+    cout << "current player          : "
+         << GetCharFromStone(this->curPlayer->id) << " has "
+         << this->curPlayer->numStones << " stones\n";
+    cout << "opponent player         : "
+         << GetCharFromStone(this->oppPlayer->id) << " has "
+         << this->oppPlayer->numStones << " stones\n";
     cout << "Num Stones to be removed: " << this->stoneMustBeRemoved << "\n";
-    cout << "setting phase           : " << (this->settingPhase ? "true" : "false");
+    cout << "setting phase           : "
+         << (this->settingPhase ? "true" : "false");
     cout << "\n";
-    cout << "\n   a-----b-----c   " << c[0] << "-----" << c[1] << "-----" << c[2];
+    cout << "\n   a-----b-----c   " << c[0] << "-----" << c[1] << "-----"
+         << c[2];
     cout << "\n   |     |     |   "
          << "|     |     |";
     cout << "\n   | d---e---f |   "
@@ -43,7 +49,8 @@ void fieldStruct::printBoard()
          << "| | " << c[6] << "-" << c[7] << "-" << c[8] << " | |";
     cout << "\n   | | | | | | |   "
          << "| | |   | | |";
-    cout << "\n   j-k-l   m-n-o   " << c[9] << "-" << c[10] << "-" << c[11] << "   " << c[12] << "-" << c[13] << "-" << c[14];
+    cout << "\n   j-k-l   m-n-o   " << c[9] << "-" << c[10] << "-" << c[11]
+         << "   " << c[12] << "-" << c[13] << "-" << c[14];
     cout << "\n   | | | | | | |   "
          << "| | |   | | |";
     cout << "\n   | | p-q-r | |   "
@@ -54,7 +61,8 @@ void fieldStruct::printBoard()
          << "| " << c[18] << "---" << c[19] << "---" << c[20] << " |";
     cout << "\n   |     |     |   "
          << "|     |     |";
-    cout << "\n   v-----w-----x   " << c[21] << "-----" << c[22] << "-----" << c[23];
+    cout << "\n   v-----w-----x   " << c[21] << "-----" << c[22] << "-----"
+         << c[23];
     cout << "\n";
 }
 
@@ -104,7 +112,8 @@ void fieldStruct::copyBoard(fieldStruct* destination)
         for (j = 0; j < 4; j++) {
             destination->connectedSquare[i][j] = this->connectedSquare[i][j];
             destination->stoneMoveAble[i][j] = this->stoneMoveAble[i][j];
-            destination->neighbour[i][j / 2][j % 2] = this->neighbour[i][j / 2][j % 2];
+            destination->neighbour[i][j / 2][j % 2]
+                = this->neighbour[i][j / 2][j % 2];
         }
     }
 }
@@ -132,7 +141,8 @@ void Player::copyPlayer(Player* destination)
 
 //-----------------------------------------------------------------------------
 // createBoard()
-// Creates, but doesn't initialize, the arrays of the of the passed board structure.
+// Creates, but doesn't initialize, the arrays of the of the passed board
+// structure.
 //-----------------------------------------------------------------------------
 void fieldStruct::createBoard()
 {
@@ -146,9 +156,11 @@ void fieldStruct::createBoard()
     stonesSet = 0;
     stoneMustBeRemoved = 0;
     settingPhase = true;
-    curPlayer->warning = (curPlayer->id == playerOne) ? playerOneWarning : playerTwoWarning;
+    curPlayer->warning
+        = (curPlayer->id == playerOne) ? playerOneWarning : playerTwoWarning;
     oppPlayer->id = (curPlayer->id == playerOne) ? playerTwo : playerOne;
-    oppPlayer->warning = (curPlayer->id == playerOne) ? playerTwoWarning : playerOneWarning;
+    oppPlayer->warning
+        = (curPlayer->id == playerOne) ? playerTwoWarning : playerOneWarning;
     curPlayer->numStones = 0;
     oppPlayer->numStones = 0;
     curPlayer->numPossibleMoves = 0;
@@ -240,11 +252,8 @@ void fieldStruct::deleteBoard()
 // setConnection()
 //
 //-----------------------------------------------------------------------------
-inline void fieldStruct::setConnection(unsigned int index,
-    int firstDirection,
-    int secondDirection,
-    int thirdDirection,
-    int fourthDirection)
+inline void fieldStruct::setConnection(unsigned int index, int firstDirection,
+    int secondDirection, int thirdDirection, int fourthDirection)
 {
     connectedSquare[index][0] = firstDirection;
     connectedSquare[index][1] = secondDirection;
@@ -257,10 +266,8 @@ inline void fieldStruct::setConnection(unsigned int index,
 //
 //-----------------------------------------------------------------------------
 inline void fieldStruct::setNeighbour(unsigned int index,
-    unsigned int firstNeighbour0,
-    unsigned int secondNeighbour0,
-    unsigned int firstNeighbour1,
-    unsigned int secondNeighbour1)
+    unsigned int firstNeighbour0, unsigned int secondNeighbour0,
+    unsigned int firstNeighbour1, unsigned int secondNeighbour1)
 {
     neighbour[index][0][0] = firstNeighbour0;
     neighbour[index][0][1] = secondNeighbour0;

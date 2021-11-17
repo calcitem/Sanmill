@@ -32,7 +32,9 @@
 
 #define HASH_KEY_DISABLE
 
-constexpr size_t HASH_SIZE_DEFAULT = 1031; // A prime number as key size gives a better distribution of values in buckets
+constexpr size_t HASH_SIZE_DEFAULT
+    = 1031; // A prime number as key size gives a better distribution of values
+            // in buckets
 
 namespace CTSL // Concurrent Thread Safe Library
 {
@@ -41,9 +43,10 @@ namespace CTSL // Concurrent Thread Safe Library
 // By default, the std::key function will be used
 // If the key size is not provided, then a default size of 1031 will be used
 // The key table itself consists of an array of key buckets.
-// Each key bucket is implemented as singly linked list with the head as a dummy node created
-// during the creation of the bucket. All the key buckets are created during the construction of the map.
-// Locks are taken per bucket, hence multiple threads can write simultaneously in different buckets in the key map
+// Each key bucket is implemented as singly linked list with the head as a dummy
+// node created during the creation of the bucket. All the key buckets are
+// created during the construction of the map. Locks are taken per bucket, hence
+// multiple threads can write simultaneously in different buckets in the key map
 #ifdef HASH_KEY_DISABLE
 #define hashFn Key
 template <typename K, typename V>
@@ -57,14 +60,17 @@ public:
     {
 #ifdef DISABLE_HASHBUCKET
 #ifdef ALIGNED_LARGE_PAGES
-        hashTable = (HashNode<K, V>*)aligned_large_pages_alloc(sizeof(HashNode<K, V>) * hashSize);
+        hashTable = (HashNode<K, V>*)aligned_large_pages_alloc(
+            sizeof(HashNode<K, V>) * hashSize);
 #else // ALIGNED_LARGE_PAGES
-        hashTable = new HashNode<K, V>[hashSize]; // Create the key table as an array of key nodes
+        hashTable = new HashNode<K,
+            V>[hashSize]; // Create the key table as an array of key nodes
 #endif // ALIGNED_LARGE_PAGES
 
         memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
 #else // DISABLE_HASHBUCKET
-        hashTable = new HashBucket<K, V>[hashSize]; //create the key table as an array of key buckets
+        hashTable = new HashBucket<K,
+            V>[hashSize]; // create the key table as an array of key buckets
 #endif // DISABLE_HASHBUCKET
     }
 
@@ -83,8 +89,9 @@ public:
     HashMap& operator=(HashMap&&) = delete;
 
     // Function to find an entry in the key map matching the key.
-    // If key is found, the corresponding value is copied into the parameter "value" and function returns true.
-    // If key is not found, function returns false.
+    // If key is found, the corresponding value is copied into the parameter
+    // "value" and function returns true. If key is not found, function returns
+    // false.
     bool find(const K& key, V& value) const
     {
         K hashValue = hashFn(key) & (hashSize - 1);
@@ -114,7 +121,8 @@ public:
     }
 
     // Function to insert into the key map.
-    // If key already exists, update the value, else insert a new node in the bucket with the <key, value> pair.
+    // If key already exists, update the value, else insert a new node in the
+    // bucket with the <key, value> pair.
     K insert(const K& key, const V& value)
     {
         K hashValue = hashFn(key) & (hashSize - 1);
@@ -184,7 +192,7 @@ public:
 #endif // DISABLE_HASHBUCKET
     }
 
-    //Function to load the key map from file
+    // Function to load the key map from file
     void load(const std::string& filename)
     {
 #ifdef DISABLE_HASHBUCKET
@@ -219,13 +227,16 @@ public:
             if (memcmp((char*)other.hashTable + offset, empty, ksize)) {
                 nProcessed++;
                 if (!memcmp((char*)hashTable + offset, empty, ksize)) {
-                    memcpy((char*)hashTable + offset, (char*)other.hashTable + offset, nsize);
+                    memcpy((char*)hashTable + offset,
+                        (char*)other.hashTable + offset, nsize);
                     nMerged++;
                 } else {
                     nSkip++;
-                    if (!memcmp((char*)other.hashTable + offset, (char*)hashTable + offset, nsize)) {
+                    if (!memcmp((char*)other.hashTable + offset,
+                            (char*)hashTable + offset, nsize)) {
                         nAllSame++;
-                    } else if (!memcmp((char*)other.hashTable + offset, (char*)hashTable + offset, ksize)) {
+                    } else if (!memcmp((char*)other.hashTable + offset,
+                                   (char*)hashTable + offset, ksize)) {
                         nOnlyKeySame++;
                     } else {
                         nDiff++;
@@ -236,11 +247,14 @@ public:
 
         size_t nAfter = stat();
 
-        loggerDebug("[key merge]\nnProcessed = %lld, nMerged = %lld,\n"
-                    "nSkip = %lld (nAllSame = %lld, nOnlyKeySame = %lld, nDiff = %lld)\n"
-                    "hashSize = %d, nBefore = %lld (%f%%), nAfter = %lld (%f%%)\n",
-            nProcessed, nMerged, nSkip, nAllSame, nOnlyKeySame, nDiff,
-            hashSize, nBefore, (double)nBefore * 100 / hashSize, nAfter, (double)nAfter * 100 / hashSize);
+        loggerDebug(
+            "[key merge]\nnProcessed = %lld, nMerged = %lld,\n"
+            "nSkip = %lld (nAllSame = %lld, nOnlyKeySame = %lld, nDiff = "
+            "%lld)\n"
+            "hashSize = %d, nBefore = %lld (%f%%), nAfter = %lld (%f%%)\n",
+            nProcessed, nMerged, nSkip, nAllSame, nOnlyKeySame, nDiff, hashSize,
+            nBefore, (double)nBefore * 100 / hashSize, nAfter,
+            (double)nAfter * 100 / hashSize);
     }
 
     size_t stat()
@@ -257,7 +271,8 @@ public:
             }
         }
 
-        loggerDebug("Hash map loaded from file (%lld/%d entries)\n", nEntries, hashSize);
+        loggerDebug("Hash map loaded from file (%lld/%d entries)\n", nEntries,
+            hashSize);
 
         return nEntries;
     }

@@ -38,10 +38,7 @@ Mill::Mill()
 // ~Mill()
 // Mill class destructor
 //-----------------------------------------------------------------------------
-Mill::~Mill()
-{
-    exit();
-}
+Mill::~Mill() { exit(); }
 
 //-----------------------------------------------------------------------------
 // deleteArrays()
@@ -74,7 +71,8 @@ void Mill::resetGame()
 // beginNewGame()
 // Reinitializes the Mill object.
 //-----------------------------------------------------------------------------
-void Mill::beginNewGame(MillAI* firstPlayerAI, MillAI* secondPlayerAI, int currentPlayer)
+void Mill::beginNewGame(
+    MillAI* firstPlayerAI, MillAI* secondPlayerAI, int currentPlayer)
 {
     // free memory
     exit();
@@ -91,7 +89,9 @@ void Mill::beginNewGame(MillAI* firstPlayerAI, MillAI* secondPlayerAI, int curre
     }
 
     field.curPlayer->id = beginningPlayer;
-    field.oppPlayer->id = (field.curPlayer->id == field.playerTwo) ? field.playerOne : field.playerTwo;
+    field.oppPlayer->id = (field.curPlayer->id == field.playerTwo)
+        ? field.playerOne
+        : field.playerTwo;
 
     winner = 0;
     movesDone = 0;
@@ -108,7 +108,8 @@ void Mill::beginNewGame(MillAI* firstPlayerAI, MillAI* secondPlayerAI, int curre
 // startSettingPhase()
 //
 //-----------------------------------------------------------------------------
-bool Mill::startSettingPhase(MillAI* firstPlayerAI, MillAI* secondPlayerAI, int currentPlayer, bool settingPhase)
+bool Mill::startSettingPhase(MillAI* firstPlayerAI, MillAI* secondPlayerAI,
+    int currentPlayer, bool settingPhase)
 {
     beginNewGame(firstPlayerAI, secondPlayerAI, currentPlayer);
 
@@ -137,7 +138,8 @@ void Mill::setUpCalcPossibleMoves(Player* player)
             if (field.board[j] != field.squareIsFree)
                 continue;
 
-            // when current player has only 3 stones he is allowed to spring his stone
+            // when current player has only 3 stones he is allowed to spring his
+            // stone
             if (player->numStones > 3 || field.settingPhase) {
                 // determine moving direction
                 for (k = 0, movingDirection = 4; k < 4; k++)
@@ -159,13 +161,16 @@ void Mill::setUpCalcPossibleMoves(Player* player)
 // setUpSetWarningAndMill()
 //
 //-----------------------------------------------------------------------------
-void Mill::setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour)
+void Mill::setUpSetWarningAndMill(unsigned int stone,
+    unsigned int firstNeighbour, unsigned int secondNeighbour)
 {
     // locals
     int rowOwner = field.board[stone];
 
     // mill closed ?
-    if (rowOwner != field.squareIsFree && field.board[firstNeighbour] == rowOwner && field.board[secondNeighbour] == rowOwner) {
+    if (rowOwner != field.squareIsFree
+        && field.board[firstNeighbour] == rowOwner
+        && field.board[secondNeighbour] == rowOwner) {
         field.stonePartOfMill[stone]++;
         field.stonePartOfMill[firstNeighbour]++;
         field.stonePartOfMill[secondNeighbour]++;
@@ -180,8 +185,10 @@ bool Mill::putPiece(unsigned int pos, int player)
 {
     // locals
     unsigned int i;
-    unsigned int numberOfMillsCurrentPlayer = 0, numberOfMillsOpponentPlayer = 0;
-    Player* myPlayer = (player == field.curPlayer->id) ? field.curPlayer : field.oppPlayer;
+    unsigned int numberOfMillsCurrentPlayer = 0,
+                 numberOfMillsOpponentPlayer = 0;
+    Player* myPlayer
+        = (player == field.curPlayer->id) ? field.curPlayer : field.oppPlayer;
 
     // check parameters
     if (player != fieldStruct::playerOne && player != fieldStruct::playerTwo)
@@ -210,8 +217,10 @@ bool Mill::putPiece(unsigned int pos, int player)
 
     // go in every direction
     for (i = 0; i < fieldStruct::size; i++) {
-        setUpSetWarningAndMill(i, field.neighbour[i][0][0], field.neighbour[i][0][1]);
-        setUpSetWarningAndMill(i, field.neighbour[i][1][0], field.neighbour[i][1][1]);
+        setUpSetWarningAndMill(
+            i, field.neighbour[i][0][0], field.neighbour[i][0][1]);
+        setUpSetWarningAndMill(
+            i, field.neighbour[i][1][0], field.neighbour[i][1][1]);
     }
 
     // since every mill was detected 3 times
@@ -230,10 +239,14 @@ bool Mill::putPiece(unsigned int pos, int player)
 
     // stonesSet & numStonesMissing
     if (field.settingPhase) {
-        // ... This calculation is not correct! It is possible that some mills did not cause a stone removal.
+        // ... This calculation is not correct! It is possible that some mills
+        // did not cause a stone removal.
         field.curPlayer->numStonesMissing = numberOfMillsOpponentPlayer;
-        field.oppPlayer->numStonesMissing = numberOfMillsCurrentPlayer - field.stoneMustBeRemoved;
-        field.stonesSet = field.curPlayer->numStones + field.oppPlayer->numStones + field.curPlayer->numStonesMissing + field.oppPlayer->numStonesMissing;
+        field.oppPlayer->numStonesMissing
+            = numberOfMillsCurrentPlayer - field.stoneMustBeRemoved;
+        field.stonesSet = field.curPlayer->numStones
+            + field.oppPlayer->numStones + field.curPlayer->numStonesMissing
+            + field.oppPlayer->numStonesMissing;
     } else {
         field.stonesSet = 18;
         field.curPlayer->numStonesMissing = 9 - field.curPlayer->numStones;
@@ -241,7 +254,8 @@ bool Mill::putPiece(unsigned int pos, int player)
     }
 
     // when opponent is unable to move than current player has won
-    if ((!field.curPlayer->numPossibleMoves) && (!field.settingPhase) && (!field.stoneMustBeRemoved) && (field.curPlayer->numStones > 3))
+    if ((!field.curPlayer->numPossibleMoves) && (!field.settingPhase)
+        && (!field.stoneMustBeRemoved) && (field.curPlayer->numStones > 3))
         winner = field.oppPlayer->id;
     else if ((field.curPlayer->numStones < 3) && (!field.settingPhase))
         winner = field.oppPlayer->id;
@@ -290,9 +304,11 @@ bool Mill::getField(int* pField)
 
 //-----------------------------------------------------------------------------
 // getLog()
-// Copy the whole history of moves into the passed arrays, which must be of size [MAX_NUM_MOVES].
+// Copy the whole history of moves into the passed arrays, which must be of size
+// [MAX_NUM_MOVES].
 //-----------------------------------------------------------------------------
-void Mill::getLog(unsigned int& numMovesDone, unsigned int* from, unsigned int* to)
+void Mill::getLog(
+    unsigned int& numMovesDone, unsigned int* from, unsigned int* to)
 {
     unsigned int index;
 
@@ -359,14 +375,17 @@ void Mill::setAI(int player, MillAI* AI)
 // getChoiceOfSpecialAI()
 // Returns the move the passed AI would do.
 //-----------------------------------------------------------------------------
-void Mill::getChoiceOfSpecialAI(MillAI* AI, unsigned int* pushFrom, unsigned int* pushTo)
+void Mill::getChoiceOfSpecialAI(
+    MillAI* AI, unsigned int* pushFrom, unsigned int* pushTo)
 {
     fieldStruct theField;
     *pushFrom = field.size;
     *pushTo = field.size;
     theField.createBoard();
     field.copyBoard(&theField);
-    if (AI != nullptr && (field.settingPhase || field.curPlayer->numPossibleMoves > 0) && winner == 0)
+    if (AI != nullptr
+        && (field.settingPhase || field.curPlayer->numPossibleMoves > 0)
+        && winner == 0)
         AI->play(&theField, pushFrom, pushTo);
     theField.deleteBoard();
 }
@@ -381,21 +400,24 @@ void Mill::getComputersChoice(unsigned int* pushFrom, unsigned int* pushTo)
     *pushFrom = field.size;
     *pushTo = field.size;
     theField.createBoard();
-    //assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <= 1);
+    // assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <= 1);
 
     field.copyBoard(&theField);
 
-    //assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <= 1);
+    // assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <= 1);
 
-    if ((field.settingPhase || field.curPlayer->numPossibleMoves > 0) && winner == 0) {
+    if ((field.settingPhase || field.curPlayer->numPossibleMoves > 0)
+        && winner == 0) {
         if (field.curPlayer->id == field.playerOne) {
             if (playerOneAI != nullptr)
                 playerOneAI->play(&theField, pushFrom, pushTo);
-            //assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <= 1);
+            // assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <=
+            // 1);
         } else {
             if (playerTwoAI != nullptr)
                 playerTwoAI->play(&theField, pushFrom, pushTo);
-            //assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <= 1);
+            // assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <=
+            // 1);
         }
     }
 
@@ -408,9 +430,11 @@ void Mill::getComputersChoice(unsigned int* pushFrom, unsigned int* pushTo)
 
 //-----------------------------------------------------------------------------
 // isNormalMovePossible()
-// 'Normal' in this context means, by moving the stone along a connection without jumping.
+// 'Normal' in this context means, by moving the stone along a connection
+// without jumping.
 //-----------------------------------------------------------------------------
-bool Mill::isNormalMovePossible(unsigned int from, unsigned int to, Player* player)
+bool Mill::isNormalMovePossible(
+    unsigned int from, unsigned int to, Player* player)
 {
     // locals
     unsigned int movingDirection, i;
@@ -475,7 +499,8 @@ void Mill::calcPossibleMoves(Player* player)
     for (i = 0; i < field.size; i++) {
         for (j = 0; j < 4; j++) {
             if (field.board[i] == player->id)
-                field.stoneMoveAble[i][j] = isNormalMovePossible(i, field.connectedSquare[i][j], player);
+                field.stoneMoveAble[i][j] = isNormalMovePossible(
+                    i, field.connectedSquare[i][j], player);
             else
                 field.stoneMoveAble[i][j] = false;
         }
@@ -486,17 +511,19 @@ void Mill::calcPossibleMoves(Player* player)
 // setWarningAndMill()
 //
 //-----------------------------------------------------------------------------
-void Mill::setWarningAndMill(unsigned int stone,
-    unsigned int firstNeighbour,
-    unsigned int secondNeighbour,
-    bool isNewStone)
+void Mill::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour,
+    unsigned int secondNeighbour, bool isNewStone)
 {
     // locals
     int rowOwner = field.board[stone];
-    unsigned int rowOwnerWarning = (rowOwner == field.playerOne) ? field.playerOneWarning : field.playerTwoWarning;
+    unsigned int rowOwnerWarning = (rowOwner == field.playerOne)
+        ? field.playerOneWarning
+        : field.playerTwoWarning;
 
     // mill closed ?
-    if (rowOwner != field.squareIsFree && field.board[firstNeighbour] == rowOwner && field.board[secondNeighbour] == rowOwner) {
+    if (rowOwner != field.squareIsFree
+        && field.board[firstNeighbour] == rowOwner
+        && field.board[secondNeighbour] == rowOwner) {
         field.stonePartOfMill[stone]++;
         field.stonePartOfMill[firstNeighbour]++;
         field.stonePartOfMill[secondNeighbour]++;
@@ -504,11 +531,15 @@ void Mill::setWarningAndMill(unsigned int stone,
             field.stoneMustBeRemoved = 1;
     }
 
-    //warning ?
-    if (rowOwner != field.squareIsFree && field.board[firstNeighbour] == field.squareIsFree && field.board[secondNeighbour] == rowOwner)
+    // warning ?
+    if (rowOwner != field.squareIsFree
+        && field.board[firstNeighbour] == field.squareIsFree
+        && field.board[secondNeighbour] == rowOwner)
         field.warnings[firstNeighbour] |= rowOwnerWarning;
 
-    if (rowOwner != field.squareIsFree && field.board[secondNeighbour] == field.squareIsFree && field.board[firstNeighbour] == rowOwner)
+    if (rowOwner != field.squareIsFree
+        && field.board[secondNeighbour] == field.squareIsFree
+        && field.board[firstNeighbour] == rowOwner)
         field.warnings[secondNeighbour] |= rowOwnerWarning;
 }
 
@@ -533,8 +564,10 @@ void Mill::updateMillsAndWarnings(unsigned int newStone)
 
     // go in every direction
     for (i = 0; i < field.size; i++) {
-        setWarningAndMill(i, field.neighbour[i][0][0], field.neighbour[i][0][1], i == newStone);
-        setWarningAndMill(i, field.neighbour[i][1][0], field.neighbour[i][1][1], i == newStone);
+        setWarningAndMill(i, field.neighbour[i][0][0], field.neighbour[i][0][1],
+            i == newStone);
+        setWarningAndMill(i, field.neighbour[i][1][0], field.neighbour[i][1][1],
+            i == newStone);
     }
 
     // since every mill was detected 3 times
@@ -543,7 +576,8 @@ void Mill::updateMillsAndWarnings(unsigned int newStone)
 
     // no stone must be removed if each belongs to a mill
     for (atLeastOneStoneRemoveAble = false, i = 0; i < field.size; i++)
-        if (field.stonePartOfMill[i] == 0 && field.board[i] == field.oppPlayer->id)
+        if (field.stonePartOfMill[i] == 0
+            && field.board[i] == field.oppPlayer->id)
             atLeastOneStoneRemoveAble = true;
     if (!atLeastOneStoneRemoveAble)
         field.stoneMustBeRemoved = 0;
@@ -706,7 +740,8 @@ bool Mill::setCurrentGameState(fieldStruct* curState)
 
 //-----------------------------------------------------------------------------
 // compareWithField()
-// Compares the current 'board' variable with the passed one. 'stoneMoveAble[]' is ignored.
+// Compares the current 'board' variable with the passed one. 'stoneMoveAble[]'
+// is ignored.
 //-----------------------------------------------------------------------------
 bool Mill::compareWithField(fieldStruct* compareField)
 {
@@ -755,15 +790,19 @@ bool Mill::compareWithField(fieldStruct* compareField)
         }
 
         for (j = 0; j < 4; j++) {
-            if (field.connectedSquare[i][j] != compareField->connectedSquare[i][j]) {
+            if (field.connectedSquare[i][j]
+                != compareField->connectedSquare[i][j]) {
                 cout << "error - connectedSquare[] differs!" << std::endl;
                 ret = false;
             }
 
-            // if (board.stoneMoveAble[i][j] != compareField->stoneMoveAble[i][j])
-            //     { cout << "error - stoneMoveAble differs!" << endl; ret = false; }
+            // if (board.stoneMoveAble[i][j] !=
+            // compareField->stoneMoveAble[i][j])
+            //     { cout << "error - stoneMoveAble differs!" << endl; ret =
+            //     false; }
 
-            if (field.neighbour[i][j / 2][j % 2] != compareField->neighbour[i][j / 2][j % 2]) {
+            if (field.neighbour[i][j / 2][j % 2]
+                != compareField->neighbour[i][j / 2][j % 2]) {
                 cout << "error - neighbour differs!" << std::endl;
                 ret = false;
             }
@@ -807,8 +846,9 @@ bool Mill::comparePlayers(Player* playerA, Player* playerB)
         ret = false;
     }
 
-    // for (i = 0; i < MAX_NUM_POS_MOVES; i++) if (playerA->posFrom[i] = playerB->posFrom[i]) return false;
-    // for (i = 0; i < MAX_NUM_POS_MOVES; i++) if (playerA->posTo[i] = playerB->posTo[i]) return false;
+    // for (i = 0; i < MAX_NUM_POS_MOVES; i++) if (playerA->posFrom[i] =
+    // playerB->posFrom[i]) return false; for (i = 0; i < MAX_NUM_POS_MOVES;
+    // i++) if (playerA->posTo[i] = playerB->posTo[i]) return false;
 
     return ret;
 }
@@ -818,14 +858,12 @@ bool Mill::comparePlayers(Player* playerA, Player* playerB)
 // Calls the printBoard() function of the current board.
 //       Prints the current game state on the screen.
 //-----------------------------------------------------------------------------
-void Mill::printBoard()
-{
-    field.printBoard();
-}
+void Mill::printBoard() { field.printBoard(); }
 
 //-----------------------------------------------------------------------------
 // undoMove()
-// Sets the initial board as the current one and apply all (minus one) moves from the move history.
+// Sets the initial board as the current one and apply all (minus one) moves
+// from the move history.
 //-----------------------------------------------------------------------------
 void Mill::undoMove(void)
 {
@@ -863,14 +901,19 @@ void Mill::undoMove(void)
 // calcNumberOfRestingStones()
 //
 //-----------------------------------------------------------------------------
-void Mill::calcNumberOfRestingStones(int& numWhiteStonesResting, int& numBlackStonesResting)
+void Mill::calcNumberOfRestingStones(
+    int& numWhiteStonesResting, int& numBlackStonesResting)
 {
     if (getCurrentPlayer() == fieldStruct::playerTwo) {
-        numWhiteStonesResting = fieldStruct::numStonesPerPlayer - field.curPlayer->numStonesMissing - field.curPlayer->numStones;
-        numBlackStonesResting = fieldStruct::numStonesPerPlayer - field.oppPlayer->numStonesMissing - field.oppPlayer->numStones;
+        numWhiteStonesResting = fieldStruct::numStonesPerPlayer
+            - field.curPlayer->numStonesMissing - field.curPlayer->numStones;
+        numBlackStonesResting = fieldStruct::numStonesPerPlayer
+            - field.oppPlayer->numStonesMissing - field.oppPlayer->numStones;
     } else {
-        numWhiteStonesResting = fieldStruct::numStonesPerPlayer - field.oppPlayer->numStonesMissing - field.oppPlayer->numStones;
-        numBlackStonesResting = fieldStruct::numStonesPerPlayer - field.curPlayer->numStonesMissing - field.curPlayer->numStones;
+        numWhiteStonesResting = fieldStruct::numStonesPerPlayer
+            - field.oppPlayer->numStonesMissing - field.oppPlayer->numStones;
+        numBlackStonesResting = fieldStruct::numStonesPerPlayer
+            - field.curPlayer->numStonesMissing - field.curPlayer->numStones;
     }
 }
 

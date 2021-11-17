@@ -40,17 +40,12 @@ public:
         QWidget* widget = nullptr) override;
 
     // Use UserType + 2 to represent pieces,
-    // and use qgraphicsitems_cast() determines whether it is an object of the pieceitem class
-    // Another way is to put the class name in the 0key position of data,
-    // setData(0, "pieceitem"), and then use data(0) to judge
-    enum {
-        Type = UserType + 2
-    };
+    // and use qgraphicsitems_cast() determines whether it is an object of the
+    // pieceitem class Another way is to put the class name in the 0key position
+    // of data, setData(0, "pieceitem"), and then use data(0) to judge
+    enum { Type = UserType + 2 };
 
-    int type() const noexcept override
-    {
-        return Type;
-    }
+    int type() const noexcept override { return Type; }
 
     enum class Models {
         noPiece = 0x1,
@@ -58,30 +53,15 @@ public:
         blackPiece = 0x4,
     };
 
-    enum Models getModel() noexcept
-    {
-        return model;
-    }
+    enum Models getModel() noexcept { return model; }
 
-    void setModel(enum Models m) noexcept
-    {
-        this->model = m;
-    }
+    void setModel(enum Models m) noexcept { this->model = m; }
 
-    int getNum() noexcept
-    {
-        return num;
-    }
+    int getNum() noexcept { return num; }
 
-    void setNum(int n) noexcept
-    {
-        num = n;
-    }
+    void setNum(int n) noexcept { num = n; }
 
-    bool isDeleted() noexcept
-    {
-        return deleted;
-    }
+    bool isDeleted() noexcept { return deleted; }
 
     void setDeleted(bool del = true)
     {
@@ -93,10 +73,7 @@ public:
         update(boundingRect());
     }
 
-    void setShowNum(bool show = true) noexcept
-    {
-        this->showNum = show;
-    }
+    void setShowNum(bool show = true) noexcept { this->showNum = show; }
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) override;

@@ -35,9 +35,9 @@ private:
     Position& pos;
 };
 
-// Evaluation::value() is the main function of the class. It computes the various
-// parts of the evaluation and returns the value of the position from the point
-// of view of the side to move.
+// Evaluation::value() is the main function of the class. It computes the
+// various parts of the evaluation and returns the value of the position from
+// the point of view of the side to move.
 
 Value Evaluation::value()
 {
@@ -45,7 +45,9 @@ Value Evaluation::value()
 
     int pieceInHandDiffCount;
     int pieceOnBoardDiffCount;
-    int pieceToRemoveCount = (pos.side_to_move() == WHITE) ? pos.piece_to_remove_count() : -pos.piece_to_remove_count();
+    int pieceToRemoveCount = (pos.side_to_move() == WHITE)
+        ? pos.piece_to_remove_count()
+        : -pos.piece_to_remove_count();
 
     switch (pos.get_phase()) {
     case Phase::ready:
@@ -56,10 +58,12 @@ Value Evaluation::value()
             value += pos.get_mobility_diff();
         }
 
-        pieceInHandDiffCount = pos.piece_in_hand_count(WHITE) - pos.piece_in_hand_count(BLACK);
+        pieceInHandDiffCount
+            = pos.piece_in_hand_count(WHITE) - pos.piece_in_hand_count(BLACK);
         value += VALUE_EACH_PIECE_INHAND * pieceInHandDiffCount;
 
-        pieceOnBoardDiffCount = pos.piece_on_board_count(WHITE) - pos.piece_on_board_count(BLACK);
+        pieceOnBoardDiffCount
+            = pos.piece_on_board_count(WHITE) - pos.piece_on_board_count(BLACK);
         value += VALUE_EACH_PIECE_ONBOARD * pieceOnBoardDiffCount;
 
         switch (pos.get_action()) {
@@ -81,7 +85,9 @@ Value Evaluation::value()
             value += pos.get_mobility_diff();
         }
 
-        value = (pos.piece_on_board_count(WHITE) - pos.piece_on_board_count(BLACK)) * VALUE_EACH_PIECE_ONBOARD;
+        value = (pos.piece_on_board_count(WHITE)
+                    - pos.piece_on_board_count(BLACK))
+            * VALUE_EACH_PIECE_ONBOARD;
 
         switch (pos.get_action()) {
         case Action::select:
@@ -98,14 +104,18 @@ Value Evaluation::value()
         break;
 
     case Phase::gameOver:
-        if (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK) >= EFFECTIVE_SQUARE_NB) {
+        if (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK)
+            >= EFFECTIVE_SQUARE_NB) {
             if (rule.isWhiteLoseButNotDrawWhenBoardFull) {
                 value -= VALUE_MATE;
             } else {
                 value = VALUE_DRAW;
             }
-        } else if (pos.get_action() == Action::select && pos.is_all_surrounded(pos.side_to_move()) && rule.isLoseButNotChangeSideWhenNoWay) {
-            const Value delta = pos.side_to_move() == WHITE ? -VALUE_MATE : VALUE_MATE;
+        } else if (pos.get_action() == Action::select
+            && pos.is_all_surrounded(pos.side_to_move())
+            && rule.isLoseButNotChangeSideWhenNoWay) {
+            const Value delta
+                = pos.side_to_move() == WHITE ? -VALUE_MATE : VALUE_MATE;
             value += delta;
         } else if (pos.piece_on_board_count(WHITE) < rule.piecesAtLeastCount) {
             value -= VALUE_MATE;
@@ -124,7 +134,8 @@ Value Evaluation::value()
     }
 
 #if EVAL_DRAW_WHEN_NOT_KNOWN_WIN_IF_MAY_FLY
-    if (pos.get_phase() == Phase::moving && rule.mayFly && !rule.hasDiagonalLines) {
+    if (pos.get_phase() == Phase::moving && rule.mayFly
+        && !rule.hasDiagonalLines) {
         int piece_on_board_count_future_white = pos.piece_on_board_count(WHITE);
         int piece_on_board_count_future_black = pos.piece_on_board_count(BLACK);
 
@@ -137,7 +148,8 @@ Value Evaluation::value()
         }
 
         // TODO(calcitem): flyPieceCount?
-        if (piece_on_board_count_future_black == 3 || piece_on_board_count_future_white == 3) {
+        if (piece_on_board_count_future_black == 3
+            || piece_on_board_count_future_white == 3) {
             if (abs(value) < VALUE_KNOWN_WIN) {
                 value = VALUE_DRAW;
             }
@@ -153,7 +165,4 @@ Value Evaluation::value()
 /// evaluate() is the evaluator for the outer world. It returns a static
 /// evaluation of the position from the point of view of the side to move.
 
-Value Eval::evaluate(Position& pos)
-{
-    return Evaluation(pos).value();
-}
+Value Eval::evaluate(Position& pos) { return Evaluation(pos).value(); }

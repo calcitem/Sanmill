@@ -151,11 +151,12 @@ begin:
 
 } // namespace
 
-/// UCI::loop() waits for a command from stdin, parses it and calls the appropriate
-/// function. Also intercepts EOF from stdin to ensure gracefully exiting if the
-/// GUI dies unexpectedly. When called with some command line arguments, e.g. to
-/// run 'bench', once the command is executed the function returns immediately.
-/// In addition to the UCI ones, also some additional debug commands are supported.
+/// UCI::loop() waits for a command from stdin, parses it and calls the
+/// appropriate function. Also intercepts EOF from stdin to ensure gracefully
+/// exiting if the GUI dies unexpectedly. When called with some command line
+/// arguments, e.g. to run 'bench', once the command is executed the function
+/// returns immediately. In addition to the UCI ones, also some additional debug
+/// commands are supported.
 
 void UCI::loop(int argc, char* argv[])
 {
@@ -217,7 +218,8 @@ void UCI::loop(int argc, char* argv[])
         cmd = line;
         LOGD("[uci] input: %s\n", line);
 #else
-        if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or EOF
+        if (argc == 1
+            && !getline(cin, cmd)) // Block here waiting for input or EOF
             cmd = "quit";
 #endif
 
@@ -226,22 +228,19 @@ void UCI::loop(int argc, char* argv[])
         token.clear(); // Avoid a stale if getline() returns empty or blank line
         is >> skipws >> token;
 
-        if (token == "quit"
-            || token == "stop")
+        if (token == "quit" || token == "stop")
             Threads.stop = true;
 
-        // The GUI sends 'ponderhit' to tell us the user has played the expected move.
-        // So 'ponderhit' will be sent if we were told to ponder on the same move the
-        // user has played. We should continue searching but switch from pondering to
-        // normal search.
+        // The GUI sends 'ponderhit' to tell us the user has played the expected
+        // move. So 'ponderhit' will be sent if we were told to ponder on the
+        // same move the user has played. We should continue searching but
+        // switch from pondering to normal search.
         else if (token == "ponderhit")
             Threads.main()->ponder = false; // Switch to normal search
 
         else if (token == "uci")
-            sync_cout << "id name " << engine_info(true)
-                      << "\n"
-                      << Options
-                      << "\nuciok" << sync_endl;
+            sync_cout << "id name " << engine_info(true) << "\n"
+                      << Options << "\nuciok" << sync_endl;
 
         else if (token == "setoption")
             setoption(is);
@@ -288,11 +287,13 @@ string UCI::value(Value v)
     return ss.str();
 }
 
-/// UCI::square() converts a Square to a string in algebraic notation ((1,2), etc.)
+/// UCI::square() converts a Square to a string in algebraic notation ((1,2),
+/// etc.)
 
 std::string UCI::square(Square s)
 {
-    return std::string { char('('), char('0' + file_of(s)), char(','), char('0' + rank_of(s)), char(')') };
+    return std::string { char('('), char('0' + file_of(s)), char(','),
+        char('0' + rank_of(s)), char(')') };
 }
 
 /// UCI::move() converts a Move to a string in algebraic notation ((1,2), etc.).

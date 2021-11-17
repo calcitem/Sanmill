@@ -60,12 +60,9 @@ int perfect_reset(void)
 
 Square from_perfect_sq(unsigned int sq)
 {
-    Square map[] = {
-        SQ_31, SQ_24, SQ_25, SQ_23, SQ_16, SQ_17, SQ_15, SQ_8,
-        SQ_9, SQ_30, SQ_22, SQ_14, SQ_10, SQ_18, SQ_26, SQ_13,
-        SQ_12, SQ_11, SQ_21, SQ_20, SQ_19, SQ_29, SQ_28, SQ_27,
-        SQ_0
-    };
+    Square map[] = { SQ_31, SQ_24, SQ_25, SQ_23, SQ_16, SQ_17, SQ_15, SQ_8,
+        SQ_9, SQ_30, SQ_22, SQ_14, SQ_10, SQ_18, SQ_26, SQ_13, SQ_12, SQ_11,
+        SQ_21, SQ_20, SQ_19, SQ_29, SQ_28, SQ_27, SQ_0 };
 
     return map[sq];
 }
@@ -154,17 +151,15 @@ void to_perfect_move(Move move, unsigned int& from, unsigned int& to)
     }
 }
 
-void to_perfect_postition(Position& pos)
-{
-}
+void to_perfect_postition(Position& pos) {}
 
 Move perfect_search()
 {
     bool ret = false;
     unsigned int from = 24, to = 24;
-    //sync_cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << sync_endl;
-    //mill->printBoard();
-    //sync_cout << "========================" << sync_endl;
+    // sync_cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << sync_endl;
+    // mill->printBoard();
+    // sync_cout << "========================" << sync_endl;
 
     mill->getComputersChoice(&from, &to);
 
@@ -172,17 +167,21 @@ Move perfect_search()
     assert(ret == true);
 
     mill->printBoard();
-    //sync_cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << sync_endl;
+    // sync_cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << sync_endl;
 
-    sync_cout << "\nlast move was from " << (char)(mill->getLastMoveFrom() + 'a') << " to " << (char)(mill->getLastMoveTo() + 'a') << sync_endl;
-    //sync_cout << "\nlast move was from " << (char)(from + 'a') << " to " << (char)(to + 'a') << sync_endl;
+    sync_cout << "\nlast move was from "
+              << (char)(mill->getLastMoveFrom() + 'a') << " to "
+              << (char)(mill->getLastMoveTo() + 'a') << sync_endl;
+    // sync_cout << "\nlast move was from " << (char)(from + 'a') << " to " <<
+    // (char)(to + 'a') << sync_endl;
 
-    //ret = mill->doMove(mill->getLastMoveFrom(), mill->getLastMoveTo());
+    // ret = mill->doMove(mill->getLastMoveFrom(), mill->getLastMoveTo());
 
-    //return from_perfect_move(from, to);
+    // return from_perfect_move(from, to);
     return from_perfect_move(mill->getLastMoveFrom(), mill->getLastMoveTo());
 
-    //cout << "\nlast move was from " << (char)(mill->getLastMoveFrom() + 'a') << " to " << (char)(mill->getLastMoveTo() + 'a') << "\n\n";
+    // cout << "\nlast move was from " << (char)(mill->getLastMoveFrom() + 'a')
+    // << " to " << (char)(mill->getLastMoveTo() + 'a') << "\n\n";
     // return from_perfect_move(mill->getLastMoveFrom(), mill->getLastMoveTo());
 }
 
@@ -215,7 +214,8 @@ bool perfect_command(const char* cmd)
         return perfect_reset();
     }
 
-    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned*)&file1, (unsigned*)&rank1, (unsigned*)&file2, (unsigned*)&rank2);
+    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned*)&file1,
+        (unsigned*)&rank1, (unsigned*)&file2, (unsigned*)&rank2);
 
     if (args >= 4) {
         move = make_move(make_square(file1, rank1), make_square(file2, rank2));

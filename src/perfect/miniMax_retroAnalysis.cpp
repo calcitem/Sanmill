@@ -15,11 +15,14 @@ s\*********************************************************************/
 //-----------------------------------------------------------------------------
 // calcKnotValuesByRetroAnalysis()
 //
-// The COUNT-ARRAY is the main element of the algorithmn. It contains the number of succeeding states for the drawn gamestates,
-// whose short knot value has to be determined. If all succeeding states (branches representing possible moves) are for example won than,
-// a state can be marked as lost, since no branch will lead to a drawn or won situation any more.
-// Each time the short knot value of a game state has been determined, the state will be added to 'statesToProcess'.
-// This list is like a queue of states, which still has to be processed.
+// The COUNT-ARRAY is the main element of the algorithmn. It contains the number
+// of succeeding states for the drawn gamestates, whose short knot value has to
+// be determined. If all succeeding states (branches representing possible
+// moves) are for example won than, a state can be marked as lost, since no
+// branch will lead to a drawn or won situation any more. Each time the short
+// knot value of a game state has been determined, the state will be added to
+// 'statesToProcess'. This list is like a queue of states, which still has to be
+// processed.
 //-----------------------------------------------------------------------------
 bool MiniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int>& layersToCalc)
 {
@@ -35,7 +38,8 @@ bool MiniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int>& layersToCalc)
     // init retro vars
     retroVars.thread.resize(threadManager.getNumThreads());
     for (threadNo = 0; threadNo < threadManager.getNumThreads(); threadNo++) {
-        retroVars.thread[threadNo].statesToProcess.resize(PLYINFO_EXP_VALUE, nullptr);
+        retroVars.thread[threadNo].statesToProcess.resize(
+            PLYINFO_EXP_VALUE, nullptr);
         retroVars.thread[threadNo].numStatesToProcess = 0;
         retroVars.thread[threadNo].threadNo = threadNo;
     }
@@ -44,16 +48,28 @@ bool MiniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int>& layersToCalc)
     retroVars.layersToCalculate = layersToCalc;
     retroVars.pMiniMax = this;
 
-    for (retroVars.totalNumKnots = 0, retroVars.numKnotsToCalc = 0, curLayer = 0; curLayer < layersToCalc.size(); curLayer++) {
-        retroVars.numKnotsToCalc += layerStats[layersToCalc[curLayer]].knotsInLayer;
-        retroVars.totalNumKnots += layerStats[layersToCalc[curLayer]].knotsInLayer;
+    for (retroVars.totalNumKnots = 0, retroVars.numKnotsToCalc = 0,
+        curLayer = 0;
+         curLayer < layersToCalc.size(); curLayer++) {
+        retroVars.numKnotsToCalc
+            += layerStats[layersToCalc[curLayer]].knotsInLayer;
+        retroVars.totalNumKnots
+            += layerStats[layersToCalc[curLayer]].knotsInLayer;
         retroVars.layerInitialized[layersToCalc[curLayer]] = true;
-        for (curSubLayer = 0; curSubLayer < layerStats[layersToCalc[curLayer]].numSuccLayers; curSubLayer++) {
-            if (retroVars.layerInitialized[layerStats[layersToCalc[curLayer]].succLayers[curSubLayer]])
+        for (curSubLayer = 0;
+             curSubLayer < layerStats[layersToCalc[curLayer]].numSuccLayers;
+             curSubLayer++) {
+            if (retroVars.layerInitialized[layerStats[layersToCalc[curLayer]]
+                                               .succLayers[curSubLayer]])
                 continue;
             else
-                retroVars.layerInitialized[layerStats[layersToCalc[curLayer]].succLayers[curSubLayer]] = true;
-            retroVars.totalNumKnots += layerStats[layerStats[layersToCalc[curLayer]].succLayers[curSubLayer]].knotsInLayer;
+                retroVars.layerInitialized[layerStats[layersToCalc[curLayer]]
+                                               .succLayers[curSubLayer]]
+                    = true;
+            retroVars.totalNumKnots
+                += layerStats[layerStats[layersToCalc[curLayer]]
+                                  .succLayers[curSubLayer]]
+                       .knotsInLayer;
         }
     }
 
@@ -62,7 +78,8 @@ bool MiniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int>& layersToCalc)
     // output & filenames
     for (curLayer = 0; curLayer < layersToCalc.size(); curLayer++)
         ssLayers << " " << layersToCalc[curLayer];
-    PRINT(0, this, "*** Calculate layers" << ssLayers.str() << " by retro analysis ***");
+    PRINT(0, this,
+        "*** Calculate layers" << ssLayers.str() << " by retro analysis ***");
 
     // initialization
     PRINT(2, this, "  Bytes in memory: " << memoryUsed2 << endl);
@@ -99,15 +116,22 @@ bool MiniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int>& layersToCalc)
     // free memory
 freeMem:
     for (threadNo = 0; threadNo < threadManager.getNumThreads(); threadNo++) {
-        for (plyCounter = 0; plyCounter < retroVars.thread[threadNo].statesToProcess.size(); plyCounter++) {
+        for (plyCounter = 0;
+             plyCounter < retroVars.thread[threadNo].statesToProcess.size();
+             plyCounter++) {
             SAFE_DELETE(retroVars.thread[threadNo].statesToProcess[plyCounter]);
         }
     }
 
     for (curLayer = 0; curLayer < layersToCalc.size(); curLayer++) {
         if (retroVars.countArrays[curLayer] != nullptr) {
-            memoryUsed2 -= layerStats[layersToCalc[curLayer]].knotsInLayer * sizeof(CountArrayVarType);
-            arrayInfos.removeArray(layersToCalc[curLayer], ArrayInfo::arrayType_countArray, layerStats[layersToCalc[curLayer]].knotsInLayer * sizeof(CountArrayVarType), 0);
+            memoryUsed2 -= layerStats[layersToCalc[curLayer]].knotsInLayer
+                * sizeof(CountArrayVarType);
+            arrayInfos.removeArray(layersToCalc[curLayer],
+                ArrayInfo::arrayType_countArray,
+                layerStats[layersToCalc[curLayer]].knotsInLayer
+                    * sizeof(CountArrayVarType),
+                0);
         }
         SAFE_DELETE_ARRAY(retroVars.countArrays[curLayer]);
     }
@@ -120,38 +144,53 @@ freeMem:
 
 //-----------------------------------------------------------------------------
 // initRetroAnalysis()
-// The state values for all game situations in the database are marked as invalid, as undecided, as won or as  lost by using the function getValueOfSituation().
+// The state values for all game situations in the database are marked as
+// invalid, as undecided, as won or as  lost by using the function
+// getValueOfSituation().
 //-----------------------------------------------------------------------------
 bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars& retroVars)
 {
 #ifndef __clang__ // TODO(calcitem)
     // locals
-    unsigned int curLayerId; // current processed layer within 'layersToCalculate'
+    unsigned int
+        curLayerId; // current processed layer within 'layersToCalculate'
     unsigned int layerNumber; // layer number of the current process layer
     stringstream ssInitArrayPath; // path of the working directory
-    stringstream ssInitArrayFilePath; // filename corresponding to a cyclic array file which is used for storage
+    stringstream ssInitArrayFilePath; // filename corresponding to a cyclic
+                                      // array file which is used for storage
     BufferedFile* initArray; //
-    bool initAlreadyDone = false; // true if the initialization information is already available in a file
+    bool initAlreadyDone = false; // true if the initialization information is
+                                  // already available in a file
 
     // process each layer
-    for (curLayerId = 0; curLayerId < retroVars.layersToCalculate.size(); curLayerId++) {
+    for (curLayerId = 0; curLayerId < retroVars.layersToCalculate.size();
+         curLayerId++) {
         // set current processed layer number
         layerNumber = retroVars.layersToCalculate[curLayerId];
         curCalculationActionId = MM_ACTION_INIT_RETRO_ANAL;
-        PRINT(1, this, endl
-                << "  *** Initialization of layer " << layerNumber << " (" << (getOutputInformation(layerNumber)) << ") which has " << layerStats[layerNumber].knotsInLayer << " knots ***");
+        PRINT(1, this,
+            endl << "  *** Initialization of layer " << layerNumber << " ("
+                 << (getOutputInformation(layerNumber)) << ") which has "
+                 << layerStats[layerNumber].knotsInLayer << " knots ***");
 
         // file names
         ssInitArrayPath.str("");
-        ssInitArrayPath << fileDirectory << (fileDirectory.size() ? "\\" : "") << "initLayer";
+        ssInitArrayPath << fileDirectory << (fileDirectory.size() ? "\\" : "")
+                        << "initLayer";
         ssInitArrayFilePath.str("");
-        ssInitArrayFilePath << fileDirectory << (fileDirectory.size() ? "\\" : "") << "initLayer\\initLayer" << layerNumber << ".dat";
+        ssInitArrayFilePath << fileDirectory
+                            << (fileDirectory.size() ? "\\" : "")
+                            << "initLayer\\initLayer" << layerNumber << ".dat";
 
         // does initialization file exist ?
         CreateDirectoryA(ssInitArrayPath.str().c_str(), nullptr);
-        initArray = new BufferedFile(threadManager.getNumThreads(), FILE_BUFFER_SIZE, ssInitArrayFilePath.str().c_str());
-        if (initArray->getFileSize() == (LONGLONG)layerStats[layerNumber].knotsInLayer) {
-            PRINT(2, this, "    Loading init states from file: " << ssInitArrayFilePath.str());
+        initArray = new BufferedFile(threadManager.getNumThreads(),
+            FILE_BUFFER_SIZE, ssInitArrayFilePath.str().c_str());
+        if (initArray->getFileSize()
+            == (LONGLONG)layerStats[layerNumber].knotsInLayer) {
+            PRINT(2, this,
+                "    Loading init states from file: "
+                    << ssInitArrayFilePath.str());
             initAlreadyDone = true;
         }
 
@@ -167,14 +206,22 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars& retroVars)
         retroVars.statsValueCounter[SKV_VALUE_GAME_LOST] = 0;
         retroVars.statsValueCounter[SKV_VALUE_GAME_DRAWN] = 0;
         retroVars.statsValueCounter[SKV_VALUE_INVALID] = 0;
-        ThreadManager::ThreadVarsArray<InitRetroAnalysisVars> tva(threadManager.getNumThreads(), (InitRetroAnalysisVars&)InitRetroAnalysisVars(this, &retroVars, layerNumber, initArray, initAlreadyDone));
+        ThreadManager::ThreadVarsArray<InitRetroAnalysisVars> tva(
+            threadManager.getNumThreads(),
+            (InitRetroAnalysisVars&)InitRetroAnalysisVars(
+                this, &retroVars, layerNumber, initArray, initAlreadyDone));
 
         // process each state in the current layer
-        switch (threadManager.executeParallelLoop(initRetroAnalysisThreadProc, tva.getPointerToArray(), tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1)) {
+        switch (threadManager.executeParallelLoop(initRetroAnalysisThreadProc,
+            tva.getPointerToArray(), tva.getSizeOfArray(), TM_SCHEDULE_STATIC,
+            0, layerStats[layerNumber].knotsInLayer - 1, 1)) {
         case TM_RETURN_VALUE_OK:
             break;
         case TM_RETURN_VALUE_EXECUTION_CANCELLED:
-            PRINT(0, this, "\n****************************************\nMain thread: Execution cancelled by user!\n****************************************\n");
+            PRINT(0, this,
+                "\n****************************************\nMain thread: "
+                "Execution cancelled by "
+                "user!\n****************************************\n");
             SAFE_DELETE(initArray);
             return false;
         default:
@@ -193,13 +240,23 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars& retroVars)
             return falseOrStop();
 
         // when init file was created new then save it now
-        PRINT(2, this, "    Saved initialized states to file: " << ssInitArrayFilePath.str());
+        PRINT(2, this,
+            "    Saved initialized states to file: "
+                << ssInitArrayFilePath.str());
 
         // show statistics
-        PRINT(2, this, "    won     states: " << retroVars.statsValueCounter[SKV_VALUE_GAME_WON]);
-        PRINT(2, this, "    lost    states: " << retroVars.statsValueCounter[SKV_VALUE_GAME_LOST]);
-        PRINT(2, this, "    draw    states: " << retroVars.statsValueCounter[SKV_VALUE_GAME_DRAWN]);
-        PRINT(2, this, "    invalid states: " << retroVars.statsValueCounter[SKV_VALUE_INVALID]);
+        PRINT(2, this,
+            "    won     states: "
+                << retroVars.statsValueCounter[SKV_VALUE_GAME_WON]);
+        PRINT(2, this,
+            "    lost    states: "
+                << retroVars.statsValueCounter[SKV_VALUE_GAME_LOST]);
+        PRINT(2, this,
+            "    draw    states: "
+                << retroVars.statsValueCounter[SKV_VALUE_GAME_DRAWN]);
+        PRINT(2, this,
+            "    invalid states: "
+                << retroVars.statsValueCounter[SKV_VALUE_INVALID]);
     }
 #endif // __clang__
     return true;
@@ -225,12 +282,18 @@ DWORD MiniMax::initRetroAnalysisThreadProc(void* pParameter, unsigned int index)
     // print status
     if (iraVars->statesProcessed % OUTPUT_EVERY_N_STATES == 0) {
         m->numStatesProcessed += OUTPUT_EVERY_N_STATES;
-        PRINT(2, m, "Already initialized " << m->numStatesProcessed << " of " << m->layerStats[curState.layerNumber].knotsInLayer << " states");
+        PRINT(2, m,
+            "Already initialized "
+                << m->numStatesProcessed << " of "
+                << m->layerStats[curState.layerNumber].knotsInLayer
+                << " states");
     }
 
     // layer initialization already done ? if so, then read from file
     if (iraVars->initAlreadyDone) {
-        if (!iraVars->bufferedFile->readBytes(iraVars->curThreadNo, index * sizeof(TwoBit), sizeof(TwoBit), (unsigned char*)&curStateValue)) {
+        if (!iraVars->bufferedFile->readBytes(iraVars->curThreadNo,
+                index * sizeof(TwoBit), sizeof(TwoBit),
+                (unsigned char*)&curStateValue)) {
             PRINT(0, m, "ERROR: initArray->takeBytes() failed");
             return m->falseOrStop();
         }
@@ -238,33 +301,41 @@ DWORD MiniMax::initRetroAnalysisThreadProc(void* pParameter, unsigned int index)
         // initialization not done
     } else {
         // set current selected situation
-        if (!m->setSituation(iraVars->curThreadNo, curState.layerNumber, curState.stateNumber)) {
+        if (!m->setSituation(iraVars->curThreadNo, curState.layerNumber,
+                curState.stateNumber)) {
             curStateValue = SKV_VALUE_INVALID;
         } else {
             // get value of current situation
-            m->getValueOfSituation(iraVars->curThreadNo, floatValue, curStateValue);
+            m->getValueOfSituation(
+                iraVars->curThreadNo, floatValue, curStateValue);
         }
     }
 
     // save init value
     if (curStateValue != SKV_VALUE_INVALID) {
         // save short knot value
-        m->saveKnotValueInDatabase(curState.layerNumber, curState.stateNumber, curStateValue);
+        m->saveKnotValueInDatabase(
+            curState.layerNumber, curState.stateNumber, curStateValue);
 
         // put in list if state is final
-        if (curStateValue == SKV_VALUE_GAME_WON || curStateValue == SKV_VALUE_GAME_LOST) {
+        if (curStateValue == SKV_VALUE_GAME_WON
+            || curStateValue == SKV_VALUE_GAME_LOST) {
             // ply info
-            m->savePlyInfoInDatabase(curState.layerNumber, curState.stateNumber, 0);
+            m->savePlyInfoInDatabase(
+                curState.layerNumber, curState.stateNumber, 0);
 
             // add state to list
-            m->addStateToProcessQueue(*iraVars->retroVars, iraVars->retroVars->thread[iraVars->curThreadNo], 0, &curState);
+            m->addStateToProcessQueue(*iraVars->retroVars,
+                iraVars->retroVars->thread[iraVars->curThreadNo], 0, &curState);
         }
     }
 
     // write data to file
     if (!iraVars->initAlreadyDone) {
         // curStateValue should be 2 at index == 1329322
-        if (!iraVars->bufferedFile->writeBytes(iraVars->curThreadNo, index * sizeof(TwoBit), sizeof(TwoBit), (unsigned char*)&curStateValue)) {
+        if (!iraVars->bufferedFile->writeBytes(iraVars->curThreadNo,
+                index * sizeof(TwoBit), sizeof(TwoBit),
+                (unsigned char*)&curStateValue)) {
             PRINT(0, m, "ERROR: bufferedFile->writeBytes failed!");
             return m->falseOrStop();
         }
@@ -289,43 +360,67 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars& retroVars)
     DWORD dwWritten;
     DWORD dwRead;
     LARGE_INTEGER fileSize;
-    HANDLE hFileCountArray = nullptr; // file handle for loading and saving the arrays in 'countArrays'
+    HANDLE hFileCountArray = nullptr; // file handle for loading and saving the
+                                      // arrays in 'countArrays'
     stringstream ssCountArrayPath;
     stringstream ssCountArrayFilePath;
     stringstream ssLayers;
 
     // output & filenames
-    for (curLayer = 0; curLayer < retroVars.layersToCalculate.size(); curLayer++)
+    for (curLayer = 0; curLayer < retroVars.layersToCalculate.size();
+         curLayer++)
         ssLayers << " " << retroVars.layersToCalculate[curLayer];
 
-    ssCountArrayPath << fileDirectory << (fileDirectory.size() ? "\\" : "") << "countArray";
-    ssCountArrayFilePath << fileDirectory << (fileDirectory.size() ? "\\" : "") << "countArray\\countArray" << ssLayers.str() << ".dat";
-    PRINT(2, this, "  *** Prepare count arrays for layers " << ssLayers.str() << " ***" << endl);
+    ssCountArrayPath << fileDirectory << (fileDirectory.size() ? "\\" : "")
+                     << "countArray";
+    ssCountArrayFilePath << fileDirectory << (fileDirectory.size() ? "\\" : "")
+                         << "countArray\\countArray" << ssLayers.str()
+                         << ".dat";
+    PRINT(2, this,
+        "  *** Prepare count arrays for layers " << ssLayers.str() << " ***"
+                                                 << endl);
     curCalculationActionId = MM_ACTION_PREPARE_COUNT_ARRAY;
 
     // prepare count arrays
     CreateDirectoryA(ssCountArrayPath.str().c_str(), nullptr);
 
-    if ((hFileCountArray = CreateFileA(ssCountArrayFilePath.str().c_str(), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr)) == INVALID_HANDLE_VALUE) {
-        PRINT(0, this, "ERROR: Could not open File " << ssCountArrayFilePath.str() << "!");
+    if ((hFileCountArray = CreateFileA(ssCountArrayFilePath.str().c_str(),
+             GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
+             nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr))
+        == INVALID_HANDLE_VALUE) {
+        PRINT(0, this,
+            "ERROR: Could not open File " << ssCountArrayFilePath.str() << "!");
         return falseOrStop();
     }
 
     // allocate memory for count arrays
-    for (curLayer = 0; curLayer < retroVars.layersToCalculate.size(); curLayer++) {
-        numKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
-        retroVars.countArrays[curLayer] = new CountArrayVarType[numKnotsInCurLayer];
+    for (curLayer = 0; curLayer < retroVars.layersToCalculate.size();
+         curLayer++) {
+        numKnotsInCurLayer
+            = layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
+        retroVars.countArrays[curLayer]
+            = new CountArrayVarType[numKnotsInCurLayer];
         memoryUsed2 += numKnotsInCurLayer * sizeof(CountArrayVarType);
-        arrayInfos.addArray(retroVars.layersToCalculate[curLayer], ArrayInfo::arrayType_countArray, numKnotsInCurLayer * sizeof(CountArrayVarType), 0);
+        arrayInfos.addArray(retroVars.layersToCalculate[curLayer],
+            ArrayInfo::arrayType_countArray,
+            numKnotsInCurLayer * sizeof(CountArrayVarType), 0);
     }
 
     // load file if already existend
-    if (GetFileSizeEx(hFileCountArray, &fileSize) && fileSize.QuadPart == retroVars.numKnotsToCalc) {
-        PRINT(2, this, "  Load number of succeeders from file: " << ssCountArrayFilePath.str().c_str());
+    if (GetFileSizeEx(hFileCountArray, &fileSize)
+        && fileSize.QuadPart == retroVars.numKnotsToCalc) {
+        PRINT(2, this,
+            "  Load number of succeeders from file: "
+                << ssCountArrayFilePath.str().c_str());
 
-        for (curLayer = 0; curLayer < retroVars.layersToCalculate.size(); curLayer++) {
-            numKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
-            if (!ReadFile(hFileCountArray, retroVars.countArrays[curLayer], numKnotsInCurLayer * sizeof(CountArrayVarType), &dwRead, nullptr))
+        for (curLayer = 0; curLayer < retroVars.layersToCalculate.size();
+             curLayer++) {
+            numKnotsInCurLayer
+                = layerStats[retroVars.layersToCalculate[curLayer]]
+                      .knotsInLayer;
+            if (!ReadFile(hFileCountArray, retroVars.countArrays[curLayer],
+                    numKnotsInCurLayer * sizeof(CountArrayVarType), &dwRead,
+                    nullptr))
                 return falseOrStop();
             if (dwRead != numKnotsInCurLayer * sizeof(CountArrayVarType))
                 return falseOrStop();
@@ -334,10 +429,16 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars& retroVars)
         // else calculate number of succedding states
     } else {
         // Set default value 0
-        for (curLayer = 0; curLayer < retroVars.layersToCalculate.size(); curLayer++) {
-            numKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
-            for (curState.stateNumber = 0; curState.stateNumber < numKnotsInCurLayer; curState.stateNumber++) {
-                retroVars.countArrays[curLayer][curState.stateNumber] = defValue;
+        for (curLayer = 0; curLayer < retroVars.layersToCalculate.size();
+             curLayer++) {
+            numKnotsInCurLayer
+                = layerStats[retroVars.layersToCalculate[curLayer]]
+                      .knotsInLayer;
+            for (curState.stateNumber = 0;
+                 curState.stateNumber < numKnotsInCurLayer;
+                 curState.stateNumber++) {
+                retroVars.countArrays[curLayer][curState.stateNumber]
+                    = defValue;
             }
         }
 
@@ -348,15 +449,21 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars& retroVars)
         }
 
         // save to file
-        for (curLayer = 0, dwWritten = 0; curLayer < retroVars.layersToCalculate.size(); curLayer++) {
-            numKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
-            if (!WriteFile(hFileCountArray, retroVars.countArrays[curLayer], numKnotsInCurLayer * sizeof(CountArrayVarType), &dwWritten, nullptr))
+        for (curLayer = 0, dwWritten = 0;
+             curLayer < retroVars.layersToCalculate.size(); curLayer++) {
+            numKnotsInCurLayer
+                = layerStats[retroVars.layersToCalculate[curLayer]]
+                      .knotsInLayer;
+            if (!WriteFile(hFileCountArray, retroVars.countArrays[curLayer],
+                    numKnotsInCurLayer * sizeof(CountArrayVarType), &dwWritten,
+                    nullptr))
                 return falseOrStop();
             if (dwWritten != numKnotsInCurLayer * sizeof(CountArrayVarType))
                 return falseOrStop();
         }
 
-        PRINT(2, this, "  Count array saved to file: " << ssCountArrayFilePath.str());
+        PRINT(2, this,
+            "  Count array saved to file: " << ssCountArrayFilePath.str());
     }
 
     // finish
@@ -372,31 +479,45 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars& retroVars)
 {
 #ifndef __clang__ // TODO(calcitem)
     // locals
-    unsigned int curLayerId; // current processed layer within 'layersToCalculate'
+    unsigned int
+        curLayerId; // current processed layer within 'layersToCalculate'
     unsigned int layerNumber; // layer number of the current process layer
     StateAdress curState; // current state counter for loops
     StateAdress succState; // current succeeding state counter for loops
     vector<bool> succCalculated(skvfHeader.numLayers, false); //
 
     // process each layer
-    for (curLayerId = 0; curLayerId < retroVars.layersToCalculate.size(); curLayerId++) {
+    for (curLayerId = 0; curLayerId < retroVars.layersToCalculate.size();
+         curLayerId++) {
         // set current processed layer number
         layerNumber = retroVars.layersToCalculate[curLayerId];
-        PRINT(0, this, "  *** Calculate number of succeeding states for each state of layer " << layerNumber << " ***");
+        PRINT(0, this,
+            "  *** Calculate number of succeeding states for each state of "
+            "layer "
+                << layerNumber << " ***");
 
         // process layer ...
         if (!succCalculated[layerNumber]) {
             // prepare parameters for multithreading
             succCalculated[layerNumber] = true;
             numStatesProcessed = 0;
-            ThreadManager::ThreadVarsArray<AddNumSucceedersVars> tva(threadManager.getNumThreads(), (AddNumSucceedersVars&)AddNumSucceedersVars(this, &retroVars, layerNumber));
+            ThreadManager::ThreadVarsArray<AddNumSucceedersVars> tva(
+                threadManager.getNumThreads(),
+                (AddNumSucceedersVars&)AddNumSucceedersVars(
+                    this, &retroVars, layerNumber));
 
             // process each state in the current layer
-            switch (threadManager.executeParallelLoop(addNumSucceedersThreadProc, tva.getPointerToArray(), tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1)) {
+            switch (threadManager.executeParallelLoop(
+                addNumSucceedersThreadProc, tva.getPointerToArray(),
+                tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0,
+                layerStats[layerNumber].knotsInLayer - 1, 1)) {
             case TM_RETURN_VALUE_OK:
                 break;
             case TM_RETURN_VALUE_EXECUTION_CANCELLED:
-                PRINT(0, this, "\n****************************************\nMain thread: Execution cancelled by user!\n****************************************\n");
+                PRINT(0, this,
+                    "\n****************************************\nMain thread: "
+                    "Execution cancelled by "
+                    "user!\n****************************************\n");
                 return false;
             default:
             case TM_RETURN_VALUE_INVALID_PARAM:
@@ -415,9 +536,12 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars& retroVars)
         }
 
         // ... and process succeeding layers
-        for (curState.layerNumber = 0; curState.layerNumber < layerStats[layerNumber].numSuccLayers; curState.layerNumber++) {
+        for (curState.layerNumber = 0;
+             curState.layerNumber < layerStats[layerNumber].numSuccLayers;
+             curState.layerNumber++) {
             // get current pred. layer
-            succState.layerNumber = layerStats[layerNumber].succLayers[curState.layerNumber];
+            succState.layerNumber
+                = layerStats[layerNumber].succLayers[curState.layerNumber];
 
             // don't add layers twice
             if (succCalculated[succState.layerNumber])
@@ -430,18 +554,29 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars& retroVars)
                 continue;
 
             // check all states of pred. layer
-            PRINT(2, this, "    - Do the same for the succeeding layer " << (int)succState.layerNumber);
+            PRINT(2, this,
+                "    - Do the same for the succeeding layer "
+                    << (int)succState.layerNumber);
 
             // prepare parameters for multithreading
             numStatesProcessed = 0;
-            ThreadManager::ThreadVarsArray<AddNumSucceedersVars> tva(threadManager.getNumThreads(), (AddNumSucceedersVars&)AddNumSucceedersVars(this, &retroVars, succState.layerNumber));
+            ThreadManager::ThreadVarsArray<AddNumSucceedersVars> tva(
+                threadManager.getNumThreads(),
+                (AddNumSucceedersVars&)AddNumSucceedersVars(
+                    this, &retroVars, succState.layerNumber));
 
             // process each state in the current layer
-            switch (threadManager.executeParallelLoop(addNumSucceedersThreadProc, tva.getPointerToArray(), tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0, layerStats[succState.layerNumber].knotsInLayer - 1, 1)) {
+            switch (threadManager.executeParallelLoop(
+                addNumSucceedersThreadProc, tva.getPointerToArray(),
+                tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0,
+                layerStats[succState.layerNumber].knotsInLayer - 1, 1)) {
             case TM_RETURN_VALUE_OK:
                 break;
             case TM_RETURN_VALUE_EXECUTION_CANCELLED:
-                PRINT(0, this, "\n****************************************\nMain thread: Execution cancelled by user!\n****************************************\n");
+                PRINT(0, this,
+                    "\n****************************************\nMain thread: "
+                    "Execution cancelled by "
+                    "user!\n****************************************\n");
                 return false;
             default:
             case TM_RETURN_VALUE_INVALID_PARAM:
@@ -451,7 +586,8 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars& retroVars)
 
             // reduce and delete thread specific data
             tva.reduce();
-            if (numStatesProcessed < layerStats[succState.layerNumber].knotsInLayer)
+            if (numStatesProcessed
+                < layerStats[succState.layerNumber].knotsInLayer)
                 return falseOrStop();
         }
     }
@@ -470,15 +606,18 @@ DWORD MiniMax::addNumSucceedersThreadProc(void* pParameter, unsigned int index)
     // locals
     AddNumSucceedersVars* ansVars = (AddNumSucceedersVars*)pParameter;
     MiniMax* m = ansVars->pMiniMax;
-    unsigned int numLayersToCalculate = (unsigned int)ansVars->retroVars->layersToCalculate.size();
-    unsigned int curLayerId; // current processed layer within 'layersToCalculate'
+    unsigned int numLayersToCalculate
+        = (unsigned int)ansVars->retroVars->layersToCalculate.size();
+    unsigned int
+        curLayerId; // current processed layer within 'layersToCalculate'
     unsigned int amountOfPred;
     unsigned int curPred;
     CountArrayVarType countValue;
     StateAdress predState;
     StateAdress curState;
     TwoBit curStateValue;
-    PlyInfoVarType numPlies; // number of plies of the current considered succeeding state
+    PlyInfoVarType
+        numPlies; // number of plies of the current considered succeeding state
     bool cuStateAddedToProcessQueue = false;
 
     curState.layerNumber = ansVars->layerNumber;
@@ -488,16 +627,22 @@ DWORD MiniMax::addNumSucceedersThreadProc(void* pParameter, unsigned int index)
     ansVars->statesProcessed++;
     if (ansVars->statesProcessed % OUTPUT_EVERY_N_STATES == 0) {
         m->numStatesProcessed += OUTPUT_EVERY_N_STATES;
-        PRINT(2, m, "    Already processed " << m->numStatesProcessed << " of " << m->layerStats[curState.layerNumber].knotsInLayer << " states");
+        PRINT(2, m,
+            "    Already processed "
+                << m->numStatesProcessed << " of "
+                << m->layerStats[curState.layerNumber].knotsInLayer
+                << " states");
     }
 
     // invalid state ?
-    m->readKnotValueFromDatabase(curState.layerNumber, curState.stateNumber, curStateValue);
+    m->readKnotValueFromDatabase(
+        curState.layerNumber, curState.stateNumber, curStateValue);
     if (curStateValue == SKV_VALUE_INVALID)
         return TM_RETURN_VALUE_OK;
 
     // set current selected situation
-    if (!m->setSituation(ansVars->curThreadNo, curState.layerNumber, curState.stateNumber)) {
+    if (!m->setSituation(
+            ansVars->curThreadNo, curState.layerNumber, curState.stateNumber)) {
         PRINT(0, m, "ERROR: setSituation() returned false!");
         return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
     }
@@ -513,7 +658,8 @@ DWORD MiniMax::addNumSucceedersThreadProc(void* pParameter, unsigned int index)
 
         // don't calculate states from layers above yet
         for (curLayerId = 0; curLayerId < numLayersToCalculate; curLayerId++) {
-            if (ansVars->retroVars->layersToCalculate[curLayerId] == predState.layerNumber)
+            if (ansVars->retroVars->layersToCalculate[curLayerId]
+                == predState.layerNumber)
                 break;
         }
 
@@ -521,29 +667,43 @@ DWORD MiniMax::addNumSucceedersThreadProc(void* pParameter, unsigned int index)
             continue;
 
         // put in list (with states to be processed) if state is final
-        if (!cuStateAddedToProcessQueue && (curStateValue == SKV_VALUE_GAME_WON || curStateValue == SKV_VALUE_GAME_LOST)) {
-            m->readPlyInfoFromDatabase(curState.layerNumber, curState.stateNumber, numPlies);
-            m->addStateToProcessQueue(*ansVars->retroVars, ansVars->retroVars->thread[ansVars->curThreadNo], numPlies, &curState);
+        if (!cuStateAddedToProcessQueue
+            && (curStateValue == SKV_VALUE_GAME_WON
+                || curStateValue == SKV_VALUE_GAME_LOST)) {
+            m->readPlyInfoFromDatabase(
+                curState.layerNumber, curState.stateNumber, numPlies);
+            m->addStateToProcessQueue(*ansVars->retroVars,
+                ansVars->retroVars->thread[ansVars->curThreadNo], numPlies,
+                &curState);
             cuStateAddedToProcessQueue = true;
         }
 
         // add this state as possible move
-        long* pCountValue = ((long*)ansVars->retroVars->countArrays[curLayerId]) + predState.stateNumber / (sizeof(long) / sizeof(CountArrayVarType));
-        long numBitsToShift = sizeof(CountArrayVarType) * 8 * (predState.stateNumber % (sizeof(long) / sizeof(CountArrayVarType))); // little-endian byte-order
+        long* pCountValue = ((long*)ansVars->retroVars->countArrays[curLayerId])
+            + predState.stateNumber
+                / (sizeof(long) / sizeof(CountArrayVarType));
+        long numBitsToShift = sizeof(CountArrayVarType) * 8
+            * (predState.stateNumber
+                % (sizeof(long)
+                    / sizeof(CountArrayVarType))); // little-endian byte-order
         long mask = 0x000000ff << numBitsToShift;
         long curCountLong, newCountLong;
 
         do {
             curCountLong = *pCountValue;
-            countValue = (CountArrayVarType)((curCountLong & mask) >> numBitsToShift);
+            countValue
+                = (CountArrayVarType)((curCountLong & mask) >> numBitsToShift);
             if (countValue == 255) {
                 PRINT(0, m, "ERROR: maximum value for Count[] reached!");
                 return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
             } else {
                 countValue++;
-                newCountLong = (curCountLong & (~mask)) + (countValue << numBitsToShift);
+                newCountLong
+                    = (curCountLong & (~mask)) + (countValue << numBitsToShift);
             }
-        } while (InterlockedCompareExchange(pCountValue, newCountLong, curCountLong) != curCountLong);
+        } while (
+            InterlockedCompareExchange(pCountValue, newCountLong, curCountLong)
+            != curCountLong);
     }
 
     // everything is fine
@@ -559,18 +719,23 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars& retroVars)
     // locals
     StateAdress curState; // current state counter for loops
     TwoBit curStateValue; // current state value
-    unsigned int curLayerId; // current processed layer within 'layersToCalculate'
+    unsigned int
+        curLayerId; // current processed layer within 'layersToCalculate'
 
     PRINT(2, this, "  *** Begin Iteration ***");
     numStatesProcessed = 0;
     curCalculationActionId = MM_ACTION_PERFORM_RETRO_ANAL;
 
     // process each state in the current layer
-    switch (threadManager.executeInParallel(performRetroAnalysisThreadProc, (void**)&retroVars, 0)) {
+    switch (threadManager.executeInParallel(
+        performRetroAnalysisThreadProc, (void**)&retroVars, 0)) {
     case TM_RETURN_VALUE_OK:
         break;
     case TM_RETURN_VALUE_EXECUTION_CANCELLED:
-        PRINT(0, this, "\n****************************************\nMain thread: Execution cancelled by user!\n****************************************\n");
+        PRINT(0, this,
+            "\n****************************************\nMain thread: "
+            "Execution cancelled by "
+            "user!\n****************************************\n");
         return false;
     default:
     case TM_RETURN_VALUE_INVALID_PARAM:
@@ -579,9 +744,12 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars& retroVars)
     }
 
     // if there are still states to process, than something went wrong
-    for (unsigned int curThreadNo = 0; curThreadNo < threadManager.getNumThreads(); curThreadNo++) {
+    for (unsigned int curThreadNo = 0;
+         curThreadNo < threadManager.getNumThreads(); curThreadNo++) {
         if (retroVars.thread[curThreadNo].numStatesToProcess) {
-            PRINT(0, this, "ERROR: There are still states to process after performing retro analysis!");
+            PRINT(0, this,
+                "ERROR: There are still states to process after performing "
+                "retro analysis!");
             return falseOrStop();
         }
     }
@@ -589,13 +757,21 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars& retroVars)
     // copy drawn and invalid states to ply info
     PRINT(2, this, "    Copy drawn and invalid states to ply info database...");
 
-    for (curLayerId = 0; curLayerId < retroVars.layersToCalculate.size(); curLayerId++) {
-        for (curState.layerNumber = retroVars.layersToCalculate[curLayerId], curState.stateNumber = 0; curState.stateNumber < layerStats[curState.layerNumber].knotsInLayer; curState.stateNumber++) {
-            readKnotValueFromDatabase(curState.layerNumber, curState.stateNumber, curStateValue);
+    for (curLayerId = 0; curLayerId < retroVars.layersToCalculate.size();
+         curLayerId++) {
+        for (curState.layerNumber = retroVars.layersToCalculate[curLayerId],
+            curState.stateNumber = 0;
+             curState.stateNumber
+             < layerStats[curState.layerNumber].knotsInLayer;
+             curState.stateNumber++) {
+            readKnotValueFromDatabase(
+                curState.layerNumber, curState.stateNumber, curStateValue);
             if (curStateValue == SKV_VALUE_GAME_DRAWN)
-                savePlyInfoInDatabase(curState.layerNumber, curState.stateNumber, PLYINFO_VALUE_DRAWN);
+                savePlyInfoInDatabase(curState.layerNumber,
+                    curState.stateNumber, PLYINFO_VALUE_DRAWN);
             if (curStateValue == SKV_VALUE_INVALID)
-                savePlyInfoInDatabase(curState.layerNumber, curState.stateNumber, PLYINFO_VALUE_INVALID);
+                savePlyInfoInDatabase(curState.layerNumber,
+                    curState.stateNumber, PLYINFO_VALUE_INVALID);
         }
     }
 
@@ -618,8 +794,10 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void* pParameter)
     RetroAnalysisThreadVars* threadVars = &retroVars->thread[threadNo];
 
     TwoBit predStateValue;
-    unsigned int curLayerId; // current processed layer within 'layersToCalculate'
-    unsigned int amountOfPred; // total numbers of predecessors and current considered one
+    unsigned int
+        curLayerId; // current processed layer within 'layersToCalculate'
+    unsigned int amountOfPred; // total numbers of predecessors and current
+                               // considered one
     unsigned int curPred;
     unsigned int threadCounter;
     int64_t numStatesProcessed;
@@ -633,26 +811,45 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void* pParameter)
     TwoBit curStateValue; // current state value
     RetroAnalysisPredVars predVars[MAX_NUM_PREDECESSORS];
 
-    for (numStatesProcessed = 0, curNumPlies = 0; curNumPlies < threadVars->statesToProcess.size(); curNumPlies++) {
+    for (numStatesProcessed = 0, curNumPlies = 0;
+         curNumPlies < threadVars->statesToProcess.size(); curNumPlies++) {
         // skip empty and uninitialized cyclic arrays
         if (threadVars->statesToProcess[curNumPlies] != nullptr) {
             if (threadNo == 0) {
-                PRINT(0, m, "    Current number of plies: " << (unsigned int)curNumPlies << "/" << threadVars->statesToProcess.size());
-                for (threadCounter = 0; threadCounter < m->threadManager.getNumThreads(); threadCounter++) {
-                    PRINT(0, m, "      States to process for thread " << threadCounter << ": " << retroVars->thread[threadCounter].numStatesToProcess);
+                PRINT(0, m,
+                    "    Current number of plies: "
+                        << (unsigned int)curNumPlies << "/"
+                        << threadVars->statesToProcess.size());
+                for (threadCounter = 0;
+                     threadCounter < m->threadManager.getNumThreads();
+                     threadCounter++) {
+                    PRINT(0, m,
+                        "      States to process for thread "
+                            << threadCounter << ": "
+                            << retroVars->thread[threadCounter]
+                                   .numStatesToProcess);
                 }
             }
 
-            while (threadVars->statesToProcess[curNumPlies]->takeBytes(sizeof(StateAdress), (unsigned char*)&curState)) {
+            while (threadVars->statesToProcess[curNumPlies]->takeBytes(
+                sizeof(StateAdress), (unsigned char*)&curState)) {
                 // execution canceled by user?
                 if (m->threadManager.wasExecutionCancelled()) {
-                    PRINT(0, m, "\n****************************************\nSub-thread no. " << threadNo << ": Execution cancelled by user!\n****************************************\n");
+                    PRINT(0, m,
+                        "\n****************************************\nSub-"
+                        "thread no. "
+                            << threadNo
+                            << ": Execution cancelled by "
+                               "user!\n****************************************"
+                               "\n");
                     return TM_RETURN_VALUE_EXECUTION_CANCELLED;
                 }
 
                 // get value of current state
-                m->readKnotValueFromDatabase(curState.layerNumber, curState.stateNumber, curStateValue);
-                m->readPlyInfoFromDatabase(curState.layerNumber, curState.stateNumber, numPliesTillCurState);
+                m->readKnotValueFromDatabase(
+                    curState.layerNumber, curState.stateNumber, curStateValue);
+                m->readPlyInfoFromDatabase(curState.layerNumber,
+                    curState.stateNumber, numPliesTillCurState);
 
                 if (numPliesTillCurState != curNumPlies) {
                     PRINT(0, m, "ERROR: numPliesTillCurState != curNumPlies");
@@ -664,14 +861,23 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void* pParameter)
                 threadVars->numStatesToProcess--;
                 if (numStatesProcessed % OUTPUT_EVERY_N_STATES == 0) {
                     m->numStatesProcessed += OUTPUT_EVERY_N_STATES;
-                    for (totalNumStatesToProcess = 0, threadCounter = 0; threadCounter < m->threadManager.getNumThreads(); threadCounter++) {
-                        totalNumStatesToProcess += retroVars->thread[threadCounter].numStatesToProcess;
+                    for (totalNumStatesToProcess = 0, threadCounter = 0;
+                         threadCounter < m->threadManager.getNumThreads();
+                         threadCounter++) {
+                        totalNumStatesToProcess
+                            += retroVars->thread[threadCounter]
+                                   .numStatesToProcess;
                     }
-                    PRINT(2, m, "    states already processed: " << m->numStatesProcessed << " \t states still in list: " << totalNumStatesToProcess);
+                    PRINT(2, m,
+                        "    states already processed: "
+                            << m->numStatesProcessed
+                            << " \t states still in list: "
+                            << totalNumStatesToProcess);
                 }
 
                 // set current selected situation
-                if (!m->setSituation(threadNo, curState.layerNumber, curState.stateNumber)) {
+                if (!m->setSituation(
+                        threadNo, curState.layerNumber, curState.stateNumber)) {
                     PRINT(0, m, "ERROR: setSituation() returned false!");
                     return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
                 }
@@ -686,61 +892,111 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void* pParameter)
                     predState.stateNumber = predVars[curPred].predStateNumbers;
 
                     // don't calculate states from layers above yet
-                    for (curLayerId = 0; curLayerId < retroVars->layersToCalculate.size(); curLayerId++) {
-                        if (retroVars->layersToCalculate[curLayerId] == predState.layerNumber)
+                    for (curLayerId = 0;
+                         curLayerId < retroVars->layersToCalculate.size();
+                         curLayerId++) {
+                        if (retroVars->layersToCalculate[curLayerId]
+                            == predState.layerNumber)
                             break;
                     }
                     if (curLayerId == retroVars->layersToCalculate.size())
                         continue;
 
                     // get value of predecessor
-                    m->readKnotValueFromDatabase(predState.layerNumber, predState.stateNumber, predStateValue);
+                    m->readKnotValueFromDatabase(predState.layerNumber,
+                        predState.stateNumber, predStateValue);
 
-                    // only drawn states are relevant here, since the other are already calculated
+                    // only drawn states are relevant here, since the other are
+                    // already calculated
                     if (predStateValue == SKV_VALUE_GAME_DRAWN) {
-                        // if current considered state is a lost game then all predecessors are a won game
-                        if (curStateValue == m->skvPerspectiveMatrix[SKV_VALUE_GAME_LOST][predVars[curPred].playerToMoveChanged ? PL_TO_MOVE_CHANGED : PL_TO_MOVE_UNCHANGED]) {
-                            m->saveKnotValueInDatabase(predState.layerNumber, predState.stateNumber, SKV_VALUE_GAME_WON);
-                            m->savePlyInfoInDatabase(predState.layerNumber, predState.stateNumber, numPliesTillCurState + 1); // (requirement: curNumPlies == numPliesTillCurState)
+                        // if current considered state is a lost game then all
+                        // predecessors are a won game
+                        if (curStateValue
+                            == m->skvPerspectiveMatrix
+                                   [SKV_VALUE_GAME_LOST]
+                                   [predVars[curPred].playerToMoveChanged
+                                           ? PL_TO_MOVE_CHANGED
+                                           : PL_TO_MOVE_UNCHANGED]) {
+                            m->saveKnotValueInDatabase(predState.layerNumber,
+                                predState.stateNumber, SKV_VALUE_GAME_WON);
+                            m->savePlyInfoInDatabase(predState.layerNumber,
+                                predState.stateNumber,
+                                numPliesTillCurState
+                                    + 1); // (requirement: curNumPlies ==
+                                          // numPliesTillCurState)
                             if (numPliesTillCurState + 1 < curNumPlies) {
-                                PRINT(0, m, "ERROR: Current number of plies is bigger than numPliesTillCurState + 1!");
+                                PRINT(0, m,
+                                    "ERROR: Current number of plies is bigger "
+                                    "than numPliesTillCurState + 1!");
                                 return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
                             }
-                            m->addStateToProcessQueue(*retroVars, *threadVars, numPliesTillCurState + 1, &predState);
-                            // if current state is a won game, then this state is not an option any more for all predecessors
+                            m->addStateToProcessQueue(*retroVars, *threadVars,
+                                numPliesTillCurState + 1, &predState);
+                            // if current state is a won game, then this state
+                            // is not an option any more for all predecessors
                         } else {
                             // reduce count value by one
-                            long* pCountValue = ((long*)retroVars->countArrays[curLayerId]) + predState.stateNumber / (sizeof(long) / sizeof(CountArrayVarType));
-                            long numBitsToShift = sizeof(CountArrayVarType) * 8 * (predState.stateNumber % (sizeof(long) / sizeof(CountArrayVarType))); // little-endian byte-order
+                            long* pCountValue
+                                = ((long*)retroVars->countArrays[curLayerId])
+                                + predState.stateNumber
+                                    / (sizeof(long)
+                                        / sizeof(CountArrayVarType));
+                            long numBitsToShift = sizeof(CountArrayVarType) * 8
+                                * (predState.stateNumber
+                                    % (sizeof(long)
+                                        / sizeof(
+                                            CountArrayVarType))); // little-endian
+                                                                  // byte-order
                             long mask = 0x000000ff << numBitsToShift;
                             long curCountLong, newCountLong;
 
                             do {
                                 curCountLong = *pCountValue;
-                                countValue = (CountArrayVarType)((curCountLong & mask) >> numBitsToShift);
+                                countValue = (CountArrayVarType)(
+                                    (curCountLong & mask) >> numBitsToShift);
                                 if (countValue > 0) {
                                     countValue--;
-                                    newCountLong = (curCountLong & (~mask)) + (countValue << numBitsToShift);
+                                    newCountLong = (curCountLong & (~mask))
+                                        + (countValue << numBitsToShift);
                                 } else {
-                                    PRINT(0, m, "ERROR: Count is already zero!");
+                                    PRINT(
+                                        0, m, "ERROR: Count is already zero!");
                                     return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
                                 }
-                            } while (InterlockedCompareExchange(pCountValue, newCountLong, curCountLong) != curCountLong);
+                            } while (InterlockedCompareExchange(pCountValue,
+                                         newCountLong, curCountLong)
+                                != curCountLong);
 
-                            // ply info (requirement: curNumPlies == numPliesTillCurState)
-                            m->readPlyInfoFromDatabase(predState.layerNumber, predState.stateNumber, numPliesTillPredState);
-                            if (numPliesTillPredState == PLYINFO_VALUE_UNCALCULATED || numPliesTillCurState + 1 > numPliesTillPredState) {
-                                m->savePlyInfoInDatabase(predState.layerNumber, predState.stateNumber, numPliesTillCurState + 1);
+                            // ply info (requirement: curNumPlies ==
+                            // numPliesTillCurState)
+                            m->readPlyInfoFromDatabase(predState.layerNumber,
+                                predState.stateNumber, numPliesTillPredState);
+                            if (numPliesTillPredState
+                                    == PLYINFO_VALUE_UNCALCULATED
+                                || numPliesTillCurState + 1
+                                    > numPliesTillPredState) {
+                                m->savePlyInfoInDatabase(predState.layerNumber,
+                                    predState.stateNumber,
+                                    numPliesTillCurState + 1);
                             }
 
-                            // when all successor are won states then this is a lost state (this should only be the case for one thread)
+                            // when all successor are won states then this is a
+                            // lost state (this should only be the case for one
+                            // thread)
                             if (countValue == 0) {
-                                m->saveKnotValueInDatabase(predState.layerNumber, predState.stateNumber, SKV_VALUE_GAME_LOST);
+                                m->saveKnotValueInDatabase(
+                                    predState.layerNumber,
+                                    predState.stateNumber, SKV_VALUE_GAME_LOST);
                                 if (numPliesTillCurState + 1 < curNumPlies) {
-                                    PRINT(0, m, "ERROR: Current number of plies is bigger than numPliesTillCurState + 1!");
+                                    PRINT(0, m,
+                                        "ERROR: Current number of plies is "
+                                        "bigger than numPliesTillCurState + "
+                                        "1!");
                                     return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
                                 }
-                                m->addStateToProcessQueue(*retroVars, *threadVars, numPliesTillCurState + 1, &predState);
+                                m->addStateToProcessQueue(*retroVars,
+                                    *threadVars, numPliesTillCurState + 1,
+                                    &predState);
                             }
                         }
                     }
@@ -748,7 +1004,8 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void* pParameter)
             }
         }
 
-        // there might be other threads still processing states with this ply number
+        // there might be other threads still processing states with this ply
+        // number
         m->threadManager.waitForOtherThreads(threadNo);
     }
 
@@ -760,29 +1017,48 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void* pParameter)
 // addStateToProcessQueue()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::addStateToProcessQueue(retroAnalysisGlobalVars& retroVars, RetroAnalysisThreadVars& threadVars, unsigned int plyNumber, StateAdress* pState)
+bool MiniMax::addStateToProcessQueue(retroAnalysisGlobalVars& retroVars,
+    RetroAnalysisThreadVars& threadVars, unsigned int plyNumber,
+    StateAdress* pState)
 {
     // resize vector if too small
     if (plyNumber >= threadVars.statesToProcess.size()) {
-        threadVars.statesToProcess.resize(max(plyNumber + 1, 10 * threadVars.statesToProcess.size()), nullptr);
-        PRINT(4, this, "    statesToProcess resized to " << threadVars.statesToProcess.size());
+        threadVars.statesToProcess.resize(
+            max(plyNumber + 1, 10 * threadVars.statesToProcess.size()),
+            nullptr);
+        PRINT(4, this,
+            "    statesToProcess resized to "
+                << threadVars.statesToProcess.size());
     }
 
     // initialize cyclic array if necessary
     if (threadVars.statesToProcess[plyNumber] == nullptr) {
         stringstream ssStatesToProcessFilePath;
         stringstream ssStatesToProcessPath;
-        ssStatesToProcessPath << fileDirectory << (fileDirectory.size() ? "\\" : "") << "statesToProcess";
+        ssStatesToProcessPath << fileDirectory
+                              << (fileDirectory.size() ? "\\" : "")
+                              << "statesToProcess";
         CreateDirectoryA(ssStatesToProcessPath.str().c_str(), nullptr);
         ssStatesToProcessFilePath.str("");
-        ssStatesToProcessFilePath << ssStatesToProcessPath.str() << "\\statesToProcessWithPlyCounter=" << plyNumber << "andThread=" << threadVars.threadNo << ".dat";
-        threadVars.statesToProcess[plyNumber] = new CyclicArray(BLOCK_SIZE_IN_CYCLIC_ARRAY * sizeof(StateAdress), (unsigned int)(retroVars.totalNumKnots / BLOCK_SIZE_IN_CYCLIC_ARRAY) + 1, ssStatesToProcessFilePath.str().c_str());
-        PRINT(4, this, "    Created cyclic array: " << ssStatesToProcessFilePath.str());
+        ssStatesToProcessFilePath
+            << ssStatesToProcessPath.str()
+            << "\\statesToProcessWithPlyCounter=" << plyNumber
+            << "andThread=" << threadVars.threadNo << ".dat";
+        threadVars.statesToProcess[plyNumber] = new CyclicArray(
+            BLOCK_SIZE_IN_CYCLIC_ARRAY * sizeof(StateAdress),
+            (unsigned int)(retroVars.totalNumKnots / BLOCK_SIZE_IN_CYCLIC_ARRAY)
+                + 1,
+            ssStatesToProcessFilePath.str().c_str());
+        PRINT(4, this,
+            "    Created cyclic array: " << ssStatesToProcessFilePath.str());
     }
 
     // add state
-    if (!threadVars.statesToProcess[plyNumber]->addBytes(sizeof(StateAdress), (unsigned char*)pState)) {
-        PRINT(0, this, "ERROR: Cyclic list to small! numStatesToProcess:" << threadVars.numStatesToProcess);
+    if (!threadVars.statesToProcess[plyNumber]->addBytes(
+            sizeof(StateAdress), (unsigned char*)pState)) {
+        PRINT(0, this,
+            "ERROR: Cyclic list to small! numStatesToProcess:"
+                << threadVars.numStatesToProcess);
         return falseOrStop();
     }
 

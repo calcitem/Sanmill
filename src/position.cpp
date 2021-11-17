@@ -75,7 +75,8 @@ Piece CharToPiece(char ch) noexcept
     return NO_PIECE;
 }
 
-constexpr PieceType PieceTypes[] = { NO_PIECE_TYPE, WHITE_STONE, BLACK_STONE, BAN };
+constexpr PieceType PieceTypes[]
+    = { NO_PIECE_TYPE, WHITE_STONE, BLACK_STONE, BAN };
 } // namespace
 
 /// operator<<(Position) returns an ASCII representation of the position
@@ -119,7 +120,8 @@ std::ostream& operator<<(std::ostream& os, const Position& pos)
         os << "| " << P(23) << " - " << P(16) << " - " << P(17) << " |\n";
         os << "| |\\  |  /| |\n";
         os << "| | " << P(15) << "-" << P(8) << "-" << P(9) << " | |\n";
-        os << P(30) << "-" << P(22) << "-" << P(14) << "   " << P(10) << "-" << P(18) << "-" << P(26) << "\n";
+        os << P(30) << "-" << P(22) << "-" << P(14) << "   " << P(10) << "-"
+           << P(18) << "-" << P(26) << "\n";
         os << "| | " << P(13) << "-" << P(12) << "-" << P(11) << " | |\n";
         os << "| |/  |  \\| |\n";
         os << "| " << P(21) << " - " << P(20) << " - " << P(19) << " |\n";
@@ -132,7 +134,8 @@ std::ostream& operator<<(std::ostream& os, const Position& pos)
         os << "| " << P(23) << " - " << P(16) << " - " << P(17) << " |\n";
         os << "| |   |   | |\n";
         os << "| | " << P(15) << "-" << P(8) << "-" << P(9) << " | |\n";
-        os << P(30) << "-" << P(22) << "-" << P(14) << "   " << P(10) << "-" << P(18) << "-" << P(26) << "\n";
+        os << P(30) << "-" << P(22) << "-" << P(14) << "   " << P(10) << "-"
+           << P(18) << "-" << P(26) << "\n";
         os << "| | " << P(13) << "-" << P(12) << "-" << P(11) << " | |\n";
         os << "| |   |   | |\n";
         os << "| " << P(21) << " - " << P(20) << " - " << P(19) << " |\n";
@@ -154,7 +157,8 @@ std::ostream& operator<<(std::ostream& os, const Position& pos)
     return os;
 }
 
-/// Position::init() initializes at startup the various arrays used to compute hash keys
+/// Position::init() initializes at startup the various arrays used to compute
+/// hash keys
 
 void Position::init()
 {
@@ -162,9 +166,11 @@ void Position::init()
 
     for (PieceType pt : PieceTypes)
         for (Square s = SQ_BEGIN; s < SQ_END; ++s)
-            Zobrist::psq[pt][s] = rng.rand<Key>() << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
+            Zobrist::psq[pt][s] = rng.rand<Key>() << Zobrist::KEY_MISC_BIT
+                >> Zobrist::KEY_MISC_BIT;
 
-    Zobrist::side = rng.rand<Key>() << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
+    Zobrist::side
+        = rng.rand<Key>() << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
 
     return;
 }
@@ -185,18 +191,19 @@ Position::Position()
 Position& Position::set(const string& fenStr, Thread* th)
 {
     /*
-       A FEN string defines a particular position using only the ASCII character set.
+       A FEN string defines a particular position using only the ASCII character
+       set.
 
        A FEN string contains six fields separated by a space. The fields are:
 
        1) Piece placement. Each rank is described, starting
-          with rank 1 and ending with rank 8. Within each rank, the contents of each
-          square are described from file A through file C. Following the Standard
-          Algebraic Notation (SAN), each piece is identified by a single letter taken
-          from the standard English names. White pieces are designated using "O"
-          whilst Black uses "@". Blank uses "*". Banned uses "X".
-          noted using digits 1 through 8 (the number of blank squares), and "/"
-          separates ranks.
+          with rank 1 and ending with rank 8. Within each rank, the contents of
+       each square are described from file A through file C. Following the
+       Standard Algebraic Notation (SAN), each piece is identified by a single
+       letter taken from the standard English names. White pieces are designated
+       using "O" whilst Black uses "@". Blank uses "*". Banned uses "X". noted
+       using digits 1 through 8 (the number of blank squares), and "/" separates
+       ranks.
 
        2) Active color. "w" means white moves next, "b" means black.
 
@@ -204,7 +211,8 @@ Position& Position::set(const string& fenStr, Thread* th)
 
        4) Action.
 
-       5) White on board/White in hand/Black on board/Black in hand/need to remove
+       5) White on board/White in hand/Black on board/Black in hand/need to
+       remove
 
        6) Halfmove clock. This is the number of halfmoves since the last
           capture. This is used to determine if a draw can be claimed under the
@@ -277,9 +285,9 @@ Position& Position::set(const string& fenStr, Thread* th)
         action = Action::none;
     }
 
-    // 5. White on board / White in hand / Black on board / Black in hand / need to remove
-    ss >> std::skipws
-        >> pieceOnBoardCount[WHITE] >> pieceInHandCount[WHITE]
+    // 5. White on board / White in hand / Black on board / Black in hand / need
+    // to remove
+    ss >> std::skipws >> pieceOnBoardCount[WHITE] >> pieceInHandCount[WHITE]
         >> pieceOnBoardCount[BLACK] >> pieceInHandCount[BLACK]
         >> pieceToRemoveCount;
 
@@ -450,7 +458,8 @@ void Position::undo_move(Sanmill::Stack<Position>& ss)
 }
 
 /// Position::key_after() computes the new hash key after the given move. Needed
-/// for speculative prefetch. It doesn't recognize special moves like (need remove)
+/// for speculative prefetch. It doesn't recognize special moves like (need
+/// remove)
 
 Key Position::key_after(Move m) const
 {
@@ -507,7 +516,8 @@ bool Position::has_repeated(Sanmill::Stack<Position>& ss) const
     return false;
 }
 
-/// Position::has_game_cycle() tests if the position has a move which draws by repetition.
+/// Position::has_game_cycle() tests if the position has a move which draws by
+/// repetition.
 
 bool Position::has_game_cycle() const
 {
@@ -559,7 +569,8 @@ bool Position::reset()
     currentSquare = SQ_0;
 
 #ifdef ENDGAME_LEARNING
-    if (gameOptions.isEndgameLearningEnabled() && gamesPlayedCount > 0 && gamesPlayedCount % SAVE_ENDGAME_EVERY_N_GAMES == 0) {
+    if (gameOptions.isEndgameLearningEnabled() && gamesPlayedCount > 0
+        && gamesPlayedCount % SAVE_ENDGAME_EVERY_N_GAMES == 0) {
         Thread::saveEndgameHashMapToFile();
     }
 #endif /* ENDGAME_LEARNING */
@@ -570,8 +581,8 @@ bool Position::reset()
             break;
     }
 
-    if (snprintf(record, RECORD_LEN_MAX, "r%1d s%03u t%02d",
-            r + 1, rule.nMoveRule, 0)
+    if (snprintf(record, RECORD_LEN_MAX, "r%1d s%03u t%02d", r + 1,
+            rule.nMoveRule, 0)
         > 0) {
         return true;
     }
@@ -605,7 +616,8 @@ bool Position::put_piece(Square s, bool updateRecord)
     Piece piece = NO_PIECE;
     Color us = sideToMove;
 
-    if (phase == Phase::gameOver || action != Action::place || !(SQ_BEGIN <= s && s < SQ_END) || board[s]) {
+    if (phase == Phase::gameOver || action != Action::place
+        || !(SQ_BEGIN <= s && s < SQ_END) || board[s]) {
         return false;
     }
 
@@ -614,7 +626,8 @@ bool Position::put_piece(Square s, bool updateRecord)
     }
 
     if (phase == Phase::placing) {
-        piece = (Piece)((0x01 | make_piece(sideToMove)) + rule.piecesCount - pieceInHandCount[us]);
+        piece = (Piece)((0x01 | make_piece(sideToMove)) + rule.piecesCount
+            - pieceInHandCount[us]);
         pieceInHandCount[us]--;
         pieceOnBoardCount[us]++;
 
@@ -627,15 +640,17 @@ bool Position::put_piece(Square s, bool updateRecord)
         updateMobility(MOVETYPE_PLACE, s);
 
         if (updateRecord) {
-            snprintf(record, RECORD_LEN_MAX, "(%1u,%1u)", file_of(s), rank_of(s));
+            snprintf(
+                record, RECORD_LEN_MAX, "(%1u,%1u)", file_of(s), rank_of(s));
         }
 
         currentSquare = s;
 
 #ifdef MADWEASEL_MUEHLE_RULE
-        if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0 && is_all_surrounded(~sideToMove, SQ_0, s)) {
+        if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0
+            && is_all_surrounded(~sideToMove, SQ_0, s)) {
             set_gameover(sideToMove, GameOverReason::loseReasonNoWay);
-            //change_side_to_move();
+            // change_side_to_move();
             return true;
         }
 #endif
@@ -647,7 +662,8 @@ bool Position::put_piece(Square s, bool updateRecord)
             || is_all_in_mills(them)
 #endif
         ) {
-            assert(pieceInHandCount[WHITE] >= 0 && pieceInHandCount[BLACK] >= 0);
+            assert(
+                pieceInHandCount[WHITE] >= 0 && pieceInHandCount[BLACK] >= 0);
 
             if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0) {
                 if (check_if_game_is_over()) {
@@ -682,9 +698,11 @@ bool Position::put_piece(Square s, bool updateRecord)
                     pieceInHandCount[them] = 0;
                 }
 
-                assert(pieceInHandCount[WHITE] >= 0 && pieceInHandCount[BLACK] >= 0);
+                assert(pieceInHandCount[WHITE] >= 0
+                    && pieceInHandCount[BLACK] >= 0);
 
-                if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0) {
+                if (pieceInHandCount[WHITE] == 0
+                    && pieceInHandCount[BLACK] == 0) {
                     if (check_if_game_is_over()) {
                         return true;
                     }
@@ -717,16 +735,19 @@ bool Position::put_piece(Square s, bool updateRecord)
 #endif // MADWEASEL_MUEHLE_RULE
 
         // If illegal
-        if (pieceOnBoardCount[sideToMove] > rule.flyPieceCount || !rule.mayFly) {
-            if ((square_bb(s) & MoveList<LEGAL>::adjacentSquaresBB[currentSquare]) == 0) {
+        if (pieceOnBoardCount[sideToMove] > rule.flyPieceCount
+            || !rule.mayFly) {
+            if ((square_bb(s)
+                    & MoveList<LEGAL>::adjacentSquaresBB[currentSquare])
+                == 0) {
                 return false;
             }
         }
 
         if (updateRecord) {
             snprintf(record, RECORD_LEN_MAX, "(%1u,%1u)->(%1u,%1u)",
-                file_of(currentSquare), rank_of(currentSquare),
-                file_of(s), rank_of(s));
+                file_of(currentSquare), rank_of(currentSquare), file_of(s),
+                rank_of(s));
             st.rule50++;
         }
 
@@ -804,7 +825,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     Piece pc = board[s];
 
-    CLEAR_BIT(byTypeBB[type_of(pc)], s); // TODO(calcitem): rule.hasBannedLocations and placing need?
+    CLEAR_BIT(byTypeBB[type_of(pc)],
+        s); // TODO(calcitem): rule.hasBannedLocations and placing need?
     CLEAR_BIT(byColorBB[color_of(pc)], s);
 
     updateMobility(MOVETYPE_REMOVE, s);
@@ -827,7 +849,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     pieceOnBoardCount[them]--;
 
-    if (pieceOnBoardCount[them] + pieceInHandCount[them] < rule.piecesAtLeastCount) {
+    if (pieceOnBoardCount[them] + pieceInHandCount[them]
+        < rule.piecesAtLeastCount) {
         set_gameover(sideToMove, GameOverReason::loseReasonlessThanThree);
         return true;
     }
@@ -890,7 +913,8 @@ bool Position::select_piece(Square s)
 
 bool Position::resign(Color loser)
 {
-    if (phase == Phase::ready || phase == Phase::gameOver || phase == Phase::none) {
+    if (phase == Phase::ready || phase == Phase::gameOver
+        || phase == Phase::none) {
         return false;
     }
 
@@ -918,7 +942,8 @@ bool Position::command(const char* cmd)
         return reset();
     }
 
-    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned*)&file1, (unsigned*)&rank1, (unsigned*)&file2, (unsigned*)&rank2);
+    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned*)&file1,
+        (unsigned*)&rank1, (unsigned*)&file2, (unsigned*)&rank2);
 
     if (args >= 4) {
         return move_piece(file1, rank1, file2, rank2);
@@ -947,7 +972,8 @@ bool Position::command(const char* cmd)
 
         if (!strcmp(cmd, "draw")) {
             set_gameover(DRAW, GameOverReason::drawReasonThreefoldRepetition);
-            //snprintf(record, RECORD_LEN_MAX, drawReasonThreefoldRepetitionStr);
+            // snprintf(record, RECORD_LEN_MAX,
+            // drawReasonThreefoldRepetitionStr);
             return true;
         }
     }
@@ -955,10 +981,7 @@ bool Position::command(const char* cmd)
     return false;
 }
 
-Color Position::get_winner() const noexcept
-{
-    return winner;
-}
+Color Position::get_winner() const noexcept { return winner; }
 
 void Position::set_gameover(Color w, GameOverReason reason)
 {
@@ -989,13 +1012,15 @@ bool Position::check_if_game_is_over()
         return true;
     }
 
-    if (rule.endgameNMoveRule < rule.nMoveRule && is_three_endgame() && posKeyHistory.size() >= rule.endgameNMoveRule) {
+    if (rule.endgameNMoveRule < rule.nMoveRule && is_three_endgame()
+        && posKeyHistory.size() >= rule.endgameNMoveRule) {
         set_gameover(DRAW, GameOverReason::drawReasonEndgameRule50);
         return true;
     }
 #endif // RULE_50
 
-    if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >= EFFECTIVE_SQUARE_NB) {
+    if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK]
+        >= EFFECTIVE_SQUARE_NB) {
         if (rule.isWhiteLoseButNotDrawWhenBoardFull) {
             set_gameover(BLACK, GameOverReason::loseReasonBoardIsFull);
         } else {
@@ -1005,7 +1030,8 @@ bool Position::check_if_game_is_over()
         return true;
     }
 
-    if (phase == Phase::moving && action == Action::select && is_all_surrounded(sideToMove)) {
+    if (phase == Phase::moving && action == Action::select
+        && is_all_surrounded(sideToMove)) {
         if (rule.isLoseButNotChangeSideWhenNoWay) {
             set_gameover(~sideToMove, GameOverReason::loseReasonNoWay);
             return true;
@@ -1028,7 +1054,8 @@ int Position::calculate_mobility_diff()
         if (board[s] == NO_PIECE || board[s] == BAN_STONE) {
             Square moveSquare;
             for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
-                moveSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
+                moveSquare = static_cast<Square>(
+                    MoveList<LEGAL>::adjacentSquares[s][d]);
                 if (moveSquare) {
                     if (board[moveSquare] & W_STONE) {
                         mobilityWhite++;
@@ -1068,7 +1095,7 @@ void Position::remove_ban_stones()
 inline void Position::set_side_to_move(Color c)
 {
     sideToMove = c;
-    //us = c;
+    // us = c;
     them = ~sideToMove;
 }
 
@@ -1087,16 +1114,14 @@ inline Key Position::update_key(Square s)
     return st.key;
 }
 
-inline Key Position::revert_key(Square s)
-{
-    return update_key(s);
-}
+inline Key Position::revert_key(Square s) { return update_key(s); }
 
 Key Position::update_key_misc()
 {
     st.key = st.key << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
 
-    st.key |= static_cast<Key>(pieceToRemoveCount) << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
+    st.key |= static_cast<Key>(pieceToRemoveCount)
+        << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
 
     return st.key;
 }
@@ -1108,15 +1133,9 @@ Key Position::update_key_misc()
 
 Bitboard Position::millTableBB[SQUARE_NB][LD_NB] = { { 0 } };
 
-void Position::create_mill_table()
-{
-    Mills::mill_table_init();
-}
+void Position::create_mill_table() { Mills::mill_table_init(); }
 
-Color Position::color_on(Square s) const
-{
-    return color_of(board[s]);
-}
+Color Position::color_on(Square s) const { return color_of(board[s]); }
 
 bool Position::bitboard_is_ok()
 {
@@ -1229,12 +1248,14 @@ bool Position::is_all_in_mills(Color c)
     return true;
 }
 
-void Position::surrounded_pieces_count(Square s, int& ourPieceCount, int& theirPieceCount, int& bannedCount, int& emptyCount)
+void Position::surrounded_pieces_count(Square s, int& ourPieceCount,
+    int& theirPieceCount, int& bannedCount, int& emptyCount)
 {
     Square moveSquare;
 
     for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
-        moveSquare = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
+        moveSquare
+            = static_cast<Square>(MoveList<LEGAL>::adjacentSquares[s][d]);
 
         if (!moveSquare) {
             continue;
@@ -1268,7 +1289,8 @@ bool Position::is_all_surrounded(Color c
 ) const
 {
     // Full
-    if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >= EFFECTIVE_SQUARE_NB)
+    if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK]
+        >= EFFECTIVE_SQUARE_NB)
         return true;
 
     // Can fly
@@ -1284,7 +1306,9 @@ bool Position::is_all_surrounded(Color c
 #endif // MADWEASEL_MUEHLE_RULE
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
-        if ((c & color_on(s)) && (bb & MoveList<LEGAL>::adjacentSquaresBB[s]) != MoveList<LEGAL>::adjacentSquaresBB[s]) {
+        if ((c & color_on(s))
+            && (bb & MoveList<LEGAL>::adjacentSquaresBB[s])
+                != MoveList<LEGAL>::adjacentSquaresBB[s]) {
             return false;
         }
     }
@@ -1352,9 +1376,12 @@ void Position::updateMobility(MoveType mt, Square s)
         return;
     }
 
-    Bitboard adjacentWhiteBB = byColorBB[WHITE] & MoveList<LEGAL>::adjacentSquaresBB[s];
-    Bitboard adjacentBlackBB = byColorBB[BLACK] & MoveList<LEGAL>::adjacentSquaresBB[s];
-    Bitboard adjacentNoColorBB = (~(byColorBB[BLACK] | byColorBB[WHITE])) & MoveList<LEGAL>::adjacentSquaresBB[s];
+    Bitboard adjacentWhiteBB
+        = byColorBB[WHITE] & MoveList<LEGAL>::adjacentSquaresBB[s];
+    Bitboard adjacentBlackBB
+        = byColorBB[BLACK] & MoveList<LEGAL>::adjacentSquaresBB[s];
+    Bitboard adjacentNoColorBB = (~(byColorBB[BLACK] | byColorBB[WHITE]))
+        & MoveList<LEGAL>::adjacentSquaresBB[s];
     int adjacentWhiteBBCount = popcount(adjacentWhiteBB);
     int adjacentBlackBBCount = popcount(adjacentBlackBB);
     int adjacentNoColorBBCount = popcount(adjacentNoColorBB);
@@ -1451,7 +1478,8 @@ void Position::mirror(vector<string>& moveHistory, bool cmdChange /*= true*/)
         }
 
         for (auto& iter : moveHistory) {
-            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
+            args = sscanf(
+                iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
             if (args >= 4) {
                 s1 = (RANK_NB - s1 + 1) % RANK_NB;
                 s2 = (RANK_NB - s2 + 1) % RANK_NB;
@@ -1535,8 +1563,7 @@ void Position::turn(vector<string>& moveHistory, bool cmdChange /*= true*/)
         unsigned r1, s1, r2, s2;
         int args = 0;
 
-        args = sscanf(record, "(%1u,%1u)->(%1u,%1u)",
-            &r1, &s1, &r2, &s2);
+        args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
 
         if (args >= 4) {
             if (r1 == 1)
@@ -1572,9 +1599,8 @@ void Position::turn(vector<string>& moveHistory, bool cmdChange /*= true*/)
         }
 
         for (auto& iter : moveHistory) {
-            args = sscanf(iter.c_str(),
-                "(%1u,%1u)->(%1u,%1u)",
-                &r1, &s1, &r2, &s2);
+            args = sscanf(
+                iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
 
             if (args >= 4) {
                 if (r1 == 1)
@@ -1614,7 +1640,8 @@ void Position::turn(vector<string>& moveHistory, bool cmdChange /*= true*/)
     }
 }
 
-void Position::rotate(vector<string>& moveHistory, int degrees, bool cmdChange /*= true*/)
+void Position::rotate(
+    vector<string>& moveHistory, int degrees, bool cmdChange /*= true*/)
 {
     degrees = degrees % 360;
 
@@ -1722,7 +1749,8 @@ void Position::rotate(vector<string>& moveHistory, int degrees, bool cmdChange /
         }
 
         for (auto& iter : moveHistory) {
-            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
+            args = sscanf(
+                iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
 
             if (args >= 4) {
                 s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;

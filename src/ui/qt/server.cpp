@@ -35,21 +35,27 @@ Server::Server(QWidget* parent, uint16_t port)
 
     QNetworkConfigurationManager manager;
 
-    if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired) {
+    if (manager.capabilities()
+        & QNetworkConfigurationManager::NetworkSessionRequired) {
         // Get saved network configuration
         QSettings settings(QSettings::UserScope, QLatin1String("QtProject"));
         settings.beginGroup(QLatin1String("QtNetwork"));
-        const QString id = settings.value(QLatin1String("DefaultNetworkConfiguration")).toString();
+        const QString id
+            = settings.value(QLatin1String("DefaultNetworkConfiguration"))
+                  .toString();
         settings.endGroup();
 
-        // If the saved network configuration is not currently discovered use the system default
+        // If the saved network configuration is not currently discovered use
+        // the system default
         QNetworkConfiguration config = manager.configurationFromIdentifier(id);
-        if ((config.state() & QNetworkConfiguration::Discovered) != QNetworkConfiguration::Discovered) {
+        if ((config.state() & QNetworkConfiguration::Discovered)
+            != QNetworkConfiguration::Discovered) {
             config = manager.defaultConfiguration();
         }
 
         networkSession = new QNetworkSession(config, this);
-        connect(networkSession, &QNetworkSession::opened, this, &Server::sessionOpened);
+        connect(networkSession, &QNetworkSession::opened, this,
+            &Server::sessionOpened);
 
         statusLabel->setText(tr("Opening network session."));
         networkSession->open();
@@ -68,17 +74,23 @@ Server::Server(QWidget* parent, uint16_t port)
     buttonLayout->addStretch(1);
 
     QVBoxLayout* mainLayout = nullptr;
-    if (QGuiApplication::styleHints()->showIsFullScreen() || QGuiApplication::styleHints()->showIsMaximized()) {
+    if (QGuiApplication::styleHints()->showIsFullScreen()
+        || QGuiApplication::styleHints()->showIsMaximized()) {
         auto outerVerticalLayout = new QVBoxLayout(this);
-        outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
+        outerVerticalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
         auto outerHorizontalLayout = new QHBoxLayout;
-        outerHorizontalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
-        auto groupBox = new QGroupBox(QGuiApplication::applicationDisplayName());
+        outerHorizontalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
+        auto groupBox
+            = new QGroupBox(QGuiApplication::applicationDisplayName());
         mainLayout = new QVBoxLayout(groupBox);
         outerHorizontalLayout->addWidget(groupBox);
-        outerHorizontalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
+        outerHorizontalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
         outerVerticalLayout->addLayout(outerHorizontalLayout);
-        outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
+        outerVerticalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
     } else {
         mainLayout = new QVBoxLayout(this);
     }
@@ -104,7 +116,9 @@ void Server::sessionOpened()
         QString id;
 
         if (config.type() == QNetworkConfiguration::UserChoice)
-            id = networkSession->sessionProperty(QLatin1String("UserChoiceConfiguration")).toString();
+            id = networkSession
+                     ->sessionProperty(QLatin1String("UserChoiceConfiguration"))
+                     .toString();
         else
             id = config.identifier();
 
@@ -129,11 +143,13 @@ void Server::sessionOpened()
         }
 
 #ifdef MESSAGE_BOX_ENABLE
-        QMessageBox::information(this, tr("Server"), tr("server Started %1.").arg(port));
+        QMessageBox::information(
+            this, tr("Server"), tr("server Started %1.").arg(port));
 #endif
     } else {
 #ifdef MESSAGE_BOX_ENABLE
-        QMessageBox::information(this, tr("Server"), tr("server Started %1.").arg(port));
+        QMessageBox::information(
+            this, tr("Server"), tr("server Started %1.").arg(port));
 #endif
     }
 
@@ -183,8 +199,8 @@ void Server::sendAction()
 
     QTcpSocket* clientConnection = tcpServer->nextPendingConnection();
 
-    connect(clientConnection, &QAbstractSocket::disconnected,
-        clientConnection, &QObject::deleteLater);
+    connect(clientConnection, &QAbstractSocket::disconnected, clientConnection,
+        &QObject::deleteLater);
 
     clientConnection->write(block);
     clientConnection->disconnectFromHost();

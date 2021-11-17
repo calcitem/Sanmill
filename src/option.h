@@ -21,45 +21,21 @@
 
 class GameOptions {
 public:
-    void setSkillLevel(int val) noexcept
-    {
-        skillLevel = val;
-    }
+    void setSkillLevel(int val) noexcept { skillLevel = val; }
 
-    int getSkillLevel() const noexcept
-    {
-        return skillLevel;
-    }
+    int getSkillLevel() const noexcept { return skillLevel; }
 
-    void setMoveTime(int val) noexcept
-    {
-        moveTime = val;
-    }
+    void setMoveTime(int val) noexcept { moveTime = val; }
 
-    int getMoveTime() const noexcept
-    {
-        return moveTime;
-    }
+    int getMoveTime() const noexcept { return moveTime; }
 
-    void setAiIsLazy(bool enabled) noexcept
-    {
-        aiIsLazy = enabled;
-    }
+    void setAiIsLazy(bool enabled) noexcept { aiIsLazy = enabled; }
 
-    bool getAiIsLazy() const noexcept
-    {
-        return aiIsLazy;
-    }
+    bool getAiIsLazy() const noexcept { return aiIsLazy; }
 
-    void setAutoRestart(bool enabled) noexcept
-    {
-        isAutoRestart = enabled;
-    }
+    void setAutoRestart(bool enabled) noexcept { isAutoRestart = enabled; }
 
-    bool getAutoRestart() const noexcept
-    {
-        return isAutoRestart;
-    }
+    bool getAutoRestart() const noexcept { return isAutoRestart; }
 
     void setAutoChangeFirstMove(bool enabled) noexcept
     {
@@ -76,31 +52,22 @@ public:
         resignIfMostLose = enabled;
     }
 
-    bool getResignIfMostLose() const noexcept
-    {
-        return resignIfMostLose;
-    }
+    bool getResignIfMostLose() const noexcept { return resignIfMostLose; }
 
     // Specify whether the successors of a given state should be shuffled if a
     // re-evaluation is required so that the AI algorithm is not favoring one
     // state if multiple ones have equal evaluations. This introduces some
-    // variation between different games against an opponent that tries to do the
-    // same sequence of moves. By default, shuffling is enabled.
+    // variation between different games against an opponent that tries to do
+    // the same sequence of moves. By default, shuffling is enabled.
 
-    bool getShufflingEnabled() const noexcept
-    {
-        return shufflingEnabled;
-    }
+    bool getShufflingEnabled() const noexcept { return shufflingEnabled; }
 
     void setShufflingEnabled(bool enabled) noexcept
     {
         shufflingEnabled = enabled;
     }
 
-    bool getLearnEndgameEnabled() const noexcept
-    {
-        return learnEndgame;
-    }
+    bool getLearnEndgameEnabled() const noexcept { return learnEndgame; }
 
     void setLearnEndgameEnabled(bool enabled) noexcept
     {
@@ -125,44 +92,23 @@ public:
         perfectAiEnabled = enabled;
     }
 
-    bool getPerfectAiEnabled() const noexcept
-    {
-        return perfectAiEnabled;
-    }
+    bool getPerfectAiEnabled() const noexcept { return perfectAiEnabled; }
 
-    void setIDSEnabled(bool enabled) noexcept
-    {
-        IDSEnabled = enabled;
-    }
+    void setIDSEnabled(bool enabled) noexcept { IDSEnabled = enabled; }
 
-    bool getIDSEnabled() const noexcept
-    {
-        return IDSEnabled;
-    }
+    bool getIDSEnabled() const noexcept { return IDSEnabled; }
 
     // DepthExtension
 
-    void setDepthExtension(bool enabled) noexcept
-    {
-        depthExtension = enabled;
-    }
+    void setDepthExtension(bool enabled) noexcept { depthExtension = enabled; }
 
-    bool getDepthExtension() const noexcept
-    {
-        return depthExtension;
-    }
+    bool getDepthExtension() const noexcept { return depthExtension; }
 
     // OpeningBook
 
-    void setOpeningBook(bool enabled) noexcept
-    {
-        openingBook = enabled;
-    }
+    void setOpeningBook(bool enabled) noexcept { openingBook = enabled; }
 
-    bool getOpeningBook() const noexcept
-    {
-        return openingBook;
-    }
+    bool getOpeningBook() const noexcept { return openingBook; }
 
     // Algorithm
 
@@ -173,10 +119,7 @@ public:
         }
     }
 
-    bool getAlphaBetaAlgorithm() const noexcept
-    {
-        return algorithm == 0;
-    }
+    bool getAlphaBetaAlgorithm() const noexcept { return algorithm == 0; }
 
     void setPvsAlgorithm(bool enabled) noexcept
     {
@@ -185,10 +128,7 @@ public:
         }
     }
 
-    bool getPvsAlgorithm() const noexcept
-    {
-        return algorithm == 1;
-    }
+    bool getPvsAlgorithm() const noexcept { return algorithm == 1; }
 
     void setMtdfAlgorithm(bool enabled) noexcept
     {
@@ -197,10 +137,7 @@ public:
         }
     }
 
-    bool getMtdfAlgorithm() const noexcept
-    {
-        return algorithm == 2;
-    }
+    bool getMtdfAlgorithm() const noexcept { return algorithm == 2; }
 
     void setAlgorithm(int val) noexcept
     {
@@ -236,10 +173,7 @@ public:
 #endif
     }
 
-    int getAlgorithm() const noexcept
-    {
-        return algorithm;
-    }
+    int getAlgorithm() const noexcept { return algorithm; }
 
     // DrawOnHumanExperience
 
@@ -260,22 +194,13 @@ public:
         considerMobility = enabled;
     }
 
-    bool getConsiderMobility() const noexcept
-    {
-        return considerMobility;
-    }
+    bool getConsiderMobility() const noexcept { return considerMobility; }
 
     // Developer Mode
 
-    void setDeveloperMode(bool enabled) noexcept
-    {
-        developerMode = enabled;
-    }
+    void setDeveloperMode(bool enabled) noexcept { developerMode = enabled; }
 
-    bool getDeveloperMode() const noexcept
-    {
-        return developerMode;
-    }
+    bool getDeveloperMode() const noexcept { return developerMode; }
 
 private:
     int skillLevel { 1 };

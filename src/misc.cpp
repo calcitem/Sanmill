@@ -49,7 +49,9 @@ typedef bool (*fun3_t)(HANDLE, CONST GROUP_AFFINITY*, PGROUP_AFFINITY);
 #include <sys/mman.h>
 #endif
 
-#if defined(__APPLE__) || defined(__ANDROID__) || defined(__OpenBSD__) || (defined(__GLIBCXX__) && !defined(_GLIBCXX_HAVE_ALIGNED_ALLOC) && !defined(_WIN32))
+#if defined(__APPLE__) || defined(__ANDROID__) || defined(__OpenBSD__)         \
+    || (defined(__GLIBCXX__) && !defined(_GLIBCXX_HAVE_ALIGNED_ALLOC)          \
+        && !defined(_WIN32))
 #define POSIXALIGNEDALLOC
 #include <stdlib.h>
 #endif
@@ -90,25 +92,13 @@ struct Tie : public streambuf {
     {
     }
 
-    int sync() override
-    {
-        return logBuf->pubsync(), buf->pubsync();
-    }
+    int sync() override { return logBuf->pubsync(), buf->pubsync(); }
 
-    int overflow(int c) override
-    {
-        return log(buf->sputc((char)c), "<< ");
-    }
+    int overflow(int c) override { return log(buf->sputc((char)c), "<< "); }
 
-    int underflow() override
-    {
-        return buf->sgetc();
-    }
+    int underflow() override { return buf->sgetc(); }
 
-    int uflow() override
-    {
-        return log(buf->sbumpc(), ">> ");
-    }
+    int uflow() override { return log(buf->sbumpc(), ">> "); }
 
     streambuf *buf, *logBuf;
 
@@ -130,10 +120,7 @@ class Logger {
     {
     }
 
-    ~Logger()
-    {
-        start("");
-    }
+    ~Logger() { start(""); }
 
     ofstream file;
     Tie in, out;
@@ -178,7 +165,8 @@ const string engine_info(bool to_uci)
 
     if (Version.empty()) {
         date >> month >> day >> year;
-        ss << setw(2) << day << setw(2) << (1 + months.find(month) / 4) << year.substr(2);
+        ss << setw(2) << day << setw(2) << (1 + months.find(month) / 4)
+           << year.substr(2);
     }
 
     ss << (to_uci ? "\nid author " : " by ")
@@ -193,7 +181,8 @@ const std::string compiler_info()
 {
 #define stringify2(x) #x
 #define stringify(x) stringify2(x)
-#define make_version_string(major, minor, patch) stringify(major) "." stringify(minor) "." stringify(patch)
+#define make_version_string(major, minor, patch)                               \
+    stringify(major) "." stringify(minor) "." stringify(patch)
 
     /// Predefined macros hell:
     ///
@@ -207,11 +196,13 @@ const std::string compiler_info()
 
 #ifdef __clang__
     compiler += "clang++ ";
-    compiler += make_version_string(__clang_major__, __clang_minor__, __clang_patchlevel__);
+    compiler += make_version_string(
+        __clang_major__, __clang_minor__, __clang_patchlevel__);
 #elif __INTEL_COMPILER
     compiler += "Intel compiler ";
     compiler += "(version ";
-    compiler += stringify(__INTEL_COMPILER) " update " stringify(__INTEL_COMPILER_UPDATE);
+    compiler += stringify(__INTEL_COMPILER) " update " stringify(
+        __INTEL_COMPILER_UPDATE);
     compiler += ")";
 #elif _MSC_VER
     compiler += "MSVC ";
@@ -220,7 +211,8 @@ const std::string compiler_info()
     compiler += ")";
 #elif __GNUC__
     compiler += "g++ (GNUC) ";
-    compiler += make_version_string(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
+    compiler
+        += make_version_string(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
 #else
     compiler += "Unknown compiler ";
     compiler += "(unknown version)";
@@ -315,12 +307,12 @@ void dbg_mean_of(int v) noexcept
 void dbg_print()
 {
     if (hits[0])
-        cerr << "Total " << hits[0] << " Hits " << hits[1]
-             << " hit rate (%) " << 100 * hits[1] / hits[0] << endl;
+        cerr << "Total " << hits[0] << " Hits " << hits[1] << " hit rate (%) "
+             << 100 * hits[1] / hits[0] << endl;
 
     if (means[0])
-        cerr << "Total " << means[0] << " Mean "
-             << (double)means[1] / means[0] << endl;
+        cerr << "Total " << means[0] << " Mean " << (double)means[1] / means[0]
+             << endl;
 }
 
 /// Used to serialize access to std::cout to avoid multiple threads writing at
@@ -340,19 +332,14 @@ std::ostream& operator<<(std::ostream& os, SyncCout sc)
 }
 
 /// Trampoline helper to avoid moving Logger to misc.h
-void start_logger(const std::string& fname)
-{
-    Logger::start(fname);
-}
+void start_logger(const std::string& fname) { Logger::start(fname); }
 
 /// prefetch() preloads the given address in L1/L2 cache. This is a non-blocking
-/// function that doesn't stall the CPU waiting for data to be loaded from memory,
-/// which can be quite slow.
+/// function that doesn't stall the CPU waiting for data to be loaded from
+/// memory, which can be quite slow.
 #ifdef NO_PREFETCH
 
-void prefetch(void*)
-{
-}
+void prefetch(void*) {}
 
 #else
 
@@ -390,9 +377,10 @@ void prefetch_range(void* addr, size_t len)
 
 #endif
 
-/// std_aligned_alloc() is our wrapper for systems where the c++17 implementation
-/// does not guarantee the availability of aligned_alloc(). Memory allocated with
-/// std_aligned_alloc() must be freed with std_aligned_free().
+/// std_aligned_alloc() is our wrapper for systems where the c++17
+/// implementation does not guarantee the availability of aligned_alloc().
+/// Memory allocated with std_aligned_alloc() must be freed with
+/// std_aligned_free().
 
 void* std_aligned_alloc(size_t alignment, size_t size)
 {
@@ -419,7 +407,8 @@ void std_aligned_free(void* ptr)
 
 #ifdef ALIGNED_LARGE_PAGES
 
-/// aligned_large_pages_alloc() will return suitably aligned memory, if possible using large pages.
+/// aligned_large_pages_alloc() will return suitably aligned memory, if possible
+/// using large pages.
 
 #if defined(_WIN32)
 
@@ -434,7 +423,8 @@ static void* aligned_large_pages_alloc_win(size_t allocSize)
         return nullptr;
 
     // We need SeLockMemoryPrivilege, so try to enable it for the process
-    if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hProcessToken))
+    if (!OpenProcessToken(GetCurrentProcess(),
+            TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hProcessToken))
         return nullptr;
 
     if (LookupPrivilegeValue(NULL, SE_LOCK_MEMORY_NAME, &luid)) {
@@ -446,15 +436,17 @@ static void* aligned_large_pages_alloc_win(size_t allocSize)
         tp.Privileges[0].Luid = luid;
         tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 
-        // Try to enable SeLockMemoryPrivilege. Note that even if AdjustTokenPrivileges() succeeds,
-        // we still need to query GetLastError() to ensure that the privileges were actually obtained.
-        if (AdjustTokenPrivileges(
-                hProcessToken, FALSE, &tp, sizeof(TOKEN_PRIVILEGES), &prevTp, &prevTpLen)
+        // Try to enable SeLockMemoryPrivilege. Note that even if
+        // AdjustTokenPrivileges() succeeds, we still need to query
+        // GetLastError() to ensure that the privileges were actually obtained.
+        if (AdjustTokenPrivileges(hProcessToken, FALSE, &tp,
+                sizeof(TOKEN_PRIVILEGES), &prevTp, &prevTpLen)
             && GetLastError() == ERROR_SUCCESS) {
             // Round up size to full pages and allocate
-            allocSize = (allocSize + largePageSize - 1) & ~size_t(largePageSize - 1);
-            mem = VirtualAlloc(
-                NULL, allocSize, MEM_RESERVE | MEM_COMMIT | MEM_LARGE_PAGES, PAGE_READWRITE);
+            allocSize
+                = (allocSize + largePageSize - 1) & ~size_t(largePageSize - 1);
+            mem = VirtualAlloc(NULL, allocSize,
+                MEM_RESERVE | MEM_COMMIT | MEM_LARGE_PAGES, PAGE_READWRITE);
 
             // Privilege no longer needed, restore previous state
             AdjustTokenPrivileges(hProcessToken, FALSE, &prevTp, 0, NULL, NULL);
@@ -473,7 +465,8 @@ void* aligned_large_pages_alloc(size_t allocSize)
 
     // Fall back to regular, page aligned, allocation if necessary
     if (!mem)
-        mem = VirtualAlloc(NULL, allocSize, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+        mem = VirtualAlloc(
+            NULL, allocSize, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
 
     return mem;
 }
@@ -507,17 +500,15 @@ void aligned_large_pages_free(void* mem)
 {
     if (mem && !VirtualFree(mem, 0, MEM_RELEASE)) {
         DWORD err = GetLastError();
-        std::cerr << "Failed to free transposition table. Error code: 0x" << std::hex << err << std::dec << std::endl;
+        std::cerr << "Failed to free transposition table. Error code: 0x"
+                  << std::hex << err << std::dec << std::endl;
         exit(EXIT_FAILURE);
     }
 }
 
 #else
 
-void aligned_large_pages_free(void* mem)
-{
-    std_aligned_free(mem);
-}
+void aligned_large_pages_free(void* mem) { std_aligned_free(mem); }
 
 #endif
 #endif // ALIGNED_LARGE_PAGES
@@ -526,9 +517,7 @@ namespace WinProcGroup {
 
 #ifndef _WIN32
 
-void bindThisThread(size_t)
-{
-}
+void bindThisThread(size_t) {}
 
 #else
 
@@ -548,7 +537,8 @@ int best_group(size_t idx)
     HMODULE k32 = GetModuleHandle(L"Kernel32.dll");
     if (k32 == nullptr)
         return -1;
-    auto fun1 = (fun1_t)(void (*)())GetProcAddress(k32, "GetLogicalProcessorInformationEx");
+    auto fun1 = (fun1_t)(void (*)())GetProcAddress(
+        k32, "GetLogicalProcessorInformationEx");
     if (!fun1)
         return -1;
 
@@ -558,7 +548,8 @@ int best_group(size_t idx)
 
     // Once we know returnLength, allocate the buffer
     SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX *buffer, *ptr;
-    ptr = buffer = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)malloc(returnLength);
+    ptr = buffer
+        = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)malloc(returnLength);
 
     if (ptr == nullptr)
         return -1;
@@ -579,7 +570,8 @@ int best_group(size_t idx)
 
         assert(ptr->Size);
         byteOffset += ptr->Size;
-        ptr = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)(((char*)ptr) + ptr->Size);
+        ptr = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)(((char*)ptr)
+            + ptr->Size);
     }
 
     free(buffer);
@@ -617,8 +609,10 @@ void bindThisThread(size_t idx)
     HMODULE k32 = GetModuleHandle(L"Kernel32.dll");
     if (k32 == nullptr)
         return;
-    auto fun2 = (fun2_t)(void (*)())GetProcAddress(k32, "GetNumaNodeProcessorMaskEx");
-    auto fun3 = (fun3_t)(void (*)())GetProcAddress(k32, "SetThreadGroupAffinity");
+    auto fun2
+        = (fun2_t)(void (*)())GetProcAddress(k32, "GetNumaNodeProcessorMaskEx");
+    auto fun3
+        = (fun3_t)(void (*)())GetProcAddress(k32, "SetThreadGroupAffinity");
 
     if (!fun2 || !fun3)
         return;

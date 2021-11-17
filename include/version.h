@@ -19,6 +19,6 @@
 
 // Please generate this file with version.sh
 
-static const char *versionNumber = "Unknown";
+static const char* versionNumber = "Unknown";
 
-#endif  // INCLUDE_VERSION_H_
+#endif // INCLUDE_VERSION_H_

@@ -37,12 +37,13 @@ struct rdtscp_clock {
 #if defined(__x86_64__) || defined(__amd64__)
 #ifdef _WIN32
         unsigned int ui;
-        return time_point(duration((static_cast<std::uint64_t>(__rdtscp(&ui)))));
+        return time_point(
+            duration((static_cast<std::uint64_t>(__rdtscp(&ui)))));
 #else
         std::uint32_t hi, lo;
-        __asm__ __volatile__("rdtscp"
-                             : "=d"(hi), "=a"(lo));
-        return time_point(duration((static_cast<std::uint64_t>(hi) << 32) | lo));
+        __asm__ __volatile__("rdtscp" : "=d"(hi), "=a"(lo));
+        return time_point(
+            duration((static_cast<std::uint64_t>(hi) << 32) | lo));
 #endif // WIN32
 #else
         constexpr unsigned int ui = 0;
@@ -52,8 +53,7 @@ struct rdtscp_clock {
 };
 
 // A timer using the specified clock.
-template <class Clock = std::chrono::system_clock>
-struct timer {
+template <class Clock = std::chrono::system_clock> struct timer {
     using time_point = typename Clock::time_point;
     using duration = typename Clock::duration;
 
@@ -86,8 +86,8 @@ constexpr auto make_timer(typename Clock::duration duration) -> timer<Clock>
 }
 
 // Times how long it takes a function to execute using the specified clock.
-template <class Clock = rdtscp_clock, class Func>
-auto time(Func&& function) -> typename Clock::duration
+template <class Clock = rdtscp_clock, class Func> auto time(Func&& function) ->
+    typename Clock::duration
 {
     const auto start = Clock::now();
     function();

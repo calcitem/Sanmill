@@ -119,8 +119,10 @@ void Thread::idle_loop()
     while (true) {
         std::unique_lock<std::mutex> lk(mutex);
         // CID 338451: Data race condition(MISSING_LOCK)
-        // missing_lock : Accessing this->searching without holding lock Thread.mutex.
-        // Elsewhere, Thread.searching is accessed with Thread.mutex held 2 out of 3 times(2 of these accesses strongly imply that it is necessary).
+        // missing_lock : Accessing this->searching without holding lock
+        // Thread.mutex. Elsewhere, Thread.searching is accessed with
+        // Thread.mutex held 2 out of 3 times(2 of these accesses strongly imply
+        // that it is necessary).
         searching = false;
 
         cv.notify_one(); // Wake up anyone waiting for search finished
@@ -228,17 +230,16 @@ void Thread::emitCommand()
 }
 
 #ifdef OPENING_BOOK
-deque<int> openingBookDeque(
-    {
-        /* B W */
-        21,
-        23,
-        19,
-        20,
-        17,
-        18,
-        15,
-    });
+deque<int> openingBookDeque({
+    /* B W */
+    21,
+    23,
+    19,
+    20,
+    17,
+    18,
+    15,
+});
 
 deque<int> openingBookDequeBak;
 
@@ -325,18 +326,18 @@ void Thread::analyze(Color c)
     }
 
     if (v == VALUE_UNIQUE) {
-        cout << "Unique move" << std::endl
-             << std::endl
-             << std::endl;
+        cout << "Unique move" << std::endl << std::endl << std::endl;
         return;
     }
 
     if (lv < -VALUE_EACH_PIECE && v == 0) {
-        cout << strThem << " made a bad move, " << strUs << " pulled back the balance of power!" << std::endl;
+        cout << strThem << " made a bad move, " << strUs
+             << " pulled back the balance of power!" << std::endl;
     }
 
     if (lv < 0 && v > 0) {
-        cout << strThem << " made a bad move, " << strUs << " reversed the situation!" << std::endl;
+        cout << strThem << " made a bad move, " << strUs
+             << " reversed the situation!" << std::endl;
     }
 
     if (lv == 0 && v > VALUE_EACH_PIECE) {
@@ -344,11 +345,13 @@ void Thread::analyze(Color c)
     }
 
     if (lv > VALUE_EACH_PIECE && v == 0) {
-        cout << strThem << "made a good move, pulled back the balance of power" << std::endl;
+        cout << strThem << "made a good move, pulled back the balance of power"
+             << std::endl;
     }
 
     if (lv > 0 && v < 0) {
-        cout << strThem << "made a good move, reversed the situation!" << std::endl;
+        cout << strThem << "made a good move, reversed the situation!"
+             << std::endl;
     }
 
     if (lv == 0 && v < -VALUE_EACH_PIECE) {
@@ -368,7 +371,8 @@ void Thread::analyze(Color c)
             if (abs(lv) < abs(v)) {
                 cout << strThem << " has expanded its lead" << std::endl;
             } else if (abs(lv) > abs(v)) {
-                cout << strThem << " has narrowed its backwardness" << std::endl;
+                cout << strThem << " has narrowed its backwardness"
+                     << std::endl;
             }
         }
     }
@@ -378,11 +382,14 @@ void Thread::analyze(Color c)
     } else if (lose) {
         cout << strThem << " will win in " << d << " moves!" << std::endl;
     } else if (np == 0) {
-        cout << "The two sides will maintain a balance of power after " << d << " moves" << std::endl;
+        cout << "The two sides will maintain a balance of power after " << d
+             << " moves" << std::endl;
     } else if (np > 0) {
-        cout << strThem << " after " << d << " moves will backward " << np << " pieces" << std::endl;
+        cout << strThem << " after " << d << " moves will backward " << np
+             << " pieces" << std::endl;
     } else if (np < 0) {
-        cout << strThem << " after " << d << " moves will lead " << -np << " pieces" << std::endl;
+        cout << strThem << " after " << d << " moves will lead " << -np
+             << " pieces" << std::endl;
     }
 
     if (p->side_to_move() == WHITE) {
@@ -404,20 +411,18 @@ void Thread::analyze(Color c)
         drawRate = (float)nDraw * 100 / total;
     }
 
-    cout << "Score: " << (int)nBlackWin << " : " << (int)nWhiteWin << " : " << (int)nDraw << "\ttotal: " << (int)total << std::endl;
-    cout << fixed << setprecision(2) << blackWinRate << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
+    cout << "Score: " << (int)nBlackWin << " : " << (int)nWhiteWin << " : "
+         << (int)nDraw << "\ttotal: " << (int)total << std::endl;
+    cout << fixed << setprecision(2) << blackWinRate << "% : " << whiteWinRate
+         << "% : " << drawRate << "%" << std::endl;
     cout.flags(flags);
 #endif // !QT_GUI_LIB
 
 out:
-    cout << std::endl
-         << std::endl;
+    cout << std::endl << std::endl;
 }
 
-Depth Thread::get_depth()
-{
-    return Mills::get_search_depth(rootPos);
-}
+Depth Thread::get_depth() { return Mills::get_search_depth(rootPos); }
 
 string Thread::next_move()
 {
@@ -426,8 +431,11 @@ string Thread::next_move()
     if (gameOptions.isEndgameLearningEnabled()) {
         if (bestvalue <= -VALUE_KNOWN_WIN) {
             Endgame endgame;
-            endgame.type = rootPos->side_to_move() == WHITE ? EndGameType::blackWin : EndGameType::whiteWin;
-            Key endgameHash = rootPos->key(); // TODO(calcitem): Do not generate hash repeatedly
+            endgame.type = rootPos->side_to_move() == WHITE
+                ? EndGameType::blackWin
+                : EndGameType::whiteWin;
+            Key endgameHash = rootPos->key(); // TODO(calcitem): Do not generate
+                                              // hash repeatedly
             saveEndgameHash(endgameHash, endgame);
         }
     }
@@ -435,8 +443,10 @@ string Thread::next_move()
 
     if (gameOptions.getResignIfMostLose() == true) {
         if (bestvalue <= -VALUE_MATE) {
-            rootPos->set_gameover(~rootPos->sideToMove, GameOverReason::loseReasonResign);
-            snprintf(rootPos->record, Position::RECORD_LEN_MAX, loseReasonResignStr, rootPos->sideToMove);
+            rootPos->set_gameover(
+                ~rootPos->sideToMove, GameOverReason::loseReasonResign);
+            snprintf(rootPos->record, Position::RECORD_LEN_MAX,
+                loseReasonResignStr, rootPos->sideToMove);
             return rootPos->record;
         }
     }
@@ -445,8 +455,10 @@ string Thread::next_move()
 #ifdef TRANSPOSITION_TABLE_DEBUG
     size_t hashProbeCount = ttHitCount + ttMissCount;
     if (hashProbeCount) {
-        loggerDebug("[posKey] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
-            hashProbeCount, ttHitCount, ttMissCount, ttHitCount * 100 / hashProbeCount);
+        loggerDebug(
+            "[posKey] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
+            hashProbeCount, ttHitCount, ttMissCount,
+            ttHitCount * 100 / hashProbeCount);
     }
 #endif // TRANSPOSITION_TABLE_DEBUG
 #endif // TRANSPOSITION_TABLE_ENABLE
@@ -465,16 +477,14 @@ int Thread::saveEndgameHash(Key posKey, const Endgame& endgame)
     Key hashValue = endgameHashMap.insert(posKey, endgame);
     unsigned addr = hashValue * (sizeof(posKey) + sizeof(endgame));
 
-    loggerDebug("[endgame] Record 0x%08I32x (%d) to Endgame hash map, TTEntry: 0x%08I32x, Address: 0x%08I32x\n",
+    loggerDebug("[endgame] Record 0x%08I32x (%d) to Endgame hash map, TTEntry: "
+                "0x%08I32x, Address: 0x%08I32x\n",
         posKey, endgame.type, hashValue, addr);
 
     return 0;
 }
 
-void Thread::clearEndgameHashMap()
-{
-    endgameHashMap.clear();
-}
+void Thread::clearEndgameHashMap() { endgameHashMap.clear(); }
 
 void Thread::saveEndgameHashMapToFile()
 {
@@ -531,7 +541,8 @@ void ThreadPool::clear()
 }
 
 /// ThreadPool::start_thinking() wakes up main thread waiting in idle_loop() and
-/// returns immediately. Main thread will wake up other threads and start the search.
+/// returns immediately. Main thread will wake up other threads and start the
+/// search.
 
 void ThreadPool::start_thinking(Position* pos, bool ponderMode)
 {
@@ -544,8 +555,10 @@ void ThreadPool::start_thinking(Position* pos, bool ponderMode)
     // We use Position::set() to set root position across threads.
     for (Thread* th : *this) {
         // Fix CID 338443: Data race condition (MISSING_LOCK)
-        // missing_lock: Accessing th->rootPos without holding lock Thread.mutex.
-        // Elsewhere, Thread.rootPos is accessed with Thread.mutex held 1 out of 2 times (1 of these accesses strongly imply that it is necessary).
+        // missing_lock: Accessing th->rootPos without holding lock
+        // Thread.mutex. Elsewhere, Thread.rootPos is accessed with Thread.mutex
+        // held 1 out of 2 times (1 of these accesses strongly imply that it is
+        // necessary).
         std::lock_guard<std::mutex> lk(th->mutex);
         th->rootPos = pos;
     }

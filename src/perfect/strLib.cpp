@@ -30,27 +30,19 @@ int MyString::hiBit(unsigned int n)
 // MyString()
 //
 //-----------------------------------------------------------------------------
-MyString::MyString()
-{
-}
+MyString::MyString() {}
 
 //-----------------------------------------------------------------------------
 // MyString()
 //
 //-----------------------------------------------------------------------------
-MyString::MyString(const char* cStr)
-{
-    assign(cStr);
-}
+MyString::MyString(const char* cStr) { assign(cStr); }
 
 //-----------------------------------------------------------------------------
 // MyString()
 //
 //-----------------------------------------------------------------------------
-MyString::MyString(const WCHAR* cStr)
-{
-    assign(cStr);
-}
+MyString::MyString(const WCHAR* cStr) { assign(cStr); }
 
 //-----------------------------------------------------------------------------
 // MyString()
@@ -78,19 +70,13 @@ MyString::~MyString()
 // c_strA()
 //
 //-----------------------------------------------------------------------------
-const char* MyString::c_strA()
-{
-    return strA;
-}
+const char* MyString::c_strA() { return strA; }
 
 //-----------------------------------------------------------------------------
 // c_strW()
 //
 //-----------------------------------------------------------------------------
-const WCHAR* MyString::c_strW()
-{
-    return strW;
-}
+const WCHAR* MyString::c_strW() { return strW; }
 
 //-----------------------------------------------------------------------------
 // assign()
@@ -154,7 +140,8 @@ MyString& MyString::assign(const WCHAR* cStr)
 // readAsciiData()
 // This functions reads in a table of floating point values faster than "cin".
 //-----------------------------------------------------------------------------
-bool readAsciiData(HANDLE hFile, double* pData, unsigned int numValues, unsigned char decimalSeperator, unsigned char columnSeparator)
+bool readAsciiData(HANDLE hFile, double* pData, unsigned int numValues,
+    unsigned char decimalSeperator, unsigned char columnSeparator)
 {
     // constants
     const unsigned int maxValueLengthInBytes = 32;
@@ -168,31 +155,26 @@ bool readAsciiData(HANDLE hFile, double* pData, unsigned int numValues, unsigned
     unsigned int actualBufferSize = 0;
     unsigned int curBufferPos = bufferSize;
     unsigned int decimalPos = 0;
-    int integralValue = 0; // ATTENTION: Only allows 8 digits before the decimal point
-    int fractionalValue = 0; // ATTENTION: Only allows 8 digits before the decimal point
+    int integralValue
+        = 0; // ATTENTION: Only allows 8 digits before the decimal point
+    int fractionalValue
+        = 0; // ATTENTION: Only allows 8 digits before the decimal point
     int exponentialValue = 1;
     bool valIsNegative = false;
     bool expIsNegative = false;
     bool decimalPlace = false;
     bool exponent = false;
-    double fractionalFactor[] = { 0,
-        0.1,
-        0.01,
-        0.001,
-        0.0001,
-        0.00001,
-        0.000001,
-        0.0000001,
-        0.00000001,
-        0.000000001,
-        0.0000000001 };
+    double fractionalFactor[] = { 0, 0.1, 0.01, 0.001, 0.0001, 0.00001,
+        0.000001, 0.0000001, 0.00000001, 0.000000001, 0.0000000001 };
 
     // read each value
     do {
         // read from buffer if necessary
         if (curBufferPos >= bufferSize - maxValueLengthInBytes) {
-            memcpy(&buffer[0], &buffer[curBufferPos], bufferSize - curBufferPos);
-            if (!ReadFile(hFile, &buffer[bufferSize - curBufferPos], curBufferPos, &dwBytesRead, nullptr))
+            memcpy(
+                &buffer[0], &buffer[curBufferPos], bufferSize - curBufferPos);
+            if (!ReadFile(hFile, &buffer[bufferSize - curBufferPos],
+                    curBufferPos, &dwBytesRead, nullptr))
                 return false;
             actualBufferSize = bufferSize - curBufferPos + dwBytesRead;
             curBufferPos = 0;
@@ -352,7 +334,9 @@ bool readAsciiData(HANDLE hFile, double* pData, unsigned int numValues, unsigned
             } else if (*curByte == columnSeparator) {
                 // everything ok?
                 if (decimalPos > 8) {
-                    cout << "ERROR in function readAsciiData(): Too many digits on decimal place. Maximum is 8 !" << std::endl;
+                    cout << "ERROR in function readAsciiData(): Too many "
+                            "digits on decimal place. Maximum is 8 !"
+                         << std::endl;
                     return false;
                 }
 
@@ -367,7 +351,8 @@ bool readAsciiData(HANDLE hFile, double* pData, unsigned int numValues, unsigned
                 }
 
                 if (exponent) {
-                    (*pData) *= pow(10, expIsNegative ? -1 * exponentialValue : 1);
+                    (*pData)
+                        *= pow(10, expIsNegative ? -1 * exponentialValue : 1);
                 }
 
                 // init
