@@ -86,9 +86,9 @@ const string Version = "";
 struct Tie : public streambuf {
     // MSVC requires split streambuf for cin and cout
 
-    Tie(streambuf* b, streambuf* l)
+    Tie(streambuf* b, streambuf* lb)
         : buf(b)
-        , logBuf(l)
+        , logBuf(lb)
     {
     }
 
@@ -128,22 +128,22 @@ class Logger {
 public:
     static void start(const std::string& fname)
     {
-        static Logger l;
+        static Logger logger;
 
-        if (!fname.empty() && !l.file.is_open()) {
-            l.file.open(fname, ifstream::out);
+        if (!fname.empty() && !logger.file.is_open()) {
+            logger.file.open(fname, ifstream::out);
 
-            if (!l.file.is_open()) {
+            if (!logger.file.is_open()) {
                 cerr << "Unable to open debug log file " << fname << endl;
                 exit(EXIT_FAILURE);
             }
 
-            cin.rdbuf(&l.in);
-            cout.rdbuf(&l.out);
-        } else if (fname.empty() && l.file.is_open()) {
-            cout.rdbuf(l.out.buf);
-            cin.rdbuf(l.in.buf);
-            l.file.close();
+            cin.rdbuf(&logger.in);
+            cout.rdbuf(&logger.out);
+        } else if (fname.empty() && logger.file.is_open()) {
+            cout.rdbuf(logger.out.buf);
+            cin.rdbuf(logger.in.buf);
+            logger.file.close();
         }
     }
 };

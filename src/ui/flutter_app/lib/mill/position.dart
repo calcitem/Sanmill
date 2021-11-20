@@ -884,9 +884,9 @@ class Position {
       board[from] = _grid[squareToIndex[from]!] = Piece.noPiece;
     }
 
-    for (int l = 0; l < lineDirectionNumber; l++) {
-      if (_c == board[millTable[to][l][0]] &&
-          _c == board[millTable[to][l][1]]) {
+    for (int ld = 0; ld < lineDirectionNumber; ld++) {
+      if (_c == board[millTable[to][ld][0]] &&
+          _c == board[millTable[to][ld][1]]) {
         n++;
       }
     }
