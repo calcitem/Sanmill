@@ -587,8 +587,11 @@ int best_group(size_t idx)
     // In case a core has more than one logical processor (we assume 2) and we
     // have still threads to allocate, then spread them evenly across available
     // nodes.
-    for (int t = 0; t < threads - cores; t++)
-        groups.push_back(t % nodes);
+    for (int t = 0; t < threads - cores; t++) {
+        if (nodes != 0) {
+            groups.push_back(t % nodes);
+        }
+    }        
 
     // If we still have more threads than the total number of logical processors
     // then return -1 and let the OS to decide what to do.

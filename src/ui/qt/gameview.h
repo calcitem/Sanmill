@@ -17,9 +17,9 @@
 #ifndef GAME_VIEW_H_INCLUDED
 #define GAME_VIEW_H_INCLUDED
 
-#include <QGraphicsView>
-
 #include "config.h"
+
+#include <QGraphicsView>
 
 // This class is mainly derived to make the view adapt to
 // the scene size and image rotation mirror operation
