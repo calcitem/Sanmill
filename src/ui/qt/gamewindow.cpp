@@ -31,7 +31,7 @@
 #include <QPushButton>
 #include <QScreen>
 #include <QSpinBox>
-#include <QTimer> 
+#include <QTimer>
 #include <QToolTip>
 #include <QVBoxLayout>
 

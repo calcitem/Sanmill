@@ -2610,7 +2610,7 @@ void PerfectAI::ThreadVars::storePredecessor(
 void PerfectAI::getPredecessors(unsigned int threadNo,
     unsigned int* amountOfPred, RetroAnalysisPredVars* predVars)
 {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     // the important variables, which much be updated for the
     // getLayerAndStateNumber function are the following ones:
     // - board->curPlayer->numStones
@@ -2619,7 +2619,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
     // - board->board
     // - board->stoneMustBeRemoved
     // - board->settingPhase
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
 
     // locals
     ThreadVars* tv = &threadVars[threadNo];
@@ -3161,18 +3161,27 @@ bool PerfectAI::checkGetPredThanGetPoss()
                     return false;
 
 #if 0
-                    // perform several commands to see in debug mode where the error occurs
+                    // perform several commands to see in debug mode where the
+                    // error occurs
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->board[k];
 
-                    applySymmetryOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
+                    applySymmetryOperationOnField(
+                        reverseSymOperation[predVars[j].predSymOperation],
+                        (unsigned int*)symField,
+                        (unsigned int*)tv->field->board);
 
                     for (k = 0; k < tv->field->size; k++)
                         symField[k] = tv->field->stonePartOfMill[k];
 
-                    applySymmetryOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
+                    applySymmetryOperationOnField(
+                        reverseSymOperation[predVars[j].predSymOperation],
+                        (unsigned int*)symField,
+                        (unsigned int*)tv->field->stonePartOfMill);
                     cout << "predecessor" << endl;
-                    cout << "   layerNum: " << predVars[j].predLayerNumbers << "\tstateNum: " << predVars[j].predStateNumbers << endl;
+                    cout << "   layerNum: " << predVars[j].predLayerNumbers
+                         << "\tstateNum: " << predVars[j].predStateNumbers
+                         << endl;
                     printBoard(threadNo, 0);
 
                     if (predVars[j].playerToMoveChanged) {
@@ -3183,10 +3192,12 @@ bool PerfectAI::checkGetPredThanGetPoss()
                             tv->field->board[k] = -1 * tv->field->board[k];
                     }
 
-                    idPossibility = getPossibilities(threadNo, &numPossibilities, &isOpponentLevel, &pPossibilities);
+                    idPossibility = getPossibilities(threadNo,
+                        &numPossibilities, &isOpponentLevel, &pPossibilities);
                     setSituation(threadNo, layerNum, stateNum);
                     cout << "current state" << endl;
-                    cout << "   layerNum: " << layerNum << "\tstateNum: " << stateNum << endl;
+                    cout << "   layerNum: " << layerNum
+                         << "\tstateNum: " << stateNum << endl;
                     printBoard(threadNo, 0);
                     getPredecessors(threadNo, &amountOfPred, predVars);
 #endif
