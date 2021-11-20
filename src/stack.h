@@ -47,8 +47,6 @@ public:
     {
         p++;
         memcpy(arr + p, &obj, sizeof(T));
-
-        assert(p < capacity);
     }
 
     inline void push_back(const T& obj)
