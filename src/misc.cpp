@@ -591,7 +591,7 @@ int best_group(size_t idx)
         if (nodes != 0) {
             groups.push_back(t % nodes);
         }
-    }        
+    }
 
     // If we still have more threads than the total number of logical processors
     // then return -1 and let the OS to decide what to do.

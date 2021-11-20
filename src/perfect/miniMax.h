@@ -1,10 +1,10 @@
-/***************************************************************************************************************************
+/*******************************************************************************
     miniMax.h
     Copyright (c) Thomas Weber. All rights reserved.
     Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
     Licensed under the GPLv3 License.
     https://github.com/madweasel/Muehle
-***************************************************************************************************************************/
+*******************************************************************************/
 
 #ifndef MINIMAX_H_INCLUDED
 #define MINIMAX_H_INCLUDED
@@ -33,28 +33,28 @@
 using std::iostream; // use standard library namespace
 
 /*** Wiki
-***************************************************************************************************************************
+********************************************************************************
 player:
-layer:					The states are divided in layers. For
+layer: The states are divided in layers. For
 example depending on number of stones on the board.
-state:					A unique game state representing a
-current game situation. situation:				Used as synonym
+state: A unique game state representing a
+current game situation. situation: Used as synonym
 to state.
-knot:					Each knot of the graph corresponds to a
+knot: Each knot of the graph corresponds to a
 game state. The knots are connected by possible valid moves. ply info:
 Number of plies/moves necessary to win the game. state address:
 A state is identified by the corresponding layer and the state number within the
 layer.
-short knot value:		Each knot/state can have the value
+short knot value: Each knot/state can have the value
 SKV_VALUE_INVALID, SKV_VALUE_GAME_LOST, SKV_VALUE_GAME_DRAWN or
-SKV_VALUE_GAME_WON. float point knot value:	Each knot/state can be evaluated
+SKV_VALUE_GAME_WON. float point knot value: Each knot/state can be evaluated
 by a floating point value. High positive values represents winning situations.
 Negative values stand for loosing situations.
-database:				The database contains the arrays with
+database: The database contains the arrays with
 the short knot values and the ply infos.
 
 /*** Constants
-***************************************************************************************************************************/
+*******************************************************************************/
 #define FPKV_MIN_VALUE -100000.0f // minimum float point knot value
 #define FPKV_MAX_VALUE 100000.0f // maximum float point knot value
 #define FPKV_THRESHOLD                                                         \
@@ -124,7 +124,7 @@ the short knot values and the ply infos.
 #define MM_ACTION_NONE 8
 
 /*** Macros
- * ***************************************************************************************************************************/
+ * ****************************************************************************/
 #define SAFE_DELETE(p)                                                         \
     {                                                                          \
         if (p) {                                                               \
@@ -156,14 +156,14 @@ the short knot values and the ply infos.
     }
 
 /*** Classes
- * ***************************************************************************************************************************/
+ * ****************************************************************************/
 class MiniMax {
     friend class MiniMaxWinInspectDb;
     friend class MiniMaxWinCalcDb;
 
 public:
     /*** typedefines
-     * ***************************************************************************************************************************/
+     * ************************************************************************/
     typedef unsigned char TwoBit; // 2-Bit variable ranging from 0 to 3
     typedef unsigned short PlyInfoVarType; // 2 Bytes for saving the ply info
     typedef unsigned char CountArrayVarType; // 1 Byte for counting predecessors
@@ -171,7 +171,7 @@ public:
         StateNumberVarType; // 4 Bytes for addressing states within a layer
 
     /*** protected structures
-     * ********************************************************************************************************************/
+     * ************************************************************************/
 
     struct SkvFileHeader // header of the short knot value file
     {
@@ -305,7 +305,7 @@ public:
     };
 
     /*** public functions
-     * *********************************************************************************************/
+     * ************************************************************************/
 
     // Constructor / destructor
     MiniMax();
@@ -867,7 +867,7 @@ private:
     frequency; // performance-counter frequency, in counts per second
 
     /*** private functions
-     * ***************************************************************************************************************************/
+     * ************************************************************************/
 
     // database functions
     void openSkvFile(const char* path, unsigned int maximumNumberOfBranches);
