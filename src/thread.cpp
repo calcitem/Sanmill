@@ -410,8 +410,9 @@ void Thread::analyze(Color c)
          << (int)nDraw << "\ttotal: " << (int)total << std::endl;
     cout << fixed << setprecision(2) << blackWinRate << "% : " << whiteWinRate
          << "% : " << drawRate << "%" << std::endl;
-    cout.flags(flags);
 #endif // !QT_GUI_LIB
+
+    cout.flags(flags);
 
 out:
     cout << std::endl << std::endl;

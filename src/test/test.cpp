@@ -180,7 +180,11 @@ void Test::writeToMemory(const QString& record)
     }
 
     char from[BUFSIZ] = { 0 };
+#ifdef _MSC_VER
+    strncpy_s(from, BUFSIZ, record.toStdString().c_str(), BUFSIZ);
+#else
     strncpy(from, record.toStdString().c_str(), BUFSIZ);
+#endif // _MSC_VER
 
     while (true) {
         sharedMemory.lock();
