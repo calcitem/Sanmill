@@ -18,10 +18,6 @@
 #define GAMEWINDOW_H_INCLUDED
 
 #include <vector>
-
-#include <QFile>
-#include <QStringListModel>
-#include <QTextStream>
 #include <QTimer>
 #include <QtWidgets/QMainWindow>
 

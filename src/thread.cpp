@@ -38,11 +38,6 @@ using std::cout;
 using std::fixed;
 using std::setprecision;
 
-#if _MSC_VER >= 1600
-#pragma warning(disable : 4695)
-#pragma execution_character_set("ANSI")
-#endif
-
 ThreadPool Threads; // Global object
 
 /// Thread constructor launches the thread and waits until it goes to sleep
