@@ -1,0 +1,48 @@
+name: Qt on Windows
+
+on:
+  push:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Setup VS
+      - name: Setup VS
+        uses: seanmiddleditch/gha-setup-vsdevenv@master
+
+      # Install Qt
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+        with:
+          version: '5.15.2'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2019_64'
+          dir: '${{ github.workspace }}'
+          install-deps: 'true'
+          modules: 'qtcore qtwgui qtmultimedia'
+          cached: 'false'
+          setup-python: 'true'
+          tools: 'tools_ifw,4.1.1,qt.tools.ifw.41 tools_qtcreator,5.0.2-0,qt.tools.qtcreator'
+          set-env: 'false'
+          tools-only: 'false'
+          aqtversion: '==1.2.5'
+          py7zrversion: '==0.16.1'
+          extra: '--external 7z'
+
+      # Build
+      - name: Build Qt
+        run: ci/run-win32-qt-build.bat
+
+      # Archive apk
+      - name: Archive Qt
+        uses: actions/upload-artifact@v2
+        with:
+          name: MIllGame
+          path: release/MillGame.exe
