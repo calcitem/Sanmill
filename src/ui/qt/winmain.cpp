@@ -52,7 +52,6 @@ int main(int argc, char* argv[])
     QTranslator translator;
     translator.load("millgame-qt_zh_CN");
     a.installTranslator(&translator);
-    QRect desktopRect = QGuiApplication::primaryScreen()->geometry();
     MillGameWindow w;
     w.show();
 
@@ -60,6 +59,7 @@ int main(int argc, char* argv[])
         + QString::number(QCoreApplication::applicationPid()) + ")");
 
 #ifndef _DEBUG
+    QRect desktopRect = QGuiApplication::primaryScreen()->geometry();
     w.move((desktopRect.width() - w.width()) / 4,
         (desktopRect.height() - w.height()) / 2);
 #endif

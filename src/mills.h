@@ -21,15 +21,15 @@
 #include "position.h"
 #include "types.h"
 
-extern const char* loseReasonNoWayStr;
-extern const char* loseReasonTimeOverStr;
-extern const char* drawReasonThreefoldRepetitionStr;
-extern const char* drawReasonRule50Str;
-extern const char* drawReasonEndgameRule50Str;
-extern const char* loseReasonBoardIsFullStr;
-extern const char* drawReasonBoardIsFullStr;
-extern const char* loseReasonlessThanThreeStr;
-extern const char* loseReasonResignStr;
+#define loseReasonNoWayStr "Player%d no way to go. Player%d win!"
+#define loseReasonTimeOverStr "Time over. Player%d win!"
+#define drawReasonThreefoldRepetitionStr "Threefold Repetition. Draw!"
+#define drawReasonRule50Str "N-move rule. Draw!"
+#define drawReasonEndgameRule50Str "Endgame N-move rule. Draw!"
+#define loseReasonBoardIsFullStr "Full. Player2 win!"
+#define drawReasonBoardIsFullStr "Full. In draw!"
+#define loseReasonlessThanThreeStr "Player%d win!"
+#define loseReasonResignStr "Player%d give up!"
 
 namespace Mills {
 
