@@ -361,3 +361,6 @@ cov-int
 
 # Visual Lint files
 .visuallint
+
+# Dev-C++ files
+*.layout
