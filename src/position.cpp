@@ -1,4 +1,4 @@
-// This file is part of Sanmill.
+﻿// This file is part of Sanmill.
 // Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
@@ -1202,8 +1202,8 @@ int Position::potential_mills_count(Square to, Color c, Square from)
     const Bitboard bc = byColorBB[c];
     const Bitboard* mt = millTableBB[to];
 
-    for (int l = 0; l < LD_NB; l++) {
-        if ((bc & mt[l]) == mt[l]) {
+    for (int ld = 0; ld < LD_NB; ld++) {
+        if ((bc & mt[ld]) == mt[ld]) {
             n++;
         }
     }
