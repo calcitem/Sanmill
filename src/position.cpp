@@ -1,4 +1,4 @@
-﻿// This file is part of Sanmill.
+// This file is part of Sanmill.
 // Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
@@ -1447,8 +1447,8 @@ void Position::mirror(vector<string>& moveHistory, bool cmdChange /*= true*/)
     }
 
     if (currentSquare != 0) {
-        f = currentSquare / RANK_NB;
-        r = currentSquare % RANK_NB;
+        f = currentSquare / (Square)RANK_NB;
+        r = currentSquare % (Square)RANK_NB;
         r = (RANK_NB - r) % RANK_NB;
         currentSquare = static_cast<Square>(f * RANK_NB + r);
     }
@@ -1548,8 +1548,8 @@ void Position::turn(vector<string>& moveHistory, bool cmdChange /*= true*/)
     }
 
     if (currentSquare != 0) {
-        f = currentSquare / RANK_NB;
-        r = currentSquare % RANK_NB;
+        f = currentSquare / (Square)RANK_NB;
+        r = currentSquare % (Square)RANK_NB;
 
         if (f == 1)
             f = FILE_NB;
@@ -1716,8 +1716,8 @@ void Position::rotate(
     }
 
     if (currentSquare != 0) {
-        f = currentSquare / RANK_NB;
-        r = currentSquare % RANK_NB;
+        f = currentSquare / (Square)RANK_NB;
+        r = currentSquare % (Square)RANK_NB;
         r = (r + RANK_NB - degrees) % RANK_NB;
         currentSquare = static_cast<Square>(f * RANK_NB + r);
     }
