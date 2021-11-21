@@ -35,6 +35,8 @@
         "fsanitize",
         "gamewindow",
         "gitee",
+        "googletest",
+        "gtest",
         "GWLP",
         "hhmmss",
         "HMONITOR",

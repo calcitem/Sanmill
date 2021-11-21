@@ -128,7 +128,9 @@ github
 GLIBCXX
 GNUC
 google
+googletest
 graphicsconst
+gtest
 GRAPHICSVIEW
 GWLP
 halfmove
