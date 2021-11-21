@@ -25,8 +25,11 @@
 #endif
 
 #ifndef QT_GUI_LIB
-
+#ifdef UNIT_TEST_MODE
+int console_main(void)
+#else
 int main(int argc, char* argv[])
+#endif // UNIT_TEST_MODE
 {
     std::cout << engine_info() << std::endl;
 
@@ -40,9 +43,11 @@ int main(int argc, char* argv[])
     Threads.set(size_t(Options["Threads"]));
     Search::clear(); // After threads are up
 
+#ifndef UNIT_TEST_MODE
     UCI::loop(argc, argv);
+#endif
 
     Threads.set(0);
     return 0;
 }
-#endif
+#endif // QT_GUI_LIB
