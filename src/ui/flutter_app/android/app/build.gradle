@@ -52,6 +52,7 @@ android {
         targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk{
             ldLibs "log"
             debugSymbolLevel 'FULL'
@@ -95,4 +96,10 @@ flutter {
 
 dependencies {
 	implementation 'com.iqiyi.xcrash:xcrash-android-lib:3.0.0'
+
+    testImplementation 'junit:junit:4.12'
+
+    // https://developer.android.com/jetpack/androidx/releases/test/#1.2.0
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
