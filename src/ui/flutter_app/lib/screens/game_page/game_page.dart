@@ -1265,7 +1265,7 @@ class _GamePageState extends State<GamePage>
 
   Future<void> _showPrivacyDialog() async {
     if (!LocalDatabaseService.preferences.isPrivacyPolicyAccepted &&
-        Localizations.localeOf(context).languageCode == "zh") {
+        Localizations.localeOf(context).languageCode.startsWith("zh_")) {
       await showPrivacyDialog(context);
     }
   }
@@ -1289,11 +1289,11 @@ class _GamePageState extends State<GamePage>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _showPrivacyDialog();
-
     screenPaddingH = _screenPaddingH;
     ltr = Directionality.of(context) == TextDirection.ltr;
     _tip = S.of(context).welcome;
+
+    _showPrivacyDialog();
   }
 
   @override
