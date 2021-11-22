@@ -18,20 +18,24 @@
 
 part of 'package:sanmill/screens/game_page/game_page.dart';
 
-typedef BoardTapCallback = Future<void> Function(int index);
+/// Board Tap Callback
+///
+/// This function gets called once a valid [square] on the board has been tapped.
+typedef BoardTapCallback = Future<void> Function(int square);
 
 class Board extends StatelessWidget {
   final double width;
   final double height;
   final BoardTapCallback onBoardTap;
-  final double animationValue;
+  final Animation<double> animation;
   final List<String> squareDesc = [];
   static const String _tag = "[board]";
 
+  // TODO: [Leptopoda] add const constructor
   Board({
     required this.width,
     required this.onBoardTap,
-    required this.animationValue,
+    required this.animation,
   }) : height = width;
 
   @override
@@ -58,15 +62,21 @@ class Board extends StatelessWidget {
       ),
     );
 
-    final customPaint = CustomPaint(
-      painter: BoardPainter(width: width),
-      foregroundPainter: PiecesPainter(
-        width: width,
-        position: gameInstance.position,
-        focusIndex: gameInstance.focusIndex,
-        blurIndex: gameInstance.blurIndex,
-        animationValue: animationValue,
-      ),
+    final customPaint = AnimatedBuilder(
+      animation: animation,
+      builder: (_, child) {
+        return CustomPaint(
+          painter: BoardPainter(width: width),
+          foregroundPainter: PiecesPainter(
+            width: width,
+            position: gameInstance.position,
+            focusIndex: gameInstance.focusIndex,
+            blurIndex: gameInstance.blurIndex,
+            animationValue: animation.value,
+          ),
+          child: child,
+        );
+      },
       child: EnvironmentConfig.devMode ? grid : null,
     );
 
@@ -90,21 +100,26 @@ class Board extends StatelessWidget {
 
         final column = (dx - padding) ~/ squareWidth;
         if (column < 0 || column > 6) {
-          debugPrint("$_tag Tap on column $column (ignored).");
-          return;
+          return debugPrint("$_tag Tap on column $column (ignored).");
         }
 
         final row = (dy - padding) ~/ squareWidth;
         if (row < 0 || row > 6) {
-          debugPrint("$_tag Tap on row $row (ignored).");
-          return;
+          return debugPrint("$_tag Tap on row $row (ignored).");
         }
 
         final index = row * 7 + column;
+        final int? square = indexToSquare[index];
+
+        if (square == null) {
+          return debugPrint(
+            "$_tag Tap not on a square ($row, $column) (ignored).",
+          );
+        }
 
         debugPrint("$_tag Tap on ($row, $column) <$index>");
 
-        await onBoardTap(index);
+        await onBoardTap(square);
       },
     );
   }

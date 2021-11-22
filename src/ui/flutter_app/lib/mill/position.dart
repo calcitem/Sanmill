@@ -1109,7 +1109,7 @@ class Position {
     }
 
     for (var i = 0; i <= moveIndex; i++) {
-      if (await gameInstance.doMove(history[i].move) == false) {
+      if (!(await gameInstance.doMove(history[i].move))) {
         errString = history[i].move;
         break;
       }

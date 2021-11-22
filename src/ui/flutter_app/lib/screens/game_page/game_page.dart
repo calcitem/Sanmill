@@ -65,7 +65,6 @@ class _GamePageState extends State<GamePage>
   bool _isGoingToHistory = false;
   late AnimationController _animationController;
   late Animation<double> _animation;
-  bool _disposed = false;
   late bool ltr;
   late double boardWidth;
 
@@ -80,15 +79,7 @@ class _GamePageState extends State<GamePage>
     );
 
     // sqrt(1.618) = 1.272
-    _animation = Tween(begin: 1.27, end: 1.0).animate(_animationController)
-      ..addListener(() => setState(() {}));
-
-    _animationController.addStatusListener((state) {
-      if (state == AnimationStatus.completed ||
-          state == AnimationStatus.dismissed) {
-        if (!_disposed) _animationController.forward();
-      }
-    });
+    _animation = Tween(begin: 1.27, end: 1.0).animate(_animationController);
   }
 
   void _showTip(String tip, {bool snackBar = false}) {
@@ -130,11 +121,8 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  Future<void> _onBoardTap(int index) async {
+  Future<void> _onBoardTap(int sq) async {
     if (!mounted) return debugPrint("[tap] Not ready, ignore tapping.");
-
-    _disposed = false;
-    _animationController.reset();
 
     if (widget.engineType == EngineType.aiVsAi ||
         widget.engineType == EngineType.testViaLAN) {
@@ -142,10 +130,6 @@ class _GamePageState extends State<GamePage>
     }
 
     final position = gameInstance.position;
-
-    final int? sq = indexToSquare[index];
-
-    if (sq == null) return debugPrint("$_tag sq is null, skip tapping.");
 
     // If nobody has placed, start to go.
     if (position.phase == Phase.placing &&
@@ -175,6 +159,8 @@ class _GamePageState extends State<GamePage>
       switch (position.action) {
         case Act.place:
           if (await position.putPiece(sq)) {
+            _animationController.reset();
+            _animationController.animateTo(1.0);
             if (position.action == Act.remove) {
               _showTip(S.of(context).tipMill, snackBar: true);
             } else {
@@ -218,7 +204,7 @@ class _GamePageState extends State<GamePage>
           switch (position.selectPiece(sq)) {
             case 0:
               await Audios.playTone(Sound.select);
-              gameInstance.select(index);
+              gameInstance.select(squareToIndex[sq]!);
               ret = true;
               debugPrint("[tap] selectPiece: [$sq]");
 
@@ -377,7 +363,7 @@ class _GamePageState extends State<GamePage>
       }
     }
 
-    while ((LocalDatabaseService.preferences.isAutoRestart == true ||
+    while ((LocalDatabaseService.preferences.isAutoRestart ||
             gameInstance.position.winner == PieceColor.nobody) &&
         gameInstance.isAiToMove &&
         mounted) {
@@ -416,15 +402,10 @@ class _GamePageState extends State<GamePage>
           final Move mv = response.value as Move;
           final Move move = Move(mv.move);
 
-          if (!_disposed) {
-            _animationController.reset();
-          } else {
-            debugPrint(
-              "[engineToGo] Disposed, so do not reset animationController.",
-            );
-          }
-
           await gameInstance.doMove(move.move);
+          _animationController.reset();
+          _animationController.animateTo(1.0);
+
           _showTips();
           if (LocalDatabaseService.preferences.screenReaderSupport &&
               move.notation != null) {
@@ -437,7 +418,7 @@ class _GamePageState extends State<GamePage>
           _showTip(S.of(context).error(response.type));
       }
 
-      if (LocalDatabaseService.preferences.isAutoRestart == true &&
+      if (LocalDatabaseService.preferences.isAutoRestart &&
           gameInstance.position.winner != PieceColor.nobody) {
         gameInstance.newGame();
       }
@@ -629,7 +610,7 @@ class _GamePageState extends State<GamePage>
     bool pop = true,
     int? number,
   }) async {
-    if (pop == true) Navigator.pop(context);
+    if (pop) Navigator.pop(context);
 
     _showTip(S.of(context).waiting);
 
@@ -1073,7 +1054,7 @@ class _GamePageState extends State<GamePage>
       child: Board(
         width: boardWidth,
         onBoardTap: _onBoardTap,
-        animationValue: _animation.value,
+        animation: _animation,
       ),
     );
   }
@@ -1339,7 +1320,6 @@ class _GamePageState extends State<GamePage>
   @override
   void dispose() {
     debugPrint("$_tag dispose");
-    _disposed = true;
     _engine.shutdown();
     _animationController.dispose();
     LocalDatabaseService.listenPreferences.removeListener(_refreshEngine);
