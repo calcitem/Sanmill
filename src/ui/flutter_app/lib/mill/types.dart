@@ -274,7 +274,7 @@ int makeSquare(int file, int rank) {
 bool isOk(int sq) {
   final bool ret = sq == 0 || (sq >= sqBegin && sq < sqEnd);
 
-  if (ret == false) {
+  if (!ret) {
     debugPrint("[types] $sq is not OK");
   }
 
