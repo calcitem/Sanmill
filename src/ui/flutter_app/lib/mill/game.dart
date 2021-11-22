@@ -78,8 +78,7 @@ class Game {
       "$_tag Black is searching? ${isSearching[PieceColor.black]}\n",
     );
 
-    return isSearching[PieceColor.white] == true ||
-        isSearching[PieceColor.black] == true;
+    return isSearching[PieceColor.white]! || isSearching[PieceColor.black]!;
   }
 
   EngineType engineType = EngineType.none;
@@ -123,7 +122,7 @@ class Game {
 
     debugPrint("$_tag AI do move: $move");
 
-    if (await position.doMove(move) == false) {
+    if (!(await position.doMove(move))) {
       return false;
     }
 
