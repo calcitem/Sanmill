@@ -43,7 +43,8 @@ class ColorSettings {
     this.pieceHighlightColor = Colors.red,
     this.messageColor = Colors.white,
     this.drawerColor = Colors.white,
-    this.drawerBackgroundColor = const Color(0x80EDF0F2),
+    @Deprecated("use [drawerColor] instead.")
+        this.drawerBackgroundColor = const Color(0x80EDF0F2),
     this.drawerTextColor = UIColors.nearlyBlack,
     this.drawerHighlightItemColor = const Color(0x3309f911),
     this.mainToolbarBackgroundColor = UIColors.burlyWood,
@@ -108,6 +109,7 @@ class ColorSettings {
   @HiveField(7)
   final Color drawerColor;
 
+  @Deprecated("use [drawerColor] instead.")
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,

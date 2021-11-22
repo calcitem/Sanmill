@@ -153,9 +153,8 @@ class _CustomDrawerState extends State<CustomDrawer>
           ),
         ),
         child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: LocalDatabaseService.colorSettings.drawerColor,
-            boxShadow: const [
+          decoration: const BoxDecoration(
+            boxShadow: [
               BoxShadow(
                 color: AppTheme.drawerBoxerShadowColor,
                 blurRadius: 24,

@@ -196,8 +196,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       ),
     ];
 
-    // LocalDatabaseService.colorSettings.drawerColor,
-
     return CustomDrawer(
       controller: _controller,
       header: CustomDrawerHeader(
