@@ -62,14 +62,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with TickerProviderStateMixin {
   final _controller = CustomDrawerController();
 
-  static const Map<_DrawerIndex, Widget> _gamePages = {
-    _DrawerIndex.humanVsAi: GamePage(EngineType.humanVsAi),
-    _DrawerIndex.humanVsHuman: GamePage(EngineType.humanVsHuman),
-    _DrawerIndex.aiVsAi: GamePage(EngineType.aiVsAi),
-  };
-
-  Widget _screenView = _gamePages[_DrawerIndex.humanVsAi]!;
   _DrawerIndex _drawerIndex = _DrawerIndex.humanVsAi;
+  Widget _screenView = const GamePage(
+    EngineType.humanVsAi,
+    key: Key("Human-Ai"),
+  );
 
   /// callback from drawer for replace screen
   /// as user need with passing DrawerIndex (Enum index)
@@ -83,13 +80,22 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       _drawerIndex = index;
       switch (_drawerIndex) {
         case _DrawerIndex.humanVsAi:
-          _screenView = _gamePages[_DrawerIndex.humanVsAi]!;
+          _screenView = const GamePage(
+            EngineType.humanVsAi,
+            key: Key("Human-Ai"),
+          );
           break;
         case _DrawerIndex.humanVsHuman:
-          _screenView = _gamePages[_DrawerIndex.humanVsHuman]!;
+          _screenView = const GamePage(
+            EngineType.humanVsHuman,
+            key: Key("Human-Human"),
+          );
           break;
         case _DrawerIndex.aiVsAi:
-          _screenView = _gamePages[_DrawerIndex.aiVsAi]!;
+          _screenView = const GamePage(
+            EngineType.aiVsAi,
+            key: Key("Ai-Ai"),
+          );
           break;
         case _DrawerIndex.preferences:
           _screenView = const GameSettingsPage();
