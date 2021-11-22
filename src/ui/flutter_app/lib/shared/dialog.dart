@@ -18,7 +18,6 @@
 
 import 'dart:io';
 
-import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,29 +39,16 @@ class _LinkTextSpan extends TextSpan {
         );
 }
 
-Future<void> showPrivacyDialog(
-  BuildContext context,
-) async {
+Future<void> showPrivacyDialog(BuildContext context) async {
+  assert(Localizations.localeOf(context).languageCode.startsWith("zh_"));
+
   final ThemeData themeData = Theme.of(context);
-  final TextStyle? aboutTextStyle = themeData.textTheme.bodyText1;
-  final TextStyle linkStyle = themeData.textTheme.bodyText1!
-      .copyWith(color: themeData.colorScheme.secondary);
+  final TextStyle aboutTextStyle = themeData.textTheme.bodyText1!;
+  final TextStyle linkStyle =
+      aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
 
-  String? locale = "en_US";
-  late String eulaURL;
-  late String privacyPolicyURL;
-  if (!Platform.isWindows) {
-    locale = await Devicelocale.currentLocale;
-  }
-
-  debugPrint("[about] local = $locale");
-  if (locale != null && locale.startsWith("zh_")) {
-    eulaURL = Constants.giteeEulaURL;
-    privacyPolicyURL = Constants.giteePrivacyPolicyURL;
-  } else {
-    eulaURL = Constants.githubEulaURL;
-    privacyPolicyURL = Constants.githubPrivacyPolicyURL;
-  }
+  const String eulaURL = Constants.giteeEulaURL;
+  const String privacyPolicyURL = Constants.giteePrivacyPolicyURL;
 
   Future<void> _setPrivacyPolicyAccepted({required bool value}) async {
     LocalDatabaseService.preferences = LocalDatabaseService.preferences
