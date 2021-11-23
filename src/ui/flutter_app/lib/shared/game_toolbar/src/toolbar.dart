@@ -44,12 +44,13 @@ class GamePageToolBar extends StatelessWidget {
           style: ToolbarItem.styleFrom(primary: itemColor),
         ),
         child: Directionality(
-            textDirection: TextDirection.ltr,
-            child: ButtonBar(
-              buttonPadding: EdgeInsets.zero,
-              alignment: MainAxisAlignment.spaceAround,
-              children: children,
-            )),
+          textDirection: TextDirection.ltr,
+          child: ButtonBar(
+            buttonPadding: EdgeInsets.zero,
+            alignment: MainAxisAlignment.spaceAround,
+            children: children,
+          ),
+        ),
       ),
     );
   }
