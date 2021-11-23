@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:sanmill/generated/assets/assets.gen.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/shared/theme/app_theme.dart';
 
 class LicenseAgreementPage extends StatelessWidget {
   @override
@@ -42,7 +43,7 @@ class LicenseAgreementPage extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Text(
               _data,
-              style: const TextStyle(fontFamily: 'Monospace', fontSize: 12),
+              style: AppTheme.licenseTextStyle,
               textAlign: TextAlign.left,
             ),
           ),

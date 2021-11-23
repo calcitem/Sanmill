@@ -36,14 +36,12 @@ class _FlyPieceCountModal extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
             title: const Text('3'),
             groupValue: flyPieceCount,
             value: 3,
             onChanged: onChanged,
           ),
           RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
             title: const Text('4'),
             groupValue: flyPieceCount,
             value: 4,

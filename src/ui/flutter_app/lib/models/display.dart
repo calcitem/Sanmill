@@ -21,7 +21,6 @@ import 'package:flutter/material.dart' show Locale, immutable;
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sanmill/services/storage/adapters/locale_adapter.dart';
-import 'package:sanmill/shared/constants.dart';
 
 part 'display.g.dart';
 
@@ -33,7 +32,7 @@ part 'display.g.dart';
 @CopyWith(generateCopyWithNull: true)
 @immutable
 class Display {
-  Display({
+  const Display({
     this.languageCode,
     this.standardNotationEnabled = true,
     this.isPieceCountInHandShown = true,
@@ -45,11 +44,9 @@ class Display {
     this.pointWidth = 10.0,
     this.pieceWidth = 0.9,
     this.fontSize = 16.0,
-    double? boardTop,
+    this.boardTop = 36.0,
     this.animationDuration = 0.0,
-  }) {
-    this.boardTop = boardTop ?? (isLargeScreen ? 75.0 : 36.0);
-  }
+  });
 
   /// the uses locale
   @HiveField(0)
@@ -90,7 +87,7 @@ class Display {
   final double fontSize;
 
   @HiveField(11)
-  late final double boardTop;
+  final double boardTop;
 
   @HiveField(12)
   final double animationDuration;

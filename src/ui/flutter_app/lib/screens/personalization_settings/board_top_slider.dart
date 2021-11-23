@@ -23,31 +23,27 @@ class _BoardTopSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliderTheme(
-      data: AppTheme.sliderThemeData,
-      child: Semantics(
-        label: S.of(context).boardTop,
-        child: ValueListenableBuilder(
-          valueListenable: LocalDatabaseService.listenDisplay,
-          builder: (context, Box<Display> displayBox, _) {
-            final Display _display = displayBox.get(
-              LocalDatabaseService.colorSettingsKey,
-              defaultValue: Display(),
-            )!;
+    return Semantics(
+      label: S.of(context).boardTop,
+      child: ValueListenableBuilder(
+        valueListenable: LocalDatabaseService.listenDisplay,
+        builder: (context, Box<Display> displayBox, _) {
+          final Display _display = displayBox.get(
+            LocalDatabaseService.colorSettingsKey,
+            defaultValue: const Display(),
+          )!;
 
-            return Slider(
-              value: _display.boardTop,
-              max: 288.0,
-              divisions: 288,
-              label: _display.boardTop.toStringAsFixed(1),
-              onChanged: (value) {
-                debugPrint("[config] AnimationDuration value: $value");
-                LocalDatabaseService.display =
-                    _display.copyWith(boardTop: value);
-              },
-            );
-          },
-        ),
+          return Slider(
+            value: _display.boardTop,
+            max: 288.0,
+            divisions: 288,
+            label: _display.boardTop.toStringAsFixed(1),
+            onChanged: (value) {
+              debugPrint("[config] AnimationDuration value: $value");
+              LocalDatabaseService.display = _display.copyWith(boardTop: value);
+            },
+          );
+        },
       ),
     );
   }

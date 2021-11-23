@@ -24,7 +24,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -70,9 +69,8 @@ void showCountdownDialog(
                 child: Center(
                   child: Text(
                     S.of(ctx).cancel,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
-                      fontSize: LocalDatabaseService.display.fontSize,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -111,6 +109,11 @@ Future<void> showPrivacyDialog(
   BuildContext context,
   Function(bool value) setPrivacyPolicyAccepted,
 ) async {
+  final ThemeData themeData = Theme.of(context);
+  final TextStyle? aboutTextStyle = themeData.textTheme.bodyText1;
+  final TextStyle linkStyle = themeData.textTheme.bodyText1!
+      .copyWith(color: themeData.colorScheme.secondary);
+
   String? locale = "en_US";
   late String eulaURL;
   late String privacyPolicyURL;
@@ -126,11 +129,6 @@ Future<void> showPrivacyDialog(
     eulaURL = Constants.githubEulaURL;
     privacyPolicyURL = Constants.githubPrivacyPolicyURL;
   }
-
-  final ThemeData themeData = Theme.of(context);
-  final TextStyle? aboutTextStyle = themeData.textTheme.bodyText1;
-  final TextStyle linkStyle = themeData.textTheme.bodyText1!
-      .copyWith(color: themeData.colorScheme.secondary);
 
   showDialog(
     context: context,

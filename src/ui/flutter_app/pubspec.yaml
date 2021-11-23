@@ -23,7 +23,6 @@ dependencies:
   flutter_email_sender: ^5.0.2
   flutter_localizations:
     sdk: flutter
-  flutter_picker: ^2.0.2
 
   # local storage
   hive: ^2.0.4

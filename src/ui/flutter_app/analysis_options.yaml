@@ -2,10 +2,7 @@ include: package:lint/analysis_options.yaml
 
 linter:
   rules:
-    avoid_positional_boolean_parameters: false
     constant_identifier_names: false
-    avoid_escaping_inner_quotes: false
-    use_build_context_synchronously: false
     depend_on_referenced_packages: false
 
 analyzer:

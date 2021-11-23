@@ -17,7 +17,6 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 class SettingsSwitchListTile extends StatelessWidget {
@@ -39,23 +38,13 @@ class SettingsSwitchListTile extends StatelessWidget {
     return SwitchListTile(
       value: value,
       onChanged: onChanged,
-      activeColor: AppTheme.switchListTileActiveColor,
       title: Text(
         titleString,
-        style: TextStyle(
-          fontSize: LocalDatabaseService.display.fontSize,
-          color: AppTheme.switchListTileTitleColor,
-        ),
+        style: AppTheme.listTileTitleStyle,
       ),
-      subtitle: subtitleString == null
-          ? null
-          : Text(
-              subtitleString!,
-              style: TextStyle(
-                fontSize: LocalDatabaseService.display.fontSize,
-                color: AppTheme.listTileSubtitleColor,
-              ),
-            ),
+      subtitle: subtitleString != null
+          ? Text(subtitleString!, style: AppTheme.listTileSubtitleStyle)
+          : null,
     );
   }
 }

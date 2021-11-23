@@ -23,32 +23,29 @@ class _MoveTimeSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliderTheme(
-      data: AppTheme.sliderThemeData,
-      child: Semantics(
-        label: S.of(context).moveTime,
-        child: ValueListenableBuilder(
-          valueListenable: LocalDatabaseService.listenPreferences,
-          builder: (context, Box<Preferences> prefBox, _) {
-            final Preferences _preferences = prefBox.get(
-              LocalDatabaseService.preferencesKey,
-              defaultValue: const Preferences(),
-            )!;
+    return Semantics(
+      label: S.of(context).moveTime,
+      child: ValueListenableBuilder(
+        valueListenable: LocalDatabaseService.listenPreferences,
+        builder: (context, Box<Preferences> prefBox, _) {
+          final Preferences _preferences = prefBox.get(
+            LocalDatabaseService.preferencesKey,
+            defaultValue: const Preferences(),
+          )!;
 
-            return Slider(
-              value: LocalDatabaseService.preferences.moveTime.toDouble(),
-              max: 60,
-              divisions: 60,
-              label: LocalDatabaseService.preferences.moveTime.toString(),
-              onChanged: (value) {
-                LocalDatabaseService.preferences =
-                    _preferences.copyWith(moveTime: value.toInt());
+          return Slider(
+            value: LocalDatabaseService.preferences.moveTime.toDouble(),
+            max: 60,
+            divisions: 60,
+            label: LocalDatabaseService.preferences.moveTime.toString(),
+            onChanged: (value) {
+              LocalDatabaseService.preferences =
+                  _preferences.copyWith(moveTime: value.toInt());
 
-                debugPrint("Move time Slider value: $value");
-              },
-            );
-          },
-        ),
+              debugPrint("Move time Slider value: $value");
+            },
+          );
+        },
       ),
     );
   }

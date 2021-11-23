@@ -34,16 +34,14 @@ class _LanguagePicker extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         RadioListTile<Locale?>(
-          activeColor: AppTheme.switchListTileActiveColor,
           title: Text(S.of(context).defaultLanguage),
           groupValue: currentLocale,
           value: null,
           onChanged: onChanged,
         ),
-        const ListItemDivider(),
+        const Divider(),
         for (var i in languageCodeToStrings.keys)
           RadioListTile<Locale>(
-            activeColor: AppTheme.switchListTileActiveColor,
             title: Text(languageCodeToStrings[i]!),
             groupValue: currentLocale,
             value: i,

@@ -16,11 +16,9 @@ class HelpScreen extends StatelessWidget {
         leading: DrawerIcon.of(context)?.icon,
         title: Text(
           S.of(context).howToPlay,
-          style: TextStyle(
-            color: AppTheme.helpTextColor,
-          ),
+          style: AppTheme.helpTextStyle,
         ),
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: AppTheme.helpTextColor,
         ),
       ),
@@ -29,10 +27,7 @@ class HelpScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Text(
           S.of(context).helpContent,
-          style: TextStyle(
-            fontSize: LocalDatabaseService.display.fontSize,
-            color: AppTheme.helpTextColor,
-          ),
+          style: AppTheme.helpTextStyle,
         ),
       ),
     );

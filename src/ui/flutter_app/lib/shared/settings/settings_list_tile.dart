@@ -18,7 +18,6 @@
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 class SettingsListTile extends StatelessWidget {
@@ -44,30 +43,18 @@ class SettingsListTile extends StatelessWidget {
     return ListTile(
       title: Text(
         titleString,
-        style: TextStyle(
-          fontSize: LocalDatabaseService.display.fontSize,
-          color: AppTheme.switchListTileTitleColor,
-        ),
+        style: AppTheme.listTileTitleStyle,
       ),
-      subtitle: subtitleString == null
-          ? null
-          : Text(
-              subtitleString!,
-              style: TextStyle(
-                fontSize: LocalDatabaseService.display.fontSize,
-                color: AppTheme.listTileSubtitleColor,
-              ),
-            ),
+      subtitle: subtitleString != null
+          ? Text(subtitleString!, style: AppTheme.listTileSubtitleStyle)
+          : null,
       // TODO: [Leptopoda] fix the trailing widget
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
             trailingColor?.value.toRadixString(16) ?? trailingString ?? '',
-            style: TextStyle(
-              fontSize: LocalDatabaseService.display.fontSize,
-              backgroundColor: trailingColor,
-            ),
+            style: TextStyle(backgroundColor: trailingColor),
           ),
           Icon(
             ltr

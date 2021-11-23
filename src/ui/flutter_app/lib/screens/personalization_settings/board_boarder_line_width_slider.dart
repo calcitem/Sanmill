@@ -23,31 +23,28 @@ class _BoardBorderWidthSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliderTheme(
-      data: AppTheme.sliderThemeData,
-      child: Semantics(
-        label: S.of(context).boardBorderLineWidth,
-        child: ValueListenableBuilder(
-          valueListenable: LocalDatabaseService.listenDisplay,
-          builder: (context, Box<Display> displayBox, _) {
-            final Display _display = displayBox.get(
-              LocalDatabaseService.colorSettingsKey,
-              defaultValue: Display(),
-            )!;
+    return Semantics(
+      label: S.of(context).boardBorderLineWidth,
+      child: ValueListenableBuilder(
+        valueListenable: LocalDatabaseService.listenDisplay,
+        builder: (context, Box<Display> displayBox, _) {
+          final Display _display = displayBox.get(
+            LocalDatabaseService.colorSettingsKey,
+            defaultValue: const Display(),
+          )!;
 
-            return Slider(
-              value: _display.boardBorderLineWidth,
-              max: 20.0,
-              divisions: 200,
-              label: _display.boardBorderLineWidth.toStringAsFixed(1),
-              onChanged: (value) {
-                debugPrint("[config] BoardBorderLineWidth value: $value");
-                LocalDatabaseService.display =
-                    _display.copyWith(boardBorderLineWidth: value);
-              },
-            );
-          },
-        ),
+          return Slider(
+            value: _display.boardBorderLineWidth,
+            max: 20.0,
+            divisions: 200,
+            label: _display.boardBorderLineWidth.toStringAsFixed(1),
+            onChanged: (value) {
+              debugPrint("[config] BoardBorderLineWidth value: $value");
+              LocalDatabaseService.display =
+                  _display.copyWith(boardBorderLineWidth: value);
+            },
+          );
+        },
       ),
     );
   }

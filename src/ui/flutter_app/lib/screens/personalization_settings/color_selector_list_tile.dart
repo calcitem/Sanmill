@@ -84,9 +84,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
     return AlertDialog(
       title: Text(
         "${S.of(context).pick} ${widget.title}",
-        style: TextStyle(
-          fontSize: LocalDatabaseService.display.fontSize + 4,
-        ),
+        style: AppTheme.dialogTitleTextStyle,
       ),
       content: SingleChildScrollView(
         child: ColorPicker(
@@ -98,9 +96,6 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
         TextButton(
           child: Text(
             S.of(context).confirm,
-            style: TextStyle(
-              fontSize: LocalDatabaseService.display.fontSize,
-            ),
           ),
           onPressed: () {
             debugPrint("[config] pickerColor.value: ${pickedColor.value}");
@@ -111,9 +106,6 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
         TextButton(
           child: Text(
             S.of(context).cancel,
-            style: TextStyle(
-              fontSize: LocalDatabaseService.display.fontSize,
-            ),
           ),
           onPressed: () => Navigator.pop(context),
         ),

@@ -23,32 +23,28 @@ class _FontSizeSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliderTheme(
-      data: AppTheme.sliderThemeData,
-      child: Semantics(
-        label: S.of(context).fontSize,
-        child: ValueListenableBuilder(
-          valueListenable: LocalDatabaseService.listenDisplay,
-          builder: (context, Box<Display> displayBox, _) {
-            final Display _display = displayBox.get(
-              LocalDatabaseService.colorSettingsKey,
-              defaultValue: Display(),
-            )!;
+    return Semantics(
+      label: S.of(context).fontSize,
+      child: ValueListenableBuilder(
+        valueListenable: LocalDatabaseService.listenDisplay,
+        builder: (context, Box<Display> displayBox, _) {
+          final Display _display = displayBox.get(
+            LocalDatabaseService.colorSettingsKey,
+            defaultValue: const Display(),
+          )!;
 
-            return Slider(
-              value: _display.fontSize,
-              min: 16,
-              max: 32,
-              divisions: 16,
-              label: _display.fontSize.toStringAsFixed(1),
-              onChanged: (value) {
-                debugPrint("[config] fontSize value: $value");
-                LocalDatabaseService.display =
-                    _display.copyWith(fontSize: value);
-              },
-            );
-          },
-        ),
+          return Slider(
+            value: _display.fontSize,
+            min: 16,
+            max: 32,
+            divisions: 16,
+            label: _display.fontSize.toStringAsFixed(1),
+            onChanged: (value) {
+              debugPrint("[config] fontSize value: $value");
+              LocalDatabaseService.display = _display.copyWith(fontSize: value);
+            },
+          );
+        },
       ),
     );
   }

@@ -17,8 +17,6 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/shared/list_item_divider.dart';
-import 'package:sanmill/shared/theme/app_theme.dart';
 
 class SettingsCard extends StatelessWidget {
   const SettingsCard({
@@ -31,13 +29,11 @@ class SettingsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppTheme.cardColor,
-      margin: AppTheme.cardMargin,
       child: ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (_, index) => children[index],
-        separatorBuilder: (_, __) => const ListItemDivider(),
+        separatorBuilder: (_, __) => const Divider(),
         itemCount: children.length,
       ),
     );

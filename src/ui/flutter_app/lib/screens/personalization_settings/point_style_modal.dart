@@ -36,14 +36,12 @@ class _PointStyleModal extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
             title: Text(S.of(context).none),
             groupValue: pointStyle,
             value: 0,
             onChanged: onChanged,
           ),
           RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
             title: Text(S.of(context).solid),
             groupValue: pointStyle,
             value: 1,

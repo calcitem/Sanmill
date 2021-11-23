@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_positional_boolean_parameters
+
 /*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
@@ -32,9 +34,11 @@ import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/engine/native_engine.dart';
 import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
+import 'package:sanmill/shared/custom_spacer.dart';
 import 'package:sanmill/shared/dialog.dart';
-import 'package:sanmill/shared/picker.dart';
+import 'package:sanmill/shared/number_picker.dart';
 import 'package:sanmill/shared/snackbar.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 import 'package:stack_trace/stack_trace.dart';
@@ -50,7 +54,7 @@ double boardWidth = 0.0;
 class GamePage extends StatefulWidget {
   final EngineType engineType;
 
-  // TODO: use gameInstance.engineType
+  // TODO: [Leptopoda] use gameInstance.engineType
   const GamePage(this.engineType, {Key? key}) : super(key: key);
 
   @override
@@ -706,7 +710,7 @@ class _GamePageState extends State<GamePage>
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: AppTheme.sizedBoxHeight),
+            const CustomSpacer(),
             SimpleDialogOption(
               onPressed: onImportGameButtonPressed,
               child: Text(
@@ -715,7 +719,7 @@ class _GamePageState extends State<GamePage>
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: AppTheme.sizedBoxHeight),
+            const CustomSpacer(),
             SimpleDialogOption(
               onPressed: onExportGameButtonPressed,
               child: Text(
@@ -724,7 +728,7 @@ class _GamePageState extends State<GamePage>
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: AppTheme.sizedBoxHeight),
+            const CustomSpacer(),
             if (LocalDatabaseService.preferences.screenReaderSupport)
               SimpleDialogOption(
                 child: Text(
@@ -755,7 +759,7 @@ class _GamePageState extends State<GamePage>
           textAlign: TextAlign.center,
         ),
       ),
-      const SizedBox(height: AppTheme.sizedBoxHeight),
+      const CustomSpacer(),
       SimpleDialogOption(
         onPressed: onStepForwardButtonPressed,
         child: Text(
@@ -764,7 +768,7 @@ class _GamePageState extends State<GamePage>
           textAlign: TextAlign.center,
         ),
       ),
-      const SizedBox(height: AppTheme.sizedBoxHeight),
+      const CustomSpacer(),
       SimpleDialogOption(
         onPressed: onTakeBackAllButtonPressed,
         child: Text(
@@ -773,7 +777,7 @@ class _GamePageState extends State<GamePage>
           textAlign: TextAlign.center,
         ),
       ),
-      const SizedBox(height: AppTheme.sizedBoxHeight),
+      const CustomSpacer(),
       SimpleDialogOption(
         onPressed: onStepForwardAllButtonPressed,
         child: Text(
@@ -782,7 +786,7 @@ class _GamePageState extends State<GamePage>
           textAlign: TextAlign.center,
         ),
       ),
-      const SizedBox(height: AppTheme.sizedBoxHeight),
+      const CustomSpacer(),
     ];
     showModalBottomSheet(
       context: context,
@@ -802,7 +806,7 @@ class _GamePageState extends State<GamePage>
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: AppTheme.sizedBoxHeight),
+            const CustomSpacer(),
             SimpleDialogOption(
               onPressed: onMoveNowButtonPressed,
               child: Text(
@@ -811,7 +815,7 @@ class _GamePageState extends State<GamePage>
                 textAlign: TextAlign.center,
               ),
             ),
-            const SizedBox(height: AppTheme.sizedBoxHeight),
+            const CustomSpacer(),
             if (LocalDatabaseService.preferences.screenReaderSupport)
               SimpleDialogOption(
                 child: Text(
@@ -934,10 +938,7 @@ class _GamePageState extends State<GamePage>
           backgroundColor: AppTheme.moveHistoryDialogBackgroundColor,
           title: Text(
             S.of(context).moveList,
-            style: TextStyle(
-              color: AppTheme.moveHistoryTextColor,
-              fontSize: LocalDatabaseService.display.fontSize + 2.0,
-            ),
+            style: AppTheme.moveHistoryTextStyle,
           ),
           content: SingleChildScrollView(
             child: Text(
@@ -954,23 +955,15 @@ class _GamePageState extends State<GamePage>
                   style: AppTheme.moveHistoryTextStyle,
                 ),
                 onPressed: () async {
-                  final int selectValue = await showPickerNumber(
-                    context,
-                    1,
-                    end,
-                    1,
-                    S.of(context).moves,
+                  final selectValue = await showDialog<int?>(
+                    context: context,
+                    builder: (context) => NumberPicker(end: end),
                   );
 
-                  if (selectValue != 0) {
+                  if (selectValue != null) {
                     onTakeBackNButtonPressed(selectValue);
                   }
                 },
-              )
-            else
-              TextButton(
-                child: const Text(""),
-                onPressed: () => Navigator.pop(context),
               ),
             TextButton(
               child: Text(
@@ -1157,24 +1150,15 @@ class _GamePageState extends State<GamePage>
           return AlertDialog(
             title: Text(
               dialogTitle,
-              style: TextStyle(
-                color: AppTheme.dialogTitleColor,
-                fontSize: LocalDatabaseService.display.fontSize + 4,
-              ),
+              style: AppTheme.dialogTitleTextStyle,
             ),
             content: Text(
               contentStr,
-              style: TextStyle(
-                fontSize: LocalDatabaseService.display.fontSize,
-              ),
             ),
             actions: <Widget>[
               TextButton(
                 child: Text(
                   S.of(context).yes,
-                  style: TextStyle(
-                    fontSize: LocalDatabaseService.display.fontSize,
-                  ),
                 ),
                 onPressed: () async {
                   if (!isTopLevel) {
@@ -1191,9 +1175,6 @@ class _GamePageState extends State<GamePage>
               TextButton(
                 child: Text(
                   S.of(context).no,
-                  style: TextStyle(
-                    fontSize: LocalDatabaseService.display.fontSize,
-                  ),
                 ),
                 onPressed: () => Navigator.pop(context),
               ),
@@ -1209,27 +1190,18 @@ class _GamePageState extends State<GamePage>
           return AlertDialog(
             title: Text(
               dialogTitle,
-              style: TextStyle(
-                color: AppTheme.dialogTitleColor,
-                fontSize: LocalDatabaseService.display.fontSize + 4,
-              ),
+              style: AppTheme.dialogTitleTextStyle,
             ),
             content: Text(
               getGameOverReasonString(
                 gameInstance.position.gameOverReason,
                 gameInstance.position.winner,
               ),
-              style: TextStyle(
-                fontSize: LocalDatabaseService.display.fontSize,
-              ),
             ),
             actions: <Widget>[
               TextButton(
                 child: Text(
                   S.of(context).restart,
-                  style: TextStyle(
-                    fontSize: LocalDatabaseService.display.fontSize,
-                  ),
                 ),
                 onPressed: () {
                   Navigator.pop(context);
@@ -1251,9 +1223,6 @@ class _GamePageState extends State<GamePage>
               TextButton(
                 child: Text(
                   S.of(context).cancel,
-                  style: TextStyle(
-                    fontSize: LocalDatabaseService.display.fontSize,
-                  ),
                 ),
                 onPressed: () => Navigator.pop(context),
               ),
@@ -1271,7 +1240,7 @@ class _GamePageState extends State<GamePage>
     final double height = windowSize.height;
     double width = windowSize.width;
 
-    // TODO: maybe use windowSize.aspectRatio
+    // TODO: [Leptopoda] maybe use windowSize.aspectRatio
     if (height / width < 16.0 / 9.0) {
       width = height * 9 / 16;
       return (windowSize.width - width) / 2 - AppTheme.boardMargin;
@@ -1315,7 +1284,10 @@ class _GamePageState extends State<GamePage>
     );
 
     return Container(
-      margin: EdgeInsets.only(top: LocalDatabaseService.display.boardTop),
+      margin: EdgeInsets.only(
+        top: LocalDatabaseService.display.boardTop +
+            (isLargeScreen ? 39.0 : 0.0),
+      ),
       child: Column(
         children: <Widget>[
           iconRow,
@@ -1334,11 +1306,10 @@ class _GamePageState extends State<GamePage>
               _tip!,
               maxLines: 1,
               style: TextStyle(
-                fontSize: LocalDatabaseService.display.fontSize,
                 color: LocalDatabaseService.colorSettings.messageColor,
               ),
             ),
-          ), // TODO: Font Size
+          ),
         ],
       ),
     );
@@ -1455,6 +1426,8 @@ class _GamePageState extends State<GamePage>
   }
 
   Widget get toolbar {
+    final _iconColor = LocalDatabaseService.colorSettings.mainToolbarIconColor;
+
     final gameButton = TextButton(
       onPressed: onGameButtonPressed,
       child: Column(
@@ -1462,13 +1435,11 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           Icon(
             FluentIcons.table_simple_24_regular,
-            color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
+            color: _iconColor,
           ),
           Text(
             S.of(context).game,
-            style: TextStyle(
-              color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
-            ),
+            style: AppTheme.mainToolbarTextStyle,
           ),
         ],
       ),
@@ -1481,13 +1452,11 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           Icon(
             FluentIcons.settings_24_regular,
-            color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
+            color: _iconColor,
           ),
           Text(
             S.of(context).options,
-            style: TextStyle(
-              color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
-            ),
+            style: AppTheme.mainToolbarTextStyle,
           ),
         ],
       ),
@@ -1500,13 +1469,11 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           Icon(
             FluentIcons.calendar_agenda_24_regular,
-            color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
+            color: _iconColor,
           ),
           Text(
             S.of(context).move,
-            style: TextStyle(
-              color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
-            ),
+            style: AppTheme.mainToolbarTextStyle,
           ),
         ],
       ),
@@ -1519,13 +1486,11 @@ class _GamePageState extends State<GamePage>
         children: <Widget>[
           Icon(
             FluentIcons.book_information_24_regular,
-            color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
+            color: _iconColor,
           ),
           Text(
             S.of(context).info,
-            style: TextStyle(
-              color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
-            ),
+            style: AppTheme.mainToolbarTextStyle,
           ),
         ],
       ),
@@ -1542,7 +1507,11 @@ class _GamePageState extends State<GamePage>
     );
   }
 
+  // TODO: [Leptopoda] why is Theme() or IconTheme() not working ¿? (even with a builder)
   Widget get historyNavToolbar {
+    final _iconColor =
+        LocalDatabaseService.colorSettings.navigationToolbarIconColor;
+
     final takeBackAllButton = TextButton(
       child: Semantics(
         label: S.of(context).takeBackAll,
@@ -1550,7 +1519,7 @@ class _GamePageState extends State<GamePage>
           ltr
               ? FluentIcons.arrow_previous_24_regular
               : FluentIcons.arrow_next_24_regular,
-          color: LocalDatabaseService.colorSettings.navigationToolbarIconColor,
+          color: _iconColor,
         ),
       ),
       onPressed: () => onTakeBackAllButtonPressed(false),
@@ -1563,7 +1532,7 @@ class _GamePageState extends State<GamePage>
           ltr
               ? FluentIcons.chevron_left_24_regular
               : FluentIcons.chevron_right_24_regular,
-          color: LocalDatabaseService.colorSettings.navigationToolbarIconColor,
+          color: _iconColor,
         ),
       ),
       onPressed: () async => onTakeBackButtonPressed(false),
@@ -1576,7 +1545,7 @@ class _GamePageState extends State<GamePage>
           ltr
               ? FluentIcons.chevron_right_24_regular
               : FluentIcons.chevron_left_24_regular,
-          color: LocalDatabaseService.colorSettings.navigationToolbarIconColor,
+          color: _iconColor,
         ),
       ),
       onPressed: () async => onStepForwardButtonPressed(false),
@@ -1589,21 +1558,26 @@ class _GamePageState extends State<GamePage>
           ltr
               ? FluentIcons.arrow_next_24_regular
               : FluentIcons.arrow_previous_24_regular,
-          color: LocalDatabaseService.colorSettings.navigationToolbarIconColor,
+          color: _iconColor,
         ),
       ),
       onPressed: () async => onStepForwardAllButtonPressed(false),
     );
 
-    return GamePageToolBar(
-      color:
-          LocalDatabaseService.colorSettings.navigationToolbarBackgroundColor,
-      children: <Widget>[
-        takeBackAllButton,
-        takeBackButton,
-        stepForwardButton,
-        stepForwardAllButton,
-      ],
+    return IconTheme(
+      data: IconThemeData(
+        color: LocalDatabaseService.colorSettings.navigationToolbarIconColor,
+      ),
+      child: GamePageToolBar(
+        color:
+            LocalDatabaseService.colorSettings.navigationToolbarBackgroundColor,
+        children: <Widget>[
+          takeBackAllButton,
+          takeBackButton,
+          stepForwardButton,
+          stepForwardAllButton,
+        ],
+      ),
     );
   }
 
@@ -1650,7 +1624,7 @@ class _GamePageState extends State<GamePage>
         leading: DrawerIcon.of(context)?.icon,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: AppTheme.drawerAnimationIconColor,
         ),
       ),

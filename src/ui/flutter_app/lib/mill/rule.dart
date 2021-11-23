@@ -18,7 +18,7 @@
 
 import 'package:sanmill/services/language_info.dart';
 
-// TODO: deprecate this thingy. No reason to keep it
+// TODO: [Leptopoda] deprecate this thingy. No reason to keep it
 class Rule {
   String name = "Default Rule";
   String description = "";

@@ -23,32 +23,29 @@ class _SkillLevelSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliderTheme(
-      data: AppTheme.sliderThemeData,
-      child: Semantics(
-        label: S.of(context).skillLevel,
-        child: ValueListenableBuilder(
-          valueListenable: LocalDatabaseService.listenPreferences,
-          builder: (context, Box<Preferences> prefBox, _) {
-            final Preferences _preferences = prefBox.get(
-              LocalDatabaseService.preferencesKey,
-              defaultValue: const Preferences(),
-            )!;
+    return Semantics(
+      label: S.of(context).skillLevel,
+      child: ValueListenableBuilder(
+        valueListenable: LocalDatabaseService.listenPreferences,
+        builder: (context, Box<Preferences> prefBox, _) {
+          final Preferences _preferences = prefBox.get(
+            LocalDatabaseService.preferencesKey,
+            defaultValue: const Preferences(),
+          )!;
 
-            return Slider(
-              value: _preferences.skillLevel.toDouble(),
-              min: 1,
-              max: 30,
-              divisions: 29,
-              label: _preferences.skillLevel.toString(),
-              onChanged: (value) {
-                LocalDatabaseService.preferences =
-                    _preferences.copyWith(skillLevel: value.toInt());
-                debugPrint("Skill level Slider value: $value");
-              },
-            );
-          },
-        ),
+          return Slider(
+            value: _preferences.skillLevel.toDouble(),
+            min: 1,
+            max: 30,
+            divisions: 29,
+            label: _preferences.skillLevel.toString(),
+            onChanged: (value) {
+              LocalDatabaseService.preferences =
+                  _preferences.copyWith(skillLevel: value.toInt());
+              debugPrint("Skill level Slider value: $value");
+            },
+          );
+        },
       ),
     );
   }

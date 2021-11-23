@@ -65,6 +65,7 @@ class BoardPainter extends PiecesBasePainter {
 
       var pieceInHandCountStr = "";
 
+      // TODO: [Leptopoda] only paint it when the phase is placing.
       if (gameInstance.position.phase == Phase.placing) {
         pieceInHandCountStr = pieceInHandCount.toString();
       }
@@ -105,18 +106,12 @@ class BoardPainter extends PiecesBasePainter {
         notationH = horizontalNotations[i];
 
         final TextSpan notationSpanV = TextSpan(
-          style: TextStyle(
-            fontSize: 20,
-            color: AppTheme.boardLineColor,
-          ), // TODO
+          style: AppTheme.notationTextStyle, // TODO
           text: notationV,
         );
 
         final TextSpan notationSpanH = TextSpan(
-          style: TextStyle(
-            fontSize: 20,
-            color: AppTheme.boardLineColor,
-          ), // TODO
+          style: AppTheme.notationTextStyle, // TODO
           text: notationH,
         );
 

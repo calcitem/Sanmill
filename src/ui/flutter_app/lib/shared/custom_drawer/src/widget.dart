@@ -108,7 +108,11 @@ class _CustomDrawerState extends State<CustomDrawer>
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               widget.header,
-              Divider(height: 1, color: AppTheme.drawerDividerColor),
+              const Divider(
+                endIndent: 0.0,
+                indent: 0.0,
+                color: AppTheme.drawerDividerColor,
+              ),
               ListView.builder(
                 padding: const EdgeInsets.only(top: 4.0),
                 physics: const BouncingScrollPhysics(),
@@ -151,7 +155,7 @@ class _CustomDrawerState extends State<CustomDrawer>
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: LocalDatabaseService.colorSettings.drawerColor,
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: AppTheme.drawerBoxerShadowColor,
                 blurRadius: 24,

@@ -25,14 +25,14 @@ import 'package:sanmill/services/storage/storage.dart';
 enum PlayerType { human, AI }
 Map<String, bool> isAi = {PieceColor.white: false, PieceColor.black: true};
 
-// TODO: add constructor
+// TODO: [Leptopoda] add constructor
 Game gameInstance = Game();
 
 class Game {
   static const String _tag = "[game]";
 
   void init() {
-    // TODO: _position is already initialized with Position(). seems like duplicate code
+    // TODO: [Leptopoda] _position is already initialized with Position(). seems like duplicate code
     _position = Position();
     focusIndex = blurIndex = invalidIndex;
   }
