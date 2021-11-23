@@ -34,7 +34,7 @@ class Game {
   void init() {
     // TODO: [Leptopoda] _position is already initialized with Position(). seems like duplicate code
     _position = Position();
-    focusIndex = blurIndex = invalidIndex;
+    focusIndex = blurIndex = null;
   }
 
   void start() {
@@ -47,7 +47,7 @@ class Game {
     position.phase = Phase.ready;
     start();
     position.init();
-    focusIndex = blurIndex = invalidIndex;
+    focusIndex = blurIndex = null;
     moveHistory = [""];
     sideToMove = PieceColor.white;
   }
@@ -64,8 +64,8 @@ class Game {
   Position _position = Position();
   Position get position => _position;
 
-  int focusIndex = invalidIndex;
-  int blurIndex = invalidIndex;
+  int? focusIndex;
+  int? blurIndex;
 
   Map<String, bool> isSearching = {
     PieceColor.white: false,
@@ -113,7 +113,7 @@ class Game {
 
   void select(int pos) {
     focusIndex = pos;
-    blurIndex = invalidIndex;
+    blurIndex = null;
   }
 
   Future<bool> doMove(String move) async {
