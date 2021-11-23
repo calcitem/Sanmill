@@ -38,13 +38,13 @@ import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
 import 'package:sanmill/shared/dialog.dart';
+import 'package:sanmill/shared/game_toolbar/game_toolbar.dart';
 import 'package:sanmill/shared/number_picker.dart';
 import 'package:sanmill/shared/snackbar.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 part 'package:sanmill/screens/game_page/board.dart';
-part 'package:sanmill/screens/game_page/game_page_toolbar.dart';
 part 'package:sanmill/shared/painters/board_painter.dart';
 part 'package:sanmill/shared/painters/painter_base.dart';
 part 'package:sanmill/shared/painters/pieces_painter.dart';
@@ -1425,160 +1425,86 @@ class _GamePageState extends State<GamePage>
     return ret;
   }
 
-  Widget get toolbar {
-    final _iconColor = LocalDatabaseService.colorSettings.mainToolbarIconColor;
-
-    final gameButton = TextButton(
+  List<Widget> get toolbar {
+    final gameButton = ToolbarItem.icon(
       onPressed: onGameButtonPressed,
-      child: Column(
-        // Replace with a Row for horizontal icon + text
-        children: <Widget>[
-          Icon(
-            FluentIcons.table_simple_24_regular,
-            color: _iconColor,
-          ),
-          Text(
-            S.of(context).game,
-            style: AppTheme.mainToolbarTextStyle,
-          ),
-        ],
-      ),
+      icon: const Icon(FluentIcons.table_simple_24_regular),
+      label: Text(S.of(context).game),
     );
 
-    final optionsButton = TextButton(
+    final optionsButton = ToolbarItem.icon(
       onPressed: onOptionButtonPressed,
-      child: Column(
-        // Replace with a Row for horizontal icon + text
-        children: <Widget>[
-          Icon(
-            FluentIcons.settings_24_regular,
-            color: _iconColor,
-          ),
-          Text(
-            S.of(context).options,
-            style: AppTheme.mainToolbarTextStyle,
-          ),
-        ],
-      ),
+      icon: const Icon(FluentIcons.settings_24_regular),
+      label: Text(S.of(context).options),
     );
 
-    final moveButton = TextButton(
+    final moveButton = ToolbarItem.icon(
       onPressed: onMoveButtonPressed,
-      child: Column(
-        // Replace with a Row for horizontal icon + text
-        children: <Widget>[
-          Icon(
-            FluentIcons.calendar_agenda_24_regular,
-            color: _iconColor,
-          ),
-          Text(
-            S.of(context).move,
-            style: AppTheme.mainToolbarTextStyle,
-          ),
-        ],
-      ),
+      icon: const Icon(FluentIcons.calendar_agenda_24_regular),
+      label: Text(S.of(context).move),
     );
 
-    final infoButton = TextButton(
+    final infoButton = ToolbarItem.icon(
       onPressed: onInfoButtonPressed,
-      child: Column(
-        // Replace with a Row for horizontal icon + text
-        children: <Widget>[
-          Icon(
-            FluentIcons.book_information_24_regular,
-            color: _iconColor,
-          ),
-          Text(
-            S.of(context).info,
-            style: AppTheme.mainToolbarTextStyle,
-          ),
-        ],
-      ),
+      icon: const Icon(FluentIcons.book_information_24_regular),
+      label: Text(S.of(context).info),
     );
 
-    return GamePageToolBar(
-      color: LocalDatabaseService.colorSettings.mainToolbarBackgroundColor,
-      children: <Widget>[
-        gameButton,
-        optionsButton,
-        moveButton,
-        infoButton,
-      ],
-    );
+    return <Widget>[
+      gameButton,
+      optionsButton,
+      moveButton,
+      infoButton,
+    ];
   }
 
-  // TODO: [Leptopoda] why is Theme() or IconTheme() not working ¿? (even with a builder)
-  Widget get historyNavToolbar {
-    final _iconColor =
-        LocalDatabaseService.colorSettings.navigationToolbarIconColor;
-
-    final takeBackAllButton = TextButton(
-      child: Semantics(
-        label: S.of(context).takeBackAll,
-        child: Icon(
-          ltr
-              ? FluentIcons.arrow_previous_24_regular
-              : FluentIcons.arrow_next_24_regular,
-          color: _iconColor,
-        ),
+  List<Widget> get historyNavToolbar {
+    final takeBackAllButton = ToolbarItem(
+      child: Icon(
+        ltr
+            ? FluentIcons.arrow_previous_24_regular
+            : FluentIcons.arrow_next_24_regular,
+        semanticLabel: S.of(context).takeBackAll,
       ),
       onPressed: () => onTakeBackAllButtonPressed(false),
     );
 
-    final takeBackButton = TextButton(
-      child: Semantics(
-        label: S.of(context).takeBack,
-        child: Icon(
-          ltr
-              ? FluentIcons.chevron_left_24_regular
-              : FluentIcons.chevron_right_24_regular,
-          color: _iconColor,
-        ),
+    final takeBackButton = ToolbarItem(
+      child: Icon(
+        ltr
+            ? FluentIcons.chevron_left_24_regular
+            : FluentIcons.chevron_right_24_regular,
+        semanticLabel: S.of(context).takeBack,
       ),
       onPressed: () async => onTakeBackButtonPressed(false),
     );
 
-    final stepForwardButton = TextButton(
-      child: Semantics(
-        label: S.of(context).stepForward,
-        child: Icon(
-          ltr
-              ? FluentIcons.chevron_right_24_regular
-              : FluentIcons.chevron_left_24_regular,
-          color: _iconColor,
-        ),
+    final stepForwardButton = ToolbarItem(
+      child: Icon(
+        ltr
+            ? FluentIcons.chevron_right_24_regular
+            : FluentIcons.chevron_left_24_regular,
+        semanticLabel: S.of(context).stepForward,
       ),
       onPressed: () async => onStepForwardButtonPressed(false),
     );
 
-    final stepForwardAllButton = TextButton(
-      child: Semantics(
-        label: S.of(context).stepForwardAll,
-        child: Icon(
-          ltr
-              ? FluentIcons.arrow_next_24_regular
-              : FluentIcons.arrow_previous_24_regular,
-          color: _iconColor,
-        ),
+    final stepForwardAllButton = ToolbarItem(
+      child: Icon(
+        ltr
+            ? FluentIcons.arrow_next_24_regular
+            : FluentIcons.arrow_previous_24_regular,
+        semanticLabel: S.of(context).stepForwardAll,
       ),
       onPressed: () async => onStepForwardAllButtonPressed(false),
     );
 
-    return IconTheme(
-      data: IconThemeData(
-        color: LocalDatabaseService.colorSettings.navigationToolbarIconColor,
-      ),
-      child: GamePageToolBar(
-        color:
-            LocalDatabaseService.colorSettings.navigationToolbarBackgroundColor,
-        children: <Widget>[
-          takeBackAllButton,
-          takeBackButton,
-          stepForwardButton,
-          stepForwardAllButton,
-        ],
-      ),
-    );
+    return <Widget>[
+      takeBackAllButton,
+      takeBackButton,
+      stepForwardButton,
+      stepForwardAllButton,
+    ];
   }
 
   @override
@@ -1637,8 +1563,20 @@ class _GamePageState extends State<GamePage>
             BlockSemantics(child: header),
             board,
             if (LocalDatabaseService.display.isHistoryNavigationToolbarShown)
-              historyNavToolbar,
-            toolbar,
+              GamePageToolBar(
+                backgroundColor: LocalDatabaseService
+                    .colorSettings.navigationToolbarBackgroundColor,
+                itemColor: LocalDatabaseService
+                    .colorSettings.navigationToolbarIconColor,
+                children: historyNavToolbar,
+              ),
+            GamePageToolBar(
+              backgroundColor:
+                  LocalDatabaseService.colorSettings.mainToolbarBackgroundColor,
+              itemColor:
+                  LocalDatabaseService.colorSettings.mainToolbarIconColor,
+              children: toolbar,
+            ),
           ],
         ),
       ),
