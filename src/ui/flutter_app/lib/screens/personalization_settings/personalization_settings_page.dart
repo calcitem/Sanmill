@@ -166,7 +166,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
           onChanged: (val) => LocalDatabaseService.colorSettings =
               _colorSettings.copyWith(drawerColor: val),
         ),
-        // TODO: [Leptopdoa] add databse migration for drawerBackgroundColor
+        // TODO: [Leptopdoa] add database migration for drawerBackgroundColor
         _ColorSelectorListTile(
           title: S.of(context).drawerTextColor,
           value: LocalDatabaseService.colorSettings.drawerTextColor,

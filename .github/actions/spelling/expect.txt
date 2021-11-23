@@ -16,6 +16,7 @@ Arial
 asm
 attr
 autobuild
+autofocus
 AVX
 backend
 bak
@@ -63,12 +64,15 @@ cwd
 cygwin
 Dalmax
 DANDROID
+dartpad
 datastore
 dbg
+deduplicate
 DEFAULTTONEAREST
 deque
 dest
 devicelocale
+Diagnosticable
 Dieharder
 DISCARDABLE
 dll
@@ -104,6 +108,7 @@ FILEOS
 FILESUBTYPE
 FILEVERSION
 firstguess
+flexbox
 fluentui
 FONTCHANGE
 FPKV
@@ -327,6 +332,7 @@ responsponds
 Resync
 rng
 rotr
+RRect
 rtl
 runloop
 sanmill
@@ -419,6 +425,7 @@ TEXTINCLUDE
 timeb
 tmp
 TODO
+toggleable
 tolower
 toolbar
 tooltip
@@ -467,6 +474,7 @@ wmd
 Wnd
 WNDCLASS
 wparam
+writeln
 wstring
 www
 XCRASH
