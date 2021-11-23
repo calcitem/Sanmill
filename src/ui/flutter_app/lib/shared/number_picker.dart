@@ -36,12 +36,9 @@ class NumberPicker extends StatelessWidget {
     final _size = Theme.of(context).textTheme.bodyText1!.fontSize!;
     int _selectValue = start;
 
-    // TODO: [Leptopdoa] use arb pluralization support
     final List<Widget> _items = List.generate(
       end,
-      (index) => Text(
-        '${start + index} ${S.of(context).moves}',
-      ),
+      (index) => Text(S.of(context).move_number(start + index)),
     );
 
     return AlertDialog(

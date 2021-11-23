@@ -83,7 +83,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        "${S.of(context).pick} ${widget.title}",
+        S.of(context).pick(widget.title),
         style: AppTheme.dialogTitleTextStyle,
       ),
       content: SingleChildScrollView(

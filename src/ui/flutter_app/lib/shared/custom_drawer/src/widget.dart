@@ -133,8 +133,6 @@ class _CustomDrawerState extends State<CustomDrawer>
         progress: ReverseAnimation(_animationController),
       ),
       tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-      // TODO: [Leptopoda] remove this unused string
-      //S.of(context).mainMenu,
       onPressed: () => _controller.toggleDrawer(),
     );
 

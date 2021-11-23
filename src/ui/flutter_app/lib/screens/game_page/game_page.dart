@@ -49,6 +49,7 @@ part 'package:sanmill/shared/painters/board_painter.dart';
 part 'package:sanmill/shared/painters/painter_base.dart';
 part 'package:sanmill/shared/painters/pieces_painter.dart';
 
+// TODO: [Leptopoda] remove variables that are not part of an object
 double boardWidth = 0.0;
 
 class GamePage extends StatefulWidget {
@@ -68,7 +69,7 @@ class _GamePageState extends State<GamePage>
   double screenPaddingH = AppTheme.boardScreenPaddingH;
   final double boardMargin = AppTheme.boardMargin;
 
-  String? _tip = '';
+  late String _tip;
   bool isReady = false;
   bool isGoingToHistory = false;
   late Timer timer;
@@ -124,44 +125,37 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  void showTip(String? tip) {
+  void showTip(String tip) {
     if (!mounted) return;
-    if (tip != null) {
-      debugPrint("[tip] $tip");
-      if (LocalDatabaseService.preferences.screenReaderSupport) {
-        //showSnackBar(context, tip);
-      }
+
+    debugPrint("[tip] $tip");
+    if (LocalDatabaseService.preferences.screenReaderSupport) {
+      //showSnackBar(context, tip);
     }
+
     setState(() => _tip = tip);
   }
 
   void showTips() {
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     final winner = gameInstance.position.winner;
 
-    final Map<String, String> colorWinStrings = {
-      PieceColor.white: S.of(context).whiteWin,
-      PieceColor.black: S.of(context).blackWin,
-      PieceColor.draw: S.of(context).isDraw
-    };
-
-    if (winner == PieceColor.nobody) {
-      if (gameInstance.position.phase == Phase.placing) {
-        if (mounted) {
-          showTip(S.of(context).tipPlace);
+    switch (winner) {
+      case PieceColor.white:
+        return showTip(S.of(context).whiteWin);
+      case PieceColor.black:
+        return showTip(S.of(context).blackWin);
+      case PieceColor.draw:
+        return showTip(S.of(context).isDraw);
+      case PieceColor.nobody:
+        switch (gameInstance.position.phase) {
+          case Phase.placing:
+            return showTip(S.of(context).tipPlace);
+          case Phase.moving:
+            return showTip(S.of(context).tipMove);
+          default:
         }
-      } else if (gameInstance.position.phase == Phase.moving) {
-        if (mounted) {
-          showTip(S.of(context).tipMove);
-        }
-      }
-    } else {
-      if (mounted) {
-        showTip(colorWinStrings[winner]);
-      }
     }
 
     if (!LocalDatabaseService.preferences.isAutoRestart) {
@@ -198,9 +192,6 @@ class _GamePageState extends State<GamePage>
     }
 
     // If nobody has placed, start to go.
-
-    // TODO
-    // WAR: Fix first tap response slow when piece count changed
     if (position.phase == Phase.placing &&
         position.pieceOnBoardCount[PieceColor.white] == 0 &&
         position.pieceOnBoardCount[PieceColor.black] == 0) {
@@ -259,7 +250,7 @@ class _GamePageState extends State<GamePage>
                   final side = gameInstance.sideToMove == PieceColor.white
                       ? S.of(context).black
                       : S.of(context).white;
-                  showTip(side + S.of(context).tipToMove);
+                  showTip(S.of(context).tipToMove(side));
                 }
               }
             }
@@ -396,7 +387,7 @@ class _GamePageState extends State<GamePage>
                         ? S.of(context).black
                         : S.of(context).white;
                     if (mounted) {
-                      showTip(them + S.of(context).tipToMove);
+                      showTip(S.of(context).tipToMove(them));
                     }
                   }
                 }
@@ -544,9 +535,8 @@ class _GamePageState extends State<GamePage>
 
           if (LocalDatabaseService.preferences.screenReaderSupport &&
               gameInstance.position.action != Act.remove &&
-              m != null &&
-              m.notation != null) {
-            showSnackBar(context, "${S.of(context).human}: ${m.notation!}");
+              m?.notation != null) {
+            showSnackBar(context, "${S.of(context).human}: ${m!.notation!}");
           }
         }
       }
@@ -596,14 +586,9 @@ class _GamePageState extends State<GamePage>
               showSnackBar(context, S.of(context).timeout);
             }
           }
-
-          //if (LocalDatabaseService.developerMode) {
-          //assert(false);
-          //}
           return;
         default:
-          showTip('Error: ${response.type}');
-          break;
+          showTip(S.of(context).error(response.type));
       }
 
       if (LocalDatabaseService.preferences.isAutoRestart == true &&
@@ -655,13 +640,13 @@ class _GamePageState extends State<GamePage>
 
     await onTakeBackAllButtonPressed(false);
     gameInstance.position.recorder.clear();
-    final importFailedStr = gameInstance.position.recorder.import(text);
+    final invalidMoveStr = gameInstance.position.recorder.import(text);
 
-    if (importFailedStr != "") {
-      showTip("${S.of(context).cannotImport} $importFailedStr");
+    if (invalidMoveStr != "") {
+      showTip(S.of(context).cannotImport(invalidMoveStr));
       if (LocalDatabaseService.preferences.screenReaderSupport) {
         ScaffoldMessenger.of(context).clearSnackBars();
-        showSnackBar(context, "${S.of(context).cannotImport} $importFailedStr");
+        showSnackBar(context, S.of(context).cannotImport(invalidMoveStr));
       }
       return;
     }
@@ -792,7 +777,7 @@ class _GamePageState extends State<GamePage>
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => Semantics(
-        label: S.of(context).move,
+        label: S.of(context).move_number(0),
         child: SimpleDialog(
           backgroundColor: Colors.transparent,
           children: <Widget>[
@@ -877,8 +862,8 @@ class _GamePageState extends State<GamePage>
 
       late final String text;
       final lastEffectiveMove = pos.recorder.lastEffectiveMove;
-      if (lastEffectiveMove != null && lastEffectiveMove.notation != null) {
-        text = "${S.of(context).lastMove}: ${lastEffectiveMove.notation}";
+      if (lastEffectiveMove?.notation != null) {
+        text = S.of(context).lastMove(lastEffectiveMove!.notation!);
       } else {
         text = S.of(context).atEnd;
       }
@@ -1035,14 +1020,13 @@ class _GamePageState extends State<GamePage>
 
     final Map<GameOverReason, String> reasonMap = {
       GameOverReason.loseReasonlessThanThree:
-          loserStr + S.of(context).loseReasonlessThanThree,
-      GameOverReason.loseReasonResign:
-          loserStr + S.of(context).loseReasonResign,
-      GameOverReason.loseReasonNoWay: loserStr + S.of(context).loseReasonNoWay,
+          S.of(context).loseReasonlessThanThree(loserStr),
+      GameOverReason.loseReasonResign: S.of(context).loseReasonResign(loserStr),
+      GameOverReason.loseReasonNoWay: S.of(context).loseReasonNoWay(loserStr),
       GameOverReason.loseReasonBoardIsFull:
-          loserStr + S.of(context).loseReasonBoardIsFull,
+          S.of(context).loseReasonBoardIsFull(loserStr),
       GameOverReason.loseReasonTimeOver:
-          loserStr + S.of(context).loseReasonTimeOver,
+          S.of(context).loseReasonTimeOver(loserStr),
       GameOverReason.drawReasonRule50: S.of(context).drawReasonRule50,
       GameOverReason.drawReasonEndgameRule50:
           S.of(context).drawReasonEndgameRule50,
@@ -1096,22 +1080,10 @@ class _GamePageState extends State<GamePage>
     return GameResult.none;
   }
 
+// TODO: [Leptopoda] deduplicate the code
   void showGameResult(String winner) {
     final GameResult result = getGameResult(winner);
     gameInstance.position.result = result;
-
-    switch (result) {
-      case GameResult.win:
-        //Audios.playTone(Audios.win);
-        break;
-      case GameResult.lose:
-        //Audios.playTone(Audios.lose);
-        break;
-      case GameResult.draw:
-        break;
-      default:
-        break;
-    }
 
     final Map<GameResult, String> retMap = {
       GameResult.win: gameInstance.engineType == EngineType.humanVsAi
@@ -1123,9 +1095,7 @@ class _GamePageState extends State<GamePage>
 
     final dialogTitle = retMap[result];
 
-    if (dialogTitle == null) {
-      return;
-    }
+    if (dialogTitle == null) return;
 
     final bool isTopLevel =
         LocalDatabaseService.preferences.skillLevel == 30; // TODO: 30
@@ -1133,14 +1103,21 @@ class _GamePageState extends State<GamePage>
     if (result == GameResult.win &&
         !isTopLevel &&
         gameInstance.engineType == EngineType.humanVsAi) {
-      var contentStr = getGameOverReasonString(
-        gameInstance.position.gameOverReason,
-        gameInstance.position.winner,
+      final contentStr = StringBuffer(
+        getGameOverReasonString(
+          gameInstance.position.gameOverReason,
+          gameInstance.position.winner,
+        ),
       );
 
       if (!isTopLevel) {
-        contentStr +=
-            "\n\n${S.of(context).challengeHarderLevel}${LocalDatabaseService.preferences.skillLevel + 1}!";
+        contentStr.writeln();
+        contentStr.writeln();
+        contentStr.writeln(
+          S.of(context).challengeHarderLevel(
+                LocalDatabaseService.preferences.skillLevel + 1,
+              ),
+        );
       }
 
       showDialog(
@@ -1152,9 +1129,7 @@ class _GamePageState extends State<GamePage>
               dialogTitle,
               style: AppTheme.dialogTitleTextStyle,
             ),
-            content: Text(
-              contentStr,
-            ),
+            content: Text(contentStr.toString()),
             actions: <Widget>[
               TextButton(
                 child: Text(
@@ -1173,9 +1148,7 @@ class _GamePageState extends State<GamePage>
                 },
               ),
               TextButton(
-                child: Text(
-                  S.of(context).no,
-                ),
+                child: Text(S.of(context).no),
                 onPressed: () => Navigator.pop(context),
               ),
             ],
@@ -1200,9 +1173,7 @@ class _GamePageState extends State<GamePage>
             ),
             actions: <Widget>[
               TextButton(
-                child: Text(
-                  S.of(context).restart,
-                ),
+                child: Text(S.of(context).restart),
                 onPressed: () {
                   Navigator.pop(context);
                   gameInstance.newGame();
@@ -1221,9 +1192,7 @@ class _GamePageState extends State<GamePage>
                 },
               ),
               TextButton(
-                child: Text(
-                  S.of(context).cancel,
-                ),
+                child: Text(S.of(context).cancel),
                 onPressed: () => Navigator.pop(context),
               ),
             ],
@@ -1234,7 +1203,6 @@ class _GamePageState extends State<GamePage>
   }
 
   double get _screenPaddingH {
-    //
     // when screen's height/width rate is less than 16/9, limit width of board
     final windowSize = MediaQuery.of(context).size;
     final double height = windowSize.height;
@@ -1303,7 +1271,7 @@ class _GamePageState extends State<GamePage>
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              _tip!,
+              _tip,
               maxLines: 1,
               style: TextStyle(
                 color: LocalDatabaseService.colorSettings.messageColor,
@@ -1356,73 +1324,103 @@ class _GamePageState extends State<GamePage>
   }
 
   String get infoText {
-    String phase = "";
-    final String period =
-        LocalDatabaseService.preferences.screenReaderSupport ? "." : "";
-    final String comma =
-        LocalDatabaseService.preferences.screenReaderSupport ? "," : "";
-
+    final buffer = StringBuffer();
     final pos = gameInstance.position;
+
+    late final String us;
+    late final String them;
+    switch (pos.side) {
+      case PieceColor.white:
+        us = S.of(context).player1;
+        them = S.of(context).player2;
+        break;
+      case PieceColor.black:
+        us = S.of(context).player2;
+        them = S.of(context).player1;
+        break;
+      default:
+        assert(false);
+    }
 
     switch (pos.phase) {
       case Phase.placing:
-        phase = S.of(context).placingPhase;
+        buffer.write(S.of(context).placingPhase);
         break;
       case Phase.moving:
-        phase = S.of(context).movingPhase;
+        buffer.write(S.of(context).movingPhase);
         break;
       default:
-        break;
     }
 
-    final String pieceCountInHand = pos.phase == Phase.placing
-        ? "${S.of(context).player1} ${S.of(context).inHand}: ${pos.pieceInHandCount[PieceColor.white]}$comma\n${S.of(context).player2} ${S.of(context).inHand}: ${pos.pieceInHandCount[PieceColor.black]}$comma\n"
-        : "";
-
-    String us = "";
-    String them = "";
-    if (pos.side == PieceColor.white) {
-      us = S.of(context).player1;
-      them = S.of(context).player2;
-    } else if (pos.side == PieceColor.black) {
-      us = S.of(context).player2;
-      them = S.of(context).player1;
+    if (LocalDatabaseService.preferences.screenReaderSupport) {
+      buffer.writeln(":");
+    } else {
+      buffer.writeln();
     }
 
-    final String tip =
-        (_tip == null || !LocalDatabaseService.preferences.screenReaderSupport)
-            ? ""
-            : "\n$_tip";
-
-    String lastMove = "";
+    // Last Move information
     if (pos.recorder.lastMove?.notation != null) {
       final String n1 = pos.recorder.lastMove!.notation!;
+      // $them is only shown with the screen reader. It is convenient for
+      // the disabled to recognize whether the opponent has finished the moving.
+      if (LocalDatabaseService.preferences.screenReaderSupport) {
+        buffer.write(S.of(context).lastMove("$them, "));
+      } else {
+        buffer.write(S.of(context).lastMove(""));
+      }
 
       if (n1.startsWith("x")) {
-        final String n2 =
-            pos.recorder.moveAt(pos.recorder.movesCount - 2).notation!;
-        lastMove = n2 + n1;
-      } else {
-        lastMove = n1;
+        buffer.writeln(
+          pos.recorder.moveAt(pos.recorder.movesCount - 2).notation,
+        );
       }
-      if (LocalDatabaseService.preferences.screenReaderSupport) {
-        lastMove = "${S.of(context).lastMove}: $them, $lastMove$period\n";
-      } else {
-        lastMove = "${S.of(context).lastMove}: $lastMove$period\n";
-      }
+      buffer.writePeriod(n1);
     }
 
-    String addedPeriod = "";
+    buffer.writePeriod(S.of(context).sideToMove(us));
+
+    // the tip
     if (LocalDatabaseService.preferences.screenReaderSupport &&
-        tip.isNotEmpty &&
-        tip[tip.length - 1] != '.' &&
-        tip[tip.length - 1] != '!') {
-      addedPeriod = ".";
+        _tip[_tip.length - 1] != '.' &&
+        _tip[_tip.length - 1] != '!') {
+      buffer.writePeriod(_tip);
     }
 
-    final String ret =
-        "$phase$period\n$lastMove${S.of(context).sideToMove}: $us$period$tip$addedPeriod\n\n${S.of(context).pieceCount}:\n$pieceCountInHand${S.of(context).player1} ${S.of(context).onBoard}: ${pos.pieceOnBoardCount[PieceColor.white]}$comma\n${S.of(context).player2} ${S.of(context).onBoard}: ${pos.pieceOnBoardCount[PieceColor.black]}$period\n\n${S.of(context).score}:\n${S.of(context).player1}: ${pos.score[PieceColor.white]}$comma\n${S.of(context).player2}: ${pos.score[PieceColor.black]}$comma\n${S.of(context).draw}: ${pos.score[PieceColor.draw]}$period";
-    return ret;
+    buffer.writeln();
+    buffer.writeln(S.of(context).pieceCount);
+    buffer.writeComma(
+      S.of(context).inHand(
+            S.of(context).player1,
+            pos.pieceInHandCount[PieceColor.white]!,
+          ),
+    );
+    buffer.writeComma(
+      S.of(context).inHand(
+            S.of(context).player2,
+            pos.pieceInHandCount[PieceColor.black]!,
+          ),
+    );
+    buffer.writeComma(
+      S.of(context).onBoard(
+            S.of(context).player1,
+            pos.pieceOnBoardCount[PieceColor.white]!,
+          ),
+    );
+    buffer.writePeriod(
+      S.of(context).onBoard(
+            S.of(context).player2,
+            pos.pieceOnBoardCount[PieceColor.black]!,
+          ),
+    );
+    buffer.writeln();
+    buffer.writeln(S.of(context).score);
+    buffer
+        .writeComma("${S.of(context).player1}: ${pos.score[PieceColor.white]}");
+    buffer
+        .writeComma("${S.of(context).player2}: ${pos.score[PieceColor.black]}");
+    buffer.writePeriod("${S.of(context).draw}: ${pos.score[PieceColor.draw]}");
+
+    return buffer.toString();
   }
 
   List<Widget> get toolbar {
@@ -1441,7 +1439,7 @@ class _GamePageState extends State<GamePage>
     final moveButton = ToolbarItem.icon(
       onPressed: onMoveButtonPressed,
       icon: const Icon(FluentIcons.calendar_agenda_24_regular),
-      label: Text(S.of(context).move),
+      label: Text(S.of(context).move_number(0)),
     );
 
     final infoButton = ToolbarItem.icon(
@@ -1537,14 +1535,11 @@ class _GamePageState extends State<GamePage>
     super.didChangeDependencies();
     screenPaddingH = _screenPaddingH;
     ltr = Directionality.of(context) == TextDirection.ltr;
+    _tip = S.of(context).welcome;
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_tip == '') {
-      _tip = S.of(context).welcome;
-    }
-
     return Scaffold(
       appBar: AppBar(
         leading: DrawerIcon.of(context)?.icon,
@@ -1591,5 +1586,23 @@ class _GamePageState extends State<GamePage>
     _animationController.dispose();
     LocalDatabaseService.listenPreferences.removeListener(_refreshEngine);
     super.dispose();
+  }
+}
+
+extension CustomStringBuffer on StringBuffer {
+  void writeComma([Object? obj = ""]) {
+    if (LocalDatabaseService.preferences.screenReaderSupport) {
+      writeln("$obj,");
+    } else {
+      writeln(obj);
+    }
+  }
+
+  void writePeriod([Object? obj = ""]) {
+    if (LocalDatabaseService.preferences.screenReaderSupport) {
+      writeln("$obj.");
+    } else {
+      writeln(obj);
+    }
   }
 }
