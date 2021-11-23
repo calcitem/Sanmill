@@ -16,16 +16,21 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of 'package:sanmill/screens/game_page/game_page.dart';
+part of '../painters.dart';
 
 abstract class PiecesBasePainter extends CustomPainter {
   final double width;
 
   final thePaint = Paint();
-  final double gridWidth;
-  final double squareWidth;
+  late final double _squareWidth;
+  late final Offset _offset;
 
-  PiecesBasePainter({required this.width})
-      : gridWidth = width - AppTheme.boardPadding * 2,
-        squareWidth = (width - AppTheme.boardPadding * 2) / 7;
+  PiecesBasePainter({required this.width}) {
+    _squareWidth = (width - AppTheme.boardPadding * 2) / 7;
+
+    // equivalent to (width + 12 * AppTheme.boardPadding) / 14
+    final offset = AppTheme.boardPadding + _squareWidth / 2;
+
+    _offset = Offset(offset, offset);
+  }
 }

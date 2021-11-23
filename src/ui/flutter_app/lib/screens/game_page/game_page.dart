@@ -40,17 +40,12 @@ import 'package:sanmill/shared/custom_spacer.dart';
 import 'package:sanmill/shared/dialog.dart';
 import 'package:sanmill/shared/game_toolbar/game_toolbar.dart';
 import 'package:sanmill/shared/number_picker.dart';
+import 'package:sanmill/shared/painters/painters.dart';
 import 'package:sanmill/shared/snackbar.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 part 'package:sanmill/screens/game_page/board.dart';
-part 'package:sanmill/shared/painters/board_painter.dart';
-part 'package:sanmill/shared/painters/painter_base.dart';
-part 'package:sanmill/shared/painters/pieces_painter.dart';
-
-// TODO: [Leptopoda] remove variables that are not part of an object
-double boardWidth = 0.0;
 
 class GamePage extends StatefulWidget {
   final EngineType engineType;
@@ -77,6 +72,8 @@ class _GamePageState extends State<GamePage>
   late Animation<double> animation;
   bool disposed = false;
   late bool ltr;
+  late double boardWidth;
+
   static const String _tag = "[game_page]";
 
   Future<void> _setReadyState() async {

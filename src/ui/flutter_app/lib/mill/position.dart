@@ -522,7 +522,7 @@ class Position {
         } else {
           changeSideToMove();
         }
-        gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
+        gameInstance.focusIndex = squareToIndex[s];
         await Audios.playTone(Sound.place);
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
@@ -558,7 +558,7 @@ class Position {
           action = Act.remove;
         }
 
-        gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
+        gameInstance.focusIndex = squareToIndex[s];
         await Audios.playTone(Sound.mill);
       }
     } else if (phase == Phase.moving) {
@@ -606,14 +606,14 @@ class Position {
         if (isGameOver()) {
           return true;
         } else {
-          gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
+          gameInstance.focusIndex = squareToIndex[s];
           await Audios.playTone(Sound.place);
         }
       } else {
         pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
         updateKeyMisc();
         action = Act.remove;
-        gameInstance.focusIndex = squareToIndex[s] ?? invalidIndex;
+        gameInstance.focusIndex = squareToIndex[s];
         await Audios.playTone(Sound.mill);
       }
     } else {
@@ -716,7 +716,7 @@ class Position {
 
     currentSquare = sq;
     action = Act.place;
-    gameInstance.blurIndex = squareToIndex[sq]!;
+    gameInstance.blurIndex = squareToIndex[sq];
 
     return 0;
   }

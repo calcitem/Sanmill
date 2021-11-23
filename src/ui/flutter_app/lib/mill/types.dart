@@ -301,8 +301,6 @@ int makeMove(int from, int to) {
   return (from << 8) + to;
 }
 
-const invalidIndex = -1;
-
 Map<int, int> squareToIndex = {
   8: 17,
   9: 18,
