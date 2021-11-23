@@ -16,16 +16,18 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of 'package:sanmill/screens/game_page/game_page.dart';
+part of '../game_toolbar.dart';
 
 class GamePageToolBar extends StatelessWidget {
   final List<Widget> children;
-  final Color? color;
+  final Color? backgroundColor;
+  final Color? itemColor;
 
   const GamePageToolBar({
     Key? key,
     required this.children,
-    this.color,
+    this.backgroundColor,
+    this.itemColor,
   }) : super(key: key);
 
   @override
@@ -33,14 +35,21 @@ class GamePageToolBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        color: color,
+        color: backgroundColor,
       ),
       margin: const EdgeInsets.symmetric(vertical: 0.5),
       padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        textDirection: TextDirection.ltr,
-        children: children,
+      child: ToolbarItemTheme(
+        data: ToolbarItemThemeData(
+          style: ToolbarItem.styleFrom(primary: itemColor),
+        ),
+        child: Directionality(
+            textDirection: TextDirection.ltr,
+            child: ButtonBar(
+              buttonPadding: EdgeInsets.zero,
+              alignment: MainAxisAlignment.spaceAround,
+              children: children,
+            )),
       ),
     );
   }

@@ -76,6 +76,7 @@ class Constants {
 }
 
 // TODO: [Leptopoda] we should only save the threshold and compute the bool right in place with MediaQuery.of(context)
+// TODO: [Leptopoda] make use of flexboxes so we don't need those values
 bool get isSmallScreen => Constants.windowHeight <= 800;
 
 bool get isLargeScreen => !isSmallScreen;
