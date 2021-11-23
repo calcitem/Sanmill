@@ -115,7 +115,7 @@ class GameRecorder {
   }
 
   bool isDalmaxMoveList(String text) {
-    if (text.length >= 15 && text.substring(0, 14) == "[Event \"Dalmax") {
+    if (text.length >= 15 && text.substring(0, 14) == '[Event "Dalmax') {
       return true;
     }
 

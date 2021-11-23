@@ -18,7 +18,7 @@
 
 part of 'package:sanmill/screens/game_page/game_page.dart';
 
-typedef BoardTapCallback = dynamic Function(int index);
+typedef BoardTapCallback = Future<void> Function(int index);
 
 class Board extends StatelessWidget {
   final double width;
@@ -36,9 +36,9 @@ class Board extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final padding = AppTheme.boardPadding;
+    const padding = AppTheme.boardPadding;
 
-    buildSquareDescription(context);
+    _buildSquareDescription(context);
 
     final grid = GridView(
       scrollDirection: Axis.horizontal,
@@ -51,7 +51,7 @@ class Board extends StatelessWidget {
           child: Text(
             squareDesc[index],
             style: TextStyle(
-              fontSize: LocalDatabaseService.display.fontSize,
+              // TODO: [Leptopoda] instead of making it transparent when not needed we should not show it in the first place
               color: LocalDatabaseService.preferences.developerMode
                   ? Colors.red
                   : Colors.transparent,
@@ -84,14 +84,8 @@ class Board extends StatelessWidget {
     );
 
     return GestureDetector(
-      /*
-      child: Semantics(
-        label: S.of(context).board,
-        child: boardContainer,
-      ),
-      */
       child: boardContainer,
-      onTapUp: (d) {
+      onTapUp: (d) async {
         final gridWidth = width - padding * 2;
         final squareWidth = gridWidth / 7;
         final dx = d.localPosition.dx;
@@ -113,12 +107,12 @@ class Board extends StatelessWidget {
 
         debugPrint("$_tag Tap on ($row, $column) <$index>");
 
-        onBoardTap(index);
+        await onBoardTap(index);
       },
     );
   }
 
-  void buildSquareDescription(BuildContext context) {
+  void _buildSquareDescription(BuildContext context) {
     final List<String> coordinates = [];
     final List<String> pieceDesc = [];
 
@@ -263,22 +257,18 @@ class Board extends StatelessWidget {
         switch (gameInstance.position.pieceOnGrid(i)) {
           case PieceColor.white:
             pieceDesc.add(S.of(context).whitePiece);
-
             break;
           case PieceColor.black:
             pieceDesc.add(S.of(context).blackPiece);
-
             break;
           case PieceColor.ban:
             pieceDesc.add(S.of(context).banPoint);
-
             break;
           case PieceColor.none:
             pieceDesc.add(S.of(context).emptyPoint);
-
             break;
-
           default:
+            assert(false);
         }
       }
     }

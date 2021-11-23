@@ -18,8 +18,10 @@
 
 import 'package:flutter/material.dart';
 
+/// Color Palate
+///
+/// gathered from  https://www.htmlcsscolor.com
 class UIColors {
-  // https://www.htmlcsscolor.com
   const UIColors._();
 
   static const Color white = Color(0xFFFFFFFF);
@@ -33,14 +35,14 @@ class UIColors {
   static const Color darkGrey = Color(0xFF313A44);
 
   static const Color burlyWood = Color(0xFFDEB887);
-  static const Color cottonCandy = Color.fromARGB(0xFF, 255, 189, 219);
-  static const Color turkishRose = Color.fromARGB(0xFF, 163, 109, 173);
+  static const Color cottonCandy = Color(0XFFFFBDDB);
+  static const Color turkishRose = Color(0XFFA36DAD);
   static const Color crusoe = Color(0xFF165B31);
   static const Color forestGreen = Color(0xFF228B22);
   static const Color freeSpeechGreen = Color(0xFF09F911);
-  static const Color oasis = Color.fromARGB(0xFF, 253, 239, 194);
+  static const Color oasis = Color(0XFFFDEFC2);
   static const Color papayaWhip = Color(0xFFFFEFD5);
-  static const Color stormGrey = Color.fromARGB(0xFF, 119, 121, 131);
-  static const Color turmeric = Color.fromARGB(0xFF, 186, 202, 68);
-  static const Color LavenderBlush = Color.fromARGB(0xFF, 255, 240, 246);
+  static const Color stormGrey = Color(0XFF777983);
+  static const Color turmeric = Color(0XFFBACA44);
+  static const Color LavenderBlush = Color(0XFFFFF0F6);
 }

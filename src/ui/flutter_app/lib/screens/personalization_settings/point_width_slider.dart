@@ -23,31 +23,28 @@ class _PointWidthSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliderTheme(
-      data: AppTheme.sliderThemeData,
-      child: Semantics(
-        label: S.of(context).pointWidth,
-        child: ValueListenableBuilder(
-          valueListenable: LocalDatabaseService.listenDisplay,
-          builder: (context, Box<Display> displayBox, _) {
-            final Display _display = displayBox.get(
-              LocalDatabaseService.colorSettingsKey,
-              defaultValue: Display(),
-            )!;
+    return Semantics(
+      label: S.of(context).pointWidth,
+      child: ValueListenableBuilder(
+        valueListenable: LocalDatabaseService.listenDisplay,
+        builder: (context, Box<Display> displayBox, _) {
+          final Display _display = displayBox.get(
+            LocalDatabaseService.colorSettingsKey,
+            defaultValue: const Display(),
+          )!;
 
-            return Slider(
-              value: _display.pointWidth,
-              max: 30.0,
-              divisions: 30,
-              label: _display.pointWidth.toStringAsFixed(1),
-              onChanged: (value) {
-                debugPrint("[config] pointWidth value: $value");
-                LocalDatabaseService.display =
-                    _display.copyWith(pointWidth: value);
-              },
-            );
-          },
-        ),
+          return Slider(
+            value: _display.pointWidth,
+            max: 30.0,
+            divisions: 30,
+            label: _display.pointWidth.toStringAsFixed(1),
+            onChanged: (value) {
+              debugPrint("[config] pointWidth value: $value");
+              LocalDatabaseService.display =
+                  _display.copyWith(pointWidth: value);
+            },
+          );
+        },
       ),
     );
   }

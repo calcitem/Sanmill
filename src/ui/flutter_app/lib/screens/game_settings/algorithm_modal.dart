@@ -36,21 +36,18 @@ class _AlgorithmModal extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
             title: const Text('Alpha-Beta'),
             groupValue: algorithm,
             value: 0,
             onChanged: onChanged,
           ),
           RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
             title: const Text('PVS'),
             groupValue: algorithm,
             value: 1,
             onChanged: onChanged,
           ),
           RadioListTile(
-            activeColor: AppTheme.switchListTileActiveColor,
             title: const Text('MTD(f)'),
             groupValue: algorithm,
             value: 2,

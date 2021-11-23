@@ -19,19 +19,11 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
-class ListItemDivider extends StatelessWidget {
-  const ListItemDivider({
-    Key? key,
-  }) : super(key: key);
+class CustomSpacer extends StatelessWidget {
+  const CustomSpacer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Divider(
-      indent: 16,
-      endIndent: 16,
-      height: 1.0,
-      thickness: 1.0,
-      color: AppTheme.listItemDividerColor,
-    );
+    return const SizedBox(height: AppTheme.sizedBoxHeight);
   }
 }

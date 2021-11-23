@@ -27,7 +27,7 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/license_page.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
-import 'package:sanmill/shared/list_item_divider.dart';
+import 'package:sanmill/shared/custom_spacer.dart';
 import 'package:sanmill/shared/settings/settings_list_tile.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -126,7 +126,7 @@ class AboutPage extends StatelessWidget {
       ),
       body: ListView.separated(
         itemBuilder: (_, index) => _children[index],
-        separatorBuilder: (_, __) => const ListItemDivider(),
+        separatorBuilder: (_, __) => const Divider(),
         itemCount: _children.length,
       ),
     );
@@ -248,20 +248,17 @@ class _VersionDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(
         S.of(context).appName,
-        style: const TextStyle(color: AppTheme.dialogTitleColor),
+        style: AppTheme.dialogTitleTextStyle,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text("${S.of(context).version}: $version"),
-          const SizedBox(height: AppTheme.sizedBoxHeight),
-          const SizedBox(height: AppTheme.sizedBoxHeight),
+          const CustomSpacer(),
           Text(
             S.of(context).copyright,
-            style: TextStyle(
-              fontSize: AppTheme.copyrightFontSize,
-            ),
+            style: AppTheme.copyrightTextStyle,
           ),
         ],
       ),
@@ -292,7 +289,7 @@ class _VersionDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(
         S.of(context).more,
-        style: const TextStyle(color: AppTheme.dialogTitleColor),
+        style: AppTheme.dialogTitleTextStyle,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,

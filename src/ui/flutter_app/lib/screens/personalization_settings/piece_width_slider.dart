@@ -23,31 +23,28 @@ class _PieceWidthSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliderTheme(
-      data: AppTheme.sliderThemeData,
-      child: Semantics(
-        label: S.of(context).pieceWidth,
-        child: ValueListenableBuilder(
-          valueListenable: LocalDatabaseService.listenDisplay,
-          builder: (context, Box<Display> displayBox, _) {
-            final Display _display = displayBox.get(
-              LocalDatabaseService.colorSettingsKey,
-              defaultValue: Display(),
-            )!;
+    return Semantics(
+      label: S.of(context).pieceWidth,
+      child: ValueListenableBuilder(
+        valueListenable: LocalDatabaseService.listenDisplay,
+        builder: (context, Box<Display> displayBox, _) {
+          final Display _display = displayBox.get(
+            LocalDatabaseService.colorSettingsKey,
+            defaultValue: const Display(),
+          )!;
 
-            return Slider(
-              value: _display.pieceWidth,
-              min: 0.5,
-              divisions: 50,
-              label: _display.pieceWidth.toStringAsFixed(1),
-              onChanged: (value) {
-                debugPrint("[config] pieceWidth value: $value");
-                LocalDatabaseService.display =
-                    _display.copyWith(pieceWidth: value);
-              },
-            );
-          },
-        ),
+          return Slider(
+            value: _display.pieceWidth,
+            min: 0.5,
+            divisions: 50,
+            label: _display.pieceWidth.toStringAsFixed(1),
+            onChanged: (value) {
+              debugPrint("[config] pieceWidth value: $value");
+              LocalDatabaseService.display =
+                  _display.copyWith(pieceWidth: value);
+            },
+          );
+        },
       ),
     );
   }

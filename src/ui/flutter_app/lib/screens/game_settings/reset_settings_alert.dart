@@ -26,7 +26,7 @@ class _ResetSettingsAlert extends StatelessWidget {
   Future<void> _restore(BuildContext context) async {
     Navigator.pop(context);
 
-    // TODO: we should probably enable database deletion in monkey tests
+    // TODO: [Leptopoda] we should probably enable database deletion in monkey tests
     //as the new storage backend supports deletion without needing an app restart
     if (!EnvironmentConfig.monkeyTest) {
       await LocalDatabaseService.resetStorage();
@@ -35,24 +35,18 @@ class _ResetSettingsAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: remove these strings as they aren't needed anymore
+    // TODO: [Leptopoda] remove these strings as they aren't needed anymore
     //S.of(context).exitApp;
     //S.of(context).exitAppManually
 
     return AlertDialog(
       title: Text(
         S.of(context).restore,
-        style: TextStyle(
-          color: AppTheme.dialogTitleColor,
-          fontSize: LocalDatabaseService.display.fontSize + 4,
-        ),
+        style: AppTheme.dialogTitleTextStyle,
       ),
       content: SingleChildScrollView(
         child: Text(
           "${S.of(context).restoreDefaultSettings}?",
-          style: TextStyle(
-            fontSize: LocalDatabaseService.display.fontSize,
-          ),
         ),
       ),
       actions: <Widget>[
@@ -60,18 +54,12 @@ class _ResetSettingsAlert extends StatelessWidget {
           onPressed: () => _restore(context),
           child: Text(
             S.of(context).ok,
-            style: TextStyle(
-              fontSize: LocalDatabaseService.display.fontSize,
-            ),
           ),
         ),
         TextButton(
           onPressed: () => cancel(context),
           child: Text(
             S.of(context).cancel,
-            style: TextStyle(
-              fontSize: LocalDatabaseService.display.fontSize,
-            ),
           ),
         ),
       ],

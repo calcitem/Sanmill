@@ -23,31 +23,28 @@ class _BoardInnerWidthSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliderTheme(
-      data: AppTheme.sliderThemeData,
-      child: Semantics(
-        label: S.of(context).boardInnerLineWidth,
-        child: ValueListenableBuilder(
-          valueListenable: LocalDatabaseService.listenDisplay,
-          builder: (context, Box<Display> displayBox, _) {
-            final Display _display = displayBox.get(
-              LocalDatabaseService.colorSettingsKey,
-              defaultValue: Display(),
-            )!;
+    return Semantics(
+      label: S.of(context).boardInnerLineWidth,
+      child: ValueListenableBuilder(
+        valueListenable: LocalDatabaseService.listenDisplay,
+        builder: (context, Box<Display> displayBox, _) {
+          final Display _display = displayBox.get(
+            LocalDatabaseService.colorSettingsKey,
+            defaultValue: const Display(),
+          )!;
 
-            return Slider(
-              value: _display.boardInnerLineWidth,
-              max: 20,
-              divisions: 200,
-              label: _display.boardInnerLineWidth.toStringAsFixed(1),
-              onChanged: (value) {
-                debugPrint("[config] BoardInnerLineWidth value: $value");
-                LocalDatabaseService.display =
-                    _display.copyWith(boardInnerLineWidth: value);
-              },
-            );
-          },
-        ),
+          return Slider(
+            value: _display.boardInnerLineWidth,
+            max: 20,
+            divisions: 200,
+            label: _display.boardInnerLineWidth.toStringAsFixed(1),
+            onChanged: (value) {
+              debugPrint("[config] BoardInnerLineWidth value: $value");
+              LocalDatabaseService.display =
+                  _display.copyWith(boardInnerLineWidth: value);
+            },
+          );
+        },
       ),
     );
   }

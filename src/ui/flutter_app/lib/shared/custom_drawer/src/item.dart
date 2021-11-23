@@ -58,7 +58,6 @@ class CustomDrawerItem<T> extends StatelessWidget {
           title,
           style: TextStyle(
             fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-            fontSize: LocalDatabaseService.display.fontSize,
             color: _color,
           ),
         ),
@@ -67,7 +66,7 @@ class CustomDrawerItem<T> extends StatelessWidget {
 
     return InkWell(
       splashColor: AppTheme.drawerSplashColor,
-      highlightColor: AppTheme.drawerHighlightColor,
+      highlightColor: Colors.transparent,
       onTap: () => onChanged(value),
       child: _drawerItem,
     );

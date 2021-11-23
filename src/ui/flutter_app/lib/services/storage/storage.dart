@@ -91,7 +91,7 @@ class LocalDatabaseService {
 
   /// gets the given [ColorSettings] from the settings Box
   static ColorSettings get colorSettings =>
-      _colorSettingsBox.get(colorSettingsKey) ?? ColorSettings();
+      _colorSettingsBox.get(colorSettingsKey) ?? const ColorSettings();
 
   /// initialize the [Display] reference
   static Future<void> _initDisplay() async {
@@ -108,7 +108,7 @@ class LocalDatabaseService {
   static set display(Display display) => _displayBox.put(displayKey, display);
 
   /// gets the given [Display] from the settings Box
-  static Display get display => _displayBox.get(displayKey) ?? Display();
+  static Display get display => _displayBox.get(displayKey) ?? const Display();
 
   /// initialize the [Preferences] reference
   static Future<void> _initPreferences() async {

@@ -28,6 +28,7 @@ import 'package:sanmill/screens/env_page.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
+import 'package:sanmill/shared/custom_spacer.dart';
 import 'package:sanmill/shared/settings/settings_card.dart';
 import 'package:sanmill/shared/settings/settings_list_tile.dart';
 import 'package:sanmill/shared/settings/settings_switch_list_tile.dart';
@@ -162,7 +163,7 @@ class GameSettingsPage extends StatelessWidget {
     )!;
 
     final _widowsSettings = [
-      const SizedBox(height: AppTheme.sizedBoxHeight),
+      const CustomSpacer(),
       Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         children: <Widget>[
@@ -181,7 +182,7 @@ class GameSettingsPage extends StatelessWidget {
     ];
 
     final _developerSettings = [
-      const SizedBox(height: AppTheme.sizedBoxHeight),
+      const CustomSpacer(),
       Text(S.of(context).forDevelopers, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         children: <Widget>[
@@ -228,7 +229,7 @@ class GameSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTheme.sizedBoxHeight),
+        const CustomSpacer(),
         Text(S.of(context).difficulty, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[
@@ -243,7 +244,7 @@ class GameSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTheme.sizedBoxHeight),
+        const CustomSpacer(),
         Text(S.of(context).aisPlayStyle, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[
@@ -275,7 +276,7 @@ class GameSettingsPage extends StatelessWidget {
           ],
         ),
         if (!Platform.isWindows) ..._widowsSettings,
-        const SizedBox(height: AppTheme.sizedBoxHeight),
+        const CustomSpacer(),
         Text(S.of(context).accessibility, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[
@@ -286,7 +287,7 @@ class GameSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTheme.sizedBoxHeight),
+        const CustomSpacer(),
         Text(S.of(context).restore, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[

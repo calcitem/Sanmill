@@ -30,12 +30,7 @@ void showSnackBar(
 
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(
-        message,
-        style: TextStyle(
-          fontSize: LocalDatabaseService.display.fontSize,
-        ),
-      ),
+      content: Text(message),
       duration: duration,
     ),
   );

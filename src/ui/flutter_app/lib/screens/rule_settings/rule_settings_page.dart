@@ -22,16 +22,17 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/rules.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
+import 'package:sanmill/shared/custom_spacer.dart';
 import 'package:sanmill/shared/settings/settings_card.dart';
 import 'package:sanmill/shared/settings/settings_list_tile.dart';
 import 'package:sanmill/shared/settings/settings_switch_list_tile.dart';
 import 'package:sanmill/shared/snackbar.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
-part 'package:sanmill/screens/rule_settings/fly_piece_count_modal.dart';
 part 'package:sanmill/screens/rule_settings/endgame_n_move_rule_modal.dart';
-part 'package:sanmill/screens/rule_settings/piece_count_modal.dart';
+part 'package:sanmill/screens/rule_settings/fly_piece_count_modal.dart';
 part 'package:sanmill/screens/rule_settings/n_move_rule_modal.dart';
+part 'package:sanmill/screens/rule_settings/piece_count_modal.dart';
 
 class RuleSettingsPage extends StatelessWidget {
   const RuleSettingsPage({Key? key}) : super(key: key);
@@ -237,7 +238,7 @@ class RuleSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTheme.sizedBoxHeight),
+        const CustomSpacer(),
         Text(S.of(context).placing, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[
@@ -264,7 +265,7 @@ class RuleSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTheme.sizedBoxHeight),
+        const CustomSpacer(),
         Text(S.of(context).moving, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[
@@ -293,7 +294,7 @@ class RuleSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTheme.sizedBoxHeight),
+        const CustomSpacer(),
         Text(S.of(context).mayFly, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[
@@ -311,7 +312,7 @@ class RuleSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppTheme.sizedBoxHeight),
+        const CustomSpacer(),
         Text(S.of(context).removing, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[

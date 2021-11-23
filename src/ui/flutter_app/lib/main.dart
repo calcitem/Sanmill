@@ -78,27 +78,29 @@ class SanmillApp extends StatelessWidget {
       builder: (BuildContext context, Box<Display> displayBox, child) {
         final Display _display = displayBox.get(
           LocalDatabaseService.displayKey,
-          defaultValue: Display(),
+          defaultValue: const Display(),
         )!;
-        return MaterialApp(
-          /// Add navigator key from Catcher.
-          /// It will be used to navigate user to report page or to show dialog.
-          navigatorKey: EnvironmentConfig.catcher ? Catcher.navigatorKey : null,
-          key: globalScaffoldKey,
-          navigatorObservers: [routeObserver],
-          localizationsDelegates: S.localizationsDelegates,
-          supportedLocales: S.supportedLocales,
-          locale: _display.languageCode,
-          theme: AppTheme.lightThemeData,
-          darkTheme: AppTheme.darkThemeData,
-          debugShowCheckedModeBanner: false,
-          home: BetterFeedback(
-            localizationsDelegates: const [
-              ...S.localizationsDelegates,
-              CustomFeedbackLocalizationsDelegate.delegate,
-            ],
-            localeOverride: _display.languageCode,
-            child: child!,
+        return BetterFeedback(
+          localizationsDelegates: const [
+            ...S.localizationsDelegates,
+            CustomFeedbackLocalizationsDelegate.delegate,
+          ],
+          localeOverride: _display.languageCode,
+          theme: AppTheme.feedbackTheme,
+          child: MaterialApp(
+            /// Add navigator key from Catcher.
+            /// It will be used to navigate user to report page or to show dialog.
+            navigatorKey:
+                EnvironmentConfig.catcher ? Catcher.navigatorKey : null,
+            key: globalScaffoldKey,
+            navigatorObservers: [routeObserver],
+            localizationsDelegates: S.localizationsDelegates,
+            supportedLocales: S.supportedLocales,
+            locale: _display.languageCode,
+            theme: AppTheme.lightThemeData,
+            darkTheme: AppTheme.darkThemeData,
+            debugShowCheckedModeBanner: false,
+            home: child,
           ),
         );
       },

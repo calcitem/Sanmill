@@ -471,7 +471,7 @@ class Position {
       start();
     }
 
-    // TODO: use switch case
+    // TODO: [Leptopoda] use switch case
     if (phase == Phase.placing) {
       piece = sideToMove;
       if (pieceInHandCount[us] != null) {
