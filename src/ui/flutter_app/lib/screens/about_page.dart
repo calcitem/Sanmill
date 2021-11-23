@@ -254,7 +254,7 @@ class _VersionDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("${S.of(context).version}: $version"),
+          Text(S.of(context).version(version)),
           const CustomSpacer(),
           Text(
             S.of(context).copyright,

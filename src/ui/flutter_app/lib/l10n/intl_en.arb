@@ -44,13 +44,15 @@
     "@testViaLAN": {
         "description": "Test Via LAN"
     },
-    "move": "Move",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " Moves",
-    "@moves": {
-        "description": " Moves"
+    "move_number": "{count,plural, =0{Move}=1{{count} Move}other{{count} Moves}}",
+    "@move_number": {
+        "description": "Moves to take back",
+        "placeholders": {
+            "count": {
+                "description": "Number of Moves",
+                "example": "3"
+            }
+        }
     },
     "showMoveList": "Move list",
     "@showMoveList": {
@@ -160,9 +162,15 @@
     "@tipCanMoveToAnyPoint": {
         "description": "You can move to any point you like."
     },
-    "tipToMove": " to move.",
+    "tipToMove": "{player} to move.",
     "@tipToMove": {
-        "description": " to move."
+        "description": "The tip that the given player is to move.",
+        "placeholders": {
+            "player": {
+                "description": "The player whose turn it is.",
+                "example": "Player 1"
+            }
+        }
     },
     "whiteWin": "Player 1 wins!",
     "@whiteWin": {
@@ -204,9 +212,15 @@
     "@gameImported": {
         "description": "Game imported from the clipboard."
     },
-    "cannotImport": "Cannot import",
+    "cannotImport": "Cannot import {invalidMove}",
     "@cannotImport": {
-        "description": "Cannot import"
+        "description": "Cannot import",
+        "placeholders": {
+            "invalidMove": {
+                "description": "Invalid move",
+                "example": "x1-y2"
+            }
+        }
     },
     "movesAndRulesNotMatch": "Moves and rules do not match.",
     "@movesAndRulesNotMatch": {
@@ -252,15 +266,21 @@
     "@analyzing": {
         "description": "Analyzing ..."
     },
-    "error": "Error",
+    "error": "Error: {message}",
     "@error": {
-        "description": "Error"
+        "description": "Error",
+        "placeholders": {
+            "message": {
+                "description": "The Error message",
+                "example": "Unknown error"
+            }
+        }
     },
     "winRate": "Win Rate",
     "@winRate": {
         "description": "Win Rate"
     },
-    "score": "Score",
+    "score": "Score:",
     "@score": {
         "description": "Score"
     },
@@ -272,25 +292,55 @@
     "@black": {
         "description": "Player 2"
     },
-    "loseReasonlessThanThree": " piece count is less than three.",
+    "loseReasonlessThanThree": "{player} piece count is less than three.",
     "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
+        "description": "Indicate that the player lost because they had less than three pieces left.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
-    "loseReasonResign": " resign.",
+    "loseReasonResign": "{player} resigned.",
     "@loseReasonResign": {
-        "description": " resign."
+        "description": "Indicate that the player resigned.",
+        "placeholders": {
+            "player": {
+                "description": "The player who resigned",
+                "example": "Player 1"
+            }
+        }
     },
-    "loseReasonNoWay": " is no way to go.",
+    "loseReasonNoWay": "{player} has no way to go.",
     "@loseReasonNoWay": {
-        "description": " is no way to go."
+        "description": "Indicate that the player has no way to go.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
-    "loseReasonBoardIsFull": "The board is full, and no way to go.",
+    "loseReasonBoardIsFull": "The board is full, and {player} has no way to go.",
     "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
+        "description": "Indicate that the player has no way to go because the board is full.",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
-    "loseReasonTimeOver": "Time Over",
+    "loseReasonTimeOver": "Time Over, {player} lost",
     "@loseReasonTimeOver": {
-        "description": "Time Over"
+        "description": "Time Over",
+        "placeholders": {
+            "player": {
+                "description": "The player who lost",
+                "example": "Player 1"
+            }
+        }
     },
     "drawReasonRule50": "In the moving phase, no piece has been removed in the last specific number of moves.",
     "@drawReasonRule50": {
@@ -316,9 +366,15 @@
     "@youWin": {
         "description": "You win! Congratulations!"
     },
-    "challengeHarderLevel": "Challenge harder level? The new level will be level ",
+    "challengeHarderLevel": "Challenge harder level? The new level will be level {level}!",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
+        "description": "Challenge harder level?",
+        "placeholders": {
+            "level": {
+                "description": "The new level",
+                "example": "5"
+            }
+        }
     },
     "youLose": "You Lose!",
     "@youLose": {
@@ -336,9 +392,15 @@
     "@about": {
         "description": "About"
     },
-    "version": "Version",
+    "version": "Version: {version_number}",
     "@version": {
-        "description": "Version"
+        "description": "Version",
+        "placeholders": {
+            "version_number": {
+                "description": "The current version",
+                "example": "1.1.38"
+            }
+        }
     },
     "thanks": "Thanks",
     "@thanks": {
@@ -636,17 +698,15 @@
     "@restoreDefaultSettings": {
         "description": "Restore Default Settings"
     },
-    "exitApp": "The app will exit.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "You have to close immediately and reopen the app to take effect.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Pick",
+    "pick": "Pick {element}",
     "@pick": {
-        "description": "Pick "
+        "description": "Used in the color picker.",
+        "placeholders": {
+            "element": {
+                "description": "The element to pick the color for.",
+                "example": "Background color"
+            }
+        }
     },
     "info": "Info",
     "@info": {
@@ -881,17 +941,37 @@
     "@considerMobility": {
         "description": "Consider mobility of pieces"
     },
-    "pieceCount": "Piece count",
+    "pieceCount": "Piece count:",
     "@pieceCount": {
         "description": "Piece count"
     },
-    "inHand": "in hand",
+    "inHand": "{player} in hand: {count}",
     "@inHand": {
-        "description": "in hand"
+        "description": "The pieces a player has in his hand.",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "Player 1"
+            },
+            "count": {
+                "description": "The count of pieces in hand",
+                "example": "5"
+            }
+        }
     },
-    "onBoard": "on board",
+    "onBoard": "{player} on board: {count}",
     "@onBoard": {
-        "description": "on board"
+        "description": "The pieces a player has on the board",
+        "placeholders": {
+            "player": {
+                "description": "The specified player",
+                "example": "White"
+            },
+            "count": {
+                "description": "The count of pieces on board",
+                "example": "5"
+            }
+        }
     },
     "boardTop": "Board offset from the top",
     "@boardTop": {
@@ -960,10 +1040,6 @@
     "drawerTextColor": "Menu text color",
     "@drawerTextColor": {
         "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Menu background color",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
     },
     "drawerHighlightItemColor": "Menu highlight item color",
     "@drawerHighlightItemColor": {
@@ -1161,21 +1237,29 @@
     "@flyingPhase": {
         "description": "Flying phase"
     },
-    "sideToMove": "Side to move",
+    "sideToMove": "Side to move: {player}",
     "@sideToMove": {
-        "description": "Side to move"
+        "description": "The player whose turn it is.",
+        "placeholders": {
+            "player": {
+                "description": "The player to move",
+                "example": "Player 1"
+            }
+        }
     },
-    "lastMove": "Last move",
+    "lastMove": "Last move: {move}",
     "@lastMove": {
-        "description": "Last move"
+        "description": "Last move",
+        "placeholders": {
+            "move": {
+                "description": "The last move",
+                "example": "d2-d3"
+            }
+        }
     },
     "selected": "Selected",
     "@selected": {
         "description": "Selected"
-    },
-    "mainMenu": "Main menu",
-    "@mainMenu": {
-        "description": "Main menu"
     },
     "accessibility": "Accessibility",
     "@accessibility": {

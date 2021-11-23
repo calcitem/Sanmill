@@ -21,7 +21,7 @@ part of 'package:sanmill/screens/game_settings/game_settings_page.dart';
 class _ResetSettingsAlert extends StatelessWidget {
   const _ResetSettingsAlert({Key? key}) : super(key: key);
 
-  void cancel(BuildContext context) => Navigator.pop(context);
+  void _cancel(BuildContext context) => Navigator.pop(context);
 
   Future<void> _restore(BuildContext context) async {
     Navigator.pop(context);
@@ -35,19 +35,13 @@ class _ResetSettingsAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: [Leptopoda] remove these strings as they aren't needed anymore
-    //S.of(context).exitApp;
-    //S.of(context).exitAppManually
-
     return AlertDialog(
       title: Text(
         S.of(context).restore,
         style: AppTheme.dialogTitleTextStyle,
       ),
       content: SingleChildScrollView(
-        child: Text(
-          "${S.of(context).restoreDefaultSettings}?",
-        ),
+        child: Text("${S.of(context).restoreDefaultSettings}?"),
       ),
       actions: <Widget>[
         TextButton(
@@ -57,7 +51,7 @@ class _ResetSettingsAlert extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () => cancel(context),
+          onPressed: () => _cancel(context),
           child: Text(
             S.of(context).cancel,
           ),
