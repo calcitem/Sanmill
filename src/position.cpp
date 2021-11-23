@@ -641,7 +641,7 @@ bool Position::put_piece(Square s, bool updateRecord)
 
         if (updateRecord) {
             snprintf(
-                record, RECORD_LEN_MAX, "(%1u,%1u)", file_of(s), rank_of(s));
+                record, RECORD_LEN_MAX, "(%1d,%1d)", file_of(s), rank_of(s));
         }
 
         currentSquare = s;
@@ -745,7 +745,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         }
 
         if (updateRecord) {
-            snprintf(record, RECORD_LEN_MAX, "(%1u,%1u)->(%1u,%1u)",
+            snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)->(%1d,%1d)",
                 file_of(currentSquare), rank_of(currentSquare), file_of(s),
                 rank_of(s));
             st.rule50++;
@@ -843,7 +843,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
     }
 
     if (updateRecord) {
-        snprintf(record, RECORD_LEN_MAX, "-(%1u,%1u)", file_of(s), rank_of(s));
+        snprintf(record, RECORD_LEN_MAX, "-(%1d,%1d)", file_of(s), rank_of(s));
         st.rule50 = 0; // TODO(calcitem): Need to move out?
     }
 
@@ -1413,7 +1413,6 @@ void Position::mirror(vector<string>& moveHistory, bool cmdChange /*= true*/)
 {
     Piece ch;
     int f, r;
-    int i;
 
     for (f = 1; f <= FILE_NB; f++) {
         for (r = 1; r < RANK_NB / 2; r++) {
@@ -1425,18 +1424,18 @@ void Position::mirror(vector<string>& moveHistory, bool cmdChange /*= true*/)
 
     reset_bb();
 
-    uint64_t llp[3] = { 0 };
-
     if (move < 0) {
         f = (-move) / RANK_NB;
         r = (-move) % RANK_NB;
         r = (RANK_NB - r) % RANK_NB;
         move = static_cast<Move>(-(f * RANK_NB + r));
     } else {
+        uint64_t llp[3] = { 0 };
+
         llp[0] = static_cast<uint64_t>(from_sq((Move)move));
         llp[1] = to_sq((Move)move);
 
-        for (i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             f = static_cast<int>(llp[i]) / RANK_NB;
             r = static_cast<int>(llp[i]) % RANK_NB;
             r = (RANK_NB - r) % RANK_NB;
@@ -1694,14 +1693,14 @@ void Position::rotate(
 
     reset_bb();
 
-    uint64_t llp[3] = { 0 };
-
     if (move < 0) {
         f = (-move) / RANK_NB;
         r = (-move) % RANK_NB;
         r = (r + RANK_NB - degrees) % RANK_NB;
         move = static_cast<Move>(-(f * RANK_NB + r));
     } else {
+        uint64_t llp[3] = { 0 };
+
         llp[0] = static_cast<uint64_t>(from_sq((Move)move));
         llp[1] = to_sq((Move)move);
         f = static_cast<int>(llp[0]) / RANK_NB;

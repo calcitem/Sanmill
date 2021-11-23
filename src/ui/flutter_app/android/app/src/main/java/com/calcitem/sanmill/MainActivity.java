@@ -43,8 +43,6 @@ public class MainActivity extends FlutterActivity {
 
     private static final String ENGINE_CHANNEL = "com.calcitem.sanmill/engine";
 
-    private MillEngine engine;
-
     private final String TAG_XCRASH = "xCrash";
 
     @Override
@@ -52,7 +50,7 @@ public class MainActivity extends FlutterActivity {
 
         super.onCreate(savedInstanceState);
 
-        engine = new MillEngine();
+        MillEngine engine = new MillEngine();
 
         FlutterEngine fe = getFlutterEngine();
         if (fe == null) return;

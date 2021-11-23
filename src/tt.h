@@ -32,6 +32,8 @@ using CTSL::HashMap;
 /// age                 8 bit
 
 struct TTEntry {
+    TTEntry() {}
+
     Value value() const noexcept { return (Value)value8; }
 
     Depth depth() const noexcept { return (Depth)depth8 + DEPTH_OFFSET; }

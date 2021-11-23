@@ -21,6 +21,8 @@
 
 class GameOptions {
 public:
+    GameOptions() {}
+
     void setSkillLevel(int val) noexcept { skillLevel = val; }
 
     int getSkillLevel() const noexcept { return skillLevel; }

@@ -29,7 +29,7 @@
 #define loseReasonBoardIsFullStr "Full. Player2 win!"
 #define drawReasonBoardIsFullStr "Full. In draw!"
 #define loseReasonlessThanThreeStr "Player%d win!"
-#define loseReasonResignStr "Player%d give up!"
+#define loseReasonResignStr "Player%u give up!"
 
 namespace Mills {
 
