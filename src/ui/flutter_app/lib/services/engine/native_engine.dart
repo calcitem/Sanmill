@@ -23,6 +23,7 @@ import 'package:flutter/services.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/engine/engine.dart';
+import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
 class NativeEngine extends Engine {
@@ -104,7 +105,7 @@ class NativeEngine extends Engine {
   }) async {
     final _pref = LocalDatabaseService.preferences;
 
-    var timeLimit = _pref.developerMode ? 100 : 6000;
+    var timeLimit = EnvironmentConfig.devMode ? 100 : 6000;
 
     if (_pref.moveTime > 0) {
       // TODO: Accurate timeLimit
@@ -113,7 +114,7 @@ class NativeEngine extends Engine {
 
     if (times > timeLimit) {
       debugPrint("[engine] Timeout. sleep = $sleep, times = $times");
-      if (_pref.developerMode && isActive) {
+      if (EnvironmentConfig.devMode && isActive) {
         throw "Exception: waitResponse timeout.";
       }
       return '';
@@ -149,7 +150,7 @@ class NativeEngine extends Engine {
     final _rules = LocalDatabaseService.rules;
 
     await send(
-      'setoption name DeveloperMode value ${_pref.developerMode}',
+      'setoption name DeveloperMode value ${EnvironmentConfig.devMode}',
     );
     await send(
       'setoption name Algorithm value ${_pref.algorithm}',

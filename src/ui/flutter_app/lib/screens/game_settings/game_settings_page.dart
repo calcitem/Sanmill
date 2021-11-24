@@ -23,7 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/preferences.dart';
-import 'package:sanmill/models/temporary.dart';
 import 'package:sanmill/screens/env_page.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/storage/storage.dart';
@@ -142,13 +141,6 @@ class GameSettingsPage extends StatelessWidget {
     debugPrint("$_tag screenReaderSupport: $value");
   }
 
-  void _setDeveloperMode(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences =
-        _preferences.copyWith(developerMode: value);
-
-    debugPrint("$_tag developerMode: $value");
-  }
-
   void _setExperimentsEnabled(Preferences _preferences, bool value) {
     LocalDatabaseService.preferences =
         _preferences.copyWith(experimentsEnabled: value);
@@ -187,8 +179,8 @@ class GameSettingsPage extends StatelessWidget {
       SettingsCard(
         children: <Widget>[
           SettingsSwitchListTile(
-            value: _preferences.developerMode,
-            onChanged: (val) => _setDeveloperMode(_preferences, val),
+            value: EnvironmentConfig.devMode,
+            onChanged: (_) {},
             titleString: S.of(context).developerMode,
           ),
           SettingsSwitchListTile(
@@ -297,7 +289,7 @@ class GameSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        if (Temp.developerMode) ..._developerSettings,
+        if (EnvironmentConfig.devMode) ..._developerSettings,
       ],
     );
   }

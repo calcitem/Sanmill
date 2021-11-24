@@ -34,7 +34,7 @@ import 'package:sanmill/screens/help_screen.dart';
 import 'package:sanmill/screens/personalization_settings/personalization_settings_page.dart';
 import 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 import 'package:sanmill/services/engine/engine.dart';
-import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 
@@ -105,7 +105,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           _screenView = const PersonalizationSettingsPage();
           break;
         case _DrawerIndex.feedback:
-          if (!LocalDatabaseService.preferences.developerMode) {
+          if (!EnvironmentConfig.devMode) {
             if (Platform.isWindows) {
               debugPrint("flutter_email_sender does not support Windows.");
             } else {
@@ -114,13 +114,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           }
           break;
         case _DrawerIndex.Help:
-          if (!LocalDatabaseService.preferences.developerMode) {
+          if (!EnvironmentConfig.devMode) {
             _screenView = const HelpScreen();
           }
           break;
 
         case _DrawerIndex.About:
-          if (!LocalDatabaseService.preferences.developerMode) {
+          if (!EnvironmentConfig.devMode) {
             _screenView = const AboutPage();
           }
           break;

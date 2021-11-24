@@ -33,6 +33,7 @@ import 'package:sanmill/screens/game_settings/game_settings_page.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/engine/native_engine.dart';
+import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
@@ -1041,7 +1042,7 @@ class _GamePageState extends State<GamePage>
     if (loseReasonStr == null) {
       loseReasonStr = S.of(context).gameOverUnknownReason;
       debugPrint("$_tag Game over reason string: $loseReasonStr");
-      if (LocalDatabaseService.preferences.developerMode) {
+      if (EnvironmentConfig.devMode) {
         assert(false);
       }
     }
