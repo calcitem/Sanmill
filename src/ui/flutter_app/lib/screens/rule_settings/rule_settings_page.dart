@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/rules.dart';
+import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
@@ -269,21 +270,20 @@ class RuleSettingsPage extends StatelessWidget {
         Text(S.of(context).moving, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[
-            if (LocalDatabaseService.preferences.experimentsEnabled)
+            if (EnvironmentConfig.devMode)
               SettingsSwitchListTile(
                 value: _rules.mayMoveInPlacingPhase,
                 onChanged: (val) =>
                     _setMayMoveInPlacingPhase(context, _rules, val),
                 titleString: S.of(context).mayMoveInPlacingPhase,
                 subtitleString: S.of(context).mayMoveInPlacingPhase_Detail,
-              )
-            else
-              SettingsSwitchListTile(
-                value: _rules.isDefenderMoveFirst,
-                onChanged: (val) => _setIsDefenderMoveFirst(_rules, val),
-                titleString: S.of(context).isDefenderMoveFirst,
-                subtitleString: S.of(context).isDefenderMoveFirst_Detail,
               ),
+            SettingsSwitchListTile(
+              value: _rules.isDefenderMoveFirst,
+              onChanged: (val) => _setIsDefenderMoveFirst(_rules, val),
+              titleString: S.of(context).isDefenderMoveFirst,
+              subtitleString: S.of(context).isDefenderMoveFirst_Detail,
+            ),
             SettingsSwitchListTile(
               value: _rules.isLoseButNotChangeSideWhenNoWay,
               onChanged: (val) =>

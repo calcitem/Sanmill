@@ -52,7 +52,8 @@ class Preferences {
     this.considerMobility = true,
     @Deprecated("we won't export the developer settings anymore. People should use the EnvironmentConfig.devMode")
         this.developerMode = false,
-    this.experimentsEnabled = false,
+    @Deprecated("use [EnvironmentConfig.devMode] instead")
+        this.experimentsEnabled = false,
   });
 
   @HiveField(0)
@@ -98,6 +99,7 @@ class Preferences {
   )
   final bool developerMode;
   @HiveField(19)
+  @Deprecated("use [EnvironmentConfig.devMode] instead")
   final bool experimentsEnabled;
 
   /// encodes a Json style map into a [Preferences] object
