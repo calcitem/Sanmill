@@ -28,11 +28,9 @@ class Board extends StatelessWidget {
   final double height;
   final BoardTapCallback onBoardTap;
   final Animation<double> animation;
-  final List<String> squareDesc = [];
   static const String _tag = "[board]";
 
-  // TODO: [Leptopoda] add const constructor
-  Board({
+  const Board({
     required this.width,
     required this.onBoardTap,
     required this.animation,
@@ -41,8 +39,9 @@ class Board extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const padding = AppTheme.boardPadding;
+    final List<String> _squareDesc = [];
 
-    _buildSquareDescription(context);
+    _buildSquareDescription(context, _squareDesc);
 
     final grid = GridView(
       scrollDirection: Axis.horizontal,
@@ -53,7 +52,7 @@ class Board extends StatelessWidget {
         7 * 7,
         (index) => Center(
           child: Text(
-            squareDesc[index],
+            _squareDesc[index],
             style: const TextStyle(
               color: Colors.red,
             ),
@@ -124,7 +123,7 @@ class Board extends StatelessWidget {
     );
   }
 
-  void _buildSquareDescription(BuildContext context) {
+  void _buildSquareDescription(BuildContext context, List<String> squareDesc) {
     final List<String> coordinates = [];
     final List<String> pieceDesc = [];
 
