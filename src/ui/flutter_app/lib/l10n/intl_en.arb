@@ -430,9 +430,9 @@
     "@difficulty": {
         "description": "Difficulty"
     },
-    "playSounds": "Sound effects",
-    "@playSounds": {
-        "description": "Sound effects"
+    "gameSettings": "Game settings",
+    "@gameSettings": {
+        "description": "Settings to change the behaviour of the game."
     },
     "playSoundsInTheGame": "Play sounds in the game",
     "@playSoundsInTheGame": {

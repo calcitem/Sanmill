@@ -23,7 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/preferences.dart';
-import 'package:sanmill/screens/env_page.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
@@ -141,13 +140,6 @@ class GameSettingsPage extends StatelessWidget {
     debugPrint("$_tag screenReaderSupport: $value");
   }
 
-  void _setExperimentsEnabled(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences =
-        _preferences.copyWith(experimentsEnabled: value);
-
-    debugPrint("$_tag experimentsEnabled: $value");
-  }
-
   Column _buildPrefs(BuildContext context, Box<Preferences> prefBox, _) {
     final Preferences _preferences = prefBox.get(
       LocalDatabaseService.preferencesKey,
@@ -156,9 +148,14 @@ class GameSettingsPage extends StatelessWidget {
 
     final _widowsSettings = [
       const CustomSpacer(),
-      Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
+      Text(S.of(context).gameSettings, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         children: <Widget>[
+          SettingsSwitchListTile(
+            value: _preferences.isAutoRestart,
+            onChanged: (val) => _setIsAutoRestart(_preferences, val),
+            titleString: S.of(context).isAutoRestart,
+          ),
           SettingsSwitchListTile(
             value: _preferences.toneEnabled,
             onChanged: (val) => _setTone(_preferences, val),
@@ -168,39 +165,6 @@ class GameSettingsPage extends StatelessWidget {
             value: _preferences.keepMuteWhenTakingBack,
             onChanged: (val) => _setKeepMuteWhenTakingBack(_preferences, val),
             titleString: S.of(context).keepMuteWhenTakingBack,
-          ),
-        ],
-      ),
-    ];
-
-    final _developerSettings = [
-      const CustomSpacer(),
-      Text(S.of(context).forDevelopers, style: AppTheme.settingsHeaderStyle),
-      SettingsCard(
-        children: <Widget>[
-          SettingsSwitchListTile(
-            value: EnvironmentConfig.devMode,
-            onChanged: (_) {},
-            titleString: S.of(context).developerMode,
-          ),
-          SettingsSwitchListTile(
-            value: _preferences.experimentsEnabled,
-            onChanged: (val) => _setExperimentsEnabled(_preferences, val),
-            titleString: S.of(context).experiments,
-          ),
-          SettingsSwitchListTile(
-            value: _preferences.isAutoRestart,
-            onChanged: (val) => _setIsAutoRestart(_preferences, val),
-            titleString: S.of(context).isAutoRestart,
-          ),
-          SettingsListTile(
-            titleString: S.of(context).environmentVariables,
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const EnvironmentVariablesPage(),
-              ),
-            ),
           ),
         ],
       ),
@@ -289,7 +253,6 @@ class GameSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        if (EnvironmentConfig.devMode) ..._developerSettings,
       ],
     );
   }
