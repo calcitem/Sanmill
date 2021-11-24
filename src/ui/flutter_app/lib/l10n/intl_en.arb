@@ -925,14 +925,6 @@
     "@personalization": {
         "description": "Personalization"
     },
-    "forDevelopers": "For developers",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Developer mode",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
     "drawOnHumanExperience": "Draw on the human experience",
     "@drawOnHumanExperience": {
         "description": "Draw on the human experience"
@@ -996,10 +988,6 @@
     "tapBackAgainToLeave": "Tap back again to leave.",
     "@tapBackAgainToLeave": {
         "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Environment variables",
-    "@environmentVariables": {
-        "description": "Environment variables"
     },
     "more": "More",
     "@more": {
