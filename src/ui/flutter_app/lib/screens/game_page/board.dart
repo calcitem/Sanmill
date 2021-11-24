@@ -50,9 +50,9 @@ class Board extends StatelessWidget {
         (index) => Center(
           child: Text(
             squareDesc[index],
-            style: TextStyle(
+            style: const TextStyle(
               // TODO: [Leptopoda] instead of making it transparent when not needed we should not show it in the first place
-              color: LocalDatabaseService.preferences.developerMode
+              color: EnvironmentConfig.devMode
                   ? Colors.red
                   : Colors.transparent,
             ),

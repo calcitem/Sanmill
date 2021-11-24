@@ -29,12 +29,6 @@ class CustomDrawerHeader extends StatelessWidget {
 
   static const String _tag = "[home_drawer]";
 
-  void _enableDeveloperMode() {
-    Temp.developerMode = true;
-
-    debugPrint("$_tag Developer mode enabled.");
-  }
-
   @override
   Widget build(BuildContext context) {
     final List<Color> _animatedTextsColors = [
@@ -48,22 +42,19 @@ class CustomDrawerHeader extends StatelessWidget {
       LocalDatabaseService.colorSettings.drawerHighlightItemColor,
     ];
 
-    final animation = GestureDetector(
-      onDoubleTap: _enableDeveloperMode,
-      child: AnimatedTextKit(
-        animatedTexts: [
-          ColorizeAnimatedText(
-            title,
-            textStyle: AppTheme.drawerHeaderTextStyle,
-            colors: _animatedTextsColors,
-            speed: const Duration(seconds: 3),
-          ),
-        ],
-        pause: const Duration(seconds: 3),
-        repeatForever: true,
-        stopPauseOnTap: true,
-        onTap: () => debugPrint("$_tag DoubleTap to enable developer mode."),
-      ),
+    final animation = AnimatedTextKit(
+      animatedTexts: [
+        ColorizeAnimatedText(
+          title,
+          textStyle: AppTheme.drawerHeaderTextStyle,
+          colors: _animatedTextsColors,
+          speed: const Duration(seconds: 3),
+        ),
+      ],
+      pause: const Duration(seconds: 3),
+      repeatForever: true,
+      stopPauseOnTap: true,
+      onTap: () => debugPrint("$_tag DoubleTap to enable developer mode."),
     );
 
     final _padding = EdgeInsets.only(

@@ -50,7 +50,8 @@ class Preferences {
     this.algorithm = 2,
     this.drawOnHumanExperience = true,
     this.considerMobility = true,
-    this.developerMode = false,
+    @Deprecated("we won't export the developer settings anymore. People should use the EnvironmentConfig.devMode")
+        this.developerMode = false,
     this.experimentsEnabled = false,
   });
 
@@ -92,6 +93,9 @@ class Preferences {
   @HiveField(17)
   final bool considerMobility;
   @HiveField(18)
+  @Deprecated(
+    "we won't export the developer settings anymore. People should use the EnvironmentConfig.devMode",
+  )
   final bool developerMode;
   @HiveField(19)
   final bool experimentsEnabled;

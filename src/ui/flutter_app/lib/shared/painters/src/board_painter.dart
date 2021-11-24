@@ -104,7 +104,7 @@ class BoardPainter extends PiecesBasePainter {
         final offset = (width - _squareWidth * 6) / 4;
 
         // Show notations "a b c d e f" on board
-        if (LocalDatabaseService.preferences.developerMode) {
+        if (EnvironmentConfig.devMode) {
           notationPainterV.paint(
             canvas,
             _offset.translate(
@@ -131,7 +131,7 @@ class BoardPainter extends PiecesBasePainter {
           ),
         );
 
-        if (LocalDatabaseService.preferences.developerMode) {
+        if (EnvironmentConfig.devMode) {
           notationPainterH.paint(
             canvas,
             _offset.translate(
