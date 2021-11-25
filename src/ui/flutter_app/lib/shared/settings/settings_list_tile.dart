@@ -38,8 +38,6 @@ class SettingsListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool ltr = Directionality.of(context) == TextDirection.ltr;
-
     return ListTile(
       title: Text(
         titleString,
@@ -56,12 +54,13 @@ class SettingsListTile extends StatelessWidget {
             trailingColor?.value.toRadixString(16) ?? trailingString ?? '',
             style: TextStyle(backgroundColor: trailingColor),
           ),
-          Icon(
-            ltr
-                ? FluentIcons.chevron_right_24_regular
-                : FluentIcons.chevron_left_24_regular,
-            color: AppTheme.listTileSubtitleColor,
-          )
+          const Directionality(
+            textDirection: TextDirection.ltr,
+            child: Icon(
+              FluentIcons.chevron_right_24_regular,
+              color: AppTheme.listTileSubtitleColor,
+            ),
+          ),
         ],
       ),
       onTap: onTap,

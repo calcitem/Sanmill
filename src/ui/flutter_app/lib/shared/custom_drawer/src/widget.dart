@@ -235,14 +235,14 @@ class _CustomDrawerState extends State<CustomDrawer>
     if (!_captured) return;
 
     final screenSize = MediaQuery.of(context).size;
-    final rtl = Directionality.of(context) == TextDirection.rtl;
+    final ltr = Directionality.of(context) == TextDirection.ltr;
 
     _freshPosition = details.globalPosition;
 
     final diff = (_freshPosition - _startPosition).dx;
 
     _animationController.value = _offsetValue +
-        (diff / (screenSize.width * _openRatio)) * (rtl ? -1 : 1);
+        (diff / (screenSize.width * _openRatio)) * (ltr ? 1 : -1);
   }
 
   void _handleDragEnd(DragEndDetails details) {

@@ -71,7 +71,6 @@ class _GamePageState extends State<GamePage>
   late AnimationController _animationController;
   late Animation<double> animation;
   bool disposed = false;
-  late bool ltr;
   late double boardWidth;
 
   static const String _tag = "[game_page]";
@@ -1237,15 +1236,18 @@ class _GamePageState extends State<GamePage>
       EngineType.testViaLAN: FluentIcons.wifi_1_24_filled,
     };
 
-    final iconColor = LocalDatabaseService.colorSettings.messageColor;
-
-    final iconRow = Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Icon(engineTypeToIconLeft[widget.engineType], color: iconColor),
-        Icon(iconArrow, color: iconColor),
-        Icon(engineTypeToIconRight[widget.engineType], color: iconColor),
-      ],
+    final iconRow = IconTheme(
+      data: IconThemeData(
+        color: LocalDatabaseService.colorSettings.messageColor,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(engineTypeToIconLeft[widget.engineType]),
+          Icon(iconArrow),
+          Icon(engineTypeToIconRight[widget.engineType]),
+        ],
+      ),
     );
 
     return Container(
@@ -1284,13 +1286,9 @@ class _GamePageState extends State<GamePage>
     if (gameInstance.position.phase == Phase.gameOver) {
       switch (gameInstance.position.winner) {
         case PieceColor.white:
-          return ltr
-              ? FluentIcons.toggle_left_24_regular
-              : FluentIcons.toggle_right_24_regular;
+          return FluentIcons.toggle_left_24_regular;
         case PieceColor.black:
-          return ltr
-              ? FluentIcons.toggle_right_24_regular
-              : FluentIcons.toggle_left_24_regular;
+          return FluentIcons.toggle_right_24_regular;
         default:
           return FluentIcons.handshake_24_regular;
       }
@@ -1456,9 +1454,7 @@ class _GamePageState extends State<GamePage>
   List<Widget> get historyNavToolbar {
     final takeBackAllButton = ToolbarItem(
       child: Icon(
-        ltr
-            ? FluentIcons.arrow_previous_24_regular
-            : FluentIcons.arrow_next_24_regular,
+        FluentIcons.arrow_previous_24_regular,
         semanticLabel: S.of(context).takeBackAll,
       ),
       onPressed: () => onTakeBackAllButtonPressed(false),
@@ -1466,9 +1462,7 @@ class _GamePageState extends State<GamePage>
 
     final takeBackButton = ToolbarItem(
       child: Icon(
-        ltr
-            ? FluentIcons.chevron_left_24_regular
-            : FluentIcons.chevron_right_24_regular,
+        FluentIcons.chevron_left_24_regular,
         semanticLabel: S.of(context).takeBack,
       ),
       onPressed: () async => onTakeBackButtonPressed(false),
@@ -1476,9 +1470,7 @@ class _GamePageState extends State<GamePage>
 
     final stepForwardButton = ToolbarItem(
       child: Icon(
-        ltr
-            ? FluentIcons.chevron_right_24_regular
-            : FluentIcons.chevron_left_24_regular,
+        FluentIcons.chevron_right_24_regular,
         semanticLabel: S.of(context).stepForward,
       ),
       onPressed: () async => onStepForwardButtonPressed(false),
@@ -1486,9 +1478,7 @@ class _GamePageState extends State<GamePage>
 
     final stepForwardAllButton = ToolbarItem(
       child: Icon(
-        ltr
-            ? FluentIcons.arrow_next_24_regular
-            : FluentIcons.arrow_previous_24_regular,
+        FluentIcons.arrow_next_24_regular,
         semanticLabel: S.of(context).stepForwardAll,
       ),
       onPressed: () async => onStepForwardAllButtonPressed(false),
@@ -1531,7 +1521,6 @@ class _GamePageState extends State<GamePage>
   void didChangeDependencies() {
     super.didChangeDependencies();
     screenPaddingH = _screenPaddingH;
-    ltr = Directionality.of(context) == TextDirection.ltr;
     _tip = S.of(context).welcome;
   }
 
