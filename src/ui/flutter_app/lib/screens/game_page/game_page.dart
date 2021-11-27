@@ -993,6 +993,7 @@ class _GamePageState extends State<GamePage>
           ),
           actions: <Widget>[
             TextButton(
+              key: const Key('infoDialogOkButton'),
               child:
                   Text(S.of(context).ok, style: AppTheme.moveHistoryTextStyle),
               onPressed: () => Navigator.pop(context),
@@ -1425,24 +1426,28 @@ class _GamePageState extends State<GamePage>
 
   List<Widget> get toolbar {
     final gameButton = ToolbarItem.icon(
+      key: const Key('gameButton'),
       onPressed: onGameButtonPressed,
       icon: const Icon(FluentIcons.table_simple_24_regular),
       label: Text(S.of(context).game),
     );
 
     final optionsButton = ToolbarItem.icon(
+      key: const Key('optionsButton'),
       onPressed: onOptionButtonPressed,
       icon: const Icon(FluentIcons.settings_24_regular),
       label: Text(S.of(context).options),
     );
 
     final moveButton = ToolbarItem.icon(
+      key: const Key('moveButton'),
       onPressed: onMoveButtonPressed,
       icon: const Icon(FluentIcons.calendar_agenda_24_regular),
       label: Text(S.of(context).move_number(0)),
     );
 
     final infoButton = ToolbarItem.icon(
+      key: const Key('infoButton'),
       onPressed: onInfoButtonPressed,
       icon: const Icon(FluentIcons.book_information_24_regular),
       label: Text(S.of(context).info),
