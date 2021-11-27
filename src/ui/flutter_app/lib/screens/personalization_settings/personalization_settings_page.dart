@@ -17,7 +17,6 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/color.dart';
@@ -26,16 +25,13 @@ import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
-import 'package:sanmill/shared/settings/settings_card.dart';
-import 'package:sanmill/shared/settings/settings_list_tile.dart';
-import 'package:sanmill/shared/settings/settings_switch_list_tile.dart';
+import 'package:sanmill/shared/settings/settings.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 part 'package:sanmill/screens/personalization_settings/animation_duration_slider.dart';
 part 'package:sanmill/screens/personalization_settings/board_boarder_line_width_slider.dart';
 part 'package:sanmill/screens/personalization_settings/board_inner_line_width_slider.dart';
 part 'package:sanmill/screens/personalization_settings/board_top_slider.dart';
-part 'package:sanmill/screens/personalization_settings/color_selector_list_tile.dart';
 part 'package:sanmill/screens/personalization_settings/font_size_slider.dart';
 part 'package:sanmill/screens/personalization_settings/language_picker.dart';
 part 'package:sanmill/screens/personalization_settings/piece_width_slider.dart';
@@ -118,85 +114,85 @@ class PersonalizationSettingsPage extends StatelessWidget {
 
     return SettingsCard(
       children: <Widget>[
-        _ColorSelectorListTile(
-          title: S.of(context).boardColor,
+        SettingsListTile.color(
+          titleString: S.of(context).boardColor,
           value: LocalDatabaseService.colorSettings.boardBackgroundColor,
           onChanged: (val) => LocalDatabaseService.colorSettings =
               _colorSettings.copyWith(boardBackgroundColor: val),
         ),
-        _ColorSelectorListTile(
-          title: S.of(context).backgroundColor,
+        SettingsListTile.color(
+          titleString: S.of(context).backgroundColor,
           value: LocalDatabaseService.colorSettings.darkBackgroundColor,
           onChanged: (val) => LocalDatabaseService.colorSettings =
               _colorSettings.copyWith(darkBackgroundColor: val),
         ),
-        _ColorSelectorListTile(
-          title: S.of(context).lineColor,
+        SettingsListTile.color(
+          titleString: S.of(context).lineColor,
           value: LocalDatabaseService.colorSettings.boardLineColor,
           onChanged: (val) => LocalDatabaseService.colorSettings =
               _colorSettings.copyWith(boardLineColor: val),
         ),
-        _ColorSelectorListTile(
-          title: S.of(context).whitePieceColor,
+        SettingsListTile.color(
+          titleString: S.of(context).whitePieceColor,
           value: LocalDatabaseService.colorSettings.whitePieceColor,
           onChanged: (val) => LocalDatabaseService.colorSettings =
               _colorSettings.copyWith(whitePieceColor: val),
         ),
-        _ColorSelectorListTile(
-          title: S.of(context).blackPieceColor,
+        SettingsListTile.color(
+          titleString: S.of(context).blackPieceColor,
           value: LocalDatabaseService.colorSettings.blackPieceColor,
           onChanged: (val) => LocalDatabaseService.colorSettings =
               _colorSettings.copyWith(blackPieceColor: val),
         ),
-        _ColorSelectorListTile(
-          title: S.of(context).pieceHighlightColor,
+        SettingsListTile.color(
+          titleString: S.of(context).pieceHighlightColor,
           value: LocalDatabaseService.colorSettings.pieceHighlightColor,
           onChanged: (val) => LocalDatabaseService.colorSettings =
               _colorSettings.copyWith(pieceHighlightColor: val),
         ),
-        _ColorSelectorListTile(
-          title: S.of(context).messageColor,
+        SettingsListTile.color(
+          titleString: S.of(context).messageColor,
           value: LocalDatabaseService.colorSettings.messageColor,
           onChanged: (val) => LocalDatabaseService.colorSettings =
               _colorSettings.copyWith(messageColor: val),
         ),
-        _ColorSelectorListTile(
-          title: S.of(context).drawerColor,
+        SettingsListTile.color(
+          titleString: S.of(context).drawerColor,
           value: LocalDatabaseService.colorSettings.drawerColor,
           onChanged: (val) => LocalDatabaseService.colorSettings =
               _colorSettings.copyWith(drawerColor: val),
         ),
         // TODO: [Leptopdoa] add database migration for drawerBackgroundColor
-        _ColorSelectorListTile(
-          title: S.of(context).drawerTextColor,
+        SettingsListTile.color(
+          titleString: S.of(context).drawerTextColor,
           value: LocalDatabaseService.colorSettings.drawerTextColor,
           onChanged: (val) => LocalDatabaseService.colorSettings =
               _colorSettings.copyWith(drawerTextColor: val),
         ),
-        _ColorSelectorListTile(
-          title: S.of(context).drawerHighlightItemColor,
+        SettingsListTile.color(
+          titleString: S.of(context).drawerHighlightItemColor,
           value: LocalDatabaseService.colorSettings.drawerHighlightItemColor,
           onChanged: (val) =>
               LocalDatabaseService.colorSettings = _colorSettings.copyWith(
             drawerHighlightItemColor: val,
           ),
         ),
-        _ColorSelectorListTile(
-          title: S.of(context).mainToolbarBackgroundColor,
+        SettingsListTile.color(
+          titleString: S.of(context).mainToolbarBackgroundColor,
           value: LocalDatabaseService.colorSettings.mainToolbarBackgroundColor,
           onChanged: (val) =>
               LocalDatabaseService.colorSettings = _colorSettings.copyWith(
             mainToolbarBackgroundColor: val,
           ),
         ),
-        _ColorSelectorListTile(
-          title: S.of(context).mainToolbarIconColor,
+        SettingsListTile.color(
+          titleString: S.of(context).mainToolbarIconColor,
           value: LocalDatabaseService.colorSettings.mainToolbarIconColor,
           onChanged: (val) => LocalDatabaseService.colorSettings =
               _colorSettings.copyWith(mainToolbarIconColor: val),
         ),
-        _ColorSelectorListTile(
-          title: S.of(context).navigationToolbarBackgroundColor,
+        SettingsListTile.color(
+          titleString: S.of(context).navigationToolbarBackgroundColor,
           value: LocalDatabaseService
               .colorSettings.navigationToolbarBackgroundColor,
           onChanged: (val) =>
@@ -204,8 +200,8 @@ class PersonalizationSettingsPage extends StatelessWidget {
             navigationToolbarBackgroundColor: val,
           ),
         ),
-        _ColorSelectorListTile(
-          title: S.of(context).navigationToolbarIconColor,
+        SettingsListTile.color(
+          titleString: S.of(context).navigationToolbarIconColor,
           value: LocalDatabaseService.colorSettings.navigationToolbarIconColor,
           onChanged: (val) =>
               LocalDatabaseService.colorSettings = _colorSettings.copyWith(
@@ -236,19 +232,19 @@ class PersonalizationSettingsPage extends StatelessWidget {
             ),
           ),
         ),
-        SettingsSwitchListTile(
+        SettingsListTile.switchTile(
           value: _display.isPieceCountInHandShown,
           onChanged: (val) => LocalDatabaseService.display =
               _display.copyWith(isPieceCountInHandShown: val),
           titleString: S.of(context).isPieceCountInHandShown,
         ),
-        SettingsSwitchListTile(
+        SettingsListTile.switchTile(
           value: _display.isNotationsShown,
           onChanged: (val) => LocalDatabaseService.display =
               _display.copyWith(isNotationsShown: val),
           titleString: S.of(context).isNotationsShown,
         ),
-        SettingsSwitchListTile(
+        SettingsListTile.switchTile(
           value: _display.isHistoryNavigationToolbarShown,
           onChanged: (val) => LocalDatabaseService.display =
               _display.copyWith(isHistoryNavigationToolbarShown: val),
@@ -286,7 +282,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
           titleString: S.of(context).animationDuration,
           onTap: () => setAnimationDuration(context),
         ),
-        SettingsSwitchListTile(
+        SettingsListTile.switchTile(
           value: LocalDatabaseService.display.standardNotationEnabled,
           onChanged: (val) => LocalDatabaseService.display =
               _display.copyWith(standardNotationEnabled: val),
