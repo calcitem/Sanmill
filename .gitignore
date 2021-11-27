@@ -427,3 +427,8 @@ cov-int
 
 # Dev-C++ files
 *.layout
+
+# Code::Blocks files
+.cccc
+*Results.xml
+*.depend
