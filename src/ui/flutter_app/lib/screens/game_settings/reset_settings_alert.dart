@@ -26,11 +26,7 @@ class _ResetSettingsAlert extends StatelessWidget {
   Future<void> _restore(BuildContext context) async {
     Navigator.pop(context);
 
-    // TODO: [Leptopoda] we should probably enable database deletion in monkey tests
-    //as the new storage backend supports deletion without needing an app restart
-    if (!EnvironmentConfig.monkeyTest) {
-      await LocalDatabaseService.resetStorage();
-    }
+    await LocalDatabaseService.resetStorage();
   }
 
   @override
