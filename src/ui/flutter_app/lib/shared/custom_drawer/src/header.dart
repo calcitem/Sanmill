@@ -18,7 +18,6 @@
 
 part of '../custom_drawer.dart';
 
-// TODO: [Leptopoda] maybe extend DrawerHeader
 class CustomDrawerHeader extends StatelessWidget {
   const CustomDrawerHeader({
     Key? key,

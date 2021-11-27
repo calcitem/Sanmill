@@ -52,7 +52,6 @@ class CustomDrawer extends StatefulWidget {
 
 class _CustomDrawerState extends State<CustomDrawer>
     with SingleTickerProviderStateMixin {
-  // TODO: [Leptopoda] maybe integrate the animation controller into the drawerController
   late final CustomDrawerController _controller;
   late final AnimationController _animationController;
   late final Animation<Offset> _childSlideAnimation;

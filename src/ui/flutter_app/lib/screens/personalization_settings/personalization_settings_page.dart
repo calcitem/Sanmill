@@ -312,7 +312,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
             ),
             const CustomSpacer(),
             Text(S.of(context).color, style: AppTheme.settingsHeaderStyle),
-            // TODO: [Leptopoda] remove the value listenable as we access the ColorSettings via Them.of(constant)
+            // TODO [Leptopoda]: remove the value listenable as we access the ColorSettings via Them.of(constant)
             ValueListenableBuilder(
               valueListenable: LocalDatabaseService.listenColorSettings,
               builder: _buildColor,
