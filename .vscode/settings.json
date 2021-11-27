@@ -127,6 +127,8 @@
         "VERSIONINFO",
         "VNNI",
         "vsync",
+        "wdio",
+        "webdriverio",
         "winbase",
         "winres",
         "winver",
