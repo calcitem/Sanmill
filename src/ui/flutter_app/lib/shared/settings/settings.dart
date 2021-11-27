@@ -16,35 +16,14 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/// Although marked as a library this package is tightly integrated into the app
+library settings;
+
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
-class SettingsSwitchListTile extends StatelessWidget {
-  const SettingsSwitchListTile({
-    Key? key,
-    required this.value,
-    required this.onChanged,
-    required this.titleString,
-    this.subtitleString,
-  }) : super(key: key);
-
-  final bool value;
-  final String titleString;
-  final String? subtitleString;
-  final ValueChanged<bool>? onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return SwitchListTile(
-      value: value,
-      onChanged: onChanged,
-      title: Text(
-        titleString,
-        style: AppTheme.listTileTitleStyle,
-      ),
-      subtitle: subtitleString != null
-          ? Text(subtitleString!, style: AppTheme.listTileSubtitleStyle)
-          : null,
-    );
-  }
-}
+part 'src/card.dart';
+part 'src/list_tile.dart';

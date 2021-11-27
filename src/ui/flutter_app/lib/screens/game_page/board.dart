@@ -51,10 +51,9 @@ class Board extends StatelessWidget {
           child: Text(
             squareDesc[index],
             style: const TextStyle(
+              color:
+                  EnvironmentConfig.devMode ? Colors.red : Colors.transparent,
               // TODO: [Leptopoda] instead of making it transparent when not needed we should not show it in the first place
-              color: EnvironmentConfig.devMode
-                  ? Colors.red
-                  : Colors.transparent,
             ),
           ),
         ),

@@ -24,9 +24,7 @@ import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
-import 'package:sanmill/shared/settings/settings_card.dart';
-import 'package:sanmill/shared/settings/settings_list_tile.dart';
-import 'package:sanmill/shared/settings/settings_switch_list_tile.dart';
+import 'package:sanmill/shared/settings/settings.dart';
 import 'package:sanmill/shared/snackbar.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
@@ -213,7 +211,7 @@ class RuleSettingsPage extends StatelessWidget {
               trailingString: _rules.piecesCount.toString(),
               onTap: () => _setNTotalPiecesEachSide(context, _rules),
             ),
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _rules.hasDiagonalLines,
               onChanged: (val) => _setHasDiagonalLines(_rules, val),
               titleString: S.of(context).hasDiagonalLines,
@@ -231,7 +229,7 @@ class RuleSettingsPage extends StatelessWidget {
               trailingString: _rules.endgameNMoveRule.toString(),
               onTap: () => _setEndgameNMoveRule(context, _rules),
             ),
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _rules.threefoldRepetitionRule,
               onChanged: (val) => _setThreefoldRepetitionRule(_rules, val),
               titleString: S.of(context).threefoldRepetitionRule,
@@ -243,13 +241,13 @@ class RuleSettingsPage extends StatelessWidget {
         Text(S.of(context).placing, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _rules.hasBannedLocations,
               onChanged: (val) => _setHasBannedLocations(_rules, val),
               titleString: S.of(context).hasBannedLocations,
               subtitleString: S.of(context).hasBannedLocations_Detail,
             ),
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _rules.isWhiteLoseButNotDrawWhenBoardFull,
               onChanged: (val) =>
                   _setIsWhiteLoseButNotDrawWhenBoardFull(_rules, val),
@@ -257,7 +255,7 @@ class RuleSettingsPage extends StatelessWidget {
               subtitleString:
                   S.of(context).isWhiteLoseButNotDrawWhenBoardFull_Detail,
             ),
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _rules.mayOnlyRemoveUnplacedPieceInPlacingPhase,
               onChanged: (val) =>
                   _setMayOnlyRemoveUnplacedPieceInPlacingPhase(_rules, val),
@@ -271,20 +269,20 @@ class RuleSettingsPage extends StatelessWidget {
         SettingsCard(
           children: <Widget>[
             if (EnvironmentConfig.devMode)
-              SettingsSwitchListTile(
+              SettingsListTile.switchTile(
                 value: _rules.mayMoveInPlacingPhase,
                 onChanged: (val) =>
                     _setMayMoveInPlacingPhase(context, _rules, val),
                 titleString: S.of(context).mayMoveInPlacingPhase,
                 subtitleString: S.of(context).mayMoveInPlacingPhase_Detail,
               ),
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _rules.isDefenderMoveFirst,
               onChanged: (val) => _setIsDefenderMoveFirst(_rules, val),
               titleString: S.of(context).isDefenderMoveFirst,
               subtitleString: S.of(context).isDefenderMoveFirst_Detail,
             ),
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _rules.isLoseButNotChangeSideWhenNoWay,
               onChanged: (val) =>
                   _setIsLoseButNotChangeSideWhenNoWay(_rules, val),
@@ -298,7 +296,7 @@ class RuleSettingsPage extends StatelessWidget {
         Text(S.of(context).mayFly, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _rules.mayFly,
               onChanged: (val) => _setAllowFlyingAllowed(_rules, val),
               titleString: S.of(context).mayFly,
@@ -316,13 +314,13 @@ class RuleSettingsPage extends StatelessWidget {
         Text(S.of(context).removing, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _rules.mayRemoveFromMillsAlways,
               onChanged: (val) => _setAllowRemovePieceInMill(_rules, val),
               titleString: S.of(context).mayRemoveFromMillsAlways,
               subtitleString: S.of(context).mayRemoveFromMillsAlways_Detail,
             ),
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _rules.mayRemoveMultiple,
               onChanged: (val) =>
                   _setAllowRemoveMultiPiecesWhenCloseMultiMill(_rules, val),

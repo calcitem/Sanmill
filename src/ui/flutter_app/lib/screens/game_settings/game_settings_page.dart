@@ -27,9 +27,7 @@ import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
-import 'package:sanmill/shared/settings/settings_card.dart';
-import 'package:sanmill/shared/settings/settings_list_tile.dart';
-import 'package:sanmill/shared/settings/settings_switch_list_tile.dart';
+import 'package:sanmill/shared/settings/settings.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 part 'package:sanmill/screens/game_settings/algorithm_modal.dart';
@@ -152,17 +150,17 @@ class GameSettingsPage extends StatelessWidget {
       Text(S.of(context).gameSettings, style: AppTheme.settingsHeaderStyle),
       SettingsCard(
         children: <Widget>[
-          SettingsSwitchListTile(
+          SettingsListTile.switchTile(
             value: _preferences.isAutoRestart,
             onChanged: (val) => _setIsAutoRestart(_preferences, val),
             titleString: S.of(context).isAutoRestart,
           ),
-          SettingsSwitchListTile(
+          SettingsListTile.switchTile(
             value: _preferences.toneEnabled,
             onChanged: (val) => _setTone(_preferences, val),
             titleString: S.of(context).playSoundsInTheGame,
           ),
-          SettingsSwitchListTile(
+          SettingsListTile.switchTile(
             value: _preferences.keepMuteWhenTakingBack,
             onChanged: (val) => _setKeepMuteWhenTakingBack(_preferences, val),
             titleString: S.of(context).keepMuteWhenTakingBack,
@@ -177,7 +175,7 @@ class GameSettingsPage extends StatelessWidget {
         Text(S.of(context).whoMovesFirst, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: !_preferences.aiMovesFirst,
               onChanged: (val) => _setWhoMovesFirst(_preferences, !val),
               titleString: _preferences.aiMovesFirst
@@ -210,22 +208,22 @@ class GameSettingsPage extends StatelessWidget {
               trailingString: _algorithmNames[_preferences.algorithm],
               onTap: () => _setAlgorithm(context, _preferences),
             ),
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _preferences.drawOnHumanExperience,
               onChanged: (val) => _setDrawOnHumanExperience(_preferences, val),
               titleString: S.of(context).drawOnHumanExperience,
             ),
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _preferences.considerMobility,
               onChanged: (val) => _setConsiderMobility(_preferences, val),
               titleString: S.of(context).considerMobility,
             ),
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _preferences.aiIsLazy,
               onChanged: (val) => _setAiIsLazy(_preferences, val),
               titleString: S.of(context).passive,
             ),
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _preferences.shufflingEnabled,
               onChanged: (val) => _setShufflingEnabled(_preferences, val),
               titleString: S.of(context).shufflingEnabled,
@@ -237,7 +235,7 @@ class GameSettingsPage extends StatelessWidget {
         Text(S.of(context).accessibility, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[
-            SettingsSwitchListTile(
+            SettingsListTile.switchTile(
               value: _preferences.screenReaderSupport,
               onChanged: (val) => _setScreenReaderSupport(_preferences, val),
               titleString: S.of(context).screenReaderSupport,
