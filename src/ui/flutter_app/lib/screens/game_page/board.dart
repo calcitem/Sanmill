@@ -51,9 +51,7 @@ class Board extends StatelessWidget {
           child: Text(
             squareDesc[index],
             style: const TextStyle(
-              color:
-                  EnvironmentConfig.devMode ? Colors.red : Colors.transparent,
-              // TODO: [Leptopoda] instead of making it transparent when not needed we should not show it in the first place
+              color: Colors.red,
             ),
           ),
         ),
@@ -69,7 +67,7 @@ class Board extends StatelessWidget {
         blurIndex: gameInstance.blurIndex,
         animationValue: animationValue,
       ),
-      child: grid,
+      child: EnvironmentConfig.devMode ? grid : null,
     );
 
     final boardContainer = Container(
