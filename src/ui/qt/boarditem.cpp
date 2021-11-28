@@ -33,31 +33,15 @@ BoardItem::BoardItem(QGraphicsItem* parent)
         // The first position is the 12 o'clock direction of the inner ring,
         // which is sorted clockwise Then there is the middle ring and the outer
         // ring
-        int a = (f + 1) * LINE_INTERVAL;
+        int p = (f + 1) * LINE_INTERVAL;
 
-        position[f * RANK_NB + 0].rx() = 0;
-        position[f * RANK_NB + 0].ry() = -a;
+        int pt[][2] = { { 0, -p }, { p, -p }, { p, 0 }, { p, p }, { 0, p },
+            { -p, p }, { -p, 0 }, { -p, -p } };
 
-        position[f * RANK_NB + 1].rx() = a;
-        position[f * RANK_NB + 1].ry() = -a;
-
-        position[f * RANK_NB + 2].rx() = a;
-        position[f * RANK_NB + 2].ry() = 0;
-
-        position[f * RANK_NB + 3].rx() = a;
-        position[f * RANK_NB + 3].ry() = a;
-
-        position[f * RANK_NB + 4].rx() = 0;
-        position[f * RANK_NB + 4].ry() = a;
-
-        position[f * RANK_NB + 5].rx() = -a;
-        position[f * RANK_NB + 5].ry() = a;
-
-        position[f * RANK_NB + 6].rx() = -a;
-        position[f * RANK_NB + 6].ry() = 0;
-
-        position[f * RANK_NB + 7].rx() = -a;
-        position[f * RANK_NB + 7].ry() = -a;
+        for (int r = 0; r < RANK_NB; r++) {
+            position[f * RANK_NB + r].rx() = pt[r][0];
+            position[f * RANK_NB + r].ry() = pt[r][1];
+        }
     }
 }
 
@@ -173,19 +157,19 @@ QPointF BoardItem::nearestPosition(QPointF const pos)
     return nearestPos;
 }
 
-QPointF BoardItem::polar2pos(File file, Rank rank)
+QPointF BoardItem::polar2pos(File f, Rank r)
 {
-    return position[((int)file - 1) * RANK_NB + (int)rank - 1];
+    return position[((int)f - 1) * RANK_NB + (int)r - 1];
 }
 
-bool BoardItem::pos2polar(QPointF pos, File& file, Rank& rank)
+bool BoardItem::pos2polar(QPointF pos, File& f, Rank& r)
 {
     // Look for the nearest spot
     for (int sq = 0; sq < EFFECTIVE_SQUARE_NB; sq++) {
         // If the pos point is near the placing point
         if (QLineF(pos, position[sq]).length() < PIECE_SIZE / 6) {
-            file = File(sq / RANK_NB + 1);
-            rank = Rank(sq % RANK_NB + 1);
+            f = File(sq / RANK_NB + 1);
+            r = Rank(sq % RANK_NB + 1);
             return true;
         }
     }

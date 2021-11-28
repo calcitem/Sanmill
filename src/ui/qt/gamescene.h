@@ -31,9 +31,9 @@ public:
     explicit GameScene(QObject* parent = nullptr);
     ~GameScene() override;
 
-    QPointF polar2pos(File file, Rank rank);
+    QPointF polar2pos(File f, Rank r);
 
-    bool pos2polar(QPointF pos, File& file, Rank& rank);
+    bool pos2polar(QPointF pos, File& f, Rank& r);
 
     void setDiagonal(bool arg = true);
 
