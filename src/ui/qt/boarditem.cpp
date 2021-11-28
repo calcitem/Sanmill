@@ -29,35 +29,35 @@ BoardItem::BoardItem(QGraphicsItem* parent)
     setPos(0, 0);
 
     // Initialize 24 points
-    for (int r = 0; r < FILE_NB; r++) {
+    for (int f = 0; f < FILE_NB; f++) {
         // The first position is the 12 o'clock direction of the inner ring,
         // which is sorted clockwise Then there is the middle ring and the outer
         // ring
-        int a = (r + 1) * LINE_INTERVAL;
+        int a = (f + 1) * LINE_INTERVAL;
 
-        position[r * RANK_NB + 0].rx() = 0;
-        position[r * RANK_NB + 0].ry() = -a;
+        position[f * RANK_NB + 0].rx() = 0;
+        position[f * RANK_NB + 0].ry() = -a;
 
-        position[r * RANK_NB + 1].rx() = a;
-        position[r * RANK_NB + 1].ry() = -a;
+        position[f * RANK_NB + 1].rx() = a;
+        position[f * RANK_NB + 1].ry() = -a;
 
-        position[r * RANK_NB + 2].rx() = a;
-        position[r * RANK_NB + 2].ry() = 0;
+        position[f * RANK_NB + 2].rx() = a;
+        position[f * RANK_NB + 2].ry() = 0;
 
-        position[r * RANK_NB + 3].rx() = a;
-        position[r * RANK_NB + 3].ry() = a;
+        position[f * RANK_NB + 3].rx() = a;
+        position[f * RANK_NB + 3].ry() = a;
 
-        position[r * RANK_NB + 4].rx() = 0;
-        position[r * RANK_NB + 4].ry() = a;
+        position[f * RANK_NB + 4].rx() = 0;
+        position[f * RANK_NB + 4].ry() = a;
 
-        position[r * RANK_NB + 5].rx() = -a;
-        position[r * RANK_NB + 5].ry() = a;
+        position[f * RANK_NB + 5].rx() = -a;
+        position[f * RANK_NB + 5].ry() = a;
 
-        position[r * RANK_NB + 6].rx() = -a;
-        position[r * RANK_NB + 6].ry() = 0;
+        position[f * RANK_NB + 6].rx() = -a;
+        position[f * RANK_NB + 6].ry() = 0;
 
-        position[r * RANK_NB + 7].rx() = -a;
-        position[r * RANK_NB + 7].ry() = -a;
+        position[f * RANK_NB + 7].rx() = -a;
+        position[f * RANK_NB + 7].ry() = -a;
     }
 }
 
@@ -118,21 +118,21 @@ void BoardItem::paint(
     // No brush
     painter->setBrush(Qt::NoBrush);
 
-    for (uint8_t i = 0; i < FILE_NB; i++) {
+    for (uint8_t f = 0; f < FILE_NB; f++) {
         // Draw three boxes
-        painter->drawPolygon(position + i * RANK_NB, RANK_NB);
+        painter->drawPolygon(position + f * RANK_NB, RANK_NB);
     }
 
     // Draw 4 vertical and horizontal lines
-    for (int i = 0; i < RANK_NB; i += 2) {
-        painter->drawLine(position[i], position[(FILE_NB - 1) * RANK_NB + i]);
+    for (int r = 0; r < RANK_NB; r += 2) {
+        painter->drawLine(position[r], position[(FILE_NB - 1) * RANK_NB + r]);
     }
 
     if (hasDiagonalLine) {
         // Draw 4 diagonal lines
-        for (int i = 1; i < RANK_NB; i += 2) {
+        for (int r = 1; r < RANK_NB; r += 2) {
             painter->drawLine(
-                position[i], position[(FILE_NB - 1) * RANK_NB + i]);
+                position[r], position[(FILE_NB - 1) * RANK_NB + r]);
         }
     }
 
@@ -181,11 +181,11 @@ QPointF BoardItem::polar2pos(File file, Rank rank)
 bool BoardItem::pos2polar(QPointF pos, File& file, Rank& rank)
 {
     // Look for the nearest spot
-    for (int i = 0; i < EFFECTIVE_SQUARE_NB; i++) {
+    for (int sq = 0; sq < EFFECTIVE_SQUARE_NB; sq++) {
         // If the pos point is near the placing point
-        if (QLineF(pos, position[i]).length() < PIECE_SIZE / 6) {
-            file = File(i / RANK_NB + 1);
-            rank = Rank(i % RANK_NB + 1);
+        if (QLineF(pos, position[sq]).length() < PIECE_SIZE / 6) {
+            file = File(sq / RANK_NB + 1);
+            rank = Rank(sq % RANK_NB + 1);
             return true;
         }
     }
