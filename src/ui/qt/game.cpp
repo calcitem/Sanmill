@@ -48,20 +48,7 @@ using std::to_string;
 Game::Game(GameScene& scene, QObject* parent)
     : QObject(parent)
     , scene(scene)
-    , currentPiece(nullptr)
-    , currentRow(-1)
-    , isEditing(false)
-    , isInverted(false)
-    , hasAnimation(true)
-    , durationTime(500)
-    , gameStartTime(0)
-    , gameEndTime(0)
-    , gameDurationTime(0)
-    , gameDurationCycle(0)
-    , timeID(0)
-    , ruleIndex(-1)
     , timeLimit(gameOptions.getMoveTime())
-    , stepsLimit(100)
 {
     // The background has been added to the style sheet of view, but not to
     // scene The difference is that the background in view does not change with

@@ -83,8 +83,8 @@ protected:
 private:
     enum Models model;
 
-    // Piece number, white and black all start from 1
-    int num { 1 };
+    // Piece number
+    int num { 0 };
 
     int size { 0 };
 
