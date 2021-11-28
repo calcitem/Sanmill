@@ -20,10 +20,26 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:sanmill/services/storage/adapters/algorithm_adapter.dart';
 
 part 'preferences.g.dart';
 
-/// Preferences data model
+enum Algorithms { AlphaBeta, PVS, MTDf }
+
+extension AlgorithmNames on Algorithms {
+  String get name {
+    switch (this) {
+      case Algorithms.AlphaBeta:
+        return 'Alpha-Beta';
+      case Algorithms.PVS:
+        return 'PVS';
+      case Algorithms.MTDf:
+        return 'MTD(f)';
+    }
+  }
+}
+
+/// Preferece data model
 ///
 /// holds the data needed for the normal Settings
 @HiveType(typeId: 2)
@@ -47,7 +63,7 @@ class Preferences {
     this.shufflingEnabled = true,
     this.learnEndgame = false,
     this.openingBook = false,
-    this.algorithm = 2,
+    this.algorithm = Algorithms.MTDf,
     this.drawOnHumanExperience = true,
     this.considerMobility = true,
     @Deprecated("we won't export the developer settings anymore. People should use the EnvironmentConfig.devMode")
@@ -87,8 +103,12 @@ class Preferences {
   final bool learnEndgame;
   @HiveField(14)
   final bool openingBook;
+  @JsonKey(
+    fromJson: AlgorithmAdapter.algorithmFromJson,
+    toJson: AlgorithmAdapter.algorithmToJson,
+  )
   @HiveField(15)
-  final int algorithm;
+  final Algorithms algorithm;
   @HiveField(16)
   final bool drawOnHumanExperience;
   @HiveField(17)

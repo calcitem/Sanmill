@@ -25,8 +25,8 @@ class _AlgorithmModal extends StatelessWidget {
     required this.onChanged,
   }) : super(key: key);
 
-  final int algorithm;
-  final Function(int?)? onChanged;
+  final Algorithms algorithm;
+  final Function(Algorithms?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -38,19 +38,19 @@ class _AlgorithmModal extends StatelessWidget {
           RadioListTile(
             title: const Text('Alpha-Beta'),
             groupValue: algorithm,
-            value: 0,
+            value: Algorithms.AlphaBeta,
             onChanged: onChanged,
           ),
           RadioListTile(
             title: const Text('PVS'),
             groupValue: algorithm,
-            value: 1,
+            value: Algorithms.PVS,
             onChanged: onChanged,
           ),
           RadioListTile(
             title: const Text('MTD(f)'),
             groupValue: algorithm,
-            value: 2,
+            value: Algorithms.MTDf,
             onChanged: onChanged,
           ),
         ],
