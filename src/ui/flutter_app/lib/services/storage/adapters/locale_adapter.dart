@@ -41,9 +41,9 @@ class LocaleAdapter extends TypeAdapter<Locale?> {
     }
   }
 
-  static String? colorToJson(Locale? locale) => locale?.languageCode;
-  static Locale? colorFromJson(String? value) {
-    if (value != null) {
+  static String? localeToJson(Locale? locale) => locale?.languageCode;
+  static Locale? localeFromJson(String? value) {
+    if (value != null && value != "Default") {
       return Locale(value);
     }
   }

@@ -51,8 +51,8 @@ class Display {
   /// the uses locale
   @HiveField(0)
   @JsonKey(
-    fromJson: LocaleAdapter.colorFromJson,
-    toJson: LocaleAdapter.colorToJson,
+    fromJson: LocaleAdapter.localeFromJson,
+    toJson: LocaleAdapter.localeToJson,
   )
   final Locale? languageCode;
 

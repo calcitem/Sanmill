@@ -23,7 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/preferences.dart';
-import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
@@ -81,7 +80,7 @@ class GameSettingsPage extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       builder: (_) => _AlgorithmModal(
-        algorithm: _preferences.algorithm,
+        algorithm: _preferences.algorithm!,
         onChanged: _callback,
       ),
     );
@@ -202,7 +201,7 @@ class GameSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile(
               titleString: S.of(context).algorithm,
-              trailingString: _preferences.algorithm.name,
+              trailingString: _preferences.algorithm!.name,
               onTap: () => _setAlgorithm(context, _preferences),
             ),
             SettingsListTile.switchTile(

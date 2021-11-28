@@ -16,23 +16,31 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/foundation.dart' show kIsWeb, ValueListenable;
+import 'dart:convert' show jsonDecode;
+import 'dart:io' show File;
+
+import 'package:flutter/foundation.dart'
+    show ValueListenable, debugPrint, kIsWeb;
 import 'package:flutter/material.dart' show Color, Locale;
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/models/color.dart';
 import 'package:sanmill/models/display.dart';
 import 'package:sanmill/models/preferences.dart';
 import 'package:sanmill/models/rules.dart';
 import 'package:sanmill/services/storage/adapters/color_adapter.dart';
 import 'package:sanmill/services/storage/adapters/locale_adapter.dart';
-import 'package:sanmill/services/storage/storage_v1.dart';
+import 'package:sanmill/shared/constants.dart';
+
+part 'package:sanmill/services/storage/storage_migration.dart';
 
 /// Helpers to handle local data storage
 class LocalDatabaseService {
   const LocalDatabaseService._();
 
   /// [ColorSettings] box reference
-  static late Box<ColorSettings> _colorSettingsBox;
+  static late final Box<ColorSettings> _colorSettingsBox;
 
   /// key at which the [ColorSettings] will be saved in the [_colorSettingsBox]
   static const String colorSettingsKey = 'settings';
@@ -41,7 +49,7 @@ class LocalDatabaseService {
   static const String _colorSettingsBoxName = 'colors';
 
   /// [Display] box reference
-  static late Box<Display> _displayBox;
+  static late final Box<Display> _displayBox;
 
   /// key at which the [Display] will be saved in the [_displayBox]
   static const String displayKey = 'settings';
@@ -50,7 +58,7 @@ class LocalDatabaseService {
   static const String _displayBoxName = 'display';
 
   /// [Preferences] box reference
-  static late Box<Preferences> _preferencesBox;
+  static late final Box<Preferences> _preferencesBox;
 
   /// key at which the [Preferences] will be saved in the [_preferencesBox]
   static const String preferencesKey = 'settings';
@@ -59,7 +67,7 @@ class LocalDatabaseService {
   static const String _preferencesBoxName = 'preferences';
 
   /// [Rules] box reference
-  static late Box<Rules> _rulesBox;
+  static late final Box<Rules> _rulesBox;
 
   /// key at which the [Rules] will be saved in the [_rulesBox]
   static const String rulesKey = 'settings';
@@ -75,6 +83,7 @@ class LocalDatabaseService {
     await _initPreferences();
     await _initRules();
     DatabaseV1.initRules();
+    await _DatabaseMigrator.migrate();
   }
 
   /// resets the storage
