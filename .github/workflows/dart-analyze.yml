@@ -2,8 +2,8 @@ name: Dart Analyze
 
 on:
   push:
-  pull_request:
-    branches: [ master ]
+    paths:
+      - 'src/ui/flutter_app/**'
 
 jobs:
   linter:
