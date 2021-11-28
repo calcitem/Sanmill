@@ -22,7 +22,6 @@
 
 PieceItem::PieceItem(QGraphicsItem* parent)
     : QGraphicsItem(parent)
-    , num(0)
 {
     Q_UNUSED(parent)
     setFlags(ItemIsSelectable

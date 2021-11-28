@@ -20,6 +20,7 @@
 #include <QGraphicsScene>
 
 #include "config.h"
+#include "graphicsconst.h"
 #include "types.h"
 
 class BoardItem;
@@ -38,10 +39,12 @@ public:
     void setDiagonal(bool arg = true);
 
     // Position of player 1's own board and opponent's board
-    const QPointF pos_p1, pos_p1_g;
+    const QPointF pos_p1 { LINE_INTERVAL * 4, LINE_INTERVAL * 6 };
+    const QPointF pos_p1_g { LINE_INTERVAL * (-4), LINE_INTERVAL * 6 };
 
     // Position of player 2's own board and opponent's board
-    const QPointF pos_p2, pos_p2_g;
+    const QPointF pos_p2 { LINE_INTERVAL * (-4), LINE_INTERVAL*(-6) };
+    const QPointF pos_p2_g { LINE_INTERVAL * 4, LINE_INTERVAL*(-6) };
 
 protected:
     // void keyPressEvent(QKeyEvent *keyEvent);

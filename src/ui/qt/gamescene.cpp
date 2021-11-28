@@ -27,10 +27,6 @@
 
 GameScene::GameScene(QObject* parent)
     : QGraphicsScene(parent)
-    , pos_p1(LINE_INTERVAL * 4, LINE_INTERVAL * 6)
-    , pos_p1_g(LINE_INTERVAL * (-4), LINE_INTERVAL * 6)
-    , pos_p2(LINE_INTERVAL * (-4), LINE_INTERVAL * (-6))
-    , pos_p2_g(LINE_INTERVAL * 4, LINE_INTERVAL * (-6))
 {
     board = new BoardItem;
     board->setDiagonal(false);

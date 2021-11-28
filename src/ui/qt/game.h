@@ -398,16 +398,16 @@ private:
     vector<PieceItem*> pieceList;
 
     // Current pieces
-    PieceItem* currentPiece;
+    PieceItem* currentPiece {nullptr};
 
     // Current browsing score line
-    int currentRow;
+    int currentRow {-1};
 
     // Is it in "Edit game" state
-    bool isEditing;
+    bool isEditing {false};
 
     // Reverse white and black
-    bool isInverted;
+    bool isInverted {false};
 
 public:
     const QString SETTINGS_FILE = "settings.ini";
@@ -431,19 +431,19 @@ private:
     bool fixWindowSize;
 
     // Is there a falling animation
-    bool hasAnimation;
+    bool hasAnimation {true};
 
     // Animation duration
-    int durationTime;
+    int durationTime {500};
 
     // Game start time
-    TimePoint gameStartTime;
+    TimePoint gameStartTime {0};
 
     // Game end time
-    TimePoint gameEndTime;
+    TimePoint gameEndTime {0};
 
     // Game duration
-    TimePoint gameDurationTime;
+    TimePoint gameDurationTime {0};
 
     // Game start cycle
     stopwatch::rdtscp_clock::time_point gameStartCycle;
@@ -452,7 +452,7 @@ private:
     stopwatch::rdtscp_clock::time_point gameEndCycle;
 
     // Game duration
-    stopwatch::rdtscp_clock::duration gameDurationCycle;
+    stopwatch::rdtscp_clock::duration gameDurationCycle {0};
 
     // Time dependent
     time_t startTime;
@@ -472,16 +472,16 @@ private:
     bool isAiFirstMove { false };
 
     // Timer ID
-    int timeID;
+    int timeID {0};
 
     // Rule number
-    int ruleIndex;
+    int ruleIndex {-1};
 
     // Rule time limit (seconds)
     int timeLimit;
 
     // Rule step limit
-    int stepsLimit;
+    int stepsLimit {100};
 
     // Player's remaining time (seconds)
     time_t remainingTime[COLOR_NB];
