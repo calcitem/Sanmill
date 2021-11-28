@@ -30,14 +30,14 @@
       ]
     },
     {
-      "name": "Sanmill-monkey",
+      "name": "Sanmill-test",
       "type": "dart",
       "request": "launch",
       "cwd": "src/ui/flutter_app",
       "program": "lib/main.dart",
       "args": [
         "--dart-define",
-        "monkey_test=true"
+        "test=true"
       ]
     },
     {
