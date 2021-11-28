@@ -237,11 +237,11 @@ void Game::gameStart()
 void Game::gameReset()
 {
     while (aiThread[WHITE]->searching || aiThread[BLACK]->searching) {
-        loggerDebug(".");
+        debugPrintf(".");
         QThread::msleep(100);
     }
 
-    loggerDebug("\n");
+    debugPrintf("\n");
 
     if (timeID != 0)
         killTimer(timeID);
@@ -620,7 +620,7 @@ void Game::setAlphaBetaAlgorithm(bool enabled)
     if (enabled) {
         gameOptions.setAlgorithm(0);
         settings->setValue("Options/Algorithm", 0);
-        loggerDebug("Algorithm is changed to Alpha-Beta.\n");
+        debugPrintf("Algorithm is changed to Alpha-Beta.\n");
     }
 }
 
@@ -629,7 +629,7 @@ void Game::setPvsAlgorithm(bool enabled)
     if (enabled) {
         gameOptions.setAlgorithm(1);
         settings->setValue("Options/Algorithm", 1);
-        loggerDebug("Algorithm is changed to PVS.\n");
+        debugPrintf("Algorithm is changed to PVS.\n");
     }
 }
 
@@ -638,7 +638,7 @@ void Game::setMtdfAlgorithm(bool enabled)
     if (enabled) {
         gameOptions.setAlgorithm(2);
         settings->setValue("Options/Algorithm", 2);
-        loggerDebug("Algorithm is changed to MTD(f).\n");
+        debugPrintf("Algorithm is changed to MTD(f).\n");
     }
 }
 
@@ -778,7 +778,7 @@ void Game::mirror()
         manualListModel.setData(manualListModel.index(row++), str.c_str());
     }
 
-    loggerDebug("list: %d\n", row);
+    debugPrintf("list: %d\n", row);
 
     // Update display
     if (currentRow == row - 1)
@@ -1173,7 +1173,7 @@ bool Game::command(const string& cmd, bool update /* = true */)
 #ifdef MADWEASEL_MUEHLE_RULE
     if (position.get_phase() != Phase::gameOver) {
 #endif // MADWEASEL_MUEHLE_RULE
-        loggerDebug("Computer: %s\n\n", cmd.c_str());
+        debugPrintf("Computer: %s\n\n", cmd.c_str());
 
         moveHistory.emplace_back(cmd);
 
@@ -1253,16 +1253,16 @@ bool Game::command(const string& cmd, bool update /* = true */)
 
         gameEndCycle = stopwatch::rdtscp_clock::now();
 
-        loggerDebug("Game Duration Time: %lldms\n", gameDurationTime);
+        debugPrintf("Game Duration Time: %lldms\n", gameDurationTime);
 
 #ifdef TIME_STAT
-        loggerDebug("Sort Time: %I64d + %I64d = %I64dms\n",
+        debugPrintf("Sort Time: %I64d + %I64d = %I64dms\n",
             aiThread[WHITE]->sortTime, aiThread[BLACK]->sortTime,
             (aiThread[WHITE]->sortTime + aiThread[BLACK]->sortTime));
         aiThread[WHITE]->sortTime = aiThread[BLACK]->sortTime = 0;
 #endif // TIME_STAT
 #ifdef CYCLE_STAT
-        loggerDebug("Sort Cycle: %ld + %ld = %ld\n", aiThread[WHITE]->sortCycle,
+        debugPrintf("Sort Cycle: %ld + %ld = %ld\n", aiThread[WHITE]->sortCycle,
             aiThread[BLACK]->sortCycle,
             (aiThread[WHITE]->sortCycle + aiThread[BLACK]->sortCycle));
         aiThread[WHITE]->sortCycle = aiThread[BLACK]->sortCycle = 0;
@@ -1270,9 +1270,9 @@ bool Game::command(const string& cmd, bool update /* = true */)
 
 #if 0
             gameDurationCycle = gameEndCycle - gameStartCycle;
-            loggerDebug("Game Start Cycle: %u\n", gameStartCycle);
-            loggerDebug("Game End Cycle: %u\n", gameEndCycle);
-            loggerDebug("Game Duration Cycle: %u\n", gameDurationCycle);
+            debugPrintf("Game Start Cycle: %u\n", gameStartCycle);
+            debugPrintf("Game End Cycle: %u\n", gameEndCycle);
+            debugPrintf("Game Duration Cycle: %u\n", gameDurationCycle);
 #endif
 
 #ifdef TRANSPOSITION_TABLE_DEBUG
@@ -1281,19 +1281,19 @@ bool Game::command(const string& cmd, bool update /* = true */)
         size_t hashProbeCount_2
             = aiThread[BLACK]->ttHitCount + aiThread[BLACK]->ttMissCount;
 
-        loggerDebug(
+        debugPrintf(
             "[key 1] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
             hashProbeCount_1, aiThread[WHITE]->ttHitCount,
             aiThread[WHITE]->ttMissCount,
             aiThread[WHITE]->ttHitCount * 100 / hashProbeCount_1);
 
-        loggerDebug(
+        debugPrintf(
             "[key 2] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
             hashProbeCount_2, aiThread[BLACK]->ttHitCount,
             aiThread[BLACK]->ttMissCount,
             aiThread[BLACK]->ttHitCount * 100 / hashProbeCount_2);
 
-        loggerDebug(
+        debugPrintf(
             "[key +] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
             hashProbeCount_1 + hashProbeCount_2,
             aiThread[WHITE]->ttHitCount + aiThread[BLACK]->ttHitCount,
@@ -1374,10 +1374,10 @@ bool Game::phaseChange(int row, bool forceUpdate)
     int rows = manualListModel.rowCount();
     QStringList mlist = manualListModel.stringList();
 
-    loggerDebug("rows: %d current: %d\n", rows, row);
+    debugPrintf("rows: %d current: %d\n", rows, row);
 
     for (int i = 0; i <= row; i++) {
-        loggerDebug("%s\n", mlist.at(i).toStdString().c_str());
+        debugPrintf("%s\n", mlist.at(i).toStdString().c_str());
         position.command(mlist.at(i).toStdString().c_str());
     }
 
@@ -1700,11 +1700,11 @@ void Game::appendGameOverReasonToMoveHistory()
             ~position.winner);
         break;
     default:
-        loggerDebug("No Game Over Reason");
+        debugPrintf("No Game Over Reason");
         break;
     }
 
-    loggerDebug("%s\n", record);
+    debugPrintf("%s\n", record);
     moveHistory.emplace_back(record);
 }
 

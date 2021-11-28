@@ -36,7 +36,7 @@ void mergeEndgameFile(
 
     map1.dump(mergedFile);
 
-    loggerDebug("[endgame] Merge %s to %s and save to %s\n", file2.c_str(),
+    debugPrintf("[endgame] Merge %s to %s and save to %s\n", file2.c_str(),
         file1.c_str(), mergedFile.c_str());
 }
 

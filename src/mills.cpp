@@ -248,17 +248,17 @@ void adjacent_squares_init() noexcept
 #ifdef DEBUG_MODE
     int sum = 0;
     for (int i = 0; i < SQUARE_NB; i++) {
-        loggerDebug("/* %d */ {", i);
+        debugPrintf("/* %d */ {", i);
         for (int j = 0; j < MD_NB; j++) {
             if (j == MD_NB - 1)
-                loggerDebug("%d", adjacentSquares[i][j]);
+                debugPrintf("%d", adjacentSquares[i][j]);
             else
-                loggerDebug("%d, ", adjacentSquares[i][j]);
+                debugPrintf("%d, ", adjacentSquares[i][j]);
             sum += adjacentSquares[i][j];
         }
-        loggerDebug("},\n");
+        debugPrintf("},\n");
     }
-    loggerDebug("sum = %d\n", sum);
+    debugPrintf("sum = %d\n", sum);
 #endif
 }
 

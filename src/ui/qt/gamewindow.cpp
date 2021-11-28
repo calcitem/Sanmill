@@ -126,7 +126,7 @@ void MillGameWindow::closeEvent(QCloseEvent* event)
     // Cancel auto run
     ui.actionAutoRun_A->setChecked(false);
 
-    loggerDebug("closed\n");
+    debugPrintf("closed\n");
 
     QMainWindow::closeEvent(event);
 }
@@ -413,28 +413,28 @@ void MillGameWindow::initialize()
         ui.actionPvsAlgorithm->setChecked(false);
         ui.actionMtdfAlgorithm->setChecked(false);
         ui.actionPerfect_AI->setChecked(false);
-        loggerDebug("Algorithm is Alpha-Beta.\n");
+        debugPrintf("Algorithm is Alpha-Beta.\n");
         break;
     case 1:
         ui.actionAlphaBetaAlgorithm->setChecked(false);
         ui.actionPvsAlgorithm->setChecked(true);
         ui.actionMtdfAlgorithm->setChecked(false);
         ui.actionPerfect_AI->setChecked(false);
-        loggerDebug("Algorithm is PVS.\n");
+        debugPrintf("Algorithm is PVS.\n");
         break;
     case 2:
         ui.actionAlphaBetaAlgorithm->setChecked(false);
         ui.actionPvsAlgorithm->setChecked(false);
         ui.actionMtdfAlgorithm->setChecked(true);
         ui.actionPerfect_AI->setChecked(false);
-        loggerDebug("Algorithm is MTD(f).\n");
+        debugPrintf("Algorithm is MTD(f).\n");
         break;
     default:
         ui.actionAlphaBetaAlgorithm->setChecked(false);
         ui.actionPvsAlgorithm->setChecked(false);
         ui.actionMtdfAlgorithm->setChecked(false);
         ui.actionPerfect_AI->setChecked(true);
-        loggerDebug("Algorithm is other.\n");
+        debugPrintf("Algorithm is other.\n");
         break;
     }
 

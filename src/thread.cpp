@@ -155,7 +155,7 @@ void Thread::idle_loop()
                 int ret = search();
 
                 if (ret == 3 || ret == 50 || ret == 10) {
-                    loggerDebug("Draw\n\n");
+                    debugPrintf("Draw\n\n");
                     strCommand = "draw";
                     emitCommand();
                 } else {
@@ -286,7 +286,7 @@ void Thread::analyze(Color c)
 
     const auto flags = cout.flags();
 
-    loggerDebug("Depth: %d\n\n", originDepth);
+    debugPrintf("Depth: %d\n\n", originDepth);
 
     const Position* p = rootPos;
 
@@ -451,7 +451,7 @@ string Thread::next_move()
 #ifdef TRANSPOSITION_TABLE_DEBUG
     size_t hashProbeCount = ttHitCount + ttMissCount;
     if (hashProbeCount) {
-        loggerDebug(
+        debugPrintf(
             "[posKey] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
             hashProbeCount, ttHitCount, ttMissCount,
             ttHitCount * 100 / hashProbeCount);
@@ -473,7 +473,7 @@ int Thread::saveEndgameHash(Key posKey, const Endgame& endgame)
     Key hashValue = endgameHashMap.insert(posKey, endgame);
     unsigned addr = hashValue * (sizeof(posKey) + sizeof(endgame));
 
-    loggerDebug("[endgame] Record 0x%08I32x (%d) to Endgame hash map, TTEntry: "
+    debugPrintf("[endgame] Record 0x%08I32x (%d) to Endgame hash map, TTEntry: "
                 "0x%08I32x, Address: 0x%08I32x\n",
         posKey, endgame.type, hashValue, addr);
 
@@ -487,7 +487,7 @@ void Thread::saveEndgameHashMapToFile()
     const string filename = "endgame.txt";
     endgameHashMap.dump(filename);
 
-    loggerDebug("[endgame] Dump hash map to file\n");
+    debugPrintf("[endgame] Dump hash map to file\n");
 }
 
 void Thread::loadEndgameFileToHashMap()
