@@ -26,7 +26,6 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/screens/about_page.dart';
 import 'package:sanmill/screens/game_page/game_page.dart';
 import 'package:sanmill/screens/game_settings/game_settings_page.dart';
@@ -63,14 +62,14 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with TickerProviderStateMixin {
   final _controller = CustomDrawerController();
 
-  Widget _screenView = const GamePage(EngineType.humanVsAi);
-  _DrawerIndex _drawerIndex = _DrawerIndex.humanVsAi;
-
   static const Map<_DrawerIndex, Widget> _gamePages = {
     _DrawerIndex.humanVsAi: GamePage(EngineType.humanVsAi),
     _DrawerIndex.humanVsHuman: GamePage(EngineType.humanVsHuman),
     _DrawerIndex.aiVsAi: GamePage(EngineType.aiVsAi),
   };
+
+  Widget _screenView = _gamePages[_DrawerIndex.humanVsAi]!;
+  _DrawerIndex _drawerIndex = _DrawerIndex.humanVsAi;
 
   /// callback from drawer for replace screen
   /// as user need with passing DrawerIndex (Enum index)
@@ -84,15 +83,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       _drawerIndex = index;
       switch (_drawerIndex) {
         case _DrawerIndex.humanVsAi:
-          gameInstance.setWhoIsAi(EngineType.humanVsAi);
           _screenView = _gamePages[_DrawerIndex.humanVsAi]!;
           break;
         case _DrawerIndex.humanVsHuman:
-          gameInstance.setWhoIsAi(EngineType.humanVsHuman);
           _screenView = _gamePages[_DrawerIndex.humanVsHuman]!;
           break;
         case _DrawerIndex.aiVsAi:
-          gameInstance.setWhoIsAi(EngineType.aiVsAi);
           _screenView = _gamePages[_DrawerIndex.aiVsAi]!;
           break;
         case _DrawerIndex.preferences:
