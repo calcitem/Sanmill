@@ -137,7 +137,7 @@ int Thread::search()
     }
 
     if (gameOptions.getMoveTime() > 0 || gameOptions.getIDSEnabled()) {
-        loggerDebug("IDS: ");
+        debugPrintf("IDS: ");
 
         const Depth depthBegin = 2;
         Value lastValue = VALUE_ZERO;
@@ -152,25 +152,25 @@ int Thread::search()
 #endif
 
             if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
-                // loggerDebug("Algorithm: MTD(f).\n");
+                // debugPrintf("Algorithm: MTD(f).\n");
                 value = MTDF(rootPos, ss, value, i, i, bestMove);
             } else {
                 value = qsearch(rootPos, ss, i, i, alpha, beta, bestMove);
             }
 
-            loggerDebug("%d(%d) ", value, value - lastValue);
+            debugPrintf("%d(%d) ", value, value - lastValue);
 
             lastValue = value;
 
             if (is_timeout(startTime)) {
-                loggerDebug("originDepth = %d, depth = %d\n", originDepth, i);
+                debugPrintf("originDepth = %d, depth = %d\n", originDepth, i);
                 goto out;
             }
         }
 
 #ifdef TIME_STAT
         timeEnd = chrono::steady_clock::now();
-        loggerDebug("\nIDS Time: %llds\n",
+        debugPrintf("\nIDS Time: %llds\n",
             chrono::duration_cast<chrono::seconds>(timeEnd - timeStart)
                 .count());
 #endif
@@ -198,7 +198,7 @@ out:
 
 #ifdef TIME_STAT
     timeEnd = chrono::steady_clock::now();
-    loggerDebug("Total Time: %llus\n",
+    debugPrintf("Total Time: %llus\n",
         chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
 #endif
 
@@ -397,7 +397,7 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth,
         // epsilon += pos->piece_to_remove_count();
 
         if (gameOptions.getAlgorithm() == 1 /* PVS */) {
-            // loggerDebug("Algorithm: PVS.\n");
+            // debugPrintf("Algorithm: PVS.\n");
 
             if (i == 0) {
                 if (after != before) {
@@ -429,7 +429,7 @@ Value qsearch(Position* pos, Sanmill::Stack<Position>& ss, Depth depth,
                 }
             }
         } else {
-            // loggerDebug("Algorithm: Alpha-Beta.\n");
+            // debugPrintf("Algorithm: Alpha-Beta.\n");
 
             if (after != before) {
                 value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth,
@@ -519,7 +519,7 @@ bool is_timeout(TimePoint startTime)
 
     if (elapsed > limit) {
 #ifdef _WIN32
-        loggerDebug("\nTimeout. elapsed = %lld\n", elapsed);
+        debugPrintf("\nTimeout. elapsed = %lld\n", elapsed);
 #endif
         return true;
     }

@@ -247,7 +247,7 @@ public:
 
         size_t nAfter = stat();
 
-        loggerDebug(
+        debugPrintf(
             "[key merge]\nnProcessed = %lld, nMerged = %lld,\n"
             "nSkip = %lld (nAllSame = %lld, nOnlyKeySame = %lld, nDiff = "
             "%lld)\n"
@@ -271,7 +271,7 @@ public:
             }
         }
 
-        loggerDebug("Hash map loaded from file (%lld/%d entries)\n", nEntries,
+        debugPrintf("Hash map loaded from file (%lld/%d entries)\n", nEntries,
             hashSize);
 
         return nEntries;

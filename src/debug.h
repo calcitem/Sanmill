@@ -30,10 +30,10 @@
 #define CSTYLE_DEBUG_OUTPUT
 
 #ifdef CSTYLE_DEBUG_OUTPUT
-#define loggerDebug printf
+#define debugPrintf printf
 #else
 #ifdef QT_GUI_LIB
-#define loggerDebug qDebug
+#define debugPrintf qDebug
 #endif
 #endif /* CSTYLE_DEBUG_OUTPUT */
 

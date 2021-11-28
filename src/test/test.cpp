@@ -135,12 +135,12 @@ void Test::attach()
     sharedMemory.setKey(key);
 
     if (sharedMemory.attach()) {
-        loggerDebug("Attached shared memory segment.\n");
+        debugPrintf("Attached shared memory segment.\n");
     } else {
         if (sharedMemory.create(SHARED_MEMORY_SIZE)) {
-            loggerDebug("Created shared memory segment.\n");
+            debugPrintf("Created shared memory segment.\n");
         } else {
-            loggerDebug("Unable to create shared memory segment.\n");
+            debugPrintf("Unable to create shared memory segment.\n");
         }
     }
 
@@ -156,7 +156,7 @@ void Test::detach()
 {
     if (sharedMemory.isAttached()) {
         if (sharedMemory.detach()) {
-            loggerDebug("Detached shared memory segment.\n");
+            debugPrintf("Detached shared memory segment.\n");
         }
     }
 }
