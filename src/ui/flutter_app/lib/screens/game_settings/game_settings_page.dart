@@ -16,7 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
