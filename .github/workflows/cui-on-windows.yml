@@ -2,8 +2,8 @@ name: CUI on Windows
 
 on:
   push:
-  pull_request:
-    branches: [ master ]
+    paths:
+      - 'src/*.cpp'
 
 jobs:
   build:

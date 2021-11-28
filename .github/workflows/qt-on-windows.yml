@@ -2,8 +2,8 @@ name: Qt on Windows
 
 on:
   push:
-  pull_request:
-    branches: [ master ]
+    paths:
+      - 'src/ui/qt/**'
 
 jobs:
   build:

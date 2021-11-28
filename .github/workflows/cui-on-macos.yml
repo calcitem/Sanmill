@@ -2,8 +2,8 @@ name: CUI on macOS
 
 on:
   push:
-  pull_request:
-    branches: [ master ]
+    paths:
+      - 'src/*.cpp'
 
 jobs:
   build:
