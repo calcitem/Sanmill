@@ -24,7 +24,15 @@ import 'package:sanmill/services/storage/adapters/algorithm_adapter.dart';
 
 part 'preferences.g.dart';
 
-enum Algorithms { AlphaBeta, PVS, MTDf }
+@HiveType(typeId: 5)
+enum Algorithms {
+  @HiveField(0)
+  AlphaBeta,
+  @HiveField(1)
+  PVS,
+  @HiveField(2)
+  MTDf,
+}
 
 extension AlgorithmNames on Algorithms {
   String get name {
@@ -39,7 +47,7 @@ extension AlgorithmNames on Algorithms {
   }
 }
 
-/// Preferece data model
+/// Preference data model
 ///
 /// holds the data needed for the normal Settings
 @HiveType(typeId: 2)
@@ -49,7 +57,8 @@ extension AlgorithmNames on Algorithms {
 class Preferences {
   const Preferences({
     this.isPrivacyPolicyAccepted = false,
-    this.usesHiveDB = false,
+    @Deprecated("as this is not a user facing preference we migrated it into another box")
+        this.usesHiveDB = false,
     this.toneEnabled = true,
     this.keepMuteWhenTakingBack = true,
     this.screenReaderSupport = false,
@@ -64,6 +73,8 @@ class Preferences {
     this.learnEndgame = false,
     this.openingBook = false,
     this.algorithm = Algorithms.MTDf,
+    @Deprecated('This only represents the old algorithm type. Use [algorithm] instead')
+        this.oldAlgorithm = 0,
     this.drawOnHumanExperience = true,
     this.considerMobility = true,
     @Deprecated("we won't export the developer settings anymore. People should use the EnvironmentConfig.devMode")
@@ -74,6 +85,9 @@ class Preferences {
 
   @HiveField(0)
   final bool isPrivacyPolicyAccepted;
+  @Deprecated(
+    "as this is not a user facing preference we migrated it into another box",
+  )
   @HiveField(1)
   final bool usesHiveDB;
 
@@ -107,8 +121,11 @@ class Preferences {
     fromJson: AlgorithmAdapter.algorithmFromJson,
     toJson: AlgorithmAdapter.algorithmToJson,
   )
+  @HiveField(20)
+  final Algorithms? algorithm;
+  @Deprecated('This only represents the old algorithm type')
   @HiveField(15)
-  final Algorithms algorithm;
+  final int oldAlgorithm;
   @HiveField(16)
   final bool drawOnHumanExperience;
   @HiveField(17)

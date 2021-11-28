@@ -33,7 +33,6 @@ import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/storage/storage.dart';
-import 'package:sanmill/services/storage/storage_v1.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/feedback_localization.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
@@ -47,7 +46,6 @@ Future<void> main() async {
   debugPrint('Environment [monkey_test]: ${EnvironmentConfig.monkeyTest}');
 
   await LocalDatabaseService.initStorage();
-  await DatabaseV1.migrateDB();
 
   _initUI();
 
