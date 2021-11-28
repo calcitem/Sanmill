@@ -53,22 +53,11 @@ Test::Test(QWidget* parent, QString k)
 
     keyCombo->setEditable(true);
 
-    keyCombo->addItem(QString("Key0"));
-    keyCombo->addItem(QString("Key1"));
-    keyCombo->addItem(QString("Key2"));
-    keyCombo->addItem(QString("Key3"));
-    keyCombo->addItem(QString("Key4"));
-    keyCombo->addItem(QString("Key5"));
-    keyCombo->addItem(QString("Key6"));
-    keyCombo->addItem(QString("Key7"));
-    keyCombo->addItem(QString("Key8"));
-    keyCombo->addItem(QString("Key9"));
-    keyCombo->addItem(QString("KeyA"));
-    keyCombo->addItem(QString("KeyB"));
-    keyCombo->addItem(QString("KeyC"));
-    keyCombo->addItem(QString("KeyD"));
-    keyCombo->addItem(QString("KeyE"));
-    keyCombo->addItem(QString("KeyF"));
+    QString keyPrefix = "Key";
+
+    for (char i = '0'; i <= '9'; i++) {
+        keyCombo->addItem(keyPrefix + i);
+    }
 
 #ifdef QT_UI_TEST_MODE
 #ifdef QT_GUI_LIB
@@ -102,13 +91,16 @@ Test::Test(QWidget* parent, QString k)
         auto outerVerticalLayout = new QVBoxLayout(this);
         outerVerticalLayout->addItem(new QSpacerItem(
             0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
+
         auto outerHorizontalLayout = new QHBoxLayout;
         outerHorizontalLayout->addItem(new QSpacerItem(
             0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
+
         auto groupBox
             = new QGroupBox(QGuiApplication::applicationDisplayName());
         mainLayout = new QGridLayout(groupBox);
         outerHorizontalLayout->addWidget(groupBox);
+
         outerHorizontalLayout->addItem(new QSpacerItem(
             0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
         outerVerticalLayout->addLayout(outerHorizontalLayout);
