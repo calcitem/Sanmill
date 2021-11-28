@@ -73,7 +73,7 @@ Run `./flutter-init.sh` , copy `src/ui/flutter_app/android/key.properties.exampl
 
 We use compile-time environment configs to enable specific parts of the code:
 
-* `monkey_test` to prepare the app for monkey tests. (References to external sites are going to be disabled.)
+* `test` to prepare the app for Monkey and Appium testing. (References to external sites are going to be disabled.)
 * `dev_mode` to show the developer mode without needing to enable it first.
 * `catcher` to control the use of catcher. (This is on by default and needs to be disabled when required.)
 
