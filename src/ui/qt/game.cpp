@@ -1,4 +1,4 @@
-﻿// This file is part of Sanmill.
+// This file is part of Sanmill.
 // Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
@@ -1483,9 +1483,9 @@ bool Game::updateScene(Position& p)
 
     // Add banned points in placing phase
     if (rule.hasBannedLocations && p.get_phase() == Phase::placing) {
-        for (int j = SQ_BEGIN; j < SQ_END; j++) {
-            if (board[j] == BAN_STONE) {
-                pos = scene.polar2pos(File(j / RANK_NB), Rank(j % RANK_NB + 1));
+        for (int sq = SQ_BEGIN; sq < SQ_END; sq++) {
+            if (board[sq] == BAN_STONE) {
+                pos = scene.polar2pos(File(sq / RANK_NB), Rank(sq % RANK_NB + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
                     pieceList.at(static_cast<size_t>(nTotalPieces++))
                         ->setPos(pos);
