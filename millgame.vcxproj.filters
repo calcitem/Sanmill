@@ -309,7 +309,7 @@
     <QtMoc Include="src\ui\qt\gamewindow.h">
       <Filter>Qt Files</Filter>
     </QtMoc>
-    <QtMoc Include="src\ui\qt\manuallistview.h">
+    <QtMoc Include="src\ui\qt\movelistview.h">
       <Filter>Qt Files</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\qt\pieceitem.h">

@@ -1,4 +1,4 @@
-// This file is part of Sanmill.
+﻿// This file is part of Sanmill.
 // Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
@@ -325,9 +325,9 @@ void Game::gameReset()
     }
 
     // Update move history
-    manualListModel.removeRows(0, manualListModel.rowCount());
-    manualListModel.insertRow(0);
-    manualListModel.setData(manualListModel.index(0), position.get_record());
+    moveListModel.removeRows(0, moveListModel.rowCount());
+    moveListModel.insertRow(0);
+    moveListModel.setData(moveListModel.index(0), position.get_record());
     currentRow = 0;
 
     // Signal the main window to update the LCD display
@@ -752,7 +752,7 @@ void Game::flip()
     // Update move history
     int row = 0;
     for (const auto& str : *(move_hostory())) {
-        manualListModel.setData(manualListModel.index(row++), str.c_str());
+        moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
     // Refresh display
@@ -775,7 +775,7 @@ void Game::mirror()
     int row = 0;
 
     for (const auto& str : *(move_hostory())) {
-        manualListModel.setData(manualListModel.index(row++), str.c_str());
+        moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
     debugPrintf("list: %d\n", row);
@@ -800,7 +800,7 @@ void Game::turnRight()
     int row = 0;
 
     for (const auto& str : *(move_hostory())) {
-        manualListModel.setData(manualListModel.index(row++), str.c_str());
+        moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
     // Update display
@@ -822,7 +822,7 @@ void Game::turnLeft()
     // Update move history
     int row = 0;
     for (const auto& str : *(move_hostory())) {
-        manualListModel.setData(manualListModel.index(row++), str.c_str());
+        moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
     // Update display
@@ -940,7 +940,7 @@ bool Game::actionPiece(QPointF p)
 
     // When you click the board while browsing the history, it is considered
     // repentance
-    if (currentRow != manualListModel.rowCount() - 1) {
+    if (currentRow != moveListModel.rowCount() - 1) {
 #ifndef QT_MOBILE_APP_UI
         // Define new dialog box
         QMessageBox msgBox;
@@ -955,9 +955,9 @@ bool Game::actionPiece(QPointF p)
 
         if (QMessageBox::Ok == msgBox.exec()) {
 #endif /* !QT_MOBILE_APP_UI */
-            const int rowCount = manualListModel.rowCount();
+            const int rowCount = moveListModel.rowCount();
             const int removeCount = rowCount - currentRow - 1;
-            manualListModel.removeRows(
+            moveListModel.removeRows(
                 currentRow + 1, rowCount - currentRow - 1);
 
             for (int i = 0; i < removeCount; i++) {
@@ -1055,7 +1055,7 @@ bool Game::actionPiece(QPointF p)
         emit statusBarChanged(message);
 
         // Insert the new score line into list model
-        currentRow = manualListModel.rowCount() - 1;
+        currentRow = moveListModel.rowCount() - 1;
         int k = 0;
 
         // Output command line
@@ -1063,16 +1063,16 @@ bool Game::actionPiece(QPointF p)
             // Skip added because the standard list container has no subscripts
             if (k++ <= currentRow)
                 continue;
-            manualListModel.insertRow(++currentRow);
-            manualListModel.setData(
-                manualListModel.index(currentRow), i.c_str());
+            moveListModel.insertRow(++currentRow);
+            moveListModel.setData(
+                moveListModel.index(currentRow), i.c_str());
         }
 
         // Play win or lose sound
 #ifndef DO_NOT_PLAY_WIN_SOUND
         const Color winner = position.get_winner();
         if (winner != NOBODY
-            && (manualListModel.data(manualListModel.index(currentRow - 1)))
+            && (moveListModel.data(moveListModel.index(currentRow - 1)))
                    .toString()
                    .contains("Time over."))
             playSound(GameSound::win, winner);
@@ -1115,7 +1115,7 @@ bool Game::resign()
     }
 
     // Insert the new record line into list model
-    currentRow = manualListModel.rowCount() - 1;
+    currentRow = moveListModel.rowCount() - 1;
     int k = 0;
 
     // Output command line
@@ -1123,8 +1123,8 @@ bool Game::resign()
         // Skip added because the standard list container has no index
         if (k++ <= currentRow)
             continue;
-        manualListModel.insertRow(++currentRow);
-        manualListModel.setData(manualListModel.index(currentRow), i.c_str());
+        moveListModel.insertRow(++currentRow);
+        moveListModel.setData(moveListModel.index(currentRow), i.c_str());
     }
 
     if (position.get_winner() != NOBODY) {
@@ -1208,13 +1208,13 @@ bool Game::command(const string& cmd, bool update /* = true */)
 
     // For opening
     if (move_hostory()->size() <= 1) {
-        manualListModel.removeRows(0, manualListModel.rowCount());
-        manualListModel.insertRow(0);
-        manualListModel.setData(
-            manualListModel.index(0), position.get_record());
+        moveListModel.removeRows(0, moveListModel.rowCount());
+        moveListModel.insertRow(0);
+        moveListModel.setData(
+            moveListModel.index(0), position.get_record());
         currentRow = 0;
     } else { // For the current position
-        currentRow = manualListModel.rowCount() - 1;
+        currentRow = moveListModel.rowCount() - 1;
         // Skip the added rows. The iterator does not support the + operator and
         // can only skip one by one++
         auto i = (move_hostory()->begin());
@@ -1224,9 +1224,9 @@ bool Game::command(const string& cmd, bool update /* = true */)
         }
         // Insert the new score line into list model
         while (i != move_hostory()->end()) {
-            manualListModel.insertRow(++currentRow);
-            manualListModel.setData(
-                manualListModel.index(currentRow), (*i++).c_str());
+            moveListModel.insertRow(++currentRow);
+            moveListModel.setData(
+                moveListModel.index(currentRow), (*i++).c_str());
         }
     }
 
@@ -1234,7 +1234,7 @@ bool Game::command(const string& cmd, bool update /* = true */)
 #ifndef DO_NOT_PLAY_WIN_SOUND
     const Color winner = position.get_winner();
     if (winner != NOBODY
-        && (manualListModel.data(manualListModel.index(currentRow - 1)))
+        && (moveListModel.data(moveListModel.index(currentRow - 1)))
                .toString()
                .contains("Time over.")) {
         playSound(GameSound::win, winner);
@@ -1371,8 +1371,8 @@ bool Game::phaseChange(int row, bool forceUpdate)
 
     // Need to refresh
     currentRow = row;
-    int rows = manualListModel.rowCount();
-    QStringList mlist = manualListModel.stringList();
+    int rows = moveListModel.rowCount();
+    QStringList mlist = moveListModel.stringList();
 
     debugPrintf("rows: %d current: %d\n", rows, row);
 

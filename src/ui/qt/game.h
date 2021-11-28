@@ -101,7 +101,7 @@ public:
 
     int getDurationTime() { return durationTime; }
 
-    QStringListModel* getManualListModel() { return &manualListModel; }
+    QStringListModel* getMoveListModel() { return &moveListModel; }
 
     void setAiDepthTime(int time1, int time2);
     void getAiDepthTime(int& time1, int& time2);
@@ -490,7 +490,7 @@ private:
     QString message;
 
     // String list model of score
-    QStringListModel manualListModel;
+    QStringListModel moveListModel;
 
     // Hint
     string tips;

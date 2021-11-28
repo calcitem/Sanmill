@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef MANUAL_LIST_VIEW_H_INCLUDED
-#define MANUAL_LIST_VIEW_H_INCLUDED
+#ifndef MOVE_LIST_VIEW_H_INCLUDED
+#define MOVE_LIST_VIEW_H_INCLUDED
 
 #include <QListView>
 #include <QMouseEvent>
@@ -32,11 +32,11 @@
  * doesn't look good after adjusting the width of the dock
  */
 
-class ManualListView : public QListView {
+class MoveListView : public QListView {
     Q_OBJECT
 
 public:
-    explicit ManualListView(QWidget* parent = nullptr) noexcept
+    explicit MoveListView(QWidget* parent = nullptr) noexcept
         : QListView(parent)
     {
         Q_UNUSED(parent)
@@ -107,4 +107,4 @@ private:
     bool newEmptyRow { false };
 };
 
-#endif // MANUAL_LIST_VIEW_H_INCLUDED
+#endif // MOVE_LIST_VIEW_H_INCLUDED

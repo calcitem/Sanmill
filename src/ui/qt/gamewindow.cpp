@@ -307,7 +307,7 @@ void MillGameWindow::initialize()
     ruleInfo();
 
     // List of associated models and string views
-    ui.listView->setModel(game->getManualListModel());
+    ui.listView->setModel(game->getMoveListModel());
 
     // Because QListView's rowsInserted can only be started after setModel,
     // The first time you need to manually initialize, select the first item of
@@ -338,7 +338,7 @@ void MillGameWindow::initialize()
         &MillGameWindow::on_actionRowChange);
 
     // Manually select the updated slot in listView
-    connect(ui.listView, &ManualListView::currentChangedSignal, this,
+    connect(ui.listView, &MoveListView::currentChangedSignal, this,
         &MillGameWindow::on_actionRowChange);
 
     // Update the status of the four keys
