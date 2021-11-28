@@ -26,7 +26,6 @@ import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/position.dart';
-import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/models/preferences.dart';
 import 'package:sanmill/screens/game_settings/game_settings_page.dart';
@@ -234,13 +233,15 @@ class _GamePageState extends State<GamePage>
             } else {
               //Audios.playTone(Audios.place);
               if (gameInstance.engineType == EngineType.humanVsAi && mounted) {
-                if (rule.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
+                if (LocalDatabaseService
+                    .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                   showTip(S.of(context).continueToMakeMove);
                 } else {
                   showTip(S.of(context).tipPlaced);
                 }
               } else if (mounted) {
-                if (rule.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
+                if (LocalDatabaseService
+                    .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                   showTip(
                     S.of(context).tipPlaced,
                   ); // TODO: HumanVsHuman - Change tip
@@ -291,7 +292,7 @@ class _GamePageState extends State<GamePage>
 
               final us = gameInstance.sideToMove;
               if (position.phase == Phase.moving &&
-                  rule.mayFly &&
+                  LocalDatabaseService.rules.mayFly &&
                   (gameInstance.position.pieceOnBoardCount[us] ==
                           LocalDatabaseService.rules.flyPieceCount ||
                       gameInstance.position.pieceOnBoardCount[us] == 3)) {
@@ -454,7 +455,8 @@ class _GamePageState extends State<GamePage>
               (posKeyHistory.isNotEmpty &&
                   position.st.key != posKeyHistory[posKeyHistory.length - 1])) {
             posKeyHistory.add(position.st.key);
-            if (rule.threefoldRepetitionRule && position.hasGameCycle()) {
+            if (LocalDatabaseService.rules.threefoldRepetitionRule &&
+                position.hasGameCycle()) {
               position.setGameOver(
                 PieceColor.draw,
                 GameOverReason.drawReasonThreefoldRepetition,

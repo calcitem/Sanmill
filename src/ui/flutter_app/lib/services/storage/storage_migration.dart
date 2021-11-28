@@ -74,11 +74,11 @@ class _DatabaseMigrator {
 
   /// Migration 0 - KV to Hive
   ///
-  /// - Calls the [DatabaseV1.migrateDB] to migrate from KV storage.
+  /// - Calls the [_DatabaseV1.migrateDB] to migrate from KV storage.
   static Future<void> _migrateToHive() async {
     assert(_currentVersion <= 0);
 
-    await DatabaseV1.migrateDB();
+    await _DatabaseV1.migrateDB();
     debugPrint("$_tag migrated from KV");
   }
 
@@ -111,8 +111,8 @@ class _DatabaseMigrator {
 /// Database KV Migrator
 ///
 /// This class provides helper methods to migrate from the old KV storage to the new hiveDB.
-class DatabaseV1 {
-  const DatabaseV1._();
+class _DatabaseV1 {
+  const _DatabaseV1._();
 
   static const _tag = "[KV store Migration]";
 
@@ -161,30 +161,5 @@ class DatabaseV1 {
     } else {
       debugPrint("$_tag $_file does not exist");
     }
-  }
-
-  /// initializes the [Rules] object with the contents of [LocalDatabaseService.rules]
-  static void initRules() {
-    final _rules = LocalDatabaseService.rules;
-    // Rules
-    rule.piecesCount = _rules.piecesCount;
-    rule.flyPieceCount = _rules.flyPieceCount;
-    rule.piecesAtLeastCount = _rules.piecesAtLeastCount;
-    rule.hasDiagonalLines = _rules.hasDiagonalLines;
-    rule.hasBannedLocations = _rules.hasBannedLocations;
-    rule.mayMoveInPlacingPhase = _rules.mayMoveInPlacingPhase;
-    rule.isDefenderMoveFirst = _rules.isDefenderMoveFirst;
-    rule.mayRemoveMultiple = _rules.mayRemoveMultiple;
-    rule.mayRemoveFromMillsAlways = _rules.mayRemoveFromMillsAlways;
-    rule.mayOnlyRemoveUnplacedPieceInPlacingPhase =
-        _rules.mayOnlyRemoveUnplacedPieceInPlacingPhase;
-    rule.isWhiteLoseButNotDrawWhenBoardFull =
-        _rules.isWhiteLoseButNotDrawWhenBoardFull;
-    rule.isLoseButNotChangeSideWhenNoWay =
-        _rules.isLoseButNotChangeSideWhenNoWay;
-    rule.mayFly = _rules.mayFly;
-    rule.nMoveRule = _rules.nMoveRule;
-    rule.endgameNMoveRule = _rules.endgameNMoveRule;
-    rule.threefoldRepetitionRule = _rules.threefoldRepetitionRule;
   }
 }
