@@ -54,11 +54,7 @@ public:
 
     // The coordinates of the falling point are transformed into circles and
     // positions for the model
-    bool pos2polar(QPointF pos, File& file, Rank& rank);
-
-    static const uint8_t FILE_NB = 3;
-
-    static const uint8_t RANK_NB = 8;
+    bool pos2polar(QPointF pos, File& f, Rank& r);
 
 private:
     int size; // board size
