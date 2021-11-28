@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, avoid_positional_boolean_parameters
+// ignore_for_file: use_build_context_synchronously
 
 /*
   This file is part of Sanmill.
@@ -17,8 +17,6 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +48,6 @@ part 'package:sanmill/screens/game_page/board.dart';
 class GamePage extends StatefulWidget {
   final EngineType engineType;
 
-  // TODO: [Leptopoda] use gameInstance.engineType
   const GamePage(this.engineType, {Key? key}) : super(key: key);
 
   @override
@@ -62,131 +59,93 @@ class _GamePageState extends State<GamePage>
   final Engine _engine = NativeEngine();
 
   double screenPaddingH = AppTheme.boardScreenPaddingH;
-  final double boardMargin = AppTheme.boardMargin;
+  final double _boardMargin = AppTheme.boardMargin;
 
   late String _tip;
-  bool isReady = false;
-  bool isGoingToHistory = false;
-  late Timer timer;
+  bool _isGoingToHistory = false;
   late AnimationController _animationController;
-  late Animation<double> animation;
-  bool disposed = false;
+  late Animation<double> _animation;
+  bool _disposed = false;
   late bool ltr;
   late double boardWidth;
 
   static const String _tag = "[game_page]";
 
-  Future<void> _setReadyState() async {
-    debugPrint("$_tag Check if need to set Ready state...");
-    if (!isReady && mounted) {
-      debugPrint("$_tag Set Ready State...");
-      setState(() {});
-      isReady = true;
-      timer.cancel();
-
-      if (Localizations.localeOf(context).languageCode == "zh" &&
-          !LocalDatabaseService.preferences.isPrivacyPolicyAccepted) {
-        onShowPrivacyDialog();
-      }
-    }
-  }
-
   void _initAnimation() {
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(
-        milliseconds:
-            (LocalDatabaseService.display.animationDuration * 1000).toInt(),
+        seconds: LocalDatabaseService.display.animationDuration.toInt(),
       ),
     );
-    _animationController.addListener(() {});
 
-    animation = Tween(
-      begin: 1.27, // sqrt(1.618) = 1.272
-      end: 1.0,
-    ).animate(_animationController)
+    // sqrt(1.618) = 1.272
+    _animation = Tween(begin: 1.27, end: 1.0).animate(_animationController)
       ..addListener(() => setState(() {}));
 
     _animationController.addStatusListener((state) {
       if (state == AnimationStatus.completed ||
           state == AnimationStatus.dismissed) {
-        if (disposed) {
-          return;
-        }
-        _animationController.forward();
+        if (!_disposed) _animationController.forward();
       }
     });
-
-    if (!disposed) {
-      _animationController.forward();
-    }
   }
 
-  void showTip(String tip) {
+  void _showTip(String tip, {bool snackBar = false}) {
     if (!mounted) return;
 
     debugPrint("[tip] $tip");
-    if (LocalDatabaseService.preferences.screenReaderSupport) {
-      //showSnackBar(context, tip);
+    if (LocalDatabaseService.preferences.screenReaderSupport && snackBar) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      showSnackBar(context, tip);
     }
 
     setState(() => _tip = tip);
   }
 
-  void showTips() {
+  void _showTips() {
     if (!mounted) return;
 
     final winner = gameInstance.position.winner;
 
     switch (winner) {
       case PieceColor.white:
-        return showTip(S.of(context).whiteWin);
+        return _showTip(S.of(context).whiteWin);
       case PieceColor.black:
-        return showTip(S.of(context).blackWin);
+        return _showTip(S.of(context).blackWin);
       case PieceColor.draw:
-        return showTip(S.of(context).isDraw);
+        return _showTip(S.of(context).isDraw);
       case PieceColor.nobody:
         switch (gameInstance.position.phase) {
           case Phase.placing:
-            return showTip(S.of(context).tipPlace);
+            return _showTip(S.of(context).tipPlace);
           case Phase.moving:
-            return showTip(S.of(context).tipMove);
+            return _showTip(S.of(context).tipMove);
           default:
         }
     }
 
     if (!LocalDatabaseService.preferences.isAutoRestart) {
-      showGameResult(winner);
+      _showGameResult(winner);
     }
   }
 
-  Future<dynamic> onBoardTap(int index) async {
-    if (!isReady) {
-      debugPrint("[tap] Not ready, ignore tapping.");
-      return false;
-    }
+  Future<void> _onBoardTap(int index) async {
+    if (!mounted) return debugPrint("[tap] Not ready, ignore tapping.");
 
-    disposed = false;
-    _animationController.duration = Duration(
-      milliseconds:
-          (LocalDatabaseService.display.animationDuration * 1000).toInt(),
-    );
+    _disposed = false;
     _animationController.reset();
 
-    if (gameInstance.engineType == EngineType.aiVsAi ||
-        gameInstance.engineType == EngineType.testViaLAN) {
-      debugPrint("$_tag Engine type is no human, ignore tapping.");
-      return false;
+    if (widget.engineType == EngineType.aiVsAi ||
+        widget.engineType == EngineType.testViaLAN) {
+      return debugPrint("$_tag Engine type is no human, ignore tapping.");
     }
 
     final position = gameInstance.position;
 
     final int? sq = indexToSquare[index];
 
-    if (sq == null) {
-      debugPrint("$_tag sq is null, skip tapping.");
-      return;
-    }
+    if (sq == null) return debugPrint("$_tag sq is null, skip tapping.");
 
     // If nobody has placed, start to go.
     if (position.phase == Phase.placing &&
@@ -196,60 +155,46 @@ class _GamePageState extends State<GamePage>
 
       if (gameInstance.isAiToMove) {
         if (gameInstance.aiIsSearching) {
-          debugPrint("$_tag AI is thinking, skip tapping.");
-          return false;
+          return debugPrint("$_tag AI is thinking, skip tapping.");
         } else {
           debugPrint("[tap] AI is not thinking. AI is to move.");
-          await engineToGo(false);
-          return false;
+          return _engineToGo(isMoveNow: false);
         }
       }
     }
 
     if (gameInstance.isAiToMove || gameInstance.aiIsSearching) {
-      debugPrint("[tap] AI's turn, skip tapping.");
-      return false;
+      return debugPrint("[tap] AI's turn, skip tapping.");
     }
 
-    if (position.phase == Phase.ready) {
-      gameInstance.start();
-    }
+    if (position.phase == Phase.ready) gameInstance.start();
 
     // Human to go
-
     bool ret = false;
     await Chain.capture(() async {
       switch (position.action) {
         case Act.place:
           if (await position.putPiece(sq)) {
             if (position.action == Act.remove) {
-              //Audios.playTone(Audios.mill);
-              if (mounted) {
-                showTip(S.of(context).tipMill);
-                if (LocalDatabaseService.preferences.screenReaderSupport) {
-                  showSnackBar(context, S.of(context).tipMill);
-                }
-              }
+              _showTip(S.of(context).tipMill, snackBar: true);
             } else {
-              //Audios.playTone(Audios.place);
-              if (gameInstance.engineType == EngineType.humanVsAi && mounted) {
+              if (widget.engineType == EngineType.humanVsAi) {
                 if (LocalDatabaseService
                     .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
-                  showTip(S.of(context).continueToMakeMove);
+                  _showTip(S.of(context).continueToMakeMove);
                 } else {
-                  showTip(S.of(context).tipPlaced);
+                  _showTip(S.of(context).tipPlaced);
                 }
-              } else if (mounted) {
+              } else {
                 if (LocalDatabaseService
                     .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
-                  showTip(
-                    S.of(context).tipPlaced,
-                  ); // TODO: HumanVsHuman - Change tip
+                  // TODO: HumanVsHuman - Change tip
+                  _showTip(S.of(context).tipPlaced);
                 } else {
                   final side = gameInstance.sideToMove == PieceColor.white
                       ? S.of(context).black
                       : S.of(context).white;
-                  showTip(S.of(context).tipToMove(side));
+                  _showTip(S.of(context).tipToMove(side));
                 }
               }
             }
@@ -258,13 +203,7 @@ class _GamePageState extends State<GamePage>
             break;
           } else {
             debugPrint("[tap] putPiece: skip [$sq]");
-            if (mounted) {
-              showTip(S.of(context).tipBanPlace);
-              if (LocalDatabaseService.preferences.screenReaderSupport) {
-                ScaffoldMessenger.of(context).clearSnackBars();
-                showSnackBar(context, S.of(context).tipBanPlace);
-              }
-            }
+            _showTip(S.of(context).tipBanPlace);
           }
 
           // If cannot move, retry select, do not break
@@ -273,17 +212,10 @@ class _GamePageState extends State<GamePage>
         select:
         case Act.select:
           if (position.phase == Phase.placing) {
-            if (mounted) {
-              showTip(S.of(context).tipCannotPlace);
-              if (LocalDatabaseService.preferences.screenReaderSupport) {
-                ScaffoldMessenger.of(context).clearSnackBars();
-                showSnackBar(context, S.of(context).tipCannotPlace);
-              }
-            }
+            _showTip(S.of(context).tipCannotPlace, snackBar: true);
             break;
           }
-          final int selectRet = position.selectPiece(sq);
-          switch (selectRet) {
+          switch (position.selectPiece(sq)) {
             case 0:
               await Audios.playTone(Sound.select);
               gameInstance.select(index);
@@ -297,98 +229,51 @@ class _GamePageState extends State<GamePage>
                           LocalDatabaseService.rules.flyPieceCount ||
                       gameInstance.position.pieceOnBoardCount[us] == 3)) {
                 debugPrint("[tap] May fly.");
-                if (mounted) {
-                  showTip(S.of(context).tipCanMoveToAnyPoint);
-                  if (LocalDatabaseService.preferences.screenReaderSupport) {
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    showSnackBar(context, S.of(context).tipCanMoveToAnyPoint);
-                  }
-                }
-              } else if (mounted) {
-                showTip(S.of(context).tipPlace);
-                if (LocalDatabaseService.preferences.screenReaderSupport) {
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  showSnackBar(context, S.of(context).selected);
-                }
+                _showTip(S.of(context).tipCanMoveToAnyPoint, snackBar: true);
+              } else {
+                _showTip(S.of(context).tipPlace, snackBar: true);
               }
 
               break;
             case -2:
               await Audios.playTone(Sound.illegal);
               debugPrint("[tap] selectPiece: skip [$sq]");
-              if (mounted && position.phase != Phase.gameOver) {
-                showTip(S.of(context).tipCannotMove);
-                if (LocalDatabaseService.preferences.screenReaderSupport) {
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  showSnackBar(context, S.of(context).tipCannotMove);
-                }
+              if (position.phase != Phase.gameOver) {
+                _showTip(S.of(context).tipCannotMove, snackBar: true);
               }
               break;
             case -3:
               await Audios.playTone(Sound.illegal);
               debugPrint("[tap] selectPiece: skip [$sq]");
-              if (mounted) {
-                showTip(S.of(context).tipCanMoveOnePoint);
-                if (LocalDatabaseService.preferences.screenReaderSupport) {
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  showSnackBar(context, S.of(context).tipCanMoveOnePoint);
-                }
-              }
+              _showTip(S.of(context).tipCanMoveOnePoint, snackBar: true);
               break;
             case -4:
               await Audios.playTone(Sound.illegal);
               debugPrint("[tap] selectPiece: skip [$sq]");
-              if (mounted) {
-                showTip(S.of(context).tipSelectPieceToMove);
-                if (LocalDatabaseService.preferences.screenReaderSupport) {
-                  showSnackBar(context, S.of(context).tipSelectPieceToMove);
-                }
-              }
+              _showTip(S.of(context).tipSelectPieceToMove, snackBar: true);
               break;
             default:
               await Audios.playTone(Sound.illegal);
               debugPrint("[tap] selectPiece: skip [$sq]");
-              if (mounted) {
-                showTip(S.of(context).tipSelectWrong);
-                if (LocalDatabaseService.preferences.screenReaderSupport) {
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  showSnackBar(context, S.of(context).tipSelectWrong);
-                }
-              }
-              break;
+              _showTip(S.of(context).tipSelectWrong, snackBar: true);
           }
-
           break;
 
         case Act.remove:
-          final int removeRet = await position.removePiece(sq);
-
-          switch (removeRet) {
+          switch (await position.removePiece(sq)) {
             case 0:
-              //Audios.playTone(Audios.remove);
               ret = true;
               debugPrint("[tap] removePiece: [$sq]");
               if (gameInstance.position.pieceToRemoveCount >= 1) {
-                if (mounted) {
-                  showTip(S.of(context).tipContinueMill);
-                  if (LocalDatabaseService.preferences.screenReaderSupport) {
-                    showSnackBar(context, S.of(context).tipContinueMill);
-                  }
-                }
+                _showTip(S.of(context).tipContinueMill, snackBar: true);
               } else {
-                if (gameInstance.engineType == EngineType.humanVsAi) {
-                  if (mounted) {
-                    showTip(S.of(context).tipRemoved);
-                  }
+                if (widget.engineType == EngineType.humanVsAi) {
+                  _showTip(S.of(context).tipRemoved);
                 } else {
-                  if (mounted) {
-                    final them = gameInstance.sideToMove == PieceColor.white
-                        ? S.of(context).black
-                        : S.of(context).white;
-                    if (mounted) {
-                      showTip(S.of(context).tipToMove(them));
-                    }
-                  }
+                  final them = gameInstance.sideToMove == PieceColor.white
+                      ? S.of(context).black
+                      : S.of(context).white;
+                  _showTip(S.of(context).tipToMove(them));
                 }
               }
               break;
@@ -397,45 +282,27 @@ class _GamePageState extends State<GamePage>
               debugPrint(
                 "[tap] removePiece: Cannot Remove our pieces, skip [$sq]",
               );
-              if (mounted) {
-                showTip(S.of(context).tipSelectOpponentsPiece);
-                if (LocalDatabaseService.preferences.screenReaderSupport) {
-                  showSnackBar(context, S.of(context).tipSelectOpponentsPiece);
-                }
-              }
+              _showTip(S.of(context).tipSelectOpponentsPiece, snackBar: true);
               break;
             case -3:
               await Audios.playTone(Sound.illegal);
               debugPrint(
                 "[tap] removePiece: Cannot remove piece from Mill, skip [$sq]",
               );
-              if (mounted) {
-                showTip(S.of(context).tipCannotRemovePieceFromMill);
-                if (LocalDatabaseService.preferences.screenReaderSupport) {
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  showSnackBar(
-                    context,
-                    S.of(context).tipCannotRemovePieceFromMill,
-                  );
-                }
-              }
+              _showTip(
+                S.of(context).tipCannotRemovePieceFromMill,
+                snackBar: true,
+              );
               break;
             default:
               await Audios.playTone(Sound.illegal);
               debugPrint("[tap] removePiece: skip [$sq]");
-              if (mounted && position.phase != Phase.gameOver) {
-                showTip(S.of(context).tipBanRemove);
-                if (LocalDatabaseService.preferences.screenReaderSupport) {
-                  showSnackBar(context, S.of(context).tipBanRemove);
-                }
+              if (position.phase != Phase.gameOver) {
+                _showTip(S.of(context).tipBanRemove, snackBar: true);
               }
-              break;
           }
-
           break;
-
-        default:
-          break;
+        case Act.none:
       }
 
       if (ret) {
@@ -468,7 +335,6 @@ class _GamePageState extends State<GamePage>
         }
 
         //position.move = m;
-
         final Move m = Move(position.record);
         position.recorder.prune();
         position.recorder.moveIn(m, position);
@@ -476,27 +342,22 @@ class _GamePageState extends State<GamePage>
         setState(() {});
 
         if (position.winner == PieceColor.nobody) {
-          engineToGo(false);
+          _engineToGo(isMoveNow: false);
         } else {
-          showTips();
+          _showTips();
         }
       }
 
       gameInstance.sideToMove = position.sideToMove;
 
       setState(() {});
-    }); // Chain.capture
-
-    return ret;
+    });
   }
 
-  Future<void> engineToGo(bool isMoveNow) async {
+  Future<void> _engineToGo({required bool isMoveNow}) async {
     bool _isMoveNow = isMoveNow;
 
-    if (!mounted) {
-      debugPrint("[engineToGo] !mounted, skip engineToGo.");
-      return;
-    }
+    if (!mounted) return debugPrint("[engineToGo] !mounted, skip engineToGo.");
 
     // TODO
     debugPrint("[engineToGo] engine type is ${widget.engineType}");
@@ -505,16 +366,14 @@ class _GamePageState extends State<GamePage>
       if (!gameInstance.isAiToMove) {
         debugPrint("[engineToGo] Human to Move. Cannot get search result now.");
         ScaffoldMessenger.of(context).clearSnackBars();
-        showSnackBar(context, S.of(context).notAIsTurn);
-        return;
+        return showSnackBar(context, S.of(context).notAIsTurn);
       }
       if (!gameInstance.position.recorder.isClean()) {
         debugPrint(
           "[engineToGo] History is not clean. Cannot get search result now.",
         );
         ScaffoldMessenger.of(context).clearSnackBars();
-        showSnackBar(context, S.of(context).aiIsNotThinking);
-        return;
+        return showSnackBar(context, S.of(context).aiIsNotThinking);
       }
     }
 
@@ -523,26 +382,24 @@ class _GamePageState extends State<GamePage>
         gameInstance.isAiToMove &&
         mounted) {
       if (widget.engineType == EngineType.aiVsAi) {
-        final String score =
-            "${gameInstance.position.score[PieceColor.white]} : ${gameInstance.position.score[PieceColor.black]} : ${gameInstance.position.score[PieceColor.draw]}";
-
-        showTip(score);
+        _showTip(
+          "${gameInstance.position.score[PieceColor.white]} : ${gameInstance.position.score[PieceColor.black]} : ${gameInstance.position.score[PieceColor.draw]}",
+        );
       } else {
         if (mounted) {
-          showTip(S.of(context).thinking);
+          _showTip(S.of(context).thinking);
 
-          final Move? m = gameInstance.position.recorder.lastMove;
+          final String? n = gameInstance.position.recorder.lastMove?.notation;
 
           if (LocalDatabaseService.preferences.screenReaderSupport &&
               gameInstance.position.action != Act.remove &&
-              m?.notation != null) {
-            showSnackBar(context, "${S.of(context).human}: ${m!.notation!}");
+              n != null) {
+            showSnackBar(context, "${S.of(context).human}: $n");
           }
         }
       }
 
-      late EngineResponse response;
-
+      final EngineResponse response;
       if (!_isMoveNow) {
         debugPrint("[engineToGo] Searching...");
         response = await _engine.search(gameInstance.position);
@@ -559,12 +416,7 @@ class _GamePageState extends State<GamePage>
           final Move mv = response.value as Move;
           final Move move = Move(mv.move);
 
-          _animationController.duration = Duration(
-            milliseconds:
-                (LocalDatabaseService.display.animationDuration * 1000).toInt(),
-          );
-
-          if (!disposed) {
+          if (!_disposed) {
             _animationController.reset();
           } else {
             debugPrint(
@@ -573,22 +425,16 @@ class _GamePageState extends State<GamePage>
           }
 
           await gameInstance.doMove(move.move);
-          showTips();
+          _showTips();
           if (LocalDatabaseService.preferences.screenReaderSupport &&
               move.notation != null) {
             showSnackBar(context, "${S.of(context).ai}: ${move.notation!}");
           }
           break;
         case 'timeout':
-          if (mounted) {
-            showTip(S.of(context).timeout);
-            if (LocalDatabaseService.preferences.screenReaderSupport) {
-              showSnackBar(context, S.of(context).timeout);
-            }
-          }
-          return;
+          return _showTip(S.of(context).timeout, snackBar: true);
         default:
-          showTip(S.of(context).error(response.type));
+          _showTip(S.of(context).error(response.type));
       }
 
       if (LocalDatabaseService.preferences.isAutoRestart == true &&
@@ -598,7 +444,7 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  Future<void> onStartNewGameButtonPressed() async {
+  Future<void> _startNew() async {
     Navigator.pop(context);
 
     if (gameInstance.isAiToMove) {
@@ -609,86 +455,55 @@ class _GamePageState extends State<GamePage>
 
     gameInstance.newGame();
 
-    if (mounted) {
-      showTip(S.of(context).gameStarted);
-      if (LocalDatabaseService.preferences.screenReaderSupport) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        showSnackBar(context, S.of(context).gameStarted);
-      }
-    }
+    _showTip(S.of(context).gameStarted, snackBar: true);
 
     if (gameInstance.isAiToMove) {
       debugPrint("$_tag New game, AI to move.");
-      engineToGo(false);
+      _engineToGo(isMoveNow: false);
     }
   }
 
-  Future<void> onImportGameButtonPressed() async {
+  Future<void> _importGame() async {
     Navigator.pop(context);
     ScaffoldMessenger.of(context).clearSnackBars();
 
     final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
 
-    if (data == null || data.text == null) {
-      return;
+    if (data?.text == null) return;
+
+    await _takeBackAll(pop: false);
+    final importFailedStr = gameInstance.position.recorder.import(data!.text!);
+
+    if (importFailedStr != null) {
+      return _showTip(
+        S.of(context).cannotImport(importFailedStr),
+        snackBar: true,
+      );
     }
 
-    final String text = data.text!;
+    await _stepForwardAll(pop: false);
 
-    debugPrint("Clipboard text:");
-    debugPrint(text);
-
-    await onTakeBackAllButtonPressed(false);
-    gameInstance.position.recorder.clear();
-    final invalidMoveStr = gameInstance.position.recorder.import(text);
-
-    if (invalidMoveStr != "") {
-      showTip(S.of(context).cannotImport(invalidMoveStr));
-      if (LocalDatabaseService.preferences.screenReaderSupport) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        showSnackBar(context, S.of(context).cannotImport(invalidMoveStr));
-      }
-      return;
-    }
-
-    await onStepForwardAllButtonPressed(false);
-
-    showTip(S.of(context).gameImported);
-    if (LocalDatabaseService.preferences.screenReaderSupport) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      showSnackBar(context, S.of(context).gameImported);
-    }
+    _showTip(S.of(context).gameImported, snackBar: true);
   }
 
-  Future<void> onExportGameButtonPressed() async {
+  Future<void> _exportGame() async {
     Navigator.pop(context);
 
-    final moveHistoryText = gameInstance.position.moveHistoryText;
-
-    Clipboard.setData(ClipboardData(text: moveHistoryText)).then((_) {
-      showSnackBar(context, S.of(context).moveHistoryCopied);
-    });
+    await Clipboard.setData(
+      ClipboardData(text: gameInstance.position.moveHistoryText),
+    );
+    showSnackBar(context, S.of(context).moveHistoryCopied);
   }
 
-  Future<void> onAutoReplayButtonPressed() async {
-    Navigator.pop(context);
-
-    await onTakeBackAllButtonPressed(false);
-    await onStepForwardAllButtonPressed(false);
-  }
-
-  void onGameButtonPressed() {
-    showModalBottomSheet(
-      //showDialog(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Semantics(
-        label: S.of(context).game,
-        child: SimpleDialog(
+  void _showGameOptions() => showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context) => SimpleDialog(
+          semanticLabel: S.of(context).game,
           backgroundColor: Colors.transparent,
           children: <Widget>[
             SimpleDialogOption(
-              onPressed: onStartNewGameButtonPressed,
+              onPressed: _startNew,
               child: Text(
                 S.of(context).newGame,
                 style: AppTheme.simpleDialogOptionTextStyle,
@@ -697,7 +512,7 @@ class _GamePageState extends State<GamePage>
             ),
             const CustomSpacer(),
             SimpleDialogOption(
-              onPressed: onImportGameButtonPressed,
+              onPressed: _importGame,
               child: Text(
                 S.of(context).importGame,
                 style: AppTheme.simpleDialogOptionTextStyle,
@@ -706,7 +521,7 @@ class _GamePageState extends State<GamePage>
             ),
             const CustomSpacer(),
             SimpleDialogOption(
-              onPressed: onExportGameButtonPressed,
+              onPressed: _exportGame,
               child: Text(
                 S.of(context).exportGame,
                 style: AppTheme.simpleDialogOptionTextStyle,
@@ -725,66 +540,61 @@ class _GamePageState extends State<GamePage>
               ),
           ],
         ),
-      ),
-    );
-  }
-
-  void onOptionButtonPressed() => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const GameSettingsPage()),
       );
 
-  void onMoveButtonPressed() {
-    final List<Widget> _historyNavigation = [
-      SimpleDialogOption(
-        onPressed: onTakeBackButtonPressed,
-        child: Text(
-          S.of(context).takeBack,
-          style: AppTheme.simpleDialogOptionTextStyle,
-          textAlign: TextAlign.center,
-        ),
-      ),
-      const CustomSpacer(),
-      SimpleDialogOption(
-        onPressed: onStepForwardButtonPressed,
-        child: Text(
-          S.of(context).stepForward,
-          style: AppTheme.simpleDialogOptionTextStyle,
-          textAlign: TextAlign.center,
-        ),
-      ),
-      const CustomSpacer(),
-      SimpleDialogOption(
-        onPressed: onTakeBackAllButtonPressed,
-        child: Text(
-          S.of(context).takeBackAll,
-          style: AppTheme.simpleDialogOptionTextStyle,
-          textAlign: TextAlign.center,
-        ),
-      ),
-      const CustomSpacer(),
-      SimpleDialogOption(
-        onPressed: onStepForwardAllButtonPressed,
-        child: Text(
-          S.of(context).stepForwardAll,
-          style: AppTheme.simpleDialogOptionTextStyle,
-          textAlign: TextAlign.center,
-        ),
-      ),
-      const CustomSpacer(),
-    ];
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Semantics(
-        label: S.of(context).move_number(0),
-        child: SimpleDialog(
+  void _showSettings() => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const GameSettingsPage()),
+      );
+
+  void _showMoveOptions() => showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context) => SimpleDialog(
+          semanticLabel: S.of(context).move_number(0),
           backgroundColor: Colors.transparent,
           children: <Widget>[
-            if (!LocalDatabaseService.display.isHistoryNavigationToolbarShown)
-              ..._historyNavigation,
+            if (!LocalDatabaseService
+                .display.isHistoryNavigationToolbarShown) ...[
+              SimpleDialogOption(
+                onPressed: _takeBack,
+                child: Text(
+                  S.of(context).takeBack,
+                  style: AppTheme.simpleDialogOptionTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const CustomSpacer(),
+              SimpleDialogOption(
+                onPressed: _stepForward,
+                child: Text(
+                  S.of(context).stepForward,
+                  style: AppTheme.simpleDialogOptionTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const CustomSpacer(),
+              SimpleDialogOption(
+                onPressed: _takeBackAll,
+                child: Text(
+                  S.of(context).takeBackAll,
+                  style: AppTheme.simpleDialogOptionTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const CustomSpacer(),
+              SimpleDialogOption(
+                onPressed: _stepForwardAll,
+                child: Text(
+                  S.of(context).stepForwardAll,
+                  style: AppTheme.simpleDialogOptionTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const CustomSpacer(),
+            ],
             SimpleDialogOption(
-              onPressed: onMoveListButtonPressed,
+              onPressed: _showMoveList,
               child: Text(
                 S.of(context).showMoveList,
                 style: AppTheme.simpleDialogOptionTextStyle,
@@ -793,7 +603,7 @@ class _GamePageState extends State<GamePage>
             ),
             const CustomSpacer(),
             SimpleDialogOption(
-              onPressed: onMoveNowButtonPressed,
+              onPressed: _moveNow,
               child: Text(
                 S.of(context).moveNow,
                 style: AppTheme.simpleDialogOptionTextStyle,
@@ -812,35 +622,26 @@ class _GamePageState extends State<GamePage>
               ),
           ],
         ),
-      ),
-    );
-  }
+      );
 
-  Future<void> onGotoHistoryButtonsPressed(
+  Future<void> _gotoHistory(
     HistoryMove move, {
     bool pop = true,
     int? number,
   }) async {
-    if (pop == true) {
-      Navigator.pop(context);
-    }
+    if (pop == true) Navigator.pop(context);
 
-    if (mounted) {
-      showTip(S.of(context).waiting);
-    }
+    _showTip(S.of(context).waiting);
 
-    if (isGoingToHistory) {
-      debugPrint(
+    if (_isGoingToHistory) {
+      return debugPrint(
         "[TakeBack] Is going to history, ignore Take Back button press.",
       );
-      return;
     }
 
-    isGoingToHistory = true;
+    _isGoingToHistory = true;
 
-    final errMove = await gameInstance.position.gotoHistory(move, number);
-
-    switch (errMove) {
+    switch (await gameInstance.position.gotoHistory(move, number)) {
       case "":
         break;
       case "null":
@@ -852,10 +653,9 @@ class _GamePageState extends State<GamePage>
       default:
         ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).movesAndRulesNotMatch);
-        break;
     }
 
-    isGoingToHistory = false;
+    _isGoingToHistory = false;
 
     if (mounted) {
       final pos = gameInstance.position;
@@ -868,48 +668,37 @@ class _GamePageState extends State<GamePage>
         text = S.of(context).atEnd;
       }
 
-      showTip(text);
-
-      if (LocalDatabaseService.preferences.screenReaderSupport) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        showSnackBar(context, text);
-      }
+      _showTip(text, snackBar: true);
     }
   }
 
-  Future<void> onTakeBackButtonPressed([bool pop = true]) async =>
-      onGotoHistoryButtonsPressed(
+  Future<void> _takeBack({bool pop = true}) async => _gotoHistory(
         HistoryMove.backOne,
         pop: pop,
       );
 
-  Future<void> onStepForwardButtonPressed([bool pop = true]) async =>
-      onGotoHistoryButtonsPressed(
+  Future<void> _stepForward({bool pop = true}) async => _gotoHistory(
         HistoryMove.forward,
         pop: pop,
       );
 
-  Future<void> onTakeBackAllButtonPressed([bool pop = true]) async =>
-      onGotoHistoryButtonsPressed(
+  Future<void> _takeBackAll({bool pop = true}) async => _gotoHistory(
         HistoryMove.backAll,
         pop: pop,
       );
 
-  Future<void> onStepForwardAllButtonPressed([bool pop = true]) async {
-    onGotoHistoryButtonsPressed(
-      HistoryMove.forwardAll,
-      pop: pop,
-    );
-  }
+  Future<void> _stepForwardAll({bool pop = true}) async => _gotoHistory(
+        HistoryMove.forwardAll,
+        pop: pop,
+      );
 
-  Future<void> onTakeBackNButtonPressed(int n, [bool pop = true]) async =>
-      onGotoHistoryButtonsPressed(
+  Future<void> _takeBackN(int n, {bool pop = true}) async => _gotoHistory(
         HistoryMove.backN,
         number: n,
         pop: pop,
       );
 
-  void onMoveListButtonPressed() {
+  void _showMoveList() {
     final moveHistoryText = gameInstance.position.moveHistoryText;
     final end = gameInstance.moveHistory.length - 1;
     Navigator.pop(context);
@@ -944,10 +733,8 @@ class _GamePageState extends State<GamePage>
                     context: context,
                     builder: (context) => NumberPicker(end: end),
                   );
-
-                  if (selectValue != null) {
-                    onTakeBackNButtonPressed(selectValue);
-                  }
+                  assert(selectValue != null);
+                  _takeBackN(selectValue!);
                 },
               ),
             TextButton(
@@ -955,12 +742,11 @@ class _GamePageState extends State<GamePage>
                 S.of(context).copy,
                 style: AppTheme.moveHistoryTextStyle,
               ),
-              onPressed: () =>
-                  Clipboard.setData(ClipboardData(text: moveHistoryText))
-                      .then((_) {
+              onPressed: () async {
+                await Clipboard.setData(ClipboardData(text: moveHistoryText));
                 ScaffoldMessenger.of(context).clearSnackBars();
                 showSnackBar(context, S.of(context).moveHistoryCopied);
-              }),
+              },
             ),
             TextButton(
               child: Text(
@@ -975,232 +761,186 @@ class _GamePageState extends State<GamePage>
     );
   }
 
-  Future<void> onMoveNowButtonPressed() async {
+  Future<void> _moveNow() async {
     Navigator.pop(context);
-    await engineToGo(true);
+    await _engineToGo(isMoveNow: true);
   }
 
-  void onInfoButtonPressed() {
-    final analyzeText = infoText;
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: AppTheme.infoDialogBackgroundColor,
-          content: SingleChildScrollView(
-            child: Text(analyzeText, style: AppTheme.moveHistoryTextStyle),
-          ),
-          actions: <Widget>[
-            TextButton(
-              key: const Key('infoDialogOkButton'),
-              child:
-                  Text(S.of(context).ok, style: AppTheme.moveHistoryTextStyle),
-              onPressed: () => Navigator.pop(context),
+  void _showInfo() => showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: AppTheme.infoDialogBackgroundColor,
+            content: SingleChildScrollView(
+              child: Text(_infoText, style: AppTheme.moveHistoryTextStyle),
             ),
-          ],
-        );
-      },
-    );
-  }
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  S.of(context).ok,
+                  key: const Key('infoDialogOkButton'),
+                  style: AppTheme.moveHistoryTextStyle,
+                ),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        },
+      );
 
-  Future<void> setPrivacyPolicyAccepted(bool value) async {
-    LocalDatabaseService.preferences = LocalDatabaseService.preferences
-        .copyWith(isPrivacyPolicyAccepted: value);
-
-    debugPrint("[config] isPrivacyPolicyAccepted: $value");
-  }
-
-  Future<void> onShowPrivacyDialog() async {
-    showPrivacyDialog(context, setPrivacyPolicyAccepted);
-  }
-
-  String getGameOverReasonString(GameOverReason? reason, String? winner) {
+  String _getGameOverReasonString(GameOverReason? reason, String? winner) {
     final String loserStr =
         winner == PieceColor.white ? S.of(context).black : S.of(context).white;
 
-    final Map<GameOverReason, String> reasonMap = {
-      GameOverReason.loseReasonlessThanThree:
-          S.of(context).loseReasonlessThanThree(loserStr),
-      GameOverReason.loseReasonResign: S.of(context).loseReasonResign(loserStr),
-      GameOverReason.loseReasonNoWay: S.of(context).loseReasonNoWay(loserStr),
-      GameOverReason.loseReasonBoardIsFull:
-          S.of(context).loseReasonBoardIsFull(loserStr),
-      GameOverReason.loseReasonTimeOver:
-          S.of(context).loseReasonTimeOver(loserStr),
-      GameOverReason.drawReasonRule50: S.of(context).drawReasonRule50,
-      GameOverReason.drawReasonEndgameRule50:
-          S.of(context).drawReasonEndgameRule50,
-      GameOverReason.drawReasonBoardIsFull: S.of(context).drawReasonBoardIsFull,
-      GameOverReason.drawReasonThreefoldRepetition:
-          S.of(context).drawReasonThreefoldRepetition,
-    };
-
-    debugPrint(
-      "$_tag Game over reason: ${gameInstance.position.gameOverReason}",
-    );
-
-    String? loseReasonStr = reasonMap[gameInstance.position.gameOverReason];
-
-    if (loseReasonStr == null) {
-      loseReasonStr = S.of(context).gameOverUnknownReason;
-      debugPrint("$_tag Game over reason string: $loseReasonStr");
-      if (EnvironmentConfig.devMode) {
-        assert(false);
-      }
+    switch (gameInstance.position.gameOverReason) {
+      case GameOverReason.loseReasonlessThanThree:
+        return S.of(context).loseReasonlessThanThree(loserStr);
+      case GameOverReason.loseReasonResign:
+        return S.of(context).loseReasonResign(loserStr);
+      case GameOverReason.loseReasonNoWay:
+        return S.of(context).loseReasonNoWay(loserStr);
+      case GameOverReason.loseReasonBoardIsFull:
+        return S.of(context).loseReasonBoardIsFull(loserStr);
+      case GameOverReason.loseReasonTimeOver:
+        return S.of(context).loseReasonTimeOver(loserStr);
+      case GameOverReason.drawReasonRule50:
+        return S.of(context).drawReasonRule50;
+      case GameOverReason.drawReasonEndgameRule50:
+        return S.of(context).drawReasonEndgameRule50;
+      case GameOverReason.drawReasonBoardIsFull:
+        return S.of(context).drawReasonBoardIsFull;
+      case GameOverReason.drawReasonThreefoldRepetition:
+        return S.of(context).drawReasonThreefoldRepetition;
+      case GameOverReason.noReason:
+        return S.of(context).gameOverUnknownReason;
     }
-
-    return loseReasonStr;
   }
 
-  GameResult getGameResult(String winner) {
-    if (isAi[PieceColor.white]! && isAi[PieceColor.black]!) {
-      return GameResult.none;
-    }
+  GameResult _getGameResult(String winner) {
+    if (widget.engineType == EngineType.aiVsAi) return GameResult.none;
 
-    if (winner == PieceColor.white) {
-      if (isAi[PieceColor.white]!) {
-        return GameResult.lose;
-      } else {
-        return GameResult.win;
-      }
+    switch (winner) {
+      case PieceColor.white:
+        if (isAi[PieceColor.white]!) {
+          return GameResult.lose;
+        } else {
+          return GameResult.win;
+        }
+      case PieceColor.black:
+        if (isAi[PieceColor.black]!) {
+          return GameResult.lose;
+        } else {
+          return GameResult.win;
+        }
+      case PieceColor.draw:
+        return GameResult.draw;
+      default:
+        return GameResult.none;
     }
-
-    if (winner == PieceColor.black) {
-      if (isAi[PieceColor.black]!) {
-        return GameResult.lose;
-      } else {
-        return GameResult.win;
-      }
-    }
-
-    if (winner == PieceColor.draw) {
-      return GameResult.draw;
-    }
-
-    return GameResult.none;
   }
 
-// TODO: [Leptopoda] deduplicate the code
-  void showGameResult(String winner) {
-    final GameResult result = getGameResult(winner);
+  void _showGameResult(String winner) {
+    final GameResult result = _getGameResult(winner);
     gameInstance.position.result = result;
 
-    final Map<GameResult, String> retMap = {
-      GameResult.win: gameInstance.engineType == EngineType.humanVsAi
-          ? S.of(context).youWin
-          : S.of(context).gameOver,
-      GameResult.lose: S.of(context).gameOver,
-      GameResult.draw: S.of(context).isDraw
-    };
-
-    final dialogTitle = retMap[result];
-
-    if (dialogTitle == null) return;
+    final String dialogTitle;
+    switch (result) {
+      case GameResult.win:
+        dialogTitle = widget.engineType == EngineType.humanVsAi
+            ? S.of(context).youWin
+            : S.of(context).gameOver;
+        break;
+      case GameResult.lose:
+        dialogTitle = S.of(context).gameOver;
+        break;
+      case GameResult.draw:
+        dialogTitle = S.of(context).isDraw;
+        break;
+      default:
+        return;
+    }
 
     final bool isTopLevel =
         LocalDatabaseService.preferences.skillLevel == 30; // TODO: 30
 
+    final content = StringBuffer(
+      _getGameOverReasonString(
+        gameInstance.position.gameOverReason,
+        gameInstance.position.winner,
+      ),
+    );
+
+    debugPrint("$_tag Game over reason string: $content");
+
+    final List<Widget> actions;
     if (result == GameResult.win &&
         !isTopLevel &&
-        gameInstance.engineType == EngineType.humanVsAi) {
-      final contentStr = StringBuffer(
-        getGameOverReasonString(
-          gameInstance.position.gameOverReason,
-          gameInstance.position.winner,
+        widget.engineType == EngineType.humanVsAi) {
+      content.writeln();
+      content.writeln();
+      content.writeln(
+        S.of(context).challengeHarderLevel(
+              LocalDatabaseService.preferences.skillLevel + 1,
+            ),
+      );
+
+      actions = [
+        TextButton(
+          child: Text(
+            S.of(context).yes,
+          ),
+          onPressed: () async {
+            if (!isTopLevel) {
+              final _pref = LocalDatabaseService.preferences;
+              LocalDatabaseService.preferences =
+                  _pref.copyWith(skillLevel: _pref.skillLevel + 1);
+              debugPrint(
+                "[config] skillLevel: ${LocalDatabaseService.preferences.skillLevel}",
+              );
+            }
+            Navigator.pop(context);
+          },
         ),
-      );
-
-      if (!isTopLevel) {
-        contentStr.writeln();
-        contentStr.writeln();
-        contentStr.writeln(
-          S.of(context).challengeHarderLevel(
-                LocalDatabaseService.preferences.skillLevel + 1,
-              ),
-        );
-      }
-
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              dialogTitle,
-              style: AppTheme.dialogTitleTextStyle,
-            ),
-            content: Text(contentStr.toString()),
-            actions: <Widget>[
-              TextButton(
-                child: Text(
-                  S.of(context).yes,
-                ),
-                onPressed: () async {
-                  if (!isTopLevel) {
-                    final _pref = LocalDatabaseService.preferences;
-                    LocalDatabaseService.preferences =
-                        _pref.copyWith(skillLevel: _pref.skillLevel + 1);
-                    debugPrint(
-                      "[config] skillLevel: ${LocalDatabaseService.preferences.skillLevel}",
-                    );
-                  }
-                  Navigator.pop(context);
-                },
-              ),
-              TextButton(
-                child: Text(S.of(context).no),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
-          );
-        },
-      );
+        TextButton(
+          child: Text(S.of(context).no),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ];
     } else {
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              dialogTitle,
-              style: AppTheme.dialogTitleTextStyle,
-            ),
-            content: Text(
-              getGameOverReasonString(
-                gameInstance.position.gameOverReason,
-                gameInstance.position.winner,
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(S.of(context).restart),
-                onPressed: () {
-                  Navigator.pop(context);
-                  gameInstance.newGame();
-                  if (mounted) {
-                    showTip(S.of(context).gameStarted);
-                    if (LocalDatabaseService.preferences.screenReaderSupport) {
-                      ScaffoldMessenger.of(context).clearSnackBars();
-                      showSnackBar(context, S.of(context).gameStarted);
-                    }
-                  }
+      actions = [
+        TextButton(
+          child: Text(S.of(context).restart),
+          onPressed: () {
+            Navigator.pop(context);
+            gameInstance.newGame();
+            _showTip(S.of(context).gameStarted, snackBar: true);
 
-                  if (gameInstance.isAiToMove) {
-                    debugPrint("$_tag New game, AI to move.");
-                    engineToGo(false);
-                  }
-                },
-              ),
-              TextButton(
-                child: Text(S.of(context).cancel),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
-          );
-        },
-      );
+            if (gameInstance.isAiToMove) {
+              debugPrint("$_tag New game, AI to move.");
+              _engineToGo(isMoveNow: false);
+            }
+          },
+        ),
+        TextButton(
+          child: Text(S.of(context).cancel),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ];
     }
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (_) => AlertDialog(
+        title: Text(
+          dialogTitle,
+          style: AppTheme.dialogTitleTextStyle,
+        ),
+        content: Text(content.toString()),
+        actions: actions,
+      ),
+    );
   }
 
   double get _screenPaddingH {
@@ -1209,7 +949,7 @@ class _GamePageState extends State<GamePage>
     final double height = windowSize.height;
     double width = windowSize.width;
 
-    // TODO: [Leptopoda] maybe use windowSize.aspectRatio
+    // TODO: [Leptopoda] maybe use windowSize.aspectratio
     if (height / width < 16.0 / 9.0) {
       width = height * 9 / 16;
       return (windowSize.width - width) / 2 - AppTheme.boardMargin;
@@ -1218,37 +958,51 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  Widget get header {
-    final Map<EngineType, IconData> engineTypeToIconLeft = {
-      EngineType.humanVsAi: LocalDatabaseService.preferences.aiMovesFirst
-          ? FluentIcons.bot_24_filled
-          : FluentIcons.person_24_filled,
-      EngineType.humanVsHuman: FluentIcons.person_24_filled,
-      EngineType.aiVsAi: FluentIcons.bot_24_filled,
-      EngineType.humanVsCloud: FluentIcons.person_24_filled,
-      EngineType.humanVsLAN: FluentIcons.person_24_filled,
-      EngineType.testViaLAN: FluentIcons.wifi_1_24_filled,
-    };
-
-    final Map<EngineType, IconData> engineTypeToIconRight = {
-      EngineType.humanVsAi: LocalDatabaseService.preferences.aiMovesFirst
-          ? FluentIcons.person_24_filled
-          : FluentIcons.bot_24_filled,
-      EngineType.humanVsHuman: FluentIcons.person_24_filled,
-      EngineType.aiVsAi: FluentIcons.bot_24_filled,
-      EngineType.humanVsCloud: FluentIcons.cloud_24_filled,
-      EngineType.humanVsLAN: FluentIcons.wifi_1_24_filled,
-      EngineType.testViaLAN: FluentIcons.wifi_1_24_filled,
-    };
+  Widget get _header {
+    late final IconData left;
+    late final IconData right;
+    switch (widget.engineType) {
+      case EngineType.humanVsAi:
+        if (LocalDatabaseService.preferences.aiMovesFirst) {
+          left = FluentIcons.bot_24_filled;
+          right = FluentIcons.person_24_filled;
+        } else {
+          left = FluentIcons.person_24_filled;
+          right = FluentIcons.bot_24_filled;
+        }
+        break;
+      case EngineType.humanVsHuman:
+        left = FluentIcons.person_24_filled;
+        right = FluentIcons.person_24_filled;
+        break;
+      case EngineType.aiVsAi:
+        left = FluentIcons.bot_24_filled;
+        right = FluentIcons.bot_24_filled;
+        break;
+      case EngineType.humanVsCloud:
+        left = FluentIcons.person_24_filled;
+        right = FluentIcons.cloud_24_filled;
+        break;
+      case EngineType.humanVsLAN:
+        left = FluentIcons.person_24_filled;
+        right = FluentIcons.wifi_1_24_filled;
+        break;
+      case EngineType.testViaLAN:
+        left = FluentIcons.wifi_1_24_filled;
+        right = FluentIcons.wifi_1_24_filled;
+        break;
+      default:
+        assert(false);
+    }
 
     final iconColor = LocalDatabaseService.colorSettings.messageColor;
 
     final iconRow = Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Icon(engineTypeToIconLeft[widget.engineType], color: iconColor),
-        Icon(iconArrow, color: iconColor),
-        Icon(engineTypeToIconRight[widget.engineType], color: iconColor),
+        Icon(left, color: iconColor),
+        Icon(_iconArrow, color: iconColor),
+        Icon(right, color: iconColor),
       ],
     );
 
@@ -1284,7 +1038,7 @@ class _GamePageState extends State<GamePage>
     );
   }
 
-  IconData get iconArrow {
+  IconData get _iconArrow {
     if (gameInstance.position.phase == Phase.gameOver) {
       switch (gameInstance.position.winner) {
         case PieceColor.white:
@@ -1311,20 +1065,20 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  Widget get board {
+  Widget get _board {
     boardWidth = MediaQuery.of(context).size.width - screenPaddingH * 2;
 
     return Container(
-      margin: EdgeInsets.symmetric(vertical: boardMargin),
+      margin: EdgeInsets.symmetric(vertical: _boardMargin),
       child: Board(
         width: boardWidth,
-        onBoardTap: onBoardTap,
-        animationValue: animation.value,
+        onBoardTap: _onBoardTap,
+        animationValue: _animation.value,
       ),
     );
   }
 
-  String get infoText {
+  String get _infoText {
     final buffer = StringBuffer();
     final pos = gameInstance.position;
 
@@ -1339,8 +1093,6 @@ class _GamePageState extends State<GamePage>
         us = S.of(context).player2;
         them = S.of(context).player1;
         break;
-      default:
-        assert(false);
     }
 
     switch (pos.phase) {
@@ -1426,29 +1178,25 @@ class _GamePageState extends State<GamePage>
 
   List<Widget> get toolbar {
     final gameButton = ToolbarItem.icon(
-      key: const Key('gameButton'),
-      onPressed: onGameButtonPressed,
+      onPressed: _showGameOptions,
       icon: const Icon(FluentIcons.table_simple_24_regular),
       label: Text(S.of(context).game),
     );
 
     final optionsButton = ToolbarItem.icon(
-      key: const Key('optionsButton'),
-      onPressed: onOptionButtonPressed,
+      onPressed: _showSettings,
       icon: const Icon(FluentIcons.settings_24_regular),
       label: Text(S.of(context).options),
     );
 
     final moveButton = ToolbarItem.icon(
-      key: const Key('moveButton'),
-      onPressed: onMoveButtonPressed,
+      onPressed: _showMoveOptions,
       icon: const Icon(FluentIcons.calendar_agenda_24_regular),
       label: Text(S.of(context).move_number(0)),
     );
 
     final infoButton = ToolbarItem.icon(
-      key: const Key('infoButton'),
-      onPressed: onInfoButtonPressed,
+      onPressed: _showInfo,
       icon: const Icon(FluentIcons.book_information_24_regular),
       label: Text(S.of(context).info),
     );
@@ -1469,7 +1217,7 @@ class _GamePageState extends State<GamePage>
             : FluentIcons.arrow_next_24_regular,
         semanticLabel: S.of(context).takeBackAll,
       ),
-      onPressed: () => onTakeBackAllButtonPressed(false),
+      onPressed: () => _takeBackAll(pop: false),
     );
 
     final takeBackButton = ToolbarItem(
@@ -1479,7 +1227,7 @@ class _GamePageState extends State<GamePage>
             : FluentIcons.chevron_right_24_regular,
         semanticLabel: S.of(context).takeBack,
       ),
-      onPressed: () async => onTakeBackButtonPressed(false),
+      onPressed: () async => _takeBack(pop: false),
     );
 
     final stepForwardButton = ToolbarItem(
@@ -1489,7 +1237,7 @@ class _GamePageState extends State<GamePage>
             : FluentIcons.chevron_left_24_regular,
         semanticLabel: S.of(context).stepForward,
       ),
-      onPressed: () async => onStepForwardButtonPressed(false),
+      onPressed: () async => _stepForward(pop: false),
     );
 
     final stepForwardAllButton = ToolbarItem(
@@ -1499,7 +1247,7 @@ class _GamePageState extends State<GamePage>
             : FluentIcons.arrow_previous_24_regular,
         semanticLabel: S.of(context).stepForwardAll,
       ),
-      onPressed: () async => onStepForwardAllButtonPressed(false),
+      onPressed: () async => _stepForwardAll(pop: false),
     );
 
     return <Widget>[
@@ -1510,34 +1258,39 @@ class _GamePageState extends State<GamePage>
     ];
   }
 
+  Future<void> _refreshEngine() async {
+    await _engine.setOptions();
+    debugPrint("$_tag reloaded engine options");
+  }
+
+  Future<void> _showPrivacyDialog() async {
+    if (!LocalDatabaseService.preferences.isPrivacyPolicyAccepted &&
+        Localizations.localeOf(context).languageCode == "zh") {
+      await showPrivacyDialog(context);
+    }
+  }
+
   @override
   void initState() {
-    debugPrint("$_tag Engine type: ${widget.engineType}");
+    super.initState();
 
+    debugPrint("$_tag Engine type: ${widget.engineType}");
     gameInstance.setWhoIsAi(widget.engineType);
 
-    super.initState();
     gameInstance.init();
     _engine.startup();
-
-    timer = Timer.periodic(
-      const Duration(microseconds: 100),
-      (_) => _setReadyState(),
-    );
 
     _initAnimation();
 
     LocalDatabaseService.listenPreferences.addListener(_refreshEngine);
   }
 
-  Future<void> _refreshEngine() async {
-    await _engine.setOptions();
-    debugPrint("$_tag reloaded engine options");
-  }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    _showPrivacyDialog();
+
     screenPaddingH = _screenPaddingH;
     ltr = Directionality.of(context) == TextDirection.ltr;
     _tip = S.of(context).welcome;
@@ -1560,8 +1313,8 @@ class _GamePageState extends State<GamePage>
         padding: EdgeInsets.symmetric(horizontal: screenPaddingH),
         child: Column(
           children: <Widget>[
-            BlockSemantics(child: header),
-            board,
+            BlockSemantics(child: _header),
+            _board,
             if (LocalDatabaseService.display.isHistoryNavigationToolbarShown)
               GamePageToolBar(
                 backgroundColor: LocalDatabaseService
@@ -1586,7 +1339,7 @@ class _GamePageState extends State<GamePage>
   @override
   void dispose() {
     debugPrint("$_tag dispose");
-    disposed = true;
+    _disposed = true;
     _engine.shutdown();
     _animationController.dispose();
     LocalDatabaseService.listenPreferences.removeListener(_refreshEngine);

@@ -470,164 +470,152 @@ class Position {
       return false;
     }
 
-    if (phase == Phase.ready) {
-      start();
-    }
+    if (phase == Phase.ready) start();
 
-    // TODO: [Leptopoda] use switch case
-    if (phase == Phase.placing) {
-      piece = sideToMove;
-      if (pieceInHandCount[us] != null) {
-        pieceInHandCount[us] = pieceInHandCount[us]! - 1;
-      }
-
-      if (pieceOnBoardCount[us] != null) {
-        pieceOnBoardCount[us] = pieceOnBoardCount[us]! + 1;
-      }
-
-      _grid[squareToIndex[s]!] = piece;
-      board[s] = piece;
-
-      record = "(${fileOf(s)},${rankOf(s)})";
-
-      updateKey(s);
-
-      currentSquare = s;
-
-      final int n = millsCount(currentSquare);
-
-      if (n == 0) {
-        assert(
-          pieceInHandCount[PieceColor.white]! >= 0 &&
-              pieceInHandCount[PieceColor.black]! >= 0,
-        );
-
-        if (pieceInHandCount[PieceColor.white] == 0 &&
-            pieceInHandCount[PieceColor.black] == 0) {
-          if (isGameOver()) {
-            return true;
-          }
-
-          phase = Phase.moving;
-          action = Act.select;
-
-          if (LocalDatabaseService.rules.hasBannedLocations) {
-            removeBanStones();
-          }
-
-          if (!LocalDatabaseService.rules.isDefenderMoveFirst) {
-            changeSideToMove();
-          }
-
-          if (isGameOver()) {
-            return true;
-          }
-        } else {
-          changeSideToMove();
+    switch (phase) {
+      case Phase.placing:
+        piece = sideToMove;
+        if (pieceInHandCount[us] != null) {
+          pieceInHandCount[us] = pieceInHandCount[us]! - 1;
         }
-        gameInstance.focusIndex = squareToIndex[s];
-        await Audios.playTone(Sound.place);
-      } else {
-        pieceToRemoveCount =
-            LocalDatabaseService.rules.mayRemoveMultiple ? n : 1;
-        updateKeyMisc();
 
-        if (LocalDatabaseService
-                .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
-            pieceInHandCount[them] != null) {
-          pieceInHandCount[them] =
-              pieceInHandCount[them]! - 1; // Or pieceToRemoveCount?
+        if (pieceOnBoardCount[us] != null) {
+          pieceOnBoardCount[us] = pieceOnBoardCount[us]! + 1;
+        }
 
-          if (pieceInHandCount[them]! < 0) {
-            pieceInHandCount[them] = 0;
-          }
+        _grid[squareToIndex[s]!] = piece;
+        board[s] = piece;
+
+        record = "(${fileOf(s)},${rankOf(s)})";
+
+        updateKey(s);
+
+        currentSquare = s;
+
+        final int n = millsCount(currentSquare);
+
+        if (n == 0) {
+          assert(
+            pieceInHandCount[PieceColor.white]! >= 0 &&
+                pieceInHandCount[PieceColor.black]! >= 0,
+          );
 
           if (pieceInHandCount[PieceColor.white] == 0 &&
               pieceInHandCount[PieceColor.black] == 0) {
-            if (isGameOver()) {
-              return true;
-            }
+            if (isGameOver()) return true;
 
             phase = Phase.moving;
             action = Act.select;
 
-            if (LocalDatabaseService.rules.isDefenderMoveFirst) {
+            if (LocalDatabaseService.rules.hasBannedLocations) {
+              removeBanStones();
+            }
+
+            if (!LocalDatabaseService.rules.isDefenderMoveFirst) {
               changeSideToMove();
             }
 
-            if (isGameOver()) {
-              return true;
-            }
+            if (isGameOver()) return true;
+          } else {
+            changeSideToMove();
           }
-        } else {
-          action = Act.remove;
-        }
-
-        gameInstance.focusIndex = squareToIndex[s];
-        await Audios.playTone(Sound.mill);
-      }
-    } else if (phase == Phase.moving) {
-      if (isGameOver()) {
-        return true;
-      }
-
-      // if illegal
-      if (pieceOnBoardCount[sideToMove]! >
-              LocalDatabaseService.rules.flyPieceCount ||
-          !LocalDatabaseService.rules.mayFly) {
-        int md;
-
-        for (md = 0; md < moveDirectionNumber; md++) {
-          if (s == adjacentSquares[currentSquare][md]) break;
-        }
-
-        // not in moveTable
-        if (md == moveDirectionNumber) {
-          debugPrint(
-            "[position] putPiece: [$s] is not in [$currentSquare]'s move table.",
-          );
-          return false;
-        }
-      }
-
-      record =
-          "(${fileOf(currentSquare)},${rankOf(currentSquare)})->(${fileOf(s)},${rankOf(s)})";
-
-      st.rule50++;
-
-      board[s] = _grid[squareToIndex[s]!] = board[currentSquare];
-      updateKey(s);
-      revertKey(currentSquare);
-
-      board[currentSquare] =
-          _grid[squareToIndex[currentSquare]!] = Piece.noPiece;
-
-      currentSquare = s;
-      final int n = millsCount(currentSquare);
-
-      // midgame
-      if (n == 0) {
-        action = Act.select;
-        changeSideToMove();
-
-        if (isGameOver()) {
-          return true;
-        } else {
           gameInstance.focusIndex = squareToIndex[s];
           await Audios.playTone(Sound.place);
-        }
-      } else {
-        pieceToRemoveCount =
-            LocalDatabaseService.rules.mayRemoveMultiple ? n : 1;
-        updateKeyMisc();
-        action = Act.remove;
-        gameInstance.focusIndex = squareToIndex[s];
-        await Audios.playTone(Sound.mill);
-      }
-    } else {
-      assert(false);
-    }
+        } else {
+          pieceToRemoveCount =
+              LocalDatabaseService.rules.mayRemoveMultiple ? n : 1;
+          updateKeyMisc();
 
+          if (LocalDatabaseService
+                  .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
+              pieceInHandCount[them] != null) {
+            pieceInHandCount[them] =
+                pieceInHandCount[them]! - 1; // Or pieceToRemoveCount?
+
+            if (pieceInHandCount[them]! < 0) {
+              pieceInHandCount[them] = 0;
+            }
+
+            if (pieceInHandCount[PieceColor.white] == 0 &&
+                pieceInHandCount[PieceColor.black] == 0) {
+              if (isGameOver()) return true;
+
+              phase = Phase.moving;
+              action = Act.select;
+
+              if (LocalDatabaseService.rules.isDefenderMoveFirst) {
+                changeSideToMove();
+              }
+
+              if (isGameOver()) return true;
+            }
+          } else {
+            action = Act.remove;
+          }
+
+          gameInstance.focusIndex = squareToIndex[s];
+          await Audios.playTone(Sound.mill);
+        }
+        break;
+      case Phase.moving:
+        if (isGameOver()) return true;
+
+        // if illegal
+        if (pieceOnBoardCount[sideToMove]! >
+                LocalDatabaseService.rules.flyPieceCount ||
+            !LocalDatabaseService.rules.mayFly) {
+          int md;
+
+          for (md = 0; md < moveDirectionNumber; md++) {
+            if (s == adjacentSquares[currentSquare][md]) break;
+          }
+
+          // not in moveTable
+          if (md == moveDirectionNumber) {
+            debugPrint(
+              "[position] putPiece: [$s] is not in [$currentSquare]'s move table.",
+            );
+            return false;
+          }
+        }
+
+        record =
+            "(${fileOf(currentSquare)},${rankOf(currentSquare)})->(${fileOf(s)},${rankOf(s)})";
+
+        st.rule50++;
+
+        board[s] = _grid[squareToIndex[s]!] = board[currentSquare];
+        updateKey(s);
+        revertKey(currentSquare);
+
+        board[currentSquare] =
+            _grid[squareToIndex[currentSquare]!] = Piece.noPiece;
+
+        currentSquare = s;
+        final int n = millsCount(currentSquare);
+
+        // midgame
+        if (n == 0) {
+          action = Act.select;
+          changeSideToMove();
+
+          if (isGameOver()) return true;
+          gameInstance.focusIndex = squareToIndex[s];
+
+          await Audios.playTone(Sound.place);
+        } else {
+          pieceToRemoveCount =
+              LocalDatabaseService.rules.mayRemoveMultiple ? n : 1;
+          updateKeyMisc();
+          action = Act.remove;
+          gameInstance.focusIndex = squareToIndex[s];
+          await Audios.playTone(Sound.mill);
+        }
+
+        break;
+      default:
+        assert(false);
+    }
     return true;
   }
 
