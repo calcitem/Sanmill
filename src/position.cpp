@@ -1202,10 +1202,16 @@ int Position::potential_mills_count(Square to, Color c, Square from)
     const Bitboard bc = byColorBB[c];
     const Bitboard* mt = millTableBB[to];
 
-    for (int ld = 0; ld < LD_NB; ld++) {
-        if ((bc & mt[ld]) == mt[ld]) {
-            n++;
-        }
+    if ((bc & mt[LD_HORIZONTAL]) == mt[LD_HORIZONTAL]) {
+        n++;
+    }
+
+    if ((bc & mt[LD_VERTICAL]) == mt[LD_VERTICAL]) {
+        n++;
+    }
+
+    if ((bc & mt[LD_SLASH]) == mt[LD_SLASH]) {
+        n++;
     }
 
     if (from != SQ_0 && from >= SQ_BEGIN && from < SQ_END) {
