@@ -17,7 +17,7 @@
 */
 
 import 'package:sanmill/mill/position.dart';
-import 'package:sanmill/mill/rule.dart';
+import 'package:sanmill/services/storage/storage.dart';
 
 class Mills {
   const Mills._();
@@ -110,7 +110,7 @@ class Mills {
       /* 39 */ [0, 0, 0, 0],
     ];
 
-    if (rule.hasDiagonalLines) {
+    if (LocalDatabaseService.rules.hasDiagonalLines) {
       Position.adjacentSquares = adjacentSquares_diagonal;
     } else {
       Position.adjacentSquares = adjacentSquares;
@@ -524,7 +524,7 @@ class Mills {
       ]
     ];
 
-    if (rule.hasDiagonalLines) {
+    if (LocalDatabaseService.rules.hasDiagonalLines) {
       Position.millTable = millTable_diagonal;
     } else {
       Position.millTable = millTable;

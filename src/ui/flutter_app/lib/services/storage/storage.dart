@@ -24,7 +24,6 @@ import 'package:flutter/foundation.dart'
 import 'package:flutter/material.dart' show Color, Locale;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/models/color.dart';
 import 'package:sanmill/models/display.dart';
 import 'package:sanmill/models/preferences.dart';
@@ -82,7 +81,6 @@ class LocalDatabaseService {
     await _initDisplay();
     await _initPreferences();
     await _initRules();
-    DatabaseV1.initRules();
     await _DatabaseMigrator.migrate();
   }
 
@@ -161,10 +159,7 @@ class LocalDatabaseService {
       _rulesBox.listenable(keys: [rulesKey]);
 
   /// saves the given [rules] to the settings Box
-  static set rules(Rules rules) {
-    _rulesBox.put(rulesKey, rules);
-    DatabaseV1.initRules();
-  }
+  static set rules(Rules rules) => _rulesBox.put(rulesKey, rules);
 
   /// gets the given [Rules] from the settings Box
   static Rules get rules => _rulesBox.get(rulesKey) ?? Rules();

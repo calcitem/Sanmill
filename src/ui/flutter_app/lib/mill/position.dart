@@ -20,7 +20,6 @@ import 'package:flutter/foundation.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/mills.dart';
 import 'package:sanmill/mill/recorder.dart';
-import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/mill/zobrist.dart';
 import 'package:sanmill/services/audios.dart';
@@ -155,7 +154,7 @@ class Position {
 
     phase = Phase.placing;
 
-    setPosition(rule); // TODO
+    setPosition(); // TODO
 
     // TODO
     recorder = GameRecorder(lastPositionWithRemove: fen());
@@ -283,13 +282,16 @@ class Position {
       score[PieceColor.draw] = score[PieceColor.draw]! + 1;
 
       // TODO: WAR to judge rule50
-      if (rule.nMoveRule > 0 && posKeyHistory.length >= rule.nMoveRule - 1) {
+      if (LocalDatabaseService.rules.nMoveRule > 0 &&
+          posKeyHistory.length >= LocalDatabaseService.rules.nMoveRule - 1) {
         gameOverReason = GameOverReason.drawReasonRule50;
-      } else if (rule.endgameNMoveRule < rule.nMoveRule &&
+      } else if (LocalDatabaseService.rules.endgameNMoveRule <
+              LocalDatabaseService.rules.nMoveRule &&
           isThreeEndgame &&
-          posKeyHistory.length >= rule.endgameNMoveRule - 1) {
+          posKeyHistory.length >=
+              LocalDatabaseService.rules.endgameNMoveRule - 1) {
         gameOverReason = GameOverReason.drawReasonEndgameRule50;
-      } else if (rule.threefoldRepetitionRule) {
+      } else if (LocalDatabaseService.rules.threefoldRepetitionRule) {
         gameOverReason =
             GameOverReason.drawReasonThreefoldRepetition; // TODO: Sure?
       } else {
@@ -345,7 +347,8 @@ class Position {
           (posKeyHistory.isNotEmpty &&
               st.key != posKeyHistory[posKeyHistory.length - 1])) {
         posKeyHistory.add(st.key);
-        if (rule.threefoldRepetitionRule && hasGameCycle()) {
+        if (LocalDatabaseService.rules.threefoldRepetitionRule &&
+            hasGameCycle()) {
           setGameOver(
             PieceColor.draw,
             GameOverReason.drawReasonThreefoldRepetition,
@@ -422,8 +425,8 @@ class Position {
 
     pieceOnBoardCount[PieceColor.white] =
         pieceOnBoardCount[PieceColor.black] = 0;
-    pieceInHandCount[PieceColor.white] =
-        pieceInHandCount[PieceColor.black] = rule.piecesCount;
+    pieceInHandCount[PieceColor.white] = pieceInHandCount[PieceColor.black] =
+        LocalDatabaseService.rules.piecesCount;
     pieceToRemoveCount = 0;
 
     // TODO:
@@ -508,11 +511,11 @@ class Position {
           phase = Phase.moving;
           action = Act.select;
 
-          if (rule.hasBannedLocations) {
+          if (LocalDatabaseService.rules.hasBannedLocations) {
             removeBanStones();
           }
 
-          if (!rule.isDefenderMoveFirst) {
+          if (!LocalDatabaseService.rules.isDefenderMoveFirst) {
             changeSideToMove();
           }
 
@@ -525,10 +528,12 @@ class Position {
         gameInstance.focusIndex = squareToIndex[s];
         await Audios.playTone(Sound.place);
       } else {
-        pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
+        pieceToRemoveCount =
+            LocalDatabaseService.rules.mayRemoveMultiple ? n : 1;
         updateKeyMisc();
 
-        if (rule.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
+        if (LocalDatabaseService
+                .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
             pieceInHandCount[them] != null) {
           pieceInHandCount[them] =
               pieceInHandCount[them]! - 1; // Or pieceToRemoveCount?
@@ -546,7 +551,7 @@ class Position {
             phase = Phase.moving;
             action = Act.select;
 
-            if (rule.isDefenderMoveFirst) {
+            if (LocalDatabaseService.rules.isDefenderMoveFirst) {
               changeSideToMove();
             }
 
@@ -567,7 +572,9 @@ class Position {
       }
 
       // if illegal
-      if (pieceOnBoardCount[sideToMove]! > rule.flyPieceCount || !rule.mayFly) {
+      if (pieceOnBoardCount[sideToMove]! >
+              LocalDatabaseService.rules.flyPieceCount ||
+          !LocalDatabaseService.rules.mayFly) {
         int md;
 
         for (md = 0; md < moveDirectionNumber; md++) {
@@ -610,7 +617,8 @@ class Position {
           await Audios.playTone(Sound.place);
         }
       } else {
-        pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
+        pieceToRemoveCount =
+            LocalDatabaseService.rules.mayRemoveMultiple ? n : 1;
         updateKeyMisc();
         action = Act.remove;
         gameInstance.focusIndex = squareToIndex[s];
@@ -633,7 +641,7 @@ class Position {
     // if piece is not their
     if (!(PieceColor.opponent(sideToMove) == board[s])) return -2;
 
-    if (!rule.mayRemoveFromMillsAlways &&
+    if (!LocalDatabaseService.rules.mayRemoveFromMillsAlways &&
         potentialMillsCount(s, PieceColor.nobody) > 0 &&
         !isAllInMills(PieceColor.opponent(sideToMove))) {
       return -3;
@@ -643,7 +651,8 @@ class Position {
 
     await Audios.playTone(Sound.remove);
 
-    if (rule.hasBannedLocations && phase == Phase.placing) {
+    if (LocalDatabaseService.rules.hasBannedLocations &&
+        phase == Phase.placing) {
       // Remove and put ban
       board[s] = _grid[squareToIndex[s]!] = Piece.ban;
       updateKey(s);
@@ -660,7 +669,7 @@ class Position {
     }
 
     if (pieceOnBoardCount[them]! + pieceInHandCount[them]! <
-        rule.piecesAtLeastCount) {
+        LocalDatabaseService.rules.piecesAtLeastCount) {
       setGameOver(sideToMove, GameOverReason.loseReasonlessThanThree);
       return 0;
     }
@@ -680,11 +689,11 @@ class Position {
         phase = Phase.moving;
         action = Act.select;
 
-        if (rule.hasBannedLocations) {
+        if (LocalDatabaseService.rules.hasBannedLocations) {
           removeBanStones();
         }
 
-        if (rule.isDefenderMoveFirst) {
+        if (LocalDatabaseService.rules.isDefenderMoveFirst) {
           isGameOver();
           return 0;
         }
@@ -764,14 +773,16 @@ class Position {
       return true;
     }
 
-    if (rule.nMoveRule > 0 && posKeyHistory.length >= rule.nMoveRule) {
+    if (LocalDatabaseService.rules.nMoveRule > 0 &&
+        posKeyHistory.length >= LocalDatabaseService.rules.nMoveRule) {
       setGameOver(PieceColor.draw, GameOverReason.drawReasonRule50);
       return true;
     }
 
-    if (rule.endgameNMoveRule < rule.nMoveRule &&
+    if (LocalDatabaseService.rules.endgameNMoveRule <
+            LocalDatabaseService.rules.nMoveRule &&
         isThreeEndgame &&
-        posKeyHistory.length >= rule.endgameNMoveRule) {
+        posKeyHistory.length >= LocalDatabaseService.rules.endgameNMoveRule) {
       setGameOver(PieceColor.draw, GameOverReason.drawReasonEndgameRule50);
       return true;
     }
@@ -779,7 +790,7 @@ class Position {
     if (pieceOnBoardCount[PieceColor.white]! +
             pieceOnBoardCount[PieceColor.black]! >=
         rankNumber * fileNumber) {
-      if (rule.isWhiteLoseButNotDrawWhenBoardFull) {
+      if (LocalDatabaseService.rules.isWhiteLoseButNotDrawWhenBoardFull) {
         setGameOver(PieceColor.black, GameOverReason.loseReasonBoardIsFull);
       } else {
         setGameOver(PieceColor.draw, GameOverReason.drawReasonBoardIsFull);
@@ -789,7 +800,7 @@ class Position {
     }
 
     if (phase == Phase.moving && action == Act.select && isAllSurrounded()) {
-      if (rule.isLoseButNotChangeSideWhenNoWay) {
+      if (LocalDatabaseService.rules.isLoseButNotChangeSideWhenNoWay) {
         setGameOver(
           PieceColor.opponent(sideToMove),
           GameOverReason.loseReasonNoWay,
@@ -805,7 +816,7 @@ class Position {
   }
 
   void removeBanStones() {
-    assert(rule.hasBannedLocations);
+    assert(LocalDatabaseService.rules.hasBannedLocations);
 
     int s = 0;
 
@@ -961,7 +972,9 @@ class Position {
     }
 
     // Can fly
-    if (pieceOnBoardCount[sideToMove]! <= rule.flyPieceCount && rule.mayFly) {
+    if (pieceOnBoardCount[sideToMove]! <=
+            LocalDatabaseService.rules.flyPieceCount &&
+        LocalDatabaseService.rules.mayFly) {
       return false;
     }
 
@@ -982,7 +995,7 @@ class Position {
   }
 
   bool isStarSquare(int s) {
-    if (rule.hasDiagonalLines == true) {
+    if (LocalDatabaseService.rules.hasDiagonalLines == true) {
       return s == 17 || s == 19 || s == 21 || s == 23;
     }
 
@@ -993,9 +1006,11 @@ class Position {
 
   int get nPiecesInHand {
     pieceInHandCount[PieceColor.white] =
-        rule.piecesCount - pieceOnBoardCount[PieceColor.white]!;
+        LocalDatabaseService.rules.piecesCount -
+            pieceOnBoardCount[PieceColor.white]!;
     pieceInHandCount[PieceColor.black] =
-        rule.piecesCount - pieceOnBoardCount[PieceColor.black]!;
+        LocalDatabaseService.rules.piecesCount -
+            pieceOnBoardCount[PieceColor.black]!;
 
     return pieceOnBoardCount[PieceColor.white]! +
         pieceOnBoardCount[PieceColor.black]!;
@@ -1011,7 +1026,7 @@ class Position {
     }
   }
 
-  int setPosition(Rule newRule) {
+  int setPosition() {
     result = GameResult.pending;
 
     gamePly = 0;
@@ -1060,8 +1075,10 @@ class Position {
       }
     }
 
-    if (pieceOnBoardCount[PieceColor.white]! > rule.piecesCount ||
-        pieceOnBoardCount[PieceColor.black]! > rule.piecesCount) {
+    if (pieceOnBoardCount[PieceColor.white]! >
+            LocalDatabaseService.rules.piecesCount ||
+        pieceOnBoardCount[PieceColor.black]! >
+            LocalDatabaseService.rules.piecesCount) {
       return -1;
     }
 
