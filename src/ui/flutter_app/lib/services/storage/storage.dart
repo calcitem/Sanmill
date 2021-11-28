@@ -125,6 +125,7 @@ class LocalDatabaseService {
   /// initialize the [Preferences] reference
   static Future<void> _initPreferences() async {
     Hive.registerAdapter<Preferences>(PreferencesAdapter());
+    Hive.registerAdapter<Algorithms>(AlgorithmsAdapter());
     _preferencesBox = await Hive.openBox<Preferences>(_preferencesBoxName);
   }
 

@@ -37,9 +37,6 @@ part 'package:sanmill/screens/game_settings/skill_level_slider.dart';
 
 class GameSettingsPage extends StatelessWidget {
   const GameSettingsPage({Key? key}) : super(key: key);
-  // TODO: [Leptopoda] use enum
-  static const List<String> _algorithmNames = ['Alpha-Beta', 'PVS', 'MTD(f)'];
-
   static const String _tag = "[game_settings_page]";
 
   // Restore
@@ -72,7 +69,7 @@ class GameSettingsPage extends StatelessWidget {
   }
 
   void _setAlgorithm(BuildContext context, Preferences _preferences) {
-    void _callback(int? algorithm) {
+    void _callback(Algorithms? algorithm) {
       Navigator.pop(context);
 
       LocalDatabaseService.preferences =
@@ -205,7 +202,7 @@ class GameSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile(
               titleString: S.of(context).algorithm,
-              trailingString: _algorithmNames[_preferences.algorithm],
+              trailingString: _preferences.algorithm.name,
               onTap: () => _setAlgorithm(context, _preferences),
             ),
             SettingsListTile.switchTile(
