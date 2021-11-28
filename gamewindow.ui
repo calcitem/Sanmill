@@ -792,7 +792,7 @@
           </layout>
          </item>
          <item>
-          <widget class="ManualListView" name="listView">
+          <widget class="MoveListView" name="listView">
            <property name="font">
             <font>
              <pointsize>7</pointsize>
@@ -1409,9 +1409,9 @@
    <header>gameview.h</header>
   </customwidget>
   <customwidget>
-   <class>ManualListView</class>
+   <class>MoveListView</class>
    <extends>QListView</extends>
-   <header>manuallistview.h</header>
+   <header>movelistview.h</header>
   </customwidget>
  </customwidgets>
  <resources>

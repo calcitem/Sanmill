@@ -503,7 +503,7 @@
     <QtMoc Include="src\ui\qt\gameview.h" />
     <QtMoc Include="src\ui\qt\gamewindow.h" />
     <ClInclude Include="src\ui\qt\graphicsconst.h" />
-    <QtMoc Include="src\ui\qt\manuallistview.h" />
+    <QtMoc Include="src\ui\qt\movelistview.h" />
     <QtMoc Include="src\ui\qt\pieceitem.h" />
     <QtMoc Include="src\ui\qt\server.h" />
   </ItemGroup>
