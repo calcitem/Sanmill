@@ -25,8 +25,8 @@ class _PointStyleModal extends StatelessWidget {
     required this.onChanged,
   }) : super(key: key);
 
-  final int pointStyle;
-  final Function(int?)? onChanged;
+  final PaintingStyle? pointStyle;
+  final Function(PaintingStyle?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +35,16 @@ class _PointStyleModal extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          RadioListTile(
+          RadioListTile<PaintingStyle?>(
             title: Text(S.of(context).none),
             groupValue: pointStyle,
-            value: 0,
+            value: null,
             onChanged: onChanged,
           ),
           RadioListTile(
             title: Text(S.of(context).solid),
             groupValue: pointStyle,
-            value: 1,
+            value: PaintingStyle.fill,
             onChanged: onChanged,
           ),
         ],

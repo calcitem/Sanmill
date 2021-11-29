@@ -22,7 +22,7 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter/material.dart' show Locale, immutable;
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:sanmill/services/storage/adapters/locale_adapter.dart';
+import 'package:sanmill/services/storage/adapters/adapters.dart';
 
 part 'display.g.dart';
 
@@ -42,7 +42,8 @@ class Display {
     this.isHistoryNavigationToolbarShown = false,
     this.boardBorderLineWidth = 2.0,
     this.boardInnerLineWidth = 2.0,
-    this.pointStyle = 0,
+    this.pointStyle,
+    @Deprecated("Use [pointStyle] instead.") this.oldPointStyle = 0,
     this.pointWidth = 10.0,
     this.pieceWidth = 0.9,
     this.fontSize = 16.0,
@@ -76,9 +77,16 @@ class Display {
   @HiveField(6)
   final double boardInnerLineWidth;
 
-  // TODO: [Leptopoda] maybe directly store the Paintingstyle
+  @Deprecated("Use [pointStyle] instead.")
   @HiveField(7)
-  final int pointStyle;
+  final int oldPointStyle;
+
+  @HiveField(13)
+  @JsonKey(
+    fromJson: PaintingStyleAdapter.paintingStyleFromJson,
+    toJson: PaintingStyleAdapter.paintingStyleToJson,
+  )
+  final PaintingStyle? pointStyle;
 
   @HiveField(8)
   final double pointWidth;

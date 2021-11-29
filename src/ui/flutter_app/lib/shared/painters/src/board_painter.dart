@@ -227,18 +227,10 @@ class BoardPainter extends PiecesBasePainter {
       paint,
     );
 
-    // TODO: [Leptopoda] use enum or so :)
     // Point
-    switch (LocalDatabaseService.display.pointStyle) {
-      case 0:
-        break;
-      case 1:
-        paint.style = PaintingStyle.fill;
-        _drawPoint(points, canvas, paint);
-        break;
-      case 2:
-        paint.style = PaintingStyle.stroke;
-        _drawPoint(points, canvas, paint);
+    if (LocalDatabaseService.display.pointStyle != null) {
+      paint.style = LocalDatabaseService.display.pointStyle!;
+      _drawPoint(points, canvas, paint);
     }
 
     if (LocalDatabaseService.rules.hasDiagonalLines) {

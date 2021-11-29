@@ -87,6 +87,7 @@ class _DatabaseMigrator {
   /// - **Algorithm to enum:** Migrates [LocalDatabaseService.preferences] to use the new Algorithm enum instead of an int representation.
   /// - **Drawer background color:** Migrates [LocalDatabaseService.colorSettings] to merge the drawerBackgroundColor and drawerColor.
   /// This reflects the deprecation of drawerBackgroundColor.
+  /// - **Painting STyle:**: Migrates [LocalDatabaseService.display] to use Flutters [PaintingStyle] enum instead of an int representation.
   static Future<void> _migrateFromV1() async {
     assert(_currentVersion <= 1);
 
@@ -103,6 +104,13 @@ class _DatabaseMigrator {
         0.5,
       )?.withAlpha(0xFF),
     );
+
+    final _display = LocalDatabaseService.display;
+    if (_display.oldPointStyle != 0) {
+      LocalDatabaseService.display = _display.copyWith(
+        pointStyle: PaintingStyle.values[_display.oldPointStyle - 1],
+      );
+    }
 
     debugPrint("$_tag migrated from v1");
   }

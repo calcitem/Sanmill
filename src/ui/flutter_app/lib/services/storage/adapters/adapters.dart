@@ -16,19 +16,15 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/// Although marked as a library this package is tightly integrated into the app
+library adapters;
+
+import 'package:flutter/material.dart' show Locale, Color, PaintingStyle;
+import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
 import 'package:sanmill/models/preferences.dart';
 
-/// Algorithm Adapter
-///
-/// This adapter provides helper functions to be used with [JsonSerializable]
-class AlgorithmAdapter {
-  const AlgorithmAdapter._();
-
-  static int? algorithmToJson(Algorithms? algorithm) => algorithm?.index;
-  static Algorithms? algorithmFromJson(int? value) {
-    if (value != null) {
-      return Algorithms.values[value];
-    }
-  }
-}
+part 'src/algorithm.dart';
+part 'src/color.dart';
+part 'src/locale.dart';
+part 'src/painting_style.dart';
