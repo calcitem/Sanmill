@@ -72,7 +72,13 @@ class AboutPage extends StatelessWidget {
           return SettingsListTile(
             titleString: S.of(context).versionInfo,
             subtitleString: "${Constants.projectName} $_version $mode",
-            onTap: () => _showVersionInfo(context, _version),
+            onTap: () => showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (_) => _VersionDialog(
+                version: _version,
+              ),
+            ),
           );
         },
       ),
@@ -227,16 +233,6 @@ class AboutPage extends StatelessWidget {
       _launchURL(Constants.githubThanksURL);
     }
   }
-
-  void _showVersionInfo(BuildContext context, String version) {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (_) => _VersionDialog(
-        version: version,
-      ),
-    );
-  }
 }
 
 class _VersionDialog extends StatelessWidget {
@@ -286,7 +282,15 @@ class _VersionDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           child: Text(S.of(context).more),
-          onPressed: () => _showFlutterVersionInfo(context),
+          onPressed: () {
+            Navigator.pop(context);
+
+            showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (_) => const _FLutterVersionAlert(),
+            );
+          },
         ),
         TextButton(
           child: Text(S.of(context).ok),
@@ -295,18 +299,13 @@ class _VersionDialog extends StatelessWidget {
       ],
     );
   }
+}
 
-  void _showFlutterVersionInfo(BuildContext context) {
-    Navigator.pop(context);
+class _FLutterVersionAlert extends StatelessWidget {
+  const _FLutterVersionAlert({Key? key}) : super(key: key);
 
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) => _flutterVersionDialog(context),
-    );
-  }
-
-  AlertDialog _flutterVersionDialog(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
         S.of(context).more,

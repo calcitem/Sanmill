@@ -44,6 +44,9 @@ import 'package:sanmill/shared/theme/app_theme.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 part 'package:sanmill/screens/game_page/board.dart';
+part 'package:sanmill/screens/game_page/result_alert.dart';
+part 'package:sanmill/screens/game_page/info_dialog.dart';
+part 'package:sanmill/screens/game_page/move_list_dialog.dart';
 
 class GamePage extends StatefulWidget {
   final EngineType engineType;
@@ -123,7 +126,18 @@ class _GamePageState extends State<GamePage>
     }
 
     if (!LocalDatabaseService.preferences.isAutoRestart) {
-      _showGameResult(winner);
+      _GameResultAlert(
+        winner: winner,
+        onRestart: () {
+          gameInstance.newGame();
+          _showTip(S.of(context).gameStarted, snackBar: true);
+
+          if (gameInstance.isAiToMove) {
+            debugPrint("$_tag New game, AI to move.");
+            _engineToGo(isMoveNow: false);
+          }
+        },
+      );
     }
   }
 
@@ -686,68 +700,13 @@ class _GamePageState extends State<GamePage>
         pop: pop,
       );
 
-  void _showMoveList() {
-    final moveHistoryText = gameInstance.position.moveHistoryText!;
-    final end = gameInstance.moveHistory.length - 1;
-    Navigator.pop(context);
-    ScaffoldMessenger.of(context).clearSnackBars();
-
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: AppTheme.moveHistoryDialogBackgroundColor,
-          title: Text(
-            S.of(context).moveList,
-            style: AppTheme.moveHistoryTextStyle,
-          ),
-          content: SingleChildScrollView(
-            child: Text(
-              moveHistoryText,
-              style: AppTheme.moveHistoryTextStyle,
-              textDirection: TextDirection.ltr,
-            ),
-          ),
-          actions: <Widget>[
-            if (end > 0)
-              TextButton(
-                child: Text(
-                  S.of(context).rollback,
-                  style: AppTheme.moveHistoryTextStyle,
-                ),
-                onPressed: () async {
-                  final selectValue = await showDialog<int?>(
-                    context: context,
-                    builder: (context) => NumberPicker(end: end),
-                  );
-                  assert(selectValue != null);
-                  _takeBackN(selectValue!);
-                },
-              ),
-            TextButton(
-              child: Text(
-                S.of(context).copy,
-                style: AppTheme.moveHistoryTextStyle,
-              ),
-              onPressed: () async {
-                await Clipboard.setData(ClipboardData(text: moveHistoryText));
-                ScaffoldMessenger.of(context).clearSnackBars();
-                showSnackBar(context, S.of(context).moveHistoryCopied);
-              },
-            ),
-            TextButton(
-              child: Text(
-                S.of(context).cancel,
-                style: AppTheme.moveHistoryTextStyle,
-              ),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  void _showMoveList() => showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (_) => _MoveListDialog(
+          takeBackCallback: _takeBackN,
+        ),
+      );
 
   Future<void> _moveNow() async {
     Navigator.pop(context);
@@ -757,149 +716,8 @@ class _GamePageState extends State<GamePage>
   void _showInfo() => showDialog(
         context: context,
         barrierDismissible: true,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: AppTheme.infoDialogBackgroundColor,
-            content: SingleChildScrollView(
-              child: Text(_infoText, style: AppTheme.moveHistoryTextStyle),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(
-                  S.of(context).ok,
-                  key: const Key('infoDialogOkButton'),
-                  style: AppTheme.moveHistoryTextStyle,
-                ),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
-          );
-        },
+        builder: (_) => _InfoDialog(tip: _tip),
       );
-
-  GameResult _getGameResult(PieceColor winner) {
-    if (widget.engineType == EngineType.aiVsAi) return GameResult.none;
-
-    switch (winner) {
-      case PieceColor.white:
-        if (gameInstance.isAi[PieceColor.white]!) {
-          return GameResult.lose;
-        } else {
-          return GameResult.win;
-        }
-      case PieceColor.black:
-        if (gameInstance.isAi[PieceColor.black]!) {
-          return GameResult.lose;
-        } else {
-          return GameResult.win;
-        }
-      case PieceColor.draw:
-        return GameResult.draw;
-      default:
-        return GameResult.none;
-    }
-  }
-
-  void _showGameResult(PieceColor winner) {
-    final GameResult result = _getGameResult(winner);
-    gameInstance.position.result = result;
-
-    late final String dialogTitle;
-    switch (result) {
-      case GameResult.win:
-        dialogTitle = widget.engineType == EngineType.humanVsAi
-            ? S.of(context).youWin
-            : S.of(context).gameOver;
-        break;
-      case GameResult.lose:
-        dialogTitle = S.of(context).gameOver;
-        break;
-      case GameResult.draw:
-        dialogTitle = S.of(context).isDraw;
-        break;
-      default:
-        assert(false);
-    }
-
-    final bool isTopLevel =
-        LocalDatabaseService.preferences.skillLevel == 30; // TODO: 30
-
-    final content = StringBuffer(
-      gameInstance.position.gameOverReason
-          .getName(context, gameInstance.position.winner),
-    );
-
-    debugPrint("$_tag Game over reason string: $content");
-
-    final List<Widget> actions;
-    if (result == GameResult.win &&
-        !isTopLevel &&
-        widget.engineType == EngineType.humanVsAi) {
-      content.writeln();
-      content.writeln();
-      content.writeln(
-        S.of(context).challengeHarderLevel(
-              LocalDatabaseService.preferences.skillLevel + 1,
-            ),
-      );
-
-      actions = [
-        TextButton(
-          child: Text(
-            S.of(context).yes,
-          ),
-          onPressed: () async {
-            if (!isTopLevel) {
-              final _pref = LocalDatabaseService.preferences;
-              LocalDatabaseService.preferences =
-                  _pref.copyWith(skillLevel: _pref.skillLevel + 1);
-              debugPrint(
-                "[config] skillLevel: ${LocalDatabaseService.preferences.skillLevel}",
-              );
-            }
-            Navigator.pop(context);
-          },
-        ),
-        TextButton(
-          child: Text(S.of(context).no),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ];
-    } else {
-      actions = [
-        TextButton(
-          child: Text(S.of(context).restart),
-          onPressed: () {
-            Navigator.pop(context);
-            gameInstance.newGame();
-            _showTip(S.of(context).gameStarted, snackBar: true);
-
-            if (gameInstance.isAiToMove) {
-              debugPrint("$_tag New game, AI to move.");
-              _engineToGo(isMoveNow: false);
-            }
-          },
-        ),
-        TextButton(
-          child: Text(S.of(context).cancel),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ];
-    }
-
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (_) => AlertDialog(
-        title: Text(
-          dialogTitle,
-          style: AppTheme.dialogTitleTextStyle,
-        ),
-        content: Text(content.toString()),
-        actions: actions,
-      ),
-    );
-  }
 
   double get _screenPaddingH {
     // when screen's height/width rate is less than 16/9, limit width of board
@@ -999,106 +817,6 @@ class _GamePageState extends State<GamePage>
         animation: _animation,
       ),
     );
-  }
-
-  String get _infoText {
-    final buffer = StringBuffer();
-    final pos = gameInstance.position;
-
-    late final String us;
-    late final String them;
-    switch (pos.side) {
-      case PieceColor.white:
-        us = S.of(context).player1;
-        them = S.of(context).player2;
-        break;
-      case PieceColor.black:
-        us = S.of(context).player2;
-        them = S.of(context).player1;
-        break;
-      default:
-    }
-
-    switch (pos.phase) {
-      case Phase.placing:
-        buffer.write(S.of(context).placingPhase);
-        break;
-      case Phase.moving:
-        buffer.write(S.of(context).movingPhase);
-        break;
-      default:
-        assert(false);
-    }
-
-    if (LocalDatabaseService.preferences.screenReaderSupport) {
-      buffer.writeln(":");
-    } else {
-      buffer.writeln();
-    }
-
-    // Last Move information
-    if (pos.recorder.lastMove?.notation != null) {
-      final String n1 = pos.recorder.lastMove!.notation;
-      // $them is only shown with the screen reader. It is convenient for
-      // the disabled to recognize whether the opponent has finished the moving.
-      if (LocalDatabaseService.preferences.screenReaderSupport) {
-        buffer.write(S.of(context).lastMove("$them, "));
-      } else {
-        buffer.write(S.of(context).lastMove(""));
-      }
-
-      if (n1.startsWith("x")) {
-        buffer.writeln(
-          pos.recorder.moves[pos.recorder.moveCount - 2].notation,
-        );
-      }
-      buffer.writePeriod(n1);
-    }
-
-    buffer.writePeriod(S.of(context).sideToMove(us));
-
-    // the tip
-    if (LocalDatabaseService.preferences.screenReaderSupport &&
-        _tip.endsWith(".") &&
-        _tip.endsWith("!")) {
-      buffer.writePeriod(_tip);
-    }
-
-    buffer.writeln();
-    buffer.writeln(S.of(context).pieceCount);
-    buffer.writeComma(
-      S.of(context).inHand(
-            S.of(context).player1,
-            pos.pieceInHandCount[PieceColor.white]!,
-          ),
-    );
-    buffer.writeComma(
-      S.of(context).inHand(
-            S.of(context).player2,
-            pos.pieceInHandCount[PieceColor.black]!,
-          ),
-    );
-    buffer.writeComma(
-      S.of(context).onBoard(
-            S.of(context).player1,
-            pos.pieceOnBoardCount[PieceColor.white]!,
-          ),
-    );
-    buffer.writePeriod(
-      S.of(context).onBoard(
-            S.of(context).player2,
-            pos.pieceOnBoardCount[PieceColor.black]!,
-          ),
-    );
-    buffer.writeln();
-    buffer.writeln(S.of(context).score);
-    buffer
-        .writeComma("${S.of(context).player1}: ${pos.score[PieceColor.white]}");
-    buffer
-        .writeComma("${S.of(context).player2}: ${pos.score[PieceColor.black]}");
-    buffer.writePeriod("${S.of(context).draw}: ${pos.score[PieceColor.draw]}");
-
-    return buffer.toString();
   }
 
   List<Widget> get toolbar {
