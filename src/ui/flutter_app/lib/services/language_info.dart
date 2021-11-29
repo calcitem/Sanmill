@@ -116,6 +116,7 @@ void setSpecialCountryAndRegion(BuildContext context) {
   final Locale currentLocale = Localizations.localeOf(context);
 
   switch (currentLocale.countryCode) {
+    // TODO: [Leptopoda] aren't country codes lowercase?
     case "IR":
       specialCountryAndRegion = "Iran";
       break;

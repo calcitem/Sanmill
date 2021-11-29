@@ -166,6 +166,21 @@ extension PieceColorExtension on PieceColor {
     }
   }
 
+  String? name(BuildContext context) {
+    switch (this) {
+      case PieceColor.white:
+        return S.of(context).white;
+      case PieceColor.black:
+        return S.of(context).black;
+      case PieceColor.none:
+        return S.of(context).none;
+      case PieceColor.draw:
+        return S.of(context).draw;
+      case PieceColor.ban:
+      case PieceColor.nobody:
+    }
+  }
+
   PieceColor get opponent {
     switch (this) {
       case PieceColor.black:
@@ -230,9 +245,8 @@ enum GameOverReason {
 }
 
 extension GameOverReasonExtension on GameOverReason {
-  String getName(BuildContext context, PieceColor? winner) {
-    final String loserStr =
-        winner == PieceColor.white ? S.of(context).black : S.of(context).white;
+  String getName(BuildContext context, PieceColor winner) {
+    final String loserStr = winner.opponent.name(context)!;
 
     switch (this) {
       case GameOverReason.loseReasonlessThanThree:
