@@ -41,7 +41,12 @@ class NativeEngine extends Engine {
     await platform.invokeMethod("send", command);
   }
 
-  Future<String?> read() async {
+  Future<void> _sendOptions(String name, dynamic option) async {
+    final String command = "setoption name $name value $option";
+    await _send(command);
+  }
+
+  Future<String?> _read() async {
     return platform.invokeMethod("read");
   }
 
@@ -71,7 +76,7 @@ class NativeEngine extends Engine {
     }
 
     if (position != null) {
-      await _send(getPositionFen(position));
+      await _send(_getPositionFen(position));
       await _send("go");
       isActive = true;
     } else {
@@ -120,7 +125,7 @@ class NativeEngine extends Engine {
       return "";
     }
 
-    final response = await read();
+    final response = await _read();
 
     if (response != null) {
       for (final prefix in prefixes) {
@@ -149,63 +154,48 @@ class NativeEngine extends Engine {
     final _pref = LocalDatabaseService.preferences;
     final _rules = LocalDatabaseService.rules;
 
-    await _send(
-      "setoption name DeveloperMode value ${EnvironmentConfig.devMode}",
+    await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
+    await _sendOptions("Algorithm", _pref.algorithm);
+    await _sendOptions("DrawOnHumanExperience", _pref.drawOnHumanExperience);
+    await _sendOptions("ConsiderMobility", _pref.considerMobility);
+    await _sendOptions("SkillLevel", _pref.skillLevel);
+    await _sendOptions("MoveTime", _pref.moveTime);
+    await _sendOptions("AiIsLazy", _pref.aiIsLazy);
+    await _sendOptions("Shuffling", _pref.shufflingEnabled);
+    await _sendOptions("PiecesCount", _rules.piecesCount);
+    await _sendOptions("FlyPieceCount", _rules.flyPieceCount);
+    await _sendOptions("PiecesAtLeastCount", _rules.piecesAtLeastCount);
+    await _sendOptions("HasDiagonalLines", _rules.hasDiagonalLines);
+    await _sendOptions("HasBannedLocations", _rules.hasBannedLocations);
+    await _sendOptions("MayMoveInPlacingPhase", _rules.mayMoveInPlacingPhase);
+    await _sendOptions("IsDefenderMoveFirst", _rules.isDefenderMoveFirst);
+    await _sendOptions("MayRemoveMultiple", _rules.mayRemoveMultiple);
+    await _sendOptions(
+      "MayRemoveFromMillsAlways",
+      _rules.mayRemoveFromMillsAlways,
     );
-    await _send("setoption name Algorithm value ${_pref.algorithm}");
-    await _send(
-      "setoption name DrawOnHumanExperience value ${_pref.drawOnHumanExperience}",
+    await _sendOptions(
+      "MayOnlyRemoveUnplacedPieceInPlacingPhase",
+      _rules.mayOnlyRemoveUnplacedPieceInPlacingPhase,
     );
-    await _send(
-      "setoption name ConsiderMobility value ${_pref.considerMobility}",
+    await _sendOptions(
+      "IsWhiteLoseButNotDrawWhenBoardFull",
+      _rules.isWhiteLoseButNotDrawWhenBoardFull,
     );
-    await _send("setoption name SkillLevel value ${_pref.skillLevel}");
-    await _send("setoption name MoveTime value ${_pref.moveTime}");
-    await _send("setoption name AiIsLazy value ${_pref.aiIsLazy}");
-    await _send("setoption name Shuffling value ${_pref.shufflingEnabled}");
-    await _send("setoption name PiecesCount value ${_rules.piecesCount}");
-    await _send("setoption name FlyPieceCount value ${_rules.flyPieceCount}");
-    await _send(
-      "setoption name PiecesAtLeastCount value ${_rules.piecesAtLeastCount}",
+    await _sendOptions(
+      "IsLoseButNotChangeSideWhenNoWay",
+      _rules.isLoseButNotChangeSideWhenNoWay,
     );
-    await _send(
-      "setoption name HasDiagonalLines value ${_rules.hasDiagonalLines}",
-    );
-    await _send(
-      "setoption name HasBannedLocations value ${_rules.hasBannedLocations}",
-    );
-    await _send(
-      "setoption name MayMoveInPlacingPhase value ${_rules.mayMoveInPlacingPhase}",
-    );
-    await _send(
-      "setoption name IsDefenderMoveFirst value ${_rules.isDefenderMoveFirst}",
-    );
-    await _send(
-      "setoption name MayRemoveMultiple value ${_rules.mayRemoveMultiple}",
-    );
-    await _send(
-      "setoption name MayRemoveFromMillsAlways value ${_rules.mayRemoveFromMillsAlways}",
-    );
-    await _send(
-      "setoption name MayOnlyRemoveUnplacedPieceInPlacingPhase value ${_rules.mayOnlyRemoveUnplacedPieceInPlacingPhase}",
-    );
-    await _send(
-      "setoption name IsWhiteLoseButNotDrawWhenBoardFull value ${_rules.isWhiteLoseButNotDrawWhenBoardFull}",
-    );
-    await _send(
-      "setoption name IsLoseButNotChangeSideWhenNoWay value ${_rules.isLoseButNotChangeSideWhenNoWay}",
-    );
-    await _send("setoption name MayFly value ${_rules.mayFly}");
-    await _send("setoption name NMoveRule value ${_rules.nMoveRule}");
-    await _send(
-      "setoption name EndgameNMoveRule value ${_rules.endgameNMoveRule}",
-    );
-    await _send(
-      "setoption name ThreefoldRepetitionRule value ${_rules.threefoldRepetitionRule}",
+    await _sendOptions("MayFly", _rules.mayFly);
+    await _sendOptions("NMoveRule", _rules.nMoveRule);
+    await _sendOptions("EndgameNMoveRule", _rules.endgameNMoveRule);
+    await _sendOptions(
+      "ThreefoldRepetitionRule",
+      _rules.threefoldRepetitionRule,
     );
   }
 
-  String getPositionFen(Position position) {
+  String _getPositionFen(Position position) {
     final startPosition = position.lastPositionWithRemove;
     final moves = position.movesSinceLastRemove();
 
