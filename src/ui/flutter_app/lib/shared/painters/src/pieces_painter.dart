@@ -18,16 +18,38 @@
 
 part of '../painters.dart';
 
+@immutable
 class _PiecePaintParam {
   final PieceColor piece;
   final Offset pos;
   final bool animated;
 
-  const _PiecePaintParam({
+  late final Color borderColor;
+  late final Color pieceColor;
+  late final Color blurPositionColor;
+
+  _PiecePaintParam({
     required this.piece,
     required this.pos,
     required this.animated,
-  });
+  }) {
+    switch (piece) {
+      case PieceColor.white:
+        borderColor = AppTheme.whitePieceBorderColor;
+        pieceColor = LocalDatabaseService.colorSettings.whitePieceColor;
+        blurPositionColor =
+            LocalDatabaseService.colorSettings.whitePieceColor.withOpacity(0.1);
+        break;
+      case PieceColor.black:
+        borderColor = AppTheme.blackPieceBorderColor;
+        pieceColor = LocalDatabaseService.colorSettings.blackPieceColor;
+
+        blurPositionColor =
+            LocalDatabaseService.colorSettings.blackPieceColor.withOpacity(0.1);
+        break;
+      default:
+    }
+  }
 }
 
 class PiecesPainter extends PiecesBasePainter {
@@ -93,34 +115,16 @@ class PiecesPainter extends PiecesBasePainter {
       final animatedPieceRadius = _animatedPieceWidth / 2;
       final animatedPieceInnerRadius = animatedPieceRadius * 0.99;
 
-      // TODO: [Leptopoda] move the following attributes into [_PiecePaintParam]
+      blurPositionColor = pps.blurPositionColor;
+
       // Draw Border of Piece
-      late final Color border;
-      late final Color piece;
-      switch (pps.piece) {
-        case PieceColor.white:
-          border = AppTheme.whitePieceBorderColor;
-          piece = LocalDatabaseService.colorSettings.whitePieceColor;
-          blurPositionColor = LocalDatabaseService.colorSettings.whitePieceColor
-              .withOpacity(0.1);
-          break;
-        case PieceColor.black:
-          border = AppTheme.blackPieceBorderColor;
-          piece = LocalDatabaseService.colorSettings.blackPieceColor;
-
-          blurPositionColor = LocalDatabaseService.colorSettings.blackPieceColor
-              .withOpacity(0.1);
-          break;
-        default:
-      }
-
-      paint.color = border;
+      paint.color = pps.borderColor;
       canvas.drawCircle(
         pps.pos,
         pps.animated ? animatedPieceRadius : pieceRadius,
         paint,
       );
-      paint.color = piece;
+      paint.color = pps.pieceColor;
       canvas.drawCircle(
         pps.pos,
         pps.animated ? animatedPieceInnerRadius : pieceInnerRadius,
