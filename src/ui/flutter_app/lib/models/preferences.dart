@@ -20,7 +20,7 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:sanmill/services/storage/adapters/algorithm_adapter.dart';
+import 'package:sanmill/services/storage/adapters/adapters.dart';
 
 part 'preferences.g.dart';
 

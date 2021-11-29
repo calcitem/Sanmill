@@ -16,29 +16,36 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/material.dart' show Color;
-import 'package:hive_flutter/adapters.dart';
-import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
+part of '../adapters.dart';
 
-/// Color Adapter
+/// PaintingStyle Adapter
 ///
 /// This adapter provides helper functions to be used with [JsonSerializable]
 /// and is a general [TypeAdapter] to be used with Hive [Box]es
-class ColorAdapter extends TypeAdapter<Color> {
+class PaintingStyleAdapter extends TypeAdapter<PaintingStyle?> {
   @override
-  final typeId = 6;
+  final typeId = 8;
 
   @override
-  Color read(BinaryReader reader) {
-    final _value = reader.readInt();
-    return Color(_value);
+  PaintingStyle? read(BinaryReader reader) {
+    final _value = reader.read() as int?;
+    if (_value != null) {
+      return PaintingStyle.values[_value];
+    }
   }
 
   @override
-  void write(BinaryWriter writer, Color obj) {
-    writer.writeInt(obj.value);
+  void write(BinaryWriter writer, PaintingStyle? obj) {
+    if (obj != null) {
+      writer.writeInt(obj.index);
+    }
   }
 
-  static int colorToJson(Color color) => color.value;
-  static Color colorFromJson(int value) => Color(value);
+  static String? paintingStyleToJson(PaintingStyle? style) =>
+      style?.index.toString();
+  static PaintingStyle? paintingStyleFromJson(String? value) {
+    if (value != null) {
+      return PaintingStyle.values[value as int];
+    }
+  }
 }

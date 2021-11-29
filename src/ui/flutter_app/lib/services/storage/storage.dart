@@ -21,15 +21,14 @@ import 'dart:io' show File;
 
 import 'package:flutter/foundation.dart'
     show ValueListenable, debugPrint, kIsWeb;
-import 'package:flutter/material.dart' show Color, Locale;
+import 'package:flutter/material.dart' show Color, Locale, PaintingStyle;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/models/color.dart';
 import 'package:sanmill/models/display.dart';
 import 'package:sanmill/models/preferences.dart';
 import 'package:sanmill/models/rules.dart';
-import 'package:sanmill/services/storage/adapters/color_adapter.dart';
-import 'package:sanmill/services/storage/adapters/locale_adapter.dart';
+import 'package:sanmill/services/storage/adapters/adapters.dart';
 import 'package:sanmill/shared/constants.dart';
 
 part 'package:sanmill/services/storage/storage_migration.dart';
@@ -115,6 +114,7 @@ class LocalDatabaseService {
   /// initialize the [Display] reference
   static Future<void> _initDisplay() async {
     Hive.registerAdapter<Locale?>(LocaleAdapter());
+    Hive.registerAdapter<PaintingStyle?>(PaintingStyleAdapter());
     Hive.registerAdapter<Display>(DisplayAdapter());
     _displayBox = await Hive.openBox<Display>(_displayBoxName);
   }

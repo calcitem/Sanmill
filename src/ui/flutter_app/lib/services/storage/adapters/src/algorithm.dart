@@ -16,35 +16,19 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/material.dart' show Locale;
-import 'package:hive_flutter/adapters.dart';
-import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
 
-/// Locale Adapter
+part of '../adapters.dart';
+
+/// Algorithm Adapter
 ///
 /// This adapter provides helper functions to be used with [JsonSerializable]
-/// and is a general [TypeAdapter] to be used with Hive [Box]es
-class LocaleAdapter extends TypeAdapter<Locale?> {
-  @override
-  final typeId = 7;
+class AlgorithmAdapter {
+  const AlgorithmAdapter._();
 
-  @override
-  Locale read(BinaryReader reader) {
-    final _value = reader.readString();
-    return Locale(_value);
-  }
-
-  @override
-  void write(BinaryWriter writer, Locale? obj) {
-    if (obj != null) {
-      writer.writeString(obj.languageCode);
-    }
-  }
-
-  static String? localeToJson(Locale? locale) => locale?.languageCode;
-  static Locale? localeFromJson(String? value) {
-    if (value != null && value != "Default") {
-      return Locale(value);
+  static int? algorithmToJson(Algorithms? algorithm) => algorithm?.index;
+  static Algorithms? algorithmFromJson(int? value) {
+    if (value != null) {
+      return Algorithms.values[value];
     }
   }
 }
