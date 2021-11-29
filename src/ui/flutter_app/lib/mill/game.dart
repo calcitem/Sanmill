@@ -22,9 +22,6 @@ import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
-enum PlayerType { human, AI }
-Map<PieceColor, bool> isAi = {PieceColor.white: false, PieceColor.black: true};
-
 // TODO: [Leptopoda] add constructor
 Game gameInstance = Game();
 
@@ -70,18 +67,25 @@ class Game {
   int? focusIndex;
   int? blurIndex;
 
-  Map<PieceColor, bool> isSearching = {
+  final Map<PieceColor, bool> isAi = {
+    PieceColor.white: false,
+    PieceColor.black: true,
+  };
+
+  final Map<PieceColor, bool> _isSearching = {
     PieceColor.white: false,
     PieceColor.black: false
   };
 
+  // TODO: [Leptopoda] this is very suspicious.
+  //[_isSearching] is private and only used by it's getter. Seems like this is somehow redundant ...
   bool get aiIsSearching {
     debugPrint(
-      "$_tag White is searching? ${isSearching[PieceColor.white]}\n"
-      "$_tag Black is searching? ${isSearching[PieceColor.black]}\n",
+      "$_tag White is searching? ${_isSearching[PieceColor.white]}\n"
+      "$_tag Black is searching? ${_isSearching[PieceColor.black]}\n",
     );
 
-    return isSearching[PieceColor.white]! || isSearching[PieceColor.black]!;
+    return _isSearching[PieceColor.white]! || _isSearching[PieceColor.black]!;
   }
 
   EngineType engineType = EngineType.none;
@@ -133,12 +137,12 @@ class Game {
 
     sideToMove = position.sideToMove;
 
-    printStat();
+    _printStat();
 
     return true;
   }
 
-  void printStat() {
+  void _printStat() {
     double whiteWinRate = 0;
     double blackWinRate = 0;
     double drawRate = 0;
