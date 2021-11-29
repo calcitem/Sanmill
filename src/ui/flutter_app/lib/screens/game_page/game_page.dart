@@ -859,8 +859,6 @@ class _GamePageState extends State<GamePage>
 
     debugPrint("$_tag Game over reason string: $content");
 
-    print(
-        "debug result: $result toplevel: $isTopLevel engineType: ${widget.engineType}");
     final List<Widget> actions;
     if (result == GameResult.win &&
         !isTopLevel &&
