@@ -120,7 +120,7 @@ class _DatabaseV1 {
     final fileName = Constants.settingsFilename;
     final docDir = await getApplicationDocumentsDirectory();
 
-    return File('${docDir.path}/$fileName');
+    return File("${docDir.path}/$fileName");
   }
 
   /// loads the preferences from the old data store

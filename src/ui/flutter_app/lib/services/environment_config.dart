@@ -28,7 +28,11 @@ class EnvironmentConfig {
   /// Gets whether we build for devMode
   static const devMode = bool.fromEnvironment('dev_mode');
 
+  /// Gets weather we build for a monkey test
+  @Deprecated("Use EnvironmentConfig.test instead")
+  static const monkeyTest = bool.fromEnvironment("monkey_test") || test;
+
   /// Gets whether we want catcher to be enabled
   /// defaults to true
-  static const catcher = bool.fromEnvironment('catcher', defaultValue: true);
+  static const catcher = bool.fromEnvironment("catcher", defaultValue: true);
 }

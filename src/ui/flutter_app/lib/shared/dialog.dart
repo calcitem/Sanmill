@@ -106,7 +106,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
             child: Text(S.of(context).exit),
             onPressed: () {
               _setPrivacyPolicyAccepted(value: false);
-              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+              SystemChannels.platform.invokeMethod("SystemNavigator.pop");
             },
           ),
       ],

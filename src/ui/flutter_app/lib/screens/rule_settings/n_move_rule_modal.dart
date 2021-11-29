@@ -36,31 +36,31 @@ class _NMoveRuleModal extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           RadioListTile(
-            title: const Text('30'),
+            title: const Text("30"),
             groupValue: nMoveRule,
             value: 30,
             onChanged: onChanged,
           ),
           RadioListTile(
-            title: const Text('50'),
+            title: const Text("50"),
             groupValue: nMoveRule,
             value: 50,
             onChanged: onChanged,
           ),
           RadioListTile(
-            title: const Text('60'),
+            title: const Text("60"),
             groupValue: nMoveRule,
             value: 60,
             onChanged: onChanged,
           ),
           RadioListTile(
-            title: const Text('100'),
+            title: const Text("100"),
             groupValue: nMoveRule,
             value: 100,
             onChanged: onChanged,
           ),
           RadioListTile(
-            title: const Text('200'),
+            title: const Text("200"),
             groupValue: nMoveRule,
             value: 200,
             onChanged: onChanged,

@@ -41,42 +41,42 @@ class LocalDatabaseService {
   /// [ColorSettings] box reference
   static late final Box<ColorSettings> _colorSettingsBox;
 
-  /// key at which the [ColorSettings] will be saved in the [_colorSettingsBox]
-  static const String colorSettingsKey = 'settings';
+  /// key at wich the [ColorSettings] will be saved in the [_colorSettingsBox]
+  static const String colorSettingsKey = "settings";
 
-  /// key at which the [_colorSettingsBox] will be saved
-  static const String _colorSettingsBoxName = 'colors';
+  /// key at wich the [_colorSettingsBox] will be saved
+  static const String _colorSettingsBoxName = "colors";
 
   /// [Display] box reference
   static late final Box<Display> _displayBox;
 
-  /// key at which the [Display] will be saved in the [_displayBox]
-  static const String displayKey = 'settings';
+  /// key at wich the [Display] will be saved in the [_displayBox]
+  static const String displayKey = "settings";
 
-  /// key at which the [_displayBox] will be saved
-  static const String _displayBoxName = 'display';
+  /// key at wich the [_displayBox] will be saved
+  static const String _displayBoxName = "display";
 
   /// [Preferences] box reference
   static late final Box<Preferences> _preferencesBox;
 
-  /// key at which the [Preferences] will be saved in the [_preferencesBox]
-  static const String preferencesKey = 'settings';
+  /// key at wich the [Preferences] will be saved in the [_preferencesBox]
+  static const String preferencesKey = "settings";
 
-  /// key at which the [_preferencesBox] will be saved
-  static const String _preferencesBoxName = 'preferences';
+  /// key at wich the [_preferencesBox] will be saved
+  static const String _preferencesBoxName = "preferences";
 
   /// [Rules] box reference
   static late final Box<Rules> _rulesBox;
 
-  /// key at which the [Rules] will be saved in the [_rulesBox]
-  static const String rulesKey = 'settings';
+  /// key at wich the [Rules] will be saved in the [_rulesBox]
+  static const String rulesKey = "settings";
 
-  /// key at which the [_rulesBox] will be saved
-  static const String _rulesBoxName = 'rules';
+  /// key at wich the [_rulesBox] will be saved
+  static const String _rulesBoxName = "rules";
 
   /// initializes the local storage
   static Future<void> initStorage() async {
-    if (!kIsWeb) await Hive.initFlutter('Sanmill');
+    if (!kIsWeb) await Hive.initFlutter("Sanmill");
     await _initColorSettings();
     await _initDisplay();
     await _initPreferences();
