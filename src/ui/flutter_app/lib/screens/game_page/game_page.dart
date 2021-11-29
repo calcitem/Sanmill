@@ -313,8 +313,7 @@ class _GamePageState extends State<GamePage>
 
         if (position.record.length > "-(1,2)".length) {
           if (position.posKeyHistory.isEmpty ||
-              (position.posKeyHistory.isNotEmpty &&
-                  position.st.key != position.posKeyHistory.last)) {
+              position.posKeyHistory.last != position.st.key) {
             position.posKeyHistory.add(position.st.key);
             if (LocalDatabaseService.rules.threefoldRepetitionRule &&
                 position.hasGameCycle()) {
