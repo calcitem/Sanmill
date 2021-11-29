@@ -56,7 +56,7 @@ class Audios {
   static late final int _winSoundId;
   static bool isTemporaryMute = false;
 
-  static const _tag = '[audio]';
+  static const _tag = "[audio]";
 
   static Future<void> loadSounds() async {
     if (Platform.isWindows) {

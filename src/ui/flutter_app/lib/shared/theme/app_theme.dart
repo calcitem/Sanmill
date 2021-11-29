@@ -145,7 +145,7 @@ class AppTheme {
   );
 
   static const licenseTextStyle = TextStyle(
-    fontFamily: 'Monospace',
+    fontFamily: "Monospace",
     fontSize: 12,
   );
 

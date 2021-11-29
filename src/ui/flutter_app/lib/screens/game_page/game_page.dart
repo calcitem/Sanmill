@@ -407,7 +407,7 @@ class _GamePageState extends State<GamePage>
       debugPrint("[engineToGo] Engine response type: ${response.type}");
 
       switch (response.type) {
-        case 'move':
+        case "move":
           final Move mv = response.value as Move;
           final Move move = Move(mv.move);
 
@@ -421,7 +421,7 @@ class _GamePageState extends State<GamePage>
             showSnackBar(context, "${S.of(context).ai}: ${move.notation!}");
           }
           break;
-        case 'timeout':
+        case "timeout":
           return _showTip(S.of(context).timeout, snackBar: true);
         default:
           _showTip(S.of(context).error(response.type));
@@ -1061,8 +1061,8 @@ class _GamePageState extends State<GamePage>
 
     // the tip
     if (LocalDatabaseService.preferences.screenReaderSupport &&
-        _tip[_tip.length - 1] != '.' &&
-        _tip[_tip.length - 1] != '!') {
+        _tip[_tip.length - 1] != "." &&
+        _tip[_tip.length - 1] != "!") {
       buffer.writePeriod(_tip);
     }
 

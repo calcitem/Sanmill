@@ -36,13 +36,13 @@ class _FlyPieceCountModal extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           RadioListTile(
-            title: const Text('3'),
+            title: const Text("3"),
             groupValue: flyPieceCount,
             value: 3,
             onChanged: onChanged,
           ),
           RadioListTile(
-            title: const Text('4'),
+            title: const Text("4"),
             groupValue: flyPieceCount,
             value: 4,
             onChanged: onChanged,

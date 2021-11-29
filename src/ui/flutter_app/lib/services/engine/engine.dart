@@ -81,6 +81,7 @@ extension EngineTypeExtensiont on EngineType {
 }
 
 class EngineResponse {
+  // TODO: [Leptopoda] make enum
   final String type;
   final dynamic value;
   EngineResponse(this.type, {this.value});

@@ -32,35 +32,35 @@ class NativeEngine extends Engine {
 
   @override
   Future<void> startup() async {
-    await platform.invokeMethod('startup');
-    await waitResponse(['uciok']);
+    await platform.invokeMethod("startup");
+    await waitResponse(["uciok"]);
   }
 
-  Future<void> send(String command) async {
+  Future<void> _send(String command) async {
     debugPrint("[engine] send: $command");
-    await platform.invokeMethod('send', command);
+    await platform.invokeMethod("send", command);
   }
 
   Future<String?> read() async {
-    return platform.invokeMethod('read');
+    return platform.invokeMethod("read");
   }
 
   @override
   Future<void> shutdown() async {
     isActive = false;
-    await platform.invokeMethod('shutdown');
+    await platform.invokeMethod("shutdown");
   }
 
   Future<bool?> isReady() async {
-    return platform.invokeMethod('isReady');
+    return platform.invokeMethod("isReady");
   }
 
   FutureOr<bool> isThinking() async {
-    final _isThinking = await platform.invokeMethod<bool>('isThinking');
+    final _isThinking = await platform.invokeMethod<bool>("isThinking");
     if (_isThinking is bool) {
       return _isThinking;
     } else {
-      throw 'Invalid platform response. Expected a value of type bool';
+      throw "Invalid platform response. Expected a value of type bool";
     }
   }
 
@@ -71,31 +71,31 @@ class NativeEngine extends Engine {
     }
 
     if (position != null) {
-      await send(getPositionFen(position));
-      await send('go');
+      await _send(getPositionFen(position));
+      await _send("go");
       isActive = true;
     } else {
       debugPrint("[engine] Move now");
     }
 
-    final response = await waitResponse(['bestmove', 'nobestmove']);
+    final response = await waitResponse(["bestmove", "nobestmove"]);
 
     debugPrint("[engine] response: $response");
 
-    if (response.startsWith('bestmove')) {
-      var best = response.substring('bestmove'.length + 1);
+    if (response.startsWith("bestmove")) {
+      var best = response.substring("bestmove".length + 1);
 
-      final pos = best.indexOf(' ');
+      final pos = best.indexOf(" ");
       if (pos > -1) best = best.substring(0, pos);
 
-      return EngineResponse('move', value: Move.set(best));
+      return EngineResponse("move", value: Move.set(best));
     }
 
-    if (response.startsWith('nobestmove')) {
-      return EngineResponse('nobestmove');
+    if (response.startsWith("nobestmove")) {
+      return EngineResponse("nobestmove");
     }
 
-    return EngineResponse('timeout');
+    return EngineResponse("timeout");
   }
 
   Future<String> waitResponse(
@@ -117,7 +117,7 @@ class NativeEngine extends Engine {
       if (EnvironmentConfig.devMode && isActive) {
         throw "Exception: waitResponse timeout.";
       }
-      return '';
+      return "";
     }
 
     final response = await read();
@@ -141,7 +141,7 @@ class NativeEngine extends Engine {
   Future<void> stopSearching() async {
     isActive = false;
     debugPrint("[engine] Stop current thinking...");
-    await send('stop');
+    await _send("stop");
   }
 
   @override
@@ -149,77 +149,59 @@ class NativeEngine extends Engine {
     final _pref = LocalDatabaseService.preferences;
     final _rules = LocalDatabaseService.rules;
 
-    await send(
-      'setoption name DeveloperMode value ${EnvironmentConfig.devMode}',
+    await _send(
+      "setoption name DeveloperMode value ${EnvironmentConfig.devMode}",
     );
-    await send(
-      'setoption name Algorithm value ${_pref.algorithm}',
+    await _send("setoption name Algorithm value ${_pref.algorithm}");
+    await _send(
+      "setoption name DrawOnHumanExperience value ${_pref.drawOnHumanExperience}",
     );
-    await send(
-      'setoption name DrawOnHumanExperience value ${_pref.drawOnHumanExperience}',
+    await _send(
+      "setoption name ConsiderMobility value ${_pref.considerMobility}",
     );
-    await send(
-      'setoption name ConsiderMobility value ${_pref.considerMobility}',
+    await _send("setoption name SkillLevel value ${_pref.skillLevel}");
+    await _send("setoption name MoveTime value ${_pref.moveTime}");
+    await _send("setoption name AiIsLazy value ${_pref.aiIsLazy}");
+    await _send("setoption name Shuffling value ${_pref.shufflingEnabled}");
+    await _send("setoption name PiecesCount value ${_rules.piecesCount}");
+    await _send("setoption name FlyPieceCount value ${_rules.flyPieceCount}");
+    await _send(
+      "setoption name PiecesAtLeastCount value ${_rules.piecesAtLeastCount}",
     );
-    await send(
-      'setoption name SkillLevel value ${_pref.skillLevel}',
+    await _send(
+      "setoption name HasDiagonalLines value ${_rules.hasDiagonalLines}",
     );
-    await send(
-      'setoption name MoveTime value ${_pref.moveTime}',
+    await _send(
+      "setoption name HasBannedLocations value ${_rules.hasBannedLocations}",
     );
-    await send(
-      'setoption name AiIsLazy value ${_pref.aiIsLazy}',
+    await _send(
+      "setoption name MayMoveInPlacingPhase value ${_rules.mayMoveInPlacingPhase}",
     );
-    await send(
-      'setoption name Shuffling value ${_pref.shufflingEnabled}',
+    await _send(
+      "setoption name IsDefenderMoveFirst value ${_rules.isDefenderMoveFirst}",
     );
-    await send(
-      'setoption name PiecesCount value ${_rules.piecesCount}',
+    await _send(
+      "setoption name MayRemoveMultiple value ${_rules.mayRemoveMultiple}",
     );
-    await send(
-      'setoption name FlyPieceCount value ${_rules.flyPieceCount}',
+    await _send(
+      "setoption name MayRemoveFromMillsAlways value ${_rules.mayRemoveFromMillsAlways}",
     );
-    await send(
-      'setoption name PiecesAtLeastCount value ${_rules.piecesAtLeastCount}',
+    await _send(
+      "setoption name MayOnlyRemoveUnplacedPieceInPlacingPhase value ${_rules.mayOnlyRemoveUnplacedPieceInPlacingPhase}",
     );
-    await send(
-      'setoption name HasDiagonalLines value ${_rules.hasDiagonalLines}',
+    await _send(
+      "setoption name IsWhiteLoseButNotDrawWhenBoardFull value ${_rules.isWhiteLoseButNotDrawWhenBoardFull}",
     );
-    await send(
-      'setoption name HasBannedLocations value ${_rules.hasBannedLocations}',
+    await _send(
+      "setoption name IsLoseButNotChangeSideWhenNoWay value ${_rules.isLoseButNotChangeSideWhenNoWay}",
     );
-    await send(
-      'setoption name MayMoveInPlacingPhase value ${_rules.mayMoveInPlacingPhase}',
+    await _send("setoption name MayFly value ${_rules.mayFly}");
+    await _send("setoption name NMoveRule value ${_rules.nMoveRule}");
+    await _send(
+      "setoption name EndgameNMoveRule value ${_rules.endgameNMoveRule}",
     );
-    await send(
-      'setoption name IsDefenderMoveFirst value ${_rules.isDefenderMoveFirst}',
-    );
-    await send(
-      'setoption name MayRemoveMultiple value ${_rules.mayRemoveMultiple}',
-    );
-    await send(
-      'setoption name MayRemoveFromMillsAlways value ${_rules.mayRemoveFromMillsAlways}',
-    );
-    await send(
-      'setoption name MayOnlyRemoveUnplacedPieceInPlacingPhase value ${_rules.mayOnlyRemoveUnplacedPieceInPlacingPhase}',
-    );
-    await send(
-      'setoption name IsWhiteLoseButNotDrawWhenBoardFull value ${_rules.isWhiteLoseButNotDrawWhenBoardFull}',
-    );
-    await send(
-      'setoption name IsLoseButNotChangeSideWhenNoWay value ${_rules.isLoseButNotChangeSideWhenNoWay}',
-    );
-    await send(
-      'setoption name MayFly value ${_rules.mayFly}',
-    );
-    await send(
-      'setoption name NMoveRule value ${_rules.nMoveRule}',
-    );
-    await send(
-      'setoption name EndgameNMoveRule value ${_rules.endgameNMoveRule}',
-    );
-    await send(
-      'setoption name ThreefoldRepetitionRule value ${_rules.threefoldRepetitionRule}',
+    await _send(
+      "setoption name ThreefoldRepetitionRule value ${_rules.threefoldRepetitionRule}",
     );
   }
 
