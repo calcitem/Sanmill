@@ -751,7 +751,7 @@ class _GamePageState extends State<GamePage>
     return Container(
       margin: EdgeInsets.only(
         top: LocalDatabaseService.display.boardTop +
-            (isLargeScreen ? 39.0 : 0.0),
+            (Constants.isLargeScreen ? 39.0 : 0.0),
       ),
       child: Column(
         children: <Widget>[

@@ -58,7 +58,7 @@ class CustomDrawerHeader extends StatelessWidget {
 
     final _padding = EdgeInsets.only(
       bottom: 16.0,
-      top: 16.0 + (isLargeScreen ? 30 : 8),
+      top: 16.0 + (Constants.isLargeScreen ? 30 : 8),
       left: 20,
       right: 16,
     );

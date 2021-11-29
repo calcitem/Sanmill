@@ -27,7 +27,7 @@ void _initUI() {
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
 
-  if (Platform.isAndroid && isLargeScreen) {
+  if (Platform.isAndroid && Constants.isLargeScreen) {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -37,7 +37,7 @@ void _initUI() {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
-  } else if (isSmallScreen) {
+  } else if (Constants.isSmallScreen) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 }
