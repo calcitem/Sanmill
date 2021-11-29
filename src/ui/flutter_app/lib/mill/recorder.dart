@@ -354,7 +354,7 @@ class GameRecorder {
 
   void moveIn(Move move, Position position) {
     if (history.isNotEmpty) {
-      if (history[history.length - 1].move == move.move) {
+      if (history.last.move == move.move) {
         //assert(false);
         // TODO: WAR
         return;
@@ -374,6 +374,7 @@ class GameRecorder {
     return history.removeLast();
   }
 
+  // TODO: [Leptopoda] we should revert this notation as it is less performant
   Move? get last => history.isEmpty ? null : history.last;
 
   Move moveAt(int index) => history[index];

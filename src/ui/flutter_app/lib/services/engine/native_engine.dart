@@ -119,6 +119,8 @@ class NativeEngine extends Engine {
 
     if (times > timeLimit) {
       debugPrint("[engine] Timeout. sleep = $sleep, times = $times");
+      // TODO: [Leptopoda] seems like is isActive only checked here and only together with the DevMode.
+      // we might be able to remove this
       if (EnvironmentConfig.devMode && isActive) {
         throw "Exception: waitResponse timeout.";
       }
