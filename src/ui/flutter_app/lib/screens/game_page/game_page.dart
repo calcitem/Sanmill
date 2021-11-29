@@ -35,7 +35,6 @@ import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
-import 'package:sanmill/shared/dialog.dart';
 import 'package:sanmill/shared/game_toolbar/game_toolbar.dart';
 import 'package:sanmill/shared/number_picker.dart';
 import 'package:sanmill/shared/painters/painters.dart';
@@ -1249,13 +1248,6 @@ class _GamePageState extends State<GamePage>
     debugPrint("$_tag reloaded engine options");
   }
 
-  Future<void> _showPrivacyDialog() async {
-    if (!LocalDatabaseService.preferences.isPrivacyPolicyAccepted &&
-        Localizations.localeOf(context).languageCode.startsWith("zh_")) {
-      await showPrivacyDialog(context);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -1278,8 +1270,6 @@ class _GamePageState extends State<GamePage>
     screenPaddingH = _screenPaddingH;
     ltr = Directionality.of(context) == TextDirection.ltr;
     _tip = S.of(context).welcome;
-
-    _showPrivacyDialog();
   }
 
   @override

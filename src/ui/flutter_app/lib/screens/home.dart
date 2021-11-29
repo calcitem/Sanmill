@@ -34,8 +34,10 @@ import 'package:sanmill/screens/personalization_settings/personalization_setting
 import 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/environment_config.dart';
+import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
+import 'package:sanmill/shared/privacy_dialog.dart';
 
 enum _DrawerIndex {
   humanVsAi,
@@ -131,6 +133,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   @override
+  void didChangeDependencies() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) => _showPrivacyDialog());
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final List<CustomDrawerItem> drawerItems = [
       CustomDrawerItem<_DrawerIndex>(
@@ -208,29 +216,40 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       child: _screenView,
     );
   }
-}
 
-/// drafts an email and sends it to the developer
-Future<void> _launchFeedback(UserFeedback feedback) async {
-  final screenshotFilePath = await _writeImageToStorage(feedback.screenshot);
-  final packageInfo = await PackageInfo.fromPlatform();
-  final _version = '${packageInfo.version} (${packageInfo.buildNumber})';
+  void _showPrivacyDialog() {
+    if (!LocalDatabaseService.preferences.isPrivacyPolicyAccepted &&
+        Localizations.localeOf(context).languageCode.startsWith("zh")) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const PrivacyDialog(),
+      );
+    }
+  }
 
-  final Email email = Email(
-    body: feedback.text,
-    subject: Constants.feedbackSubjectPrefix +
-        _version +
-        Constants.feedbackSubjectSuffix,
-    recipients: Constants.recipients,
-    attachmentPaths: [screenshotFilePath],
-  );
-  await FlutterEmailSender.send(email);
-}
+  /// drafts an email and sends it to the developer
+  static Future<void> _launchFeedback(UserFeedback feedback) async {
+    final screenshotFilePath = await _saveFeedbackImage(feedback.screenshot);
+    final packageInfo = await PackageInfo.fromPlatform();
+    final _version = '${packageInfo.version} (${packageInfo.buildNumber})';
 
-Future<String> _writeImageToStorage(Uint8List feedbackScreenshot) async {
-  final Directory output = await getTemporaryDirectory();
-  final String screenshotFilePath = '${output.path}/sanmill-feedback.png';
-  final File screenshotFile = File(screenshotFilePath);
-  await screenshotFile.writeAsBytes(feedbackScreenshot);
-  return screenshotFilePath;
+    final Email email = Email(
+      body: feedback.text,
+      subject: Constants.feedbackSubjectPrefix +
+          _version +
+          Constants.feedbackSubjectSuffix,
+      recipients: Constants.recipients,
+      attachmentPaths: [screenshotFilePath],
+    );
+    await FlutterEmailSender.send(email);
+  }
+
+  static Future<String> _saveFeedbackImage(Uint8List screenshot) async {
+    final Directory output = await getTemporaryDirectory();
+    final String screenshotFilePath = '${output.path}/sanmill-feedback.png';
+    final File screenshotFile = File(screenshotFilePath);
+    await screenshotFile.writeAsBytes(screenshot);
+    return screenshotFilePath;
+  }
 }

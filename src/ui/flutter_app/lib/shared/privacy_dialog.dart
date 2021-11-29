@@ -39,28 +39,33 @@ class _LinkTextSpan extends TextSpan {
         );
 }
 
-Future<void> showPrivacyDialog(BuildContext context) async {
-  assert(Localizations.localeOf(context).languageCode.startsWith("zh_"));
+class PrivacyDialog extends StatelessWidget {
+  const PrivacyDialog({Key? key}) : super(key: key);
 
-  final ThemeData themeData = Theme.of(context);
-  final TextStyle aboutTextStyle = themeData.textTheme.bodyText1!;
-  final TextStyle linkStyle =
-      aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
-
-  const String eulaURL = Constants.giteeEulaURL;
-  const String privacyPolicyURL = Constants.giteePrivacyPolicyURL;
-
-  Future<void> _setPrivacyPolicyAccepted({required bool value}) async {
+  void _setPrivacyPolicyAccepted() {
     LocalDatabaseService.preferences = LocalDatabaseService.preferences
-        .copyWith(isPrivacyPolicyAccepted: value);
+        .copyWith(isPrivacyPolicyAccepted: true);
 
-    debugPrint("[config] isPrivacyPolicyAccepted: $value");
+    debugPrint("[config] isPrivacyPolicyAccepted: true");
   }
 
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => AlertDialog(
+  @override
+  Widget build(BuildContext context) {
+    assert(
+      Localizations.localeOf(context).languageCode.startsWith("zh"),
+      "The current locale must start with 'zh'",
+    );
+    assert(
+      !LocalDatabaseService.preferences.isPrivacyPolicyAccepted,
+      "The privacy policy must not be accepted",
+    );
+
+    final ThemeData themeData = Theme.of(context);
+    final TextStyle aboutTextStyle = themeData.textTheme.bodyText1!;
+    final TextStyle linkStyle =
+        aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
+
+    return AlertDialog(
       title: Text(S.of(context).privacyPolicy),
       content: RichText(
         text: TextSpan(
@@ -72,7 +77,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
             _LinkTextSpan(
               style: linkStyle,
               text: S.of(context).eula,
-              url: eulaURL,
+              url: Constants.giteeEulaURL,
             ),
             TextSpan(
               style: aboutTextStyle,
@@ -81,7 +86,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
             _LinkTextSpan(
               style: linkStyle,
               text: S.of(context).privacyPolicy,
-              url: privacyPolicyURL,
+              url: Constants.giteePrivacyPolicyURL,
             ),
             TextSpan(
               style: aboutTextStyle,
@@ -94,7 +99,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
         TextButton(
           child: Text(S.of(context).accept),
           onPressed: () {
-            _setPrivacyPolicyAccepted(value: true);
+            _setPrivacyPolicyAccepted();
             Navigator.pop(context);
           },
         ),
@@ -102,11 +107,10 @@ Future<void> showPrivacyDialog(BuildContext context) async {
           TextButton(
             child: Text(S.of(context).exit),
             onPressed: () {
-              _setPrivacyPolicyAccepted(value: false);
               SystemChannels.platform.invokeMethod('SystemNavigator.pop');
             },
           ),
       ],
-    ),
-  );
+    );
+  }
 }
