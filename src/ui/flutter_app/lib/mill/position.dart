@@ -38,6 +38,8 @@ class StateInfo {
 }
 
 enum HistoryResponse { equal, outOfRange, error }
+enum SelectionResponse { r0, r1, r2, r3, r4 }
+enum RemoveResponse { r0, r1, r2, r3 }
 
 class Position {
   GameResult result = GameResult.pending;
@@ -135,7 +137,7 @@ class Position {
   PieceColor movedPiece(int move) => pieceOn(fromSq(move));
 
   Future<bool> movePiece(int from, int to) async {
-    if (selectPiece(from) == 0) {
+    if (selectPiece(from) == SelectionResponse.r0) {
       return putPiece(to);
     }
     return false;
@@ -273,7 +275,7 @@ class Position {
 
     switch (m.type) {
       case MoveType.remove:
-        ret = await removePiece(m.to) == 0;
+        ret = await removePiece(m.to) == RemoveResponse.r0;
         if (ret) {
           // Reset rule 50 counter
           st.rule50 = 0;
@@ -582,20 +584,22 @@ class Position {
     return true;
   }
 
-  Future<int> removePiece(int s) async {
-    if (phase == Phase.ready || phase == Phase.gameOver) return -1;
+  Future<RemoveResponse> removePiece(int s) async {
+    if (phase == Phase.ready || phase == Phase.gameOver) {
+      return RemoveResponse.r1;
+    }
 
-    if (action != Act.remove) return -1;
+    if (action != Act.remove) return RemoveResponse.r1;
 
-    if (pieceToRemoveCount <= 0) return -1;
+    if (pieceToRemoveCount <= 0) return RemoveResponse.r1;
 
     // if piece is not their
-    if (!(sideToMove.opponent == board[s])) return -2;
+    if (!(sideToMove.opponent == board[s])) return RemoveResponse.r2;
 
     if (!LocalDatabaseService.rules.mayRemoveFromMillsAlways &&
         potentialMillsCount(s, PieceColor.nobody) > 0 &&
         !isAllInMills(sideToMove.opponent)) {
-      return -3;
+      return RemoveResponse.r3;
     }
 
     revertKey(s);
@@ -622,7 +626,7 @@ class Position {
     if (pieceOnBoardCount[them]! + pieceInHandCount[them]! <
         LocalDatabaseService.rules.piecesAtLeastCount) {
       setGameOver(sideToMove, GameOverReason.loseReasonlessThanThree);
-      return 0;
+      return RemoveResponse.r0;
     }
 
     currentSquare = 0;
@@ -631,7 +635,7 @@ class Position {
     updateKeyMisc();
 
     if (pieceToRemoveCount != 0) {
-      return 0;
+      return RemoveResponse.r0;
     }
 
     if (phase == Phase.placing) {
@@ -646,7 +650,7 @@ class Position {
 
         if (LocalDatabaseService.rules.isDefenderMoveFirst) {
           isGameOver();
-          return 0;
+          return RemoveResponse.r0;
         }
       } else {
         action = Act.place;
@@ -658,27 +662,29 @@ class Position {
     changeSideToMove();
     isGameOver();
 
-    return 0;
+    return RemoveResponse.r0;
   }
 
-  int selectPiece(int sq) {
-    if (phase != Phase.moving) return -2;
+  SelectionResponse selectPiece(int sq) {
+    if (phase != Phase.moving) return SelectionResponse.r2;
 
-    if (action != Act.select && action != Act.place) return -1;
+    if (action != Act.select && action != Act.place) {
+      return SelectionResponse.r1;
+    }
 
     if (board[sq] == PieceColor.none) {
-      return -3;
+      return SelectionResponse.r3;
     }
 
     if (!(board[sq] == sideToMove)) {
-      return -4;
+      return SelectionResponse.r4;
     }
 
     currentSquare = sq;
     action = Act.place;
     gameInstance.blurIndex = squareToIndex[sq];
 
-    return 0;
+    return SelectionResponse.r0;
   }
 
   bool resign(PieceColor loser) {

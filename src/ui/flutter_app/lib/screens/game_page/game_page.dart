@@ -183,10 +183,10 @@ class _GamePageState extends State<GamePage>
                   // TODO: HumanVsHuman - Change tip
                   _showTip(S.of(context).tipPlaced);
                 } else {
-                  final side = gameInstance.sideToMove == PieceColor.white
-                      ? S.of(context).black
-                      : S.of(context).white;
-                  _showTip(S.of(context).tipToMove(side));
+                  final side = gameInstance.sideToMove.opponent.name(context)!;
+                  _showTip(
+                    S.of(context).tipToMove(side),
+                  );
                 }
               }
             }
@@ -208,7 +208,7 @@ class _GamePageState extends State<GamePage>
             break;
           }
           switch (position.selectPiece(sq)) {
-            case 0:
+            case SelectionResponse.r0:
               await Audios.playTone(Sound.select);
               gameInstance.select(squareToIndex[sq]!);
               ret = true;
@@ -225,35 +225,35 @@ class _GamePageState extends State<GamePage>
               } else {
                 _showTip(S.of(context).tipPlace, snackBar: true);
               }
-
               break;
-            case -2:
+            case SelectionResponse.r2:
               await Audios.playTone(Sound.illegal);
               debugPrint("[tap] selectPiece: skip [$sq]");
               if (position.phase != Phase.gameOver) {
                 _showTip(S.of(context).tipCannotMove, snackBar: true);
               }
               break;
-            case -3:
+            case SelectionResponse.r3:
               await Audios.playTone(Sound.illegal);
               debugPrint("[tap] selectPiece: skip [$sq]");
               _showTip(S.of(context).tipCanMoveOnePoint, snackBar: true);
               break;
-            case -4:
+            case SelectionResponse.r4:
               await Audios.playTone(Sound.illegal);
               debugPrint("[tap] selectPiece: skip [$sq]");
               _showTip(S.of(context).tipSelectPieceToMove, snackBar: true);
               break;
-            default:
+            case SelectionResponse.r1:
               await Audios.playTone(Sound.illegal);
               debugPrint("[tap] selectPiece: skip [$sq]");
               _showTip(S.of(context).tipSelectWrong, snackBar: true);
+              break;
           }
           break;
 
         case Act.remove:
           switch (await position.removePiece(sq)) {
-            case 0:
+            case RemoveResponse.r0:
               _animationController.reset();
               _animationController.animateTo(1.0);
 
@@ -265,21 +265,19 @@ class _GamePageState extends State<GamePage>
                 if (widget.engineType == EngineType.humanVsAi) {
                   _showTip(S.of(context).tipRemoved);
                 } else {
-                  final them = gameInstance.sideToMove == PieceColor.white
-                      ? S.of(context).black
-                      : S.of(context).white;
+                  final them = gameInstance.sideToMove.opponent.name(context)!;
                   _showTip(S.of(context).tipToMove(them));
                 }
               }
               break;
-            case -2:
+            case RemoveResponse.r2:
               await Audios.playTone(Sound.illegal);
               debugPrint(
                 "[tap] removePiece: Cannot Remove our pieces, skip [$sq]",
               );
               _showTip(S.of(context).tipSelectOpponentsPiece, snackBar: true);
               break;
-            case -3:
+            case RemoveResponse.r3:
               await Audios.playTone(Sound.illegal);
               debugPrint(
                 "[tap] removePiece: Cannot remove piece from Mill, skip [$sq]",
@@ -289,12 +287,13 @@ class _GamePageState extends State<GamePage>
                 snackBar: true,
               );
               break;
-            default:
+            case RemoveResponse.r1:
               await Audios.playTone(Sound.illegal);
               debugPrint("[tap] removePiece: skip [$sq]");
               if (position.phase != Phase.gameOver) {
                 _showTip(S.of(context).tipBanRemove, snackBar: true);
               }
+              break;
           }
           break;
         case Act.none:
@@ -406,6 +405,7 @@ class _GamePageState extends State<GamePage>
 
       debugPrint("[engineToGo] Engine response type: ${response.type}");
 
+      // TODO: [Leptopoda] make enum¿?
       switch (response.type) {
         case "move":
           final Move mv = response.value as Move;
@@ -982,7 +982,6 @@ class _GamePageState extends State<GamePage>
       switch (gameInstance.sideToMove) {
         case PieceColor.white:
           return FluentIcons.chevron_left_24_regular;
-
         case PieceColor.black:
           return FluentIcons.chevron_right_24_regular;
         default:

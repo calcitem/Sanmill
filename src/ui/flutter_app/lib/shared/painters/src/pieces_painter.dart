@@ -36,10 +36,9 @@ class PiecesPainter extends PiecesBasePainter {
   final int? blurIndex;
   final double animationValue;
 
-  late final int pointStyle;
-  late final double pointWidth;
-  late final double pieceWidth;
-  late final double animatedPieceWidth;
+
+  late final double _pieceWidth;
+  late final double _animatedPieceWidth;
 
   PiecesPainter({
     required double width,
@@ -48,10 +47,8 @@ class PiecesPainter extends PiecesBasePainter {
     this.blurIndex,
     required this.animationValue,
   }) : super(width: width) {
-    pointStyle = LocalDatabaseService.display.pointStyle;
-    pointWidth = LocalDatabaseService.display.pointWidth;
-    pieceWidth = _squareWidth * LocalDatabaseService.display.pieceWidth;
-    animatedPieceWidth =
+    _pieceWidth = _squareWidth * LocalDatabaseService.display.pieceWidth;
+    _animatedPieceWidth =
         _squareWidth * LocalDatabaseService.display.pieceWidth * animationValue;
   }
 
@@ -80,7 +77,7 @@ class PiecesPainter extends PiecesBasePainter {
             .add(_PiecePaintParam(piece: piece, pos: pos, animated: animated));
 
         shadowPath.addOval(
-          Rect.fromCenter(center: pos, width: pieceWidth, height: pieceWidth),
+          Rect.fromCenter(center: pos, width: _pieceWidth, height: _pieceWidth),
         );
       }
     }
@@ -91,10 +88,10 @@ class PiecesPainter extends PiecesBasePainter {
 
     late Color blurPositionColor;
     for (final pps in piecesToDraw) {
-      final pieceRadius = pieceWidth / 2;
+      final pieceRadius = _pieceWidth / 2;
       final pieceInnerRadius = pieceRadius * 0.99;
 
-      final animatedPieceRadius = animatedPieceWidth / 2;
+      final animatedPieceRadius = _animatedPieceWidth / 2;
       final animatedPieceInnerRadius = animatedPieceRadius * 0.99;
 
       // TODO: [Leptopoda] move the following attributes into [_PiecePaintParam]
@@ -143,7 +140,7 @@ class PiecesPainter extends PiecesBasePainter {
 
       canvas.drawCircle(
         _offset.translate(column * _squareWidth, row * _squareWidth),
-        animatedPieceWidth / 2,
+        _animatedPieceWidth / 2,
         paint,
       );
     }
@@ -157,7 +154,7 @@ class PiecesPainter extends PiecesBasePainter {
 
       canvas.drawCircle(
         _offset.translate(column * _squareWidth, row * _squareWidth),
-        animatedPieceWidth / 2 * 0.8,
+        _animatedPieceWidth / 2 * 0.8,
         paint,
       );
     }
