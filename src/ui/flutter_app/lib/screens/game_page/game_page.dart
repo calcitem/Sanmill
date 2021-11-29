@@ -101,11 +101,14 @@ class _GamePageState extends State<GamePage>
 
     switch (winner) {
       case PieceColor.white:
-        return _showTip(S.of(context).whiteWin);
+        _showTip(S.of(context).whiteWin);
+        break;
       case PieceColor.black:
-        return _showTip(S.of(context).blackWin);
+        _showTip(S.of(context).blackWin);
+        break;
       case PieceColor.draw:
-        return _showTip(S.of(context).isDraw);
+        _showTip(S.of(context).isDraw);
+        break;
       case PieceColor.nobody:
         switch (gameInstance.position.phase) {
           case Phase.placing:
@@ -854,6 +857,8 @@ class _GamePageState extends State<GamePage>
 
     debugPrint("$_tag Game over reason string: $content");
 
+    print(
+        "debug result: $result toplevel: $isTopLevel engineType: ${widget.engineType}");
     final List<Widget> actions;
     if (result == GameResult.win &&
         !isTopLevel &&
