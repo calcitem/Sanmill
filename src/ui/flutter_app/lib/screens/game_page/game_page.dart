@@ -251,6 +251,9 @@ class _GamePageState extends State<GamePage>
         case Act.remove:
           switch (await position.removePiece(sq)) {
             case 0:
+              _animationController.reset();
+              _animationController.animateTo(1.0);
+
               ret = true;
               debugPrint("[tap] removePiece: [$sq]");
               if (gameInstance.position.pieceToRemoveCount >= 1) {
