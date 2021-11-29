@@ -26,8 +26,6 @@ import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
-List<int> posKeyHistory = [];
-
 class StateInfo {
   // Copied when making a move
   int rule50 = 0;
@@ -42,6 +40,8 @@ enum SelectionResponse { r0, r1, r2, r3, r4 }
 enum RemoveResponse { r0, r1, r2, r3 }
 
 class Position {
+  final List<int> posKeyHistory = [];
+
   GameResult result = GameResult.pending;
 
   List<PieceColor> board = List.filled(sqNumber, PieceColor.none);
@@ -309,8 +309,7 @@ class Position {
 
     if (record.length > "-(1,2)".length) {
       if (posKeyHistory.isEmpty ||
-          (posKeyHistory.isNotEmpty &&
-              st.key != posKeyHistory[posKeyHistory.length - 1])) {
+          (posKeyHistory.isNotEmpty && st.key != posKeyHistory.last)) {
         posKeyHistory.add(st.key);
         if (LocalDatabaseService.rules.threefoldRepetitionRule &&
             hasGameCycle()) {

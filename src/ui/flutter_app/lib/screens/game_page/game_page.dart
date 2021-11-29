@@ -312,10 +312,10 @@ class _GamePageState extends State<GamePage>
         ++position.st.pliesFromNull;
 
         if (position.record.length > "-(1,2)".length) {
-          if (posKeyHistory.isEmpty ||
-              (posKeyHistory.isNotEmpty &&
-                  position.st.key != posKeyHistory[posKeyHistory.length - 1])) {
-            posKeyHistory.add(position.st.key);
+          if (position.posKeyHistory.isEmpty ||
+              (position.posKeyHistory.isNotEmpty &&
+                  position.st.key != position.posKeyHistory.last)) {
+            position.posKeyHistory.add(position.st.key);
             if (LocalDatabaseService.rules.threefoldRepetitionRule &&
                 position.hasGameCycle()) {
               position.setGameOver(
@@ -325,7 +325,7 @@ class _GamePageState extends State<GamePage>
             }
           }
         } else {
-          posKeyHistory.clear();
+          position.posKeyHistory.clear();
         }
 
         //position.move = m;
@@ -783,13 +783,13 @@ class _GamePageState extends State<GamePage>
 
     switch (winner) {
       case PieceColor.white:
-        if (isAi[PieceColor.white]!) {
+        if (gameInstance.isAi[PieceColor.white]!) {
           return GameResult.lose;
         } else {
           return GameResult.win;
         }
       case PieceColor.black:
-        if (isAi[PieceColor.black]!) {
+        if (gameInstance.isAi[PieceColor.black]!) {
           return GameResult.lose;
         } else {
           return GameResult.win;
@@ -1060,8 +1060,8 @@ class _GamePageState extends State<GamePage>
 
     // the tip
     if (LocalDatabaseService.preferences.screenReaderSupport &&
-        _tip[_tip.length - 1] != "." &&
-        _tip[_tip.length - 1] != "!") {
+        _tip.endsWith(".") &&
+        _tip.endsWith("!")) {
       buffer.writePeriod(_tip);
     }
 
