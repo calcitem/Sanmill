@@ -23,90 +23,65 @@ import 'package:sanmill/generated/intl/l10n.dart';
 int abs(int value) => value > 0 ? value : -value;
 
 class Move {
-  static const invalidMove = -1;
+  static const _invalidMove = -1;
 
   // Square
   int from = 0;
   int to = 0;
 
   // file & rank
-  int fromFile = 0;
-  int fromRank = 0;
-  int toFile = 0;
-  int toRank = 0;
-
-  // Index
-  int fromIndex = 0;
-  int toIndex = 0;
-
-  PieceColor removed = PieceColor.none;
+  int _fromFile = 0;
+  int _fromRank = 0;
+  int _toFile = 0;
+  int _toRank = 0;
 
   // 'move' is the UCI engine's move-string
-  String move;
+  final String move;
 
   // "notation" is Standard Notation
-  late String notation;
+  late final String notation;
 
-  MoveType type = MoveType.none;
+  late final MoveType type;
 
-  void parse() {
-    if (!legal(move)) {
+  Move(this.move) {
+    if (!_isLegal) {
       throw "Error: Invalid Move: $move";
     }
 
     if (move[0] == "-" && move.length == "-(1,2)".length) {
       type = MoveType.remove;
-      from = fromFile = fromRank = fromIndex = invalidMove;
-      toFile = int.parse(move[2]);
-      toRank = int.parse(move[4]);
-      to = makeSquare(toFile, toRank);
-      notation = "x${squareToWmdNotation[to]}";
+      from = _fromFile = _fromRank = _invalidMove;
+      _toFile = int.parse(move[2]);
+      _toRank = int.parse(move[4]);
+      to = makeSquare(_toFile, _toRank);
+      notation = "x${_squareToWmdNotation[to]}";
       //captured = PieceColor.none;
     } else if (move.length == "(1,2)->(3,4)".length) {
       type = MoveType.move;
-      fromFile = int.parse(move[1]);
-      fromRank = int.parse(move[3]);
-      from = makeSquare(fromFile, fromRank);
-      fromIndex = squareToIndex[from] ?? invalidMove;
-      toFile = int.parse(move[8]);
-      toRank = int.parse(move[10]);
-      to = makeSquare(toFile, toRank);
-      notation = "${squareToWmdNotation[from]}-${squareToWmdNotation[to]}";
-      removed = PieceColor.none;
+      _fromFile = int.parse(move[1]);
+      _fromRank = int.parse(move[3]);
+      from = makeSquare(_fromFile, _fromRank);
+      _toFile = int.parse(move[8]);
+      _toRank = int.parse(move[10]);
+      to = makeSquare(_toFile, _toRank);
+      notation = "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}";
     } else if (move.length == "(1,2)".length) {
       type = MoveType.place;
-      from = fromFile = fromRank = fromIndex = invalidMove;
-      toFile = int.parse(move[1]);
-      toRank = int.parse(move[3]);
-      to = makeSquare(toFile, toRank);
       // TODO: [Leptopoda] remove stringy thing
-      notation = "${squareToWmdNotation[to]}";
-      removed = PieceColor.none;
+      from = _fromFile = _fromRank = _invalidMove;
+      _toFile = int.parse(move[1]);
+      _toRank = int.parse(move[3]);
+      to = makeSquare(_toFile, _toRank);
+      notation = "${_squareToWmdNotation[to]}";
     } else if (move == "draw") {
       assert(false, "not yet implemented"); // TODO
       debugPrint("[TODO] Computer request draw");
     } else {
       assert(false);
     }
-
-    toIndex = squareToIndex[to] ?? invalidMove;
   }
 
-  Move(this.move) {
-    parse();
-  }
-
-  // TODO: [Leptopoda] why are there two identical Move constructors...
-
-  /// Format:
-  /// Place: (1,2)
-  /// Remove: -(1,2)
-  /// Move: (3,1)->(2,1)
-  Move.set(this.move) {
-    parse();
-  }
-
-  static bool legal(String move) {
+  bool get _isLegal {
     if (move == "draw") {
       return true; // TODO
     }
@@ -276,7 +251,6 @@ extension GameOverReasonExtension on GameOverReason {
 const sqBegin = 8;
 const sqEnd = 32;
 const sqNumber = 40;
-const effectiveSqNumber = 24;
 
 const moveDirectionBegin = 0;
 const moveDirectionNumber = 4;
@@ -366,7 +340,7 @@ Map<int, int> indexToSquare = squareToIndex.map((k, v) => MapEntry(v, k));
         1 X --- X --- X 1
           a b c d e f g
  */
-Map<int, String> squareToWmdNotation = {
+Map<int, String> _squareToWmdNotation = {
   8: "d5",
   9: "e5",
   10: "e4",
@@ -420,39 +394,6 @@ Map<String, String> wmdNotationToMove = {
   "a7": "(3,8)",
 };
 
-Map<String, String> moveToWmdNotation =
-    wmdNotationToMove.map((k, v) => MapEntry(v, k));
-
-Map<String, String> wmdToPlayOkNotation = {
-  "a7": "1",
-  "d7": "2",
-  "g7": "3",
-  "b6": "4",
-  "d6": "5",
-  "f6": "6",
-  "c5": "7",
-  "d5": "8",
-  "e5": "9",
-  "a4": "10",
-  "b4": "11",
-  "c4": "12",
-  "e4": "13",
-  "f4": "14",
-  "g4": "15",
-  "c3": "16",
-  "d3": "17",
-  "e3": "18",
-  "b2": "19",
-  "d2": "20",
-  "f2": "21",
-  "a1": "22",
-  "d1": "23",
-  "g1": "24",
-};
-
-Map<String, String> playOkToWmdNotation =
-    wmdToPlayOkNotation.map((k, v) => MapEntry(v, k));
-
 Map<String, String> playOkNotationToMove = {
   "8": "(1,1)",
   "9": "(1,2)",
@@ -479,8 +420,5 @@ Map<String, String> playOkNotationToMove = {
   "10": "(3,7)",
   "1": "(3,8)",
 };
-
-Map<String, String> moveToPlayOkNotation =
-    playOkNotationToMove.map((k, v) => MapEntry(v, k));
 
 enum GameResult { pending, win, lose, draw, none }
