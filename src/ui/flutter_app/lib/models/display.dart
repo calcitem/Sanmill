@@ -16,6 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'dart:ui';
+
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter/material.dart' show Locale, immutable;
 import 'package:hive_flutter/adapters.dart';
@@ -74,6 +76,7 @@ class Display {
   @HiveField(6)
   final double boardInnerLineWidth;
 
+  // TODO: [Leptopoda] maybe directly store the Paintingstyle
   @HiveField(7)
   final int pointStyle;
 
