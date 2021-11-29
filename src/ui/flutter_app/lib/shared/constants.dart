@@ -70,13 +70,11 @@ class Constants {
   static const String githubThanksURL = "$githubRepoWiKiURL/thanks";
   static const String giteeThanksURL = "$giteeRepoWiKiURL/thanks";
 
-  static final windowWidth = window.physicalSize.width;
-  static final windowHeight = window.physicalSize.height;
-  static final windowAspectRatio = windowHeight / windowWidth;
+  static final _windowWidth = window.physicalSize.width;
+  static final _windowHeight = window.physicalSize.height;
+  static final windowAspectRatio = _windowHeight / _windowWidth;
+
+  static const screenThreshhold = 800;
+  static bool get isSmallScreen => _windowHeight <= screenThreshhold;
+  static bool get isLargeScreen => !isSmallScreen;
 }
-
-// TODO: [Leptopoda] we should only save the threshold and compute the bool right in place with MediaQuery.of(context)
-// TODO: [Leptopoda] make use of flexbox so we don't need those values
-bool get isSmallScreen => Constants.windowHeight <= 800;
-
-bool get isLargeScreen => !isSmallScreen;
