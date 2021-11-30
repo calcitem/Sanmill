@@ -42,7 +42,7 @@ class _SkillLevelSlider extends StatelessWidget {
             onChanged: (value) {
               LocalDatabaseService.preferences =
                   _preferences.copyWith(skillLevel: value.toInt());
-              debugPrint("Skill level Slider value: $value");
+              logger.v("Skill level Slider value: $value");
             },
           );
         },

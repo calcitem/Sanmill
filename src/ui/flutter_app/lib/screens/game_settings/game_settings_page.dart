@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/preferences.dart';
+import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
@@ -57,13 +58,13 @@ class GameSettingsPage extends StatelessWidget {
     LocalDatabaseService.preferences =
         _preferences.copyWith(aiMovesFirst: value);
 
-    debugPrint("$_tag aiMovesFirst: $value");
+    logger.v("$_tag aiMovesFirst: $value");
   }
 
   void _setAiIsLazy(Preferences _preferences, bool value) {
     LocalDatabaseService.preferences = _preferences.copyWith(aiIsLazy: value);
 
-    debugPrint("$_tag aiIsLazy: $value");
+    logger.v("$_tag aiIsLazy: $value");
   }
 
   void _setAlgorithm(BuildContext context, Preferences _preferences) {
@@ -73,7 +74,7 @@ class GameSettingsPage extends StatelessWidget {
       LocalDatabaseService.preferences =
           _preferences.copyWith(algorithm: algorithm);
 
-      debugPrint("$_tag algorithm = $algorithm");
+      logger.v("$_tag algorithm = $algorithm");
     }
 
     showModalBottomSheet(
@@ -89,49 +90,49 @@ class GameSettingsPage extends StatelessWidget {
     LocalDatabaseService.preferences =
         _preferences.copyWith(drawOnHumanExperience: value);
 
-    debugPrint("$_tag drawOnHumanExperience: $value");
+    logger.v("$_tag drawOnHumanExperience: $value");
   }
 
   void _setConsiderMobility(Preferences _preferences, bool value) {
     LocalDatabaseService.preferences =
         _preferences.copyWith(considerMobility: value);
 
-    debugPrint("$_tag considerMobility: $value");
+    logger.v("$_tag considerMobility: $value");
   }
 
   void _setIsAutoRestart(Preferences _preferences, bool value) {
     LocalDatabaseService.preferences =
         _preferences.copyWith(isAutoRestart: value);
 
-    debugPrint("$_tag isAutoRestart: $value");
+    logger.v("$_tag isAutoRestart: $value");
   }
 
   void _setShufflingEnabled(Preferences _preferences, bool value) {
     LocalDatabaseService.preferences =
         _preferences.copyWith(shufflingEnabled: value);
 
-    debugPrint("$_tag shufflingEnabled: $value");
+    logger.v("$_tag shufflingEnabled: $value");
   }
 
   void _setTone(Preferences _preferences, bool value) {
     LocalDatabaseService.preferences =
         _preferences.copyWith(toneEnabled: value);
 
-    debugPrint("$_tag toneEnabled: $value");
+    logger.v("$_tag toneEnabled: $value");
   }
 
   void _setKeepMuteWhenTakingBack(Preferences _preferences, bool value) {
     LocalDatabaseService.preferences =
         _preferences.copyWith(keepMuteWhenTakingBack: value);
 
-    debugPrint("$_tag keepMuteWhenTakingBack: $value");
+    logger.v("$_tag keepMuteWhenTakingBack: $value");
   }
 
   void _setScreenReaderSupport(Preferences _preferences, bool value) {
     LocalDatabaseService.preferences =
         _preferences.copyWith(screenReaderSupport: value);
 
-    debugPrint("$_tag screenReaderSupport: $value");
+    logger.v("$_tag screenReaderSupport: $value");
   }
 
   Column _buildPrefs(BuildContext context, Box<Preferences> prefBox, _) {

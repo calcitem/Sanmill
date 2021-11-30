@@ -83,7 +83,7 @@ class _GameResultAlert extends StatelessWidget {
           .getName(context, controller.position.winner),
     );
 
-    debugPrint("$_tag Game over reason string: $content");
+    logger.v("$_tag Game over reason string: $content");
 
     final List<Widget> actions;
     if (_gameResult == GameResult.win &&
@@ -106,7 +106,7 @@ class _GameResultAlert extends StatelessWidget {
             final _pref = LocalDatabaseService.preferences;
             LocalDatabaseService.preferences =
                 _pref.copyWith(skillLevel: _pref.skillLevel + 1);
-            debugPrint(
+            logger.v(
               "[config] skillLevel: ${LocalDatabaseService.preferences.skillLevel}",
             );
 

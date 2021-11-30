@@ -19,8 +19,7 @@
 import 'dart:convert' show jsonDecode;
 import 'dart:io' show File;
 
-import 'package:flutter/foundation.dart'
-    show ValueListenable, debugPrint, kIsWeb;
+import 'package:flutter/foundation.dart' show ValueListenable, kIsWeb;
 import 'package:flutter/material.dart' show Color, Locale, PaintingStyle;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -28,6 +27,7 @@ import 'package:sanmill/models/color.dart';
 import 'package:sanmill/models/display.dart';
 import 'package:sanmill/models/preferences.dart';
 import 'package:sanmill/models/rules.dart';
+import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/adapters/adapters.dart';
 import 'package:sanmill/shared/constants.dart';
 

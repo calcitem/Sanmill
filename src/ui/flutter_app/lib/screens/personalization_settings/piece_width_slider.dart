@@ -39,7 +39,7 @@ class _PieceWidthSlider extends StatelessWidget {
             divisions: 50,
             label: _display.pieceWidth.toStringAsFixed(1),
             onChanged: (value) {
-              debugPrint("[config] pieceWidth value: $value");
+              logger.v("[config] pieceWidth value: $value");
               LocalDatabaseService.display =
                   _display.copyWith(pieceWidth: value);
             },

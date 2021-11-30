@@ -39,7 +39,7 @@ class _BoardInnerWidthSlider extends StatelessWidget {
             divisions: 200,
             label: _display.boardInnerLineWidth.toStringAsFixed(1),
             onChanged: (value) {
-              debugPrint("[config] BoardInnerLineWidth value: $value");
+              logger.v("[config] BoardInnerLineWidth value: $value");
               LocalDatabaseService.display =
                   _display.copyWith(boardInnerLineWidth: value);
             },

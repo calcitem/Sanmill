@@ -16,21 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/// Although marked as a library this package is tightly integrated into the app
-library mill;
+import 'package:logger/logger.dart';
+import 'package:sanmill/services/environment_config.dart';
 
-import 'package:flutter/widgets.dart';
-import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/services/audios.dart';
-import 'package:sanmill/services/engine/engine.dart';
-import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/services/storage/storage.dart';
-import 'package:sanmill/shared/array_helper.dart';
-
-part 'src/controller.dart';
-part 'src/game.dart';
-part 'src/mills.dart';
-part 'src/position.dart';
-part 'src/recorder.dart';
-part 'src/types.dart';
-part 'src/zobrist.dart';
+final logger = Logger(level: Level.values[EnvironmentConfig.logLevel]);

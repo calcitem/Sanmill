@@ -22,6 +22,7 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/color.dart';
 import 'package:sanmill/models/display.dart';
 import 'package:sanmill/services/language_info.dart';
+import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
@@ -57,7 +58,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
 
       LocalDatabaseService.display = _display.copyWith(pointStyle: pointStyle);
 
-      debugPrint("[config] pointStyle: $pointStyle");
+      logger.v("[config] pointStyle: $pointStyle");
     }
 
     showModalBottomSheet(
@@ -103,7 +104,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
       LocalDatabaseService.display = _display.copyWith(languageCode: locale);
     }
 
-    debugPrint("[config] languageCode = $locale");
+    logger.v("[config] languageCode = $locale");
   }
 
   Widget _buildColor(BuildContext context, Box<ColorSettings> colorBox, _) {

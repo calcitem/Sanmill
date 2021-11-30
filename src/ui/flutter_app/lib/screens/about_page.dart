@@ -27,6 +27,7 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/license_page.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/git_info.dart';
+import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
@@ -151,7 +152,7 @@ class AboutPage extends StatelessWidget {
 
     locale = await Devicelocale.currentLocale;
 
-    debugPrint("$_tag local = $locale");
+    logger.v("$_tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeIssuesURL);
     } else {
@@ -166,7 +167,7 @@ class AboutPage extends StatelessWidget {
       locale = await Devicelocale.currentLocale;
     }
 
-    debugPrint("$_tag local = $locale");
+    logger.v("$_tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeEulaURL);
     } else {
@@ -181,7 +182,7 @@ class AboutPage extends StatelessWidget {
       locale = await Devicelocale.currentLocale;
     }
 
-    debugPrint("$_tag local = $locale");
+    logger.v("$_tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeSourceCodeURL);
     } else {
@@ -196,7 +197,7 @@ class AboutPage extends StatelessWidget {
       locale = await Devicelocale.currentLocale;
     }
 
-    debugPrint("$_tag local = $locale");
+    logger.v("$_tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteePrivacyPolicyURL);
     } else {
@@ -211,7 +212,7 @@ class AboutPage extends StatelessWidget {
       locale = await Devicelocale.currentLocale;
     }
 
-    debugPrint("$_tag local = $locale");
+    logger.v("$_tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeHelpImproveTranslateURL);
     } else {
@@ -226,7 +227,7 @@ class AboutPage extends StatelessWidget {
       locale = await Devicelocale.currentLocale;
     }
 
-    debugPrint("$_tag local = $locale");
+    logger.v("$_tag local = $locale");
     if (locale != null && locale.startsWith("zh_")) {
       _launchURL(Constants.giteeThanksURL);
     } else {

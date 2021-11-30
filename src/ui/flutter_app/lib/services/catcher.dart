@@ -29,11 +29,11 @@ Future<void> _initCatcher(Catcher catcher) async {
       externalDirStr = ".";
     }
   } catch (e) {
-    debugPrint(e.toString());
+    logger.e(e.toString());
     externalDirStr = ".";
   }
   final String path = "$externalDirStr/${Constants.crashLogsFileName}";
-  debugPrint("[env] ExternalStorageDirectory: $externalDirStr");
+  logger.v("[env] ExternalStorageDirectory: $externalDirStr");
 
   final CatcherOptions debugOptions = CatcherOptions(PageReportMode(), [
     ConsoleHandler(),

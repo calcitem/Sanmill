@@ -19,6 +19,7 @@
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:sanmill/services/logger.dart';
 
 // TODO: [Leptopoda] this implementation is shitty and I don't like it. Just a reminder that I wan'ted to rewrite it.
 
@@ -81,7 +82,7 @@ class CustomFeedbackLocalizationsDelegate
     if (_supportedLocales.containsKey(Locale(locale.languageCode))) {
       return true;
     }
-    debugPrint(
+    logger.w(
       'The locale $locale is not supported, '
       'falling back to english translations',
     );

@@ -79,7 +79,7 @@ class _DatabaseMigrator {
     assert(_currentVersion <= 0);
 
     await _DatabaseV1.migrateDB();
-    debugPrint("$_tag migrated from KV");
+    logger.i("$_tag migrated from KV");
   }
 
   /// Migration 1 - Sanmill version 1.1.38+2196 - 2021-11-09
@@ -112,7 +112,7 @@ class _DatabaseMigrator {
       );
     }
 
-    debugPrint("$_tag migrated from v1");
+    logger.v("$_tag migrated from v1");
   }
 }
 
@@ -133,21 +133,21 @@ class _DatabaseV1 {
 
   /// loads the preferences from the old data store
   static Future<Map<String, dynamic>?> _loadFile(File _file) async {
-    debugPrint("$_tag Loading $_file ...");
+    logger.v("$_tag Loading $_file ...");
 
     try {
       final contents = await _file.readAsString();
       final _values = jsonDecode(contents) as Map<String, dynamic>?;
-      debugPrint(_values.toString());
+      logger.v(_values.toString());
       return _values;
     } catch (e) {
-      debugPrint("$_tag error loading file $e");
+      logger.e("$_tag error loading file $e");
     }
   }
 
   /// migrates the deprecated Settings to the new [LocalDatabaseService]
   static Future<void> migrateDB() async {
-    debugPrint("$_tag migrate from KV");
+    logger.i("$_tag migrate from KV");
     final _file = await _getFile();
     final _json = await _loadFile(_file);
     if (_json != null) {
@@ -161,13 +161,13 @@ class _DatabaseV1 {
 
   /// deletes the old settings file
   static Future<void> _deleteFile(File _file) async {
-    debugPrint("$_tag deleting Settings...");
+    logger.v("$_tag deleting Settings...");
 
     if (await _file.exists()) {
       await _file.delete();
-      debugPrint("$_tag $_file deleted");
+      logger.i("$_tag $_file deleted");
     } else {
-      debugPrint("$_tag $_file does not exist");
+      logger.i("$_tag $_file does not exist");
     }
   }
 }
