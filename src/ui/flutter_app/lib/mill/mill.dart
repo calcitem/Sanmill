@@ -17,14 +17,21 @@
 */
 
 /// Although marked as a library this package is tightly integrated into the app
-library painters;
+library mill;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sanmill/mill/mill.dart';
-import 'package:sanmill/services/environment_config.dart';
+import 'package:flutter/rendering.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/services/audios.dart';
+import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/storage/storage.dart';
-import 'package:sanmill/shared/theme/app_theme.dart';
+import 'package:sanmill/shared/array_helper.dart';
 
-part 'src/board_painter.dart';
-part 'src/painter_base.dart';
-part 'src/pieces_painter.dart';
+part 'src/controller.dart';
+part 'src/game.dart';
+part 'src/mills.dart';
+part 'src/position.dart';
+part 'src/recorder.dart';
+part 'src/types.dart';
+part 'src/zobrist.dart';

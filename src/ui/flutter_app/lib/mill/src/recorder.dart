@@ -16,11 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/foundation.dart';
-import 'package:sanmill/mill/position.dart';
-import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/services/storage/storage.dart';
-import 'package:sanmill/shared/array_helper.dart';
+part of '../mill.dart';
 
 // TODO
 // TODO: [Leptopoda] the public facing methods look a lot like the ones Itterable has.
