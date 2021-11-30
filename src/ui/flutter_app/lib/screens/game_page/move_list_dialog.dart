@@ -28,8 +28,8 @@ class _MoveListDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final moveHistoryText = gameInstance.position.moveHistoryText!;
-    final end = gameInstance.moveHistory.length - 1;
+    final moveHistoryText = controller.position.moveHistoryText!;
+    final end = controller.gameInstance.moveHistory.length - 1;
     Navigator.pop(context);
     ScaffoldMessenger.of(context).clearSnackBars();
 
