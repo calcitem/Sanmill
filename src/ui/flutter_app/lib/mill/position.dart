@@ -823,9 +823,9 @@ class Position {
   }
 
   int updateKeyMisc() {
-    st.key = st.key << Zobrist.KEY_MISC_BIT >> Zobrist.KEY_MISC_BIT;
+    st.key = st.key << Zobrist.keyMiscBit >> Zobrist.keyMiscBit;
 
-    st.key |= pieceToRemoveCount << (32 - Zobrist.KEY_MISC_BIT);
+    st.key |= pieceToRemoveCount << (32 - Zobrist.keyMiscBit);
 
     return st.key;
   }

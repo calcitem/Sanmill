@@ -36,21 +36,21 @@ class _AlgorithmModal extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           RadioListTile(
-            title: Text(Algorithms.AlphaBeta.name),
+            title: Text(Algorithms.alphaBeta.name),
             groupValue: algorithm,
-            value: Algorithms.AlphaBeta,
+            value: Algorithms.alphaBeta,
             onChanged: onChanged,
           ),
           RadioListTile(
-            title: Text(Algorithms.PVS.name),
+            title: Text(Algorithms.pvs.name),
             groupValue: algorithm,
-            value: Algorithms.PVS,
+            value: Algorithms.pvs,
             onChanged: onChanged,
           ),
           RadioListTile(
-            title: Text(Algorithms.MTDf.name),
+            title: Text(Algorithms.mdtf.name),
             groupValue: algorithm,
-            value: Algorithms.MTDf,
+            value: Algorithms.mdtf,
             onChanged: onChanged,
           ),
         ],

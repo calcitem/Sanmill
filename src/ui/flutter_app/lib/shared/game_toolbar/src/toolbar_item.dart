@@ -16,8 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// ignore_for_file: avoid_redundant_argument_values
-
 part of '../game_toolbar.dart';
 
 /// A Material Design "Game Toolbar Button".
@@ -323,7 +321,6 @@ class ToolbarItem extends ButtonStyleButton {
       padding: scaledPadding,
       minimumSize: const Size(64, 36),
       maximumSize: Size.infinite,
-      side: null,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(4)),
       ),

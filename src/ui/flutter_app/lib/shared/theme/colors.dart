@@ -44,5 +44,5 @@ class UIColors {
   static const Color papayaWhip = Color(0xFFFFEFD5);
   static const Color stormGrey = Color(0XFF777983);
   static const Color turmeric = Color(0XFFBACA44);
-  static const Color LavenderBlush = Color(0XFFFFF0F6);
+  static const Color lavenderBlush = Color(0XFFFFF0F6);
 }
