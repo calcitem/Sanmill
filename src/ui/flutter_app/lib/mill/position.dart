@@ -27,7 +27,7 @@ import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/array_helper.dart';
 
-class StateInfo {
+class _StateInfo {
   // Copied when making a move
   int rule50 = 0;
   int pliesFromNull = 0;
@@ -63,7 +63,7 @@ class Position {
   int gamePly = 0;
   PieceColor _sideToMove = PieceColor.white;
 
-  StateInfo st = StateInfo();
+  _StateInfo st = _StateInfo();
 
   PieceColor us = PieceColor.white;
   PieceColor them = PieceColor.black;
@@ -483,7 +483,7 @@ class Position {
           } else {
             changeSideToMove();
           }
-          gameInstance.focusIndex = squareToIndex[s];
+          controller.gameInstance.focusIndex = squareToIndex[s];
           await Audios.playTone(Sound.place);
         } else {
           pieceToRemoveCount =
@@ -517,7 +517,7 @@ class Position {
             action = Act.remove;
           }
 
-          gameInstance.focusIndex = squareToIndex[s];
+          controller.gameInstance.focusIndex = squareToIndex[s];
           await Audios.playTone(Sound.mill);
         }
         break;
@@ -565,7 +565,7 @@ class Position {
           changeSideToMove();
 
           if (isGameOver()) return true;
-          gameInstance.focusIndex = squareToIndex[s];
+          controller.gameInstance.focusIndex = squareToIndex[s];
 
           await Audios.playTone(Sound.place);
         } else {
@@ -573,7 +573,7 @@ class Position {
               LocalDatabaseService.rules.mayRemoveMultiple ? n : 1;
           updateKeyMisc();
           action = Act.remove;
-          gameInstance.focusIndex = squareToIndex[s];
+          controller.gameInstance.focusIndex = squareToIndex[s];
           await Audios.playTone(Sound.mill);
         }
 
@@ -682,7 +682,7 @@ class Position {
 
     currentSquare = sq;
     action = Act.place;
-    gameInstance.blurIndex = squareToIndex[sq];
+    controller.gameInstance.blurIndex = squareToIndex[sq];
 
     return SelectionResponse.r0;
   }
@@ -952,7 +952,7 @@ class Position {
   }
 
   bool isStarSquare(int s) {
-    if (LocalDatabaseService.rules.hasDiagonalLines == true) {
+    if (LocalDatabaseService.rules.hasDiagonalLines) {
       return s == 17 || s == 19 || s == 21 || s == 23;
     }
 
@@ -1008,8 +1008,8 @@ class Position {
     pieceToRemoveCount = 0;
 
     _winner = PieceColor.nobody;
-    Mills.adjacentSquaresInit();
-    Mills.millTableInit();
+    adjacentSquares = Mills.adjacentSquaresInit;
+    millTable = Mills.millTableInit;
     currentSquare = 0;
 
     return -1;
@@ -1060,23 +1060,21 @@ class Position {
     Audios.isTemporaryMute = true;
 
     // Backup context
-    final engineTypeBackup = gameInstance.engineType;
-    gameInstance.setWhoIsAi(EngineType.humanVsHuman);
+    final engineTypeBackup = controller.gameInstance.engineType;
+    controller.gameInstance.setWhoIsAi(EngineType.humanVsHuman);
     final historyBack = recorder.moves;
-    gameInstance.newGame();
+    controller.gameInstance.newGame();
 
     HistoryResponse? error;
     for (var i = 0; i <= moveIndex; i++) {
-      if (!(await gameInstance.doMove(recorder.moves[i]))) {
-        // TODO: [Leptopoda] testing
+      if (!(await controller.gameInstance.doMove(historyBack[i]))) {
         error = HistoryResponse.error;
         break;
       }
     }
 
-    // TODO: [Leptopoda] something in here is crashing and it isn't clear what :(
     // Restore context
-    gameInstance.setWhoIsAi(engineTypeBackup);
+    controller.gameInstance.setWhoIsAi(engineTypeBackup);
     recorder.moves = historyBack;
     recorder.cur = moveIndex;
 

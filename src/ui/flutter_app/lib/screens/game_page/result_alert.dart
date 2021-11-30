@@ -25,7 +25,7 @@ class _GameResultAlert extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final EngineType engineType = gameInstance.engineType;
+  final EngineType engineType = controller.gameInstance.engineType;
   final PieceColor winner;
   final VoidCallback onRestart;
 
@@ -36,13 +36,13 @@ class _GameResultAlert extends StatelessWidget {
 
     switch (winner) {
       case PieceColor.white:
-        if (gameInstance.isAi[PieceColor.white]!) {
+        if (controller.gameInstance.isAi[PieceColor.white]!) {
           return GameResult.lose;
         } else {
           return GameResult.win;
         }
       case PieceColor.black:
-        if (gameInstance.isAi[PieceColor.black]!) {
+        if (controller.gameInstance.isAi[PieceColor.black]!) {
           return GameResult.lose;
         } else {
           return GameResult.win;
@@ -56,7 +56,7 @@ class _GameResultAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    gameInstance.position.result = _gameResult;
+    controller.position.result = _gameResult;
 
     late final String dialogTitle;
     switch (_gameResult) {
@@ -79,8 +79,8 @@ class _GameResultAlert extends StatelessWidget {
         LocalDatabaseService.preferences.skillLevel == 30; // TODO: 30
 
     final content = StringBuffer(
-      gameInstance.position.gameOverReason
-          .getName(context, gameInstance.position.winner),
+      controller.position.gameOverReason
+          .getName(context, controller.position.winner),
     );
 
     debugPrint("$_tag Game over reason string: $content");

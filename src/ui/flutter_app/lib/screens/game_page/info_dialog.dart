@@ -28,7 +28,7 @@ class _InfoDialog extends StatelessWidget {
 
   String _infoText(BuildContext context) {
     final buffer = StringBuffer();
-    final pos = gameInstance.position;
+    final pos = controller.position;
 
     late final String us;
     late final String them;

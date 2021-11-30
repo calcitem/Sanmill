@@ -33,14 +33,14 @@ class BoardPainter extends PiecesBasePainter {
     paint.style = PaintingStyle.stroke;
 
     if (LocalDatabaseService.display.isPieceCountInHandShown &&
-        gameInstance.position.phase == Phase.placing) {
+        controller.position.phase == Phase.placing) {
       final int pieceInHandCount;
-      if (gameInstance.position.pieceOnBoardCount[PieceColor.white] == 0 &&
-          gameInstance.position.pieceOnBoardCount[PieceColor.black] == 0) {
+      if (controller.position.pieceOnBoardCount[PieceColor.white] == 0 &&
+          controller.position.pieceOnBoardCount[PieceColor.black] == 0) {
         pieceInHandCount = LocalDatabaseService.rules.piecesCount;
       } else {
         pieceInHandCount =
-            gameInstance.position.pieceInHandCount[PieceColor.black]!;
+            controller.position.pieceInHandCount[PieceColor.black]!;
       }
 
       final TextSpan textSpan = TextSpan(
