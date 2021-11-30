@@ -175,7 +175,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
         TextButton(
           child: Text(S.of(context).confirm),
           onPressed: () {
-            debugPrint("[config] pickerColor.value: ${pickedColor.value}");
+            logger.v("[config] pickerColor.value: ${pickedColor.value}");
             widget.onChanged(pickedColor);
             Navigator.pop(context);
           },

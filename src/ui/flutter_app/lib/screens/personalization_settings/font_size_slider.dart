@@ -40,7 +40,7 @@ class _FontSizeSlider extends StatelessWidget {
             divisions: 16,
             label: _display.fontSize.toStringAsFixed(1),
             onChanged: (value) {
-              debugPrint("[config] fontSize value: $value");
+              logger.v("[config] fontSize value: $value");
               LocalDatabaseService.display = _display.copyWith(fontSize: value);
             },
           );

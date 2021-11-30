@@ -18,11 +18,11 @@
 
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/environment_config.dart';
+import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
 class NativeEngine extends Engine {
@@ -36,7 +36,7 @@ class NativeEngine extends Engine {
   }
 
   Future<void> _send(String command) async {
-    debugPrint("[engine] send: $command");
+    logger.v("[engine] send: $command");
     await platform.invokeMethod("send", command);
   }
 
@@ -79,12 +79,12 @@ class NativeEngine extends Engine {
       await _send("go");
       isActive = true;
     } else {
-      debugPrint("[engine] Move now");
+      logger.v("[engine] Move now");
     }
 
     final response = await waitResponse(["bestmove", "nobestmove"]);
 
-    debugPrint("[engine] response: $response");
+    logger.v("[engine] response: $response");
 
     if (response.startsWith("bestmove")) {
       var best = response.substring("bestmove".length + 1);
@@ -117,7 +117,7 @@ class NativeEngine extends Engine {
     }
 
     if (times > timeLimit) {
-      debugPrint("[engine] Timeout. sleep = $sleep, times = $times");
+      logger.v("[engine] Timeout. sleep = $sleep, times = $times");
       // TODO: [Leptopoda] seems like is isActive only checked here and only together with the DevMode.
       // we might be able to remove this
       if (EnvironmentConfig.devMode && isActive) {
@@ -133,7 +133,7 @@ class NativeEngine extends Engine {
         if (response.startsWith(prefix)) {
           return response;
         } else {
-          debugPrint("[engine] Unexpected engine response: $response");
+          logger.w("[engine] Unexpected engine response: $response");
         }
       }
     }
@@ -146,7 +146,7 @@ class NativeEngine extends Engine {
 
   Future<void> stopSearching() async {
     isActive = false;
-    debugPrint("[engine] Stop current thinking...");
+    logger.w("[engine] Stop current thinking...");
     await _send("stop");
   }
 

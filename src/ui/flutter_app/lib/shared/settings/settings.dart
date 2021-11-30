@@ -23,6 +23,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 part 'src/card.dart';

@@ -39,7 +39,7 @@ class _AnimationDurationSlider extends StatelessWidget {
             divisions: 50,
             label: _display.animationDuration.toStringAsFixed(1),
             onChanged: (value) {
-              debugPrint("[config] AnimationDuration value: $value");
+              logger.v("[config] AnimationDuration value: $value");
               LocalDatabaseService.display =
                   _display.copyWith(animationDuration: value);
             },

@@ -193,7 +193,7 @@ class Position {
 
     buffer.write("${st.rule50} ${1 + (gamePly - sideIsBlack) ~/ 2}");
 
-    debugPrint("FEN is $buffer");
+    logger.v("FEN is $buffer");
 
     return buffer.toString();
   }
@@ -205,13 +205,13 @@ class Position {
     final PieceColor us = _sideToMove;
 
     if (move.from == move.to) {
-      debugPrint("[position] Move $move.move from == to");
+      logger.v("[position] Move $move.move from == to");
       return false;
     }
 
     if (move.type == MoveType.remove) {
       if (movedPiece(move.to) != us) {
-        debugPrint("[position] Move $move.to to != us");
+        logger.v("[position] Move $move.to to != us");
         return false;
       }
     }
@@ -351,7 +351,7 @@ class Position {
       if (st.key == i) {
         repetition++;
         if (repetition == 3) {
-          debugPrint("[position] Has game cycle.");
+          logger.i("[position] Has game cycle.");
           return true;
         }
       }
@@ -528,7 +528,7 @@ class Position {
 
           // not in moveTable
           if (md == moveDirectionNumber) {
-            debugPrint(
+            logger.i(
               "[position] putPiece: [$s] is not in [$currentSquare]'s move table.",
             );
             return false;
@@ -698,7 +698,7 @@ class Position {
     gameOverReason = reason;
     _winner = w;
 
-    debugPrint("[position] Game over, $w win, because of $reason");
+    logger.i("[position] Game over, $w win, because of $reason");
     updateScore();
   }
 
@@ -790,7 +790,7 @@ class Position {
   void changeSideToMove() {
     setSideToMove(_sideToMove.opponent);
     st.key ^= Zobrist.side;
-    debugPrint("[position] $_sideToMove to move.");
+    logger.v("[position] $_sideToMove to move.");
 
     /*
     if (phase == Phase.moving &&
@@ -798,7 +798,7 @@ class Position {
         isAllSurrounded() &&
         !rule.mayFly &&
         pieceOnBoardCount[sideToMove()]! >= rule.piecesAtLeastCount) {
-      debugPrint("[position] $_sideToMove is no way to go.");
+      logger.v("[position] $_sideToMove is no way to go.");
       changeSideToMove();
     }
     */
@@ -1040,13 +1040,13 @@ class Position {
     final int moveIndex = _gotoHistoryIndex(move, index);
 
     if (recorder.cur == moveIndex) {
-      debugPrint("[goto] cur is equal to moveIndex.");
+      logger.i("[goto] cur is equal to moveIndex.");
       return HistoryResponse.equal;
     }
 
     // TODO: [Leptopoda] use null
     if (moveIndex < -1 || recorder.moveCount <= moveIndex) {
-      debugPrint("[goto] moveIndex is out of range.");
+      logger.i("[goto] moveIndex is out of range.");
       return HistoryResponse.outOfRange;
     }
 

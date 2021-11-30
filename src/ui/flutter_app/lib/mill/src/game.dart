@@ -67,7 +67,7 @@ class Game {
   // TODO: [Leptopoda] this is very suspicious.
   //[_isSearching] is private and only used by it's getter. Seems like this is somehow redundant ...
   bool get aiIsSearching {
-    debugPrint(
+    logger.i(
       "$_tag White is searching? ${_isSearching[PieceColor.white]}\n"
       "$_tag Black is searching? ${_isSearching[PieceColor.black]}\n",
     );
@@ -99,7 +99,7 @@ class Game {
         assert(false);
     }
 
-    debugPrint(
+    logger.i(
       "$_tag White is AI? ${isAi[PieceColor.white]}\n"
       "$_tag Black is AI? ${isAi[PieceColor.black]}\n",
     );
@@ -115,7 +115,7 @@ class Game {
       start();
     }
 
-    debugPrint("$_tag AI do move: $move");
+    logger.i("$_tag AI do move: $move");
 
     if (!(await controller.position.doMove(move.move))) {
       return false;
@@ -125,12 +125,12 @@ class Game {
 
     sideToMove = controller.position.sideToMove;
 
-    _printStat();
+    _logStat();
 
     return true;
   }
 
-  void _printStat() {
+  void _logStat() {
     double whiteWinRate = 0;
     double blackWinRate = 0;
     double drawRate = 0;
@@ -146,8 +146,11 @@ class Game {
     }
 
     final String scoreInfo =
-        "Score: ${controller.position.score[PieceColor.white]} : ${controller.position.score[PieceColor.black]} : ${controller.position.score[PieceColor.draw]}\ttotal: $total\n$whiteWinRate% : $blackWinRate% : $drawRate%\n";
+        "Score: ${controller.position.score[PieceColor.white]} :"
+        " ${controller.position.score[PieceColor.black]} :"
+        " ${controller.position.score[PieceColor.draw]}\ttotal:"
+        " $total\n$whiteWinRate% : $blackWinRate% : $drawRate%\n";
 
-    debugPrint("$_tag $scoreInfo");
+    logger.i("$_tag $scoreInfo");
   }
 }

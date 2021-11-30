@@ -26,8 +26,6 @@ class CustomDrawerHeader extends StatelessWidget {
 
   final String title;
 
-  static const String _tag = "[home_drawer]";
-
   @override
   Widget build(BuildContext context) {
     final List<Color> _animatedTextsColors = [
@@ -53,7 +51,6 @@ class CustomDrawerHeader extends StatelessWidget {
       pause: const Duration(seconds: 3),
       repeatForever: true,
       stopPauseOnTap: true,
-      onTap: () => debugPrint("$_tag DoubleTap to enable developer mode."),
     );
 
     final _padding = EdgeInsets.only(

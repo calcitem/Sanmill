@@ -24,6 +24,7 @@ import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/preferences.dart';
 import 'package:sanmill/services/environment_config.dart';
+import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -57,7 +58,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
     LocalDatabaseService.preferences = LocalDatabaseService.preferences
         .copyWith(isPrivacyPolicyAccepted: value);
 
-    debugPrint("[config] isPrivacyPolicyAccepted: $value");
+    logger.v("[config] isPrivacyPolicyAccepted: $value");
   }
 
   showDialog(

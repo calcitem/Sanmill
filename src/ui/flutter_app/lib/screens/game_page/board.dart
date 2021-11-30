@@ -99,24 +99,24 @@ class Board extends StatelessWidget {
 
         final column = (dx - padding) ~/ squareWidth;
         if (column < 0 || column > 6) {
-          return debugPrint("$_tag Tap on column $column (ignored).");
+          return logger.v("$_tag Tap on column $column (ignored).");
         }
 
         final row = (dy - padding) ~/ squareWidth;
         if (row < 0 || row > 6) {
-          return debugPrint("$_tag Tap on row $row (ignored).");
+          return logger.v("$_tag Tap on row $row (ignored).");
         }
 
         final index = row * 7 + column;
         final int? square = indexToSquare[index];
 
         if (square == null) {
-          return debugPrint(
+          return logger.v(
             "$_tag Tap not on a square ($row, $column) (ignored).",
           );
         }
 
-        debugPrint("$_tag Tap on ($row, $column) <$index>");
+        logger.v("$_tag Tap on ($row, $column) <$index>");
 
         await onBoardTap(square);
       },
