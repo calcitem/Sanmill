@@ -16,9 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:sanmill/generated/intl/l10n.dart';
+part of '../mill.dart';
 
 int abs(int value) => value > 0 ? value : -value;
 

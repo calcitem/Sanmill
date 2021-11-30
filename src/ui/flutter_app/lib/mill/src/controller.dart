@@ -16,9 +16,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'game.dart';
-import 'position.dart';
-// import 'recorder.dart';
+part of '../mill.dart';
+
+// TODO: [Leptopoda] add constructor
+MillController controller = MillController();
 
 class MillController {
   late final Game gameInstance;

@@ -16,7 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:sanmill/services/storage/storage.dart';
+part of '../mill.dart';
 
 class Mills {
   const Mills._();
