@@ -16,16 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/foundation.dart';
-import 'package:sanmill/mill/game.dart';
-import 'package:sanmill/mill/mills.dart';
-import 'package:sanmill/mill/recorder.dart';
-import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/mill/zobrist.dart';
-import 'package:sanmill/services/audios.dart';
-import 'package:sanmill/services/engine/engine.dart';
-import 'package:sanmill/services/storage/storage.dart';
-import 'package:sanmill/shared/array_helper.dart';
+part of '../mill.dart';
 
 class _StateInfo {
   // Copied when making a move
@@ -309,7 +300,7 @@ class Position {
     ++st.pliesFromNull;
 
     if (record != null && record!.move.length > "-(1,2)".length) {
-      if (posKeyHistory.isEmpty || st.key != posKeyHistory.lastF) {
+      if (st.key != posKeyHistory.lastF) {
         posKeyHistory.add(st.key);
         if (LocalDatabaseService.rules.threefoldRepetitionRule &&
             hasGameCycle()) {
@@ -756,7 +747,7 @@ class Position {
       return true;
     }
 
-    if (phase == Phase.moving && action == Act.select && isAllSurrounded()) {
+    if (phase == Phase.moving && action == Act.select && isAllSurrounded) {
       if (LocalDatabaseService.rules.isLoseButNotChangeSideWhenNoWay) {
         setGameOver(
           sideToMove.opponent,
@@ -920,7 +911,7 @@ class Position {
     return true;
   }
 
-  bool isAllSurrounded() {
+  bool get isAllSurrounded {
     // Full
     if (pieceOnBoardCount[PieceColor.white]! +
             pieceOnBoardCount[PieceColor.black]! >=
@@ -1066,6 +1057,7 @@ class Position {
     controller.gameInstance.newGame();
 
     HistoryResponse? error;
+    // TODO: [Leptopoda] throw errors instead of returning bools
     for (var i = 0; i <= moveIndex; i++) {
       if (!(await controller.gameInstance.doMove(historyBack[i]))) {
         error = HistoryResponse.error;

@@ -16,15 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/foundation.dart';
-import 'package:sanmill/mill/types.dart';
-import 'package:sanmill/services/engine/engine.dart';
-import 'package:sanmill/services/storage/storage.dart';
-
-import 'controller.dart';
-
-// TODO: [Leptopoda] add constructor
-MillController controller = MillController();
+part of '../mill.dart';
 
 class Game {
   static const String _tag = "[game]";

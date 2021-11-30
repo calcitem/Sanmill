@@ -18,8 +18,7 @@
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:sanmill/mill/position.dart';
-import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
 enum EngineType {

@@ -16,7 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 part of '../adapters.dart';
 
 /// Algorithm Adapter
