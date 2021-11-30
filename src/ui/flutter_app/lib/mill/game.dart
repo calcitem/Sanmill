@@ -17,32 +17,33 @@
 */
 
 import 'package:flutter/foundation.dart';
-import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
+import 'controller.dart';
+
 // TODO: [Leptopoda] add constructor
-Game gameInstance = Game();
+MillController controller = MillController();
 
 class Game {
   static const String _tag = "[game]";
 
-  void init() {
+  Game() {
     focusIndex = blurIndex = null;
   }
 
   void start() {
-    position.reset();
+    controller.position.reset();
 
     setWhoIsAi(engineType);
   }
 
   void newGame() {
-    position.phase = Phase.ready;
+    controller.position.phase = Phase.ready;
     start();
 
-    position.restart();
+    controller.position.restart();
     focusIndex = blurIndex = null;
 
     moveHistory = [];
@@ -57,9 +58,6 @@ class Game {
   }
 
   List<Move?> moveHistory = [];
-
-  final Position _position = Position();
-  Position get position => _position;
 
   int? focusIndex;
   int? blurIndex;
@@ -121,19 +119,19 @@ class Game {
   }
 
   Future<bool> doMove(Move move) async {
-    if (position.phase == Phase.ready) {
+    if (controller.position.phase == Phase.ready) {
       start();
     }
 
     debugPrint("$_tag AI do move: $move");
 
-    if (!(await position.doMove(move.move))) {
+    if (!(await controller.position.doMove(move.move))) {
       return false;
     }
 
     moveHistory.add(move);
 
-    sideToMove = position.sideToMove;
+    sideToMove = controller.position.sideToMove;
 
     _printStat();
 
@@ -145,18 +143,18 @@ class Game {
     double blackWinRate = 0;
     double drawRate = 0;
 
-    final int total = position.score[PieceColor.white]! +
-        position.score[PieceColor.black]! +
-        position.score[PieceColor.draw]!;
+    final int total = controller.position.score[PieceColor.white]! +
+        controller.position.score[PieceColor.black]! +
+        controller.position.score[PieceColor.draw]!;
 
     if (total != 0) {
-      whiteWinRate = position.score[PieceColor.white]! * 100 / total;
-      blackWinRate = position.score[PieceColor.black]! * 100 / total;
-      drawRate = position.score[PieceColor.draw]! * 100 / total;
+      whiteWinRate = controller.position.score[PieceColor.white]! * 100 / total;
+      blackWinRate = controller.position.score[PieceColor.black]! * 100 / total;
+      drawRate = controller.position.score[PieceColor.draw]! * 100 / total;
     }
 
     final String scoreInfo =
-        "Score: ${position.score[PieceColor.white]} : ${position.score[PieceColor.black]} : ${position.score[PieceColor.draw]}\ttotal: $total\n$whiteWinRate% : $blackWinRate% : $drawRate%\n";
+        "Score: ${controller.position.score[PieceColor.white]} : ${controller.position.score[PieceColor.black]} : ${controller.position.score[PieceColor.draw]}\ttotal: $total\n$whiteWinRate% : $blackWinRate% : $drawRate%\n";
 
     debugPrint("$_tag $scoreInfo");
   }

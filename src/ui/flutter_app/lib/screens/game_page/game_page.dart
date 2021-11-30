@@ -100,7 +100,7 @@ class _GamePageState extends State<GamePage>
   void _showTips() {
     if (!mounted) return;
 
-    final winner = gameInstance.position.winner;
+    final winner = controller.position.winner;
 
     switch (winner) {
       case PieceColor.white:
@@ -113,7 +113,7 @@ class _GamePageState extends State<GamePage>
         _showTip(S.of(context).isDraw);
         break;
       case PieceColor.nobody:
-        switch (gameInstance.position.phase) {
+        switch (controller.position.phase) {
           case Phase.placing:
             return _showTip(S.of(context).tipPlace);
           case Phase.moving:
@@ -129,10 +129,10 @@ class _GamePageState extends State<GamePage>
       _GameResultAlert(
         winner: winner,
         onRestart: () {
-          gameInstance.newGame();
+          controller.gameInstance.newGame();
           _showTip(S.of(context).gameStarted, snackBar: true);
 
-          if (gameInstance.isAiToMove) {
+          if (controller.gameInstance.isAiToMove) {
             debugPrint("$_tag New game, AI to move.");
             _engineToGo(isMoveNow: false);
           }
@@ -149,16 +149,16 @@ class _GamePageState extends State<GamePage>
       return debugPrint("$_tag Engine type is no human, ignore tapping.");
     }
 
-    final position = gameInstance.position;
+    final position = controller.position;
 
     // If nobody has placed, start to go.
     if (position.phase == Phase.placing &&
         position.pieceOnBoardCount[PieceColor.white] == 0 &&
         position.pieceOnBoardCount[PieceColor.black] == 0) {
-      gameInstance.newGame();
+      controller.gameInstance.newGame();
 
-      if (gameInstance.isAiToMove) {
-        if (gameInstance.aiIsSearching) {
+      if (controller.gameInstance.isAiToMove) {
+        if (controller.gameInstance.aiIsSearching) {
           return debugPrint("$_tag AI is thinking, skip tapping.");
         } else {
           debugPrint("[tap] AI is not thinking. AI is to move.");
@@ -167,11 +167,12 @@ class _GamePageState extends State<GamePage>
       }
     }
 
-    if (gameInstance.isAiToMove || gameInstance.aiIsSearching) {
+    if (controller.gameInstance.isAiToMove ||
+        controller.gameInstance.aiIsSearching) {
       return debugPrint("[tap] AI's turn, skip tapping.");
     }
 
-    if (position.phase == Phase.ready) gameInstance.start();
+    if (position.phase == Phase.ready) controller.gameInstance.start();
 
     // Human to go
     bool ret = false;
@@ -197,7 +198,8 @@ class _GamePageState extends State<GamePage>
                   // TODO: HumanVsHuman - Change tip
                   _showTip(S.of(context).tipPlaced);
                 } else {
-                  final side = gameInstance.sideToMove.opponent.name(context)!;
+                  final side = controller.gameInstance.sideToMove.opponent
+                      .name(context)!;
                   _showTip(
                     S.of(context).tipToMove(side),
                   );
@@ -224,16 +226,16 @@ class _GamePageState extends State<GamePage>
           switch (position.selectPiece(sq)) {
             case SelectionResponse.r0:
               await Audios.playTone(Sound.select);
-              gameInstance.select(squareToIndex[sq]!);
+              controller.gameInstance.select(squareToIndex[sq]!);
               ret = true;
               debugPrint("[tap] selectPiece: [$sq]");
 
-              final us = gameInstance.sideToMove;
+              final us = controller.gameInstance.sideToMove;
               if (position.phase == Phase.moving &&
                   LocalDatabaseService.rules.mayFly &&
-                  (gameInstance.position.pieceOnBoardCount[us] ==
+                  (controller.position.pieceOnBoardCount[us] ==
                           LocalDatabaseService.rules.flyPieceCount ||
-                      gameInstance.position.pieceOnBoardCount[us] == 3)) {
+                      controller.position.pieceOnBoardCount[us] == 3)) {
                 debugPrint("[tap] May fly.");
                 _showTip(S.of(context).tipCanMoveToAnyPoint, snackBar: true);
               } else {
@@ -273,13 +275,14 @@ class _GamePageState extends State<GamePage>
 
               ret = true;
               debugPrint("[tap] removePiece: [$sq]");
-              if (gameInstance.position.pieceToRemoveCount >= 1) {
+              if (controller.position.pieceToRemoveCount >= 1) {
                 _showTip(S.of(context).tipContinueMill, snackBar: true);
               } else {
                 if (widget.engineType == EngineType.humanVsAi) {
                   _showTip(S.of(context).tipRemoved);
                 } else {
-                  final them = gameInstance.sideToMove.opponent.name(context)!;
+                  final them = controller.gameInstance.sideToMove.opponent
+                      .name(context)!;
                   _showTip(S.of(context).tipToMove(them));
                 }
               }
@@ -314,8 +317,8 @@ class _GamePageState extends State<GamePage>
       }
 
       if (ret) {
-        gameInstance.sideToMove = position.sideToMove;
-        gameInstance.moveHistory.add(position.record);
+        controller.gameInstance.sideToMove = position.sideToMove;
+        controller.gameInstance.moveHistory.add(position.record);
 
         // TODO: Need Others?
         // Increment ply counters. In particular,
@@ -356,7 +359,7 @@ class _GamePageState extends State<GamePage>
         }
       }
 
-      gameInstance.sideToMove = position.sideToMove;
+      controller.gameInstance.sideToMove = position.sideToMove;
 
       setState(() {});
     });
@@ -371,12 +374,12 @@ class _GamePageState extends State<GamePage>
     debugPrint("[engineToGo] engine type is ${widget.engineType}");
 
     if (_isMoveNow) {
-      if (!gameInstance.isAiToMove) {
+      if (!controller.gameInstance.isAiToMove) {
         debugPrint("[engineToGo] Human to Move. Cannot get search result now.");
         ScaffoldMessenger.of(context).clearSnackBars();
         return showSnackBar(context, S.of(context).notAIsTurn);
       }
-      if (!gameInstance.position.recorder.isClean()) {
+      if (!controller.position.recorder.isClean()) {
         debugPrint(
           "[engineToGo] History is not clean. Cannot get search result now.",
         );
@@ -386,21 +389,21 @@ class _GamePageState extends State<GamePage>
     }
 
     while ((LocalDatabaseService.preferences.isAutoRestart ||
-            gameInstance.position.winner == PieceColor.nobody) &&
-        gameInstance.isAiToMove &&
+            controller.position.winner == PieceColor.nobody) &&
+        controller.gameInstance.isAiToMove &&
         mounted) {
       if (widget.engineType == EngineType.aiVsAi) {
         _showTip(
-          "${gameInstance.position.score[PieceColor.white]} : ${gameInstance.position.score[PieceColor.black]} : ${gameInstance.position.score[PieceColor.draw]}",
+          "${controller.position.score[PieceColor.white]} : ${controller.position.score[PieceColor.black]} : ${controller.position.score[PieceColor.draw]}",
         );
       } else {
         if (mounted) {
           _showTip(S.of(context).thinking);
 
-          final String? n = gameInstance.position.recorder.lastMove?.notation;
+          final String? n = controller.position.recorder.lastMove?.notation;
 
           if (LocalDatabaseService.preferences.screenReaderSupport &&
-              gameInstance.position.action != Act.remove &&
+              controller.position.action != Act.remove &&
               n != null) {
             showSnackBar(context, "${S.of(context).human}: $n");
           }
@@ -410,7 +413,7 @@ class _GamePageState extends State<GamePage>
       final EngineResponse response;
       if (!_isMoveNow) {
         debugPrint("[engineToGo] Searching...");
-        response = await _engine.search(gameInstance.position);
+        response = await _engine.search(controller.position);
       } else {
         debugPrint("[engineToGo] Get search result now...");
         response = await _engine.search(null);
@@ -423,7 +426,7 @@ class _GamePageState extends State<GamePage>
         case EngineResponseType.move:
           final Move move = response.value!;
 
-          await gameInstance.doMove(move);
+          await controller.gameInstance.doMove(move);
           _animationController.reset();
           _animationController.animateTo(1.0);
 
@@ -439,8 +442,8 @@ class _GamePageState extends State<GamePage>
       }
 
       if (LocalDatabaseService.preferences.isAutoRestart &&
-          gameInstance.position.winner != PieceColor.nobody) {
-        gameInstance.newGame();
+          controller.position.winner != PieceColor.nobody) {
+        controller.gameInstance.newGame();
       }
     }
   }
@@ -448,17 +451,17 @@ class _GamePageState extends State<GamePage>
   Future<void> _startNew() async {
     Navigator.pop(context);
 
-    if (gameInstance.isAiToMove) {
+    if (controller.gameInstance.isAiToMove) {
       // TODO: Move now
       //debugPrint("$tag New game, AI to move, move now.");
       //await engineToGo(true);
     }
 
-    gameInstance.newGame();
+    controller.gameInstance.newGame();
 
     _showTip(S.of(context).gameStarted, snackBar: true);
 
-    if (gameInstance.isAiToMove) {
+    if (controller.gameInstance.isAiToMove) {
       debugPrint("$_tag New game, AI to move.");
       _engineToGo(isMoveNow: false);
     }
@@ -473,7 +476,7 @@ class _GamePageState extends State<GamePage>
     if (data?.text == null) return;
 
     await _takeBackAll(pop: false);
-    final importFailedStr = gameInstance.position.recorder.import(data!.text!);
+    final importFailedStr = controller.position.recorder.import(data!.text!);
 
     if (importFailedStr != null) {
       return _showTip(
@@ -491,7 +494,7 @@ class _GamePageState extends State<GamePage>
     Navigator.pop(context);
 
     await Clipboard.setData(
-      ClipboardData(text: gameInstance.position.moveHistoryText),
+      ClipboardData(text: controller.position.moveHistoryText),
     );
     showSnackBar(context, S.of(context).moveHistoryCopied);
   }
@@ -593,7 +596,7 @@ class _GamePageState extends State<GamePage>
               ),
               const CustomSpacer(),
             ],
-            if (gameInstance.position.moveHistoryText != null) ...[
+            if (controller.position.moveHistoryText != null) ...[
               SimpleDialogOption(
                 onPressed: _showMoveList,
                 child: Text(
@@ -643,7 +646,7 @@ class _GamePageState extends State<GamePage>
 
     _isGoingToHistory = true;
 
-    switch (await gameInstance.position.gotoHistory(move, number)) {
+    switch (await controller.position.gotoHistory(move, number)) {
       case null:
         break;
       case HistoryResponse.outOfRange:
@@ -660,7 +663,7 @@ class _GamePageState extends State<GamePage>
     _isGoingToHistory = false;
 
     if (mounted) {
-      final pos = gameInstance.position;
+      final pos = controller.position;
 
       late final String text;
       final lastEffectiveMove = pos.recorder.lastEffectiveMove;
@@ -781,8 +784,8 @@ class _GamePageState extends State<GamePage>
   }
 
   IconData get _iconArrow {
-    if (gameInstance.position.phase == Phase.gameOver) {
-      switch (gameInstance.position.winner) {
+    if (controller.position.phase == Phase.gameOver) {
+      switch (controller.position.winner) {
         case PieceColor.white:
           return ltr
               ? FluentIcons.toggle_left_24_regular
@@ -795,7 +798,7 @@ class _GamePageState extends State<GamePage>
           return FluentIcons.handshake_24_regular;
       }
     } else {
-      switch (gameInstance.sideToMove) {
+      switch (controller.gameInstance.sideToMove) {
         case PieceColor.white:
           return FluentIcons.chevron_left_24_regular;
         case PieceColor.black:
@@ -918,9 +921,8 @@ class _GamePageState extends State<GamePage>
     super.initState();
 
     debugPrint("$_tag Engine type: ${widget.engineType}");
-    gameInstance.setWhoIsAi(widget.engineType);
+    controller.gameInstance.setWhoIsAi(widget.engineType);
 
-    gameInstance.init();
     _engine.startup();
 
     _initAnimation();
