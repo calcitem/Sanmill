@@ -16,8 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// ignore_for_file: avoid_redundant_argument_values
-
 part of '../game_toolbar.dart';
 
 /// Overrides the default [ButtonStyle] of its [ToolbarItem] descendants.

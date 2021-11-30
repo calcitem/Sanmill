@@ -45,8 +45,8 @@ enum _DrawerIndex {
   ruleSettings,
   personalization,
   feedback,
-  Help,
-  About,
+  help,
+  about,
 }
 
 extension _DrawerScreen on _DrawerIndex {
@@ -75,9 +75,9 @@ extension _DrawerScreen on _DrawerIndex {
         return const PersonalizationSettingsPage();
       case _DrawerIndex.feedback:
         break;
-      case _DrawerIndex.Help:
+      case _DrawerIndex.help:
         return const HelpScreen();
-      case _DrawerIndex.About:
+      case _DrawerIndex.about:
         return const AboutPage();
     }
   }
@@ -176,14 +176,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           onChanged: _changeIndex,
         ),
       CustomDrawerItem<_DrawerIndex>(
-        value: _DrawerIndex.Help,
+        value: _DrawerIndex.help,
         title: S.of(context).help,
         icon: const Icon(FluentIcons.question_circle_24_regular),
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
       ),
       CustomDrawerItem<_DrawerIndex>(
-        value: _DrawerIndex.About,
+        value: _DrawerIndex.about,
         title: S.of(context).about,
         icon: const Icon(FluentIcons.info_24_regular),
         groupValue: _drawerIndex,

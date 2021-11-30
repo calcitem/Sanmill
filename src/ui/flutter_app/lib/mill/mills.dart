@@ -67,7 +67,7 @@ class Mills {
       /* 39 */ [0, 0, 0, 0],
     ];
 
-    const adjacentSquares_diagonal = [
+    const adjacentSquaresDiagonal = [
       /*  0 */ [0, 0, 0, 0],
       /*  1 */ [0, 0, 0, 0],
       /*  2 */ [0, 0, 0, 0],
@@ -111,7 +111,7 @@ class Mills {
     ];
 
     if (LocalDatabaseService.rules.hasDiagonalLines) {
-      Position.adjacentSquares = adjacentSquares_diagonal;
+      Position.adjacentSquares = adjacentSquaresDiagonal;
     } else {
       Position.adjacentSquares = adjacentSquares;
     }
@@ -321,7 +321,7 @@ class Mills {
       ]
     ];
 
-    const millTable_diagonal = [
+    const millTableDiagonal = [
       /*  0 */ [
         [0, 0],
         [0, 0],
@@ -525,7 +525,7 @@ class Mills {
     ];
 
     if (LocalDatabaseService.rules.hasDiagonalLines) {
-      Position.millTable = millTable_diagonal;
+      Position.millTable = millTableDiagonal;
     } else {
       Position.millTable = millTable;
     }

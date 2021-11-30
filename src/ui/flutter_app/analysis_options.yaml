@@ -1,10 +1,5 @@
 include: package:lint/analysis_options.yaml
 
-linter:
-  rules:
-    constant_identifier_names: false
-    depend_on_referenced_packages: false
-
 analyzer:
   exclude:
     # generated code
