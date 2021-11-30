@@ -27,21 +27,21 @@ part 'preferences.g.dart';
 @HiveType(typeId: 5)
 enum Algorithms {
   @HiveField(0)
-  AlphaBeta,
+  alphaBeta,
   @HiveField(1)
-  PVS,
+  pvs,
   @HiveField(2)
-  MTDf,
+  mdtf,
 }
 
 extension AlgorithmNames on Algorithms {
   String get name {
     switch (this) {
-      case Algorithms.AlphaBeta:
+      case Algorithms.alphaBeta:
         return 'Alpha-Beta';
-      case Algorithms.PVS:
+      case Algorithms.pvs:
         return 'PVS';
-      case Algorithms.MTDf:
+      case Algorithms.mdtf:
         return 'MTD(f)';
     }
   }
@@ -72,7 +72,7 @@ class Preferences {
     this.shufflingEnabled = true,
     this.learnEndgame = false,
     this.openingBook = false,
-    this.algorithm = Algorithms.MTDf,
+    this.algorithm = Algorithms.mdtf,
     @Deprecated('This only represents the old algorithm type. Use [algorithm] instead')
         this.oldAlgorithm = 0,
     this.drawOnHumanExperience = true,
