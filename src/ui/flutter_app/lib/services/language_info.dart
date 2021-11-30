@@ -60,6 +60,7 @@ import 'package:sanmill/generated/intl/l10n_tr.dart';
 import 'package:sanmill/generated/intl/l10n_uz.dart';
 import 'package:sanmill/generated/intl/l10n_vi.dart';
 import 'package:sanmill/generated/intl/l10n_zh.dart';
+import 'package:sanmill/services/logger.dart';
 
 Map<Locale, String> languageCodeToStrings = {
   const Locale("ar"): SAr().languageName,
@@ -117,10 +118,10 @@ void setSpecialCountryAndRegion(BuildContext context) {
 
   switch (currentLocale.countryCode) {
     // TODO: [Leptopoda] aren't country codes lowercase?
-    case "IR":
+    case "fa":
       specialCountryAndRegion = "Iran";
       break;
   }
 
-  debugPrint("Set Special Country and Region to $specialCountryAndRegion.");
+  logger.i("Set Special Country and Region to $specialCountryAndRegion.");
 }

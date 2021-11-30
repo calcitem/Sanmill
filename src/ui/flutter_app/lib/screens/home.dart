@@ -34,6 +34,7 @@ import 'package:sanmill/screens/personalization_settings/personalization_setting
 import 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/environment_config.dart';
+import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 
@@ -108,7 +109,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     if (index == _DrawerIndex.feedback) {
       if (!EnvironmentConfig.monkeyTest) {
         if (Platform.isWindows) {
-          return debugPrint("flutter_email_sender does not support Windows.");
+          return logger.w("flutter_email_sender does not support Windows.");
         } else {
           return BetterFeedback.of(context).show(_launchFeedback);
         }

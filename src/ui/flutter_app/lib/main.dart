@@ -32,6 +32,7 @@ import 'package:sanmill/screens/home.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/language_info.dart';
+import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/feedback_localization.dart';
@@ -41,9 +42,9 @@ part 'package:sanmill/services/catcher.dart';
 part 'package:sanmill/services/init_system_ui.dart';
 
 Future<void> main() async {
-  debugPrint("Environment [catcher]: ${EnvironmentConfig.catcher}");
-  debugPrint("Environment [dev_mode]: ${EnvironmentConfig.devMode}");
-  debugPrint("Environment [monkey_test]: ${EnvironmentConfig.monkeyTest}");
+  logger.i("Environment [catcher]: ${EnvironmentConfig.catcher}");
+  logger.i("Environment [dev_mode]: ${EnvironmentConfig.devMode}");
+  logger.i("Environment [monkey_test]: ${EnvironmentConfig.monkeyTest}");
 
   await LocalDatabaseService.initStorage();
 

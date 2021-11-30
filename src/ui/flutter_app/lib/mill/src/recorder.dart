@@ -46,9 +46,9 @@ class GameRecorder {
       }
     } else if ((wmd.length == 8 && wmd[2] == "-" && wmd[5] == "x") ||
         (wmd.length == 5 && wmd[2] == "x")) {
-      debugPrint("$_tag Not support parsing format oo-ooxo notation.");
+      logger.w("$_tag Not support parsing format oo-ooxo notation.");
     } else {
-      debugPrint("$_tag Parse notation $wmd failed.");
+      logger.e("$_tag Parse notation $wmd failed.");
     }
   }
 
@@ -64,7 +64,7 @@ class GameRecorder {
       if (val >= 1 && val <= 24) {
         return playOkNotationToMove[playOk]!;
       } else {
-        debugPrint("$_tag Parse PlayOK notation $playOk failed.");
+        logger.e("$_tag Parse PlayOK notation $playOk failed.");
         return null;
       }
     }
@@ -76,7 +76,7 @@ class GameRecorder {
       if (val >= 1 && val <= 24) {
         return "-${playOkNotationToMove[sub]!}";
       } else {
-        debugPrint("$_tag Parse PlayOK notation $playOk failed.");
+        logger.e("$_tag Parse PlayOK notation $playOk failed.");
         return null;
       }
     }
@@ -88,7 +88,7 @@ class GameRecorder {
       if (val1 >= 1 && val1 <= 24) {
         move = playOkNotationToMove[sub1];
       } else {
-        debugPrint("$_tag Parse PlayOK notation $playOk failed.");
+        logger.e("$_tag Parse PlayOK notation $playOk failed.");
         return null;
       }
 
@@ -97,12 +97,12 @@ class GameRecorder {
       if (val2 >= 1 && val2 <= 24) {
         return "$move->${playOkNotationToMove[sub2]!}";
       } else {
-        debugPrint("$_tag Parse PlayOK notation $playOk failed.");
+        logger.e("$_tag Parse PlayOK notation $playOk failed.");
         return null;
       }
     }
 
-    debugPrint("$_tag Not support parsing format oo-ooxo PlayOK notation.");
+    logger.w("$_tag Not support parsing format oo-ooxo PlayOK notation.");
     return null;
   }
 
@@ -143,7 +143,7 @@ class GameRecorder {
 
   String? import(String moveList) {
     clear();
-    debugPrint("Clipboard text: $moveList");
+    logger.v("Clipboard text: $moveList");
 
     if (_isDalmaxMoveList(moveList)) {
       return _importDalmax(moveList);
@@ -197,6 +197,7 @@ class GameRecorder {
         i = "$i.";
       }
 
+      // TODO: [Leptopdoa] deduplicate
       if (i.isNotEmpty && !i.endsWith(".")) {
         if (i.length == 5 && i[2] == "x") {
           // "a1xc3"
@@ -204,14 +205,14 @@ class GameRecorder {
           if (m1 != null) {
             newHistory.add(Move(m1));
           } else {
-            debugPrint("Cannot import $i");
+            logger.e("Cannot import $i");
             return i;
           }
           final String? m2 = _wmdNotationToMoveString(i.substring(2));
           if (m2 != null) {
             newHistory.add(Move(m2));
           } else {
-            debugPrint("Cannot import $i");
+            logger.e("Cannot import $i");
             return i;
           }
         } else if (i.length == 8 && i[2] == "-" && i[5] == "x") {
@@ -220,14 +221,14 @@ class GameRecorder {
           if (m1 != null) {
             newHistory.add(Move(m1));
           } else {
-            debugPrint("Cannot import $i");
+            logger.e("Cannot import $i");
             return i;
           }
           final String? m2 = _wmdNotationToMoveString(i.substring(5));
           if (m2 != null) {
             newHistory.add(Move(m2));
           } else {
-            debugPrint("Cannot import $i");
+            logger.e("Cannot import $i");
             return i;
           }
         } else {
@@ -236,7 +237,7 @@ class GameRecorder {
           if (m != null) {
             newHistory.add(Move(m));
           } else {
-            debugPrint("Cannot import $i");
+            logger.e("Cannot import $i");
             return i;
           }
         }
@@ -276,7 +277,7 @@ class GameRecorder {
           if (m != null) {
             newHistory.add(Move(m));
           } else {
-            debugPrint("Cannot import $i");
+            logger.e("Cannot import $i");
             return i;
           }
         } else if (iX != -1) {
@@ -284,14 +285,14 @@ class GameRecorder {
           if (m1 != null) {
             newHistory.add(Move(m1));
           } else {
-            debugPrint("Cannot import $i");
+            logger.e("Cannot import $i");
             return i;
           }
           final String? m2 = playOkNotationToMoveString(i.substring(iX));
           if (m2 != null) {
             newHistory.add(Move(m2));
           } else {
-            debugPrint("Cannot import $i");
+            logger.e("Cannot import $i");
             return i;
           }
         }

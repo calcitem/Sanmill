@@ -42,7 +42,7 @@ class _MoveTimeSlider extends StatelessWidget {
               LocalDatabaseService.preferences =
                   _preferences.copyWith(moveTime: value.toInt());
 
-              debugPrint("Move time Slider value: $value");
+              logger.v("Move time Slider value: $value");
             },
           );
         },

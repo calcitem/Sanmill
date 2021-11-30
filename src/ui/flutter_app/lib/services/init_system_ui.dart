@@ -20,8 +20,8 @@ part of 'package:sanmill/main.dart';
 
 /// initializes the given [SystemChrome] ui
 void _initUI() {
-  debugPrint(window.physicalSize.toString());
-  debugPrint(Constants.windowAspectRatio.toString());
+  logger.v(window.physicalSize.toString());
+  logger.v(Constants.windowAspectRatio.toString());
 
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],

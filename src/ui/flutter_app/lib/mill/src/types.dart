@@ -74,7 +74,7 @@ class Move {
       notation = "${_squareToWmdNotation[to]}";
     } else if (move == "draw") {
       assert(false, "not yet implemented"); // TODO
-      debugPrint("[TODO] Computer request draw");
+      logger.v("[TODO] Computer request draw");
     } else {
       assert(false);
     }
@@ -275,7 +275,7 @@ bool isOk(int sq) {
   final bool ret = sq == 0 || (sq >= sqBegin && sq < sqEnd);
 
   if (!ret) {
-    debugPrint("[types] $sq is not OK");
+    logger.w("[types] $sq is not OK");
   }
 
   return ret; // TODO: SQ_NONE?
