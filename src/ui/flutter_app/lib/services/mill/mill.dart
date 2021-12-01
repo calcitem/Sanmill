@@ -19,16 +19,22 @@
 /// Although marked as a library this package is tightly integrated into the app
 library mill;
 
+import 'dart:async';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/services/audios.dart';
-import 'package:sanmill/services/engine/engine.dart';
+import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/array_helper.dart';
 
 part 'src/controller.dart';
+part 'src/engine/engine.dart';
+part 'src/engine/native_engine.dart';
 part 'src/game.dart';
 part 'src/mills.dart';
 part 'src/position.dart';

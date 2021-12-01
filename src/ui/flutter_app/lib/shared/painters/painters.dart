@@ -20,8 +20,8 @@
 library painters;
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/services/environment_config.dart';
+import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
