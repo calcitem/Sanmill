@@ -34,24 +34,7 @@ class _GameResultAlert extends StatelessWidget {
   GameResult get _gameResult {
     if (engineType == EngineType.aiVsAi) return GameResult.none;
 
-    switch (winner) {
-      case PieceColor.white:
-        if (controller.gameInstance.isAi[PieceColor.white]!) {
-          return GameResult.lose;
-        } else {
-          return GameResult.win;
-        }
-      case PieceColor.black:
-        if (controller.gameInstance.isAi[PieceColor.black]!) {
-          return GameResult.lose;
-        } else {
-          return GameResult.win;
-        }
-      case PieceColor.draw:
-        return GameResult.draw;
-      default:
-        return GameResult.none;
-    }
+    return winner.result;
   }
 
   @override

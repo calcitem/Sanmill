@@ -54,7 +54,7 @@ class Game {
   int? focusIndex;
   int? blurIndex;
 
-  final Map<PieceColor, bool> isAi = {
+  Map<PieceColor, bool> isAi = {
     PieceColor.white: false,
     PieceColor.black: true,
   };
@@ -81,23 +81,7 @@ class Game {
   void setWhoIsAi(EngineType type) {
     _engineType = type;
 
-    switch (type) {
-      case EngineType.humanVsAi:
-      case EngineType.testViaLAN:
-        isAi[PieceColor.white] = LocalDatabaseService.preferences.aiMovesFirst;
-        isAi[PieceColor.black] = !LocalDatabaseService.preferences.aiMovesFirst;
-        break;
-      case EngineType.humanVsHuman:
-      case EngineType.humanVsLAN:
-      case EngineType.humanVsCloud:
-        isAi[PieceColor.white] = isAi[PieceColor.black] = false;
-        break;
-      case EngineType.aiVsAi:
-        isAi[PieceColor.white] = isAi[PieceColor.black] = true;
-        break;
-      default:
-        throw Exception("No engine to set");
-    }
+    isAi = type.whoIsAI;
 
     logger.i(
       "$_tag White is AI? ${isAi[PieceColor.white]}\n"
