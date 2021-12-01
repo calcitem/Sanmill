@@ -23,7 +23,6 @@ import 'package:sanmill/generated/assets/assets.gen.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:soundpool/soundpool.dart';
-import 'package:stack_trace/stack_trace.dart';
 
 enum Sound {
   draw,
@@ -168,26 +167,24 @@ class Audios {
   }
 
   static Future<void> playTone(Sound sound) async {
-    await Chain.capture(() async {
-      if (!LocalDatabaseService.preferences.toneEnabled ||
-          isTemporaryMute ||
-          LocalDatabaseService.preferences.screenReaderSupport ||
-          !_initialized) {
-        return;
-      }
+    if (!LocalDatabaseService.preferences.toneEnabled ||
+        isTemporaryMute ||
+        LocalDatabaseService.preferences.screenReaderSupport ||
+        !_initialized) {
+      return;
+    }
 
-      // If the platform is Windows [_initialized] should be false thus this code shouldn't be executed
-      assert(!Platform.isWindows);
+    // If the platform is Windows [_initialized] should be false thus this code shouldn't be executed
+    assert(!Platform.isWindows);
 
-      // TODO: [Leptopoda] isn't debug chain meant to catch errors? so why catching them in here and not in onError??
-      try {
-        await _stopSound();
+    try {
+      await _stopSound();
 
-        await _playSound(sound);
-      } catch (e) {
-        // Fallback for all errors
-        logger.e(e.toString());
-      }
-    });
+      await _playSound(sound);
+    } catch (e) {
+      // Fallback for all errors
+      logger.e(e.toString());
+      rethrow;
+    }
   }
 }

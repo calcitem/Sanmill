@@ -40,7 +40,6 @@ import 'package:sanmill/shared/number_picker.dart';
 import 'package:sanmill/shared/painters/painters.dart';
 import 'package:sanmill/shared/snackbar.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
-import 'package:stack_trace/stack_trace.dart';
 
 part 'package:sanmill/screens/game_page/board.dart';
 part 'package:sanmill/screens/game_page/result_alert.dart';
@@ -156,7 +155,7 @@ class _GamePageState extends State<GamePage>
 
     // Human to go
     bool ret = false;
-    await Chain.capture(() async {
+    try {
       switch (position.action) {
         case Act.place:
           if (await position.putPiece(sq)) {
@@ -343,7 +342,10 @@ class _GamePageState extends State<GamePage>
       controller.gameInstance.sideToMove = position.sideToMove;
 
       setState(() {});
-    });
+    } catch (e) {
+      // TODO: [Leptopoda] improve error handling
+      rethrow;
+    }
   }
 
   Future<void> _engineToGo({required bool isMoveNow}) async {
