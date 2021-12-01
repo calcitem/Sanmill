@@ -146,7 +146,7 @@ class Position {
     setPosition(); // TODO
 
     // TODO
-    controller.recorder = _GameRecorder(lastPositionWithRemove: fen());
+    controller.recorder.lastPositionWithRemove = fen();
   }
 
   /// Return a FEN representation of the position.
