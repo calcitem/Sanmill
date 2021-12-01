@@ -44,16 +44,7 @@ class _InfoDialog extends StatelessWidget {
       default:
     }
 
-    switch (pos.phase) {
-      case Phase.placing:
-        buffer.write(S.of(context).placingPhase);
-        break;
-      case Phase.moving:
-        buffer.write(S.of(context).movingPhase);
-        break;
-      default:
-        assert(false);
-    }
+    buffer.write(pos.phase.getName(context));
 
     if (LocalDatabaseService.preferences.screenReaderSupport) {
       buffer.writeln(":");
