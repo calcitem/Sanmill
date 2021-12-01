@@ -16,10 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:flutter/material.dart';
-import 'package:sanmill/mill/mill.dart';
-import 'package:sanmill/services/storage/storage.dart';
+part of '../../mill.dart';
 
 enum EngineType {
   humanVsAi,

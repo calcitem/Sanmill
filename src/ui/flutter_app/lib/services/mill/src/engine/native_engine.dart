@@ -16,14 +16,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'dart:async';
 
-import 'package:flutter/services.dart';
-import 'package:sanmill/mill/mill.dart';
-import 'package:sanmill/services/engine/engine.dart';
-import 'package:sanmill/services/environment_config.dart';
-import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/services/storage/storage.dart';
+
+part of '../../mill.dart';
+
 
 class NativeEngine extends Engine {
   static const platform = MethodChannel("com.calcitem.sanmill/engine");
