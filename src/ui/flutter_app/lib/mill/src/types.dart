@@ -225,7 +225,11 @@ extension PieceColorExtension on PieceColor {
     }
   }
 
-  IconData get chevron {
+  IconData get icon {
+    return controller.position.phase == Phase.gameOver ? _arrow : _chevron;
+  }
+
+  IconData get _chevron {
     switch (controller.gameInstance.sideToMove) {
       case PieceColor.white:
         return FluentIcons.chevron_left_24_regular;
@@ -236,17 +240,12 @@ extension PieceColorExtension on PieceColor {
     }
   }
 
-  // ignore: avoid_positional_boolean_parameters
-  IconData getArrow(bool ltr) {
+  IconData get _arrow {
     switch (controller.position.winner) {
       case PieceColor.white:
-        return ltr
-            ? FluentIcons.toggle_left_24_regular
-            : FluentIcons.toggle_right_24_regular;
+        return FluentIcons.toggle_left_24_regular;
       case PieceColor.black:
-        return ltr
-            ? FluentIcons.toggle_right_24_regular
-            : FluentIcons.toggle_left_24_regular;
+        return FluentIcons.toggle_right_24_regular;
       default:
         return FluentIcons.handshake_24_regular;
     }
