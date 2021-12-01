@@ -369,8 +369,8 @@ class _GamePageState extends State<GamePage>
       }
     }
 
-    while ((LocalDatabaseService.preferences.isAutoRestart ||
-            controller.position.winner == PieceColor.nobody) &&
+    while ((controller.position.winner == PieceColor.nobody ||
+            LocalDatabaseService.preferences.isAutoRestart) &&
         controller.gameInstance.isAiToMove &&
         mounted) {
       if (widget.engineType == EngineType.aiVsAi) {
@@ -627,18 +627,10 @@ class _GamePageState extends State<GamePage>
 
     _isGoingToHistory = true;
 
-    switch (await controller.position.gotoHistory(move, number)) {
-      case null:
-        break;
-      case HistoryResponse.outOfRange:
-      case HistoryResponse.equal:
-        ScaffoldMessenger.of(context).clearSnackBars();
-        showSnackBar(context, S.of(context).atEnd);
-        break;
-      case HistoryResponse.error:
-      default:
-        ScaffoldMessenger.of(context).clearSnackBars();
-        showSnackBar(context, S.of(context).movesAndRulesNotMatch);
+    final response = await controller.position.gotoHistory(move, number);
+    if (response != null) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      showSnackBar(context, response.getString(context));
     }
 
     _isGoingToHistory = false;
