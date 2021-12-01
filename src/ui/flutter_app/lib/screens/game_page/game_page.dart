@@ -65,7 +65,6 @@ class _GamePageState extends State<GamePage>
   bool _isGoingToHistory = false;
   late AnimationController _animationController;
   late Animation<double> _animation;
-  late bool ltr;
   late double boardWidth;
 
   static const String _tag = "[game_page]";
@@ -712,17 +711,18 @@ class _GamePageState extends State<GamePage>
   }
 
   Widget get _header {
-    final left = widget.engineType.leftHeaderIcon;
-    final right = widget.engineType.rightHeaderIcon;
-    final iconColor = LocalDatabaseService.colorSettings.messageColor;
-
-    final iconRow = Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Icon(left, color: iconColor),
-        Icon(_iconArrow, color: iconColor),
-        Icon(right, color: iconColor),
-      ],
+    final iconRow = IconTheme(
+      data: IconThemeData(
+        color: LocalDatabaseService.colorSettings.messageColor,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(widget.engineType.leftHeaderIcon),
+          Icon(_iconArrow),
+          Icon(widget.engineType.rightHeaderIcon),
+        ],
+      ),
     );
 
     return Container(
@@ -758,11 +758,7 @@ class _GamePageState extends State<GamePage>
   }
 
   IconData get _iconArrow {
-    if (controller.position.phase == Phase.gameOver) {
-      return controller.gameInstance.sideToMove.getArrow(ltr);
-    } else {
-      return controller.gameInstance.sideToMove.chevron;
-    }
+    return controller.gameInstance.sideToMove.icon;
   }
 
   Widget get _board {
@@ -814,9 +810,7 @@ class _GamePageState extends State<GamePage>
   List<Widget> get historyNavToolbar {
     final takeBackAllButton = ToolbarItem(
       child: Icon(
-        ltr
-            ? FluentIcons.arrow_previous_24_regular
-            : FluentIcons.arrow_next_24_regular,
+        FluentIcons.arrow_previous_24_regular,
         semanticLabel: S.of(context).takeBackAll,
       ),
       onPressed: () => _takeBackAll(pop: false),
@@ -824,9 +818,7 @@ class _GamePageState extends State<GamePage>
 
     final takeBackButton = ToolbarItem(
       child: Icon(
-        ltr
-            ? FluentIcons.chevron_left_24_regular
-            : FluentIcons.chevron_right_24_regular,
+        FluentIcons.chevron_left_24_regular,
         semanticLabel: S.of(context).takeBack,
       ),
       onPressed: () async => _takeBack(pop: false),
@@ -834,9 +826,7 @@ class _GamePageState extends State<GamePage>
 
     final stepForwardButton = ToolbarItem(
       child: Icon(
-        ltr
-            ? FluentIcons.chevron_right_24_regular
-            : FluentIcons.chevron_left_24_regular,
+        FluentIcons.chevron_right_24_regular,
         semanticLabel: S.of(context).stepForward,
       ),
       onPressed: () async => _stepForward(pop: false),
@@ -844,9 +834,7 @@ class _GamePageState extends State<GamePage>
 
     final stepForwardAllButton = ToolbarItem(
       child: Icon(
-        ltr
-            ? FluentIcons.arrow_next_24_regular
-            : FluentIcons.arrow_previous_24_regular,
+        FluentIcons.arrow_next_24_regular,
         semanticLabel: S.of(context).stepForwardAll,
       ),
       onPressed: () async => _stepForwardAll(pop: false),
@@ -884,7 +872,6 @@ class _GamePageState extends State<GamePage>
     super.didChangeDependencies();
 
     screenPaddingH = _screenPaddingH;
-    ltr = Directionality.of(context) == TextDirection.ltr;
     _tip = S.of(context).welcome;
   }
 
