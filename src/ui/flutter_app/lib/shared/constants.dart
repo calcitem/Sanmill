@@ -18,6 +18,23 @@
 
 import 'dart:ui';
 
+class URL {
+  final String url;
+  final String urlZH;
+
+  const URL({
+    required this.url,
+    required this.urlZH,
+  });
+
+  URL fromSubpath(String path, [String? pathZH]) {
+    return URL(
+      url: "$url/$path",
+      urlZH: "$urlZH/${pathZH ?? path}",
+    );
+  }
+}
+
 class Constants {
   const Constants._();
   static const String appName = "Mill";
@@ -32,43 +49,24 @@ class Constants {
   static const String feedbackSubjectPrefix = "[$appName] $projectName ";
   static const String feedbackSubjectSuffix = " Feedback";
 
-  static const String githubURL = "https://github.com";
-  static const String giteeURL = "https://gitee.com";
-
   static const String fullRepoName = "$authorAccount/$projectName";
 
-  static const String githubRepoURL = "$githubURL/$fullRepoName";
-  static const String giteeRepoURL = "$giteeURL/$fullRepoName";
+  static const vcsURL = URL(
+    url: "https://github.com",
+    urlZH: "https://gitee.com",
+  );
 
-  static const String githubRepoWiKiURL = "$githubURL/$fullRepoName/wiki";
-  static const String giteeRepoWiKiURL = "$giteeURL/$fullRepoName/wikis";
-
-  static const String githubIssuesURL = "$githubRepoURL/issues";
-  static const String giteeIssuesURL = "$giteeRepoURL/issues";
-
-  static const String githubEulaURL = "$githubRepoWiKiURL/EULA";
-  static const String giteeEulaURL = "$giteeRepoWiKiURL/EULA_zh";
-
-  static const String githubSourceCodeURL = githubRepoURL;
-  static const String giteeSourceCodeURL = giteeRepoURL;
-
-  static const String githubThirdPartyNoticesURL =
-      "$githubRepoWiKiURL/third-party_notices";
-  static const String giteeThirdPartyNoticesURL =
-      "$giteeRepoWiKiURL/wikis/third-party_notices";
-
-  static const String githubPrivacyPolicyURL =
-      "$githubRepoWiKiURL/privacy_policy";
-  static const String giteePrivacyPolicyURL =
-      "$giteeRepoWiKiURL/privacy_policy_zh";
-
-  static const String githubHelpImproveTranslateURL =
-      "$githubRepoWiKiURL/Translation-and-Localization";
-  static const String giteeHelpImproveTranslateURL =
-      "$giteeRepoWiKiURL/Translation-and-Localization";
-
-  static const String githubThanksURL = "$githubRepoWiKiURL/thanks";
-  static const String giteeThanksURL = "$giteeRepoWiKiURL/thanks";
+  static final repoURL = vcsURL.fromSubpath(fullRepoName);
+  static final issuesURL = repoURL.fromSubpath("issues");
+  static final wikiURL = repoURL.fromSubpath("wiki", "wikis");
+  static final eulaURL = wikiURL.fromSubpath("EULA", "EULA_zh");
+  static final thirdPartyNoticesURL =
+      wikiURL.fromSubpath("third-party_notices");
+  static final privacyPolicyURL =
+      wikiURL.fromSubpath("privacy_policy", "privacy_policy_zh");
+  static final helpImproveTranslateURL =
+      wikiURL.fromSubpath("Translation-and-Localization");
+  static final thanksURL = wikiURL.fromSubpath("thanks");
 
   static final _windowWidth = window.physicalSize.width;
   static final _windowHeight = window.physicalSize.height;
