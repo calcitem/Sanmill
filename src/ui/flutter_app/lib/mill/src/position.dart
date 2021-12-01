@@ -53,8 +53,6 @@ class Position {
   List<PieceColor> board = List.filled(sqNumber, PieceColor.none);
   List<PieceColor> _grid = List.filled(7 * 7, PieceColor.none);
 
-  late GameRecorder recorder;
-
   // TODO: [Leptopoda] use null
   Map<PieceColor, int> pieceInHandCount = {
     PieceColor.white: -1,
@@ -111,8 +109,6 @@ class Position {
       board.add(piece);
     }
 
-    recorder = other.recorder;
-
     pieceInHandCount = other.pieceInHandCount;
     pieceOnBoardCount = other.pieceOnBoardCount;
     pieceToRemoveCount = other.pieceToRemoveCount;
@@ -168,7 +164,7 @@ class Position {
     setPosition(); // TODO
 
     // TODO
-    recorder = GameRecorder(lastPositionWithRemove: fen());
+    controller.recorder = GameRecorder(lastPositionWithRemove: fen());
   }
 
   /// Return a FEN representation of the position.
@@ -331,7 +327,7 @@ class Position {
 
     this.move = m;
 
-    recorder.moveIn(m, this); // TODO: Is Right?
+    controller.recorder.moveIn(m, this); // TODO: Is Right?
 
     return true;
   }
@@ -414,9 +410,6 @@ class Position {
     gameOverReason = GameOverReason.noReason;
 
     switch (phase) {
-      case Phase.placing:
-      case Phase.moving:
-        return false;
       case Phase.gameOver:
         reset();
         continue ready;
@@ -424,7 +417,9 @@ class Position {
       case Phase.ready:
         phase = Phase.placing;
         return true;
-      default:
+      case Phase.placing:
+      case Phase.moving:
+      case Phase.none:
         return false;
     }
   }
@@ -1051,14 +1046,13 @@ class Position {
 
 ///////////////////////////////////////////////////////////////////////////////
   Future<HistoryResponse?> gotoHistory(HistoryMove move, [int? index]) async {
-    final int moveIndex = _gotoHistoryIndex(move, index);
+    final int moveIndex = move.gotoHistoryIndex(index);
 
-    if (recorder.cur == moveIndex) {
+    if (controller.recorder.cur == moveIndex) {
       logger.i("[goto] cur is equal to moveIndex.");
       return HistoryResponse.equal;
     }
 
-    // TODO: [Leptopoda] use null
     if (moveIndex < -1 || recorder.moveCount <= moveIndex) {
       logger.i("[goto] moveIndex is out of range.");
       return HistoryResponse.outOfRange;
@@ -1069,7 +1063,7 @@ class Position {
     // Backup context
     final engineTypeBackup = controller.gameInstance.engineType;
     controller.gameInstance.setWhoIsAi(EngineType.humanVsHuman);
-    final historyBack = recorder.moves;
+    final historyBack = controller.recorder.moves;
     controller.gameInstance.newGame();
 
     HistoryResponse? error;
@@ -1083,15 +1077,14 @@ class Position {
 
     // Restore context
     controller.gameInstance.setWhoIsAi(engineTypeBackup);
-    recorder.moves = historyBack;
-    recorder.cur = moveIndex;
+    controller.recorder.moves = historyBack;
+    controller.recorder.cur = moveIndex;
 
     Audios.isTemporaryMute = false;
     await _gotoHistoryPlaySound(move);
     return error;
   }
 
-  // TODO: [Leptopoda] use null
   int _gotoHistoryIndex(HistoryMove move, [int? index]) {
     switch (move) {
       case HistoryMove.forwardAll:
@@ -1133,7 +1126,7 @@ class Position {
     final buffer = StringBuffer();
     int posAfterLastRemove = 0;
 
-    for (i = recorder.moveCount - 1; i >= 0; i--) {
+    for (i = controller.recorder.moveCount - 1; i >= 0; i--) {
       if (recorder.moves[i].move[0] == "-") break;
     }
 
@@ -1141,8 +1134,8 @@ class Position {
       posAfterLastRemove = i + 1;
     }
 
-    for (int i = posAfterLastRemove; i < recorder.moveCount; i++) {
-      buffer.write(" ${recorder.moves[i].move}");
+    for (int i = posAfterLastRemove; i < controller.recorder.moveCount; i++) {
+      buffer.write(" ${controller.recorder.moves[i].move}");
     }
 
     final String moves = buffer.toString();
@@ -1152,13 +1145,36 @@ class Position {
     return moves.isNotEmpty ? moves.substring(1) : null;
   }
 
-  String? get moveHistoryText => recorder.buildMoveHistoryText();
+  String? get moveHistoryText => controller.recorder.buildMoveHistoryText();
 
   PieceColor get side => _sideToMove;
 
-  Move? get lastMove => recorder.lastMove;
+  Move? get lastMove => controller.recorder.lastMove;
 
-  String? get lastPositionWithRemove => recorder.lastPositionWithRemove;
+  String? get lastPositionWithRemove =>
+      controller.recorder.lastPositionWithRemove;
 }
 
 enum HistoryMove { forwardAll, backAll, forward, backN, backOne }
+
+extension HistoryMoveExtension on HistoryMove {
+  int gotoHistoryIndex([int? index]) {
+    switch (this) {
+      case HistoryMove.forwardAll:
+        return controller.recorder.moveCount - 1;
+      case HistoryMove.backAll:
+        return -1;
+      case HistoryMove.forward:
+        return controller.recorder.cur + 1;
+      case HistoryMove.backN:
+        assert(index != null);
+        int _index = controller.recorder.cur - index!;
+        if (_index < -1) {
+          _index = -1;
+        }
+        return _index;
+      case HistoryMove.backOne:
+        return controller.recorder.cur - 1;
+    }
+  }
+}
