@@ -26,7 +26,7 @@ extension ListExtension<E> on List<E> {
   /// It will return null if the list [isEmpty].
   E? get lastF {
     if (isNotEmpty) {
-      return last;
+      return this[length - 1];
     }
   }
 }
