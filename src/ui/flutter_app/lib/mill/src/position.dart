@@ -288,7 +288,7 @@ class Position {
         }
         break;
       default:
-        assert(false);
+        throw Exception("No Move to do");
     }
 
     if (!ret) {

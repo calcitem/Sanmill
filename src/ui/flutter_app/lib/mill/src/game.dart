@@ -96,7 +96,7 @@ class Game {
         isAi[PieceColor.white] = isAi[PieceColor.black] = true;
         break;
       default:
-        assert(false);
+        throw Exception("No engine to set");
     }
 
     logger.i(

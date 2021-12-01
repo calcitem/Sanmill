@@ -177,9 +177,7 @@ class Audios {
       }
 
       // If the platform is Windows [_initialized] should be false thus this code shouldn't be executed
-      if (Platform.isWindows) {
-        assert(false);
-      }
+      assert(!Platform.isWindows);
 
       // TODO: [Leptopoda] isn't debug chain meant to catch errors? so why catching them in here and not in onError??
       try {

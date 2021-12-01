@@ -58,22 +58,7 @@ class _GameResultAlert extends StatelessWidget {
   Widget build(BuildContext context) {
     controller.position.result = _gameResult;
 
-    late final String dialogTitle;
-    switch (_gameResult) {
-      case GameResult.win:
-        dialogTitle = engineType == EngineType.humanVsAi
-            ? S.of(context).youWin
-            : S.of(context).gameOver;
-        break;
-      case GameResult.lose:
-        dialogTitle = S.of(context).gameOver;
-        break;
-      case GameResult.draw:
-        dialogTitle = S.of(context).isDraw;
-        break;
-      default:
-        assert(false);
-    }
+    final String dialogTitle = _gameResult.winString(context);
 
     final bool isTopLevel =
         LocalDatabaseService.preferences.skillLevel == 30; // TODO: 30

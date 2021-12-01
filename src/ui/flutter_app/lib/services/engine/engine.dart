@@ -32,7 +32,7 @@ enum EngineType {
 }
 
 extension EngineTypeExtensiont on EngineType {
-  IconData? get leftHeaderIcon {
+  IconData get leftHeaderIcon {
     switch (this) {
       case EngineType.humanVsAi:
         if (LocalDatabaseService.preferences.aiMovesFirst) {
@@ -52,11 +52,11 @@ extension EngineTypeExtensiont on EngineType {
       case EngineType.testViaLAN:
         return FluentIcons.wifi_1_24_filled;
       case EngineType.none:
-        assert(false);
+        throw Exception("No engine selected");
     }
   }
 
-  IconData? get rightHeaderIcon {
+  IconData get rightHeaderIcon {
     switch (this) {
       case EngineType.humanVsAi:
         if (LocalDatabaseService.preferences.aiMovesFirst) {
@@ -75,7 +75,7 @@ extension EngineTypeExtensiont on EngineType {
       case EngineType.testViaLAN:
         return FluentIcons.wifi_1_24_filled;
       case EngineType.none:
-        assert(false);
+        throw Exception("No engine selected");
     }
   }
 }

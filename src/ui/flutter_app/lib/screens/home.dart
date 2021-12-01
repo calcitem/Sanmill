@@ -51,7 +51,7 @@ enum _DrawerIndex {
 }
 
 extension _DrawerScreen on _DrawerIndex {
-  Widget? get screen {
+  Widget get screen {
     switch (this) {
       case _DrawerIndex.humanVsAi:
         return const GamePage(
@@ -75,7 +75,9 @@ extension _DrawerScreen on _DrawerIndex {
       case _DrawerIndex.personalization:
         return const PersonalizationSettingsPage();
       case _DrawerIndex.feedback:
-        break;
+        throw Exception(
+          "Feedback screen is not a widget and should be called separately",
+        );
       case _DrawerIndex.help:
         return const HelpScreen();
       case _DrawerIndex.about:
@@ -97,7 +99,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with TickerProviderStateMixin {
   final _controller = CustomDrawerController();
 
-  Widget _screenView = _DrawerIndex.humanVsAi.screen!;
+  Widget _screenView = _DrawerIndex.humanVsAi.screen;
   _DrawerIndex _drawerIndex = _DrawerIndex.humanVsAi;
 
   /// callback from drawer for replace screen
@@ -119,7 +121,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     setState(() {
       assert(index != _DrawerIndex.feedback);
       _drawerIndex = index;
-      _screenView = index.screen!;
+      _screenView = index.screen;
     });
   }
 

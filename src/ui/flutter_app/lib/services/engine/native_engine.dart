@@ -83,6 +83,9 @@ class NativeEngine extends Engine {
     }
 
     final response = await waitResponse(["bestmove", "nobestmove"]);
+    if (response == null) {
+      return EngineResponse(EngineResponseType.timeout);
+    }
 
     logger.v("[engine] response: $response");
 
@@ -102,7 +105,7 @@ class NativeEngine extends Engine {
     return EngineResponse(EngineResponseType.timeout);
   }
 
-  Future<String> waitResponse(
+  Future<String?> waitResponse(
     List<String> prefixes, {
     int sleep = 100,
     int times = 0,
@@ -123,7 +126,7 @@ class NativeEngine extends Engine {
       if (EnvironmentConfig.devMode && isActive) {
         throw "Exception: waitResponse timeout.";
       }
-      return "";
+      return null;
     }
 
     final response = await _read();
@@ -138,7 +141,7 @@ class NativeEngine extends Engine {
       }
     }
 
-    return Future<String>.delayed(
+    return Future<String?>.delayed(
       Duration(milliseconds: sleep),
       () => waitResponse(prefixes, times: times + 1),
     );
