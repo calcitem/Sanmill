@@ -18,10 +18,10 @@
 
 part of '../mill.dart';
 
-class Game {
+class _Game {
   static const String _tag = "[game]";
 
-  Game() {
+  _Game() {
     focusIndex = blurIndex = null;
   }
 

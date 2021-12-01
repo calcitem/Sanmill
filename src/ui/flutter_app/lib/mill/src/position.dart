@@ -27,24 +27,6 @@ class _StateInfo {
   int key = 0;
 }
 
-enum HistoryResponse { equal, outOfRange, error }
-
-extension HistoryResponseExtension on HistoryResponse {
-  String getString(BuildContext context) {
-    switch (this) {
-      case HistoryResponse.outOfRange:
-      case HistoryResponse.equal:
-        return S.of(context).atEnd;
-      case HistoryResponse.error:
-      default:
-        return S.of(context).movesAndRulesNotMatch;
-    }
-  }
-}
-
-enum SelectionResponse { r0, r1, r2, r3, r4 }
-enum RemoveResponse { r0, r1, r2, r3 }
-
 class Position {
   final List<int> posKeyHistory = [];
 
@@ -73,7 +55,7 @@ class Position {
   PieceColor them = PieceColor.black;
   PieceColor _winner = PieceColor.nobody;
 
-  GameOverReason gameOverReason = GameOverReason.noReason;
+  GameOverReason gameOverReason = GameOverReason.none;
 
   Phase phase = Phase.none;
   Act action = Act.none;
@@ -164,7 +146,7 @@ class Position {
     setPosition(); // TODO
 
     // TODO
-    controller.recorder = GameRecorder(lastPositionWithRemove: fen());
+    controller.recorder = _GameRecorder(lastPositionWithRemove: fen());
   }
 
   /// Return a FEN representation of the position.
@@ -219,7 +201,7 @@ class Position {
       return false;
     }
 
-    if (move.type == MoveType.remove) {
+    if (move.type == _MoveType.remove) {
       if (movedPiece(move.to) != us) {
         logger.v("[position] Move $move.to to != us");
         return false;
@@ -253,18 +235,18 @@ class Position {
       // TODO: WAR to judge rule50
       if (LocalDatabaseService.rules.nMoveRule > 0 &&
           posKeyHistory.length >= LocalDatabaseService.rules.nMoveRule - 1) {
-        gameOverReason = GameOverReason.drawReasonRule50;
+        gameOverReason = GameOverReason.drawRule50;
       } else if (LocalDatabaseService.rules.endgameNMoveRule <
               LocalDatabaseService.rules.nMoveRule &&
           isThreeEndgame &&
           posKeyHistory.length >=
               LocalDatabaseService.rules.endgameNMoveRule - 1) {
-        gameOverReason = GameOverReason.drawReasonEndgameRule50;
+        gameOverReason = GameOverReason.drawEndgameRule50;
       } else if (LocalDatabaseService.rules.threefoldRepetitionRule) {
         gameOverReason =
-            GameOverReason.drawReasonThreefoldRepetition; // TODO: Sure?
+            GameOverReason.drawThreefoldRepetition; // TODO: Sure?
       } else {
-        gameOverReason = GameOverReason.drawReasonBoardIsFull; // TODO: Sure?
+        gameOverReason = GameOverReason.drawBoardIsFull; // TODO: Sure?
       }
 
       return true;
@@ -277,20 +259,20 @@ class Position {
     final Move m = Move(move);
 
     switch (m.type) {
-      case MoveType.remove:
+      case _MoveType.remove:
         ret = await removePiece(m.to) == RemoveResponse.r0;
         if (ret) {
           // Reset rule 50 counter
           st.rule50 = 0;
         }
         break;
-      case MoveType.move:
+      case _MoveType.move:
         ret = await movePiece(m.from, m.to);
         if (ret) {
           ++st.rule50;
         }
         break;
-      case MoveType.place:
+      case _MoveType.place:
         ret = await putPiece(m.to);
         if (ret) {
           // Reset rule 50 counter
@@ -317,7 +299,7 @@ class Position {
             hasGameCycle()) {
           setGameOver(
             PieceColor.draw,
-            GameOverReason.drawReasonThreefoldRepetition,
+            GameOverReason.drawThreefoldRepetition,
           );
         }
       }
@@ -342,7 +324,7 @@ class Position {
     final int size = ss.length;
 
     for (int i = size - 1; i >= 0; i--) {
-      if (ss[i].move.type == MoveType.remove) {
+      if (ss[i].move.type == _MoveType.remove) {
         break;
       }
       if (st.key == ss[i].st.key) {
@@ -383,7 +365,7 @@ class Position {
     action = Act.place;
 
     _winner = PieceColor.nobody;
-    gameOverReason = GameOverReason.noReason;
+    gameOverReason = GameOverReason.none;
 
     clearBoard();
 
@@ -407,7 +389,7 @@ class Position {
   }
 
   bool start() {
-    gameOverReason = GameOverReason.noReason;
+    gameOverReason = GameOverReason.none;
 
     switch (phase) {
       case Phase.gameOver:
@@ -626,7 +608,7 @@ class Position {
 
     if (pieceOnBoardCount[them]! + pieceInHandCount[them]! <
         LocalDatabaseService.rules.piecesAtLeastCount) {
-      setGameOver(sideToMove, GameOverReason.loseReasonlessThanThree);
+      setGameOver(sideToMove, GameOverReason.loseLessThanThree);
       return RemoveResponse.r0;
     }
 
@@ -695,7 +677,7 @@ class Position {
       return false;
     }
 
-    setGameOver(loser.opponent, GameOverReason.loseReasonResign);
+    setGameOver(loser.opponent, GameOverReason.loseResign);
 
     return true;
   }
@@ -733,7 +715,7 @@ class Position {
 
     if (LocalDatabaseService.rules.nMoveRule > 0 &&
         posKeyHistory.length >= LocalDatabaseService.rules.nMoveRule) {
-      setGameOver(PieceColor.draw, GameOverReason.drawReasonRule50);
+      setGameOver(PieceColor.draw, GameOverReason.drawRule50);
       return true;
     }
 
@@ -741,7 +723,7 @@ class Position {
             LocalDatabaseService.rules.nMoveRule &&
         isThreeEndgame &&
         posKeyHistory.length >= LocalDatabaseService.rules.endgameNMoveRule) {
-      setGameOver(PieceColor.draw, GameOverReason.drawReasonEndgameRule50);
+      setGameOver(PieceColor.draw, GameOverReason.drawEndgameRule50);
       return true;
     }
 
@@ -749,9 +731,9 @@ class Position {
             pieceOnBoardCount[PieceColor.black]! >=
         rankNumber * fileNumber) {
       if (LocalDatabaseService.rules.isWhiteLoseButNotDrawWhenBoardFull) {
-        setGameOver(PieceColor.black, GameOverReason.loseReasonBoardIsFull);
+        setGameOver(PieceColor.black, GameOverReason.loseBoardIsFull);
       } else {
-        setGameOver(PieceColor.draw, GameOverReason.drawReasonBoardIsFull);
+        setGameOver(PieceColor.draw, GameOverReason.drawBoardIsFull);
       }
 
       return true;
@@ -761,7 +743,7 @@ class Position {
       if (LocalDatabaseService.rules.isLoseButNotChangeSideWhenNoWay) {
         setGameOver(
           sideToMove.opponent,
-          GameOverReason.loseReasonNoWay,
+          GameOverReason.loseNoWay,
         );
         return true;
       } else {
@@ -798,7 +780,7 @@ class Position {
 
   void changeSideToMove() {
     setSideToMove(_sideToMove.opponent);
-    st.key ^= Zobrist.side;
+    st.key ^= _Zobrist.side;
     logger.v("[position] $_sideToMove to move.");
 
     /*
@@ -816,7 +798,7 @@ class Position {
   int updateKey(int s) {
     final PieceColor pieceType = colorOn(s);
 
-    return st.key ^= Zobrist.psq[pieceType.index][s];
+    return st.key ^= _Zobrist.psq[pieceType.index][s];
   }
 
   int revertKey(int s) {
@@ -824,9 +806,9 @@ class Position {
   }
 
   int updateKeyMisc() {
-    st.key = st.key << Zobrist.keyMiscBit >> Zobrist.keyMiscBit;
+    st.key = st.key << _Zobrist.keyMiscBit >> _Zobrist.keyMiscBit;
 
-    st.key |= pieceToRemoveCount << (32 - Zobrist.keyMiscBit);
+    st.key |= pieceToRemoveCount << (32 - _Zobrist.keyMiscBit);
 
     return st.key;
   }
@@ -991,7 +973,7 @@ class Position {
     st.rule50 = 0;
     st.pliesFromNull = 0;
 
-    gameOverReason = GameOverReason.noReason;
+    gameOverReason = GameOverReason.none;
     phase = Phase.placing;
     setSideToMove(PieceColor.white);
     action = Act.place;
@@ -1009,8 +991,8 @@ class Position {
     pieceToRemoveCount = 0;
 
     _winner = PieceColor.nobody;
-    adjacentSquares = Mills.adjacentSquaresInit;
-    millTable = Mills.millTableInit;
+    adjacentSquares = _Mills.adjacentSquaresInit;
+    millTable = _Mills.millTableInit;
     currentSquare = 0;
 
     return -1;
@@ -1045,17 +1027,17 @@ class Position {
   }
 
 ///////////////////////////////////////////////////////////////////////////////
-  Future<HistoryResponse?> gotoHistory(HistoryMove move, [int? index]) async {
+  Future<_HistoryResponse?> gotoHistory(HistoryMove move, [int? index]) async {
     final int moveIndex = move.gotoHistoryIndex(index);
 
     if (controller.recorder.cur == moveIndex) {
       logger.i("[goto] cur is equal to moveIndex.");
-      return HistoryResponse.equal;
+      return _HistoryResponse.equal;
     }
 
     if (moveIndex < -1 || recorder.moveCount <= moveIndex) {
       logger.i("[goto] moveIndex is out of range.");
-      return HistoryResponse.outOfRange;
+      return _HistoryResponse.outOfRange;
     }
 
     Audios.isTemporaryMute = true;
@@ -1066,11 +1048,11 @@ class Position {
     final historyBack = controller.recorder.moves;
     controller.gameInstance.newGame();
 
-    HistoryResponse? error;
+    _HistoryResponse? error;
     // TODO: [Leptopoda] throw errors instead of returning bools
     for (var i = 0; i <= moveIndex; i++) {
       if (!(await controller.gameInstance.doMove(historyBack[i]))) {
-        error = HistoryResponse.error;
+        error = _HistoryResponse.error;
         break;
       }
     }
@@ -1117,43 +1099,4 @@ class Position {
 
   String? get lastPositionWithRemove =>
       controller.recorder.lastPositionWithRemove;
-}
-
-enum HistoryMove { forwardAll, backAll, forward, backN, backOne }
-
-extension HistoryMoveExtension on HistoryMove {
-  int gotoHistoryIndex([int? index]) {
-    switch (this) {
-      case HistoryMove.forwardAll:
-        return controller.recorder.moveCount - 1;
-      case HistoryMove.backAll:
-        return -1;
-      case HistoryMove.forward:
-        return controller.recorder.cur + 1;
-      case HistoryMove.backN:
-        assert(index != null);
-        int _index = controller.recorder.cur - index!;
-        if (_index < -1) {
-          _index = -1;
-        }
-        return _index;
-      case HistoryMove.backOne:
-        return controller.recorder.cur - 1;
-    }
-  }
-
-  Future<void> gotoHistoryPlaySound() async {
-    if (!LocalDatabaseService.preferences.keepMuteWhenTakingBack) {
-      switch (this) {
-        case HistoryMove.forwardAll:
-        case HistoryMove.forward:
-          await Audios.playTone(Sound.place);
-          break;
-        case HistoryMove.backAll:
-        case HistoryMove.backN:
-        case HistoryMove.backOne:
-          await Audios.playTone(Sound.remove);
-      }
-    }
-  }
 }

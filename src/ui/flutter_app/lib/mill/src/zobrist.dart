@@ -18,8 +18,8 @@
 
 part of '../mill.dart';
 
-class Zobrist {
-  const Zobrist._();
+class _Zobrist {
+  const _Zobrist._();
 
   static const int keyMiscBit = 2;
   static const List<List<int>> psq = [
