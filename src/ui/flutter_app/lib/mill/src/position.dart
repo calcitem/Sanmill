@@ -243,8 +243,7 @@ class Position {
               LocalDatabaseService.rules.endgameNMoveRule - 1) {
         gameOverReason = GameOverReason.drawEndgameRule50;
       } else if (LocalDatabaseService.rules.threefoldRepetitionRule) {
-        gameOverReason =
-            GameOverReason.drawThreefoldRepetition; // TODO: Sure?
+        gameOverReason = GameOverReason.drawThreefoldRepetition; // TODO: Sure?
       } else {
         gameOverReason = GameOverReason.drawBoardIsFull; // TODO: Sure?
       }
@@ -278,9 +277,6 @@ class Position {
           // Reset rule 50 counter
           st.rule50 = 0;
         }
-        break;
-      default:
-        throw Exception("No Move to do");
     }
 
     if (!ret) {

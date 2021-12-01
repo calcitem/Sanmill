@@ -20,7 +20,7 @@ part of '../mill.dart';
 
 int abs(int value) => value > 0 ? value : -value;
 
-enum _MoveType { place, move, remove, none }
+enum _MoveType { place, move, remove }
 
 enum PieceColor { none, white, black, ban, nobody, draw }
 
