@@ -22,14 +22,12 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/mill/mill.dart';
 import 'package:sanmill/models/preferences.dart';
 import 'package:sanmill/screens/game_settings/game_settings_page.dart';
 import 'package:sanmill/services/audios.dart';
-import 'package:sanmill/services/engine/engine.dart';
-import 'package:sanmill/services/engine/native_engine.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
+import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
@@ -41,9 +39,9 @@ import 'package:sanmill/shared/snackbar.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 part 'package:sanmill/screens/game_page/board.dart';
-part 'package:sanmill/screens/game_page/result_alert.dart';
 part 'package:sanmill/screens/game_page/info_dialog.dart';
 part 'package:sanmill/screens/game_page/move_list_dialog.dart';
+part 'package:sanmill/screens/game_page/result_alert.dart';
 
 class GamePage extends StatefulWidget {
   final EngineType engineType;
