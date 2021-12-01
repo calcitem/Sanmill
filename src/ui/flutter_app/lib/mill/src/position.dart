@@ -28,6 +28,20 @@ class _StateInfo {
 }
 
 enum HistoryResponse { equal, outOfRange, error }
+
+extension HistoryResponseExtension on HistoryResponse {
+  String getString(BuildContext context) {
+    switch (this) {
+      case HistoryResponse.outOfRange:
+      case HistoryResponse.equal:
+        return S.of(context).atEnd;
+      case HistoryResponse.error:
+      default:
+        return S.of(context).movesAndRulesNotMatch;
+    }
+  }
+}
+
 enum SelectionResponse { r0, r1, r2, r3, r4 }
 enum RemoveResponse { r0, r1, r2, r3 }
 
