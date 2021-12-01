@@ -18,8 +18,8 @@
 
 part of '../mill.dart';
 
-class Mills {
-  const Mills._();
+class _Mills {
+  const _Mills._();
 
   static List<List<int>> get adjacentSquaresInit {
     return LocalDatabaseService.rules.hasDiagonalLines

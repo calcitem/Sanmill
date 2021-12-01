@@ -24,18 +24,7 @@ import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:soundpool/soundpool.dart';
 
-enum Sound {
-  draw,
-  fly,
-  go,
-  illegal,
-  lose,
-  mill,
-  place,
-  remove,
-  select,
-  win,
-}
+enum Sound { draw, fly, go, illegal, lose, mill, place, remove, select, win }
 
 class Audios {
   const Audios._();

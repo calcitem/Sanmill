@@ -22,13 +22,13 @@ part of '../mill.dart';
 MillController controller = MillController();
 
 class MillController {
-  late final Game gameInstance;
+  late final _Game gameInstance;
   late final Position position;
-  late GameRecorder recorder;
+  late _GameRecorder recorder;
 
   MillController() {
-    gameInstance = Game();
+    gameInstance = _Game();
     position = Position();
-    recorder = GameRecorder(lastPositionWithRemove: position.fen());
+    recorder = _GameRecorder(lastPositionWithRemove: position.fen());
   }
 }

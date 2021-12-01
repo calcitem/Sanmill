@@ -315,7 +315,7 @@ class _GamePageState extends State<GamePage>
                 position.hasGameCycle()) {
               position.setGameOver(
                 PieceColor.draw,
-                GameOverReason.drawReasonThreefoldRepetition,
+                GameOverReason.drawThreefoldRepetition,
               );
             }
           }

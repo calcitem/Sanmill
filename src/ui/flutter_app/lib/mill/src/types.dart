@@ -20,113 +20,9 @@ part of '../mill.dart';
 
 int abs(int value) => value > 0 ? value : -value;
 
-class Move {
-  static const _invalidMove = -1;
+enum _MoveType { place, move, remove, none }
 
-  // Square
-  int from = 0;
-  int to = 0;
-
-  // file & rank
-  int _fromFile = 0;
-  int _fromRank = 0;
-  int _toFile = 0;
-  int _toRank = 0;
-
-  // 'move' is the UCI engine's move-string
-  final String move;
-
-  // "notation" is Standard Notation
-  late final String notation;
-
-  late final MoveType type;
-
-  // TODO: [Leptopoda] attributes should probably be made getters
-  Move(this.move) {
-    if (!_isLegal) {
-      throw "Error: Invalid Move: $move";
-    }
-
-    if (move[0] == "-" && move.length == "-(1,2)".length) {
-      type = MoveType.remove;
-      from = _fromFile = _fromRank = _invalidMove;
-      _toFile = int.parse(move[2]);
-      _toRank = int.parse(move[4]);
-      to = makeSquare(_toFile, _toRank);
-      notation = "x${_squareToWmdNotation[to]}";
-      //captured = PieceColor.none;
-    } else if (move.length == "(1,2)->(3,4)".length) {
-      type = MoveType.move;
-      _fromFile = int.parse(move[1]);
-      _fromRank = int.parse(move[3]);
-      from = makeSquare(_fromFile, _fromRank);
-      _toFile = int.parse(move[8]);
-      _toRank = int.parse(move[10]);
-      to = makeSquare(_toFile, _toRank);
-      notation = "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}";
-    } else if (move.length == "(1,2)".length) {
-      type = MoveType.place;
-      // TODO: [Leptopoda] remove stringy thing
-      from = _fromFile = _fromRank = _invalidMove;
-      _toFile = int.parse(move[1]);
-      _toRank = int.parse(move[3]);
-      to = makeSquare(_toFile, _toRank);
-      notation = "${_squareToWmdNotation[to]}";
-    } else if (move == "draw") {
-      assert(false, "not yet implemented"); // TODO
-      logger.v("[TODO] Computer request draw");
-    } else {
-      assert(false);
-    }
-  }
-
-  bool get _isLegal {
-    if (move == "draw") {
-      return true; // TODO
-    }
-
-    if (move.length > "(3,1)->(2,1)".length) return false;
-
-    const String range = "0123456789(,)->";
-
-    if (!(move[0] == "(" || move[0] == "-")) {
-      return false;
-    }
-
-    if (move[move.length - 1] != ")") {
-      return false;
-    }
-
-    for (int i = 0; i < move.length; i++) {
-      if (!range.contains(move[i])) return false;
-    }
-
-    if (move.length == "(3,1)->(2,1)".length) {
-      if (move.substring(0, 4) == move.substring(7, 11)) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  @override
-  int get hashCode => move.hashCode;
-
-  @override
-  bool operator ==(Object other) => other is Move && other.move == move;
-}
-
-enum MoveType { place, move, remove, none }
-
-enum PieceColor {
-  none,
-  white,
-  black,
-  ban,
-  nobody,
-  draw,
-}
+enum PieceColor { none, white, black, ban, nobody, draw }
 
 extension PieceColorExtension on PieceColor {
   @Deprecated("this is the old representation and not needed anymore")
@@ -313,16 +209,16 @@ extension ActExtension on Act {
 }
 
 enum GameOverReason {
-  noReason,
-  loseReasonlessThanThree,
-  loseReasonNoWay,
-  loseReasonBoardIsFull,
-  loseReasonResign,
-  loseReasonTimeOver,
-  drawReasonThreefoldRepetition,
-  drawReasonRule50,
-  drawReasonEndgameRule50,
-  drawReasonBoardIsFull
+  none,
+  loseLessThanThree,
+  loseNoWay,
+  loseBoardIsFull,
+  loseResign,
+  loseTimeOver,
+  drawThreefoldRepetition,
+  drawRule50,
+  drawEndgameRule50,
+  drawBoardIsFull
 }
 
 extension GameOverReasonExtension on GameOverReason {
@@ -330,28 +226,200 @@ extension GameOverReasonExtension on GameOverReason {
     final String loserStr = winner.opponent.playerName(context);
 
     switch (this) {
-      case GameOverReason.loseReasonlessThanThree:
+      case GameOverReason.loseLessThanThree:
         return S.of(context).loseReasonlessThanThree(loserStr);
-      case GameOverReason.loseReasonResign:
+      case GameOverReason.loseResign:
         return S.of(context).loseReasonResign(loserStr);
-      case GameOverReason.loseReasonNoWay:
+      case GameOverReason.loseNoWay:
         return S.of(context).loseReasonNoWay(loserStr);
-      case GameOverReason.loseReasonBoardIsFull:
+      case GameOverReason.loseBoardIsFull:
         return S.of(context).loseReasonBoardIsFull(loserStr);
-      case GameOverReason.loseReasonTimeOver:
+      case GameOverReason.loseTimeOver:
         return S.of(context).loseReasonTimeOver(loserStr);
-      case GameOverReason.drawReasonRule50:
+      case GameOverReason.drawRule50:
         return S.of(context).drawReasonRule50;
-      case GameOverReason.drawReasonEndgameRule50:
+      case GameOverReason.drawEndgameRule50:
         return S.of(context).drawReasonEndgameRule50;
-      case GameOverReason.drawReasonBoardIsFull:
+      case GameOverReason.drawBoardIsFull:
         return S.of(context).drawReasonBoardIsFull;
-      case GameOverReason.drawReasonThreefoldRepetition:
+      case GameOverReason.drawThreefoldRepetition:
         return S.of(context).drawReasonThreefoldRepetition;
-      case GameOverReason.noReason:
+      case GameOverReason.none:
         return S.of(context).gameOverUnknownReason;
     }
   }
+}
+
+enum GameResult { pending, win, lose, draw, none }
+
+extension GameResultExtension on GameResult {
+  String winString(BuildContext context) {
+    switch (this) {
+      case GameResult.win:
+        return controller.gameInstance.engineType == EngineType.humanVsAi
+            ? S.of(context).youWin
+            : S.of(context).gameOver;
+      case GameResult.lose:
+        return S.of(context).gameOver;
+      case GameResult.draw:
+        return S.of(context).isDraw;
+      default:
+        throw Exception("No result specified");
+    }
+  }
+}
+
+enum _HistoryResponse { equal, outOfRange, error }
+
+extension HistoryResponseExtension on _HistoryResponse {
+  String getString(BuildContext context) {
+    switch (this) {
+      case _HistoryResponse.outOfRange:
+      case _HistoryResponse.equal:
+        return S.of(context).atEnd;
+      case _HistoryResponse.error:
+      default:
+        return S.of(context).movesAndRulesNotMatch;
+    }
+  }
+}
+
+enum SelectionResponse { r0, r1, r2, r3, r4 }
+enum RemoveResponse { r0, r1, r2, r3 }
+
+enum HistoryMove { forwardAll, backAll, forward, backN, backOne }
+
+extension HistoryMoveExtension on HistoryMove {
+  int gotoHistoryIndex([int? index]) {
+    switch (this) {
+      case HistoryMove.forwardAll:
+        return controller.recorder.moveCount - 1;
+      case HistoryMove.backAll:
+        return -1;
+      case HistoryMove.forward:
+        return controller.recorder.cur + 1;
+      case HistoryMove.backN:
+        assert(index != null);
+        int _index = controller.recorder.cur - index!;
+        if (_index < -1) {
+          _index = -1;
+        }
+        return _index;
+      case HistoryMove.backOne:
+        return controller.recorder.cur - 1;
+    }
+  }
+
+  Future<void> gotoHistoryPlaySound() async {
+    if (!LocalDatabaseService.preferences.keepMuteWhenTakingBack) {
+      switch (this) {
+        case HistoryMove.forwardAll:
+        case HistoryMove.forward:
+          return Audios.playTone(Sound.place);
+        case HistoryMove.backAll:
+        case HistoryMove.backN:
+        case HistoryMove.backOne:
+          return Audios.playTone(Sound.remove);
+      }
+    }
+  }
+}
+
+class Move {
+  static const _invalidMove = -1;
+
+  // Square
+  int from = 0;
+  int to = 0;
+
+  // file & rank
+  int _fromFile = 0;
+  int _fromRank = 0;
+  int _toFile = 0;
+  int _toRank = 0;
+
+  // 'move' is the UCI engine's move-string
+  final String move;
+
+  // "notation" is Standard Notation
+  late final String notation;
+
+  late final _MoveType type;
+
+  // TODO: [Leptopoda] attributes should probably be made getters
+  Move(this.move) {
+    if (!_isLegal) {
+      throw "Error: Invalid Move: $move";
+    }
+
+    if (move[0] == "-" && move.length == "-(1,2)".length) {
+      type = _MoveType.remove;
+      from = _fromFile = _fromRank = _invalidMove;
+      _toFile = int.parse(move[2]);
+      _toRank = int.parse(move[4]);
+      to = makeSquare(_toFile, _toRank);
+      notation = "x${_squareToWmdNotation[to]}";
+      //captured = PieceColor.none;
+    } else if (move.length == "(1,2)->(3,4)".length) {
+      type = _MoveType.move;
+      _fromFile = int.parse(move[1]);
+      _fromRank = int.parse(move[3]);
+      from = makeSquare(_fromFile, _fromRank);
+      _toFile = int.parse(move[8]);
+      _toRank = int.parse(move[10]);
+      to = makeSquare(_toFile, _toRank);
+      notation = "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}";
+    } else if (move.length == "(1,2)".length) {
+      type = _MoveType.place;
+      from = _fromFile = _fromRank = _invalidMove;
+      _toFile = int.parse(move[1]);
+      _toRank = int.parse(move[3]);
+      to = makeSquare(_toFile, _toRank);
+      // TODO: [Leptopoda] remove stringy thing
+      notation = "${_squareToWmdNotation[to]}";
+    } else if (move == "draw") {
+      assert(false, "not yet implemented"); // TODO
+      logger.v("[TODO] Computer request draw");
+    } else {
+      assert(false);
+    }
+  }
+
+  bool get _isLegal {
+    if (move == "draw") {
+      return true; // TODO
+    }
+
+    if (move.length > "(3,1)->(2,1)".length) return false;
+
+    const String range = "0123456789(,)->";
+
+    if (!(move[0] == "(" || move[0] == "-")) {
+      return false;
+    }
+
+    if (move[move.length - 1] != ")") {
+      return false;
+    }
+
+    for (int i = 0; i < move.length; i++) {
+      if (!range.contains(move[i])) return false;
+    }
+
+    if (move.length == "(3,1)->(2,1)".length) {
+      if (move.substring(0, 4) == move.substring(7, 11)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  @override
+  int get hashCode => move.hashCode;
+
+  @override
+  bool operator ==(Object other) => other is Move && other.move == move;
 }
 
 const sqBegin = 8;
@@ -526,22 +594,3 @@ Map<String, String> playOkNotationToMove = {
   "10": "(3,7)",
   "1": "(3,8)",
 };
-
-enum GameResult { pending, win, lose, draw, none }
-
-extension GameResultExtension on GameResult {
-  String winString(BuildContext context) {
-    switch (this) {
-      case GameResult.win:
-        return controller.gameInstance.engineType == EngineType.humanVsAi
-            ? S.of(context).youWin
-            : S.of(context).gameOver;
-      case GameResult.lose:
-        return S.of(context).gameOver;
-      case GameResult.draw:
-        return S.of(context).isDraw;
-      default:
-        throw Exception("No result specified");
-    }
-  }
-}
