@@ -24,14 +24,11 @@ part of '../mill.dart';
 class _GameRecorder {
   // TODO: [Leptopoda] use null
   int cur = -1;
-  String? lastPositionWithRemove;
+  String lastPositionWithRemove = controller.position.fen();
   List<Move> moves = <Move>[];
   static const _tag = "[GameRecorder]";
 
-  _GameRecorder({
-    this.cur = -1,
-    this.lastPositionWithRemove,
-  });
+  _GameRecorder({this.cur = -1});
 
   String? _wmdNotationToMoveString(String wmd) {
     if (wmd.length == 3 && wmd[0] == "x") {
