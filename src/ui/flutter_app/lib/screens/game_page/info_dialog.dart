@@ -52,9 +52,9 @@ class _InfoDialog extends StatelessWidget {
       buffer.writeln();
     }
 
+    final String? n1 = controller.recorder.lastMove?.notation;
     // Last Move information
-    if (pos.recorder.lastMove?.notation != null) {
-      final String n1 = pos.recorder.lastMove!.notation;
+    if (n1 != null) {
       // $them is only shown with the screen reader. It is convenient for
       // the disabled to recognize whether the opponent has finished the moving.
       if (LocalDatabaseService.preferences.screenReaderSupport) {
@@ -65,7 +65,7 @@ class _InfoDialog extends StatelessWidget {
 
       if (n1.startsWith("x")) {
         buffer.writeln(
-          pos.recorder.moves[pos.recorder.moveCount - 2].notation,
+          controller.recorder.moves[controller.recorder.moveCount - 2].notation,
         );
       }
       buffer.writePeriod(n1);

@@ -325,8 +325,8 @@ class _GamePageState extends State<GamePage>
 
         //position.move = m;
         final Move m = position.record!;
-        position.recorder.prune();
-        position.recorder.moveIn(m, position);
+        controller.recorder.prune();
+        controller.recorder.moveIn(m, position);
 
         setState(() {});
 
@@ -360,7 +360,7 @@ class _GamePageState extends State<GamePage>
         ScaffoldMessenger.of(context).clearSnackBars();
         return showSnackBar(context, S.of(context).notAIsTurn);
       }
-      if (!controller.position.recorder.isClean()) {
+      if (!controller.recorder.isClean()) {
         logger.i(
           "[engineToGo] History is not clean. Cannot get search result now.",
         );
@@ -381,7 +381,7 @@ class _GamePageState extends State<GamePage>
         if (mounted) {
           _showTip(S.of(context).thinking);
 
-          final String? n = controller.position.recorder.lastMove?.notation;
+          final String? n = controller.recorder.lastMove?.notation;
 
           if (LocalDatabaseService.preferences.screenReaderSupport &&
               controller.position.action != Act.remove &&
@@ -457,7 +457,7 @@ class _GamePageState extends State<GamePage>
     if (data?.text == null) return;
 
     await _takeBackAll(pop: false);
-    final importFailedStr = controller.position.recorder.import(data!.text!);
+    final importFailedStr = controller.recorder.import(data!.text!);
 
     if (importFailedStr != null) {
       return _showTip(
@@ -636,10 +636,8 @@ class _GamePageState extends State<GamePage>
     _isGoingToHistory = false;
 
     if (mounted) {
-      final pos = controller.position;
-
       late final String text;
-      final lastEffectiveMove = pos.recorder.lastEffectiveMove;
+      final lastEffectiveMove = controller.recorder.lastEffectiveMove;
       if (lastEffectiveMove?.notation != null) {
         text = S.of(context).lastMove(lastEffectiveMove!.notation);
       } else {
