@@ -18,7 +18,6 @@
 
 import 'dart:io';
 
-import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -26,7 +25,6 @@ import 'package:sanmill/generated/flutter_version.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/license_page.dart';
 import 'package:sanmill/services/environment_config.dart';
-import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
@@ -36,8 +34,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({Key? key}) : super(key: key);
-
-  static const String _tag = "[about] ";
 
   String? get mode {
     if (kDebugMode) {
@@ -84,11 +80,11 @@ class AboutPage extends StatelessWidget {
       ),
       SettingsListTile(
         titleString: S.of(context).feedback,
-        onTap: _launchFeedback,
+        onTap: () => _launchURL(context, Constants.issuesURL),
       ),
       SettingsListTile(
         titleString: S.of(context).eula,
-        onTap: _launchEULA,
+        onTap: () => _launchURL(context, Constants.eulaURL),
       ),
       SettingsListTile(
         titleString: S.of(context).license,
@@ -103,11 +99,11 @@ class AboutPage extends StatelessWidget {
       ),
       SettingsListTile(
         titleString: S.of(context).sourceCode,
-        onTap: _launchSourceCode,
+        onTap: () => _launchURL(context, Constants.repoURL),
       ),
       SettingsListTile(
         titleString: S.of(context).privacyPolicy,
-        onTap: _launchPrivacyPolicy,
+        onTap: () => _launchURL(context, Constants.privacyPolicyURL),
       ),
       SettingsListTile(
         titleString: S.of(context).ossLicenses,
@@ -118,11 +114,11 @@ class AboutPage extends StatelessWidget {
       ),
       SettingsListTile(
         titleString: S.of(context).helpImproveTranslate,
-        onTap: _launchHelpImproveTranslate,
+        onTap: () => _launchURL(context, Constants.helpImproveTranslateURL),
       ),
       SettingsListTile(
         titleString: S.of(context).thanks,
-        onTap: _launchThanks,
+        onTap: () => _launchURL(context, Constants.thanksURL),
       ),
     ];
 
@@ -140,97 +136,13 @@ class AboutPage extends StatelessWidget {
     );
   }
 
-  Future<void> _launchURL(String url) async {
+  Future<void> _launchURL(BuildContext context, URL url) async {
     if (!EnvironmentConfig.monkeyTest) {
-      await launch(url);
-    }
-  }
-
-  Future<void> _launchFeedback() async {
-    String? locale = "en_US";
-
-    locale = await Devicelocale.currentLocale;
-
-    logger.v("$_tag local = $locale");
-    if (locale != null && locale.startsWith("zh_")) {
-      _launchURL(Constants.giteeIssuesURL);
-    } else {
-      _launchURL(Constants.githubIssuesURL);
-    }
-  }
-
-  Future<void> _launchEULA() async {
-    String? locale = "en_US";
-
-    if (!Platform.isWindows) {
-      locale = await Devicelocale.currentLocale;
-    }
-
-    logger.v("$_tag local = $locale");
-    if (locale != null && locale.startsWith("zh_")) {
-      _launchURL(Constants.giteeEulaURL);
-    } else {
-      _launchURL(Constants.githubEulaURL);
-    }
-  }
-
-  Future<void> _launchSourceCode() async {
-    String? locale = "en_US";
-
-    if (!Platform.isWindows) {
-      locale = await Devicelocale.currentLocale;
-    }
-
-    logger.v("$_tag local = $locale");
-    if (locale != null && locale.startsWith("zh_")) {
-      _launchURL(Constants.giteeSourceCodeURL);
-    } else {
-      _launchURL(Constants.githubSourceCodeURL);
-    }
-  }
-
-  Future<void> _launchPrivacyPolicy() async {
-    String? locale = "en_US";
-
-    if (!Platform.isWindows) {
-      locale = await Devicelocale.currentLocale;
-    }
-
-    logger.v("$_tag local = $locale");
-    if (locale != null && locale.startsWith("zh_")) {
-      _launchURL(Constants.giteePrivacyPolicyURL);
-    } else {
-      _launchURL(Constants.githubPrivacyPolicyURL);
-    }
-  }
-
-  Future<void> _launchHelpImproveTranslate() async {
-    String? locale = "en_US";
-
-    if (!Platform.isWindows) {
-      locale = await Devicelocale.currentLocale;
-    }
-
-    logger.v("$_tag local = $locale");
-    if (locale != null && locale.startsWith("zh_")) {
-      _launchURL(Constants.giteeHelpImproveTranslateURL);
-    } else {
-      _launchURL(Constants.githubHelpImproveTranslateURL);
-    }
-  }
-
-  Future<void> _launchThanks() async {
-    String? locale = "en_US";
-
-    if (!Platform.isWindows) {
-      locale = await Devicelocale.currentLocale;
-    }
-
-    logger.v("$_tag local = $locale");
-    if (locale != null && locale.startsWith("zh_")) {
-      _launchURL(Constants.giteeThanksURL);
-    } else {
-      _launchURL(Constants.githubThanksURL);
+      if (Localizations.localeOf(context).languageCode.startsWith("zh_")) {
+        await launch(url.url);
+      } else {
+        await launch(url.urlZH);
+      }
     }
   }
 }

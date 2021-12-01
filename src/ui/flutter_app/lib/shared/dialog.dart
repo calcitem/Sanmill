@@ -51,8 +51,8 @@ Future<void> showPrivacyDialog(BuildContext context) async {
   final TextStyle linkStyle =
       aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
 
-  const String eulaURL = Constants.giteeEulaURL;
-  const String privacyPolicyURL = Constants.giteePrivacyPolicyURL;
+  final String eulaURL = Constants.eulaURL.urlZH;
+  final String privacyPolicyURL = Constants.privacyPolicyURL.urlZH;
 
   Future<void> _setPrivacyPolicyAccepted({required bool value}) async {
     LocalDatabaseService.preferences = LocalDatabaseService.preferences
