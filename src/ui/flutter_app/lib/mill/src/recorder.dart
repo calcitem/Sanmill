@@ -21,14 +21,14 @@ part of '../mill.dart';
 // TODO
 // TODO: [Leptopoda] the public facing methods look a lot like the ones Itterable has.
 //We might wanna make GameRecorder one.
-class GameRecorder {
+class _GameRecorder {
   // TODO: [Leptopoda] use null
   int cur = -1;
   String? lastPositionWithRemove;
   List<Move> moves = <Move>[];
   static const _tag = "[GameRecorder]";
 
-  GameRecorder({
+  _GameRecorder({
     this.cur = -1,
     this.lastPositionWithRemove,
   });
@@ -350,7 +350,7 @@ class GameRecorder {
     moves.add(move);
     cur++;
 
-    if (move.type == MoveType.remove) {
+    if (move.type == _MoveType.remove) {
       lastPositionWithRemove = position.fen();
     }
   }
@@ -378,7 +378,7 @@ class GameRecorder {
             num = " $num ";
           }
         }
-        if (i + 1 <= cur && moves[i + 1].type == MoveType.remove) {
+        if (i + 1 <= cur && moves[i + 1].type == _MoveType.remove) {
           moveHistory.write(
             "$num${moves[i].notation}${moves[i + 1].notation}    ",
           );
