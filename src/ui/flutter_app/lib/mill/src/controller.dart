@@ -24,11 +24,11 @@ MillController controller = MillController();
 class MillController {
   late final Game gameInstance;
   late final Position position;
-  // late final GameRecorder recorder;
+  late GameRecorder recorder;
 
   MillController() {
     gameInstance = Game();
     position = Position();
-    // recorder = GameRecorder(lastPositionWithRemove: position.fen());
+    recorder = GameRecorder(lastPositionWithRemove: position.fen());
   }
 }
