@@ -224,6 +224,33 @@ extension PieceColorExtension on PieceColor {
         return GameResult.none;
     }
   }
+
+  IconData get chevron {
+    switch (controller.gameInstance.sideToMove) {
+      case PieceColor.white:
+        return FluentIcons.chevron_left_24_regular;
+      case PieceColor.black:
+        return FluentIcons.chevron_right_24_regular;
+      default:
+        return FluentIcons.code_24_regular;
+    }
+  }
+
+  // ignore: avoid_positional_boolean_parameters
+  IconData getArrow(bool ltr) {
+    switch (controller.position.winner) {
+      case PieceColor.white:
+        return ltr
+            ? FluentIcons.toggle_left_24_regular
+            : FluentIcons.toggle_right_24_regular;
+      case PieceColor.black:
+        return ltr
+            ? FluentIcons.toggle_right_24_regular
+            : FluentIcons.toggle_left_24_regular;
+      default:
+        return FluentIcons.handshake_24_regular;
+    }
+  }
 }
 
 enum Phase { none, ready, placing, moving, gameOver }
