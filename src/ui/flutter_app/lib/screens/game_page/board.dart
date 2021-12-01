@@ -265,22 +265,7 @@ class Board extends StatelessWidget {
       if (checkPoints[i] == 0) {
         pieceDesc.add(S.of(context).noPoint);
       } else {
-        switch (controller.position.pieceOnGrid(i)) {
-          case PieceColor.white:
-            pieceDesc.add(S.of(context).whitePiece);
-            break;
-          case PieceColor.black:
-            pieceDesc.add(S.of(context).blackPiece);
-            break;
-          case PieceColor.ban:
-            pieceDesc.add(S.of(context).banPoint);
-            break;
-          case PieceColor.none:
-            pieceDesc.add(S.of(context).emptyPoint);
-            break;
-          default:
-            assert(false);
-        }
+        pieceDesc.add(controller.position.pieceOnGrid(i).pieceName(context));
       }
     }
 

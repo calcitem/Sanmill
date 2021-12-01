@@ -129,6 +129,7 @@ enum PieceColor {
 }
 
 extension PieceColorExtension on PieceColor {
+  @Deprecated("this is the old representation and not needed anymore")
   String get string {
     switch (this) {
       case PieceColor.none:
@@ -146,7 +147,7 @@ extension PieceColorExtension on PieceColor {
     }
   }
 
-  String? name(BuildContext context) {
+  String playerName(BuildContext context) {
     switch (this) {
       case PieceColor.white:
         return S.of(context).white;
@@ -158,6 +159,22 @@ extension PieceColorExtension on PieceColor {
         return S.of(context).draw;
       case PieceColor.ban:
       case PieceColor.nobody:
+        throw Exception("Player has no name");
+    }
+  }
+
+  String pieceName(BuildContext context) {
+    switch (this) {
+      case PieceColor.white:
+        return S.of(context).whitePiece;
+      case PieceColor.black:
+        return S.of(context).blackPiece;
+      case PieceColor.ban:
+        return S.of(context).banPoint;
+      case PieceColor.none:
+        return S.of(context).emptyPoint;
+      default:
+        throw Exception("No piece name available");
     }
   }
 
@@ -169,6 +186,21 @@ extension PieceColorExtension on PieceColor {
         return PieceColor.black;
       default:
         return this;
+    }
+  }
+
+  String getWinString(BuildContext context) {
+    switch (this) {
+      case PieceColor.white:
+        return S.of(context).whiteWin;
+      case PieceColor.black:
+        return S.of(context).blackWin;
+      case PieceColor.draw:
+        return S.of(context).isDraw;
+      case PieceColor.nobody:
+        return controller.position.phase.getTip(context);
+      default:
+        throw Exception("No winnig string available");
     }
   }
 }
@@ -190,6 +222,28 @@ extension PhaseExtension on Phase {
         return "o";
       default:
         return "?";
+    }
+  }
+
+  String getTip(BuildContext context) {
+    switch (controller.position.phase) {
+      case Phase.placing:
+        return S.of(context).tipPlace;
+      case Phase.moving:
+        return S.of(context).tipMove;
+      default:
+        throw Exception("No tip available");
+    }
+  }
+
+  String getName(BuildContext context) {
+    switch (this) {
+      case Phase.placing:
+        return S.of(context).placingPhase;
+      case Phase.moving:
+        return S.of(context).movingPhase;
+      default:
+        throw Exception("No name available");
     }
   }
 }
@@ -226,7 +280,7 @@ enum GameOverReason {
 
 extension GameOverReasonExtension on GameOverReason {
   String getName(BuildContext context, PieceColor winner) {
-    final String loserStr = winner.opponent.name(context)!;
+    final String loserStr = winner.opponent.playerName(context);
 
     switch (this) {
       case GameOverReason.loseReasonlessThanThree:
@@ -427,3 +481,20 @@ Map<String, String> playOkNotationToMove = {
 };
 
 enum GameResult { pending, win, lose, draw, none }
+
+extension GameResultExtension on GameResult {
+  String winString(BuildContext context) {
+    switch (this) {
+      case GameResult.win:
+        return controller.gameInstance.engineType == EngineType.humanVsAi
+            ? S.of(context).youWin
+            : S.of(context).gameOver;
+      case GameResult.lose:
+        return S.of(context).gameOver;
+      case GameResult.draw:
+        return S.of(context).isDraw;
+      default:
+        throw Exception("No result specified");
+    }
+  }
+}

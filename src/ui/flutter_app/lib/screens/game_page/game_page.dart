@@ -100,28 +100,9 @@ class _GamePageState extends State<GamePage>
     if (!mounted) return;
 
     final winner = controller.position.winner;
-
-    switch (winner) {
-      case PieceColor.white:
-        _showTip(S.of(context).whiteWin);
-        break;
-      case PieceColor.black:
-        _showTip(S.of(context).blackWin);
-        break;
-      case PieceColor.draw:
-        _showTip(S.of(context).isDraw);
-        break;
-      case PieceColor.nobody:
-        switch (controller.position.phase) {
-          case Phase.placing:
-            return _showTip(S.of(context).tipPlace);
-          case Phase.moving:
-            return _showTip(S.of(context).tipMove);
-          default:
-            assert(false);
-        }
-        break;
-      default:
+    _showTip(winner.getWinString(context));
+    if (winner == PieceColor.nobody) {
+      return;
     }
 
     if (!LocalDatabaseService.preferences.isAutoRestart) {
@@ -198,7 +179,7 @@ class _GamePageState extends State<GamePage>
                   _showTip(S.of(context).tipPlaced);
                 } else {
                   final side = controller.gameInstance.sideToMove.opponent
-                      .name(context)!;
+                      .playerName(context);
                   _showTip(
                     S.of(context).tipToMove(side),
                   );
@@ -282,7 +263,7 @@ class _GamePageState extends State<GamePage>
                   _showTip(S.of(context).tipRemoved);
                 } else {
                   final them = controller.gameInstance.sideToMove.opponent
-                      .name(context)!;
+                      .playerName(context);
                   _showTip(S.of(context).tipToMove(them));
                 }
               }
