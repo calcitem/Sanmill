@@ -78,6 +78,31 @@ extension EngineTypeExtensiont on EngineType {
         throw Exception("No engine selected");
     }
   }
+
+  Map<PieceColor, bool> get whoIsAI {
+    switch (this) {
+      case EngineType.humanVsAi:
+      case EngineType.testViaLAN:
+        return {
+          PieceColor.white: LocalDatabaseService.preferences.aiMovesFirst,
+          PieceColor.black: !LocalDatabaseService.preferences.aiMovesFirst,
+        };
+      case EngineType.humanVsHuman:
+      case EngineType.humanVsLAN:
+      case EngineType.humanVsCloud:
+        return {
+          PieceColor.white: false,
+          PieceColor.black: false,
+        };
+      case EngineType.aiVsAi:
+        return {
+          PieceColor.white: true,
+          PieceColor.black: true,
+        };
+      default:
+        throw Exception("No engine to set");
+    }
+  }
 }
 
 enum EngineResponseType { move, timeout, nobestmove }

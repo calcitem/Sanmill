@@ -43,7 +43,6 @@ class _PiecePaintParam {
       case PieceColor.black:
         borderColor = AppTheme.blackPieceBorderColor;
         pieceColor = LocalDatabaseService.colorSettings.blackPieceColor;
-
         blurPositionColor =
             LocalDatabaseService.colorSettings.blackPieceColor.withOpacity(0.1);
         break;

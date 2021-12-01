@@ -203,6 +203,27 @@ extension PieceColorExtension on PieceColor {
         throw Exception("No winnig string available");
     }
   }
+
+  GameResult get result {
+    switch (this) {
+      case PieceColor.white:
+        if (controller.gameInstance.isAi[this]!) {
+          return GameResult.lose;
+        } else {
+          return GameResult.win;
+        }
+      case PieceColor.black:
+        if (controller.gameInstance.isAi[this]!) {
+          return GameResult.lose;
+        } else {
+          return GameResult.win;
+        }
+      case PieceColor.draw:
+        return GameResult.draw;
+      default:
+        return GameResult.none;
+    }
+  }
 }
 
 enum Phase { none, ready, placing, moving, gameOver }
@@ -226,7 +247,7 @@ extension PhaseExtension on Phase {
   }
 
   String getTip(BuildContext context) {
-    switch (controller.position.phase) {
+    switch (this) {
       case Phase.placing:
         return S.of(context).tipPlace;
       case Phase.moving:
