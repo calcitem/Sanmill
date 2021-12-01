@@ -1081,44 +1081,8 @@ class Position {
     controller.recorder.cur = moveIndex;
 
     Audios.isTemporaryMute = false;
-    await _gotoHistoryPlaySound(move);
+    await move.gotoHistoryPlaySound();
     return error;
-  }
-
-  int _gotoHistoryIndex(HistoryMove move, [int? index]) {
-    switch (move) {
-      case HistoryMove.forwardAll:
-        return recorder.moveCount - 1;
-      case HistoryMove.backAll:
-        return -1;
-      case HistoryMove.forward:
-        return recorder.cur + 1;
-      case HistoryMove.backN:
-        assert(index != null);
-        int _index = recorder.cur - index!;
-        if (_index < -1) {
-          _index = -1;
-        }
-        return _index;
-      case HistoryMove.backOne:
-        return recorder.cur - 1;
-    }
-  }
-
-  Future<void> _gotoHistoryPlaySound(HistoryMove move) async {
-    if (!LocalDatabaseService.preferences.keepMuteWhenTakingBack) {
-      switch (move) {
-        case HistoryMove.forwardAll:
-        case HistoryMove.forward:
-          await Audios.playTone(Sound.place);
-          break;
-        case HistoryMove.backAll:
-        case HistoryMove.backN:
-
-        case HistoryMove.backOne:
-          await Audios.playTone(Sound.remove);
-      }
-    }
   }
 
   String? get movesSinceLastRemove {
@@ -1175,6 +1139,21 @@ extension HistoryMoveExtension on HistoryMove {
         return _index;
       case HistoryMove.backOne:
         return controller.recorder.cur - 1;
+    }
+  }
+
+  Future<void> gotoHistoryPlaySound() async {
+    if (!LocalDatabaseService.preferences.keepMuteWhenTakingBack) {
+      switch (this) {
+        case HistoryMove.forwardAll:
+        case HistoryMove.forward:
+          await Audios.playTone(Sound.place);
+          break;
+        case HistoryMove.backAll:
+        case HistoryMove.backN:
+        case HistoryMove.backOne:
+          await Audios.playTone(Sound.remove);
+      }
     }
   }
 }

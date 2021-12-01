@@ -230,7 +230,7 @@ extension PieceColorExtension on PieceColor {
   }
 
   IconData get _chevron {
-    switch (controller.gameInstance.sideToMove) {
+    switch (this) {
       case PieceColor.white:
         return FluentIcons.chevron_left_24_regular;
       case PieceColor.black:
@@ -241,7 +241,7 @@ extension PieceColorExtension on PieceColor {
   }
 
   IconData get _arrow {
-    switch (controller.position.winner) {
+    switch (this) {
       case PieceColor.white:
         return FluentIcons.toggle_left_24_regular;
       case PieceColor.black:
