@@ -79,8 +79,6 @@ class SettingsListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool ltr = Directionality.of(context) == TextDirection.ltr;
-
     switch (_type) {
       case _SettingsTileType.switchTile:
         return SwitchListTile(
@@ -97,10 +95,8 @@ class SettingsListTile extends StatelessWidget {
             style: AppTheme.listTileSubtitleStyle,
           );
         } else {
-          trailing = Icon(
-            ltr
-                ? FluentIcons.chevron_right_24_regular
-                : FluentIcons.chevron_left_24_regular,
+          trailing = const Icon(
+            FluentIcons.chevron_right_24_regular,
             color: AppTheme.listTileSubtitleColor,
           );
         }

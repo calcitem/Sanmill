@@ -245,9 +245,7 @@ class Board extends StatelessWidget {
       1
     ];
 
-    final bool ltr = Directionality.of(context) == TextDirection.ltr;
-
-    if (ltr) {
+    if (Directionality.of(context) == TextDirection.ltr) {
       for (final file in ['a', 'b', 'c', 'd', 'e', 'f', 'g']) {
         for (final rank in ['7', '6', '5', '4', '3', '2', '1']) {
           coordinates.add("$file$rank");
