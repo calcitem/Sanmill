@@ -19,6 +19,7 @@
 /// Although marked as a library this package is tightly integrated into the app
 library mill;
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/services/audios.dart';
