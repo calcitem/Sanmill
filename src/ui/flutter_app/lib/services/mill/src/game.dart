@@ -25,18 +25,12 @@ class _Game {
     focusIndex = blurIndex = null;
   }
 
-  void start() {
-    controller.position.reset();
-
-    // TODO: [Leptopoda] redundant
-    // engineType = _engineType;
-  }
+  // TODO: [Leptopoda] maybe call reset directly although it seems cleaner like this
+  void start() => controller.position.reset();
 
   void newGame() {
     controller.position.phase = Phase.ready;
     start();
-
-    controller.position.restart();
     focusIndex = blurIndex = null;
 
     moveHistory = [];
