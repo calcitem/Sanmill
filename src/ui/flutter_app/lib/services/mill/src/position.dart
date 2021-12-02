@@ -86,6 +86,12 @@ class Position {
   PieceColor pieceOn(int sq) => board[sq];
 
   PieceColor get sideToMove => _sideToMove;
+  set sideToMove(PieceColor color) {
+    _sideToMove = color;
+    //us = color;
+    them = _sideToMove.opponent;
+  }
+
   PieceColor movedPiece(int move) => pieceOn(fromSq(move));
 
   Future<bool> movePiece(int from, int to) async {
@@ -316,7 +322,7 @@ class Position {
     st.rule50 = 0;
 
     phase = Phase.ready;
-    setSideToMove(PieceColor.white);
+    sideToMove = PieceColor.white;
     action = Act.place;
 
     _winner = PieceColor.nobody;
@@ -401,7 +407,7 @@ class Position {
 
           if (pieceInHandCount[PieceColor.white] == 0 &&
               pieceInHandCount[PieceColor.black] == 0) {
-            if (isGameOver) return true;
+            if (gameOver) return true;
 
             phase = Phase.moving;
             action = Act.select;
@@ -414,7 +420,7 @@ class Position {
               changeSideToMove();
             }
 
-            if (isGameOver) return true;
+            if (gameOver) return true;
           } else {
             changeSideToMove();
           }
@@ -437,7 +443,7 @@ class Position {
 
             if (pieceInHandCount[PieceColor.white] == 0 &&
                 pieceInHandCount[PieceColor.black] == 0) {
-              if (isGameOver) return true;
+              if (gameOver) return true;
 
               phase = Phase.moving;
               action = Act.select;
@@ -446,7 +452,7 @@ class Position {
                 changeSideToMove();
               }
 
-              if (isGameOver) return true;
+              if (gameOver) return true;
             }
           } else {
             action = Act.remove;
@@ -457,7 +463,7 @@ class Position {
         }
         break;
       case Phase.moving:
-        if (isGameOver) return true;
+        if (gameOver) return true;
 
         // if illegal
         if (pieceOnBoardCount[sideToMove]! >
@@ -499,7 +505,7 @@ class Position {
           action = Act.select;
           changeSideToMove();
 
-          if (isGameOver) return true;
+          if (gameOver) return true;
           controller.gameInstance.focusIndex = squareToIndex[s];
 
           await Audios.playTone(Sound.place);
@@ -584,7 +590,7 @@ class Position {
         }
 
         if (LocalDatabaseService.rules.isDefenderMoveFirst) {
-          isGameOver;
+          gameOver;
           return RemoveResponse.r0;
         }
       } else {
@@ -595,7 +601,7 @@ class Position {
     }
 
     changeSideToMove();
-    isGameOver;
+    gameOver;
 
     return RemoveResponse.r0;
   }
@@ -662,7 +668,7 @@ class Position {
 
   // TODO: [Leptopoda] this method seems to be more than  a getter
   //we should probably return it to not be a getter and rename it to avoid confusion
-  bool get isGameOver {
+  bool get gameOver {
     if (phase == Phase.ready || phase == Phase.gameOver) {
       return true;
     }
@@ -726,35 +732,20 @@ class Position {
     }
   }
 
-  void setSideToMove(PieceColor color) {
-    _sideToMove = color;
-    //us = color;
-    them = _sideToMove.opponent;
-  }
-
   void changeSideToMove() {
-    setSideToMove(_sideToMove.opponent);
+    sideToMove = _sideToMove.opponent;
     st.key ^= _Zobrist.side;
     logger.v("[position] $_sideToMove to move.");
-
-    /*
-    if (phase == Phase.moving &&
-        !rule.isLoseButNotChangeSideWhenNoWay &&
-        isAllSurrounded() &&
-        !rule.mayFly &&
-        pieceOnBoardCount[sideToMove()]! >= rule.piecesAtLeastCount) {
-      logger.v("[position] $_sideToMove is no way to go.");
-      changeSideToMove();
-    }
-    */
   }
 
+  // TODO: [Leptopoda] make it a setter of [_StateInfo]
   int updateKey(int s) {
     final PieceColor pieceType = colorOn(s);
 
     return st.key ^= _Zobrist.psq[pieceType.index][s];
   }
 
+  // TODO: [Leptopoda] remove this method as it doesn't bring anything new
   int revertKey(int s) {
     return updateKey(s);
   }
@@ -922,7 +913,7 @@ class Position {
 
     gameOverReason = GameOverReason.none;
     phase = Phase.placing;
-    setSideToMove(PieceColor.white);
+    sideToMove = PieceColor.white;
     action = Act.place;
     currentSquare = 0;
 
@@ -1040,8 +1031,6 @@ class Position {
   }
 
   String? get moveHistoryText => recorder.buildMoveHistoryText();
-
-  PieceColor get side => _sideToMove;
 
   Move? get lastMove => recorder.lastMove;
 
