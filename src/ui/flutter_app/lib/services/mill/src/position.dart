@@ -28,6 +28,10 @@ class _StateInfo {
 }
 
 class Position {
+  Position() {
+    _init();
+  }
+
   final List<int> posKeyHistory = [];
 
   GameResult result = GameResult.pending;
@@ -76,45 +80,6 @@ class Position {
 
   late Move move;
 
-  Position() {
-    _init();
-  }
-
-  Position.clone(Position other) {
-    _grid = [];
-    for (final piece in other._grid) {
-      _grid.add(piece);
-    }
-
-    board = [];
-    for (final piece in other.board) {
-      board.add(piece);
-    }
-
-    pieceInHandCount = other.pieceInHandCount;
-    pieceOnBoardCount = other.pieceOnBoardCount;
-    pieceToRemoveCount = other.pieceToRemoveCount;
-
-    gamePly = other.gamePly;
-
-    _sideToMove = other._sideToMove;
-
-    st.rule50 = other.st.rule50;
-    st.pliesFromNull = other.st.pliesFromNull;
-
-    them = other.them;
-    _winner = other._winner;
-    gameOverReason = other.gameOverReason;
-
-    phase = other.phase;
-    action = other.action;
-
-    score = other.score;
-
-    currentSquare = other.currentSquare;
-    nPlayed = other.nPlayed;
-  }
-
   PieceColor pieceOnGrid(int index) => _grid[index];
   PieceColor pieceOn(int sq) => board[sq];
 
@@ -128,14 +93,10 @@ class Position {
     return false;
   }
 
+  // TODO: [Leptopoda] inline with [_init()] as it will call [setPosition()]
+  //wich itself will clear the board through [_clearBoard()]
   void restart() {
-    for (var i = 0; i < _grid.length; i++) {
-      _grid[i] = PieceColor.none;
-    }
-
-    for (var i = 0; i < board.length; i++) {
-      board[i] = PieceColor.none;
-    }
+    _clearBoard();
 
     _init();
   }
@@ -146,11 +107,11 @@ class Position {
     setPosition(); // TODO
 
     // TODO
-    controller.recorder.lastPositionWithRemove = fen();
+    controller.recorder.lastPositionWithRemove = fen;
   }
 
   /// Return a FEN representation of the position.
-  String fen() {
+  String get fen {
     final buffer = StringBuffer();
     const space = " ";
 
@@ -363,7 +324,7 @@ class Position {
     _winner = PieceColor.nobody;
     gameOverReason = GameOverReason.none;
 
-    clearBoard();
+    _clearBoard();
 
     st.key = 0;
 
@@ -952,16 +913,12 @@ class Position {
         pieceOnBoardCount[PieceColor.black]!;
   }
 
-  void clearBoard() {
-    for (int i = 0; i < _grid.length; i++) {
-      _grid[i] = PieceColor.none;
-    }
-
-    for (int i = 0; i < board.length; i++) {
-      board[i] = PieceColor.none;
-    }
+  void _clearBoard() {
+    _grid = List.filled(_grid.length, PieceColor.none);
+    board = List.filled(board.length, PieceColor.none);
   }
 
+  // TODO: [Leptopda] seems like this method always returns -1
   int setPosition() {
     result = GameResult.pending;
 
@@ -977,9 +934,10 @@ class Position {
 
     record = null;
 
-    clearBoard();
+    _clearBoard();
+
+    if (pieceOnBoardCountCount == -1) {
     // TODO: [Leptopoda] use null
-    if (pieceOnBoardCountCount() == -1) {
       return -1;
     }
 
@@ -994,7 +952,7 @@ class Position {
     return -1;
   }
 
-  int pieceOnBoardCountCount() {
+  int get pieceOnBoardCountCount {
     pieceOnBoardCount[PieceColor.white] =
         pieceOnBoardCount[PieceColor.black] = 0;
 
