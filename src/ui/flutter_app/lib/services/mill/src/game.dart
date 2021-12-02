@@ -96,7 +96,7 @@ class _Game {
 
     logger.i("$_tag AI do move: $move");
 
-    if (!(await controller.position.doMove(move.move))) {
+    if (!(await controller.position.doMove(move.uciMove))) {
       return false;
     }
 

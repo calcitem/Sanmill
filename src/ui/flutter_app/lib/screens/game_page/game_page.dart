@@ -305,12 +305,12 @@ class _GamePageState extends State<GamePage>
         ++position.st.pliesFromNull;
 
         if (position.record != null &&
-            position.record!.move.length > "-(1,2)".length) {
+            position.record!.uciMove.length > "-(1,2)".length) {
           if (position.posKeyHistory.isEmpty ||
               position.posKeyHistory.last != position.st.key) {
             position.posKeyHistory.add(position.st.key);
             if (LocalDatabaseService.rules.threefoldRepetitionRule &&
-                position.hasGameCycle()) {
+                position.hasGameCycle) {
               position.setGameOver(
                 PieceColor.draw,
                 GameOverReason.drawThreefoldRepetition,
