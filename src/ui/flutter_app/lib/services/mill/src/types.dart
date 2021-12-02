@@ -293,20 +293,20 @@ extension HistoryMoveExtension on HistoryMove {
   int gotoHistoryIndex([int? index]) {
     switch (this) {
       case HistoryMove.forwardAll:
-        return controller.recorder.moveCount - 1;
+        return controller.position.recorder.moveCount - 1;
       case HistoryMove.backAll:
         return -1;
       case HistoryMove.forward:
-        return controller.recorder.cur + 1;
+        return controller.position.recorder.cur + 1;
       case HistoryMove.backN:
         assert(index != null);
-        int _index = controller.recorder.cur - index!;
+        int _index = controller.position.recorder.cur - index!;
         if (_index < -1) {
           _index = -1;
         }
         return _index;
       case HistoryMove.backOne:
-        return controller.recorder.cur - 1;
+        return controller.position.recorder.cur - 1;
     }
   }
 

@@ -39,7 +39,9 @@ class Position {
   List<PieceColor> board = List.filled(sqNumber, PieceColor.none);
   List<PieceColor> _grid = List.filled(7 * 7, PieceColor.none);
 
-  // TODO: [Leptopoda] use null
+  // TODO: [Leptopoda] move it into the controller
+  late _GameRecorder recorder;
+
   Map<PieceColor, int> pieceInHandCount = {
     PieceColor.white: -1,
     PieceColor.black: -1
@@ -109,7 +111,7 @@ class Position {
     // TODO
     // controller.recorder.lastPositionWithRemove = fen;
     // TODO: [Leptopoda] make the recorder get the fen itself as it is public so we don't need to pas it arround...
-    controller.recorder = _GameRecorder(lastPositionWithRemove: fen);
+    recorder = _GameRecorder(lastPositionWithRemove: fen);
   }
 
   /// Returns a FEN representation of the position.
@@ -268,7 +270,7 @@ class Position {
 
     this.move = m;
 
-    controller.recorder.moveIn(m, this); // TODO: Is Right?
+    recorder.moveIn(m, this); // TODO: Is Right?
 
     return true;
   }
@@ -986,7 +988,7 @@ class Position {
   Future<_HistoryResponse?> gotoHistory(HistoryMove move, [int? index]) async {
     final int moveIndex = move.gotoHistoryIndex(index);
 
-    if (controller.recorder.cur == moveIndex) {
+    if (recorder.cur == moveIndex) {
       logger.i("[goto] cur is equal to moveIndex.");
       return _HistoryResponse.equal;
     }
@@ -1001,7 +1003,7 @@ class Position {
     // Backup context
     final engineTypeBackup = controller.gameInstance.engineType;
     controller.gameInstance.engineType = EngineType.humanVsHuman;
-    final historyBack = controller.recorder.moves;
+    final historyBack = recorder.moves;
     controller.gameInstance.newGame();
 
     _HistoryResponse? error;
@@ -1015,8 +1017,8 @@ class Position {
 
     // Restore context
     controller.gameInstance.engineType = engineTypeBackup;
-    controller.recorder.moves = historyBack;
-    controller.recorder.cur = moveIndex;
+    recorder.moves = historyBack;
+    recorder.cur = moveIndex;
 
     Audios.isTemporaryMute = false;
     await move.gotoHistoryPlaySound();
@@ -1028,7 +1030,7 @@ class Position {
     final buffer = StringBuffer();
     int posAfterLastRemove = 0;
 
-    for (i = controller.recorder.moveCount - 1; i >= 0; i--) {
+    for (i = recorder.moveCount - 1; i >= 0; i--) {
       if (recorder.moves[i].move[0] == "-") break;
     }
 
@@ -1036,8 +1038,8 @@ class Position {
       posAfterLastRemove = i + 1;
     }
 
-    for (int i = posAfterLastRemove; i < controller.recorder.moveCount; i++) {
-      buffer.write(" ${controller.recorder.moves[i].move}");
+    for (int i = posAfterLastRemove; i < recorder.moveCount; i++) {
+      buffer.write(" ${recorder.moves[i].move}");
     }
 
     final String moves = buffer.toString();
@@ -1047,12 +1049,11 @@ class Position {
     return moves.isNotEmpty ? moves.substring(1) : null;
   }
 
-  String? get moveHistoryText => controller.recorder.buildMoveHistoryText();
+  String? get moveHistoryText => recorder.buildMoveHistoryText();
 
   PieceColor get side => _sideToMove;
 
-  Move? get lastMove => controller.recorder.lastMove;
+  Move? get lastMove => recorder.lastMove;
 
-  String? get lastPositionWithRemove =>
-      controller.recorder.lastPositionWithRemove;
+  String? get lastPositionWithRemove => recorder.lastPositionWithRemove;
 }
