@@ -24,7 +24,7 @@ part of '../mill.dart';
 class _GameRecorder {
   // TODO: [Leptopoda] use null
   int cur = -1;
-  String lastPositionWithRemove = controller.position.fen();
+  String lastPositionWithRemove = controller.position.fen;
   List<Move> moves = <Move>[];
   static const _tag = "[GameRecorder]";
 
@@ -348,7 +348,7 @@ class _GameRecorder {
     cur++;
 
     if (move.type == _MoveType.remove) {
-      lastPositionWithRemove = position.fen();
+      lastPositionWithRemove = position.fen;
     }
   }
 

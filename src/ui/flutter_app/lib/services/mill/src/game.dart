@@ -115,14 +115,13 @@ class _Game {
   }
 
   void _logStat() {
-    double whiteWinRate = 0;
-    double blackWinRate = 0;
-    double drawRate = 0;
-
     final int total = controller.position.score[PieceColor.white]! +
         controller.position.score[PieceColor.black]! +
         controller.position.score[PieceColor.draw]!;
 
+    double whiteWinRate = 0;
+    double blackWinRate = 0;
+    double drawRate = 0;
     if (total != 0) {
       whiteWinRate = controller.position.score[PieceColor.white]! * 100 / total;
       blackWinRate = controller.position.score[PieceColor.black]! * 100 / total;

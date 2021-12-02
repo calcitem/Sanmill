@@ -19,15 +19,19 @@
 part of '../mill.dart';
 
 // TODO: [Leptopoda] add constructor
-MillController controller = MillController();
+final MillController controller = MillController();
 
 class MillController {
-  final _Game gameInstance;
-  final Position position;
-  final _GameRecorder recorder;
+  late final _Game gameInstance;
+  late final Position position;
+  late final _GameRecorder recorder;
 
-  MillController()
-      : gameInstance = _Game(),
-        position = Position(),
-        recorder = _GameRecorder();
+  MillController() {
+    // debugger(message: "MillController");
+
+    // TODO: [Leptopoda] mitigate stack overflow :)
+    gameInstance = _Game();
+    position = Position();
+    recorder = _GameRecorder();
+  }
 }
