@@ -2,6 +2,10 @@ name: Clang Format
 
 on:
   push:
+    branches: [master, dev]
+    paths-ignore:
+      - 'src/ui/flutter_app/**'
+  pull_request:
     paths-ignore:
       - 'src/ui/flutter_app/**'
 
