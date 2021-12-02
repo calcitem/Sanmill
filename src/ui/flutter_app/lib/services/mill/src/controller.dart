@@ -22,16 +22,15 @@ part of '../mill.dart';
 final MillController controller = MillController();
 
 class MillController {
-  late final _Game gameInstance;
-  late final Position position;
-  late final _GameRecorder recorder;
+  final _Game gameInstance;
+  final Position position;
+  late _GameRecorder recorder;
 
-  MillController() {
-    // debugger(message: "MillController");
+  MillController()
+      :
+        // debugger(message: "MillController");
 
-    // TODO: [Leptopoda] mitigate stack overflow :)
-    gameInstance = _Game();
-    position = Position();
-    recorder = _GameRecorder();
-  }
+        // TODO: [Leptopoda] mitigate stack overflow :)
+        gameInstance = _Game(),
+        position = Position();
 }
