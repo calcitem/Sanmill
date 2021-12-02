@@ -28,7 +28,8 @@ class _Game {
   void start() {
     controller.position.reset();
 
-    setWhoIsAi(engineType);
+    // TODO: [Leptopoda] redundant
+    // engineType = _engineType;
   }
 
   void newGame() {
@@ -78,7 +79,7 @@ class _Game {
   EngineType _engineType = EngineType.none;
   EngineType get engineType => _engineType;
 
-  void setWhoIsAi(EngineType type) {
+  set engineType(EngineType type) {
     _engineType = type;
 
     isAi = type.whoIsAI;
