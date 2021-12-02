@@ -107,10 +107,12 @@ class Position {
     setPosition(); // TODO
 
     // TODO
-    controller.recorder.lastPositionWithRemove = fen;
+    // controller.recorder.lastPositionWithRemove = fen;
+    // TODO: [Leptopoda] make the recorder get the fen itself as it is public so we don't need to pas it arround...
+    controller.recorder = _GameRecorder(lastPositionWithRemove: fen);
   }
 
-  /// Return a FEN representation of the position.
+  /// Returns a FEN representation of the position.
   String get fen {
     final buffer = StringBuffer();
     const space = " ";
@@ -998,7 +1000,7 @@ class Position {
 
     // Backup context
     final engineTypeBackup = controller.gameInstance.engineType;
-    controller.gameInstance.setWhoIsAi(EngineType.humanVsHuman);
+    controller.gameInstance.engineType = EngineType.humanVsHuman;
     final historyBack = controller.recorder.moves;
     controller.gameInstance.newGame();
 
@@ -1012,7 +1014,7 @@ class Position {
     }
 
     // Restore context
-    controller.gameInstance.setWhoIsAi(engineTypeBackup);
+    controller.gameInstance.engineType = engineTypeBackup;
     controller.recorder.moves = historyBack;
     controller.recorder.cur = moveIndex;
 

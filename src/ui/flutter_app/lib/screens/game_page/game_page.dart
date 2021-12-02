@@ -358,7 +358,7 @@ class _GamePageState extends State<GamePage>
         ScaffoldMessenger.of(context).clearSnackBars();
         return showSnackBar(context, S.of(context).notAIsTurn);
       }
-      if (!controller.recorder.isClean()) {
+      if (!controller.recorder.isClean) {
         logger.i(
           "[engineToGo] History is not clean. Cannot get search result now.",
         );
@@ -854,7 +854,7 @@ class _GamePageState extends State<GamePage>
     super.initState();
 
     logger.i("$_tag Engine type: ${widget.engineType}");
-    controller.gameInstance.setWhoIsAi(widget.engineType);
+    controller.gameInstance.engineType = widget.engineType;
 
     _engine.startup();
 

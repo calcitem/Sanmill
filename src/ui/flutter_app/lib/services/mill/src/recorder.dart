@@ -24,11 +24,11 @@ part of '../mill.dart';
 class _GameRecorder {
   // TODO: [Leptopoda] use null
   int cur = -1;
-  String lastPositionWithRemove = controller.position.fen;
+  String lastPositionWithRemove;
   List<Move> moves = <Move>[];
   static const _tag = "[GameRecorder]";
 
-  _GameRecorder({this.cur = -1});
+  _GameRecorder({this.cur = -1, required this.lastPositionWithRemove});
 
   String? _wmdNotationToMoveString(String wmd) {
     if (wmd.length == 3 && wmd[0] == "x") {
@@ -325,18 +325,19 @@ class _GameRecorder {
     cur = 0;
   }
 
-  bool isClean() {
+  bool get isClean {
     return cur == moves.length - 1;
   }
 
   void prune() {
-    if (isClean()) {
+    if (isClean) {
       return;
     }
 
     moves.removeRange(cur + 1, moves.length);
   }
 
+  // TODO: [Leptopoda] don't pass around the position object as we can access it through [controller.position]
   void moveIn(Move move, Position position) {
     if (moves.lastF == move) {
       //assert(false);
