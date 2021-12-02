@@ -2,6 +2,10 @@ name: Flutter
 
 on:
   push:
+    branches: [master, dev]
+    paths:
+      - 'src/ui/flutter_app/**'
+  pull_request:
     paths:
       - 'src/ui/flutter_app/**'
 
