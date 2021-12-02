@@ -32,7 +32,7 @@ class _InfoDialog extends StatelessWidget {
 
     late final String us;
     late final String them;
-    switch (pos.side) {
+    switch (pos.sideToMove) {
       case PieceColor.white:
         us = S.of(context).player1;
         them = S.of(context).player2;

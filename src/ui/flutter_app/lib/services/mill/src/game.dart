@@ -28,6 +28,7 @@ class _Game {
   // TODO: [Leptopoda] maybe call reset directly although it seems cleaner like this
   void start() => controller.position.reset();
 
+  // TODO: [Leptopoda] just reassign controller.game with a new Game instance
   void newGame() {
     controller.position.phase = Phase.ready;
     start();
@@ -49,6 +50,7 @@ class _Game {
   int? focusIndex;
   int? blurIndex;
 
+  // TODO: [Leptopda] give a game two players (new class) to hold a player. A player can have a color, be ai ...
   Map<PieceColor, bool> isAi = {
     PieceColor.white: false,
     PieceColor.black: true,
