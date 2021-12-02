@@ -325,7 +325,7 @@ class _GameRecorder {
     cur = 0;
   }
 
-    bool get isClean {
+  bool get isClean {
     return cur == moves.length - 1;
   }
 

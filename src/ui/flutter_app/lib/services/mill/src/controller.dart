@@ -28,9 +28,6 @@ class MillController {
 
   MillController()
       :
-        // debugger(message: "MillController");
-
-        // TODO: [Leptopoda] mitigate stack overflow :)
         gameInstance = _Game(),
         position = Position();
 }

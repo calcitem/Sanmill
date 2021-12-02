@@ -95,22 +95,16 @@ class Position {
     return false;
   }
 
-  // TODO: [Leptopoda] inline with [_init()] as it will call [setPosition()]
-  //wich itself will clear the board through [_clearBoard()]
-  void restart() {
-    _clearBoard();
-
-    _init();
-  }
+  void restart() => _init();
 
   void _init() {
     phase = Phase.placing;
 
-    setPosition(); // TODO
+    _setPosition(); // TODO
 
     // TODO
-    // controller.recorder.lastPositionWithRemove = fen;
     // TODO: [Leptopoda] make the recorder get the fen itself as it is public so we don't need to pas it arround...
+    // seems like this is causing the stack overflow
     recorder = _GameRecorder(lastPositionWithRemove: fen);
   }
 
@@ -922,8 +916,7 @@ class Position {
     board = List.filled(board.length, PieceColor.none);
   }
 
-  // TODO: [Leptopda] seems like this method always returns -1
-  int setPosition() {
+  void _setPosition() {
     result = GameResult.pending;
 
     gamePly = 0;
@@ -941,8 +934,8 @@ class Position {
     _clearBoard();
 
     if (pieceOnBoardCountCount == -1) {
+      return;
     // TODO: [Leptopoda] use null
-      return -1;
     }
 
     nPiecesInHand;
@@ -953,7 +946,7 @@ class Position {
     millTable = _Mills.millTableInit;
     currentSquare = 0;
 
-    return -1;
+    return;
   }
 
   int get pieceOnBoardCountCount {
