@@ -24,7 +24,7 @@ final MillController controller = MillController();
 class MillController {
   final _Game gameInstance;
   final Position position;
-  late _GameRecorder recorder;
+  // late _GameRecorder recorder;
 
   MillController()
       :
