@@ -339,7 +339,7 @@ class Move {
   int _toRank = 0;
 
   // 'move' is the UCI engine's move-string
-  final String move;
+  final String uciMove;
 
   // "notation" is Standard Notation
   late final String notation;
@@ -347,37 +347,37 @@ class Move {
   late final _MoveType type;
 
   // TODO: [Leptopoda] attributes should probably be made getters
-  Move(this.move) {
+  Move(this.uciMove) {
     if (!_isLegal) {
-      throw "Error: Invalid Move: $move";
+      throw "Error: Invalid Move: $uciMove";
     }
 
-    if (move[0] == "-" && move.length == "-(1,2)".length) {
+    if (uciMove[0] == "-" && uciMove.length == "-(1,2)".length) {
       type = _MoveType.remove;
       from = _fromFile = _fromRank = _invalidMove;
-      _toFile = int.parse(move[2]);
-      _toRank = int.parse(move[4]);
+      _toFile = int.parse(uciMove[2]);
+      _toRank = int.parse(uciMove[4]);
       to = makeSquare(_toFile, _toRank);
       notation = "x${_squareToWmdNotation[to]}";
       //captured = PieceColor.none;
-    } else if (move.length == "(1,2)->(3,4)".length) {
+    } else if (uciMove.length == "(1,2)->(3,4)".length) {
       type = _MoveType.move;
-      _fromFile = int.parse(move[1]);
-      _fromRank = int.parse(move[3]);
+      _fromFile = int.parse(uciMove[1]);
+      _fromRank = int.parse(uciMove[3]);
       from = makeSquare(_fromFile, _fromRank);
-      _toFile = int.parse(move[8]);
-      _toRank = int.parse(move[10]);
+      _toFile = int.parse(uciMove[8]);
+      _toRank = int.parse(uciMove[10]);
       to = makeSquare(_toFile, _toRank);
       notation = "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}";
-    } else if (move.length == "(1,2)".length) {
+    } else if (uciMove.length == "(1,2)".length) {
       type = _MoveType.place;
       from = _fromFile = _fromRank = _invalidMove;
-      _toFile = int.parse(move[1]);
-      _toRank = int.parse(move[3]);
+      _toFile = int.parse(uciMove[1]);
+      _toRank = int.parse(uciMove[3]);
       to = makeSquare(_toFile, _toRank);
       // TODO: [Leptopoda] remove stringy thing
       notation = "${_squareToWmdNotation[to]}";
-    } else if (move == "draw") {
+    } else if (uciMove == "draw") {
       assert(false, "not yet implemented"); // TODO
       logger.v("[TODO] Computer request draw");
     } else {
@@ -386,28 +386,28 @@ class Move {
   }
 
   bool get _isLegal {
-    if (move == "draw") {
+    if (uciMove == "draw") {
       return true; // TODO
     }
 
-    if (move.length > "(3,1)->(2,1)".length) return false;
+    if (uciMove.length > "(3,1)->(2,1)".length) return false;
 
     const String range = "0123456789(,)->";
 
-    if (!(move[0] == "(" || move[0] == "-")) {
+    if (!(uciMove[0] == "(" || uciMove[0] == "-")) {
       return false;
     }
 
-    if (move[move.length - 1] != ")") {
+    if (uciMove[uciMove.length - 1] != ")") {
       return false;
     }
 
-    for (int i = 0; i < move.length; i++) {
-      if (!range.contains(move[i])) return false;
+    for (int i = 0; i < uciMove.length; i++) {
+      if (!range.contains(uciMove[i])) return false;
     }
 
-    if (move.length == "(3,1)->(2,1)".length) {
-      if (move.substring(0, 4) == move.substring(7, 11)) {
+    if (uciMove.length == "(3,1)->(2,1)".length) {
+      if (uciMove.substring(0, 4) == uciMove.substring(7, 11)) {
         return false;
       }
     }
@@ -416,10 +416,10 @@ class Move {
   }
 
   @override
-  int get hashCode => move.hashCode;
+  int get hashCode => uciMove.hashCode;
 
   @override
-  bool operator ==(Object other) => other is Move && other.move == move;
+  bool operator ==(Object other) => other is Move && other.uciMove == uciMove;
 }
 
 const sqBegin = 8;

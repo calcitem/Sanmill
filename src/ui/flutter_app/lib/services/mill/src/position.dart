@@ -247,11 +247,11 @@ class Position {
     ++gamePly;
     ++st.pliesFromNull;
 
-    if (record != null && record!.move.length > "-(1,2)".length) {
+    if (record != null && record!.uciMove.length > "-(1,2)".length) {
       if (st.key != posKeyHistory.lastF) {
         posKeyHistory.add(st.key);
         if (LocalDatabaseService.rules.threefoldRepetitionRule &&
-            hasGameCycle()) {
+            hasGameCycle) {
           setGameOver(
             PieceColor.draw,
             GameOverReason.drawThreefoldRepetition,
@@ -292,7 +292,7 @@ class Position {
 
   /// hasGameCycle() tests if the position has a move which draws by repetition.
 
-  bool hasGameCycle() {
+  bool get hasGameCycle {
     int repetition = 0; // Note: Engine is global val
     for (final i in posKeyHistory) {
       if (st.key == i) {
@@ -311,7 +311,7 @@ class Position {
 
   /// Mill Game
 
-  bool reset() {
+  void reset() {
     gamePly = 0;
     st.rule50 = 0;
 
@@ -339,11 +339,9 @@ class Position {
     currentSquare = 0;
 
     record = null;
-
-    return true;
   }
 
-  bool start() {
+  void start() {
     gameOverReason = GameOverReason.none;
 
     switch (phase) {
@@ -353,11 +351,10 @@ class Position {
       ready:
       case Phase.ready:
         phase = Phase.placing;
-        return true;
+        break;
       case Phase.placing:
       case Phase.moving:
       case Phase.none:
-        return false;
     }
   }
 
@@ -404,7 +401,7 @@ class Position {
 
           if (pieceInHandCount[PieceColor.white] == 0 &&
               pieceInHandCount[PieceColor.black] == 0) {
-            if (isGameOver()) return true;
+            if (isGameOver) return true;
 
             phase = Phase.moving;
             action = Act.select;
@@ -417,7 +414,7 @@ class Position {
               changeSideToMove();
             }
 
-            if (isGameOver()) return true;
+            if (isGameOver) return true;
           } else {
             changeSideToMove();
           }
@@ -440,7 +437,7 @@ class Position {
 
             if (pieceInHandCount[PieceColor.white] == 0 &&
                 pieceInHandCount[PieceColor.black] == 0) {
-              if (isGameOver()) return true;
+              if (isGameOver) return true;
 
               phase = Phase.moving;
               action = Act.select;
@@ -449,7 +446,7 @@ class Position {
                 changeSideToMove();
               }
 
-              if (isGameOver()) return true;
+              if (isGameOver) return true;
             }
           } else {
             action = Act.remove;
@@ -460,7 +457,7 @@ class Position {
         }
         break;
       case Phase.moving:
-        if (isGameOver()) return true;
+        if (isGameOver) return true;
 
         // if illegal
         if (pieceOnBoardCount[sideToMove]! >
@@ -502,7 +499,7 @@ class Position {
           action = Act.select;
           changeSideToMove();
 
-          if (isGameOver()) return true;
+          if (isGameOver) return true;
           controller.gameInstance.focusIndex = squareToIndex[s];
 
           await Audios.playTone(Sound.place);
@@ -587,7 +584,7 @@ class Position {
         }
 
         if (LocalDatabaseService.rules.isDefenderMoveFirst) {
-          isGameOver();
+          isGameOver;
           return RemoveResponse.r0;
         }
       } else {
@@ -598,7 +595,7 @@ class Position {
     }
 
     changeSideToMove();
-    isGameOver();
+    isGameOver;
 
     return RemoveResponse.r0;
   }
@@ -663,7 +660,9 @@ class Position {
         pieceOnBoardCount[PieceColor.black] == 3;
   }
 
-  bool isGameOver() {
+  // TODO: [Leptopoda] this method seems to be more than  a getter
+  //we should probably return it to not be a getter and rename it to avoid confusion
+  bool get isGameOver {
     if (phase == Phase.ready || phase == Phase.gameOver) {
       return true;
     }
@@ -760,12 +759,10 @@ class Position {
     return updateKey(s);
   }
 
-  int updateKeyMisc() {
+  void updateKeyMisc() {
     st.key = st.key << _Zobrist.keyMiscBit >> _Zobrist.keyMiscBit;
 
     st.key |= pieceToRemoveCount << (32 - _Zobrist.keyMiscBit);
-
-    return st.key;
   }
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -1032,7 +1029,7 @@ class Position {
     }
 
     for (int i = posAfterLastRemove; i < recorder.moveCount; i++) {
-      buffer.write(" ${recorder.moves[i].move}");
+      buffer.write(" ${recorder.moves[i].uciMove}");
     }
 
     final String moves = buffer.toString();
