@@ -386,7 +386,7 @@ class _GameRecorder {
         }
         k++;
       } else {
-        moveHistory.write("${i < 9 ? " " : ""}${i + 1}. ${moves[i].move}　");
+        moveHistory.write("${i < 9 ? " " : ""}${i + 1}. ${moves[i].uciMove}　");
       }
 
       if (LocalDatabaseService.display.standardNotationEnabled) {
