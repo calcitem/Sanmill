@@ -22,6 +22,7 @@ part of '../mill.dart';
 // TODO: [Leptopoda] the public facing methods look a lot like the ones Itterable has.
 //We might wanna make GameRecorder one.
 class GameRecorder {
+  // TODO: [Leptopoda] use null
   int cur = -1;
   String lastPositionWithRemove;
   List<Move> moves = <Move>[];

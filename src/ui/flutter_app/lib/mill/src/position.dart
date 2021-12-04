@@ -41,6 +41,7 @@ class Position {
 
   late GameRecorder recorder;
 
+  // TODO: [Leptopoda] use null
   Map<PieceColor, int> pieceInHandCount = {
     PieceColor.white: -1,
     PieceColor.black: -1
@@ -990,7 +991,7 @@ class Position {
     record = null;
 
     clearBoard();
-
+    // TODO: [Leptopoda] use null
     if (pieceOnBoardCountCount() == -1) {
       return -1;
     }
@@ -1043,6 +1044,7 @@ class Position {
       return HistoryResponse.equal;
     }
 
+    // TODO: [Leptopoda] use null
     if (moveIndex < -1 || recorder.moveCount <= moveIndex) {
       debugPrint("[goto] moveIndex is out of range.");
       return HistoryResponse.outOfRange;
@@ -1075,6 +1077,7 @@ class Position {
     return error;
   }
 
+  // TODO: [Leptopoda] use null
   int _gotoHistoryIndex(HistoryMove move, [int? index]) {
     switch (move) {
       case HistoryMove.forwardAll:
@@ -1111,7 +1114,7 @@ class Position {
     }
   }
 
-  String movesSinceLastRemove() {
+  String? get movesSinceLastRemove {
     int i = 0;
     final buffer = StringBuffer();
     int posAfterLastRemove = 0;
@@ -1130,13 +1133,9 @@ class Position {
 
     final String moves = buffer.toString();
 
-    final idx = moves.indexOf("-(");
-    // TODO: [Leptopoda] clean up assertion
-    if (idx != -1) {
-      assert(false);
-    }
+    assert(!moves.contains('-('));
 
-    return moves.isNotEmpty ? moves.substring(1) : "";
+    return moves.isNotEmpty ? moves.substring(1) : null;
   }
 
   String? get moveHistoryText => recorder.buildMoveHistoryText();

@@ -198,11 +198,12 @@ class NativeEngine extends Engine {
 
   String _getPositionFen(Position position) {
     final startPosition = position.lastPositionWithRemove;
-    final moves = position.movesSinceLastRemove();
+    final moves = position.movesSinceLastRemove;
 
     String posFenStr;
 
-    if (moves.isEmpty) {
+    // TODO: [Leptopoda] use StringBuffer
+    if (moves == null) {
       posFenStr = "position fen $startPosition";
     } else {
       posFenStr = "position fen $startPosition moves $moves";
