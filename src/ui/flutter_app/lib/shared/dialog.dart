@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/preferences.dart';
+import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -34,7 +35,9 @@ class _LinkTextSpan extends TextSpan {
           text: text ?? url,
           recognizer: TapGestureRecognizer()
             ..onTap = () {
-              launch(url, forceSafariVC: false);
+              if (!EnvironmentConfig.monkeyTest) {
+                launch(url, forceSafariVC: false);
+              }
             },
         );
 }

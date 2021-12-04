@@ -23,7 +23,7 @@ import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
 enum PlayerType { human, AI }
-Map<String, bool> isAi = {PieceColor.white: false, PieceColor.black: true};
+Map<PieceColor, bool> isAi = {PieceColor.white: false, PieceColor.black: true};
 
 // TODO: [Leptopoda] add constructor
 Game gameInstance = Game();
@@ -46,19 +46,22 @@ class Game {
   void newGame() {
     position.phase = Phase.ready;
     start();
-    position.init();
+
+    position.restart();
     focusIndex = blurIndex = null;
+
     moveHistory = [""];
     sideToMove = PieceColor.white;
   }
 
-  String sideToMove = PieceColor.white;
+  PieceColor sideToMove = PieceColor.white;
 
   bool get isAiToMove {
     assert(sideToMove == PieceColor.white || sideToMove == PieceColor.black);
     return isAi[sideToMove]!;
   }
 
+  // TODO: [Leptopoda] make the move historry a seperate class
   List<String> moveHistory = [""];
 
   Position _position = Position();
@@ -67,7 +70,7 @@ class Game {
   int? focusIndex;
   int? blurIndex;
 
-  Map<String, bool> isSearching = {
+  Map<PieceColor, bool> isSearching = {
     PieceColor.white: false,
     PieceColor.black: false
   };

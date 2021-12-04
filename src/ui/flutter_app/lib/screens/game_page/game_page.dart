@@ -117,6 +117,8 @@ class _GamePageState extends State<GamePage>
             return _showTip(S.of(context).tipMove);
           default:
         }
+        break;
+      default:
     }
 
     if (!LocalDatabaseService.preferences.isAutoRestart) {
@@ -776,35 +778,7 @@ class _GamePageState extends State<GamePage>
         },
       );
 
-  String _getGameOverReasonString(GameOverReason? reason, String? winner) {
-    final String loserStr =
-        winner == PieceColor.white ? S.of(context).black : S.of(context).white;
-
-    switch (gameInstance.position.gameOverReason) {
-      case GameOverReason.loseReasonlessThanThree:
-        return S.of(context).loseReasonlessThanThree(loserStr);
-      case GameOverReason.loseReasonResign:
-        return S.of(context).loseReasonResign(loserStr);
-      case GameOverReason.loseReasonNoWay:
-        return S.of(context).loseReasonNoWay(loserStr);
-      case GameOverReason.loseReasonBoardIsFull:
-        return S.of(context).loseReasonBoardIsFull(loserStr);
-      case GameOverReason.loseReasonTimeOver:
-        return S.of(context).loseReasonTimeOver(loserStr);
-      case GameOverReason.drawReasonRule50:
-        return S.of(context).drawReasonRule50;
-      case GameOverReason.drawReasonEndgameRule50:
-        return S.of(context).drawReasonEndgameRule50;
-      case GameOverReason.drawReasonBoardIsFull:
-        return S.of(context).drawReasonBoardIsFull;
-      case GameOverReason.drawReasonThreefoldRepetition:
-        return S.of(context).drawReasonThreefoldRepetition;
-      case GameOverReason.noReason:
-        return S.of(context).gameOverUnknownReason;
-    }
-  }
-
-  GameResult _getGameResult(String winner) {
+  GameResult _getGameResult(PieceColor winner) {
     if (widget.engineType == EngineType.aiVsAi) return GameResult.none;
 
     switch (winner) {
@@ -827,7 +801,7 @@ class _GamePageState extends State<GamePage>
     }
   }
 
-  void _showGameResult(String winner) {
+  void _showGameResult(PieceColor winner) {
     final GameResult result = _getGameResult(winner);
     gameInstance.position.result = result;
 
@@ -852,10 +826,8 @@ class _GamePageState extends State<GamePage>
         LocalDatabaseService.preferences.skillLevel == 30; // TODO: 30
 
     final content = StringBuffer(
-      _getGameOverReasonString(
-        gameInstance.position.gameOverReason,
-        gameInstance.position.winner,
-      ),
+      gameInstance.position.gameOverReason
+          .getName(context, gameInstance.position.winner),
     );
 
     debugPrint("$_tag Game over reason string: $content");
@@ -946,42 +918,8 @@ class _GamePageState extends State<GamePage>
   }
 
   Widget get _header {
-    late final IconData left;
-    late final IconData right;
-    switch (widget.engineType) {
-      case EngineType.humanVsAi:
-        if (LocalDatabaseService.preferences.aiMovesFirst) {
-          left = FluentIcons.bot_24_filled;
-          right = FluentIcons.person_24_filled;
-        } else {
-          left = FluentIcons.person_24_filled;
-          right = FluentIcons.bot_24_filled;
-        }
-        break;
-      case EngineType.humanVsHuman:
-        left = FluentIcons.person_24_filled;
-        right = FluentIcons.person_24_filled;
-        break;
-      case EngineType.aiVsAi:
-        left = FluentIcons.bot_24_filled;
-        right = FluentIcons.bot_24_filled;
-        break;
-      case EngineType.humanVsCloud:
-        left = FluentIcons.person_24_filled;
-        right = FluentIcons.cloud_24_filled;
-        break;
-      case EngineType.humanVsLAN:
-        left = FluentIcons.person_24_filled;
-        right = FluentIcons.wifi_1_24_filled;
-        break;
-      case EngineType.testViaLAN:
-        left = FluentIcons.wifi_1_24_filled;
-        right = FluentIcons.wifi_1_24_filled;
-        break;
-      default:
-        assert(false);
-    }
-
+    final left = widget.engineType.leftHeaderIcon;
+    final right = widget.engineType.rightHeaderIcon;
     final iconColor = LocalDatabaseService.colorSettings.messageColor;
 
     final iconRow = Row(
@@ -1080,6 +1018,7 @@ class _GamePageState extends State<GamePage>
         us = S.of(context).player2;
         them = S.of(context).player1;
         break;
+      default:
     }
 
     switch (pos.phase) {
