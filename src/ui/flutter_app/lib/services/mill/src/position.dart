@@ -57,7 +57,6 @@ class Position {
 
   _StateInfo st = _StateInfo();
 
-  PieceColor _us = PieceColor.white;
   PieceColor _them = PieceColor.black;
   PieceColor _winner = PieceColor.nobody;
 
@@ -73,7 +72,6 @@ class Position {
   };
 
   int _currentSquare = 0;
-  int _nPlayed = 0;
 
   Move? record;
 
@@ -155,6 +153,7 @@ class Position {
     return buffer.toString();
   }
 
+  // TODO: [Leptopoda] why isn't this needed anymore? Probably removed it by accident
   /// Position::legal() tests whether a pseudo-legal move is legal
   bool _legal(Move move) {
     if (!isOk(move.from) || !isOk(move.to)) return false;
@@ -874,14 +873,6 @@ class Position {
     }
 
     return true;
-  }
-
-  bool _isStarSquare(int s) {
-    if (LocalDatabaseService.rules.hasDiagonalLines) {
-      return s == 17 || s == 19 || s == 21 || s == 23;
-    }
-
-    return s == 16 || s == 18 || s == 20 || s == 22;
   }
 
   ///////////////////////////////////////////////////////////////////////////////
