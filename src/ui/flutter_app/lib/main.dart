@@ -41,9 +41,9 @@ part 'package:sanmill/services/catcher.dart';
 part 'package:sanmill/services/init_system_ui.dart';
 
 Future<void> main() async {
-  debugPrint('Environment [catcher]: ${EnvironmentConfig.catcher}');
-  debugPrint('Environment [dev_mode]: ${EnvironmentConfig.devMode}');
-  debugPrint('Environment [monkey_test]: ${EnvironmentConfig.monkeyTest}');
+  debugPrint("Environment [catcher]: ${EnvironmentConfig.catcher}");
+  debugPrint("Environment [dev_mode]: ${EnvironmentConfig.devMode}");
+  debugPrint("Environment [monkey_test]: ${EnvironmentConfig.monkeyTest}");
 
   await LocalDatabaseService.initStorage();
 

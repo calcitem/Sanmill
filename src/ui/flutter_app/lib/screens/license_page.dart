@@ -30,7 +30,7 @@ class LicenseAgreementPage extends StatelessWidget {
       builder: (context, data) {
         late final String _data;
         if (!data.hasData) {
-          _data = 'Nothing to show';
+          _data = "Nothing to show";
         } else {
           _data = data.data!;
         }

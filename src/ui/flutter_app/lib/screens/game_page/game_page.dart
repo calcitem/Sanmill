@@ -416,9 +416,8 @@ class _GamePageState extends State<GamePage>
           _animationController.animateTo(1.0);
 
           _showTips();
-          if (LocalDatabaseService.preferences.screenReaderSupport &&
-              move.notation != null) {
-            showSnackBar(context, "${S.of(context).ai}: ${move.notation!}");
+          if (LocalDatabaseService.preferences.screenReaderSupport) {
+            showSnackBar(context, "${S.of(context).ai}: ${move.notation}");
           }
           break;
         case "timeout":
@@ -554,7 +553,6 @@ class _GamePageState extends State<GamePage>
                   textAlign: TextAlign.center,
                 ),
               ),
-              const CustomSpacer(),
               SimpleDialogOption(
                 onPressed: _stepForward,
                 child: Text(
@@ -583,15 +581,17 @@ class _GamePageState extends State<GamePage>
               ),
               const CustomSpacer(),
             ],
-            SimpleDialogOption(
-              onPressed: _showMoveList,
-              child: Text(
-                S.of(context).showMoveList,
-                style: AppTheme.simpleDialogOptionTextStyle,
-                textAlign: TextAlign.center,
+            if (gameInstance.position.moveHistoryText != null) ...[
+              SimpleDialogOption(
+                onPressed: _showMoveList,
+                child: Text(
+                  S.of(context).showMoveList,
+                  style: AppTheme.simpleDialogOptionTextStyle,
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            const CustomSpacer(),
+              const CustomSpacer(),
+            ],
             SimpleDialogOption(
               onPressed: _moveNow,
               child: Text(
@@ -632,14 +632,14 @@ class _GamePageState extends State<GamePage>
     _isGoingToHistory = true;
 
     switch (await gameInstance.position.gotoHistory(move, number)) {
-      case "":
+      case null:
         break;
-      case "null":
-      case "out-of-range":
-      case "equal":
+      case HistoryResponse.outOfRange:
+      case HistoryResponse.equal:
         ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).atEnd);
         break;
+      case HistoryResponse.error:
       default:
         ScaffoldMessenger.of(context).clearSnackBars();
         showSnackBar(context, S.of(context).movesAndRulesNotMatch);
@@ -653,7 +653,7 @@ class _GamePageState extends State<GamePage>
       late final String text;
       final lastEffectiveMove = pos.recorder.lastEffectiveMove;
       if (lastEffectiveMove?.notation != null) {
-        text = S.of(context).lastMove(lastEffectiveMove!.notation!);
+        text = S.of(context).lastMove(lastEffectiveMove!.notation);
       } else {
         text = S.of(context).atEnd;
       }
@@ -689,7 +689,7 @@ class _GamePageState extends State<GamePage>
       );
 
   void _showMoveList() {
-    final moveHistoryText = gameInstance.position.moveHistoryText;
+    final moveHistoryText = gameInstance.position.moveHistoryText!;
     final end = gameInstance.moveHistory.length - 1;
     Navigator.pop(context);
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -1040,7 +1040,7 @@ class _GamePageState extends State<GamePage>
 
     // Last Move information
     if (pos.recorder.lastMove?.notation != null) {
-      final String n1 = pos.recorder.lastMove!.notation!;
+      final String n1 = pos.recorder.lastMove!.notation;
       // $them is only shown with the screen reader. It is convenient for
       // the disabled to recognize whether the opponent has finished the moving.
       if (LocalDatabaseService.preferences.screenReaderSupport) {

@@ -33,19 +33,19 @@ class GameRecorder {
   String? wmdNotationToMoveString(String wmd) {
     if (wmd.length == 3 && wmd[0] == "x") {
       if (wmdNotationToMove[wmd.substring(1, 3)] != null) {
-        return '-${wmdNotationToMove[wmd.substring(1, 3)]!}';
+        return "-${wmdNotationToMove[wmd.substring(1, 3)]!}";
       }
     } else if (wmd.length == 2) {
       if (wmdNotationToMove[wmd] != null) {
         return wmdNotationToMove[wmd]!;
       }
-    } else if (wmd.length == 5 && wmd[2] == '-') {
+    } else if (wmd.length == 5 && wmd[2] == "-") {
       if (wmdNotationToMove[(wmd.substring(0, 2))] != null &&
           wmdNotationToMove[(wmd.substring(3, 5))] != null) {
-        return '${wmdNotationToMove[(wmd.substring(0, 2))]!}->${wmdNotationToMove[(wmd.substring(3, 5))]!}';
+        return "${wmdNotationToMove[(wmd.substring(0, 2))]!}->${wmdNotationToMove[(wmd.substring(3, 5))]!}";
       }
-    } else if ((wmd.length == 8 && wmd[2] == '-' && wmd[5] == 'x') ||
-        (wmd.length == 5 && wmd[2] == 'x')) {
+    } else if ((wmd.length == 8 && wmd[2] == "-" && wmd[5] == "x") ||
+        (wmd.length == 5 && wmd[2] == "x")) {
       debugPrint("$_tag Not support parsing format oo-ooxo notation.");
     } else {
       debugPrint("$_tag Parse notation $wmd failed.");
@@ -55,8 +55,8 @@ class GameRecorder {
   String? playOkNotationToMoveString(String playOk) {
     if (playOk.isEmpty) return null;
 
-    final iDash = playOk.indexOf('-');
-    final iX = playOk.indexOf('x');
+    final iDash = playOk.indexOf("-");
+    final iX = playOk.indexOf("x");
 
     if (iDash == -1 && iX == -1) {
       // 12
@@ -121,7 +121,7 @@ class GameRecorder {
       return true;
     }
 
-    if (text.isNotEmpty && text[0] == '[') {
+    if (text.isNotEmpty && text[0] == "[") {
       return true;
     }
 
@@ -168,45 +168,45 @@ class GameRecorder {
     final List<Move> newHistory = [];
     final List<String> list = moveList
         .toLowerCase()
-        .replaceAll('\n', ' ')
-        .replaceAll(',', ' ')
-        .replaceAll(';', ' ')
-        .replaceAll('!', ' ')
-        .replaceAll('?', ' ')
-        .replaceAll('#', ' ')
-        .replaceAll('()', ' ')
-        .replaceAll('white', ' ')
-        .replaceAll('black', ' ')
-        .replaceAll('win', ' ')
-        .replaceAll('lose', ' ')
-        .replaceAll('draw', ' ')
-        .replaceAll('resign', ' ')
-        .replaceAll('-/x', 'x')
-        .replaceAll('/x', 'x')
-        .replaceAll('.a', '. a')
-        .replaceAll('.b', '. b')
-        .replaceAll('.c', '. c')
-        .replaceAll('.d', '. d')
-        .replaceAll('.e', '. e')
-        .replaceAll('.f', '. f')
-        .replaceAll('.g', '. g')
+        .replaceAll("\n", " ")
+        .replaceAll(",", " ")
+        .replaceAll(";", " ")
+        .replaceAll("!", " ")
+        .replaceAll("?", " ")
+        .replaceAll("#", " ")
+        .replaceAll("()", " ")
+        .replaceAll("white", " ")
+        .replaceAll("black", " ")
+        .replaceAll("win", " ")
+        .replaceAll("lose", " ")
+        .replaceAll("draw", " ")
+        .replaceAll("resign", " ")
+        .replaceAll("-/x", "x")
+        .replaceAll("/x", "x")
+        .replaceAll(".a", ". a")
+        .replaceAll(".b", ". b")
+        .replaceAll(".c", ". c")
+        .replaceAll(".d", ". d")
+        .replaceAll(".e", ". e")
+        .replaceAll(".f", ". f")
+        .replaceAll(".g", ". g")
         // GoldToken
-        .replaceAll('\t', ' ')
-        .replaceAll('place to ', '')
-        .replaceAll('  take ', 'x')
-        .replaceAll(' -> ', '-')
+        .replaceAll("\t", " ")
+        .replaceAll("place to ", "")
+        .replaceAll("  take ", "x")
+        .replaceAll(" -> ", "-")
         // Finally
-        .split(' ');
+        .split(" ");
 
     for (var i in list) {
       i = i.trim();
 
       if (int.tryParse(i) != null) {
-        i = '$i.';
+        i = "$i.";
       }
 
       if (i.isNotEmpty && !i.endsWith(".")) {
-        if (i.length == 5 && i[2] == 'x') {
+        if (i.length == 5 && i[2] == "x") {
           // "a1xc3"
           final String? m1 = wmdNotationToMoveString(i.substring(0, 2));
           if (m1 != null) {
@@ -222,7 +222,7 @@ class GameRecorder {
             debugPrint("Cannot import $i");
             return i;
           }
-        } else if (i.length == 8 && i[2] == '-' && i[5] == 'x') {
+        } else if (i.length == 8 && i[2] == "-" && i[5] == "x") {
           // "a1-b2xc3"
           final String? m1 = wmdNotationToMoveString(i.substring(0, 5));
           if (m1 != null) {
@@ -264,12 +264,12 @@ class GameRecorder {
     final List<Move> newHistory = [];
 
     final List<String> list = moveList
-        .replaceAll('\n', ' ')
-        .replaceAll(' 1/2-1/2', '')
-        .replaceAll(' 1-0', '')
-        .replaceAll(' 0-1', '')
-        .replaceAll('TXT', '')
-        .split(' ');
+        .replaceAll("\n", " ")
+        .replaceAll(" 1/2-1/2", "")
+        .replaceAll(" 1-0", "")
+        .replaceAll(" 0-1", "")
+        .replaceAll("TXT", "")
+        .split(" ");
 
     for (var i in list) {
       i = i.trim();
@@ -278,7 +278,7 @@ class GameRecorder {
           !i.endsWith(".") &&
           !i.startsWith("[") &&
           !i.endsWith("]")) {
-        final iX = i.indexOf('x');
+        final iX = i.indexOf("x");
         if (iX == -1) {
           final String? m = playOkNotationToMoveString(i);
           if (m != null) {
@@ -384,15 +384,15 @@ class GameRecorder {
 
   Move? get lastEffectiveMove => cur == -1 ? null : moveAt(cur);
 
-  String buildMoveHistoryText({int cols = 2}) {
+  String? buildMoveHistoryText({int cols = 2}) {
     if (history.isEmpty) {
-      return '';
+      return null;
     }
 
-    var moveHistoryText = '';
-    int k = 1;
-    String num = "";
+    final StringBuffer moveHistory = StringBuffer();
 
+    String num = "";
+    int k = 1;
     for (var i = 0; i <= cur; i++) {
       if (LocalDatabaseService.display.standardNotationEnabled) {
         if (k % cols == 1) {
@@ -400,32 +400,27 @@ class GameRecorder {
           if (k < 9 * cols) {
             num = " $num ";
           }
-        } else {
-          num = "";
         }
         if (i + 1 <= cur && history[i + 1].type == MoveType.remove) {
-          moveHistoryText +=
-              '$num${history[i].notation}${history[i + 1].notation}    ';
+          moveHistory.write(
+            "$num${history[i].notation}${history[i + 1].notation}    ",
+          );
           i++;
         } else {
-          moveHistoryText += '$num${history[i].notation}    ';
+          moveHistory.write("$num${history[i].notation}    ");
         }
         k++;
       } else {
-        moveHistoryText += '${i < 9 ? ' ' : ''}${i + 1}. ${history[i].move}　';
+        moveHistory.write("${i < 9 ? " " : ""}${i + 1}. ${history[i].move}　");
       }
 
       if (LocalDatabaseService.display.standardNotationEnabled) {
-        if ((k + 1) % cols == 0) moveHistoryText += '\n';
+        if ((k + 1) % cols == 0) moveHistory.write("\n");
       } else {
-        if ((i + 1) % cols == 0) moveHistoryText += '\n';
+        if ((i + 1) % cols == 0) moveHistory.write("\n");
       }
     }
 
-    if (moveHistoryText.isEmpty) {
-      moveHistoryText = "";
-    }
-
-    return moveHistoryText.replaceAll('    \n', '\n');
+    return moveHistory.toString().replaceAll("    \n", "\n");
   }
 }

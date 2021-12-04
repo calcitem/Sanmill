@@ -37,6 +37,8 @@ class StateInfo {
   int key = 0;
 }
 
+enum HistoryResponse { equal, outOfRange, error }
+
 class Position {
   GameResult result = GameResult.pending;
 
@@ -175,7 +177,7 @@ class Position {
       if (file == 3) {
         buffer.write(space);
       } else {
-        buffer.write('/');
+        buffer.write("/");
       }
     }
 
@@ -225,7 +227,7 @@ class Position {
   Future<bool> doMove(String move) async {
     if (move.length > "Player".length &&
         move.substring(0, "Player".length - 1) == "Player") {
-      if (move["Player".length] == '1') {
+      if (move["Player".length] == "1") {
         return resign(PieceColor.white);
       } else {
         return resign(PieceColor.black);
@@ -1036,22 +1038,20 @@ class Position {
   }
 
 ///////////////////////////////////////////////////////////////////////////////
-  Future<String> gotoHistory(HistoryMove move, [int? index]) async {
+  Future<HistoryResponse?> gotoHistory(HistoryMove move, [int? index]) async {
     final int moveIndex = _gotoHistoryIndex(move, index);
 
     if (recorder.cur == moveIndex) {
       debugPrint("[goto] cur is equal to moveIndex.");
-      return "equal";
+      return HistoryResponse.equal;
     }
 
     final history = recorder.history;
 
     if (moveIndex < -1 || history.length <= moveIndex) {
       debugPrint("[goto] moveIndex is out of range.");
-      return "out-of-range";
+      return HistoryResponse.outOfRange;
     }
-
-    String errString = "";
 
     Audios.isTemporaryMute = true;
 
@@ -1065,13 +1065,11 @@ class Position {
 
     gameInstance.newGame();
 
-    if (moveIndex == -1) {
-      errString = "";
-    }
-
+    HistoryResponse? error;
     for (var i = 0; i <= moveIndex; i++) {
       if (!(await gameInstance.doMove(history[i].move))) {
-        errString = history[i].move;
+        // TODO: [Leptopoda] testing
+        error = HistoryResponse.error;
         break;
       }
     }
@@ -1084,8 +1082,7 @@ class Position {
 
     Audios.isTemporaryMute = false;
     await _gotoHistoryPlaySound(move);
-
-    return errString;
+    return error;
   }
 
   int _gotoHistoryIndex(HistoryMove move, [int? index]) {
@@ -1130,7 +1127,7 @@ class Position {
     int posAfterLastRemove = 0;
 
     for (i = recorder.movesCount - 1; i >= 0; i--) {
-      if (recorder.moveAt(i).move[0] == '-') break;
+      if (recorder.moveAt(i).move[0] == "-") break;
     }
 
     if (i >= 0) {
@@ -1143,15 +1140,15 @@ class Position {
 
     final String moves = buffer.toString();
 
-    final idx = moves.indexOf('-(');
+    final idx = moves.indexOf("-(");
     if (idx != -1) {
       assert(false);
     }
 
-    return moves.isNotEmpty ? moves.substring(1) : '';
+    return moves.isNotEmpty ? moves.substring(1) : "";
   }
 
-  String get moveHistoryText => recorder.buildMoveHistoryText();
+  String? get moveHistoryText => recorder.buildMoveHistoryText();
 
   PieceColor get side => _sideToMove;
 

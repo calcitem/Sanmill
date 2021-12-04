@@ -31,15 +31,15 @@ void main() {
     );
   }
 
-  testWidgets('Widget', (WidgetTester tester) async {
+  testWidgets("Widget", (WidgetTester tester) async {
     const _screen = Home();
     await tester.pumpWidget(
       makeTestableWidget(
         child: _screen,
-        locale: const Locale('en'),
+        locale: const Locale("en"),
       ),
     );
     await tester.pump();
-    expect(find.text('Mill'), findsOneWidget);
+    expect(find.text("Mill"), findsOneWidget);
   });
 }
