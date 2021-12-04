@@ -40,36 +40,36 @@ class StateInfo {
 class Position {
   GameResult result = GameResult.pending;
 
-  List<String> board = List.filled(sqNumber, "");
-  List<String> _grid = List.filled(7 * 7, "");
+  List<PieceColor> board = List.filled(sqNumber, PieceColor.none);
+  List<PieceColor> _grid = List.filled(7 * 7, PieceColor.none);
 
   late GameRecorder recorder;
 
-  Map<String, int> pieceInHandCount = {
+  Map<PieceColor, int> pieceInHandCount = {
     PieceColor.white: -1,
     PieceColor.black: -1
   };
-  Map<String, int> pieceOnBoardCount = {
+  Map<PieceColor, int> pieceOnBoardCount = {
     PieceColor.white: 0,
     PieceColor.black: 0
   };
   int pieceToRemoveCount = 0;
 
   int gamePly = 0;
-  String _sideToMove = PieceColor.white;
+  PieceColor _sideToMove = PieceColor.white;
 
   StateInfo st = StateInfo();
 
-  String us = PieceColor.white;
-  String them = PieceColor.black;
-  String _winner = PieceColor.nobody;
+  PieceColor us = PieceColor.white;
+  PieceColor them = PieceColor.black;
+  PieceColor _winner = PieceColor.nobody;
 
   GameOverReason gameOverReason = GameOverReason.noReason;
 
   Phase phase = Phase.none;
   Act action = Act.none;
 
-  Map<String, int> score = {
+  Map<PieceColor, int> score = {
     PieceColor.white: 0,
     PieceColor.black: 0,
     PieceColor.draw: 0
@@ -86,7 +86,7 @@ class Position {
   late Move move;
 
   Position() {
-    init();
+    _init();
   }
 
   Position.clone(Position other) {
@@ -126,14 +126,14 @@ class Position {
     nPlayed = other.nPlayed;
   }
 
-  String pieceOnGrid(int index) => _grid[index];
-  String pieceOn(int sq) => board[sq];
+  PieceColor pieceOnGrid(int index) => _grid[index];
+  PieceColor pieceOn(int sq) => board[sq];
 
-  bool empty(int sq) => pieceOn(sq) == Piece.noPiece;
+  bool empty(int sq) => pieceOn(sq) == PieceColor.none;
 
-  String get sideToMove => _sideToMove;
+  PieceColor get sideToMove => _sideToMove;
 
-  String movedPiece(int move) => pieceOn(fromSq(move));
+  PieceColor movedPiece(int move) => pieceOn(fromSq(move));
 
   Future<bool> movePiece(int from, int to) async {
     if (selectPiece(from) == 0) {
@@ -143,15 +143,19 @@ class Position {
     return false;
   }
 
-  void init() {
+  void restart() {
     for (var i = 0; i < _grid.length; i++) {
-      _grid[i] = Piece.noPiece;
+      _grid[i] = PieceColor.none;
     }
 
     for (var i = 0; i < board.length; i++) {
-      board[i] = Piece.noPiece;
+      board[i] = PieceColor.none;
     }
 
+    _init();
+  }
+
+  void _init() {
     phase = Phase.placing;
 
     setPosition(); // TODO
@@ -168,7 +172,7 @@ class Position {
     for (var file = 1; file <= fileNumber; file++) {
       for (var rank = 1; rank <= rankNumber; rank++) {
         final piece = pieceOnGrid(squareToIndex[makeSquare(file, rank)]!);
-        buffer.write(piece);
+        buffer.write(piece.string);
       }
 
       if (file == 3) {
@@ -243,7 +247,7 @@ class Position {
   bool legal(Move move) {
     if (!isOk(move.from) || !isOk(move.to)) return false;
 
-    final String us = _sideToMove;
+    final PieceColor us = _sideToMove;
 
     if (move.from == move.to) {
       debugPrint("[position] Move $move.move from == to");
@@ -460,13 +464,13 @@ class Position {
   }
 
   Future<bool> putPiece(int s) async {
-    var piece = Piece.noPiece;
+    var piece = PieceColor.none;
     final us = _sideToMove;
 
     if (phase == Phase.gameOver ||
         action != Act.place ||
         !(sqBegin <= s && s < sqEnd) ||
-        board[s] != Piece.noPiece) {
+        board[s] != PieceColor.none) {
       return false;
     }
 
@@ -589,7 +593,7 @@ class Position {
         revertKey(currentSquare);
 
         board[currentSquare] =
-            _grid[squareToIndex[currentSquare]!] = Piece.noPiece;
+            _grid[squareToIndex[currentSquare]!] = PieceColor.none;
 
         currentSquare = s;
         final int n = millsCount(currentSquare);
@@ -627,11 +631,11 @@ class Position {
     if (pieceToRemoveCount <= 0) return -1;
 
     // if piece is not their
-    if (!(PieceColor.opponent(sideToMove) == board[s])) return -2;
+    if (!(sideToMove.opponent == board[s])) return -2;
 
     if (!LocalDatabaseService.rules.mayRemoveFromMillsAlways &&
         potentialMillsCount(s, PieceColor.nobody) > 0 &&
-        !isAllInMills(PieceColor.opponent(sideToMove))) {
+        !isAllInMills(sideToMove.opponent)) {
       return -3;
     }
 
@@ -642,11 +646,11 @@ class Position {
     if (LocalDatabaseService.rules.hasBannedLocations &&
         phase == Phase.placing) {
       // Remove and put ban
-      board[s] = _grid[squareToIndex[s]!] = Piece.ban;
+      board[s] = _grid[squareToIndex[s]!] = PieceColor.ban;
       updateKey(s);
     } else {
       // Remove only
-      board[s] = _grid[squareToIndex[s]!] = Piece.noPiece;
+      board[s] = _grid[squareToIndex[s]!] = PieceColor.none;
     }
 
     record = "-(${fileOf(s)},${rankOf(s)})";
@@ -718,21 +722,21 @@ class Position {
     return 0;
   }
 
-  bool resign(String loser) {
+  bool resign(PieceColor loser) {
     if (phase == Phase.ready ||
         phase == Phase.gameOver ||
         phase == Phase.none) {
       return false;
     }
 
-    setGameOver(PieceColor.opponent(loser), GameOverReason.loseReasonResign);
+    setGameOver(loser.opponent, GameOverReason.loseReasonResign);
 
     return true;
   }
 
-  String get winner => _winner;
+  PieceColor get winner => _winner;
 
-  void setGameOver(String w, GameOverReason reason) {
+  void setGameOver(PieceColor w, GameOverReason reason) {
     phase = Phase.gameOver;
     gameOverReason = reason;
     _winner = w;
@@ -790,7 +794,7 @@ class Position {
     if (phase == Phase.moving && action == Act.select && isAllSurrounded()) {
       if (LocalDatabaseService.rules.isLoseButNotChangeSideWhenNoWay) {
         setGameOver(
-          PieceColor.opponent(sideToMove),
+          sideToMove.opponent,
           GameOverReason.loseReasonNoWay,
         );
         return true;
@@ -812,22 +816,22 @@ class Position {
       for (int r = 0; r < rankNumber; r++) {
         s = f * rankNumber + r;
 
-        if (board[s] == Piece.ban) {
-          board[s] = _grid[squareToIndex[s]!] = Piece.noPiece;
+        if (board[s] == PieceColor.ban) {
+          board[s] = _grid[squareToIndex[s]!] = PieceColor.none;
           revertKey(s);
         }
       }
     }
   }
 
-  void setSideToMove(String color) {
+  void setSideToMove(PieceColor color) {
     _sideToMove = color;
     //us = color;
-    them = PieceColor.opponent(_sideToMove);
+    them = _sideToMove.opponent;
   }
 
   void changeSideToMove() {
-    setSideToMove(PieceColor.opponent(_sideToMove));
+    setSideToMove(_sideToMove.opponent);
     st.key ^= Zobrist.side;
     debugPrint("[position] $_sideToMove to move.");
 
@@ -844,9 +848,9 @@ class Position {
   }
 
   int updateKey(int s) {
-    final String pieceType = colorOn(s);
+    final PieceColor pieceType = colorOn(s);
 
-    return st.key ^= Zobrist.psq[pieceColorIndex[pieceType]!][s];
+    return st.key ^= Zobrist.psq[pieceType.index][s];
   }
 
   int revertKey(int s) {
@@ -863,14 +867,14 @@ class Position {
 
   ///////////////////////////////////////////////////////////////////////////////
 
-  String colorOn(int sq) {
+  PieceColor colorOn(int sq) {
     return board[sq];
   }
 
-  int potentialMillsCount(int to, String c, {int from = 0}) {
+  int potentialMillsCount(int to, PieceColor c, {int from = 0}) {
     int n = 0;
-    String locbak = Piece.noPiece;
-    String _c = c;
+    PieceColor locbak = PieceColor.none;
+    PieceColor _c = c;
 
     assert(0 <= from && from < sqNumber);
 
@@ -880,7 +884,7 @@ class Position {
 
     if (from != 0 && from >= sqBegin && from < sqEnd) {
       locbak = board[from];
-      board[from] = _grid[squareToIndex[from]!] = Piece.noPiece;
+      board[from] = _grid[squareToIndex[from]!] = PieceColor.none;
     }
 
     for (int ld = 0; ld < lineDirectionNumber; ld++) {
@@ -902,7 +906,7 @@ class Position {
     final List<int?> idx = [0, 0, 0];
     int min = 0;
     int? temp = 0;
-    final String m = colorOn(s);
+    final PieceColor m = colorOn(s);
 
     for (int i = 0; i < idx.length; i++) {
       idx[0] = s;
@@ -939,7 +943,7 @@ class Position {
     return n;
   }
 
-  bool isAllInMills(String c) {
+  bool isAllInMills(PieceColor c) {
     for (int i = sqBegin; i < sqEnd; i++) {
       if (board[i] == c) {
         if (potentialMillsCount(i, PieceColor.nobody) == 0) {
@@ -973,7 +977,7 @@ class Position {
 
       for (int d = moveDirectionBegin; d < moveDirectionNumber; d++) {
         final int moveSquare = adjacentSquares[s][d];
-        if (moveSquare != 0 && board[moveSquare] == Piece.noPiece) {
+        if (moveSquare != 0 && board[moveSquare] == PieceColor.none) {
           return false;
         }
       }
@@ -1006,11 +1010,11 @@ class Position {
 
   void clearBoard() {
     for (int i = 0; i < _grid.length; i++) {
-      _grid[i] = Piece.noPiece;
+      _grid[i] = PieceColor.none;
     }
 
     for (int i = 0; i < board.length; i++) {
-      board[i] = Piece.noPiece;
+      board[i] = PieceColor.none;
     }
   }
 
@@ -1053,10 +1057,10 @@ class Position {
     for (int f = 1; f < fileExNumber; f++) {
       for (int r = 0; r < rankNumber; r++) {
         final int s = f * rankNumber + r;
-        if (board[s] == Piece.whiteStone) {
+        if (board[s] == PieceColor.white) {
           pieceOnBoardCount[PieceColor.white] =
               pieceOnBoardCount[PieceColor.white]! + 1;
-        } else if (board[s] == Piece.blackStone) {
+        } else if (board[s] == PieceColor.black) {
           pieceOnBoardCount[PieceColor.black] =
               pieceOnBoardCount[PieceColor.black]! + 1;
         }
@@ -1192,7 +1196,7 @@ class Position {
 
   String get moveHistoryText => recorder.buildMoveHistoryText();
 
-  String get side => _sideToMove;
+  PieceColor get side => _sideToMove;
 
   Move? get lastMove => recorder.last;
 

@@ -16,7 +16,10 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/material.dart';
 import 'package:sanmill/mill/position.dart';
+import 'package:sanmill/services/storage/storage.dart';
 
 enum EngineType {
   humanVsAi,
@@ -26,6 +29,55 @@ enum EngineType {
   humanVsLAN, // Not Implemented
   testViaLAN, // Not Implemented
   none
+}
+
+extension EngineTypeExtensiont on EngineType {
+  IconData? get leftHeaderIcon {
+    switch (this) {
+      case EngineType.humanVsAi:
+        if (LocalDatabaseService.preferences.aiMovesFirst) {
+          return FluentIcons.bot_24_filled;
+        } else {
+          return FluentIcons.person_24_filled;
+        }
+      case EngineType.humanVsHuman:
+        return FluentIcons.person_24_filled;
+
+      case EngineType.aiVsAi:
+        return FluentIcons.bot_24_filled;
+      case EngineType.humanVsCloud:
+        return FluentIcons.person_24_filled;
+      case EngineType.humanVsLAN:
+        return FluentIcons.person_24_filled;
+      case EngineType.testViaLAN:
+        return FluentIcons.wifi_1_24_filled;
+      case EngineType.none:
+        assert(false);
+    }
+  }
+
+  IconData? get rightHeaderIcon {
+    switch (this) {
+      case EngineType.humanVsAi:
+        if (LocalDatabaseService.preferences.aiMovesFirst) {
+          return FluentIcons.person_24_filled;
+        } else {
+          return FluentIcons.bot_24_filled;
+        }
+      case EngineType.humanVsHuman:
+        return FluentIcons.person_24_filled;
+      case EngineType.aiVsAi:
+        return FluentIcons.bot_24_filled;
+      case EngineType.humanVsCloud:
+        return FluentIcons.cloud_24_filled;
+      case EngineType.humanVsLAN:
+        return FluentIcons.wifi_1_24_filled;
+      case EngineType.testViaLAN:
+        return FluentIcons.wifi_1_24_filled;
+      case EngineType.none:
+        assert(false);
+    }
+  }
 }
 
 class EngineResponse {

@@ -17,6 +17,8 @@
 */
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 
 int abs(int value) => value > 0 ? value : -value;
 
@@ -37,7 +39,7 @@ class Move {
   int fromIndex = 0;
   int toIndex = 0;
 
-  String removed = Piece.noPiece;
+  PieceColor removed = PieceColor.none;
 
   // 'move' is the UCI engine's move-string
   String move = "";
@@ -62,7 +64,7 @@ class Move {
       toRank = int.parse(move[4]);
       to = makeSquare(toFile, toRank);
       notation = "x${squareToWmdNotation[to]}";
-      //captured = Piece.noPiece;
+      //captured = PieceColor.none;
     } else if (move.length == "(1,2)->(3,4)".length) {
       type = MoveType.move;
       fromFile = int.parse(move[1]);
@@ -73,15 +75,16 @@ class Move {
       toRank = int.parse(move[10]);
       to = makeSquare(toFile, toRank);
       notation = "${squareToWmdNotation[from]}-${squareToWmdNotation[to]}";
-      removed = Piece.noPiece;
+      removed = PieceColor.none;
     } else if (move.length == "(1,2)".length) {
       type = MoveType.place;
       from = fromFile = fromRank = fromIndex = invalidMove;
       toFile = int.parse(move[1]);
       toRank = int.parse(move[3]);
       to = makeSquare(toFile, toRank);
+      // TODO: [Leptopoda] remove stringy thing
       notation = "${squareToWmdNotation[to]}";
-      removed = Piece.noPiece;
+      removed = PieceColor.none;
     } else if (move == "draw") {
       // TODO
       debugPrint("[TODO] Computer request draw");
@@ -96,11 +99,12 @@ class Move {
     parse();
   }
 
+  // TODO: [Leptopoda] why are there two identical Move constructors...
+
   /// Format:
   /// Place: (1,2)
   /// Remove: -(1,2)
   /// Move: (3,1)->(2,1)
-
   Move.set(this.move) {
     parse();
   }
@@ -138,44 +142,44 @@ class Move {
 
 enum MoveType { place, move, remove, none }
 
-class PieceColor {
-  static const none = '*';
-  static const white = 'O';
-  static const black = '@';
-  static const ban = 'X';
-  static const nobody = '-';
-  static const draw = '=';
+enum PieceColor {
+  none,
+  white,
+  black,
+  ban,
+  nobody,
+  draw,
+}
 
-  static String of(String piece) {
-    switch (piece) {
-      case white:
-        return white;
-      case black:
-        return black;
-      case ban:
-        return ban;
-      default:
-        return nobody;
+extension PieceColorExtension on PieceColor {
+  String get string {
+    switch (this) {
+      case PieceColor.none:
+        return '*';
+      case PieceColor.white:
+        return 'O';
+      case PieceColor.black:
+        return '@';
+      case PieceColor.ban:
+        return 'X';
+      case PieceColor.nobody:
+        return '-';
+      case PieceColor.draw:
+        return '=';
     }
   }
 
-  static bool isSameColor(String p1, String p2) => of(p1) == of(p2);
-
-  static String opponent(String color) {
-    if (color == black) return white;
-    if (color == white) return black;
-    return color;
+  PieceColor get opponent {
+    switch (this) {
+      case PieceColor.black:
+        return PieceColor.white;
+      case PieceColor.white:
+        return PieceColor.black;
+      default:
+        return this;
+    }
   }
-
-  String operator -(String c) => opponent(c);
 }
-
-Map<String, int> pieceColorIndex = {
-  PieceColor.none: 0,
-  PieceColor.white: 1,
-  PieceColor.black: 2,
-  PieceColor.ban: 3
-};
 
 enum Phase { none, ready, placing, moving, gameOver }
 
@@ -194,54 +198,34 @@ enum GameOverReason {
   drawReasonBoardIsFull
 }
 
-enum PieceType { none, whiteStone, blackStone, ban, count, stone }
+extension GameOverReasonExtension on GameOverReason {
+  String getName(BuildContext context, PieceColor? winner) {
+    final String loserStr =
+        winner == PieceColor.white ? S.of(context).black : S.of(context).white;
 
-class Piece {
-  const Piece._();
-  static const noPiece = PieceColor.none;
-  static const whiteStone = PieceColor.white;
-  static const blackStone = PieceColor.black;
-  static const ban = PieceColor.ban;
-
-  static bool isEmpty(String c) => noPiece.contains(c);
-  static bool isWhite(String c) => whiteStone.contains(c);
-  static bool isBlack(String c) => blackStone.contains(c);
-  static bool isBan(String c) => ban.contains(c);
-}
-
-enum Square {
-  SQ_0,
-  SQ_1,
-  SQ_2,
-  SQ_3,
-  SQ_4,
-  SQ_5,
-  SQ_6,
-  SQ_7,
-  SQ_8,
-  SQ_9,
-  SQ_10,
-  SQ_11,
-  SQ_12,
-  SQ_13,
-  SQ_14,
-  SQ_15,
-  SQ_16,
-  SQ_17,
-  SQ_18,
-  SQ_19,
-  SQ_20,
-  SQ_21,
-  SQ_22,
-  SQ_23,
-  SQ_24,
-  SQ_25,
-  SQ_26,
-  SQ_27,
-  SQ_28,
-  SQ_29,
-  SQ_30,
-  SQ_31,
+    switch (this) {
+      case GameOverReason.loseReasonlessThanThree:
+        return S.of(context).loseReasonlessThanThree(loserStr);
+      case GameOverReason.loseReasonResign:
+        return S.of(context).loseReasonResign(loserStr);
+      case GameOverReason.loseReasonNoWay:
+        return S.of(context).loseReasonNoWay(loserStr);
+      case GameOverReason.loseReasonBoardIsFull:
+        return S.of(context).loseReasonBoardIsFull(loserStr);
+      case GameOverReason.loseReasonTimeOver:
+        return S.of(context).loseReasonTimeOver(loserStr);
+      case GameOverReason.drawReasonRule50:
+        return S.of(context).drawReasonRule50;
+      case GameOverReason.drawReasonEndgameRule50:
+        return S.of(context).drawReasonEndgameRule50;
+      case GameOverReason.drawReasonBoardIsFull:
+        return S.of(context).drawReasonBoardIsFull;
+      case GameOverReason.drawReasonThreefoldRepetition:
+        return S.of(context).drawReasonThreefoldRepetition;
+      case GameOverReason.noReason:
+        return S.of(context).gameOverUnknownReason;
+    }
+  }
 }
 
 const sqBegin = 8;
@@ -249,21 +233,13 @@ const sqEnd = 32;
 const sqNumber = 40;
 const effectiveSqNumber = 24;
 
-enum MoveDirection { clockwise, anticlockwise, inward, outward }
-
 const moveDirectionBegin = 0;
 const moveDirectionNumber = 4;
 
-enum LineDirection { horizontal, vertical, slash }
-
 const lineDirectionNumber = 3;
-
-enum File { none, A, B, C }
 
 const fileNumber = 3;
 const fileExNumber = fileNumber + 2;
-
-enum Rank { rank_1, rank_2, rank_3, rank_4, rank_5, rank_6, rank_7, rank_8 }
 
 const rankNumber = 8;
 

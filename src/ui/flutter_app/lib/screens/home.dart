@@ -49,6 +49,40 @@ enum _DrawerIndex {
   About,
 }
 
+extension _DrawerScreen on _DrawerIndex {
+  Widget? get screen {
+    switch (this) {
+      case _DrawerIndex.humanVsAi:
+        return const GamePage(
+          EngineType.humanVsAi,
+          key: Key("Human-Ai"),
+        );
+      case _DrawerIndex.humanVsHuman:
+        return const GamePage(
+          EngineType.humanVsHuman,
+          key: Key("Human-Human"),
+        );
+      case _DrawerIndex.aiVsAi:
+        return const GamePage(
+          EngineType.aiVsAi,
+          key: Key("Ai-Ai"),
+        );
+      case _DrawerIndex.preferences:
+        return const GameSettingsPage();
+      case _DrawerIndex.ruleSettings:
+        return const RuleSettingsPage();
+      case _DrawerIndex.personalization:
+        return const PersonalizationSettingsPage();
+      case _DrawerIndex.feedback:
+        break;
+      case _DrawerIndex.Help:
+        return const HelpScreen();
+      case _DrawerIndex.About:
+        return const AboutPage();
+    }
+  }
+}
+
 /// Home View
 ///
 /// this widget implements the home view of our app.
@@ -62,71 +96,29 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with TickerProviderStateMixin {
   final _controller = CustomDrawerController();
 
+  Widget _screenView = _DrawerIndex.humanVsAi.screen!;
   _DrawerIndex _drawerIndex = _DrawerIndex.humanVsAi;
-  Widget _screenView = const GamePage(
-    EngineType.humanVsAi,
-    key: Key("Human-Ai"),
-  );
 
   /// callback from drawer for replace screen
   /// as user need with passing DrawerIndex (Enum index)
   void _changeIndex(_DrawerIndex index) {
     _controller.hideDrawer();
-    if (_drawerIndex == index && _drawerIndex != _DrawerIndex.feedback) {
-      return;
+    if (_drawerIndex == index && _drawerIndex != _DrawerIndex.feedback) return;
+
+    if (index == _DrawerIndex.feedback) {
+      if (!EnvironmentConfig.monkeyTest) {
+        if (Platform.isWindows) {
+          return debugPrint("flutter_email_sender does not support Windows.");
+        } else {
+          return BetterFeedback.of(context).show(_launchFeedback);
+        }
+      }
     }
 
     setState(() {
+      assert(index != _DrawerIndex.feedback);
       _drawerIndex = index;
-      switch (_drawerIndex) {
-        case _DrawerIndex.humanVsAi:
-          _screenView = const GamePage(
-            EngineType.humanVsAi,
-            key: Key("Human-Ai"),
-          );
-          break;
-        case _DrawerIndex.humanVsHuman:
-          _screenView = const GamePage(
-            EngineType.humanVsHuman,
-            key: Key("Human-Human"),
-          );
-          break;
-        case _DrawerIndex.aiVsAi:
-          _screenView = const GamePage(
-            EngineType.aiVsAi,
-            key: Key("Ai-Ai"),
-          );
-          break;
-        case _DrawerIndex.preferences:
-          _screenView = const GameSettingsPage();
-          break;
-        case _DrawerIndex.ruleSettings:
-          _screenView = const RuleSettingsPage();
-          break;
-        case _DrawerIndex.personalization:
-          _screenView = const PersonalizationSettingsPage();
-          break;
-        case _DrawerIndex.feedback:
-          if (!EnvironmentConfig.devMode) {
-            if (Platform.isWindows) {
-              debugPrint("flutter_email_sender does not support Windows.");
-            } else {
-              BetterFeedback.of(context).show(_launchFeedback);
-            }
-          }
-          break;
-        case _DrawerIndex.Help:
-          if (!EnvironmentConfig.devMode) {
-            _screenView = const HelpScreen();
-          }
-          break;
-
-        case _DrawerIndex.About:
-          if (!EnvironmentConfig.devMode) {
-            _screenView = const AboutPage();
-          }
-          break;
-      }
+      _screenView = index.screen!;
     });
   }
 
