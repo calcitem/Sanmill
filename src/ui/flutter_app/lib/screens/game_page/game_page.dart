@@ -762,7 +762,7 @@ class _GamePageState extends State<GamePage>
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: _boardMargin),
-      child: Board(
+      child: _Board(
         width: boardWidth,
         onBoardTap: _onBoardTap,
         animation: _animation,
