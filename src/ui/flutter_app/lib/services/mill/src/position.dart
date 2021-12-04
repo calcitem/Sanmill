@@ -1011,7 +1011,7 @@ class Position {
     int posAfterLastRemove = 0;
 
     for (i = recorder.moveCount - 1; i >= 0; i--) {
-      if (recorder.moves[i].move[0] == "-") break;
+      if (recorder.moves[i].uciMove[0] == "-") break;
     }
 
     if (i >= 0) {
