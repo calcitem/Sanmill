@@ -25,6 +25,7 @@ import 'package:sanmill/mill/zobrist.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/engine/engine.dart';
 import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/array_helper.dart';
 
 class StateInfo {
   // Copied when making a move
@@ -82,7 +83,7 @@ class Position {
   int currentSquare = 0;
   int nPlayed = 0;
 
-  late String record;
+  Move? record;
 
   static late List<List<List<int>>> millTable;
   static late List<List<int>> adjacentSquares;
@@ -307,9 +308,8 @@ class Position {
     ++gamePly;
     ++st.pliesFromNull;
 
-    if (record.length > "-(1,2)".length) {
-      if (posKeyHistory.isEmpty ||
-          (posKeyHistory.isNotEmpty && st.key != posKeyHistory.last)) {
+    if (record != null && record!.move.length > "-(1,2)".length) {
+      if (posKeyHistory.isEmpty || st.key != posKeyHistory.lastF) {
         posKeyHistory.add(st.key);
         if (LocalDatabaseService.rules.threefoldRepetitionRule &&
             hasGameCycle()) {
@@ -399,7 +399,7 @@ class Position {
 
     currentSquare = 0;
 
-    record = "";
+    record = null;
 
     return true;
   }
@@ -450,7 +450,7 @@ class Position {
         _grid[squareToIndex[s]!] = piece;
         board[s] = piece;
 
-        record = "(${fileOf(s)},${rankOf(s)})";
+        record = Move("(${fileOf(s)},${rankOf(s)})");
 
         updateKey(s);
 
@@ -543,8 +543,9 @@ class Position {
           }
         }
 
-        record =
-            "(${fileOf(currentSquare)},${rankOf(currentSquare)})->(${fileOf(s)},${rankOf(s)})";
+        record = Move(
+          "(${fileOf(currentSquare)},${rankOf(currentSquare)})->(${fileOf(s)},${rankOf(s)})",
+        );
 
         st.rule50++;
 
@@ -615,7 +616,7 @@ class Position {
       board[s] = _grid[squareToIndex[s]!] = PieceColor.none;
     }
 
-    record = "-(${fileOf(s)},${rankOf(s)})";
+    record = Move("-(${fileOf(s)},${rankOf(s)})");
     st.rule50 = 0; // TODO: Need to move out?
 
     if (pieceOnBoardCount[them] != null) {
@@ -995,7 +996,7 @@ class Position {
     action = Act.place;
     currentSquare = 0;
 
-    record = "";
+    record = null;
 
     clearBoard();
 
@@ -1051,9 +1052,7 @@ class Position {
       return HistoryResponse.equal;
     }
 
-    final history = recorder.history;
-
-    if (moveIndex < -1 || history.length <= moveIndex) {
+    if (moveIndex < -1 || recorder.moveCount <= moveIndex) {
       debugPrint("[goto] moveIndex is out of range.");
       return HistoryResponse.outOfRange;
     }
@@ -1062,27 +1061,23 @@ class Position {
 
     // Backup context
     final engineTypeBackup = gameInstance.engineType;
-
-    gameInstance.engineType = EngineType.humanVsHuman;
     gameInstance.setWhoIsAi(EngineType.humanVsHuman);
-
-    final historyBack = history;
-
+    final historyBack = recorder.moves;
     gameInstance.newGame();
 
     HistoryResponse? error;
     for (var i = 0; i <= moveIndex; i++) {
-      if (!(await gameInstance.doMove(history[i].move))) {
+      if (!(await gameInstance.doMove(recorder.moves[i]))) {
         // TODO: [Leptopoda] testing
         error = HistoryResponse.error;
         break;
       }
     }
 
+    // TODO: [Leptopoda] something in here is crashing and it isn't clear what :(
     // Restore context
-    gameInstance.engineType = engineTypeBackup;
     gameInstance.setWhoIsAi(engineTypeBackup);
-    recorder.history = historyBack;
+    recorder.moves = historyBack;
     recorder.cur = moveIndex;
 
     Audios.isTemporaryMute = false;
@@ -1093,7 +1088,7 @@ class Position {
   int _gotoHistoryIndex(HistoryMove move, [int? index]) {
     switch (move) {
       case HistoryMove.forwardAll:
-        return recorder.history.length - 1;
+        return recorder.moveCount - 1;
       case HistoryMove.backAll:
         return -1;
       case HistoryMove.forward:
@@ -1131,21 +1126,22 @@ class Position {
     final buffer = StringBuffer();
     int posAfterLastRemove = 0;
 
-    for (i = recorder.movesCount - 1; i >= 0; i--) {
-      if (recorder.moveAt(i).move[0] == "-") break;
+    for (i = recorder.moveCount - 1; i >= 0; i--) {
+      if (recorder.moves[i].move[0] == "-") break;
     }
 
     if (i >= 0) {
       posAfterLastRemove = i + 1;
     }
 
-    for (int i = posAfterLastRemove; i < recorder.movesCount; i++) {
-      buffer.write(" ${recorder.moveAt(i).move}");
+    for (int i = posAfterLastRemove; i < recorder.moveCount; i++) {
+      buffer.write(" ${recorder.moves[i].move}");
     }
 
     final String moves = buffer.toString();
 
     final idx = moves.indexOf("-(");
+    // TODO: [Leptopoda] clean up assertion
     if (idx != -1) {
       assert(false);
     }
@@ -1157,7 +1153,7 @@ class Position {
 
   PieceColor get side => _sideToMove;
 
-  Move? get lastMove => recorder.last;
+  Move? get lastMove => recorder.lastMove;
 
   String? get lastPositionWithRemove => recorder.lastPositionWithRemove;
 }

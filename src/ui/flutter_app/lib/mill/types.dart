@@ -43,6 +43,7 @@ class Move {
 
   late final MoveType type;
 
+  // TODO: [Leptopoda] attributes should probably be made getters
   Move(this.move) {
     if (!_isLegal) {
       throw "Error: Invalid Move: $move";
@@ -110,6 +111,12 @@ class Move {
 
     return true;
   }
+
+  @override
+  int get hashCode => move.hashCode;
+
+  @override
+  bool operator ==(Object other) => other is Move && other.move == move;
 }
 
 enum MoveType { place, move, remove, none }

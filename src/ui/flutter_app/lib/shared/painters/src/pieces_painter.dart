@@ -36,7 +36,6 @@ class PiecesPainter extends PiecesBasePainter {
   final int? blurIndex;
   final double animationValue;
 
-
   late final double _pieceWidth;
   late final double _animatedPieceWidth;
 
