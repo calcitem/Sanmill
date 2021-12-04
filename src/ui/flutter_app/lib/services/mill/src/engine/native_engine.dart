@@ -49,11 +49,6 @@ class NativeEngine extends Engine {
     await _platform.invokeMethod("shutdown");
   }
 
-  // TODO: [Leptopoda] dafuq
-  Future<bool?> _isReady() async {
-    return _platform.invokeMethod("isReady");
-  }
-
   FutureOr<bool> _isThinking() async {
     final _isThinking = await _platform.invokeMethod<bool>("isThinking");
     if (_isThinking is bool) {

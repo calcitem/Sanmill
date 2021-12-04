@@ -25,7 +25,6 @@ enum _MoveType { place, move, remove }
 enum PieceColor { none, white, black, ban, nobody, draw }
 
 extension PieceColorExtension on PieceColor {
-  @Deprecated("this is the old representation and not needed anymore")
   String get string {
     switch (this) {
       case PieceColor.none:
