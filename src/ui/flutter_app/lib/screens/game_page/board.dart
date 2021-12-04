@@ -23,14 +23,14 @@ part of 'package:sanmill/screens/game_page/game_page.dart';
 /// This function gets called once a valid [square] on the board has been tapped.
 typedef BoardTapCallback = Future<void> Function(int square);
 
-class Board extends StatelessWidget {
+class _Board extends StatelessWidget {
   final double width;
   final double height;
   final BoardTapCallback onBoardTap;
   final Animation<double> animation;
   static const String _tag = "[board]";
 
-  const Board({
+  const _Board({
     required this.width,
     required this.onBoardTap,
     required this.animation,
