@@ -206,7 +206,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 Future<void> _launchFeedback(UserFeedback feedback) async {
   final screenshotFilePath = await _writeImageToStorage(feedback.screenshot);
   final packageInfo = await PackageInfo.fromPlatform();
-  final _version = '${packageInfo.version} (${packageInfo.buildNumber})';
+  final _version = "${packageInfo.version} (${packageInfo.buildNumber})";
 
   final Email email = Email(
     body: feedback.text,
@@ -221,7 +221,7 @@ Future<void> _launchFeedback(UserFeedback feedback) async {
 
 Future<String> _writeImageToStorage(Uint8List feedbackScreenshot) async {
   final Directory output = await getTemporaryDirectory();
-  final String screenshotFilePath = '${output.path}/sanmill-feedback.png';
+  final String screenshotFilePath = "${output.path}/sanmill-feedback.png";
   final File screenshotFile = File(screenshotFilePath);
   await screenshotFile.writeAsBytes(feedbackScreenshot);
   return screenshotFilePath;

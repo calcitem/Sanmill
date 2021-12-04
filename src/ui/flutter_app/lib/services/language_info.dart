@@ -110,7 +110,7 @@ Map<Locale, String> languageCodeToStrings = {
       SZhHant().languageName,
 };
 
-String specialCountryAndRegion = "";
+String? specialCountryAndRegion;
 
 void setSpecialCountryAndRegion(BuildContext context) {
   final Locale currentLocale = Localizations.localeOf(context);
@@ -119,8 +119,6 @@ void setSpecialCountryAndRegion(BuildContext context) {
     case "fa":
       specialCountryAndRegion = "Iran";
       break;
-    default:
-      specialCountryAndRegion = "";
   }
 
   debugPrint("Set Special Country and Region to $specialCountryAndRegion.");

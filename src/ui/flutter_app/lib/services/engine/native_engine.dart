@@ -27,7 +27,7 @@ import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
 class NativeEngine extends Engine {
-  static const platform = MethodChannel('com.calcitem.sanmill/engine');
+  static const platform = MethodChannel("com.calcitem.sanmill/engine");
   bool isActive = false;
 
   @override
