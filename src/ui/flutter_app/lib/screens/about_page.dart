@@ -39,13 +39,13 @@ class AboutPage extends StatelessWidget {
 
   static const String _tag = "[about] ";
 
-  String get mode {
+  String? get mode {
     if (kDebugMode) {
       return "- debug";
     } else if (kProfileMode) {
       return "- profile";
     } else if (kReleaseMode) {
-      return "";
+      return null;
     } else {
       return "-test";
     }
@@ -57,16 +57,16 @@ class AboutPage extends StatelessWidget {
       FutureBuilder<PackageInfo>(
         future: PackageInfo.fromPlatform(),
         builder: (_, data) {
-          late final String _version;
+          final String _version;
           if (!data.hasData) {
-            _version = '';
+            return Container();
           } else {
             final PackageInfo packageInfo = data.data!;
             if (Platform.isWindows) {
               _version = packageInfo.version; // TODO
 
             } else {
-              _version = '${packageInfo.version} (${packageInfo.buildNumber})';
+              _version = "${packageInfo.version} (${packageInfo.buildNumber})";
             }
           }
           return SettingsListTile(
@@ -319,9 +319,9 @@ class _VersionDialog extends StatelessWidget {
           Text(
             flutterVersion
                 .toString()
-                .replaceAll('{', '')
-                .replaceAll('}', '')
-                .replaceAll(', ', '\n'),
+                .replaceAll("{", "")
+                .replaceAll("}", "")
+                .replaceAll(", ", "\n"),
           ),
         ],
       ),

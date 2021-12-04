@@ -42,22 +42,19 @@ class Move {
   PieceColor removed = PieceColor.none;
 
   // 'move' is the UCI engine's move-string
-  String move = "";
+  String move;
 
   // "notation" is Standard Notation
-  String? notation = "";
+  late String notation;
 
   MoveType type = MoveType.none;
-
-  // Used to restore fen step counter when undoing move
-  String counterMarks = "";
 
   void parse() {
     if (!legal(move)) {
       throw "Error: Invalid Move: $move";
     }
 
-    if (move[0] == '-' && move.length == "-(1,2)".length) {
+    if (move[0] == "-" && move.length == "-(1,2)".length) {
       type = MoveType.remove;
       from = fromFile = fromRank = fromIndex = invalidMove;
       toFile = int.parse(move[2]);
@@ -86,7 +83,7 @@ class Move {
       notation = "${squareToWmdNotation[to]}";
       removed = PieceColor.none;
     } else if (move == "draw") {
-      // TODO
+      assert(false, "not yet implemented"); // TODO
       debugPrint("[TODO] Computer request draw");
     } else {
       assert(false);
@@ -118,11 +115,11 @@ class Move {
 
     const String range = "0123456789(,)->";
 
-    if (!(move[0] == '(' || move[0] == '-')) {
+    if (!(move[0] == "(" || move[0] == "-")) {
       return false;
     }
 
-    if (move[move.length - 1] != ')') {
+    if (move[move.length - 1] != ")") {
       return false;
     }
 
@@ -155,17 +152,17 @@ extension PieceColorExtension on PieceColor {
   String get string {
     switch (this) {
       case PieceColor.none:
-        return '*';
+        return "*";
       case PieceColor.white:
-        return 'O';
+        return "O";
       case PieceColor.black:
-        return '@';
+        return "@";
       case PieceColor.ban:
-        return 'X';
+        return "X";
       case PieceColor.nobody:
-        return '-';
+        return "-";
       case PieceColor.draw:
-        return '=';
+        return "=";
     }
   }
 

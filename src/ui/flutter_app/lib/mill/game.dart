@@ -62,7 +62,7 @@ class Game {
   }
 
   // TODO: [Leptopoda] make the move historry a seperate class
-  List<String> moveHistory = [""];
+  List<String?> moveHistory = [];
 
   Position _position = Position();
   Position get position => _position;
