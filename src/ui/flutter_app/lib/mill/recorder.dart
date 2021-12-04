@@ -20,17 +20,20 @@ import 'package:flutter/foundation.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/array_helper.dart';
 
 // TODO
+// TODO: [Leptopoda] the public facing methods look a lot like the ones Itterable has.
+//We might wanna make GameRecorder one.
 class GameRecorder {
   int cur = -1;
-  String? lastPositionWithRemove = "";
-  List<Move> history = <Move>[];
+  String lastPositionWithRemove;
+  List<Move> moves = <Move>[];
   static const _tag = "[GameRecorder]";
 
-  GameRecorder({this.cur = -1, this.lastPositionWithRemove});
+  GameRecorder({this.cur = -1, this.lastPositionWithRemove = ""});
 
-  String? wmdNotationToMoveString(String wmd) {
+  String? _wmdNotationToMoveString(String wmd) {
     if (wmd.length == 3 && wmd[0] == "x") {
       if (wmdNotationToMove[wmd.substring(1, 3)] != null) {
         return "-${wmdNotationToMove[wmd.substring(1, 3)]!}";
@@ -106,7 +109,7 @@ class GameRecorder {
     return null;
   }
 
-  bool isDalmaxMoveList(String text) {
+  bool _isDalmaxMoveList(String text) {
     if (text.length >= 15 && text.substring(0, 14) == '[Event "Dalmax') {
       return true;
     }
@@ -114,7 +117,7 @@ class GameRecorder {
     return false;
   }
 
-  bool isPlayOkMoveList(String text) {
+  bool _isPlayOkMoveList(String text) {
     if (text.length >= 4 &&
         text.substring(0, 3) == "1. " &&
         int.tryParse(text.substring(3, 4)) != null) {
@@ -128,7 +131,7 @@ class GameRecorder {
     return false;
   }
 
-  bool isGoldTokenMoveList(String text) {
+  bool _isGoldTokenMoveList(String text) {
     if (text.length >= 10 &&
         (text.substring(0, 9) == "GoldToken" ||
             text.substring(0, 10) == "Past Moves" ||
@@ -141,28 +144,20 @@ class GameRecorder {
     return false;
   }
 
-  bool isPlayOkNotation(String text) {
-    if (int.tryParse(text.substring(3, 4)) != null) {
-      return true;
-    }
-
-    return false;
-  }
-
   String? import(String moveList) {
     clear();
     debugPrint("Clipboard text: $moveList");
 
-    if (isDalmaxMoveList(moveList)) {
-      return importDalmax(moveList);
+    if (_isDalmaxMoveList(moveList)) {
+      return _importDalmax(moveList);
     }
 
-    if (isPlayOkMoveList(moveList)) {
-      return importPlayOk(moveList);
+    if (_isPlayOkMoveList(moveList)) {
+      return _importPlayOk(moveList);
     }
 
-    if (isGoldTokenMoveList(moveList)) {
-      return importGoldToken(moveList);
+    if (_isGoldTokenMoveList(moveList)) {
+      return _importGoldToken(moveList);
     }
 
     final List<Move> newHistory = [];
@@ -208,14 +203,14 @@ class GameRecorder {
       if (i.isNotEmpty && !i.endsWith(".")) {
         if (i.length == 5 && i[2] == "x") {
           // "a1xc3"
-          final String? m1 = wmdNotationToMoveString(i.substring(0, 2));
+          final String? m1 = _wmdNotationToMoveString(i.substring(0, 2));
           if (m1 != null) {
             newHistory.add(Move(m1));
           } else {
             debugPrint("Cannot import $i");
             return i;
           }
-          final String? m2 = wmdNotationToMoveString(i.substring(2));
+          final String? m2 = _wmdNotationToMoveString(i.substring(2));
           if (m2 != null) {
             newHistory.add(Move(m2));
           } else {
@@ -224,14 +219,14 @@ class GameRecorder {
           }
         } else if (i.length == 8 && i[2] == "-" && i[5] == "x") {
           // "a1-b2xc3"
-          final String? m1 = wmdNotationToMoveString(i.substring(0, 5));
+          final String? m1 = _wmdNotationToMoveString(i.substring(0, 5));
           if (m1 != null) {
             newHistory.add(Move(m1));
           } else {
             debugPrint("Cannot import $i");
             return i;
           }
-          final String? m2 = wmdNotationToMoveString(i.substring(5));
+          final String? m2 = _wmdNotationToMoveString(i.substring(5));
           if (m2 != null) {
             newHistory.add(Move(m2));
           } else {
@@ -240,7 +235,7 @@ class GameRecorder {
           }
         } else {
           // no x
-          final String? m = wmdNotationToMoveString(i);
+          final String? m = _wmdNotationToMoveString(i);
           if (m != null) {
             newHistory.add(Move(m));
           } else {
@@ -252,15 +247,15 @@ class GameRecorder {
     }
 
     if (newHistory.isNotEmpty) {
-      history = newHistory;
+      moves = newHistory;
     }
   }
 
-  String? importDalmax(String moveList) {
+  String? _importDalmax(String moveList) {
     return import(moveList.substring(moveList.indexOf("1. ")));
   }
 
-  String? importPlayOk(String moveList) {
+  String? _importPlayOk(String moveList) {
     final List<Move> newHistory = [];
 
     final List<String> list = moveList
@@ -307,13 +302,13 @@ class GameRecorder {
     }
 
     if (newHistory.isNotEmpty) {
-      history = newHistory;
+      moves = newHistory;
     }
 
     return null;
   }
 
-  String? importGoldToken(String moveList) {
+  String? _importGoldToken(String moveList) {
     int start = moveList.indexOf("1\t");
 
     if (start == -1) {
@@ -327,21 +322,13 @@ class GameRecorder {
     return import(moveList.substring(start));
   }
 
-  void jumpToHead() {
-    cur = 0;
-  }
-
-  void jumpToTail() {
-    cur = history.length - 1;
-  }
-
   void clear() {
-    history.clear();
+    moves.clear();
     cur = 0;
   }
 
   bool isClean() {
-    return cur == history.length - 1;
+    return cur == moves.length - 1;
   }
 
   void prune() {
@@ -349,19 +336,17 @@ class GameRecorder {
       return;
     }
 
-    history.removeRange(cur + 1, history.length);
+    moves.removeRange(cur + 1, moves.length);
   }
 
   void moveIn(Move move, Position position) {
-    if (history.isNotEmpty) {
-      if (history.last.move == move.move) {
-        //assert(false);
-        // TODO: WAR
-        return;
-      }
+    if (moves.lastF == move) {
+      //assert(false);
+      // TODO: WAR
+      return;
     }
 
-    history.add(move);
+    moves.add(move);
     cur++;
 
     if (move.type == MoveType.remove) {
@@ -369,24 +354,14 @@ class GameRecorder {
     }
   }
 
-  Move? removeLast() {
-    if (history.isEmpty) return null;
-    return history.removeLast();
-  }
+  int get moveCount => moves.length;
 
-  // TODO: [Leptopoda] we should revert this notation as it is less performant
-  Move? get last => history.isEmpty ? null : history.last;
+  Move? get lastMove => moves.lastF;
 
-  Move moveAt(int index) => history[index];
-
-  int get movesCount => history.length;
-
-  Move? get lastMove => movesCount == 0 ? null : moveAt(movesCount - 1);
-
-  Move? get lastEffectiveMove => cur == -1 ? null : moveAt(cur);
+  Move? get lastEffectiveMove => cur == -1 ? null : moves[cur];
 
   String? buildMoveHistoryText({int cols = 2}) {
-    if (history.isEmpty) {
+    if (moves.isEmpty) {
       return null;
     }
 
@@ -402,17 +377,17 @@ class GameRecorder {
             num = " $num ";
           }
         }
-        if (i + 1 <= cur && history[i + 1].type == MoveType.remove) {
+        if (i + 1 <= cur && moves[i + 1].type == MoveType.remove) {
           moveHistory.write(
-            "$num${history[i].notation}${history[i + 1].notation}    ",
+            "$num${moves[i].notation}${moves[i + 1].notation}    ",
           );
           i++;
         } else {
-          moveHistory.write("$num${history[i].notation}    ");
+          moveHistory.write("$num${moves[i].notation}    ");
         }
         k++;
       } else {
-        moveHistory.write("${i < 9 ? " " : ""}${i + 1}. ${history[i].move}　");
+        moveHistory.write("${i < 9 ? " " : ""}${i + 1}. ${moves[i].move}　");
       }
 
       if (LocalDatabaseService.display.standardNotationEnabled) {

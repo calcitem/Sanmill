@@ -311,7 +311,8 @@ class _GamePageState extends State<GamePage>
         ++position.st.rule50;
         ++position.st.pliesFromNull;
 
-        if (position.record.length > "-(1,2)".length) {
+        if (position.record != null &&
+            position.record!.move.length > "-(1,2)".length) {
           if (position.posKeyHistory.isEmpty ||
               position.posKeyHistory.last != position.st.key) {
             position.posKeyHistory.add(position.st.key);
@@ -328,7 +329,7 @@ class _GamePageState extends State<GamePage>
         }
 
         //position.move = m;
-        final Move m = Move(position.record);
+        final Move m = position.record!;
         position.recorder.prune();
         position.recorder.moveIn(m, position);
 
@@ -406,10 +407,9 @@ class _GamePageState extends State<GamePage>
 
       switch (response.type) {
         case EngineResponseType.move:
-          final Move mv = response.value!;
-          final Move move = Move(mv.move);
+          final Move move = response.value!;
 
-          await gameInstance.doMove(move.move);
+          await gameInstance.doMove(move);
           _animationController.reset();
           _animationController.animateTo(1.0);
 
@@ -1049,7 +1049,7 @@ class _GamePageState extends State<GamePage>
 
       if (n1.startsWith("x")) {
         buffer.writeln(
-          pos.recorder.moveAt(pos.recorder.movesCount - 2).notation,
+          pos.recorder.moves[pos.recorder.moveCount - 2].notation,
         );
       }
       buffer.writePeriod(n1);

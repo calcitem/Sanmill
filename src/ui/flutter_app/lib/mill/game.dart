@@ -29,8 +29,6 @@ class Game {
   static const String _tag = "[game]";
 
   void init() {
-    // TODO: [Leptopoda] _position is already initialized with Position(). seems like duplicate code
-    _position = Position();
     focusIndex = blurIndex = null;
   }
 
@@ -47,7 +45,7 @@ class Game {
     position.restart();
     focusIndex = blurIndex = null;
 
-    moveHistory = [""];
+    moveHistory = [];
     sideToMove = PieceColor.white;
   }
 
@@ -58,10 +56,9 @@ class Game {
     return isAi[sideToMove]!;
   }
 
-  // TODO: [Leptopoda] make the move historry a seperate class
-  List<String?> moveHistory = [];
+  List<Move?> moveHistory = [];
 
-  Position _position = Position();
+  final Position _position = Position();
   Position get position => _position;
 
   int? focusIndex;
@@ -88,10 +85,11 @@ class Game {
     return _isSearching[PieceColor.white]! || _isSearching[PieceColor.black]!;
   }
 
-  EngineType engineType = EngineType.none;
+  EngineType _engineType = EngineType.none;
+  EngineType get engineType => _engineType;
 
   void setWhoIsAi(EngineType type) {
-    engineType = type;
+    _engineType = type;
 
     switch (type) {
       case EngineType.humanVsAi:
@@ -122,14 +120,14 @@ class Game {
     blurIndex = null;
   }
 
-  Future<bool> doMove(String move) async {
+  Future<bool> doMove(Move move) async {
     if (position.phase == Phase.ready) {
       start();
     }
 
     debugPrint("$_tag AI do move: $move");
 
-    if (!(await position.doMove(move))) {
+    if (!(await position.doMove(move.move))) {
       return false;
     }
 
