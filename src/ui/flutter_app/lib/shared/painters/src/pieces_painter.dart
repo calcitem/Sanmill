@@ -19,7 +19,7 @@
 part of '../painters.dart';
 
 class _PiecePaintParam {
-  final String piece;
+  final PieceColor piece;
   final Offset pos;
   final bool animated;
 
@@ -71,7 +71,7 @@ class PiecesPainter extends PiecesBasePainter {
         final index = row * 7 + col;
         final piece = position.pieceOnGrid(index); // No Pieces when initial
 
-        if (piece == Piece.noPiece) continue;
+        if (piece == PieceColor.none) continue;
 
         final pos = _offset.translate(_squareWidth * col, _squareWidth * row);
         final animated = focusIndex == index;
@@ -102,21 +102,20 @@ class PiecesPainter extends PiecesBasePainter {
       late final Color border;
       late final Color piece;
       switch (pps.piece) {
-        case Piece.whiteStone:
+        case PieceColor.white:
           border = AppTheme.whitePieceBorderColor;
           piece = LocalDatabaseService.colorSettings.whitePieceColor;
           blurPositionColor = LocalDatabaseService.colorSettings.whitePieceColor
               .withOpacity(0.1);
           break;
-        case Piece.blackStone:
+        case PieceColor.black:
           border = AppTheme.blackPieceBorderColor;
           piece = LocalDatabaseService.colorSettings.blackPieceColor;
+
           blurPositionColor = LocalDatabaseService.colorSettings.blackPieceColor
               .withOpacity(0.1);
           break;
-        case Piece.ban:
-          //print("pps.piece is Ban");
-          continue;
+        default:
       }
 
       paint.color = border;

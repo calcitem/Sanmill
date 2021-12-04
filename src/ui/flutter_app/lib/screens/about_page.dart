@@ -25,6 +25,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sanmill/generated/flutter_version.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/license_page.dart';
+import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
@@ -133,7 +134,9 @@ class AboutPage extends StatelessWidget {
   }
 
   Future<void> _launchURL(String url) async {
-    await launch(url);
+    if (!EnvironmentConfig.monkeyTest) {
+      await launch(url);
+    }
   }
 
   Future<void> _launchFeedback() async {
