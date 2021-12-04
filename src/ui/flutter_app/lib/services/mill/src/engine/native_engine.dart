@@ -154,7 +154,7 @@ class NativeEngine extends Engine {
     final _rules = LocalDatabaseService.rules;
 
     await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
-    await _sendOptions("Algorithm", _pref.algorithm);
+    await _sendOptions("Algorithm", _pref.algorithm?.index ?? 2);
     await _sendOptions("DrawOnHumanExperience", _pref.drawOnHumanExperience);
     await _sendOptions("ConsiderMobility", _pref.considerMobility);
     await _sendOptions("SkillLevel", _pref.skillLevel);
