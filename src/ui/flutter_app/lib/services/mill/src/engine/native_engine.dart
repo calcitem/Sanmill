@@ -18,19 +18,20 @@
 
 part of '../../mill.dart';
 
+// TODO: [Leptopoda] make this a utility class. There shouldn't be multiple engines running
 class NativeEngine extends Engine {
-  static const platform = MethodChannel("com.calcitem.sanmill/engine");
-  bool isActive = false;
+  static const _platform = MethodChannel("com.calcitem.sanmill/engine");
+  bool _isActive = false;
 
   @override
   Future<void> startup() async {
-    await platform.invokeMethod("startup");
-    await waitResponse(["uciok"]);
+    await _platform.invokeMethod("startup");
+    await _waitResponse(["uciok"]);
   }
 
   Future<void> _send(String command) async {
     logger.v("[engine] send: $command");
-    await platform.invokeMethod("send", command);
+    await _platform.invokeMethod("send", command);
   }
 
   Future<void> _sendOptions(String name, dynamic option) async {
@@ -39,21 +40,22 @@ class NativeEngine extends Engine {
   }
 
   Future<String?> _read() async {
-    return platform.invokeMethod("read");
+    return _platform.invokeMethod("read");
   }
 
   @override
   Future<void> shutdown() async {
-    isActive = false;
-    await platform.invokeMethod("shutdown");
+    _isActive = false;
+    await _platform.invokeMethod("shutdown");
   }
 
-  Future<bool?> isReady() async {
-    return platform.invokeMethod("isReady");
+  // TODO: [Leptopoda] dafuq
+  Future<bool?> _isReady() async {
+    return _platform.invokeMethod("isReady");
   }
 
-  FutureOr<bool> isThinking() async {
-    final _isThinking = await platform.invokeMethod<bool>("isThinking");
+  FutureOr<bool> _isThinking() async {
+    final _isThinking = await _platform.invokeMethod<bool>("isThinking");
     if (_isThinking is bool) {
       return _isThinking;
     } else {
@@ -63,19 +65,19 @@ class NativeEngine extends Engine {
 
   @override
   Future<EngineResponse> search(Position? position) async {
-    if (await isThinking()) {
-      await stopSearching();
+    if (await _isThinking()) {
+      await _stopSearching();
     }
 
     if (position != null) {
       await _send(_getPositionFen(position));
       await _send("go");
-      isActive = true;
+      _isActive = true;
     } else {
       logger.v("[engine] Move now");
     }
 
-    final response = await waitResponse(["bestmove", "nobestmove"]);
+    final response = await _waitResponse(["bestmove", "nobestmove"]);
     if (response == null) {
       return EngineResponse(EngineResponseType.timeout);
     }
@@ -98,7 +100,7 @@ class NativeEngine extends Engine {
     return EngineResponse(EngineResponseType.timeout);
   }
 
-  Future<String?> waitResponse(
+  Future<String?> _waitResponse(
     List<String> prefixes, {
     int sleep = 100,
     int times = 0,
@@ -116,7 +118,7 @@ class NativeEngine extends Engine {
       logger.v("[engine] Timeout. sleep = $sleep, times = $times");
       // TODO: [Leptopoda] seems like is isActive only checked here and only together with the DevMode.
       // we might be able to remove this
-      if (EnvironmentConfig.devMode && isActive) {
+      if (EnvironmentConfig.devMode && _isActive) {
         throw "Exception: waitResponse timeout.";
       }
       return null;
@@ -136,12 +138,12 @@ class NativeEngine extends Engine {
 
     return Future<String?>.delayed(
       Duration(milliseconds: sleep),
-      () => waitResponse(prefixes, times: times + 1),
+      () => _waitResponse(prefixes, times: times + 1),
     );
   }
 
-  Future<void> stopSearching() async {
-    isActive = false;
+  Future<void> _stopSearching() async {
+    _isActive = false;
     logger.w("[engine] Stop current thinking...");
     await _send("stop");
   }
@@ -194,7 +196,7 @@ class NativeEngine extends Engine {
 
   String _getPositionFen(Position position) {
     final startPosition = position.lastPositionWithRemove;
-    final moves = position.movesSinceLastRemove;
+    final moves = position._movesSinceLastRemove;
 
     String posFenStr;
 

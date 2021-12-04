@@ -52,7 +52,7 @@ class _GameRecorder {
     }
   }
 
-  String? playOkNotationToMoveString(String playOk) {
+  String? _playOkNotationToMoveString(String playOk) {
     if (playOk.isEmpty) return null;
 
     final iDash = playOk.indexOf("-");
@@ -141,6 +141,7 @@ class _GameRecorder {
     return false;
   }
 
+// TODO [Leptopoda] make param a List<Move> and change the return type
   String? import(String moveList) {
     clear();
     logger.v("Clipboard text: $moveList");
@@ -273,7 +274,7 @@ class _GameRecorder {
           !i.endsWith("]")) {
         final iX = i.indexOf("x");
         if (iX == -1) {
-          final String? m = playOkNotationToMoveString(i);
+          final String? m = _playOkNotationToMoveString(i);
           if (m != null) {
             newHistory.add(Move(m));
           } else {
@@ -281,14 +282,14 @@ class _GameRecorder {
             return i;
           }
         } else if (iX != -1) {
-          final String? m1 = playOkNotationToMoveString(i.substring(0, iX));
+          final String? m1 = _playOkNotationToMoveString(i.substring(0, iX));
           if (m1 != null) {
             newHistory.add(Move(m1));
           } else {
             logger.e("Cannot import $i");
             return i;
           }
-          final String? m2 = playOkNotationToMoveString(i.substring(iX));
+          final String? m2 = _playOkNotationToMoveString(i.substring(iX));
           if (m2 != null) {
             newHistory.add(Move(m2));
           } else {
@@ -349,7 +350,7 @@ class _GameRecorder {
     cur++;
 
     if (move.type == _MoveType.remove) {
-      lastPositionWithRemove = position.fen;
+      lastPositionWithRemove = position._fen;
     }
   }
 
@@ -359,7 +360,7 @@ class _GameRecorder {
 
   Move? get lastEffectiveMove => cur == -1 ? null : moves[cur];
 
-  String? buildMoveHistoryText({int cols = 2}) {
+  String? _buildMoveHistoryText({int cols = 2}) {
     if (moves.isEmpty) {
       return null;
     }

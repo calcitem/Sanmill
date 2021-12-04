@@ -103,13 +103,13 @@ extension PieceColorExtension on PieceColor {
   GameResult get result {
     switch (this) {
       case PieceColor.white:
-        if (controller.gameInstance.isAi[this]!) {
+        if (controller.gameInstance._isAi[this]!) {
           return GameResult.lose;
         } else {
           return GameResult.win;
         }
       case PieceColor.black:
-        if (controller.gameInstance.isAi[this]!) {
+        if (controller.gameInstance._isAi[this]!) {
           return GameResult.lose;
         } else {
           return GameResult.win;

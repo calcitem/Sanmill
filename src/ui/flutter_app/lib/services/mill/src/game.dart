@@ -26,7 +26,7 @@ class _Game {
   }
 
   // TODO: [Leptopoda] maybe call reset directly although it seems cleaner like this
-  void start() => controller.position.reset();
+  void start() => controller.position._reset();
 
   // TODO: [Leptopoda] just reassign controller.game with a new Game instance
   void newGame() {
@@ -42,7 +42,7 @@ class _Game {
 
   bool get isAiToMove {
     assert(sideToMove == PieceColor.white || sideToMove == PieceColor.black);
-    return isAi[sideToMove]!;
+    return _isAi[sideToMove]!;
   }
 
   List<Move?> moveHistory = [];
@@ -51,7 +51,7 @@ class _Game {
   int? blurIndex;
 
   // TODO: [Leptopda] give a game two players (new class) to hold a player. A player can have a color, be ai ...
-  Map<PieceColor, bool> isAi = {
+  Map<PieceColor, bool> _isAi = {
     PieceColor.white: false,
     PieceColor.black: true,
   };
@@ -78,11 +78,11 @@ class _Game {
   set engineType(EngineType type) {
     _engineType = type;
 
-    isAi = type.whoIsAI;
+    _isAi = type.whoIsAI;
 
     logger.i(
-      "$_tag White is AI? ${isAi[PieceColor.white]}\n"
-      "$_tag Black is AI? ${isAi[PieceColor.black]}\n",
+      "$_tag White is AI? ${_isAi[PieceColor.white]}\n"
+      "$_tag Black is AI? ${_isAi[PieceColor.black]}\n",
     );
   }
 
@@ -98,7 +98,7 @@ class _Game {
 
     logger.i("$_tag AI do move: $move");
 
-    if (!(await controller.position.doMove(move.uciMove))) {
+    if (!(await controller.position._doMove(move.uciMove))) {
       return false;
     }
 

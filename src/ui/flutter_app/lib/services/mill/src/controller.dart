@@ -21,13 +21,13 @@ part of '../mill.dart';
 // TODO: [Leptopoda] add constructor
 final MillController controller = MillController();
 
+// TODO: [Leptopoda] maybe make this a utility class ¿?
 class MillController {
   final _Game gameInstance;
   final Position position;
   // late _GameRecorder recorder;
 
   MillController()
-      :
-        gameInstance = _Game(),
+      : gameInstance = _Game(),
         position = Position();
 }
