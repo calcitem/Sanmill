@@ -17,7 +17,9 @@
 */
 
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/intl/l10n.dart';
@@ -202,22 +204,25 @@ class GameSettingsPage extends StatelessWidget {
           ],
         ),
         const CustomSpacer(),
-        Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
-        SettingsCard(
-          children: <Widget>[
-            SettingsListTile.switchTile(
-              value: _preferences.toneEnabled,
-              onChanged: (val) => _setTone(_preferences, val),
-              titleString: S.of(context).playSoundsInTheGame,
-            ),
-            SettingsListTile.switchTile(
-              value: _preferences.keepMuteWhenTakingBack,
-              onChanged: (val) => _setKeepMuteWhenTakingBack(_preferences, val),
-              titleString: S.of(context).keepMuteWhenTakingBack,
-            ),
-          ],
-        ),
-        const CustomSpacer(),
+        if (!Platform.isWindows)
+          Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
+        if (!Platform.isWindows)
+          SettingsCard(
+            children: <Widget>[
+              SettingsListTile.switchTile(
+                value: _preferences.toneEnabled,
+                onChanged: (val) => _setTone(_preferences, val),
+                titleString: S.of(context).playSoundsInTheGame,
+              ),
+              SettingsListTile.switchTile(
+                value: _preferences.keepMuteWhenTakingBack,
+                onChanged: (val) =>
+                    _setKeepMuteWhenTakingBack(_preferences, val),
+                titleString: S.of(context).keepMuteWhenTakingBack,
+              ),
+            ],
+          ),
+        if (!Platform.isWindows) const CustomSpacer(),
         Text(S.of(context).accessibility, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[
