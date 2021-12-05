@@ -202,14 +202,9 @@ class GameSettingsPage extends StatelessWidget {
           ],
         ),
         const CustomSpacer(),
-        Text(S.of(context).gameSettings, style: AppTheme.settingsHeaderStyle),
+        Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
           children: <Widget>[
-            SettingsListTile.switchTile(
-              value: _preferences.isAutoRestart,
-              onChanged: (val) => _setIsAutoRestart(_preferences, val),
-              titleString: S.of(context).isAutoRestart,
-            ),
             SettingsListTile.switchTile(
               value: _preferences.toneEnabled,
               onChanged: (val) => _setTone(_preferences, val),
@@ -230,6 +225,17 @@ class GameSettingsPage extends StatelessWidget {
               value: _preferences.screenReaderSupport,
               onChanged: (val) => _setScreenReaderSupport(_preferences, val),
               titleString: S.of(context).screenReaderSupport,
+            ),
+          ],
+        ),
+        const CustomSpacer(),
+        Text(S.of(context).misc, style: AppTheme.settingsHeaderStyle),
+        SettingsCard(
+          children: <Widget>[
+            SettingsListTile.switchTile(
+              value: _preferences.isAutoRestart,
+              onChanged: (val) => _setIsAutoRestart(_preferences, val),
+              titleString: S.of(context).isAutoRestart,
             ),
           ],
         ),

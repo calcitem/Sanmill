@@ -434,6 +434,10 @@
     "@gameSettings": {
         "description": "Settings to change the behaviour of the game."
     },
+    "playSounds": "Sound effects",
+    "@playSounds": {
+        "description": "Sound effects"
+    },
     "playSoundsInTheGame": "Play sounds in the game",
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
