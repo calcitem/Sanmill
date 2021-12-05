@@ -47,11 +47,6 @@ class Audios {
   static const _tag = "[audio]";
 
   static Future<void> loadSounds() async {
-    if (Platform.isWindows) {
-      logger.w("$_tag Audio Player does not support Windows.");
-      return;
-    }
-
     if (_initialized) {
       logger.i("$_tag Audio Player is already initialized.");
       return;
@@ -101,8 +96,6 @@ class Audios {
   }
 
   static Future<void> _playSound(Sound sound) async {
-    assert(!Platform.isWindows);
-
     final int soundId;
 
     switch (sound) {
@@ -142,16 +135,12 @@ class Audios {
   }
 
   static Future<void> _stopSound() async {
-    assert(!Platform.isWindows);
-
     if (_alarmSoundStreamId > 0) {
       await _soundpool.stop(_alarmSoundStreamId);
     }
   }
 
   static void disposePool() {
-    assert(!Platform.isWindows);
-
     _soundpool.dispose();
   }
 
@@ -162,9 +151,6 @@ class Audios {
         !_initialized) {
       return;
     }
-
-    // If the platform is Windows [_initialized] should be false thus this code shouldn't be executed
-    assert(!Platform.isWindows);
 
     try {
       await _stopSound();
