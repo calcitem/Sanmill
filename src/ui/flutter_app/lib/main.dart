@@ -43,9 +43,9 @@ part 'package:sanmill/services/catcher.dart';
 part 'package:sanmill/services/init_system_ui.dart';
 
 Future<void> main() async {
-  logger.i('Environment [catcher]: ${EnvironmentConfig.catcher}');
-  logger.i('Environment [dev_mode]: ${EnvironmentConfig.devMode}');
-  logger.i('Environment [test]: ${EnvironmentConfig.test}');
+  logger.i("Environment [catcher]: ${EnvironmentConfig.catcher}");
+  logger.i("Environment [dev_mode]: ${EnvironmentConfig.devMode}");
+  logger.i("Environment [test]: ${EnvironmentConfig.test}");
 
   if (EnvironmentConfig.test) {
     enableFlutterDriverExtension();
