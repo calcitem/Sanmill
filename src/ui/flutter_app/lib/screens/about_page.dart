@@ -25,6 +25,7 @@ import 'package:sanmill/generated/flutter_version.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/license_page.dart';
 import 'package:sanmill/services/environment_config.dart';
+import 'package:sanmill/services/git_info.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
@@ -137,7 +138,7 @@ class AboutPage extends StatelessWidget {
   }
 
   Future<void> _launchURL(BuildContext context, URL url) async {
-    if (!EnvironmentConfig.monkeyTest) {
+    if (!EnvironmentConfig.test) {
       if (Localizations.localeOf(context).languageCode.startsWith("zh_")) {
         await launch(url.url);
       } else {
@@ -168,9 +169,26 @@ class _VersionDialog extends StatelessWidget {
         children: <Widget>[
           Text(S.of(context).version(version)),
           const CustomSpacer(),
-          Text(
-            S.of(context).copyright,
-            style: AppTheme.copyrightTextStyle,
+          FutureBuilder<GitInformation>(
+            future: gitInfo,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Branch: ${snapshot.data!.branch}'),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Revision: ${snapshot.data!.revision}'),
+                    ),
+                  ],
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
           ),
         ],
       ),

@@ -24,6 +24,7 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_driver/driver_extension.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
@@ -42,9 +43,13 @@ part 'package:sanmill/services/catcher.dart';
 part 'package:sanmill/services/init_system_ui.dart';
 
 Future<void> main() async {
-  logger.i("Environment [catcher]: ${EnvironmentConfig.catcher}");
-  logger.i("Environment [dev_mode]: ${EnvironmentConfig.devMode}");
-  logger.i("Environment [monkey_test]: ${EnvironmentConfig.monkeyTest}");
+  logger.i('Environment [catcher]: ${EnvironmentConfig.catcher}');
+  logger.i('Environment [dev_mode]: ${EnvironmentConfig.devMode}');
+  logger.i('Environment [test]: ${EnvironmentConfig.test}');
+
+  if (EnvironmentConfig.test) {
+    enableFlutterDriverExtension();
+  }
 
   await LocalDatabaseService.initStorage();
 

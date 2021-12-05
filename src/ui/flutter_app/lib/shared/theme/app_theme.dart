@@ -119,10 +119,6 @@ class AppTheme {
     color: _appPrimaryColor,
   );
 
-  static const TextStyle copyrightTextStyle = TextStyle(
-    fontSize: _copyrightFontSize,
-  );
-
   static final TextStyle notationTextStyle = TextStyle(
     fontSize: 20,
     color: LocalDatabaseService.colorSettings.boardLineColor,
@@ -164,8 +160,6 @@ class AppTheme {
   );
 
   static const double sizedBoxHeight = 16.0;
-
-  static const double _copyrightFontSize = 12;
 
   /// Game page
   static const Color _moveHistoryTextColor = Colors.yellow;

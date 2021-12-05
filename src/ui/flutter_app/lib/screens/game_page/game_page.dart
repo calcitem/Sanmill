@@ -772,24 +772,28 @@ class _GamePageState extends State<GamePage>
 
   List<Widget> get toolbar {
     final gameButton = ToolbarItem.icon(
+      key: const Key('gameButton'),
       onPressed: _showGameOptions,
       icon: const Icon(FluentIcons.table_simple_24_regular),
       label: Text(S.of(context).game),
     );
 
     final optionsButton = ToolbarItem.icon(
+      key: const Key('optionsButton'),
       onPressed: _showSettings,
       icon: const Icon(FluentIcons.settings_24_regular),
       label: Text(S.of(context).options),
     );
 
     final moveButton = ToolbarItem.icon(
+      key: const Key('moveButton'),
       onPressed: _showMoveOptions,
       icon: const Icon(FluentIcons.calendar_agenda_24_regular),
       label: Text(S.of(context).move_number(0)),
     );
 
     final infoButton = ToolbarItem.icon(
+      key: const Key('infoButton'),
       onPressed: _showInfo,
       icon: const Icon(FluentIcons.book_information_24_regular),
       label: Text(S.of(context).info),

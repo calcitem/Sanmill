@@ -16,7 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'dart:io';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
@@ -141,30 +141,6 @@ class GameSettingsPage extends StatelessWidget {
       defaultValue: const Preferences(),
     )!;
 
-    final _widowsSettings = [
-      const CustomSpacer(),
-      Text(S.of(context).gameSettings, style: AppTheme.settingsHeaderStyle),
-      SettingsCard(
-        children: <Widget>[
-          SettingsListTile.switchTile(
-            value: _preferences.isAutoRestart,
-            onChanged: (val) => _setIsAutoRestart(_preferences, val),
-            titleString: S.of(context).isAutoRestart,
-          ),
-          SettingsListTile.switchTile(
-            value: _preferences.toneEnabled,
-            onChanged: (val) => _setTone(_preferences, val),
-            titleString: S.of(context).playSoundsInTheGame,
-          ),
-          SettingsListTile.switchTile(
-            value: _preferences.keepMuteWhenTakingBack,
-            onChanged: (val) => _setKeepMuteWhenTakingBack(_preferences, val),
-            titleString: S.of(context).keepMuteWhenTakingBack,
-          ),
-        ],
-      ),
-    ];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -226,7 +202,22 @@ class GameSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        if (!Platform.isWindows) ..._widowsSettings,
+        const CustomSpacer(),
+        Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
+        SettingsCard(
+          children: <Widget>[
+            SettingsListTile.switchTile(
+              value: _preferences.toneEnabled,
+              onChanged: (val) => _setTone(_preferences, val),
+              titleString: S.of(context).playSoundsInTheGame,
+            ),
+            SettingsListTile.switchTile(
+              value: _preferences.keepMuteWhenTakingBack,
+              onChanged: (val) => _setKeepMuteWhenTakingBack(_preferences, val),
+              titleString: S.of(context).keepMuteWhenTakingBack,
+            ),
+          ],
+        ),
         const CustomSpacer(),
         Text(S.of(context).accessibility, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
@@ -235,6 +226,17 @@ class GameSettingsPage extends StatelessWidget {
               value: _preferences.screenReaderSupport,
               onChanged: (val) => _setScreenReaderSupport(_preferences, val),
               titleString: S.of(context).screenReaderSupport,
+            ),
+          ],
+        ),
+        const CustomSpacer(),
+        Text(S.of(context).misc, style: AppTheme.settingsHeaderStyle),
+        SettingsCard(
+          children: <Widget>[
+            SettingsListTile.switchTile(
+              value: _preferences.isAutoRestart,
+              onChanged: (val) => _setIsAutoRestart(_preferences, val),
+              titleString: S.of(context).isAutoRestart,
             ),
           ],
         ),

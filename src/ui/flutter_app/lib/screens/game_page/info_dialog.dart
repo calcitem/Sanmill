@@ -65,8 +65,8 @@ class _InfoDialog extends StatelessWidget {
 
       if (n1.startsWith("x")) {
         buffer.writeln(
-          controller.position
-            .recorder.moves[controller.position.recorder.moveCount - 2].notation,
+          controller.position.recorder
+              .moves[controller.position.recorder.moveCount - 2].notation,
         );
       }
       buffer.writePeriod(n1);
@@ -130,6 +130,7 @@ class _InfoDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
+          key: const Key('infoDialogOkButton'),
           child: Text(
             S.of(context).ok,
             style: AppTheme.moveHistoryTextStyle,

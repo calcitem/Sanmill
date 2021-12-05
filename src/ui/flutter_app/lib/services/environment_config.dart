@@ -22,13 +22,13 @@
 class EnvironmentConfig {
   const EnvironmentConfig._();
 
-  /// gets weather we build for a monkey test
-  static const monkeyTest = bool.fromEnvironment("monkey_test");
+  /// Gets whether we build for Monkey/Appium testing
+  static const test = bool.fromEnvironment("test");
 
-  /// gets weather we build for devMode
+  /// Gets whether we build for devMode
   static const devMode = bool.fromEnvironment("dev_mode");
 
-  /// gets weather we want catcher to be enabled
+  /// Gets whether we want catcher to be enabled
   /// defaults to true
   static const catcher = bool.fromEnvironment("catcher", defaultValue: true);
 

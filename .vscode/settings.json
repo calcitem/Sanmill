@@ -2,6 +2,7 @@
     "cSpell.words": [
         "ALIGNAS",
         "appbundle",
+        "Appium",
         "APSTUDIO",
         "ARGB",
         "autobuild",
@@ -126,6 +127,8 @@
         "VERSIONINFO",
         "VNNI",
         "vsync",
+        "wdio",
+        "webdriverio",
         "winbase",
         "winres",
         "winver",
