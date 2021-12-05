@@ -10,7 +10,7 @@ on:
       - 'src/*.cpp'
 
 jobs:
-  cygwin-g++:
+  cygwin-gcc:
     runs-on: windows-latest
 
     steps:
@@ -33,7 +33,7 @@ jobs:
           name: sanmill_cygwin-g++.exe
           path: src/sanmill.exe
 
-  linux-g++:
+  linux-gcc:
     runs-on: ubuntu-latest
 
     steps:
@@ -59,7 +59,7 @@ jobs:
           name: sanmill_linux-g++
           path: src/sanmill
 
-  darwin-g++:
+  darwin-gcc:
     runs-on: macos-latest
 
     steps:
