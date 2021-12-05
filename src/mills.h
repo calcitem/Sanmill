@@ -21,15 +21,15 @@
 #include "position.h"
 #include "types.h"
 
-#define loseReasonNoWayStr "Player%d no way to go. Player%d win!"
-#define loseReasonTimeOverStr "Time over. Player%d win!"
+#define loseReasonNoWayStr "Player%hhu no way to go. Player%hhu win!"
+#define loseReasonTimeOverStr "Time over. Player%hhu win!"
 #define drawReasonThreefoldRepetitionStr "Threefold Repetition. Draw!"
 #define drawReasonRule50Str "N-move rule. Draw!"
 #define drawReasonEndgameRule50Str "Endgame N-move rule. Draw!"
 #define loseReasonBoardIsFullStr "Full. Player2 win!"
 #define drawReasonBoardIsFullStr "Full. In draw!"
-#define loseReasonlessThanThreeStr "Player%d win!"
-#define loseReasonResignStr "Player%u give up!"
+#define loseReasonlessThanThreeStr "Player%hhu win!"
+#define loseReasonResignStr "Player%hhu give up!"
 
 namespace Mills {
 

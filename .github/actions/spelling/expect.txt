@@ -145,6 +145,7 @@ hashmap
 hashnode
 hbr
 hhmmss
+hhu
 HINSTANCE
 HMODULE
 HMONITOR
