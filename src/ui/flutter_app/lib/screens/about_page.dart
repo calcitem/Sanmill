@@ -256,10 +256,6 @@ class _VersionDialog extends StatelessWidget {
         children: <Widget>[
           Text(S.of(context).version(version)),
           const CustomSpacer(),
-          Text(
-            S.of(context).copyright,
-            style: AppTheme.copyrightTextStyle,
-          ),
         ],
       ),
       actions: <Widget>[
