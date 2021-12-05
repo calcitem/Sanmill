@@ -25,6 +25,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sanmill/generated/flutter_version.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/license_page.dart';
+import 'package:sanmill/services/git_info.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
@@ -256,6 +257,27 @@ class _VersionDialog extends StatelessWidget {
         children: <Widget>[
           Text(S.of(context).version(version)),
           const CustomSpacer(),
+          FutureBuilder<GitInformation>(
+            future: gitInfo,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Branch: ${snapshot.data!.branch}'),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Revision: ${snapshot.data!.revision}'),
+                    ),
+                  ],
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          ),
         ],
       ),
       actions: <Widget>[
