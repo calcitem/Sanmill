@@ -26,11 +26,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_driver/driver_extension.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
+import 'package:kplayer/kplayer.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/display.dart';
 import 'package:sanmill/screens/home.dart';
-import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/logger.dart';
@@ -54,6 +54,7 @@ Future<void> main() async {
   await LocalDatabaseService.initStorage();
 
   _initUI();
+  Player.boot();
 
   if (EnvironmentConfig.catcher && !Platform.isWindows) {
     final catcher = Catcher(
@@ -75,7 +76,6 @@ class SanmillApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final globalScaffoldKey = GlobalKey<ScaffoldState>();
-    Audios.loadSounds();
 
     return ValueListenableBuilder(
       valueListenable: LocalDatabaseService.listenDisplay,

@@ -31,10 +31,10 @@ dependencies:
   intl: ^0.17.0
 
   json_annotation: ^4.3.0
+  kplayer: ^0.1.11
   logger: ^1.1.0
   package_info_plus: ^1.3.0
   path_provider: ^2.0.6
-  soundpool: ^2.2.0
   url_launcher: ^6.0.12
   uuid: ^3.0.5
   #pref: ^2.3.0

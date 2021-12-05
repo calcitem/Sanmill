@@ -16,139 +16,70 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'dart:io';
-
-import 'package:flutter/services.dart';
+import 'package:kplayer/kplayer.dart';
 import 'package:sanmill/generated/assets/assets.gen.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
-import 'package:soundpool/soundpool.dart';
 
 enum Sound { draw, fly, go, illegal, lose, mill, place, remove, select, win }
 
 class Audios {
   const Audios._();
-  //static AudioPlayer? _player;
-  static final Soundpool _soundpool = Soundpool.fromOptions();
-  static bool _initialized = false;
-  static int _alarmSoundStreamId = 0;
-  static late final int _drawSoundId;
-  static late final int _flySoundId;
-  static late final int _goSoundId;
-  static late final int _illegalSoundId;
-  static late final int _loseSoundId;
-  static late final int _millSoundId;
-  static late final int _placeSoundId;
-  static late final int _removeSoundId;
-  static late final int _selectSoundId;
-  static late final int _winSoundId;
   static bool isTemporaryMute = false;
 
-  static const _tag = "[audio]";
-
-  static Future<void> loadSounds() async {
-    if (_initialized) {
-      logger.i("$_tag Audio Player is already initialized.");
-      return;
-    }
-
-    _drawSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.draw),
-    );
-
-    _flySoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.fly),
-    );
-
-    _goSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.go),
-    );
-
-    _illegalSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.illegal),
-    );
-
-    _loseSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.lose),
-    );
-
-    _millSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.mill),
-    );
-
-    _placeSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.place),
-    );
-
-    _removeSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.remove),
-    );
-
-    _selectSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.select),
-    );
-
-    _winSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.win),
-    );
-
-    _initialized = true;
-  }
-
-  static Future<void> _playSound(Sound sound) async {
-    final int soundId;
+  static Future<String> _playSound(Sound sound) async {
+    final String media;
 
     switch (sound) {
       case Sound.draw:
-        soundId = _drawSoundId;
+        media = Assets.audios.draw;
         break;
       case Sound.fly:
-        soundId = _flySoundId;
+        media = Assets.audios.fly;
         break;
       case Sound.go:
-        soundId = _goSoundId;
+        media = Assets.audios.go;
         break;
       case Sound.illegal:
-        soundId = _illegalSoundId;
+        media = Assets.audios.illegal;
         break;
       case Sound.lose:
-        soundId = _loseSoundId;
+        media = Assets.audios.lose;
         break;
       case Sound.mill:
-        soundId = _millSoundId;
+        media = Assets.audios.mill;
         break;
       case Sound.place:
-        soundId = _placeSoundId;
+        media = Assets.audios.place;
         break;
       case Sound.remove:
-        soundId = _removeSoundId;
+        media = Assets.audios.remove;
         break;
       case Sound.select:
-        soundId = _selectSoundId;
+        media = Assets.audios.select;
         break;
       case Sound.win:
-        soundId = _winSoundId;
+        media = Assets.audios.win;
         break;
     }
 
-    _alarmSoundStreamId = await _soundpool.play(soundId);
+    Player.asset(media).play();
+
+    return media;
   }
 
   static Future<void> _stopSound() async {
-    if (_alarmSoundStreamId > 0) {
-      await _soundpool.stop(_alarmSoundStreamId);
-    }
+    // TODO: Implement stopping sound
   }
 
   static void disposePool() {
-    _soundpool.dispose();
+    // TODO: Implement disposing
   }
 
   static Future<void> playTone(Sound sound) async {
     if (!LocalDatabaseService.preferences.toneEnabled ||
         isTemporaryMute ||
-        LocalDatabaseService.preferences.screenReaderSupport ||
-        !_initialized) {
+        LocalDatabaseService.preferences.screenReaderSupport) {
       return;
     }
 
