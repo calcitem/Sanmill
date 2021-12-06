@@ -23,14 +23,18 @@ class NativeEngine extends Engine {
   static const _platform = MethodChannel("com.calcitem.sanmill/engine");
   bool _isActive = false;
 
+  static const _tag = "[engine]";
+
   @override
   Future<void> startup() async {
+    LocalDatabaseService.listenPreferences.addListener(() => setOptions());
+
     await _platform.invokeMethod("startup");
     await _waitResponse(["uciok"]);
   }
 
   Future<void> _send(String command) async {
-    logger.v("[engine] send: $command");
+    logger.v("$_tag send: $command");
     await _platform.invokeMethod("send", command);
   }
 
@@ -45,6 +49,8 @@ class NativeEngine extends Engine {
 
   @override
   Future<void> shutdown() async {
+    LocalDatabaseService.listenPreferences.removeListener(() => setOptions());
+
     _isActive = false;
     await _platform.invokeMethod("shutdown");
   }
@@ -69,7 +75,7 @@ class NativeEngine extends Engine {
       await _send("go");
       _isActive = true;
     } else {
-      logger.v("[engine] Move now");
+      logger.v("$_tag Move now");
     }
 
     final response = await _waitResponse(["bestmove", "nobestmove"]);
@@ -77,7 +83,7 @@ class NativeEngine extends Engine {
       return EngineResponse(EngineResponseType.timeout);
     }
 
-    logger.v("[engine] response: $response");
+    logger.v("$_tag response: $response");
 
     if (response.startsWith("bestmove")) {
       var best = response.substring("bestmove".length + 1);
@@ -110,7 +116,7 @@ class NativeEngine extends Engine {
     }
 
     if (times > timeLimit) {
-      logger.v("[engine] Timeout. sleep = $sleep, times = $times");
+      logger.v("$_tag Timeout. sleep = $sleep, times = $times");
       // TODO: [Leptopoda] seems like is isActive only checked here and only together with the DevMode.
       // we might be able to remove this
       if (EnvironmentConfig.devMode && _isActive) {
@@ -126,7 +132,7 @@ class NativeEngine extends Engine {
         if (response.startsWith(prefix)) {
           return response;
         } else {
-          logger.w("[engine] Unexpected engine response: $response");
+          logger.w("$_tag Unexpected engine response: $response");
         }
       }
     }
@@ -139,12 +145,14 @@ class NativeEngine extends Engine {
 
   Future<void> _stopSearching() async {
     _isActive = false;
-    logger.w("[engine] Stop current thinking...");
+    logger.w("$_tag Stop current thinking...");
     await _send("stop");
   }
 
   @override
   Future<void> setOptions() async {
+    logger.i("$_tag reloaded engine options");
+
     final _pref = LocalDatabaseService.preferences;
     final _rules = LocalDatabaseService.rules;
 
