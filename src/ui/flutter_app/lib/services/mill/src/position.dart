@@ -113,7 +113,6 @@ class Position {
   /// Returns a FEN representation of the position.
   String get _fen {
     final buffer = StringBuffer();
-    const space = " ";
 
     // Piece placement data
     for (var file = 1; file <= fileNumber; file++) {
@@ -123,24 +122,26 @@ class Position {
       }
 
       if (file == 3) {
-        buffer.write(space);
+        buffer.writeSpace();
       } else {
         buffer.write("/");
       }
     }
 
     // Active color
-    buffer.write(_sideToMove == PieceColor.white ? "w$space" : "b$space");
+    buffer.writeSpace(_sideToMove == PieceColor.white ? "w" : "b");
 
     // Phrase
-    buffer.write(phase.fen + space);
+    buffer.writeSpace(phase.fen);
 
     // Action
-    buffer.write(action.fen + space);
+    buffer.writeSpace(action.fen);
 
-    buffer.write(
-      "${pieceOnBoardCount[PieceColor.white]} ${pieceInHandCount[PieceColor.white]} ${pieceOnBoardCount[PieceColor.black]} ${pieceInHandCount[PieceColor.black]} $pieceToRemoveCount ",
-    );
+    buffer.writeSpace(pieceOnBoardCount[PieceColor.white]);
+    buffer.writeSpace(pieceInHandCount[PieceColor.white]);
+    buffer.writeSpace(pieceOnBoardCount[PieceColor.black]);
+    buffer.writeSpace(pieceInHandCount[PieceColor.black]);
+    buffer.writeSpace(pieceToRemoveCount);
 
     final int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
 
