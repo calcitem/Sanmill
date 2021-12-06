@@ -854,11 +854,6 @@ class _GamePageState extends State<GamePage>
     ];
   }
 
-  Future<void> _refreshEngine() async {
-    await _engine.setOptions();
-    logger.i("$_tag reloaded engine options");
-  }
-
   @override
   void initState() {
     super.initState();
@@ -869,8 +864,6 @@ class _GamePageState extends State<GamePage>
     _engine.startup();
 
     _initAnimation();
-
-    LocalDatabaseService.listenPreferences.addListener(_refreshEngine);
   }
 
   @override
@@ -926,7 +919,6 @@ class _GamePageState extends State<GamePage>
     logger.i("$_tag dispose");
     _engine.shutdown();
     _animationController.dispose();
-    LocalDatabaseService.listenPreferences.removeListener(_refreshEngine);
     super.dispose();
   }
 }
