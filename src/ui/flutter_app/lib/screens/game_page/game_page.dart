@@ -679,13 +679,16 @@ class _GamePageState extends State<GamePage>
         pop: pop,
       );
 
-  void _showMoveList() => showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (_) => _MoveListDialog(
-          takeBackCallback: _takeBackN,
-        ),
-      );
+  void _showMoveList() {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (_) => _MoveListDialog(
+        takeBackCallback: _takeBackN,
+      ),
+    );
+  }
 
   Future<void> _moveNow() async {
     Navigator.pop(context);
