@@ -885,12 +885,9 @@ class Position {
     for (int f = 1; f < fileExNumber; f++) {
       for (int r = 0; r < rankNumber; r++) {
         final int s = f * rankNumber + r;
-        if (_board[s] == PieceColor.white) {
-          pieceOnBoardCount[PieceColor.white] =
-              pieceOnBoardCount[PieceColor.white]! + 1;
-        } else if (_board[s] == PieceColor.black) {
-          pieceOnBoardCount[PieceColor.black] =
-              pieceOnBoardCount[PieceColor.black]! + 1;
+
+        if (_board[s] == PieceColor.white || _board[s] == PieceColor.black) {
+          pieceOnBoardCount[_board[s]] = pieceOnBoardCount[_board[s]]! + 1;
         }
       }
     }
