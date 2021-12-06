@@ -30,8 +30,6 @@ class _MoveListDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final moveHistoryText = controller.position.moveHistoryText!;
     final end = controller.gameInstance.moveHistory.length - 1;
-    // TODO: [Leptopoda] wtf is happening here? is the alert even build?
-    Navigator.pop(context);
     ScaffoldMessenger.of(context).clearSnackBars();
 
     return AlertDialog(
