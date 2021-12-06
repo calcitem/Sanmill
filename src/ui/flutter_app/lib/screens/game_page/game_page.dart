@@ -36,6 +36,7 @@ import 'package:sanmill/shared/game_toolbar/game_toolbar.dart';
 import 'package:sanmill/shared/number_picker.dart';
 import 'package:sanmill/shared/painters/painters.dart';
 import 'package:sanmill/shared/snackbar.dart';
+import 'package:sanmill/shared/string_buffer_helper.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 part 'package:sanmill/screens/game_page/board.dart';
@@ -918,23 +919,5 @@ class _GamePageState extends State<GamePage>
     _animationController.dispose();
     LocalDatabaseService.listenPreferences.removeListener(_refreshEngine);
     super.dispose();
-  }
-}
-
-extension CustomStringBuffer on StringBuffer {
-  void writeComma([Object? obj = ""]) {
-    if (LocalDatabaseService.preferences.screenReaderSupport) {
-      writeln("$obj,");
-    } else {
-      writeln(obj);
-    }
-  }
-
-  void writePeriod([Object? obj = ""]) {
-    if (LocalDatabaseService.preferences.screenReaderSupport) {
-      writeln("$obj.");
-    } else {
-      writeln(obj);
-    }
   }
 }
