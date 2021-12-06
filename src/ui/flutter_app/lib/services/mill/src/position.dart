@@ -90,8 +90,6 @@ class Position {
     _them = _sideToMove.opponent;
   }
 
-  PieceColor _movedPiece(int move) => pieceOn(fromSq(move));
-
   Future<bool> _movePiece(int from, int to) async {
     if (selectPiece(from) == SelectionResponse.r0) {
       return putPiece(to);
@@ -151,28 +149,6 @@ class Position {
     logger.v("FEN is $buffer");
 
     return buffer.toString();
-  }
-
-  // TODO: [Leptopoda] why isn't this needed anymore? Probably removed it by accident
-  /// Position::legal() tests whether a pseudo-legal move is legal
-  bool _legal(Move move) {
-    if (!isOk(move.from) || !isOk(move.to)) return false;
-
-    final PieceColor us = _sideToMove;
-
-    if (move.from == move.to) {
-      logger.v("[position] Move $move.move from == to");
-      return false;
-    }
-
-    if (move.type == _MoveType.remove) {
-      if (_movedPiece(move.to) != us) {
-        logger.v("[position] Move $move.to to != us");
-        return false;
-      }
-    }
-
-    return true;
   }
 
   Future<bool> _doMove(String move) async {
@@ -272,27 +248,6 @@ class Position {
     recorder.moveIn(m, this); // TODO: Is Right?
 
     return true;
-  }
-
-  bool _hasRepeated(List<Position> ss) {
-    for (int i = posKeyHistory.length - 2; i >= 0; i--) {
-      if (st.key == posKeyHistory[i]) {
-        return true;
-      }
-    }
-
-    final int size = ss.length;
-
-    for (int i = size - 1; i >= 0; i--) {
-      if (ss[i].move.type == _MoveType.remove) {
-        break;
-      }
-      if (st.key == ss[i].st.key) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   /// hasGameCycle() tests if the position has a move which draws by repetition.
@@ -913,7 +868,7 @@ class Position {
 
     if (_pieceOnBoardCount == -1) {
       return;
-    // TODO: [Leptopoda] use null
+      // TODO: [Leptopoda] use null
     }
 
     _nPiecesInHand;
