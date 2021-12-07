@@ -42,3 +42,4 @@ part 'src/position.dart';
 part 'src/recorder.dart';
 part 'src/types.dart';
 part 'src/zobrist.dart';
+part 'src/import_export_service.dart';
