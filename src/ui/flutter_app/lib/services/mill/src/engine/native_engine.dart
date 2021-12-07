@@ -189,19 +189,17 @@ class NativeEngine extends Engine {
     );
   }
 
+  // TODO: [Leptopoda] don't pass around the position object as we can access it through [controller.position]
   String _getPositionFen(Position position) {
     final startPosition = position.lastPositionWithRemove;
     final moves = position._movesSinceLastRemove;
 
-    String posFenStr;
+    final StringBuffer posFenStr = StringBuffer("position fen $startPosition");
 
-    // TODO: [Leptopoda] use StringBuffer
-    if (moves == null) {
-      posFenStr = "position fen $startPosition";
-    } else {
-      posFenStr = "position fen $startPosition moves $moves";
+    if (moves != null) {
+      posFenStr.write(" moves $moves");
     }
 
-    return posFenStr;
+    return posFenStr.toString();
   }
 }
