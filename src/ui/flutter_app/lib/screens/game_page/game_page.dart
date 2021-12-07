@@ -56,7 +56,7 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage>
-    with RouteAware, SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   // TODO: [Leptopoda] move _engine into controller
   final Engine _engine = NativeEngine();
 
