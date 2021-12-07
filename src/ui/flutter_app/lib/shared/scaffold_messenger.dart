@@ -17,25 +17,15 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/services/storage/storage.dart';
 
-// TODO: [Leptopoda] deprecate this method as it doesn't really provide any layer of abstraction
-// so the ScaffoldMessenger should be used directly.
-void showSnackBar(
-  BuildContext context,
-  String message, {
-  Duration duration = const Duration(milliseconds: 4000),
-}) {
-  // TODO: [Leptopoda] this is somehow different to the condition in [game_page]:
-  // LocalDatabaseService.preferences.screenReaderSupport && snackBar
-  if (!LocalDatabaseService.preferences.screenReaderSupport) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+extension ScaffoldMessengerExtension on ScaffoldMessengerState {
+  void showSnackBarClear(String message) {
+    clearSnackBars();
+
+    showSnackBar(CustomSnackBar(message));
   }
+}
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message),
-      duration: duration,
-    ),
-  );
+class CustomSnackBar extends SnackBar {
+  CustomSnackBar(String message) : super(content: Text(message));
 }

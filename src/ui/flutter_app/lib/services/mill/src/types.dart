@@ -352,6 +352,7 @@ class Move {
     }
 
     if (uciMove[0] == "-" && uciMove.length == "-(1,2)".length) {
+      // TODO: [Leptopdoa] let [_MoveType] parse the move
       type = _MoveType.remove;
       from = _fromFile = _fromRank = _invalidMove;
       _toFile = int.parse(uciMove[2]);

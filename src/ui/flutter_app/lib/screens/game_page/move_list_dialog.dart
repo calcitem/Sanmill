@@ -30,6 +30,7 @@ class _MoveListDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final moveHistoryText = controller.position.moveHistoryText!;
     final end = controller.gameInstance.moveHistory.length - 1;
+    // TODO: [Leptopoda] wtf is happening here? is the alert even build?
     Navigator.pop(context);
     ScaffoldMessenger.of(context).clearSnackBars();
 
@@ -63,9 +64,9 @@ class _MoveListDialog extends StatelessWidget {
           onPressed: () async {
             await Clipboard.setData(ClipboardData(text: moveHistoryText));
             // ignore: use_build_context_synchronously
-            ScaffoldMessenger.of(context).clearSnackBars();
-            // ignore: use_build_context_synchronously
-            showSnackBar(context, S.of(context).moveHistoryCopied);
+            ScaffoldMessenger.of(context)
+                // ignore: use_build_context_synchronously
+                .showSnackBarClear(S.of(context).moveHistoryCopied);
           },
         ),
         TextButton(
