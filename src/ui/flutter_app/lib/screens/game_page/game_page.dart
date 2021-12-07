@@ -57,6 +57,7 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage>
     with RouteAware, SingleTickerProviderStateMixin {
+  // TODO: [Leptopoda] move _engine into controller
   final Engine _engine = NativeEngine();
 
   double screenPaddingH = AppTheme.boardScreenPaddingH;
@@ -698,7 +699,7 @@ class _GamePageState extends State<GamePage>
   void _showInfo() => showDialog(
         context: context,
         barrierDismissible: true,
-        builder:a (_) => _InfoDialog(tip: _tip),
+        builder: (_) => _InfoDialog(tip: _tip),
       );
 
   double get _screenPaddingH {
@@ -857,8 +858,6 @@ class _GamePageState extends State<GamePage>
   @override
   void initState() {
     super.initState();
-
-    logger.i("$_tag Engine type: ${widget.engineType}");
     controller.gameInstance.engineType = widget.engineType;
 
     _engine.startup();
