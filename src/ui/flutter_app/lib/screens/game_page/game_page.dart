@@ -35,7 +35,7 @@ import 'package:sanmill/shared/custom_spacer.dart';
 import 'package:sanmill/shared/game_toolbar/game_toolbar.dart';
 import 'package:sanmill/shared/number_picker.dart';
 import 'package:sanmill/shared/painters/painters.dart';
-import 'package:sanmill/shared/snackbar.dart';
+import 'package:sanmill/shared/scaffold_messenger.dart';
 import 'package:sanmill/shared/string_buffer_helper.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
@@ -44,6 +44,8 @@ part 'package:sanmill/screens/game_page/info_dialog.dart';
 part 'package:sanmill/screens/game_page/move_list_dialog.dart';
 part 'package:sanmill/screens/game_page/result_alert.dart';
 
+// TODO: [Leptopoda] extract more widgets
+// TODO: [Leptopoda] change layout (landscape mode, padding on small devices)
 class GamePage extends StatefulWidget {
   final EngineType engineType;
 
@@ -85,8 +87,7 @@ class _GamePageState extends State<GamePage>
 
     logger.v("[tip] $tip");
     if (LocalDatabaseService.preferences.screenReaderSupport && snackBar) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      showSnackBar(context, tip);
+      ScaffoldMessenger.of(context).showSnackBarClear(tip);
     }
 
     setState(() => _tip = tip);
@@ -356,15 +357,15 @@ class _GamePageState extends State<GamePage>
     if (_isMoveNow) {
       if (!controller.gameInstance.isAiToMove) {
         logger.i("[engineToGo] Human to Move. Cannot get search result now.");
-        ScaffoldMessenger.of(context).clearSnackBars();
-        return showSnackBar(context, S.of(context).notAIsTurn);
+        return ScaffoldMessenger.of(context)
+            .showSnackBarClear(S.of(context).notAIsTurn);
       }
       if (!controller.position.recorder.isClean) {
         logger.i(
           "[engineToGo] History is not clean. Cannot get search result now.",
         );
-        ScaffoldMessenger.of(context).clearSnackBars();
-        return showSnackBar(context, S.of(context).aiIsNotThinking);
+        return ScaffoldMessenger.of(context)
+            .showSnackBarClear(S.of(context).aiIsNotThinking);
       }
     }
 
@@ -385,7 +386,8 @@ class _GamePageState extends State<GamePage>
           if (LocalDatabaseService.preferences.screenReaderSupport &&
               controller.position.action != Act.remove &&
               n != null) {
-            showSnackBar(context, "${S.of(context).human}: $n");
+            ScaffoldMessenger.of(context)
+                .showSnackBar(CustomSnackBar("${S.of(context).human}: $n"));
           }
         }
       }
@@ -412,7 +414,9 @@ class _GamePageState extends State<GamePage>
 
           _showTips();
           if (LocalDatabaseService.preferences.screenReaderSupport) {
-            showSnackBar(context, "${S.of(context).ai}: ${move.notation}");
+            ScaffoldMessenger.of(context).showSnackBar(
+              CustomSnackBar("${S.of(context).ai}: ${move.notation}"),
+            );
           }
           break;
         case EngineResponseType.timeout:
@@ -476,7 +480,9 @@ class _GamePageState extends State<GamePage>
     await Clipboard.setData(
       ClipboardData(text: controller.position.moveHistoryText),
     );
-    showSnackBar(context, S.of(context).moveHistoryCopied);
+
+    ScaffoldMessenger.of(context)
+        .showSnackBar(CustomSnackBar(S.of(context).moveHistoryCopied));
   }
 
   void _showGameOptions() => showModalBottomSheet(
@@ -628,8 +634,8 @@ class _GamePageState extends State<GamePage>
 
     final response = await controller.position.gotoHistory(move, number);
     if (response != null) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      showSnackBar(context, response.getString(context));
+      ScaffoldMessenger.of(context)
+          .showSnackBarClear(response.getString(context));
     }
 
     _isGoingToHistory = false;
@@ -689,7 +695,7 @@ class _GamePageState extends State<GamePage>
   void _showInfo() => showDialog(
         context: context,
         barrierDismissible: true,
-        builder: (_) => _InfoDialog(tip: _tip),
+        builder:a (_) => _InfoDialog(tip: _tip),
       );
 
   double get _screenPaddingH {
