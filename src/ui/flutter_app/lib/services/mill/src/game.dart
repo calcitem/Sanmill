@@ -77,6 +77,8 @@ class _Game {
   set engineType(EngineType type) {
     _engineType = type;
 
+    logger.i("$_tag Engine type: $type");
+
     _isAi = type.whoIsAI;
 
     logger.i(
