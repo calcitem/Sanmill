@@ -25,7 +25,6 @@ class _Game {
     focusIndex = blurIndex = null;
   }
 
-  // TODO: [Leptopoda] maybe call reset directly although it seems cleaner like this
   void start() => controller.position._reset();
 
   // TODO: [Leptopoda] just reassign controller.game with a new Game instance
