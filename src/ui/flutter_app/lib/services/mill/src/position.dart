@@ -867,9 +867,8 @@ class Position {
 
     _clearBoard();
 
-    if (_pieceOnBoardCount == -1) {
+    if (_pieceOnBoardCount == null) {
       return;
-      // TODO: [Leptopoda] use null
     }
 
     _nPiecesInHand;
@@ -883,7 +882,7 @@ class Position {
     return;
   }
 
-  int get _pieceOnBoardCount {
+  int? get _pieceOnBoardCount {
     pieceOnBoardCount[PieceColor.white] =
         pieceOnBoardCount[PieceColor.black] = 0;
 
@@ -904,7 +903,7 @@ class Position {
             LocalDatabaseService.rules.piecesCount ||
         pieceOnBoardCount[PieceColor.black]! >
             LocalDatabaseService.rules.piecesCount) {
-      return -1;
+      return null;
     }
 
     return pieceOnBoardCount[PieceColor.white]! +
