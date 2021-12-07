@@ -692,17 +692,13 @@ class Position {
     logger.v("[position] $_sideToMove to move.");
   }
 
-  // TODO: [Leptopoda] make it a setter of [_StateInfo]
   int _updateKey(int s) {
     final PieceColor pieceType = _colorOn(s);
 
     return st.key ^= _Zobrist.psq[pieceType.index][s];
   }
 
-  // TODO: [Leptopoda] remove this method as it doesn't bring anything new
-  int _revertKey(int s) {
-    return _updateKey(s);
-  }
+  int _revertKey(int s) => _updateKey(s);
 
   void _updateKeyMisc() {
     st.key = st.key << _Zobrist.keyMiscBit >> _Zobrist.keyMiscBit;

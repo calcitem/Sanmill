@@ -25,8 +25,8 @@ import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
+import 'package:sanmill/shared/scaffold_messenger.dart';
 import 'package:sanmill/shared/settings/settings.dart';
-import 'package:sanmill/shared/snackbar.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 part 'package:sanmill/screens/rule_settings/endgame_n_move_rule_modal.dart';
@@ -163,8 +163,8 @@ class RuleSettingsPage extends StatelessWidget {
     logger.v("[config] mayMoveInPlacingPhase: $value");
 
     if (value) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      showSnackBar(context, S.of(context).experimental);
+      ScaffoldMessenger.of(context)
+          .showSnackBarClear(S.of(context).experimental);
     }
   }
 
