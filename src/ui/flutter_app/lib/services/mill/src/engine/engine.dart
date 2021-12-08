@@ -118,6 +118,8 @@ class EngineResponse {
 }
 
 abstract class Engine {
+  const Engine();
+
   Future<void> setOptions() async {}
   Future<void> startup() async {}
   Future<void> shutdown() async {}
