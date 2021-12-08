@@ -927,7 +927,7 @@ class Position {
 
     _HistoryResponse? error;
     // TODO: [Leptopoda] throw errors instead of returning bools
-    for (var i = 0; i <= moveIndex; i++) {
+    for (int i = 0; i <= moveIndex; i++) {
       if (!(await controller.gameInstance.doMove(historyBack[i]))) {
         error = _HistoryResponse.error;
         break;
