@@ -39,27 +39,6 @@ class _Board extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const padding = AppTheme.boardPadding;
-    final List<String> _squareDesc = [];
-
-    _buildSquareDescription(context, _squareDesc);
-
-    final grid = GridView(
-      scrollDirection: Axis.horizontal,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 7,
-      ),
-      children: List.generate(
-        7 * 7,
-        (index) => Center(
-          child: Text(
-            _squareDesc[index],
-            style: const TextStyle(
-              color: Colors.red,
-            ),
-          ),
-        ),
-      ),
-    );
 
     final customPaint = AnimatedBuilder(
       animation: animation,
@@ -76,7 +55,7 @@ class _Board extends StatelessWidget {
           child: child,
         );
       },
-      child: EnvironmentConfig.devMode ? grid : null,
+      child: EnvironmentConfig.devMode ? const _DevGrid() : null,
     );
 
     final boardContainer = Container(
@@ -124,10 +103,38 @@ class _Board extends StatelessWidget {
       ),
     );
   }
+}
 
-  void _buildSquareDescription(BuildContext context, List<String> squareDesc) {
+class _DevGrid extends StatelessWidget {
+  const _DevGrid({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _squareDesc = _buildSquareDescription(context);
+
+    return GridView(
+      scrollDirection: Axis.horizontal,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 7,
+      ),
+      children: List.generate(
+        7 * 7,
+        (index) => Center(
+          child: Text(
+            _squareDesc[index],
+            style: const TextStyle(
+              color: Colors.red,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<String> _buildSquareDescription(BuildContext context) {
     final List<String> coordinates = [];
     final List<String> pieceDesc = [];
+    final List<String> squareDesc = [];
 
     const map = [
       /* 1 */
@@ -247,17 +254,13 @@ class _Board extends StatelessWidget {
       1
     ];
 
-    if (Directionality.of(context) == TextDirection.ltr) {
-      for (final file in ['a', 'b', 'c', 'd', 'e', 'f', 'g']) {
-        for (final rank in ['7', '6', '5', '4', '3', '2', '1']) {
-          coordinates.add("$file$rank");
-        }
-      }
-    } else {
-      for (final file in ['g', 'f', 'e', 'd', 'c', 'b', 'a']) {
-        for (final rank in ['7', '6', '5', '4', '3', '2', '1']) {
-          coordinates.add("$file$rank");
-        }
+    const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+    const ranks = ['7', '6', '5', '4', '3', '2', '1'];
+    final ltr = Directionality.of(context) == TextDirection.ltr;
+
+    for (final file in ltr ? files : files.reversed) {
+      for (final rank in ranks) {
+        coordinates.add("$file$rank");
       }
     }
 
@@ -279,5 +282,7 @@ class _Board extends StatelessWidget {
         squareDesc.add("$desc: ${coordinates[i]}");
       }
     }
+
+    return squareDesc;
   }
 }
