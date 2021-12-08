@@ -290,7 +290,7 @@ enum RemoveResponse { r0, r1, r2, r3 }
 enum HistoryMove { forwardAll, backAll, forward, backN, backOne }
 
 extension HistoryMoveExtension on HistoryMove {
-  int gotoHistoryIndex([int? index]) {
+  int gotoHistoryIndex([int? amount]) {
     switch (this) {
       case HistoryMove.forwardAll:
         return controller.position.recorder.moveCount - 1;
@@ -299,8 +299,8 @@ extension HistoryMoveExtension on HistoryMove {
       case HistoryMove.forward:
         return controller.position.recorder.cur + 1;
       case HistoryMove.backN:
-        assert(index != null);
-        int _index = controller.position.recorder.cur - index!;
+        assert(amount != null);
+        int _index = controller.position.recorder.cur - amount!;
         if (_index < -1) {
           _index = -1;
         }

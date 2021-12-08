@@ -639,7 +639,7 @@ class _GamePageState extends State<GamePage>
     _isGoingToHistory = false;
 
     if (mounted) {
-      late final String text;
+      final String text;
       final lastEffectiveMove = controller.position.recorder.lastEffectiveMove;
       if (lastEffectiveMove?.notation != null) {
         text = S.of(context).lastMove(lastEffectiveMove!.notation);
