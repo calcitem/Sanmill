@@ -186,6 +186,7 @@ class AppTheme {
   /// Drawer
   static const Color drawerDividerColor = Color(0x993A5160);
   static const Color drawerBoxerShadowColor = Color(0x993A5160);
+  // TODO: [Leptopdoa] actually store the theme and not the color
   static const Color drawerAnimationIconColor = Colors.white;
   static const Color drawerSplashColor = Color(0X1A9E9E9E);
 }

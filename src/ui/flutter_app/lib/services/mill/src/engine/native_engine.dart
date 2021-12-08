@@ -20,6 +20,8 @@ part of '../../mill.dart';
 
 // TODO: [Leptopoda] make this a utility class. There shouldn't be multiple engines running
 class NativeEngine extends Engine {
+  NativeEngine();
+
   static const _platform = MethodChannel("com.calcitem.sanmill/engine");
   bool _isActive = false;
 
@@ -120,7 +122,7 @@ class NativeEngine extends Engine {
       // TODO: [Leptopoda] seems like is isActive only checked here and only together with the DevMode.
       // we might be able to remove this
       if (EnvironmentConfig.devMode && _isActive) {
-        throw "Exception: waitResponse timeout.";
+        throw Exception("$_tag waitResponse timeout.");
       }
       return null;
     }

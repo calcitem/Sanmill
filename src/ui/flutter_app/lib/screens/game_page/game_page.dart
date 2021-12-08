@@ -57,19 +57,14 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage>
     with SingleTickerProviderStateMixin {
-  // TODO: [Leptopoda] move _engine into controller
-  final Engine _engine = NativeEngine();
+  static const String _tag = "[game_page]";
 
   double screenPaddingH = AppTheme.boardScreenPaddingH;
-  final double _boardMargin = AppTheme.boardMargin;
+  late AnimationController _animationController;
+  late Animation<double> _animation;
 
   late String _tip;
   bool _isGoingToHistory = false;
-  late AnimationController _animationController;
-  late Animation<double> _animation;
-  late double boardWidth;
-
-  static const String _tag = "[game_page]";
 
   void _initAnimation() {
     _animationController = AnimationController(
@@ -396,10 +391,10 @@ class _GamePageState extends State<GamePage>
       final EngineResponse response;
       if (!_isMoveNow) {
         logger.v("[engineToGo] Searching...");
-        response = await _engine.search(controller.position);
+        response = await controller.engine.search(controller.position);
       } else {
         logger.v("[engineToGo] Get search result now...");
-        response = await _engine.search(null);
+        response = await controller.engine.search(null);
         _isMoveNow = false;
       }
 
@@ -769,10 +764,10 @@ class _GamePageState extends State<GamePage>
   }
 
   Widget get _board {
-    boardWidth = MediaQuery.of(context).size.width - screenPaddingH * 2;
+    final boardWidth = MediaQuery.of(context).size.width - screenPaddingH * 2;
 
     return Container(
-      margin: EdgeInsets.symmetric(vertical: _boardMargin),
+      margin: const EdgeInsets.symmetric(vertical: AppTheme.boardMargin),
       child: _Board(
         width: boardWidth,
         onBoardTap: _onBoardTap,
@@ -860,8 +855,6 @@ class _GamePageState extends State<GamePage>
     super.initState();
     controller.gameInstance.engineType = widget.engineType;
 
-    _engine.startup();
-
     _initAnimation();
   }
 
@@ -888,26 +881,39 @@ class _GamePageState extends State<GamePage>
       backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: screenPaddingH),
-        child: Column(
-          children: <Widget>[
-            BlockSemantics(child: _header),
-            _board,
-            if (LocalDatabaseService.display.isHistoryNavigationToolbarShown)
-              GamePageToolBar(
-                backgroundColor: LocalDatabaseService
-                    .colorSettings.navigationToolbarBackgroundColor,
-                itemColor: LocalDatabaseService
-                    .colorSettings.navigationToolbarIconColor,
-                children: historyNavToolbar,
-              ),
-            GamePageToolBar(
-              backgroundColor:
-                  LocalDatabaseService.colorSettings.mainToolbarBackgroundColor,
-              itemColor:
-                  LocalDatabaseService.colorSettings.mainToolbarIconColor,
-              children: toolbar,
-            ),
-          ],
+        child: FutureBuilder(
+          future: !controller.initialized ? controller.start() : null,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            }
+
+            return Column(
+              children: <Widget>[
+                // TODO: [Leptopoda] make this the actual header
+                BlockSemantics(child: _header),
+                _board,
+                if (LocalDatabaseService
+                    .display.isHistoryNavigationToolbarShown)
+                  GamePageToolBar(
+                    backgroundColor: LocalDatabaseService
+                        .colorSettings.navigationToolbarBackgroundColor,
+                    itemColor: LocalDatabaseService
+                        .colorSettings.navigationToolbarIconColor,
+                    children: historyNavToolbar,
+                  ),
+                GamePageToolBar(
+                  backgroundColor: LocalDatabaseService
+                      .colorSettings.mainToolbarBackgroundColor,
+                  itemColor:
+                      LocalDatabaseService.colorSettings.mainToolbarIconColor,
+                  children: toolbar,
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
@@ -916,7 +922,7 @@ class _GamePageState extends State<GamePage>
   @override
   void dispose() {
     logger.i("$_tag dispose");
-    _engine.shutdown();
+    controller.dispose();
     _animationController.dispose();
     super.dispose();
   }
