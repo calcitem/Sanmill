@@ -163,8 +163,6 @@ extension PhaseExtension on Phase {
         return "m";
       case Phase.gameOver:
         return "o";
-      default:
-        return "?";
     }
   }
 
@@ -204,7 +202,7 @@ extension ActExtension on Act {
         return "s";
       case Act.remove:
         return "r";
-      default:
+      case Act.none:
         return "?";
     }
   }
@@ -281,7 +279,6 @@ extension HistoryResponseExtension on _HistoryResponse {
       case _HistoryResponse.equal:
         return S.of(context).atEnd;
       case _HistoryResponse.error:
-      default:
         return S.of(context).movesAndRulesNotMatch;
     }
   }
