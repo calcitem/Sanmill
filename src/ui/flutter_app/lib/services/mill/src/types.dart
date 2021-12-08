@@ -68,7 +68,8 @@ extension PieceColorExtension on PieceColor {
         return S.of(context).banPoint;
       case PieceColor.none:
         return S.of(context).emptyPoint;
-      default:
+      case PieceColor.nobody:
+      case PieceColor.draw:
         throw Exception("No piece name available");
     }
   }
@@ -84,7 +85,7 @@ extension PieceColorExtension on PieceColor {
     }
   }
 
-  String getWinString(BuildContext context) {
+  String? getWinString(BuildContext context) {
     switch (this) {
       case PieceColor.white:
         return S.of(context).whiteWin;
@@ -94,8 +95,8 @@ extension PieceColorExtension on PieceColor {
         return S.of(context).isDraw;
       case PieceColor.nobody:
         return controller.position.phase.getTip(context);
-      default:
-        throw Exception("No winnig string available");
+      case PieceColor.none:
+      case PieceColor.ban:
     }
   }
 
@@ -167,25 +168,27 @@ extension PhaseExtension on Phase {
     }
   }
 
-  String getTip(BuildContext context) {
+  String? getTip(BuildContext context) {
     switch (this) {
       case Phase.placing:
         return S.of(context).tipPlace;
       case Phase.moving:
         return S.of(context).tipMove;
-      default:
-        throw Exception("No tip available");
+      case Phase.none:
+      case Phase.ready:
+      case Phase.gameOver:
     }
   }
 
-  String getName(BuildContext context) {
+  String? getName(BuildContext context) {
     switch (this) {
       case Phase.placing:
         return S.of(context).placingPhase;
       case Phase.moving:
         return S.of(context).movingPhase;
-      default:
-        throw Exception("No name available");
+      case Phase.none:
+      case Phase.ready:
+      case Phase.gameOver:
     }
   }
 }
@@ -222,7 +225,7 @@ enum GameOverReason {
 
 extension GameOverReasonExtension on GameOverReason {
   String getName(BuildContext context, PieceColor winner) {
-    final String loserStr = winner.opponent.playerName(context);
+    final loserStr = winner.opponent.playerName(context);
 
     switch (this) {
       case GameOverReason.loseLessThanThree:
@@ -262,8 +265,9 @@ extension GameResultExtension on GameResult {
         return S.of(context).gameOver;
       case GameResult.draw:
         return S.of(context).isDraw;
-      default:
-        throw Exception("No result specified");
+      case GameResult.pending:
+      case GameResult.none:
+        throw Exception("No winnig string available");
     }
   }
 }

@@ -78,6 +78,7 @@ class _GamePageState extends State<GamePage>
     _animation = Tween(begin: 1.27, end: 1.0).animate(_animationController);
   }
 
+  // TODO: [Leptopoda] move the tip into the controller as a value listenable
   void _showTip(String tip, {bool snackBar = false}) {
     if (!mounted) return;
 
@@ -93,12 +94,13 @@ class _GamePageState extends State<GamePage>
     if (!mounted) return;
 
     final winner = controller.position.winner;
-    _showTip(winner.getWinString(context));
-    if (winner == PieceColor.nobody) {
-      return;
+    final message = winner.getWinString(context);
+    if (message != null) {
+      _showTip(message);
     }
 
-    if (!LocalDatabaseService.preferences.isAutoRestart) {
+    if (!LocalDatabaseService.preferences.isAutoRestart &&
+        winner != PieceColor.nobody) {
       _GameResultAlert(
         winner: winner,
         onRestart: () {
