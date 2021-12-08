@@ -23,11 +23,34 @@ final MillController controller = MillController();
 
 // TODO: [Leptopoda] maybe make this a utility class ¿?
 class MillController {
+  static const _tag = "[Controller]";
+
   final _Game gameInstance;
   final Position position;
+  final Engine engine;
   // late _GameRecorder recorder;
+
+  bool _initialized = false;
+  bool get initialized => _initialized;
 
   MillController()
       : gameInstance = _Game(),
-        position = Position();
+        position = Position(),
+        engine = NativeEngine();
+
+  Future<void> start() async {
+    if (_initialized) return;
+
+    await engine.startup();
+
+    _initialized = true;
+    logger.i("$_tag initialized");
+  }
+
+  void dispose() {
+    engine.shutdown();
+
+    _initialized = false;
+    logger.i("$_tag disposed");
+  }
 }

@@ -89,37 +89,39 @@ class _Board extends StatelessWidget {
       child: customPaint,
     );
 
-    return GestureDetector(
-      child: boardContainer,
-      onTapUp: (d) async {
-        final gridWidth = width - padding * 2;
-        final squareWidth = gridWidth / 7;
-        final dx = d.localPosition.dx;
-        final dy = d.localPosition.dy;
+    return RepaintBoundary(
+      child: GestureDetector(
+        child: boardContainer,
+        onTapUp: (d) async {
+          final gridWidth = width - padding * 2;
+          final squareWidth = gridWidth / 7;
+          final dx = d.localPosition.dx;
+          final dy = d.localPosition.dy;
 
-        final column = (dx - padding) ~/ squareWidth;
-        if (column < 0 || column > 6) {
-          return logger.v("$_tag Tap on column $column (ignored).");
-        }
+          final column = (dx - padding) ~/ squareWidth;
+          if (column < 0 || column > 6) {
+            return logger.v("$_tag Tap on column $column (ignored).");
+          }
 
-        final row = (dy - padding) ~/ squareWidth;
-        if (row < 0 || row > 6) {
-          return logger.v("$_tag Tap on row $row (ignored).");
-        }
+          final row = (dy - padding) ~/ squareWidth;
+          if (row < 0 || row > 6) {
+            return logger.v("$_tag Tap on row $row (ignored).");
+          }
 
-        final index = row * 7 + column;
-        final int? square = indexToSquare[index];
+          final index = row * 7 + column;
+          final int? square = indexToSquare[index];
 
-        if (square == null) {
-          return logger.v(
-            "$_tag Tap not on a square ($row, $column) (ignored).",
-          );
-        }
+          if (square == null) {
+            return logger.v(
+              "$_tag Tap not on a square ($row, $column) (ignored).",
+            );
+          }
 
-        logger.v("$_tag Tap on ($row, $column) <$index>");
+          logger.v("$_tag Tap on ($row, $column) <$index>");
 
-        await onBoardTap(square);
-      },
+          await onBoardTap(square);
+        },
+      ),
     );
   }
 
