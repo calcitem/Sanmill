@@ -265,7 +265,7 @@ extension GameResultExtension on GameResult {
         return S.of(context).isDraw;
       case GameResult.pending:
       case GameResult.none:
-        throw Exception("No winnig string available");
+        throw Exception("No winning string available");
     }
   }
 }

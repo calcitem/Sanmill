@@ -20,7 +20,7 @@ import 'package:sanmill/services/storage/storage.dart';
 
 /// StringBuffer Extension
 ///
-/// Extends the StringBuffer Object with some convenience methods used througout the app.
+/// Extends the StringBuffer Object with some convenience methods used through the app.
 extension CustomStringBuffer on StringBuffer {
   void writeComma([Object? obj = ""]) {
     if (LocalDatabaseService.preferences.screenReaderSupport) {

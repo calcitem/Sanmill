@@ -928,6 +928,7 @@ class Position {
     controller.gameInstance.newGame();
 
     _HistoryResponse? error;
+
     // TODO: [Leptopoda] throw errors instead of returning bools
     for (int i = 0; i <= moveIndex; i++) {
       if (!(await controller.gameInstance.doMove(historyBack[i]))) {
