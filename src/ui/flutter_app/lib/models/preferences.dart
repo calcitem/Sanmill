@@ -31,7 +31,7 @@ enum Algorithms {
   @HiveField(1)
   pvs,
   @HiveField(2)
-  mdtf,
+  mtdf,
 }
 
 extension AlgorithmNames on Algorithms {
@@ -41,7 +41,7 @@ extension AlgorithmNames on Algorithms {
         return 'Alpha-Beta';
       case Algorithms.pvs:
         return 'PVS';
-      case Algorithms.mdtf:
+      case Algorithms.mtdf:
         return 'MTD(f)';
     }
   }
@@ -72,7 +72,7 @@ class Preferences {
     this.shufflingEnabled = true,
     this.learnEndgame = false,
     this.openingBook = false,
-    this.algorithm = Algorithms.mdtf,
+    this.algorithm = Algorithms.mtdf,
     @Deprecated('This only represents the old algorithm type. Use [algorithm] instead')
         this.oldAlgorithm = 0,
     this.drawOnHumanExperience = true,

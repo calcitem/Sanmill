@@ -27,7 +27,7 @@ class URL {
     required this.urlZH,
   });
 
-  URL fromSubpath(String path, [String? pathZH]) {
+  URL fromSubPath(String path, [String? pathZH]) {
     return URL(
       url: "$url/$path",
       urlZH: "$urlZH/${pathZH ?? path}",
@@ -51,28 +51,28 @@ class Constants {
 
   static const String fullRepoName = "$authorAccount/$projectName";
 
-  static const vcsURL = URL(
+  static const scmURL = URL(
     url: "https://github.com",
     urlZH: "https://gitee.com",
   );
 
-  static final repoURL = vcsURL.fromSubpath(fullRepoName);
-  static final issuesURL = repoURL.fromSubpath("issues");
-  static final wikiURL = repoURL.fromSubpath("wiki", "wikis");
-  static final eulaURL = wikiURL.fromSubpath("EULA", "EULA_zh");
+  static final repoURL = scmURL.fromSubPath(fullRepoName);
+  static final issuesURL = repoURL.fromSubPath("issues");
+  static final wikiURL = repoURL.fromSubPath("wiki", "wikis");
+  static final eulaURL = wikiURL.fromSubPath("EULA", "EULA_zh");
   static final thirdPartyNoticesURL =
-      wikiURL.fromSubpath("third-party_notices");
+      wikiURL.fromSubPath("third-party_notices");
   static final privacyPolicyURL =
-      wikiURL.fromSubpath("privacy_policy", "privacy_policy_zh");
+      wikiURL.fromSubPath("privacy_policy", "privacy_policy_zh");
   static final helpImproveTranslateURL =
-      wikiURL.fromSubpath("Translation-and-Localization");
-  static final thanksURL = wikiURL.fromSubpath("thanks");
+      wikiURL.fromSubPath("Translation-and-Localization");
+  static final thanksURL = wikiURL.fromSubPath("thanks");
 
   static final _windowWidth = window.physicalSize.width;
   static final _windowHeight = window.physicalSize.height;
   static final windowAspectRatio = _windowHeight / _windowWidth;
 
-  static const screenThreshhold = 800;
-  static bool get isSmallScreen => _windowHeight <= screenThreshhold;
+  static const screenThreshold = 800;
+  static bool get isSmallScreen => _windowHeight <= screenThreshold;
   static bool get isLargeScreen => !isSmallScreen;
 }
