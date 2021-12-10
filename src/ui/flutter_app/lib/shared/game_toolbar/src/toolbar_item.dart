@@ -115,6 +115,8 @@ class ToolbarItem extends ButtonStyleButton {
     bool autofocus = false,
     Clip clipBehavior = Clip.none,
     required Widget child,
+    void Function(bool)? onHover,
+    void Function(bool)? onFocusChange,
   }) : super(
           key: key,
           onPressed: onPressed,
@@ -124,6 +126,8 @@ class ToolbarItem extends ButtonStyleButton {
           autofocus: autofocus,
           clipBehavior: clipBehavior,
           child: child,
+          onHover: onHover,
+          onFocusChange: onFocusChange,
         );
 
   /// Create a toolbar button from a pair of widgets that serve as the button's
