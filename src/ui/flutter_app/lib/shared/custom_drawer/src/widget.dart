@@ -113,6 +113,7 @@ class _CustomDrawerState extends State<CustomDrawer>
                 color: AppTheme.drawerDividerColor,
               ),
               ListView.builder(
+                controller: ScrollController(),
                 padding: const EdgeInsets.only(top: 4.0),
                 physics: const BouncingScrollPhysics(),
                 shrinkWrap: true,
