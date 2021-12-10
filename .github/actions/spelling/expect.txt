@@ -28,6 +28,7 @@ Bitboard
 bitboard
 bitset
 boarditem
+bools
 buf
 BUFSIZ
 cafebazaar
@@ -344,6 +345,7 @@ sbumpc
 screenshot
 scrollable
 SCs
+scm
 SDa
 SDe
 Sebastiano
@@ -457,6 +459,7 @@ utils
 uuid
 Validator
 vcvarsall
+vcs
 VERSIONINFO
 vigna
 VNNI

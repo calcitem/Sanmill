@@ -50,7 +50,7 @@ class _Game {
   int? focusIndex;
   int? blurIndex;
 
-  // TODO: [Leptopda] give a game two players (new class) to hold a player. A player can have a color, be ai ...
+  // TODO: [Leptopoda] give a game two players (new class) to hold a player. A player can have a color, be ai ...
   Map<PieceColor, bool> _isAi = {
     PieceColor.white: false,
     PieceColor.black: true,

@@ -391,7 +391,7 @@ class _GamePageState extends State<GamePage>
     final double height = windowSize.height;
     double width = windowSize.width;
 
-    // TODO: [Leptopoda] maybe use windowSize.aspectratio
+    // TODO: [Leptopoda] maybe use windowSize.aspectRatio
     if (height / width < 16.0 / 9.0) {
       width = height * 9 / 16;
       return (windowSize.width - width) / 2 - AppTheme.boardMargin;

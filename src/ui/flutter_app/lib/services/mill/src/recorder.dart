@@ -19,7 +19,7 @@
 part of '../mill.dart';
 
 // TODO
-// TODO: [Leptopoda] the public facing methods look a lot like the ones Itterable has.
+// TODO: [Leptopoda] the public facing methods look a lot like the ones Iterable has.
 //We might wanna make GameRecorder one.
 class _GameRecorder {
   // TODO: [Leptopoda] use null

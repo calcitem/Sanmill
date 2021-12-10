@@ -48,9 +48,9 @@ class _AlgorithmModal extends StatelessWidget {
             onChanged: onChanged,
           ),
           RadioListTile(
-            title: Text(Algorithms.mdtf.name),
+            title: Text(Algorithms.mtdf.name),
             groupValue: algorithm,
-            value: Algorithms.mdtf,
+            value: Algorithms.mtdf,
             onChanged: onChanged,
           ),
         ],

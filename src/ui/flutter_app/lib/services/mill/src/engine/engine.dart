@@ -34,7 +34,7 @@ enum EngineType {
   none
 }
 
-extension EngineTypeExtensiont on EngineType {
+extension EngineTypeExtension on EngineType {
   IconData get leftHeaderIcon {
     switch (this) {
       case EngineType.humanVsAi:
