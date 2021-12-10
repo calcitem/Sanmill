@@ -77,6 +77,8 @@ class Move {
     } else {
       assert(false);
     }
+
+    assert(from != to);
   }
 
   void _checkLegal() {
