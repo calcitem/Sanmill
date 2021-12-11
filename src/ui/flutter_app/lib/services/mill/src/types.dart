@@ -256,7 +256,7 @@ extension GameResultExtension on GameResult {
   String winString(BuildContext context) {
     switch (this) {
       case GameResult.win:
-        return controller.gameInstance.engineType == EngineType.humanVsAi
+        return controller.gameInstance.gameMode == GameMode.humanVsAi
             ? S.of(context).youWin
             : S.of(context).gameOver;
       case GameResult.lose:

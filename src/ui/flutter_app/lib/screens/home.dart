@@ -57,17 +57,17 @@ extension _DrawerScreen on _DrawerIndex {
     switch (this) {
       case _DrawerIndex.humanVsAi:
         return const GamePage(
-          EngineType.humanVsAi,
+          GameMode.humanVsAi,
           key: Key("Human-Ai"),
         );
       case _DrawerIndex.humanVsHuman:
         return const GamePage(
-          EngineType.humanVsHuman,
+          GameMode.humanVsHuman,
           key: Key("Human-Human"),
         );
       case _DrawerIndex.aiVsAi:
         return const GamePage(
-          EngineType.aiVsAi,
+          GameMode.aiVsAi,
           key: Key("Ai-Ai"),
         );
       case _DrawerIndex.preferences:

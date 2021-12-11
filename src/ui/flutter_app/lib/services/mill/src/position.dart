@@ -928,8 +928,8 @@ class Position {
     Audios.isTemporaryMute = true;
 
     // Backup context
-    final engineTypeBackup = controller.gameInstance.engineType;
-    controller.gameInstance.engineType = EngineType.humanVsHuman;
+    final gameModeBackup = controller.gameInstance.gameMode;
+    controller.gameInstance.gameMode = GameMode.humanVsHuman;
     final historyBack = recorder.moves;
     controller.gameInstance.newGame();
 
@@ -944,7 +944,7 @@ class Position {
     }
 
     // Restore context
-    controller.gameInstance.engineType = engineTypeBackup;
+    controller.gameInstance.gameMode = gameModeBackup;
     recorder.moves = historyBack;
     recorder.cur = moveIndex;
 
