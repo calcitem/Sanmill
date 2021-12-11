@@ -113,7 +113,7 @@ enum EngineResponseType { move, timeout, nobestmove }
 class EngineResponse {
   // TODO: extract the value as it is only needed by the move
   final EngineResponseType type;
-  final Move? value;
+  final ExtMove? value;
   EngineResponse(this.type, {this.value});
 }
 

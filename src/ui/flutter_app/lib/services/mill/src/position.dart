@@ -75,12 +75,12 @@ class Position {
 
   int _currentSquare = 0;
 
-  Move? record;
+  ExtMove? record;
 
   static late List<List<List<int>>> _millTable;
   static late List<List<int>> _adjacentSquares;
 
-  late Move move;
+  late ExtMove extMove;
 
   PieceColor pieceOnGrid(int index) => _grid[index];
   PieceColor pieceOn(int sq) => _board[sq];
@@ -198,7 +198,7 @@ class Position {
 
     bool ret = false;
 
-    final Move m = Move(move);
+    final ExtMove m = ExtMove(move);
 
     switch (m.type) {
       case _MoveType.remove:
@@ -246,7 +246,7 @@ class Position {
       posKeyHistory.clear();
     }
 
-    this.move = m;
+    extMove = m;
 
     recorder.moveIn(m, this); // TODO: Is Right?
 
@@ -347,7 +347,7 @@ class Position {
         _grid[squareToIndex[s]!] = piece;
         _board[s] = piece;
 
-        record = Move("(${fileOf(s)},${rankOf(s)})");
+        record = ExtMove("(${fileOf(s)},${rankOf(s)})");
 
         _updateKey(s);
 
@@ -440,7 +440,7 @@ class Position {
           }
         }
 
-        record = Move(
+        record = ExtMove(
           "(${fileOf(_currentSquare)},${rankOf(_currentSquare)})->(${fileOf(s)},${rankOf(s)})",
         );
 
@@ -513,7 +513,7 @@ class Position {
       _board[s] = _grid[squareToIndex[s]!] = PieceColor.none;
     }
 
-    record = Move("-(${fileOf(s)},${rankOf(s)})");
+    record = ExtMove("-(${fileOf(s)},${rankOf(s)})");
     st.rule50 = 0; // TODO: Need to move out?
 
     if (pieceOnBoardCount[_them] != null) {
@@ -979,7 +979,7 @@ class Position {
 
   String? get moveHistoryText => recorder._buildMoveHistoryText();
 
-  Move? get lastMove => recorder.lastMove;
+  ExtMove? get lastMove => recorder.lastMove;
 
   String? get lastPositionWithRemove => recorder.lastPositionWithRemove;
 }

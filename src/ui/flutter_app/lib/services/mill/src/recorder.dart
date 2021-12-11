@@ -25,13 +25,15 @@ class _GameRecorder {
   // TODO: [Leptopoda] use null
   int cur = -1;
   String lastPositionWithRemove;
-  List<Move> moves = <Move>[];
+  List<ExtMove> moves = <ExtMove>[];
   final MillController controller;
 
-  _GameRecorder(this.controller, {this.cur = -1, required this.lastPositionWithRemove});
+  _GameRecorder(this.controller,
+      {this.cur = -1, required this.lastPositionWithRemove});
 
 // TODO [Leptopoda] make param a List<Move> and change the return type
-  String? import(String moveList) => _ImportService(controller).import(moveList);
+  String? import(String moveList) =>
+      _ImportService(controller).import(moveList);
 
   void clear() {
     moves.clear();
@@ -51,26 +53,26 @@ class _GameRecorder {
   }
 
   // TODO: [Leptopoda] don't pass around the position object as we can access it through [controller.position]
-  void moveIn(Move move, Position position) {
-    if (moves.lastF == move) {
+  void moveIn(ExtMove extMove, Position position) {
+    if (moves.lastF == extMove) {
       //assert(false);
       // TODO: WAR
       return;
     }
 
-    moves.add(move);
+    moves.add(extMove);
     cur++;
 
-    if (move.type == _MoveType.remove) {
+    if (extMove.type == _MoveType.remove) {
       lastPositionWithRemove = position._fen;
     }
   }
 
   int get moveCount => moves.length;
 
-  Move? get lastMove => moves.lastF;
+  ExtMove? get lastMove => moves.lastF;
 
-  Move? get lastEffectiveMove => cur == -1 ? null : moves[cur];
+  ExtMove? get lastEffectiveMove => cur == -1 ? null : moves[cur];
 
   String? _buildMoveHistoryText({int cols = 2}) {
     if (moves.isEmpty) {

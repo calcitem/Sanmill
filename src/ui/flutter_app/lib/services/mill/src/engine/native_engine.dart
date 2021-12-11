@@ -96,7 +96,7 @@ class NativeEngine extends Engine {
       final pos = best.indexOf(" ");
       if (pos > -1) best = best.substring(0, pos);
 
-      return EngineResponse(EngineResponseType.move, value: Move(best));
+      return EngineResponse(EngineResponseType.move, value: ExtMove(best));
     }
 
     if (response.startsWith("nobestmove")) {
