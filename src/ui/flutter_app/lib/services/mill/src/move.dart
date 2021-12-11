@@ -18,7 +18,7 @@
 
 part of '../mill.dart';
 
-class Move {
+class ExtMove {
   static const _invalidMove = -1;
 
   static const _tag = "[Move]";
@@ -42,7 +42,7 @@ class Move {
   late final _MoveType type;
 
   // TODO: [Leptopoda] attributes should probably be made getters
-  Move(this.uciMove) {
+  ExtMove(this.uciMove) {
     _checkLegal();
 
     if (uciMove[0] == "-" && uciMove.length == "-(1,2)".length) {
@@ -132,5 +132,6 @@ class Move {
   int get hashCode => uciMove.hashCode;
 
   @override
-  bool operator ==(Object other) => other is Move && other.uciMove == uciMove;
+  bool operator ==(Object other) =>
+      other is ExtMove && other.uciMove == uciMove;
 }

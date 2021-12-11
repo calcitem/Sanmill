@@ -232,7 +232,7 @@ class TapHandler {
         }
 
         //position.move = m;
-        final Move m = position.record!;
+        final ExtMove m = position.record!;
         controller.position.recorder.prune();
         controller.position.recorder.moveIn(m, position);
 
@@ -310,16 +310,16 @@ class TapHandler {
 
       switch (response.type) {
         case EngineResponseType.move:
-          final Move move = response.value!;
+          final ExtMove extMove = response.value!;
 
-          await controller.gameInstance.doMove(move);
+          await controller.gameInstance.doMove(extMove);
           animationController.reset();
           animationController.animateTo(1.0);
 
           onWin();
           if (LocalDatabaseService.preferences.screenReaderSupport) {
             ScaffoldMessenger.of(context).showSnackBar(
-              CustomSnackBar("${S.of(context).ai}: ${move.notation}"),
+              CustomSnackBar("${S.of(context).ai}: ${extMove.notation}"),
             );
           }
           break;

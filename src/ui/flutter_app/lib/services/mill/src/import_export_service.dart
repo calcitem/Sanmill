@@ -155,7 +155,7 @@ class _ImportService {
       return _importGoldToken(moveList);
     }
 
-    final List<Move> newHistory = [];
+    final List<ExtMove> newHistory = [];
     final List<String> list = moveList
         .toLowerCase()
         .replaceAll("\n", " ")
@@ -201,14 +201,14 @@ class _ImportService {
           // "a1xc3"
           final String? m1 = _wmdNotationToMoveString(i.substring(0, 2));
           if (m1 != null) {
-            newHistory.add(Move(m1));
+            newHistory.add(ExtMove(m1));
           } else {
             logger.e("Cannot import $i");
             return i;
           }
           final String? m2 = _wmdNotationToMoveString(i.substring(2));
           if (m2 != null) {
-            newHistory.add(Move(m2));
+            newHistory.add(ExtMove(m2));
           } else {
             logger.e("Cannot import $i");
             return i;
@@ -217,14 +217,14 @@ class _ImportService {
           // "a1-b2xc3"
           final String? m1 = _wmdNotationToMoveString(i.substring(0, 5));
           if (m1 != null) {
-            newHistory.add(Move(m1));
+            newHistory.add(ExtMove(m1));
           } else {
             logger.e("Cannot import $i");
             return i;
           }
           final String? m2 = _wmdNotationToMoveString(i.substring(5));
           if (m2 != null) {
-            newHistory.add(Move(m2));
+            newHistory.add(ExtMove(m2));
           } else {
             logger.e("Cannot import $i");
             return i;
@@ -233,7 +233,7 @@ class _ImportService {
           // no x
           final String? m = _wmdNotationToMoveString(i);
           if (m != null) {
-            newHistory.add(Move(m));
+            newHistory.add(ExtMove(m));
           } else {
             logger.e("Cannot import $i");
             return i;
@@ -253,7 +253,7 @@ class _ImportService {
   }
 
   String? _importPlayOk(String moveList) {
-    final List<Move> newHistory = [];
+    final List<ExtMove> newHistory = [];
 
     final List<String> list = moveList
         .replaceAll("\n", " ")
@@ -274,7 +274,7 @@ class _ImportService {
         if (iX == -1) {
           final String? m = _playOkNotationToMoveString(i);
           if (m != null) {
-            newHistory.add(Move(m));
+            newHistory.add(ExtMove(m));
           } else {
             logger.e("Cannot import $i");
             return i;
@@ -282,14 +282,14 @@ class _ImportService {
         } else if (iX != -1) {
           final String? m1 = _playOkNotationToMoveString(i.substring(0, iX));
           if (m1 != null) {
-            newHistory.add(Move(m1));
+            newHistory.add(ExtMove(m1));
           } else {
             logger.e("Cannot import $i");
             return i;
           }
           final String? m2 = _playOkNotationToMoveString(i.substring(iX));
           if (m2 != null) {
-            newHistory.add(Move(m2));
+            newHistory.add(ExtMove(m2));
           } else {
             logger.e("Cannot import $i");
             return i;
