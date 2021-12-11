@@ -550,7 +550,7 @@ bool Position::reset()
     action = Action::place;
 
     winner = NOBODY;
-    gameOverReason = GameOverReason::noReason;
+    gameOverReason = GameOverReason::none;
 
     memset(board, 0, sizeof(board));
     memset(byTypeBB, 0, sizeof(byTypeBB));
@@ -594,7 +594,7 @@ bool Position::reset()
 
 bool Position::start()
 {
-    gameOverReason = GameOverReason::noReason;
+    gameOverReason = GameOverReason::none;
 
     switch (phase) {
     case Phase::placing:
@@ -649,7 +649,7 @@ bool Position::put_piece(Square s, bool updateRecord)
 #ifdef MADWEASEL_MUEHLE_RULE
         if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0
             && is_all_surrounded(~sideToMove, SQ_0, s)) {
-            set_gameover(sideToMove, GameOverReason::loseReasonNoWay);
+            set_gameover(sideToMove, GameOverReason::loseNoWay);
             // change_side_to_move();
             return true;
         }
@@ -726,7 +726,7 @@ bool Position::put_piece(Square s, bool updateRecord)
     } else if (phase == Phase::moving) {
 #ifdef MADWEASEL_MUEHLE_RULE
         if (is_all_surrounded(~sideToMove, currentSquare, s)) {
-            set_gameover(sideToMove, GameOverReason::loseReasonNoWay);
+            set_gameover(sideToMove, GameOverReason::loseNoWay);
         }
 #else
         if (check_if_game_is_over()) {
@@ -851,7 +851,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     if (pieceOnBoardCount[them] + pieceInHandCount[them]
         < rule.piecesAtLeastCount) {
-        set_gameover(sideToMove, GameOverReason::loseReasonlessThanThree);
+        set_gameover(sideToMove, GameOverReason::loseLessThanThree);
         return true;
     }
 
@@ -918,7 +918,7 @@ bool Position::resign(Color loser)
         return false;
     }
 
-    set_gameover(~loser, GameOverReason::loseReasonResign);
+    set_gameover(~loser, GameOverReason::loseResign);
 
     snprintf(record, RECORD_LEN_MAX, loseReasonResignStr, loser);
 
@@ -971,7 +971,7 @@ bool Position::command(const char* cmd)
         }
 
         if (!strcmp(cmd, "draw")) {
-            set_gameover(DRAW, GameOverReason::drawReasonThreefoldRepetition);
+            set_gameover(DRAW, GameOverReason::drawThreefoldRepetition);
             // snprintf(record, RECORD_LEN_MAX,
             // drawReasonThreefoldRepetitionStr);
             return true;
@@ -1008,13 +1008,13 @@ bool Position::check_if_game_is_over()
 {
 #ifdef RULE_50
     if (rule.nMoveRule > 0 && posKeyHistory.size() >= rule.nMoveRule) {
-        set_gameover(DRAW, GameOverReason::drawReasonRule50);
+        set_gameover(DRAW, GameOverReason::drawRule50);
         return true;
     }
 
     if (rule.endgameNMoveRule < rule.nMoveRule && is_three_endgame()
         && posKeyHistory.size() >= rule.endgameNMoveRule) {
-        set_gameover(DRAW, GameOverReason::drawReasonEndgameRule50);
+        set_gameover(DRAW, GameOverReason::drawEndgameRule50);
         return true;
     }
 #endif // RULE_50
@@ -1022,9 +1022,9 @@ bool Position::check_if_game_is_over()
     if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK]
         >= EFFECTIVE_SQUARE_NB) {
         if (rule.isWhiteLoseButNotDrawWhenBoardFull) {
-            set_gameover(BLACK, GameOverReason::loseReasonBoardIsFull);
+            set_gameover(BLACK, GameOverReason::loseBoardIsFull);
         } else {
-            set_gameover(DRAW, GameOverReason::drawReasonBoardIsFull);
+            set_gameover(DRAW, GameOverReason::drawBoardIsFull);
         }
 
         return true;
@@ -1033,7 +1033,7 @@ bool Position::check_if_game_is_over()
     if (phase == Phase::moving && action == Action::select
         && is_all_surrounded(sideToMove)) {
         if (rule.isLoseButNotChangeSideWhenNoWay) {
-            set_gameover(~sideToMove, GameOverReason::loseReasonNoWay);
+            set_gameover(~sideToMove, GameOverReason::loseNoWay);
             return true;
         } else {
             change_side_to_move(); // TODO(calcitem): Need?

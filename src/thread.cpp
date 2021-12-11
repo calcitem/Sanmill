@@ -440,7 +440,7 @@ string Thread::next_move()
     if (gameOptions.getResignIfMostLose() == true) {
         if (bestvalue <= -VALUE_MATE) {
             rootPos->set_gameover(
-                ~rootPos->sideToMove, GameOverReason::loseReasonResign);
+                ~rootPos->sideToMove, GameOverReason::loseResign);
             snprintf(rootPos->record, Position::RECORD_LEN_MAX,
                 loseReasonResignStr, rootPos->sideToMove);
             return rootPos->record;

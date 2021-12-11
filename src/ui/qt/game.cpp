@@ -944,8 +944,7 @@ bool Game::actionPiece(QPointF p)
 #endif /* !QT_MOBILE_APP_UI */
             const int rowCount = moveListModel.rowCount();
             const int removeCount = rowCount - currentRow - 1;
-            moveListModel.removeRows(
-                currentRow + 1, rowCount - currentRow - 1);
+            moveListModel.removeRows(currentRow + 1, rowCount - currentRow - 1);
 
             for (int i = 0; i < removeCount; i++) {
                 moveHistory.pop_back();
@@ -1051,8 +1050,7 @@ bool Game::actionPiece(QPointF p)
             if (k++ <= currentRow)
                 continue;
             moveListModel.insertRow(++currentRow);
-            moveListModel.setData(
-                moveListModel.index(currentRow), i.c_str());
+            moveListModel.setData(moveListModel.index(currentRow), i.c_str());
         }
 
         // Play win or lose sound
@@ -1197,8 +1195,7 @@ bool Game::command(const string& cmd, bool update /* = true */)
     if (move_hostory()->size() <= 1) {
         moveListModel.removeRows(0, moveListModel.rowCount());
         moveListModel.insertRow(0);
-        moveListModel.setData(
-            moveListModel.index(0), position.get_record());
+        moveListModel.setData(moveListModel.index(0), position.get_record());
         currentRow = 0;
     } else { // For the current position
         currentRow = moveListModel.rowCount() - 1;
@@ -1472,7 +1469,8 @@ bool Game::updateScene(Position& p)
     if (rule.hasBannedLocations && p.get_phase() == Phase::placing) {
         for (int sq = SQ_BEGIN; sq < SQ_END; sq++) {
             if (board[sq] == BAN_STONE) {
-                pos = scene.polar2pos(File(sq / RANK_NB), Rank(sq % RANK_NB + 1));
+                pos = scene.polar2pos(
+                    File(sq / RANK_NB), Rank(sq % RANK_NB + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
                     pieceList.at(static_cast<size_t>(nTotalPieces++))
                         ->setPos(pos);
@@ -1654,35 +1652,35 @@ void Game::appendGameOverReasonToMoveHistory()
 
     char record[64] = { 0 };
     switch (position.gameOverReason) {
-    case GameOverReason::loseReasonNoWay:
+    case GameOverReason::loseNoWay:
         snprintf(record, Position::RECORD_LEN_MAX, loseReasonNoWayStr,
             position.sideToMove, position.winner);
         break;
-    case GameOverReason::loseReasonTimeOver:
+    case GameOverReason::loseTimeOver:
         snprintf(record, Position::RECORD_LEN_MAX, loseReasonTimeOverStr,
             position.winner);
         break;
-    case GameOverReason::drawReasonThreefoldRepetition:
+    case GameOverReason::drawThreefoldRepetition:
         snprintf(
             record, Position::RECORD_LEN_MAX, drawReasonThreefoldRepetitionStr);
         break;
-    case GameOverReason::drawReasonRule50:
+    case GameOverReason::drawRule50:
         snprintf(record, Position::RECORD_LEN_MAX, drawReasonRule50Str);
         break;
-    case GameOverReason::drawReasonEndgameRule50:
+    case GameOverReason::drawEndgameRule50:
         snprintf(record, Position::RECORD_LEN_MAX, drawReasonEndgameRule50Str);
         break;
-    case GameOverReason::loseReasonBoardIsFull:
+    case GameOverReason::loseBoardIsFull:
         snprintf(record, Position::RECORD_LEN_MAX, loseReasonBoardIsFullStr);
         break;
-    case GameOverReason::drawReasonBoardIsFull:
+    case GameOverReason::drawBoardIsFull:
         snprintf(record, Position::RECORD_LEN_MAX, drawReasonBoardIsFullStr);
         break;
-    case GameOverReason::loseReasonlessThanThree:
+    case GameOverReason::loseLessThanThree:
         snprintf(record, Position::RECORD_LEN_MAX, loseReasonlessThanThreeStr,
             position.winner);
         break;
-    case GameOverReason::loseReasonResign:
+    case GameOverReason::loseResign:
         snprintf(record, Position::RECORD_LEN_MAX, loseReasonResignStr,
             ~position.winner);
         break;
@@ -1757,9 +1755,9 @@ void Game::setTips()
         }
 
         switch (p.gameOverReason) {
-        case GameOverReason::loseReasonlessThanThree:
+        case GameOverReason::loseLessThanThree:
             break;
-        case GameOverReason::loseReasonNoWay:
+        case GameOverReason::loseNoWay:
 #ifdef MADWEASEL_MUEHLE_RULE
             if (!isInverted) {
                 turnStr = char_to_string(color_to_char(~p.sideToMove));
@@ -1769,22 +1767,22 @@ void Game::setTips()
 #endif
             reasonStr = turnStr + " is blocked.";
             break;
-        case GameOverReason::loseReasonResign:
+        case GameOverReason::loseResign:
             reasonStr = turnStr + " resigned.";
             break;
-        case GameOverReason::loseReasonTimeOver:
+        case GameOverReason::loseTimeOver:
             reasonStr = "Time over." + turnStr + " lost.";
             break;
-        case GameOverReason::drawReasonThreefoldRepetition:
+        case GameOverReason::drawThreefoldRepetition:
             reasonStr = "Draw because of threefold repetition.";
             break;
-        case GameOverReason::drawReasonRule50:
+        case GameOverReason::drawRule50:
             reasonStr = "Draw because of rule 50.";
             break;
-        case GameOverReason::drawReasonEndgameRule50:
+        case GameOverReason::drawEndgameRule50:
             reasonStr = "Draw because of endgame rule 50.";
             break;
-        case GameOverReason::drawReasonBoardIsFull:
+        case GameOverReason::drawBoardIsFull:
             reasonStr = "Draw because of board is full.";
             break;
         default:

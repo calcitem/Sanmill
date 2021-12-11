@@ -181,7 +181,7 @@ public:
     /// Mill Game
     Color them { NOCOLOR };
     Color winner;
-    GameOverReason gameOverReason { GameOverReason::noReason };
+    GameOverReason gameOverReason { GameOverReason::none };
 
     enum Phase phase { Phase::none };
     enum Action action;

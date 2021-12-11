@@ -252,7 +252,7 @@ bool perfect_command(const char* cmd)
             phase = Phase::gameOver;
             winner = DRAW;
             score_draw++;
-            gameOverReason = GameOverReason::drawReasonThreefoldRepetition;
+            gameOverReason = GameOverReason::drawThreefoldRepetition;
             //snprintf(record, RECORD_LEN_MAX, drawReasonThreefoldRepetitionStr);
             return true;
         }

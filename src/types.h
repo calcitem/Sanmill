@@ -153,22 +153,22 @@ enum class Phase : uint16_t {
 enum class Action : uint16_t { none, select, place, remove };
 
 enum class GameOverReason {
-    noReason,
+    none,
 
     // A player wins by reducing the opponent to two pieces
     // (where they could no longer form mills and thus be unable to win)
-    loseReasonlessThanThree,
+    loseLessThanThree,
 
     // A player wins by leaving them without a legal move.
-    loseReasonNoWay,
-    loseReasonBoardIsFull,
+    loseNoWay,
+    loseBoardIsFull,
 
-    loseReasonResign,
-    loseReasonTimeOver,
-    drawReasonThreefoldRepetition,
-    drawReasonRule50,
-    drawReasonEndgameRule50,
-    drawReasonBoardIsFull,
+    loseResign,
+    loseTimeOver,
+    drawThreefoldRepetition,
+    drawRule50,
+    drawEndgameRule50,
+    drawBoardIsFull,
 };
 
 enum Bound : uint8_t {
