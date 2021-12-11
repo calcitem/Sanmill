@@ -19,6 +19,7 @@
 part of '../mill.dart';
 
 class ExtMove {
+  // TODO: [Leptopoda] use null to the _invalidMove
   static const _invalidMove = -1;
 
   static const _tag = "[Move]";
