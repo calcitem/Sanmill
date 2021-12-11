@@ -330,6 +330,7 @@ rdtscp
 READONLY
 READWRITE
 readyok
+refactoring
 registar
 responsponds
 Resync
