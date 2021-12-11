@@ -19,6 +19,7 @@
 part of '../../mill.dart';
 
 // TODO: [Leptopoda] make this a utility class. There shouldn't be multiple engines running
+// TODO: [calcitem] Test AI Vs. AI when the refactoring is complete.
 class NativeEngine extends Engine {
   final MillController controller;
 
@@ -121,6 +122,12 @@ class NativeEngine extends Engine {
 
     if (times > timeLimit) {
       logger.v("$_tag Timeout. sleep = $sleep, times = $times");
+
+      // Note:
+      // Do not throw exception in the production environment here.
+      // Because if the user sets the search depth to be very deep, but his phone performance is low, it may timeout.
+      // But we have to test timeout in devMode to identify anomalies under shallow search.
+      // What method is user-friendly is to be discussed.
       // TODO: [Leptopoda] seems like is isActive only checked here and only together with the DevMode.
       // we might be able to remove this
       if (EnvironmentConfig.devMode && _isActive) {
