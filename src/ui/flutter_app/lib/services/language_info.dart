@@ -116,7 +116,7 @@ String? specialCountryAndRegion;
 void setSpecialCountryAndRegion(BuildContext context) {
   final Locale currentLocale = Localizations.localeOf(context);
 
-  switch (currentLocale.countryCode) {
+  switch (currentLocale.languageCode) {
     case "fa":
       specialCountryAndRegion = "Iran";
       break;
