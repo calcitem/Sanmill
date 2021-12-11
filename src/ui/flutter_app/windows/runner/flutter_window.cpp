@@ -25,12 +25,11 @@
 
 #include "flutter/generated_plugin_registrant.h"
 
-FlutterWindow::FlutterWindow(
-    RunLoop* run_loop, const flutter::DartProject& project)
+FlutterWindow::FlutterWindow(RunLoop *run_loop,
+                             const flutter::DartProject &project)
     : run_loop_(run_loop)
     , project_(project)
-{
-}
+{ }
 
 FlutterWindow::~FlutterWindow()
 {
@@ -66,7 +65,7 @@ bool FlutterWindow::OnCreate()
             "com.calcitem.sanmill/engine",
             &flutter::StandardMethodCodec::GetInstance());
 
-        channel->SetMethodCallHandler([this](const auto& call, auto result) {
+        channel->SetMethodCallHandler([this](const auto &call, auto result) {
             HandleMethodCall(call, std::move(result));
         });
     }
@@ -76,15 +75,16 @@ bool FlutterWindow::OnCreate()
     return true;
 }
 
-void FlutterWindow::HandleMethodCall(const flutter::MethodCall<>& method_call,
+void FlutterWindow::HandleMethodCall(
+    const flutter::MethodCall<> &method_call,
     std::unique_ptr<flutter::MethodResult<>> result)
 {
-    const std::string& method = method_call.method_name();
+    const std::string &method = method_call.method_name();
 
     if (method.compare("startup") == 0) {
         result->Success(engine->startup());
     } else if (method_call.method_name().compare("send") == 0) {
-        const auto& args = std::get<std::string>(*method_call.arguments());
+        const auto &args = std::get<std::string>(*method_call.arguments());
         result->Success(engine->send(args.c_str()));
     } else if (method.compare("read") == 0) {
         result->Success(engine->read());
@@ -111,13 +111,13 @@ void FlutterWindow::OnDestroy()
 
 LRESULT
 FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
-    WPARAM const wparam, LPARAM const lparam) noexcept
+                              WPARAM const wparam, LPARAM const lparam) noexcept
 {
     // Give Flutter, including plugin, an opportunity to handle window messages.
     if (flutter_controller_) {
-        std::optional<LRESULT> result
-            = flutter_controller_->HandleTopLevelWindowProc(
-                hwnd, message, wparam, lparam);
+        std::optional<LRESULT> result =
+            flutter_controller_->HandleTopLevelWindowProc(hwnd, message, wparam,
+                                                          lparam);
         if (result) {
             return *result;
         }

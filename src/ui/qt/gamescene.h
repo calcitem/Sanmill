@@ -25,32 +25,33 @@
 
 class BoardItem;
 
-class GameScene : public QGraphicsScene {
+class GameScene : public QGraphicsScene
+{
     Q_OBJECT
 
 public:
-    explicit GameScene(QObject* parent = nullptr);
+    explicit GameScene(QObject *parent = nullptr);
     ~GameScene() override;
 
     QPointF polar2pos(File f, Rank r);
 
-    bool pos2polar(QPointF pos, File& f, Rank& r);
+    bool pos2polar(QPointF pos, File &f, Rank &r);
 
     void setDiagonal(bool arg = true);
 
     // Position of player 1's own board and opponent's board
-    const QPointF pos_p1 { LINE_INTERVAL * 4, LINE_INTERVAL * 6 };
-    const QPointF pos_p1_g { LINE_INTERVAL * (-4), LINE_INTERVAL * 6 };
+    const QPointF pos_p1 {LINE_INTERVAL * 4, LINE_INTERVAL * 6};
+    const QPointF pos_p1_g {LINE_INTERVAL * (-4), LINE_INTERVAL * 6};
 
     // Position of player 2's own board and opponent's board
-    const QPointF pos_p2 { LINE_INTERVAL * (-4), LINE_INTERVAL*(-6) };
-    const QPointF pos_p2_g { LINE_INTERVAL * 4, LINE_INTERVAL*(-6) };
+    const QPointF pos_p2 {LINE_INTERVAL * (-4), LINE_INTERVAL *(-6)};
+    const QPointF pos_p2_g {LINE_INTERVAL * 4, LINE_INTERVAL *(-6)};
 
 protected:
     // void keyPressEvent(QKeyEvent *keyEvent);
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
-    void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
 signals:
     void mouseReleased(QPointF);
@@ -58,7 +59,7 @@ signals:
 public slots:
 
 private:
-    BoardItem* board { nullptr };
+    BoardItem *board {nullptr};
 };
 
 #endif // GAMESCENE_H_INCLUDED

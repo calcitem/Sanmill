@@ -45,10 +45,10 @@ ThreadPool Threads; // Global object
 
 Thread::Thread(size_t n
 #ifdef QT_GUI_LIB
-    ,
-    QObject* parent
+               ,
+               QObject *parent
 #endif
-    )
+               )
     :
 #ifdef QT_GUI_LIB
     QObject(parent)
@@ -146,7 +146,7 @@ void Thread::idle_loop()
 #ifdef OPENING_BOOK
             // gameOptions.getOpeningBook()
             if (!openingBookDeque.empty()) {
-                char obc[16] = { 0 };
+                char obc[16] = {0};
                 sq2str(obc);
                 strCommand = obc;
                 emitCommand();
@@ -175,7 +175,7 @@ void Thread::idle_loop()
 
 ////////////////////////////////////////////////////////////////////////////
 
-void Thread::setAi(Position* p)
+void Thread::setAi(Position *p)
 {
     std::lock_guard<std::mutex> lk(mutex);
 
@@ -188,7 +188,7 @@ void Thread::setAi(Position* p)
 #endif
 }
 
-void Thread::setAi(Position* p, int tl)
+void Thread::setAi(Position *p, int tl)
 {
     setAi(p);
 
@@ -238,7 +238,7 @@ deque<int> openingBookDeque({
 
 deque<int> openingBookDequeBak;
 
-void sq2str(char* str)
+void sq2str(char *str)
 {
     int sq = openingBookDeque.front();
     openingBookDeque.pop_front();
@@ -288,7 +288,7 @@ void Thread::analyze(Color c)
 
     debugPrintf("Depth: %d\n\n", originDepth);
 
-    const Position* p = rootPos;
+    const Position *p = rootPos;
 
     cout << *p << std::endl;
     cout << std::dec;
@@ -418,7 +418,10 @@ out:
     cout << std::endl << std::endl;
 }
 
-Depth Thread::get_depth() { return Mills::get_search_depth(rootPos); }
+Depth Thread::get_depth()
+{
+    return Mills::get_search_depth(rootPos);
+}
 
 string Thread::next_move()
 {
@@ -427,9 +430,9 @@ string Thread::next_move()
     if (gameOptions.isEndgameLearningEnabled()) {
         if (bestvalue <= -VALUE_KNOWN_WIN) {
             Endgame endgame;
-            endgame.type = rootPos->side_to_move() == WHITE
-                ? EndGameType::blackWin
-                : EndGameType::whiteWin;
+            endgame.type = rootPos->side_to_move() == WHITE ?
+                               EndGameType::blackWin :
+                               EndGameType::whiteWin;
             Key endgameHash = rootPos->key(); // TODO(calcitem): Do not generate
                                               // hash repeatedly
             saveEndgameHash(endgameHash, endgame);
@@ -439,10 +442,10 @@ string Thread::next_move()
 
     if (gameOptions.getResignIfMostLose() == true) {
         if (bestvalue <= -VALUE_MATE) {
-            rootPos->set_gameover(
-                ~rootPos->sideToMove, GameOverReason::loseResign);
+            rootPos->set_gameover(~rootPos->sideToMove,
+                                  GameOverReason::loseResign);
             snprintf(rootPos->record, Position::RECORD_LEN_MAX,
-                loseReasonResignStr, rootPos->sideToMove);
+                     loseReasonResignStr, rootPos->sideToMove);
             return rootPos->record;
         }
     }
@@ -451,10 +454,10 @@ string Thread::next_move()
 #ifdef TRANSPOSITION_TABLE_DEBUG
     size_t hashProbeCount = ttHitCount + ttMissCount;
     if (hashProbeCount) {
-        debugPrintf(
-            "[posKey] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
-            hashProbeCount, ttHitCount, ttMissCount,
-            ttHitCount * 100 / hashProbeCount);
+        debugPrintf("[posKey] probe: %llu, hit: %llu, miss: %llu, hit rate: "
+                    "%llu%%\n",
+                    hashProbeCount, ttHitCount, ttMissCount,
+                    ttHitCount * 100 / hashProbeCount);
     }
 #endif // TRANSPOSITION_TABLE_DEBUG
 #endif // TRANSPOSITION_TABLE_ENABLE
@@ -463,24 +466,27 @@ string Thread::next_move()
 }
 
 #ifdef ENDGAME_LEARNING
-bool Thread::probeEndgameHash(Key posKey, Endgame& endgame)
+bool Thread::probeEndgameHash(Key posKey, Endgame &endgame)
 {
     return endgameHashMap.find(posKey, endgame);
 }
 
-int Thread::saveEndgameHash(Key posKey, const Endgame& endgame)
+int Thread::saveEndgameHash(Key posKey, const Endgame &endgame)
 {
     Key hashValue = endgameHashMap.insert(posKey, endgame);
     unsigned addr = hashValue * (sizeof(posKey) + sizeof(endgame));
 
     debugPrintf("[endgame] Record 0x%08I32x (%d) to Endgame hash map, TTEntry: "
                 "0x%08I32x, Address: 0x%08I32x\n",
-        posKey, endgame.type, hashValue, addr);
+                posKey, endgame.type, hashValue, addr);
 
     return 0;
 }
 
-void Thread::clearEndgameHashMap() { endgameHashMap.clear(); }
+void Thread::clearEndgameHashMap()
+{
+    endgameHashMap.clear();
+}
 
 void Thread::saveEndgameHashMapToFile()
 {
@@ -532,7 +538,7 @@ void ThreadPool::set(size_t requested)
 
 void ThreadPool::clear()
 {
-    for (Thread* th : *this)
+    for (Thread *th : *this)
         th->clear();
 }
 
@@ -540,7 +546,7 @@ void ThreadPool::clear()
 /// returns immediately. Main thread will wake up other threads and start the
 /// search.
 
-void ThreadPool::start_thinking(Position* pos, bool ponderMode)
+void ThreadPool::start_thinking(Position *pos, bool ponderMode)
 {
     main()->wait_for_search_finished();
 
@@ -549,7 +555,7 @@ void ThreadPool::start_thinking(Position* pos, bool ponderMode)
     main()->ponder = ponderMode;
 
     // We use Position::set() to set root position across threads.
-    for (Thread* th : *this) {
+    for (Thread *th : *this) {
         // Fix CID 338443: Data race condition (MISSING_LOCK)
         // missing_lock: Accessing th->rootPos without holding lock
         // Thread.mutex. Elsewhere, Thread.rootPos is accessed with Thread.mutex

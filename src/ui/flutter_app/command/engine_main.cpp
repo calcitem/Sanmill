@@ -21,20 +21,20 @@
 #include "base.h"
 #include "command_channel.h"
 
-extern int main(int argc, char* argv[]);
+extern int main(int argc, char *argv[]);
 
-void println(const char* str, ...)
+void println(const char *str, ...)
 {
     va_list args;
 
     va_start(args, str);
 
-    char buffer[256] = { 0 };
+    char buffer[256] = {0};
     vsnprintf(buffer, sizeof(buffer), str, args);
 
     va_end(args);
 
-    CommandChannel* channel = CommandChannel::getInstance();
+    CommandChannel *channel = CommandChannel::getInstance();
 
     LOGD("println: %s\n", buffer);
 
@@ -43,4 +43,7 @@ void println(const char* str, ...)
     }
 }
 
-int engineMain(void) { return main(1, 0); }
+int engineMain(void)
+{
+    return main(1, 0);
+}

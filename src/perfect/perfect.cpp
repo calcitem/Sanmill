@@ -15,8 +15,8 @@
 #include "position.h"
 
 // Perfect AI
-Mill* mill = nullptr;
-PerfectAI* ai = nullptr;
+Mill *mill = nullptr;
+PerfectAI *ai = nullptr;
 
 int perfect_init(void)
 {
@@ -60,9 +60,10 @@ int perfect_reset(void)
 
 Square from_perfect_sq(unsigned int sq)
 {
-    Square map[] = { SQ_31, SQ_24, SQ_25, SQ_23, SQ_16, SQ_17, SQ_15, SQ_8,
-        SQ_9, SQ_30, SQ_22, SQ_14, SQ_10, SQ_18, SQ_26, SQ_13, SQ_12, SQ_11,
-        SQ_21, SQ_20, SQ_19, SQ_29, SQ_28, SQ_27, SQ_0 };
+    Square map[] = {SQ_31, SQ_24, SQ_25, SQ_23, SQ_16, SQ_17, SQ_15,
+                    SQ_8,  SQ_9,  SQ_30, SQ_22, SQ_14, SQ_10, SQ_18,
+                    SQ_26, SQ_13, SQ_12, SQ_11, SQ_21, SQ_20, SQ_19,
+                    SQ_29, SQ_28, SQ_27, SQ_0};
 
     return map[sq];
 }
@@ -88,52 +89,17 @@ Move from_perfect_move(unsigned int from, unsigned int to)
 unsigned to_perfect_sq(Square sq)
 {
     int map[] = {
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        7,
-        8,
-        12,
-        17,
-        16,
-        15,
-        11,
-        6, /* 8 - 15 */
-        4,
-        5,
-        13,
-        20,
-        19,
-        18,
-        10,
-        3, /* 16 - 23 */
-        1,
-        2,
-        14,
-        23,
-        22,
-        21,
-        9,
-        0, /* 24 - 31 */
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
-        -1,
+        -1, -1, -1, -1, -1, -1, -1, -1,
+        7,  8,  12, 17, 16, 15, 11, 6, /* 8 - 15 */
+        4,  5,  13, 20, 19, 18, 10, 3, /* 16 - 23 */
+        1,  2,  14, 23, 22, 21, 9,  0, /* 24 - 31 */
+        -1, -1, -1, -1, -1, -1, -1, -1,
     };
 
     return map[sq];
 }
 
-void to_perfect_move(Move move, unsigned int& from, unsigned int& to)
+void to_perfect_move(Move move, unsigned int &from, unsigned int &to)
 {
     Square f = from_sq(move);
     Square t = to_sq(move);
@@ -151,7 +117,7 @@ void to_perfect_move(Move move, unsigned int& from, unsigned int& to)
     }
 }
 
-void to_perfect_postition(Position& pos) {}
+void to_perfect_postition(Position &pos) { }
 
 Move perfect_search()
 {
@@ -196,7 +162,7 @@ bool perfect_do_move(Move move)
     return ret;
 }
 
-bool perfect_command(const char* cmd)
+bool perfect_command(const char *cmd)
 {
     unsigned int ruleNo = 0;
     unsigned t = 0;
@@ -214,21 +180,21 @@ bool perfect_command(const char* cmd)
         return perfect_reset();
     }
 
-    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned*)&file1,
-        (unsigned*)&rank1, (unsigned*)&file2, (unsigned*)&rank2);
+    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned *)&file1,
+                  (unsigned *)&rank1, (unsigned *)&file2, (unsigned *)&rank2);
 
     if (args >= 4) {
         move = make_move(make_square(file1, rank1), make_square(file2, rank2));
         return perfect_do_move(move);
     }
 
-    args = sscanf(cmd, "-(%1u,%1u)", (unsigned*)&file1, (unsigned*)&rank1);
+    args = sscanf(cmd, "-(%1u,%1u)", (unsigned *)&file1, (unsigned *)&rank1);
     if (args >= 2) {
         move = (Move)-make_move(SQ_0, make_square(file1, rank1));
         return perfect_do_move(move);
     }
 
-    args = sscanf(cmd, "(%1u,%1u)", (unsigned*)&file1, (unsigned*)&rank1);
+    args = sscanf(cmd, "(%1u,%1u)", (unsigned *)&file1, (unsigned *)&rank1);
     if (args >= 2) {
         move = make_move(SQ_0, make_square(file1, rank1));
         return perfect_do_move(move);

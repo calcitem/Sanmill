@@ -33,7 +33,7 @@ using std::string;
 using std::stringstream;
 using std::vector;
 
-extern vector<string> setup_bench(Position*, istream&);
+extern vector<string> setup_bench(Position *, istream &);
 
 extern int repetition;
 extern vector<Key> posKeyHistory;
@@ -41,10 +41,10 @@ extern vector<Key> posKeyHistory;
 namespace {
 
 // FEN string of the initial position, normal mill game
-const char* StartFEN9 = "********/********/******** w p p 0 9 0 9 0 0 1";
-const char* StartFEN10 = "********/********/******** w p p 0 10 0 10 0 0 1";
-const char* StartFEN11 = "********/********/******** w p p 0 11 0 11 0 0 1";
-const char* StartFEN12 = "********/********/******** w p p 0 12 0 12 0 0 1";
+const char *StartFEN9 = "********/********/******** w p p 0 9 0 9 0 0 1";
+const char *StartFEN10 = "********/********/******** w p p 0 10 0 10 0 0 1";
+const char *StartFEN11 = "********/********/******** w p p 0 11 0 11 0 0 1";
+const char *StartFEN12 = "********/********/******** w p p 0 12 0 12 0 0 1";
 
 char StartFEN[BUFSIZ];
 
@@ -53,7 +53,7 @@ char StartFEN[BUFSIZ];
 // or the starting position ("startpos") and then makes the moves given in the
 // following move list ("moves").
 
-void position(Position* pos, istringstream& is)
+void position(Position *pos, istringstream &is)
 {
     Move m;
     string token, fen;
@@ -93,7 +93,7 @@ void position(Position* pos, istringstream& is)
 // setoption() is called when engine receives the "setoption" UCI command. The
 // function updates the UCI option ("name") to the given value ("value").
 
-void setoption(istringstream& is)
+void setoption(istringstream &is)
 {
     string token, name, value;
 
@@ -117,7 +117,7 @@ void setoption(istringstream& is)
 // the thinking time and other parameters from the input string, then starts
 // the search.
 
-void go(Position* pos)
+void go(Position *pos)
 {
 #ifdef UCI_AUTO_RE_GO
 begin:
@@ -158,9 +158,9 @@ begin:
 /// returns immediately. In addition to the UCI ones, also some additional debug
 /// commands are supported.
 
-void UCI::loop(int argc, char* argv[])
+void UCI::loop(int argc, char *argv[])
 {
-    Position* pos = new Position;
+    Position *pos = new Position;
     string token, cmd;
 
 #ifdef _MSC_VER
@@ -212,14 +212,14 @@ void UCI::loop(int argc, char* argv[])
 #ifdef FLUTTER_UI
         static const int LINE_INPUT_MAX_CHAR = 4096;
         char line[LINE_INPUT_MAX_CHAR];
-        CommandChannel* channel = CommandChannel::getInstance();
+        CommandChannel *channel = CommandChannel::getInstance();
         while (!channel->popupCommand(line))
             Idle();
         cmd = line;
         LOGD("[uci] input: %s\n", line);
 #else
-        if (argc == 1
-            && !getline(cin, cmd)) // Block here waiting for input or EOF
+        if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or
+                                             // EOF
             cmd = "quit";
 #endif
 
@@ -292,8 +292,8 @@ string UCI::value(Value v)
 
 std::string UCI::square(Square s)
 {
-    return std::string { char('('), char('0' + file_of(s)), char(','),
-        char('0' + rank_of(s)), char(')') };
+    return std::string {char('('), char('0' + file_of(s)), char(','),
+                        char('0' + rank_of(s)), char(')')};
 }
 
 /// UCI::move() converts a Move to a string in algebraic notation ((1,2), etc.).
@@ -325,9 +325,9 @@ string UCI::move(Move m)
 /// UCI::to_move() converts a string representing a move in coordinate notation
 /// to the corresponding legal Move, if any.
 
-Move UCI::to_move(Position* pos, string& str)
+Move UCI::to_move(Position *pos, string &str)
 {
-    for (const auto& m : MoveList<LEGAL>(*pos))
+    for (const auto &m : MoveList<LEGAL>(*pos))
         if (str == UCI::move(m))
             return m;
 

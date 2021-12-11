@@ -53,8 +53,8 @@ public:
 
     explicit Thread(size_t n
 #ifdef QT_GUI_LIB
-        ,
-        QObject* parent = nullptr
+                    ,
+                    QObject *parent = nullptr
 #endif
     );
     virtual ~Thread();
@@ -64,7 +64,7 @@ public:
     void start_searching();
     void wait_for_search_finished();
 
-    Position* rootPos { nullptr };
+    Position *rootPos {nullptr};
 
     // Mill Game
 
@@ -72,8 +72,8 @@ public:
 
     void pause();
 
-    void setAi(Position* p);
-    void setAi(Position* p, int time);
+    void setAi(Position *p);
+    void setAi(Position *p, int time);
 
     string next_move();
     Depth get_depth();
@@ -83,17 +83,17 @@ public:
     void analyze(Color c);
 
 #ifdef TIME_STAT
-    TimePoint sortTime { 0 };
+    TimePoint sortTime {0};
 #endif
 #ifdef CYCLE_STAT
     stopwatch::rdtscp_clock::time_point sortCycle;
-    stopwatch::timer<std::chrono::system_clock>::duration sortCycle { 0 };
+    stopwatch::timer<std::chrono::system_clock>::duration sortCycle {0};
     stopwatch::timer<std::chrono::system_clock>::period sortCycle;
 #endif
 
 #ifdef ENDGAME_LEARNING
-    static bool probeEndgameHash(Key key, Endgame& endgame);
-    static int saveEndgameHash(Key key, const Endgame& endgame);
+    static bool probeEndgameHash(Key key, Endgame &endgame);
+    static int saveEndgameHash(Key key, const Endgame &endgame);
     void clearEndgameHashMap();
     static void saveEndgameHashMapToFile();
     static void loadEndgameFileToHashMap();
@@ -101,24 +101,24 @@ public:
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef TRANSPOSITION_TABLE_DEBUG
-    size_t tteCount { 0 };
-    size_t ttHitCount { 0 };
-    size_t ttMissCount { 0 };
-    size_t ttInsertNewCount { 0 };
-    size_t ttAddrHitCount { 0 };
-    size_t ttReplaceCozDepthCount { 0 };
-    size_t ttReplaceCozHashCount { 0 };
+    size_t tteCount {0};
+    size_t ttHitCount {0};
+    size_t ttMissCount {0};
+    size_t ttInsertNewCount {0};
+    size_t ttAddrHitCount {0};
+    size_t ttReplaceCozDepthCount {0};
+    size_t ttReplaceCozHashCount {0};
 #endif // TRANSPOSITION_TABLE_DEBUG
 #endif // TRANSPOSITION_TABLE_ENABLE
 
 public:
-    Depth originDepth { 0 };
+    Depth originDepth {0};
 
-    Move bestMove { MOVE_NONE };
-    Value bestvalue { VALUE_ZERO };
-    Value lastvalue { VALUE_ZERO };
+    Move bestMove {MOVE_NONE};
+    Value bestvalue {VALUE_ZERO};
+    Value lastvalue {VALUE_ZERO};
 
-    Color us { WHITE };
+    Color us {WHITE};
 
 private:
     int timeLimit;
@@ -135,28 +135,30 @@ public:
     void emitCommand();
 #endif // QT_GUI_LIB
 
-    void command(const string& record, bool update = true);
+    void command(const string &record, bool update = true);
 };
 
 /// MainThread is a derived class specific for main thread
 
-struct MainThread : public Thread {
+struct MainThread : public Thread
+{
     using Thread::Thread;
 
-    bool stopOnPonderhit { false };
-    std::atomic_bool ponder { false };
+    bool stopOnPonderhit {false};
+    std::atomic_bool ponder {false};
 };
 
 /// ThreadPool struct handles all the threads-related stuff like init, starting,
 /// parking and, most importantly, launching a thread. All the access to threads
 /// is done through this class.
 
-struct ThreadPool : public std::vector<Thread*> {
-    void start_thinking(Position*, bool = false);
+struct ThreadPool : public std::vector<Thread *>
+{
+    void start_thinking(Position *, bool = false);
     void clear();
     void set(size_t);
 
-    MainThread* main() const { return static_cast<MainThread*>(front()); }
+    MainThread *main() const { return static_cast<MainThread *>(front()); }
 
     std::atomic_bool stop, increaseDepth;
 
@@ -164,7 +166,7 @@ private:
     uint64_t accumulate(std::atomic<uint64_t> Thread::*member) const noexcept
     {
         uint64_t sum = 0;
-        for (Thread* th : *this)
+        for (Thread *th : *this)
             sum += (th->*member).load(std::memory_order_relaxed);
         return sum;
     }

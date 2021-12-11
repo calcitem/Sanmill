@@ -17,6 +17,10 @@
 #ifndef ENGINE_STATE_H
 #define ENGINE_STATE_H
 
-enum class EngineState { STATE_READY, STATE_THINKING };
+enum class EngineState
+{
+    STATE_READY,
+    STATE_THINKING
+};
 
 #endif /* ENGINE_STATE_H */

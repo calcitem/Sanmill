@@ -25,7 +25,7 @@
 #include "pieceitem.h"
 #include "types.h"
 
-GameScene::GameScene(QObject* parent)
+GameScene::GameScene(QObject *parent)
     : QGraphicsScene(parent)
 {
     board = new BoardItem;
@@ -33,21 +33,24 @@ GameScene::GameScene(QObject* parent)
     addItem(board);
 }
 
-GameScene::~GameScene() { delete board; }
+GameScene::~GameScene()
+{
+    delete board;
+}
 
-void GameScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mouseEvent)
+void GameScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     // Block double click events
     mouseEvent->accept();
 }
 
-void GameScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
+void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     // Screen mouse down events
     mouseEvent->accept();
 }
 
-void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
+void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     // Only handle left click events
     if (mouseEvent->button() != Qt::LeftButton) {
@@ -56,7 +59,7 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
     }
 
     // If it's a board
-    const QGraphicsItem* item = itemAt(mouseEvent->scenePos(), QTransform());
+    const QGraphicsItem *item = itemAt(mouseEvent->scenePos(), QTransform());
 
     if (!item || item->type() == BoardItem::Type) {
         QPointF p = mouseEvent->scenePos();
@@ -77,7 +80,7 @@ QPointF GameScene::polar2pos(File f, Rank r)
     return board->polar2pos(f, r);
 }
 
-bool GameScene::pos2polar(QPointF pos, File& f, Rank& r)
+bool GameScene::pos2polar(QPointF pos, File &f, Rank &r)
 {
     return board->pos2polar(pos, f, r);
 }

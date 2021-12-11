@@ -23,11 +23,12 @@
 
 // This class is mainly derived to make the view adapt to
 // the scene size and image rotation mirror operation
-class GameView : public QGraphicsView {
+class GameView : public QGraphicsView
+{
     Q_OBJECT
 
 public:
-    explicit GameView(QWidget* parent);
+    explicit GameView(QWidget *parent);
     ~GameView() override;
 
 public slots:
@@ -37,7 +38,7 @@ public slots:
     void turnLeft();
 
 protected:
-    void resizeEvent(QResizeEvent* event) override;
+    void resizeEvent(QResizeEvent *event) override;
 };
 
 #endif // GAME_VIEW_H_INCLUDED

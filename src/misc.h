@@ -28,15 +28,16 @@
 
 const std::string engine_info(bool to_uci = false);
 const std::string compiler_info();
-void prefetch(void* addr);
-void prefetch_range(void* addr, size_t len);
-void start_logger(const std::string& fname);
-void* std_aligned_alloc(size_t alignment, size_t size);
-void std_aligned_free(void* ptr);
+void prefetch(void *addr);
+void prefetch_range(void *addr, size_t len);
+void start_logger(const std::string &fname);
+void *std_aligned_alloc(size_t alignment, size_t size);
+void std_aligned_free(void *ptr);
 #ifdef ALIGNED_LARGE_PAGES
-void* aligned_large_pages_alloc(
-    size_t allocSize); // memory aligned by page size, min alignment: 4096 bytes
-void aligned_large_pages_free(void* mem); // nop if mem == nullptr
+void *aligned_large_pages_alloc(size_t allocSize); // memory aligned by page
+                                                   // size, min alignment: 4096
+                                                   // bytes
+void aligned_large_pages_free(void *mem);          // nop if mem == nullptr
 #endif // ALIGNED_LARGE_PAGES
 
 void dbg_hit_on(bool b) noexcept;
@@ -46,26 +47,32 @@ void dbg_print();
 
 typedef std::chrono::milliseconds::rep TimePoint; // A value in milliseconds
 
-static_assert(
-    sizeof(TimePoint) == sizeof(int64_t), "TimePoint should be 64 bits");
+static_assert(sizeof(TimePoint) == sizeof(int64_t), "TimePoint should be 64 "
+                                                    "bits");
 
 inline TimePoint now()
 {
     return std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::steady_clock::now().time_since_epoch())
+               std::chrono::steady_clock::now().time_since_epoch())
         .count();
 }
 
-template <class Entry, int Size> struct HashTable {
-    Entry* operator[](Key key) { return &table[(uint32_t)key & (Size - 1)]; }
+template <class Entry, int Size>
+struct HashTable
+{
+    Entry *operator[](Key key) { return &table[(uint32_t)key & (Size - 1)]; }
 
 private:
     std::vector<Entry> table = std::vector<Entry>(Size); // Allocate on the heap
 };
 
-enum SyncCout { IO_LOCK, IO_UNLOCK };
+enum SyncCout
+{
+    IO_LOCK,
+    IO_UNLOCK
+};
 
-std::ostream& operator<<(std::ostream&, SyncCout);
+std::ostream &operator<<(std::ostream &, SyncCout);
 
 #define sync_cout std::cout << IO_LOCK
 #define sync_endl std::endl << IO_UNLOCK
@@ -73,13 +80,14 @@ std::ostream& operator<<(std::ostream&, SyncCout);
 // `ptr` must point to an array of size at least
 // `sizeof(T) * N + alignment` bytes, where `N` is the
 // number of elements in the array.
-template <uintptr_t Alignment, typename T> T* align_ptr_up(T* ptr)
+template <uintptr_t Alignment, typename T>
+T *align_ptr_up(T *ptr)
 {
     static_assert(alignof(T) < Alignment);
 
-    const uintptr_t ptrint
-        = reinterpret_cast<uintptr_t>(reinterpret_cast<char*>(ptr));
-    return reinterpret_cast<T*>(reinterpret_cast<char*>(
+    const uintptr_t ptrint = reinterpret_cast<uintptr_t>(
+        reinterpret_cast<char *>(ptr));
+    return reinterpret_cast<T *>(reinterpret_cast<char *>(
         (ptrint + (Alignment - 1)) / Alignment * Alignment));
 }
 
@@ -98,7 +106,8 @@ template <uintptr_t Alignment, typename T> T* align_ptr_up(T* ptr)
 /// For further analysis see
 ///   <http://vigna.di.unimi.it/ftp/papers/xorshift.pdf>
 
-class PRNG {
+class PRNG
+{
     uint64_t s;
 
     uint64_t rand64()
@@ -114,11 +123,16 @@ public:
         assert(seed);
     }
 
-    template <typename T> T rand() { return T(rand64()); }
+    template <typename T>
+    T rand()
+    {
+        return T(rand64());
+    }
 
     /// Special generator used to fast init magic numbers.
     /// Output values only have 1/8th of their bits set on average.
-    template <typename T> T sparse_rand()
+    template <typename T>
+    T sparse_rand()
     {
         return T(rand64() & rand64() & rand64());
     }

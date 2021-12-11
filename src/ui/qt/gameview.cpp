@@ -16,7 +16,7 @@
 
 #include "gameview.h"
 
-GameView::GameView(QWidget* parent)
+GameView::GameView(QWidget *parent)
     : QGraphicsView(parent)
 {
     Q_UNUSED(parent)
@@ -90,7 +90,7 @@ void GameView::turnLeft()
     setTransform(transform() * QTransform(0, -1, 1, 0, 0, 0));
 }
 
-void GameView::resizeEvent(QResizeEvent* event)
+void GameView::resizeEvent(QResizeEvent *event)
 {
     QGraphicsView::resizeEvent(event);
     fitInView(sceneRect(), Qt::KeepAspectRatio);

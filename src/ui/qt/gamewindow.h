@@ -17,9 +17,9 @@
 #ifndef GAMEWINDOW_H_INCLUDED
 #define GAMEWINDOW_H_INCLUDED
 
-#include <vector>
 #include <QTimer>
 #include <QtWidgets/QMainWindow>
+#include <vector>
 
 #include "config.h"
 
@@ -33,27 +33,28 @@ using std::vector;
 class GameScene;
 class Game;
 
-class MillGameWindow : public QMainWindow {
+class MillGameWindow : public QMainWindow
+{
     Q_OBJECT
 
 public:
-    explicit MillGameWindow(QWidget* parent = nullptr);
+    explicit MillGameWindow(QWidget *parent = nullptr);
     ~MillGameWindow() override;
 
 protected:
-    bool eventFilter(QObject* watched, QEvent* event) override;
-    void closeEvent(QCloseEvent* event) override;
+    bool eventFilter(QObject *watched, QEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
 #ifdef QT_MOBILE_APP_UI
-    void mousePressEvent(QMouseEvent* mouseEvent) override;
-    void mouseMoveEvent(QMouseEvent* mouseEvent) override;
-    void mouseReleaseEvent(QMouseEvent* mouseEvent) override;
+    void mousePressEvent(QMouseEvent *mouseEvent) override;
+    void mouseMoveEvent(QMouseEvent *mouseEvent) override;
+    void mouseReleaseEvent(QMouseEvent *mouseEvent) override;
 #endif /* QT_MOBILE_APP_UI */
 
 private slots:
     void initialize();
 
 #ifdef QT_MOBILE_APP_UI
-    void ctxMenu(const QPoint& pos);
+    void ctxMenu(const QPoint &pos);
 #endif /* QT_MOBILE_APP_UI */
 
     void actionRules_triggered();
@@ -103,19 +104,19 @@ private slots:
     void on_actionAbout_A_triggered();
 
 protected:
-    void saveBook(const QString& path);
+    void saveBook(const QString &path);
 
 private:
     Ui::MillGameWindowClass ui {};
-    GameScene* scene { nullptr };
-    Game* game { nullptr };
-    vector<QAction*> ruleActionList;
-    int ruleNo { -1 };
+    GameScene *scene {nullptr};
+    Game *game {nullptr};
+    vector<QAction *> ruleActionList;
+    int ruleNo {-1};
     QFile file;
     QTimer autoRunTimer;
 
 #ifdef QT_MOBILE_APP_UI
-    bool m_move { false };
+    bool m_move {false};
     QPoint m_startPoint;
     QPoint m_windowPoint;
 #endif

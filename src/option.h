@@ -19,9 +19,10 @@
 
 #include "config.h"
 
-class GameOptions {
+class GameOptions
+{
 public:
-    GameOptions() {}
+    GameOptions() { }
 
     void setSkillLevel(int val) noexcept { skillLevel = val; }
 
@@ -205,26 +206,26 @@ public:
     bool getDeveloperMode() const noexcept { return developerMode; }
 
 private:
-    int skillLevel { 1 };
-    int moveTime { 1 };
-    bool aiIsLazy { false };
-    bool isAutoRestart { false };
-    bool isAutoChangeFirstMove { false };
-    bool resignIfMostLose { false };
-    bool shufflingEnabled { true };
+    int skillLevel {1};
+    int moveTime {1};
+    bool aiIsLazy {false};
+    bool isAutoRestart {false};
+    bool isAutoChangeFirstMove {false};
+    bool resignIfMostLose {false};
+    bool shufflingEnabled {true};
 #ifdef ENDGAME_LEARNING_FORCE
-    bool learnEndgame { true };
+    bool learnEndgame {true};
 #else
-    bool learnEndgame { false };
+    bool learnEndgame {false};
 #endif
-    int algorithm { 2 };
-    bool perfectAiEnabled { false };
-    bool IDSEnabled { false };
-    bool depthExtension { true };
-    bool openingBook { false };
-    bool drawOnHumanExperience { true };
-    bool considerMobility { true };
-    bool developerMode { false };
+    int algorithm {2};
+    bool perfectAiEnabled {false};
+    bool IDSEnabled {false};
+    bool depthExtension {true};
+    bool openingBook {false};
+    bool drawOnHumanExperience {true};
+    bool considerMobility {true};
+    bool developerMode {false};
 };
 
 extern GameOptions gameOptions;

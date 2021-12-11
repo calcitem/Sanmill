@@ -26,11 +26,12 @@ HashMap<Key, TTEntry> TT(TRANSPOSITION_TABLE_SIZE);
 uint8_t transpositionTableAge;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
-Value TranspositionTable::probe(const Key& key, const Depth& depth,
-    const Value& alpha, const Value& beta, Bound& type
+Value TranspositionTable::probe(const Key &key, const Depth &depth,
+                                const Value &alpha, const Value &beta,
+                                Bound &type
 #ifdef TT_MOVE_ENABLE
-    ,
-    Move& ttMove
+                                ,
+                                Move &ttMove
 #endif // TT_MOVE_ENABLE
 )
 {
@@ -85,18 +86,21 @@ out:
     return VALUE_UNKNOWN;
 }
 
-bool TranspositionTable::search(const Key& key, TTEntry& tte)
+bool TranspositionTable::search(const Key &key, TTEntry &tte)
 {
     return TT.find(key, tte);
 }
 
-void TranspositionTable::prefetch(const Key& key) { TT.prefetchValue(key); }
+void TranspositionTable::prefetch(const Key &key)
+{
+    TT.prefetchValue(key);
+}
 
-int TranspositionTable::save(
-    const Value& value, const Depth& depth, const Bound& type, const Key& key
+int TranspositionTable::save(const Value &value, const Depth &depth,
+                             const Bound &type, const Key &key
 #ifdef TT_MOVE_ENABLE
-    ,
-    const Move& ttMove
+                             ,
+                             const Move &ttMove
 #endif // TT_MOVE_ENABLE
 )
 {

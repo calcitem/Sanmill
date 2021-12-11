@@ -19,8 +19,10 @@
 
 #include <mutex>
 
-class CommandQueue {
-    enum {
+class CommandQueue
+{
+    enum
+    {
         MAX_COMMAND_COUNT = 128,
         COMMAND_LENGTH = 4096,
     };
@@ -33,8 +35,8 @@ class CommandQueue {
 public:
     CommandQueue();
 
-    bool write(const char* command);
-    bool read(char* dest);
+    bool write(const char *command);
+    bool read(char *dest);
 };
 
 #endif /* COMMAND_QUEUE_H */

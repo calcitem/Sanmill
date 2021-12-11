@@ -37,14 +37,15 @@ class QTcpSocket;
 class QNetworkSession;
 QT_END_NAMESPACE
 
-class Client : public QDialog {
+class Client : public QDialog
+{
     Q_OBJECT
 
 public:
-    explicit Client(QWidget* parent = nullptr, uint16_t port = 33333);
+    explicit Client(QWidget *parent = nullptr, uint16_t port = 33333);
 
 signals:
-    void command(const string& cmd, bool update = true);
+    void command(const string &cmd, bool update = true);
 
 private slots:
     void requestNewAction();
@@ -58,17 +59,17 @@ private slots:
     uint16_t getPort() noexcept { return port; }
 
 private:
-    QComboBox* hostCombo = nullptr;
-    QLineEdit* portLineEdit = nullptr;
-    QLabel* statusLabel = nullptr;
-    QPushButton* getActionButton = nullptr;
+    QComboBox *hostCombo = nullptr;
+    QLineEdit *portLineEdit = nullptr;
+    QLabel *statusLabel = nullptr;
+    QPushButton *getActionButton = nullptr;
 
-    QTcpSocket* tcpSocket = nullptr;
+    QTcpSocket *tcpSocket = nullptr;
     QDataStream in;
     QString currentAction;
 
     // TODO(calcitem): 'QNetworkSession': was declared deprecated
-    QNetworkSession* networkSession = nullptr;
+    QNetworkSession *networkSession = nullptr;
 
     uint16_t port {};
 };

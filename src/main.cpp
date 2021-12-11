@@ -28,7 +28,7 @@
 #ifdef UNIT_TEST_MODE
 int console_main(void)
 #else
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 #endif // UNIT_TEST_MODE
 {
     std::cout << engine_info() << std::endl;

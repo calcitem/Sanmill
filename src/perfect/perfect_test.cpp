@@ -23,8 +23,8 @@
 
 using std::iostream;
 
-extern Mill* mill;
-extern PerfectAI* ai;
+extern Mill *mill;
+extern PerfectAI *ai;
 
 unsigned int startTestFromLayer = 0;
 
@@ -118,10 +118,10 @@ int perfect_main(void)
             mill->printBoard();
 
             // Human
-            if ((mill->getCurrentPlayer() == fieldStruct::playerOne
-                    && playerOneHuman)
-                || (mill->getCurrentPlayer() == fieldStruct::playerTwo
-                    && playerTwoHuman)) {
+            if ((mill->getCurrentPlayer() == fieldStruct::playerOne &&
+                 playerOneHuman) ||
+                (mill->getCurrentPlayer() == fieldStruct::playerTwo &&
+                 playerTwoHuman)) {
                 do {
                     // Show text
                     if (mill->mustStoneBeRemoved())
@@ -152,17 +152,17 @@ int perfect_main(void)
                     }
 
                     // undo
-                    if (ch[0] == 'u' && ch[1] == 'n' && ch[2] == 'd'
-                        && ch[3] == 'o') {
+                    if (ch[0] == 'u' && ch[1] == 'n' && ch[2] == 'd' &&
+                        ch[3] == 'o') {
                         // undo moves until a human player shall move
                         do {
                             mill->undoMove();
-                        } while (!(
-                            (mill->getCurrentPlayer() == fieldStruct::playerOne
-                                && playerOneHuman)
-                            || (mill->getCurrentPlayer()
-                                    == fieldStruct::playerTwo
-                                && playerTwoHuman)));
+                        } while (!((mill->getCurrentPlayer() ==
+                                        fieldStruct::playerOne &&
+                                    playerOneHuman) ||
+                                   (mill->getCurrentPlayer() ==
+                                        fieldStruct::playerTwo &&
+                                    playerTwoHuman)));
 
                         // reprint board
                         break;

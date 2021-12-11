@@ -19,37 +19,39 @@
 
 namespace Sanmill {
 
-template <typename T, size_t capacity = 128> class Stack {
+template <typename T, size_t capacity = 128>
+class Stack
+{
 public:
     Stack() { arr = new T[capacity]; }
 
-    Stack(const Stack& other) { *this = other; }
+    Stack(const Stack &other) { *this = other; }
 
     ~Stack() { delete[] arr; }
 
-    Stack& operator=(const Stack& other)
+    Stack &operator=(const Stack &other)
     {
         memcpy(arr, other.arr, length());
         p = other.p;
         return *this;
     }
 
-    bool operator==(const T& other) const
+    bool operator==(const T &other) const
     {
         return (p == other.p && memcmp(arr, other.arr, size()));
     }
 
-    T& operator[](int i) { return arr[i]; }
+    T &operator[](int i) { return arr[i]; }
 
-    const T& operator[](int i) const { return arr[i]; }
+    const T &operator[](int i) const { return arr[i]; }
 
-    inline void push(const T& obj)
+    inline void push(const T &obj)
     {
         p++;
         memcpy(arr + p, &obj, sizeof(T));
     }
 
-    inline void push_back(const T& obj)
+    inline void push_back(const T &obj)
     {
         p++;
         arr[p] = obj;
@@ -59,15 +61,15 @@ public:
 
     inline void pop() { p--; }
 
-    inline T* top() { return &(arr[p]); }
+    inline T *top() { return &(arr[p]); }
 
     inline int size() const { return p + 1; }
 
     inline size_t length() const { return (sizeof(T) * size()); }
 
-    inline T* begin() { return &arr[0]; }
+    inline T *begin() { return &arr[0]; }
 
-    inline T* end() { return &arr[p + 1]; }
+    inline T *end() { return &arr[p + 1]; }
 
     inline bool empty() const { return (p < 0); }
 
@@ -83,8 +85,8 @@ public:
     }
 
 private:
-    T* arr;
-    int p { -1 };
+    T *arr;
+    int p {-1};
 };
 
 } // namespace Sanmill
