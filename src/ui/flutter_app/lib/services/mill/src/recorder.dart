@@ -26,11 +26,12 @@ class _GameRecorder {
   int cur = -1;
   String lastPositionWithRemove;
   List<Move> moves = <Move>[];
+  final MillController controller;
 
-  _GameRecorder({this.cur = -1, required this.lastPositionWithRemove});
+  _GameRecorder(this.controller, {this.cur = -1, required this.lastPositionWithRemove});
 
 // TODO [Leptopoda] make param a List<Move> and change the return type
-  String? import(String moveList) => _ImportService.import(moveList);
+  String? import(String moveList) => _ImportService(controller).import(moveList);
 
   void clear() {
     moves.clear();
@@ -102,9 +103,9 @@ class _GameRecorder {
       }
 
       if (LocalDatabaseService.display.standardNotationEnabled) {
-        if ((k + 1) % cols == 0) moveHistory.write("\n");
+        if ((k + 1) % cols == 0) moveHistory.writeln();
       } else {
-        if ((i + 1) % cols == 0) moveHistory.write("\n");
+        if ((i + 1) % cols == 0) moveHistory.writeln();
       }
     }
 

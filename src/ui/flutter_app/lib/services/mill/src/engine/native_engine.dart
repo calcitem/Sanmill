@@ -20,7 +20,9 @@ part of '../../mill.dart';
 
 // TODO: [Leptopoda] make this a utility class. There shouldn't be multiple engines running
 class NativeEngine extends Engine {
-  NativeEngine();
+  final MillController controller;
+
+  NativeEngine(this.controller);
 
   static const _platform = MethodChannel("com.calcitem.sanmill/engine");
   bool _isActive = false;
