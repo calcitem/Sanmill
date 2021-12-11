@@ -35,13 +35,14 @@ class QTcpServer;
 class QNetworkSession;
 QT_END_NAMESPACE
 
-class Server : public QDialog {
+class Server : public QDialog
+{
     Q_OBJECT
 
 public:
-    explicit Server(QWidget* parent = nullptr, uint16_t port = 33333);
+    explicit Server(QWidget *parent = nullptr, uint16_t port = 33333);
     ~Server();
-    void setAction(const QString& a);
+    void setAction(const QString &a);
     void setPort(uint16_t p) noexcept { port = p; }
     uint16_t getPort() noexcept { return port; }
 
@@ -50,9 +51,9 @@ private slots:
     void sendAction();
 
 private:
-    QLabel* statusLabel = nullptr;
-    QTcpServer* tcpServer = nullptr;
-    QNetworkSession* networkSession = nullptr;
+    QLabel *statusLabel = nullptr;
+    QTcpServer *tcpServer = nullptr;
+    QNetworkSession *networkSession = nullptr;
     uint16_t port;
     std::queue<QString> actions;
     QString action;

@@ -30,11 +30,12 @@
 
 using std::string;
 
-class Test : public QDialog {
+class Test : public QDialog
+{
     Q_OBJECT
 
 public:
-    explicit Test(QWidget* parent = nullptr, QString k = "Key0");
+    explicit Test(QWidget *parent = nullptr, QString k = "Key0");
     ~Test();
 
     void setKey(QString k) noexcept { key = k; }
@@ -44,10 +45,10 @@ public:
     void stop();
 
 signals:
-    void command(const string& cmd, bool update = true);
+    void command(const string &cmd, bool update = true);
 
 public slots:
-    void writeToMemory(const QString& str);
+    void writeToMemory(const QString &str);
     void readFromMemory();
     void startAction();
     void stopAction();
@@ -63,18 +64,18 @@ private:
     QSharedMemory sharedMemory;
     QString uuid;
     int uuidSize;
-    char* to { nullptr };
+    char *to {nullptr};
     QString readStr;
 
     QString key;
 
-    QComboBox* keyCombo = nullptr;
-    QLabel* statusLabel = nullptr;
-    QPushButton* startButton = nullptr;
-    QPushButton* stopButton = nullptr;
+    QComboBox *keyCombo = nullptr;
+    QLabel *statusLabel = nullptr;
+    QPushButton *startButton = nullptr;
+    QPushButton *stopButton = nullptr;
 
-    bool isTestMode { false };
-    QTimer* readMemoryTimer;
+    bool isTestMode {false};
+    QTimer *readMemoryTimer;
 };
 
 #endif // TEST_H_INCLUDED

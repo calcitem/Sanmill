@@ -93,7 +93,7 @@ char fieldStruct::GetCharFromStone(int stone)
 // copyBoard()
 // Only copies the values without array creation.
 //-----------------------------------------------------------------------------
-void fieldStruct::copyBoard(fieldStruct* destination)
+void fieldStruct::copyBoard(fieldStruct *destination)
 {
     unsigned int i, j;
 
@@ -112,8 +112,8 @@ void fieldStruct::copyBoard(fieldStruct* destination)
         for (j = 0; j < 4; j++) {
             destination->connectedSquare[i][j] = this->connectedSquare[i][j];
             destination->stoneMoveAble[i][j] = this->stoneMoveAble[i][j];
-            destination->neighbour[i][j / 2][j % 2]
-                = this->neighbour[i][j / 2][j % 2];
+            destination->neighbour[i][j / 2][j % 2] =
+                this->neighbour[i][j / 2][j % 2];
         }
     }
 }
@@ -122,7 +122,7 @@ void fieldStruct::copyBoard(fieldStruct* destination)
 // copyPlayer()
 // Only copies the values without array creation.
 //-----------------------------------------------------------------------------
-void Player::copyPlayer(Player* destination)
+void Player::copyPlayer(Player *destination)
 {
     unsigned int i;
 
@@ -156,11 +156,11 @@ void fieldStruct::createBoard()
     stonesSet = 0;
     stoneMustBeRemoved = 0;
     settingPhase = true;
-    curPlayer->warning
-        = (curPlayer->id == playerOne) ? playerOneWarning : playerTwoWarning;
+    curPlayer->warning = (curPlayer->id == playerOne) ? playerOneWarning :
+                                                        playerTwoWarning;
     oppPlayer->id = (curPlayer->id == playerOne) ? playerTwo : playerOne;
-    oppPlayer->warning
-        = (curPlayer->id == playerOne) ? playerTwoWarning : playerOneWarning;
+    oppPlayer->warning = (curPlayer->id == playerOne) ? playerTwoWarning :
+                                                        playerOneWarning;
     curPlayer->numStones = 0;
     oppPlayer->numStones = 0;
     curPlayer->numPossibleMoves = 0;
@@ -243,7 +243,7 @@ void fieldStruct::deleteBoard()
     try {
         SAFE_DELETE(curPlayer);
         SAFE_DELETE(oppPlayer);
-    } catch (const char* msg) {
+    } catch (const char *msg) {
         cerr << msg << endl;
     }
 }
@@ -253,7 +253,8 @@ void fieldStruct::deleteBoard()
 //
 //-----------------------------------------------------------------------------
 inline void fieldStruct::setConnection(unsigned int index, int firstDirection,
-    int secondDirection, int thirdDirection, int fourthDirection)
+                                       int secondDirection, int thirdDirection,
+                                       int fourthDirection)
 {
     connectedSquare[index][0] = firstDirection;
     connectedSquare[index][1] = secondDirection;
@@ -266,8 +267,10 @@ inline void fieldStruct::setConnection(unsigned int index, int firstDirection,
 //
 //-----------------------------------------------------------------------------
 inline void fieldStruct::setNeighbour(unsigned int index,
-    unsigned int firstNeighbour0, unsigned int secondNeighbour0,
-    unsigned int firstNeighbour1, unsigned int secondNeighbour1)
+                                      unsigned int firstNeighbour0,
+                                      unsigned int secondNeighbour0,
+                                      unsigned int firstNeighbour1,
+                                      unsigned int secondNeighbour1)
 {
     neighbour[index][0][0] = firstNeighbour0;
     neighbour[index][0][1] = secondNeighbour0;

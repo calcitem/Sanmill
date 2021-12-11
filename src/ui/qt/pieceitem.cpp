@@ -20,12 +20,12 @@
 #include <QPainter>
 #include <QStyleOption>
 
-PieceItem::PieceItem(QGraphicsItem* parent)
+PieceItem::PieceItem(QGraphicsItem *parent)
     : QGraphicsItem(parent)
 {
     Q_UNUSED(parent)
     setFlags(ItemIsSelectable
-        // | ItemIsMovable
+             // | ItemIsMovable
     );
 
     setCacheMode(DeviceCoordinateCache);
@@ -69,8 +69,8 @@ QPainterPath PieceItem::shape() const
     return path;
 }
 
-void PieceItem::paint(
-    QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+void PieceItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                      QWidget *widget)
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
@@ -86,7 +86,7 @@ void PieceItem::paint(
         painter->drawEllipse(-size / 2, -size / 2, size, size);
 #else
         painter->drawPixmap(-size / 2, -size / 2, size, size,
-            QPixmap(":/image/resources/image/white_piece.png"));
+                            QPixmap(":/image/resources/image/white_piece.png"));
 #endif /* QT_MOBILE_APP_UI */
         break;
 
@@ -98,7 +98,7 @@ void PieceItem::paint(
         painter->drawEllipse(-size / 2, -size / 2, size, size);
 #else
         painter->drawPixmap(-size / 2, -size / 2, size, size,
-            QPixmap(":/image/resources/image/black_piece.png"));
+                            QPixmap(":/image/resources/image/black_piece.png"));
 #endif /* QT_MOBILE_APP_UI */
         break;
     default:
@@ -119,13 +119,13 @@ void PieceItem::paint(
         painter->setFont(font);
 
         painter->drawText(boundingRect().adjusted(0, 0, 0, -size / 12),
-            Qt::AlignCenter, QString::number(num));
+                          Qt::AlignCenter, QString::number(num));
     }
 
     // If the model is selected, draw four small right angles
     if (isSelected()) {
         QPen pen(selectLineColor, selectLineWeight, Qt::SolidLine,
-            Qt::SquareCap, Qt::BevelJoin);
+                 Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
         const int xy = (size - selectLineWeight) / 2;
 
@@ -142,7 +142,7 @@ void PieceItem::paint(
     // If the model is deleted, cross it
     if (deleted) {
         QPen pen(removeLineColor, removeLineWeight, Qt::SolidLine,
-            Qt::SquareCap, Qt::BevelJoin);
+                 Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
 
         painter->drawLine(-size / 3, -size / 3, size / 3, size / 3);
@@ -150,19 +150,19 @@ void PieceItem::paint(
     }
 }
 
-void PieceItem::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
+void PieceItem::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     // When the mouse is pressed, it becomes the shape of the hand it holds
     setCursor(Qt::ClosedHandCursor);
     QGraphicsItem::mousePressEvent(mouseEvent);
 }
 
-void PieceItem::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
+void PieceItem::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     QGraphicsItem::mouseMoveEvent(mouseEvent);
 }
 
-void PieceItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
+void PieceItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
     // When the mouse is released, it becomes an extended hand
     setCursor(Qt::OpenHandCursor);

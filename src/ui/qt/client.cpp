@@ -24,7 +24,7 @@
 #include "client.h"
 #include "thread.h"
 
-Client::Client(QWidget* parent, uint16_t port)
+Client::Client(QWidget *parent, uint16_t port)
     : QDialog(parent)
     , hostCombo(new QComboBox)
     , portLineEdit(new QLineEdit)
@@ -58,28 +58,29 @@ Client::Client(QWidget* parent, uint16_t port)
     in.setVersion(QDataStream::Qt_4_0);
 
     connect(hostCombo, &QComboBox::editTextChanged, this,
-        &Client::enableGetActionButton);
+            &Client::enableGetActionButton);
     connect(portLineEdit, &QLineEdit::textChanged, this,
-        &Client::enableGetActionButton);
+            &Client::enableGetActionButton);
     connect(getActionButton, &QAbstractButton::clicked, this,
-        &Client::requestNewAction);
+            &Client::requestNewAction);
     connect(quitButton, &QAbstractButton::clicked, this, &QWidget::close);
     connect(tcpSocket, &QIODevice::readyRead, this, &Client::readAction);
-    connect(tcpSocket,
+    connect(
+        tcpSocket,
         QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error),
         this, &Client::displayError);
 
-    QGridLayout* mainLayout = nullptr;
-    if (QGuiApplication::styleHints()->showIsFullScreen()
-        || QGuiApplication::styleHints()->showIsMaximized()) {
+    QGridLayout *mainLayout = nullptr;
+    if (QGuiApplication::styleHints()->showIsFullScreen() ||
+        QGuiApplication::styleHints()->showIsMaximized()) {
         auto outerVerticalLayout = new QVBoxLayout(this);
         outerVerticalLayout->addItem(new QSpacerItem(
             0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
         auto outerHorizontalLayout = new QHBoxLayout;
         outerHorizontalLayout->addItem(new QSpacerItem(
             0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
-        auto groupBox
-            = new QGroupBox(QGuiApplication::applicationDisplayName());
+        auto groupBox = new QGroupBox(
+            QGuiApplication::applicationDisplayName());
         mainLayout = new QGridLayout(groupBox);
         outerHorizontalLayout->addWidget(groupBox);
         outerHorizontalLayout->addItem(new QSpacerItem(
@@ -104,27 +105,28 @@ Client::Client(QWidget* parent, uint16_t port)
 
     QNetworkConfigurationManager manager;
 
-    if (manager.capabilities()
-        & QNetworkConfigurationManager::NetworkSessionRequired) {
+    if (manager.capabilities() &
+        QNetworkConfigurationManager::NetworkSessionRequired) {
         // Get saved network configuration
         QSettings settings(QSettings::UserScope, QLatin1String("QtProject"));
         settings.beginGroup(QLatin1String("QtNetwork"));
-        const QString id
-            = settings.value(QLatin1String("DefaultNetworkConfiguration"))
-                  .toString();
+        const QString id = settings
+                               .value(QLatin1String("DefaultNetworkConfiguratio"
+                                                    "n"))
+                               .toString();
         settings.endGroup();
 
         // If the saved network configuration is not currently discovered use
         // the system default
         QNetworkConfiguration config = manager.configurationFromIdentifier(id);
-        if ((config.state() & QNetworkConfiguration::Discovered)
-            != QNetworkConfiguration::Discovered) {
+        if ((config.state() & QNetworkConfiguration::Discovered) !=
+            QNetworkConfiguration::Discovered) {
             config = manager.defaultConfiguration();
         }
 
         networkSession = new QNetworkSession(config, this);
         connect(networkSession, &QNetworkSession::opened, this,
-            &Client::sessionOpened);
+                &Client::sessionOpened);
 
         getActionButton->setEnabled(false);
         statusLabel->setText(tr("Opening network session."));
@@ -136,8 +138,8 @@ void Client::requestNewAction()
 {
     getActionButton->setEnabled(false);
     tcpSocket->abort();
-    tcpSocket->connectToHost(
-        hostCombo->currentText(), portLineEdit->text().toUShort());
+    tcpSocket->connectToHost(hostCombo->currentText(),
+                             portLineEdit->text().toUShort());
 }
 
 void Client::readAction()
@@ -165,20 +167,20 @@ void Client::displayError(QAbstractSocket::SocketError socketError)
         break;
     case QAbstractSocket::HostNotFoundError:
         QMessageBox::information(this, tr("Client"),
-            tr("The host was not found. Please check the "
-               "host name and port settings."));
+                                 tr("The host was not found. Please check the "
+                                    "host name and port settings."));
         break;
     case QAbstractSocket::ConnectionRefusedError:
         QMessageBox::information(this, tr("Client"),
-            tr("The connection was refused by the peer. "
-               "Make sure the server is running, "
-               "and check that the host name and port "
-               "settings are correct."));
+                                 tr("The connection was refused by the peer. "
+                                    "Make sure the server is running, "
+                                    "and check that the host name and port "
+                                    "settings are correct."));
         break;
     default:
         QMessageBox::information(this, tr("Client"),
-            tr("The following error occurred: %1.")
-                .arg(tcpSocket->errorString()));
+                                 tr("The following error occurred: %1.")
+                                     .arg(tcpSocket->errorString()));
     }
 
     getActionButton->setEnabled(true);
@@ -186,9 +188,9 @@ void Client::displayError(QAbstractSocket::SocketError socketError)
 
 void Client::enableGetActionButton()
 {
-    getActionButton->setEnabled((!networkSession || networkSession->isOpen())
-        && !hostCombo->currentText().isEmpty()
-        && !portLineEdit->text().isEmpty());
+    getActionButton->setEnabled((!networkSession || networkSession->isOpen()) &&
+                                !hostCombo->currentText().isEmpty() &&
+                                !portLineEdit->text().isEmpty());
 }
 
 void Client::sessionOpened()

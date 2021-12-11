@@ -41,7 +41,7 @@ QString getAppFileName()
 }
 
 #ifndef MADWEASEL_MUEHLE_PERFECT_AI_TEST
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     Bitboards::init();
     Position::init();
@@ -55,13 +55,13 @@ int main(int argc, char* argv[])
     MillGameWindow w;
     w.show();
 
-    w.setWindowTitle(getAppFileName() + " ("
-        + QString::number(QCoreApplication::applicationPid()) + ")");
+    w.setWindowTitle(getAppFileName() + " (" +
+                     QString::number(QCoreApplication::applicationPid()) + ")");
 
 #ifndef _DEBUG
     QRect desktopRect = QGuiApplication::primaryScreen()->geometry();
     w.move((desktopRect.width() - w.width()) / 4,
-        (desktopRect.height() - w.height()) / 2);
+           (desktopRect.height() - w.height()) / 2);
 #endif
 
     return QApplication::exec();

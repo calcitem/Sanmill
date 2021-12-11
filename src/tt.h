@@ -31,8 +31,9 @@ using CTSL::HashMap;
 /// bound type          8 bit
 /// age                 8 bit
 
-struct TTEntry {
-    TTEntry() {}
+struct TTEntry
+{
+    TTEntry() { }
 
     Value value() const noexcept { return (Value)value8; }
 
@@ -47,34 +48,35 @@ struct TTEntry {
 private:
     friend class TranspositionTable;
 
-    int8_t value8 { 0 };
-    int8_t depth8 { 0 };
-    uint8_t genBound8 { 0 };
+    int8_t value8 {0};
+    int8_t depth8 {0};
+    uint8_t genBound8 {0};
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    uint8_t age8 { 0 };
+    uint8_t age8 {0};
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 #ifdef TT_MOVE_ENABLE
-    Move ttMove { MOVE_NONE };
+    Move ttMove {MOVE_NONE};
 #endif // TT_MOVE_ENABLE
 };
 
-class TranspositionTable {
+class TranspositionTable
+{
 public:
-    static bool search(const Key& key, TTEntry& tte);
+    static bool search(const Key &key, TTEntry &tte);
 
-    static Value probe(const Key& key, const Depth& depth, const Value& alpha,
-        const Value& beta, Bound& type
+    static Value probe(const Key &key, const Depth &depth, const Value &alpha,
+                       const Value &beta, Bound &type
 #ifdef TT_MOVE_ENABLE
-        ,
-        Move& ttMove
+                       ,
+                       Move &ttMove
 #endif // TT_MOVE_ENABLE
     );
 
-    static int save(const Value& value, const Depth& depth, const Bound& type,
-        const Key& key
+    static int save(const Value &value, const Depth &depth, const Bound &type,
+                    const Key &key
 #ifdef TT_MOVE_ENABLE
-        ,
-        const Move& ttMove
+                    ,
+                    const Move &ttMove
 #endif // TT_MOVE_ENABLE
     );
 
@@ -82,7 +84,7 @@ public:
 
     static void clear();
 
-    static void prefetch(const Key& key);
+    static void prefetch(const Key &key);
 
 private:
     friend struct TTEntry;

@@ -32,11 +32,12 @@
  * doesn't look good after adjusting the width of the dock
  */
 
-class MoveListView : public QListView {
+class MoveListView : public QListView
+{
     Q_OBJECT
 
 public:
-    explicit MoveListView(QWidget* parent = nullptr) noexcept
+    explicit MoveListView(QWidget *parent = nullptr) noexcept
         : QListView(parent)
     {
         Q_UNUSED(parent)
@@ -55,18 +56,18 @@ public:
 signals:
     // A currentChanged signal is required, but not by default.
     // This slot needs to be transformed into a signal
-    void currentChangedSignal(
-        const QModelIndex& current, const QModelIndex& previous);
+    void currentChangedSignal(const QModelIndex &current,
+                              const QModelIndex &previous);
 
 protected slots:
     // Block double-click editing feature
-    void mouseDoubleClickEvent(QMouseEvent* mouseEvent) override
+    void mouseDoubleClickEvent(QMouseEvent *mouseEvent) override
     {
         // Block double click events
         mouseEvent->accept();
     }
 
-    void rowsInserted(const QModelIndex& parent, int start, int end) override
+    void rowsInserted(const QModelIndex &parent, int start, int end) override
     {
         Q_UNUSED(parent)
         Q_UNUSED(start)
@@ -75,14 +76,14 @@ protected slots:
     }
 
     // Select by judging whether the last element has changed
-    void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight,
-        const QVector<int>& roles = QVector<int>()) override
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,
+                     const QVector<int> &roles = QVector<int>()) override
     {
         QListView::dataChanged(topLeft, bottomRight, roles);
 
         if (model()) {
-            const QModelIndex square
-                = model()->index(model()->rowCount() - 1, 0);
+            const QModelIndex square = model()->index(model()->rowCount() - 1,
+                                                      0);
             if (square == bottomRight && newEmptyRow) {
                 setCurrentIndex(square);
                 QAbstractItemView::scrollToBottom();
@@ -95,8 +96,8 @@ protected slots:
     // This slot needs to be transformed into a signal
     // The activated signal needs to press enter to send out,
     // and the selectedChanged and clicked signals are not appropriate
-    void currentChanged(
-        const QModelIndex& current, const QModelIndex& previous) override
+    void currentChanged(const QModelIndex &current,
+                        const QModelIndex &previous) override
     {
         QListView::currentChanged(current, previous);
         emit currentChangedSignal(current, previous);
@@ -104,7 +105,7 @@ protected slots:
 
 private:
     // The identity of the new blank line is added
-    bool newEmptyRow { false };
+    bool newEmptyRow {false};
 };
 
 #endif // MOVE_LIST_VIEW_H_INCLUDED

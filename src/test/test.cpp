@@ -37,7 +37,7 @@ QString getAppFileName();
 
 extern QString APP_FILENAME_DEFAULT;
 
-Test::Test(QWidget* parent, QString k)
+Test::Test(QWidget *parent, QString k)
     : QDialog(parent)
     , keyCombo(new QComboBox)
     , startButton(new QPushButton(tr("Start")))
@@ -85,9 +85,9 @@ Test::Test(QWidget* parent, QString k)
     connect(stopButton, &QAbstractButton::clicked, this, &Test::stopAction);
     connect(closeButton, &QAbstractButton::clicked, this, &QWidget::close);
 
-    QGridLayout* mainLayout = nullptr;
-    if (QGuiApplication::styleHints()->showIsFullScreen()
-        || QGuiApplication::styleHints()->showIsMaximized()) {
+    QGridLayout *mainLayout = nullptr;
+    if (QGuiApplication::styleHints()->showIsFullScreen() ||
+        QGuiApplication::styleHints()->showIsMaximized()) {
         auto outerVerticalLayout = new QVBoxLayout(this);
         outerVerticalLayout->addItem(new QSpacerItem(
             0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
@@ -96,8 +96,8 @@ Test::Test(QWidget* parent, QString k)
         outerHorizontalLayout->addItem(new QSpacerItem(
             0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
 
-        auto groupBox
-            = new QGroupBox(QGuiApplication::applicationDisplayName());
+        auto groupBox = new QGroupBox(
+            QGuiApplication::applicationDisplayName());
         mainLayout = new QGridLayout(groupBox);
         outerHorizontalLayout->addWidget(groupBox);
 
@@ -144,7 +144,7 @@ void Test::attach()
         }
     }
 
-    to = (char*)sharedMemory.data();
+    to = (char *)sharedMemory.data();
 
     uuid = createUuidString();
     uuidSize = uuid.size();
@@ -161,7 +161,7 @@ void Test::detach()
     }
 }
 
-void Test::writeToMemory(const QString& record)
+void Test::writeToMemory(const QString &record)
 {
     if (!isTestMode) {
         return;
@@ -171,7 +171,7 @@ void Test::writeToMemory(const QString& record)
         return;
     }
 
-    char from[BUFSIZ] = { 0 };
+    char from[BUFSIZ] = {0};
 #ifdef _MSC_VER
     strncpy_s(from, BUFSIZ, record.toStdString().c_str(), BUFSIZ);
 #else
@@ -229,7 +229,10 @@ void Test::readFromMemory()
     }
 }
 
-QString Test::createUuidString() { return QUuid::createUuid().toString(); }
+QString Test::createUuidString()
+{
+    return QUuid::createUuid().toString();
+}
 
 void Test::startAction()
 {
@@ -253,4 +256,7 @@ void Test::stopAction()
     stopButton->setEnabled(false);
 }
 
-void Test::onTimeOut() { readFromMemory(); }
+void Test::onTimeOut()
+{
+    readFromMemory();
+}

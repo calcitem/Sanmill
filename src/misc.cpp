@@ -30,10 +30,10 @@
 // the calls at compile time), try to load them at runtime. To do this we need
 // first to define the corresponding function pointers.
 extern "C" {
-typedef bool (*fun1_t)(LOGICAL_PROCESSOR_RELATIONSHIP,
-    PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, PDWORD);
-typedef bool (*fun2_t)(USHORT, PGROUP_AFFINITY);
-typedef bool (*fun3_t)(HANDLE, CONST GROUP_AFFINITY*, PGROUP_AFFINITY);
+    typedef bool (*fun1_t)(LOGICAL_PROCESSOR_RELATIONSHIP,
+                           PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, PDWORD);
+    typedef bool (*fun2_t)(USHORT, PGROUP_AFFINITY);
+    typedef bool (*fun3_t)(HANDLE, CONST GROUP_AFFINITY *, PGROUP_AFFINITY);
 }
 #endif
 
@@ -49,9 +49,9 @@ typedef bool (*fun3_t)(HANDLE, CONST GROUP_AFFINITY*, PGROUP_AFFINITY);
 #include <sys/mman.h>
 #endif
 
-#if defined(__APPLE__) || defined(__ANDROID__) || defined(__OpenBSD__)         \
-    || (defined(__GLIBCXX__) && !defined(_GLIBCXX_HAVE_ALIGNED_ALLOC)          \
-        && !defined(_WIN32))
+#if defined(__APPLE__) || defined(__ANDROID__) || defined(__OpenBSD__) || \
+    (defined(__GLIBCXX__) && !defined(_GLIBCXX_HAVE_ALIGNED_ALLOC) && \
+     !defined(_WIN32))
 #define POSIXALIGNEDALLOC
 #include <stdlib.h>
 #endif
@@ -83,14 +83,14 @@ const string Version = "";
 /// usual I/O functionality, all without changing a single line of code!
 /// Idea from http://groups.google.com/group/comp.lang.c++/msg/1d941c0f26ea0d81
 
-struct Tie : public streambuf {
+struct Tie : public streambuf
+{
     // MSVC requires split streambuf for cin and cout
 
-    Tie(streambuf* b, streambuf* lb)
+    Tie(streambuf *b, streambuf *lb)
         : buf(b)
         , logBuf(lb)
-    {
-    }
+    { }
 
     int sync() override { return logBuf->pubsync(), buf->pubsync(); }
 
@@ -102,7 +102,7 @@ struct Tie : public streambuf {
 
     streambuf *buf, *logBuf;
 
-    int log(int c, const char* prefix)
+    int log(int c, const char *prefix)
     {
         static int last = '\n'; // Single log file
 
@@ -113,12 +113,12 @@ struct Tie : public streambuf {
     }
 };
 
-class Logger {
+class Logger
+{
     Logger()
         : in(cin.rdbuf(), file.rdbuf())
         , out(cout.rdbuf(), file.rdbuf())
-    {
-    }
+    { }
 
     ~Logger() { start(""); }
 
@@ -126,7 +126,7 @@ class Logger {
     Tie in, out;
 
 public:
-    static void start(const std::string& fname)
+    static void start(const std::string &fname)
     {
         static Logger logger;
 
@@ -181,7 +181,7 @@ const std::string compiler_info()
 {
 #define stringify2(x) #x
 #define stringify(x) stringify2(x)
-#define make_version_string(major, minor, patch)                               \
+#define make_version_string(major, minor, patch) \
     stringify(major) "." stringify(minor) "." stringify(patch)
 
     /// Predefined macros hell:
@@ -196,8 +196,8 @@ const std::string compiler_info()
 
 #ifdef __clang__
     compiler += "clang++ ";
-    compiler += make_version_string(
-        __clang_major__, __clang_minor__, __clang_patchlevel__);
+    compiler += make_version_string(__clang_major__, __clang_minor__,
+                                    __clang_patchlevel__);
 #elif __INTEL_COMPILER
     compiler += "Intel compiler ";
     compiler += "(version ";
@@ -211,8 +211,8 @@ const std::string compiler_info()
     compiler += ")";
 #elif __GNUC__
     compiler += "g++ (GNUC) ";
-    compiler
-        += make_version_string(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
+    compiler += make_version_string(__GNUC__, __GNUC_MINOR__,
+                                    __GNUC_PATCHLEVEL__);
 #else
     compiler += "Unknown compiler ";
     compiler += "(unknown version)";
@@ -318,7 +318,7 @@ void dbg_print()
 /// Used to serialize access to std::cout to avoid multiple threads writing at
 /// the same time.
 
-std::ostream& operator<<(std::ostream& os, SyncCout sc)
+std::ostream &operator<<(std::ostream &os, SyncCout sc)
 {
     static std::mutex m;
 
@@ -332,18 +332,21 @@ std::ostream& operator<<(std::ostream& os, SyncCout sc)
 }
 
 /// Trampoline helper to avoid moving Logger to misc.h
-void start_logger(const std::string& fname) { Logger::start(fname); }
+void start_logger(const std::string &fname)
+{
+    Logger::start(fname);
+}
 
 /// prefetch() preloads the given address in L1/L2 cache. This is a non-blocking
 /// function that doesn't stall the CPU waiting for data to be loaded from
 /// memory, which can be quite slow.
 #ifdef NO_PREFETCH
 
-void prefetch(void*) {}
+void prefetch(void *) { }
 
 #else
 
-void prefetch(void* addr)
+void prefetch(void *addr)
 {
 #if defined(__INTEL_COMPILER)
     // This hack prevents prefetches from being optimized away by
@@ -352,7 +355,7 @@ void prefetch(void* addr)
 #endif
 
 #if defined(__INTEL_COMPILER) || defined(_MSC_VER)
-    _mm_prefetch((char*)addr, _MM_HINT_T0);
+    _mm_prefetch((char *)addr, _MM_HINT_T0);
 #else
     __builtin_prefetch(addr);
 #endif
@@ -366,12 +369,12 @@ void prefetch(void* addr)
 #define PREFETCH_STRIDE (4 * L1_CACHE_BYTES)
 #endif
 
-void prefetch_range(void* addr, size_t len)
+void prefetch_range(void *addr, size_t len)
 {
-    char* cp = nullptr;
-    const char* end = (char*)addr + len;
+    char *cp = nullptr;
+    const char *end = (char *)addr + len;
 
-    for (cp = (char*)addr; cp < end; cp += PREFETCH_STRIDE)
+    for (cp = (char *)addr; cp < end; cp += PREFETCH_STRIDE)
         prefetch(cp);
 }
 
@@ -382,10 +385,10 @@ void prefetch_range(void* addr, size_t len)
 /// Memory allocated with std_aligned_alloc() must be freed with
 /// std_aligned_free().
 
-void* std_aligned_alloc(size_t alignment, size_t size)
+void *std_aligned_alloc(size_t alignment, size_t size)
 {
 #if defined(POSIXALIGNEDALLOC)
-    void* mem;
+    void *mem;
     return posix_memalign(&mem, alignment, size) ? nullptr : mem;
 #elif defined(_WIN32)
     return _mm_malloc(size, alignment);
@@ -394,7 +397,7 @@ void* std_aligned_alloc(size_t alignment, size_t size)
 #endif
 }
 
-void std_aligned_free(void* ptr)
+void std_aligned_free(void *ptr)
 {
 #if defined(POSIXALIGNEDALLOC)
     free(ptr);
@@ -412,11 +415,11 @@ void std_aligned_free(void* ptr)
 
 #if defined(_WIN32)
 
-static void* aligned_large_pages_alloc_win(size_t allocSize)
+static void *aligned_large_pages_alloc_win(size_t allocSize)
 {
     HANDLE hProcessToken {};
     LUID luid {};
-    void* mem = nullptr;
+    void *mem = nullptr;
 
     const size_t largePageSize = GetLargePageMinimum();
     if (!largePageSize)
@@ -424,7 +427,8 @@ static void* aligned_large_pages_alloc_win(size_t allocSize)
 
     // We need SeLockMemoryPrivilege, so try to enable it for the process
     if (!OpenProcessToken(GetCurrentProcess(),
-            TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hProcessToken))
+                          TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY,
+                          &hProcessToken))
         return nullptr;
 
     if (LookupPrivilegeValue(NULL, SE_LOCK_MEMORY_NAME, &luid)) {
@@ -440,13 +444,15 @@ static void* aligned_large_pages_alloc_win(size_t allocSize)
         // AdjustTokenPrivileges() succeeds, we still need to query
         // GetLastError() to ensure that the privileges were actually obtained.
         if (AdjustTokenPrivileges(hProcessToken, FALSE, &tp,
-                sizeof(TOKEN_PRIVILEGES), &prevTp, &prevTpLen)
-            && GetLastError() == ERROR_SUCCESS) {
+                                  sizeof(TOKEN_PRIVILEGES), &prevTp,
+                                  &prevTpLen) &&
+            GetLastError() == ERROR_SUCCESS) {
             // Round up size to full pages and allocate
-            allocSize
-                = (allocSize + largePageSize - 1) & ~size_t(largePageSize - 1);
+            allocSize = (allocSize + largePageSize - 1) &
+                        ~size_t(largePageSize - 1);
             mem = VirtualAlloc(NULL, allocSize,
-                MEM_RESERVE | MEM_COMMIT | MEM_LARGE_PAGES, PAGE_READWRITE);
+                               MEM_RESERVE | MEM_COMMIT | MEM_LARGE_PAGES,
+                               PAGE_READWRITE);
 
             // Privilege no longer needed, restore previous state
             AdjustTokenPrivileges(hProcessToken, FALSE, &prevTp, 0, NULL, NULL);
@@ -458,22 +464,22 @@ static void* aligned_large_pages_alloc_win(size_t allocSize)
     return mem;
 }
 
-void* aligned_large_pages_alloc(size_t allocSize)
+void *aligned_large_pages_alloc(size_t allocSize)
 {
     // Try to allocate large pages
-    void* mem = aligned_large_pages_alloc_win(allocSize);
+    void *mem = aligned_large_pages_alloc_win(allocSize);
 
     // Fall back to regular, page aligned, allocation if necessary
     if (!mem)
-        mem = VirtualAlloc(
-            NULL, allocSize, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+        mem = VirtualAlloc(NULL, allocSize, MEM_RESERVE | MEM_COMMIT,
+                           PAGE_READWRITE);
 
     return mem;
 }
 
 #else
 
-void* aligned_large_pages_alloc(size_t allocSize)
+void *aligned_large_pages_alloc(size_t allocSize)
 {
 #if defined(__linux__)
     constexpr size_t alignment = 2 * 1024 * 1024; // assumed 2MB page size
@@ -483,7 +489,7 @@ void* aligned_large_pages_alloc(size_t allocSize)
 
     // round up to multiples of alignment
     size_t size = ((allocSize + alignment - 1) / alignment) * alignment;
-    void* mem = std_aligned_alloc(alignment, size);
+    void *mem = std_aligned_alloc(alignment, size);
 #if defined(MADV_HUGEPAGE)
     madvise(mem, size, MADV_HUGEPAGE);
 #endif
@@ -496,7 +502,7 @@ void* aligned_large_pages_alloc(size_t allocSize)
 
 #if defined(_WIN32)
 
-void aligned_large_pages_free(void* mem)
+void aligned_large_pages_free(void *mem)
 {
     if (mem && !VirtualFree(mem, 0, MEM_RELEASE)) {
         DWORD err = GetLastError();
@@ -508,7 +514,10 @@ void aligned_large_pages_free(void* mem)
 
 #else
 
-void aligned_large_pages_free(void* mem) { std_aligned_free(mem); }
+void aligned_large_pages_free(void *mem)
+{
+    std_aligned_free(mem);
+}
 
 #endif
 #endif // ALIGNED_LARGE_PAGES

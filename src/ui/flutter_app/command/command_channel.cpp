@@ -19,7 +19,7 @@
 #include "command_channel.h"
 #include "command_queue.h"
 
-CommandChannel* CommandChannel::instance = nullptr;
+CommandChannel *CommandChannel::instance = nullptr;
 
 CommandChannel::CommandChannel()
 {
@@ -27,7 +27,7 @@ CommandChannel::CommandChannel()
     responseQueue = new CommandQueue();
 }
 
-CommandChannel* CommandChannel::getInstance()
+CommandChannel *CommandChannel::getInstance()
 {
     if (instance == nullptr) {
         instance = new CommandChannel();
@@ -57,22 +57,22 @@ CommandChannel::~CommandChannel()
     }
 }
 
-bool CommandChannel::pushCommand(const char* cmd)
+bool CommandChannel::pushCommand(const char *cmd)
 {
     return commandQueue->write(cmd);
 }
 
-bool CommandChannel::popupCommand(char* buffer)
+bool CommandChannel::popupCommand(char *buffer)
 {
     return commandQueue->read(buffer);
 }
 
-bool CommandChannel::pushResponse(const char* resp)
+bool CommandChannel::pushResponse(const char *resp)
 {
     return responseQueue->write(resp);
 }
 
-bool CommandChannel::popupResponse(char* buffer)
+bool CommandChannel::popupResponse(char *buffer)
 {
     return responseQueue->read(buffer);
 }

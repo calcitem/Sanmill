@@ -44,7 +44,7 @@
 #include "server.h"
 #include "version.h"
 
-MillGameWindow::MillGameWindow(QWidget* parent)
+MillGameWindow::MillGameWindow(QWidget *parent)
     : QMainWindow(parent)
     , autoRunTimer(this)
 {
@@ -66,7 +66,7 @@ MillGameWindow::MillGameWindow(QWidget* parent)
 
     // Set the scene size to 1.08 times the board size
     scene->setSceneRect(-BOARD_SIZE * 0.54, -BOARD_SIZE * 0.54,
-        BOARD_SIZE * 1.08, BOARD_SIZE * 1.08);
+                        BOARD_SIZE * 1.08, BOARD_SIZE * 1.08);
 
     // Initialize the controls
 
@@ -118,7 +118,7 @@ MillGameWindow::~MillGameWindow()
     qDeleteAll(ruleActionList);
 }
 
-void MillGameWindow::closeEvent(QCloseEvent* event)
+void MillGameWindow::closeEvent(QCloseEvent *event)
 {
     if (file.isOpen())
         file.close();
@@ -131,13 +131,13 @@ void MillGameWindow::closeEvent(QCloseEvent* event)
     QMainWindow::closeEvent(event);
 }
 
-bool MillGameWindow::eventFilter(QObject* watched, QEvent* event)
+bool MillGameWindow::eventFilter(QObject *watched, QEvent *event)
 {
     // This function is overridden just to make the rules menu (dynamic) display
     // prompts
     if (watched == ui.menu_R && event->type() == QEvent::ToolTip) {
-        const auto* he = dynamic_cast<QHelpEvent*>(event);
-        QAction* action = ui.menu_R->actionAt(he->pos());
+        const auto *he = dynamic_cast<QHelpEvent *>(event);
+        QAction *action = ui.menu_R->actionAt(he->pos());
         if (action) {
             QToolTip::showText(he->globalPos(), action->toolTip(), this);
             return true;
@@ -162,7 +162,7 @@ void MillGameWindow::initialize()
     for (auto i = actions.begin(); i != actions.end(); i++) {
         // The key of map stores int index value, and value stores rule name and
         // rule prompt
-        auto* ruleAction = new QAction(i->second.at(0), this);
+        auto *ruleAction = new QAction(i->second.at(0), this);
         ruleAction->setToolTip(i->second.at(1));
         ruleAction->setCheckable(true);
 
@@ -176,7 +176,7 @@ void MillGameWindow::initialize()
         ui.menu_R->addAction(ruleAction);
 
         connect(ruleAction, SIGNAL(triggered()), this,
-            SLOT(actionRules_triggered()));
+                SLOT(actionRules_triggered()));
     }
 
     // The main window controller is associated with the action of the signal
@@ -189,68 +189,68 @@ void MillGameWindow::initialize()
 #endif
 
     connect(ui.actionEngine1_T, SIGNAL(toggled(bool)), game,
-        SLOT(setEngineWhite(bool)));
+            SLOT(setEngineWhite(bool)));
 
     connect(ui.actionEngine2_R, SIGNAL(toggled(bool)), game,
-        SLOT(setEngineBlack(bool)));
+            SLOT(setEngineBlack(bool)));
 
     connect(ui.actionFixWindowSize, SIGNAL(toggled(bool)), game,
-        SLOT(setFixWindowSize(bool)));
+            SLOT(setFixWindowSize(bool)));
 
-    connect(
-        ui.actionSound_S, SIGNAL(toggled(bool)), game, SLOT(setSound(bool)));
+    connect(ui.actionSound_S, SIGNAL(toggled(bool)), game,
+            SLOT(setSound(bool)));
 
     connect(ui.actionAnimation_A, SIGNAL(toggled(bool)), game,
-        SLOT(setAnimation(bool)));
+            SLOT(setAnimation(bool)));
 
     connect(ui.actionAlphaBetaAlgorithm, SIGNAL(toggled(bool)), game,
-        SLOT(setAlphaBetaAlgorithm(bool)));
+            SLOT(setAlphaBetaAlgorithm(bool)));
 
     connect(ui.actionPvsAlgorithm, SIGNAL(toggled(bool)), game,
-        SLOT(setPvsAlgorithm(bool)));
+            SLOT(setPvsAlgorithm(bool)));
 
     connect(ui.actionMtdfAlgorithm, SIGNAL(toggled(bool)), game,
-        SLOT(setMtdfAlgorithm(bool)));
+            SLOT(setMtdfAlgorithm(bool)));
 
     connect(ui.actionDrawOnHumanExperience, SIGNAL(toggled(bool)), game,
-        SLOT(setDrawOnHumanExperience(bool)));
+            SLOT(setDrawOnHumanExperience(bool)));
 
     connect(ui.actionConsiderMobility, SIGNAL(toggled(bool)), game,
-        SLOT(setConsiderMobility(bool)));
+            SLOT(setConsiderMobility(bool)));
 
     connect(ui.actionAiIsLazy, SIGNAL(toggled(bool)), game,
-        SLOT(setAiIsLazy(bool)));
+            SLOT(setAiIsLazy(bool)));
 
     connect(ui.actionResignIfMostLose_G, SIGNAL(toggled(bool)), game,
-        SLOT(setResignIfMostLose(bool)));
+            SLOT(setResignIfMostLose(bool)));
 
     connect(ui.actionAutoRestart_A, SIGNAL(toggled(bool)), game,
-        SLOT(setAutoRestart(bool)));
+            SLOT(setAutoRestart(bool)));
 
     connect(ui.actionAutoChangeFirstMove_C, SIGNAL(toggled(bool)), game,
-        SLOT(setAutoChangeFirstMove(bool)));
+            SLOT(setAutoChangeFirstMove(bool)));
 
     connect(ui.actionShuffling_R, SIGNAL(toggled(bool)), game,
-        SLOT(setShuffling(bool)));
+            SLOT(setShuffling(bool)));
 
     connect(ui.actionLearnEndgame_E, SIGNAL(toggled(bool)), game,
-        SLOT(setLearnEndgame(bool)));
+            SLOT(setLearnEndgame(bool)));
 
     connect(ui.actionPerfect_AI, SIGNAL(toggled(bool)), game,
-        SLOT(setPerfectAi(bool)));
+            SLOT(setPerfectAi(bool)));
 
     connect(ui.actionIDS_I, SIGNAL(toggled(bool)), game, SLOT(setIDS(bool)));
 
     // DepthExtension
     connect(ui.actionDepthExtension_D, SIGNAL(toggled(bool)), game,
-        SLOT(setDepthExtension(bool)));
+            SLOT(setDepthExtension(bool)));
 
     //  OpeningBook
     connect(ui.actionOpeningBook_O, SIGNAL(toggled(bool)), game,
-        SLOT(setOpeningBook(bool)));
+            SLOT(setOpeningBook(bool)));
 
     connect(ui.actionDeveloperMode, SIGNAL(toggled(bool)), game,
-        SLOT(setDeveloperMode(bool)));
+            SLOT(setDeveloperMode(bool)));
 
     connect(ui.actionFlip_F, &QAction::triggered, game, &Game::flip);
 
@@ -261,44 +261,44 @@ void MillGameWindow::initialize()
     connect(ui.actionTurnLeft_L, &QAction::triggered, game, &Game::turnLeft);
 
     connect(game, SIGNAL(nGamesPlayedChanged(QString)),
-        ui.scoreLcdNumber_GamesPlayed, SLOT(display(QString)));
+            ui.scoreLcdNumber_GamesPlayed, SLOT(display(QString)));
 
     connect(game, SIGNAL(score1Changed(QString)), ui.scoreLcdNumber_1,
-        SLOT(display(QString)));
+            SLOT(display(QString)));
 
     connect(game, SIGNAL(score2Changed(QString)), ui.scoreLcdNumber_2,
-        SLOT(display(QString)));
+            SLOT(display(QString)));
 
     connect(game, SIGNAL(scoreDrawChanged(QString)), ui.scoreLcdNumber_draw,
-        SLOT(display(QString)));
+            SLOT(display(QString)));
 
     connect(game, SIGNAL(winningRate1Changed(QString)),
-        ui.winningRateLcdNumber_1, SLOT(display(QString)));
+            ui.winningRateLcdNumber_1, SLOT(display(QString)));
 
     connect(game, SIGNAL(winningRate2Changed(QString)),
-        ui.winningRateLcdNumber_2, SLOT(display(QString)));
+            ui.winningRateLcdNumber_2, SLOT(display(QString)));
 
     connect(game, SIGNAL(winningRateDrawChanged(QString)),
-        ui.winningRateLcdNumber_draw, SLOT(display(QString)));
+            ui.winningRateLcdNumber_draw, SLOT(display(QString)));
 
     connect(game, SIGNAL(time1Changed(QString)), ui.lcdNumber_1,
-        SLOT(display(QString)));
+            SLOT(display(QString)));
 
     connect(game, SIGNAL(time2Changed(QString)), ui.lcdNumber_2,
-        SLOT(display(QString)));
+            SLOT(display(QString)));
 
     connect(scene, SIGNAL(mouseReleased(QPointF)), game,
-        SLOT(actionPiece(QPointF)));
+            SLOT(actionPiece(QPointF)));
 
     // Add a normal display label to the status bar
-    auto* statusBarLabel = new QLabel(this);
+    auto *statusBarLabel = new QLabel(this);
     QFont statusBarFont;
     statusBarFont.setPointSize(16);
     statusBarLabel->setFont(statusBarFont);
     ui.statusBar->addWidget(statusBarLabel);
 
     connect(game, SIGNAL(statusBarChanged(QString)), statusBarLabel,
-        SLOT(setText(QString)));
+            SLOT(setText(QString)));
 
     ruleActionList[game->getRuleIndex()]->setChecked(true);
     game->setRule(game->getRuleIndex());
@@ -318,28 +318,28 @@ void MillGameWindow::initialize()
     // the final situation
 
     connect(ui.actionBegin_S, &QAction::triggered, this,
-        &MillGameWindow::on_actionRowChange);
+            &MillGameWindow::on_actionRowChange);
 
     connect(ui.actionPrevious_B, &QAction::triggered, this,
-        &MillGameWindow::on_actionRowChange);
+            &MillGameWindow::on_actionRowChange);
 
 #ifdef QT_MOBILE_APP_UI
     connect(ui.pushButton_retractMove, &QPushButton::released, this,
-        &MillGameWindow::on_actionRowChange);
+            &MillGameWindow::on_actionRowChange);
 
     connect(ui.pushButton_newGame, &QPushButton::released, this,
-        &MillGameWindow::on_actionNew_N_triggered);
+            &MillGameWindow::on_actionNew_N_triggered);
 #endif /* QT_MOBILE_APP_UI */
 
     connect(ui.actionNext_F, &QAction::triggered, this,
-        &MillGameWindow::on_actionRowChange);
+            &MillGameWindow::on_actionRowChange);
 
     connect(ui.actionEnd_E, &QAction::triggered, this,
-        &MillGameWindow::on_actionRowChange);
+            &MillGameWindow::on_actionRowChange);
 
     // Manually select the updated slot in listView
     connect(ui.listView, &MoveListView::currentChangedSignal, this,
-        &MillGameWindow::on_actionRowChange);
+            &MillGameWindow::on_actionRowChange);
 
     // Update the status of the four keys
     on_actionRowChange();
@@ -358,7 +358,7 @@ void MillGameWindow::initialize()
     const int screen_iPhone_6s_Plus[] = {1242, 2208};
     const int screen_iPhone_6s[] = {750, 1334};
 #endif
-    const int screen_iPhone_SE[] = { 640, 1136 };
+    const int screen_iPhone_SE[] = {640, 1136};
     this->resize(QSize(screen_iPhone_SE[0], screen_iPhone_SE[1]));
 #else /* QT_MOBILE_APP_UI */
 
@@ -383,15 +383,16 @@ void MillGameWindow::initialize()
 
 #ifdef SHOW_MAXIMIZED_ON_LOAD
     showMaximized();
-    QWidget::setWindowFlags(Qt::WindowMaximizeButtonHint
-        | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
+    QWidget::setWindowFlags(Qt::WindowMaximizeButtonHint |
+                            Qt::WindowCloseButtonHint |
+                            Qt::WindowMinimizeButtonHint);
 #endif // SHOW_MAXIMIZED_ON_LOAD
 
 #ifdef QT_MOBILE_APP_UI
     ui.pushButton_option->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(ui.pushButton_option,
-        SIGNAL(customContextMenuRequested(const QPoint&)), this,
-        SLOT(ctxMenu(const QPoint&)));
+            SIGNAL(customContextMenuRequested(const QPoint &)), this,
+            SLOT(ctxMenu(const QPoint &)));
 #endif /* QT_MOBILE_APP_UI */
 
     ui.actionEngine1_T->setChecked(game->isAiPlayer[WHITE]);
@@ -454,9 +455,9 @@ void MillGameWindow::initialize()
 }
 
 #ifdef QT_MOBILE_APP_UI
-void MillGameWindow::ctxMenu(const QPoint& pos)
+void MillGameWindow::ctxMenu(const QPoint &pos)
 {
-    QMenu* menu = new QMenu;
+    QMenu *menu = new QMenu;
     menu->addAction(tr("Test Item"), this, SLOT(on_actionNew_N_triggered()));
     menu->exec(ui.pushButton_option->mapToGlobal(pos));
 }
@@ -495,7 +496,7 @@ void MillGameWindow::ruleInfo()
     return;
 }
 
-void MillGameWindow::saveBook(const QString& path)
+void MillGameWindow::saveBook(const QString &path)
 {
     if (path.isEmpty()) {
         return;
@@ -512,9 +513,9 @@ void MillGameWindow::saveBook(const QString& path)
     }
 
     QTextStream textStream(&file);
-    auto* strlist = qobject_cast<QStringListModel*>(ui.listView->model());
+    auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
 
-    for (const QString& cmd : strlist->stringList()) {
+    for (const QString &cmd : strlist->stringList()) {
         textStream << cmd << "\n";
     }
 
@@ -526,19 +527,19 @@ void MillGameWindow::on_actionLimited_T_triggered()
     int gStep = game->getStepsLimit();
     int gTime = game->getTimeLimit();
 
-    auto* dialog = new QDialog(this);
+    auto *dialog = new QDialog(this);
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("Dialog"));
     dialog->setWindowTitle(tr("Levels"));
     dialog->resize(256, 108);
     dialog->setModal(true);
 
-    auto* formLayout = new QFormLayout(dialog);
-    auto* label_step = new QLabel(dialog);
-    auto* label_time = new QLabel(dialog);
-    auto* comboBox_step = new QComboBox(dialog);
-    auto* comboBox_time = new QComboBox(dialog);
-    auto* buttonBox = new QDialogButtonBox(dialog);
+    auto *formLayout = new QFormLayout(dialog);
+    auto *label_step = new QLabel(dialog);
+    auto *label_time = new QLabel(dialog);
+    auto *comboBox_step = new QComboBox(dialog);
+    auto *comboBox_time = new QComboBox(dialog);
+    auto *buttonBox = new QDialogButtonBox(dialog);
 
 #if 0
     formLayout->setObjectName(QStringLiteral("formLayout"));
@@ -568,8 +569,8 @@ void MillGameWindow::on_actionLimited_T_triggered()
     comboBox_time->addItem(tr("60s"), 60);
     comboBox_time->setCurrentIndex(comboBox_time->findData(gTime));
 
-    buttonBox->setStandardButtons(
-        QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel |
+                                  QDialogButtonBox::Ok);
     buttonBox->setCenterButtons(true);
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -590,7 +591,7 @@ void MillGameWindow::on_actionLimited_T_triggered()
         int dTime = comboBox_time->currentData().toInt();
         if (gStep != dStep || gTime != dTime) {
             game->setRule(ruleNo, static_cast<int>(dStep),
-                dTime); // TODO(calcitem): Remove dTime
+                          dTime); // TODO(calcitem): Remove dTime
             game->setMoveTime(dTime);
         }
     }
@@ -606,11 +607,11 @@ void MillGameWindow::actionRules_triggered()
     ui.actionAutoRun_A->setChecked(false);
 
     // Cancel the selection of other rules
-    for (QAction* action : ruleActionList)
+    for (QAction *action : ruleActionList)
         action->setChecked(false);
 
     // Select current rule
-    auto* action = dynamic_cast<QAction*>(sender());
+    auto *action = dynamic_cast<QAction *>(sender());
     action->setChecked(true);
     ruleNo = action->data().toInt();
 
@@ -629,7 +630,7 @@ void MillGameWindow::actionRules_triggered()
 
 void MillGameWindow::on_actionNew_N_triggered()
 {
-    auto* strlist = qobject_cast<QStringListModel*>(ui.listView->model());
+    auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
 
     // If you have not finished playing game and have already taken more than a
     // few steps, you will be lost
@@ -640,8 +641,8 @@ void MillGameWindow::on_actionNew_N_triggered()
     game->saveScore();
 
 #ifdef SAVE_GAME_BOOK_WHEN_ACTION_NEW_TRIGGERED
-    QString strDateTime
-        = QDateTime::currentDateTime().toString("yyyy-MM-dd_hhmmss");
+    QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_"
+                                                                "hhmmss");
     QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
     QString whoWin;
 
@@ -660,8 +661,8 @@ void MillGameWindow::on_actionNew_N_triggered()
         break;
     }
 
-    QString path = QDir::currentPath() + "/" + tr("Book_") + whoWin + "_"
-        + strDateTime + ".txt";
+    QString path = QDir::currentPath() + "/" + tr("Book_") + whoWin + "_" +
+                   strDateTime + ".txt";
 
     // After a certain number of steps, save the score when creating a new game
     if (strlist->stringList().size() > 18) {
@@ -686,8 +687,9 @@ void MillGameWindow::on_actionNew_N_triggered()
 
 void MillGameWindow::on_actionOpen_O_triggered()
 {
-    QString path = QFileDialog::getOpenFileName(this,
-        tr("Open the move history file"), QDir::currentPath(), "TXT(*.txt)");
+    QString path = QFileDialog::getOpenFileName(
+        this, tr("Open the move history file"), QDir::currentPath(),
+        "TXT(*.txt)");
 
     if (path.isEmpty()) {
         return;
@@ -702,7 +704,8 @@ void MillGameWindow::on_actionOpen_O_triggered()
     // Files larger than 1MB are not supported
     if (file.size() > 0x100000) {
         QMessageBox msgBox(QMessageBox::Warning, tr("The file is too large"),
-            tr("Files larger than 1MB are not supported"), QMessageBox::Ok);
+                           tr("Files larger than 1MB are not supported"),
+                           QMessageBox::Ok);
         msgBox.exec();
         return;
     }
@@ -722,7 +725,8 @@ void MillGameWindow::on_actionOpen_O_triggered()
     // the scene
     if (!(game->command(cmd.toStdString(), false))) {
         QMessageBox msgBox(QMessageBox::Warning, tr("File error"),
-            tr("Not the correct move history file"), QMessageBox::Ok);
+                           tr("Not the correct move history file"),
+                           QMessageBox::Ok);
         msgBox.exec();
         return;
     }
@@ -743,9 +747,9 @@ void MillGameWindow::on_actionSave_S_triggered()
 
         if (file.open(QFileDevice::WriteOnly | QFileDevice::Text)) {
             QTextStream textStream(&file);
-            auto* strlist
-                = qobject_cast<QStringListModel*>(ui.listView->model());
-            for (const QString& cmd : strlist->stringList())
+            auto *strlist = qobject_cast<QStringListModel *>(
+                ui.listView->model());
+            for (const QString &cmd : strlist->stringList())
                 textStream << cmd << "\n";
             file.flush();
         }
@@ -758,17 +762,19 @@ void MillGameWindow::on_actionSave_S_triggered()
 
 void MillGameWindow::on_actionSaveAs_A_triggered()
 {
-    QString path
-        = QFileDialog::getSaveFileName(this, tr("Open the move history file"),
-            QDir::currentPath() + tr("MoveHistory_")
-                + QDateTime::currentDateTime().toString().replace(" ", "_")
-                + ".txt",
-            "TXT(*.txt)");
+    QString path = QFileDialog::getSaveFileName(
+        this, tr("Open the move history file"),
+        QDir::currentPath() + tr("MoveHistory_") +
+            QDateTime::currentDateTime().toString().replace(" ", "_") + ".txt",
+        "TXT(*.txt)");
 
     saveBook(path);
 }
 
-void MillGameWindow::on_actionEdit_E_toggled(bool arg1) { Q_UNUSED(arg1) }
+void MillGameWindow::on_actionEdit_E_toggled(bool arg1)
+{
+    Q_UNUSED(arg1)
+}
 
 void MillGameWindow::on_actionInvert_I_toggled(bool arg1)
 {
@@ -791,18 +797,18 @@ void MillGameWindow::on_actionInvert_I_toggled(bool arg1)
 
 void MillGameWindow::on_actionRowChange()
 {
-    QAbstractItemModel* model = ui.listView->model();
+    QAbstractItemModel *model = ui.listView->model();
     int rows = model->rowCount();
     int currentRow = ui.listView->currentIndex().row();
 
-    QObject* const obsender = sender();
+    QObject *const obsender = sender();
 
     if (obsender != nullptr) {
         if (obsender == ui.actionBegin_S) {
             ui.listView->setCurrentIndex(model->index(0, 0));
         } else if (obsender == ui.actionPrevious_B
 #ifdef QT_MOBILE_APP_UI
-            || obsender == ui.pushButton_retractMove
+                   || obsender == ui.pushButton_retractMove
 #endif /* QT_MOBILE_APP_UI */
         ) {
             if (currentRow > 0) {
@@ -949,26 +955,26 @@ void MillGameWindow::on_actionEngineFight_E_triggered()
 
 void MillGameWindow::on_actionEngine_E_triggered()
 {
-    auto* dialog = new QDialog(this);
+    auto *dialog = new QDialog(this);
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("Dialog"));
     dialog->setWindowTitle(tr("Configure AI"));
     dialog->resize(256, 188);
     dialog->setModal(true);
 
-    auto* vLayout = new QVBoxLayout(dialog);
-    auto* groupBox1 = new QGroupBox(dialog);
-    auto* groupBox2 = new QGroupBox(dialog);
+    auto *vLayout = new QVBoxLayout(dialog);
+    auto *groupBox1 = new QGroupBox(dialog);
+    auto *groupBox2 = new QGroupBox(dialog);
 
-    auto* hLayout1 = new QHBoxLayout;
-    auto* label_time1 = new QLabel(dialog);
-    auto* spinBox_time1 = new QSpinBox(dialog);
+    auto *hLayout1 = new QHBoxLayout;
+    auto *label_time1 = new QLabel(dialog);
+    auto *spinBox_time1 = new QSpinBox(dialog);
 
-    auto* hLayout2 = new QHBoxLayout;
-    auto* label_time2 = new QLabel(dialog);
-    auto* spinBox_time2 = new QSpinBox(dialog);
+    auto *hLayout2 = new QHBoxLayout;
+    auto *label_time2 = new QLabel(dialog);
+    auto *spinBox_time2 = new QSpinBox(dialog);
 
-    auto* buttonBox = new QDialogButtonBox(dialog);
+    auto *buttonBox = new QDialogButtonBox(dialog);
 
     groupBox1->setTitle(tr("Player1 AI Settings"));
     label_time1->setText(tr("Time limit"));
@@ -980,8 +986,8 @@ void MillGameWindow::on_actionEngine_E_triggered()
     spinBox_time2->setMinimum(1);
     spinBox_time2->setMaximum(3600);
 
-    buttonBox->setStandardButtons(
-        QDialogButtonBox::Cancel | QDialogButtonBox::Ok);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel |
+                                  QDialogButtonBox::Ok);
     buttonBox->setCenterButtons(true);
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -1031,22 +1037,22 @@ void MillGameWindow::on_actionWeb_W_triggered()
 
 void MillGameWindow::on_actionAbout_A_triggered()
 {
-    auto* dialog = new QDialog;
+    auto *dialog = new QDialog;
 
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("aboutDialog"));
     dialog->setWindowTitle(tr("The Mill Game"));
     dialog->setModal(true);
 
-    auto* vLayout = new QVBoxLayout(dialog);
-    auto* hLayout = new QHBoxLayout;
+    auto *vLayout = new QVBoxLayout(dialog);
+    auto *hLayout = new QHBoxLayout;
     // QLabel *label_icon1 = new QLabel(dialog);
     // QLabel *label_icon2 = new QLabel(dialog);
-    auto* date_text = new QLabel(dialog);
-    auto* version_text = new QLabel(dialog);
-    auto* donate_text = new QLabel(dialog);
-    auto* label_text = new QLabel(dialog);
-    auto* label_image = new QLabel(dialog);
+    auto *date_text = new QLabel(dialog);
+    auto *version_text = new QLabel(dialog);
+    auto *donate_text = new QLabel(dialog);
+    auto *label_text = new QLabel(dialog);
+    auto *label_image = new QLabel(dialog);
 
 #if 0
     label_icon1->setPixmap(
@@ -1065,8 +1071,8 @@ void MillGameWindow::on_actionAbout_A_triggered()
     QString versionText;
 
     if (strcmp(versionNumber, "Unknown")) {
-        versionText = tr("Version: ") + versionNumber
-            + "\nBuild: " + __DATE__ " " __TIME__;
+        versionText = tr("Version: ") + versionNumber +
+                      "\nBuild: " + __DATE__ " " __TIME__;
     } else {
         versionText = tr("Build: ") + __DATE__ " " __TIME__;
     }
@@ -1090,7 +1096,7 @@ void MillGameWindow::on_actionAbout_A_triggered()
 }
 
 #ifdef QT_MOBILE_APP_UI
-void MillGameWindow::mousePressEvent(QMouseEvent* mouseEvent)
+void MillGameWindow::mousePressEvent(QMouseEvent *mouseEvent)
 {
     if (mouseEvent->button() == Qt::LeftButton) {
         m_move = true;
@@ -1099,7 +1105,7 @@ void MillGameWindow::mousePressEvent(QMouseEvent* mouseEvent)
     }
 }
 
-void MillGameWindow::mouseMoveEvent(QMouseEvent* mouseEvent)
+void MillGameWindow::mouseMoveEvent(QMouseEvent *mouseEvent)
 {
     if (mouseEvent->buttons() & Qt::LeftButton) {
         QPoint relativePos = mouseEvent->globalPos() - m_startPoint;
@@ -1107,7 +1113,7 @@ void MillGameWindow::mouseMoveEvent(QMouseEvent* mouseEvent)
     }
 }
 
-void MillGameWindow::mouseReleaseEvent(QMouseEvent* mouseEvent)
+void MillGameWindow::mouseReleaseEvent(QMouseEvent *mouseEvent)
 {
     if (mouseEvent->button() == Qt::LeftButton) {
         m_move = false;

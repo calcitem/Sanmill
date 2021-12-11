@@ -30,7 +30,7 @@ bool MiniMax::testLayer(unsigned int layerNumber)
 
     // output
     PRINT(1, this,
-        endl << "*** Test each state in layer: " << layerNumber << " ***");
+          endl << "*** Test each state in layer: " << layerNumber << " ***");
     PRINT(1, this, (getOutputInformation(layerNumber)));
 
     // prepare parameters for multithreading
@@ -39,7 +39,7 @@ bool MiniMax::testLayer(unsigned int layerNumber)
     numStatesProcessed = 0;
     curCalculatedLayer = layerNumber;
     curCalculationActionId = MM_ACTION_TESTING_LAYER;
-    TestLayersVars* tlVars = new TestLayersVars[threadManager.getNumThreads()];
+    TestLayersVars *tlVars = new TestLayersVars[threadManager.getNumThreads()];
 
     for (curThreadNo = 0; curThreadNo < threadManager.getNumThreads();
          curThreadNo++) {
@@ -53,9 +53,9 @@ bool MiniMax::testLayer(unsigned int layerNumber)
     }
 
     // process each state in the current layer
-    returnValue = threadManager.executeParallelLoop(testLayerThreadProc,
-        (void*)tlVars, sizeof(TestLayersVars), TM_SCHEDULE_STATIC, 0,
-        layerStats[layerNumber].knotsInLayer - 1, 1);
+    returnValue = threadManager.executeParallelLoop(
+        testLayerThreadProc, (void *)tlVars, sizeof(TestLayersVars),
+        TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
     switch (returnValue) {
     case TM_RETURN_VALUE_OK:
     case TM_RETURN_VALUE_EXECUTION_CANCELLED:
@@ -96,17 +96,17 @@ bool MiniMax::testLayer(unsigned int layerNumber)
 // testLayerThreadProc()
 //
 //-----------------------------------------------------------------------------
-DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
+DWORD MiniMax::testLayerThreadProc(void *pParameter, unsigned index)
 {
     // locals
-    TestLayersVars* tlVars = (TestLayersVars*)pParameter;
-    MiniMax* m = tlVars->pMiniMax;
+    TestLayersVars *tlVars = (TestLayersVars *)pParameter;
+    MiniMax *m = tlVars->pMiniMax;
     unsigned int layerNumber = tlVars->layerNumber;
     unsigned int stateNumber = index;
     unsigned int threadNo = tlVars->curThreadNo;
-    TwoBit* subValueInDatabase = tlVars->subValueInDatabase;
-    PlyInfoVarType* subPlyInfos = tlVars->subPlyInfos;
-    bool* hasCurPlayerChanged = tlVars->hasCurPlayerChanged;
+    TwoBit *subValueInDatabase = tlVars->subValueInDatabase;
+    PlyInfoVarType *subPlyInfos = tlVars->subPlyInfos;
+    bool *hasCurPlayerChanged = tlVars->hasCurPlayerChanged;
     TwoBit shortValueInDatabase;
     PlyInfoVarType numPliesTillCurState;
     TwoBit shortValueInGame;
@@ -115,9 +115,9 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
     unsigned int numPossibilities;
     unsigned int i, j;
     unsigned int tmpStateNumber, tmpLayerNumber;
-    unsigned int* idPossibility;
-    void* pPossibilities;
-    void* pBackup;
+    unsigned int *idPossibility;
+    void *pPossibilities;
+    void *pBackup;
     bool isOpponentLevel;
     bool invalidLayerOrStateNumber;
     bool layerInDatabaseAndCompleted;
@@ -127,26 +127,27 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
     if (tlVars->statesProcessed % OUTPUT_EVERY_N_STATES == 0) {
         m->numStatesProcessed += OUTPUT_EVERY_N_STATES;
         PRINT(0, m,
-            m->numStatesProcessed << " states of "
-                                  << m->layerStats[layerNumber].knotsInLayer
-                                  << " tested");
+              m->numStatesProcessed << " states of "
+                                    << m->layerStats[layerNumber].knotsInLayer
+                                    << " tested");
     }
 
     // situation already existend in database ?
-    m->readKnotValueFromDatabase(
-        layerNumber, stateNumber, shortValueInDatabase);
+    m->readKnotValueFromDatabase(layerNumber, stateNumber,
+                                 shortValueInDatabase);
     m->readPlyInfoFromDatabase(layerNumber, stateNumber, numPliesTillCurState);
 
     // prepare the situation
     if (!m->setSituation(threadNo, layerNumber, stateNumber)) {
         // when situation cannot be constructed then state must be marked as
         // invalid in database
-        if (shortValueInDatabase != SKV_VALUE_INVALID
-            || numPliesTillCurState != PLYINFO_VALUE_INVALID) {
+        if (shortValueInDatabase != SKV_VALUE_INVALID ||
+            numPliesTillCurState != PLYINFO_VALUE_INVALID) {
             PRINT(0, m,
-                "ERROR: DATABASE ERROR IN LAYER "
-                    << layerNumber << " AND STATE " << stateNumber
-                    << ": Could not set situation, but value is not invalid.");
+                  "ERROR: DATABASE ERROR IN LAYER "
+                      << layerNumber << " AND STATE " << stateNumber
+                      << ": Could not set situation, but value is not "
+                         "invalid.");
             goto errorInDatabase;
         } else {
             return TM_RETURN_VALUE_OK;
@@ -161,8 +162,8 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
 
     // get number of possibilities
     m->setOpponentLevel(threadNo, false);
-    idPossibility = m->getPossibilities(
-        threadNo, &numPossibilities, &isOpponentLevel, &pPossibilities);
+    idPossibility = m->getPossibilities(threadNo, &numPossibilities,
+                                        &isOpponentLevel, &pPossibilities);
 
     // unable to move
     if (numPossibilities == 0) {
@@ -170,21 +171,21 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
         m->getValueOfSituation(threadNo, floatValueInGame, shortValueInGame);
 
         // compare database with game
-        if (shortValueInDatabase != shortValueInGame
-            || numPliesTillCurState != 0) {
+        if (shortValueInDatabase != shortValueInGame ||
+            numPliesTillCurState != 0) {
             PRINT(0, m,
-                "ERROR: DATABASE ERROR IN LAYER "
-                    << layerNumber << " AND STATE " << stateNumber
-                    << ": Number of possibilities is zero, but knot value is "
-                       "not invalid or ply info equal zero.");
+                  "ERROR: DATABASE ERROR IN LAYER "
+                      << layerNumber << " AND STATE " << stateNumber
+                      << ": Number of possibilities is zero, but knot value is "
+                         "not invalid or ply info equal zero.");
             goto errorInDatabase;
         }
         if (shortValueInDatabase == SKV_VALUE_INVALID) {
             PRINT(0, m,
-                "ERROR: DATABASE ERROR IN LAYER "
-                    << layerNumber << " AND STATE " << stateNumber
-                    << ": Number of possibilities is zero, but knot value is "
-                       "invalid.");
+                  "ERROR: DATABASE ERROR IN LAYER "
+                      << layerNumber << " AND STATE " << stateNumber
+                      << ": Number of possibilities is zero, but knot value is "
+                         "invalid.");
             goto errorInDatabase;
         }
     } else {
@@ -192,35 +193,37 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
         for (i = 0; i < numPossibilities; i++) {
             // move
             m->move(threadNo, idPossibility[i], isOpponentLevel, &pBackup,
-                pPossibilities);
+                    pPossibilities);
 
             // get database value
             m->readKnotValueFromDatabase(threadNo, tmpLayerNumber,
-                tmpStateNumber, subValueInDatabase[i],
-                invalidLayerOrStateNumber, layerInDatabaseAndCompleted);
-            m->readPlyInfoFromDatabase(
-                tmpLayerNumber, tmpStateNumber, subPlyInfos[i]);
+                                         tmpStateNumber, subValueInDatabase[i],
+                                         invalidLayerOrStateNumber,
+                                         layerInDatabaseAndCompleted);
+            m->readPlyInfoFromDatabase(tmpLayerNumber, tmpStateNumber,
+                                       subPlyInfos[i]);
             hasCurPlayerChanged[i] = (m->getOpponentLevel(threadNo) == true);
 
             // debug information
             if (m->verbosity > 5) {
                 PRINT(5, m,
-                    "layer: " << tmpLayerNumber << " state: " << tmpStateNumber
-                              << " value: " << (int)subValueInDatabase[i]);
+                      "layer: " << tmpLayerNumber
+                                << " state: " << tmpStateNumber
+                                << " value: " << (int)subValueInDatabase[i]);
                 m->printBoard(threadNo, subValueInDatabase[i]);
             }
 
             // if layer or state number is invalid then value of testes state
             // must be invalid
-            if (invalidLayerOrStateNumber
-                && shortValueInDatabase != SKV_VALUE_INVALID) {
+            if (invalidLayerOrStateNumber &&
+                shortValueInDatabase != SKV_VALUE_INVALID) {
                 PRINT(0, m,
-                    "ERROR: DATABASE ERROR IN LAYER "
-                        << layerNumber << " AND STATE " << stateNumber
-                        << ": Succeeding state  has invalid layer ("
-                        << tmpLayerNumber << ")or state number ("
-                        << tmpStateNumber
-                        << "), but tested state is not marked as invalid.");
+                      "ERROR: DATABASE ERROR IN LAYER "
+                          << layerNumber << " AND STATE " << stateNumber
+                          << ": Succeeding state  has invalid layer ("
+                          << tmpLayerNumber << ")or state number ("
+                          << tmpStateNumber
+                          << "), but tested state is not marked as invalid.");
                 goto errorInDatabase;
             }
             // BUG: Does not work because, layer 101 is calculated before 105,
@@ -233,7 +236,7 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
 
             // undo move
             m->undo(threadNo, idPossibility[i], isOpponentLevel, pBackup,
-                pPossibilities);
+                    pPossibilities);
         }
 
         // value possible?
@@ -242,15 +245,15 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
             // all possible moves must be lost for the current player or won for
             // the opponent
             for (i = 0; i < numPossibilities; i++) {
-                if (subValueInDatabase[i]
-                        != ((hasCurPlayerChanged[i]) ? SKV_VALUE_GAME_WON
-                                                     : SKV_VALUE_GAME_LOST)
-                    && subValueInDatabase[i] != SKV_VALUE_INVALID) {
+                if (subValueInDatabase[i] != ((hasCurPlayerChanged[i]) ?
+                                                  SKV_VALUE_GAME_WON :
+                                                  SKV_VALUE_GAME_LOST) &&
+                    subValueInDatabase[i] != SKV_VALUE_INVALID) {
                     PRINT(0, m,
-                        "ERROR: DATABASE ERROR IN LAYER "
-                            << layerNumber << " AND STATE " << stateNumber
-                            << ": All possible moves must be lost for the "
-                               "current player or won for the opponent");
+                          "ERROR: DATABASE ERROR IN LAYER "
+                              << layerNumber << " AND STATE " << stateNumber
+                              << ": All possible moves must be lost for the "
+                                 "current player or won for the opponent");
                     goto errorInDatabase;
                 }
             }
@@ -262,16 +265,16 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
             }
             if (j == numPossibilities) {
                 PRINT(0, m,
-                    "DATABASE ERROR IN LAYER "
-                        << layerNumber << " AND STATE " << stateNumber
-                        << ". Not all options can be invalid");
+                      "DATABASE ERROR IN LAYER "
+                          << layerNumber << " AND STATE " << stateNumber
+                          << ". Not all options can be invalid");
             }
             // ply info must be max(subPlyInfos[]+1)
             max = 0;
             for (i = 0; i < numPossibilities; i++) {
-                if (subValueInDatabase[i]
-                    == ((hasCurPlayerChanged[i]) ? SKV_VALUE_GAME_WON
-                                                 : SKV_VALUE_GAME_LOST)) {
+                if (subValueInDatabase[i] == ((hasCurPlayerChanged[i]) ?
+                                                  SKV_VALUE_GAME_WON :
+                                                  SKV_VALUE_GAME_LOST)) {
                     if (subPlyInfos[i] + 1 > max) {
                         max = subPlyInfos[i] + 1;
                     }
@@ -279,18 +282,19 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
             }
             if (numPliesTillCurState > PLYINFO_VALUE_DRAWN) {
                 PRINT(0, m,
-                    "DATABASE ERROR IN LAYER "
-                        << layerNumber << " AND STATE " << stateNumber
-                        << ": Knot value is LOST, but numPliesTillCurState is "
-                           "bigger than PLYINFO_MAX_VALUE.");
+                      "DATABASE ERROR IN LAYER "
+                          << layerNumber << " AND STATE " << stateNumber
+                          << ": Knot value is LOST, but numPliesTillCurState "
+                             "is "
+                             "bigger than PLYINFO_MAX_VALUE.");
                 goto errorInDatabase;
             }
             if (numPliesTillCurState != max) {
                 PRINT(0, m,
-                    "DATABASE ERROR IN LAYER "
-                        << layerNumber << " AND STATE " << stateNumber
-                        << ": Number of needed plies is not maximal for LOST "
-                           "state.");
+                      "DATABASE ERROR IN LAYER "
+                          << layerNumber << " AND STATE " << stateNumber
+                          << ": Number of needed plies is not maximal for LOST "
+                             "state.");
                 goto errorInDatabase;
             }
             break;
@@ -305,26 +309,27 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
                 // the opponent or won for the current player. But
                 // subValueInDatabase[i] == SKV_VALUE_INVALID."); goto
                 // errorInDatabase; }
-                if (subValueInDatabase[i]
-                    == ((hasCurPlayerChanged[i]) ? SKV_VALUE_GAME_LOST
-                                                 : SKV_VALUE_GAME_WON))
+                if (subValueInDatabase[i] == ((hasCurPlayerChanged[i]) ?
+                                                  SKV_VALUE_GAME_LOST :
+                                                  SKV_VALUE_GAME_WON))
                     i = numPossibilities;
             }
             if (i == numPossibilities) {
                 PRINT(0, m,
-                    "DATABASE ERROR IN LAYER "
-                        << layerNumber << " AND STATE " << stateNumber
-                        << ": At least one possible move must be lost for the "
-                           "opponent or won for the current player.");
+                      "DATABASE ERROR IN LAYER "
+                          << layerNumber << " AND STATE " << stateNumber
+                          << ": At least one possible move must be lost for "
+                             "the "
+                             "opponent or won for the current player.");
                 goto errorInDatabase;
             }
 
             // ply info must be min(subPlyInfos[]+1)
             min = PLYINFO_VALUE_DRAWN;
             for (i = 0; i < numPossibilities; i++) {
-                if (subValueInDatabase[i]
-                    == ((hasCurPlayerChanged[i]) ? SKV_VALUE_GAME_LOST
-                                                 : SKV_VALUE_GAME_WON)) {
+                if (subValueInDatabase[i] == ((hasCurPlayerChanged[i]) ?
+                                                  SKV_VALUE_GAME_LOST :
+                                                  SKV_VALUE_GAME_WON)) {
                     if (subPlyInfos[i] + 1 < min) {
                         min = subPlyInfos[i] + 1;
                     }
@@ -332,18 +337,18 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
             }
             if (numPliesTillCurState > PLYINFO_VALUE_DRAWN) {
                 PRINT(0, m,
-                    "DATABASE ERROR IN LAYER "
-                        << layerNumber << " AND STATE " << stateNumber
-                        << ": Knot value is WON, but numPliesTillCurState is "
-                           "bigger than PLYINFO_MAX_VALUE.");
+                      "DATABASE ERROR IN LAYER "
+                          << layerNumber << " AND STATE " << stateNumber
+                          << ": Knot value is WON, but numPliesTillCurState is "
+                             "bigger than PLYINFO_MAX_VALUE.");
                 goto errorInDatabase;
             }
             if (numPliesTillCurState != min) {
                 PRINT(0, m,
-                    "DATABASE ERROR IN LAYER " << layerNumber << " AND STATE "
-                                               << stateNumber
-                                               << ": Number of needed plies is "
-                                                  "not minimal for WON state.");
+                      "DATABASE ERROR IN LAYER "
+                          << layerNumber << " AND STATE " << stateNumber
+                          << ": Number of needed plies is "
+                             "not minimal for WON state.");
                 goto errorInDatabase;
             }
             break;
@@ -358,17 +363,17 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
                 // opponent, lost for the current player or drawn. But
                 // subValueInDatabase[i] == SKV_VALUE_INVALID."); goto
                 // errorInDatabase; }
-                if (subValueInDatabase[i]
-                        != ((hasCurPlayerChanged[i]) ? SKV_VALUE_GAME_WON
-                                                     : SKV_VALUE_GAME_LOST)
-                    && subValueInDatabase[i] != SKV_VALUE_GAME_DRAWN
-                    && subValueInDatabase[i] != SKV_VALUE_INVALID) {
+                if (subValueInDatabase[i] != ((hasCurPlayerChanged[i]) ?
+                                                  SKV_VALUE_GAME_WON :
+                                                  SKV_VALUE_GAME_LOST) &&
+                    subValueInDatabase[i] != SKV_VALUE_GAME_DRAWN &&
+                    subValueInDatabase[i] != SKV_VALUE_INVALID) {
                     PRINT(0, m,
-                        "DATABASE ERROR IN LAYER "
-                            << layerNumber << " AND STATE " << stateNumber
-                            << ": All possible moves must be won for the "
-                               "opponent, lost for the current player or "
-                               "drawn.");
+                          "DATABASE ERROR IN LAYER "
+                              << layerNumber << " AND STATE " << stateNumber
+                              << ": All possible moves must be won for the "
+                                 "opponent, lost for the current player or "
+                                 "drawn.");
                     goto errorInDatabase;
                 }
                 if (subValueInDatabase[i] == SKV_VALUE_GAME_DRAWN)
@@ -378,18 +383,18 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
             // at least one succeeding state must be drawn
             if (j == 0) {
                 PRINT(0, m,
-                    "DATABASE ERROR IN LAYER "
-                        << layerNumber << " AND STATE " << stateNumber
-                        << ": At least one succeeding state must be drawn.");
+                      "DATABASE ERROR IN LAYER "
+                          << layerNumber << " AND STATE " << stateNumber
+                          << ": At least one succeeding state must be drawn.");
                 goto errorInDatabase;
             }
 
             // ply info must also be drawn
             if (numPliesTillCurState != PLYINFO_VALUE_DRAWN) {
                 PRINT(0, m,
-                    "DATABASE ERROR IN LAYER "
-                        << layerNumber << " AND STATE " << stateNumber
-                        << ": Knot value is drawn but ply info is not!");
+                      "DATABASE ERROR IN LAYER "
+                          << layerNumber << " AND STATE " << stateNumber
+                          << ": Knot value is drawn but ply info is not!");
                 goto errorInDatabase;
             }
             break;
@@ -403,19 +408,20 @@ DWORD MiniMax::testLayerThreadProc(void* pParameter, unsigned index)
             }
             if (i != numPossibilities) {
                 PRINT(0, m,
-                    "DATABASE ERROR IN LAYER "
-                        << layerNumber << " AND STATE " << stateNumber
-                        << ": If setSituation() returned true but state value "
-                           "is invalid, then all following states must be "
-                           "invalid.");
+                      "DATABASE ERROR IN LAYER "
+                          << layerNumber << " AND STATE " << stateNumber
+                          << ": If setSituation() returned true but state "
+                             "value "
+                             "is invalid, then all following states must be "
+                             "invalid.");
                 goto errorInDatabase;
             }
             // ply info must also be invalid
             if (numPliesTillCurState != PLYINFO_VALUE_INVALID) {
                 PRINT(0, m,
-                    "DATABASE ERROR IN LAYER "
-                        << layerNumber << " AND STATE " << stateNumber
-                        << ": Knot value is invalid but ply info is not!");
+                      "DATABASE ERROR IN LAYER "
+                          << layerNumber << " AND STATE " << stateNumber
+                          << ": Knot value is invalid but ply info is not!");
                 goto errorInDatabase;
             }
             break;
@@ -470,13 +476,13 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 
     // output
     PRINT(1, this,
-        endl << "*** Test each state in layer: " << layerNumber << " ***");
+          endl << "*** Test each state in layer: " << layerNumber << " ***");
     PRINT(1, this, (getOutputInformation(layerNumber)));
 
     // prepare parameters for multithreading
     numStatesProcessed = 0;
     curCalculationActionId = MM_ACTION_TESTING_LAYER;
-    TestLayersVars* tlVars = new TestLayersVars[threadManager.getNumThreads()];
+    TestLayersVars *tlVars = new TestLayersVars[threadManager.getNumThreads()];
 
     for (curThreadNo = 0; curThreadNo < threadManager.getNumThreads();
          curThreadNo++) {
@@ -490,9 +496,9 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
     }
 
     // process each state in the current layer
-    returnValue = threadManager.executeParallelLoop(testSetSituationThreadProc,
-        (void*)tlVars, sizeof(TestLayersVars), TM_SCHEDULE_STATIC, 0,
-        layerStats[layerNumber].knotsInLayer - 1, 1);
+    returnValue = threadManager.executeParallelLoop(
+        testSetSituationThreadProc, (void *)tlVars, sizeof(TestLayersVars),
+        TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
 
     switch (returnValue) {
     case TM_RETURN_VALUE_OK:
@@ -534,14 +540,14 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 // testSetSituationThreadProc()
 //
 //-----------------------------------------------------------------------------
-DWORD MiniMax::testSetSituationThreadProc(void* pParameter, unsigned int index)
+DWORD MiniMax::testSetSituationThreadProc(void *pParameter, unsigned int index)
 {
     // locals
-    TestLayersVars* tlVars = (TestLayersVars*)pParameter;
-    MiniMax* m = tlVars->pMiniMax;
-    unsigned int* idPossibility;
-    void* pPossibilities;
-    void* pBackup;
+    TestLayersVars *tlVars = (TestLayersVars *)pParameter;
+    MiniMax *m = tlVars->pMiniMax;
+    unsigned int *idPossibility;
+    void *pPossibilities;
+    void *pBackup;
     unsigned int curPoss;
     float floatValue;
     StateAdress curState;
@@ -557,15 +563,15 @@ DWORD MiniMax::testSetSituationThreadProc(void* pParameter, unsigned int index)
     if (tlVars->statesProcessed % OUTPUT_EVERY_N_STATES == 0) {
         m->numStatesProcessed += OUTPUT_EVERY_N_STATES;
         PRINT(0, m,
-            m->numStatesProcessed
-                << " states of "
-                << m->layerStats[curState.layerNumber].knotsInLayer
-                << " tested");
+              m->numStatesProcessed
+                  << " states of "
+                  << m->layerStats[curState.layerNumber].knotsInLayer
+                  << " tested");
     }
 
     // set state
-    if (m->setSituation(
-            tlVars->curThreadNo, curState.layerNumber, curState.stateNumber)) {
+    if (m->setSituation(tlVars->curThreadNo, curState.layerNumber,
+                        curState.stateNumber)) {
         m->getValueOfSituation(tlVars->curThreadNo, floatValue, shortKnotValue);
     } else {
         shortKnotValue = SKV_VALUE_INVALID;
@@ -573,28 +579,29 @@ DWORD MiniMax::testSetSituationThreadProc(void* pParameter, unsigned int index)
 
     // get number of possibilities
     idPossibility = m->getPossibilities(tlVars->curThreadNo,
-        &knot.numPossibilities, &knot.isOpponentLevel, &pPossibilities);
+                                        &knot.numPossibilities,
+                                        &knot.isOpponentLevel, &pPossibilities);
 
     // unable to move
     if (knot.numPossibilities == 0) {
         if (shortKnotValue == SKV_VALUE_GAME_DRAWN) {
             PRINT(0, m,
-                "ERROR: Layer "
-                    << curState.layerNumber << " and state "
-                    << curState.stateNumber
-                    << ". setSituation() returned true, although "
-                       "getPossibilities() yields no possible moves.");
+                  "ERROR: Layer " << curState.layerNumber << " and state "
+                                  << curState.stateNumber
+                                  << ". setSituation() returned true, although "
+                                     "getPossibilities() yields no possible "
+                                     "moves.");
             return m->falseOrStop();
         }
         // moving is possible
     } else {
         if (shortKnotValue == SKV_VALUE_INVALID) {
             PRINT(0, m,
-                "ERROR: Moved from layer "
-                    << curState.layerNumber << " and state "
-                    << curState.stateNumber
-                    << " setSituation() returned false, although "
-                       "getPossibilities() yields some possible moves.");
+                  "ERROR: Moved from layer "
+                      << curState.layerNumber << " and state "
+                      << curState.stateNumber
+                      << " setSituation() returned false, although "
+                         "getPossibilities() yields some possible moves.");
             return m->falseOrStop();
         }
 
@@ -602,33 +609,33 @@ DWORD MiniMax::testSetSituationThreadProc(void* pParameter, unsigned int index)
         for (curPoss = 0; curPoss < knot.numPossibilities; curPoss++) {
             // move
             m->move(tlVars->curThreadNo, idPossibility[curPoss],
-                knot.isOpponentLevel, &pBackup, pPossibilities);
+                    knot.isOpponentLevel, &pBackup, pPossibilities);
 
             // get state number of succeeding state
             unsigned int i;
-            m->getLayerAndStateNumber(
-                tlVars->curThreadNo, i, subState.stateNumber);
+            m->getLayerAndStateNumber(tlVars->curThreadNo, i,
+                                      subState.stateNumber);
             subState.layerNumber = i;
 
             // undo move
             m->undo(tlVars->curThreadNo, idPossibility[curPoss],
-                knot.isOpponentLevel, pBackup, pPossibilities);
+                    knot.isOpponentLevel, pBackup, pPossibilities);
 
             // state reached by move() must not be invalid
             if (!m->setSituation(tlVars->curThreadNo, subState.layerNumber,
-                    subState.stateNumber)) {
+                                 subState.stateNumber)) {
                 PRINT(0, m,
-                    "ERROR: Moved from layer "
-                        << curState.layerNumber << " and state "
-                        << curState.stateNumber
-                        << " to invalid situation layer "
-                        << curState.layerNumber << " and state "
-                        << curState.stateNumber);
+                      "ERROR: Moved from layer "
+                          << curState.layerNumber << " and state "
+                          << curState.stateNumber
+                          << " to invalid situation layer "
+                          << curState.layerNumber << " and state "
+                          << curState.stateNumber);
                 return m->falseOrStop();
             }
             // set back to current state
             m->setSituation(tlVars->curThreadNo, curState.layerNumber,
-                curState.stateNumber);
+                            curState.stateNumber);
         }
     }
 
@@ -652,7 +659,7 @@ bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
     PlyInfoVarType numPliesTillCurState;
     PlyInfoVarType numPliesTillSymState;
     unsigned int stateNumber = 0;
-    unsigned int* symStateNumbers = nullptr;
+    unsigned int *symStateNumbers = nullptr;
     unsigned int numSymmetricStates;
     unsigned int i;
 
@@ -672,9 +679,9 @@ bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
 
     // test if each state has symmetric states with the same value
     PRINT(1, this,
-        endl
-            << "testIfSymmetricStatesHaveSameValue - TEST EACH STATE IN LAYER: "
-            << layerNumber);
+          endl << "testIfSymmetricStatesHaveSameValue - TEST EACH STATE IN "
+                  "LAYER: "
+               << layerNumber);
     PRINT(1, this, (getOutputInformation(layerNumber)));
     skvfHeader.completed = false;
 
@@ -683,49 +690,49 @@ bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
         // output
         if (stateNumber % OUTPUT_EVERY_N_STATES == 0)
             PRINT(1, this,
-                stateNumber << " states of "
-                            << layerStats[layerNumber].knotsInLayer
-                            << " tested");
+                  stateNumber << " states of "
+                              << layerStats[layerNumber].knotsInLayer
+                              << " tested");
 
         // situation already existend in database ?
-        readKnotValueFromDatabase(
-            layerNumber, stateNumber, shortValueInDatabase);
+        readKnotValueFromDatabase(layerNumber, stateNumber,
+                                  shortValueInDatabase);
         readPlyInfoFromDatabase(layerNumber, stateNumber, numPliesTillCurState);
 
         // prepare the situation
         if (!setSituation(threadNo, layerNumber, stateNumber)) {
             // when situation cannot be constructed then state must be marked as
             // invalid in database
-            if (shortValueInDatabase != SKV_VALUE_INVALID
-                || numPliesTillCurState != PLYINFO_VALUE_INVALID)
+            if (shortValueInDatabase != SKV_VALUE_INVALID ||
+                numPliesTillCurState != PLYINFO_VALUE_INVALID)
                 goto errorInDatabase;
             else
                 continue;
         }
 
         // get numbers of symmetric states
-        getSymStateNumWithDoubles(
-            threadNo, &numSymmetricStates, &symStateNumbers);
+        getSymStateNumWithDoubles(threadNo, &numSymmetricStates,
+                                  &symStateNumbers);
 
         // save value for all symmetric states
         for (i = 0; i < numSymmetricStates; i++) {
-            readKnotValueFromDatabase(
-                layerNumber, symStateNumbers[i], shortValueOfSymState);
-            readPlyInfoFromDatabase(
-                layerNumber, symStateNumbers[i], numPliesTillSymState);
+            readKnotValueFromDatabase(layerNumber, symStateNumbers[i],
+                                      shortValueOfSymState);
+            readPlyInfoFromDatabase(layerNumber, symStateNumbers[i],
+                                    numPliesTillSymState);
 
-            if (shortValueOfSymState != shortValueInDatabase
-                || numPliesTillCurState != numPliesTillSymState) {
+            if (shortValueOfSymState != shortValueInDatabase ||
+                numPliesTillCurState != numPliesTillSymState) {
                 PRINT(2, this,
-                    "current tested state " << stateNumber << " has value "
-                                            << (int)shortValueInDatabase);
+                      "current tested state " << stateNumber << " has value "
+                                              << (int)shortValueInDatabase);
                 setSituation(threadNo, layerNumber, stateNumber);
                 printBoard(threadNo, shortValueInDatabase);
 
                 PRINT(1, this, "");
                 PRINT(1, this,
-                    "symmetric state " << symStateNumbers[i] << " has value "
-                                       << (int)shortValueOfSymState);
+                      "symmetric state " << symStateNumbers[i] << " has value "
+                                         << (int)shortValueOfSymState);
                 setSituation(threadNo, layerNumber, symStateNumbers[i]);
                 printBoard(threadNo, shortValueOfSymState);
 
@@ -744,8 +751,8 @@ errorInDatabase:
     // layer is not ok
     if (layerNumber)
         PRINT(0, this,
-            "DATABASE ERROR IN LAYER " << layerNumber << " AND STATE "
-                                       << stateNumber);
+              "DATABASE ERROR IN LAYER " << layerNumber << " AND STATE "
+                                         << stateNumber);
 
     return falseOrStop();
 }

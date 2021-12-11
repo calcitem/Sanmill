@@ -13,15 +13,16 @@
 #include <stdlib.h>
 #include <time.h>
 
-class RandomAI : public MillAI {
+class RandomAI : public MillAI
+{
 public:
     // Constructor / destructor
     RandomAI();
     ~RandomAI();
 
     // Functions
-    void play(
-        fieldStruct* theField, unsigned int* pushFrom, unsigned int* pushTo);
+    void play(fieldStruct *theField, unsigned int *pushFrom,
+              unsigned int *pushTo);
 };
 
 #endif // RANDOM_AI_H_INCLUDED

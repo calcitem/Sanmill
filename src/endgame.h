@@ -28,14 +28,16 @@ using CTSL::HashMap;
 
 static const int SAVE_ENDGAME_EVERY_N_GAMES = 256;
 
-enum class EndGameType : uint32_t {
+enum class EndGameType : uint32_t
+{
     none,
     whiteWin,
     blackWin,
     draw,
 };
 
-struct Endgame {
+struct Endgame
+{
     EndGameType type;
 };
 

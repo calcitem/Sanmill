@@ -20,7 +20,7 @@
 #include "graphicsconst.h"
 #include "types.h"
 
-BoardItem::BoardItem(QGraphicsItem* parent)
+BoardItem::BoardItem(QGraphicsItem *parent)
     : size(BOARD_SIZE)
 {
     Q_UNUSED(parent)
@@ -35,8 +35,8 @@ BoardItem::BoardItem(QGraphicsItem* parent)
         // ring
         int p = (f + 1) * LINE_INTERVAL;
 
-        int pt[][2] = { { 0, -p }, { p, -p }, { p, 0 }, { p, p }, { 0, p },
-            { -p, p }, { -p, 0 }, { -p, -p } };
+        int pt[][2] = {{0, -p}, {p, -p}, {p, 0},  {p, p},
+                       {0, p},  {-p, p}, {-p, 0}, {-p, -p}};
 
         for (int r = 0; r < RANK_NB; r++) {
             position[f * RANK_NB + r].rx() = pt[r][0];
@@ -66,8 +66,8 @@ void BoardItem::setDiagonal(bool arg)
     update(boundingRect());
 }
 
-void BoardItem::paint(
-    QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                      QWidget *widget)
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
@@ -86,16 +86,16 @@ void BoardItem::paint(
     painter->drawRect(-size / 2, -size / 2, size, size);
 #else
     painter->drawPixmap(-size / 2, -size / 2, size, size,
-        QPixmap(":/image/resources/image/board.png"));
+                        QPixmap(":/image/resources/image/board.png"));
 #endif /* QT_MOBILE_APP_UI */
 
     // Solid line brush
 #ifdef QT_MOBILE_APP_UI
     QPen pen(QBrush(QColor(241, 156, 159)), LINE_WEIGHT, Qt::SolidLine,
-        Qt::SquareCap, Qt::BevelJoin);
+             Qt::SquareCap, Qt::BevelJoin);
 #else
     QPen pen(QBrush(QColor(178, 34, 34)), LINE_WEIGHT, Qt::SolidLine,
-        Qt::SquareCap, Qt::BevelJoin);
+             Qt::SquareCap, Qt::BevelJoin);
 #endif
     painter->setPen(pen);
 
@@ -115,15 +115,15 @@ void BoardItem::paint(
     if (hasDiagonalLine) {
         // Draw 4 diagonal lines
         for (int r = 1; r < RANK_NB; r += 2) {
-            painter->drawLine(
-                position[r], position[(FILE_NB - 1) * RANK_NB + r]);
+            painter->drawLine(position[r],
+                              position[(FILE_NB - 1) * RANK_NB + r]);
         }
     }
 
 #ifdef PLAYER_DRAW_SEAT_NUMBER
     // Draw the seat number
     QPen fontPen(QBrush(Qt::white), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap,
-        Qt::BevelJoin);
+                 Qt::BevelJoin);
     painter->setPen(fontPen);
     QFont font;
     font.setPointSize(4);
@@ -162,7 +162,7 @@ QPointF BoardItem::polar2pos(File f, Rank r)
     return position[((int)f - 1) * RANK_NB + (int)r - 1];
 }
 
-bool BoardItem::pos2polar(QPointF pos, File& f, Rank& r)
+bool BoardItem::pos2polar(QPointF pos, File &f, Rank &r)
 {
     // Look for the nearest spot
     for (int sq = 0; sq < EFFECTIVE_SQUARE_NB; sq++) {

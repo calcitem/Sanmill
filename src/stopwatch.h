@@ -26,7 +26,8 @@
 
 namespace stopwatch {
 // An implementation of the 'TrivialClock' concept using the rdtscp instruction.
-struct rdtscp_clock {
+struct rdtscp_clock
+{
     using rep = std::uint64_t;
     using period = std::ratio<1>;
     using duration = std::chrono::duration<rep, period>;
@@ -53,18 +54,18 @@ struct rdtscp_clock {
 };
 
 // A timer using the specified clock.
-template <class Clock = std::chrono::system_clock> struct timer {
+template <class Clock = std::chrono::system_clock>
+struct timer
+{
     using time_point = typename Clock::time_point;
     using duration = typename Clock::duration;
 
     explicit timer(const duration duration) noexcept
         : expiry(Clock::now() + duration)
-    {
-    }
+    { }
     explicit timer(const time_point expiry) noexcept
         : expiry(expiry)
-    {
-    }
+    { }
 
     bool done(time_point now = Clock::now()) const noexcept
     {
@@ -86,8 +87,8 @@ constexpr auto make_timer(typename Clock::duration duration) -> timer<Clock>
 }
 
 // Times how long it takes a function to execute using the specified clock.
-template <class Clock = rdtscp_clock, class Func> auto time(Func&& function) ->
-    typename Clock::duration
+template <class Clock = rdtscp_clock, class Func>
+auto time(Func &&function) -> typename Clock::duration
 {
     const auto start = Clock::now();
     function();
@@ -96,7 +97,7 @@ template <class Clock = rdtscp_clock, class Func> auto time(Func&& function) ->
 
 // Samples the given function N times using the specified clock.
 template <std::size_t N, class Clock = rdtscp_clock, class Func>
-auto sample(Func&& function) -> std::array<typename Clock::duration, N>
+auto sample(Func &&function) -> std::array<typename Clock::duration, N>
 {
     std::array<typename Clock::duration, N> samples;
 

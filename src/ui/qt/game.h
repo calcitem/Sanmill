@@ -51,7 +51,8 @@ using std::endl;
 using std::fixed;
 using std::map;
 
-enum class GameSound {
+enum class GameSound
+{
     none,
     blockMill,
     remove,
@@ -79,11 +80,12 @@ enum class GameSound {
     winAndLossesAreObvious
 };
 
-class Game : public QObject {
+class Game : public QObject
+{
     Q_OBJECT
 
 public:
-    explicit Game(GameScene& scene, QObject* parent = nullptr);
+    explicit Game(GameScene &scene, QObject *parent = nullptr);
     ~Game() override;
 
     //  Main window menu bar details
@@ -101,21 +103,21 @@ public:
 
     int getDurationTime() { return durationTime; }
 
-    QStringListModel* getMoveListModel() { return &moveListModel; }
+    QStringListModel *getMoveListModel() { return &moveListModel; }
 
     void setAiDepthTime(int time1, int time2);
-    void getAiDepthTime(int& time1, int& time2);
+    void getAiDepthTime(int &time1, int &time2);
 
     void humanResign();
 
-    Position* getPosition() noexcept { return &position; }
+    Position *getPosition() noexcept { return &position; }
 
     char color_to_char(Color color);
     std::string char_to_string(char ch);
     void appendGameOverReasonToMoveHistory();
     void setTips();
 
-    inline const std::vector<std::string>* move_hostory() const
+    inline const std::vector<std::string> *move_hostory() const
     {
         return &moveHistory;
     }
@@ -126,52 +128,52 @@ public:
     void updateTime();
 
 #ifdef NET_FIGHT_SUPPORT
-    Server* server;
-    Client* client;
+    Server *server;
+    Client *client;
 
-    Server* getServer() { return server; }
+    Server *getServer() { return server; }
 
-    Client* getClient() { return client; }
+    Client *getClient() { return client; }
 #endif
 
 signals:
 
     // Signal of total disk number change
-    void nGamesPlayedChanged(const QString& score);
+    void nGamesPlayedChanged(const QString &score);
 
     // Player 1 (first hand) signal to change the number of winning sets
-    void score1Changed(const QString& score);
+    void score1Changed(const QString &score);
 
     // Signal for player 2 (backhand) to change the number of winning sets
-    void score2Changed(const QString& score);
+    void score2Changed(const QString &score);
 
     // The signal of the change of draw number
-    void scoreDrawChanged(const QString& score);
+    void scoreDrawChanged(const QString &score);
 
     // Signal of player 1 (first hand) winning rate change
-    void winningRate1Changed(const QString& score);
+    void winningRate1Changed(const QString &score);
 
     // Signal of player 2 (backhand) winning rate change
-    void winningRate2Changed(const QString& score);
+    void winningRate2Changed(const QString &score);
 
     // Signal of change of draw rate
-    void winningRateDrawChanged(const QString& score);
+    void winningRateDrawChanged(const QString &score);
 
     // Player 1 (first hand) time changed signal
-    void time1Changed(const QString& time);
+    void time1Changed(const QString &time);
 
     // Player 2 (backhand) time changed signal
-    void time2Changed(const QString& time);
+    void time2Changed(const QString &time);
 
     // A signal that tells the main window to update the status bar
-    void statusBarChanged(const QString& message);
+    void statusBarChanged(const QString &message);
 
 public slots:
 
     // Set rules
     void setRule(int ruleNo,
-        int stepLimited = std::numeric_limits<uint16_t>::max(),
-        int timeLimited = 0);
+                 int stepLimited = std::numeric_limits<uint16_t>::max(),
+                 int timeLimited = 0);
 
     // The game begins
     void gameStart();
@@ -268,7 +270,7 @@ public slots:
 
     bool isAIsTurn();
 
-    void threadsSetAi(Position* p)
+    void threadsSetAi(Position *p)
     {
         aiThread[WHITE]->setAi(p);
         aiThread[BLACK]->setAi(p);
@@ -351,7 +353,7 @@ public slots:
     bool resign();
 
     // Command line execution of score
-    bool command(const string& cmd, bool update = true);
+    bool command(const string &cmd, bool update = true);
 
     // Historical situation and situation change
     bool phaseChange(int row, bool forceUpdate = false);
@@ -359,7 +361,7 @@ public slots:
     // Update the game display. Only after each step can the situation be
     // refreshed
     bool updateScene();
-    bool updateScene(Position& p);
+    bool updateScene(Position &p);
 
 #ifdef NET_FIGHT_SUPPORT
     // The network configuration window is displayed
@@ -371,13 +373,13 @@ public slots:
 
     void saveScore();
 
-    Test* getTest() { return gameTest; }
+    Test *getTest() { return gameTest; }
 
 protected:
     // bool eventFilter(QObject * watched, QEvent * event);
 
     // Timer
-    void timerEvent(QTimerEvent* event) override;
+    void timerEvent(QTimerEvent *event) override;
 
 private:
     // Data model of object
@@ -385,20 +387,20 @@ private:
     Color sideToMove;
 
     // Testing
-    Test* gameTest;
+    Test *gameTest;
 
 private:
     // 2 AI threads
-    Thread* aiThread[COLOR_NB];
+    Thread *aiThread[COLOR_NB];
 
     // The scene class of game
-    GameScene& scene;
+    GameScene &scene;
 
     // All the pieces
-    vector<PieceItem*> pieceList;
+    vector<PieceItem *> pieceList;
 
     // Current pieces
-    PieceItem* currentPiece {nullptr};
+    PieceItem *currentPiece {nullptr};
 
     // Current browsing score line
     int currentRow {-1};
@@ -411,7 +413,7 @@ private:
 
 public:
     const QString SETTINGS_FILE = "settings.ini";
-    QSettings* settings { nullptr };
+    QSettings *settings {nullptr};
 
     void loadSettings();
 
@@ -460,16 +462,16 @@ private:
     time_t elapsedSeconds[COLOR_NB];
 
     // Is there a drop sound effect
-    inline static bool hasSound { true };
+    inline static bool hasSound {true};
 
     // Do you admit defeat when you lose
-    bool resignIfMostLose_ { false };
+    bool resignIfMostLose_ {false};
 
     // Do you want to exchange first before second
-    bool isAutoChangeFirstMove { false };
+    bool isAutoChangeFirstMove {false};
 
     // Is ai the first
-    bool isAiFirstMove { false };
+    bool isAiFirstMove {false};
 
     // Timer ID
     int timeID {0};
@@ -498,8 +500,14 @@ private:
     std::vector<std::string> moveHistory;
 };
 
-inline time_t Game::start_timeb() const { return startTime; }
+inline time_t Game::start_timeb() const
+{
+    return startTime;
+}
 
-inline void Game::set_start_time(int time) { startTime = time; }
+inline void Game::set_start_time(int time)
+{
+    startTime = time;
+}
 
 #endif // GAME_H_INCLUDED

@@ -32,9 +32,15 @@
 #endif // __ANDROID__
 
 #ifdef _WIN32
-inline void Idle(void) { Sleep(1); }
+inline void Idle(void)
+{
+    Sleep(1);
+}
 #else
-inline void Idle(void) { usleep(1000); }
+inline void Idle(void)
+{
+    usleep(1000);
+}
 #endif // _WIN32
 
 #define LOG_TAG "MillEngine"

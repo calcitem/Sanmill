@@ -23,8 +23,8 @@ using std::string;
 static constexpr int endgameHashSize = 0x1000000; // 16M
 HashMap<Key, Endgame> endgameHashMap(endgameHashSize);
 
-void mergeEndgameFile(
-    const string& file1, const string& file2, const string& mergedFile)
+void mergeEndgameFile(const string &file1, const string &file2,
+                      const string &mergedFile)
 {
     HashMap<Key, Endgame> map1(endgameHashSize);
     HashMap<Key, Endgame> map2(endgameHashSize);
@@ -37,7 +37,7 @@ void mergeEndgameFile(
     map1.dump(mergedFile);
 
     debugPrintf("[endgame] Merge %s to %s and save to %s\n", file2.c_str(),
-        file1.c_str(), mergedFile.c_str());
+                file1.c_str(), mergedFile.c_str());
 }
 
 int mergeEndgameFile_main()
