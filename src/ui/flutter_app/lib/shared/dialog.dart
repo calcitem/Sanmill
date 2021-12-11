@@ -51,8 +51,8 @@ Future<void> showPrivacyDialog(BuildContext context) async {
   final TextStyle linkStyle =
       aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
 
-  final String eulaURL = Constants.eulaURL.urlZH;
-  final String privacyPolicyURL = Constants.privacyPolicyURL.urlZH;
+  final String eulaURL = Constants.eulaURL.urlZh;
+  final String privacyPolicyURL = Constants.privacyPolicyURL.urlZh;
 
   Future<void> _setPrivacyPolicyAccepted({required bool value}) async {
     LocalDatabaseService.preferences = LocalDatabaseService.preferences

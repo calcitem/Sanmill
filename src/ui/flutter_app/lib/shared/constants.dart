@@ -20,17 +20,17 @@ import 'dart:ui';
 
 class URL {
   final String url;
-  final String urlZH;
+  final String urlZh;
 
   const URL({
     required this.url,
-    required this.urlZH,
+    required this.urlZh,
   });
 
-  URL fromSubPath(String path, [String? pathZH]) {
+  URL fromSubPath(String path, [String? pathZh]) {
     return URL(
       url: "$url/$path",
-      urlZH: "$urlZH/${pathZH ?? path}",
+      urlZh: "$urlZh/${pathZh ?? path}",
     );
   }
 }
@@ -53,7 +53,7 @@ class Constants {
 
   static const scmURL = URL(
     url: "https://github.com",
-    urlZH: "https://gitee.com",
+    urlZh: "https://gitee.com",
   );
 
   static final repoURL = scmURL.fromSubPath(fullRepoName);

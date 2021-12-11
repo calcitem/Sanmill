@@ -142,7 +142,7 @@ class AboutPage extends StatelessWidget {
       if (Localizations.localeOf(context).languageCode.startsWith("zh_")) {
         await launch(url.url);
       } else {
-        await launch(url.urlZH);
+        await launch(url.urlZh);
       }
     }
   }

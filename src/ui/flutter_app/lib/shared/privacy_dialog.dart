@@ -34,7 +34,7 @@ class _LinkTextSpan extends TextSpan {
           text: text,
           recognizer: TapGestureRecognizer()
             ..onTap = () {
-              launch(url.urlZH, forceSafariVC: false);
+              launch(url.urlZh, forceSafariVC: false);
             },
         );
 }
