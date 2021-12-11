@@ -25,14 +25,14 @@ class _GameResultAlert extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final EngineType engineType = controller.gameInstance.engineType;
+  final GameMode gameMode = controller.gameInstance.gameMode;
   final PieceColor winner;
   final VoidCallback onRestart;
 
   static const _tag = "[Game Over Alert]";
 
   GameResult get _gameResult {
-    if (engineType == EngineType.aiVsAi) return GameResult.none;
+    if (gameMode == GameMode.aiVsAi) return GameResult.none;
 
     return winner.result;
   }
@@ -56,7 +56,7 @@ class _GameResultAlert extends StatelessWidget {
     final List<Widget> actions;
     if (_gameResult == GameResult.win &&
         !isTopLevel &&
-        engineType == EngineType.humanVsAi) {
+        gameMode == GameMode.humanVsAi) {
       content.writeln();
       content.writeln();
       content.writeln(

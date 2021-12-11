@@ -18,7 +18,7 @@
 
 part of '../../mill.dart';
 
-enum EngineType {
+enum GameMode {
   humanVsAi,
   humanVsHuman,
   aiVsAi,
@@ -34,70 +34,70 @@ enum EngineType {
   none
 }
 
-extension EngineTypeExtension on EngineType {
+extension GameModeExtension on GameMode {
   IconData get leftHeaderIcon {
     switch (this) {
-      case EngineType.humanVsAi:
+      case GameMode.humanVsAi:
         if (LocalDatabaseService.preferences.aiMovesFirst) {
           return FluentIcons.bot_24_filled;
         } else {
           return FluentIcons.person_24_filled;
         }
-      case EngineType.humanVsHuman:
+      case GameMode.humanVsHuman:
         return FluentIcons.person_24_filled;
 
-      case EngineType.aiVsAi:
+      case GameMode.aiVsAi:
         return FluentIcons.bot_24_filled;
-      case EngineType.humanVsCloud:
+      case GameMode.humanVsCloud:
         return FluentIcons.person_24_filled;
-      case EngineType.humanVsLAN:
+      case GameMode.humanVsLAN:
         return FluentIcons.person_24_filled;
-      case EngineType.testViaLAN:
+      case GameMode.testViaLAN:
         return FluentIcons.wifi_1_24_filled;
-      case EngineType.none:
+      case GameMode.none:
         throw Exception("No engine selected");
     }
   }
 
   IconData get rightHeaderIcon {
     switch (this) {
-      case EngineType.humanVsAi:
+      case GameMode.humanVsAi:
         if (LocalDatabaseService.preferences.aiMovesFirst) {
           return FluentIcons.person_24_filled;
         } else {
           return FluentIcons.bot_24_filled;
         }
-      case EngineType.humanVsHuman:
+      case GameMode.humanVsHuman:
         return FluentIcons.person_24_filled;
-      case EngineType.aiVsAi:
+      case GameMode.aiVsAi:
         return FluentIcons.bot_24_filled;
-      case EngineType.humanVsCloud:
+      case GameMode.humanVsCloud:
         return FluentIcons.cloud_24_filled;
-      case EngineType.humanVsLAN:
+      case GameMode.humanVsLAN:
         return FluentIcons.wifi_1_24_filled;
-      case EngineType.testViaLAN:
+      case GameMode.testViaLAN:
         return FluentIcons.wifi_1_24_filled;
-      case EngineType.none:
+      case GameMode.none:
         throw Exception("No engine selected");
     }
   }
 
   Map<PieceColor, bool> get whoIsAI {
     switch (this) {
-      case EngineType.humanVsAi:
-      case EngineType.testViaLAN:
+      case GameMode.humanVsAi:
+      case GameMode.testViaLAN:
         return {
           PieceColor.white: LocalDatabaseService.preferences.aiMovesFirst,
           PieceColor.black: !LocalDatabaseService.preferences.aiMovesFirst,
         };
-      case EngineType.humanVsHuman:
-      case EngineType.humanVsLAN:
-      case EngineType.humanVsCloud:
+      case GameMode.humanVsHuman:
+      case GameMode.humanVsLAN:
+      case GameMode.humanVsCloud:
         return {
           PieceColor.white: false,
           PieceColor.black: false,
         };
-      case EngineType.aiVsAi:
+      case GameMode.aiVsAi:
         return {
           PieceColor.white: true,
           PieceColor.black: true,

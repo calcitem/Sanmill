@@ -21,7 +21,7 @@ class TapHandler {
     required this.onWin,
   });
 
-  final EngineType engineType = controller.gameInstance.engineType;
+  final GameMode gameMode = controller.gameInstance.gameMode;
   static const _tag = "[Tap Handler]";
 
   // TODO: [Leptopoda]
@@ -30,8 +30,7 @@ class TapHandler {
   Future<void> onBoardTap(int sq) async {
     if (!mounted) return logger.v("[tap] Not ready, ignore tapping.");
 
-    if (engineType == EngineType.aiVsAi ||
-        engineType == EngineType.testViaLAN) {
+    if (gameMode == GameMode.aiVsAi || gameMode == GameMode.testViaLAN) {
       return logger.v("$_tag Engine type is no human, ignore tapping.");
     }
 
@@ -71,7 +70,7 @@ class TapHandler {
             if (position.action == Act.remove) {
               showTip(S.of(context).tipMill, snackBar: true);
             } else {
-              if (engineType == EngineType.humanVsAi) {
+              if (gameMode == GameMode.humanVsAi) {
                 if (LocalDatabaseService
                     .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                   showTip(S.of(context).continueToMakeMove);
@@ -165,7 +164,7 @@ class TapHandler {
               if (controller.position.pieceToRemoveCount >= 1) {
                 showTip(S.of(context).tipContinueMill, snackBar: true);
               } else {
-                if (engineType == EngineType.humanVsAi) {
+                if (gameMode == GameMode.humanVsAi) {
                   showTip(S.of(context).tipRemoved);
                 } else {
                   final them = controller.gameInstance.sideToMove.opponent
@@ -251,15 +250,13 @@ class TapHandler {
     }
   }
 
-
-
   Future<void> engineToGo({required bool isMoveNow}) async {
     bool _isMoveNow = isMoveNow;
 
     if (!mounted) return logger.i("[engineToGo] !mounted, skip engineToGo.");
 
     // TODO
-    logger.v("[engineToGo] engine type is $engineType");
+    logger.v("[engineToGo] engine type is $gameMode");
 
     if (_isMoveNow) {
       if (!controller.gameInstance.isAiToMove) {
@@ -280,7 +277,7 @@ class TapHandler {
             LocalDatabaseService.preferences.isAutoRestart) &&
         controller.gameInstance.isAiToMove &&
         mounted) {
-      if (engineType == EngineType.aiVsAi) {
+      if (gameMode == GameMode.aiVsAi) {
         showTip(
           "${controller.position.score[PieceColor.white]} : ${controller.position.score[PieceColor.black]} : ${controller.position.score[PieceColor.draw]}",
         );
