@@ -45,7 +45,7 @@ class _Game {
     return _isAi[sideToMove]!;
   }
 
-  List<Move?> moveHistory = [];
+  List<ExtMove?> moveHistory = [];
 
   int? focusIndex;
   int? blurIndex;
@@ -93,18 +93,18 @@ class _Game {
     blurIndex = null;
   }
 
-  Future<bool> doMove(Move move) async {
+  Future<bool> doMove(ExtMove extMove) async {
     if (controller.position.phase == Phase.ready) {
       start();
     }
 
-    logger.i("$_tag AI do move: $move");
+    logger.i("$_tag AI do move: $extMove");
 
-    if (!(await controller.position._doMove(move.uciMove))) {
+    if (!(await controller.position._doMove(extMove.uciMove))) {
       return false;
     }
 
-    moveHistory.add(move);
+    moveHistory.add(extMove);
 
     sideToMove = controller.position.sideToMove;
 
