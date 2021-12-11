@@ -72,11 +72,11 @@ class _Game {
     return _isSearching[PieceColor.white]! || _isSearching[PieceColor.black]!;
   }
 
-  EngineType _engineType = EngineType.none;
-  EngineType get engineType => _engineType;
+  GameMode _gameMode = GameMode.none;
+  GameMode get gameMode => _gameMode;
 
-  set engineType(EngineType type) {
-    _engineType = type;
+  set gameMode(GameMode type) {
+    _gameMode = type;
 
     logger.i("$_tag Engine type: $type");
 

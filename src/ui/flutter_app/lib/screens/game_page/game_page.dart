@@ -47,9 +47,9 @@ part 'package:sanmill/screens/game_page/result_alert.dart';
 // TODO: [Leptopoda] extract more widgets
 // TODO: [Leptopoda] change layout (landscape mode, padding on small devices)
 class GamePage extends StatefulWidget {
-  final EngineType engineType;
+  final GameMode gameMode;
 
-  const GamePage(this.engineType, {Key? key}) : super(key: key);
+  const GamePage(this.gameMode, {Key? key}) : super(key: key);
 
   @override
   _GamePageState createState() => _GamePageState();
@@ -408,9 +408,9 @@ class _GamePageState extends State<GamePage>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(widget.engineType.leftHeaderIcon),
+          Icon(widget.gameMode.leftHeaderIcon),
           Icon(_iconArrow),
-          Icon(widget.engineType.rightHeaderIcon),
+          Icon(widget.gameMode.rightHeaderIcon),
         ],
       ),
     );
@@ -541,7 +541,7 @@ class _GamePageState extends State<GamePage>
   @override
   void initState() {
     super.initState();
-    controller.gameInstance.engineType = widget.engineType;
+    controller.gameInstance.gameMode = widget.gameMode;
 
     _initAnimation();
   }
