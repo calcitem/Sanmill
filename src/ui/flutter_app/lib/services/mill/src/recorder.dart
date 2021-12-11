@@ -28,8 +28,11 @@ class _GameRecorder {
   List<ExtMove> moves = <ExtMove>[];
   final MillController controller;
 
-  _GameRecorder(this.controller,
-      {this.cur = -1, required this.lastPositionWithRemove});
+  _GameRecorder(
+    this.controller, {
+    this.cur = -1,
+    required this.lastPositionWithRemove,
+  });
 
 // TODO [Leptopoda] make param a List<Move> and change the return type
   String? import(String moveList) =>
