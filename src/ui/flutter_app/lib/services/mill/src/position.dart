@@ -694,12 +694,17 @@ class Position {
     logger.v("[position] $_sideToMove to move.");
   }
 
+  /// Updates square if it hasn't been updated yet.
   int _updateKey(int s) {
     final PieceColor pieceType = _colorOn(s);
 
     return st.key ^= _Zobrist.psq[pieceType.index][s];
   }
 
+  /// If the square has been updated,
+  /// then another update is equivalent to returning to
+  /// the state before the update
+  /// The significance of this function is to improve code readability.
   int _revertKey(int s) => _updateKey(s);
 
   void _updateKeyMisc() {
