@@ -25,18 +25,19 @@ final MillController controller = MillController();
 class MillController {
   static const _tag = "[Controller]";
 
-  final _Game gameInstance;
-  final Position position;
-  final Engine engine;
+  late final _Game gameInstance;
+  late final Position position;
+  late final Engine engine;
   // late _GameRecorder recorder;
 
   bool _initialized = false;
   bool get initialized => _initialized;
 
-  MillController()
-      : gameInstance = _Game(),
-        position = Position(),
-        engine = NativeEngine();
+  MillController() {
+    gameInstance = _Game(this);
+    position = Position(this);
+    engine = NativeEngine(this);
+  }
 
   Future<void> start() async {
     if (_initialized) return;

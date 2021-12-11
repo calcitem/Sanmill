@@ -22,8 +22,9 @@ part of '../mill.dart';
 // TODO: [Leptopoda] change error handling
 class _ImportService {
   static const _tag = "[Importer]";
+  final MillController controller;
 
-  const _ImportService._();
+  const _ImportService(this.controller);
 
   static String? _wmdNotationToMoveString(String wmd) {
     if (wmd.length == 3 && wmd[0] == "x") {
@@ -137,7 +138,7 @@ class _ImportService {
   }
 
 // TODO [Leptopoda] make param a List<Move> and change the return type
-  static String? import(String moveList) {
+  String? import(String moveList) {
     // TODO: [Leptopoda] clean up
     controller.position.recorder.clear();
     logger.v("Clipboard text: $moveList");
@@ -247,11 +248,11 @@ class _ImportService {
     }
   }
 
-  static String? _importDalmax(String moveList) {
+  String? _importDalmax(String moveList) {
     return import(moveList.substring(moveList.indexOf("1. ")));
   }
 
-  static String? _importPlayOk(String moveList) {
+  String? _importPlayOk(String moveList) {
     final List<Move> newHistory = [];
 
     final List<String> list = moveList
@@ -305,7 +306,7 @@ class _ImportService {
     return null;
   }
 
-  static String? _importGoldToken(String moveList) {
+  String? _importGoldToken(String moveList) {
     int start = moveList.indexOf("1\t");
 
     if (start == -1) {
