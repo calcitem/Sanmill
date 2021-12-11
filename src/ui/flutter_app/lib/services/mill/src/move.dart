@@ -34,7 +34,7 @@ class ExtMove {
   int _toRank = 0;
 
   // 'move' is the UCI engine's move-string
-  final String uciMove;
+  final String move;
 
   // "notation" is Standard Notation
   late final String notation;
@@ -42,36 +42,36 @@ class ExtMove {
   late final _MoveType type;
 
   // TODO: [Leptopoda] attributes should probably be made getters
-  ExtMove(this.uciMove) {
+  ExtMove(this.move) {
     _checkLegal();
 
-    if (uciMove[0] == "-" && uciMove.length == "-(1,2)".length) {
+    if (move[0] == "-" && move.length == "-(1,2)".length) {
       // TODO: [Leptopdoa] let [_MoveType] parse the move
       type = _MoveType.remove;
       from = _fromFile = _fromRank = _invalidMove;
-      _toFile = int.parse(uciMove[2]);
-      _toRank = int.parse(uciMove[4]);
+      _toFile = int.parse(move[2]);
+      _toRank = int.parse(move[4]);
       to = makeSquare(_toFile, _toRank);
       notation = "x${_squareToWmdNotation[to]}";
       //captured = PieceColor.none;
-    } else if (uciMove.length == "(1,2)->(3,4)".length) {
+    } else if (move.length == "(1,2)->(3,4)".length) {
       type = _MoveType.move;
-      _fromFile = int.parse(uciMove[1]);
-      _fromRank = int.parse(uciMove[3]);
+      _fromFile = int.parse(move[1]);
+      _fromRank = int.parse(move[3]);
       from = makeSquare(_fromFile, _fromRank);
-      _toFile = int.parse(uciMove[8]);
-      _toRank = int.parse(uciMove[10]);
+      _toFile = int.parse(move[8]);
+      _toRank = int.parse(move[10]);
       to = makeSquare(_toFile, _toRank);
       notation = "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}";
-    } else if (uciMove.length == "(1,2)".length) {
+    } else if (move.length == "(1,2)".length) {
       type = _MoveType.place;
       from = _fromFile = _fromRank = _invalidMove;
-      _toFile = int.parse(uciMove[1]);
-      _toRank = int.parse(uciMove[3]);
+      _toFile = int.parse(move[1]);
+      _toRank = int.parse(move[3]);
       to = makeSquare(_toFile, _toRank);
       // TODO: [Leptopoda] remove stringy thing
       notation = "${_squareToWmdNotation[to]}";
-    } else if (uciMove == "draw") {
+    } else if (move == "draw") {
       assert(false, "not yet implemented"); // TODO
       logger.v("[TODO] Computer request draw");
     } else {
@@ -82,56 +82,55 @@ class ExtMove {
   }
 
   void _checkLegal() {
-    if (uciMove == "draw") {
+    if (move == "draw") {
       // TODO
     }
 
-    if (uciMove.length > "(3,1)->(2,1)".length) {
+    if (move.length > "(3,1)->(2,1)".length) {
       throw FormatException(
         "$_tag Invalid Move: move representation is to long",
-        uciMove,
+        move,
       );
     }
 
     const String range = "0123456789(,)->";
 
-    if (!(uciMove[0] == "(" || uciMove[0] == "-")) {
+    if (!(move[0] == "(" || move[0] == "-")) {
       throw FormatException(
-        "$_tag Invalid Move: invalid first char. Expected '(' or '-' but got a ${uciMove[0]}",
-        uciMove,
+        "$_tag Invalid Move: invalid first char. Expected '(' or '-' but got a ${move[0]}",
+        move,
         0,
       );
     }
 
-    if (uciMove.characters.last != ")") {
+    if (move.characters.last != ")") {
       throw FormatException(
-        "$_tag Invalid Move: invalid last char. Expected a ')' but got a ${uciMove.characters.last}",
-        uciMove,
-        uciMove.length - 1,
+        "$_tag Invalid Move: invalid last char. Expected a ')' but got a ${move.characters.last}",
+        move,
+        move.length - 1,
       );
     }
 
-    for (int i = 0; i < uciMove.length; i++) {
-      if (!range.contains(uciMove[i])) {
+    for (int i = 0; i < move.length; i++) {
+      if (!range.contains(move[i])) {
         throw FormatException(
-          "$_tag Invalid Move: invalid char at pos $i. Expected one of '$range' but got ${uciMove[i]}",
-          uciMove,
+          "$_tag Invalid Move: invalid char at pos $i. Expected one of '$range' but got ${move[i]}",
+          move,
           i,
         );
       }
     }
 
-    if (uciMove.length == "(3,1)->(2,1)".length) {
-      if (uciMove.substring(0, 4) == uciMove.substring(7, 11)) {
+    if (move.length == "(3,1)->(2,1)".length) {
+      if (move.substring(0, 4) == move.substring(7, 11)) {
         throw "Error: $_tag Invalid Move: move to the same place";
       }
     }
   }
 
   @override
-  int get hashCode => uciMove.hashCode;
+  int get hashCode => move.hashCode;
 
   @override
-  bool operator ==(Object other) =>
-      other is ExtMove && other.uciMove == uciMove;
+  bool operator ==(Object other) => other is ExtMove && other.move == move;
 }

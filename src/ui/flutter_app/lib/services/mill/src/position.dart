@@ -231,7 +231,7 @@ class Position {
     ++gamePly;
     ++st.pliesFromNull;
 
-    if (record != null && record!.uciMove.length > "-(1,2)".length) {
+    if (record != null && record!.move.length > "-(1,2)".length) {
       if (st.key != posKeyHistory.lastF) {
         posKeyHistory.add(st.key);
         if (LocalDatabaseService.rules.threefoldRepetitionRule &&
@@ -959,7 +959,7 @@ class Position {
     int posAfterLastRemove = 0;
 
     for (i = recorder.moveCount - 1; i >= 0; i--) {
-      if (recorder.moves[i].uciMove[0] == "-") break;
+      if (recorder.moves[i].move[0] == "-") break;
     }
 
     if (i >= 0) {
@@ -967,7 +967,7 @@ class Position {
     }
 
     for (int i = posAfterLastRemove; i < recorder.moveCount; i++) {
-      buffer.write(" ${recorder.moves[i].uciMove}");
+      buffer.write(" ${recorder.moves[i].move}");
     }
 
     final String moves = buffer.toString();
