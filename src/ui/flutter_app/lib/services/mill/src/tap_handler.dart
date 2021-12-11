@@ -109,7 +109,7 @@ class TapHandler {
             break;
           }
           switch (position.selectPiece(sq)) {
-            case SelectionResponse.r0:
+            case SelectionResponse.ok:
               await Audios.playTone(Sound.select);
               controller.gameInstance.select(squareToIndex[sq]!);
               ret = true;
@@ -128,24 +128,24 @@ class TapHandler {
               }
               break;
             // TODO: [Leptopoda] deduplicate
-            case SelectionResponse.r2:
+            case SelectionResponse.illegalPhase:
               await Audios.playTone(Sound.illegal);
               logger.v("[tap] selectPiece: skip [$sq]");
               if (position.phase != Phase.gameOver) {
                 showTip(S.of(context).tipCannotMove, snackBar: true);
               }
               break;
-            case SelectionResponse.r3:
+            case SelectionResponse.canOnlyMoveToAdjacentEmptyPoints:
               await Audios.playTone(Sound.illegal);
               logger.v("[tap] selectPiece: skip [$sq]");
               showTip(S.of(context).tipCanMoveOnePoint, snackBar: true);
               break;
-            case SelectionResponse.r4:
+            case SelectionResponse.pleaseSelectOurPieceToMove:
               await Audios.playTone(Sound.illegal);
               logger.v("[tap] selectPiece: skip [$sq]");
               showTip(S.of(context).tipSelectPieceToMove, snackBar: true);
               break;
-            case SelectionResponse.r1:
+            case SelectionResponse.illegalAction:
               await Audios.playTone(Sound.illegal);
               logger.v("[tap] selectPiece: skip [$sq]");
               showTip(S.of(context).tipSelectWrong, snackBar: true);
@@ -155,7 +155,7 @@ class TapHandler {
 
         case Act.remove:
           switch (await position.removePiece(sq)) {
-            case RemoveResponse.r0:
+            case RemoveResponse.ok:
               animationController.reset();
               animationController.animateTo(1.0);
 
@@ -173,14 +173,14 @@ class TapHandler {
                 }
               }
               break;
-            case RemoveResponse.r2:
+            case RemoveResponse.cannotRemoveOurPiece:
               await Audios.playTone(Sound.illegal);
               logger.i(
                 "[tap] removePiece: Cannot Remove our pieces, skip [$sq]",
               );
               showTip(S.of(context).tipSelectOpponentsPiece, snackBar: true);
               break;
-            case RemoveResponse.r3:
+            case RemoveResponse.cannotRemovePieceFromMill:
               await Audios.playTone(Sound.illegal);
               logger.i(
                 "[tap] removePiece: Cannot remove piece from Mill, skip [$sq]",
@@ -190,7 +190,9 @@ class TapHandler {
                 snackBar: true,
               );
               break;
-            case RemoveResponse.r1:
+            case RemoveResponse.illegalPhase:
+            case RemoveResponse.illegalAction:
+            case RemoveResponse.noPieceToRemove:
               await Audios.playTone(Sound.illegal);
               logger.v("[tap] removePiece: skip [$sq]");
               if (position.phase != Phase.gameOver) {
