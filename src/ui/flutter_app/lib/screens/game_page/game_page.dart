@@ -24,10 +24,10 @@ import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/preferences.dart';
 import 'package:sanmill/screens/game_settings/game_settings_page.dart';
-import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/mill/mill.dart';
+import 'package:sanmill/services/mill/src/tap_handler.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
@@ -58,6 +58,8 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage>
     with SingleTickerProviderStateMixin {
   static const String _tag = "[game_page]";
+
+  late final TapHandler extracted;
 
   double screenPaddingH = AppTheme.boardScreenPaddingH;
   late AnimationController _animationController;
@@ -90,9 +92,7 @@ class _GamePageState extends State<GamePage>
     setState(() => _tip = tip);
   }
 
-  void _showTips() {
-    if (!mounted) return;
-
+  void _showResult() {
     final winner = controller.position.winner;
     final message = winner.getWinString(context);
     if (message != null) {
@@ -109,324 +109,10 @@ class _GamePageState extends State<GamePage>
 
           if (controller.gameInstance.isAiToMove) {
             logger.i("$_tag New game, AI to move.");
-            _engineToGo(isMoveNow: false);
+            extracted.engineToGo(isMoveNow: false);
           }
         },
       );
-    }
-  }
-
-  Future<void> _onBoardTap(int sq) async {
-    if (!mounted) return logger.v("[tap] Not ready, ignore tapping.");
-
-    if (widget.engineType == EngineType.aiVsAi ||
-        widget.engineType == EngineType.testViaLAN) {
-      return logger.v("$_tag Engine type is no human, ignore tapping.");
-    }
-
-    final position = controller.position;
-
-    // If nobody has placed, start to go.
-    if (position.phase == Phase.placing &&
-        position.pieceOnBoardCount[PieceColor.white] == 0 &&
-        position.pieceOnBoardCount[PieceColor.black] == 0) {
-      controller.gameInstance.newGame();
-
-      if (controller.gameInstance.isAiToMove) {
-        if (controller.gameInstance.aiIsSearching) {
-          return logger.i("$_tag AI is thinking, skip tapping.");
-        } else {
-          logger.i("[tap] AI is not thinking. AI is to move.");
-          return _engineToGo(isMoveNow: false);
-        }
-      }
-    }
-
-    if (controller.gameInstance.isAiToMove ||
-        controller.gameInstance.aiIsSearching) {
-      return logger.i("[tap] AI's turn, skip tapping.");
-    }
-
-    if (position.phase == Phase.ready) controller.gameInstance.start();
-
-    // Human to go
-    bool ret = false;
-    try {
-      switch (position.action) {
-        case Act.place:
-          if (await position.putPiece(sq)) {
-            _animationController.reset();
-            _animationController.animateTo(1.0);
-            if (position.action == Act.remove) {
-              _showTip(S.of(context).tipMill, snackBar: true);
-            } else {
-              if (widget.engineType == EngineType.humanVsAi) {
-                if (LocalDatabaseService
-                    .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
-                  _showTip(S.of(context).continueToMakeMove);
-                } else {
-                  _showTip(S.of(context).tipPlaced);
-                }
-              } else {
-                if (LocalDatabaseService
-                    .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
-                  // TODO: HumanVsHuman - Change tip
-                  _showTip(S.of(context).tipPlaced);
-                } else {
-                  final side = controller.gameInstance.sideToMove.opponent
-                      .playerName(context);
-                  _showTip(
-                    S.of(context).tipToMove(side),
-                  );
-                }
-              }
-            }
-            ret = true;
-            logger.v("[tap] putPiece: [$sq]");
-            break;
-          } else {
-            logger.v("[tap] putPiece: skip [$sq]");
-            _showTip(S.of(context).tipBanPlace);
-          }
-
-          // If cannot move, retry select, do not break
-          //[[fallthrough]];
-          continue select;
-        select:
-        case Act.select:
-          if (position.phase == Phase.placing) {
-            _showTip(S.of(context).tipCannotPlace, snackBar: true);
-            break;
-          }
-          switch (position.selectPiece(sq)) {
-            case SelectionResponse.r0:
-              await Audios.playTone(Sound.select);
-              controller.gameInstance.select(squareToIndex[sq]!);
-              ret = true;
-              logger.v("[tap] selectPiece: [$sq]");
-
-              final us = controller.gameInstance.sideToMove;
-              if (position.phase == Phase.moving &&
-                  LocalDatabaseService.rules.mayFly &&
-                  (controller.position.pieceOnBoardCount[us] ==
-                          LocalDatabaseService.rules.flyPieceCount ||
-                      controller.position.pieceOnBoardCount[us] == 3)) {
-                logger.v("[tap] May fly.");
-                _showTip(S.of(context).tipCanMoveToAnyPoint, snackBar: true);
-              } else {
-                _showTip(S.of(context).tipPlace, snackBar: true);
-              }
-              break;
-            // TODO: [Leptopoda] deduplicate
-            case SelectionResponse.r2:
-              await Audios.playTone(Sound.illegal);
-              logger.v("[tap] selectPiece: skip [$sq]");
-              if (position.phase != Phase.gameOver) {
-                _showTip(S.of(context).tipCannotMove, snackBar: true);
-              }
-              break;
-            case SelectionResponse.r3:
-              await Audios.playTone(Sound.illegal);
-              logger.v("[tap] selectPiece: skip [$sq]");
-              _showTip(S.of(context).tipCanMoveOnePoint, snackBar: true);
-              break;
-            case SelectionResponse.r4:
-              await Audios.playTone(Sound.illegal);
-              logger.v("[tap] selectPiece: skip [$sq]");
-              _showTip(S.of(context).tipSelectPieceToMove, snackBar: true);
-              break;
-            case SelectionResponse.r1:
-              await Audios.playTone(Sound.illegal);
-              logger.v("[tap] selectPiece: skip [$sq]");
-              _showTip(S.of(context).tipSelectWrong, snackBar: true);
-              break;
-          }
-          break;
-
-        case Act.remove:
-          switch (await position.removePiece(sq)) {
-            case RemoveResponse.r0:
-              _animationController.reset();
-              _animationController.animateTo(1.0);
-
-              ret = true;
-              logger.v("[tap] removePiece: [$sq]");
-              if (controller.position.pieceToRemoveCount >= 1) {
-                _showTip(S.of(context).tipContinueMill, snackBar: true);
-              } else {
-                if (widget.engineType == EngineType.humanVsAi) {
-                  _showTip(S.of(context).tipRemoved);
-                } else {
-                  final them = controller.gameInstance.sideToMove.opponent
-                      .playerName(context);
-                  _showTip(S.of(context).tipToMove(them));
-                }
-              }
-              break;
-            case RemoveResponse.r2:
-              await Audios.playTone(Sound.illegal);
-              logger.i(
-                "[tap] removePiece: Cannot Remove our pieces, skip [$sq]",
-              );
-              _showTip(S.of(context).tipSelectOpponentsPiece, snackBar: true);
-              break;
-            case RemoveResponse.r3:
-              await Audios.playTone(Sound.illegal);
-              logger.i(
-                "[tap] removePiece: Cannot remove piece from Mill, skip [$sq]",
-              );
-              _showTip(
-                S.of(context).tipCannotRemovePieceFromMill,
-                snackBar: true,
-              );
-              break;
-            case RemoveResponse.r1:
-              await Audios.playTone(Sound.illegal);
-              logger.v("[tap] removePiece: skip [$sq]");
-              if (position.phase != Phase.gameOver) {
-                _showTip(S.of(context).tipBanRemove, snackBar: true);
-              }
-              break;
-          }
-          break;
-        case Act.none:
-      }
-
-      if (ret) {
-        controller.gameInstance.sideToMove = position.sideToMove;
-        controller.gameInstance.moveHistory.add(position.record);
-
-        // TODO: Need Others?
-        // Increment ply counters. In particular,
-        // rule50 will be reset to zero later on
-        // in case of a remove.
-        ++position.gamePly;
-        ++position.st.rule50;
-        ++position.st.pliesFromNull;
-
-        if (position.record != null &&
-            position.record!.uciMove.length > "-(1,2)".length) {
-          if (position.posKeyHistory.isEmpty ||
-              position.posKeyHistory.last != position.st.key) {
-            position.posKeyHistory.add(position.st.key);
-            if (LocalDatabaseService.rules.threefoldRepetitionRule &&
-                position.hasGameCycle) {
-              position.setGameOver(
-                PieceColor.draw,
-                GameOverReason.drawThreefoldRepetition,
-              );
-            }
-          }
-        } else {
-          position.posKeyHistory.clear();
-        }
-
-        //position.move = m;
-        final Move m = position.record!;
-        controller.position.recorder.prune();
-        controller.position.recorder.moveIn(m, position);
-
-        setState(() {});
-
-        if (position.winner == PieceColor.nobody) {
-          _engineToGo(isMoveNow: false);
-        } else {
-          _showTips();
-        }
-      }
-
-      controller.gameInstance.sideToMove = position.sideToMove;
-
-      setState(() {});
-    } catch (e) {
-      // TODO: [Leptopoda] improve error handling
-      rethrow;
-    }
-  }
-
-  Future<void> _engineToGo({required bool isMoveNow}) async {
-    bool _isMoveNow = isMoveNow;
-
-    if (!mounted) return logger.i("[engineToGo] !mounted, skip engineToGo.");
-
-    // TODO
-    logger.v("[engineToGo] engine type is ${widget.engineType}");
-
-    if (_isMoveNow) {
-      if (!controller.gameInstance.isAiToMove) {
-        logger.i("[engineToGo] Human to Move. Cannot get search result now.");
-        return ScaffoldMessenger.of(context)
-            .showSnackBarClear(S.of(context).notAIsTurn);
-      }
-      if (!controller.position.recorder.isClean) {
-        logger.i(
-          "[engineToGo] History is not clean. Cannot get search result now.",
-        );
-        return ScaffoldMessenger.of(context)
-            .showSnackBarClear(S.of(context).aiIsNotThinking);
-      }
-    }
-
-    while ((controller.position.winner == PieceColor.nobody ||
-            LocalDatabaseService.preferences.isAutoRestart) &&
-        controller.gameInstance.isAiToMove &&
-        mounted) {
-      if (widget.engineType == EngineType.aiVsAi) {
-        _showTip(
-          "${controller.position.score[PieceColor.white]} : ${controller.position.score[PieceColor.black]} : ${controller.position.score[PieceColor.draw]}",
-        );
-      } else {
-        if (mounted) {
-          _showTip(S.of(context).thinking);
-
-          final String? n = controller.position.recorder.lastMove?.notation;
-
-          if (LocalDatabaseService.preferences.screenReaderSupport &&
-              controller.position.action != Act.remove &&
-              n != null) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(CustomSnackBar("${S.of(context).human}: $n"));
-          }
-        }
-      }
-
-      final EngineResponse response;
-      if (!_isMoveNow) {
-        logger.v("[engineToGo] Searching...");
-        response = await controller.engine.search(controller.position);
-      } else {
-        logger.v("[engineToGo] Get search result now...");
-        response = await controller.engine.search(null);
-        _isMoveNow = false;
-      }
-
-      logger.i("[engineToGo] Engine response type: ${response.type}");
-
-      switch (response.type) {
-        case EngineResponseType.move:
-          final Move move = response.value!;
-
-          await controller.gameInstance.doMove(move);
-          _animationController.reset();
-          _animationController.animateTo(1.0);
-
-          _showTips();
-          if (LocalDatabaseService.preferences.screenReaderSupport) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              CustomSnackBar("${S.of(context).ai}: ${move.notation}"),
-            );
-          }
-          break;
-        case EngineResponseType.timeout:
-          return _showTip(S.of(context).timeout, snackBar: true);
-        case EngineResponseType.nobestmove:
-          _showTip(S.of(context).error(response.type));
-      }
-
-      if (LocalDatabaseService.preferences.isAutoRestart &&
-          controller.position.winner != PieceColor.nobody) {
-        controller.gameInstance.newGame();
-      }
     }
   }
 
@@ -445,7 +131,7 @@ class _GamePageState extends State<GamePage>
 
     if (controller.gameInstance.isAiToMove) {
       logger.v("$_tag New game, AI to move.");
-      _engineToGo(isMoveNow: false);
+      extracted.engineToGo(isMoveNow: false);
     }
   }
 
@@ -690,7 +376,7 @@ class _GamePageState extends State<GamePage>
 
   Future<void> _moveNow() async {
     Navigator.pop(context);
-    await _engineToGo(isMoveNow: true);
+    await extracted.engineToGo(isMoveNow: true);
   }
 
   void _showInfo() => showDialog(
@@ -772,7 +458,7 @@ class _GamePageState extends State<GamePage>
       margin: const EdgeInsets.symmetric(vertical: AppTheme.boardMargin),
       child: _Board(
         width: boardWidth,
-        onBoardTap: _onBoardTap,
+        onBoardTap: extracted.onBoardTap,
         animation: _animation,
       ),
     );
@@ -863,6 +549,13 @@ class _GamePageState extends State<GamePage>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    extracted = TapHandler(
+      animationController: _animationController,
+      context: context,
+      showTip: _showTip,
+      onWin: _showResult,
+    );
 
     screenPaddingH = _screenPaddingH;
     _tip = S.of(context).welcome;

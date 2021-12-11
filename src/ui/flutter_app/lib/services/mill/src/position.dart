@@ -28,7 +28,9 @@ class _StateInfo {
 }
 
 class Position {
-  Position() {
+  final MillController controller;
+
+  Position(this.controller) {
     _init();
   }
 
@@ -107,7 +109,7 @@ class Position {
     // TODO
     // TODO: [Leptopoda] make the recorder get the fen itself as it is public so we don't need to pas it arround...
     // seems like this is causing the stack overflow
-    recorder = _GameRecorder(lastPositionWithRemove: _fen);
+    recorder = _GameRecorder(controller, lastPositionWithRemove: _fen);
   }
 
   /// Returns a FEN representation of the position.

@@ -19,9 +19,10 @@
 part of '../mill.dart';
 
 class _Game {
+  final MillController controller;
   static const String _tag = "[game]";
 
-  _Game() {
+  _Game(this.controller) {
     focusIndex = blurIndex = null;
   }
 
