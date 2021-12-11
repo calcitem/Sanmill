@@ -101,7 +101,7 @@ class _GameRecorder {
         }
         k++;
       } else {
-        moveHistory.write("${i < 9 ? " " : ""}${i + 1}. ${moves[i].uciMove}　");
+        moveHistory.write("${i < 9 ? " " : ""}${i + 1}. ${moves[i].move}　");
       }
 
       if (LocalDatabaseService.display.standardNotationEnabled) {

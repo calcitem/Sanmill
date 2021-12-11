@@ -215,7 +215,7 @@ class TapHandler {
         ++position.st.pliesFromNull;
 
         if (position.record != null &&
-            position.record!.uciMove.length > "-(1,2)".length) {
+            position.record!.move.length > "-(1,2)".length) {
           if (position.posKeyHistory.isEmpty ||
               position.posKeyHistory.last != position.st.key) {
             position.posKeyHistory.add(position.st.key);
