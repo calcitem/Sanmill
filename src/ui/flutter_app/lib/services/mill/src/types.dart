@@ -284,6 +284,7 @@ extension HistoryResponseExtension on _HistoryResponse {
   }
 }
 
+// TODO: [calcitem] Change them to better names.
 enum SelectionResponse { r0, r1, r2, r3, r4 }
 enum RemoveResponse { r0, r1, r2, r3 }
 

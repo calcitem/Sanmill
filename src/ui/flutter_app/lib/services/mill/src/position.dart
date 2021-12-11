@@ -107,7 +107,7 @@ class Position {
     _setPosition(); // TODO
 
     // TODO
-    // TODO: [Leptopoda] make the recorder get the fen itself as it is public so we don't need to pas it arround...
+    // TODO: [Leptopoda] make the recorder get the fen itself as it is public so we don't need to pas it around...
     // seems like this is causing the stack overflow
     recorder = _GameRecorder(controller, lastPositionWithRemove: _fen);
   }
@@ -623,7 +623,8 @@ class Position {
   }
 
   // TODO: [Leptopoda] this method seems to be more than  a getter
-  //we should probably return it to not be a getter and rename it to avoid confusion
+  // we should probably return it to not be a getter and rename it to avoid confusion
+  // The original name was: checkIfGameIsOver()
   bool get _gameOver {
     if (phase == Phase.ready || phase == Phase.gameOver) {
       return true;
