@@ -54,7 +54,8 @@ private:
 
     // Variables
     unsigned int threadCount; // number of threads
-    HANDLE *hThread; // array of size 'threadCount' containing the thread handles
+    HANDLE *hThread; // array of size 'threadCount' containing the thread
+                     // handles
     DWORD *threadId; // array of size 'threadCount' containing the thread ids
     bool termineAllThreads;
     bool executionPaused;    // switch for the
@@ -62,8 +63,8 @@ private:
 
     // barier stuff
     HANDLE hEventBarrierPassedByEveryBody;
-    HANDLE *hBarrier; // array of size 'threadCount' containing the event handles
-                      // for the barrier
+    HANDLE *hBarrier; // array of size 'threadCount' containing the event
+                      // handles for the barrier
     unsigned int threadPassedBarrierCount;
     CRITICAL_SECTION csBarrier;
 
@@ -95,8 +96,8 @@ public:
             this->threadCount = threadCount;
             this->item = new varType[threadCount];
 
-            for (unsigned int threadCounter = 0;
-                 threadCounter < threadCount; threadCounter++) {
+            for (unsigned int threadCounter = 0; threadCounter < threadCount;
+                 threadCounter++) {
                 item[threadCounter].curThreadNo = threadCounter;
                 item[threadCounter].initializeElement(master);
                 item[threadCounter].curThreadNo =
@@ -107,8 +108,8 @@ public:
 
         ~ThreadVarsArray()
         {
-            for (unsigned int threadCounter = 0;
-                 threadCounter < threadCount; threadCounter++) {
+            for (unsigned int threadCounter = 0; threadCounter < threadCount;
+                 threadCounter++) {
                 item[threadCounter].destroyElement();
             }
             delete[] item;
@@ -120,8 +121,8 @@ public:
 
         void reduce()
         {
-            for (unsigned int threadCounter = 0;
-                 threadCounter < threadCount; threadCounter++) {
+            for (unsigned int threadCounter = 0; threadCounter < threadCount;
+                 threadCounter++) {
                 item[threadCounter].reduce();
             }
         };

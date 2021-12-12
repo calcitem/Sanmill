@@ -92,8 +92,8 @@ void MiniMax::unloadAllLayers()
 // saveBytesToFile()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::saveBytesToFile(HANDLE hFile, int64_t offset,
-                              unsigned int nBytes, void *pBytes)
+void MiniMax::saveBytesToFile(HANDLE hFile, int64_t offset, unsigned int nBytes,
+                              void *pBytes)
 {
     DWORD dwBytesWritten;
     LARGE_INTEGER liDistanceToMove;
@@ -187,8 +187,8 @@ void MiniMax::saveHeader(SkvFileHeader *dbH, LayerStats *lStats)
     SetFilePointer(hFileShortKnotValues, 0, nullptr, FILE_BEGIN);
     WriteFile(hFileShortKnotValues, dbH, sizeof(SkvFileHeader), &dwBytesWritten,
               nullptr);
-    WriteFile(hFileShortKnotValues, lStats, sizeof(LayerStats) * dbH->LayerCount,
-              &dwBytesWritten, nullptr);
+    WriteFile(hFileShortKnotValues, lStats,
+              sizeof(LayerStats) * dbH->LayerCount, &dwBytesWritten, nullptr);
 }
 
 //-----------------------------------------------------------------------------
@@ -209,8 +209,7 @@ void MiniMax::saveHeader(PlyInfoFileHeader *piH, PlyInfo *pInfo)
 // openDatabase()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::openDatabase(const char *directory,
-                           unsigned int branchCountMax)
+bool MiniMax::openDatabase(const char *directory, unsigned int branchCountMax)
 {
     if (strlen(directory) && !PathFileExistsA(directory)) {
         PRINT(0, this, "ERROR: Database path " << directory << " not valid!");
@@ -225,8 +224,7 @@ bool MiniMax::openDatabase(const char *directory,
 // openSkvFile()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::openSkvFile(const char *directory,
-                          unsigned int branchCountMax)
+void MiniMax::openSkvFile(const char *directory, unsigned int branchCountMax)
 {
     // locals
     stringstream ssDatabaseFile;
@@ -440,8 +438,7 @@ void MiniMax::saveLayerToFile(unsigned int layerNumber)
 // measureIops()
 //
 //-----------------------------------------------------------------------------
-inline void MiniMax::measureIops(int64_t &nOperations,
-                                 LARGE_INTEGER &interval,
+inline void MiniMax::measureIops(int64_t &nOperations, LARGE_INTEGER &interval,
                                  LARGE_INTEGER &curTimeBefore, char text[])
 {
     // locals
@@ -463,7 +460,7 @@ inline void MiniMax::measureIops(int64_t &nOperations,
                   text << "operations per second for last interval: "
                        << (int)(nOperations / totalTimeGone));
             interval.QuadPart = 0; // ... not thread-safe !!!
-            nOperations = 0;     // ... not thread-safe !!!
+            nOperations = 0;       // ... not thread-safe !!!
         }
         // the whole time passed since the beginning of the interval is
         // considered
@@ -476,7 +473,7 @@ inline void MiniMax::measureIops(int64_t &nOperations,
               text << "operations per second for last interval: "
                    << nOperations / totalTimeGone);
         interval.QuadPart = curTimeAfter.QuadPart; // ... not thread-safe !!!
-        nOperations = 0;                         // ... not thread-safe !!!
+        nOperations = 0;                           // ... not thread-safe !!!
     }
 }
 
@@ -753,8 +750,8 @@ void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber,
     long *pShortKnotValue = ((long *)myLss->shortKnotValueByte) +
                             stateNumber / ((sizeof(long) * 8) / 2);
     long nBitsToShift = 2 * (stateNumber %
-                               ((sizeof(long) * 8) / 2)); // little-endian
-                                                          // byte-order
+                             ((sizeof(long) * 8) / 2)); // little-endian
+                                                        // byte-order
     long mask = 0x00000003 << nBitsToShift;
     long curShortKnotValueLong, newShortKnotValueLong;
 

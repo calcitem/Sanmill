@@ -103,11 +103,10 @@ public:
     void setUpSetWarningAndMill(unsigned int piece, unsigned int firstNeighbour,
                                 unsigned int secondNeighbour);
     void calcRestingPieceCount(int &nWhitePiecesResting,
-                                   int &nBlackPiecesResting);
+                               int &nBlackPiecesResting);
 
     // getter
-    void getLog(unsigned int &nMovesDone, unsigned int *from,
-                unsigned int *to);
+    void getLog(unsigned int &nMovesDone, unsigned int *from, unsigned int *to);
     bool getField(int *pField);
     bool isCurrentPlayerHuman();
     bool isOpponentPlayerHuman();
@@ -136,9 +135,15 @@ public:
 
     int getBeginningPlayer() { return beginningPlayer; }
 
-    unsigned int getCurPlayerPieceCount() { return field.curPlayer->pieceCount; }
+    unsigned int getCurPlayerPieceCount()
+    {
+        return field.curPlayer->pieceCount;
+    }
 
-    unsigned int getOpponentPlayerPieceCount() { return field.oppPlayer->pieceCount; }
+    unsigned int getOpponentPlayerPieceCount()
+    {
+        return field.oppPlayer->pieceCount;
+    }
 };
 
 #endif // MILL_H_INCLUDED

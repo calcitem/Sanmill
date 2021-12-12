@@ -339,7 +339,8 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 
     // reduce and delete thread specific data
     tva.reduce();
-    if (stateProcessedCount < layerStats[alphaBetaVars.layerNumber].knotsInLayer)
+    if (stateProcessedCount <
+        layerStats[alphaBetaVars.layerNumber].knotsInLayer)
         return falseOrStop();
 
     // show statistics

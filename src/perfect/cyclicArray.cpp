@@ -17,8 +17,8 @@
 // Creates a cyclic array. The passed file is used as temporary data buffer for
 // the cyclic array.
 //-----------------------------F------------------------------------------------
-CyclicArray::CyclicArray(unsigned int blockSizeInBytes,
-                         unsigned int nBlocks, const char *fileName)
+CyclicArray::CyclicArray(unsigned int blockSizeInBytes, unsigned int nBlocks,
+                         const char *fileName)
 {
     // Init blocks
     blockSize = blockSizeInBytes;
@@ -278,11 +278,10 @@ bool CyclicArray::loadFile(const char *fileName, LONGLONG &nBytesLoaded)
     curReadingBlock = 0;
     curWritingBlock = 0;
 
-    nblocksInFile = (unsigned int)(largeInt.QuadPart /
-                                     ((LONGLONG)blockSize)) +
-                      1;
+    nblocksInFile = (unsigned int)(largeInt.QuadPart / ((LONGLONG)blockSize)) +
+                    1;
     nBytesInLastBlock = (unsigned int)(largeInt.QuadPart %
-                                         ((LONGLONG)blockSize));
+                                       ((LONGLONG)blockSize));
     dataInFile = new unsigned char[blockSize];
 
     //

@@ -144,8 +144,7 @@ constexpr auto MEASURE_IOPS = false;
 // considered or also the calculating time in-between
 constexpr auto MEASURE_ONLY_IO = false;
 
-enum MmAction
-{
+enum MmAction {
     MM_ACTION_INIT_RETRO_ANAL = 1,
     MM_ACTION_PREPARE_COUNT_ARRAY = 2,
     MM_ACTION_PERFORM_RETRO_ANAL = 3,
@@ -432,8 +431,7 @@ public:
                         unsigned int branchCountMax);
 
     // Database functions
-    bool openDatabase(const char *directory,
-                      unsigned int branchCountMax);
+    bool openDatabase(const char *directory, unsigned int branchCountMax);
     void calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLayer);
     bool isCurrentStateInDatabase(unsigned int threadNo);
     void closeDatabase();
@@ -670,9 +668,9 @@ private:
             this->pMiniMax = pMiniMax;
             if (pMiniMax->layerStats) {
                 this->knotToCalcCount = pMiniMax->layerStats[layerNumber]
-                                           .knotsInLayer;
+                                            .knotsInLayer;
                 this->totalKnotCount = pMiniMax->layerStats[layerNumber]
-                                          .knotsInLayer;
+                                           .knotsInLayer;
             }
             this->statsValueCounter[SKV_VALUE_GAME_WON] = 0;
             this->statsValueCounter[SKV_VALUE_GAME_LOST] = 0;
@@ -699,8 +697,8 @@ private:
             this->layerNumber = layerNumber;
             this->pMiniMax = pMiniMax;
             this->alphaBetaVars = alphaBetaVars;
-            for (unsigned int curStateValue = 0; curStateValue < SKV_VALUE_COUNT;
-                 curStateValue++) {
+            for (unsigned int curStateValue = 0;
+                 curStateValue < SKV_VALUE_COUNT; curStateValue++) {
                 this->statsValueCounter[curStateValue] = 0;
             }
         };
@@ -708,8 +706,8 @@ private:
         void reduceDefault()
         {
             pMiniMax->stateProcessedCount += this->statesProcessed;
-            for (unsigned int curStateValue = 0; curStateValue < SKV_VALUE_COUNT;
-                 curStateValue++) {
+            for (unsigned int curStateValue = 0;
+                 curStateValue < SKV_VALUE_COUNT; curStateValue++) {
                 alphaBetaVars->statsValueCounter[curStateValue] +=
                     this->statsValueCounter[curStateValue];
             }
@@ -849,8 +847,8 @@ private:
             this->layerNumber = layerNumber;
             this->pMiniMax = pMiniMax;
             this->retroVars = retroVars;
-            for (unsigned int curStateValue = 0; curStateValue < SKV_VALUE_COUNT;
-                 curStateValue++) {
+            for (unsigned int curStateValue = 0;
+                 curStateValue < SKV_VALUE_COUNT; curStateValue++) {
                 this->statsValueCounter[curStateValue] = 0;
             }
         };
@@ -858,8 +856,8 @@ private:
         void reduceDefault()
         {
             pMiniMax->stateProcessedCount += this->statesProcessed;
-            for (unsigned int curStateValue = 0; curStateValue < SKV_VALUE_COUNT;
-                 curStateValue++) {
+            for (unsigned int curStateValue = 0;
+                 curStateValue < SKV_VALUE_COUNT; curStateValue++) {
                 retroVars->statsValueCounter[curStateValue] +=
                     this->statsValueCounter[curStateValue];
             }
