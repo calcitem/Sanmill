@@ -170,7 +170,7 @@ public:
     bool move_piece(Square from, Square to);
 
     // Data members
-    Piece board[SQUARE_NB];
+    Piece board[SQUARE_EXT_NB];
     Bitboard byTypeBB[PIECE_TYPE_NB];
     Bitboard byColorBB[COLOR_NB];
     int pieceInHandCount[COLOR_NB] {0, 9, 9};
@@ -194,7 +194,7 @@ public:
     int score_draw {0};
 
     // Relate to Rule
-    static Bitboard millTableBB[SQUARE_NB][LD_NB];
+    static Bitboard millTableBB[SQUARE_EXT_NB][LD_NB];
 
     Square currentSquare;
     int gamesPlayedCount {0};

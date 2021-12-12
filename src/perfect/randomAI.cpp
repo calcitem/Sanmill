@@ -46,8 +46,8 @@ void RandomAI::play(fieldStruct *theField, unsigned int *pushFrom,
     if (theField->pieceMustBeRemoved) {
         // search a piece from the enemy
         do {
-            from = rand() % theField->size;
-            to = theField->size;
+            from = rand() % SQUARE_NB;
+            to = SQUARE_NB;
         } while (theField->board[from] != theField->oppPlayer->id ||
                  theField->piecePartOfMill[from]);
 
@@ -55,8 +55,8 @@ void RandomAI::play(fieldStruct *theField, unsigned int *pushFrom,
     } else if (theField->settingPhase) {
         // search a free square
         do {
-            from = theField->size;
-            to = rand() % theField->size;
+            from = SQUARE_NB;
+            to = rand() % SQUARE_NB;
         } while (theField->board[to] != theField->squareIsFree);
 
         // try to push randomly
@@ -64,13 +64,13 @@ void RandomAI::play(fieldStruct *theField, unsigned int *pushFrom,
         do {
             // search an own piece
             do {
-                from = rand() % theField->size;
+                from = rand() % SQUARE_NB;
             } while (theField->board[from] != theField->curPlayer->id);
 
             // select a free square
             if (allowedToSpring) {
                 do {
-                    to = rand() % theField->size;
+                    to = rand() % SQUARE_NB;
                 } while (theField->board[to] != theField->squareIsFree);
 
                 // select a connected square
@@ -78,7 +78,7 @@ void RandomAI::play(fieldStruct *theField, unsigned int *pushFrom,
                 do {
                     direction = rand() % 4;
                     to = theField->connectedSquare[from][direction];
-                } while (to == theField->size);
+                } while (to == SQUARE_NB);
             }
         } while (theField->board[to] != theField->squareIsFree);
     }

@@ -107,9 +107,9 @@ void to_perfect_move(Move move, unsigned int &from, unsigned int &to)
 
     if (type == MOVETYPE_REMOVE) {
         from = to_perfect_sq(t);
-        to = fieldStruct::size;
+        to = SQUARE_NB;
     } else if (type == MOVETYPE_PLACE) {
-        from = fieldStruct::size;
+        from = SQUARE_NB;
         to = to_perfect_sq(t);
     } else {
         from = to_perfect_sq(f);

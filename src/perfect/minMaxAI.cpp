@@ -131,7 +131,7 @@ unsigned int *MiniMaxAI::getPossSettingPhase(unsigned int *numPossibilities,
         &idPossibilities[curSearchDepth * MAX_NUM_POS_MOVES];
 
     // possibilities with cut off
-    for ((*numPossibilities) = 0, i = 0; i < field->size; i++) {
+    for ((*numPossibilities) = 0, i = 0; i < SQUARE_NB; i++) {
         // move possible ?
         if (field->board[i] == field->squareIsFree) {
             idPossibility[*numPossibilities] = i;
@@ -160,13 +160,14 @@ unsigned int *MiniMaxAI::getPossNormalMove(unsigned int *numPossibilities,
 
     // if he is not allowed to spring
     if (field->curPlayer->numPieces > 3) {
-        for ((*numPossibilities) = 0, from = 0; from < field->size; from++) {
+        for ((*numPossibilities) = 0, from = 0; from < SQUARE_NB;
+             from++) {
             for (dir = 0; dir < 4; dir++) {
                 // destination
                 to = field->connectedSquare[from][dir];
 
                 // move possible ?
-                if (to < field->size &&
+                if (to < SQUARE_NB &&
                     field->board[from] == field->curPlayer->id &&
                     field->board[to] == field->squareIsFree) {
                     // piece is moveable
@@ -180,8 +181,9 @@ unsigned int *MiniMaxAI::getPossNormalMove(unsigned int *numPossibilities,
             }
         }
     } else {
-        for ((*numPossibilities) = 0, from = 0; from < field->size; from++) {
-            for (to = 0; to < field->size; to++) {
+        for ((*numPossibilities) = 0, from = 0; from < SQUARE_NB;
+             from++) {
+            for (to = 0; to < SQUARE_NB; to++) {
                 // move possible ?
                 if (field->board[from] == field->curPlayer->id &&
                     field->board[to] == field->squareIsFree &&
@@ -215,7 +217,7 @@ unsigned int *MiniMaxAI::getPossPieceRemove(unsigned int *numPossibilities,
         &idPossibilities[curSearchDepth * MAX_NUM_POS_MOVES];
 
     // possibilities with cut off
-    for ((*numPossibilities) = 0, i = 0; i < field->size; i++) {
+    for ((*numPossibilities) = 0, i = 0; i < SQUARE_NB; i++) {
         // move possible ?
         if (field->board[i] == field->oppPlayer->id &&
             !field->piecePartOfMill[i]) {
@@ -305,7 +307,7 @@ void MiniMaxAI::undo(unsigned int threadNo, unsigned int idPossibility,
     field->board[oldState->to] = oldState->fieldTo;
 
     // very expensive
-    for (int i = 0; i < field->size; i++) {
+    for (int i = 0; i < SQUARE_NB; i++) {
         field->piecePartOfMill[i] = oldState->piecePartOfMill[i];
         field->warnings[i] = oldState->warnings[i];
     }
@@ -423,17 +425,17 @@ inline void MiniMaxAI::updateWarning(unsigned int firstPiece,
                                      unsigned int secondPiece)
 {
     // set warnings
-    if (firstPiece < field->size)
+    if (firstPiece < SQUARE_NB)
         setWarning(firstPiece, field->neighbour[firstPiece][0][0],
                    field->neighbour[firstPiece][0][1]);
-    if (firstPiece < field->size)
+    if (firstPiece < SQUARE_NB)
         setWarning(firstPiece, field->neighbour[firstPiece][1][0],
                    field->neighbour[firstPiece][1][1]);
 
-    if (secondPiece < field->size)
+    if (secondPiece < SQUARE_NB)
         setWarning(secondPiece, field->neighbour[secondPiece][0][0],
                    field->neighbour[secondPiece][0][1]);
-    if (secondPiece < field->size)
+    if (secondPiece < SQUARE_NB)
         setWarning(secondPiece, field->neighbour[secondPiece][1][0],
                    field->neighbour[secondPiece][1][1]);
 
@@ -442,7 +444,7 @@ inline void MiniMaxAI::updateWarning(unsigned int firstPiece,
     bool atLeastOnePieceRemoveAble = false;
 
     if (field->pieceMustBeRemoved) {
-        for (i = 0; i < field->size; i++) {
+        for (i = 0; i < SQUARE_NB; i++) {
             if (field->piecePartOfMill[i] == 0 &&
                 field->board[i] == field->oppPlayer->id) {
                 atLeastOnePieceRemoveAble = true;
@@ -472,7 +474,7 @@ inline void MiniMaxAI::updatePossibleMoves(unsigned int piece,
         neighbor = field->connectedSquare[piece][direction];
 
         // neighbor must exist
-        if (neighbor < field->size) {
+        if (neighbor < SQUARE_NB) {
             // relevant when moving from one square to another connected square
             if (ignorePiece == neighbor)
                 continue;
@@ -503,12 +505,12 @@ inline void MiniMaxAI::updatePossibleMoves(unsigned int piece,
     // only 3 pieces resting
     if (field->curPlayer->numPieces <= 3 && !field->settingPhase)
         field->curPlayer->numPossibleMoves = field->curPlayer->numPieces *
-                                             (field->size -
+                                             (SQUARE_NB -
                                               field->curPlayer->numPieces -
                                               field->oppPlayer->numPieces);
     if (field->oppPlayer->numPieces <= 3 && !field->settingPhase)
         field->oppPlayer->numPossibleMoves = field->oppPlayer->numPieces *
-                                             (field->size -
+                                             (SQUARE_NB -
                                               field->curPlayer->numPieces -
                                               field->oppPlayer->numPieces);
 }
@@ -520,9 +522,9 @@ inline void MiniMaxAI::updatePossibleMoves(unsigned int piece,
 inline void MiniMaxAI::setPiece(unsigned int to, Backup *backup)
 {
     // backup
-    backup->from = field->size;
+    backup->from = SQUARE_NB;
     backup->to = to;
-    backup->fieldFrom = field->size;
+    backup->fieldFrom = SQUARE_NB;
     backup->fieldTo = field->board[to];
 
     // set piece into board
@@ -535,10 +537,10 @@ inline void MiniMaxAI::setPiece(unsigned int to, Backup *backup)
         field->settingPhase = false;
 
     // update possible moves
-    updatePossibleMoves(to, field->curPlayer, false, field->size);
+    updatePossibleMoves(to, field->curPlayer, false, SQUARE_NB);
 
     // update warnings
-    updateWarning(to, field->size);
+    updateWarning(to, SQUARE_NB);
 }
 
 //-----------------------------------------------------------------------------
@@ -574,9 +576,9 @@ inline void MiniMaxAI::removePiece(unsigned int from, Backup *backup)
 {
     // backup
     backup->from = from;
-    backup->to = field->size;
+    backup->to = SQUARE_NB;
     backup->fieldFrom = field->board[from];
-    backup->fieldTo = field->size;
+    backup->fieldTo = SQUARE_NB;
 
     // remove piece
     field->board[from] = field->squareIsFree;
@@ -585,10 +587,10 @@ inline void MiniMaxAI::removePiece(unsigned int from, Backup *backup)
     field->pieceMustBeRemoved--;
 
     // update possible moves
-    updatePossibleMoves(from, field->oppPlayer, true, field->size);
+    updatePossibleMoves(from, field->oppPlayer, true, SQUARE_NB);
 
     // update warnings
-    updateWarning(from, field->size);
+    updateWarning(from, SQUARE_NB);
 
     // end of game ?
     if ((field->oppPlayer->numPieces < 3) && (!field->settingPhase))
@@ -626,7 +628,7 @@ void MiniMaxAI::move(unsigned int threadNo, unsigned int idPossibility,
     curSearchDepth++;
 
     // very expensive
-    for (i = 0; i < field->size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         oldState->piecePartOfMill[i] = field->piecePartOfMill[i];
         oldState->warnings[i] = field->warnings[i];
     }

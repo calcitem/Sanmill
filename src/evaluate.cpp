@@ -105,7 +105,7 @@ Value Evaluation::value()
 
     case Phase::gameOver:
         if (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK) >=
-            EFFECTIVE_SQUARE_NB) {
+            SQUARE_NB) {
             if (rule.isWhiteLoseButNotDrawWhenBoardFull) {
                 value -= VALUE_MATE;
             } else {

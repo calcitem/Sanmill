@@ -12,6 +12,8 @@
 #include <cstdio>
 #include <iostream>
 
+#include "types.h"
+
 // using namespace std;
 
 // not (9 * 4) = 36 since the possibilities with 3 pieces are more
@@ -76,31 +78,28 @@ public:
     static const unsigned int playerBothWarning = 6;
     static const unsigned int numPiecesPerPlayer = 9;
 
-    // number of squares
-    static const unsigned int size = 24;
-
     // only a nonzero value
     static const int gameDrawn = 3;
 
     // variables
 
     // one of the values above for each board position
-    int board[size];
+    int board[SQUARE_NB];
 
     // array containing the warnings for each board position
-    unsigned int warnings[size];
+    unsigned int warnings[SQUARE_NB];
 
     // true if piece can be moved in this direction
-    bool pieceMoveAble[size][4];
+    bool pieceMoveAble[SQUARE_NB][4];
 
     // the number of mills, of which this piece is part of
-    unsigned int piecePartOfMill[size];
+    unsigned int piecePartOfMill[SQUARE_NB];
 
     // static array containing the index of the neighbour or "size"
-    unsigned int connectedSquare[size][4];
+    unsigned int connectedSquare[SQUARE_NB][4];
 
     // static array containing the two neighbors of each squares
-    unsigned int neighbour[size][2][2];
+    unsigned int neighbour[SQUARE_NB][2][2];
 
     // number of pieces set in the setting phase
     unsigned int piecesSet;

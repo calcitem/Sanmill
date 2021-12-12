@@ -45,7 +45,7 @@ namespace Mills {
 
 void adjacent_squares_init() noexcept
 {
-    const int adjacentSquares[SQUARE_NB][MD_NB] = {
+    const int adjacentSquares[SQUARE_EXT_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -92,7 +92,7 @@ void adjacent_squares_init() noexcept
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const int adjacentSquares_diagonal[SQUARE_NB][MD_NB] = {
+    const int adjacentSquares_diagonal[SQUARE_EXT_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -139,7 +139,7 @@ void adjacent_squares_init() noexcept
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const Bitboard adjacentSquaresBB[SQUARE_NB] = {
+    const Bitboard adjacentSquaresBB[SQUARE_EXT_NB] = {
         /*  0 */ 0,
         /*  1 */ 0,
         /*  2 */ 0,
@@ -186,7 +186,7 @@ void adjacent_squares_init() noexcept
         /* 39 */ 0,
     };
 
-    const Bitboard adjacentSquaresBB_diagonal[SQUARE_NB] = {
+    const Bitboard adjacentSquaresBB_diagonal[SQUARE_EXT_NB] = {
         /*  0 */ 0,
         /*  1 */ 0,
         /*  2 */ 0,
@@ -247,7 +247,7 @@ void adjacent_squares_init() noexcept
 
 #ifdef DEBUG_MODE
     int sum = 0;
-    for (int i = 0; i < SQUARE_NB; i++) {
+    for (int i = 0; i < SQUARE_EXT_NB; i++) {
         debugPrintf("/* %d */ {", i);
         for (int j = 0; j < MD_NB; j++) {
             if (j == MD_NB - 1)
@@ -264,7 +264,7 @@ void adjacent_squares_init() noexcept
 
 void mill_table_init()
 {
-    const Bitboard millTableBB[SQUARE_NB][LD_NB] = {
+    const Bitboard millTableBB[SQUARE_EXT_NB][LD_NB] = {
         /* 0 */ {0, 0, 0},
         /* 1 */ {0, 0, 0},
         /* 2 */ {0, 0, 0},
@@ -311,7 +311,7 @@ void mill_table_init()
         /* 39 */ {0, 0, 0},
     };
 
-    const Bitboard millTableBB_diagonal[SQUARE_NB][LD_NB] = {
+    const Bitboard millTableBB_diagonal[SQUARE_EXT_NB][LD_NB] = {
         /* 0 */ {0, 0, 0},
         /* 1 */ {0, 0, 0},
         /* 2 */ {0, 0, 0},

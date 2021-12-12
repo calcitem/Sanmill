@@ -165,7 +165,7 @@ QPointF BoardItem::polar2pos(File f, Rank r)
 bool BoardItem::pos2polar(QPointF pos, File &f, Rank &r)
 {
     // Look for the nearest spot
-    for (int sq = 0; sq < EFFECTIVE_SQUARE_NB; sq++) {
+    for (int sq = 0; sq < SQUARE_NB; sq++) {
         // If the pos point is near the placing point
         if (QLineF(pos, position[sq]).length() < PIECE_SIZE / 6) {
             f = File(sq / RANK_NB + 1);

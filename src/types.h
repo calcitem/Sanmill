@@ -352,10 +352,10 @@ enum Square : int {
     SQ_NONE = 0,
 
     // The board consists of a grid with twenty-four intersections or points.
-    EFFECTIVE_SQUARE_NB = 24,
+    SQUARE_NB = 24,
 
     SQUARE_ZERO = 0,
-    SQUARE_NB = 40,
+    SQUARE_EXT_NB = 40,
 
     SQ_BEGIN = SQ_8,
     SQ_END = SQ_32

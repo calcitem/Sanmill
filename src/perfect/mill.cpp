@@ -131,8 +131,8 @@ void Mill::setUpCalcPossibleMoves(Player *player)
     // locals
     unsigned int i, j, k, movingDirection;
 
-    for (player->numPossibleMoves = 0, i = 0; i < fieldStruct::size; i++) {
-        for (j = 0; j < fieldStruct::size; j++) {
+    for (player->numPossibleMoves = 0, i = 0; i < SQUARE_NB; i++) {
+        for (j = 0; j < SQUARE_NB; j++) {
             // is piece from player ?
             if (field.board[i] != player->id)
                 continue;
@@ -197,7 +197,7 @@ bool Mill::putPiece(unsigned int pos, int player)
     // check parameters
     if (player != fieldStruct::playerOne && player != fieldStruct::playerTwo)
         return false;
-    if (pos >= fieldStruct::size)
+    if (pos >= SQUARE_NB)
         return false;
     if (field.board[pos] != field.squareIsFree)
         return false;
@@ -216,11 +216,11 @@ bool Mill::putPiece(unsigned int pos, int player)
     setUpCalcPossibleMoves(field.oppPlayer);
 
     // zero
-    for (i = 0; i < fieldStruct::size; i++)
+    for (i = 0; i < SQUARE_NB; i++)
         field.piecePartOfMill[i] = 0;
 
     // go in every direction
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         setUpSetWarningAndMill(i, field.neighbour[i][0][0],
                                field.neighbour[i][0][1]);
         setUpSetWarningAndMill(i, field.neighbour[i][1][0],
@@ -228,11 +228,11 @@ bool Mill::putPiece(unsigned int pos, int player)
     }
 
     // since every mill was detected 3 times
-    for (i = 0; i < fieldStruct::size; i++)
+    for (i = 0; i < SQUARE_NB; i++)
         field.piecePartOfMill[i] /= 3;
 
     // count completed mills
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         if (field.board[i] == field.curPlayer->id)
             numberOfMillsCurrentPlayer += field.piecePartOfMill[i];
         else
@@ -297,7 +297,7 @@ bool Mill::getField(int *pField)
     if (moveLogFrom == nullptr)
         return false;
 
-    for (index = 0; index < field.size; index++) {
+    for (index = 0; index < SQUARE_NB; index++) {
         if (field.warnings[index] != field.noWarning)
             pField[index] = (int)field.warnings[index];
         else
@@ -384,8 +384,8 @@ void Mill::getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom,
                                 unsigned int *pushTo)
 {
     fieldStruct theField;
-    *pushFrom = field.size;
-    *pushTo = field.size;
+    *pushFrom = SQUARE_NB;
+    *pushTo = SQUARE_NB;
     theField.createBoard();
     field.copyBoard(&theField);
     if (AI != nullptr &&
@@ -402,8 +402,8 @@ void Mill::getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom,
 void Mill::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 {
     fieldStruct theField;
-    *pushFrom = field.size;
-    *pushTo = field.size;
+    *pushFrom = SQUARE_NB;
+    *pushTo = SQUARE_NB;
     theField.createBoard();
     // assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <= 1);
 
@@ -445,9 +445,9 @@ bool Mill::isNormalMovePossible(unsigned int from, unsigned int to,
     unsigned int movingDirection, i;
 
     // parameter ok ?
-    if (from >= field.size)
+    if (from >= SQUARE_NB)
         return false;
-    if (to >= field.size)
+    if (to >= SQUARE_NB)
         return false;
 
     // is piece from player ?
@@ -485,13 +485,13 @@ void Mill::calcPossibleMoves(Player *player)
 
     // zero
     for (i = 0; i < MAX_NUM_POS_MOVES; i++)
-        player->posTo[i] = field.size;
+        player->posTo[i] = SQUARE_NB;
     for (i = 0; i < MAX_NUM_POS_MOVES; i++)
-        player->posFrom[i] = field.size;
+        player->posFrom[i] = SQUARE_NB;
 
     // calc
-    for (player->numPossibleMoves = 0, i = 0; i < field.size; i++) {
-        for (j = 0; j < field.size; j++) {
+    for (player->numPossibleMoves = 0, i = 0; i < SQUARE_NB; i++) {
+        for (j = 0; j < SQUARE_NB; j++) {
             if (isNormalMovePossible(i, j, player)) {
                 player->posFrom[player->numPossibleMoves] = i;
                 player->posTo[player->numPossibleMoves] = j;
@@ -501,7 +501,7 @@ void Mill::calcPossibleMoves(Player *player)
     }
 
     // pieceMoveAble
-    for (i = 0; i < field.size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         for (j = 0; j < 4; j++) {
             if (field.board[i] == player->id)
                 field.pieceMoveAble[i][j] = isNormalMovePossible(
@@ -559,16 +559,16 @@ void Mill::updateMillsAndWarnings(unsigned int newPiece)
     bool atLeastOnePieceRemoveAble;
 
     // zero
-    for (i = 0; i < field.size; i++)
+    for (i = 0; i < SQUARE_NB; i++)
         field.piecePartOfMill[i] = 0;
 
-    for (i = 0; i < field.size; i++)
+    for (i = 0; i < SQUARE_NB; i++)
         field.warnings[i] = field.noWarning;
 
     field.pieceMustBeRemoved = 0;
 
     // go in every direction
-    for (i = 0; i < field.size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         setWarningAndMill(i, field.neighbour[i][0][0], field.neighbour[i][0][1],
                           i == newPiece);
         setWarningAndMill(i, field.neighbour[i][1][0], field.neighbour[i][1][1],
@@ -576,11 +576,11 @@ void Mill::updateMillsAndWarnings(unsigned int newPiece)
     }
 
     // since every mill was detected 3 times
-    for (i = 0; i < field.size; i++)
+    for (i = 0; i < SQUARE_NB; i++)
         field.piecePartOfMill[i] /= 3;
 
     // no piece must be removed if each belongs to a mill
-    for (atLeastOnePieceRemoveAble = false, i = 0; i < field.size; i++)
+    for (atLeastOnePieceRemoveAble = false, i = 0; i < SQUARE_NB; i++)
         if (field.piecePartOfMill[i] == 0 &&
             field.board[i] == field.oppPlayer->id)
             atLeastOnePieceRemoveAble = true;
@@ -605,7 +605,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
     // handle the remove of a piece
     if (field.pieceMustBeRemoved) {
         // parameter ok ?
-        if (pushFrom >= field.size)
+        if (pushFrom >= SQUARE_NB)
             return false;
 
         // is it piece from the opponent ?
@@ -618,7 +618,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
 
         // remove piece
         moveLogFrom[movesDone] = pushFrom;
-        moveLogTo[movesDone] = field.size;
+        moveLogTo[movesDone] = SQUARE_NB;
         field.board[pushFrom] = field.squareIsFree;
         field.oppPlayer->numPiecesMissing++;
         field.oppPlayer->numPieces--;
@@ -630,7 +630,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
             winner = field.curPlayer->id;
 
         // update warnings & mills
-        updateMillsAndWarnings(field.size);
+        updateMillsAndWarnings(SQUARE_NB);
 
         // calc possibilities
         calcPossibleMoves(field.curPlayer);
@@ -650,7 +650,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         // handle setting phase
     } else if (field.settingPhase) {
         // parameter ok ?
-        if (pushTo >= field.size)
+        if (pushTo >= SQUARE_NB)
             return false;
 
         // is destination free ?
@@ -658,7 +658,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
             return false;
 
         // set piece
-        moveLogFrom[movesDone] = field.size;
+        moveLogFrom[movesDone] = SQUARE_NB;
         moveLogTo[movesDone] = pushTo;
         field.board[pushTo] = field.curPlayer->id;
         field.curPlayer->numPieces++;
@@ -778,7 +778,7 @@ bool Mill::compareWithField(fieldStruct *compareField)
         ret = false;
     }
 
-    for (i = 0; i < field.size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         if (field.board[i] != compareField->board[i]) {
             cout << "error - board[] differs!" << std::endl;
             ret = false;
