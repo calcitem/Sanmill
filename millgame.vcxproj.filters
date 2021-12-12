@@ -144,16 +144,7 @@
     <ClInclude Include="src\perfect\miniMax_retroAnalysis.h">
       <Filter>Perfect AI Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\perfect\miniMaxAI.h">
-      <Filter>Perfect AI Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\perfect\miniMaxWin.h">
-      <Filter>Perfect AI Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\perfect\perfectAI.h">
-      <Filter>Perfect AI Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\perfect\randomAI.h">
       <Filter>Perfect AI Files</Filter>
     </ClInclude>
     <ClInclude Include="src\perfect\strLib.h">
@@ -434,13 +425,7 @@
     <ClCompile Include="src\perfect\miniMax_test.cpp">
       <Filter>Perfect AI Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\perfect\minMaxAI.cpp">
-      <Filter>Perfect AI Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\perfect\perfectAI.cpp">
-      <Filter>Perfect AI Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\perfect\randomAI.cpp">
       <Filter>Perfect AI Files</Filter>
     </ClCompile>
     <ClCompile Include="src\perfect\strLib.cpp">

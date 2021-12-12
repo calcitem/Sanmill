@@ -11,10 +11,9 @@
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI
 
 #include "mill.h"
-#include "miniMaxAI.h"
 #include "perfect.h"
 #include "perfectAI.h"
-#include "randomAI.h"
+
 #include <cstdio>
 #include <iostream>
 #include <windows.h>
