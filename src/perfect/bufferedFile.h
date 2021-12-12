@@ -24,16 +24,16 @@ private:
     HANDLE hFile;
 
     // number of threads
-    unsigned int numThreads;
+    unsigned int threadCount;
 
-    // Array of size [numThreads*blockSize] containing the data of the block,
+    // Array of size [threadCount*blockSize] containing the data of the block,
     // where reading is taking place
     unsigned char *readBuffer;
 
     // '' - access by [threadNo*bufferSize+position]
     unsigned char *writeBuffer;
 
-    // Array of size [numThreads] with pointers to the byte which is currently
+    // Array of size [threadCount] with pointers to the byte which is currently
     // read
     int64_t *curReadingPointer;
     // ''
@@ -59,18 +59,18 @@ private:
 
 public:
     // Constructor / destructor
-    BufferedFile(unsigned int numThreads, unsigned int bufferSizeInBytes,
+    BufferedFile(unsigned int threadCount, unsigned int bufferSizeInBytes,
                  const char *fileName);
     ~BufferedFile();
 
     // Functions
     bool flushBuffers();
-    bool writeBytes(unsigned int numBytes, unsigned char *pData);
-    bool readBytes(unsigned int numBytes, unsigned char *pData);
+    bool writeBytes(unsigned int nBytes, unsigned char *pData);
+    bool readBytes(unsigned int nBytes, unsigned char *pData);
     bool writeBytes(unsigned int threadNo, int64_t positionInFile,
-                    unsigned int numBytes, unsigned char *pData);
+                    unsigned int nBytes, unsigned char *pData);
     bool readBytes(unsigned int threadNo, int64_t positionInFile,
-                   unsigned int numBytes, unsigned char *pData);
+                   unsigned int nBytes, unsigned char *pData);
     int64_t getFileSize();
 };
 

@@ -95,7 +95,7 @@ void on_developerMode(const Option &o)
 
 void on_piecesCount(const Option &o)
 {
-    rule.piecesCount = (int)o;
+    rule.pieceCount = (int)o;
 }
 
 void on_flyPieceCount(const Option &o)

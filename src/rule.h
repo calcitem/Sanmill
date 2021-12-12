@@ -27,7 +27,7 @@ struct Rule
     const char description[512];
 
     // The number of pieces each player has
-    int piecesCount;
+    int pieceCount;
 
     // When a player is reduced to N pieces, his pieces are free to move to any
     // unoccupied point

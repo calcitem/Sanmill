@@ -16,9 +16,9 @@
 // showMemoryStatus()
 //
 //-----------------------------------------------------------------------------
-unsigned int MiniMax::getNumThreads()
+unsigned int MiniMax::getThreadCount()
 {
-    return threadManager.getNumThreads();
+    return threadManager.getThreadCount();
 }
 
 //-----------------------------------------------------------------------------
@@ -65,47 +65,47 @@ int64_t MiniMax::getLayerSizeInBytes(unsigned int layerNum)
 }
 
 //-----------------------------------------------------------------------------
-// getNumWonStates()
+// getWonStateCount()
 //
 //-----------------------------------------------------------------------------
-MiniMax::StateNumberVarType MiniMax::getNumWonStates(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getWonStateCount(unsigned int layerNum)
 {
     if (layerStats == nullptr)
         return 0;
-    return layerStats[layerNum].numWonStates;
+    return layerStats[layerNum].wonStateCount;
 }
 
 //-----------------------------------------------------------------------------
-// getNumLostStates()
+// getLostStateCount()
 //
 //-----------------------------------------------------------------------------
-MiniMax::StateNumberVarType MiniMax::getNumLostStates(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getLostStateCount(unsigned int layerNum)
 {
     if (layerStats == nullptr)
         return 0;
-    return layerStats[layerNum].numLostStates;
+    return layerStats[layerNum].lostStateCount;
 }
 
 //-----------------------------------------------------------------------------
-// getNumDrawnStates()
+// getDrawnStateCount()
 //
 //-----------------------------------------------------------------------------
-MiniMax::StateNumberVarType MiniMax::getNumDrawnStates(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getDrawnStateCount(unsigned int layerNum)
 {
     if (layerStats == nullptr)
         return 0;
-    return layerStats[layerNum].numDrawnStates;
+    return layerStats[layerNum].drawnStateCount;
 }
 
 //-----------------------------------------------------------------------------
-// getNumInvalidStates()
+// getInvalidStateCount()
 //
 //-----------------------------------------------------------------------------
-MiniMax::StateNumberVarType MiniMax::getNumInvalidStates(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getInvalidStateCount(unsigned int layerNum)
 {
     if (layerStats == nullptr)
         return 0;
-    return layerStats[layerNum].numInvalidStates;
+    return layerStats[layerNum].invalidStateCount;
 }
 
 //-----------------------------------------------------------------------------
@@ -163,12 +163,12 @@ void MiniMax::showLayerStats(unsigned int layerNumber)
         statsValueCounter[curStateValue]++;
     }
 
-    layerStats[layerNumber].numWonStates = statsValueCounter[SKV_VALUE_GAME_WON];
-    layerStats[layerNumber].numLostStates =
+    layerStats[layerNumber].wonStateCount = statsValueCounter[SKV_VALUE_GAME_WON];
+    layerStats[layerNumber].lostStateCount =
         statsValueCounter[SKV_VALUE_GAME_LOST];
-    layerStats[layerNumber].numDrawnStates =
+    layerStats[layerNumber].drawnStateCount =
         statsValueCounter[SKV_VALUE_GAME_DRAWN];
-    layerStats[layerNumber].numInvalidStates =
+    layerStats[layerNumber].invalidStateCount =
         statsValueCounter[SKV_VALUE_INVALID];
 
     PRINT(1, this, endl << "FINAL STATISTICS OF LAYER " << layerNumber);
@@ -226,15 +226,15 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
     text += "num succeeding layers\t";
     text += "partner layer\t";
     text += "size in bytes\t";
-    text += "succLayers[0]\t";
-    text += "succLayers[1]\n";
+    text += "succeedingLayers[0]\t";
+    text += "succeedingLayers[1]\n";
 
-    statsValueCounter = new unsigned int[4 * skvfHeader.numLayers];
+    statsValueCounter = new unsigned int[4 * skvfHeader.LayerCount];
     curCalculationActionId = MM_ACTION_CALC_LAYER_STATS;
 
     // calc and show statistics
     for (layerInDatabase = false, curState.layerNumber = 0;
-         curState.layerNumber < skvfHeader.numLayers; curState.layerNumber++) {
+         curState.layerNumber < skvfHeader.LayerCount; curState.layerNumber++) {
         // status output
         PRINT(0, this,
               "Calculating statistics of layer: " << (int)curState.layerNumber);
@@ -271,11 +271,11 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
             statsValueCounter[4 * curState.layerNumber + SKV_VALUE_GAME_DRAWN],
             statsValueCounter[4 * curState.layerNumber + SKV_VALUE_INVALID],
             layerStats[curState.layerNumber].knotsInLayer,
-            layerStats[curState.layerNumber].numSuccLayers,
+            layerStats[curState.layerNumber].succeedingLayerCount,
             layerStats[curState.layerNumber].partnerLayer,
             layerStats[curState.layerNumber].sizeInBytes,
-            layerStats[curState.layerNumber].succLayers[0],
-            layerStats[curState.layerNumber].succLayers[1]);
+            layerStats[curState.layerNumber].succeedingLayers[0],
+            layerStats[curState.layerNumber].succeedingLayers[1]);
         text += line;
     }
 
@@ -381,7 +381,7 @@ void MiniMax::ArrayInfoContainer::addArray(unsigned int layerNumber,
     arrayInfosToBeUpdated.push_back(aic);
 
     // save pointer of info in vector for direct access
-    vectorArrays[layerNumber * ArrayInfo::numArrayTypes + type] =
+    vectorArrays[layerNumber * ArrayInfo::arrayTypeCount + type] =
         (--listArrays.end());
 
     // update GUI
@@ -403,9 +403,9 @@ void MiniMax::ArrayInfoContainer::removeArray(unsigned int layerNumber,
     // find info object in list
     EnterCriticalSection(&c->csOsPrint);
 
-    if (vectorArrays.size() > layerNumber * ArrayInfo::numArrayTypes + type) {
+    if (vectorArrays.size() > layerNumber * ArrayInfo::arrayTypeCount + type) {
         list<ArrayInfo>::iterator itr =
-            vectorArrays[layerNumber * ArrayInfo::numArrayTypes + type];
+            vectorArrays[layerNumber * ArrayInfo::arrayTypeCount + type];
         if (itr != listArrays.end()) {
             // does sizes fit?
             if (itr->belongsToLayer != layerNumber || itr->type != type ||
@@ -443,7 +443,7 @@ void MiniMax::ArrayInfoContainer::updateArray(unsigned int layerNumber,
 {
     // find info object in list
     list<ArrayInfo>::iterator itr =
-        vectorArrays[layerNumber * ArrayInfo::numArrayTypes + type];
+        vectorArrays[layerNumber * ArrayInfo::arrayTypeCount + type];
 
     itr->updateCounter++;
     if (itr->updateCounter > ArrayInfo::updateCounterThreshold) {

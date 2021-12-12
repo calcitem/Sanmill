@@ -53,18 +53,18 @@ private:
     };
 
     // Variables
-    unsigned int numThreads; // number of threads
-    HANDLE *hThread; // array of size 'numThreads' containing the thread handles
-    DWORD *threadId; // array of size 'numThreads' containing the thread ids
+    unsigned int threadCount; // number of threads
+    HANDLE *hThread; // array of size 'threadCount' containing the thread handles
+    DWORD *threadId; // array of size 'threadCount' containing the thread ids
     bool termineAllThreads;
     bool executionPaused;    // switch for the
     bool executionCancelled; // true when cancelExecution() was called
 
     // barier stuff
     HANDLE hEventBarrierPassedByEveryBody;
-    HANDLE *hBarrier; // array of size 'numThreads' containing the event handles
+    HANDLE *hBarrier; // array of size 'threadCount' containing the event handles
                       // for the barrier
-    unsigned int numThreadsPassedBarrier;
+    unsigned int threadPassedBarrierCount;
     CRITICAL_SECTION csBarrier;
 
     // functions
@@ -87,16 +87,16 @@ public:
     class ThreadVarsArray
     {
     public:
-        unsigned int numberOfThreads;
+        unsigned int threadCount;
         varType *item;
 
-        ThreadVarsArray(unsigned int numberOfThreads, varType &master)
+        ThreadVarsArray(unsigned int threadCount, varType &master)
         {
-            this->numberOfThreads = numberOfThreads;
-            this->item = new varType[numberOfThreads];
+            this->threadCount = threadCount;
+            this->item = new varType[threadCount];
 
             for (unsigned int threadCounter = 0;
-                 threadCounter < numberOfThreads; threadCounter++) {
+                 threadCounter < threadCount; threadCounter++) {
                 item[threadCounter].curThreadNo = threadCounter;
                 item[threadCounter].initializeElement(master);
                 item[threadCounter].curThreadNo =
@@ -108,7 +108,7 @@ public:
         ~ThreadVarsArray()
         {
             for (unsigned int threadCounter = 0;
-                 threadCounter < numberOfThreads; threadCounter++) {
+                 threadCounter < threadCount; threadCounter++) {
                 item[threadCounter].destroyElement();
             }
             delete[] item;
@@ -121,7 +121,7 @@ public:
         void reduce()
         {
             for (unsigned int threadCounter = 0;
-                 threadCounter < numberOfThreads; threadCounter++) {
+                 threadCounter < threadCount; threadCounter++) {
                 item[threadCounter].reduce();
             }
         };
@@ -133,7 +133,7 @@ public:
 
     // Functions
     unsigned int getThreadNumber();
-    unsigned int getNumThreads();
+    unsigned int getThreadCount();
 
     bool setNumThreads(unsigned int newNumThreads);
     void waitForOtherThreads(unsigned int threadNo);

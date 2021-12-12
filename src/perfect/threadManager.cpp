@@ -27,17 +27,17 @@ ThreadManager::ThreadManager()
     // init default values
     executionPaused = false;
     executionCancelled = false;
-    numThreads = m_si.dwNumberOfProcessors;
-    hThread = new HANDLE[numThreads];
-    threadId = new DWORD[numThreads];
-    hBarrier = new HANDLE[numThreads];
-    numThreadsPassedBarrier = 0;
+    threadCount = m_si.dwNumberOfProcessors;
+    hThread = new HANDLE[threadCount];
+    threadId = new DWORD[threadCount];
+    hBarrier = new HANDLE[threadCount];
+    threadPassedBarrierCount = 0;
     termineAllThreads = false;
 
     InitializeCriticalSection(&csBarrier);
     hEventBarrierPassedByEveryBody = CreateEvent(nullptr, true, false, nullptr);
 
-    for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
+    for (curThreadNo = 0; curThreadNo < threadCount; curThreadNo++) {
         hThread[curThreadNo] = nullptr;
         threadId[curThreadNo] = 0;
         hBarrier[curThreadNo] = CreateEvent(nullptr, false, false, nullptr);
@@ -53,7 +53,7 @@ ThreadManager::~ThreadManager()
     // locals
     unsigned int curThreadNo;
 
-    for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
+    for (curThreadNo = 0; curThreadNo < threadCount; curThreadNo++) {
         CloseHandle(hBarrier[curThreadNo]);
     }
 
@@ -84,16 +84,16 @@ void ThreadManager::waitForOtherThreads(unsigned int threadNo)
 #if 0
     cout << endl
          << "thread=" << threadNo
-         << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": "
-         << "while (numThreadsPassedBarrier>0)";
+         << ", threadPassedBarrierCount= " << threadPassedBarrierCount << ": "
+         << "while (threadPassedBarrierCount>0)";
 #endif
 
-    if (numThreadsPassedBarrier > 0) {
+    if (threadPassedBarrierCount > 0) {
         WaitForSingleObject(hEventBarrierPassedByEveryBody, INFINITE);
     }
 
-    // a simple while (numThreadsPassedBarrier>0) {}; does not work, since the
-    // variable 'numThreadsPassedBarrier' is not updated, due to compiler
+    // a simple while (threadPassedBarrierCount>0) {}; does not work, since the
+    // variable 'threadPassedBarrierCount' is not updated, due to compiler
     // optimizations
 
     // set signal that barrier is reached
@@ -101,7 +101,7 @@ void ThreadManager::waitForOtherThreads(unsigned int threadNo)
 #if 0
     cout << endl
          << "thread=" << threadNo
-         << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": "
+         << ", threadPassedBarrierCount= " << threadPassedBarrierCount << ": "
          << "SetEvent()";
 #endif
 
@@ -112,22 +112,22 @@ void ThreadManager::waitForOtherThreads(unsigned int threadNo)
 #if 0
     cout << endl
          << "thread=" << threadNo
-         << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": "
+         << ", threadPassedBarrierCount= " << threadPassedBarrierCount << ": "
          << "EnterCriticalSection()";
 #endif
 
     EnterCriticalSection(&csBarrier);
 
     // if the first one which entered, then wait until other threads
-    if (numThreadsPassedBarrier == 0) {
+    if (threadPassedBarrierCount == 0) {
 #if 0
         cout << endl
              << "thread=" << threadNo
-             << ", numThreadsPassedBarrier=
-                " << numThreadsPassedBarrier << "
+             << ", threadPassedBarrierCount=
+                " << threadPassedBarrierCount << "
             : " << " WaitForMultipleObjects() ";
 #endif
-        WaitForMultipleObjects(numThreads, hBarrier, TRUE, INFINITE);
+        WaitForMultipleObjects(threadCount, hBarrier, TRUE, INFINITE);
         ResetEvent(hEventBarrierPassedByEveryBody);
     }
 
@@ -135,30 +135,30 @@ void ThreadManager::waitForOtherThreads(unsigned int threadNo)
 #if 0
     cout << endl
          << "thread=" << threadNo
-         << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": "
-         << "numThreadsPassedBarrier++";
+         << ", threadPassedBarrierCount= " << threadPassedBarrierCount << ": "
+         << "threadPassedBarrierCount++";
 #endif
 
-    numThreadsPassedBarrier++;
+    threadPassedBarrierCount++;
 
     // the last one closes the door
 #if 0
     cout << endl
          << "thread=" << threadNo
-         << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": "
-         << "if (numThreadsPassedBarrier == numThreads) "
-            "numThreadsPassedBarrier = 0";
+         << ", threadPassedBarrierCount= " << threadPassedBarrierCount << ": "
+         << "if (threadPassedBarrierCount == threadCount) "
+            "threadPassedBarrierCount = 0";
 #endif
 
-    if (numThreadsPassedBarrier == numThreads) {
-        numThreadsPassedBarrier = 0;
+    if (threadPassedBarrierCount == threadCount) {
+        threadPassedBarrierCount = 0;
         SetEvent(hEventBarrierPassedByEveryBody);
     }
 
 #if 0
     cout << endl
          << "thread=" << threadNo
-         << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": "
+         << ", threadPassedBarrierCount= " << threadPassedBarrierCount << ": "
          << "LeaveCriticalSection()";
 #endif
 
@@ -166,12 +166,12 @@ void ThreadManager::waitForOtherThreads(unsigned int threadNo)
 }
 
 //-----------------------------------------------------------------------------
-// getNumThreads()
+// getThreadCount()
 //
 //-----------------------------------------------------------------------------
-unsigned int ThreadManager::getNumThreads()
+unsigned int ThreadManager::getThreadCount()
 {
-    return numThreads;
+    return threadCount;
 }
 
 //-----------------------------------------------------------------------------
@@ -183,7 +183,7 @@ bool ThreadManager::setNumThreads(unsigned int newNumThreads)
     // cancel if any thread running
     EnterCriticalSection(&csBarrier);
 
-    for (unsigned int curThreadNo = 0; curThreadNo < numThreads;
+    for (unsigned int curThreadNo = 0; curThreadNo < threadCount;
          curThreadNo++) {
         if (hThread[curThreadNo]) {
             LeaveCriticalSection(&csBarrier);
@@ -191,14 +191,14 @@ bool ThreadManager::setNumThreads(unsigned int newNumThreads)
         }
     }
 
-    for (unsigned int curThreadNo = 0; curThreadNo < numThreads;
+    for (unsigned int curThreadNo = 0; curThreadNo < threadCount;
          curThreadNo++) {
         CloseHandle(hBarrier[curThreadNo]);
     }
 
-    numThreads = newNumThreads;
+    threadCount = newNumThreads;
 
-    for (unsigned int curThreadNo = 0; curThreadNo < numThreads;
+    for (unsigned int curThreadNo = 0; curThreadNo < threadCount;
          curThreadNo++) {
         hBarrier[curThreadNo] = CreateEvent(nullptr, false, false, nullptr);
     }
@@ -214,7 +214,7 @@ bool ThreadManager::setNumThreads(unsigned int newNumThreads)
 //-----------------------------------------------------------------------------
 void ThreadManager::pauseExecution()
 {
-    for (unsigned int curThread = 0; curThread < numThreads; curThread++) {
+    for (unsigned int curThread = 0; curThread < threadCount; curThread++) {
         // unsuspend all threads
         if (!executionPaused) {
             SuspendThread(hThread[curThread]);
@@ -263,7 +263,7 @@ bool ThreadManager::wasExecutionCancelled()
 
 //-----------------------------------------------------------------------------
 // getThreadId()
-// Returns a number from 0 to 'numThreads'-1. Returns 0 if the function fails.
+// Returns a number from 0 to 'threadCount'-1. Returns 0 if the function fails.
 //-----------------------------------------------------------------------------
 unsigned int ThreadManager::getThreadNumber()
 {
@@ -271,7 +271,7 @@ unsigned int ThreadManager::getThreadNumber()
     DWORD curThreadId = GetCurrentThreadId();
     unsigned int curThreadNo;
 
-    for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
+    for (curThreadNo = 0; curThreadNo < threadCount; curThreadNo++) {
         if (curThreadId == threadId[curThreadNo]) {
             return curThreadNo;
         }
@@ -282,7 +282,7 @@ unsigned int ThreadManager::getThreadNumber()
 
 //-----------------------------------------------------------------------------
 // executeInParallel()
-// lpParameter is an array of size numThreads.
+// lpParameter is an array of size threadCount.
 //-----------------------------------------------------------------------------
 unsigned int
 ThreadManager::executeInParallel(DWORD threadProc(void *pParameter),
@@ -301,7 +301,7 @@ ThreadManager::executeInParallel(DWORD threadProc(void *pParameter),
     termineAllThreads = false;
 
     // create threads
-    for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
+    for (curThreadNo = 0; curThreadNo < threadCount; curThreadNo++) {
         hThread[curThreadNo] = CreateThread(
             nullptr, dwStackSize, (LPTHREAD_START_ROUTINE)threadProc,
             (void *)(((char *)pParameter) + curThreadNo * parameterStructSize),
@@ -322,16 +322,16 @@ ThreadManager::executeInParallel(DWORD threadProc(void *pParameter),
     }
 
     // start threads
-    for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
+    for (curThreadNo = 0; curThreadNo < threadCount; curThreadNo++) {
         if (!executionPaused)
             ResumeThread(hThread[curThreadNo]);
     }
 
     // wait for every thread to end
-    WaitForMultipleObjects(numThreads, hThread, TRUE, INFINITE);
+    WaitForMultipleObjects(threadCount, hThread, TRUE, INFINITE);
 
     // Close all thread handles upon completion.
-    for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
+    for (curThreadNo = 0; curThreadNo < threadCount; curThreadNo++) {
         CloseHandle(hThread[curThreadNo]);
         hThread[curThreadNo] = nullptr;
         threadId[curThreadNo] = 0;
@@ -348,7 +348,7 @@ ThreadManager::executeInParallel(DWORD threadProc(void *pParameter),
 //-----------------------------------------------------------------------------
 // executeInParallel()
 //
-// lpParameter - an array of size numThreads
+// lpParameter - an array of size threadCount
 // finalValue  - this value is part of the iteration, meaning that index ranges
 // from initialValue to finalValue including both border values
 //-----------------------------------------------------------------------------
@@ -375,11 +375,11 @@ unsigned int ThreadManager::executeParallelLoop(
 
     // locals
 
-    // the threads are enumerated from 0 to numThreads-1
+    // the threads are enumerated from 0 to threadCount-1
     unsigned int curThreadNo;
 
     // total number of iterations
-    int numIterations = (finalValue - initialValue) / inkrement + 1;
+    int nIterations = (finalValue - initialValue) / inkrement + 1;
 
     // number of iterations per chunk
     int chunkSize = 0;
@@ -387,13 +387,13 @@ unsigned int ThreadManager::executeParallelLoop(
     // initital stack size of each thread. 0 means default size ~1MB
     SIZE_T dwStackSize = 0;
 
-    ForLoop *forLoopParameters = new ForLoop[numThreads];
+    ForLoop *forLoopParameters = new ForLoop[threadCount];
 
     // globals
     termineAllThreads = false;
 
     // create threads
-    for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
+    for (curThreadNo = 0; curThreadNo < threadCount; curThreadNo++) {
         forLoopParameters[curThreadNo].pParameter =
             (pParameter != nullptr ?
                  (void *)(((char *)pParameter) +
@@ -406,8 +406,8 @@ unsigned int ThreadManager::executeParallelLoop(
 
         switch (scheduleType) {
         case TM_SCHEDULE_STATIC:
-            chunkSize = numIterations / numThreads +
-                        (curThreadNo < numIterations % numThreads ? 1 : 0);
+            chunkSize = nIterations / threadCount +
+                        (curThreadNo < nIterations % threadCount ? 1 : 0);
             if (curThreadNo == 0) {
                 forLoopParameters[curThreadNo].initialValue = initialValue;
             } else {
@@ -455,16 +455,16 @@ unsigned int ThreadManager::executeParallelLoop(
     }
 
     // start threads, but don't resume if in pause mode
-    for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
+    for (curThreadNo = 0; curThreadNo < threadCount; curThreadNo++) {
         if (!executionPaused)
             ResumeThread(hThread[curThreadNo]);
     }
 
     // wait for every thread to end
-    WaitForMultipleObjects(numThreads, hThread, TRUE, INFINITE);
+    WaitForMultipleObjects(threadCount, hThread, TRUE, INFINITE);
 
     // Close all thread handles upon completion.
-    for (curThreadNo = 0; curThreadNo < numThreads; curThreadNo++) {
+    for (curThreadNo = 0; curThreadNo < threadCount; curThreadNo++) {
         CloseHandle(hThread[curThreadNo]);
         hThread[curThreadNo] = nullptr;
         threadId[curThreadNo] = 0;

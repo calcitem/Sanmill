@@ -19,7 +19,7 @@ struct RetroAnalysisQueueState
     StateNumberVarType stateNumber;
 
     // ply number for the stored state
-    PlyInfoVarType numPliesTillCurState;
+    PlyInfoVarType plyTillCurStateCount;
 };
 
 // thread specific variables for each thread in the retro analysis
@@ -36,7 +36,7 @@ struct RetroAnalysisThreadVars
     vector<vector<RetroAnalysisQueueState>> stateQueue;
 
     // Number of states in 'statesToProcess' which have to be processed
-    int64_t numStatesToProcess;
+    int64_t stateToProcessCount;
 
     unsigned int threadNo;
 };
@@ -57,10 +57,10 @@ struct RetroAnalysisVars
     vector<unsigned int> layersToCalculate;
 
     // total numbers of knots which have to be stored in memory
-    int64_t totalNumKnots;
+    int64_t totalKnotCount;
 
     // number of knots of all layers to be calculated
-    int64_t numKnotsToCalc;
+    int64_t knotToCalcCount;
 
     vector<RetroAnalysisThreadVars> thread;
 };
@@ -71,7 +71,7 @@ struct InitRetroAnalysisVars
     unsigned int curThreadNo;
     unsigned int layerNumber;
     LONGLONG statesProcessed;
-    unsigned int statsValueCounter[SKV_NUM_VALUES];
+    unsigned int statsValueCounter[SKV_VALUE_COUNT];
     BufferedFile *bufferedFile;
     RetroAnalysisVars *retroVars;
     bool initAlreadyDone; // true if the initialization information is already
@@ -82,7 +82,7 @@ struct addSuccLayersVars
 {
     MiniMax *pMiniMax;
     unsigned int curThreadNo;
-    unsigned int statsValueCounter[SKV_NUM_VALUES];
+    unsigned int statsValueCounter[SKV_VALUE_COUNT];
     unsigned int layerNumber;
     RetroAnalysisVars *retroVars;
 };

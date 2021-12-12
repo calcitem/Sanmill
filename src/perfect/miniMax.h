@@ -83,7 +83,7 @@ enum SkvValue {
     SKV_MAX_VALUE = SKV_VALUE_GAME_WON,
 
     // number of different short knot values
-    SKV_NUM_VALUES = 4,
+    SKV_VALUE_COUNT = 4,
 };
 
 // four short knot values are stored in one byte. so all four knot values
@@ -106,7 +106,7 @@ enum PlayInfoValue {
 };
 
 // each layer must have at maximum two preceding layers
-constexpr auto MAX_NUM_PRED_LAYERS = 2;
+constexpr auto PRED_LAYER_COUNT_MAX = 2;
 
 // constant to identify the header
 constexpr auto SKV_FILE_HEADER_CODE = 0xF4F5;
@@ -120,7 +120,7 @@ constexpr auto OUTPUT_EVERY_N_STATES = 10000000;
 constexpr auto BLOCK_SIZE_IN_CYCLIC_ARRAY = 10000;
 
 // maximum number of predecessors. important for array sizes
-constexpr auto MAX_NUM_PREDECESSORS = 10000;
+constexpr auto PREDECESSOR_COUNT_MAX = 10000;
 
 // size in bytes
 constexpr auto FILE_BUFFER_SIZE = 1000000;
@@ -220,7 +220,7 @@ public:
         bool completed;
 
         // number of layers
-        unsigned int numLayers;
+        unsigned int LayerCount;
 
         // = SKV_FILE_HEADER_CODE
         unsigned int headerCode;
@@ -235,7 +235,7 @@ public:
         bool plyInfoCompleted;
 
         // number of layers
-        unsigned int numLayers;
+        unsigned int LayerCount;
 
         // = PLYINFO_HEADER_CODE
         unsigned int headerCode;
@@ -288,10 +288,10 @@ public:
 
         // number of succeeding layers. states of other layers are connected by
         // a move of a player
-        unsigned int numSuccLayers;
+        unsigned int succeedingLayerCount;
 
         // array containing the layer ids of the succeeding layers
-        unsigned int succLayers[MAX_NUM_PRED_LAYERS];
+        unsigned int succeedingLayers[PRED_LAYER_COUNT_MAX];
 
         // layer id relevant when switching current and opponent player
         unsigned int partnerLayer;
@@ -300,16 +300,16 @@ public:
         StateNumberVarType knotsInLayer;
 
         // number of won states in this layer
-        StateNumberVarType numWonStates;
+        StateNumberVarType wonStateCount;
 
         // number of lost states in this layer
-        StateNumberVarType numLostStates;
+        StateNumberVarType lostStateCount;
 
         // number of drawn states in this layer
-        StateNumberVarType numDrawnStates;
+        StateNumberVarType drawnStateCount;
 
         // number of invalid states in this layer
-        StateNumberVarType numInvalidStates;
+        StateNumberVarType invalidStateCount;
 
         // (knotsInLayer + 3) / 4
         unsigned int sizeInBytes;
@@ -339,7 +339,7 @@ public:
         TwoBit shortValue;       // Value of knot (for database)
         unsigned int bestMoveId; // for calling class
         unsigned int bestBranch; // branch with highest value
-        unsigned int numPossibilities; // number of branches
+        unsigned int possibilityCount; // number of branches
         PlyInfoVarType plyInfo;        // number of moves till win/lost
         Knot *branches;                // pointer to branches
     };
@@ -365,7 +365,7 @@ public:
         static const unsigned int arrayType_countArray = 2;
         static const unsigned int arrayType_plyInfos = 3;
         static const unsigned int arrayType_layerStats = 4;
-        static const unsigned int numArrayTypes = 5;
+        static const unsigned int arrayTypeCount = 5;
 
         static const unsigned int updateCounterThreshold = 100;
     };
@@ -384,7 +384,7 @@ public:
         // [itemIndex]
         list<ArrayInfo> listArrays;
 
-        // [layerNumber*ArrayInfo::numArrayTypes + type]
+        // [layerNumber*ArrayInfo::arrayTypeCount + type]
 
         vector<list<ArrayInfo>::iterator> vectorArrays;
 
@@ -411,13 +411,13 @@ public:
     // Statistics
     bool calcLayerStatistics(char *statisticsFileName);
     void showMemoryStatus();
-    unsigned int getNumThreads();
+    unsigned int getThreadCount();
     bool anyFreshlyCalculatedLayer();
     unsigned int getLastCalculatedLayer();
-    StateNumberVarType getNumWonStates(unsigned int layerNum);
-    StateNumberVarType getNumLostStates(unsigned int layerNum);
-    StateNumberVarType getNumDrawnStates(unsigned int layerNum);
-    StateNumberVarType getNumInvalidStates(unsigned int layerNum);
+    StateNumberVarType getWonStateCount(unsigned int layerNum);
+    StateNumberVarType getLostStateCount(unsigned int layerNum);
+    StateNumberVarType getDrawnStateCount(unsigned int layerNum);
+    StateNumberVarType getInvalidStateCount(unsigned int layerNum);
     bool isLayerInDatabase(unsigned int layerNum);
     int64_t getLayerSizeInBytes(unsigned int layerNum);
     void setOutputStream(ostream *theStream, void (*printFunc)(void *pUserData),
@@ -429,11 +429,11 @@ public:
 
     // Main function for getting the best choice
     void *getBestChoice(unsigned int tilLevel, unsigned int *choice,
-                        unsigned int maximumNumberOfBranches);
+                        unsigned int branchCountMax);
 
     // Database functions
     bool openDatabase(const char *directory,
-                      unsigned int maximumNumberOfBranches);
+                      unsigned int branchCountMax);
     void calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLayer);
     bool isCurrentStateInDatabase(unsigned int threadNo);
     void closeDatabase();
@@ -451,7 +451,7 @@ public:
     }; // is called once before building the tree
 
     virtual unsigned int *getPossibilities(unsigned int threadNo,
-                                           unsigned int *numPossibilities,
+                                           unsigned int *possibilityCount,
                                            bool *opponentsMove,
                                            void **pPossibilities)
     {
@@ -509,7 +509,7 @@ public:
 
     virtual void getSuccLayers(unsigned int layerNum,
                                unsigned int *amountOfSuccLayers,
-                               unsigned int *succLayers)
+                               unsigned int *succeedingLayers)
     {
         while (true) {
         }
@@ -573,7 +573,7 @@ public:
     };
 
     virtual void getSymStateNumWithDoubles(unsigned int threadNo,
-                                           unsigned int *numSymmetricStates,
+                                           unsigned int *nSymmetricStates,
                                            unsigned int **symStateNumbers)
     {
         while (true) {
@@ -636,7 +636,7 @@ private:
     struct AlphaBetaThreadVars
     {
         // thread specific variables for each thread in the alpha beta algorithm
-        int64_t numStatesToProcess;
+        int64_t stateToProcessCount;
 
         unsigned int threadNo;
     };
@@ -648,30 +648,30 @@ private:
         unsigned int layerNumber;
 
         // total numbers of knots which have to be stored in memory
-        int64_t totalNumKnots;
+        int64_t totalKnotCount;
 
         // number of knots of all layers to be calculated
-        int64_t numKnotsToCalc;
+        int64_t knotToCalcCount;
 
         vector<AlphaBetaThreadVars> thread;
-        unsigned int statsValueCounter[SKV_NUM_VALUES];
+        unsigned int statsValueCounter[SKV_VALUE_COUNT];
         MiniMax *pMiniMax;
 
         AlphaBetaGlobalVars(MiniMax *pMiniMax, unsigned int layerNumber)
         {
-            this->thread.resize(pMiniMax->threadManager.getNumThreads());
+            this->thread.resize(pMiniMax->threadManager.getThreadCount());
             for (unsigned int threadNo = 0;
-                 threadNo < pMiniMax->threadManager.getNumThreads();
+                 threadNo < pMiniMax->threadManager.getThreadCount();
                  threadNo++) {
-                this->thread[threadNo].numStatesToProcess = 0;
+                this->thread[threadNo].stateToProcessCount = 0;
                 this->thread[threadNo].threadNo = threadNo;
             }
             this->layerNumber = layerNumber;
             this->pMiniMax = pMiniMax;
             if (pMiniMax->layerStats) {
-                this->numKnotsToCalc = pMiniMax->layerStats[layerNumber]
+                this->knotToCalcCount = pMiniMax->layerStats[layerNumber]
                                            .knotsInLayer;
-                this->totalNumKnots = pMiniMax->layerStats[layerNumber]
+                this->totalKnotCount = pMiniMax->layerStats[layerNumber]
                                           .knotsInLayer;
             }
             this->statsValueCounter[SKV_VALUE_GAME_WON] = 0;
@@ -687,7 +687,7 @@ private:
         AlphaBetaGlobalVars *alphaBetaVars;
         unsigned int layerNumber;
         LONGLONG statesProcessed;
-        unsigned int statsValueCounter[SKV_NUM_VALUES];
+        unsigned int statsValueCounter[SKV_VALUE_COUNT];
 
         AlphaBetaDefaultThreadVars() { }
 
@@ -699,7 +699,7 @@ private:
             this->layerNumber = layerNumber;
             this->pMiniMax = pMiniMax;
             this->alphaBetaVars = alphaBetaVars;
-            for (unsigned int curStateValue = 0; curStateValue < SKV_NUM_VALUES;
+            for (unsigned int curStateValue = 0; curStateValue < SKV_VALUE_COUNT;
                  curStateValue++) {
                 this->statsValueCounter[curStateValue] = 0;
             }
@@ -707,8 +707,8 @@ private:
 
         void reduceDefault()
         {
-            pMiniMax->numStatesProcessed += this->statesProcessed;
-            for (unsigned int curStateValue = 0; curStateValue < SKV_NUM_VALUES;
+            pMiniMax->stateProcessedCount += this->statesProcessed;
+            for (unsigned int curStateValue = 0; curStateValue < SKV_VALUE_COUNT;
                  curStateValue++) {
                 alphaBetaVars->statsValueCounter[curStateValue] +=
                     this->statsValueCounter[curStateValue];
@@ -786,7 +786,7 @@ private:
         StateNumberVarType stateNumber;
 
         // ply number for the stored state
-        PlyInfoVarType numPliesTillCurState;
+        PlyInfoVarType plyTillCurStateCount;
     };
 
     // thread specific variables for each thread in the retro analysis
@@ -803,7 +803,7 @@ private:
         vector<vector<RetroAnalysisQueueState>> stateQueue;
 
         // Number of states in 'statesToProcess' which have to be processed
-        int64_t numStatesToProcess;
+        int64_t stateToProcessCount;
 
         unsigned int threadNo;
     };
@@ -821,13 +821,13 @@ private:
         vector<unsigned int> layersToCalculate;
 
         // total numbers of knots which have to be stored in memory
-        int64_t totalNumKnots;
+        int64_t totalKnotCount;
 
         // number of knots of all layers to be calculated
-        int64_t numKnotsToCalc;
+        int64_t knotToCalcCount;
 
         vector<RetroAnalysisThreadVars> thread;
-        unsigned int statsValueCounter[SKV_NUM_VALUES];
+        unsigned int statsValueCounter[SKV_VALUE_COUNT];
         MiniMax *pMiniMax;
     };
 
@@ -837,7 +837,7 @@ private:
         retroAnalysisGlobalVars *retroVars;
         unsigned int layerNumber;
         LONGLONG statesProcessed;
-        unsigned int statsValueCounter[SKV_NUM_VALUES];
+        unsigned int statsValueCounter[SKV_VALUE_COUNT];
 
         RetroAnalysisDefaultThreadVars() { }
 
@@ -849,7 +849,7 @@ private:
             this->layerNumber = layerNumber;
             this->pMiniMax = pMiniMax;
             this->retroVars = retroVars;
-            for (unsigned int curStateValue = 0; curStateValue < SKV_NUM_VALUES;
+            for (unsigned int curStateValue = 0; curStateValue < SKV_VALUE_COUNT;
                  curStateValue++) {
                 this->statsValueCounter[curStateValue] = 0;
             }
@@ -857,8 +857,8 @@ private:
 
         void reduceDefault()
         {
-            pMiniMax->numStatesProcessed += this->statesProcessed;
-            for (unsigned int curStateValue = 0; curStateValue < SKV_NUM_VALUES;
+            pMiniMax->stateProcessedCount += this->statesProcessed;
+            for (unsigned int curStateValue = 0; curStateValue < SKV_VALUE_COUNT;
                  curStateValue++) {
                 retroVars->statsValueCounter[curStateValue] +=
                     this->statsValueCounter[curStateValue];
@@ -895,7 +895,7 @@ private:
     struct AddNumSucceedersVars : public ThreadManager::ThreadVarsArrayItem,
                                   public RetroAnalysisDefaultThreadVars
     {
-        RetroAnalysisPredVars predVars[MAX_NUM_PREDECESSORS];
+        RetroAnalysisPredVars predVars[PREDECESSOR_COUNT_MAX];
 
         AddNumSucceedersVars() { }
 
@@ -976,7 +976,7 @@ private:
     // ...
     LONGLONG memoryUsed2 = 0;
 
-    LONGLONG numStatesProcessed = 0;
+    LONGLONG stateProcessedCount = 0;
 
     // maximum number of branches/moves
     unsigned int maxNumBranches = 0;
@@ -1016,16 +1016,16 @@ private:
     // database I/O operations per second
 
     // number of read operations done since start of the program
-    int64_t numReadSkvOperations = 0;
+    int64_t nReadSkvOperations = 0;
 
     // number of write operations done since start of the program
-    int64_t numWriteSkvOperations = 0;
+    int64_t nWriteSkvOperations = 0;
 
     // number of read operations done since start of the program
-    int64_t numReadPlyOperations = 0;
+    int64_t nReadPlyOperations = 0;
 
     // number of write operations done since start of the program
-    int64_t numWritePlyOperations = 0;
+    int64_t nWritePlyOperations = 0;
 
     // time of interval for read operations
     LARGE_INTEGER readSkvInterval;
@@ -1040,7 +1040,7 @@ private:
      * ************************************************************************/
 
     // database functions
-    void openSkvFile(const char *path, unsigned int maximumNumberOfBranches);
+    void openSkvFile(const char *path, unsigned int branchCountMax);
     void openPlyInfoFile(const char *path);
     bool calcLayer(unsigned int layerNumber);
     void unloadPlyInfo(unsigned int layerNumber);
@@ -1061,12 +1061,12 @@ private:
                                  unsigned int stateNumber, TwoBit knotValue);
     void savePlyInfoInDatabase(unsigned int layerNumber,
                                unsigned int stateNumber, PlyInfoVarType value);
-    void loadBytesFromFile(HANDLE hFile, int64_t offset, unsigned int numBytes,
+    void loadBytesFromFile(HANDLE hFile, int64_t offset, unsigned int nBytes,
                            void *pBytes);
-    void saveBytesToFile(HANDLE hFile, int64_t offset, unsigned int numBytes,
+    void saveBytesToFile(HANDLE hFile, int64_t offset, unsigned int nBytes,
                          void *pBytes);
     void saveLayerToFile(unsigned int layerNumber);
-    inline void measureIops(int64_t &numOperations, LARGE_INTEGER &interval,
+    inline void measureIops(int64_t &nOperations, LARGE_INTEGER &interval,
                             LARGE_INTEGER &curTimeBefore, char text[]);
 
     // Testing functions

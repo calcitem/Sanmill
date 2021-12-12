@@ -39,7 +39,7 @@ bool MiniMax::calcKnotValuesByAlphaBeta(unsigned int layerNumber)
         return false;
     }
 
-    // update layerStats[].numWonStates, etc.
+    // update layerStats[].wonStateCount, etc.
     PRINT(2, this, "  Bytes in memory: " << memoryUsed2 << endl);
     showLayerStats(layerNumber);
 
@@ -58,7 +58,7 @@ void MiniMax::alphaBetaSaveInDatabase(unsigned int threadNo,
 {
     // locals
     unsigned int *symStateNumbers = nullptr;
-    unsigned int numSymmetricStates;
+    unsigned int symmetricStateCount;
     unsigned int sysStateNumber;
     unsigned int i;
 
@@ -71,14 +71,14 @@ void MiniMax::alphaBetaSaveInDatabase(unsigned int threadNo,
         knotValue = skvPerspectiveMatrix[knotValue][PL_TO_MOVE_UNCHANGED];
 
     // get numbers of symmetric states
-    getSymStateNumWithDoubles(threadNo, &numSymmetricStates, &symStateNumbers);
+    getSymStateNumWithDoubles(threadNo, &symmetricStateCount, &symStateNumbers);
 
     // save
     saveKnotValueInDatabase(layerNumber, stateNumber, knotValue);
     savePlyInfoInDatabase(layerNumber, stateNumber, plyValue);
 
     // save value for all symmetric states
-    for (i = 0; i < numSymmetricStates; i++) {
+    for (i = 0; i < symmetricStateCount; i++) {
         // get state number
         sysStateNumber = symStateNumbers[i];
 
@@ -128,7 +128,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 
     // does initialization file exist ?
     CreateDirectoryA(ssInvArrayDirectory.str().c_str(), nullptr);
-    invalidArray = new BufferedFile(threadManager.getNumThreads(),
+    invalidArray = new BufferedFile(threadManager.getThreadCount(),
                                     FILE_BUFFER_SIZE,
                                     ssInvArrayFilePath.str().c_str());
 
@@ -141,13 +141,13 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     }
 
     // prepare parameters
-    numStatesProcessed = 0;
+    stateProcessedCount = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_WON] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_LOST] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_DRAWN] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_INVALID] = 0;
     ThreadManager::ThreadVarsArray<InitAlphaBetaVars> tva(
-        threadManager.getNumThreads(),
+        threadManager.getThreadCount(),
         (InitAlphaBetaVars &)InitAlphaBetaVars(this, &alphaBetaVars,
                                                alphaBetaVars.layerNumber,
                                                invalidArray, initAlreadyDone));
@@ -179,7 +179,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 
     // reduce and delete thread specific data
     tva.reduce();
-    if (numStatesProcessed <
+    if (stateProcessedCount <
         layerStats[alphaBetaVars.layerNumber].knotsInLayer) {
         SAFE_DELETE(invalidArray);
         return falseOrStop();
@@ -230,10 +230,10 @@ DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, unsigned int index)
 
     // print status
     if (iabVars->statesProcessed % OUTPUT_EVERY_N_STATES == 0) {
-        m->numStatesProcessed += OUTPUT_EVERY_N_STATES;
+        m->stateProcessedCount += OUTPUT_EVERY_N_STATES;
         PRINT(2, m,
               "Already initialized "
-                  << m->numStatesProcessed << " of "
+                  << m->stateProcessedCount << " of "
                   << m->layerStats[curState.layerNumber].knotsInLayer
                   << " states");
     }
@@ -303,13 +303,13 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     PRINT(1, this,
           "  Calculate layer " << alphaBetaVars.layerNumber
                                << " with function letTheTreeGrow():");
-    numStatesProcessed = 0;
+    stateProcessedCount = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_WON] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_LOST] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_DRAWN] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_INVALID] = 0;
     ThreadManager::ThreadVarsArray<RunAlphaBetaVars> tva(
-        threadManager.getNumThreads(),
+        threadManager.getThreadCount(),
         (RunAlphaBetaVars &)RunAlphaBetaVars(this, &alphaBetaVars,
                                              alphaBetaVars.layerNumber));
 
@@ -339,7 +339,7 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 
     // reduce and delete thread specific data
     tva.reduce();
-    if (numStatesProcessed < layerStats[alphaBetaVars.layerNumber].knotsInLayer)
+    if (stateProcessedCount < layerStats[alphaBetaVars.layerNumber].knotsInLayer)
         return falseOrStop();
 
     // show statistics
@@ -378,9 +378,9 @@ DWORD MiniMax::runAlphaBetaThreadProc(void *pParameter, unsigned int index)
 
     // print status
     if (rabVars->statesProcessed % OUTPUT_EVERY_N_STATES == 0) {
-        m->numStatesProcessed += OUTPUT_EVERY_N_STATES;
+        m->stateProcessedCount += OUTPUT_EVERY_N_STATES;
         PRINT(2, m,
-              "  Processed " << m->numStatesProcessed << " of "
+              "  Processed " << m->stateProcessedCount << " of "
                              << m->layerStats[curState.layerNumber].knotsInLayer
                              << " states");
     }
@@ -425,7 +425,7 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars,
     // standard values
     knot->branches =
         &rabVars->branchArray[(depthOfFullTree - tilLevel) * maxNumBranches];
-    knot->numPossibilities = 0;
+    knot->possibilityCount = 0;
     knot->bestBranch = 0;
     knot->bestMoveId = 0;
     knot->isOpponentLevel = getOpponentLevel(rabVars->curThreadNo);
@@ -457,12 +457,12 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars,
 
         // get number of possibilities
         idPossibility = getPossibilities(rabVars->curThreadNo,
-                                         &knot->numPossibilities,
+                                         &knot->possibilityCount,
                                          &knot->isOpponentLevel,
                                          &pPossibilities);
 
         // unable to move
-        if (knot->numPossibilities == 0) {
+        if (knot->possibilityCount == 0) {
             // if unable to move a final state is reached
             knot->plyInfo = 0;
             getValueOfSituation(rabVars->curThreadNo, knot->floatValue,
@@ -605,7 +605,7 @@ void MiniMax::alphaBetaTryPossibilities(Knot *knot, RunAlphaBetaVars *rabVars,
     void *pBackup;
     unsigned int curPoss;
 
-    for (curPoss = 0; curPoss < knot->numPossibilities; curPoss++) {
+    for (curPoss = 0; curPoss < knot->possibilityCount; curPoss++) {
         // output
         if (tilLevel == depthOfFullTree && !calcDatabase) {
             printMoveInformation(rabVars->curThreadNo, idPossibility[curPoss],
@@ -675,14 +675,14 @@ void MiniMax::alphaBetaTryPossibilities(Knot *knot, RunAlphaBetaVars *rabVars,
         // alpha beta algorithm
         if (!knot->isOpponentLevel) {
             if (knot->branches[curPoss].floatValue >= beta) {
-                knot->numPossibilities = curPoss + 1;
+                knot->possibilityCount = curPoss + 1;
                 break;
             } else if (knot->branches[curPoss].floatValue > alpha) {
                 alpha = knot->branches[curPoss].floatValue;
             }
         } else {
             if (knot->branches[curPoss].floatValue <= alpha) {
-                knot->numPossibilities = curPoss + 1;
+                knot->possibilityCount = curPoss + 1;
                 break;
             } else if (knot->branches[curPoss].floatValue < beta) {
                 beta = knot->branches[curPoss].floatValue;
@@ -711,7 +711,7 @@ void MiniMax::alphaBetaCalcKnotValue(Knot *knot)
 
     // opponent tries to minimize the value
     if (knot->isOpponentLevel) {
-        for (i = 1; i < knot->numPossibilities; i++) {
+        for (i = 1; i < knot->possibilityCount; i++) {
             // version 21: it should be impossible that knot->shortValue is
             // equal SKV_VALUE_INVALID
             if (/* knot->shortValue != SKV_VALUE_INVALID && */ knot->branches[i]
@@ -722,7 +722,7 @@ void MiniMax::alphaBetaCalcKnotValue(Knot *knot)
         }
         // maximize the value
     } else {
-        for (i = 1; i < knot->numPossibilities; i++) {
+        for (i = 1; i < knot->possibilityCount; i++) {
             if (/* knot->shortValue != SKV_VALUE_INVALID && */ knot->branches[i]
                     .floatValue > maxValue) {
                 maxValue = knot->branches[i].floatValue;
@@ -766,7 +766,7 @@ void MiniMax::alphaBetaCalcPlyInfo(Knot *knot)
 
         // when current knot is a won state
         if (shortKnotValue == SKV_VALUE_GAME_WON) {
-            for (i = 0; i < knot->numPossibilities; i++) {
+            for (i = 0; i < knot->possibilityCount; i++) {
                 // invert knot value if necessary
                 shortKnotValue =
                     (knot->branches[i].isOpponentLevel) ?
@@ -792,7 +792,7 @@ void MiniMax::alphaBetaCalcPlyInfo(Knot *knot)
 
             // current state is a lost state
         } else {
-            for (i = 0; i < knot->numPossibilities; i++) {
+            for (i = 0; i < knot->possibilityCount; i++) {
                 // invert knot value if necessary
                 shortKnotValue =
                     (knot->branches[i].isOpponentLevel) ?
@@ -834,7 +834,7 @@ void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars,
 {
     // locals
     float dif;
-    unsigned int numBestChoices = 0;
+    unsigned int nBestChoices = 0;
     unsigned int *bestBranches = new unsigned int[maxNumBranches];
     unsigned int i;
     unsigned int maxBranch;
@@ -842,7 +842,7 @@ void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars,
     // select randomly one of the best moves, if they are equivalent
     if (tilLevel == depthOfFullTree && !calcDatabase) {
         // check every possible move
-        for (numBestChoices = 0, i = 0; i < knot->numPossibilities; i++) {
+        for (nBestChoices = 0, i = 0; i < knot->possibilityCount; i++) {
             // use information in database
             if (layerInDatabase && hFileShortKnotValues != nullptr) {
                 // selected move with equal knot value
@@ -851,15 +851,15 @@ void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars,
                     if (knot->shortValue == SKV_VALUE_GAME_DRAWN) {
                         if (maxWonfreqValuesSubMoves ==
                             rabVars->freqValuesSubMovesBranchWon[i]) {
-                            bestBranches[numBestChoices] = i;
-                            numBestChoices++;
+                            bestBranches[nBestChoices] = i;
+                            nBestChoices++;
                         }
 
                         // best move lead to lost or won state
                     } else {
                         if (knot->plyInfo == knot->branches[i].plyInfo + 1) {
-                            bestBranches[numBestChoices] = i;
-                            numBestChoices++;
+                            bestBranches[nBestChoices] = i;
+                            nBestChoices++;
                         }
                     }
                 }
@@ -868,15 +868,15 @@ void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars,
                 dif = knot->branches[i].floatValue - knot->floatValue;
                 dif = (dif > 0) ? dif : -1.0f * dif;
                 if (dif < FPKV_THRESHOLD) {
-                    bestBranches[numBestChoices] = i;
-                    numBestChoices++;
+                    bestBranches[nBestChoices] = i;
+                    nBestChoices++;
                 }
             }
         }
     }
 
     // set value
-    maxBranch = (numBestChoices ? bestBranches[rand() % numBestChoices] : 0);
+    maxBranch = (nBestChoices ? bestBranches[rand() % nBestChoices] : 0);
     knot->bestMoveId = idPossibility[maxBranch];
     knot->bestBranch = maxBranch;
     SAFE_DELETE_ARRAY(bestBranches);

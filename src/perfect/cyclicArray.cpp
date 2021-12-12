@@ -18,11 +18,11 @@
 // the cyclic array.
 //-----------------------------F------------------------------------------------
 CyclicArray::CyclicArray(unsigned int blockSizeInBytes,
-                         unsigned int numberOfBlocks, const char *fileName)
+                         unsigned int nBlocks, const char *fileName)
 {
     // Init blocks
     blockSize = blockSizeInBytes;
-    numBlocks = numberOfBlocks;
+    blockCount = nBlocks;
     readingBlock = new unsigned char[blockSize];
     writingBlock = new unsigned char[blockSize];
     curReadingPointer = writingBlock;
@@ -123,13 +123,13 @@ void CyclicArray::readDataFromFile(HANDLE fd, int64_t offset,
 //       the data of the whole block is written to the file and the next block
 //       is considered for writing.
 //-----------------------------------------------------------------------------
-bool CyclicArray::addBytes(unsigned int numBytes, unsigned char *pData)
+bool CyclicArray::addBytes(unsigned int nBytes, unsigned char *pData)
 {
     // locals
     unsigned int bytesWritten = 0;
 
     // write each byte
-    while (bytesWritten < numBytes) {
+    while (bytesWritten < nBytes) {
         // store byte in current reading block
         *curWritingPointer = *pData;
         curWritingPointer++;
@@ -156,7 +156,7 @@ bool CyclicArray::addBytes(unsigned int numBytes, unsigned char *pData)
 
             // set pointer to beginning of writing block
             curWritingPointer = writingBlock;
-            curWritingBlock = (curWritingBlock + 1) % numBlocks;
+            curWritingBlock = (curWritingBlock + 1) % blockCount;
 
             if (curWritingBlock == 0)
                 readWriteInSameRound = false;
@@ -186,13 +186,13 @@ bool CyclicArray::bytesAvailable()
 // block,
 //       the data of the next whole block is read from the file.
 //-----------------------------------------------------------------------------
-bool CyclicArray::takeBytes(unsigned int numBytes, unsigned char *pData)
+bool CyclicArray::takeBytes(unsigned int nBytes, unsigned char *pData)
 {
     // locals
     unsigned int bytesRead = 0;
 
     // read each byte
-    while (bytesRead < numBytes) {
+    while (bytesRead < nBytes) {
         // was current reading byte already written ?
         if (curReadingBlock == curWritingBlock &&
             curReadingPointer == curWritingPointer && readWriteInSameRound)
@@ -207,7 +207,7 @@ bool CyclicArray::takeBytes(unsigned int numBytes, unsigned char *pData)
         // load next block?
         if (curReadingPointer == readingBlock + blockSize) {
             // go to next block
-            curReadingBlock = (curReadingBlock + 1) % numBlocks;
+            curReadingBlock = (curReadingBlock + 1) % blockCount;
             if (curReadingBlock == 0)
                 readWriteInSameRound = true;
 
@@ -236,18 +236,18 @@ bool CyclicArray::takeBytes(unsigned int numBytes, unsigned char *pData)
 //       The passed filename must be different than the passed filename to the
 //       constructor cyclicarray().
 //-----------------------------------------------------------------------------
-bool CyclicArray::loadFile(const char *fileName, LONGLONG &numBytesLoaded)
+bool CyclicArray::loadFile(const char *fileName, LONGLONG &nBytesLoaded)
 {
     // locals
     HANDLE hLoadFile;
     unsigned char *dataInFile;
     LARGE_INTEGER largeInt;
-    LONGLONG maxFileSize = ((LONGLONG)blockSize) * ((LONGLONG)numBlocks);
+    LONGLONG maxFileSize = ((LONGLONG)blockSize) * ((LONGLONG)blockCount);
     LONGLONG curOffset = 0;
-    unsigned int numBlocksInFile;
+    unsigned int nblocksInFile;
     unsigned int curBlock;
-    unsigned int numBytesInLastBlock;
-    numBytesLoaded = 0;
+    unsigned int nBytesInLastBlock;
+    nBytesLoaded = 0;
 
     // cyclic array file must be open
     if (hFile == nullptr)
@@ -278,15 +278,15 @@ bool CyclicArray::loadFile(const char *fileName, LONGLONG &numBytesLoaded)
     curReadingBlock = 0;
     curWritingBlock = 0;
 
-    numBlocksInFile = (unsigned int)(largeInt.QuadPart /
+    nblocksInFile = (unsigned int)(largeInt.QuadPart /
                                      ((LONGLONG)blockSize)) +
                       1;
-    numBytesInLastBlock = (unsigned int)(largeInt.QuadPart %
+    nBytesInLastBlock = (unsigned int)(largeInt.QuadPart %
                                          ((LONGLONG)blockSize));
     dataInFile = new unsigned char[blockSize];
 
     //
-    for (curBlock = 0; curBlock < numBlocksInFile - 1;
+    for (curBlock = 0; curBlock < nblocksInFile - 1;
          curBlock++, curOffset += blockSize) {
         // load data from file
         readDataFromFile(hLoadFile, curOffset, blockSize, dataInFile);
@@ -296,10 +296,10 @@ bool CyclicArray::loadFile(const char *fileName, LONGLONG &numBytesLoaded)
     }
 
     // last block
-    readDataFromFile(hLoadFile, curOffset, numBytesInLastBlock, dataInFile);
-    addBytes(numBytesInLastBlock, dataInFile);
-    curOffset += numBytesInLastBlock;
-    numBytesLoaded = curOffset;
+    readDataFromFile(hLoadFile, curOffset, nBytesInLastBlock, dataInFile);
+    addBytes(nBytesInLastBlock, dataInFile);
+    curOffset += nBytesInLastBlock;
+    nBytesLoaded = curOffset;
 
     // everything ok
     delete[] dataInFile;
@@ -372,7 +372,7 @@ bool CyclicArray::saveFile(const char *fileName)
         if (curBlock == curWritingBlock)
             break;
         else
-            curBlock = (curBlock + 1) % numBlocks;
+            curBlock = (curBlock + 1) % blockCount;
     } while (true);
 
     // everything ok

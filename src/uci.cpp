@@ -164,7 +164,7 @@ void UCI::loop(int argc, char *argv[])
     string token, cmd;
 
 #ifdef _MSC_VER
-    switch (rule.piecesCount) {
+    switch (rule.pieceCount) {
     case 9:
         strncpy_s(StartFEN, BUFSIZ, StartFEN9, BUFSIZ - 1);
         break;
@@ -182,7 +182,7 @@ void UCI::loop(int argc, char *argv[])
         break;
     }
 #else
-    switch (rule.piecesCount) {
+    switch (rule.pieceCount) {
     case 9:
         strncpy(StartFEN, StartFEN9, BUFSIZ - 1);
         break;
