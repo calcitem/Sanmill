@@ -39,6 +39,7 @@ class _Board extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const padding = AppTheme.boardPadding;
+    final _prefs = LocalDatabaseService.preferences;
 
     final customPaint = AnimatedBuilder(
       animation: animation,
@@ -55,7 +56,9 @@ class _Board extends StatelessWidget {
           child: child,
         );
       },
-      child: EnvironmentConfig.devMode ? const _DevGrid() : null,
+      child: EnvironmentConfig.devMode || _prefs.screenReaderSupport
+          ? const _BoardNotation()
+          : null,
     );
 
     final boardContainer = Container(
@@ -105,8 +108,8 @@ class _Board extends StatelessWidget {
   }
 }
 
-class _DevGrid extends StatelessWidget {
-  const _DevGrid({Key? key}) : super(key: key);
+class _BoardNotation extends StatelessWidget {
+  const _BoardNotation({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +126,8 @@ class _DevGrid extends StatelessWidget {
           child: Text(
             _squareDesc[index],
             style: const TextStyle(
-              color: Colors.red,
+              color:
+                  EnvironmentConfig.devMode ? Colors.red : Colors.transparent,
             ),
           ),
         ),
