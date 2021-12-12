@@ -44,7 +44,7 @@ int perfect_main(void)
     char ch[100];
     unsigned int from, to;
     mill = new Mill();
-    ai = new PerfectAI(databaseDirectory);
+    ai = new PerfectAI(PERFECT_AI_DATABASE_DIR);
 
     SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS);
     srand(GetTickCount64());
@@ -54,7 +54,7 @@ int perfect_main(void)
     cout << "* Muehle                *" << endl;
     cout << "*************************" << endl << endl;
 
-    ai->setDatabasePath(databaseDirectory);
+    ai->setDatabasePath(PERFECT_AI_DATABASE_DIR);
 
     // begin
 #ifdef SELF_PLAY

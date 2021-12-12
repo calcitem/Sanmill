@@ -67,6 +67,7 @@
 #endif
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI
 #define MADWEASEL_MUEHLE_RULE
+#define PERFECT_AI_DATABASE_DIR "D:\\Muehle\\Muehle"
 #endif
 #endif
 #endif
