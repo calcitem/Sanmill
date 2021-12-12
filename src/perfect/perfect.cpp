@@ -25,8 +25,8 @@ int perfect_init(void)
     }
 
     mill = new Mill();
-    ai = new PerfectAI(databaseDirectory);
-    ai->setDatabasePath(databaseDirectory);
+    ai = new PerfectAI(PERFECT_AI_DATABASE_DIR);
+    ai->setDatabasePath(PERFECT_AI_DATABASE_DIR);
     mill->beginNewGame(ai, ai, fieldStruct::playerOne);
 
     return 0;

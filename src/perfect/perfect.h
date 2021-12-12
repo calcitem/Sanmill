@@ -13,8 +13,6 @@
 #include "perfectAI.h"
 #include "types.h"
 
-static const char databaseDirectory[] = "D:\\Muehle\\Muehle";
-
 extern Mill *mill;
 extern PerfectAI *ai;
 
