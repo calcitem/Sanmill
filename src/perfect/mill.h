@@ -69,7 +69,7 @@ private:
     // Functions
     void exit();
     void setNextPlayer();
-    void calcPossibleMoves(Player *player);
+    void generateMoves(Player *player);
     void updateMillsAndWarnings(unsigned int newPiece);
     bool isNormalMovePossible(unsigned int from, unsigned int to,
                               Player *player);

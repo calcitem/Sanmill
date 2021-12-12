@@ -255,7 +255,7 @@ protected:
         bool fieldIntegrityOK(unsigned int nMillsCurrentPlayer,
                               unsigned int nMillsOpponentPlayer,
                               bool aPieceCanBeRemovedFromCurPlayer);
-        void calcPossibleMoves(Player *player);
+        void generateMoves(Player *player);
         void storePredecessor(unsigned int nMillsCurrentPlayer,
                               unsigned int nMillsOpponentPlayer,
                               unsigned int *amountOfPred,
