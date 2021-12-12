@@ -469,12 +469,9 @@
     <ClInclude Include="src\perfect\mill.h" />
     <ClInclude Include="src\perfect\millAI.h" />
     <ClInclude Include="src\perfect\miniMax.h" />
-    <ClInclude Include="src\perfect\miniMaxAI.h" />
-    <ClInclude Include="src\perfect\miniMaxWin.h" />
     <ClInclude Include="src\perfect\miniMax_retroAnalysis.h" />
     <ClInclude Include="src\perfect\perfect.h" />
     <ClInclude Include="src\perfect\perfectAI.h" />
-    <ClInclude Include="src\perfect\randomAI.h" />
     <ClInclude Include="src\perfect\strLib.h" />
     <ClInclude Include="src\perfect\threadManager.h" />
     <ClInclude Include="src\search.h" />
@@ -746,11 +743,9 @@
     <ClCompile Include="src\perfect\miniMax_retroAnalysis.cpp" />
     <ClCompile Include="src\perfect\miniMax_statistics.cpp" />
     <ClCompile Include="src\perfect\miniMax_test.cpp" />
-    <ClCompile Include="src\perfect\minMaxAI.cpp" />
     <ClCompile Include="src\perfect\perfect.cpp" />
     <ClCompile Include="src\perfect\perfectAI.cpp" />
     <ClCompile Include="src\perfect\perfect_test.cpp" />
-    <ClCompile Include="src\perfect\randomAI.cpp" />
     <ClCompile Include="src\perfect\strLib.cpp" />
     <ClCompile Include="src\perfect\threadManager.cpp" />
     <ClCompile Include="src\search.cpp" />
