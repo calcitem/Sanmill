@@ -118,21 +118,11 @@ typedef uint32_t Bitboard;
 constexpr int MAX_MOVES = 72; // (24 - 4 - 3) * 4 = 68
 constexpr int MAX_PLY = 48;
 
-enum Move : int32_t
-{
-    MOVE_NONE,
-    MOVE_NULL = 65
-};
+enum Move : int32_t { MOVE_NONE, MOVE_NULL = 65 };
 
-enum MoveType
-{
-    MOVETYPE_PLACE,
-    MOVETYPE_MOVE,
-    MOVETYPE_REMOVE
-};
+enum MoveType { MOVETYPE_PLACE, MOVETYPE_MOVE, MOVETYPE_REMOVE };
 
-enum Color : uint8_t
-{
+enum Color : uint8_t {
     NOCOLOR = 0,
     WHITE = 1,
     BLACK = 2,
@@ -141,14 +131,7 @@ enum Color : uint8_t
     NOBODY = 8
 };
 
-enum class Phase : uint16_t
-{
-    none,
-    ready,
-    placing,
-    moving,
-    gameOver
-};
+enum class Phase : uint16_t { none, ready, placing, moving, gameOver };
 
 // enum class that represents an action that one player can take when it's
 // his turn at the board. The can be on of the following:
@@ -159,16 +142,9 @@ enum class Phase : uint16_t
 //       - 'Jump' a piece to any empty location if the player has less than
 //         three or four pieces and mayFly is |true|;
 //   - Remove an opponent's piece after successfully closing a mill.
-enum class Action : uint16_t
-{
-    none,
-    select,
-    place,
-    remove
-};
+enum class Action : uint16_t { none, select, place, remove };
 
-enum class GameOverReason
-{
+enum class GameOverReason {
     none,
 
     // A player wins by reducing the opponent to two pieces
@@ -187,16 +163,14 @@ enum class GameOverReason
     drawBoardIsFull,
 };
 
-enum Bound : uint8_t
-{
+enum Bound : uint8_t {
     BOUND_NONE,
     BOUND_UPPER,
     BOUND_LOWER,
     BOUND_EXACT = BOUND_UPPER | BOUND_LOWER
 };
 
-enum Value : int8_t
-{
+enum Value : int8_t {
     VALUE_ZERO = 0,
     VALUE_DRAW = 0,
 #ifdef ENDGAME_LEARNING
@@ -230,8 +204,7 @@ enum Value : int8_t
     VALUE_MOVING_WINDOW = VALUE_EACH_PIECE_MOVING_NEEDREMOVE + 1,
 };
 
-enum Rating : int8_t
-{
+enum Rating : int8_t {
     RATING_ZERO = 0,
 
     RATING_BLOCK_ONE_MILL = 10,
@@ -257,8 +230,7 @@ enum Rating : int8_t
     RATING_MAX = INT8_MAX,
 };
 
-enum PieceType : uint16_t
-{
+enum PieceType : uint16_t {
     NO_PIECE_TYPE = 0,
     WHITE_STONE = 1,
     BLACK_STONE = 2,
@@ -270,8 +242,7 @@ enum PieceType : uint16_t
     ON_BOARD = 0x20,
 };
 
-enum Piece : uint8_t
-{
+enum Piece : uint8_t {
     NO_PIECE = 0x00,
     BAN_STONE = 0x0F,
 
@@ -310,14 +281,9 @@ constexpr Value PieceValue = StoneValue;
 
 using Depth = int8_t;
 
-enum : int
-{
-    DEPTH_NONE = 0,
-    DEPTH_OFFSET = DEPTH_NONE
-};
+enum : int { DEPTH_NONE = 0, DEPTH_OFFSET = DEPTH_NONE };
 
-enum Square : int
-{
+enum Square : int {
     SQ_0 = 0,
     SQ_1 = 1,
     SQ_2 = 2,
@@ -397,8 +363,7 @@ enum Square : int
     SQ_END = SQ_32
 };
 
-enum MoveDirection : int
-{
+enum MoveDirection : int {
     MD_CLOCKWISE = 0,
     MD_BEGIN = MD_CLOCKWISE,
     MD_ANTICLOCKWISE = 1,
@@ -407,24 +372,16 @@ enum MoveDirection : int
     MD_NB = 4
 };
 
-enum LineDirection : int
-{
+enum LineDirection : int {
     LD_HORIZONTAL = 0,
     LD_VERTICAL = 1,
     LD_SLASH = 2,
     LD_NB = 3
 };
 
-enum File : int
-{
-    FILE_A = 1,
-    FILE_B,
-    FILE_C,
-    FILE_NB = 3
-};
+enum File : int { FILE_A = 1, FILE_B, FILE_C, FILE_NB = 3 };
 
-enum Rank : int
-{
+enum Rank : int {
     RANK_1 = 1,
     RANK_2,
     RANK_3,

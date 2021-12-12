@@ -67,11 +67,7 @@ private:
     std::vector<Entry> table = std::vector<Entry>(Size); // Allocate on the heap
 };
 
-enum SyncCout
-{
-    IO_LOCK,
-    IO_UNLOCK
-};
+enum SyncCout { IO_LOCK, IO_UNLOCK };
 
 std::ostream &operator<<(std::ostream &, SyncCout);
 

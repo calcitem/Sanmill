@@ -702,8 +702,8 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParameter, unsigned int index)
 
         do {
             curCountLong = *pCountValue;
-            countValue = (CountArrayVarType)((curCountLong & mask) >>
-                                             numBitsToShift);
+            long temp = (curCountLong & mask) >> numBitsToShift;
+            countValue = (CountArrayVarType)temp;
             if (countValue == 255) {
                 PRINT(0, m, "ERROR: maximum value for Count[] reached!");
                 return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
@@ -968,9 +968,10 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParameter)
 
                             do {
                                 curCountLong = *pCountValue;
-                                countValue = (CountArrayVarType)((curCountLong &
-                                                                  mask) >>
-                                                                 numBitsToShift);
+                                long temp = (curCountLong & mask) >>
+                                            numBitsToShift;
+                                countValue = (CountArrayVarType)temp;
+
                                 if (countValue > 0) {
                                     countValue--;
                                     newCountLong = (curCountLong & (~mask)) +

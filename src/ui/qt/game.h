@@ -51,8 +51,7 @@ using std::endl;
 using std::fixed;
 using std::map;
 
-enum class GameSound
-{
+enum class GameSound {
     none,
     blockMill,
     remove,
