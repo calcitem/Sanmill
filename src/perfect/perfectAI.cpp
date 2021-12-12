@@ -1147,7 +1147,7 @@ PerfectAI::ThreadVars::getPossNormalMove(unsigned int *numPossibilities,
     // if he is not allowed to spring
     if (field->curPlayer->numPieces > 3) {
         for ((*numPossibilities) = 0, from = 0; from < SQUARE_NB; from++) {
-            for (dir = 0; dir < 4; dir++) {
+            for (dir = 0; dir < MD_NB; dir++) {
                 // destination
                 to = field->connectedSquare[from][dir];
 
@@ -1406,7 +1406,7 @@ inline void PerfectAI::ThreadVars::updatePossibleMoves(unsigned int piece,
     unsigned int neighbor, direction;
 
     // look into every direction
-    for (direction = 0; direction < 4; direction++) {
+    for (direction = 0; direction < MD_NB; direction++) {
         neighbor = field->connectedSquare[piece][direction];
 
         // neighbor must exist
@@ -2230,7 +2230,7 @@ void PerfectAI::ThreadVars::calcPossibleMoves(Player *player)
             // piece
             if (player->numPieces > 3 || field->settingPhase) {
                 // determine moving direction
-                for (k = 0, movingDirection = 4; k < 4; k++)
+                for (k = 0, movingDirection = MD_NB; k < MD_NB; k++)
                     if (field->connectedSquare[i][k] == j)
                         movingDirection = k;
 
@@ -2723,7 +2723,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
                         continue;
 
                     // test each direction
-                    for (dir = 0; dir < 4; dir++) {
+                    for (dir = 0; dir < MD_NB; dir++) {
                         // origin
                         from = tv->field->connectedSquare[to][dir];
 

@@ -109,7 +109,7 @@ void fieldStruct::copyBoard(fieldStruct *destination)
         destination->warnings[i] = this->warnings[i];
         destination->piecePartOfMill[i] = this->piecePartOfMill[i];
 
-        for (j = 0; j < 4; j++) {
+        for (j = 0; j < MD_NB; j++) {
             destination->connectedSquare[i][j] = this->connectedSquare[i][j];
             destination->pieceMoveAble[i][j] = this->pieceMoveAble[i][j];
             destination->neighbour[i][j / 2][j % 2] =
@@ -173,10 +173,10 @@ void fieldStruct::createBoard()
         board[i] = squareIsFree;
         warnings[i] = noWarning;
         piecePartOfMill[i] = 0;
-        pieceMoveAble[i][0] = false;
-        pieceMoveAble[i][1] = false;
-        pieceMoveAble[i][2] = false;
-        pieceMoveAble[i][3] = false;
+        pieceMoveAble[i][MD_CLOCKWISE] = false;
+        pieceMoveAble[i][MD_ANTICLOCKWISE] = false;
+        pieceMoveAble[i][MD_INWARD] = false;
+        pieceMoveAble[i][MD_OUTWARD] = false;
     }
 
     // set connections

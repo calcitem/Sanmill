@@ -502,7 +502,7 @@ void Mill::calcPossibleMoves(Player *player)
 
     // pieceMoveAble
     for (i = 0; i < SQUARE_NB; i++) {
-        for (j = 0; j < 4; j++) {
+        for (j = 0; j < MD_NB; j++) {
             if (field.board[i] == player->id)
                 field.pieceMoveAble[i][j] = isNormalMovePossible(
                     i, field.connectedSquare[i][j], player);
