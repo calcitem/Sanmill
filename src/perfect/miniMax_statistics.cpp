@@ -216,8 +216,8 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
 
     // headline
     text += "layer number\t";
-    text += "white stones\t";
-    text += "black stones\t";
+    text += "white pieces\t";
+    text += "black pieces\t";
     text += "won states\t";
     text += "lost states\t";
     text += "draw states\t";

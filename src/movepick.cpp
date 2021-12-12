@@ -118,10 +118,10 @@ void MovePicker::score()
                 // cur->value += RATING_REMOVE_ONE_MILL * ourMillsCount;
 
                 if (theirPiecesCount == 0) {
-                    // if remove point nearby has no their stone, preferred.
+                    // if remove point nearby has no their piece, preferred.
                     cur->value += 1;
                     if (ourPieceCount > 0) {
-                        // if remove point nearby our stone, preferred
+                        // if remove point nearby our piece, preferred
                         cur->value += ourPieceCount;
                     }
                 }

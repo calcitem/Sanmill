@@ -62,7 +62,7 @@ MiniMax::MiniMax()
     }
 
     // The algorithm assumes that each player does only one move.
-    // That means closing a mill and removing a stone should be one move.
+    // That means closing a mill and removing a piece should be one move.
     // PL_TO_MOVE_CHANGED   means that in the predecessor state the player to
     // move has changed to the other player. PL_TO_MOVE_UNCHANGED means that the
     // player to move is still the one who shall move.

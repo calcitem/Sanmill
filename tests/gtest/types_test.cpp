@@ -58,18 +58,18 @@ TEST(TypesTest, makeSquare)
 
 TEST(TypesTest, makePiece)
 {
-    EXPECT_EQ(make_piece(WHITE), W_STONE);
-    EXPECT_EQ(make_piece(BLACK), B_STONE);
+    EXPECT_EQ(make_piece(WHITE), W_PIECE);
+    EXPECT_EQ(make_piece(BLACK), B_PIECE);
 
-    EXPECT_EQ(make_piece(WHITE, WHITE_STONE), W_STONE);
-    EXPECT_EQ(make_piece(BLACK, WHITE_STONE), B_STONE);
-    EXPECT_EQ(make_piece(NOCOLOR, BAN), BAN_STONE);
+    EXPECT_EQ(make_piece(WHITE, WHITE_PIECE), W_PIECE);
+    EXPECT_EQ(make_piece(BLACK, WHITE_PIECE), B_PIECE);
+    EXPECT_EQ(make_piece(NOCOLOR, BAN), BAN_PIECE);
 }
 
 TEST(TypesTest, colorOf)
 {
-    EXPECT_EQ(color_of(W_STONE), WHITE);
-    EXPECT_EQ(color_of(B_STONE), BLACK);
+    EXPECT_EQ(color_of(W_PIECE), WHITE);
+    EXPECT_EQ(color_of(B_PIECE), BLACK);
 }
 
 TEST(TypesTest, isOk)

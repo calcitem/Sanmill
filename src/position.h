@@ -106,7 +106,7 @@ public:
     bool command(const char *cmd);
     void update_score();
     bool check_if_game_is_over();
-    void remove_ban_stones();
+    void remove_ban_pieces();
     void set_side_to_move(Color c);
 
     void change_side_to_move();

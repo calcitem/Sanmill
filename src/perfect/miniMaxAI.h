@@ -37,12 +37,12 @@ protected:
         bool settingPhase;
         int fieldFrom, fieldTo; // value of board
         unsigned int from, to;  // index of board
-        unsigned int curNumStones, oppNumStones;
+        unsigned int curNumPieces, oppNumPieces;
         unsigned int curPosMoves, oppPosMoves;
-        unsigned int curMissStones, oppMissStones;
-        unsigned int stonesSet;
-        unsigned int stoneMustBeRemoved;
-        unsigned int stonePartOfMill[fieldStruct::size];
+        unsigned int curMissPieces, oppMissPieces;
+        unsigned int piecesSet;
+        unsigned int pieceMustBeRemoved;
+        unsigned int piecePartOfMill[fieldStruct::size];
         unsigned int warnings[fieldStruct::size];
         Player *curPlayer, *oppPlayer;
     };
@@ -81,19 +81,19 @@ protected:
                                       void **pPossibilities);
     unsigned int *getPossNormalMove(unsigned int *numPossibilities,
                                     void **pPossibilities);
-    unsigned int *getPossStoneRemove(unsigned int *numPossibilities,
+    unsigned int *getPossPieceRemove(unsigned int *numPossibilities,
                                      void **pPossibilities);
 
     // move functions
-    inline void updatePossibleMoves(unsigned int stone, Player *stoneOwner,
-                                    bool stoneRemoved,
-                                    unsigned int ignoreStone);
-    inline void updateWarning(unsigned int firstStone,
-                              unsigned int secondStone);
-    inline void setWarning(unsigned int stoneOne, unsigned int stoneTwo,
-                           unsigned int stoneThree);
-    inline void removeStone(unsigned int from, Backup *backup);
-    inline void setStone(unsigned int to, Backup *backup);
+    inline void updatePossibleMoves(unsigned int piece, Player *pieceOwner,
+                                    bool pieceRemoved,
+                                    unsigned int ignorePiece);
+    inline void updateWarning(unsigned int firstPiece,
+                              unsigned int secondPiece);
+    inline void setWarning(unsigned int pieceOne, unsigned int pieceTwo,
+                           unsigned int pieceThree);
+    inline void removePiece(unsigned int from, Backup *backup);
+    inline void setPiece(unsigned int to, Backup *backup);
     inline void normalMove(unsigned int from, unsigned int to, Backup *backup);
 
     // Virtual Functions

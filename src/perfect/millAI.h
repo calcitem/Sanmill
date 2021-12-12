@@ -15,7 +15,7 @@
 // using namespace std;
 
 #define MAX_NUM_POS_MOVES \
-    (3 * 18) // not (9 * 4) = 36 since the possibilities with 3 stones are more
+    (3 * 18) // not (9 * 4) = 36 since the possibilities with 3 pieces are more
 
 #define SAFE_DELETE(p) \
     { \
@@ -34,11 +34,11 @@ public:
     // static
     unsigned int warning;
 
-    // number of stones of this player on the board
-    unsigned int numStones;
+    // number of pieces of this player on the board
+    unsigned int numPieces;
 
-    // number of stones, which where stolen by the opponent
-    unsigned int numStonesMissing;
+    // number of pieces, which where stolen by the opponent
+    unsigned int numPiecesMissing;
 
     // amount of possible moves
     unsigned int numPossibleMoves;
@@ -74,7 +74,7 @@ public:
     static const unsigned int playerOneWarning = 2;
     static const unsigned int playerTwoWarning = 4;
     static const unsigned int playerBothWarning = 6;
-    static const unsigned int numStonesPerPlayer = 9;
+    static const unsigned int numPiecesPerPlayer = 9;
 
     // number of squares
     static const unsigned int size = 24;
@@ -90,11 +90,11 @@ public:
     // array containing the warnings for each board position
     unsigned int warnings[size];
 
-    // true if stone can be moved in this direction
-    bool stoneMoveAble[size][4];
+    // true if piece can be moved in this direction
+    bool pieceMoveAble[size][4];
 
-    // the number of mills, of which this stone is part of
-    unsigned int stonePartOfMill[size];
+    // the number of mills, of which this piece is part of
+    unsigned int piecePartOfMill[size];
 
     // static array containing the index of the neighbour or "size"
     unsigned int connectedSquare[size][4];
@@ -102,14 +102,14 @@ public:
     // static array containing the two neighbors of each squares
     unsigned int neighbour[size][2][2];
 
-    // number of stones set in the setting phase
-    unsigned int stonesSet;
+    // number of pieces set in the setting phase
+    unsigned int piecesSet;
 
-    // true if stonesSet < 18
+    // true if piecesSet < 18
     bool settingPhase;
 
-    // number of stones which must be removed by the current player
-    unsigned int stoneMustBeRemoved;
+    // number of pieces which must be removed by the current player
+    unsigned int pieceMustBeRemoved;
 
     // pointers to the current and opponent player
     Player *curPlayer, *oppPlayer;
@@ -122,7 +122,7 @@ public:
 
 private:
     // helper functions
-    char GetCharFromStone(int stone);
+    char GetCharFromPiece(int piece);
     void setConnection(unsigned int index, int firstDirection,
                        int secondDirection, int thirdDirection,
                        int fourthDirection);

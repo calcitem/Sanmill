@@ -40,16 +40,16 @@ void RandomAI::play(fieldStruct *theField, unsigned int *pushFrom,
 {
     // locals
     unsigned int from, to, direction;
-    bool allowedToSpring = (theField->curPlayer->numStones == 3) ? true : false;
+    bool allowedToSpring = (theField->curPlayer->numPieces == 3) ? true : false;
 
-    // must stone be removed ?
-    if (theField->stoneMustBeRemoved) {
-        // search a stone from the enemy
+    // must piece be removed ?
+    if (theField->pieceMustBeRemoved) {
+        // search a piece from the enemy
         do {
             from = rand() % theField->size;
             to = theField->size;
         } while (theField->board[from] != theField->oppPlayer->id ||
-                 theField->stonePartOfMill[from]);
+                 theField->piecePartOfMill[from]);
 
         // still in setting phase ?
     } else if (theField->settingPhase) {
@@ -62,7 +62,7 @@ void RandomAI::play(fieldStruct *theField, unsigned int *pushFrom,
         // try to push randomly
     } else {
         do {
-            // search an own stone
+            // search an own piece
             do {
                 from = rand() % theField->size;
             } while (theField->board[from] != theField->curPlayer->id);

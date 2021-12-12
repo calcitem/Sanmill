@@ -70,11 +70,11 @@ private:
     void exit();
     void setNextPlayer();
     void calcPossibleMoves(Player *player);
-    void updateMillsAndWarnings(unsigned int newStone);
+    void updateMillsAndWarnings(unsigned int newPiece);
     bool isNormalMovePossible(unsigned int from, unsigned int to,
                               Player *player);
-    void setWarningAndMill(unsigned int stone, unsigned int firstNeighbour,
-                           unsigned int secondNeighbour, bool isNewStone);
+    void setWarningAndMill(unsigned int piece, unsigned int firstNeighbour,
+                           unsigned int secondNeighbour, bool isNewPiece);
 
 public:
     // Constructor / destructor
@@ -100,10 +100,10 @@ public:
     void getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom,
                               unsigned int *pushTo);
     void setUpCalcPossibleMoves(Player *player);
-    void setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbour,
+    void setUpSetWarningAndMill(unsigned int piece, unsigned int firstNeighbour,
                                 unsigned int secondNeighbour);
-    void calcNumberOfRestingStones(int &numWhiteStonesResting,
-                                   int &numBlackStonesResting);
+    void calcNumberOfRestingPieces(int &numWhitePiecesResting,
+                                   int &numBlackPiecesResting);
 
     // getter
     void getLog(unsigned int &numMovesDone, unsigned int *from,
@@ -114,7 +114,7 @@ public:
 
     bool inSettingPhase() { return field.settingPhase; }
 
-    unsigned int mustStoneBeRemoved() { return field.stoneMustBeRemoved; }
+    unsigned int mustPieceBeRemoved() { return field.pieceMustBeRemoved; }
 
     int getWinner() { return winner; }
 
@@ -132,13 +132,13 @@ public:
 
     unsigned int getMovesDone() { return movesDone; }
 
-    unsigned int getNumStonesSet() { return field.stonesSet; }
+    unsigned int getNumPiecesSet() { return field.piecesSet; }
 
     int getBeginningPlayer() { return beginningPlayer; }
 
-    unsigned int getNumStonOfCurPlayer() { return field.curPlayer->numStones; }
+    unsigned int getNumStonOfCurPlayer() { return field.curPlayer->numPieces; }
 
-    unsigned int getNumStonOfOppPlayer() { return field.oppPlayer->numStones; }
+    unsigned int getNumStonOfOppPlayer() { return field.oppPlayer->numPieces; }
 };
 
 #endif // MILL_H_INCLUDED
