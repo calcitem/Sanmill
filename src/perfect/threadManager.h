@@ -136,12 +136,17 @@ public:
     void pauseExecution();  // un-/suspend all threads
     void cancelExecution(); // termineAllThreads auf true
     bool wasExecutionCancelled();
-    void unCancelExecution(); // sets executionCancelled to false, otherwise
-                              // executeParallelLoop returns immediately
-    //... void setCallBackFunction (void userFunction(void* pUser), void* pUser,
-    // DWORD milliseconds);
-    // a user function which is called every x-milliseconds during
-    // execution between two iterations
+
+    // sets executionCancelled to false, otherwise executeParallelLoop returns
+    // immediately
+    void unCancelExecution();
+
+// a user function which is called every x-milliseconds during
+// execution between two iterations
+#if 0
+    void setCallBackFunction(void userFunction(void *pUser), void *pUser,
+                             DWORD milliseconds);
+#endif
 
     // execute
     unsigned int executeInParallel(DWORD threadProc(void *pParameter),

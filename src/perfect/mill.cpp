@@ -416,8 +416,8 @@ void Mill::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
         if (field.curPlayer->id == field.playerOne) {
             if (playerOneAI != nullptr)
                 playerOneAI->play(&theField, pushFrom, pushTo);
-            // assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <=
-            // 1);
+            // assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id
+            // <=1);
         } else {
             if (playerTwoAI != nullptr)
                 playerTwoAI->play(&theField, pushFrom, pushTo);
@@ -851,10 +851,14 @@ bool Mill::comparePlayers(Player *playerA, Player *playerB)
         ret = false;
     }
 
-    // for (i = 0; i < MAX_NUM_POS_MOVES; i++) if (playerA->posFrom[i] =
-    // playerB->posFrom[i]) return false; for (i = 0; i < MAX_NUM_POS_MOVES;
-    // i++) if (playerA->posTo[i] = playerB->posTo[i]) return false;
-
+#if 0
+    for (i = 0; i < MAX_NUM_POS_MOVES; i++)
+        if (playerA->posFrom[i] = playerB->posFrom[i])
+            return false;
+    for (i = 0; i < MAX_NUM_POS_MOVES; i++)
+        if (playerA->posTo[i] = playerB->posTo[i])
+            return false;
+#endif
     return ret;
 }
 

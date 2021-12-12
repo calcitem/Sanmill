@@ -193,85 +193,130 @@ class MiniMax
 public:
     /*** typedefines
      * ************************************************************************/
-    typedef unsigned char TwoBit;          // 2-Bit variable ranging from 0 to 3
-    typedef unsigned short PlyInfoVarType; // 2 Bytes for saving the ply info
-    typedef unsigned char CountArrayVarType; // 1 Byte for counting predecessors
-    typedef unsigned int StateNumberVarType; // 4 Bytes for addressing states
-                                             // within a layer
+    // 2-Bit variable ranging from 0 to 3
+    typedef unsigned char TwoBit;
+
+    // 2 Bytes for saving the ply info
+    typedef unsigned short PlyInfoVarType;
+
+    // 1 Byte for counting predecessors
+    typedef unsigned char CountArrayVarType;
+
+    // 4 Bytes for addressing states within a layer
+    typedef unsigned int StateNumberVarType;
 
     /*** protected structures
      * ************************************************************************/
 
-    struct SkvFileHeader // header of the short knot value file
+    // header of the short knot value file
+    struct SkvFileHeader
     {
-        bool completed;          // true if all states have been calculated
-        unsigned int numLayers;  // number of layers
-        unsigned int headerCode; // = SKV_FILE_HEADER_CODE
-        unsigned int headerAndStatsSize; // size in bytes of this struct plus
-                                         // the stats
+        // true if all states have been calculated
+        bool completed;
+
+        // number of layers
+        unsigned int numLayers;
+
+        // = SKV_FILE_HEADER_CODE
+        unsigned int headerCode;
+
+        // size in bytes of this struct plus the stats
+        unsigned int headerAndStatsSize;
     };
 
     struct PlyInfoFileHeader
     {
-        bool plyInfoCompleted;   // true if ply information has been calculated
-                                 // for all game states
-        unsigned int numLayers;  // number of layers
-        unsigned int headerCode; // = PLYINFO_HEADER_CODE
-        unsigned int headerAndPlyInfosSize; // size in bytes of this struct plus
-                                            // ...
+        // true if ply information has been calculated for all game states
+        bool plyInfoCompleted;
+
+        // number of layers
+        unsigned int numLayers;
+
+        // = PLYINFO_HEADER_CODE
+        unsigned int headerCode;
+
+        // size in bytes of this struct plus...
+        unsigned int headerAndPlyInfosSize;
     };
 
-    struct PlyInfo // this struct is created for each layer
+    // this struct is created for each layer
+    struct PlyInfo
     {
-        bool plyInfoIsLoaded; // the array plyInfo[] exists in memory. does not
-                              // necessary mean that it contains only valid
-                              // values
-        bool plyInfoIsCompletedAndInFile; // the array plyInfo[] contains only
-                                          // fully calculated valid values
-        int64_t layerOffset; // position of this struct in the ply info file
-        unsigned int sizeInBytes;        // size of this struct plus the array
-                                         // plyInfo[]
-        StateNumberVarType knotsInLayer; // number of knots of the corresponding
-                                         // layer
-        PlyInfoVarType *plyInfo; // array of size [knotsInLayer] containing the
-                                 // ply info for each knot in this layer
-        // compressorClass::compressedArrayClass* plyInfoCompressed; //
+        // the array plyInfo[] exists in memory. does not necessary mean that it
+        // contains only valid values
+        bool plyInfoIsLoaded;
+
+        // the array plyInfo[] contains only fully calculated valid values
+        bool plyInfoIsCompletedAndInFile;
+
+        // position of this struct in the ply info file
+        int64_t layerOffset;
+
+        // size of this struct plus the array plyInfo[]
+        unsigned int sizeInBytes;
+
+        // number of knots of the corresponding layer
+        StateNumberVarType knotsInLayer;
+
+        // array of size [knotsInLayer] containing the ply info for each knot in
+        // this layer
+        PlyInfoVarType *plyInfo;
+
         // compressed array containing the ply info for each knot in this layer
+        // compressorClass::compressedArrayClass* plyInfoCompressed;
+
         void *plyInfoCompressed; // dummy pointer for padding
     };
 
     struct LayerStats
     {
-        bool layerIsLoaded; // the array shortKnotValueByte[] exists in memory.
-                            // does not necessary mean that it contains only
-                            // valid values
-        bool layerIsCompletedAndInFile; // the array shortKnotValueByte[]
-                                        // contains only fully calculated valid
-                                        // values
-        int64_t layerOffset; // position of this struct in the short knot value
-                             // file
-        unsigned int numSuccLayers; // number of succeeding layers. states of
-                                    // other layers are connected by a move of a
-                                    // player
-        unsigned int succLayers[MAX_NUM_PRED_LAYERS]; // array containing the
-                                                      // layer ids of the
-                                                      // succeeding layers
-        unsigned int partnerLayer; // layer id relevant when switching current
-                                   // and opponent player
-        StateNumberVarType knotsInLayer; // number of knots of the corresponding
-                                         // layer
-        StateNumberVarType numWonStates; // number of won states in this layer
-        StateNumberVarType numLostStates; // number of lost states in this layer
-        StateNumberVarType numDrawnStates;   // number of drawn states in this
-                                             // layer
-        StateNumberVarType numInvalidStates; // number of invalid states in this
-                                             // layer
-        unsigned int sizeInBytes;            // (knotsInLayer + 3) / 4
-        TwoBit *shortKnotValueByte; // array of size [sizeInBytes] containing
-                                    // the short knot values
-        // compressorClass::compressedArrayClass* skvCompressed; // compressed
-        // array containing the short knot values
-        void *skvCompressed; // dummy pointer for padding
+        // the array shortKnotValueByte[] exists in memory. does not necessary
+        // mean that it contains only valid values
+        bool layerIsLoaded;
+
+        // the array shortKnotValueByte[] contains only fully calculated valid
+        // values
+        bool layerIsCompletedAndInFile;
+
+        // position of this struct in the short knot value file
+        int64_t layerOffset;
+
+        // number of succeeding layers. states of other layers are connected by
+        // a move of a player
+        unsigned int numSuccLayers;
+
+        // array containing the layer ids of the succeeding layers
+        unsigned int succLayers[MAX_NUM_PRED_LAYERS];
+
+        // layer id relevant when switching current and opponent player
+        unsigned int partnerLayer;
+
+        // number of knots of the corresponding layer
+        StateNumberVarType knotsInLayer;
+
+        // number of won states in this layer
+        StateNumberVarType numWonStates;
+
+        // number of lost states in this layer
+        StateNumberVarType numLostStates;
+
+        // number of drawn states in this layer
+        StateNumberVarType numDrawnStates;
+
+        // number of invalid states in this layer
+        StateNumberVarType numInvalidStates;
+
+        // (knotsInLayer + 3) / 4
+        unsigned int sizeInBytes;
+
+        // array of size [sizeInBytes] containing the short knot values
+        TwoBit *shortKnotValueByte;
+
+        // compressed array containing the short knot values
+        // compressorClass::compressedArrayClass* skvCompressed;
+
+        // dummy pointer for padding
+        void *skvCompressed;
     };
 
     struct StateAdress
@@ -296,18 +341,18 @@ public:
 
     struct RetroAnalysisPredVars
     {
-        unsigned int predStateNumbers; //
-        unsigned int predLayerNumbers; //
-        unsigned int predSymOperation; //
-        bool playerToMoveChanged;      //
+        unsigned int predStateNumbers;
+        unsigned int predLayerNumbers;
+        unsigned int predSymOperation;
+        bool playerToMoveChanged;
     };
 
     struct ArrayInfo
     {
-        unsigned int type;             //
-        int64_t sizeInBytes;           //
-        int64_t compressedSizeInBytes; //
-        unsigned int belongsToLayer;   //
+        unsigned int type;
+        int64_t sizeInBytes;
+        int64_t compressedSizeInBytes;
+        unsigned int belongsToLayer;
         unsigned int updateCounter;
 
         static const unsigned int arrayType_invalid = 0;
@@ -322,17 +367,21 @@ public:
 
     struct ArrayInfoChange
     {
-        unsigned int itemIndex; //
-        ArrayInfo *arrayInfo;   //
+        unsigned int itemIndex;
+        ArrayInfo *arrayInfo;
     };
 
     struct ArrayInfoContainer
     {
         MiniMax *c;
-        list<ArrayInfoChange> arrayInfosToBeUpdated; //
-        list<ArrayInfo> listArrays;                  // [itemIndex]
-        vector<list<ArrayInfo>::iterator> vectorArrays; // [layerNumber*ArrayInfo::numArrayTypes
-                                                        // + type]
+        list<ArrayInfoChange> arrayInfosToBeUpdated;
+
+        // [itemIndex]
+        list<ArrayInfo> listArrays;
+
+        // [layerNumber*ArrayInfo::numArrayTypes + type]
+
+        vector<list<ArrayInfo>::iterator> vectorArrays;
 
         void addArray(unsigned int layerNumber, unsigned int type, int64_t size,
                       int64_t compressedSize);
@@ -578,21 +627,27 @@ private:
     /*** classes for the alpha beta algorithmn
      * ************************************************************************/
 
-    struct AlphaBetaThreadVars // thread specific variables for each thread in
-                               // the alpha beta algorithm
+    // thread specific variables for each thread in the alpha beta algorithm
+    struct AlphaBetaThreadVars
     {
-        int64_t numStatesToProcess; // Number of states in 'statesToProcess'
-                                    // which have to be processed
+        // thread specific variables for each thread in the alpha beta algorithm
+        int64_t numStatesToProcess;
+
         unsigned int threadNo;
     };
 
-    struct AlphaBetaGlobalVars // constant during calculation
+    // constant during calculation
+    struct AlphaBetaGlobalVars
     {
-        unsigned int layerNumber; // layer number of the current process layer
-        int64_t totalNumKnots; // total numbers of knots which have to be stored
-                               // in memory
-        int64_t numKnotsToCalc; // number of knots of all layers to be
-                                // calculated
+        // layer number of the current process layer
+        unsigned int layerNumber;
+
+        // total numbers of knots which have to be stored in memory
+        int64_t totalNumKnots;
+
+        // number of knots of all layers to be calculated
+        int64_t numKnotsToCalc;
+
         vector<AlphaBetaThreadVars> thread;
         unsigned int statsValueCounter[SKV_NUM_VALUES];
         MiniMax *pMiniMax;
@@ -681,11 +736,12 @@ private:
     struct RunAlphaBetaVars : public ThreadManager::ThreadVarsArrayItem,
                               public AlphaBetaDefaultThreadVars
     {
-        Knot *branchArray = nullptr; // array of size [(depthOfFullTree -
-                                     // tilLevel) * maxNumBranches] for storage
-                                     // of the branches at each search depth
-        unsigned int *freqValuesSubMovesBranchWon = nullptr; // ...
-        unsigned int freqValuesSubMoves[4];                  // ...
+        // array of size [(depthOfFullTree - tilLevel) * maxNumBranches] for
+        // storage of the branches at each search depth
+        Knot *branchArray = nullptr;
+
+        unsigned int *freqValuesSubMovesBranchWon = nullptr;
+        unsigned int freqValuesSubMoves[4];
 
         RunAlphaBetaVars() { }
 
@@ -719,55 +775,52 @@ private:
 
     struct RetroAnalysisQueueState
     {
-        StateNumberVarType
-            stateNumber; // state stored in the retro analysis queue. the queue
-                         // is a buffer containing states to be passed to
-                         // 'RetroAnalysisThreadVars::statesToProcess'
-        PlyInfoVarType numPliesTillCurState; // ply number for the stored state
+        // state stored in the retro analysis queue. the queue is a buffer
+        // containing states to be passed to
+        // 'RetroAnalysisThreadVars::statesToProcess'
+        StateNumberVarType stateNumber;
+
+        // ply number for the stored state
+        PlyInfoVarType numPliesTillCurState;
     };
 
-    struct RetroAnalysisThreadVars // thread specific variables for each thread
-                                   // in the retro analysis
+    // thread specific variables for each thread in the retro analysis
+    struct RetroAnalysisThreadVars
     {
-        vector<CyclicArray *> statesToProcess; // vector-queue containing the
-                                               // states, whose short knot value
-                                               // are known for sure. they have
-                                               // to be processed. if processed
-                                               // the state will be removed from
-                                               // list. indexing:
-                                               // [threadNo][plyNumber]
-        vector<vector<RetroAnalysisQueueState>> stateQueue; // Queue containing
-                                                            // states, whose
-                                                            // 'count value'
-                                                            // shall be
-                                                            // increased by one.
-                                                            // Before writing
-                                                            // 'count value' to
-                                                            // 'count array' the
-                                                            // writing positions
-                                                            // are sorted for
-                                                            // faster
-                                                            // processing.
-        int64_t numStatesToProcess; // Number of states in 'statesToProcess'
-                                    // which have to be processed
+        // vector-queue containing the states, whose short knot value are known
+        // for sure. they have to be processed. if processed the state will be
+        // removed from list. indexing: [threadNo][plyNumber]
+        vector<CyclicArray *> statesToProcess;
+
+        // Queue containing states, whose 'count value' shall be increased by
+        // one. Before writing 'count value' to 'count array' the writing
+        // positions are sorted for faster processing.
+        vector<vector<RetroAnalysisQueueState>> stateQueue;
+
+        // Number of states in 'statesToProcess' which have to be processed
+        int64_t numStatesToProcess;
+
         unsigned int threadNo;
     };
 
-    struct retroAnalysisGlobalVars // constant during calculation
+    // constant during calculation
+    struct retroAnalysisGlobalVars
     {
-        vector<CountArrayVarType *> countArrays; // One count array for each
-                                                 // layer in
-                                                 // 'layersToCalculate'. (For
-                                                 // the nine men's morris game
-                                                 // two layers have to
-                                                 // considered at once.)
-        vector<bool> layerInitialized;           //
-        vector<unsigned int> layersToCalculate;  // layers which shall be
-                                                 // calculated
-        int64_t totalNumKnots; // total numbers of knots which have to be stored
-                               // in memory
-        int64_t numKnotsToCalc; // number of knots of all layers to be
-                                // calculated
+        // One count array for each layer in 'layersToCalculate'. (For the nine
+        // men's morris game two layers have to considered at once.)
+        vector<CountArrayVarType *> countArrays;
+
+        vector<bool> layerInitialized;
+
+        // layers which shall be calculated
+        vector<unsigned int> layersToCalculate;
+
+        // total numbers of knots which have to be stored in memory
+        int64_t totalNumKnots;
+
+        // number of knots of all layers to be calculated
+        int64_t numKnotsToCalc;
+
         vector<RetroAnalysisThreadVars> thread;
         unsigned int statsValueCounter[SKV_NUM_VALUES];
         MiniMax *pMiniMax;
@@ -860,75 +913,123 @@ private:
 
     // variables, which are constant during database calculation
     int verbosity = 2; // output detail level. default is 2
-    unsigned char skvPerspectiveMatrix[4][2]; // [short knot value][current or
-                                              // opponent
-    // player] - A winning situation is a loosing
-    // situation for the opponent and so on ...
-    bool calcDatabase = false; // true, if the database is currently being
-                               // calculated
-    HANDLE hFileShortKnotValues = nullptr; // handle of the file for the short
-                                           // knot value
-    HANDLE hFilePlyInfo = nullptr;   // handle of the file for the ply info
-    SkvFileHeader skvfHeader;        // short knot value file header
-    PlyInfoFileHeader plyInfoHeader; // header of the ply info file
-    string fileDirectory; // path of the folder where the database files are
-                          // located
-    ostream *osPrint = nullptr; // stream for output. default is cout
-    list<unsigned int> lastCalculatedLayer; //
-    vector<unsigned int> layersToCalculate; // used in calcLayer() and
-                                            // getCurrentCalculatedLayers()
-    bool onlyPrepareLayer = false;          //
-    bool stopOnCriticalError = true; // if true then process will stay in while
-                                     // loop
-    ThreadManager threadManager;     //
-    CRITICAL_SECTION csDatabase;     //
-    CRITICAL_SECTION
-    csOsPrint; // for thread safety when output is passed to osPrint
-    void (*userPrintFunc)(void *) = nullptr; // called every time output is
-                                             // passed to osPrint
-    void *pDataForUserPrintFunc = nullptr;   // pointer passed when calling
-                                             // userPrintFunc
-    ArrayInfoContainer arrayInfos; // information about the arrays in memory
+
+    // [short knot value][current or opponent player] - A winning situation is a
+    // loosing situation for the opponent and so on ...
+    unsigned char skvPerspectiveMatrix[4][2];
+
+    // true, if the database is currently being calculated
+    bool calcDatabase = false;
+
+    // handle of the file for the short knot value
+    HANDLE hFileShortKnotValues = nullptr;
+
+    // handle of the file for the ply info
+    HANDLE hFilePlyInfo = nullptr;
+
+    // short knot value file header
+    SkvFileHeader skvfHeader;
+
+    // header of the ply info file
+    PlyInfoFileHeader plyInfoHeader;
+
+    // path of the folder where the database files are located
+    string fileDirectory;
+
+    // stream for output. default is cout
+    ostream *osPrint = nullptr;
+
+    list<unsigned int> lastCalculatedLayer;
+
+    // used in calcLayer() and getCurrentCalculatedLayers()
+    vector<unsigned int> layersToCalculate;
+
+    bool onlyPrepareLayer = false;
+
+    // if true then process will stay in while loop
+    bool stopOnCriticalError = true;
+
+    ThreadManager threadManager;
+
+    CRITICAL_SECTION csDatabase;
+
+    // for thread safety when output is passed to osPrint
+    CRITICAL_SECTION csOsPrint;
+
+    // called every time output is passed to osPrint
+    void (*userPrintFunc)(void *) = nullptr;
+
+    // pointer passed when calling userPrintFunc
+    void *pDataForUserPrintFunc = nullptr;
+
+    // information about the arrays in memory
+    ArrayInfoContainer arrayInfos;
 
     // thread specific or non-constant variables
-    LONGLONG memoryUsed2 = 0;         // memory in bytes used for storing: ply
-                                      // information, short knot value and ...
-    LONGLONG numStatesProcessed = 0;  //
-    unsigned int maxNumBranches = 0;  // maximum number of branches/moves
-    unsigned int depthOfFullTree = 0; // maximum search depth
-    unsigned int curCalculatedLayer = 0; // id of the currently calculated layer
-    unsigned int curCalculationActionId = 0; // one of ...
-    bool layerInDatabase = false; // true if the current considered layer has
-                                  // already been calculated and stored in the
-                                  // database
-    void *pRootPossibilities = nullptr; // pointer to the structure passed by
-                                        // getPossibilities() for the state at
-                                        // which getBestChoice() has been called
-    LayerStats *layerStats = nullptr; // array of size [] containing general
-                                      // layer information and the skv of all
-                                      // layers
-    PlyInfo *plyInfos = nullptr; // array of size [] containing ply information
 
+    // memory in bytes used for storing: ply information, short knot value and
+    // ...
+    LONGLONG memoryUsed2 = 0;
+
+    LONGLONG numStatesProcessed = 0;
+
+    // maximum number of branches/moves
+    unsigned int maxNumBranches = 0;
+
+    // maximum search depth
+    unsigned int depthOfFullTree = 0;
+
+    // id of the currently calculated layer
+    unsigned int curCalculatedLayer = 0;
+
+    // one of ...
+    unsigned int curCalculationActionId = 0;
+
+    // true if the current considered layer has already been calculated and
+    // stored in the database
+    bool layerInDatabase = false;
+
+    // pointer to the structure passed by getPossibilities() for the state at
+    // which getBestChoice() has been called
+    void *pRootPossibilities = nullptr;
+
+    // array of size [] containing general layer information and the skv of all
+    // layers
+    LayerStats *layerStats = nullptr;
+
+    // array of size [] containing ply information
+    PlyInfo *plyInfos = nullptr;
+
+#if 0
     // variables concerning the compression of the database
-    // compressorClass* compressor = nullptr;
-    // unsigned int compressionAlgorithmnId = 0; // 0 or one of the
-    // COMPRESSOR_ALG_... constants
+    compressorClass *compressor = nullptr;
+
+    // 0 or one of the COMPRESSOR_ALG_... constants
+    unsigned int compressionAlgorithmnId = 0;
+#endif
 
     // database I/O operations per second
-    int64_t numReadSkvOperations = 0;  // number of read operations done since
-                                       // start of the program
-    int64_t numWriteSkvOperations = 0; // number of write operations done since
-                                       // start of the program
-    int64_t numReadPlyOperations = 0;  // number of read operations done since
-                                       // start of the program
-    int64_t numWritePlyOperations = 0; // number of write operations done since
-                                       // start of the program
-    LARGE_INTEGER readSkvInterval;     // time of interval for read operations
-    LARGE_INTEGER writeSkvInterval;    //  ''
-    LARGE_INTEGER readPlyInterval;     //  ''
-    LARGE_INTEGER writePlyInterval;    //  ''
-    LARGE_INTEGER
-    frequency; // performance-counter frequency, in counts per second
+
+    // number of read operations done since start of the program
+    int64_t numReadSkvOperations = 0;
+
+    // number of write operations done since start of the program
+    int64_t numWriteSkvOperations = 0;
+
+    // number of read operations done since start of the program
+    int64_t numReadPlyOperations = 0;
+
+    // number of write operations done since start of the program
+    int64_t numWritePlyOperations = 0;
+
+    // time of interval for read operations
+    LARGE_INTEGER readSkvInterval;
+    LARGE_INTEGER writeSkvInterval;
+    LARGE_INTEGER readPlyInterval;
+    LARGE_INTEGER writePlyInterval;
+
+    // performance-counter frequency, in counts per second
+    LARGE_INTEGER frequency;
 
     /*** private functions
      * ************************************************************************/

@@ -59,16 +59,27 @@ class MiniMaxWinCalcDb
 {
 protected:
     // Calculation variables
-    wildWeasel::masterMind *ww = nullptr; // pointer to engine
-    MiniMax *pMiniMax = nullptr;     // pointer to perfect AI class granting the
-                                     // access to the database
-    ostream *outputStream = nullptr; // pointer to a stream for the console
-                                     // output of the calculation done by the
-                                     // class MiniMax
-    stringbuf outputStringBuf; // buffer linked to the stream, for reading out
-                               // of the stream into the buffer
-    locale myLocale;           // for formatting the output
-    queue<unsigned int> layersToTest; // layer numbers to be tested
+
+    // pointer to engine
+    wildWeasel::masterMind *ww = nullptr;
+
+    // pointer to perfect AI class granting the access to the database
+    MiniMax *pMiniMax = nullptr;
+
+    // pointer to a stream for the console output of the calculation done by the
+    // class MiniMax
+    ostream *outputStream = nullptr;
+
+    // buffer linked to the stream, for reading out of the stream into the
+    // buffer
+    stringbuf outputStringBuf;
+
+    // for formatting the output
+    locale myLocale;
+
+    // layer numbers to be tested
+    queue<unsigned int> layersToTest;
+
     thread hThreadSolve;
     thread hThreadTestLayer;
     bool showingCalculationControls = false;
@@ -79,9 +90,9 @@ protected:
 
     // positions, metrics, sizes, dimensions
     unsigned int listViewRowHeight = 20; // height in pixel of a single row
-    const float defPixelDist = 15;       //
-    const float labelHeight = 30;        //
-    const float buttonHeight = 30;       //
+    const float defPixelDist = 15;
+    const float labelHeight = 30;
+    const float buttonHeight = 30;
 
     // Calculation Functions
     void buttonFuncCalcStartOrContinue(void *pUser);

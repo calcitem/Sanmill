@@ -100,11 +100,13 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 {
 #ifndef __clang__ // TODO(calcitem)
     // locals
-    BufferedFile *invalidArray;   //
-    bool initAlreadyDone = false; // true if the initialization information is
-                                  // already available in a file
-    stringstream ssInvArrayDirectory; //
-    stringstream ssInvArrayFilePath;  //
+    BufferedFile *invalidArray;
+
+    // true if the initialization information is already available in a file
+    bool initAlreadyDone = false;
+
+    stringstream ssInvArrayDirectory;
+    stringstream ssInvArrayFilePath;
 
     // set current processed layer number
     PRINT(1, this,
@@ -712,7 +714,7 @@ void MiniMax::alphaBetaCalcKnotValue(Knot *knot)
         for (i = 1; i < knot->numPossibilities; i++) {
             // version 21: it should be impossible that knot->shortValue is
             // equal SKV_VALUE_INVALID
-            if (/*knot->shortValue != SKV_VALUE_INVALID && */ knot->branches[i]
+            if (/* knot->shortValue != SKV_VALUE_INVALID && */ knot->branches[i]
                     .floatValue < maxValue) {
                 maxValue = knot->branches[i].floatValue;
                 maxBranch = i;
@@ -721,7 +723,7 @@ void MiniMax::alphaBetaCalcKnotValue(Knot *knot)
         // maximize the value
     } else {
         for (i = 1; i < knot->numPossibilities; i++) {
-            if (/*knot->shortValue != SKV_VALUE_INVALID && */ knot->branches[i]
+            if (/* knot->shortValue != SKV_VALUE_INVALID && */ knot->branches[i]
                     .floatValue > maxValue) {
                 maxValue = knot->branches[i].floatValue;
                 maxBranch = i;

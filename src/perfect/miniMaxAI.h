@@ -48,18 +48,33 @@ protected:
     };
 
     // Variables
-    fieldStruct *field;   // pointer of the current board [changed by move()]
-    float currentValue;   // value of current situation for board->currentPlayer
-    bool gameHasFinished; // someone has won or current board is full
 
-    int ownId; // id of the player who called the play()-function
-    unsigned int curSearchDepth;   // current level
-    unsigned int depthOfFullTree;  // search depth where the whole tree is
-                                   // explored
-    unsigned int *idPossibilities; // returned pointer of
-                                   // getPossibilities()-function
-    Backup *oldStates;             // for undo()-function
-    Possibility *possibilities;    // for getPossNormalMove()-function
+    // pointer of the current board [changed by move()]
+    fieldStruct *field;
+
+    // value of current situation for board->currentPlayer
+    float currentValue;
+
+    // someone has won or current board is full
+    bool gameHasFinished;
+
+    // id of the player who called the play()-function
+    int ownId;
+
+    // current level
+    unsigned int curSearchDepth;
+
+    // search depth where the whole tree is explored
+    unsigned int depthOfFullTree;
+
+    // returned pointer of getPossibilities()-function
+    unsigned int *idPossibilities;
+
+    // for undo()-function
+    Backup *oldStates;
+
+    // for getPossNormalMove()-function
+    Possibility *possibilities;
 
     // Functions
     unsigned int *getPossSettingPhase(unsigned int *numPossibilities,

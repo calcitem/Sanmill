@@ -67,7 +67,8 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
         if (p != QPointF(0, 0))
             // Send the nearest drop point of the mouse point
             emit mouseReleased(p);
-    } else if (item->type() == PieceItem::Type) { // If it's a piece
+    } else if (item->type() == PieceItem::Type) {
+        // If it's a piece
         // Send out the position of the current piece in the scene
         emit mouseReleased(item->scenePos());
     }

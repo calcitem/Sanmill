@@ -151,15 +151,23 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 {
 #ifndef __clang__ // TODO(calcitem)
     // locals
-    unsigned int curLayerId;      // current processed layer within
-                                  // 'layersToCalculate'
-    unsigned int layerNumber;     // layer number of the current process layer
-    stringstream ssInitArrayPath; // path of the working directory
-    stringstream ssInitArrayFilePath; // filename corresponding to a cyclic
-                                      // array file which is used for storage
-    BufferedFile *initArray;          //
-    bool initAlreadyDone = false; // true if the initialization information is
-                                  // already available in a file
+
+    // current processed layer within 'layersToCalculate'
+    unsigned int curLayerId;
+
+    // layer number of the current process layer
+    unsigned int layerNumber;
+
+    // path of the working directory
+    stringstream ssInitArrayPath;
+
+    // filename corresponding to a cyclic array file which is used for storage
+    stringstream ssInitArrayFilePath;
+
+    BufferedFile *initArray;
+
+    // true if the initialization information is already available in a file
+    bool initAlreadyDone = false;
 
     // process each layer
     for (curLayerId = 0; curLayerId < retroVars.layersToCalculate.size();
@@ -960,8 +968,9 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParameter)
 
                             do {
                                 curCountLong = *pCountValue;
-                                countValue = (CountArrayVarType)(
-                                    (curCountLong & mask) >> numBitsToShift);
+                                countValue = (CountArrayVarType)((curCountLong &
+                                                                  mask) >>
+                                                                 numBitsToShift);
                                 if (countValue > 0) {
                                     countValue--;
                                     newCountLong = (curCountLong & (~mask)) +

@@ -42,17 +42,29 @@ class Mill
 {
 private:
     // Variables
-    unsigned int *moveLogFrom, *moveLogTo,
-        movesDone;            // array containing the history of moves done
-    MillAI *playerOneAI;      // class-pointer to the AI of player one
-    MillAI *playerTwoAI;      // class-pointer to the AI of player two
-    fieldStruct field;        // current board
-    fieldStruct initialField; // undo of the last move is done by setting the
-                              // initial board und performing all moves saved in
-                              // history
-    int winner; // playerId of the player who has won the game. zero if game is
-                // still running.
-    int beginningPlayer; // playerId of the player who makes the first move
+
+    // array containing the history of moves done
+    unsigned int *moveLogFrom, *moveLogTo, movesDone;
+
+    // class-pointer to the AI of player one
+    MillAI *playerOneAI;
+
+    // class-pointer to the AI of player two
+    MillAI *playerTwoAI;
+
+    // current board
+    fieldStruct field;
+
+    // undo of the last move is done by setting the initial board und performing
+    // all moves saved in history
+    fieldStruct initialField;
+
+    // playerId of the player who has won the game. zero if game is still
+    // running.
+    int winner;
+
+    // playerId of the player who makes the first move
+    int beginningPlayer;
 
     // Functions
     void exit();
