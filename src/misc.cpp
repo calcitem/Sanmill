@@ -30,10 +30,10 @@
 // the calls at compile time), try to load them at runtime. To do this we need
 // first to define the corresponding function pointers.
 extern "C" {
-    typedef bool (*fun1_t)(LOGICAL_PROCESSOR_RELATIONSHIP,
-                           PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, PDWORD);
-    typedef bool (*fun2_t)(USHORT, PGROUP_AFFINITY);
-    typedef bool (*fun3_t)(HANDLE, CONST GROUP_AFFINITY *, PGROUP_AFFINITY);
+typedef bool (*fun1_t)(LOGICAL_PROCESSOR_RELATIONSHIP,
+                       PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, PDWORD);
+typedef bool (*fun2_t)(USHORT, PGROUP_AFFINITY);
+typedef bool (*fun3_t)(HANDLE, CONST GROUP_AFFINITY *, PGROUP_AFFINITY);
 }
 #endif
 

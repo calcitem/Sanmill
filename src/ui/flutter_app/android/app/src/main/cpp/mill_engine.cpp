@@ -28,108 +28,108 @@
 
 extern "C" {
 
-    EngineState state = EngineState::STATE_READY;
-    pthread_t thread_id = 0;
+EngineState state = EngineState::STATE_READY;
+pthread_t thread_id = 0;
 
-    void *engineThread(void *)
-    {
-        printf("Engine Think Thread enter.\n");
+void *engineThread(void *)
+{
+    printf("Engine Think Thread enter.\n");
 
-        engineMain();
+    engineMain();
 
-        printf("Engine Think Thread exit.\n");
+    printf("Engine Think Thread exit.\n");
 
-        return NULL;
-    }
+    return NULL;
+}
 
-    JNIEXPORT jint JNICALL Java_com_calcitem_sanmill_MillEngine_send(
-        JNIEnv *env, jobject, jstring command);
+JNIEXPORT jint JNICALL Java_com_calcitem_sanmill_MillEngine_send(
+    JNIEnv *env, jobject, jstring command);
 
-    JNIEXPORT jint JNICALL
-    Java_com_calcitem_sanmill_MillEngine_shutdown(JNIEnv *, jobject);
+JNIEXPORT jint JNICALL Java_com_calcitem_sanmill_MillEngine_shutdown(JNIEnv *,
+                                                                     jobject);
 
-    JNIEXPORT jint JNICALL
-    Java_com_calcitem_sanmill_MillEngine_startup(JNIEnv *env, jobject obj)
-    {
-        if (thread_id) {
-            Java_com_calcitem_sanmill_MillEngine_shutdown(env, obj);
-            pthread_join(thread_id, NULL);
-        }
-
-        CommandChannel::getInstance();
-
-        usleep(10);
-
-        pthread_create(&thread_id, NULL, engineThread, NULL);
-
-        Java_com_calcitem_sanmill_MillEngine_send(env, obj,
-                                                  env->NewStringUTF("uci"));
-
-        return 0;
-    }
-
-    JNIEXPORT jint JNICALL Java_com_calcitem_sanmill_MillEngine_send(
-        JNIEnv *env, jobject, jstring command)
-    {
-        const char *pCommand = env->GetStringUTFChars(command, JNI_FALSE);
-
-        if (pCommand[0] == 'g' && pCommand[1] == 'o')
-            state = EngineState::STATE_THINKING;
-
-        CommandChannel *channel = CommandChannel::getInstance();
-
-        bool success = channel->pushCommand(pCommand);
-        if (success)
-            printf(">>> %s\n", pCommand);
-
-        env->ReleaseStringUTFChars(command, pCommand);
-
-        return success ? 0 : -1;
-    }
-
-    JNIEXPORT jstring JNICALL
-    Java_com_calcitem_sanmill_MillEngine_read(JNIEnv *env, jobject)
-    {
-        char line[4096] = {0};
-
-        CommandChannel *channel = CommandChannel::getInstance();
-        bool got_response = channel->popupResponse(line);
-
-        if (!got_response)
-            return NULL;
-
-        printf("<<< %s\n", line);
-
-        if (strstr(line, "readyok") || strstr(line, "uciok") ||
-            strstr(line, "bestmove") || strstr(line, "nobestmove")) {
-            state = EngineState::STATE_READY;
-        }
-
-        return env->NewStringUTF(line);
-    }
-
-    JNIEXPORT jint JNICALL
-    Java_com_calcitem_sanmill_MillEngine_shutdown(JNIEnv *env, jobject obj)
-    {
-        Java_com_calcitem_sanmill_MillEngine_send(env, obj,
-                                                  env->NewStringUTF("quit"));
-
+JNIEXPORT jint JNICALL Java_com_calcitem_sanmill_MillEngine_startup(JNIEnv *env,
+                                                                    jobject obj)
+{
+    if (thread_id) {
+        Java_com_calcitem_sanmill_MillEngine_shutdown(env, obj);
         pthread_join(thread_id, NULL);
-
-        thread_id = 0;
-
-        return 0;
     }
 
-    JNIEXPORT jboolean JNICALL
-    Java_com_calcitem_sanmill_MillEngine_isReady(JNIEnv *, jobject)
-    {
-        return static_cast<jboolean>(state == EngineState::STATE_READY);
+    CommandChannel::getInstance();
+
+    usleep(10);
+
+    pthread_create(&thread_id, NULL, engineThread, NULL);
+
+    Java_com_calcitem_sanmill_MillEngine_send(env, obj,
+                                              env->NewStringUTF("uci"));
+
+    return 0;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_calcitem_sanmill_MillEngine_send(JNIEnv *env, jobject, jstring command)
+{
+    const char *pCommand = env->GetStringUTFChars(command, JNI_FALSE);
+
+    if (pCommand[0] == 'g' && pCommand[1] == 'o')
+        state = EngineState::STATE_THINKING;
+
+    CommandChannel *channel = CommandChannel::getInstance();
+
+    bool success = channel->pushCommand(pCommand);
+    if (success)
+        printf(">>> %s\n", pCommand);
+
+    env->ReleaseStringUTFChars(command, pCommand);
+
+    return success ? 0 : -1;
+}
+
+JNIEXPORT jstring JNICALL Java_com_calcitem_sanmill_MillEngine_read(JNIEnv *env,
+                                                                    jobject)
+{
+    char line[4096] = {0};
+
+    CommandChannel *channel = CommandChannel::getInstance();
+    bool got_response = channel->popupResponse(line);
+
+    if (!got_response)
+        return NULL;
+
+    printf("<<< %s\n", line);
+
+    if (strstr(line, "readyok") || strstr(line, "uciok") ||
+        strstr(line, "bestmove") || strstr(line, "nobestmove")) {
+        state = EngineState::STATE_READY;
     }
 
-    JNIEXPORT jboolean JNICALL
-    Java_com_calcitem_sanmill_MillEngine_isThinking(JNIEnv *, jobject)
-    {
-        return static_cast<jboolean>(state == EngineState::STATE_THINKING);
-    }
+    return env->NewStringUTF(line);
+}
+
+JNIEXPORT jint JNICALL
+Java_com_calcitem_sanmill_MillEngine_shutdown(JNIEnv *env, jobject obj)
+{
+    Java_com_calcitem_sanmill_MillEngine_send(env, obj,
+                                              env->NewStringUTF("quit"));
+
+    pthread_join(thread_id, NULL);
+
+    thread_id = 0;
+
+    return 0;
+}
+
+JNIEXPORT jboolean JNICALL
+Java_com_calcitem_sanmill_MillEngine_isReady(JNIEnv *, jobject)
+{
+    return static_cast<jboolean>(state == EngineState::STATE_READY);
+}
+
+JNIEXPORT jboolean JNICALL
+Java_com_calcitem_sanmill_MillEngine_isThinking(JNIEnv *, jobject)
+{
+    return static_cast<jboolean>(state == EngineState::STATE_THINKING);
+}
 }

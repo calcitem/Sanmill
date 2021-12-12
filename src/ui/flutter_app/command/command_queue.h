@@ -21,8 +21,7 @@
 
 class CommandQueue
 {
-    enum
-    {
+    enum {
         MAX_COMMAND_COUNT = 128,
         COMMAND_LENGTH = 4096,
     };

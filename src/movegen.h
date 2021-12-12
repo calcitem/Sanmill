@@ -24,13 +24,7 @@
 
 class Position;
 
-enum GenType
-{
-    PLACE,
-    MOVE,
-    REMOVE,
-    LEGAL
-};
+enum GenType { PLACE, MOVE, REMOVE, LEGAL };
 
 struct ExtMove
 {

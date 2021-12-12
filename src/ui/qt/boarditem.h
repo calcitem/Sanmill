@@ -39,10 +39,7 @@ public:
     // an object of the boarditem class Another way is to put the class name in
     // the 0key position of data, SetData(0, "BoardItem"), and then use data(0)
     // to judge
-    enum
-    {
-        Type = UserType + 1
-    };
+    enum { Type = UserType + 1 };
 
     int type() const noexcept override { return Type; }
 

@@ -35,87 +35,90 @@
 
 extern "C" {
 
-    EngineState state = EngineState::STATE_READY;
-    pthread_t thread_id = nullptr;
+EngineState state = EngineState::STATE_READY;
+pthread_t thread_id = nullptr;
 
-    DWORD WINAPI engineThread(LPVOID lpParam)
-    {
-        printf("Engine Think Thread enter.\n");
+DWORD WINAPI engineThread(LPVOID lpParam)
+{
+    printf("Engine Think Thread enter.\n");
 
-        engineMain();
+    engineMain();
 
-        printf("Engine Think Thread exit.\n");
+    printf("Engine Think Thread exit.\n");
 
-        return 0;
-    }
+    return 0;
+}
 
-    int MillEngine::startup()
-    {
-        if (thread_id) {
-            shutdown();
-            pthread_join(thread_id, nullptr);
-        }
-
-        CommandChannel::getInstance();
-
-        Sleep(10);
-
-        CreateThread(nullptr, 0, engineThread, 0, 0, nullptr);
-
-        send("uci");
-
-        return 0;
-    }
-
-    int MillEngine::send(const char *command)
-    {
-        if (command[0] == 'g' && command[1] == 'o')
-            state = EngineState::STATE_THINKING;
-
-        CommandChannel *channel = CommandChannel::getInstance();
-
-        bool success = channel->pushCommand(command);
-        if (success)
-            printf(">>> %s\n", command);
-
-        return success ? 0 : -1;
-    }
-
-    std::string MillEngine::read()
-    {
-        char line[4096] = {0};
-
-        CommandChannel *channel = CommandChannel::getInstance();
-        bool got_response = channel->popupResponse(line);
-
-        if (!got_response)
-            return "";
-
-        printf("<<< %s\n", line);
-
-        if (strstr(line, "readyok") || strstr(line, "uciok") ||
-            strstr(line, "bestmove") || strstr(line, "nobestmove")) {
-            state = EngineState::STATE_READY;
-        }
-
-        return line; // TODO
-    }
-
-    int MillEngine::shutdown()
-    {
-        send("quit");
-
+int MillEngine::startup()
+{
+    if (thread_id) {
+        shutdown();
         pthread_join(thread_id, nullptr);
-
-        thread_id = nullptr;
-
-        return 0;
     }
 
-    bool MillEngine::isReady() { return state == EngineState::STATE_READY; }
+    CommandChannel::getInstance();
 
-    bool MillEngine::isThinking()
-    {
-        return state == EngineState::STATE_THINKING;
+    Sleep(10);
+
+    CreateThread(nullptr, 0, engineThread, 0, 0, nullptr);
+
+    send("uci");
+
+    return 0;
+}
+
+int MillEngine::send(const char *command)
+{
+    if (command[0] == 'g' && command[1] == 'o')
+        state = EngineState::STATE_THINKING;
+
+    CommandChannel *channel = CommandChannel::getInstance();
+
+    bool success = channel->pushCommand(command);
+    if (success)
+        printf(">>> %s\n", command);
+
+    return success ? 0 : -1;
+}
+
+std::string MillEngine::read()
+{
+    char line[4096] = {0};
+
+    CommandChannel *channel = CommandChannel::getInstance();
+    bool got_response = channel->popupResponse(line);
+
+    if (!got_response)
+        return "";
+
+    printf("<<< %s\n", line);
+
+    if (strstr(line, "readyok") || strstr(line, "uciok") ||
+        strstr(line, "bestmove") || strstr(line, "nobestmove")) {
+        state = EngineState::STATE_READY;
     }
+
+    return line; // TODO
+}
+
+int MillEngine::shutdown()
+{
+    send("quit");
+
+    pthread_join(thread_id, nullptr);
+
+    thread_id = nullptr;
+
+    return 0;
+}
+
+bool MillEngine::isReady()
+{
+    return state == EngineState::STATE_READY;
+}
+
+bool MillEngine::isThinking()
+{
+    return state == EngineState::STATE_THINKING;
+}
 }

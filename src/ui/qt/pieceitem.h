@@ -44,15 +44,11 @@ public:
     // and use qgraphicsitems_cast() determines whether it is an object of the
     // pieceitem class Another way is to put the class name in the 0key position
     // of data, setData(0, "pieceitem"), and then use data(0) to judge
-    enum
-    {
-        Type = UserType + 2
-    };
+    enum { Type = UserType + 2 };
 
     int type() const noexcept override { return Type; }
 
-    enum class Models
-    {
+    enum class Models {
         noPiece = 0x1,
         whitePiece = 0x2,
         blackPiece = 0x4,
