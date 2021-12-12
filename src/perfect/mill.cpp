@@ -189,8 +189,7 @@ bool Mill::putPiece(unsigned int pos, int player)
 {
     // locals
     unsigned int i;
-    unsigned int nCurrentPlayerMills = 0,
-                 nOpponentPlayerMills = 0;
+    unsigned int nCurrentPlayerMills = 0, nOpponentPlayerMills = 0;
     Player *myPlayer = (player == field.curPlayer->id) ? field.curPlayer :
                                                          field.oppPlayer;
 
@@ -247,7 +246,7 @@ bool Mill::putPiece(unsigned int pos, int player)
         // did not cause a piece removal.
         field.curPlayer->removedPiecesCount = nOpponentPlayerMills;
         field.oppPlayer->removedPiecesCount = nCurrentPlayerMills -
-                                            field.pieceMustBeRemoved;
+                                              field.pieceMustBeRemoved;
         field.piecesSet = field.curPlayer->pieceCount +
                           field.oppPlayer->pieceCount +
                           field.curPlayer->removedPiecesCount +
@@ -921,22 +920,22 @@ void Mill::undoMove(void)
 //
 //-----------------------------------------------------------------------------
 void Mill::calcRestingPieceCount(int &nWhitePiecesResting,
-                                     int &nBlackPiecesResting)
+                                 int &nBlackPiecesResting)
 {
     if (getCurrentPlayer() == fieldStruct::playerTwo) {
         nWhitePiecesResting = fieldStruct::piecePerPlayerCount -
-                                field.curPlayer->removedPiecesCount -
-                                field.curPlayer->pieceCount;
+                              field.curPlayer->removedPiecesCount -
+                              field.curPlayer->pieceCount;
         nBlackPiecesResting = fieldStruct::piecePerPlayerCount -
-                                field.oppPlayer->removedPiecesCount -
-                                field.oppPlayer->pieceCount;
+                              field.oppPlayer->removedPiecesCount -
+                              field.oppPlayer->pieceCount;
     } else {
         nWhitePiecesResting = fieldStruct::piecePerPlayerCount -
-                                field.oppPlayer->removedPiecesCount -
-                                field.oppPlayer->pieceCount;
+                              field.oppPlayer->removedPiecesCount -
+                              field.oppPlayer->pieceCount;
         nBlackPiecesResting = fieldStruct::piecePerPlayerCount -
-                                field.curPlayer->removedPiecesCount -
-                                field.curPlayer->pieceCount;
+                              field.curPlayer->removedPiecesCount -
+                              field.curPlayer->pieceCount;
     }
 }
 

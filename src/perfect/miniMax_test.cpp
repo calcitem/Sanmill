@@ -128,8 +128,8 @@ DWORD MiniMax::testLayerThreadProc(void *pParameter, unsigned index)
         m->stateProcessedCount += OUTPUT_EVERY_N_STATES;
         PRINT(0, m,
               m->stateProcessedCount << " states of "
-                                    << m->layerStats[layerNumber].knotsInLayer
-                                    << " tested");
+                                     << m->layerStats[layerNumber].knotsInLayer
+                                     << " tested");
     }
 
     // situation already existend in database ?

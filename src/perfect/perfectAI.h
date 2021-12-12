@@ -9,9 +9,9 @@
 #ifndef PERFECT_AI_H_INCLUDED
 #define PERFECT_AI_H_INCLUDED
 
-#include "types.h"
 #include "millAI.h"
 #include "miniMax.h"
+#include "types.h"
 #include <cstdio>
 #include <iostream>
 #include <math.h>
@@ -138,10 +138,10 @@ protected:
                            [NUM_PIECES_PER_PLAYER_PLUS_ONE];
 
     unsigned int nPositionsCD[NUM_PIECES_PER_PLAYER_PLUS_ONE]
-                               [NUM_PIECES_PER_PLAYER_PLUS_ONE];
+                             [NUM_PIECES_PER_PLAYER_PLUS_ONE];
 
     unsigned int nPositionsAB[NUM_PIECES_PER_PLAYER_PLUS_ONE]
-                               [NUM_PIECES_PER_PLAYER_PLUS_ONE];
+                             [NUM_PIECES_PER_PLAYER_PLUS_ONE];
 
     unsigned int indexAB[MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B];
 
@@ -179,8 +179,7 @@ protected:
     unsigned short plyInfoForOutput[SQUARE_NB * SQUARE_NB];
 
     // contains the number of ...
-    unsigned int incidencesValuesSubMoves[SQUARE_NB * SQUARE_NB]
-                                         [4];
+    unsigned int incidencesValuesSubMoves[SQUARE_NB * SQUARE_NB][4];
 
     // array for state numbers
     unsigned int symmetricStateNumberArray[NUM_SYM_OPERATIONS];

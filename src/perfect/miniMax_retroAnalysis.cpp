@@ -52,19 +52,21 @@ bool MiniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int> &layersToCalc)
         curLayer = 0;
          curLayer < layersToCalc.size(); curLayer++) {
         retroVars.knotToCalcCount += layerStats[layersToCalc[curLayer]]
-                                        .knotsInLayer;
+                                         .knotsInLayer;
         retroVars.totalKnotCount += layerStats[layersToCalc[curLayer]]
-                                       .knotsInLayer;
+                                        .knotsInLayer;
         retroVars.layerInitialized[layersToCalc[curLayer]] = true;
         for (curSubLayer = 0;
-             curSubLayer < layerStats[layersToCalc[curLayer]].succeedingLayerCount;
+             curSubLayer <
+             layerStats[layersToCalc[curLayer]].succeedingLayerCount;
              curSubLayer++) {
             if (retroVars.layerInitialized[layerStats[layersToCalc[curLayer]]
                                                .succeedingLayers[curSubLayer]])
                 continue;
             else
                 retroVars.layerInitialized[layerStats[layersToCalc[curLayer]]
-                                               .succeedingLayers[curSubLayer]] = true;
+                                               .succeedingLayers[curSubLayer]] =
+                    true;
             retroVars.totalKnotCount +=
                 layerStats[layerStats[layersToCalc[curLayer]]
                                .succeedingLayers[curSubLayer]]
@@ -408,7 +410,7 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
     for (curLayer = 0; curLayer < retroVars.layersToCalculate.size();
          curLayer++) {
         nKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]]
-                                 .knotsInLayer;
+                               .knotsInLayer;
         retroVars.countArrays[curLayer] =
             new CountArrayVarType[nKnotsInCurLayer];
         memoryUsed2 += nKnotsInCurLayer * sizeof(CountArrayVarType);
@@ -426,11 +428,11 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 
         for (curLayer = 0; curLayer < retroVars.layersToCalculate.size();
              curLayer++) {
-            nKnotsInCurLayer =
-                layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
+            nKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]]
+                                   .knotsInLayer;
             if (!ReadFile(hFileCountArray, retroVars.countArrays[curLayer],
-                          nKnotsInCurLayer * sizeof(CountArrayVarType),
-                          &dwRead, nullptr))
+                          nKnotsInCurLayer * sizeof(CountArrayVarType), &dwRead,
+                          nullptr))
                 return falseOrStop();
             if (dwRead != nKnotsInCurLayer * sizeof(CountArrayVarType))
                 return falseOrStop();
@@ -441,8 +443,8 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
         // Set default value 0
         for (curLayer = 0; curLayer < retroVars.layersToCalculate.size();
              curLayer++) {
-            nKnotsInCurLayer =
-                layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
+            nKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]]
+                                   .knotsInLayer;
             for (curState.stateNumber = 0;
                  curState.stateNumber < nKnotsInCurLayer;
                  curState.stateNumber++) {
@@ -459,8 +461,8 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
         // save to file
         for (curLayer = 0, dwWritten = 0;
              curLayer < retroVars.layersToCalculate.size(); curLayer++) {
-            nKnotsInCurLayer =
-                layerStats[retroVars.layersToCalculate[curLayer]].knotsInLayer;
+            nKnotsInCurLayer = layerStats[retroVars.layersToCalculate[curLayer]]
+                                   .knotsInLayer;
             if (!WriteFile(hFileCountArray, retroVars.countArrays[curLayer],
                            nKnotsInCurLayer * sizeof(CountArrayVarType),
                            &dwWritten, nullptr))
@@ -545,7 +547,8 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
 
         // ... and process succeeding layers
         for (curState.layerNumber = 0;
-             curState.layerNumber < layerStats[layerNumber].succeedingLayerCount;
+             curState.layerNumber <
+             layerStats[layerNumber].succeedingLayerCount;
              curState.layerNumber++) {
             // get current pred. layer
             succState.layerNumber = layerStats[layerNumber]
@@ -616,7 +619,7 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParameter, unsigned int index)
     AddNumSucceedersVars *ansVars = (AddNumSucceedersVars *)pParameter;
     MiniMax *m = ansVars->pMiniMax;
     unsigned int nLayersToCalculate = (unsigned int)ansVars->retroVars
-                                            ->layersToCalculate.size();
+                                          ->layersToCalculate.size();
     unsigned int curLayerId; // current processed layer within
                              // 'layersToCalculate'
     unsigned int amountOfPred;
@@ -626,7 +629,7 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParameter, unsigned int index)
     StateAdress curState;
     TwoBit curStateValue;
     PlyInfoVarType nPlies; // number of plies of the current considered
-                             // succeeding state
+                           // succeeding state
     bool cuStateAddedToProcessQueue = false;
 
     curState.layerNumber = ansVars->layerNumber;
@@ -693,10 +696,10 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParameter, unsigned int index)
             ((long *)ansVars->retroVars->countArrays[curLayerId]) +
             predState.stateNumber / (sizeof(long) / sizeof(CountArrayVarType));
         long nBitsToShift = sizeof(CountArrayVarType) * 8 *
-                              (predState.stateNumber %
-                               (sizeof(long) /
-                                sizeof(CountArrayVarType))); // little-endian
-                                                             // byte-order
+                            (predState.stateNumber %
+                             (sizeof(long) /
+                              sizeof(CountArrayVarType))); // little-endian
+                                                           // byte-order
         long mask = 0x000000ff << nBitsToShift;
         long curCountLong, newCountLong;
 
@@ -878,8 +881,9 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParameter)
                     for (totalNumStatesToProcess = 0, threadCounter = 0;
                          threadCounter < m->threadManager.getThreadCount();
                          threadCounter++) {
-                        totalNumStatesToProcess +=
-                            retroVars->thread[threadCounter].stateToProcessCount;
+                        totalNumStatesToProcess += retroVars
+                                                       ->thread[threadCounter]
+                                                       .stateToProcessCount;
                     }
                     PRINT(2, m,
                           "    states already processed: "
@@ -975,8 +979,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParameter)
                                 if (countValue > 0) {
                                     countValue--;
                                     newCountLong = (curCountLong & (~mask)) +
-                                                   (countValue
-                                                    << nBitsToShift);
+                                                   (countValue << nBitsToShift);
                                 } else {
                                     PRINT(0, m,
                                           "ERROR: Count is already zero!");

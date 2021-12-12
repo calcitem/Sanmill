@@ -494,8 +494,7 @@ Depth get_search_depth(const Position *pos)
                 +0                /* 24 */
             };
 
-            const int index = rule.pieceCount * 2 -
-                              pos->count<IN_HAND>(WHITE) -
+            const int index = rule.pieceCount * 2 - pos->count<IN_HAND>(WHITE) -
                               pos->count<IN_HAND>(BLACK);
 
             if (rule.hasDiagonalLines) {

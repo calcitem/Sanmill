@@ -163,7 +163,8 @@ void MiniMax::showLayerStats(unsigned int layerNumber)
         statsValueCounter[curStateValue]++;
     }
 
-    layerStats[layerNumber].wonStateCount = statsValueCounter[SKV_VALUE_GAME_WON];
+    layerStats[layerNumber].wonStateCount =
+        statsValueCounter[SKV_VALUE_GAME_WON];
     layerStats[layerNumber].lostStateCount =
         statsValueCounter[SKV_VALUE_GAME_LOST];
     layerStats[layerNumber].drawnStateCount =

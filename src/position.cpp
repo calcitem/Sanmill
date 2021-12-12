@@ -1020,8 +1020,7 @@ bool Position::check_if_game_is_over()
     }
 #endif // RULE_50
 
-    if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >=
-        SQUARE_NB) {
+    if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >= SQUARE_NB) {
         if (rule.isWhiteLoseButNotDrawWhenBoardFull) {
             set_gameover(BLACK, GameOverReason::loseBoardIsFull);
         } else {
@@ -1306,8 +1305,7 @@ bool Position::is_all_surrounded(Color c
 ) const
 {
     // Full
-    if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >=
-        SQUARE_NB)
+    if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >= SQUARE_NB)
         return true;
 
     // Can fly
