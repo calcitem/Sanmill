@@ -90,7 +90,7 @@ public:
     unsigned int warnings[SQUARE_NB];
 
     // true if piece can be moved in this direction
-    bool pieceMoveAble[SQUARE_NB][4];
+    bool pieceMoveAble[SQUARE_NB][MD_NB];
 
     // the number of mills, of which this piece is part of
     unsigned int piecePartOfMill[SQUARE_NB];
