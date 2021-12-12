@@ -28,7 +28,7 @@ using std::string;
 
 namespace Zobrist {
 constexpr int KEY_MISC_BIT = 2;
-Key psq[PIECE_TYPE_NB][SQUARE_NB];
+Key psq[PIECE_TYPE_NB][SQUARE_EXT_NB];
 Key side;
 } // namespace Zobrist
 
@@ -1021,7 +1021,7 @@ bool Position::check_if_game_is_over()
 #endif // RULE_50
 
     if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >=
-        EFFECTIVE_SQUARE_NB) {
+        SQUARE_NB) {
         if (rule.isWhiteLoseButNotDrawWhenBoardFull) {
             set_gameover(BLACK, GameOverReason::loseBoardIsFull);
         } else {
@@ -1135,7 +1135,7 @@ Key Position::update_key_misc()
 #include "misc.h"
 #include "movegen.h"
 
-Bitboard Position::millTableBB[SQUARE_NB][LD_NB] = {{0}};
+Bitboard Position::millTableBB[SQUARE_EXT_NB][LD_NB] = {{0}};
 
 void Position::create_mill_table()
 {
@@ -1194,7 +1194,7 @@ int Position::potential_mills_count(Square to, Color c, Square from)
     int n = 0;
     Piece locbak = NO_PIECE;
 
-    assert(SQ_0 <= from && from < SQUARE_NB);
+    assert(SQ_0 <= from && from < SQUARE_EXT_NB);
 
     if (c == NOBODY) {
         c = color_on(to);
@@ -1307,7 +1307,7 @@ bool Position::is_all_surrounded(Color c
 {
     // Full
     if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >=
-        EFFECTIVE_SQUARE_NB)
+        SQUARE_NB)
         return true;
 
     // Can fly
@@ -1525,8 +1525,8 @@ void Position::turn(vector<string> &moveHistory, bool cmdChange /*= true*/)
 
     for (r = 0; r < RANK_NB; r++) {
         ch = board[RANK_NB + r];
-        board[RANK_NB + r] = board[EFFECTIVE_SQUARE_NB + r];
-        board[EFFECTIVE_SQUARE_NB + r] = ch;
+        board[RANK_NB + r] = board[SQUARE_NB + r];
+        board[SQUARE_NB + r] = ch;
     }
 
     reset_bb();

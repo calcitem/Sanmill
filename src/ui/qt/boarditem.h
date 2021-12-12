@@ -60,7 +60,7 @@ public:
 private:
     int size; // board size
     int sizeShadow {5};
-    QPointF position[EFFECTIVE_SQUARE_NB]; // 24 points
+    QPointF position[SQUARE_NB]; // 24 points
     bool hasDiagonalLine {false};
 };
 

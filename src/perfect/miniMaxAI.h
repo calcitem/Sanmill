@@ -42,8 +42,8 @@ protected:
         unsigned int curMissPieces, oppMissPieces;
         unsigned int piecesSet;
         unsigned int pieceMustBeRemoved;
-        unsigned int piecePartOfMill[fieldStruct::size];
-        unsigned int warnings[fieldStruct::size];
+        unsigned int piecePartOfMill[SQUARE_NB];
+        unsigned int warnings[SQUARE_NB];
         Player *curPlayer, *oppPlayer;
     };
 

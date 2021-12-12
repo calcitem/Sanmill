@@ -117,7 +117,7 @@ protected:
         unsigned int curMissPieces, oppMissPieces;
         unsigned int piecesSet;
         unsigned int pieceMustBeRemoved;
-        unsigned int piecePartOfMill[fieldStruct::size];
+        unsigned int piecePartOfMill[SQUARE_NB];
         Player *curPlayer, *oppPlayer;
     };
 
@@ -155,7 +155,7 @@ protected:
     unsigned int powerOfThree[numSquaresGroupC + numSquaresGroupD];
 
     // Matrix used for application of the symmetry operations
-    unsigned int symmetryOperationTable[NUM_SYM_OPERATIONS][fieldStruct::size];
+    unsigned int symmetryOperationTable[NUM_SYM_OPERATIONS][SQUARE_NB];
 
     unsigned int *originalStateCD[NUM_PIECES_PER_PLAYER_PLUS_ONE]
                                  [NUM_PIECES_PER_PLAYER_PLUS_ONE];
@@ -170,16 +170,16 @@ protected:
     unsigned int concSymOperation[NUM_SYM_OPERATIONS][NUM_SYM_OPERATIONS];
 
     // m over n
-    unsigned int mOverN[fieldStruct::size + 1][fieldStruct::size + 1];
+    unsigned int mOverN[SQUARE_NB + 1][SQUARE_NB + 1];
 
     // contains the value of the situation, which will be achieved by that move
-    unsigned char valueOfMove[fieldStruct::size * fieldStruct::size];
+    unsigned char valueOfMove[SQUARE_NB * SQUARE_NB];
 
     // contains the value of the situation, which will be achieved by that move
-    unsigned short plyInfoForOutput[fieldStruct::size * fieldStruct::size];
+    unsigned short plyInfoForOutput[SQUARE_NB * SQUARE_NB];
 
     // contains the number of ...
-    unsigned int incidencesValuesSubMoves[fieldStruct::size * fieldStruct::size]
+    unsigned int incidencesValuesSubMoves[SQUARE_NB * SQUARE_NB]
                                          [4];
 
     // array for state numbers

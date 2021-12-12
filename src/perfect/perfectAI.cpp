@@ -197,8 +197,8 @@ PerfectAI::PerfectAI(const char *directory)
     unsigned int i, a, b, c, totalNumPieces;
     unsigned int wCD, bCD, wAB, bAB;
     unsigned int stateAB, stateCD, symStateCD, layerNum;
-    unsigned int myField[fieldStruct::size];
-    unsigned int symField[fieldStruct::size];
+    unsigned int myField[SQUARE_NB];
+    unsigned int symField[SQUARE_NB];
     unsigned int *originalStateCD_tmp[10][10];
     DWORD dwBytesRead = 0;
     DWORD dwBytesWritten = 0;
@@ -276,7 +276,7 @@ PerfectAI::PerfectAI(const char *directory)
                       &dwBytesRead, nullptr))
             return;
         if (!ReadFile(hFilePreCalcVars, symmetryOperationTable,
-                      sizeof(unsigned int) * fieldStruct::size *
+                      sizeof(unsigned int) * SQUARE_NB *
                           NUM_SYM_OPERATIONS,
                       &dwBytesRead, nullptr))
             return;
@@ -290,23 +290,23 @@ PerfectAI::PerfectAI(const char *directory)
                       &dwBytesRead, nullptr))
             return;
         if (!ReadFile(hFilePreCalcVars, mOverN,
-                      sizeof(unsigned int) * (fieldStruct::size + 1) *
-                          (fieldStruct::size + 1),
+                      sizeof(unsigned int) * (SQUARE_NB + 1) *
+                          (SQUARE_NB + 1),
                       &dwBytesRead, nullptr))
             return;
         if (!ReadFile(hFilePreCalcVars, valueOfMove,
-                      sizeof(unsigned char) * fieldStruct::size *
-                          fieldStruct::size,
+                      sizeof(unsigned char) * SQUARE_NB *
+                          SQUARE_NB,
                       &dwBytesRead, nullptr))
             return;
         if (!ReadFile(hFilePreCalcVars, plyInfoForOutput,
-                      sizeof(PlyInfoVarType) * fieldStruct::size *
-                          fieldStruct::size,
+                      sizeof(PlyInfoVarType) * SQUARE_NB *
+                          SQUARE_NB,
                       &dwBytesRead, nullptr))
             return;
         if (!ReadFile(hFilePreCalcVars, incidencesValuesSubMoves,
-                      sizeof(unsigned int) * 4 * fieldStruct::size *
-                          fieldStruct::size,
+                      sizeof(unsigned int) * 4 * SQUARE_NB *
+                          SQUARE_NB,
                       &dwBytesRead, nullptr))
             return;
 
@@ -339,14 +339,14 @@ PerfectAI::PerfectAI(const char *directory)
         // calculate vars and save into file
     } else {
         // calc mOverN
-        for (a = 0; a <= fieldStruct::size; a++) {
-            for (b = 0; b <= fieldStruct::size; b++) {
+        for (a = 0; a <= SQUARE_NB; a++) {
+            for (b = 0; b <= SQUARE_NB; b++) {
                 mOverN[a][b] = (unsigned int)mOverN_Function(a, b);
             }
         }
 
         // reset
-        for (i = 0; i < fieldStruct::size * fieldStruct::size; i++) {
+        for (i = 0; i < SQUARE_NB * SQUARE_NB; i++) {
             plyInfoForOutput[i] = PLYINFO_VALUE_INVALID;
             valueOfMove[i] = SKV_VALUE_INVALID;
             incidencesValuesSubMoves[i][SKV_VALUE_INVALID] = 0;
@@ -361,7 +361,7 @@ PerfectAI::PerfectAI(const char *directory)
             powerOfThree[i] = 3 * powerOfThree[i - 1];
 
         // symmetry operation table
-        for (i = 0; i < fieldStruct::size; i++) {
+        for (i = 0; i < SQUARE_NB; i++) {
             symmetryOperationTable[SO_TURN_LEFT][i] = soTableTurnLeft[i];
             symmetryOperationTable[SO_TURN_180][i] = soTableTurn180[i];
             symmetryOperationTable[SO_TURN_RIGHT][i] = soTableTurnRight[i];
@@ -404,7 +404,7 @@ PerfectAI::PerfectAI(const char *directory)
                 // test each symmetry operation
                 for (c = 0; c < NUM_SYM_OPERATIONS; c++) {
                     // look if b(a(state)) == c(state)
-                    for (i = 0; i < fieldStruct::size; i++) {
+                    for (i = 0; i < SQUARE_NB; i++) {
                         if (symmetryOperationTable[c][i] !=
                             symmetryOperationTable[a]
                                                   [symmetryOperationTable[b][i]])
@@ -412,7 +412,7 @@ PerfectAI::PerfectAI(const char *directory)
                     }
 
                     // match found?
-                    if (i == fieldStruct::size) {
+                    if (i == SQUARE_NB) {
                         concSymOperation[a][b] = c;
                         break;
                     }
@@ -451,7 +451,7 @@ PerfectAI::PerfectAI(const char *directory)
             // new state ?
             if (indexAB[stateAB] == NOT_INDEXED) {
                 // zero board
-                for (i = 0; i < fieldStruct::size; i++)
+                for (i = 0; i < SQUARE_NB; i++)
                     myField[i] = FREE_SQUARE;
 
                 // make board
@@ -465,10 +465,10 @@ PerfectAI::PerfectAI(const char *directory)
                 myField[squareIndexGroupB[7]] = (stateAB / powerOfThree[0]) % 3;
 
                 // count black and white pieces
-                for (a = 0, i = 0; i < fieldStruct::size; i++)
+                for (a = 0, i = 0; i < SQUARE_NB; i++)
                     if (myField[i] == WHITE_PIECE)
                         a++;
-                for (b = 0, i = 0; i < fieldStruct::size; i++)
+                for (b = 0, i = 0; i < SQUARE_NB; i++)
                     if (myField[i] == BLACK_PIECE)
                         b++;
 
@@ -508,7 +508,7 @@ PerfectAI::PerfectAI(const char *directory)
             // new state ?
             if (indexCD[stateCD] == NOT_INDEXED) {
                 // zero board
-                for (i = 0; i < fieldStruct::size; i++)
+                for (i = 0; i < SQUARE_NB; i++)
                     myField[i] = FREE_SQUARE;
 
                 // make board
@@ -536,10 +536,10 @@ PerfectAI::PerfectAI(const char *directory)
                 myField[squareIndexGroupD[7]] = (stateCD / powerOfThree[0]) % 3;
 
                 // count black and white pieces
-                for (a = 0, i = 0; i < fieldStruct::size; i++)
+                for (a = 0, i = 0; i < SQUARE_NB; i++)
                     if (myField[i] == WHITE_PIECE)
                         a++;
-                for (b = 0, i = 0; i < fieldStruct::size; i++)
+                for (b = 0, i = 0; i < SQUARE_NB; i++)
                     if (myField[i] == BLACK_PIECE)
                         b++;
 
@@ -811,7 +811,7 @@ PerfectAI::PerfectAI(const char *directory)
                   sizeof(unsigned int) * (numSquaresGroupC + numSquaresGroupD),
                   &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, symmetryOperationTable,
-                  sizeof(unsigned int) * fieldStruct::size * NUM_SYM_OPERATIONS,
+                  sizeof(unsigned int) * SQUARE_NB * NUM_SYM_OPERATIONS,
                   &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, reverseSymOperation,
                   sizeof(unsigned int) * NUM_SYM_OPERATIONS, &dwBytesWritten,
@@ -821,19 +821,19 @@ PerfectAI::PerfectAI(const char *directory)
                       NUM_SYM_OPERATIONS,
                   &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, mOverN,
-                  sizeof(unsigned int) * (fieldStruct::size + 1) *
-                      (fieldStruct::size + 1),
+                  sizeof(unsigned int) * (SQUARE_NB + 1) *
+                      (SQUARE_NB + 1),
                   &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, valueOfMove,
-                  sizeof(unsigned char) * fieldStruct::size * fieldStruct::size,
+                  sizeof(unsigned char) * SQUARE_NB * SQUARE_NB,
                   &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, plyInfoForOutput,
-                  sizeof(PlyInfoVarType) * fieldStruct::size *
-                      fieldStruct::size,
+                  sizeof(PlyInfoVarType) * SQUARE_NB *
+                      SQUARE_NB,
                   &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, incidencesValuesSubMoves,
-                  sizeof(unsigned int) * 4 * fieldStruct::size *
-                      fieldStruct::size,
+                  sizeof(unsigned int) * 4 * SQUARE_NB *
+                      SQUARE_NB,
                   &dwBytesWritten, nullptr);
 
         // process originalStateAB[][]
@@ -901,7 +901,7 @@ void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom,
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // reset
-    for (i = 0; i < fieldStruct::size * fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB * SQUARE_NB; i++) {
         valueOfMove[i] = SKV_VALUE_INVALID;
         plyInfoForOutput[i] = PLYINFO_VALUE_INVALID;
         incidencesValuesSubMoves[i][SKV_VALUE_INVALID] = 0;
@@ -1089,7 +1089,7 @@ PerfectAI::ThreadVars::getPossSettingPhase(unsigned int *numPossibilities,
     unsigned int numberOfMillsBeeingClosed;
 
     // check if an opponent piece can be removed
-    for (pieceCanBeRemoved = false, i = 0; i < field->size; i++) {
+    for (pieceCanBeRemoved = false, i = 0; i < SQUARE_NB; i++) {
         if (field->board[i] == field->oppPlayer->id &&
             field->piecePartOfMill[i] == 0) {
             pieceCanBeRemoved = true;
@@ -1098,7 +1098,7 @@ PerfectAI::ThreadVars::getPossSettingPhase(unsigned int *numPossibilities,
     }
 
     // possibilities with cut off
-    for ((*numPossibilities) = 0, i = 0; i < field->size; i++) {
+    for ((*numPossibilities) = 0, i = 0; i < SQUARE_NB; i++) {
         // move possible ?
         if (field->board[i] == field->squareIsFree) {
             // check if a mill is beeing closed
@@ -1146,13 +1146,13 @@ PerfectAI::ThreadVars::getPossNormalMove(unsigned int *numPossibilities,
 
     // if he is not allowed to spring
     if (field->curPlayer->numPieces > 3) {
-        for ((*numPossibilities) = 0, from = 0; from < field->size; from++) {
+        for ((*numPossibilities) = 0, from = 0; from < SQUARE_NB; from++) {
             for (dir = 0; dir < 4; dir++) {
                 // destination
                 to = field->connectedSquare[from][dir];
 
                 // move possible ?
-                if (to < field->size &&
+                if (to < SQUARE_NB &&
                     field->board[from] == field->curPlayer->id &&
                     field->board[to] == field->squareIsFree) {
                     // piece is moveable
@@ -1166,8 +1166,8 @@ PerfectAI::ThreadVars::getPossNormalMove(unsigned int *numPossibilities,
             }
         }
     } else if (field->curPlayer->numPieces == 3) {
-        for ((*numPossibilities) = 0, from = 0; from < field->size; from++) {
-            for (to = 0; to < field->size; to++) {
+        for ((*numPossibilities) = 0, from = 0; from < SQUARE_NB; from++) {
+            for (to = 0; to < SQUARE_NB; to++) {
                 // move possible ?
                 if (field->board[from] == field->curPlayer->id &&
                     field->board[to] == field->squareIsFree &&
@@ -1205,7 +1205,7 @@ PerfectAI::ThreadVars::getPossPieceRemove(unsigned int *numPossibilities,
         &idPossibilities[curSearchDepth * MAX_NUM_POS_MOVES];
 
     // possibilities with cut off
-    for ((*numPossibilities) = 0, i = 0; i < field->size; i++) {
+    for ((*numPossibilities) = 0, i = 0; i < SQUARE_NB; i++) {
         // move possible ?
         if (field->board[i] == field->oppPlayer->id &&
             !field->piecePartOfMill[i]) {
@@ -1241,7 +1241,7 @@ unsigned int *PerfectAI::getPossibilities(unsigned int threadNo,
     *opponentsMove = (tv->field->curPlayer->id == tv->ownId) ? false : true;
 
     // count completed mills
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         if (tv->field->board[i] == tv->field->curPlayer->id)
             numberOfMillsCurrentPlayer += tv->field->piecePartOfMill[i];
         else
@@ -1322,7 +1322,7 @@ void PerfectAI::undo(unsigned int threadNo, unsigned int idPossibility,
     tv->field->board[oldState->to] = oldState->fieldTo;
 
     // very expensive
-    for (int i = 0; i < tv->field->size; i++) {
+    for (int i = 0; i < SQUARE_NB; i++) {
         tv->field->piecePartOfMill[i] = oldState->piecePartOfMill[i];
     }
 }
@@ -1363,17 +1363,17 @@ inline void PerfectAI::ThreadVars::updateWarning(unsigned int firstPiece,
                                                  unsigned int secondPiece)
 {
     // set warnings
-    if (firstPiece < field->size)
+    if (firstPiece < SQUARE_NB)
         this->setWarning(firstPiece, field->neighbour[firstPiece][0][0],
                          field->neighbour[firstPiece][0][1]);
-    if (firstPiece < field->size)
+    if (firstPiece < SQUARE_NB)
         this->setWarning(firstPiece, field->neighbour[firstPiece][1][0],
                          field->neighbour[firstPiece][1][1]);
 
-    if (secondPiece < field->size)
+    if (secondPiece < SQUARE_NB)
         this->setWarning(secondPiece, field->neighbour[secondPiece][0][0],
                          field->neighbour[secondPiece][0][1]);
-    if (secondPiece < field->size)
+    if (secondPiece < SQUARE_NB)
         this->setWarning(secondPiece, field->neighbour[secondPiece][1][0],
                          field->neighbour[secondPiece][1][1]);
 
@@ -1381,7 +1381,7 @@ inline void PerfectAI::ThreadVars::updateWarning(unsigned int firstPiece,
     unsigned int i;
     bool atLeastOnePieceRemoveAble = false;
     if (field->pieceMustBeRemoved) {
-        for (i = 0; i < field->size; i++) {
+        for (i = 0; i < SQUARE_NB; i++) {
             if (field->piecePartOfMill[i] == 0 &&
                 field->board[i] == field->oppPlayer->id) {
                 atLeastOnePieceRemoveAble = true;
@@ -1410,7 +1410,7 @@ inline void PerfectAI::ThreadVars::updatePossibleMoves(unsigned int piece,
         neighbor = field->connectedSquare[piece][direction];
 
         // neighbor must exist
-        if (neighbor < field->size) {
+        if (neighbor < SQUARE_NB) {
             // relevant when moving from one square to another connected square
             if (ignorePiece == neighbor)
                 continue;
@@ -1441,12 +1441,12 @@ inline void PerfectAI::ThreadVars::updatePossibleMoves(unsigned int piece,
     // only 3 pieces resting
     if (field->curPlayer->numPieces <= 3 && !field->settingPhase)
         field->curPlayer->numPossibleMoves = field->curPlayer->numPieces *
-                                             (field->size -
+                                             (SQUARE_NB -
                                               field->curPlayer->numPieces -
                                               field->oppPlayer->numPieces);
     if (field->oppPlayer->numPieces <= 3 && !field->settingPhase)
         field->oppPlayer->numPossibleMoves = field->oppPlayer->numPieces *
-                                             (field->size -
+                                             (SQUARE_NB -
                                               field->curPlayer->numPieces -
                                               field->oppPlayer->numPieces);
 }
@@ -1458,9 +1458,9 @@ inline void PerfectAI::ThreadVars::updatePossibleMoves(unsigned int piece,
 inline void PerfectAI::ThreadVars::setPiece(unsigned int to, Backup *backup)
 {
     // backup
-    backup->from = field->size;
+    backup->from = SQUARE_NB;
     backup->to = to;
-    backup->fieldFrom = field->size;
+    backup->fieldFrom = SQUARE_NB;
     backup->fieldTo = field->board[to];
 
     // set piece into board
@@ -1473,10 +1473,10 @@ inline void PerfectAI::ThreadVars::setPiece(unsigned int to, Backup *backup)
         field->settingPhase = false;
 
     // update possible moves
-    updatePossibleMoves(to, field->curPlayer, false, field->size);
+    updatePossibleMoves(to, field->curPlayer, false, SQUARE_NB);
 
     // update warnings
-    updateWarning(to, field->size);
+    updateWarning(to, SQUARE_NB);
 }
 
 //-----------------------------------------------------------------------------
@@ -1513,9 +1513,9 @@ inline void PerfectAI::ThreadVars::removePiece(unsigned int from,
 {
     // backup
     backup->from = from;
-    backup->to = field->size;
+    backup->to = SQUARE_NB;
     backup->fieldFrom = field->board[from];
-    backup->fieldTo = field->size;
+    backup->fieldTo = SQUARE_NB;
 
     // remove piece
     field->board[from] = field->squareIsFree;
@@ -1524,10 +1524,10 @@ inline void PerfectAI::ThreadVars::removePiece(unsigned int from,
     field->pieceMustBeRemoved--;
 
     // update possible moves
-    updatePossibleMoves(from, field->oppPlayer, true, field->size);
+    updatePossibleMoves(from, field->oppPlayer, true, SQUARE_NB);
 
     // update warnings
-    updateWarning(from, field->size);
+    updateWarning(from, SQUARE_NB);
 
     // end of game ?
     if ((field->oppPlayer->numPieces < 3) && (!field->settingPhase))
@@ -1567,7 +1567,7 @@ void PerfectAI::move(unsigned int threadNo, unsigned int idPossibility,
     tv->curSearchDepth++;
 
     // very expensive
-    for (i = 0; i < tv->field->size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         oldState->piecePartOfMill[i] = tv->field->piecePartOfMill[i];
     }
 
@@ -1643,7 +1643,7 @@ void PerfectAI::storeValueOfMove(unsigned int threadNo,
     else if (tv->field->settingPhase)
         index = idPossibility;
     else
-        index = tmpPossibility->from[idPossibility] * fieldStruct::size +
+        index = tmpPossibility->from[idPossibility] * SQUARE_NB +
                 tmpPossibility->to[idPossibility];
 
     plyInfoForOutput[index] = plyInfo;
@@ -1670,7 +1670,7 @@ void PerfectAI::getValueOfMoves(unsigned char *moveValue,
                                 PlyInfoVarType &bestAmountOfPlies)
 {
     // locals
-    unsigned int moveQualities[fieldStruct::size * fieldStruct::size]; // 0 is
+    unsigned int moveQualities[SQUARE_NB * SQUARE_NB]; // 0 is
                                                                        // bad, 1
                                                                        // is
                                                                        // good
@@ -1680,16 +1680,16 @@ void PerfectAI::getValueOfMoves(unsigned char *moveValue,
     knotValue = SKV_NUM_VALUES;
 
     // calc knotValue
-    for (i = 0; i < fieldStruct::size; i++) {
-        for (j = 0; j < fieldStruct::size; j++) {
-            if (valueOfMove[i * fieldStruct::size + j] == SKV_VALUE_GAME_WON) {
+    for (i = 0; i < SQUARE_NB; i++) {
+        for (j = 0; j < SQUARE_NB; j++) {
+            if (valueOfMove[i * SQUARE_NB + j] == SKV_VALUE_GAME_WON) {
                 knotValue = SKV_VALUE_GAME_WON;
-                i = fieldStruct::size;
-                j = fieldStruct::size;
-            } else if (valueOfMove[i * fieldStruct::size + j] ==
+                i = SQUARE_NB;
+                j = SQUARE_NB;
+            } else if (valueOfMove[i * SQUARE_NB + j] ==
                        SKV_VALUE_GAME_DRAWN) {
                 knotValue = SKV_VALUE_GAME_DRAWN;
-            } else if (valueOfMove[i * fieldStruct::size + j] ==
+            } else if (valueOfMove[i * SQUARE_NB + j] ==
                            SKV_VALUE_GAME_LOST &&
                        knotValue != SKV_VALUE_GAME_DRAWN) {
                 knotValue = SKV_VALUE_GAME_LOST;
@@ -1701,14 +1701,14 @@ void PerfectAI::getValueOfMoves(unsigned char *moveValue,
     if (knotValue == SKV_VALUE_GAME_WON) {
         bestAmountOfPlies = PLYINFO_VALUE_INVALID;
 
-        for (i = 0; i < fieldStruct::size; i++) {
-            for (j = 0; j < fieldStruct::size; j++) {
-                if (valueOfMove[i * fieldStruct::size + j] ==
+        for (i = 0; i < SQUARE_NB; i++) {
+            for (j = 0; j < SQUARE_NB; j++) {
+                if (valueOfMove[i * SQUARE_NB + j] ==
                     SKV_VALUE_GAME_WON) {
                     if (bestAmountOfPlies >=
-                        plyInfoForOutput[i * fieldStruct::size + j]) {
+                        plyInfoForOutput[i * SQUARE_NB + j]) {
                         bestAmountOfPlies =
-                            plyInfoForOutput[i * fieldStruct::size + j];
+                            plyInfoForOutput[i * SQUARE_NB + j];
                     }
                 }
             }
@@ -1716,14 +1716,14 @@ void PerfectAI::getValueOfMoves(unsigned char *moveValue,
     } else if (knotValue == SKV_VALUE_GAME_LOST) {
         bestAmountOfPlies = 0;
 
-        for (i = 0; i < fieldStruct::size; i++) {
-            for (j = 0; j < fieldStruct::size; j++) {
-                if (valueOfMove[i * fieldStruct::size + j] ==
+        for (i = 0; i < SQUARE_NB; i++) {
+            for (j = 0; j < SQUARE_NB; j++) {
+                if (valueOfMove[i * SQUARE_NB + j] ==
                     SKV_VALUE_GAME_LOST) {
                     if (bestAmountOfPlies <=
-                        plyInfoForOutput[i * fieldStruct::size + j]) {
+                        plyInfoForOutput[i * SQUARE_NB + j]) {
                         bestAmountOfPlies =
-                            plyInfoForOutput[i * fieldStruct::size + j];
+                            plyInfoForOutput[i * SQUARE_NB + j];
                     }
                 }
             }
@@ -1731,15 +1731,15 @@ void PerfectAI::getValueOfMoves(unsigned char *moveValue,
     } else if (knotValue == SKV_VALUE_GAME_DRAWN) {
         bestAmountOfPlies = 0;
 
-        for (i = 0; i < fieldStruct::size; i++) {
-            for (j = 0; j < fieldStruct::size; j++) {
-                if (valueOfMove[i * fieldStruct::size + j] ==
+        for (i = 0; i < SQUARE_NB; i++) {
+            for (j = 0; j < SQUARE_NB; j++) {
+                if (valueOfMove[i * SQUARE_NB + j] ==
                     SKV_VALUE_GAME_DRAWN) {
                     if (bestAmountOfPlies <=
-                        incidencesValuesSubMoves[i * fieldStruct::size + j]
+                        incidencesValuesSubMoves[i * SQUARE_NB + j]
                                                 [SKV_VALUE_GAME_WON]) {
                         bestAmountOfPlies =
-                            incidencesValuesSubMoves[i * fieldStruct::size + j]
+                            incidencesValuesSubMoves[i * SQUARE_NB + j]
                                                     [SKV_VALUE_GAME_WON];
                     }
                 }
@@ -1748,33 +1748,33 @@ void PerfectAI::getValueOfMoves(unsigned char *moveValue,
     }
 
     // zero move qualities
-    for (i = 0; i < fieldStruct::size; i++) {
-        for (j = 0; j < fieldStruct::size; j++) {
-            if ((valueOfMove[i * fieldStruct::size + j] == knotValue &&
+    for (i = 0; i < SQUARE_NB; i++) {
+        for (j = 0; j < SQUARE_NB; j++) {
+            if ((valueOfMove[i * SQUARE_NB + j] == knotValue &&
                  bestAmountOfPlies ==
-                     plyInfoForOutput[i * fieldStruct::size + j] &&
+                     plyInfoForOutput[i * SQUARE_NB + j] &&
                  knotValue != SKV_VALUE_GAME_DRAWN) ||
-                (valueOfMove[i * fieldStruct::size + j] == knotValue &&
+                (valueOfMove[i * SQUARE_NB + j] == knotValue &&
                  bestAmountOfPlies ==
-                     incidencesValuesSubMoves[i * fieldStruct::size + j]
+                     incidencesValuesSubMoves[i * SQUARE_NB + j]
                                              [SKV_VALUE_GAME_WON] &&
                  knotValue == SKV_VALUE_GAME_DRAWN)) {
-                moveQualities[i * fieldStruct::size + j] = 1;
+                moveQualities[i * SQUARE_NB + j] = 1;
             } else {
-                moveQualities[i * fieldStruct::size + j] = 0;
+                moveQualities[i * SQUARE_NB + j] = 0;
             }
         }
     }
 
     // copy
     memcpy(moveQuality, moveQualities,
-           sizeof(unsigned int) * fieldStruct::size * fieldStruct::size);
+           sizeof(unsigned int) * SQUARE_NB * SQUARE_NB);
     memcpy(plyInfo, plyInfoForOutput,
-           sizeof(PlyInfoVarType) * fieldStruct::size * fieldStruct::size);
+           sizeof(PlyInfoVarType) * SQUARE_NB * SQUARE_NB);
     memcpy(moveValue, valueOfMove,
-           sizeof(unsigned char) * fieldStruct::size * fieldStruct::size);
+           sizeof(unsigned char) * SQUARE_NB * SQUARE_NB);
     memcpy(freqValuesSubMoves, incidencesValuesSubMoves,
-           sizeof(unsigned int) * fieldStruct::size * fieldStruct::size * 4);
+           sizeof(unsigned int) * SQUARE_NB * SQUARE_NB * 4);
 }
 
 //-----------------------------------------------------------------------------
@@ -1888,7 +1888,7 @@ void PerfectAI::applySymmetryOperationOnField(
     unsigned char symmetryOperationNumber, unsigned int *sourceField,
     unsigned int *destField)
 {
-    for (unsigned int i = 0; i < fieldStruct::size; i++) {
+    for (unsigned int i = 0; i < SQUARE_NB; i++) {
         destField[i] =
             sourceField[symmetryOperationTable[symmetryOperationNumber][i]];
     }
@@ -1930,8 +1930,8 @@ PerfectAI::ThreadVars::getLayerAndStateNumber(unsigned int &layerNum,
                                               unsigned int &stateNumber)
 {
     // locals
-    unsigned int myField[fieldStruct::size];
-    unsigned int symField[fieldStruct::size];
+    unsigned int myField[SQUARE_NB];
+    unsigned int symField[SQUARE_NB];
     unsigned int numBlackPieces = field->oppPlayer->numPieces;
     unsigned int numWhitePieces = field->curPlayer->numPieces;
     unsigned int phaseIndex = (field->settingPhase == true) ?
@@ -1945,7 +1945,7 @@ PerfectAI::ThreadVars::getLayerAndStateNumber(unsigned int &layerNum,
     layerNum = parent->layerIndex[phaseIndex][numWhitePieces][numBlackPieces];
 
     // make white and black fields
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         if (field->board[i] == fieldStruct::squareIsFree) {
             myField[i] = FREE_SQUARE;
         } else if (field->board[i] == field->curPlayer->id) {
@@ -2030,8 +2030,8 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
     unsigned int stateNumberWithInAB;
     unsigned int stateNumberWithInCD;
     unsigned int stateAB, stateCD;
-    unsigned int myField[fieldStruct::size];
-    unsigned int symField[fieldStruct::size];
+    unsigned int myField[SQUARE_NB];
+    unsigned int symField[SQUARE_NB];
     unsigned int numWhitePieces = layer[layerNum].numWhitePieces;
     unsigned int numBlackPieces = layer[layerNum].numBlackPieces;
     unsigned int numberOfMillsCurrentPlayer = 0;
@@ -2113,7 +2113,7 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
         reverseSymOperation[symmetryOperationCD[stateCD]], myField, symField);
 
     // translate symField[] to board->board[]
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         if (symField[i] == FREE_SQUARE)
             tv->field->board[i] = fieldStruct::squareIsFree;
         else if (symField[i] == WHITE_PIECE)
@@ -2127,12 +2127,12 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
     tv->calcPossibleMoves(tv->field->oppPlayer);
 
     // zero
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         tv->field->piecePartOfMill[i] = 0;
     }
 
     // go in every direction
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         tv->setWarningAndMill(i, tv->field->neighbour[i][0][0],
                               tv->field->neighbour[i][0][1]);
         tv->setWarningAndMill(i, tv->field->neighbour[i][1][0],
@@ -2140,11 +2140,11 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
     }
 
     // since every mill was detected 3 times
-    for (i = 0; i < fieldStruct::size; i++)
+    for (i = 0; i < SQUARE_NB; i++)
         tv->field->piecePartOfMill[i] /= 3;
 
     // count completed mills
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         if (tv->field->board[i] == tv->field->curPlayer->id)
             numberOfMillsCurrentPlayer += tv->field->piecePartOfMill[i];
         else
@@ -2192,7 +2192,7 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
     tv->floatValue = tv->shortValue;
 
     // precalc aPieceCanBeRemovedFromCurPlayer
-    for (aPieceCanBeRemovedFromCurPlayer = false, i = 0; i < tv->field->size;
+    for (aPieceCanBeRemovedFromCurPlayer = false, i = 0; i < SQUARE_NB;
          i++) {
         if (tv->field->piecePartOfMill[i] == 0 &&
             tv->field->board[i] == tv->field->curPlayer->id) {
@@ -2216,8 +2216,8 @@ void PerfectAI::ThreadVars::calcPossibleMoves(Player *player)
     // locals
     unsigned int i, j, k, movingDirection;
 
-    for (player->numPossibleMoves = 0, i = 0; i < fieldStruct::size; i++) {
-        for (j = 0; j < fieldStruct::size; j++) {
+    for (player->numPossibleMoves = 0, i = 0; i < SQUARE_NB; i++) {
+        for (j = 0; j < SQUARE_NB; j++) {
             // is piece from player ?
             if (field->board[i] != player->id)
                 continue;
@@ -2406,8 +2406,8 @@ void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo,
 {
     // locals
     ThreadVars *tv = &threadVars[threadNo];
-    int originalField[fieldStruct::size];
-    unsigned int originalPartOfMill[fieldStruct::size];
+    int originalField[SQUARE_NB];
+    unsigned int originalPartOfMill[SQUARE_NB];
     unsigned int i, symmetryOperation;
     unsigned int layerNum, stateNum;
 
@@ -2415,7 +2415,7 @@ void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo,
     *symStateNumbers = symmetricStateNumberArray;
 
     // save current board
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         originalField[i] = tv->field->board[i];
         originalPartOfMill[i] = tv->field->piecePartOfMill[i];
     }
@@ -2437,7 +2437,7 @@ void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo,
     }
 
     // restore original board
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         tv->field->board[i] = originalField[i];
         tv->field->piecePartOfMill[i] = originalPartOfMill[i];
     }
@@ -2459,11 +2459,11 @@ bool PerfectAI::ThreadVars::fieldIntegrityOK(
     // when piece is going to be removed than at least one opponent piece
     // mustn't be part of a mill
     if (numberOfMillsOpponentPlayer > 0 && field->pieceMustBeRemoved) {
-        for (i = 0; i < field->size; i++)
+        for (i = 0; i < SQUARE_NB; i++)
             if (field->piecePartOfMill[i] == 0 &&
                 field->oppPlayer->id == field->board[i])
                 break;
-        if (i == field->size)
+        if (i == SQUARE_NB)
             return false;
     }
 
@@ -2583,7 +2583,7 @@ void PerfectAI::ThreadVars::storePredecessor(
     RetroAnalysisPredVars *predVars)
 {
     // locals
-    int originalField[fieldStruct::size];
+    int originalField[SQUARE_NB];
     unsigned int i, symmetryOperation, symOpApplied;
     unsigned int predLayerNum, predStateNum;
     unsigned int originalAmountOfPred = *amountOfPred;
@@ -2592,7 +2592,7 @@ void PerfectAI::ThreadVars::storePredecessor(
     if (fieldIntegrityOK(numberOfMillsCurrentPlayer,
                          numberOfMillsOpponentPlayer, false)) {
         // save current board
-        for (i = 0; i < fieldStruct::size; i++)
+        for (i = 0; i < SQUARE_NB; i++)
             originalField[i] = field->board[i];
 
         // add all symmetric states
@@ -2627,7 +2627,7 @@ void PerfectAI::ThreadVars::storePredecessor(
         }
 
         // restore original board
-        for (i = 0; i < fieldStruct::size; i++)
+        for (i = 0; i < SQUARE_NB; i++)
             field->board[i] = originalField[i];
     }
 }
@@ -2664,7 +2664,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
     *amountOfPred = 0;
 
     // count completed mills
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         if (tv->field->board[i] == tv->field->curPlayer->id)
             numberOfMillsCurrentPlayer += tv->field->piecePartOfMill[i];
         else
@@ -2675,7 +2675,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
     numberOfMillsOpponentPlayer /= 3;
 
     // precalc aPieceCanBeRemovedFromCurPlayer
-    for (aPieceCanBeRemovedFromCurPlayer = false, i = 0; i < tv->field->size;
+    for (aPieceCanBeRemovedFromCurPlayer = false, i = 0; i < SQUARE_NB;
          i++) {
         if (tv->field->piecePartOfMill[i] == 0 &&
             tv->field->board[i] == tv->field->curPlayer->id) {
@@ -2703,7 +2703,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
             if (!tv->gameHasFinished ||
                 tv->field->curPlayer->numPossibleMoves == 0) {
                 // test each destination
-                for (to = 0; to < tv->field->size; to++) {
+                for (to = 0; to < SQUARE_NB; to++) {
                     // was opponent player piece owner?
                     if (tv->field->board[to] != (tv->field->pieceMustBeRemoved ?
                                                      tv->field->curPlayer->id :
@@ -2728,7 +2728,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
                         from = tv->field->connectedSquare[to][dir];
 
                         // move possible ?
-                        if (from < tv->field->size &&
+                        if (from < SQUARE_NB &&
                             tv->field->board[from] == tv->field->squareIsFree) {
                             if (millWasClosed) {
                                 numberOfMillsCurrentPlayer -=
@@ -2787,7 +2787,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
 
         } else if (!tv->gameHasFinished) {
             // test each destination
-            for (to = 0; to < tv->field->size; to++) {
+            for (to = 0; to < SQUARE_NB; to++) {
                 // when piece must be removed than current player closed a mill,
                 // otherwise the opponent did a common spring move
                 if (tv->field->board[to] != (tv->field->pieceMustBeRemoved ?
@@ -2807,7 +2807,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
                     continue;
 
                 // test each direction
-                for (from = 0; from < tv->field->size; from++) {
+                for (from = 0; from < SQUARE_NB; from++) {
                     // move possible ?
                     if (tv->field->board[from] == tv->field->squareIsFree) {
                         // was a mill closed?
@@ -2871,7 +2871,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
         if (numberOfMillsOpponentPlayer) {
             // from each free position the opponent could have removed a piece
             // from the current player
-            for (from = 0; from < tv->field->size; from++) {
+            for (from = 0; from < SQUARE_NB; from++) {
                 // square free?
                 if (tv->field->board[from] == tv->field->squareIsFree) {
                     // piece mustn't be part of mill
@@ -2980,7 +2980,7 @@ bool PerfectAI::checkMoveAndSetSituation()
                 numberOfMillsCurrentPlayer = 0;
                 numberOfMillsOpponentPlayer = 0;
 
-                for (i = 0; i < fieldStruct::size; i++) {
+                for (i = 0; i < SQUARE_NB; i++) {
                     if (tv->field->board[i] == tv->field->curPlayer->id)
                         numberOfMillsCurrentPlayer += tv->field
                                                           ->piecePartOfMill[i];
@@ -2994,7 +2994,7 @@ bool PerfectAI::checkMoveAndSetSituation()
 
                 // precalc aPieceCanBeRemovedFromCurPlayer
                 for (aPieceCanBeRemovedFromCurPlayer = false, i = 0;
-                     i < tv->field->size; i++) {
+                     i < SQUARE_NB; i++) {
                     if (tv->field->piecePartOfMill[i] == 0 &&
                         tv->field->board[i] == tv->field->curPlayer->id) {
                         aPieceCanBeRemovedFromCurPlayer = true;
@@ -3142,7 +3142,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
     bool isOpponentLevel;
     void *pPossibilities;
     void *pBackup;
-    int symField[fieldStruct::size];
+    int symField[SQUARE_NB];
     RetroAnalysisPredVars predVars[MAX_NUM_PREDECESSORS];
 
     // test if each predecessor from getPredecessors() leads to the original
@@ -3188,7 +3188,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
 #if 0
                     // perform several commands to see in debug mode where the
                     // error occurs
-                    for (k = 0; k < tv->field->size; k++)
+                    for (k = 0; k < SQUARE_NB; k++)
                         symField[k] = tv->field->board[k];
 
                     applySymmetryOperationOnField(
@@ -3196,7 +3196,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
                         (unsigned int*)symField,
                         (unsigned int*)tv->field->board);
 
-                    for (k = 0; k < tv->field->size; k++)
+                    for (k = 0; k < SQUARE_NB; k++)
                         symField[k] = tv->field->piecePartOfMill[k];
 
                     applySymmetryOperationOnField(
@@ -3213,7 +3213,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
                         k = tv->field->curPlayer->id;
                         tv->field->curPlayer->id = tv->field->oppPlayer->id;
                         tv->field->oppPlayer->id = k;
-                        for (k = 0; k < tv->field->size; k++)
+                        for (k = 0; k < SQUARE_NB; k++)
                             tv->field->board[k] = -1 * tv->field->board[k];
                     }
 
@@ -3229,14 +3229,14 @@ bool PerfectAI::checkGetPredThanGetPoss()
                 }
 
                 // regard used symmetry operation
-                for (k = 0; k < tv->field->size; k++)
+                for (k = 0; k < SQUARE_NB; k++)
                     symField[k] = tv->field->board[k];
 
                 applySymmetryOperationOnField(
                     reverseSymOperation[predVars[j].predSymOperation],
                     (unsigned int *)symField, (unsigned int *)tv->field->board);
 
-                for (k = 0; k < tv->field->size; k++)
+                for (k = 0; k < SQUARE_NB; k++)
                     symField[k] = tv->field->piecePartOfMill[k];
 
                 applySymmetryOperationOnField(
@@ -3248,7 +3248,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
                     k = tv->field->curPlayer->id;
                     tv->field->curPlayer->id = tv->field->oppPlayer->id;
                     tv->field->oppPlayer->id = k;
-                    for (k = 0; k < tv->field->size; k++)
+                    for (k = 0; k < SQUARE_NB; k++)
                         tv->field->board[k] = -1 * tv->field->board[k];
                 }
 
@@ -3287,7 +3287,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
                     setSituation(threadNo, predVars[j].predLayerNumbers,
                                  predVars[j].predStateNumbers);
 
-                    for (k = 0; k < tv->field->size; k++)
+                    for (k = 0; k < SQUARE_NB; k++)
                         symField[k] = tv->field->board[k];
 
                     applySymmetryOperationOnField(
@@ -3295,7 +3295,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
                         (unsigned int *)symField,
                         (unsigned int *)tv->field->board);
 
-                    for (k = 0; k < tv->field->size; k++)
+                    for (k = 0; k < SQUARE_NB; k++)
                         symField[k] = tv->field->piecePartOfMill[k];
 
                     applySymmetryOperationOnField(
@@ -3314,7 +3314,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
                         k = tv->field->curPlayer->id;
                         tv->field->curPlayer->id = tv->field->oppPlayer->id;
                         tv->field->oppPlayer->id = k;
-                        for (k = 0; k < tv->field->size; k++)
+                        for (k = 0; k < SQUARE_NB; k++)
                             tv->field->board[k] = -1 * tv->field->board[k];
                     }
 
@@ -3333,13 +3333,13 @@ bool PerfectAI::checkGetPredThanGetPoss()
                     tv->field->curPlayer->id = tv->field->oppPlayer->id;
                     tv->field->oppPlayer->id = k;
 
-                    for (k = 0; k < tv->field->size; k++)
+                    for (k = 0; k < SQUARE_NB; k++)
                         tv->field->board[k] = -1 * tv->field->board[k];
 
                     setSituation(threadNo, predVars[j].predLayerNumbers,
                                  predVars[j].predStateNumbers);
 
-                    for (k = 0; k < tv->field->size; k++)
+                    for (k = 0; k < SQUARE_NB; k++)
                         symField[k] = tv->field->board[k];
 
                     applySymmetryOperationOnField(
@@ -3347,7 +3347,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
                         (unsigned int *)symField,
                         (unsigned int *)tv->field->board);
 
-                    for (k = 0; k < tv->field->size; k++)
+                    for (k = 0; k < SQUARE_NB; k++)
                         symField[k] = tv->field->piecePartOfMill[k];
 
                     applySymmetryOperationOnField(

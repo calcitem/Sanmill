@@ -20,6 +20,7 @@
 #include <windows.h>
 
 #include "rule.h"
+#include "types.h"
 
 using std::iostream;
 
@@ -139,18 +140,18 @@ int perfect_main(void)
                     if ((ch[0] >= 'a') && (ch[0] <= 'x'))
                         from = ch[0] - 'a';
                     else
-                        from = fieldStruct::size;
+                        from = SQUARE_NB;
 
                     if (mill->inSettingPhase()) {
                         if ((ch[0] >= 'a') && (ch[0] <= 'x'))
                             to = ch[0] - 'a';
                         else
-                            to = fieldStruct::size;
+                            to = SQUARE_NB;
                     } else {
                         if ((ch[1] >= 'a') && (ch[1] <= 'x'))
                             to = ch[1] - 'a';
                         else
-                            to = fieldStruct::size;
+                            to = SQUARE_NB;
                     }
 
                     // undo

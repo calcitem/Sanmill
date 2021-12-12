@@ -22,9 +22,9 @@ void fieldStruct::printBoard()
 {
     // locals
     unsigned int index;
-    char c[fieldStruct::size];
+    char c[SQUARE_NB];
 
-    for (index = 0; index < fieldStruct::size; index++)
+    for (index = 0; index < SQUARE_NB; index++)
         c[index] = GetCharFromPiece(this->board[index]);
 
     cout << "current player          : "
@@ -104,7 +104,7 @@ void fieldStruct::copyBoard(fieldStruct *destination)
     destination->settingPhase = this->settingPhase;
     destination->pieceMustBeRemoved = this->pieceMustBeRemoved;
 
-    for (i = 0; i < this->size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         destination->board[i] = this->board[i];
         destination->warnings[i] = this->warnings[i];
         destination->piecePartOfMill[i] = this->piecePartOfMill[i];
@@ -169,7 +169,7 @@ void fieldStruct::createBoard()
     oppPlayer->numPiecesMissing = 0;
 
     // zero
-    for (i = 0; i < size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         board[i] = squareIsFree;
         warnings[i] = noWarning;
         piecePartOfMill[i] = 0;
@@ -180,7 +180,7 @@ void fieldStruct::createBoard()
     }
 
     // set connections
-    i = size;
+    i = SQUARE_NB;
 
     setConnection(0, 1, 9, i, i);
     setConnection(1, 2, 4, 0, i);

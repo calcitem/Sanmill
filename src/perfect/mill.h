@@ -122,12 +122,12 @@ public:
 
     unsigned int getLastMoveFrom()
     {
-        return (movesDone ? moveLogFrom[movesDone - 1] : field.size);
+        return (movesDone ? moveLogFrom[movesDone - 1] : SQUARE_NB);
     }
 
     unsigned int getLastMoveTo()
     {
-        return (movesDone ? moveLogTo[movesDone - 1] : field.size);
+        return (movesDone ? moveLogTo[movesDone - 1] : SQUARE_NB);
     }
 
     unsigned int getMovesDone() { return movesDone; }
