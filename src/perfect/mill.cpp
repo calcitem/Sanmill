@@ -475,39 +475,46 @@ bool Mill::isNormalMovePossible(unsigned int from, unsigned int to,
 }
 
 //-----------------------------------------------------------------------------
-// calcPossibleMoves()
+// generateMoves()
 // ...
 //-----------------------------------------------------------------------------
-void Mill::calcPossibleMoves(Player *player)
+void Mill::generateMoves(Player *player)
 {
     // locals
-    unsigned int i, j;
+    unsigned int i;
+    Square from, to;
+    MoveDirection md;
 
     // zero
-    for (i = 0; i < POSIBILE_MOVE_COUNT_MAX; i++)
+    for (i = 0; i < POSIBILE_MOVE_COUNT_MAX; i++) {
         player->posTo[i] = SQUARE_NB;
-    for (i = 0; i < POSIBILE_MOVE_COUNT_MAX; i++)
-        player->posFrom[i] = SQUARE_NB;
+    }
 
-    // calc
-    for (player->possibleMovesCount = 0, i = 0; i < SQUARE_NB; i++) {
-        for (j = 0; j < SQUARE_NB; j++) {
-            if (isNormalMovePossible(i, j, player)) {
-                player->posFrom[player->possibleMovesCount] = i;
-                player->posTo[player->possibleMovesCount] = j;
+    for (i = 0; i < POSIBILE_MOVE_COUNT_MAX; i++) {
+        player->posFrom[i] = SQUARE_NB;
+    }
+
+    // calculate
+    for (player->possibleMovesCount = 0, from = SQ_0; from < SQUARE_NB;
+         ++from) {
+        for (to = SQ_0; to < SQUARE_NB; ++to) {
+            if (isNormalMovePossible(from, to, player)) {
+                player->posFrom[player->possibleMovesCount] = from;
+                player->posTo[player->possibleMovesCount] = to;
                 player->possibleMovesCount++;
             }
         }
     }
 
     // pieceMoveAble
-    for (i = 0; i < SQUARE_NB; i++) {
-        for (j = 0; j < MD_NB; j++) {
-            if (field.board[i] == player->id)
-                field.pieceMoveAble[i][j] = isNormalMovePossible(
-                    i, field.connectedSquare[i][j], player);
-            else
-                field.pieceMoveAble[i][j] = false;
+    for (from = SQ_0; from < SQUARE_NB; ++from) {
+        for (md = MD_BEGIN; md < MD_NB; ++md) {
+            if (field.board[from] == player->id) {
+                field.pieceMoveAble[from][md] = isNormalMovePossible(
+                    from, field.connectedSquare[from][md], player);
+            } else {
+                field.pieceMoveAble[from][md] = false;
+            }
         }
     }
 }
@@ -633,8 +640,8 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         updateMillsAndWarnings(SQUARE_NB);
 
         // calc possibilities
-        calcPossibleMoves(field.curPlayer);
-        calcPossibleMoves(field.oppPlayer);
+        generateMoves(field.curPlayer);
+        generateMoves(field.oppPlayer);
 
         // is opponent unable to move ?
         if (field.oppPlayer->possibleMovesCount == 0 && !field.settingPhase)
@@ -669,8 +676,8 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         updateMillsAndWarnings(pushTo);
 
         // calc possibilities
-        calcPossibleMoves(field.curPlayer);
-        calcPossibleMoves(field.oppPlayer);
+        generateMoves(field.curPlayer);
+        generateMoves(field.oppPlayer);
 
         // setting phase finished ?
         if (field.piecesSet == 18)
@@ -704,8 +711,8 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         updateMillsAndWarnings(pushTo);
 
         // calc possibilities
-        calcPossibleMoves(field.curPlayer);
-        calcPossibleMoves(field.oppPlayer);
+        generateMoves(field.curPlayer);
+        generateMoves(field.oppPlayer);
 
         // is opponent unable to move ?
         if (field.oppPlayer->possibleMovesCount == 0 && !field.settingPhase)

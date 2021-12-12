@@ -45,11 +45,11 @@ public:
     // amount of possible moves
     unsigned int possibleMovesCount;
 
-    // target board position of a possible move
-    unsigned int posTo[POSIBILE_MOVE_COUNT_MAX];
-
     // source board position of a possible move
-    unsigned int posFrom[POSIBILE_MOVE_COUNT_MAX];
+    Square posFrom[POSIBILE_MOVE_COUNT_MAX];
+
+    // target board position of a possible move
+    Square posTo[POSIBILE_MOVE_COUNT_MAX];
 
     void copyPlayer(Player *destination);
 };

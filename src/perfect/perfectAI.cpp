@@ -2123,8 +2123,8 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
     }
 
     // calc possible moves
-    tv->calcPossibleMoves(tv->field->curPlayer);
-    tv->calcPossibleMoves(tv->field->oppPlayer);
+    tv->generateMoves(tv->field->curPlayer);
+    tv->generateMoves(tv->field->oppPlayer);
 
     // zero
     for (i = 0; i < SQUARE_NB; i++) {
@@ -2208,10 +2208,10 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
 }
 
 //-----------------------------------------------------------------------------
-// calcPossibleMoves()
+// generateMoves()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::ThreadVars::calcPossibleMoves(Player *player)
+void PerfectAI::ThreadVars::generateMoves(Player *player)
 {
     // locals
     unsigned int i, j, k, movingDirection;
