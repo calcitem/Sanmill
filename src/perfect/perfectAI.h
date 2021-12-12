@@ -128,85 +128,100 @@ protected:
     };
 
     // constant variables for state addressing in the database
-    Layer layer[NUM_LAYERS]; // the layers
+
+    // the layers
+    Layer layer[NUM_LAYERS];
+
+    // indices of layer [moving/setting phase][number of white stones][number of
+    // black stones]
     unsigned int layerIndex[2][NUM_STONES_PER_PLAYER_PLUS_ONE]
-                           [NUM_STONES_PER_PLAYER_PLUS_ONE]; // indices of layer
-                                                             // [moving/setting
-                                                             // phase][number of
-                                                             // white
-                                                             // stones][number
-                                                             // of black stones]
+                           [NUM_STONES_PER_PLAYER_PLUS_ONE];
+
     unsigned int numPositionsCD[NUM_STONES_PER_PLAYER_PLUS_ONE]
                                [NUM_STONES_PER_PLAYER_PLUS_ONE];
+
     unsigned int numPositionsAB[NUM_STONES_PER_PLAYER_PLUS_ONE]
                                [NUM_STONES_PER_PLAYER_PLUS_ONE];
+
     unsigned int indexAB[MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B];
+
     unsigned int indexCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D];
-    unsigned char symmetryOperationCD[MAX_ANZ_POSITION_C *
-                                      MAX_ANZ_POSITION_D]; // index of symmetry
-                                                           // operation used to
-                                                           // get from the
-                                                           // original state to
-                                                           // the current one
-    unsigned int powerOfThree[numSquaresGroupC + numSquaresGroupD]; // 3^0, 3^1,
-                                                                    // 3^2, ...
-    unsigned int symmetryOperationTable[NUM_SYM_OPERATIONS]
-                                       [fieldStruct::size]; // Matrix used for
-                                                            // application of
-                                                            // the symmetry
-                                                            // operations
+
+    // index of symmetry operation used to get from the original state to the
+    // current one
+    unsigned char symmetryOperationCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D];
+
+    // 3^0, 3^1, 3^2, ...
+    unsigned int powerOfThree[numSquaresGroupC + numSquaresGroupD];
+
+    // Matrix used for application of the symmetry operations
+    unsigned int symmetryOperationTable[NUM_SYM_OPERATIONS][fieldStruct::size];
+
     unsigned int *originalStateCD[NUM_STONES_PER_PLAYER_PLUS_ONE]
                                  [NUM_STONES_PER_PLAYER_PLUS_ONE];
+
     unsigned int *originalStateAB[NUM_STONES_PER_PLAYER_PLUS_ONE]
                                  [NUM_STONES_PER_PLAYER_PLUS_ONE];
-    unsigned int reverseSymOperation[NUM_SYM_OPERATIONS]; // index of the
-                                                          // reverse symmetry
-                                                          // operation
-    unsigned int concSymOperation[NUM_SYM_OPERATIONS]
-                                 [NUM_SYM_OPERATIONS]; // symmetry operation,
-                                                       // which is identical to
-                                                       // applying those two in
-                                                       // the index
-    unsigned int mOverN[fieldStruct::size + 1][fieldStruct::size + 1]; // m over
-                                                                       // n
-    unsigned char valueOfMove[fieldStruct::size * fieldStruct::size]; // contains
-                                                                      // the
-                                                                      // value
-                                                                      // of the
-                                                                      // situation,
-                                                                      // which
-                                                                      // will be
-                                                                      // achieved
-                                                                      // by that
-                                                                      // move
-    unsigned short plyInfoForOutput[fieldStruct::size *
-                                    fieldStruct::size]; // contains the value of
-                                                        // the situation, which
-                                                        // will be achieved by
-                                                        // that move
+
+    // index of the reverse symmetry operation
+    unsigned int reverseSymOperation[NUM_SYM_OPERATIONS];
+
+    // symmetry operation, which is identical to applying those two in the index
+    unsigned int concSymOperation[NUM_SYM_OPERATIONS][NUM_SYM_OPERATIONS];
+
+    // m over n
+    unsigned int mOverN[fieldStruct::size + 1][fieldStruct::size + 1];
+
+    // contains the value of the situation, which will be achieved by that move
+    unsigned char valueOfMove[fieldStruct::size * fieldStruct::size];
+
+    // contains the value of the situation, which will be achieved by that move
+    unsigned short plyInfoForOutput[fieldStruct::size * fieldStruct::size];
+
+    // contains the number of ...
     unsigned int incidencesValuesSubMoves[fieldStruct::size * fieldStruct::size]
-                                         [4]; // contains the number of ...
-    unsigned int symmetricStateNumberArray[NUM_SYM_OPERATIONS]; // array for
-                                                                // state numbers
-    string databaseDirectory; // directory containing the database files
+                                         [4];
+
+    // array for state numbers
+    unsigned int symmetricStateNumberArray[NUM_SYM_OPERATIONS];
+
+    // directory containing the database files
+    string databaseDirectory;
 
     // Variables used individually by each single thread
     class ThreadVars
     {
     public:
-        fieldStruct *field; // pointer of the current board [changed by move()]
-        float floatValue; // value of current situation for board->currentPlayer
-        TwoBit shortValue;    // ''
-        bool gameHasFinished; // someone has won or current board is full
-        int ownId;            // id of the player who called the play()-function
-        unsigned int curSearchDepth;   // current level
-        unsigned int depthOfFullTree;  // search depth where the whole tree is
-                                       // explored
-        unsigned int *idPossibilities; // returned pointer of
-                                       // getPossibilities()-function
-        Backup *oldStates;             // for undo()-function
-        Possibility *possibilities;    // for getPossNormalMove()-function
-        PerfectAI *parent;             //
+        // pointer of the current board [changed by move()]
+        fieldStruct *field;
+
+        // value of current situation for board->currentPlayer
+        float floatValue;
+
+        TwoBit shortValue;
+
+        // someone has won or current board is full
+        bool gameHasFinished;
+
+        // id of the player who called the play()-function
+        int ownId;
+
+        // current level
+        unsigned int curSearchDepth;
+
+        // search depth where the whole tree is explored
+        unsigned int depthOfFullTree;
+
+        // returned pointer of getPossibilities()-function
+        unsigned int *idPossibilities;
+
+        // for undo()-function
+        Backup *oldStates;
+
+        // for getPossNormalMove()-function
+        Possibility *possibilities;
+
+        PerfectAI *parent;
 
         // constructor
         ThreadVars();

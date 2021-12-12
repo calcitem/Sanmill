@@ -145,10 +145,8 @@ enum class Phase : uint16_t
 {
     none,
     ready,
-    placing, // Placing men on vacant points
-    moving,  // Moving men to adjacent points or
-    // (optional) Moving men to any vacant point when the player has been
-    // reduced to three men
+    placing,
+    moving,
     gameOver
 };
 
@@ -389,8 +387,8 @@ enum Square : int
 
     SQ_NONE = 0,
 
-    EFFECTIVE_SQUARE_NB = 24, // The board consists of a grid with twenty-four
-                              // intersections or points.
+    // The board consists of a grid with twenty-four intersections or points.
+    EFFECTIVE_SQUARE_NB = 24,
 
     SQUARE_ZERO = 0,
     SQUARE_NB = 40,

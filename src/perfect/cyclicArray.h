@@ -20,22 +20,34 @@ class CyclicArray
 {
 private:
     // Variables
-    HANDLE hFile;                // Handle of the file
-    unsigned char *readingBlock; // Array of size [blockSize] containing the
-                                 // data of the block, where reading is taking
-                                 // place
-    unsigned char *writingBlock;      // ''
-    unsigned char *curReadingPointer; // pointer to the byte which is currently
-                                      // read
-    unsigned char *curWritingPointer; // ''
-    unsigned int blockSize;           // size in bytes of a block
-    unsigned int curReadingBlock; // index of the block, where reading is taking
-                                  // place
-    unsigned int curWritingBlock; // index of the block, where writing is taking
-                                  // place
-    unsigned int numBlocks;       // amount of blocks
-    bool readWriteInSameRound;    // true if curReadingBlock > curWritingBlock,
-                                  // false otherwise
+    HANDLE hFile; // Handle of the file
+    // Array of size [blockSize] containing the data of the block, where reading
+    // is taking place
+    unsigned char *readingBlock;
+
+    // ''
+    unsigned char *writingBlock;
+
+    // pointer to the byte which is currently read
+    unsigned char *curReadingPointer;
+
+    // ''
+    unsigned char *curWritingPointer;
+
+    // size in bytes of a block
+    unsigned int blockSize;
+
+    // index of the block, where reading is taking place
+    unsigned int curReadingBlock;
+
+    // index of the block, where writing is taking place
+    unsigned int curWritingBlock;
+
+    // amount of blocks
+    unsigned int numBlocks;
+
+    // true if curReadingBlock > curWritingBlock, false otherwise
+    bool readWriteInSameRound;
 
     // Functions
     void writeDataToFile(HANDLE hFile, int64_t offset, unsigned int sizeInBytes,

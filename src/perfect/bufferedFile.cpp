@@ -42,7 +42,8 @@ BufferedFile::BufferedFile(unsigned int numberOfThreads,
 
     InitializeCriticalSection(&csIO);
 
-    // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH |
+    // Open Database-File
+    // (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH |
     // FILE_FLAG_RANDOM_ACCESS)
     hFile = CreateFileA(fileName, GENERIC_READ | GENERIC_WRITE, 0, nullptr,
                         OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);

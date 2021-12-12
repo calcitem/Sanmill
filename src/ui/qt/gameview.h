@@ -21,8 +21,8 @@
 
 #include <QGraphicsView>
 
-// This class is mainly derived to make the view adapt to
-// the scene size and image rotation mirror operation
+// This class is mainly derived to make the view adapt to the scene size and
+// image rotation mirror operation
 class GameView : public QGraphicsView
 {
     Q_OBJECT

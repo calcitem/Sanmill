@@ -80,8 +80,14 @@ ThreadManager::~ThreadManager()
 void ThreadManager::waitForOtherThreads(unsigned int threadNo)
 {
     // wait if other threads are still waiting at the barrier
-    // cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " <<
-    // numThreadsPassedBarrier << ": " << "while (numThreadsPassedBarrier>0)";
+
+#if 0
+    cout << endl
+         << "thread=" << threadNo
+         << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": "
+         << "while (numThreadsPassedBarrier>0)";
+#endif
+
     if (numThreadsPassedBarrier > 0) {
         WaitForSingleObject(hEventBarrierPassedByEveryBody, INFINITE);
     }
@@ -91,39 +97,71 @@ void ThreadManager::waitForOtherThreads(unsigned int threadNo)
     // optimizations
 
     // set signal that barrier is reached
-    // cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " <<
-    // numThreadsPassedBarrier << ": " << "SetEvent()";
+
+#if 0
+    cout << endl
+         << "thread=" << threadNo
+         << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": "
+         << "SetEvent()";
+#endif
+
     SetEvent(hBarrier[threadNo]);
 
     // enter the barrier one by one
-    // cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " <<
-    // numThreadsPassedBarrier << ": " << "EnterCriticalSection()";
+
+#if 0
+    cout << endl
+         << "thread=" << threadNo
+         << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": "
+         << "EnterCriticalSection()";
+#endif
+
     EnterCriticalSection(&csBarrier);
 
     // if the first one which entered, then wait until other threads
     if (numThreadsPassedBarrier == 0) {
-        // cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier=
-        // " << numThreadsPassedBarrier << ": " << "WaitForMultipleObjects()";
+#if 0
+        cout << endl
+             << "thread=" << threadNo
+             << ", numThreadsPassedBarrier=
+                " << numThreadsPassedBarrier << "
+            : " << " WaitForMultipleObjects() ";
+#endif
         WaitForMultipleObjects(numThreads, hBarrier, TRUE, INFINITE);
         ResetEvent(hEventBarrierPassedByEveryBody);
     }
 
-    // count threads which passed the barrier
-    // cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " <<
-    // numThreadsPassedBarrier << ": " << "numThreadsPassedBarrier++";
+// count threads which passed the barrier
+#if 0
+    cout << endl
+         << "thread=" << threadNo
+         << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": "
+         << "numThreadsPassedBarrier++";
+#endif
+
     numThreadsPassedBarrier++;
 
     // the last one closes the door
-    // cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " <<
-    // numThreadsPassedBarrier << ": " << "if (numThreadsPassedBarrier ==
-    // numThreads) numThreadsPassedBarrier = 0";
+#if 0
+    cout << endl
+         << "thread=" << threadNo
+         << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": "
+         << "if (numThreadsPassedBarrier == numThreads) "
+            "numThreadsPassedBarrier = 0";
+#endif
+
     if (numThreadsPassedBarrier == numThreads) {
         numThreadsPassedBarrier = 0;
         SetEvent(hEventBarrierPassedByEveryBody);
     }
 
-    // cout << endl << "thread=" << threadNo << ", numThreadsPassedBarrier= " <<
-    // numThreadsPassedBarrier << ": " << "LeaveCriticalSection()";
+#if 0
+    cout << endl
+         << "thread=" << threadNo
+         << ", numThreadsPassedBarrier= " << numThreadsPassedBarrier << ": "
+         << "LeaveCriticalSection()";
+#endif
+
     LeaveCriticalSection(&csBarrier);
 }
 
@@ -336,14 +374,20 @@ unsigned int ThreadManager::executeParallelLoop(
         return TM_RETURN_VALUE_INVALID_PARAM;
 
     // locals
-    unsigned int curThreadNo; // the threads are enumerated from 0 to
-                              // numThreads-1
-    int numIterations = (finalValue - initialValue) / inkrement +
-                        1;  // total number of iterations
-    int chunkSize = 0;      // number of iterations per chunk
-    SIZE_T dwStackSize = 0; // initital stack size of each thread. 0 means
-                            // default size ~1MB
-    ForLoop *forLoopParameters = new ForLoop[numThreads]; //
+
+    // the threads are enumerated from 0 to numThreads-1
+    unsigned int curThreadNo;
+
+    // total number of iterations
+    int numIterations = (finalValue - initialValue) / inkrement + 1;
+
+    // number of iterations per chunk
+    int chunkSize = 0;
+
+    // initital stack size of each thread. 0 means default size ~1MB
+    SIZE_T dwStackSize = 0;
+
+    ForLoop *forLoopParameters = new ForLoop[numThreads];
 
     // globals
     termineAllThreads = false;
@@ -404,8 +448,10 @@ unsigned int ThreadManager::executeParallelLoop(
             return TM_RETURN_VALUE_UNEXPECTED_ERROR;
         }
 
-        // DWORD dwThreadAffinityMask = 1 << curThreadNo;
-        // SetThreadAffinityMask(hThread[curThreadNo], &dwThreadAffinityMask);
+#if 0
+        DWORD dwThreadAffinityMask = 1 << curThreadNo;
+        SetThreadAffinityMask(hThread[curThreadNo], &dwThreadAffinityMask);
+#endif
     }
 
     // start threads, but don't resume if in pause mode

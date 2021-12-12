@@ -168,10 +168,13 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int numValues,
     unsigned int actualBufferSize = 0;
     unsigned int curBufferPos = bufferSize;
     unsigned int decimalPos = 0;
-    int integralValue = 0; // ATTENTION: Only allows 8 digits before the decimal
-                           // point
-    int fractionalValue = 0; // ATTENTION: Only allows 8 digits before the
-                             // decimal point
+
+    // ATTENTION: Only allows 8 digits before the decimal point
+    int integralValue = 0;
+
+    // ATTENTION: Only allows 8 digits before the decimal point
+    int fractionalValue = 0;
+
     int exponentialValue = 1;
     bool valIsNegative = false;
     bool expIsNegative = false;

@@ -28,16 +28,26 @@
 class Player
 {
 public:
-    int id;                 // static
-    unsigned int warning;   // static
-    unsigned int numStones; // number of stones of this player on the board
-    unsigned int numStonesMissing; // number of stones, which where stolen by
-                                   // the opponent
-    unsigned int numPossibleMoves; // amount of possible moves
-    unsigned int posTo[MAX_NUM_POS_MOVES];   // target board position of a
-                                             // possible move
-    unsigned int posFrom[MAX_NUM_POS_MOVES]; // source board position of a
-                                             // possible move
+    // static
+    int id;
+
+    // static
+    unsigned int warning;
+
+    // number of stones of this player on the board
+    unsigned int numStones;
+
+    // number of stones, which where stolen by the opponent
+    unsigned int numStonesMissing;
+
+    // amount of possible moves
+    unsigned int numPossibleMoves;
+
+    // target board position of a possible move
+    unsigned int posTo[MAX_NUM_POS_MOVES];
+
+    // source board position of a possible move
+    unsigned int posFrom[MAX_NUM_POS_MOVES];
 
     void copyPlayer(Player *destination);
 };
@@ -46,38 +56,63 @@ class fieldStruct
 {
 public:
     // constants
-    static const int squareIsFree = 0; // trivial
-    static const int playerOne = -1;   // so rowOwner can be calculated easy
+
+    // trivial
+    static const int squareIsFree = 0;
+
+    // so rowOwner can be calculated easy
+    static const int playerOne = -1;
     static const int playerTwo = 1;
-    static const int playerBlack = -1; // so rowOwner can be calculated easy
+
+    // so rowOwner can be calculated easy
+    static const int playerBlack = -1;
     static const int playerWhite = 1;
-    static const unsigned int noWarning = 0; // so the bitwise or-operation can
-                                             // be applied, without interacting
-                                             // with playerOne & Two
+
+    // so the bitwise or-operation can be applied, without interacting with
+    // playerOne & Two
+    static const unsigned int noWarning = 0;
     static const unsigned int playerOneWarning = 2;
     static const unsigned int playerTwoWarning = 4;
     static const unsigned int playerBothWarning = 6;
     static const unsigned int numStonesPerPlayer = 9;
-    static const unsigned int size = 24; // number of squares
-    static const int gameDrawn = 3;      // only a nonzero value
+
+    // number of squares
+    static const unsigned int size = 24;
+
+    // only a nonzero value
+    static const int gameDrawn = 3;
 
     // variables
-    int board[size]; // one of the values above for each board position
-    unsigned int warnings[size]; // array containing the warnings for each board
-                                 // position
-    bool stoneMoveAble[size][4]; // true if stone can be moved in this direction
-    unsigned int stonePartOfMill[size];    // the number of mills, of which this
-                                           // stone is part of
-    unsigned int connectedSquare[size][4]; // static array containing the index
-                                           // of the neighbour or "size"
-    unsigned int neighbour[size][2][2];    // static array containing the two
-                                           // neighbors of each squares
-    unsigned int stonesSet; // number of stones set in the setting phase
-    bool settingPhase;      // true if stonesSet < 18
-    unsigned int stoneMustBeRemoved; // number of stones which must be removed
-                                     // by the current player
-    Player *curPlayer,
-        *oppPlayer; // pointers to the current and opponent player
+
+    // one of the values above for each board position
+    int board[size];
+
+    // array containing the warnings for each board position
+    unsigned int warnings[size];
+
+    // true if stone can be moved in this direction
+    bool stoneMoveAble[size][4];
+
+    // the number of mills, of which this stone is part of
+    unsigned int stonePartOfMill[size];
+
+    // static array containing the index of the neighbour or "size"
+    unsigned int connectedSquare[size][4];
+
+    // static array containing the two neighbors of each squares
+    unsigned int neighbour[size][2][2];
+
+    // number of stones set in the setting phase
+    unsigned int stonesSet;
+
+    // true if stonesSet < 18
+    bool settingPhase;
+
+    // number of stones which must be removed by the current player
+    unsigned int stoneMustBeRemoved;
+
+    // pointers to the current and opponent player
+    Player *curPlayer, *oppPlayer;
 
     // useful functions
     void printBoard();

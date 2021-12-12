@@ -328,7 +328,8 @@ bool CyclicArray::saveFile(const char *fileName)
         return false;
     }
 
-    // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH |
+    // Open Database-File
+    // (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH |
     // FILE_FLAG_RANDOM_ACCESS)
     hSaveFile = CreateFileA(fileName, GENERIC_WRITE, FILE_SHARE_WRITE, nullptr,
                             OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);

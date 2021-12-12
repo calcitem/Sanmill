@@ -226,13 +226,20 @@ DWORD MiniMax::testLayerThreadProc(void *pParameter, unsigned index)
                           << "), but tested state is not marked as invalid.");
                 goto errorInDatabase;
             }
+
+#if 0
             // BUG: Does not work because, layer 101 is calculated before 105,
-            // although removing a stone does need this jump. if
-            // (!layerInDatabaseAndCompleted) { PRINT(0,m, "ERROR: DATABASE
-            // ERROR IN LAYER " << layerNumber << " AND STATE " << stateNumber
-            // << ": Succeeding state " << tmpStateNumber << " in an
-            // uncalculated layer " << tmpLayerNumber << "! Calc layer first!");
-            // goto errorInDatabase; }
+            // although removing a stone does need this jump.
+            if (!layerInDatabaseAndCompleted) {
+                PRINT(0, m,
+                      "ERROR: DATABASE ERROR IN LAYER "
+                          << layerNumber << " AND STATE " << stateNumber
+                          << ": Succeding state " << tmpStateNumber
+                          << " in an uncalculated layer " << tmpLayerNumber
+                          << "! Calc layer first!");
+                goto errorInDatabase;
+            }
+#endif
 
             // undo move
             m->undo(threadNo, idPossibility[i], isOpponentLevel, pBackup,
@@ -303,12 +310,18 @@ DWORD MiniMax::testLayerThreadProc(void *pParameter, unsigned index)
             // at least one possible move must be lost for the opponent or won
             // for the current player
             for (i = 0; i < numPossibilities; i++) {
-                // if (subValueInDatabase[i] == SKV_VALUE_INVALID) { PRINT(0,m,
-                // "DATABASE ERROR IN LAYER " << layerNumber << " AND STATE " <<
-                // stateNumber << ": At least one possible move must be lost for
-                // the opponent or won for the current player. But
-                // subValueInDatabase[i] == SKV_VALUE_INVALID."); goto
-                // errorInDatabase; }
+#if 0
+                if (subValueInDatabase[i] == SKV_VALUE_INVALID) {
+                    PRINT(0, m,
+                          "DATABASE ERROR IN LAYER "
+                              << layerNumber << " AND STATE " << stateNumber
+                              << ": At least one possible move must be lost "
+                                 "for the opponent or won for the current "
+                                 "player. But subValueInDatabase[i] == "
+                                 "SKV_VALUE_INVALID.");
+                    goto errorInDatabase;
+                }
+#endif
                 if (subValueInDatabase[i] == ((hasCurPlayerChanged[i]) ?
                                                   SKV_VALUE_GAME_LOST :
                                                   SKV_VALUE_GAME_WON))
@@ -357,12 +370,18 @@ DWORD MiniMax::testLayerThreadProc(void *pParameter, unsigned index)
             // all possible moves must be won for the opponent, lost for the
             // current player or drawn
             for (j = 0, i = 0; i < numPossibilities; i++) {
-                // if (subValueInDatabase[i] == SKV_VALUE_INVALID) { PRINT(0,m,
-                // "DATABASE ERROR IN LAYER " << layerNumber << " AND STATE " <<
-                // stateNumber << ": All possible moves must be won for the
-                // opponent, lost for the current player or drawn. But
-                // subValueInDatabase[i] == SKV_VALUE_INVALID."); goto
-                // errorInDatabase; }
+#if 0
+                if (subValueInDatabase[i] == SKV_VALUE_INVALID) {
+                    PRINT(0, m,
+                          "DATABASE ERROR IN LAYER "
+                              << layerNumber << " AND STATE " << stateNumber
+                              << ": All possible moves must be won for the "
+                                 "opponent, lost for the current player or "
+                                 "drawn. But subValueInDatabase[i] == "
+                                 "SKV_VALUE_INVALID.");
+                    goto errorInDatabase;
+                }
+#endif
                 if (subValueInDatabase[i] != ((hasCurPlayerChanged[i]) ?
                                                   SKV_VALUE_GAME_WON :
                                                   SKV_VALUE_GAME_LOST) &&
