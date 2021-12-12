@@ -124,8 +124,8 @@ int perfect_main(void)
                  playerTwoHuman)) {
                 do {
                     // Show text
-                    if (mill->mustStoneBeRemoved())
-                        cout << "\n   Which stone do you want to remove? "
+                    if (mill->mustPieceBeRemoved())
+                        cout << "\n   Which piece do you want to remove? "
                                 "[a-x]: \n\n\n";
                     else if (mill->inSettingPhase())
                         cout << "\n   Where are you going? [a-x]: \n\n\n";

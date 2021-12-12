@@ -1409,7 +1409,7 @@ bool Game::updateScene(Position &p)
         piece->setSelected(false);
 
         // Convert the subscript of pieceList to the code of game
-        key = (i % 2) ? (i / 2 + B_STONE_1) : (i / 2 + W_STONE_1);
+        key = (i % 2) ? (i / 2 + B_PIECE_1) : (i / 2 + W_PIECE_1);
 
         int j;
 
@@ -1440,7 +1440,7 @@ bool Game::updateScene(Position &p)
         // If not, place the pieces outside the board
         if (j == (RANK_NB) * (FILE_NB + 1)) {
             // Judge whether it is a removing seed or an unplaced one
-            if (key & W_STONE) {
+            if (key & W_PIECE) {
                 pos = (key - 0x11 <
                        nTotalPieces / 2 - p.count<IN_HAND>(WHITE)) ?
                           scene.pos_p2_g :
@@ -1479,7 +1479,7 @@ bool Game::updateScene(Position &p)
     // Add banned points in placing phase
     if (rule.hasBannedLocations && p.get_phase() == Phase::placing) {
         for (int sq = SQ_BEGIN; sq < SQ_END; sq++) {
-            if (board[sq] == BAN_STONE) {
+            if (board[sq] == BAN_PIECE) {
                 pos = scene.polar2pos(File(sq / RANK_NB),
                                       Rank(sq % RANK_NB + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
@@ -1509,8 +1509,8 @@ bool Game::updateScene(Position &p)
     int ipos = p.current_square();
     if (ipos) {
         key = board[p.current_square()];
-        ipos = (key & W_STONE) ? (key - W_STONE_1) * 2 :
-                                 (key - B_STONE_1) * 2 + 1;
+        ipos = (key & W_PIECE) ? (key - W_PIECE_1) * 2 :
+                                 (key - B_PIECE_1) * 2 + 1;
         if (ipos >= 0 && ipos < nTotalPieces) {
             currentPiece = pieceList.at(static_cast<size_t>(ipos));
             currentPiece->setSelected(true);

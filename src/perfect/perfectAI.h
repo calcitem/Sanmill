@@ -22,11 +22,11 @@
 #define VALUE_GAME_WON 1000.0f
 
 // since a state must be saved two times,
-// one time where no stone must be removed,
-// one time where a stone must be removed
-#define MAX_NUM_STONES_REMOVED_MINUS_1 2
+// one time where no piece must be removed,
+// one time where a piece must be removed
+#define MAX_NUM_PIECES_REMOVED_MINUS_1 2
 
-// 10 x 10 since each color can range from 0 to 9 stones
+// 10 x 10 since each color can range from 0 to 9 pieces
 // x2 since there is the setting phase and the moving phase
 #define NUM_LAYERS 200
 #define MAX_NUM_SUB_LAYERS 100
@@ -34,8 +34,8 @@
 #define LAYER_INDEX_MOVING_PHASE 0
 #define NOT_INDEXED 4294967295
 #define MAX_DEPTH_OF_TREE 100
-#define NUM_STONES_PER_PLAYER 9
-#define NUM_STONES_PER_PLAYER_PLUS_ONE 10
+#define NUM_PIECES_PER_PLAYER 9
+#define NUM_PIECES_PER_PLAYER_PLUS_ONE 10
 
 // The Four Groups (the board position is divided in four groups A,B,C,D)
 #define numSquaresGroupA 4
@@ -52,8 +52,8 @@
 #define MAX_ANZ_POSITION_D (81 * 81)
 
 #define FREE_SQUARE 0
-#define WHITE_STONE 1
-#define BLACK_STONE 2
+#define WHITE_PIECE 1
+#define BLACK_PIECE 2
 
 // Symmetry Operations
 #define SO_TURN_LEFT 0
@@ -82,19 +82,19 @@ protected:
     {
         unsigned int minIndex;
         unsigned int maxIndex;
-        unsigned int numWhiteStonesGroupCD, numBlackStonesGroupCD;
-        unsigned int numWhiteStonesGroupAB, numBlackStonesGroupAB;
+        unsigned int numWhitePiecesGroupCD, numBlackPiecesGroupCD;
+        unsigned int numWhitePiecesGroupAB, numBlackPiecesGroupAB;
     };
 
     struct Layer
     {
-        unsigned int numWhiteStones;
-        unsigned int numBlackStones;
+        unsigned int numWhitePieces;
+        unsigned int numBlackPieces;
         unsigned int numSubLayers;
-        unsigned int subLayerIndexAB[NUM_STONES_PER_PLAYER_PLUS_ONE]
-                                    [NUM_STONES_PER_PLAYER_PLUS_ONE];
-        unsigned int subLayerIndexCD[NUM_STONES_PER_PLAYER_PLUS_ONE]
-                                    [NUM_STONES_PER_PLAYER_PLUS_ONE];
+        unsigned int subLayerIndexAB[NUM_PIECES_PER_PLAYER_PLUS_ONE]
+                                    [NUM_PIECES_PER_PLAYER_PLUS_ONE];
+        unsigned int subLayerIndexCD[NUM_PIECES_PER_PLAYER_PLUS_ONE]
+                                    [NUM_PIECES_PER_PLAYER_PLUS_ONE];
         SubLayer subLayer[MAX_NUM_SUB_LAYERS];
     };
 
@@ -112,12 +112,12 @@ protected:
         bool settingPhase;
         int fieldFrom, fieldTo; // value of board
         unsigned int from, to;  // index of board
-        unsigned int curNumStones, oppNumStones;
+        unsigned int curNumPieces, oppNumPieces;
         unsigned int curPosMoves, oppPosMoves;
-        unsigned int curMissStones, oppMissStones;
-        unsigned int stonesSet;
-        unsigned int stoneMustBeRemoved;
-        unsigned int stonePartOfMill[fieldStruct::size];
+        unsigned int curMissPieces, oppMissPieces;
+        unsigned int piecesSet;
+        unsigned int pieceMustBeRemoved;
+        unsigned int piecePartOfMill[fieldStruct::size];
         Player *curPlayer, *oppPlayer;
     };
 
@@ -132,16 +132,16 @@ protected:
     // the layers
     Layer layer[NUM_LAYERS];
 
-    // indices of layer [moving/setting phase][number of white stones][number of
-    // black stones]
-    unsigned int layerIndex[2][NUM_STONES_PER_PLAYER_PLUS_ONE]
-                           [NUM_STONES_PER_PLAYER_PLUS_ONE];
+    // indices of layer [moving/setting phase][number of white pieces][number of
+    // black pieces]
+    unsigned int layerIndex[2][NUM_PIECES_PER_PLAYER_PLUS_ONE]
+                           [NUM_PIECES_PER_PLAYER_PLUS_ONE];
 
-    unsigned int numPositionsCD[NUM_STONES_PER_PLAYER_PLUS_ONE]
-                               [NUM_STONES_PER_PLAYER_PLUS_ONE];
+    unsigned int numPositionsCD[NUM_PIECES_PER_PLAYER_PLUS_ONE]
+                               [NUM_PIECES_PER_PLAYER_PLUS_ONE];
 
-    unsigned int numPositionsAB[NUM_STONES_PER_PLAYER_PLUS_ONE]
-                               [NUM_STONES_PER_PLAYER_PLUS_ONE];
+    unsigned int numPositionsAB[NUM_PIECES_PER_PLAYER_PLUS_ONE]
+                               [NUM_PIECES_PER_PLAYER_PLUS_ONE];
 
     unsigned int indexAB[MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B];
 
@@ -157,11 +157,11 @@ protected:
     // Matrix used for application of the symmetry operations
     unsigned int symmetryOperationTable[NUM_SYM_OPERATIONS][fieldStruct::size];
 
-    unsigned int *originalStateCD[NUM_STONES_PER_PLAYER_PLUS_ONE]
-                                 [NUM_STONES_PER_PLAYER_PLUS_ONE];
+    unsigned int *originalStateCD[NUM_PIECES_PER_PLAYER_PLUS_ONE]
+                                 [NUM_PIECES_PER_PLAYER_PLUS_ONE];
 
-    unsigned int *originalStateAB[NUM_STONES_PER_PLAYER_PLUS_ONE]
-                                 [NUM_STONES_PER_PLAYER_PLUS_ONE];
+    unsigned int *originalStateAB[NUM_PIECES_PER_PLAYER_PLUS_ONE]
+                                 [NUM_PIECES_PER_PLAYER_PLUS_ONE];
 
     // index of the reverse symmetry operation
     unsigned int reverseSymOperation[NUM_SYM_OPERATIONS];
@@ -231,30 +231,30 @@ protected:
                                           void **pPossibilities);
         unsigned int *getPossNormalMove(unsigned int *numPossibilities,
                                         void **pPossibilities);
-        unsigned int *getPossStoneRemove(unsigned int *numPossibilities,
+        unsigned int *getPossPieceRemove(unsigned int *numPossibilities,
                                          void **pPossibilities);
 
         // move functions
-        inline void updatePossibleMoves(unsigned int stone, Player *stoneOwner,
-                                        bool stoneRemoved,
-                                        unsigned int ignoreStone);
-        inline void updateWarning(unsigned int firstStone,
-                                  unsigned int secondStone);
-        inline void setWarning(unsigned int stoneOne, unsigned int stoneTwo,
-                               unsigned int stoneThree);
-        inline void removeStone(unsigned int from, Backup *backup);
-        inline void setStone(unsigned int to, Backup *backup);
+        inline void updatePossibleMoves(unsigned int piece, Player *pieceOwner,
+                                        bool pieceRemoved,
+                                        unsigned int ignorePiece);
+        inline void updateWarning(unsigned int firstPiece,
+                                  unsigned int secondPiece);
+        inline void setWarning(unsigned int pieceOne, unsigned int pieceTwo,
+                               unsigned int pieceThree);
+        inline void removePiece(unsigned int from, Backup *backup);
+        inline void setPiece(unsigned int to, Backup *backup);
         inline void normalMove(unsigned int from, unsigned int to,
                                Backup *backup);
 
         // database functions
         unsigned int getLayerAndStateNumber(unsigned int &layerNum,
                                             unsigned int &stateNumber);
-        void setWarningAndMill(unsigned int stone, unsigned int firstNeighbour,
+        void setWarningAndMill(unsigned int piece, unsigned int firstNeighbour,
                                unsigned int secondNeighbour);
         bool fieldIntegrityOK(unsigned int numberOfMillsCurrentPlayer,
                               unsigned int numberOfMillsOpponentPlayer,
-                              bool aStoneCanBeRemovedFromCurPlayer);
+                              bool aPieceCanBeRemovedFromCurPlayer);
         void calcPossibleMoves(Player *player);
         void storePredecessor(unsigned int numberOfMillsCurrentPlayer,
                               unsigned int numberOfMillsOpponentPlayer,

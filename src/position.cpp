@@ -39,15 +39,15 @@ const string PieceToChar(Piece p)
         return "*";
     }
 
-    if (p == BAN_STONE) {
+    if (p == BAN_PIECE) {
         return "X";
     }
 
-    if (W_STONE <= p && p <= W_STONE_12) {
+    if (W_PIECE <= p && p <= W_PIECE_12) {
         return "O";
     }
 
-    if (B_STONE <= p && p <= B_STONE_12) {
+    if (B_PIECE <= p && p <= B_PIECE_12) {
         return "@";
     }
 
@@ -61,21 +61,21 @@ Piece CharToPiece(char ch) noexcept
     }
 
     if (ch == 'O') {
-        return W_STONE;
+        return W_PIECE;
     }
 
     if (ch == '@') {
-        return B_STONE;
+        return B_PIECE;
     }
 
     if (ch == 'X') {
-        return BAN_STONE;
+        return BAN_PIECE;
     }
 
     return NO_PIECE;
 }
 
-constexpr PieceType PieceTypes[] = {NO_PIECE_TYPE, WHITE_STONE, BLACK_STONE,
+constexpr PieceType PieceTypes[] = {NO_PIECE_TYPE, WHITE_PIECE, BLACK_PIECE,
                                     BAN};
 } // namespace
 
@@ -673,7 +673,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                 action = Action::select;
 
                 if (rule.hasBannedLocations) {
-                    remove_ban_stones();
+                    remove_ban_pieces();
                 }
 
                 if (!rule.isDefenderMoveFirst) {
@@ -831,7 +831,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     if (rule.hasBannedLocations && phase == Phase::placing) {
         // Remove and put ban
-        pc = board[s] = BAN_STONE;
+        pc = board[s] = BAN_PIECE;
         update_key(s);
         SET_BIT(byTypeBB[type_of(pc)], s);
     } else {
@@ -868,7 +868,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
             action = Action::select;
 
             if (rule.hasBannedLocations) {
-                remove_ban_stones();
+                remove_ban_pieces();
             }
 
             if (rule.isDefenderMoveFirst) {
@@ -1052,16 +1052,16 @@ int Position::calculate_mobility_diff()
     int mobilityBlack = 0;
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
-        if (board[s] == NO_PIECE || board[s] == BAN_STONE) {
+        if (board[s] == NO_PIECE || board[s] == BAN_PIECE) {
             Square moveSquare;
             for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
                 moveSquare = static_cast<Square>(
                     MoveList<LEGAL>::adjacentSquares[s][d]);
                 if (moveSquare) {
-                    if (board[moveSquare] & W_STONE) {
+                    if (board[moveSquare] & W_PIECE) {
                         mobilityWhite++;
                     }
-                    if (board[moveSquare] & B_STONE) {
+                    if (board[moveSquare] & B_PIECE) {
                         mobilityBlack++;
                     }
                 }
@@ -1072,7 +1072,7 @@ int Position::calculate_mobility_diff()
     return mobilityWhite - mobilityBlack;
 }
 
-void Position::remove_ban_stones()
+void Position::remove_ban_pieces()
 {
     assert(rule.hasBannedLocations);
 
@@ -1082,7 +1082,7 @@ void Position::remove_ban_stones()
         for (int r = 0; r < RANK_NB; r++) {
             s = static_cast<Square>(f * RANK_NB + r);
 
-            if (board[s] == BAN_STONE) {
+            if (board[s] == BAN_PIECE) {
                 const Piece pc = board[s];
                 byTypeBB[ALL_PIECES] ^= s;
                 byTypeBB[type_of(pc)] ^= s;
@@ -1284,7 +1284,7 @@ void Position::surrounded_pieces_count(Square s, int &ourPieceCount,
         case NO_PIECE:
             emptyCount++;
             break;
-        case BAN_STONE:
+        case BAN_PIECE:
             bannedCount++;
             break;
         default:

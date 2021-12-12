@@ -229,7 +229,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParameter, unsigned index)
 
 #if 0
             // BUG: Does not work because, layer 101 is calculated before 105,
-            // although removing a stone does need this jump.
+            // although removing a piece does need this jump.
             if (!layerInDatabaseAndCompleted) {
                 PRINT(0, m,
                       "ERROR: DATABASE ERROR IN LAYER "

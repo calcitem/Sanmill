@@ -25,15 +25,15 @@ void fieldStruct::printBoard()
     char c[fieldStruct::size];
 
     for (index = 0; index < fieldStruct::size; index++)
-        c[index] = GetCharFromStone(this->board[index]);
+        c[index] = GetCharFromPiece(this->board[index]);
 
     cout << "current player          : "
-         << GetCharFromStone(this->curPlayer->id) << " has "
-         << this->curPlayer->numStones << " stones\n";
+         << GetCharFromPiece(this->curPlayer->id) << " has "
+         << this->curPlayer->numPieces << " pieces\n";
     cout << "opponent player         : "
-         << GetCharFromStone(this->oppPlayer->id) << " has "
-         << this->oppPlayer->numStones << " stones\n";
-    cout << "Num Stones to be removed: " << this->stoneMustBeRemoved << "\n";
+         << GetCharFromPiece(this->oppPlayer->id) << " has "
+         << this->oppPlayer->numPieces << " pieces\n";
+    cout << "Num Pieces to be removed: " << this->pieceMustBeRemoved << "\n";
     cout << "setting phase           : "
          << (this->settingPhase ? "true" : "false");
     cout << "\n";
@@ -67,12 +67,12 @@ void fieldStruct::printBoard()
 }
 
 //-----------------------------------------------------------------------------
-// GetCharFromStone()
+// GetCharFromPiece()
 //
 //-----------------------------------------------------------------------------
-char fieldStruct::GetCharFromStone(int stone)
+char fieldStruct::GetCharFromPiece(int piece)
 {
-    switch (stone) {
+    switch (piece) {
     case fieldStruct::playerOne:
         return 'o';
     case fieldStruct::playerTwo:
@@ -100,18 +100,18 @@ void fieldStruct::copyBoard(fieldStruct *destination)
     this->curPlayer->copyPlayer(destination->curPlayer);
     this->oppPlayer->copyPlayer(destination->oppPlayer);
 
-    destination->stonesSet = this->stonesSet;
+    destination->piecesSet = this->piecesSet;
     destination->settingPhase = this->settingPhase;
-    destination->stoneMustBeRemoved = this->stoneMustBeRemoved;
+    destination->pieceMustBeRemoved = this->pieceMustBeRemoved;
 
     for (i = 0; i < this->size; i++) {
         destination->board[i] = this->board[i];
         destination->warnings[i] = this->warnings[i];
-        destination->stonePartOfMill[i] = this->stonePartOfMill[i];
+        destination->piecePartOfMill[i] = this->piecePartOfMill[i];
 
         for (j = 0; j < 4; j++) {
             destination->connectedSquare[i][j] = this->connectedSquare[i][j];
-            destination->stoneMoveAble[i][j] = this->stoneMoveAble[i][j];
+            destination->pieceMoveAble[i][j] = this->pieceMoveAble[i][j];
             destination->neighbour[i][j / 2][j % 2] =
                 this->neighbour[i][j / 2][j % 2];
         }
@@ -126,8 +126,8 @@ void Player::copyPlayer(Player *destination)
 {
     unsigned int i;
 
-    destination->numStonesMissing = this->numStonesMissing;
-    destination->numStones = this->numStones;
+    destination->numPiecesMissing = this->numPiecesMissing;
+    destination->numPieces = this->numPieces;
     destination->id = this->id;
     destination->warning = this->warning;
     destination->numPossibleMoves = this->numPossibleMoves;
@@ -153,30 +153,30 @@ void fieldStruct::createBoard()
     oppPlayer = new Player;
 
     curPlayer->id = playerOne;
-    stonesSet = 0;
-    stoneMustBeRemoved = 0;
+    piecesSet = 0;
+    pieceMustBeRemoved = 0;
     settingPhase = true;
     curPlayer->warning = (curPlayer->id == playerOne) ? playerOneWarning :
                                                         playerTwoWarning;
     oppPlayer->id = (curPlayer->id == playerOne) ? playerTwo : playerOne;
     oppPlayer->warning = (curPlayer->id == playerOne) ? playerTwoWarning :
                                                         playerOneWarning;
-    curPlayer->numStones = 0;
-    oppPlayer->numStones = 0;
+    curPlayer->numPieces = 0;
+    oppPlayer->numPieces = 0;
     curPlayer->numPossibleMoves = 0;
     oppPlayer->numPossibleMoves = 0;
-    curPlayer->numStonesMissing = 0;
-    oppPlayer->numStonesMissing = 0;
+    curPlayer->numPiecesMissing = 0;
+    oppPlayer->numPiecesMissing = 0;
 
     // zero
     for (i = 0; i < size; i++) {
         board[i] = squareIsFree;
         warnings[i] = noWarning;
-        stonePartOfMill[i] = 0;
-        stoneMoveAble[i][0] = false;
-        stoneMoveAble[i][1] = false;
-        stoneMoveAble[i][2] = false;
-        stoneMoveAble[i][3] = false;
+        piecePartOfMill[i] = 0;
+        pieceMoveAble[i][0] = false;
+        pieceMoveAble[i][1] = false;
+        pieceMoveAble[i][2] = false;
+        pieceMoveAble[i][3] = false;
     }
 
     // set connections

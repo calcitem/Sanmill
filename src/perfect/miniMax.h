@@ -36,7 +36,7 @@ using std::iostream; // use standard library namespace
 ********************************************************************************
 player:
 layer: The states are divided in layers. For
-example depending on number of stones on the board.
+example depending on number of pieces on the board.
 state: A unique game state representing a
 current game situation. situation: Used as synonym
 to state.

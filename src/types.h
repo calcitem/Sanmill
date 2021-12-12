@@ -187,8 +187,8 @@ enum Value : int8_t {
     VALUE_MATE_IN_MAX_PLY = VALUE_MATE - MAX_PLY,
     VALUE_MATED_IN_MAX_PLY = -VALUE_MATE_IN_MAX_PLY,
 
-    StoneValue = 5,
-    VALUE_EACH_PIECE = StoneValue,
+    PieceValue = 5,
+    VALUE_EACH_PIECE = PieceValue,
     VALUE_EACH_PIECE_INHAND = VALUE_EACH_PIECE,
     VALUE_EACH_PIECE_ONBOARD = VALUE_EACH_PIECE,
     VALUE_EACH_PIECE_PLACING_NEEDREMOVE = VALUE_EACH_PIECE,
@@ -232,8 +232,8 @@ enum Rating : int8_t {
 
 enum PieceType : uint16_t {
     NO_PIECE_TYPE = 0,
-    WHITE_STONE = 1,
-    BLACK_STONE = 2,
+    WHITE_PIECE = 1,
+    BLACK_PIECE = 2,
     BAN = 3,
     ALL_PIECES = 0,
     PIECE_TYPE_NB = 4,
@@ -244,40 +244,38 @@ enum PieceType : uint16_t {
 
 enum Piece : uint8_t {
     NO_PIECE = 0x00,
-    BAN_STONE = 0x0F,
+    BAN_PIECE = 0x0F,
 
-    W_STONE = 0x10,
-    W_STONE_1 = 0x11,
-    W_STONE_2 = 0x12,
-    W_STONE_3 = 0x13,
-    W_STONE_4 = 0x14,
-    W_STONE_5 = 0x15,
-    W_STONE_6 = 0x16,
-    W_STONE_7 = 0x17,
-    W_STONE_8 = 0x18,
-    W_STONE_9 = 0x19,
-    W_STONE_10 = 0x1A,
-    W_STONE_11 = 0x1B,
-    W_STONE_12 = 0x1C,
+    W_PIECE = 0x10,
+    W_PIECE_1 = 0x11,
+    W_PIECE_2 = 0x12,
+    W_PIECE_3 = 0x13,
+    W_PIECE_4 = 0x14,
+    W_PIECE_5 = 0x15,
+    W_PIECE_6 = 0x16,
+    W_PIECE_7 = 0x17,
+    W_PIECE_8 = 0x18,
+    W_PIECE_9 = 0x19,
+    W_PIECE_10 = 0x1A,
+    W_PIECE_11 = 0x1B,
+    W_PIECE_12 = 0x1C,
 
-    B_STONE = 0x20,
-    B_STONE_1 = 0x21,
-    B_STONE_2 = 0x22,
-    B_STONE_3 = 0x23,
-    B_STONE_4 = 0x24,
-    B_STONE_5 = 0x25,
-    B_STONE_6 = 0x26,
-    B_STONE_7 = 0x27,
-    B_STONE_8 = 0x28,
-    B_STONE_9 = 0x29,
-    B_STONE_10 = 0x2A,
-    B_STONE_11 = 0x2B,
-    B_STONE_12 = 0x2C,
+    B_PIECE = 0x20,
+    B_PIECE_1 = 0x21,
+    B_PIECE_2 = 0x22,
+    B_PIECE_3 = 0x23,
+    B_PIECE_4 = 0x24,
+    B_PIECE_5 = 0x25,
+    B_PIECE_6 = 0x26,
+    B_PIECE_7 = 0x27,
+    B_PIECE_8 = 0x28,
+    B_PIECE_9 = 0x29,
+    B_PIECE_10 = 0x2A,
+    B_PIECE_11 = 0x2B,
+    B_PIECE_12 = 0x2C,
 
     PIECE_NB = 64, // Fix overflow
 };
-
-constexpr Value PieceValue = StoneValue;
 
 using Depth = int8_t;
 
@@ -443,12 +441,12 @@ constexpr Piece make_piece(Color c)
 
 constexpr Piece make_piece(Color c, PieceType pt)
 {
-    if (pt == WHITE_STONE || pt == BLACK_STONE) {
+    if (pt == WHITE_PIECE || pt == BLACK_PIECE) {
         return make_piece(c);
     }
 
     if (pt == BAN) {
-        return BAN_STONE;
+        return BAN_PIECE;
     }
 
     return NO_PIECE;
@@ -461,16 +459,16 @@ constexpr Color color_of(Piece pc)
 
 constexpr PieceType type_of(Piece pc)
 {
-    if (pc == BAN_STONE) {
+    if (pc == BAN_PIECE) {
         return BAN;
     }
 
     if (color_of(pc) == WHITE) {
-        return WHITE_STONE;
+        return WHITE_PIECE;
     }
 
     if (color_of(pc) == BLACK) {
-        return BLACK_STONE;
+        return BLACK_PIECE;
     }
 
     return NO_PIECE_TYPE;
