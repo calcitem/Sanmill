@@ -494,7 +494,7 @@ Depth get_search_depth(const Position *pos)
                 +0                /* 24 */
             };
 
-            const int index = rule.piecesCount * 2 -
+            const int index = rule.pieceCount * 2 -
                               pos->count<IN_HAND>(WHITE) -
                               pos->count<IN_HAND>(BLACK);
 
@@ -588,14 +588,14 @@ Depth get_search_depth(const Position *pos)
     constexpr Depth flyingDepth = 9;
 
     if (pos->phase == Phase::placing) {
-        const int index = rule.piecesCount * 2 - pos->count<IN_HAND>(WHITE) -
+        const int index = rule.pieceCount * 2 - pos->count<IN_HAND>(WHITE) -
                           pos->count<IN_HAND>(BLACK);
 
-        if (rule.piecesCount == 9) {
+        if (rule.pieceCount == 9) {
             assert(0 <= index && index <= 19);
             d = placingDepthTable_9[index];
         } else {
-            assert(0 <= index && index <= rule.piecesCount * 2);
+            assert(0 <= index && index <= rule.pieceCount * 2);
             if (!rule.hasBannedLocations && !rule.hasDiagonalLines) {
                 d = placingDepthTable_12_special[index];
             } else {

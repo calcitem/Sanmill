@@ -40,7 +40,7 @@ void RandomAI::play(fieldStruct *theField, unsigned int *pushFrom,
 {
     // locals
     unsigned int from, to, direction;
-    bool allowedToSpring = (theField->curPlayer->numPieces == 3) ? true : false;
+    bool allowedToSpring = (theField->curPlayer->pieceCount == 3) ? true : false;
 
     // must piece be removed ?
     if (theField->pieceMustBeRemoved) {

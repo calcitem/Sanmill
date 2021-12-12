@@ -54,9 +54,9 @@ void MiniMaxAI::play(fieldStruct *theField, unsigned int *pushFrom,
     if (depthOfFullTree == 0) {
         if (theField->settingPhase)
             searchDepth = 5;
-        else if (theField->curPlayer->numPieces <= 4)
+        else if (theField->curPlayer->pieceCount <= 4)
             searchDepth = 7;
-        else if (theField->oppPlayer->numPieces <= 4)
+        else if (theField->oppPlayer->pieceCount <= 4)
             searchDepth = 7;
         else
             searchDepth = 7;
@@ -71,11 +71,11 @@ void MiniMaxAI::play(fieldStruct *theField, unsigned int *pushFrom,
     // reserve memory
     possibilities = new Possibility[searchDepth + 1];
     oldStates = new Backup[searchDepth + 1];
-    idPossibilities = new unsigned int[(searchDepth + 1) * MAX_NUM_POS_MOVES];
+    idPossibilities = new unsigned int[(searchDepth + 1) * POSIBILE_MOVE_COUNT_MAX];
 
     // start the miniMax-algorithmn
     Possibility *rootPossibilities = (Possibility *)getBestChoice(
-        searchDepth, &bestChoice, MAX_NUM_POS_MOVES);
+        searchDepth, &bestChoice, POSIBILE_MOVE_COUNT_MAX);
 
     // decode the best choice
     if (field->pieceMustBeRemoved) {
@@ -122,20 +122,20 @@ void MiniMaxAI::prepareBestChoiceCalculation()
 // getPossSettingPhase()
 //
 //-----------------------------------------------------------------------------
-unsigned int *MiniMaxAI::getPossSettingPhase(unsigned int *numPossibilities,
+unsigned int *MiniMaxAI::getPossSettingPhase(unsigned int *possibilityCount,
                                              void **pPossibilities)
 {
     // locals
     unsigned int i;
     unsigned int *idPossibility =
-        &idPossibilities[curSearchDepth * MAX_NUM_POS_MOVES];
+        &idPossibilities[curSearchDepth * POSIBILE_MOVE_COUNT_MAX];
 
     // possibilities with cut off
-    for ((*numPossibilities) = 0, i = 0; i < SQUARE_NB; i++) {
+    for ((*possibilityCount) = 0, i = 0; i < SQUARE_NB; i++) {
         // move possible ?
         if (field->board[i] == field->squareIsFree) {
-            idPossibility[*numPossibilities] = i;
-            (*numPossibilities)++;
+            idPossibility[*possibilityCount] = i;
+            (*possibilityCount)++;
         }
     }
 
@@ -149,18 +149,18 @@ unsigned int *MiniMaxAI::getPossSettingPhase(unsigned int *numPossibilities,
 // getPossNormalMove()
 //
 //-----------------------------------------------------------------------------
-unsigned int *MiniMaxAI::getPossNormalMove(unsigned int *numPossibilities,
+unsigned int *MiniMaxAI::getPossNormalMove(unsigned int *possibilityCount,
                                            void **pPossibilities)
 {
     // locals
     unsigned int from, to, dir;
     unsigned int *idPossibility =
-        &idPossibilities[curSearchDepth * MAX_NUM_POS_MOVES];
+        &idPossibilities[curSearchDepth * POSIBILE_MOVE_COUNT_MAX];
     Possibility *possibility = &possibilities[curSearchDepth];
 
     // if he is not allowed to spring
-    if (field->curPlayer->numPieces > 3) {
-        for ((*numPossibilities) = 0, from = 0; from < SQUARE_NB;
+    if (field->curPlayer->pieceCount > 3) {
+        for ((*possibilityCount) = 0, from = 0; from < SQUARE_NB;
              from++) {
             for (dir = 0; dir < 4; dir++) {
                 // destination
@@ -171,28 +171,28 @@ unsigned int *MiniMaxAI::getPossNormalMove(unsigned int *numPossibilities,
                     field->board[from] == field->curPlayer->id &&
                     field->board[to] == field->squareIsFree) {
                     // piece is moveable
-                    idPossibility[*numPossibilities] = *numPossibilities;
-                    possibility->from[*numPossibilities] = from;
-                    possibility->to[*numPossibilities] = to;
-                    (*numPossibilities)++;
+                    idPossibility[*possibilityCount] = *possibilityCount;
+                    possibility->from[*possibilityCount] = from;
+                    possibility->to[*possibilityCount] = to;
+                    (*possibilityCount)++;
 
                     // current player is allowed to spring
                 }
             }
         }
     } else {
-        for ((*numPossibilities) = 0, from = 0; from < SQUARE_NB;
+        for ((*possibilityCount) = 0, from = 0; from < SQUARE_NB;
              from++) {
             for (to = 0; to < SQUARE_NB; to++) {
                 // move possible ?
                 if (field->board[from] == field->curPlayer->id &&
                     field->board[to] == field->squareIsFree &&
-                    *numPossibilities < MAX_NUM_POS_MOVES) {
+                    *possibilityCount < POSIBILE_MOVE_COUNT_MAX) {
                     // piece is moveable
-                    idPossibility[*numPossibilities] = *numPossibilities;
-                    possibility->from[*numPossibilities] = from;
-                    possibility->to[*numPossibilities] = to;
-                    (*numPossibilities)++;
+                    idPossibility[*possibilityCount] = *possibilityCount;
+                    possibility->from[*possibilityCount] = from;
+                    possibility->to[*possibilityCount] = to;
+                    (*possibilityCount)++;
                 }
             }
         }
@@ -208,21 +208,21 @@ unsigned int *MiniMaxAI::getPossNormalMove(unsigned int *numPossibilities,
 // getPossPieceRemove()
 //
 //-----------------------------------------------------------------------------
-unsigned int *MiniMaxAI::getPossPieceRemove(unsigned int *numPossibilities,
+unsigned int *MiniMaxAI::getPossPieceRemove(unsigned int *possibilityCount,
                                             void **pPossibilities)
 {
     // locals
     unsigned int i;
     unsigned int *idPossibility =
-        &idPossibilities[curSearchDepth * MAX_NUM_POS_MOVES];
+        &idPossibilities[curSearchDepth * POSIBILE_MOVE_COUNT_MAX];
 
     // possibilities with cut off
-    for ((*numPossibilities) = 0, i = 0; i < SQUARE_NB; i++) {
+    for ((*possibilityCount) = 0, i = 0; i < SQUARE_NB; i++) {
         // move possible ?
         if (field->board[i] == field->oppPlayer->id &&
             !field->piecePartOfMill[i]) {
-            idPossibility[*numPossibilities] = i;
-            (*numPossibilities)++;
+            idPossibility[*possibilityCount] = i;
+            (*possibilityCount)++;
         }
     }
 
@@ -237,7 +237,7 @@ unsigned int *MiniMaxAI::getPossPieceRemove(unsigned int *numPossibilities,
 //
 //-----------------------------------------------------------------------------
 unsigned int *MiniMaxAI::getPossibilities(unsigned int threadNo,
-                                          unsigned int *numPossibilities,
+                                          unsigned int *possibilityCount,
                                           bool *opponentsMove,
                                           void **pPossibilities)
 {
@@ -246,16 +246,16 @@ unsigned int *MiniMaxAI::getPossibilities(unsigned int threadNo,
 
     // When game has ended of course nothing happens any more
     if (gameHasFinished) {
-        *numPossibilities = 0;
+        *possibilityCount = 0;
         return 0;
         // look what is to do
     } else {
         if (field->pieceMustBeRemoved)
-            return getPossPieceRemove(numPossibilities, pPossibilities);
+            return getPossPieceRemove(possibilityCount, pPossibilities);
         else if (field->settingPhase)
-            return getPossSettingPhase(numPossibilities, pPossibilities);
+            return getPossSettingPhase(possibilityCount, pPossibilities);
         else
-            return getPossNormalMove(numPossibilities, pPossibilities);
+            return getPossNormalMove(possibilityCount, pPossibilities);
     }
 }
 
@@ -294,12 +294,12 @@ void MiniMaxAI::undo(unsigned int threadNo, unsigned int idPossibility,
 
     field->curPlayer = oldState->curPlayer;
     field->oppPlayer = oldState->oppPlayer;
-    field->curPlayer->numPieces = oldState->curNumPieces;
-    field->oppPlayer->numPieces = oldState->oppNumPieces;
-    field->curPlayer->numPiecesMissing = oldState->curMissPieces;
-    field->oppPlayer->numPiecesMissing = oldState->oppMissPieces;
-    field->curPlayer->numPossibleMoves = oldState->curPosMoves;
-    field->oppPlayer->numPossibleMoves = oldState->oppPosMoves;
+    field->curPlayer->pieceCount = oldState->curPieceCount;
+    field->oppPlayer->pieceCount = oldState->oppPieceCount;
+    field->curPlayer->removedPiecesCount = oldState->curMissPieces;
+    field->oppPlayer->removedPiecesCount = oldState->oppMissPieces;
+    field->curPlayer->possibleMovesCount = oldState->curPosMoves;
+    field->oppPlayer->possibleMovesCount = oldState->oppPosMoves;
     field->settingPhase = oldState->settingPhase;
     field->piecesSet = oldState->piecesSet;
     field->pieceMustBeRemoved = oldState->pieceMustBeRemoved;
@@ -483,36 +483,36 @@ inline void MiniMaxAI::updatePossibleMoves(unsigned int piece,
             // piece
             if (field->board[neighbor] == field->squareIsFree) {
                 if (pieceRemoved)
-                    pieceOwner->numPossibleMoves--;
+                    pieceOwner->possibleMovesCount--;
                 else
-                    pieceOwner->numPossibleMoves++;
+                    pieceOwner->possibleMovesCount++;
 
                 // if there is a neighbour piece than it effects only this one
             } else if (field->board[neighbor] == field->curPlayer->id) {
                 if (pieceRemoved)
-                    field->curPlayer->numPossibleMoves++;
+                    field->curPlayer->possibleMovesCount++;
                 else
-                    field->curPlayer->numPossibleMoves--;
+                    field->curPlayer->possibleMovesCount--;
             } else {
                 if (pieceRemoved)
-                    field->oppPlayer->numPossibleMoves++;
+                    field->oppPlayer->possibleMovesCount++;
                 else
-                    field->oppPlayer->numPossibleMoves--;
+                    field->oppPlayer->possibleMovesCount--;
             }
         }
     }
 
     // only 3 pieces resting
-    if (field->curPlayer->numPieces <= 3 && !field->settingPhase)
-        field->curPlayer->numPossibleMoves = field->curPlayer->numPieces *
+    if (field->curPlayer->pieceCount <= 3 && !field->settingPhase)
+        field->curPlayer->possibleMovesCount = field->curPlayer->pieceCount *
                                              (SQUARE_NB -
-                                              field->curPlayer->numPieces -
-                                              field->oppPlayer->numPieces);
-    if (field->oppPlayer->numPieces <= 3 && !field->settingPhase)
-        field->oppPlayer->numPossibleMoves = field->oppPlayer->numPieces *
+                                              field->curPlayer->pieceCount -
+                                              field->oppPlayer->pieceCount);
+    if (field->oppPlayer->pieceCount <= 3 && !field->settingPhase)
+        field->oppPlayer->possibleMovesCount = field->oppPlayer->pieceCount *
                                              (SQUARE_NB -
-                                              field->curPlayer->numPieces -
-                                              field->oppPlayer->numPieces);
+                                              field->curPlayer->pieceCount -
+                                              field->oppPlayer->pieceCount);
 }
 
 //-----------------------------------------------------------------------------
@@ -529,7 +529,7 @@ inline void MiniMaxAI::setPiece(unsigned int to, Backup *backup)
 
     // set piece into board
     field->board[to] = field->curPlayer->id;
-    field->curPlayer->numPieces++;
+    field->curPlayer->pieceCount++;
     field->piecesSet++;
 
     // setting phase finished ?
@@ -582,8 +582,8 @@ inline void MiniMaxAI::removePiece(unsigned int from, Backup *backup)
 
     // remove piece
     field->board[from] = field->squareIsFree;
-    field->oppPlayer->numPieces--;
-    field->oppPlayer->numPiecesMissing++;
+    field->oppPlayer->pieceCount--;
+    field->oppPlayer->removedPiecesCount++;
     field->pieceMustBeRemoved--;
 
     // update possible moves
@@ -593,7 +593,7 @@ inline void MiniMaxAI::removePiece(unsigned int from, Backup *backup)
     updateWarning(from, SQUARE_NB);
 
     // end of game ?
-    if ((field->oppPlayer->numPieces < 3) && (!field->settingPhase))
+    if ((field->oppPlayer->pieceCount < 3) && (!field->settingPhase))
         gameHasFinished = true;
 }
 
@@ -616,12 +616,12 @@ void MiniMaxAI::move(unsigned int threadNo, unsigned int idPossibility,
     oldState->gameHasFinished = gameHasFinished;
     oldState->curPlayer = field->curPlayer;
     oldState->oppPlayer = field->oppPlayer;
-    oldState->curNumPieces = field->curPlayer->numPieces;
-    oldState->oppNumPieces = field->oppPlayer->numPieces;
-    oldState->curPosMoves = field->curPlayer->numPossibleMoves;
-    oldState->oppPosMoves = field->oppPlayer->numPossibleMoves;
-    oldState->curMissPieces = field->curPlayer->numPiecesMissing;
-    oldState->oppMissPieces = field->oppPlayer->numPiecesMissing;
+    oldState->curPieceCount = field->curPlayer->pieceCount;
+    oldState->oppPieceCount = field->oppPlayer->pieceCount;
+    oldState->curPosMoves = field->curPlayer->possibleMovesCount;
+    oldState->oppPosMoves = field->oppPlayer->possibleMovesCount;
+    oldState->curMissPieces = field->curPlayer->removedPiecesCount;
+    oldState->oppMissPieces = field->oppPlayer->removedPiecesCount;
     oldState->settingPhase = field->settingPhase;
     oldState->piecesSet = field->piecesSet;
     oldState->pieceMustBeRemoved = field->pieceMustBeRemoved;
@@ -644,23 +644,23 @@ void MiniMaxAI::move(unsigned int threadNo, unsigned int idPossibility,
     }
 
     // when opponent is unable to move than current player has won
-    if ((!field->oppPlayer->numPossibleMoves) && (!field->settingPhase) &&
-        (!field->pieceMustBeRemoved) && (field->oppPlayer->numPieces > 3))
+    if ((!field->oppPlayer->possibleMovesCount) && (!field->settingPhase) &&
+        (!field->pieceMustBeRemoved) && (field->oppPlayer->pieceCount > 3))
         gameHasFinished = true;
 
     // calc value
     if (!opponentsMove)
-        currentValue = (float)field->oppPlayer->numPiecesMissing -
-                       field->curPlayer->numPiecesMissing +
+        currentValue = (float)field->oppPlayer->removedPiecesCount -
+                       field->curPlayer->removedPiecesCount +
                        field->pieceMustBeRemoved +
-                       field->curPlayer->numPossibleMoves * 0.1f -
-                       field->oppPlayer->numPossibleMoves * 0.1f;
+                       field->curPlayer->possibleMovesCount * 0.1f -
+                       field->oppPlayer->possibleMovesCount * 0.1f;
     else
-        currentValue = (float)field->curPlayer->numPiecesMissing -
-                       field->oppPlayer->numPiecesMissing -
+        currentValue = (float)field->curPlayer->removedPiecesCount -
+                       field->oppPlayer->removedPiecesCount -
                        field->pieceMustBeRemoved +
-                       field->oppPlayer->numPossibleMoves * 0.1f -
-                       field->curPlayer->numPossibleMoves * 0.1f;
+                       field->oppPlayer->possibleMovesCount * 0.1f -
+                       field->curPlayer->possibleMovesCount * 0.1f;
 
     // when game has finished - perfect for the current player
     if (gameHasFinished && !opponentsMove)

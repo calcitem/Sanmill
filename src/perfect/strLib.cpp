@@ -152,7 +152,7 @@ MyString &MyString::assign(const WCHAR *cStr)
 // readAsciiData()
 // This functions reads in a table of floating point values faster than "cin".
 //-----------------------------------------------------------------------------
-bool readAsciiData(HANDLE hFile, double *pData, unsigned int numValues,
+bool readAsciiData(HANDLE hFile, double *pData, unsigned int nValues,
                    unsigned char decimalSeperator,
                    unsigned char columnSeparator)
 {
@@ -399,7 +399,7 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int numValues,
         // buffer overrun?
         if (curBufferPos >= actualBufferSize)
             return false;
-    } while (curReadValue < numValues);
+    } while (curReadValue < nValues);
 
     // quit
     return true;

@@ -559,7 +559,7 @@ bool Position::reset()
     st.key = 0;
 
     pieceOnBoardCount[WHITE] = pieceOnBoardCount[BLACK] = 0;
-    pieceInHandCount[WHITE] = pieceInHandCount[BLACK] = rule.piecesCount;
+    pieceInHandCount[WHITE] = pieceInHandCount[BLACK] = rule.pieceCount;
     pieceToRemoveCount = 0;
 
     mobilityDiff = 0;
@@ -625,7 +625,7 @@ bool Position::put_piece(Square s, bool updateRecord)
     }
 
     if (phase == Phase::placing) {
-        piece = (Piece)((0x01 | make_piece(sideToMove)) + rule.piecesCount -
+        piece = (Piece)((0x01 | make_piece(sideToMove)) + rule.pieceCount -
                         pieceInHandCount[us]);
         pieceInHandCount[us]--;
         pieceOnBoardCount[us]++;

@@ -274,7 +274,7 @@ void Game::gameReset()
     // ......
     PieceItem::Models md;
 
-    for (int i = 0; i < rule.piecesCount; i++) {
+    for (int i = 0; i < rule.pieceCount; i++) {
         // The first piece
         md = isInverted ? PieceItem::Models::blackPiece :
                           PieceItem::Models::whitePiece;
@@ -1394,7 +1394,7 @@ bool Game::updateScene(Position &p)
     int key;
 
     // Total number of pieces
-    int nTotalPieces = rule.piecesCount * 2;
+    int nTotalPieces = rule.pieceCount * 2;
 
     // Animation group
     auto *animationGroup = new QParallelAnimationGroup;

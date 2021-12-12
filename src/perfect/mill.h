@@ -20,7 +20,7 @@
 using std::cout;
 using std::iostream;
 
-constexpr auto MAX_NUM_MOVES = 10000;
+constexpr auto MOVE_COUNT_MAX = 10000;
 
 #define SAFE_DELETE(p) \
     { \
@@ -102,11 +102,11 @@ public:
     void setUpCalcPossibleMoves(Player *player);
     void setUpSetWarningAndMill(unsigned int piece, unsigned int firstNeighbour,
                                 unsigned int secondNeighbour);
-    void calcNumberOfRestingPieces(int &numWhitePiecesResting,
-                                   int &numBlackPiecesResting);
+    void calcRestingPieceCount(int &nWhitePiecesResting,
+                                   int &nBlackPiecesResting);
 
     // getter
-    void getLog(unsigned int &numMovesDone, unsigned int *from,
+    void getLog(unsigned int &nMovesDone, unsigned int *from,
                 unsigned int *to);
     bool getField(int *pField);
     bool isCurrentPlayerHuman();
@@ -132,13 +132,13 @@ public:
 
     unsigned int getMovesDone() { return movesDone; }
 
-    unsigned int getNumPiecesSet() { return field.piecesSet; }
+    unsigned int getPiecesSetCount() { return field.piecesSet; }
 
     int getBeginningPlayer() { return beginningPlayer; }
 
-    unsigned int getNumStonOfCurPlayer() { return field.curPlayer->numPieces; }
+    unsigned int getCurPlayerPieceCount() { return field.curPlayer->pieceCount; }
 
-    unsigned int getNumStonOfOppPlayer() { return field.oppPlayer->numPieces; }
+    unsigned int getOpponentPlayerPieceCount() { return field.oppPlayer->pieceCount; }
 };
 
 #endif // MILL_H_INCLUDED

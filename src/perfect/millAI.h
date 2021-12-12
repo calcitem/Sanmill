@@ -17,7 +17,7 @@
 // using namespace std;
 
 // not (9 * 4) = 36 since the possibilities with 3 pieces are more
-constexpr auto MAX_NUM_POS_MOVES = (3 * 18) ;
+constexpr auto POSIBILE_MOVE_COUNT_MAX = (3 * 18) ;
 
 #define SAFE_DELETE(p) \
     { \
@@ -37,19 +37,19 @@ public:
     unsigned int warning;
 
     // number of pieces of this player on the board
-    unsigned int numPieces;
+    unsigned int pieceCount;
 
     // number of pieces, which where stolen by the opponent
-    unsigned int numPiecesMissing;
+    unsigned int removedPiecesCount;
 
     // amount of possible moves
-    unsigned int numPossibleMoves;
+    unsigned int possibleMovesCount;
 
     // target board position of a possible move
-    unsigned int posTo[MAX_NUM_POS_MOVES];
+    unsigned int posTo[POSIBILE_MOVE_COUNT_MAX];
 
     // source board position of a possible move
-    unsigned int posFrom[MAX_NUM_POS_MOVES];
+    unsigned int posFrom[POSIBILE_MOVE_COUNT_MAX];
 
     void copyPlayer(Player *destination);
 };
@@ -76,7 +76,7 @@ public:
     static const unsigned int playerOneWarning = 2;
     static const unsigned int playerTwoWarning = 4;
     static const unsigned int playerBothWarning = 6;
-    static const unsigned int numPiecesPerPlayer = 9;
+    static const unsigned int piecePerPlayerCount = 9;
 
     // only a nonzero value
     static const int gameDrawn = 3;

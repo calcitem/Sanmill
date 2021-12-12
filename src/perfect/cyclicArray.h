@@ -44,7 +44,7 @@ private:
     unsigned int curWritingBlock;
 
     // amount of blocks
-    unsigned int numBlocks;
+    unsigned int blockCount;
 
     // true if curReadingBlock > curWritingBlock, false otherwise
     bool readWriteInSameRound;
@@ -57,14 +57,14 @@ private:
 
 public:
     // Constructor / destructor
-    CyclicArray(unsigned int blockSizeInBytes, unsigned int numberOfBlocks,
+    CyclicArray(unsigned int blockSizeInBytes, unsigned int nBlocks,
                 const char *fileName);
     ~CyclicArray();
 
     // Functions
-    bool addBytes(unsigned int numBytes, unsigned char *pData);
-    bool takeBytes(unsigned int numBytes, unsigned char *pData);
-    bool loadFile(const char *fileName, LONGLONG &numBytesLoaded);
+    bool addBytes(unsigned int nBytes, unsigned char *pData);
+    bool takeBytes(unsigned int nBytes, unsigned char *pData);
+    bool loadFile(const char *fileName, LONGLONG &nBytesLoaded);
     bool saveFile(const char *fileName);
     bool bytesAvailable();
 };

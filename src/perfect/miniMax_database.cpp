@@ -72,7 +72,7 @@ void MiniMax::unloadLayer(unsigned int layerNumber)
 //-----------------------------------------------------------------------------
 void MiniMax::unloadAllPlyInfos()
 {
-    for (unsigned int i = 0; i < plyInfoHeader.numLayers; i++) {
+    for (unsigned int i = 0; i < plyInfoHeader.LayerCount; i++) {
         unloadPlyInfo(i);
     }
 }
@@ -83,7 +83,7 @@ void MiniMax::unloadAllPlyInfos()
 //-----------------------------------------------------------------------------
 void MiniMax::unloadAllLayers()
 {
-    for (unsigned int i = 0; i < skvfHeader.numLayers; i++) {
+    for (unsigned int i = 0; i < skvfHeader.LayerCount; i++) {
         unloadLayer(i);
     }
 }
@@ -93,11 +93,11 @@ void MiniMax::unloadAllLayers()
 //
 //-----------------------------------------------------------------------------
 void MiniMax::saveBytesToFile(HANDLE hFile, int64_t offset,
-                              unsigned int numBytes, void *pBytes)
+                              unsigned int nBytes, void *pBytes)
 {
     DWORD dwBytesWritten;
     LARGE_INTEGER liDistanceToMove;
-    unsigned int restingBytes = numBytes;
+    unsigned int restingBytes = nBytes;
     void *myPointer = pBytes;
     bool errorPrint = false;
 
@@ -129,11 +129,11 @@ void MiniMax::saveBytesToFile(HANDLE hFile, int64_t offset,
 //
 //-----------------------------------------------------------------------------
 void MiniMax::loadBytesFromFile(HANDLE hFile, int64_t offset,
-                                unsigned int numBytes, void *pBytes)
+                                unsigned int nBytes, void *pBytes)
 {
     DWORD dwBytesRead;
     LARGE_INTEGER liDistanceToMove;
-    unsigned int restingBytes = numBytes;
+    unsigned int restingBytes = nBytes;
     void *myPointer = pBytes;
     bool errorPrint = false;
 
@@ -187,7 +187,7 @@ void MiniMax::saveHeader(SkvFileHeader *dbH, LayerStats *lStats)
     SetFilePointer(hFileShortKnotValues, 0, nullptr, FILE_BEGIN);
     WriteFile(hFileShortKnotValues, dbH, sizeof(SkvFileHeader), &dwBytesWritten,
               nullptr);
-    WriteFile(hFileShortKnotValues, lStats, sizeof(LayerStats) * dbH->numLayers,
+    WriteFile(hFileShortKnotValues, lStats, sizeof(LayerStats) * dbH->LayerCount,
               &dwBytesWritten, nullptr);
 }
 
@@ -201,7 +201,7 @@ void MiniMax::saveHeader(PlyInfoFileHeader *piH, PlyInfo *pInfo)
     SetFilePointer(hFilePlyInfo, 0, nullptr, FILE_BEGIN);
     WriteFile(hFilePlyInfo, piH, sizeof(PlyInfoFileHeader), &dwBytesWritten,
               nullptr);
-    WriteFile(hFilePlyInfo, pInfo, sizeof(PlyInfo) * piH->numLayers,
+    WriteFile(hFilePlyInfo, pInfo, sizeof(PlyInfo) * piH->LayerCount,
               &dwBytesWritten, nullptr);
 }
 
@@ -210,13 +210,13 @@ void MiniMax::saveHeader(PlyInfoFileHeader *piH, PlyInfo *pInfo)
 //
 //-----------------------------------------------------------------------------
 bool MiniMax::openDatabase(const char *directory,
-                           unsigned int maximumNumberOfBranches)
+                           unsigned int branchCountMax)
 {
     if (strlen(directory) && !PathFileExistsA(directory)) {
         PRINT(0, this, "ERROR: Database path " << directory << " not valid!");
         return falseOrStop();
     }
-    openSkvFile(directory, maximumNumberOfBranches);
+    openSkvFile(directory, branchCountMax);
     openPlyInfoFile(directory);
     return true;
 }
@@ -226,7 +226,7 @@ bool MiniMax::openDatabase(const char *directory,
 //
 //-----------------------------------------------------------------------------
 void MiniMax::openSkvFile(const char *directory,
-                          unsigned int maximumNumberOfBranches)
+                          unsigned int branchCountMax)
 {
     // locals
     stringstream ssDatabaseFile;
@@ -262,7 +262,7 @@ void MiniMax::openSkvFile(const char *directory,
 
     // set header to invalid
     skvfHeader.headerCode = 0;
-    maxNumBranches = maximumNumberOfBranches;
+    maxNumBranches = branchCountMax;
 
     // database complete ?
     if (!ReadFile(hFileShortKnotValues, &skvfHeader, sizeof(SkvFileHeader),
@@ -274,17 +274,17 @@ void MiniMax::openSkvFile(const char *directory,
         skvfHeader.headerCode != SKV_FILE_HEADER_CODE) {
         // create default header
         skvfHeader.completed = false;
-        skvfHeader.numLayers = getNumberOfLayers();
+        skvfHeader.LayerCount = getNumberOfLayers();
         skvfHeader.headerCode = SKV_FILE_HEADER_CODE;
         skvfHeader.headerAndStatsSize = sizeof(LayerStats) *
-                                            skvfHeader.numLayers +
+                                            skvfHeader.LayerCount +
                                         sizeof(SkvFileHeader);
-        layerStats = new LayerStats[skvfHeader.numLayers];
+        layerStats = new LayerStats[skvfHeader.LayerCount];
         layerStats[0].layerOffset = 0;
 
-        for (i = 0; i < skvfHeader.numLayers; i++) {
-            getSuccLayers(i, &layerStats[i].numSuccLayers,
-                          &layerStats[i].succLayers[0]);
+        for (i = 0; i < skvfHeader.LayerCount; i++) {
+            getSuccLayers(i, &layerStats[i].succeedingLayerCount,
+                          &layerStats[i].succeedingLayers[0]);
             layerStats[i].partnerLayer = getPartnerLayer(i);
             layerStats[i].knotsInLayer = getNumberOfKnotsInLayer(i);
             layerStats[i].sizeInBytes = (layerStats[i].knotsInLayer + 3) / 4;
@@ -292,13 +292,13 @@ void MiniMax::openSkvFile(const char *directory,
             layerStats[i].skvCompressed = nullptr;
             layerStats[i].layerIsLoaded = false;
             layerStats[i].layerIsCompletedAndInFile = false;
-            layerStats[i].numWonStates = 0;
-            layerStats[i].numLostStates = 0;
-            layerStats[i].numDrawnStates = 0;
-            layerStats[i].numInvalidStates = 0;
+            layerStats[i].wonStateCount = 0;
+            layerStats[i].lostStateCount = 0;
+            layerStats[i].drawnStateCount = 0;
+            layerStats[i].invalidStateCount = 0;
         }
 
-        for (i = 1; i < skvfHeader.numLayers; i++) {
+        for (i = 1; i < skvfHeader.LayerCount; i++) {
             layerStats[i].layerOffset = layerStats[i - 1].layerOffset +
                                         layerStats[i - 1].sizeInBytes;
         }
@@ -308,12 +308,12 @@ void MiniMax::openSkvFile(const char *directory,
 
         // read layer stats
     } else {
-        layerStats = new LayerStats[skvfHeader.numLayers];
+        layerStats = new LayerStats[skvfHeader.LayerCount];
         if (!ReadFile(hFileShortKnotValues, layerStats,
-                      sizeof(LayerStats) * skvfHeader.numLayers, &dwBytesRead,
+                      sizeof(LayerStats) * skvfHeader.LayerCount, &dwBytesRead,
                       nullptr))
             return;
-        for (i = 0; i < skvfHeader.numLayers; i++) {
+        for (i = 0; i < skvfHeader.LayerCount; i++) {
             layerStats[i].shortKnotValueByte = nullptr;
             layerStats[i].skvCompressed = nullptr;
         }
@@ -365,15 +365,15 @@ void MiniMax::openPlyInfoFile(const char *directory)
         plyInfoHeader.headerCode != PLYINFO_HEADER_CODE) {
         // create default header
         plyInfoHeader.plyInfoCompleted = false;
-        plyInfoHeader.numLayers = getNumberOfLayers();
+        plyInfoHeader.LayerCount = getNumberOfLayers();
         plyInfoHeader.headerCode = PLYINFO_HEADER_CODE;
         plyInfoHeader.headerAndPlyInfosSize = sizeof(PlyInfo) *
-                                                  plyInfoHeader.numLayers +
+                                                  plyInfoHeader.LayerCount +
                                               sizeof(plyInfoHeader);
-        plyInfos = new PlyInfo[plyInfoHeader.numLayers];
+        plyInfos = new PlyInfo[plyInfoHeader.LayerCount];
         plyInfos[0].layerOffset = 0;
 
-        for (i = 0; i < plyInfoHeader.numLayers; i++) {
+        for (i = 0; i < plyInfoHeader.LayerCount; i++) {
             plyInfos[i].knotsInLayer = getNumberOfKnotsInLayer(i);
             plyInfos[i].plyInfo = nullptr;
             plyInfos[i].plyInfoCompressed = nullptr;
@@ -383,7 +383,7 @@ void MiniMax::openPlyInfoFile(const char *directory)
                                       sizeof(PlyInfoVarType);
         }
 
-        for (i = 1; i < plyInfoHeader.numLayers; i++) {
+        for (i = 1; i < plyInfoHeader.LayerCount; i++) {
             plyInfos[i].layerOffset = plyInfos[i - 1].layerOffset +
                                       plyInfos[i - 1].sizeInBytes;
         }
@@ -393,12 +393,12 @@ void MiniMax::openPlyInfoFile(const char *directory)
 
         // read layer stats
     } else {
-        plyInfos = new PlyInfo[plyInfoHeader.numLayers];
+        plyInfos = new PlyInfo[plyInfoHeader.LayerCount];
         if (!ReadFile(hFilePlyInfo, plyInfos,
-                      sizeof(PlyInfo) * plyInfoHeader.numLayers, &dwBytesRead,
+                      sizeof(PlyInfo) * plyInfoHeader.LayerCount, &dwBytesRead,
                       nullptr))
             return;
-        for (i = 0; i < plyInfoHeader.numLayers; i++) {
+        for (i = 0; i < plyInfoHeader.LayerCount; i++) {
             plyInfos[i].plyInfo = nullptr;
             plyInfos[i].plyInfoCompressed = nullptr;
         }
@@ -440,7 +440,7 @@ void MiniMax::saveLayerToFile(unsigned int layerNumber)
 // measureIops()
 //
 //-----------------------------------------------------------------------------
-inline void MiniMax::measureIops(int64_t &numOperations,
+inline void MiniMax::measureIops(int64_t &nOperations,
                                  LARGE_INTEGER &interval,
                                  LARGE_INTEGER &curTimeBefore, char text[])
 {
@@ -449,7 +449,7 @@ inline void MiniMax::measureIops(int64_t &numOperations,
 
     if (!MEASURE_IOPS)
         return;
-    numOperations++; // ... not thread-safe !!!
+    nOperations++; // ... not thread-safe !!!
 
     // only the time for the io-operation is considered and accumulated
     if (MEASURE_ONLY_IO) {
@@ -461,22 +461,22 @@ inline void MiniMax::measureIops(int64_t &numOperations,
         if (totalTimeGone >= 5.0) {
             PRINT(0, this,
                   text << "operations per second for last interval: "
-                       << (int)(numOperations / totalTimeGone));
+                       << (int)(nOperations / totalTimeGone));
             interval.QuadPart = 0; // ... not thread-safe !!!
-            numOperations = 0;     // ... not thread-safe !!!
+            nOperations = 0;     // ... not thread-safe !!!
         }
         // the whole time passed since the beginning of the interval is
         // considered
-    } else if (numOperations >= MEASURE_TIME_FREQUENCY) {
+    } else if (nOperations >= MEASURE_TIME_FREQUENCY) {
         QueryPerformanceCounter(&curTimeAfter);
         double totalTimeGone = (double)(curTimeAfter.QuadPart -
                                         interval.QuadPart) /
                                frequency.QuadPart; // ... not thread-safe !!!
         PRINT(0, this,
               text << "operations per second for last interval: "
-                   << numOperations / totalTimeGone);
+                   << nOperations / totalTimeGone);
         interval.QuadPart = curTimeAfter.QuadPart; // ... not thread-safe !!!
-        numOperations = 0;                         // ... not thread-safe !!!
+        nOperations = 0;                         // ... not thread-safe !!!
     }
 }
 
@@ -499,7 +499,7 @@ void MiniMax::readKnotValueFromDatabase(unsigned int threadNo,
     layerInDatabaseAndCompleted = myLss->layerIsCompletedAndInFile;
 
     // valid state and layer number ?
-    if (layerNumber > skvfHeader.numLayers ||
+    if (layerNumber > skvfHeader.LayerCount ||
         stateNumber > myLss->knotsInLayer) {
         invalidLayerOrStateNumber = true;
     } else {
@@ -530,7 +530,7 @@ void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber,
     LayerStats *myLss = &layerStats[layerNumber];
 
     // valid state and layer number ?
-    if (layerNumber > skvfHeader.numLayers ||
+    if (layerNumber > skvfHeader.LayerCount ||
         stateNumber > myLss->knotsInLayer) {
         PRINT(0, this,
               "ERROR: INVALID layerNumber OR stateNumber in "
@@ -597,7 +597,7 @@ void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber,
         databaseByte = myLss->shortKnotValueByte[stateNumber / 4];
 
         // measure io-operations per second
-        measureIops(numReadSkvOperations, readSkvInterval, curTimeBefore,
+        measureIops(nReadSkvOperations, readSkvInterval, curTimeBefore,
                     (char *)"Read  knot value ");
     }
 
@@ -620,7 +620,7 @@ void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber,
     PlyInfo *myPis = &plyInfos[layerNumber];
 
     // valid state and layer number ?
-    if (layerNumber > plyInfoHeader.numLayers ||
+    if (layerNumber > plyInfoHeader.LayerCount ||
         stateNumber > myPis->knotsInLayer) {
         PRINT(0, this,
               "ERROR: INVALID layerNumber OR stateNumber in "
@@ -684,7 +684,7 @@ void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber,
         value = myPis->plyInfo[stateNumber];
 
         // measure io-operations per second
-        measureIops(numReadPlyOperations, readPlyInterval, curTimeBefore,
+        measureIops(nReadPlyOperations, readPlyInterval, curTimeBefore,
                     (char *)"Read  ply info   ");
     }
 }
@@ -703,7 +703,7 @@ void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber,
     LayerStats *myLss = &layerStats[layerNumber];
 
     // valid state and layer number ?
-    if (layerNumber > skvfHeader.numLayers ||
+    if (layerNumber > skvfHeader.LayerCount ||
         stateNumber > myLss->knotsInLayer) {
         PRINT(0, this,
               "ERROR: INVALID layerNumber OR stateNumber in "
@@ -752,22 +752,22 @@ void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber,
     // set value
     long *pShortKnotValue = ((long *)myLss->shortKnotValueByte) +
                             stateNumber / ((sizeof(long) * 8) / 2);
-    long numBitsToShift = 2 * (stateNumber %
+    long nBitsToShift = 2 * (stateNumber %
                                ((sizeof(long) * 8) / 2)); // little-endian
                                                           // byte-order
-    long mask = 0x00000003 << numBitsToShift;
+    long mask = 0x00000003 << nBitsToShift;
     long curShortKnotValueLong, newShortKnotValueLong;
 
     do {
         curShortKnotValueLong = *pShortKnotValue;
         newShortKnotValueLong = (curShortKnotValueLong & (~mask)) +
-                                (knotValue << numBitsToShift);
+                                (knotValue << nBitsToShift);
     } while (InterlockedCompareExchange(pShortKnotValue, newShortKnotValueLong,
                                         curShortKnotValueLong) !=
              curShortKnotValueLong);
 
     // measure io-operations per second
-    measureIops(numWriteSkvOperations, writeSkvInterval, curTimeBefore,
+    measureIops(nWriteSkvOperations, writeSkvInterval, curTimeBefore,
                 (char *)"Write knot value ");
 }
 
@@ -786,7 +786,7 @@ void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber,
     PlyInfo *myPis = &plyInfos[layerNumber];
 
     // valid state and layer number ?
-    if (layerNumber > plyInfoHeader.numLayers ||
+    if (layerNumber > plyInfoHeader.LayerCount ||
         stateNumber > myPis->knotsInLayer) {
         PRINT(0, this,
               "ERROR: INVALID layerNumber OR stateNumber in "
@@ -839,7 +839,7 @@ void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber,
     myPis->plyInfo[stateNumber] = value;
 
     // measure io-operations per second
-    measureIops(numWritePlyOperations, writePlyInterval, curTimeBefore,
+    measureIops(nWritePlyOperations, writePlyInterval, curTimeBefore,
                 (char *)"Write ply info   ");
 }
 

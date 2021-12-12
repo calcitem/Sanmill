@@ -26,8 +26,8 @@ protected:
     // structs
     struct Possibility
     {
-        unsigned int from[MAX_NUM_POS_MOVES];
-        unsigned int to[MAX_NUM_POS_MOVES];
+        unsigned int from[POSIBILE_MOVE_COUNT_MAX];
+        unsigned int to[POSIBILE_MOVE_COUNT_MAX];
     };
 
     struct Backup
@@ -37,7 +37,7 @@ protected:
         bool settingPhase;
         int fieldFrom, fieldTo; // value of board
         unsigned int from, to;  // index of board
-        unsigned int curNumPieces, oppNumPieces;
+        unsigned int curPieceCount, oppPieceCount;
         unsigned int curPosMoves, oppPosMoves;
         unsigned int curMissPieces, oppMissPieces;
         unsigned int piecesSet;
@@ -77,11 +77,11 @@ protected:
     Possibility *possibilities;
 
     // Functions
-    unsigned int *getPossSettingPhase(unsigned int *numPossibilities,
+    unsigned int *getPossSettingPhase(unsigned int *possibilityCount,
                                       void **pPossibilities);
-    unsigned int *getPossNormalMove(unsigned int *numPossibilities,
+    unsigned int *getPossNormalMove(unsigned int *possibilityCount,
                                     void **pPossibilities);
-    unsigned int *getPossPieceRemove(unsigned int *numPossibilities,
+    unsigned int *getPossPieceRemove(unsigned int *possibilityCount,
                                      void **pPossibilities);
 
     // move functions
@@ -99,7 +99,7 @@ protected:
     // Virtual Functions
     void prepareBestChoiceCalculation();
     unsigned int *getPossibilities(unsigned int threadNo,
-                                   unsigned int *numPossibilities,
+                                   unsigned int *possibilityCount,
                                    bool *opponentsMove, void **pPossibilities);
     void deletePossibilities(unsigned int threadNo, void *pPossibilities);
     void move(unsigned int threadNo, unsigned int idPossibility,
@@ -116,7 +116,7 @@ protected:
     unsigned int getNumberOfKnotsInLayer(unsigned int layerNum) { return 0; }
 
     void getSuccLayers(unsigned int layerNum, unsigned int *amountOfSuccLayers,
-                       unsigned int *succLayers)
+                       unsigned int *succeedingLayers)
     { }
 
     unsigned int getPartnerLayer(unsigned int layerNum) { return 0; }
@@ -143,7 +143,7 @@ protected:
     unsigned int getLayerNumber(unsigned int threadNo) { return 0; }
 
     void getSymStateNumWithDoubles(unsigned int threadNo,
-                                   unsigned int *numSymmetricStates,
+                                   unsigned int *nSymmetricStates,
                                    unsigned int **symStateNumbers)
     { }
 

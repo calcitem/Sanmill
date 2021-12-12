@@ -62,8 +62,8 @@ void Mill::exit()
 //-----------------------------------------------------------------------------
 void Mill::resetGame()
 {
-    std::memset(moveLogFrom, 0, MAX_NUM_MOVES);
-    std::memset(moveLogTo, 0, MAX_NUM_MOVES);
+    std::memset(moveLogFrom, 0, MOVE_COUNT_MAX);
+    std::memset(moveLogTo, 0, MOVE_COUNT_MAX);
     initialField.copyBoard(&field);
 
     winner = 0;
@@ -100,8 +100,8 @@ void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
     movesDone = 0;
     playerOneAI = firstPlayerAI;
     playerTwoAI = secondPlayerAI;
-    moveLogFrom = new unsigned int[MAX_NUM_MOVES];
-    moveLogTo = new unsigned int[MAX_NUM_MOVES];
+    moveLogFrom = new unsigned int[MOVE_COUNT_MAX];
+    moveLogTo = new unsigned int[MOVE_COUNT_MAX];
 
     // remember initialField
     field.copyBoard(&initialField);
@@ -131,7 +131,7 @@ void Mill::setUpCalcPossibleMoves(Player *player)
     // locals
     unsigned int i, j, k, movingDirection;
 
-    for (player->numPossibleMoves = 0, i = 0; i < SQUARE_NB; i++) {
+    for (player->possibleMovesCount = 0, i = 0; i < SQUARE_NB; i++) {
         for (j = 0; j < SQUARE_NB; j++) {
             // is piece from player ?
             if (field.board[i] != player->id)
@@ -143,7 +143,7 @@ void Mill::setUpCalcPossibleMoves(Player *player)
 
             // when current player has only 3 pieces he is allowed to spring his
             // piece
-            if (player->numPieces > 3 || field.settingPhase) {
+            if (player->pieceCount > 3 || field.settingPhase) {
                 // determine moving direction
                 for (k = 0, movingDirection = 4; k < 4; k++)
                     if (field.connectedSquare[i][k] == j)
@@ -155,7 +155,7 @@ void Mill::setUpCalcPossibleMoves(Player *player)
             }
 
             // everything is ok
-            player->numPossibleMoves++;
+            player->possibleMovesCount++;
         }
     }
 }
@@ -189,8 +189,8 @@ bool Mill::putPiece(unsigned int pos, int player)
 {
     // locals
     unsigned int i;
-    unsigned int numberOfMillsCurrentPlayer = 0,
-                 numberOfMillsOpponentPlayer = 0;
+    unsigned int nCurrentPlayerMills = 0,
+                 nOpponentPlayerMills = 0;
     Player *myPlayer = (player == field.curPlayer->id) ? field.curPlayer :
                                                          field.oppPlayer;
 
@@ -204,7 +204,7 @@ bool Mill::putPiece(unsigned int pos, int player)
 
     // set piece
     field.board[pos] = player;
-    myPlayer->numPieces++;
+    myPlayer->pieceCount++;
     field.piecesSet++;
 
     // setting phase finished ?
@@ -234,37 +234,37 @@ bool Mill::putPiece(unsigned int pos, int player)
     // count completed mills
     for (i = 0; i < SQUARE_NB; i++) {
         if (field.board[i] == field.curPlayer->id)
-            numberOfMillsCurrentPlayer += field.piecePartOfMill[i];
+            nCurrentPlayerMills += field.piecePartOfMill[i];
         else
-            numberOfMillsOpponentPlayer += field.piecePartOfMill[i];
+            nOpponentPlayerMills += field.piecePartOfMill[i];
     }
-    numberOfMillsCurrentPlayer /= 3;
-    numberOfMillsOpponentPlayer /= 3;
+    nCurrentPlayerMills /= 3;
+    nOpponentPlayerMills /= 3;
 
-    // piecesSet & numPiecesMissing
+    // piecesSet & removedPiecesCount
     if (field.settingPhase) {
         // ... This calculation is not correct! It is possible that some mills
         // did not cause a piece removal.
-        field.curPlayer->numPiecesMissing = numberOfMillsOpponentPlayer;
-        field.oppPlayer->numPiecesMissing = numberOfMillsCurrentPlayer -
+        field.curPlayer->removedPiecesCount = nOpponentPlayerMills;
+        field.oppPlayer->removedPiecesCount = nCurrentPlayerMills -
                                             field.pieceMustBeRemoved;
-        field.piecesSet = field.curPlayer->numPieces +
-                          field.oppPlayer->numPieces +
-                          field.curPlayer->numPiecesMissing +
-                          field.oppPlayer->numPiecesMissing;
+        field.piecesSet = field.curPlayer->pieceCount +
+                          field.oppPlayer->pieceCount +
+                          field.curPlayer->removedPiecesCount +
+                          field.oppPlayer->removedPiecesCount;
     } else {
         field.piecesSet = 18;
-        field.curPlayer->numPiecesMissing = 9 - field.curPlayer->numPieces;
-        field.oppPlayer->numPiecesMissing = 9 - field.oppPlayer->numPieces;
+        field.curPlayer->removedPiecesCount = 9 - field.curPlayer->pieceCount;
+        field.oppPlayer->removedPiecesCount = 9 - field.oppPlayer->pieceCount;
     }
 
     // when opponent is unable to move than current player has won
-    if ((!field.curPlayer->numPossibleMoves) && (!field.settingPhase) &&
-        (!field.pieceMustBeRemoved) && (field.curPlayer->numPieces > 3))
+    if ((!field.curPlayer->possibleMovesCount) && (!field.settingPhase) &&
+        (!field.pieceMustBeRemoved) && (field.curPlayer->pieceCount > 3))
         winner = field.oppPlayer->id;
-    else if ((field.curPlayer->numPieces < 3) && (!field.settingPhase))
+    else if ((field.curPlayer->pieceCount < 3) && (!field.settingPhase))
         winner = field.oppPlayer->id;
-    else if ((field.oppPlayer->numPieces < 3) && (!field.settingPhase))
+    else if ((field.oppPlayer->pieceCount < 3) && (!field.settingPhase))
         winner = field.curPlayer->id;
     else
         winner = 0;
@@ -310,14 +310,14 @@ bool Mill::getField(int *pField)
 //-----------------------------------------------------------------------------
 // getLog()
 // Copy the whole history of moves into the passed arrays, which must be of size
-// [MAX_NUM_MOVES].
+// [MOVE_COUNT_MAX].
 //-----------------------------------------------------------------------------
-void Mill::getLog(unsigned int &numMovesDone, unsigned int *from,
+void Mill::getLog(unsigned int &nMovesDone, unsigned int *from,
                   unsigned int *to)
 {
     unsigned int index;
 
-    numMovesDone = movesDone;
+    nMovesDone = movesDone;
 
     for (index = 0; index < movesDone; index++) {
         from[index] = moveLogFrom[index];
@@ -389,7 +389,7 @@ void Mill::getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom,
     theField.createBoard();
     field.copyBoard(&theField);
     if (AI != nullptr &&
-        (field.settingPhase || field.curPlayer->numPossibleMoves > 0) &&
+        (field.settingPhase || field.curPlayer->possibleMovesCount > 0) &&
         winner == 0)
         AI->play(&theField, pushFrom, pushTo);
     theField.deleteBoard();
@@ -411,7 +411,7 @@ void Mill::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 
     // assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <= 1);
 
-    if ((field.settingPhase || field.curPlayer->numPossibleMoves > 0) &&
+    if ((field.settingPhase || field.curPlayer->possibleMovesCount > 0) &&
         winner == 0) {
         if (field.curPlayer->id == field.playerOne) {
             if (playerOneAI != nullptr)
@@ -459,7 +459,7 @@ bool Mill::isNormalMovePossible(unsigned int from, unsigned int to,
         return false;
 
     // when current player has only 3 pieces he is allowed to spring his piece
-    if (player->numPieces > 3 || field.settingPhase) {
+    if (player->pieceCount > 3 || field.settingPhase) {
         // determine moving direction
         for (i = 0, movingDirection = 4; i < 4; i++)
             if (field.connectedSquare[from][i] == to)
@@ -484,18 +484,18 @@ void Mill::calcPossibleMoves(Player *player)
     unsigned int i, j;
 
     // zero
-    for (i = 0; i < MAX_NUM_POS_MOVES; i++)
+    for (i = 0; i < POSIBILE_MOVE_COUNT_MAX; i++)
         player->posTo[i] = SQUARE_NB;
-    for (i = 0; i < MAX_NUM_POS_MOVES; i++)
+    for (i = 0; i < POSIBILE_MOVE_COUNT_MAX; i++)
         player->posFrom[i] = SQUARE_NB;
 
     // calc
-    for (player->numPossibleMoves = 0, i = 0; i < SQUARE_NB; i++) {
+    for (player->possibleMovesCount = 0, i = 0; i < SQUARE_NB; i++) {
         for (j = 0; j < SQUARE_NB; j++) {
             if (isNormalMovePossible(i, j, player)) {
-                player->posFrom[player->numPossibleMoves] = i;
-                player->posTo[player->numPossibleMoves] = j;
-                player->numPossibleMoves++;
+                player->posFrom[player->possibleMovesCount] = i;
+                player->posTo[player->possibleMovesCount] = j;
+                player->possibleMovesCount++;
             }
         }
     }
@@ -595,7 +595,7 @@ void Mill::updateMillsAndWarnings(unsigned int newPiece)
 bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
 {
     // avoid index override
-    if (movesDone >= MAX_NUM_MOVES)
+    if (movesDone >= MOVE_COUNT_MAX)
         return false;
 
     // is game still running ?
@@ -620,13 +620,13 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         moveLogFrom[movesDone] = pushFrom;
         moveLogTo[movesDone] = SQUARE_NB;
         field.board[pushFrom] = field.squareIsFree;
-        field.oppPlayer->numPiecesMissing++;
-        field.oppPlayer->numPieces--;
+        field.oppPlayer->removedPiecesCount++;
+        field.oppPlayer->pieceCount--;
         field.pieceMustBeRemoved--;
         movesDone++;
 
         // is the game finished ?
-        if ((field.oppPlayer->numPieces < 3) && (!field.settingPhase))
+        if ((field.oppPlayer->pieceCount < 3) && (!field.settingPhase))
             winner = field.curPlayer->id;
 
         // update warnings & mills
@@ -637,7 +637,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         calcPossibleMoves(field.oppPlayer);
 
         // is opponent unable to move ?
-        if (field.oppPlayer->numPossibleMoves == 0 && !field.settingPhase)
+        if (field.oppPlayer->possibleMovesCount == 0 && !field.settingPhase)
             winner = field.curPlayer->id;
 
         // next player
@@ -661,7 +661,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         moveLogFrom[movesDone] = SQUARE_NB;
         moveLogTo[movesDone] = pushTo;
         field.board[pushTo] = field.curPlayer->id;
-        field.curPlayer->numPieces++;
+        field.curPlayer->pieceCount++;
         field.piecesSet++;
         movesDone++;
 
@@ -677,7 +677,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
             field.settingPhase = false;
 
         // is opponent unable to move ?
-        if (field.oppPlayer->numPossibleMoves == 0 && !field.settingPhase)
+        if (field.oppPlayer->possibleMovesCount == 0 && !field.settingPhase)
             winner = field.curPlayer->id;
 
         // next player
@@ -708,7 +708,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         calcPossibleMoves(field.oppPlayer);
 
         // is opponent unable to move ?
-        if (field.oppPlayer->numPossibleMoves == 0 && !field.settingPhase)
+        if (field.oppPlayer->possibleMovesCount == 0 && !field.settingPhase)
             winner = field.curPlayer->id;
 
         // next player
@@ -731,13 +731,13 @@ bool Mill::setCurrentGameState(fieldStruct *curState)
     winner = 0;
     movesDone = 0;
 
-    if ((field.curPlayer->numPieces < 3) && (!field.settingPhase))
+    if ((field.curPlayer->pieceCount < 3) && (!field.settingPhase))
         winner = field.oppPlayer->id;
 
-    if ((field.oppPlayer->numPieces < 3) && (!field.settingPhase))
+    if ((field.oppPlayer->pieceCount < 3) && (!field.settingPhase))
         winner = field.curPlayer->id;
 
-    if ((field.curPlayer->numPossibleMoves == 0) && (!field.settingPhase))
+    if ((field.curPlayer->possibleMovesCount == 0) && (!field.settingPhase))
         winner = field.oppPlayer->id;
 
     return true;
@@ -826,13 +826,13 @@ bool Mill::comparePlayers(Player *playerA, Player *playerB)
     // unsigned int i;
     bool ret = true;
 
-    if (playerA->numPiecesMissing != playerB->numPiecesMissing) {
-        cout << "error - numPiecesMissing differs!" << std::endl;
+    if (playerA->removedPiecesCount != playerB->removedPiecesCount) {
+        cout << "error - removedPiecesCount differs!" << std::endl;
         ret = false;
     }
 
-    if (playerA->numPieces != playerB->numPieces) {
-        cout << "error - numPieces differs!" << std::endl;
+    if (playerA->pieceCount != playerB->pieceCount) {
+        cout << "error - pieceCount differs!" << std::endl;
         ret = false;
     }
 
@@ -846,16 +846,16 @@ bool Mill::comparePlayers(Player *playerA, Player *playerB)
         ret = false;
     }
 
-    if (playerA->numPossibleMoves != playerB->numPossibleMoves) {
-        cout << "error - numPossibleMoves differs!" << std::endl;
+    if (playerA->possibleMovesCount != playerB->possibleMovesCount) {
+        cout << "error - possibleMovesCount differs!" << std::endl;
         ret = false;
     }
 
 #if 0
-    for (i = 0; i < MAX_NUM_POS_MOVES; i++)
+    for (i = 0; i < POSIBILE_MOVE_COUNT_MAX; i++)
         if (playerA->posFrom[i] = playerB->posFrom[i])
             return false;
-    for (i = 0; i < MAX_NUM_POS_MOVES; i++)
+    for (i = 0; i < POSIBILE_MOVE_COUNT_MAX; i++)
         if (playerA->posTo[i] = playerB->posTo[i])
             return false;
 #endif
@@ -910,26 +910,26 @@ void Mill::undoMove(void)
 }
 
 //-----------------------------------------------------------------------------
-// calcNumberOfRestingPieces()
+// calcRestingPieceCount()
 //
 //-----------------------------------------------------------------------------
-void Mill::calcNumberOfRestingPieces(int &numWhitePiecesResting,
-                                     int &numBlackPiecesResting)
+void Mill::calcRestingPieceCount(int &nWhitePiecesResting,
+                                     int &nBlackPiecesResting)
 {
     if (getCurrentPlayer() == fieldStruct::playerTwo) {
-        numWhitePiecesResting = fieldStruct::numPiecesPerPlayer -
-                                field.curPlayer->numPiecesMissing -
-                                field.curPlayer->numPieces;
-        numBlackPiecesResting = fieldStruct::numPiecesPerPlayer -
-                                field.oppPlayer->numPiecesMissing -
-                                field.oppPlayer->numPieces;
+        nWhitePiecesResting = fieldStruct::piecePerPlayerCount -
+                                field.curPlayer->removedPiecesCount -
+                                field.curPlayer->pieceCount;
+        nBlackPiecesResting = fieldStruct::piecePerPlayerCount -
+                                field.oppPlayer->removedPiecesCount -
+                                field.oppPlayer->pieceCount;
     } else {
-        numWhitePiecesResting = fieldStruct::numPiecesPerPlayer -
-                                field.oppPlayer->numPiecesMissing -
-                                field.oppPlayer->numPieces;
-        numBlackPiecesResting = fieldStruct::numPiecesPerPlayer -
-                                field.curPlayer->numPiecesMissing -
-                                field.curPlayer->numPieces;
+        nWhitePiecesResting = fieldStruct::piecePerPlayerCount -
+                                field.oppPlayer->removedPiecesCount -
+                                field.oppPlayer->pieceCount;
+        nBlackPiecesResting = fieldStruct::piecePerPlayerCount -
+                                field.curPlayer->removedPiecesCount -
+                                field.curPlayer->pieceCount;
     }
 }
 

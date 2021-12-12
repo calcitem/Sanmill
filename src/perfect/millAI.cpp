@@ -29,10 +29,10 @@ void fieldStruct::printBoard()
 
     cout << "current player          : "
          << GetCharFromPiece(this->curPlayer->id) << " has "
-         << this->curPlayer->numPieces << " pieces\n";
+         << this->curPlayer->pieceCount << " pieces\n";
     cout << "opponent player         : "
          << GetCharFromPiece(this->oppPlayer->id) << " has "
-         << this->oppPlayer->numPieces << " pieces\n";
+         << this->oppPlayer->pieceCount << " pieces\n";
     cout << "Num Pieces to be removed: " << this->pieceMustBeRemoved << "\n";
     cout << "setting phase           : "
          << (this->settingPhase ? "true" : "false");
@@ -126,16 +126,16 @@ void Player::copyPlayer(Player *destination)
 {
     unsigned int i;
 
-    destination->numPiecesMissing = this->numPiecesMissing;
-    destination->numPieces = this->numPieces;
+    destination->removedPiecesCount = this->removedPiecesCount;
+    destination->pieceCount = this->pieceCount;
     destination->id = this->id;
     destination->warning = this->warning;
-    destination->numPossibleMoves = this->numPossibleMoves;
+    destination->possibleMovesCount = this->possibleMovesCount;
 
-    for (i = 0; i < MAX_NUM_POS_MOVES; i++)
+    for (i = 0; i < POSIBILE_MOVE_COUNT_MAX; i++)
         destination->posFrom[i] = this->posFrom[i];
 
-    for (i = 0; i < MAX_NUM_POS_MOVES; i++)
+    for (i = 0; i < POSIBILE_MOVE_COUNT_MAX; i++)
         destination->posTo[i] = this->posTo[i];
 }
 
@@ -161,12 +161,12 @@ void fieldStruct::createBoard()
     oppPlayer->id = (curPlayer->id == playerOne) ? playerTwo : playerOne;
     oppPlayer->warning = (curPlayer->id == playerOne) ? playerTwoWarning :
                                                         playerOneWarning;
-    curPlayer->numPieces = 0;
-    oppPlayer->numPieces = 0;
-    curPlayer->numPossibleMoves = 0;
-    oppPlayer->numPossibleMoves = 0;
-    curPlayer->numPiecesMissing = 0;
-    oppPlayer->numPiecesMissing = 0;
+    curPlayer->pieceCount = 0;
+    oppPlayer->pieceCount = 0;
+    curPlayer->possibleMovesCount = 0;
+    oppPlayer->possibleMovesCount = 0;
+    curPlayer->removedPiecesCount = 0;
+    oppPlayer->removedPiecesCount = 0;
 
     // zero
     for (i = 0; i < SQUARE_NB; i++) {

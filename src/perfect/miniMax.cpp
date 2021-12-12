@@ -44,10 +44,10 @@ MiniMax::MiniMax()
 
     // for io operations per second measurement
     QueryPerformanceFrequency(&frequency);
-    numReadSkvOperations = 0;
-    numWriteSkvOperations = 0;
-    numReadPlyOperations = 0;
-    numWritePlyOperations = 0;
+    nReadSkvOperations = 0;
+    nWriteSkvOperations = 0;
+    nReadPlyOperations = 0;
+    nWritePlyOperations = 0;
 
     if (MEASURE_ONLY_IO) {
         readSkvInterval.QuadPart = 0;
@@ -110,11 +110,11 @@ bool MiniMax::falseOrStop()
 // calculates the best choice for that if database is not open.
 //-----------------------------------------------------------------------------
 void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice,
-                             unsigned int maximumNumberOfBranches)
+                             unsigned int branchCountMax)
 {
     // set global vars
     depthOfFullTree = tilLevel;
-    maxNumBranches = maximumNumberOfBranches;
+    maxNumBranches = branchCountMax;
     layerInDatabase = isCurrentStateInDatabase(0);
     calcDatabase = false;
 
@@ -165,12 +165,12 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
         layerInDatabase = false;
         calcDatabase = true;
         threadManager.unCancelExecution();
-        arrayInfos.vectorArrays.resize(ArrayInfo::numArrayTypes *
-                                           skvfHeader.numLayers,
+        arrayInfos.vectorArrays.resize(ArrayInfo::arrayTypeCount *
+                                           skvfHeader.LayerCount,
                                        arrayInfos.listArrays.end());
 
         // calculate layer after layer, beginning with the last one
-        for (curCalculatedLayer = 0; curCalculatedLayer < skvfHeader.numLayers;
+        for (curCalculatedLayer = 0; curCalculatedLayer < skvfHeader.LayerCount;
              curCalculatedLayer++) {
             // layer already calculated?
             if (layerStats[curCalculatedLayer].layerIsCompletedAndInFile)
