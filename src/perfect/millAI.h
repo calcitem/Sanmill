@@ -14,8 +14,8 @@
 
 // using namespace std;
 
-#define MAX_NUM_POS_MOVES \
-    (3 * 18) // not (9 * 4) = 36 since the possibilities with 3 pieces are more
+// not (9 * 4) = 36 since the possibilities with 3 pieces are more
+constexpr auto MAX_NUM_POS_MOVES = (3 * 18) ;
 
 #define SAFE_DELETE(p) \
     { \

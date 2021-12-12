@@ -76,9 +76,9 @@
 
 // #define DEBUG_MODE
 
-#define DEFAULT_RULE_NUMBER 2
+constexpr auto DEFAULT_RULE_NUMBER = 2;
 
-#define DEPTH_ADJUST (0)
+constexpr auto DEPTH_ADJUST = 0;
 
 // #define TIME_STAT
 // #define CYCLE_STAT

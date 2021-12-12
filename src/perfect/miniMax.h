@@ -66,90 +66,95 @@ the short knot values and the ply infos.
 // than this threshold will be regarded as legal
 #define FPKV_THRESHOLD 0.001f
 
-// short knot value: knot value is invalid
-#define SKV_VALUE_INVALID 0
+enum SkvValue {
+    // short knot value: knot value is invalid
+    SKV_VALUE_INVALID = 0,
 
-// game lost means that there is no perfect move possible
-#define SKV_VALUE_GAME_LOST 1
+    // game lost means that there is no perfect move possible
+    SKV_VALUE_GAME_LOST = 1,
 
-// the perfect move leads at least to a drawn game
-#define SKV_VALUE_GAME_DRAWN 2
+    // the perfect move leads at least to a drawn game
+    SKV_VALUE_GAME_DRAWN = 2,
 
-// the perfect move will lead to a won game
-#define SKV_VALUE_GAME_WON 3
+    // the perfect move will lead to a won game
+    SKV_VALUE_GAME_WON = 3,
 
-// highest short knot value
-#define SKV_MAX_VALUE 3
+    // highest short knot value
+    SKV_MAX_VALUE = SKV_VALUE_GAME_WON,
 
-// number of different short knot values
-#define SKV_NUM_VALUES 4
+    // number of different short knot values
+    SKV_NUM_VALUES = 4,
+};
 
 // four short knot values are stored in one byte. so all four knot values
 // are invalid
-#define SKV_WHOLE_BYTE_IS_INVALID 0
+constexpr auto SKV_WHOLE_BYTE_IS_INVALID = 0;
 
 // expected maximum number of plies -> user for vector initialization
-#define PLYINFO_EXP_VALUE 1000
+constexpr auto PLYINFO_EXP_VALUE = 1000;
 
-// knot value is drawn. since drawn means a never ending game, this is
-// a special ply info
-#define PLYINFO_VALUE_DRAWN 65001
+enum PlayInfoValue {
+    // knot value is drawn. since drawn means a never ending game, this is
+    // a special ply info
+    PLYINFO_VALUE_DRAWN = 65001,
 
-// ply info is not calculated yet for this game state
-#define PLYINFO_VALUE_UNCALCULATED 65002
+    // ply info is not calculated yet for this game state
+    PLYINFO_VALUE_UNCALCULATED = 65002,
 
-// ply info is invalid, since knot value is invalid
-#define PLYINFO_VALUE_INVALID 65003
+    // ply info is invalid, since knot value is invalid
+    PLYINFO_VALUE_INVALID = 65003,
+};
 
 // each layer must have at maximum two preceding layers
-#define MAX_NUM_PRED_LAYERS 2
+constexpr auto MAX_NUM_PRED_LAYERS = 2;
 
 // constant to identify the header
-#define SKV_FILE_HEADER_CODE 0xF4F5
-
-// ''
-#define PLYINFO_HEADER_CODE 0xF3F2
+constexpr auto SKV_FILE_HEADER_CODE = 0xF4F5;
+constexpr auto PLYINFO_HEADER_CODE = 0xF3F2;
 
 // print progress every n-th processed knot
-#define OUTPUT_EVERY_N_STATES 10000000
+constexpr auto OUTPUT_EVERY_N_STATES = 10000000;
 
 // BLOCK_SIZE_IN_CYCLIC_ARRAY*sizeof(stateAdressStruct) = block size
 // in bytes for the cyclic arrays
-#define BLOCK_SIZE_IN_CYCLIC_ARRAY 10000
+constexpr auto BLOCK_SIZE_IN_CYCLIC_ARRAY = 10000;
 
 // maximum number of predecessors. important for array sizes
-#define MAX_NUM_PREDECESSORS 10000
+constexpr auto MAX_NUM_PREDECESSORS = 10000;
 
 // size in bytes
-#define FILE_BUFFER_SIZE 1000000
+constexpr auto FILE_BUFFER_SIZE = 1000000;
 
 // player to move changed - second index of the 2D-array
 // skvPerspectiveMatrix[][]
-#define PL_TO_MOVE_CHANGED 1
+constexpr auto PL_TO_MOVE_CHANGED = 1;
 
 // player to move is still the same - second index of the 2D-array
 // skvPerspectiveMatrix[][]
-#define PL_TO_MOVE_UNCHANGED 0
+constexpr auto PL_TO_MOVE_UNCHANGED = 0;
 
 // for io operations per second: measure time every n-th operations
-#define MEASURE_TIME_FREQUENCY 100000
+constexpr auto MEASURE_TIME_FREQUENCY = 100000;
 
 // true or false - for measurement of the input/output operations per
 // second
-#define MEASURE_IOPS false
+constexpr auto MEASURE_IOPS = false;
 
 // true or false - to indicate if only the io-operation shall be
 // considered or also the calculating time in-between
-#define MEASURE_ONLY_IO false
+constexpr auto MEASURE_ONLY_IO = false;
 
-#define MM_ACTION_INIT_RETRO_ANAL 1
-#define MM_ACTION_PREPARE_COUNT_ARRAY 2
-#define MM_ACTION_PERFORM_RETRO_ANAL 3
-#define MM_ACTION_PERFORM_ALPHA_BETA 4
-#define MM_ACTION_TESTING_LAYER 5
-#define MM_ACTION_SAVING_LAYER_TO_FILE 6
-#define MM_ACTION_CALC_LAYER_STATS 7
-#define MM_ACTION_NONE 8
+enum MmAction
+{
+    MM_ACTION_INIT_RETRO_ANAL = 1,
+    MM_ACTION_PREPARE_COUNT_ARRAY = 2,
+    MM_ACTION_PERFORM_RETRO_ANAL = 3,
+    MM_ACTION_PERFORM_ALPHA_BETA = 4,
+    MM_ACTION_TESTING_LAYER = 5,
+    MM_ACTION_SAVING_LAYER_TO_FILE = 6,
+    MM_ACTION_CALC_LAYER_STATS = 7,
+    MM_ACTION_NONE = 8,
+};
 
 /*** Macros
  * ****************************************************************************/

@@ -9,6 +9,7 @@
 #ifndef PERFECT_AI_H_INCLUDED
 #define PERFECT_AI_H_INCLUDED
 
+#include "types.h"
 #include "millAI.h"
 #include "miniMax.h"
 #include <cstdio>
@@ -24,55 +25,54 @@
 // since a state must be saved two times,
 // one time where no piece must be removed,
 // one time where a piece must be removed
-#define MAX_NUM_PIECES_REMOVED_MINUS_1 2
+constexpr auto MAX_NUM_PIECES_REMOVED_MINUS_1 = 2;
 
 // 10 x 10 since each color can range from 0 to 9 pieces
 // x2 since there is the setting phase and the moving phase
-#define NUM_LAYERS 200
-#define MAX_NUM_SUB_LAYERS 100
-#define LAYER_INDEX_SETTING_PHASE 1
-#define LAYER_INDEX_MOVING_PHASE 0
-#define NOT_INDEXED 4294967295
-#define MAX_DEPTH_OF_TREE 100
-#define NUM_PIECES_PER_PLAYER 9
-#define NUM_PIECES_PER_PLAYER_PLUS_ONE 10
+constexpr auto NUM_LAYERS = 200;
+constexpr auto MAX_NUM_SUB_LAYERS = 100;
+constexpr auto LAYER_INDEX_SETTING_PHASE = 1;
+constexpr auto LAYER_INDEX_MOVING_PHASE = 0;
+constexpr auto NOT_INDEXED = 4294967295;
+constexpr auto MAX_DEPTH_OF_TREE = 100;
+constexpr auto NUM_PIECES_PER_PLAYER = 9;
+constexpr auto NUM_PIECES_PER_PLAYER_PLUS_ONE = 10;
 
 // The Four Groups (the board position is divided in four groups A,B,C,D)
-#define numSquaresGroupA 4
-#define numSquaresGroupB 4
-#define numSquaresGroupC 8
-#define numSquaresGroupD 8
-#define GROUP_A 0
-#define GROUP_B 1
-#define GROUP_C 2
-#define GROUP_D 3
-#define MAX_ANZ_POSITION_A 81
-#define MAX_ANZ_POSITION_B 81
-#define MAX_ANZ_POSITION_C (81 * 81)
-#define MAX_ANZ_POSITION_D (81 * 81)
+constexpr auto numSquaresGroupA = 4;
+constexpr auto numSquaresGroupB = 4;
+constexpr auto numSquaresGroupC = 8;
+constexpr auto numSquaresGroupD = 8;
 
-#define FREE_SQUARE 0
-#define WHITE_PIECE 1
-#define BLACK_PIECE 2
+enum Group { GROUP_A = 0, GROUP_B = 1, GROUP_C = 2, GROUP_D = 3 };
+
+constexpr auto MAX_ANZ_POSITION_A = 81;
+constexpr auto MAX_ANZ_POSITION_B = 81;
+constexpr auto MAX_ANZ_POSITION_C = (81 * 81);
+constexpr auto MAX_ANZ_POSITION_D = (81 * 81);
+
+constexpr auto FREE_SQUARE = 0;
 
 // Symmetry Operations
-#define SO_TURN_LEFT 0
-#define SO_TURN_180 1
-#define SO_TURN_RIGHT 2
-#define SO_DO_NOTHING 3
-#define SO_INVERT 4
-#define SO_MIRROR_VERT 5
-#define SO_MIRROR_HORI 6
-#define SO_MIRROR_DIAG_1 7
-#define SO_MIRROR_DIAG_2 8
-#define SO_INV_LEFT 9
-#define SO_INV_RIGHT 10
-#define SO_INV_180 11
-#define SO_INV_MIR_VERT 12
-#define SO_INV_MIR_HORI 13
-#define SO_INV_MIR_DIAG_1 14
-#define SO_INV_MIR_DIAG_2 15
-#define NUM_SYM_OPERATIONS 16
+enum SymOperation {
+    SO_TURN_LEFT = 0,
+    SO_TURN_180 = 1,
+    SO_TURN_RIGHT = 2,
+    SO_DO_NOTHING = 3,
+    SO_INVERT = 4,
+    SO_MIRROR_VERT = 5,
+    SO_MIRROR_HORI = 6,
+    SO_MIRROR_DIAG_1 = 7,
+    SO_MIRROR_DIAG_2 = 8,
+    SO_INV_LEFT = 9,
+    SO_INV_RIGHT = 10,
+    SO_INV_180 = 11,
+    SO_INV_MIR_VERT = 12,
+    SO_INV_MIR_HORI = 13,
+    SO_INV_MIR_DIAG_1 = 14,
+    SO_INV_MIR_DIAG_2 = 15,
+    NUM_SYM_OPERATIONS = 16,
+};
 
 class PerfectAI : public MillAI, public MiniMax
 {
