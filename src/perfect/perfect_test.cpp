@@ -26,11 +26,11 @@ using std::iostream;
 extern Mill *mill;
 extern PerfectAI *ai;
 
-unsigned int startTestFromLayer = 0;
+const unsigned int startTestFromLayer = 0;
 
-unsigned int endTestAtLayer = NUM_LAYERS - 1;
+const unsigned int endTestAtLayer = NUM_LAYERS - 1;
 
-bool calculateDatabase = false;
+const bool calculateDatabase = false;
 
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI_TEST
 int main(void)
@@ -42,7 +42,9 @@ int perfect_main(void)
     bool playerOneHuman = false;
     bool playerTwoHuman = false;
     char ch[100];
-    unsigned int from, to;
+    unsigned int from;
+    unsigned int to;
+
     mill = new Mill();
     ai = new PerfectAI(PERFECT_AI_DATABASE_DIR);
 

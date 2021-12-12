@@ -20,7 +20,7 @@
 using std::cout;
 using std::iostream;
 
-#define MAX_NUM_MOVES 10000
+constexpr auto MAX_NUM_MOVES = 10000;
 
 #define SAFE_DELETE(p) \
     { \

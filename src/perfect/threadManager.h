@@ -16,18 +16,22 @@
 
 using std::iostream; // use standard library namespace
 
-#define TM_SCHEDULE_USER_DEFINED 0
-#define TM_SCHEDULE_STATIC 1
-#define TM_SCHEDULE_DYNAMIC 2
-#define TM_SCHEDULE_GUIDED 3
-#define TM_SCHEDULE_RUNTIME 4
-#define TM_SCHEDULE_NUM_TYPES 5
+enum ThreadManagerSchedule {
+    TM_SCHEDULE_USER_DEFINED = 0,
+    TM_SCHEDULE_STATIC = 1,
+    TM_SCHEDULE_DYNAMIC = 2,
+    TM_SCHEDULE_GUIDED = 3,
+    TM_SCHEDULE_RUNTIME = 4,
+    TM_SCHEDULE_NUM_TYPES = 5
+};
 
-#define TM_RETURN_VALUE_OK 0
-#define TM_RETURN_VALUE_TERMINATE_ALL_THREADS 1
-#define TM_RETURN_VALUE_EXECUTION_CANCELLED 2
-#define TM_RETURN_VALUE_INVALID_PARAM 3
-#define TM_RETURN_VALUE_UNEXPECTED_ERROR 4
+enum ThreadManagerReturnValue {
+    TM_RETURN_VALUE_OK = 0,
+    TM_RETURN_VALUE_TERMINATE_ALL_THREADS = 1,
+    TM_RETURN_VALUE_EXECUTION_CANCELLED = 2,
+    TM_RETURN_VALUE_INVALID_PARAM = 3,
+    TM_RETURN_VALUE_UNEXPECTED_ERROR = 4
+};
 
 /*** Structures ******************************************************/
 

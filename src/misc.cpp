@@ -363,10 +363,10 @@ void prefetch(void *addr)
 
 #ifndef PREFETCH_STRIDE
 /* L1 cache line size */
-#define L1_CACHE_SHIFT 7
-#define L1_CACHE_BYTES (1 << L1_CACHE_SHIFT)
+constexpr auto L1_CACHE_SHIFT = 7;
+constexpr auto L1_CACHE_BYTES = 1 << L1_CACHE_SHIFT;
 
-#define PREFETCH_STRIDE (4 * L1_CACHE_BYTES)
+constexpr auto PREFETCH_STRIDE = 4 * L1_CACHE_BYTES;
 #endif
 
 void prefetch_range(void *addr, size_t len)
