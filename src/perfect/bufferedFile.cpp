@@ -100,12 +100,12 @@ int64_t BufferedFile::getFileSize()
 //-----------------------------------------------------------------------------
 bool BufferedFile::flushBuffers()
 {
-    for (unsigned int threadNo = 0; threadNo < threadCount; threadNo++) {
+    for (unsigned int th = 0; th < threadCount; th++) {
         writeDataToFile(
-            hFile, curWritingPointer[threadNo] - bytesInWriteBuffer[threadNo],
-            bytesInWriteBuffer[threadNo],
-            &writeBuffer[threadNo * bufferSize + 0]);
-        bytesInWriteBuffer[threadNo] = 0;
+            hFile, curWritingPointer[th] - bytesInWriteBuffer[th],
+            bytesInWriteBuffer[th],
+            &writeBuffer[th * bufferSize + 0]);
+        bytesInWriteBuffer[th] = 0;
     }
 
     return true;

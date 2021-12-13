@@ -147,7 +147,7 @@ freeMem:
 // initRetroAnalysis()
 // The state values for all game situations in the database are marked as
 // invalid, as undecided, as won or as  lost by using the function
-// getValueOfSituation().
+// getSituationValue().
 //-----------------------------------------------------------------------------
 bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 {
@@ -221,13 +221,13 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
                 this, &retroVars, layerNumber, initArray, initAlreadyDone));
 
         // process each state in the current layer
-        switch (threadManager.executeParallelLoop(
+        switch (threadManager.execParallelLoop(
             initRetroAnalysisThreadProc, tva.getPointerToArray(),
-            tva.getSizeOfArray(), TM_SCHED_STATIC, 0,
+            tva.getArraySize(), TM_SCHED_STATIC, 0,
             layerStats[layerNumber].knotsInLayer - 1, 1)) {
-        case TM_RETURN_VALUE_OK:
+        case TM_RETVAL_OK:
             break;
-        case TM_RETURN_VALUE_EXEC_CANCELLED:
+        case TM_RETVAL_EXEC_CANCELLED:
             PRINT(0, this,
                   "\n****************************************\nMain thread: "
                   "Execution cancelled by "
@@ -235,8 +235,8 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
             SAFE_DELETE(initArray);
             return false;
         default:
-        case TM_RETURN_VALUE_INVALID_PARAM:
-        case TM_RETURN_VALUE_UNEXPECTED_ERROR:
+        case TM_RETVAL_INVALID_PARAM:
+        case TM_RETVAL_UNEXPECTED_ERROR:
             return falseOrStop();
         }
 
@@ -281,9 +281,9 @@ DWORD MiniMax::initRetroAnalysisThreadProc(void *pParam, unsigned int index)
     // locals
     InitRetroAnalysisVars *iraVars = (InitRetroAnalysisVars *)pParam;
     MiniMax *m = iraVars->pMiniMax;
-    float floatValue;     // dummy variable for calls of getValueOfSituation()
+    float floatValue;     // dummy variable for calls of getSituationValue()
     StateAdress curState; // current state counter for loops
-    TwoBit curStateValue; // for calls of getValueOfSituation()
+    TwoBit curStateValue; // for calls of getSituationValue()
 
     curState.layerNumber = iraVars->layerNumber;
     curState.stateNumber = index;
@@ -316,7 +316,7 @@ DWORD MiniMax::initRetroAnalysisThreadProc(void *pParam, unsigned int index)
             curStateValue = SKV_VALUE_INVALID;
         } else {
             // get value of current situation
-            m->getValueOfSituation(iraVars->curThreadNo, floatValue,
+            m->getSituationValue(iraVars->curThreadNo, floatValue,
                                    curStateValue);
         }
     }
@@ -354,7 +354,7 @@ DWORD MiniMax::initRetroAnalysisThreadProc(void *pParam, unsigned int index)
 
     iraVars->statsValueCounter[curStateValue]++;
 
-    return TM_RETURN_VALUE_OK;
+    return TM_RETVAL_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -514,13 +514,13 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
                                                              layerNumber));
 
             // process each state in the current layer
-            switch (threadManager.executeParallelLoop(
+            switch (threadManager.execParallelLoop(
                 addNumSucceedersThreadProc, tva.getPointerToArray(),
-                tva.getSizeOfArray(), TM_SCHED_STATIC, 0,
+                tva.getArraySize(), TM_SCHED_STATIC, 0,
                 layerStats[layerNumber].knotsInLayer - 1, 1)) {
-            case TM_RETURN_VALUE_OK:
+            case TM_RETVAL_OK:
                 break;
-            case TM_RETURN_VALUE_EXEC_CANCELLED:
+            case TM_RETVAL_EXEC_CANCELLED:
                 PRINT(0, this,
                       "\n****************************************\nMain "
                       "thread: "
@@ -528,8 +528,8 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
                       "user!\n****************************************\n");
                 return false;
             default:
-            case TM_RETURN_VALUE_INVALID_PARAM:
-            case TM_RETURN_VALUE_UNEXPECTED_ERROR:
+            case TM_RETVAL_INVALID_PARAM:
+            case TM_RETVAL_UNEXPECTED_ERROR:
                 return falseOrStop();
             }
 
@@ -575,13 +575,13 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
                     this, &retroVars, succState.layerNumber));
 
             // process each state in the current layer
-            switch (threadManager.executeParallelLoop(
+            switch (threadManager.execParallelLoop(
                 addNumSucceedersThreadProc, tva.getPointerToArray(),
-                tva.getSizeOfArray(), TM_SCHED_STATIC, 0,
+                tva.getArraySize(), TM_SCHED_STATIC, 0,
                 layerStats[succState.layerNumber].knotsInLayer - 1, 1)) {
-            case TM_RETURN_VALUE_OK:
+            case TM_RETVAL_OK:
                 break;
-            case TM_RETURN_VALUE_EXEC_CANCELLED:
+            case TM_RETVAL_EXEC_CANCELLED:
                 PRINT(0, this,
                       "\n****************************************\nMain "
                       "thread: "
@@ -589,8 +589,8 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
                       "user!\n****************************************\n");
                 return false;
             default:
-            case TM_RETURN_VALUE_INVALID_PARAM:
-            case TM_RETURN_VALUE_UNEXPECTED_ERROR:
+            case TM_RETVAL_INVALID_PARAM:
+            case TM_RETVAL_UNEXPECTED_ERROR:
                 return falseOrStop();
             }
 
@@ -648,13 +648,13 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, unsigned int index)
     m->readKnotValueFromDatabase(curState.layerNumber, curState.stateNumber,
                                  curStateValue);
     if (curStateValue == SKV_VALUE_INVALID)
-        return TM_RETURN_VALUE_OK;
+        return TM_RETVAL_OK;
 
     // set current selected situation
     if (!m->setSituation(ansVars->curThreadNo, curState.layerNumber,
                          curState.stateNumber)) {
         PRINT(0, m, "ERROR: setSituation() returned false!");
-        return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
+        return TM_RETVAL_TERMINATE_ALL_THREADS;
     }
 
     // get list with state numbers of predecessors
@@ -707,7 +707,7 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, unsigned int index)
             countValue = (CountArrayVarType)temp;
             if (countValue == 255) {
                 PRINT(0, m, "ERROR: maximum value for Count[] reached!");
-                return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
+                return TM_RETVAL_TERMINATE_ALL_THREADS;
             } else {
                 countValue++;
                 newCountLong = (curCountLong & (~mask)) +
@@ -718,7 +718,7 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, unsigned int index)
     }
 
     // everything is fine
-    return TM_RETURN_VALUE_OK;
+    return TM_RETVAL_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -738,19 +738,19 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
     curCalculationActionId = MM_ACTION_PERFORM_RETRO_ANAL;
 
     // process each state in the current layer
-    switch (threadManager.executeInParallel(performRetroAnalysisThreadProc,
+    switch (threadManager.execInParallel(performRetroAnalysisThreadProc,
                                             (void **)&retroVars, 0)) {
-    case TM_RETURN_VALUE_OK:
+    case TM_RETVAL_OK:
         break;
-    case TM_RETURN_VALUE_EXEC_CANCELLED:
+    case TM_RETVAL_EXEC_CANCELLED:
         PRINT(0, this,
               "\n****************************************\nMain thread: "
               "Execution cancelled by "
               "user!\n****************************************\n");
         return false;
     default:
-    case TM_RETURN_VALUE_INVALID_PARAM:
-    case TM_RETURN_VALUE_UNEXPECTED_ERROR:
+    case TM_RETVAL_INVALID_PARAM:
+    case TM_RETVAL_UNEXPECTED_ERROR:
         return falseOrStop();
     }
 
@@ -856,7 +856,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
                                  "user!\n**************************************"
                                  "**"
                                  "\n");
-                    return TM_RETURN_VALUE_EXEC_CANCELLED;
+                    return TM_RETVAL_EXEC_CANCELLED;
                 }
 
                 // get value of current state
@@ -868,7 +868,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
 
                 if (plyTillCurStateCount != curNumPlies) {
                     PRINT(0, m, "ERROR: plyTillCurStateCount != curNumPlies");
-                    return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
+                    return TM_RETVAL_TERMINATE_ALL_THREADS;
                 }
 
                 // console output
@@ -894,7 +894,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
                 if (!m->setSituation(threadNo, curState.layerNumber,
                                      curState.stateNumber)) {
                     PRINT(0, m, "ERROR: setSituation() returned false!");
-                    return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
+                    return TM_RETVAL_TERMINATE_ALL_THREADS;
                 }
 
                 // get list with state numbers of predecessors
@@ -946,7 +946,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
                                       "ERROR: Current number of plies is "
                                       "bigger "
                                       "than plyTillCurStateCount + 1!");
-                                return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
+                                return TM_RETVAL_TERMINATE_ALL_THREADS;
                             }
                             m->addStateToProcessQueue(*retroVars, *threadVars,
                                                       plyTillCurStateCount + 1,
@@ -981,7 +981,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
                                 } else {
                                     PRINT(0, m,
                                           "ERROR: Count is already zero!");
-                                    return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
+                                    return TM_RETVAL_TERMINATE_ALL_THREADS;
                                 }
                             } while (InterlockedCompareExchange(
                                          pCountValue, newCountLong,
@@ -1014,7 +1014,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
                                           "ERROR: Current number of plies is "
                                           "bigger than plyTillCurStateCount + "
                                           "1!");
-                                    return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
+                                    return TM_RETVAL_TERMINATE_ALL_THREADS;
                                 }
                                 m->addStateToProcessQueue(
                                     *retroVars, *threadVars,
@@ -1032,7 +1032,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
     }
 
     // every thing ok
-    return TM_RETURN_VALUE_OK;
+    return TM_RETVAL_OK;
 }
 
 //-----------------------------------------------------------------------------

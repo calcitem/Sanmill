@@ -910,26 +910,26 @@ void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom,
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     if (theField->settingPhase)
-        threadVars[0].depthOfFullTree = 2;
+        threadVars[0].fullTreeDepth = 2;
     else
-        threadVars[0].depthOfFullTree = 2;
+        threadVars[0].fullTreeDepth = 2;
 
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // current state already calculated?
     if (isCurrentStateInDatabase(0)) {
         cout << "PerfectAI is using database!\n\n\n";
-        threadVars[0].depthOfFullTree = 3;
+        threadVars[0].fullTreeDepth = 3;
     } else {
         cout << "PerfectAI is thinking thinking with a depth of "
-             << threadVars[0].depthOfFullTree << " steps!\n\n\n";
+             << threadVars[0].fullTreeDepth << " steps!\n\n\n";
     }
 
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // start the miniMax-algorithm
     Possibility *rootPossibilities = (Possibility *)getBestChoice(
-        threadVars[0].depthOfFullTree, &bestChoice, POSIBILE_MOVE_COUNT_MAX);
+        threadVars[0].fullTreeDepth, &bestChoice, POSIBILE_MOVE_COUNT_MAX);
 
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
@@ -1059,7 +1059,7 @@ PerfectAI::ThreadVars::ThreadVars()
     gameHasFinished = false;
     ownId = 0;
     curSearchDepth = 0;
-    depthOfFullTree = 0;
+    fullTreeDepth = 0;
     idPossibilities = nullptr;
     oldStates = nullptr;
     possibilities = nullptr;
@@ -1264,10 +1264,10 @@ unsigned int *PerfectAI::getPossibilities(unsigned int threadNo,
 }
 
 //-----------------------------------------------------------------------------
-// getValueOfSituation()
+// getSituationValue()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::getValueOfSituation(unsigned int threadNo, float &floatValue,
+void PerfectAI::getSituationValue(unsigned int threadNo, float &floatValue,
                                     TwoBit &shortValue)
 {
     ThreadVars *tv = &threadVars[threadNo];

@@ -113,7 +113,7 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice,
                              unsigned int branchCountMax)
 {
     // set global vars
-    depthOfFullTree = tilLevel;
+    fullTreeDepth = tilLevel;
     maxNumBranches = branchCountMax;
     layerInDatabase = isCurrentStateInDatabase(0);
     calcDatabase = false;
@@ -129,7 +129,7 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice,
     prepareBestChoiceCalculation();
 
     // First make a tree until the desired level
-    letTheTreeGrow(&root, &tva, depthOfFullTree, FPKV_MIN_VALUE,
+    letTheTreeGrow(&root, &tva, fullTreeDepth, FPKV_MIN_VALUE,
                    FPKV_MAX_VALUE);
 
     // pass best choice and close database
@@ -161,10 +161,10 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
     if (hFileShortKnotValues != nullptr && skvfHeader.completed == false) {
         // reserve memory
         lastCalculatedLayer.clear();
-        depthOfFullTree = maxDepthOfTree;
+        fullTreeDepth = maxDepthOfTree;
         layerInDatabase = false;
         calcDatabase = true;
-        threadManager.unCancelExec();
+        threadManager.uncancelExec();
         arrayInfos.vectorArrays.resize(ArrayInfo::arrayTypeCount *
                                            skvfHeader.LayerCount,
                                        arrayInfos.listArrays.end());
@@ -305,7 +305,7 @@ void MiniMax::pauseDatabaseCalculation()
 //-----------------------------------------------------------------------------
 void MiniMax::cancelDatabaseCalculation()
 {
-    // when returning from executeParallelLoop() all function shall quit
+    // when returning from execParallelLoop() all function shall quit
     // immediately up to calculateDatabase()
     threadManager.cancelExec();
 }

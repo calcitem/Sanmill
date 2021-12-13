@@ -541,7 +541,7 @@ public:
         return false;
     };
 
-    virtual void getValueOfSituation(unsigned int threadNo, float &floatValue,
+    virtual void getSituationValue(unsigned int threadNo, float &floatValue,
                                      TwoBit &shortValue)
     {
         while (true) {
@@ -739,7 +739,7 @@ private:
     struct RunAlphaBetaVars : public ThreadManager::ThreadVarsArrayItem,
                               public AlphaBetaDefaultThreadVars
     {
-        // array of size [(depthOfFullTree - tilLevel) * maxNumBranches] for
+        // array of size [(fullTreeDepth - tilLevel) * maxNumBranches] for
         // storage of the branches at each search depth
         Knot *branchArray = nullptr;
 
@@ -767,7 +767,7 @@ private:
         {
             *this = master;
             branchArray = new Knot[alphaBetaVars->pMiniMax->maxNumBranches *
-                                   alphaBetaVars->pMiniMax->depthOfFullTree];
+                                   alphaBetaVars->pMiniMax->fullTreeDepth];
             freqValuesSubMovesBranchWon =
                 new unsigned int[alphaBetaVars->pMiniMax->maxNumBranches];
         };
@@ -980,7 +980,7 @@ private:
     unsigned int maxNumBranches = 0;
 
     // maximum search depth
-    unsigned int depthOfFullTree = 0;
+    unsigned int fullTreeDepth = 0;
 
     // id of the currently calculated layer
     unsigned int curCalculatedLayer = 0;
@@ -1078,7 +1078,7 @@ private:
     bool runAlphaBeta(AlphaBetaGlobalVars &retroVars);
     void letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars,
                         unsigned int tilLevel, float alpha, float beta);
-    bool alphaBetaTryDataBase(Knot *knot, RunAlphaBetaVars *rabVars,
+    bool alphaBetaTryDatabase(Knot *knot, RunAlphaBetaVars *rabVars,
                               unsigned int tilLevel, unsigned int &layerNumber,
                               unsigned int &stateNumber);
     void alphaBetaTryPossibilities(Knot *knot, RunAlphaBetaVars *rabVars,
