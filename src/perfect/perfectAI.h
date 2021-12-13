@@ -292,7 +292,7 @@ protected:
     // Virtual Functions
     void prepareBestChoiceCalculation();
     void getSituationValue(unsigned int threadNo, float &floatValue,
-                             TwoBit &shortValue);
+                           TwoBit &shortValue);
     void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel);
     bool getOpponentLevel(unsigned int threadNo);
     void deletePossibilities(unsigned int threadNo, void *pPossibilities);

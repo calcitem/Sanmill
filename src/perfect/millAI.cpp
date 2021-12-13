@@ -267,10 +267,10 @@ inline void fieldStruct::setConnection(unsigned int index, int firstDirection,
 //
 //-----------------------------------------------------------------------------
 inline void fieldStruct::setNeighbor(unsigned int index,
-                                      unsigned int firstNeighbor0,
-                                      unsigned int secondNeighbor0,
-                                      unsigned int firstNeighbor1,
-                                      unsigned int secondNeighbor1)
+                                     unsigned int firstNeighbor0,
+                                     unsigned int secondNeighbor0,
+                                     unsigned int firstNeighbor1,
+                                     unsigned int secondNeighbor1)
 {
     neighbor[index][0][0] = firstNeighbor0;
     neighbor[index][0][1] = secondNeighbor0;
