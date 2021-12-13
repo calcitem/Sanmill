@@ -218,8 +218,8 @@ DWORD MiniMax::initAlphaBetaThreadProc(void *pParam, unsigned int index)
     // locals
     InitAlphaBetaVars *iabVars = (InitAlphaBetaVars *)pParam;
     MiniMax *m = iabVars->pMiniMax;
-    float floatValue;     // dummy variable for calls of getSituationValue()
-    StateAdress curState; // current state counter for loops
+    float floatValue;         // dummy variable for calls of getSituationValue()
+    StateAdress curState;     // current state counter for loops
     TwoBit curStateValue = 0; // for calls of getSituationValue()
     PlyInfoVarType plyInfo;   // depends on the curStateValue
 
@@ -254,7 +254,7 @@ DWORD MiniMax::initAlphaBetaThreadProc(void *pParam, unsigned int index)
         } else {
             // get value of current situation
             m->getSituationValue(iabVars->curThreadNo, floatValue,
-                                   curStateValue);
+                                 curStateValue);
         }
     }
 
@@ -396,8 +396,8 @@ DWORD MiniMax::runAlphaBetaThreadProc(void *pParam, unsigned int index)
     if (m->setSituation(rabVars->curThreadNo, curState.layerNumber,
                         curState.stateNumber)) {
         // calculate value of situation
-        m->letTheTreeGrow(&root, rabVars, m->fullTreeDepth,
-                          SKV_VALUE_GAME_LOST, SKV_VALUE_GAME_WON);
+        m->letTheTreeGrow(&root, rabVars, m->fullTreeDepth, SKV_VALUE_GAME_LOST,
+                          SKV_VALUE_GAME_WON);
     } else {
         // should not occur, because already tested by plyInfo ==
         // PLYINFO_VALUE_UNCALCULATED
@@ -445,7 +445,7 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars,
             falseOrStop();
         } else {
             getSituationValue(rabVars->curThreadNo, knot->floatValue,
-                                knot->shortValue);
+                              knot->shortValue);
         }
         // investigate branches
     } else {
@@ -466,7 +466,7 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars,
             // if unable to move a final state is reached
             knot->plyInfo = 0;
             getSituationValue(rabVars->curThreadNo, knot->floatValue,
-                                knot->shortValue);
+                              knot->shortValue);
             if (tilLevel == fullTreeDepth - 1)
                 rabVars->freqValuesSubMoves[knot->shortValue]++;
 
@@ -535,11 +535,9 @@ bool MiniMax::alphaBetaTryDatabase(Knot *knot, RunAlphaBetaVars *rabVars,
         // it was possible to achieve an invalid state using move(),
         // so the original state was an invalid one
         if ((tilLevel < fullTreeDepth && invalidLayerOrStateNumber) ||
-            (tilLevel < fullTreeDepth &&
-             shortKnotValue == SKV_VALUE_INVALID &&
+            (tilLevel < fullTreeDepth && shortKnotValue == SKV_VALUE_INVALID &&
              subLayerInDatabaseAndCompleted) ||
-            (tilLevel < fullTreeDepth &&
-             shortKnotValue == SKV_VALUE_INVALID &&
+            (tilLevel < fullTreeDepth && shortKnotValue == SKV_VALUE_INVALID &&
              plyInfo != PLYINFO_VALUE_UNCALCULATED)) { // version 22: replaced:
             // curCalculatedLayer ==
             // layerNumber &&
@@ -554,9 +552,8 @@ bool MiniMax::alphaBetaTryDatabase(Knot *knot, RunAlphaBetaVars *rabVars,
 
         // print out put, if not calculating database, but requesting a knot
         // value
-        if (shortKnotValue != SKV_VALUE_INVALID &&
-            tilLevel == fullTreeDepth && !calcDatabase &&
-            subLayerInDatabaseAndCompleted) {
+        if (shortKnotValue != SKV_VALUE_INVALID && tilLevel == fullTreeDepth &&
+            !calcDatabase && subLayerInDatabaseAndCompleted) {
             PRINT(2, this,
                   "This state is marked as "
                       << ((shortKnotValue == SKV_VALUE_GAME_WON) ?
@@ -669,11 +666,11 @@ void MiniMax::alphaBetaTryPossibilities(Knot *knot, RunAlphaBetaVars *rabVars,
         // don't use alpha beta if using database
         if (hFileShortKnotValues != nullptr && calcDatabase) {
             continue;
-        }            
+        }
 
         if (hFileShortKnotValues != nullptr && tilLevel + 1 >= fullTreeDepth) {
             continue;
-        }            
+        }
 
         // alpha beta algorithm
         if (!knot->isOpponentLevel) {

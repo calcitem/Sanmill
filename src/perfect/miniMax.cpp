@@ -129,8 +129,7 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice,
     prepareBestChoiceCalculation();
 
     // First make a tree until the desired level
-    letTheTreeGrow(&root, &tva, fullTreeDepth, FPKV_MIN_VALUE,
-                   FPKV_MAX_VALUE);
+    letTheTreeGrow(&root, &tva, fullTreeDepth, FPKV_MIN_VALUE, FPKV_MAX_VALUE);
 
     // pass best choice and close database
     *choice = root.bestMoveId;

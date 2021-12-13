@@ -159,12 +159,11 @@ int perfect_main(void)
                         // undo moves until a human player shall move
                         do {
                             mill->undoMove();
-                        } while (!((mill->getCurPlayer() ==
-                                        fieldStruct::playerOne &&
-                                    playerOneHuman) ||
-                                   (mill->getCurPlayer() ==
-                                        fieldStruct::playerTwo &&
-                                    playerTwoHuman)));
+                        } while (
+                            !((mill->getCurPlayer() == fieldStruct::playerOne &&
+                               playerOneHuman) ||
+                              (mill->getCurPlayer() == fieldStruct::playerTwo &&
+                               playerTwoHuman)));
 
                         // reprint board
                         break;

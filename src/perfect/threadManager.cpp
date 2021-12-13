@@ -183,23 +183,20 @@ bool ThreadManager::setThreadCount(unsigned int newNumThreads)
     // cancel if any thread running
     EnterCriticalSection(&csBarrier);
 
-    for (unsigned int th = 0; th < threadCount;
-         th++) {
+    for (unsigned int th = 0; th < threadCount; th++) {
         if (hThread[th]) {
             LeaveCriticalSection(&csBarrier);
             return false;
         }
     }
 
-    for (unsigned int th = 0; th < threadCount;
-         th++) {
+    for (unsigned int th = 0; th < threadCount; th++) {
         CloseHandle(hBarrier[th]);
     }
 
     threadCount = newNumThreads;
 
-    for (unsigned int th = 0; th < threadCount;
-         th++) {
+    for (unsigned int th = 0; th < threadCount; th++) {
         hBarrier[th] = CreateEvent(nullptr, false, false, nullptr);
     }
 
@@ -284,10 +281,9 @@ unsigned int ThreadManager::getThreadNumber()
 // execInParallel()
 // lpParam is an array of size threadCount.
 //-----------------------------------------------------------------------------
-unsigned int
-ThreadManager::execInParallel(DWORD threadProc(void *pParam),
-                                 void *pParam,
-                                 unsigned int paramStructSize)
+unsigned int ThreadManager::execInParallel(DWORD threadProc(void *pParam),
+                                           void *pParam,
+                                           unsigned int paramStructSize)
 {
     // locals
     unsigned int th;
@@ -304,12 +300,11 @@ ThreadManager::execInParallel(DWORD threadProc(void *pParam),
     for (th = 0; th < threadCount; th++) {
         hThread[th] = CreateThread(
             nullptr, dwStackSize, (LPTHREAD_START_ROUTINE)threadProc,
-            (void *)(((char *)pParam) + th * paramStructSize),
-            CREATE_SUSPENDED, &threadId[th]);
+            (void *)(((char *)pParam) + th * paramStructSize), CREATE_SUSPENDED,
+            &threadId[th]);
 
         if (hThread[th] != nullptr) {
-            SetThreadPriority(hThread[th],
-                              THREAD_PRIORITY_BELOW_NORMAL);
+            SetThreadPriority(hThread[th], THREAD_PRIORITY_BELOW_NORMAL);
         }
 
         if (hThread[th] == nullptr) {
@@ -352,10 +347,11 @@ ThreadManager::execInParallel(DWORD threadProc(void *pParam),
 // finalValue  - this value is part of the iteration, meaning that index ranges
 // from initValue to finalValue including both border values
 //-----------------------------------------------------------------------------
-unsigned int ThreadManager::execParallelLoop(
-    DWORD threadProc(void *pParam, unsigned index), void *pParam,
-    unsigned int paramStructSize, unsigned int schedType, int initValue,
-    int finalValue, int increment)
+unsigned int
+ThreadManager::execParallelLoop(DWORD threadProc(void *pParam, unsigned index),
+                                void *pParam, unsigned int paramStructSize,
+                                unsigned int schedType, int initValue,
+                                int finalValue, int increment)
 {
     // params ok?
     if (execCancelled == true)
@@ -394,11 +390,10 @@ unsigned int ThreadManager::execParallelLoop(
 
     // create threads
     for (th = 0; th < threadCount; th++) {
-        forLoopParams[th].pParam =
-            (pParam != nullptr ?
-                 (void *)(((char *)pParam) +
-                          th * paramStructSize) :
-                 nullptr);
+        forLoopParams[th].pParam = (pParam != nullptr ?
+                                        (void *)(((char *)pParam) +
+                                                 th * paramStructSize) :
+                                        nullptr);
         forLoopParams[th].threadManager = this;
         forLoopParams[th].threadProc = threadProc;
         forLoopParams[th].increment = increment;
@@ -411,11 +406,11 @@ unsigned int ThreadManager::execParallelLoop(
             if (th == 0) {
                 forLoopParams[th].initValue = initValue;
             } else {
-                forLoopParams[th].initValue =
-                    forLoopParams[th - 1].finalValue + 1;
+                forLoopParams[th].initValue = forLoopParams[th - 1].finalValue +
+                                              1;
             }
-            forLoopParams[th].finalValue =
-                forLoopParams[th].initValue + chunkSize - 1;
+            forLoopParams[th].finalValue = forLoopParams[th].initValue +
+                                           chunkSize - 1;
             break;
         case TM_SCHED_DYNAMIC:
             return TM_RETVAL_INVALID_PARAM;
@@ -429,14 +424,12 @@ unsigned int ThreadManager::execParallelLoop(
         }
 
         // create suspended thread
-        hThread[th] = CreateThread(
-            nullptr, dwStackSize, threadForLoop,
-            (LPVOID)(&forLoopParams[th]), CREATE_SUSPENDED,
-            &threadId[th]);
+        hThread[th] = CreateThread(nullptr, dwStackSize, threadForLoop,
+                                   (LPVOID)(&forLoopParams[th]),
+                                   CREATE_SUSPENDED, &threadId[th]);
 
         if (hThread[th] != nullptr) {
-            SetThreadPriority(hThread[th],
-                              THREAD_PRIORITY_BELOW_NORMAL);
+            SetThreadPriority(hThread[th], THREAD_PRIORITY_BELOW_NORMAL);
         }
 
         if (hThread[th] == nullptr) {
@@ -496,8 +489,7 @@ DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParam)
                  index >= forLoopParams->finalValue :
                  index <= forLoopParams->finalValue;
              index += forLoopParams->increment) {
-            switch (forLoopParams->threadProc(forLoopParams->pParam,
-                                                  index)) {
+            switch (forLoopParams->threadProc(forLoopParams->pParam, index)) {
             case TM_RETVAL_OK:
                 break;
             case TM_RETVAL_TERMINATE_ALL_THREADS:

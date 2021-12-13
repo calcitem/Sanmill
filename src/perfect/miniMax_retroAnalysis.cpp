@@ -317,7 +317,7 @@ DWORD MiniMax::initRetroAnalysisThreadProc(void *pParam, unsigned int index)
         } else {
             // get value of current situation
             m->getSituationValue(iraVars->curThreadNo, floatValue,
-                                   curStateValue);
+                                 curStateValue);
         }
     }
 
@@ -739,7 +739,7 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 
     // process each state in the current layer
     switch (threadManager.execInParallel(performRetroAnalysisThreadProc,
-                                            (void **)&retroVars, 0)) {
+                                         (void **)&retroVars, 0)) {
     case TM_RETVAL_OK:
         break;
     case TM_RETVAL_EXEC_CANCELLED:

@@ -542,7 +542,7 @@ public:
     };
 
     virtual void getSituationValue(unsigned int threadNo, float &floatValue,
-                                     TwoBit &shortValue)
+                                   TwoBit &shortValue)
     {
         while (true) {
         }
@@ -882,10 +882,7 @@ private:
             this->initAlreadyDone = initAlreadyDone;
         };
 
-        void initElement(InitRetroAnalysisVars &master)
-        {
-            *this = master;
-        };
+        void initElement(InitRetroAnalysisVars &master) { *this = master; };
 
         void reduce() { reduceDefault(); }
     };
@@ -903,10 +900,7 @@ private:
             : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
         { }
 
-        void initElement(AddNumSucceedersVars &master)
-        {
-            *this = master;
-        };
+        void initElement(AddNumSucceedersVars &master) { *this = master; };
 
         void reduce() { reduceDefault(); }
     };
@@ -1069,8 +1063,7 @@ private:
 
     // Testing functions
     static DWORD testLayerThreadProc(void *pParam, unsigned int index);
-    static DWORD testSetSituationThreadProc(void *pParam,
-                                            unsigned int index);
+    static DWORD testSetSituationThreadProc(void *pParam, unsigned int index);
 
     // Alpha-Beta-Algorithm
     bool calcKnotValuesByAlphaBeta(unsigned int layerNumber);
@@ -1114,10 +1107,8 @@ private:
     {
         return a.stateNumber < b.stateNumber;
     };
-    static DWORD initRetroAnalysisThreadProc(void *pParam,
-                                             unsigned int index);
-    static DWORD addNumSucceedersThreadProc(void *pParam,
-                                            unsigned int index);
+    static DWORD initRetroAnalysisThreadProc(void *pParam, unsigned int index);
+    static DWORD addNumSucceedersThreadProc(void *pParam, unsigned int index);
     static DWORD performRetroAnalysisThreadProc(void *pParam);
 
     // Progress report functions

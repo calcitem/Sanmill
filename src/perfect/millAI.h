@@ -126,9 +126,8 @@ private:
                        int secondDirection, int thirdDirection,
                        int fourthDirection);
     void setNeighbor(unsigned int index, unsigned int firstNeighbor0,
-                      unsigned int secondNeighbor0,
-                      unsigned int firstNeighbor1,
-                      unsigned int secondNeighbor1);
+                     unsigned int secondNeighbor0, unsigned int firstNeighbor1,
+                     unsigned int secondNeighbor1);
 };
 
 #ifdef __clang__ // TODO(calcitem)
