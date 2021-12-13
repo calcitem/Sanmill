@@ -57,7 +57,7 @@ private:
 
     // undo of the last move is done by setting the initial board und performing
     // all moves saved in history
-    fieldStruct initialField;
+    fieldStruct initField;
 
     // playerId of the player who has won the game. zero if game is still
     // running.

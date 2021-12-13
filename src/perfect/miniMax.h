@@ -731,7 +731,7 @@ private:
             this->initAlreadyDone = initAlreadyDone;
         };
 
-        void initializeElement(InitAlphaBetaVars &master) { *this = master; }
+        void initElement(InitAlphaBetaVars &master) { *this = master; }
 
         void reduce() { reduceDefault(); }
     };
@@ -752,7 +752,7 @@ private:
                          unsigned int layerNumber)
             : AlphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
         {
-            initializeElement(*this);
+            initElement(*this);
         };
 
         ~RunAlphaBetaVars()
@@ -763,7 +763,7 @@ private:
 
         void reduce() { reduceDefault(); }
 
-        void initializeElement(RunAlphaBetaVars &master)
+        void initElement(RunAlphaBetaVars &master)
         {
             *this = master;
             branchArray = new Knot[alphaBetaVars->pMiniMax->maxNumBranches *
@@ -882,7 +882,7 @@ private:
             this->initAlreadyDone = initAlreadyDone;
         };
 
-        void initializeElement(InitRetroAnalysisVars &master)
+        void initElement(InitRetroAnalysisVars &master)
         {
             *this = master;
         };
@@ -903,7 +903,7 @@ private:
             : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
         { }
 
-        void initializeElement(AddNumSucceedersVars &master)
+        void initElement(AddNumSucceedersVars &master)
         {
             *this = master;
         };
