@@ -192,7 +192,7 @@ bool BufferedFile::writeBytes(unsigned int nBytes, unsigned char *pData)
 bool BufferedFile::writeBytes(unsigned int threadNo, int64_t positionInFile,
                               unsigned int nBytes, unsigned char *pData)
 {
-    // parameters ok?
+    // params ok?
     if (threadNo >= threadCount)
         return false;
 
@@ -238,7 +238,7 @@ bool BufferedFile::readBytes(unsigned int nBytes, unsigned char *pData)
 bool BufferedFile::readBytes(unsigned int threadNo, int64_t positionInFile,
                              unsigned int nBytes, unsigned char *pData)
 {
-    // parameters ok?
+    // params ok?
     if (threadNo >= threadCount)
         return false;
 

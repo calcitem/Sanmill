@@ -209,7 +209,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
         else
             retroVars.layerInitialized[layerNumber] = true;
 
-        // prepare parameters
+        // prepare params
         stateProcessedCount = 0;
         retroVars.statsValueCounter[SKV_VALUE_GAME_WON] = 0;
         retroVars.statsValueCounter[SKV_VALUE_GAME_LOST] = 0;
@@ -276,10 +276,10 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 // initRetroAnalysisParallelSub()
 //
 //-----------------------------------------------------------------------------
-DWORD MiniMax::initRetroAnalysisThreadProc(void *pParameter, unsigned int index)
+DWORD MiniMax::initRetroAnalysisThreadProc(void *pParam, unsigned int index)
 {
     // locals
-    InitRetroAnalysisVars *iraVars = (InitRetroAnalysisVars *)pParameter;
+    InitRetroAnalysisVars *iraVars = (InitRetroAnalysisVars *)pParam;
     MiniMax *m = iraVars->pMiniMax;
     float floatValue;     // dummy variable for calls of getValueOfSituation()
     StateAdress curState; // current state counter for loops
@@ -505,7 +505,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
 
         // process layer ...
         if (!succCalculated[layerNumber]) {
-            // prepare parameters for multithreading
+            // prepare params for multithreading
             succCalculated[layerNumber] = true;
             stateProcessedCount = 0;
             ThreadManager::ThreadVarsArray<AddNumSucceedersVars> tva(
@@ -567,7 +567,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
                   "    - Do the same for the succeeding layer "
                       << (int)succState.layerNumber);
 
-            // prepare parameters for multithreading
+            // prepare params for multithreading
             stateProcessedCount = 0;
             ThreadManager::ThreadVarsArray<AddNumSucceedersVars> tva(
                 threadManager.getThreadCount(),
@@ -611,10 +611,10 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
 // addNumSucceedersThreadProc()
 //
 //-----------------------------------------------------------------------------
-DWORD MiniMax::addNumSucceedersThreadProc(void *pParameter, unsigned int index)
+DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, unsigned int index)
 {
     // locals
-    AddNumSucceedersVars *ansVars = (AddNumSucceedersVars *)pParameter;
+    AddNumSucceedersVars *ansVars = (AddNumSucceedersVars *)pParam;
     MiniMax *m = ansVars->pMiniMax;
     unsigned int nLayersToCalculate = (unsigned int)ansVars->retroVars
                                           ->layersToCalculate.size();
@@ -798,10 +798,10 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 // performRetroAnalysisThreadProc()
 //
 //-----------------------------------------------------------------------------
-DWORD MiniMax::performRetroAnalysisThreadProc(void *pParameter)
+DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
 {
     // locals
-    retroAnalysisGlobalVars *retroVars = (retroAnalysisGlobalVars *)pParameter;
+    retroAnalysisGlobalVars *retroVars = (retroAnalysisGlobalVars *)pParam;
     MiniMax *m = retroVars->pMiniMax;
     unsigned int threadNo = m->threadManager.getThreadNumber();
     RetroAnalysisThreadVars *threadVars = &retroVars->thread[threadNo];

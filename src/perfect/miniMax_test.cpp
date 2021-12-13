@@ -33,7 +33,7 @@ bool MiniMax::testLayer(unsigned int layerNumber)
           endl << "*** Test each state in layer: " << layerNumber << " ***");
     PRINT(1, this, (getOutputInformation(layerNumber)));
 
-    // prepare parameters for multithreading
+    // prepare params for multithreading
     skvfHeader.completed = false;
     layerInDatabase = false;
     stateProcessedCount = 0;
@@ -96,10 +96,10 @@ bool MiniMax::testLayer(unsigned int layerNumber)
 // testLayerThreadProc()
 //
 //-----------------------------------------------------------------------------
-DWORD MiniMax::testLayerThreadProc(void *pParameter, unsigned index)
+DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
 {
     // locals
-    TestLayersVars *tlVars = (TestLayersVars *)pParameter;
+    TestLayersVars *tlVars = (TestLayersVars *)pParam;
     MiniMax *m = tlVars->pMiniMax;
     unsigned int layerNumber = tlVars->layerNumber;
     unsigned int stateNumber = index;
@@ -464,7 +464,7 @@ bool MiniMax::testState(unsigned int layerNumber, unsigned int stateNumber)
     TestLayersVars tlVars;
     bool result = false;
 
-    // prepare parameters for multithreading
+    // prepare params for multithreading
     tlVars.curThreadNo = 0;
     tlVars.pMiniMax = this;
     tlVars.layerNumber = layerNumber;
@@ -498,7 +498,7 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
           endl << "*** Test each state in layer: " << layerNumber << " ***");
     PRINT(1, this, (getOutputInformation(layerNumber)));
 
-    // prepare parameters for multithreading
+    // prepare params for multithreading
     stateProcessedCount = 0;
     curCalculationActionId = MM_ACTION_TESTING_LAYER;
     TestLayersVars *tlVars = new TestLayersVars[threadManager.getThreadCount()];
@@ -559,10 +559,10 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 // testSetSituationThreadProc()
 //
 //-----------------------------------------------------------------------------
-DWORD MiniMax::testSetSituationThreadProc(void *pParameter, unsigned int index)
+DWORD MiniMax::testSetSituationThreadProc(void *pParam, unsigned int index)
 {
     // locals
-    TestLayersVars *tlVars = (TestLayersVars *)pParameter;
+    TestLayersVars *tlVars = (TestLayersVars *)pParam;
     MiniMax *m = tlVars->pMiniMax;
     unsigned int *idPossibility;
     void *pPossibilities;
