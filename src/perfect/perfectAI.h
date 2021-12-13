@@ -184,8 +184,8 @@ protected:
     // array for state numbers
     unsigned int symmetricStateNumberArray[NUM_SYM_OPERATIONS];
 
-    // directory containing the database files
-    string databaseDirectory;
+    // dir containing the database files
+    string databaseDir;
 
     // Variables used individually by each single thread
     class ThreadVars
@@ -320,11 +320,11 @@ protected:
 
 public:
     // Constructor / destructor
-    explicit PerfectAI(const char *directory);
+    explicit PerfectAI(const char *dir);
     ~PerfectAI();
 
     // Functions
-    bool setDatabasePath(const char *directory);
+    bool setDatabasePath(const char *dir);
     void play(fieldStruct *theField, unsigned int *pushFrom,
               unsigned int *pushTo);
     void getValueOfMoves(unsigned char *moveValue,

@@ -209,14 +209,14 @@ void MiniMax::saveHeader(PlyInfoFileHeader *piH, PlyInfo *pInfo)
 // openDatabase()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::openDatabase(const char *directory, unsigned int branchCountMax)
+bool MiniMax::openDatabase(const char *dir, unsigned int branchCountMax)
 {
-    if (strlen(directory) && !PathFileExistsA(directory)) {
-        PRINT(0, this, "ERROR: Database path " << directory << " not valid!");
+    if (strlen(dir) && !PathFileExistsA(dir)) {
+        PRINT(0, this, "ERROR: Database path " << dir << " not valid!");
         return falseOrStop();
     }
-    openSkvFile(directory, branchCountMax);
-    openPlyInfoFile(directory);
+    openSkvFile(dir, branchCountMax);
+    openPlyInfoFile(dir);
     return true;
 }
 
@@ -224,7 +224,7 @@ bool MiniMax::openDatabase(const char *directory, unsigned int branchCountMax)
 // openSkvFile()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::openSkvFile(const char *directory, unsigned int branchCountMax)
+void MiniMax::openSkvFile(const char *dir, unsigned int branchCountMax)
 {
     // locals
     stringstream ssDatabaseFile;
@@ -235,13 +235,12 @@ void MiniMax::openSkvFile(const char *directory, unsigned int branchCountMax)
     if (hFileShortKnotValues != nullptr)
         return;
 
-    // remember directory name
-    fileDirectory.assign(directory);
-    ssDatabaseFile << fileDirectory << (strlen(directory) ? "\\" : "")
+    // remember dir name
+    fileDir.assign(dir);
+    ssDatabaseFile << fileDir << (strlen(dir) ? "\\" : "")
                    << "shortKnotValue.dat";
     PRINT(2, this,
-          "Open short knot value file: " << fileDirectory
-                                         << (strlen(directory) ? "\\" : "")
+          "Open short knot value file: " << fileDir << (strlen(dir) ? "\\" : "")
                                          << "shortKnotValue.dat" << endl);
 
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH |
@@ -322,7 +321,7 @@ void MiniMax::openSkvFile(const char *directory, unsigned int branchCountMax)
 // openPlyInfoFile()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::openPlyInfoFile(const char *directory)
+void MiniMax::openPlyInfoFile(const char *dir)
 {
     // locals
     stringstream ssFile;
@@ -333,8 +332,8 @@ void MiniMax::openPlyInfoFile(const char *directory)
     if (hFilePlyInfo != nullptr)
         return;
 
-    // remember directory name
-    ssFile << directory << (strlen(directory) ? "\\" : "") << "plyInfo.dat";
+    // remember dir name
+    ssFile << dir << (strlen(dir) ? "\\" : "") << "plyInfo.dat";
     PRINT(2, this, "Open ply info file: " << ssFile.str() << endl << endl);
 
     // Open Database-File (FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH |
