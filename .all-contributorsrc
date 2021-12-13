@@ -26,7 +26,10 @@
         "security",
         "translation",
         "test",
-        "video"
+        "video",
+        "maintenance",
+        "mentoring",
+        "projectManagement"
       ]
     }
   ],
