@@ -31,6 +31,22 @@
         "mentoring",
         "projectManagement"
       ]
+    },
+    {
+      "login": "Leptopoda",
+      "name": "Nikolas Rimikis",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25266387?v=4",
+      "profile": "http://gitlab.rimikis.de/Leptopoda",
+      "contributions": [
+        "code",
+        "doc",
+        "ideas",
+        "maintenance",
+        "projectManagement",
+        "platform",
+        "review",
+        "translation"
+      ]
     }
   ],
   "contributorsPerLine": 7,
