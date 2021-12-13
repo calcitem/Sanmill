@@ -1,0 +1,39 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "calcitem",
+      "name": "Calcitem",
+      "avatar_url": "https://avatars.githubusercontent.com/u/51521682?v=4",
+      "profile": "https://play.google.com/store/apps/dev?id=4614143494034576766",
+      "contributions": [
+        "a11y",
+        "bug",
+        "blog",
+        "business",
+        "code",
+        "doc",
+        "design",
+        "ideas",
+        "infra",
+        "platform",
+        "question",
+        "review",
+        "security",
+        "translation",
+        "test",
+        "video"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Sanmill",
+  "projectOwner": "calcitem",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
