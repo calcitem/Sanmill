@@ -350,11 +350,11 @@ ThreadManager::executeInParallel(DWORD threadProc(void *pParam),
 //
 // lpParam - an array of size threadCount
 // finalValue  - this value is part of the iteration, meaning that index ranges
-// from initialValue to finalValue including both border values
+// from initValue to finalValue including both border values
 //-----------------------------------------------------------------------------
 unsigned int ThreadManager::executeParallelLoop(
     DWORD threadProc(void *pParam, unsigned index), void *pParam,
-    unsigned int paramStructSize, unsigned int schedType, int initialValue,
+    unsigned int paramStructSize, unsigned int schedType, int initValue,
     int finalValue, int increment)
 {
     // params ok?
@@ -370,7 +370,7 @@ unsigned int ThreadManager::executeParallelLoop(
     if (increment == 0)
         return TM_RETURN_VALUE_INVALID_PARAM;
 
-    if (abs(finalValue - initialValue) == abs(increment))
+    if (abs(finalValue - initValue) == abs(increment))
         return TM_RETURN_VALUE_INVALID_PARAM;
 
     // locals
@@ -379,7 +379,7 @@ unsigned int ThreadManager::executeParallelLoop(
     unsigned int curThreadNo;
 
     // total number of iterations
-    int nIterations = (finalValue - initialValue) / increment + 1;
+    int nIterations = (finalValue - initValue) / increment + 1;
 
     // number of iterations per chunk
     int chunkSize = 0;
@@ -409,13 +409,13 @@ unsigned int ThreadManager::executeParallelLoop(
             chunkSize = nIterations / threadCount +
                         (curThreadNo < nIterations % threadCount ? 1 : 0);
             if (curThreadNo == 0) {
-                forLoopParams[curThreadNo].initialValue = initialValue;
+                forLoopParams[curThreadNo].initValue = initValue;
             } else {
-                forLoopParams[curThreadNo].initialValue =
+                forLoopParams[curThreadNo].initValue =
                     forLoopParams[curThreadNo - 1].finalValue + 1;
             }
             forLoopParams[curThreadNo].finalValue =
-                forLoopParams[curThreadNo].initialValue + chunkSize - 1;
+                forLoopParams[curThreadNo].initValue + chunkSize - 1;
             break;
         case TM_SCHED_DYNAMIC:
             return TM_RETURN_VALUE_INVALID_PARAM;
@@ -491,7 +491,7 @@ DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParam)
 
     switch (forLoopParams->schedType) {
     case TM_SCHED_STATIC:
-        for (index = forLoopParams->initialValue;
+        for (index = forLoopParams->initValue;
              (forLoopParams->increment < 0) ?
                  index >= forLoopParams->finalValue :
                  index <= forLoopParams->finalValue;

@@ -31,7 +31,7 @@ Mill::Mill()
     beginningPlayer = 0;
 
     field.createBoard();
-    initialField.createBoard();
+    initField.createBoard();
 }
 
 //-----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ void Mill::exit()
     SAFE_DELETE_ARRAY(moveLogTo);
 
     field.deleteBoard();
-    initialField.deleteBoard();
+    initField.deleteBoard();
 }
 
 //-----------------------------------------------------------------------------
@@ -64,7 +64,7 @@ void Mill::resetGame()
 {
     std::memset(moveLogFrom, 0, MOVE_COUNT_MAX);
     std::memset(moveLogTo, 0, MOVE_COUNT_MAX);
-    initialField.copyBoard(&field);
+    initField.copyBoard(&field);
 
     winner = 0;
     movesDone = 0;
@@ -82,7 +82,7 @@ void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
 
     // create arrays
     field.createBoard();
-    initialField.createBoard();
+    initField.createBoard();
 
     // calculate beginning player
     if (currentPlayer == field.playerOne || currentPlayer == field.playerTwo) {
@@ -103,8 +103,8 @@ void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
     moveLogFrom = new unsigned int[MOVE_COUNT_MAX];
     moveLogTo = new unsigned int[MOVE_COUNT_MAX];
 
-    // remember initialField
-    field.copyBoard(&initialField);
+    // remember initField
+    field.copyBoard(&initField);
 }
 
 //-----------------------------------------------------------------------------
@@ -278,8 +278,8 @@ bool Mill::putPiece(unsigned int pos, int player)
 //-----------------------------------------------------------------------------
 bool Mill::settingPhaseHasFinished()
 {
-    // remember initialField
-    field.copyBoard(&initialField);
+    // remember initField
+    field.copyBoard(&initField);
 
     return true;
 }
@@ -900,7 +900,7 @@ void Mill::undoMove(void)
         }
 
         // reset
-        initialField.copyBoard(&field);
+        initField.copyBoard(&field);
         winner = 0;
         movesDone = 0;
 

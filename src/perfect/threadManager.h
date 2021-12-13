@@ -43,7 +43,7 @@ private:
     {
         unsigned int schedType;
         int increment;
-        int initialValue;
+        int initValue;
         int finalValue;
         void *pParam;
         DWORD(*threadProc)
@@ -77,7 +77,7 @@ public:
     public:
         unsigned int curThreadNo;
 
-        virtual void initializeElement() { }
+        virtual void initElement() { }
 
         virtual void destroyElement() { }
 
@@ -99,10 +99,10 @@ public:
             for (unsigned int threadCounter = 0; threadCounter < threadCount;
                  threadCounter++) {
                 item[threadCounter].curThreadNo = threadCounter;
-                item[threadCounter].initializeElement(master);
+                item[threadCounter].initElement(master);
                 item[threadCounter].curThreadNo =
                     threadCounter; // if 'curThreadNo' is overwritten in
-                                   // 'initializeElement()'
+                                   // 'initElement()'
             }
         };
 
@@ -160,7 +160,7 @@ public:
     unsigned int
     executeParallelLoop(DWORD threadProc(void *pParam, unsigned int index),
                         void *pParam, unsigned int paramStructSize,
-                        unsigned int schedType, int initialValue,
+                        unsigned int schedType, int initValue,
                         int finalValue, int increment);
 };
 
