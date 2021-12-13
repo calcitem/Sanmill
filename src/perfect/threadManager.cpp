@@ -354,8 +354,8 @@ ThreadManager::executeInParallel(DWORD threadProc(void *pParameter),
 //-----------------------------------------------------------------------------
 unsigned int ThreadManager::executeParallelLoop(
     DWORD threadProc(void *pParameter, unsigned index), void *pParameter,
-    unsigned int parameterStructSize, unsigned int scheduleType,
-    int initialValue, int finalValue, int inkrement)
+    unsigned int parameterStructSize, unsigned int schedType, int initialValue,
+    int finalValue, int inkrement)
 {
     // parameters ok?
     if (executionCancelled == true)
@@ -364,7 +364,7 @@ unsigned int ThreadManager::executeParallelLoop(
     if (pParameter == nullptr)
         return TM_RETURN_VALUE_INVALID_PARAM;
 
-    if (scheduleType >= TM_SCHEDULE_NUM_TYPES)
+    if (schedType >= TM_SCHED_NUM_TYPES)
         return TM_RETURN_VALUE_INVALID_PARAM;
 
     if (inkrement == 0)
@@ -402,10 +402,10 @@ unsigned int ThreadManager::executeParallelLoop(
         forLoopParameters[curThreadNo].threadManager = this;
         forLoopParameters[curThreadNo].threadProc = threadProc;
         forLoopParameters[curThreadNo].inkrement = inkrement;
-        forLoopParameters[curThreadNo].scheduleType = scheduleType;
+        forLoopParameters[curThreadNo].schedType = schedType;
 
-        switch (scheduleType) {
-        case TM_SCHEDULE_STATIC:
+        switch (schedType) {
+        case TM_SCHED_STATIC:
             chunkSize = nIterations / threadCount +
                         (curThreadNo < nIterations % threadCount ? 1 : 0);
             if (curThreadNo == 0) {
@@ -417,13 +417,13 @@ unsigned int ThreadManager::executeParallelLoop(
             forLoopParameters[curThreadNo].finalValue =
                 forLoopParameters[curThreadNo].initialValue + chunkSize - 1;
             break;
-        case TM_SCHEDULE_DYNAMIC:
+        case TM_SCHED_DYNAMIC:
             return TM_RETURN_VALUE_INVALID_PARAM;
             break;
-        case TM_SCHEDULE_GUIDED:
+        case TM_SCHED_GUIDED:
             return TM_RETURN_VALUE_INVALID_PARAM;
             break;
-        case TM_SCHEDULE_RUNTIME:
+        case TM_SCHED_RUNTIME:
             return TM_RETURN_VALUE_INVALID_PARAM;
             break;
         }
@@ -489,8 +489,8 @@ DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParameter)
     ForLoop *forLoopParameters = (ForLoop *)lpParameter;
     int index;
 
-    switch (forLoopParameters->scheduleType) {
-    case TM_SCHEDULE_STATIC:
+    switch (forLoopParameters->schedType) {
+    case TM_SCHED_STATIC:
         for (index = forLoopParameters->initialValue;
              (forLoopParameters->inkrement < 0) ?
                  index >= forLoopParameters->finalValue :
@@ -510,13 +510,13 @@ DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParameter)
                 break;
         }
         break;
-    case TM_SCHEDULE_DYNAMIC:
+    case TM_SCHED_DYNAMIC:
         return TM_RETURN_VALUE_INVALID_PARAM;
         break;
-    case TM_SCHEDULE_GUIDED:
+    case TM_SCHED_GUIDED:
         return TM_RETURN_VALUE_INVALID_PARAM;
         break;
-    case TM_SCHEDULE_RUNTIME:
+    case TM_SCHED_RUNTIME:
         return TM_RETURN_VALUE_INVALID_PARAM;
         break;
     }

@@ -223,7 +223,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
         // process each state in the current layer
         switch (threadManager.executeParallelLoop(
             initRetroAnalysisThreadProc, tva.getPointerToArray(),
-            tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0,
+            tva.getSizeOfArray(), TM_SCHED_STATIC, 0,
             layerStats[layerNumber].knotsInLayer - 1, 1)) {
         case TM_RETURN_VALUE_OK:
             break;
@@ -516,7 +516,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
             // process each state in the current layer
             switch (threadManager.executeParallelLoop(
                 addNumSucceedersThreadProc, tva.getPointerToArray(),
-                tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0,
+                tva.getSizeOfArray(), TM_SCHED_STATIC, 0,
                 layerStats[layerNumber].knotsInLayer - 1, 1)) {
             case TM_RETURN_VALUE_OK:
                 break;
@@ -577,7 +577,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
             // process each state in the current layer
             switch (threadManager.executeParallelLoop(
                 addNumSucceedersThreadProc, tva.getPointerToArray(),
-                tva.getSizeOfArray(), TM_SCHEDULE_STATIC, 0,
+                tva.getSizeOfArray(), TM_SCHED_STATIC, 0,
                 layerStats[succState.layerNumber].knotsInLayer - 1, 1)) {
             case TM_RETURN_VALUE_OK:
                 break;

@@ -55,7 +55,7 @@ bool MiniMax::testLayer(unsigned int layerNumber)
     // process each state in the current layer
     returnValue = threadManager.executeParallelLoop(
         testLayerThreadProc, (void *)tlVars, sizeof(TestLayersVars),
-        TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
+        TM_SCHED_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
     switch (returnValue) {
     case TM_RETURN_VALUE_OK:
     case TM_RETURN_VALUE_EXECUTION_CANCELLED:
@@ -517,7 +517,7 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
     // process each state in the current layer
     returnValue = threadManager.executeParallelLoop(
         testSetSituationThreadProc, (void *)tlVars, sizeof(TestLayersVars),
-        TM_SCHEDULE_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
+        TM_SCHED_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
 
     switch (returnValue) {
     case TM_RETURN_VALUE_OK:

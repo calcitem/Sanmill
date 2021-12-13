@@ -16,13 +16,13 @@
 
 using std::iostream; // use standard library namespace
 
-enum ThreadManagerSchedule {
-    TM_SCHEDULE_USER_DEFINED = 0,
-    TM_SCHEDULE_STATIC = 1,
-    TM_SCHEDULE_DYNAMIC = 2,
-    TM_SCHEDULE_GUIDED = 3,
-    TM_SCHEDULE_RUNTIME = 4,
-    TM_SCHEDULE_NUM_TYPES = 5
+enum ThreadManagerSched {
+    TM_SCHED_USER_DEFINED = 0,
+    TM_SCHED_STATIC = 1,
+    TM_SCHED_DYNAMIC = 2,
+    TM_SCHED_GUIDED = 3,
+    TM_SCHED_RUNTIME = 4,
+    TM_SCHED_NUM_TYPES = 5
 };
 
 enum ThreadManagerReturnValue {
@@ -41,7 +41,7 @@ private:
     // structures
     struct ForLoop
     {
-        unsigned int scheduleType;
+        unsigned int schedType;
         int inkrement;
         int initialValue;
         int finalValue;
@@ -160,7 +160,7 @@ public:
     unsigned int
     executeParallelLoop(DWORD threadProc(void *pParameter, unsigned int index),
                         void *pParameter, unsigned int parameterStructSize,
-                        unsigned int scheduleType, int initialValue,
+                        unsigned int schedType, int initialValue,
                         int finalValue, int inkrement);
 };
 
