@@ -1,6 +1,6 @@
 ## Overview
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![YouTube](fastlane/metadata/android/en-US/images/featureGraphic.png)](https://www.youtube.com/channel/UCbGKXwhh1DkuINyZw05kyHw/featured)
@@ -130,6 +130,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://play.google.com/store/apps/dev?id=4614143494034576766"><img src="https://avatars.githubusercontent.com/u/51521682?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Calcitem</b></sub></a><br /><a href="#a11y-calcitem" title="Accessibility">️️️️♿️</a> <a href="https://github.com/calcitem/Sanmill/issues?q=author%3Acalcitem" title="Bug reports">🐛</a> <a href="#blog-calcitem" title="Blogposts">📝</a> <a href="#business-calcitem" title="Business development">💼</a> <a href="https://github.com/calcitem/Sanmill/commits?author=calcitem" title="Code">💻</a> <a href="https://github.com/calcitem/Sanmill/commits?author=calcitem" title="Documentation">📖</a> <a href="#design-calcitem" title="Design">🎨</a> <a href="#ideas-calcitem" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-calcitem" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#platform-calcitem" title="Packaging/porting to new platform">📦</a> <a href="#question-calcitem" title="Answering Questions">💬</a> <a href="https://github.com/calcitem/Sanmill/pulls?q=is%3Apr+reviewed-by%3Acalcitem" title="Reviewed Pull Requests">👀</a> <a href="#security-calcitem" title="Security">🛡️</a> <a href="#translation-calcitem" title="Translation">🌍</a> <a href="https://github.com/calcitem/Sanmill/commits?author=calcitem" title="Tests">⚠️</a> <a href="#video-calcitem" title="Videos">📹</a> <a href="#maintenance-calcitem" title="Maintenance">🚧</a> <a href="#mentoring-calcitem" title="Mentoring">🧑‍🏫</a> <a href="#projectManagement-calcitem" title="Project Management">📆</a></td>
+    <td align="center"><a href="http://gitlab.rimikis.de/Leptopoda"><img src="https://avatars.githubusercontent.com/u/25266387?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nikolas Rimikis</b></sub></a><br /><a href="https://github.com/calcitem/Sanmill/commits?author=Leptopoda" title="Code">💻</a> <a href="https://github.com/calcitem/Sanmill/commits?author=Leptopoda" title="Documentation">📖</a> <a href="#ideas-Leptopoda" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-Leptopoda" title="Maintenance">🚧</a> <a href="#projectManagement-Leptopoda" title="Project Management">📆</a> <a href="#platform-Leptopoda" title="Packaging/porting to new platform">📦</a> <a href="https://github.com/calcitem/Sanmill/pulls?q=is%3Apr+reviewed-by%3ALeptopoda" title="Reviewed Pull Requests">👀</a> <a href="#translation-Leptopoda" title="Translation">🌍</a></td>
   </tr>
 </table>
 
