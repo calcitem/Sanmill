@@ -34,7 +34,7 @@ MiniMax::MiniMax()
     userPrintFunc = nullptr;
     layerStats = nullptr;
     plyInfos = nullptr;
-    fileDirectory.assign("");
+    fileDir.assign("");
     InitializeCriticalSection(&csDatabase);
     InitializeCriticalSection(&csOsPrint);
 

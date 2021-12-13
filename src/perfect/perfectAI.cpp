@@ -191,7 +191,7 @@ unsigned int fieldPosIsOfGroup[] = {GROUP_C, GROUP_D, GROUP_C, GROUP_A, GROUP_B,
 // PerfectAI()
 // PerfectAI class constructor
 //-----------------------------------------------------------------------------
-PerfectAI::PerfectAI(const char *directory)
+PerfectAI::PerfectAI(const char *dir)
 {
     // locals
     unsigned int i, a, b, c, totalNumPieces;
@@ -221,8 +221,8 @@ PerfectAI::PerfectAI(const char *directory)
     }
 
     // Open File, which contains the precalculated vars
-    if (strlen(directory) && PathFileExistsA(directory)) {
-        ssPreCalcVarsFilePath << directory << "\\";
+    if (strlen(dir) && PathFileExistsA(dir)) {
+        ssPreCalcVarsFilePath << dir << "\\";
     }
 
     ssPreCalcVarsFilePath << "preCalculatedVars.dat";
@@ -905,7 +905,7 @@ void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom,
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // open database file
-    openDatabase(databaseDirectory.c_str(), POSIBILE_MOVE_COUNT_MAX);
+    openDatabase(databaseDir.c_str(), POSIBILE_MOVE_COUNT_MAX);
 
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
@@ -970,7 +970,7 @@ void PerfectAI::prepareDatabaseCalculation()
     }
 
     // open database file
-    openDatabase(databaseDirectory.c_str(), POSIBILE_MOVE_COUNT_MAX);
+    openDatabase(databaseDir.c_str(), POSIBILE_MOVE_COUNT_MAX);
 }
 
 //-----------------------------------------------------------------------------
@@ -1004,7 +1004,7 @@ bool PerfectAI::testLayers(unsigned int startTestFromLayer,
     for (curLayer = startTestFromLayer; curLayer <= endTestAtLayer;
          curLayer++) {
         closeDatabase();
-        if (!openDatabase(databaseDirectory.c_str(), POSIBILE_MOVE_COUNT_MAX))
+        if (!openDatabase(databaseDir.c_str(), POSIBILE_MOVE_COUNT_MAX))
             result = false;
         if (!testIfSymStatesHaveSameValue(curLayer))
             result = false;
@@ -1021,13 +1021,13 @@ bool PerfectAI::testLayers(unsigned int startTestFromLayer,
 // setDatabasePath()
 //
 //-----------------------------------------------------------------------------
-bool PerfectAI::setDatabasePath(const char *directory)
+bool PerfectAI::setDatabasePath(const char *dir)
 {
-    if (directory == nullptr) {
+    if (dir == nullptr) {
         return false;
     } else {
-        cout << "Path to database set to: " << directory << endl;
-        databaseDirectory.assign(directory);
+        cout << "Path to database set to: " << dir << endl;
+        databaseDir.assign(dir);
         return true;
     }
 }

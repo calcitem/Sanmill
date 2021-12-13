@@ -160,7 +160,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
     // layer number of the current process layer
     unsigned int layerNumber;
 
-    // path of the working directory
+    // path of the working dir
     stringstream ssInitArrayPath;
 
     // filename corresponding to a cyclic array file which is used for storage
@@ -184,11 +184,10 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 
         // file names
         ssInitArrayPath.str("");
-        ssInitArrayPath << fileDirectory << (fileDirectory.size() ? "\\" : "")
+        ssInitArrayPath << fileDir << (fileDir.size() ? "\\" : "")
                         << "initLayer";
         ssInitArrayFilePath.str("");
-        ssInitArrayFilePath << fileDirectory
-                            << (fileDirectory.size() ? "\\" : "")
+        ssInitArrayFilePath << fileDir << (fileDir.size() ? "\\" : "")
                             << "initLayer\\initLayer" << layerNumber << ".dat";
 
         // does initialization file exist ?
@@ -383,9 +382,8 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
          curLayer++)
         ssLayers << " " << retroVars.layersToCalculate[curLayer];
 
-    ssCountArrayPath << fileDirectory << (fileDirectory.size() ? "\\" : "")
-                     << "countArray";
-    ssCountArrayFilePath << fileDirectory << (fileDirectory.size() ? "\\" : "")
+    ssCountArrayPath << fileDir << (fileDir.size() ? "\\" : "") << "countArray";
+    ssCountArrayFilePath << fileDir << (fileDir.size() ? "\\" : "")
                          << "countArray\\countArray" << ssLayers.str()
                          << ".dat";
     PRINT(2, this,
@@ -1060,8 +1058,7 @@ bool MiniMax::addStateToProcessQueue(retroAnalysisGlobalVars &retroVars,
     if (threadVars.statesToProcess[plyNumber] == nullptr) {
         stringstream ssStatesToProcessFilePath;
         stringstream ssStatesToProcessPath;
-        ssStatesToProcessPath << fileDirectory
-                              << (fileDirectory.size() ? "\\" : "")
+        ssStatesToProcessPath << fileDir << (fileDir.size() ? "\\" : "")
                               << "statesToProcess";
         CreateDirectoryA(ssStatesToProcessPath.str().c_str(), nullptr);
         ssStatesToProcessFilePath.str("");

@@ -431,7 +431,7 @@ public:
                         unsigned int branchCountMax);
 
     // Database functions
-    bool openDatabase(const char *directory, unsigned int branchCountMax);
+    bool openDatabase(const char *dir, unsigned int branchCountMax);
     void calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLayer);
     bool isCurrentStateInDatabase(unsigned int threadNo);
     void closeDatabase();
@@ -937,7 +937,7 @@ private:
     PlyInfoFileHeader plyInfoHeader;
 
     // path of the folder where the database files are located
-    string fileDirectory;
+    string fileDir;
 
     // stream for output. default is cout
     ostream *osPrint = nullptr;

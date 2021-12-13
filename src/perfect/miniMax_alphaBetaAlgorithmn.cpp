@@ -105,7 +105,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     // true if the initialization information is already available in a file
     bool initAlreadyDone = false;
 
-    stringstream ssInvArrayDirectory;
+    stringstream ssInvArrayDir;
     stringstream ssInvArrayFilePath;
 
     // set current processed layer number
@@ -118,16 +118,15 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
                << " knots ***");
 
     // file names
-    ssInvArrayDirectory.str("");
-    ssInvArrayDirectory << fileDirectory << (fileDirectory.size() ? "\\" : "")
-                        << "invalidStates";
+    ssInvArrayDir.str("");
+    ssInvArrayDir << fileDir << (fileDir.size() ? "\\" : "") << "invalidStates";
     ssInvArrayFilePath.str("");
-    ssInvArrayFilePath << fileDirectory << (fileDirectory.size() ? "\\" : "")
+    ssInvArrayFilePath << fileDir << (fileDir.size() ? "\\" : "")
                        << "invalidStates\\invalidStatesOfLayer"
                        << alphaBetaVars.layerNumber << ".dat";
 
     // does initialization file exist ?
-    CreateDirectoryA(ssInvArrayDirectory.str().c_str(), nullptr);
+    CreateDirectoryA(ssInvArrayDir.str().c_str(), nullptr);
     invalidArray = new BufferedFile(threadManager.getThreadCount(),
                                     FILE_BUFFER_SIZE,
                                     ssInvArrayFilePath.str().c_str());
