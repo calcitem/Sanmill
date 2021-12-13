@@ -194,7 +194,7 @@ protected:
         // pointer of the current board [changed by move()]
         fieldStruct *field;
 
-        // value of current situation for board->currentPlayer
+        // value of current situation for board->curPlayer
         float floatValue;
 
         TwoBit shortValue;
@@ -251,11 +251,11 @@ protected:
                                             unsigned int &stateNumber);
         void setWarningAndMill(unsigned int piece, unsigned int firstNeighbor,
                                unsigned int secondNeighbor);
-        bool fieldIntegrityOK(unsigned int nMillsCurrentPlayer,
+        bool fieldIntegrityOK(unsigned int nMillsCurPlayer,
                               unsigned int nMillsOpponentPlayer,
                               bool aPieceCanBeRemovedFromCurPlayer);
         void generateMoves(Player *player);
-        void storePredecessor(unsigned int nMillsCurrentPlayer,
+        void storePredecessor(unsigned int nMillsCurPlayer,
                               unsigned int nMillsOpponentPlayer,
                               unsigned int *amountOfPred,
                               RetroAnalysisPredVars *predVars);

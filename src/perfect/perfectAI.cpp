@@ -917,7 +917,7 @@ void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom,
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // current state already calculated?
-    if (isCurrentStateInDatabase(0)) {
+    if (isCurStateInDatabase(0)) {
         cout << "PerfectAI is using database!\n\n\n";
         threadVars[0].fullTreeDepth = 3;
     } else {
@@ -1225,7 +1225,7 @@ unsigned int *PerfectAI::getPossibilities(unsigned int threadNo,
 {
     // locals
     bool aPieceCanBeRemovedFromCurPlayer = 0;
-    unsigned int nMillsCurrentPlayer = 0;
+    unsigned int nMillsCurPlayer = 0;
     unsigned int nMillsOpponentPlayer = 0;
     unsigned int i;
 
@@ -1236,19 +1236,19 @@ unsigned int *PerfectAI::getPossibilities(unsigned int threadNo,
     // count completed mills
     for (i = 0; i < SQUARE_NB; i++) {
         if (tv->field->board[i] == tv->field->curPlayer->id)
-            nMillsCurrentPlayer += tv->field->piecePartOfMill[i];
+            nMillsCurPlayer += tv->field->piecePartOfMill[i];
         else
             nMillsOpponentPlayer += tv->field->piecePartOfMill[i];
         if (tv->field->piecePartOfMill[i] == 0 &&
             tv->field->board[i] == tv->field->curPlayer->id)
             aPieceCanBeRemovedFromCurPlayer = true;
     }
-    nMillsCurrentPlayer /= 3;
+    nMillsCurPlayer /= 3;
     nMillsOpponentPlayer /= 3;
 
     // When game has ended of course nothing happens any more
     if (tv->gameHasFinished ||
-        !tv->fieldIntegrityOK(nMillsCurrentPlayer, nMillsOpponentPlayer,
+        !tv->fieldIntegrityOK(nMillsCurPlayer, nMillsOpponentPlayer,
                               aPieceCanBeRemovedFromCurPlayer)) {
         *possibilityCount = 0;
         return 0;
@@ -2019,7 +2019,7 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
     unsigned int symField[SQUARE_NB];
     unsigned int whitePieceCount = layer[layerNum].whitePieceCount;
     unsigned int blackPieceCount = layer[layerNum].blackPieceCount;
-    unsigned int nMillsCurrentPlayer = 0;
+    unsigned int nMillsCurPlayer = 0;
     unsigned int nMillsOpponentPlayer = 0;
     unsigned int wCD = 0, bCD = 0, wAB = 0, bAB = 0;
     unsigned int i;
@@ -2131,12 +2131,12 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
     // count completed mills
     for (i = 0; i < SQUARE_NB; i++) {
         if (tv->field->board[i] == tv->field->curPlayer->id)
-            nMillsCurrentPlayer += tv->field->piecePartOfMill[i];
+            nMillsCurPlayer += tv->field->piecePartOfMill[i];
         else
             nMillsOpponentPlayer += tv->field->piecePartOfMill[i];
     }
 
-    nMillsCurrentPlayer /= 3;
+    nMillsCurPlayer /= 3;
     nMillsOpponentPlayer /= 3;
 
     // piecesSet & removedPiecesCount
@@ -2144,7 +2144,7 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
         // BUG: ... This calculation is not correct! It is possible that some
         // mills did not cause a piece removal.
         tv->field->curPlayer->removedPiecesCount = nMillsOpponentPlayer;
-        tv->field->oppPlayer->removedPiecesCount = nMillsCurrentPlayer -
+        tv->field->oppPlayer->removedPiecesCount = nMillsCurPlayer -
                                                    tv->field->pieceMustBeRemoved;
         tv->field->piecesSet = tv->field->curPlayer->pieceCount +
                                tv->field->oppPlayer->pieceCount +
@@ -2186,7 +2186,7 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
     }
 
     // test if board is ok
-    return tv->fieldIntegrityOK(nMillsCurrentPlayer, nMillsOpponentPlayer,
+    return tv->fieldIntegrityOK(nMillsCurPlayer, nMillsOpponentPlayer,
                                 aPieceCanBeRemovedFromCurPlayer);
 }
 
@@ -2433,7 +2433,7 @@ void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo,
 //
 //-----------------------------------------------------------------------------
 bool PerfectAI::ThreadVars::fieldIntegrityOK(
-    unsigned int nMillsCurrentPlayer, unsigned int nMillsOpponentPlayer,
+    unsigned int nMillsCurPlayer, unsigned int nMillsOpponentPlayer,
     bool aPieceCanBeRemovedFromCurPlayer)
 {
     // locals
@@ -2452,7 +2452,7 @@ bool PerfectAI::ThreadVars::fieldIntegrityOK(
     }
 
     // when no mill is closed than no piece can be removed
-    if (field->pieceMustBeRemoved && nMillsCurrentPlayer == 0) {
+    if (field->pieceMustBeRemoved && nMillsCurPlayer == 0) {
         return false;
 
         // when in placing phase and difference in number of pieces between the
@@ -2462,20 +2462,20 @@ bool PerfectAI::ThreadVars::fieldIntegrityOK(
         noneFullFilled = true;
 
         for (i = 0; noneFullFilled && i <= (int)nMillsOpponentPlayer &&
-                    i <= (int)nMillsCurrentPlayer;
+                    i <= (int)nMillsCurPlayer;
              i++) {
             for (j = 0;
                  noneFullFilled && j <= (int)nMillsOpponentPlayer &&
-                 j <= (int)nMillsCurrentPlayer - (int)field->pieceMustBeRemoved;
+                 j <= (int)nMillsCurPlayer - (int)field->pieceMustBeRemoved;
                  j++) {
                 if (field->curPlayer->pieceCount + nMillsOpponentPlayer + 0 -
                         field->pieceMustBeRemoved - j ==
-                    field->oppPlayer->pieceCount + nMillsCurrentPlayer -
+                    field->oppPlayer->pieceCount + nMillsCurPlayer -
                         field->pieceMustBeRemoved - i)
                     noneFullFilled = false;
                 if (field->curPlayer->pieceCount + nMillsOpponentPlayer + 1 -
                         field->pieceMustBeRemoved - j ==
-                    field->oppPlayer->pieceCount + nMillsCurrentPlayer -
+                    field->oppPlayer->pieceCount + nMillsCurPlayer -
                         field->pieceMustBeRemoved - i)
                     noneFullFilled = false;
             }
@@ -2560,7 +2560,7 @@ bool PerfectAI::isSymOperationInvariantOnGroupCD(unsigned int symmetryOperation,
 // storePredecessor()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::ThreadVars::storePredecessor(unsigned int nMillsCurrentPlayer,
+void PerfectAI::ThreadVars::storePredecessor(unsigned int nMillsCurPlayer,
                                              unsigned int nMillsOpponentPlayer,
                                              unsigned int *amountOfPred,
                                              RetroAnalysisPredVars *predVars)
@@ -2572,7 +2572,7 @@ void PerfectAI::ThreadVars::storePredecessor(unsigned int nMillsCurrentPlayer,
     unsigned int originalAmountOfPred = *amountOfPred;
 
     // store only if state is valid
-    if (fieldIntegrityOK(nMillsCurrentPlayer, nMillsOpponentPlayer, false)) {
+    if (fieldIntegrityOK(nMillsCurPlayer, nMillsOpponentPlayer, false)) {
         // save current board
         for (i = 0; i < SQUARE_NB; i++)
             originalField[i] = field->board[i];
@@ -2639,7 +2639,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
     bool millWasClosed;
     unsigned int from, to, dir, i;
     Player *tmpPlayer;
-    unsigned int nMillsCurrentPlayer = 0;
+    unsigned int nMillsCurPlayer = 0;
     unsigned int nMillsOpponentPlayer = 0;
 
     // zero
@@ -2648,12 +2648,12 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
     // count completed mills
     for (i = 0; i < SQUARE_NB; i++) {
         if (tv->field->board[i] == tv->field->curPlayer->id)
-            nMillsCurrentPlayer += tv->field->piecePartOfMill[i];
+            nMillsCurPlayer += tv->field->piecePartOfMill[i];
         else
             nMillsOpponentPlayer += tv->field->piecePartOfMill[i];
     }
 
-    nMillsCurrentPlayer /= 3;
+    nMillsCurPlayer /= 3;
     nMillsOpponentPlayer /= 3;
 
     // precalc aPieceCanBeRemovedFromCurPlayer
@@ -2712,7 +2712,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
                         if (from < SQUARE_NB &&
                             tv->field->board[from] == tv->field->squareIsFree) {
                             if (millWasClosed) {
-                                nMillsCurrentPlayer -=
+                                nMillsCurPlayer -=
                                     tv->field->piecePartOfMill[to];
                                 tv->field->pieceMustBeRemoved = 0;
                                 predVars[*amountOfPred].playerToMoveChanged =
@@ -2723,10 +2723,10 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
                                 tmpPlayer = tv->field->curPlayer;
                                 tv->field->curPlayer = tv->field->oppPlayer;
                                 tv->field->oppPlayer = tmpPlayer;
-                                i = nMillsCurrentPlayer;
-                                nMillsCurrentPlayer = nMillsOpponentPlayer;
+                                i = nMillsCurPlayer;
+                                nMillsCurPlayer = nMillsOpponentPlayer;
                                 nMillsOpponentPlayer = i;
-                                nMillsCurrentPlayer -=
+                                nMillsCurPlayer -=
                                     tv->field->piecePartOfMill[to];
                             }
 
@@ -2735,7 +2735,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
                             tv->field->board[to] = tv->field->squareIsFree;
 
                             // store predecessor
-                            tv->storePredecessor(nMillsCurrentPlayer,
+                            tv->storePredecessor(nMillsCurPlayer,
                                                  nMillsOpponentPlayer,
                                                  amountOfPred, predVars);
 
@@ -2744,17 +2744,17 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
                             tv->field->board[from] = tv->field->squareIsFree;
 
                             if (millWasClosed) {
-                                nMillsCurrentPlayer +=
+                                nMillsCurPlayer +=
                                     tv->field->piecePartOfMill[to];
                                 tv->field->pieceMustBeRemoved = 1;
                             } else {
                                 tmpPlayer = tv->field->curPlayer;
                                 tv->field->curPlayer = tv->field->oppPlayer;
                                 tv->field->oppPlayer = tmpPlayer;
-                                nMillsCurrentPlayer +=
+                                nMillsCurPlayer +=
                                     tv->field->piecePartOfMill[to];
-                                i = nMillsCurrentPlayer;
-                                nMillsCurrentPlayer = nMillsOpponentPlayer;
+                                i = nMillsCurPlayer;
+                                nMillsCurPlayer = nMillsOpponentPlayer;
                                 nMillsOpponentPlayer = i;
                             }
 
@@ -2791,7 +2791,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
                     if (tv->field->board[from] == tv->field->squareIsFree) {
                         // was a mill closed?
                         if (millWasClosed) {
-                            nMillsCurrentPlayer -= tv->field
+                            nMillsCurPlayer -= tv->field
                                                        ->piecePartOfMill[to];
                             tv->field->pieceMustBeRemoved = 0;
                             predVars[*amountOfPred].playerToMoveChanged = false;
@@ -2800,10 +2800,10 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
                             tmpPlayer = tv->field->curPlayer;
                             tv->field->curPlayer = tv->field->oppPlayer;
                             tv->field->oppPlayer = tmpPlayer;
-                            i = nMillsCurrentPlayer;
-                            nMillsCurrentPlayer = nMillsOpponentPlayer;
+                            i = nMillsCurPlayer;
+                            nMillsCurPlayer = nMillsOpponentPlayer;
                             nMillsOpponentPlayer = i;
-                            nMillsCurrentPlayer -= tv->field
+                            nMillsCurPlayer -= tv->field
                                                        ->piecePartOfMill[to];
                         }
 
@@ -2812,7 +2812,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
                         tv->field->board[to] = tv->field->squareIsFree;
 
                         // store predecessor
-                        tv->storePredecessor(nMillsCurrentPlayer,
+                        tv->storePredecessor(nMillsCurPlayer,
                                              nMillsOpponentPlayer, amountOfPred,
                                              predVars);
 
@@ -2821,17 +2821,17 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
                         tv->field->board[from] = tv->field->squareIsFree;
 
                         if (millWasClosed) {
-                            nMillsCurrentPlayer += tv->field
+                            nMillsCurPlayer += tv->field
                                                        ->piecePartOfMill[to];
                             tv->field->pieceMustBeRemoved = 1;
                         } else {
                             tmpPlayer = tv->field->curPlayer;
                             tv->field->curPlayer = tv->field->oppPlayer;
                             tv->field->oppPlayer = tmpPlayer;
-                            nMillsCurrentPlayer += tv->field
+                            nMillsCurPlayer += tv->field
                                                        ->piecePartOfMill[to];
-                            i = nMillsCurrentPlayer;
-                            nMillsCurrentPlayer = nMillsOpponentPlayer;
+                            i = nMillsCurPlayer;
+                            nMillsCurPlayer = nMillsOpponentPlayer;
                             nMillsOpponentPlayer = i;
                         }
                     }
@@ -2874,7 +2874,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
 
                         // store predecessor
                         tv->storePredecessor(nMillsOpponentPlayer,
-                                             nMillsCurrentPlayer, amountOfPred,
+                                             nMillsCurPlayer, amountOfPred,
                                              predVars);
 
                         tmpPlayer = tv->field->curPlayer;
@@ -2901,7 +2901,7 @@ bool PerfectAI::checkMoveAndSetSituation()
 {
     // locals
     bool aPieceCanBeRemovedFromCurPlayer;
-    unsigned int nMillsCurrentPlayer, nMillsOpponentPlayer;
+    unsigned int nMillsCurPlayer, nMillsOpponentPlayer;
     unsigned int stateNum, layerNum, curMove, i;
     unsigned int *idPossibility;
     unsigned int possibilityCount;
@@ -2955,17 +2955,17 @@ bool PerfectAI::checkMoveAndSetSituation()
                      &pBackup, pPossibilities);
 
                 // count completed mills
-                nMillsCurrentPlayer = 0;
+                nMillsCurPlayer = 0;
                 nMillsOpponentPlayer = 0;
 
                 for (i = 0; i < SQUARE_NB; i++) {
                     if (tv->field->board[i] == tv->field->curPlayer->id)
-                        nMillsCurrentPlayer += tv->field->piecePartOfMill[i];
+                        nMillsCurPlayer += tv->field->piecePartOfMill[i];
                     else
                         nMillsOpponentPlayer += tv->field->piecePartOfMill[i];
                 }
 
-                nMillsCurrentPlayer /= 3;
+                nMillsCurPlayer /= 3;
                 nMillsOpponentPlayer /= 3;
 
                 // precalc aPieceCanBeRemovedFromCurPlayer
@@ -2980,7 +2980,7 @@ bool PerfectAI::checkMoveAndSetSituation()
 
                 //
                 if (tv->fieldIntegrityOK(
-                        nMillsCurrentPlayer, nMillsOpponentPlayer,
+                        nMillsCurPlayer, nMillsOpponentPlayer,
                         aPieceCanBeRemovedFromCurPlayer) == false) {
                     cout << endl
                          << "ERROR: STATE " << stateNum

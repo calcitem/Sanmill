@@ -229,6 +229,6 @@ bool perfect_command(const char *cmd)
 }
 
 // mill->getWinner() == 0
-// mill->getCurrentPlayer() == fieldStruct::playerTwo
+// mill->getCurPlayer() == fieldStruct::playerTwo
 
 #endif // MADWEASEL_MUEHLE_PERFECT_AI

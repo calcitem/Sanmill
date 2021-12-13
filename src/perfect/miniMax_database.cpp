@@ -162,10 +162,10 @@ void MiniMax::loadBytesFromFile(HANDLE hFile, int64_t offset,
 }
 
 //-----------------------------------------------------------------------------
-// isCurrentStateInDatabase()
+// isCurStateInDatabase()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::isCurrentStateInDatabase(unsigned int threadNo)
+bool MiniMax::isCurStateInDatabase(unsigned int threadNo)
 {
     unsigned int layerNum, stateNumber;
 

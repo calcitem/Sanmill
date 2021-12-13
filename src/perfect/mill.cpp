@@ -75,7 +75,7 @@ void Mill::resetGame()
 // Reinitializes the Mill object.
 //-----------------------------------------------------------------------------
 void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
-                        int currentPlayer)
+                        int curPlayer)
 {
     // free memory
     exit();
@@ -85,8 +85,8 @@ void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
     initField.createBoard();
 
     // calculate beginning player
-    if (currentPlayer == field.playerOne || currentPlayer == field.playerTwo) {
-        beginningPlayer = currentPlayer;
+    if (curPlayer == field.playerOne || curPlayer == field.playerTwo) {
+        beginningPlayer = curPlayer;
     } else {
         beginningPlayer = (rand() % 2) ? field.playerOne : field.playerTwo;
     }
@@ -112,9 +112,9 @@ void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
 //
 //-----------------------------------------------------------------------------
 bool Mill::startPlacingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
-                             int currentPlayer, bool placingPhase)
+                             int curPlayer, bool placingPhase)
 {
-    beginNewGame(firstPlayerAI, secondPlayerAI, currentPlayer);
+    beginNewGame(firstPlayerAI, secondPlayerAI, curPlayer);
 
     field.placingPhase = placingPhase;
 
@@ -189,7 +189,7 @@ bool Mill::putPiece(unsigned int pos, int player)
 {
     // locals
     unsigned int i;
-    unsigned int nCurrentPlayerMills = 0, nOpponentPlayerMills = 0;
+    unsigned int nCurPlayerMills = 0, nOpponentPlayerMills = 0;
     Player *myPlayer = (player == field.curPlayer->id) ? field.curPlayer :
                                                          field.oppPlayer;
 
@@ -233,11 +233,11 @@ bool Mill::putPiece(unsigned int pos, int player)
     // count completed mills
     for (i = 0; i < SQUARE_NB; i++) {
         if (field.board[i] == field.curPlayer->id)
-            nCurrentPlayerMills += field.piecePartOfMill[i];
+            nCurPlayerMills += field.piecePartOfMill[i];
         else
             nOpponentPlayerMills += field.piecePartOfMill[i];
     }
-    nCurrentPlayerMills /= 3;
+    nCurPlayerMills /= 3;
     nOpponentPlayerMills /= 3;
 
     // piecesSet & removedPiecesCount
@@ -245,7 +245,7 @@ bool Mill::putPiece(unsigned int pos, int player)
         // ... This calculation is not correct! It is possible that some mills
         // did not cause a piece removal.
         field.curPlayer->removedPiecesCount = nOpponentPlayerMills;
-        field.oppPlayer->removedPiecesCount = nCurrentPlayerMills -
+        field.oppPlayer->removedPiecesCount = nCurPlayerMills -
                                               field.pieceMustBeRemoved;
         field.piecesSet = field.curPlayer->pieceCount +
                           field.oppPlayer->pieceCount +
@@ -338,10 +338,10 @@ void Mill::setNextPlayer()
 }
 
 //-----------------------------------------------------------------------------
-// isCurrentPlayerHuman()
+// isCurPlayerHuman()
 // Returns true if the current player is not assigned to an AI.
 //-----------------------------------------------------------------------------
-bool Mill::isCurrentPlayerHuman()
+bool Mill::isCurPlayerHuman()
 {
     if (field.curPlayer->id == field.playerOne)
         return (playerOneAI == nullptr) ? true : false;
@@ -727,10 +727,10 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
 }
 
 //-----------------------------------------------------------------------------
-// setCurrentGameState()
+// setCurGameState()
 // Set an arbitrary game state as the current one.
 //-----------------------------------------------------------------------------
-bool Mill::setCurrentGameState(fieldStruct *curState)
+bool Mill::setCurGameState(fieldStruct *curState)
 {
     curState->copyBoard(&field);
 
@@ -922,7 +922,7 @@ void Mill::undoMove(void)
 void Mill::calcRestingPieceCount(int &nWhitePiecesResting,
                                  int &nBlackPiecesResting)
 {
-    if (getCurrentPlayer() == fieldStruct::playerTwo) {
+    if (getCurPlayer() == fieldStruct::playerTwo) {
         nWhitePiecesResting = fieldStruct::piecePerPlayerCount -
                               field.curPlayer->removedPiecesCount -
                               field.curPlayer->pieceCount;
