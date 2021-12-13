@@ -358,7 +358,7 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int nValues,
                     return false;
                 }
 
-                // calc final value
+                // calculate final value
                 (*pData) = integralValue;
                 if (decimalPos) {
                     (*pData) += fractionalValue * fractionalFactor[decimalPos];

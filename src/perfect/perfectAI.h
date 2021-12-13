@@ -209,7 +209,7 @@ protected:
         unsigned int curSearchDepth;
 
         // search depth where the whole tree is explored
-        unsigned int depthOfFullTree;
+        unsigned int fullTreeDepth;
 
         // returned pointer of getPossibilities()-function
         unsigned int *idPossibilities;
@@ -291,7 +291,7 @@ protected:
 
     // Virtual Functions
     void prepareBestChoiceCalculation();
-    void getValueOfSituation(unsigned int threadNo, float &floatValue,
+    void getSituationValue(unsigned int threadNo, float &floatValue,
                              TwoBit &shortValue);
     void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel);
     bool getOpponentLevel(unsigned int threadNo);

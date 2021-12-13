@@ -22,15 +22,15 @@ enum ThreadManagerSched {
     TM_SCHED_DYNAMIC = 2,
     TM_SCHED_GUIDED = 3,
     TM_SCHED_RUNTIME = 4,
-    TM_SCHED_NUM_TYPES = 5
+    TM_SCHED_TYPE_COUNT = 5
 };
 
 enum ThreadManagerReturnValue {
-    TM_RETURN_VALUE_OK = 0,
-    TM_RETURN_VALUE_TERMINATE_ALL_THREADS = 1,
-    TM_RETURN_VALUE_EXEC_CANCELLED = 2,
-    TM_RETURN_VALUE_INVALID_PARAM = 3,
-    TM_RETURN_VALUE_UNEXPECTED_ERROR = 4
+    TM_RETVAL_OK = 0,
+    TM_RETVAL_TERMINATE_ALL_THREADS = 1,
+    TM_RETVAL_EXEC_CANCELLED = 2,
+    TM_RETVAL_INVALID_PARAM = 3,
+    TM_RETVAL_UNEXPECTED_ERROR = 4
 };
 
 /*** Structures ******************************************************/
@@ -62,7 +62,7 @@ private:
     bool execCancelled; // true when cancelExec() was called
 
     // barrier stuff
-    HANDLE hEventBarrierPassedByEveryBody;
+    HANDLE hEventBarrierPassedByEverybody;
     HANDLE *hBarrier; // array of size 'threadCount' containing the event
                       // handles for the barrier
     unsigned int threadPassedBarrierCount;
@@ -91,39 +91,39 @@ public:
         unsigned int threadCount;
         varType *item;
 
-        ThreadVarsArray(unsigned int threadCount, varType &master)
+        ThreadVarsArray(unsigned int threadCnt, varType &master)
         {
-            this->threadCount = threadCount;
-            this->item = new varType[threadCount];
+            this->threadCount = threadCnt;
+            this->item = new varType[threadCnt];
 
-            for (unsigned int threadCounter = 0; threadCounter < threadCount;
-                 threadCounter++) {
-                item[threadCounter].curThreadNo = threadCounter;
-                item[threadCounter].initElement(master);
-                item[threadCounter].curThreadNo =
-                    threadCounter; // if 'curThreadNo' is overwritten in
-                                   // 'initElement()'
+            for (unsigned int th = 0; th < threadCnt;
+                 th++) {
+                item[th].curThreadNo = th;
+                item[th].initElement(master);
+                // if 'curThreadNo' is overwritten in 'initElement()'
+                item[th].curThreadNo = th; 
             }
         };
 
         ~ThreadVarsArray()
         {
-            for (unsigned int threadCounter = 0; threadCounter < threadCount;
-                 threadCounter++) {
-                item[threadCounter].destroyElement();
+            for (unsigned int th = 0; th < threadCount;
+                 th++) {
+                item[th].destroyElement();
             }
+
             delete[] item;
         };
 
         void *getPointerToArray() { return (void *)item; }
 
-        unsigned int getSizeOfArray() { return sizeof(varType); }
+        unsigned int getArraySize() { return sizeof(varType); }
 
         void reduce()
         {
-            for (unsigned int threadCounter = 0; threadCounter < threadCount;
-                 threadCounter++) {
-                item[threadCounter].reduce();
+            for (unsigned int th = 0; th < threadCount;
+                 th++) {
+                item[th].reduce();
             }
         };
     };
@@ -136,15 +136,15 @@ public:
     unsigned int getThreadNumber();
     unsigned int getThreadCount();
 
-    bool setNumThreads(unsigned int newNumThreads);
+    bool setThreadCount(unsigned int newThreadCount);
     void waitForOtherThreads(unsigned int threadNo);
     void pauseExec();  // un-/suspend all threads
     void cancelExec(); // termineAllThreads auf true
     bool wasExecCancelled();
 
-    // sets execCancelled to false, otherwise executeParallelLoop returns
+    // sets execCancelled to false, otherwise execParallelLoop returns
     // immediately
-    void unCancelExec();
+    void uncancelExec();
 
 // a user function which is called every x-milliseconds during
 // exec between two iterations
@@ -154,11 +154,11 @@ public:
 #endif
 
     // execute
-    unsigned int executeInParallel(DWORD threadProc(void *pParam),
+    unsigned int execInParallel(DWORD threadProc(void *pParam),
                                    void *pParam,
                                    unsigned int paramStructSize);
     unsigned int
-    executeParallelLoop(DWORD threadProc(void *pParam, unsigned int index),
+    execParallelLoop(DWORD threadProc(void *pParam, unsigned int index),
                         void *pParam, unsigned int paramStructSize,
                         unsigned int schedType, int initValue,
                         int finalValue, int increment);

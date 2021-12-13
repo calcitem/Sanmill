@@ -53,12 +53,12 @@ bool MiniMax::testLayer(unsigned int layerNumber)
     }
 
     // process each state in the current layer
-    returnValue = threadManager.executeParallelLoop(
+    returnValue = threadManager.execParallelLoop(
         testLayerThreadProc, (void *)tlVars, sizeof(TestLayersVars),
         TM_SCHED_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
     switch (returnValue) {
-    case TM_RETURN_VALUE_OK:
-    case TM_RETURN_VALUE_EXEC_CANCELLED:
+    case TM_RETVAL_OK:
+    case TM_RETVAL_EXEC_CANCELLED:
         // reduce and delete thread specific data
         for (stateProcessedCount = 0, curThreadNo = 0;
              curThreadNo < threadManager.getThreadCount(); curThreadNo++) {
@@ -68,7 +68,7 @@ bool MiniMax::testLayer(unsigned int layerNumber)
             SAFE_DELETE_ARRAY(tlVars[curThreadNo].subPlyInfos);
         }
         SAFE_DELETE_ARRAY(tlVars);
-        if (returnValue == TM_RETURN_VALUE_EXEC_CANCELLED) {
+        if (returnValue == TM_RETVAL_EXEC_CANCELLED) {
             PRINT(0, this, "Main thread: Execution cancelled by user");
             return false; // ... better would be to return a cancel-specific
                           // value
@@ -76,8 +76,8 @@ bool MiniMax::testLayer(unsigned int layerNumber)
             break;
         }
     default:
-    case TM_RETURN_VALUE_INVALID_PARAM:
-    case TM_RETURN_VALUE_UNEXPECTED_ERROR:
+    case TM_RETVAL_INVALID_PARAM:
+    case TM_RETVAL_UNEXPECTED_ERROR:
         return falseOrStop();
     }
 
@@ -150,7 +150,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
                          "invalid.");
             goto errorInDatabase;
         } else {
-            return TM_RETURN_VALUE_OK;
+            return TM_RETVAL_OK;
         }
     }
 
@@ -168,7 +168,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
     // unable to move
     if (possibilityCount == 0) {
         // get ingame value
-        m->getValueOfSituation(threadNo, floatValueInGame, shortValueInGame);
+        m->getSituationValue(threadNo, floatValueInGame, shortValueInGame);
 
         // compare database with game
         if (shortValueInDatabase != shortValueInGame ||
@@ -447,11 +447,11 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
         }
     }
 
-    return TM_RETURN_VALUE_OK;
+    return TM_RETVAL_OK;
 
 errorInDatabase:
     // terminate all threads
-    return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
+    return TM_RETVAL_TERMINATE_ALL_THREADS;
 }
 
 //-----------------------------------------------------------------------------
@@ -473,7 +473,7 @@ bool MiniMax::testState(unsigned int layerNumber, unsigned int stateNumber)
     tlVars.subPlyInfos = new PlyInfoVarType[maxNumBranches];
     tlVars.hasCurPlayerChanged = new bool[maxNumBranches];
 
-    if (testLayerThreadProc(&tlVars, stateNumber) != TM_RETURN_VALUE_OK)
+    if (testLayerThreadProc(&tlVars, stateNumber) != TM_RETVAL_OK)
         result = false;
 
     delete[] tlVars.subValueInDatabase;
@@ -515,13 +515,13 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
     }
 
     // process each state in the current layer
-    returnValue = threadManager.executeParallelLoop(
+    returnValue = threadManager.execParallelLoop(
         testSetSituationThreadProc, (void *)tlVars, sizeof(TestLayersVars),
         TM_SCHED_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
 
     switch (returnValue) {
-    case TM_RETURN_VALUE_OK:
-    case TM_RETURN_VALUE_EXEC_CANCELLED:
+    case TM_RETVAL_OK:
+    case TM_RETVAL_EXEC_CANCELLED:
         // reduce and delete thread specific data
         for (stateProcessedCount = 0, curThreadNo = 0;
              curThreadNo < threadManager.getThreadCount(); curThreadNo++) {
@@ -531,7 +531,7 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
             SAFE_DELETE_ARRAY(tlVars[curThreadNo].subPlyInfos);
         }
         SAFE_DELETE_ARRAY(tlVars);
-        if (returnValue == TM_RETURN_VALUE_EXEC_CANCELLED) {
+        if (returnValue == TM_RETVAL_EXEC_CANCELLED) {
             PRINT(0, this, "Main thread: Execution cancelled by user");
             return false; // ... better would be to return a cancel-specific
                           // value
@@ -539,8 +539,8 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
             break;
         }
     default:
-    case TM_RETURN_VALUE_INVALID_PARAM:
-    case TM_RETURN_VALUE_UNEXPECTED_ERROR:
+    case TM_RETVAL_INVALID_PARAM:
+    case TM_RETVAL_UNEXPECTED_ERROR:
         return falseOrStop();
     }
 
@@ -591,7 +591,7 @@ DWORD MiniMax::testSetSituationThreadProc(void *pParam, unsigned int index)
     // set state
     if (m->setSituation(tlVars->curThreadNo, curState.layerNumber,
                         curState.stateNumber)) {
-        m->getValueOfSituation(tlVars->curThreadNo, floatValue, shortKnotValue);
+        m->getSituationValue(tlVars->curThreadNo, floatValue, shortKnotValue);
     } else {
         shortKnotValue = SKV_VALUE_INVALID;
     }
@@ -658,11 +658,11 @@ DWORD MiniMax::testSetSituationThreadProc(void *pParam, unsigned int index)
         }
     }
 
-    return TM_RETURN_VALUE_OK;
+    return TM_RETVAL_OK;
 
     // errorInDatabase:
     // terminate all threads
-    // return TM_RETURN_VALUE_TERMINATE_ALL_THREADS;
+    // return TM_RETVAL_TERMINATE_ALL_THREADS;
 }
 
 //-----------------------------------------------------------------------------
