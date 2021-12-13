@@ -249,8 +249,8 @@ protected:
         // database functions
         unsigned int getLayerAndStateNumber(unsigned int &layerNum,
                                             unsigned int &stateNumber);
-        void setWarningAndMill(unsigned int piece, unsigned int firstNeighbour,
-                               unsigned int secondNeighbour);
+        void setWarningAndMill(unsigned int piece, unsigned int firstNeighbor,
+                               unsigned int secondNeighbor);
         bool fieldIntegrityOK(unsigned int nMillsCurrentPlayer,
                               unsigned int nMillsOpponentPlayer,
                               bool aPieceCanBeRemovedFromCurPlayer);

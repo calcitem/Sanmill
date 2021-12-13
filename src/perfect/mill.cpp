@@ -165,19 +165,19 @@ void Mill::setUpCalcPossibleMoves(Player *player)
 //
 //-----------------------------------------------------------------------------
 void Mill::setUpSetWarningAndMill(unsigned int piece,
-                                  unsigned int firstNeighbour,
-                                  unsigned int secondNeighbour)
+                                  unsigned int firstNeighbor,
+                                  unsigned int secondNeighbor)
 {
     // locals
     int rowOwner = field.board[piece];
 
     // mill closed ?
     if (rowOwner != field.squareIsFree &&
-        field.board[firstNeighbour] == rowOwner &&
-        field.board[secondNeighbour] == rowOwner) {
+        field.board[firstNeighbor] == rowOwner &&
+        field.board[secondNeighbor] == rowOwner) {
         field.piecePartOfMill[piece]++;
-        field.piecePartOfMill[firstNeighbour]++;
-        field.piecePartOfMill[secondNeighbour]++;
+        field.piecePartOfMill[firstNeighbor]++;
+        field.piecePartOfMill[secondNeighbor]++;
     }
 }
 
@@ -220,10 +220,10 @@ bool Mill::putPiece(unsigned int pos, int player)
 
     // go in every direction
     for (i = 0; i < SQUARE_NB; i++) {
-        setUpSetWarningAndMill(i, field.neighbour[i][0][0],
-                               field.neighbour[i][0][1]);
-        setUpSetWarningAndMill(i, field.neighbour[i][1][0],
-                               field.neighbour[i][1][1]);
+        setUpSetWarningAndMill(i, field.neighbor[i][0][0],
+                               field.neighbor[i][0][1]);
+        setUpSetWarningAndMill(i, field.neighbor[i][1][0],
+                               field.neighbor[i][1][1]);
     }
 
     // since every mill was detected 3 times
@@ -522,8 +522,8 @@ void Mill::generateMoves(Player *player)
 // setWarningAndMill()
 //
 //-----------------------------------------------------------------------------
-void Mill::setWarningAndMill(unsigned int piece, unsigned int firstNeighbour,
-                             unsigned int secondNeighbour, bool isNewPiece)
+void Mill::setWarningAndMill(unsigned int piece, unsigned int firstNeighbor,
+                             unsigned int secondNeighbor, bool isNewPiece)
 {
     // locals
     int rowOwner = field.board[piece];
@@ -533,25 +533,25 @@ void Mill::setWarningAndMill(unsigned int piece, unsigned int firstNeighbour,
 
     // mill closed ?
     if (rowOwner != field.squareIsFree &&
-        field.board[firstNeighbour] == rowOwner &&
-        field.board[secondNeighbour] == rowOwner) {
+        field.board[firstNeighbor] == rowOwner &&
+        field.board[secondNeighbor] == rowOwner) {
         field.piecePartOfMill[piece]++;
-        field.piecePartOfMill[firstNeighbour]++;
-        field.piecePartOfMill[secondNeighbour]++;
+        field.piecePartOfMill[firstNeighbor]++;
+        field.piecePartOfMill[secondNeighbor]++;
         if (isNewPiece)
             field.pieceMustBeRemoved = 1;
     }
 
     // warning ?
     if (rowOwner != field.squareIsFree &&
-        field.board[firstNeighbour] == field.squareIsFree &&
-        field.board[secondNeighbour] == rowOwner)
-        field.warnings[firstNeighbour] |= rowOwnerWarning;
+        field.board[firstNeighbor] == field.squareIsFree &&
+        field.board[secondNeighbor] == rowOwner)
+        field.warnings[firstNeighbor] |= rowOwnerWarning;
 
     if (rowOwner != field.squareIsFree &&
-        field.board[secondNeighbour] == field.squareIsFree &&
-        field.board[firstNeighbour] == rowOwner)
-        field.warnings[secondNeighbour] |= rowOwnerWarning;
+        field.board[secondNeighbor] == field.squareIsFree &&
+        field.board[firstNeighbor] == rowOwner)
+        field.warnings[secondNeighbor] |= rowOwnerWarning;
 }
 
 //-----------------------------------------------------------------------------
@@ -575,9 +575,9 @@ void Mill::updateMillsAndWarnings(unsigned int newPiece)
 
     // go in every direction
     for (i = 0; i < SQUARE_NB; i++) {
-        setWarningAndMill(i, field.neighbour[i][0][0], field.neighbour[i][0][1],
+        setWarningAndMill(i, field.neighbor[i][0][0], field.neighbor[i][0][1],
                           i == newPiece);
-        setWarningAndMill(i, field.neighbour[i][1][0], field.neighbour[i][1][1],
+        setWarningAndMill(i, field.neighbor[i][1][0], field.neighbor[i][1][1],
                           i == newPiece);
     }
 
@@ -812,9 +812,9 @@ bool Mill::compareWithField(fieldStruct *compareField)
             //     { cout << "error - pieceMoveAble differs!" << endl; ret =
             //     false; }
 
-            if (field.neighbour[i][j / 2][j % 2] !=
-                compareField->neighbour[i][j / 2][j % 2]) {
-                cout << "error - neighbour differs!" << std::endl;
+            if (field.neighbor[i][j / 2][j % 2] !=
+                compareField->neighbor[i][j / 2][j % 2]) {
+                cout << "error - neighbor differs!" << std::endl;
                 ret = false;
             }
         }

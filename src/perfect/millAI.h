@@ -95,11 +95,11 @@ public:
     // the number of mills, of which this piece is part of
     unsigned int piecePartOfMill[SQUARE_NB];
 
-    // static array containing the index of the neighbour or "size"
+    // static array containing the index of the neighbor or "size"
     unsigned int connectedSquare[SQUARE_NB][4];
 
     // static array containing the two neighbors of each squares
-    unsigned int neighbour[SQUARE_NB][2][2];
+    unsigned int neighbor[SQUARE_NB][2][2];
 
     // number of pieces set in the placing phase
     unsigned int piecesSet;
@@ -125,10 +125,10 @@ private:
     void setConnection(unsigned int index, int firstDirection,
                        int secondDirection, int thirdDirection,
                        int fourthDirection);
-    void setNeighbour(unsigned int index, unsigned int firstNeighbour0,
-                      unsigned int secondNeighbour0,
-                      unsigned int firstNeighbour1,
-                      unsigned int secondNeighbour1);
+    void setNeighbor(unsigned int index, unsigned int firstNeighbor0,
+                      unsigned int secondNeighbor0,
+                      unsigned int firstNeighbor1,
+                      unsigned int secondNeighbor1);
 };
 
 #ifdef __clang__ // TODO(calcitem)

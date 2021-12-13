@@ -73,8 +73,8 @@ private:
     void updateMillsAndWarnings(unsigned int newPiece);
     bool isNormalMovePossible(unsigned int from, unsigned int to,
                               Player *player);
-    void setWarningAndMill(unsigned int piece, unsigned int firstNeighbour,
-                           unsigned int secondNeighbour, bool isNewPiece);
+    void setWarningAndMill(unsigned int piece, unsigned int firstNeighbor,
+                           unsigned int secondNeighbor, bool isNewPiece);
 
 public:
     // Constructor / destructor
@@ -100,8 +100,8 @@ public:
     void getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom,
                               unsigned int *pushTo);
     void setUpCalcPossibleMoves(Player *player);
-    void setUpSetWarningAndMill(unsigned int piece, unsigned int firstNeighbour,
-                                unsigned int secondNeighbour);
+    void setUpSetWarningAndMill(unsigned int piece, unsigned int firstNeighbor,
+                                unsigned int secondNeighbor);
     void calcRestingPieceCount(int &nWhitePiecesResting,
                                int &nBlackPiecesResting);
 

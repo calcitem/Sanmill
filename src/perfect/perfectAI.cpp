@@ -1097,12 +1097,12 @@ PerfectAI::ThreadVars::getPossPlacingPhase(unsigned int *possibilityCount,
             // check if a mill is beeing closed
             nMillsBeeingClosed = 0;
             if (field->curPlayer->id ==
-                    field->board[field->neighbour[i][0][0]] &&
-                field->curPlayer->id == field->board[field->neighbour[i][0][1]])
+                    field->board[field->neighbor[i][0][0]] &&
+                field->curPlayer->id == field->board[field->neighbor[i][0][1]])
                 nMillsBeeingClosed++;
             if (field->curPlayer->id ==
-                    field->board[field->neighbour[i][1][0]] &&
-                field->curPlayer->id == field->board[field->neighbour[i][1][1]])
+                    field->board[field->neighbor[i][1][0]] &&
+                field->curPlayer->id == field->board[field->neighbor[i][1][1]])
                 nMillsBeeingClosed++;
 
             // Version 15: don't allow to close two mills at once
@@ -1356,18 +1356,18 @@ inline void PerfectAI::ThreadVars::updateWarning(unsigned int firstPiece,
 {
     // set warnings
     if (firstPiece < SQUARE_NB)
-        this->setWarning(firstPiece, field->neighbour[firstPiece][0][0],
-                         field->neighbour[firstPiece][0][1]);
+        this->setWarning(firstPiece, field->neighbor[firstPiece][0][0],
+                         field->neighbor[firstPiece][0][1]);
     if (firstPiece < SQUARE_NB)
-        this->setWarning(firstPiece, field->neighbour[firstPiece][1][0],
-                         field->neighbour[firstPiece][1][1]);
+        this->setWarning(firstPiece, field->neighbor[firstPiece][1][0],
+                         field->neighbor[firstPiece][1][1]);
 
     if (secondPiece < SQUARE_NB)
-        this->setWarning(secondPiece, field->neighbour[secondPiece][0][0],
-                         field->neighbour[secondPiece][0][1]);
+        this->setWarning(secondPiece, field->neighbor[secondPiece][0][0],
+                         field->neighbor[secondPiece][0][1]);
     if (secondPiece < SQUARE_NB)
-        this->setWarning(secondPiece, field->neighbour[secondPiece][1][0],
-                         field->neighbour[secondPiece][1][1]);
+        this->setWarning(secondPiece, field->neighbor[secondPiece][1][0],
+                         field->neighbor[secondPiece][1][1]);
 
     // no piece must be removed if each belongs to a mill
     unsigned int i;
@@ -1407,7 +1407,7 @@ inline void PerfectAI::ThreadVars::updatePossibleMoves(unsigned int piece,
             if (ignorePiece == neighbor)
                 continue;
 
-            // if there is no neighbour piece than it only affects the actual
+            // if there is no neighbor piece than it only affects the actual
             // piece
             if (field->board[neighbor] == field->squareIsFree) {
                 if (pieceRemoved)
@@ -1415,7 +1415,7 @@ inline void PerfectAI::ThreadVars::updatePossibleMoves(unsigned int piece,
                 else
                     pieceOwner->possibleMovesCount++;
 
-                // if there is a neighbour piece than it effects only this one
+                // if there is a neighbor piece than it effects only this one
             } else if (field->board[neighbor] == field->curPlayer->id) {
                 if (pieceRemoved)
                     field->curPlayer->possibleMovesCount++;
@@ -2118,10 +2118,10 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
 
     // go in every direction
     for (i = 0; i < SQUARE_NB; i++) {
-        tv->setWarningAndMill(i, tv->field->neighbour[i][0][0],
-                              tv->field->neighbour[i][0][1]);
-        tv->setWarningAndMill(i, tv->field->neighbour[i][1][0],
-                              tv->field->neighbour[i][1][1]);
+        tv->setWarningAndMill(i, tv->field->neighbor[i][0][0],
+                              tv->field->neighbor[i][0][1]);
+        tv->setWarningAndMill(i, tv->field->neighbor[i][1][0],
+                              tv->field->neighbor[i][1][1]);
     }
 
     // since every mill was detected 3 times
@@ -2233,19 +2233,19 @@ void PerfectAI::ThreadVars::generateMoves(Player *player)
 //
 //-----------------------------------------------------------------------------
 void PerfectAI::ThreadVars::setWarningAndMill(unsigned int piece,
-                                              unsigned int firstNeighbour,
-                                              unsigned int secondNeighbour)
+                                              unsigned int firstNeighbor,
+                                              unsigned int secondNeighbor)
 {
     // locals
     int rowOwner = field->board[piece];
 
     // mill closed ?
     if (rowOwner != field->squareIsFree &&
-        field->board[firstNeighbour] == rowOwner &&
-        field->board[secondNeighbour] == rowOwner) {
+        field->board[firstNeighbor] == rowOwner &&
+        field->board[secondNeighbor] == rowOwner) {
         field->piecePartOfMill[piece]++;
-        field->piecePartOfMill[firstNeighbour]++;
-        field->piecePartOfMill[secondNeighbour]++;
+        field->piecePartOfMill[firstNeighbor]++;
+        field->piecePartOfMill[secondNeighbor]++;
     }
 }
 
@@ -2852,13 +2852,13 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
                 // square free?
                 if (tv->field->board[from] == tv->field->squareIsFree) {
                     // piece mustn't be part of mill
-                    if ((!(tv->field->board[tv->field->neighbour[from][0][0]] ==
+                    if ((!(tv->field->board[tv->field->neighbor[from][0][0]] ==
                                tv->field->curPlayer->id &&
-                           tv->field->board[tv->field->neighbour[from][0][1]] ==
+                           tv->field->board[tv->field->neighbor[from][0][1]] ==
                                tv->field->curPlayer->id)) &&
-                        (!(tv->field->board[tv->field->neighbour[from][1][0]] ==
+                        (!(tv->field->board[tv->field->neighbor[from][1][0]] ==
                                tv->field->curPlayer->id &&
-                           tv->field->board[tv->field->neighbour[from][1][1]] ==
+                           tv->field->board[tv->field->neighbor[from][1][1]] ==
                                tv->field->curPlayer->id))) {
                         // put back piece
                         tv->field->pieceMustBeRemoved = 1;
