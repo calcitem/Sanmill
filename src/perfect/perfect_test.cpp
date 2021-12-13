@@ -120,9 +120,9 @@ int perfect_main(void)
             mill->printBoard();
 
             // Human
-            if ((mill->getCurrentPlayer() == fieldStruct::playerOne &&
+            if ((mill->getCurPlayer() == fieldStruct::playerOne &&
                  playerOneHuman) ||
-                (mill->getCurrentPlayer() == fieldStruct::playerTwo &&
+                (mill->getCurPlayer() == fieldStruct::playerTwo &&
                  playerTwoHuman)) {
                 do {
                     // Show text
@@ -159,10 +159,10 @@ int perfect_main(void)
                         // undo moves until a human player shall move
                         do {
                             mill->undoMove();
-                        } while (!((mill->getCurrentPlayer() ==
+                        } while (!((mill->getCurPlayer() ==
                                         fieldStruct::playerOne &&
                                     playerOneHuman) ||
-                                   (mill->getCurrentPlayer() ==
+                                   (mill->getCurPlayer() ==
                                         fieldStruct::playerTwo &&
                                     playerTwoHuman)));
 

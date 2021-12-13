@@ -423,8 +423,8 @@ public:
                          void *pUserData);
     bool anyArrayInfoToUpdate();
     ArrayInfoChange getArrayInfoForUpdate();
-    void getCurrentCalculatedLayer(vector<unsigned int> &layers);
-    LPWSTR getCurrentActionStr();
+    void getCurCalculatedLayer(vector<unsigned int> &layers);
+    LPWSTR getCurActionStr();
 
     // Main function for getting the best choice
     void *getBestChoice(unsigned int tilLevel, unsigned int *choice,
@@ -433,7 +433,7 @@ public:
     // Database functions
     bool openDatabase(const char *dir, unsigned int branchCountMax);
     void calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepareLayer);
-    bool isCurrentStateInDatabase(unsigned int threadNo);
+    bool isCurStateInDatabase(unsigned int threadNo);
     void closeDatabase();
     void unloadAllLayers();
     void unloadAllPlyInfos();
@@ -944,7 +944,7 @@ private:
 
     list<unsigned int> lastCalculatedLayer;
 
-    // used in calcLayer() and getCurrentCalculatedLayers()
+    // used in calcLayer() and getCurCalculatedLayers()
     vector<unsigned int> layersToCalculate;
 
     bool onlyPrepareLayer = false;

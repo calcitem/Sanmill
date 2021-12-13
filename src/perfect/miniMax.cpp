@@ -115,7 +115,7 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice,
     // set global vars
     fullTreeDepth = tilLevel;
     maxNumBranches = branchCountMax;
-    layerInDatabase = isCurrentStateInDatabase(0);
+    layerInDatabase = isCurStateInDatabase(0);
     calcDatabase = false;
 
     // Locals

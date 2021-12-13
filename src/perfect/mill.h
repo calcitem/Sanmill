@@ -85,16 +85,16 @@ public:
     void undoMove();
     void resetGame();
     void beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
-                      int currentPlayer);
+                      int curPlayer);
     void setAI(int player, MillAI *AI);
     bool doMove(unsigned int pushFrom, unsigned int pushTo);
     void getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo);
-    bool setCurrentGameState(fieldStruct *curState);
+    bool setCurGameState(fieldStruct *curState);
     bool compareWithField(fieldStruct *compareField);
     bool comparePlayers(Player *playerA, Player *playerB);
     void printBoard();
     bool startPlacingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
-                           int currentPlayer, bool placingPhase);
+                           int curPlayer, bool placingPhase);
     bool putPiece(unsigned int pos, int player);
     bool placingPhaseHasFinished();
     void getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom,
@@ -108,7 +108,7 @@ public:
     // getter
     void getLog(unsigned int &nMovesDone, unsigned int *from, unsigned int *to);
     bool getField(int *pField);
-    bool isCurrentPlayerHuman();
+    bool isCurPlayerHuman();
     bool isOpponentPlayerHuman();
 
     bool inPlacingPhase() { return field.placingPhase; }
@@ -117,7 +117,7 @@ public:
 
     int getWinner() { return winner; }
 
-    int getCurrentPlayer() { return field.curPlayer->id; }
+    int getCurPlayer() { return field.curPlayer->id; }
 
     unsigned int getLastMoveFrom()
     {

@@ -309,10 +309,10 @@ MiniMax::ArrayInfoChange MiniMax::getArrayInfoForUpdate()
 }
 
 //-----------------------------------------------------------------------------
-// getCurrentActionStr()
+// getCurActionStr()
 // called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
-LPWSTR MiniMax::getCurrentActionStr()
+LPWSTR MiniMax::getCurActionStr()
 {
     switch (curCalculationActionId) {
     case MM_ACTION_INIT_RETRO_ANAL:
@@ -337,10 +337,10 @@ LPWSTR MiniMax::getCurrentActionStr()
 }
 
 //-----------------------------------------------------------------------------
-// getCurrentCalculatedLayer()
+// getCurCalculatedLayer()
 // called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
-void MiniMax::getCurrentCalculatedLayer(vector<unsigned int> &layers)
+void MiniMax::getCurCalculatedLayer(vector<unsigned int> &layers)
 {
     // when retro-analysis is used than two layers are calculated at the same
     // time
