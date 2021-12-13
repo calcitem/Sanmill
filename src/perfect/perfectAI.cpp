@@ -276,16 +276,16 @@ PerfectAI::PerfectAI(const char *dir)
                       &dwBytesRead, nullptr))
             return;
         if (!ReadFile(hFilePreCalcVars, symmetryOperationTable,
-                      sizeof(unsigned int) * SQUARE_NB * NUM_SYM_OPERATIONS,
+                      sizeof(unsigned int) * SQUARE_NB * SO_COUNT,
                       &dwBytesRead, nullptr))
             return;
         if (!ReadFile(hFilePreCalcVars, reverseSymOperation,
-                      sizeof(unsigned int) * NUM_SYM_OPERATIONS, &dwBytesRead,
+                      sizeof(unsigned int) * SO_COUNT, &dwBytesRead,
                       nullptr))
             return;
         if (!ReadFile(hFilePreCalcVars, concSymOperation,
-                      sizeof(unsigned int) * NUM_SYM_OPERATIONS *
-                          NUM_SYM_OPERATIONS,
+                      sizeof(unsigned int) * SO_COUNT *
+                          SO_COUNT,
                       &dwBytesRead, nullptr))
             return;
         if (!ReadFile(hFilePreCalcVars, mOverN,
@@ -394,10 +394,10 @@ PerfectAI::PerfectAI(const char *dir)
         reverseSymOperation[SO_INV_MIR_DIAG_2] = SO_INV_MIR_DIAG_2;
 
         // concatenated symmetry operations
-        for (a = 0; a < NUM_SYM_OPERATIONS; a++) {
-            for (b = 0; b < NUM_SYM_OPERATIONS; b++) {
+        for (a = 0; a < SO_COUNT; a++) {
+            for (b = 0; b < SO_COUNT; b++) {
                 // test each symmetry operation
-                for (c = 0; c < NUM_SYM_OPERATIONS; c++) {
+                for (c = 0; c < SO_COUNT; c++) {
                     // look if b(a(state)) == c(state)
                     for (i = 0; i < SQUARE_NB; i++) {
                         if (symmetryOperationTable[c][i] !=
@@ -414,7 +414,7 @@ PerfectAI::PerfectAI(const char *dir)
                 }
 
                 // no match found
-                if (c == NUM_SYM_OPERATIONS) {
+                if (c == SO_COUNT) {
                     cout << endl << "ERROR IN SYMMETRY-OPERATIONS!" << endl;
                 }
             }
@@ -552,7 +552,7 @@ PerfectAI::PerfectAI(const char *dir)
                 originalStateCD_tmp[a][b][nPositionsCD[a][b]] = stateCD;
 
                 // mark all symmetric states
-                for (i = 0; i < NUM_SYM_OPERATIONS; i++) {
+                for (i = 0; i < SO_COUNT; i++) {
                     applySymmetryOperationOnField(i, myField, symField);
 
                     symStateCD =
@@ -684,7 +684,7 @@ PerfectAI::PerfectAI(const char *dir)
             }
         }
 
-        // setting phase
+        // placing phase
         for (totalNumPieces = 0, layerNum = NUM_LAYERS - 1;
              totalNumPieces <= 2 * NUM_PIECES_PER_PLAYER; totalNumPieces++) {
             for (a = 0; a <= totalNumPieces; a++) {
@@ -697,14 +697,14 @@ PerfectAI::PerfectAI(const char *dir)
                         continue;
                     layer[layerNum].whitePieceCount = a;
                     layer[layerNum].blackPieceCount = b;
-                    layerIndex[LAYER_INDEX_SETTING_PHASE][a][b] = layerNum;
+                    layerIndex[LAYER_INDEX_PLACING_PHASE][a][b] = layerNum;
                     layer[layerNum].subLayerCount = 0;
 
                     for (wCD = 0; wCD <= layer[layerNum].whitePieceCount;
                          wCD++) {
                         for (bCD = 0; bCD <= layer[layerNum].blackPieceCount;
                              bCD++) {
-                            // calc number of white and black pieces for group
+                            // calculate number of white and black pieces for group
                             // A&B
                             wAB = layer[layerNum].whitePieceCount - wCD;
                             bAB = layer[layerNum].blackPieceCount - bCD;
@@ -806,14 +806,14 @@ PerfectAI::PerfectAI(const char *dir)
                   sizeof(unsigned int) * (nSquaresGroupC + nSquaresGroupD),
                   &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, symmetryOperationTable,
-                  sizeof(unsigned int) * SQUARE_NB * NUM_SYM_OPERATIONS,
+                  sizeof(unsigned int) * SQUARE_NB * SO_COUNT,
                   &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, reverseSymOperation,
-                  sizeof(unsigned int) * NUM_SYM_OPERATIONS, &dwBytesWritten,
+                  sizeof(unsigned int) * SO_COUNT, &dwBytesWritten,
                   nullptr);
         WriteFile(hFilePreCalcVars, concSymOperation,
-                  sizeof(unsigned int) * NUM_SYM_OPERATIONS *
-                      NUM_SYM_OPERATIONS,
+                  sizeof(unsigned int) * SO_COUNT *
+                      SO_COUNT,
                   &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, mOverN,
                   sizeof(unsigned int) * (SQUARE_NB + 1) * (SQUARE_NB + 1),
@@ -909,7 +909,7 @@ void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom,
 
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
-    if (theField->settingPhase)
+    if (theField->placingPhase)
         threadVars[0].fullTreeDepth = 2;
     else
         threadVars[0].fullTreeDepth = 2;
@@ -937,7 +937,7 @@ void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom,
     if (threadVars[0].field->pieceMustBeRemoved) {
         *pushFrom = bestChoice;
         *pushTo = 0;
-    } else if (threadVars[0].field->settingPhase) {
+    } else if (threadVars[0].field->placingPhase) {
         *pushFrom = 0;
         *pushTo = bestChoice;
     } else {
@@ -1067,11 +1067,11 @@ PerfectAI::ThreadVars::ThreadVars()
 }
 
 //-----------------------------------------------------------------------------
-// getPossSettingPhase()
+// getPossPlacingPhase()
 //
 //-----------------------------------------------------------------------------
 unsigned int *
-PerfectAI::ThreadVars::getPossSettingPhase(unsigned int *possibilityCount,
+PerfectAI::ThreadVars::getPossPlacingPhase(unsigned int *possibilityCount,
                                            void **pPossibilities)
 {
     // locals
@@ -1256,8 +1256,8 @@ unsigned int *PerfectAI::getPossibilities(unsigned int threadNo,
     } else {
         if (tv->field->pieceMustBeRemoved)
             return tv->getPossPieceRemove(possibilityCount, pPossibilities);
-        else if (tv->field->settingPhase)
-            return tv->getPossSettingPhase(possibilityCount, pPossibilities);
+        else if (tv->field->placingPhase)
+            return tv->getPossPlacingPhase(possibilityCount, pPossibilities);
         else
             return tv->getPossNormalMove(possibilityCount, pPossibilities);
     }
@@ -1307,7 +1307,7 @@ void PerfectAI::undo(unsigned int threadNo, unsigned int idPossibility,
     tv->field->oppPlayer->removedPiecesCount = oldState->oppMissPieces;
     tv->field->curPlayer->possibleMovesCount = oldState->curPosMoves;
     tv->field->oppPlayer->possibleMovesCount = oldState->oppPosMoves;
-    tv->field->settingPhase = oldState->settingPhase;
+    tv->field->placingPhase = oldState->placingPhase;
     tv->field->piecesSet = oldState->piecesSet;
     tv->field->pieceMustBeRemoved = oldState->pieceMustBeRemoved;
     tv->field->board[oldState->from] = oldState->fieldFrom;
@@ -1431,12 +1431,12 @@ inline void PerfectAI::ThreadVars::updatePossibleMoves(unsigned int piece,
     }
 
     // only 3 pieces resting
-    if (field->curPlayer->pieceCount <= 3 && !field->settingPhase)
+    if (field->curPlayer->pieceCount <= 3 && !field->placingPhase)
         field->curPlayer->possibleMovesCount = field->curPlayer->pieceCount *
                                                (SQUARE_NB -
                                                 field->curPlayer->pieceCount -
                                                 field->oppPlayer->pieceCount);
-    if (field->oppPlayer->pieceCount <= 3 && !field->settingPhase)
+    if (field->oppPlayer->pieceCount <= 3 && !field->placingPhase)
         field->oppPlayer->possibleMovesCount = field->oppPlayer->pieceCount *
                                                (SQUARE_NB -
                                                 field->curPlayer->pieceCount -
@@ -1460,9 +1460,9 @@ inline void PerfectAI::ThreadVars::setPiece(unsigned int to, Backup *backup)
     field->curPlayer->pieceCount++;
     field->piecesSet++;
 
-    // setting phase finished ?
+    // placing phase finished ?
     if (field->piecesSet == 18)
-        field->settingPhase = false;
+        field->placingPhase = false;
 
     // update possible moves
     updatePossibleMoves(to, field->curPlayer, false, SQUARE_NB);
@@ -1522,7 +1522,7 @@ inline void PerfectAI::ThreadVars::removePiece(unsigned int from,
     updateWarning(from, SQUARE_NB);
 
     // end of game ?
-    if ((field->oppPlayer->pieceCount < 3) && (!field->settingPhase))
+    if ((field->oppPlayer->pieceCount < 3) && (!field->placingPhase))
         gameHasFinished = true;
 }
 
@@ -1553,7 +1553,7 @@ void PerfectAI::move(unsigned int threadNo, unsigned int idPossibility,
     oldState->oppPosMoves = tv->field->oppPlayer->possibleMovesCount;
     oldState->curMissPieces = tv->field->curPlayer->removedPiecesCount;
     oldState->oppMissPieces = tv->field->oppPlayer->removedPiecesCount;
-    oldState->settingPhase = tv->field->settingPhase;
+    oldState->placingPhase = tv->field->placingPhase;
     oldState->piecesSet = tv->field->piecesSet;
     oldState->pieceMustBeRemoved = tv->field->pieceMustBeRemoved;
     tv->curSearchDepth++;
@@ -1566,7 +1566,7 @@ void PerfectAI::move(unsigned int threadNo, unsigned int idPossibility,
     // move
     if (tv->field->pieceMustBeRemoved) {
         tv->removePiece(idPossibility, oldState);
-    } else if (tv->field->settingPhase) {
+    } else if (tv->field->placingPhase) {
         tv->setPiece(idPossibility, oldState);
     } else {
         tv->normalMove(tmpPossibility->from[idPossibility],
@@ -1575,7 +1575,7 @@ void PerfectAI::move(unsigned int threadNo, unsigned int idPossibility,
 
     // when opponent is unable to move than current player has won
     if ((!tv->field->oppPlayer->possibleMovesCount) &&
-        (!tv->field->settingPhase) && (!tv->field->pieceMustBeRemoved) &&
+        (!tv->field->placingPhase) && (!tv->field->pieceMustBeRemoved) &&
         (tv->field->oppPlayer->pieceCount > 3))
         tv->gameHasFinished = true;
 
@@ -1632,7 +1632,7 @@ void PerfectAI::storeValueOfMove(unsigned int threadNo,
 
     if (tv->field->pieceMustBeRemoved)
         index = idPossibility;
-    else if (tv->field->settingPhase)
+    else if (tv->field->placingPhase)
         index = idPossibility;
     else
         index = tmpPossibility->from[idPossibility] * SQUARE_NB +
@@ -1776,7 +1776,7 @@ void PerfectAI::printMoveInformation(unsigned int threadNo,
     // move
     if (tv->field->pieceMustBeRemoved)
         cout << "remove piece from " << (char)(idPossibility + 97);
-    else if (tv->field->settingPhase)
+    else if (tv->field->placingPhase)
         cout << "set piece to " << (char)(idPossibility + 97);
     else
         cout << "move from " << (char)(tmpPossibility->from[idPossibility] + 97)
@@ -1888,8 +1888,8 @@ unsigned int PerfectAI::getLayerNumber(unsigned int threadNo)
     ThreadVars *tv = &threadVars[threadNo];
     unsigned int blackPieceCount = tv->field->oppPlayer->pieceCount;
     unsigned int whitePieceCount = tv->field->curPlayer->pieceCount;
-    unsigned int phaseIndex = (tv->field->settingPhase == true) ?
-                                  LAYER_INDEX_SETTING_PHASE :
+    unsigned int phaseIndex = (tv->field->placingPhase == true) ?
+                                  LAYER_INDEX_PLACING_PHASE :
                                   LAYER_INDEX_MOVING_PHASE;
     return layerIndex[phaseIndex][whitePieceCount][blackPieceCount];
 }
@@ -1919,8 +1919,8 @@ PerfectAI::ThreadVars::getLayerAndStateNumber(unsigned int &layerNum,
     unsigned int symField[SQUARE_NB];
     unsigned int blackPieceCount = field->oppPlayer->pieceCount;
     unsigned int whitePieceCount = field->curPlayer->pieceCount;
-    unsigned int phaseIndex = (field->settingPhase == true) ?
-                                  LAYER_INDEX_SETTING_PHASE :
+    unsigned int phaseIndex = (field->placingPhase == true) ?
+                                  LAYER_INDEX_PLACING_PHASE :
                                   LAYER_INDEX_MOVING_PHASE;
     unsigned int wCD = 0, bCD = 0;
     unsigned int stateAB, stateCD;
@@ -2045,8 +2045,8 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
     tv->shortValue = SKV_VALUE_GAME_DRAWN;
     tv->gameHasFinished = false;
 
-    tv->field->settingPhase = (layerNum >= NUM_LAYERS / 2) ?
-                                  LAYER_INDEX_SETTING_PHASE :
+    tv->field->placingPhase = (layerNum >= NUM_LAYERS / 2) ?
+                                  LAYER_INDEX_PLACING_PHASE :
                                   LAYER_INDEX_MOVING_PHASE;
     tv->field->pieceMustBeRemoved = stateNumber %
                                     MAX_NUM_PIECES_REMOVED_MINUS_1;
@@ -2140,7 +2140,7 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
     nMillsOpponentPlayer /= 3;
 
     // piecesSet & removedPiecesCount
-    if (tv->field->settingPhase) {
+    if (tv->field->placingPhase) {
         // BUG: ... This calculation is not correct! It is possible that some
         // mills did not cause a piece removal.
         tv->field->curPlayer->removedPiecesCount = nMillsOpponentPlayer;
@@ -2160,16 +2160,16 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
 
     // when opponent is unable to move than current player has won
     if ((!tv->field->curPlayer->possibleMovesCount) &&
-        (!tv->field->settingPhase) && (!tv->field->pieceMustBeRemoved) &&
+        (!tv->field->placingPhase) && (!tv->field->pieceMustBeRemoved) &&
         (tv->field->curPlayer->pieceCount > 3)) {
         tv->gameHasFinished = true;
         tv->shortValue = SKV_VALUE_GAME_LOST;
     }
-    if ((tv->field->curPlayer->pieceCount < 3) && (!tv->field->settingPhase)) {
+    if ((tv->field->curPlayer->pieceCount < 3) && (!tv->field->placingPhase)) {
         tv->gameHasFinished = true;
         tv->shortValue = SKV_VALUE_GAME_LOST;
     }
-    if ((tv->field->oppPlayer->pieceCount < 3) && (!tv->field->settingPhase)) {
+    if ((tv->field->oppPlayer->pieceCount < 3) && (!tv->field->placingPhase)) {
         tv->gameHasFinished = true;
         tv->shortValue = SKV_VALUE_GAME_WON;
     }
@@ -2211,7 +2211,7 @@ void PerfectAI::ThreadVars::generateMoves(Player *player)
 
             // when current player has only 3 pieces he is allowed to spring his
             // piece
-            if (player->pieceCount > 3 || field->settingPhase) {
+            if (player->pieceCount > 3 || field->placingPhase) {
                 // determine moving direction
                 for (k = 0, movingDirection = MD_NB; k < MD_NB; k++)
                     if (field->connectedSquare[i][k] == j)
@@ -2406,7 +2406,7 @@ void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo,
     }
 
     // add all symmetric states
-    for (symmetryOperation = 0; symmetryOperation < NUM_SYM_OPERATIONS;
+    for (symmetryOperation = 0; symmetryOperation < SO_COUNT;
          symmetryOperation++) {
         // apply symmetry operation
         applySymmetryOperationOnField(symmetryOperation,
@@ -2455,9 +2455,9 @@ bool PerfectAI::ThreadVars::fieldIntegrityOK(
     if (field->pieceMustBeRemoved && nMillsCurrentPlayer == 0) {
         return false;
 
-        // when in setting phase and difference in number of pieces between the
+        // when in placing phase and difference in number of pieces between the
         // two players is not
-    } else if (field->settingPhase) {
+    } else if (field->placingPhase) {
         // Version 8: added for-loop
         noneFullFilled = true;
 
@@ -2486,7 +2486,7 @@ bool PerfectAI::ThreadVars::fieldIntegrityOK(
         }
 
         // moving phase
-    } else if (!field->settingPhase && (field->curPlayer->pieceCount < 2 ||
+    } else if (!field->placingPhase && (field->curPlayer->pieceCount < 2 ||
                                         field->oppPlayer->pieceCount < 2)) {
         return false;
     }
@@ -2578,7 +2578,7 @@ void PerfectAI::ThreadVars::storePredecessor(unsigned int nMillsCurrentPlayer,
             originalField[i] = field->board[i];
 
         // add all symmetric states
-        for (symmetryOperation = 0; symmetryOperation < NUM_SYM_OPERATIONS;
+        for (symmetryOperation = 0; symmetryOperation < SO_COUNT;
              symmetryOperation++) {
             // ...
             if (symmetryOperation == SO_DO_NOTHING ||
@@ -2630,7 +2630,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
     // - board->curPlayer->id
     // - board->board
     // - board->pieceMustBeRemoved
-    // - board->settingPhase
+    // - board->placingPhase
     ////////////////////////////////////////////////////////////////////////////
 
     // locals
@@ -2672,7 +2672,7 @@ void PerfectAI::getPredecessors(unsigned int threadNo,
         millWasClosed = false;
 
     // in moving phase
-    if (!tv->field->settingPhase && tv->field->curPlayer->pieceCount >= 3 &&
+    if (!tv->field->placingPhase && tv->field->curPlayer->pieceCount >= 3 &&
         tv->field->oppPlayer->pieceCount >= 3) {
         // normal move
         if ((tv->field->pieceMustBeRemoved &&
@@ -3160,7 +3160,7 @@ bool PerfectAI::checkGetPredThanGetPoss()
                 // set situation
                 if (!setSituation(threadNo, predVars[j].predLayerNumbers,
                                   predVars[j].predStateNumbers)) {
-                    cout << endl << "ERROR SETTING SITUATION";
+                    cout << endl << "ERROR PLACING SITUATION";
                     return false;
 
 #if 0

@@ -55,7 +55,7 @@ private:
     // current board
     fieldStruct field;
 
-    // undo of the last move is done by setting the initial board und performing
+    // undo of the last move is done by setting the initial board and performing
     // all moves saved in history
     fieldStruct initField;
 
@@ -93,10 +93,10 @@ public:
     bool compareWithField(fieldStruct *compareField);
     bool comparePlayers(Player *playerA, Player *playerB);
     void printBoard();
-    bool startSettingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
-                           int currentPlayer, bool settingPhase);
+    bool startPlacingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
+                           int currentPlayer, bool placingPhase);
     bool putPiece(unsigned int pos, int player);
-    bool settingPhaseHasFinished();
+    bool placingPhaseHasFinished();
     void getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom,
                               unsigned int *pushTo);
     void setUpCalcPossibleMoves(Player *player);
@@ -111,7 +111,7 @@ public:
     bool isCurrentPlayerHuman();
     bool isOpponentPlayerHuman();
 
-    bool inSettingPhase() { return field.settingPhase; }
+    bool inPlacingPhase() { return field.placingPhase; }
 
     unsigned int mustPieceBeRemoved() { return field.pieceMustBeRemoved; }
 

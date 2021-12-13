@@ -108,15 +108,15 @@ void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
 }
 
 //-----------------------------------------------------------------------------
-// startSettingPhase()
+// startPlacingPhase()
 //
 //-----------------------------------------------------------------------------
-bool Mill::startSettingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
-                             int currentPlayer, bool settingPhase)
+bool Mill::startPlacingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
+                             int currentPlayer, bool placingPhase)
 {
     beginNewGame(firstPlayerAI, secondPlayerAI, currentPlayer);
 
-    field.settingPhase = settingPhase;
+    field.placingPhase = placingPhase;
 
     return true;
 }
@@ -143,7 +143,7 @@ void Mill::setUpCalcPossibleMoves(Player *player)
 
             // when current player has only 3 pieces he is allowed to spring his
             // piece
-            if (player->pieceCount > 3 || field.settingPhase) {
+            if (player->pieceCount > 3 || field.placingPhase) {
                 // determine moving direction
                 for (k = 0, movingDirection = 4; k < 4; k++)
                     if (field.connectedSquare[i][k] == j)
@@ -183,7 +183,7 @@ void Mill::setUpSetWarningAndMill(unsigned int piece,
 
 //-----------------------------------------------------------------------------
 // putPiece()
-// Put a piece onto the board during the setting phase.
+// Put a piece onto the board during the placing phase.
 //-----------------------------------------------------------------------------
 bool Mill::putPiece(unsigned int pos, int player)
 {
@@ -206,11 +206,11 @@ bool Mill::putPiece(unsigned int pos, int player)
     myPlayer->pieceCount++;
     field.piecesSet++;
 
-    // setting phase finished ?
+    // placing phase finished ?
     if (field.piecesSet == 18)
-        field.settingPhase = false;
+        field.placingPhase = false;
 
-    // calc possible moves
+    // calculate possible moves
     setUpCalcPossibleMoves(field.curPlayer);
     setUpCalcPossibleMoves(field.oppPlayer);
 
@@ -241,7 +241,7 @@ bool Mill::putPiece(unsigned int pos, int player)
     nOpponentPlayerMills /= 3;
 
     // piecesSet & removedPiecesCount
-    if (field.settingPhase) {
+    if (field.placingPhase) {
         // ... This calculation is not correct! It is possible that some mills
         // did not cause a piece removal.
         field.curPlayer->removedPiecesCount = nOpponentPlayerMills;
@@ -258,12 +258,12 @@ bool Mill::putPiece(unsigned int pos, int player)
     }
 
     // when opponent is unable to move than current player has won
-    if ((!field.curPlayer->possibleMovesCount) && (!field.settingPhase) &&
+    if ((!field.curPlayer->possibleMovesCount) && (!field.placingPhase) &&
         (!field.pieceMustBeRemoved) && (field.curPlayer->pieceCount > 3))
         winner = field.oppPlayer->id;
-    else if ((field.curPlayer->pieceCount < 3) && (!field.settingPhase))
+    else if ((field.curPlayer->pieceCount < 3) && (!field.placingPhase))
         winner = field.oppPlayer->id;
-    else if ((field.oppPlayer->pieceCount < 3) && (!field.settingPhase))
+    else if ((field.oppPlayer->pieceCount < 3) && (!field.placingPhase))
         winner = field.curPlayer->id;
     else
         winner = 0;
@@ -273,10 +273,10 @@ bool Mill::putPiece(unsigned int pos, int player)
 }
 
 //-----------------------------------------------------------------------------
-// settingPhaseHasFinished()
-// This function has to be called when the setting phase has finished.
+// placingPhaseHasFinished()
+// This function has to be called when the placing phase has finished.
 //-----------------------------------------------------------------------------
-bool Mill::settingPhaseHasFinished()
+bool Mill::placingPhaseHasFinished()
 {
     // remember initField
     field.copyBoard(&initField);
@@ -388,7 +388,7 @@ void Mill::getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom,
     theField.createBoard();
     field.copyBoard(&theField);
     if (AI != nullptr &&
-        (field.settingPhase || field.curPlayer->possibleMovesCount > 0) &&
+        (field.placingPhase || field.curPlayer->possibleMovesCount > 0) &&
         winner == 0)
         AI->play(&theField, pushFrom, pushTo);
     theField.deleteBoard();
@@ -410,7 +410,7 @@ void Mill::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 
     // assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <= 1);
 
-    if ((field.settingPhase || field.curPlayer->possibleMovesCount > 0) &&
+    if ((field.placingPhase || field.curPlayer->possibleMovesCount > 0) &&
         winner == 0) {
         if (field.curPlayer->id == field.playerOne) {
             if (playerOneAI != nullptr)
@@ -458,7 +458,7 @@ bool Mill::isNormalMovePossible(unsigned int from, unsigned int to,
         return false;
 
     // when current player has only 3 pieces he is allowed to spring his piece
-    if (player->pieceCount > 3 || field.settingPhase) {
+    if (player->pieceCount > 3 || field.placingPhase) {
         // determine moving direction
         for (i = 0, movingDirection = 4; i < 4; i++)
             if (field.connectedSquare[from][i] == to)
@@ -632,7 +632,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         movesDone++;
 
         // is the game finished ?
-        if ((field.oppPlayer->pieceCount < 3) && (!field.settingPhase))
+        if ((field.oppPlayer->pieceCount < 3) && (!field.placingPhase))
             winner = field.curPlayer->id;
 
         // update warnings & mills
@@ -643,7 +643,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         generateMoves(field.oppPlayer);
 
         // is opponent unable to move ?
-        if (field.oppPlayer->possibleMovesCount == 0 && !field.settingPhase)
+        if (field.oppPlayer->possibleMovesCount == 0 && !field.placingPhase)
             winner = field.curPlayer->id;
 
         // next player
@@ -653,8 +653,8 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         // everything is ok
         return true;
 
-        // handle setting phase
-    } else if (field.settingPhase) {
+        // handle placing phase
+    } else if (field.placingPhase) {
         // param ok ?
         if (pushTo >= SQUARE_NB)
             return false;
@@ -674,16 +674,16 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         // update warnings & mills
         updateMillsAndWarnings(pushTo);
 
-        // calc possibilities
+        // calculate possibilities
         generateMoves(field.curPlayer);
         generateMoves(field.oppPlayer);
 
-        // setting phase finished ?
+        // placing phase finished ?
         if (field.piecesSet == 18)
-            field.settingPhase = false;
+            field.placingPhase = false;
 
         // is opponent unable to move ?
-        if (field.oppPlayer->possibleMovesCount == 0 && !field.settingPhase)
+        if (field.oppPlayer->possibleMovesCount == 0 && !field.placingPhase)
             winner = field.curPlayer->id;
 
         // next player
@@ -714,7 +714,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         generateMoves(field.oppPlayer);
 
         // is opponent unable to move ?
-        if (field.oppPlayer->possibleMovesCount == 0 && !field.settingPhase)
+        if (field.oppPlayer->possibleMovesCount == 0 && !field.placingPhase)
             winner = field.curPlayer->id;
 
         // next player
@@ -737,13 +737,13 @@ bool Mill::setCurrentGameState(fieldStruct *curState)
     winner = 0;
     movesDone = 0;
 
-    if ((field.curPlayer->pieceCount < 3) && (!field.settingPhase))
+    if ((field.curPlayer->pieceCount < 3) && (!field.placingPhase))
         winner = field.oppPlayer->id;
 
-    if ((field.oppPlayer->pieceCount < 3) && (!field.settingPhase))
+    if ((field.oppPlayer->pieceCount < 3) && (!field.placingPhase))
         winner = field.curPlayer->id;
 
-    if ((field.curPlayer->possibleMovesCount == 0) && (!field.settingPhase))
+    if ((field.curPlayer->possibleMovesCount == 0) && (!field.placingPhase))
         winner = field.oppPlayer->id;
 
     return true;
@@ -774,8 +774,8 @@ bool Mill::compareWithField(fieldStruct *compareField)
         ret = false;
     }
 
-    if (field.settingPhase != compareField->settingPhase) {
-        cout << "error - settingPhase differs!" << std::endl;
+    if (field.placingPhase != compareField->placingPhase) {
+        cout << "error - placingPhase differs!" << std::endl;
         ret = false;
     }
 

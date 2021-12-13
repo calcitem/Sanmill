@@ -34,8 +34,8 @@ void fieldStruct::printBoard()
          << GetCharFromPiece(this->oppPlayer->id) << " has "
          << this->oppPlayer->pieceCount << " pieces\n";
     cout << "Num Pieces to be removed: " << this->pieceMustBeRemoved << "\n";
-    cout << "setting phase           : "
-         << (this->settingPhase ? "true" : "false");
+    cout << "placing phase           : "
+         << (this->placingPhase ? "true" : "false");
     cout << "\n";
     cout << "\n   a-----b-----c   " << c[0] << "-----" << c[1] << "-----"
          << c[2];
@@ -101,7 +101,7 @@ void fieldStruct::copyBoard(fieldStruct *destination)
     this->oppPlayer->copyPlayer(destination->oppPlayer);
 
     destination->piecesSet = this->piecesSet;
-    destination->settingPhase = this->settingPhase;
+    destination->placingPhase = this->placingPhase;
     destination->pieceMustBeRemoved = this->pieceMustBeRemoved;
 
     for (i = 0; i < SQUARE_NB; i++) {
@@ -155,7 +155,7 @@ void fieldStruct::createBoard()
     curPlayer->id = playerOne;
     piecesSet = 0;
     pieceMustBeRemoved = 0;
-    settingPhase = true;
+    placingPhase = true;
     curPlayer->warning = (curPlayer->id == playerOne) ? playerOneWarning :
                                                         playerTwoWarning;
     oppPlayer->id = (curPlayer->id == playerOne) ? playerTwo : playerOne;
