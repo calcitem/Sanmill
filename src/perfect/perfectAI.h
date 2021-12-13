@@ -28,10 +28,10 @@
 constexpr auto MAX_NUM_PIECES_REMOVED_MINUS_1 = 2;
 
 // 10 x 10 since each color can range from 0 to 9 pieces
-// x2 since there is the setting phase and the moving phase
+// x2 since there is the placing phase and the moving phase
 constexpr auto NUM_LAYERS = 200;
 constexpr auto MAX_NUM_SUB_LAYERS = 100;
-constexpr auto LAYER_INDEX_SETTING_PHASE = 1;
+constexpr auto LAYER_INDEX_PLACING_PHASE = 1;
 constexpr auto LAYER_INDEX_MOVING_PHASE = 0;
 constexpr auto NOT_INDEXED = 4294967295;
 constexpr auto MAX_DEPTH_OF_TREE = 100;
@@ -71,13 +71,13 @@ enum SymOperation {
     SO_INV_MIR_HORI = 13,
     SO_INV_MIR_DIAG_1 = 14,
     SO_INV_MIR_DIAG_2 = 15,
-    NUM_SYM_OPERATIONS = 16,
+    SO_COUNT = 16,
 };
 
 class PerfectAI : public MillAI, public MiniMax
 {
 protected:
-    // structs
+    // struct
     struct SubLayer
     {
         unsigned int minIndex;
@@ -109,7 +109,7 @@ protected:
         float floatValue;
         TwoBit shortValue;
         bool gameHasFinished;
-        bool settingPhase;
+        bool placingPhase;
         int fieldFrom, fieldTo; // value of board
         unsigned int from, to;  // index of board
         unsigned int curPieceCount, oppPieceCount;
@@ -132,7 +132,7 @@ protected:
     // the layers
     Layer layer[NUM_LAYERS];
 
-    // indices of layer [moving/setting phase][number of white pieces][number of
+    // indices of layer [moving/placing phase][number of white pieces][number of
     // black pieces]
     unsigned int layerIndex[2][NUM_PIECES_PER_PLAYER_PLUS_ONE]
                            [NUM_PIECES_PER_PLAYER_PLUS_ONE];
@@ -155,7 +155,7 @@ protected:
     unsigned int powerOfThree[nSquaresGroupC + nSquaresGroupD];
 
     // Matrix used for application of the symmetry operations
-    unsigned int symmetryOperationTable[NUM_SYM_OPERATIONS][SQUARE_NB];
+    unsigned int symmetryOperationTable[SO_COUNT][SQUARE_NB];
 
     unsigned int *originalStateCD[NUM_PIECES_PER_PLAYER_PLUS_ONE]
                                  [NUM_PIECES_PER_PLAYER_PLUS_ONE];
@@ -164,10 +164,10 @@ protected:
                                  [NUM_PIECES_PER_PLAYER_PLUS_ONE];
 
     // index of the reverse symmetry operation
-    unsigned int reverseSymOperation[NUM_SYM_OPERATIONS];
+    unsigned int reverseSymOperation[SO_COUNT];
 
     // symmetry operation, which is identical to applying those two in the index
-    unsigned int concSymOperation[NUM_SYM_OPERATIONS][NUM_SYM_OPERATIONS];
+    unsigned int concSymOperation[SO_COUNT][SO_COUNT];
 
     // m over n
     unsigned int mOverN[SQUARE_NB + 1][SQUARE_NB + 1];
@@ -182,7 +182,7 @@ protected:
     unsigned int incidencesValuesSubMoves[SQUARE_NB * SQUARE_NB][4];
 
     // array for state numbers
-    unsigned int symmetricStateNumberArray[NUM_SYM_OPERATIONS];
+    unsigned int symmetricStateNumberArray[SO_COUNT];
 
     // dir containing the database files
     string databaseDir;
@@ -226,7 +226,7 @@ protected:
         ThreadVars();
 
         // Functions
-        unsigned int *getPossSettingPhase(unsigned int *possibilityCount,
+        unsigned int *getPossPlacingPhase(unsigned int *possibilityCount,
                                           void **pPossibilities);
         unsigned int *getPossNormalMove(unsigned int *possibilityCount,
                                         void **pPossibilities);

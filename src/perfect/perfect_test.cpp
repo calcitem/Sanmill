@@ -129,7 +129,7 @@ int perfect_main(void)
                     if (mill->mustPieceBeRemoved())
                         cout << "\n   Which piece do you want to remove? "
                                 "[a-x]: \n\n\n";
-                    else if (mill->inSettingPhase())
+                    else if (mill->inPlacingPhase())
                         cout << "\n   Where are you going? [a-x]: \n\n\n";
                     else
                         cout << "\n   Your train? [a-x][a-x]: \n\n\n";
@@ -141,7 +141,7 @@ int perfect_main(void)
                     else
                         from = SQUARE_NB;
 
-                    if (mill->inSettingPhase()) {
+                    if (mill->inPlacingPhase()) {
                         if ((ch[0] >= 'a') && (ch[0] <= 'x'))
                             to = ch[0] - 'a';
                         else

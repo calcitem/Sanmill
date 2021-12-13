@@ -101,11 +101,11 @@ public:
     // static array containing the two neighbors of each squares
     unsigned int neighbour[SQUARE_NB][2][2];
 
-    // number of pieces set in the setting phase
+    // number of pieces set in the placing phase
     unsigned int piecesSet;
 
     // true if piecesSet < 18
-    bool settingPhase;
+    bool placingPhase;
 
     // number of pieces which must be removed by the current player
     unsigned int pieceMustBeRemoved;
