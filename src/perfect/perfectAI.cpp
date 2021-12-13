@@ -1843,7 +1843,7 @@ int64_t PerfectAI::mOverN_Function(unsigned int m, unsigned int n)
     int64_t fakN = 1;
     unsigned int i;
 
-    // invalid parameters ?
+    // invalid params ?
     if (n > m)
         return 0;
 
@@ -2003,7 +2003,7 @@ PerfectAI::ThreadVars::getLayerAndStateNumber(unsigned int &layerNum,
 bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
                              unsigned int stateNumber)
 {
-    // parameters ok ?
+    // params ok ?
     if (getNumberOfLayers() <= layerNum)
         return false;
     if (getNumberOfKnotsInLayer(layerNum) <= stateNumber)

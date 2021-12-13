@@ -1068,8 +1068,8 @@ private:
                             LARGE_INTEGER &curTimeBefore, char text[]);
 
     // Testing functions
-    static DWORD testLayerThreadProc(void *pParameter, unsigned int index);
-    static DWORD testSetSituationThreadProc(void *pParameter,
+    static DWORD testLayerThreadProc(void *pParam, unsigned int index);
+    static DWORD testSetSituationThreadProc(void *pParam,
                                             unsigned int index);
 
     // Alpha-Beta-Algorithm
@@ -1097,8 +1097,8 @@ private:
                                  unsigned int layerNumber,
                                  unsigned int stateNumber, TwoBit knotValue,
                                  PlyInfoVarType plyValue, bool invertValue);
-    static DWORD initAlphaBetaThreadProc(void *pParameter, unsigned int index);
-    static DWORD runAlphaBetaThreadProc(void *pParameter, unsigned int index);
+    static DWORD initAlphaBetaThreadProc(void *pParam, unsigned int index);
+    static DWORD runAlphaBetaThreadProc(void *pParam, unsigned int index);
 
     // Retro Analysis
     bool calcKnotValuesByRetroAnalysis(vector<unsigned int> &layersToCalculate);
@@ -1114,11 +1114,11 @@ private:
     {
         return a.stateNumber < b.stateNumber;
     };
-    static DWORD initRetroAnalysisThreadProc(void *pParameter,
+    static DWORD initRetroAnalysisThreadProc(void *pParam,
                                              unsigned int index);
-    static DWORD addNumSucceedersThreadProc(void *pParameter,
+    static DWORD addNumSucceedersThreadProc(void *pParam,
                                             unsigned int index);
-    static DWORD performRetroAnalysisThreadProc(void *pParameter);
+    static DWORD performRetroAnalysisThreadProc(void *pParam);
 
     // Progress report functions
     void showLayerStats(unsigned int layerNumber);

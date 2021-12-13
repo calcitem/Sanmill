@@ -193,7 +193,7 @@ bool Mill::putPiece(unsigned int pos, int player)
     Player *myPlayer = (player == field.curPlayer->id) ? field.curPlayer :
                                                          field.oppPlayer;
 
-    // check parameters
+    // check params
     if (player != fieldStruct::playerOne && player != fieldStruct::playerTwo)
         return false;
     if (pos >= SQUARE_NB)
@@ -443,7 +443,7 @@ bool Mill::isNormalMovePossible(unsigned int from, unsigned int to,
     // locals
     unsigned int movingDirection, i;
 
-    // parameter ok ?
+    // param ok ?
     if (from >= SQUARE_NB)
         return false;
     if (to >= SQUARE_NB)
@@ -610,7 +610,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
 
     // handle the remove of a piece
     if (field.pieceMustBeRemoved) {
-        // parameter ok ?
+        // param ok ?
         if (pushFrom >= SQUARE_NB)
             return false;
 
@@ -655,7 +655,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
 
         // handle setting phase
     } else if (field.settingPhase) {
-        // parameter ok ?
+        // param ok ?
         if (pushTo >= SQUARE_NB)
             return false;
 

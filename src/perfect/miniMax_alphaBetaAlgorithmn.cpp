@@ -139,7 +139,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
         initAlreadyDone = true;
     }
 
-    // prepare parameters
+    // prepare params
     stateProcessedCount = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_WON] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_LOST] = 0;
@@ -213,10 +213,10 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 // and knotAlreadyCalculated to true or false, whether setSituation() returns
 // true or false
 //-----------------------------------------------------------------------------
-DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, unsigned int index)
+DWORD MiniMax::initAlphaBetaThreadProc(void *pParam, unsigned int index)
 {
     // locals
-    InitAlphaBetaVars *iabVars = (InitAlphaBetaVars *)pParameter;
+    InitAlphaBetaVars *iabVars = (InitAlphaBetaVars *)pParam;
     MiniMax *m = iabVars->pMiniMax;
     float floatValue;     // dummy variable for calls of getValueOfSituation()
     StateAdress curState; // current state counter for loops
@@ -298,7 +298,7 @@ DWORD MiniMax::initAlphaBetaThreadProc(void *pParameter, unsigned int index)
 bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 {
 #ifndef __clang__ // TODO(calcitem)
-    // prepare parameters
+    // prepare params
     PRINT(1, this,
           "  Calculate layer " << alphaBetaVars.layerNumber
                                << " with function letTheTreeGrow():");
@@ -363,10 +363,10 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 // runAlphaBetaThreadProc()
 //
 //-----------------------------------------------------------------------------
-DWORD MiniMax::runAlphaBetaThreadProc(void *pParameter, unsigned int index)
+DWORD MiniMax::runAlphaBetaThreadProc(void *pParam, unsigned int index)
 {
     // locals
-    RunAlphaBetaVars *rabVars = (RunAlphaBetaVars *)pParameter;
+    RunAlphaBetaVars *rabVars = (RunAlphaBetaVars *)pParam;
     MiniMax *m = rabVars->pMiniMax;
     StateAdress curState;   // current state counter for loops
     Knot root;              //

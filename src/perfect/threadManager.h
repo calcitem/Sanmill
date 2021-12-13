@@ -45,9 +45,9 @@ private:
         int increment;
         int initialValue;
         int finalValue;
-        void *pParameter;
+        void *pParam;
         DWORD(*threadProc)
-        (void *pParameter, unsigned int index); // pointer to the user function
+        (void *pParam, unsigned int index); // pointer to the user function
                                                 // to be executed by the threads
         ThreadManager *threadManager;
     };
@@ -69,7 +69,7 @@ private:
     CRITICAL_SECTION csBarrier;
 
     // functions
-    static DWORD WINAPI threadForLoop(LPVOID lpParameter);
+    static DWORD WINAPI threadForLoop(LPVOID lpParam);
 
 public:
     class ThreadVarsArrayItem
@@ -154,12 +154,12 @@ public:
 #endif
 
     // execute
-    unsigned int executeInParallel(DWORD threadProc(void *pParameter),
-                                   void *pParameter,
-                                   unsigned int parameterStructSize);
+    unsigned int executeInParallel(DWORD threadProc(void *pParam),
+                                   void *pParam,
+                                   unsigned int paramStructSize);
     unsigned int
-    executeParallelLoop(DWORD threadProc(void *pParameter, unsigned int index),
-                        void *pParameter, unsigned int parameterStructSize,
+    executeParallelLoop(DWORD threadProc(void *pParam, unsigned int index),
+                        void *pParam, unsigned int paramStructSize,
                         unsigned int schedType, int initialValue,
                         int finalValue, int increment);
 };
