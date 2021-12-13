@@ -112,8 +112,8 @@ void fieldStruct::copyBoard(fieldStruct *destination)
         for (j = 0; j < MD_NB; j++) {
             destination->connectedSquare[i][j] = this->connectedSquare[i][j];
             destination->pieceMoveAble[i][j] = this->pieceMoveAble[i][j];
-            destination->neighbour[i][j / 2][j % 2] =
-                this->neighbour[i][j / 2][j % 2];
+            destination->neighbor[i][j / 2][j % 2] =
+                this->neighbor[i][j / 2][j % 2];
         }
     }
 }
@@ -208,30 +208,30 @@ void fieldStruct::createBoard()
     setConnection(23, i, i, 22, 14);
 
     // neighbors
-    setNeighbour(0, 1, 2, 9, 21);
-    setNeighbour(1, 0, 2, 4, 7);
-    setNeighbour(2, 0, 1, 14, 23);
-    setNeighbour(3, 4, 5, 10, 18);
-    setNeighbour(4, 1, 7, 3, 5);
-    setNeighbour(5, 3, 4, 13, 20);
-    setNeighbour(6, 7, 8, 11, 15);
-    setNeighbour(7, 1, 4, 6, 8);
-    setNeighbour(8, 6, 7, 12, 17);
-    setNeighbour(9, 10, 11, 0, 21);
-    setNeighbour(10, 9, 11, 3, 18);
-    setNeighbour(11, 9, 10, 6, 15);
-    setNeighbour(12, 13, 14, 8, 17);
-    setNeighbour(13, 12, 14, 5, 20);
-    setNeighbour(14, 12, 13, 2, 23);
-    setNeighbour(15, 6, 11, 16, 17);
-    setNeighbour(16, 15, 17, 19, 22);
-    setNeighbour(17, 15, 16, 8, 12);
-    setNeighbour(18, 3, 10, 19, 20);
-    setNeighbour(19, 18, 20, 16, 22);
-    setNeighbour(20, 5, 13, 18, 19);
-    setNeighbour(21, 0, 9, 22, 23);
-    setNeighbour(22, 16, 19, 21, 23);
-    setNeighbour(23, 2, 14, 21, 22);
+    setNeighbor(0, 1, 2, 9, 21);
+    setNeighbor(1, 0, 2, 4, 7);
+    setNeighbor(2, 0, 1, 14, 23);
+    setNeighbor(3, 4, 5, 10, 18);
+    setNeighbor(4, 1, 7, 3, 5);
+    setNeighbor(5, 3, 4, 13, 20);
+    setNeighbor(6, 7, 8, 11, 15);
+    setNeighbor(7, 1, 4, 6, 8);
+    setNeighbor(8, 6, 7, 12, 17);
+    setNeighbor(9, 10, 11, 0, 21);
+    setNeighbor(10, 9, 11, 3, 18);
+    setNeighbor(11, 9, 10, 6, 15);
+    setNeighbor(12, 13, 14, 8, 17);
+    setNeighbor(13, 12, 14, 5, 20);
+    setNeighbor(14, 12, 13, 2, 23);
+    setNeighbor(15, 6, 11, 16, 17);
+    setNeighbor(16, 15, 17, 19, 22);
+    setNeighbor(17, 15, 16, 8, 12);
+    setNeighbor(18, 3, 10, 19, 20);
+    setNeighbor(19, 18, 20, 16, 22);
+    setNeighbor(20, 5, 13, 18, 19);
+    setNeighbor(21, 0, 9, 22, 23);
+    setNeighbor(22, 16, 19, 21, 23);
+    setNeighbor(23, 2, 14, 21, 22);
 }
 
 //-----------------------------------------------------------------------------
@@ -263,19 +263,19 @@ inline void fieldStruct::setConnection(unsigned int index, int firstDirection,
 }
 
 //-----------------------------------------------------------------------------
-// setNeighbour()
+// setNeighbor()
 //
 //-----------------------------------------------------------------------------
-inline void fieldStruct::setNeighbour(unsigned int index,
-                                      unsigned int firstNeighbour0,
-                                      unsigned int secondNeighbour0,
-                                      unsigned int firstNeighbour1,
-                                      unsigned int secondNeighbour1)
+inline void fieldStruct::setNeighbor(unsigned int index,
+                                      unsigned int firstNeighbor0,
+                                      unsigned int secondNeighbor0,
+                                      unsigned int firstNeighbor1,
+                                      unsigned int secondNeighbor1)
 {
-    neighbour[index][0][0] = firstNeighbour0;
-    neighbour[index][0][1] = secondNeighbour0;
-    neighbour[index][1][0] = firstNeighbour1;
-    neighbour[index][1][1] = secondNeighbour1;
+    neighbor[index][0][0] = firstNeighbor0;
+    neighbor[index][0][1] = secondNeighbor0;
+    neighbor[index][1][0] = firstNeighbor1;
+    neighbor[index][1][1] = secondNeighbor1;
 }
 
 #endif // MADWEASEL_MUEHLE_PERFECT_AI
