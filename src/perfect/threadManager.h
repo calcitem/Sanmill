@@ -42,7 +42,7 @@ private:
     struct ForLoop
     {
         unsigned int schedType;
-        int inkrement;
+        int increment;
         int initialValue;
         int finalValue;
         void *pParameter;
@@ -161,7 +161,7 @@ public:
     executeParallelLoop(DWORD threadProc(void *pParameter, unsigned int index),
                         void *pParameter, unsigned int parameterStructSize,
                         unsigned int schedType, int initialValue,
-                        int finalValue, int inkrement);
+                        int finalValue, int increment);
 };
 
 #endif // THREADMANAGER_H_INCLUDED

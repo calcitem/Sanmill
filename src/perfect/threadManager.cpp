@@ -355,7 +355,7 @@ ThreadManager::executeInParallel(DWORD threadProc(void *pParameter),
 unsigned int ThreadManager::executeParallelLoop(
     DWORD threadProc(void *pParameter, unsigned index), void *pParameter,
     unsigned int parameterStructSize, unsigned int schedType, int initialValue,
-    int finalValue, int inkrement)
+    int finalValue, int increment)
 {
     // parameters ok?
     if (executionCancelled == true)
@@ -367,10 +367,10 @@ unsigned int ThreadManager::executeParallelLoop(
     if (schedType >= TM_SCHED_NUM_TYPES)
         return TM_RETURN_VALUE_INVALID_PARAM;
 
-    if (inkrement == 0)
+    if (increment == 0)
         return TM_RETURN_VALUE_INVALID_PARAM;
 
-    if (abs(finalValue - initialValue) == abs(inkrement))
+    if (abs(finalValue - initialValue) == abs(increment))
         return TM_RETURN_VALUE_INVALID_PARAM;
 
     // locals
@@ -379,7 +379,7 @@ unsigned int ThreadManager::executeParallelLoop(
     unsigned int curThreadNo;
 
     // total number of iterations
-    int nIterations = (finalValue - initialValue) / inkrement + 1;
+    int nIterations = (finalValue - initialValue) / increment + 1;
 
     // number of iterations per chunk
     int chunkSize = 0;
@@ -401,7 +401,7 @@ unsigned int ThreadManager::executeParallelLoop(
                  nullptr);
         forLoopParameters[curThreadNo].threadManager = this;
         forLoopParameters[curThreadNo].threadProc = threadProc;
-        forLoopParameters[curThreadNo].inkrement = inkrement;
+        forLoopParameters[curThreadNo].increment = increment;
         forLoopParameters[curThreadNo].schedType = schedType;
 
         switch (schedType) {
@@ -492,10 +492,10 @@ DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParameter)
     switch (forLoopParameters->schedType) {
     case TM_SCHED_STATIC:
         for (index = forLoopParameters->initialValue;
-             (forLoopParameters->inkrement < 0) ?
+             (forLoopParameters->increment < 0) ?
                  index >= forLoopParameters->finalValue :
                  index <= forLoopParameters->finalValue;
-             index += forLoopParameters->inkrement) {
+             index += forLoopParameters->increment) {
             switch (forLoopParameters->threadProc(forLoopParameters->pParameter,
                                                   index)) {
             case TM_RETURN_VALUE_OK:
