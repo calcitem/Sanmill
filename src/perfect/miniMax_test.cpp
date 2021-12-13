@@ -58,7 +58,7 @@ bool MiniMax::testLayer(unsigned int layerNumber)
         TM_SCHED_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
     switch (returnValue) {
     case TM_RETURN_VALUE_OK:
-    case TM_RETURN_VALUE_EXECUTION_CANCELLED:
+    case TM_RETURN_VALUE_EXEC_CANCELLED:
         // reduce and delete thread specific data
         for (stateProcessedCount = 0, curThreadNo = 0;
              curThreadNo < threadManager.getThreadCount(); curThreadNo++) {
@@ -68,7 +68,7 @@ bool MiniMax::testLayer(unsigned int layerNumber)
             SAFE_DELETE_ARRAY(tlVars[curThreadNo].subPlyInfos);
         }
         SAFE_DELETE_ARRAY(tlVars);
-        if (returnValue == TM_RETURN_VALUE_EXECUTION_CANCELLED) {
+        if (returnValue == TM_RETURN_VALUE_EXEC_CANCELLED) {
             PRINT(0, this, "Main thread: Execution cancelled by user");
             return false; // ... better would be to return a cancel-specific
                           // value
@@ -521,7 +521,7 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 
     switch (returnValue) {
     case TM_RETURN_VALUE_OK:
-    case TM_RETURN_VALUE_EXECUTION_CANCELLED:
+    case TM_RETURN_VALUE_EXEC_CANCELLED:
         // reduce and delete thread specific data
         for (stateProcessedCount = 0, curThreadNo = 0;
              curThreadNo < threadManager.getThreadCount(); curThreadNo++) {
@@ -531,7 +531,7 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
             SAFE_DELETE_ARRAY(tlVars[curThreadNo].subPlyInfos);
         }
         SAFE_DELETE_ARRAY(tlVars);
-        if (returnValue == TM_RETURN_VALUE_EXECUTION_CANCELLED) {
+        if (returnValue == TM_RETURN_VALUE_EXEC_CANCELLED) {
             PRINT(0, this, "Main thread: Execution cancelled by user");
             return false; // ... better would be to return a cancel-specific
                           // value

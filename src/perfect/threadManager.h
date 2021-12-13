@@ -28,7 +28,7 @@ enum ThreadManagerSched {
 enum ThreadManagerReturnValue {
     TM_RETURN_VALUE_OK = 0,
     TM_RETURN_VALUE_TERMINATE_ALL_THREADS = 1,
-    TM_RETURN_VALUE_EXECUTION_CANCELLED = 2,
+    TM_RETURN_VALUE_EXEC_CANCELLED = 2,
     TM_RETURN_VALUE_INVALID_PARAM = 3,
     TM_RETURN_VALUE_UNEXPECTED_ERROR = 4
 };
@@ -58,10 +58,10 @@ private:
                      // handles
     DWORD *threadId; // array of size 'threadCount' containing the thread ids
     bool termineAllThreads;
-    bool executionPaused;    // switch for the
-    bool executionCancelled; // true when cancelExecution() was called
+    bool execPaused;    // switch for the
+    bool execCancelled; // true when cancelExec() was called
 
-    // barier stuff
+    // barrier stuff
     HANDLE hEventBarrierPassedByEveryBody;
     HANDLE *hBarrier; // array of size 'threadCount' containing the event
                       // handles for the barrier
@@ -138,16 +138,16 @@ public:
 
     bool setNumThreads(unsigned int newNumThreads);
     void waitForOtherThreads(unsigned int threadNo);
-    void pauseExecution();  // un-/suspend all threads
-    void cancelExecution(); // termineAllThreads auf true
-    bool wasExecutionCancelled();
+    void pauseExec();  // un-/suspend all threads
+    void cancelExec(); // termineAllThreads auf true
+    bool wasExecCancelled();
 
-    // sets executionCancelled to false, otherwise executeParallelLoop returns
+    // sets execCancelled to false, otherwise executeParallelLoop returns
     // immediately
-    void unCancelExecution();
+    void unCancelExec();
 
 // a user function which is called every x-milliseconds during
-// execution between two iterations
+// exec between two iterations
 #if 0
     void setCallBackFunction(void userFunction(void *pUser), void *pUser,
                              DWORD milliseconds);

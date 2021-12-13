@@ -25,8 +25,8 @@ ThreadManager::ThreadManager()
     GetSystemInfo(&m_si);
 
     // init default values
-    executionPaused = false;
-    executionCancelled = false;
+    execPaused = false;
+    execCancelled = false;
     threadCount = m_si.dwNumberOfProcessors;
     hThread = new HANDLE[threadCount];
     threadId = new DWORD[threadCount];
@@ -209,14 +209,14 @@ bool ThreadManager::setNumThreads(unsigned int newNumThreads)
 }
 
 //-----------------------------------------------------------------------------
-// pauseExecution()
+// pauseExec()
 //
 //-----------------------------------------------------------------------------
-void ThreadManager::pauseExecution()
+void ThreadManager::pauseExec()
 {
     for (unsigned int curThread = 0; curThread < threadCount; curThread++) {
         // unsuspend all threads
-        if (!executionPaused) {
+        if (!execPaused) {
             SuspendThread(hThread[curThread]);
             // suspend all threads
         } else {
@@ -224,41 +224,41 @@ void ThreadManager::pauseExecution()
         }
     }
 
-    executionPaused = (!executionPaused);
+    execPaused = (!execPaused);
 }
 
 //-----------------------------------------------------------------------------
-// cancelExecution()
+// cancelExec()
 // Stops executeParallelLoop() before the next iteration.
 //     When executeInParallel() was called, user has to handle cancellation by
 //     himself.
 //-----------------------------------------------------------------------------
-void ThreadManager::cancelExecution()
+void ThreadManager::cancelExec()
 {
     termineAllThreads = true;
-    executionCancelled = true;
+    execCancelled = true;
 
-    if (executionPaused) {
-        pauseExecution();
+    if (execPaused) {
+        pauseExec();
     }
 }
 
 //-----------------------------------------------------------------------------
-// unCancelExecution()
+// unCancelExec()
 //
 //-----------------------------------------------------------------------------
-void ThreadManager::unCancelExecution()
+void ThreadManager::unCancelExec()
 {
-    executionCancelled = false;
+    execCancelled = false;
 }
 
 //-----------------------------------------------------------------------------
-// wasExecutionCancelled()
+// wasExecCancelled()
 //
 //-----------------------------------------------------------------------------
-bool ThreadManager::wasExecutionCancelled()
+bool ThreadManager::wasExecCancelled()
 {
-    return executionCancelled;
+    return execCancelled;
 }
 
 //-----------------------------------------------------------------------------
@@ -323,7 +323,7 @@ ThreadManager::executeInParallel(DWORD threadProc(void *pParameter),
 
     // start threads
     for (curThreadNo = 0; curThreadNo < threadCount; curThreadNo++) {
-        if (!executionPaused)
+        if (!execPaused)
             ResumeThread(hThread[curThreadNo]);
     }
 
@@ -338,8 +338,8 @@ ThreadManager::executeInParallel(DWORD threadProc(void *pParameter),
     }
 
     // everything ok
-    if (executionCancelled) {
-        return TM_RETURN_VALUE_EXECUTION_CANCELLED;
+    if (execCancelled) {
+        return TM_RETURN_VALUE_EXEC_CANCELLED;
     } else {
         return TM_RETURN_VALUE_OK;
     }
@@ -358,8 +358,8 @@ unsigned int ThreadManager::executeParallelLoop(
     int finalValue, int increment)
 {
     // parameters ok?
-    if (executionCancelled == true)
-        return TM_RETURN_VALUE_EXECUTION_CANCELLED;
+    if (execCancelled == true)
+        return TM_RETURN_VALUE_EXEC_CANCELLED;
 
     if (pParameter == nullptr)
         return TM_RETURN_VALUE_INVALID_PARAM;
@@ -456,7 +456,7 @@ unsigned int ThreadManager::executeParallelLoop(
 
     // start threads, but don't resume if in pause mode
     for (curThreadNo = 0; curThreadNo < threadCount; curThreadNo++) {
-        if (!executionPaused)
+        if (!execPaused)
             ResumeThread(hThread[curThreadNo]);
     }
 
@@ -472,8 +472,8 @@ unsigned int ThreadManager::executeParallelLoop(
     delete[] forLoopParameters;
 
     // everything ok
-    if (executionCancelled) {
-        return TM_RETURN_VALUE_EXECUTION_CANCELLED;
+    if (execCancelled) {
+        return TM_RETURN_VALUE_EXEC_CANCELLED;
     } else {
         return TM_RETURN_VALUE_OK;
     }

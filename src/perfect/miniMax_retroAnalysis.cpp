@@ -227,7 +227,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
             layerStats[layerNumber].knotsInLayer - 1, 1)) {
         case TM_RETURN_VALUE_OK:
             break;
-        case TM_RETURN_VALUE_EXECUTION_CANCELLED:
+        case TM_RETURN_VALUE_EXEC_CANCELLED:
             PRINT(0, this,
                   "\n****************************************\nMain thread: "
                   "Execution cancelled by "
@@ -520,7 +520,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
                 layerStats[layerNumber].knotsInLayer - 1, 1)) {
             case TM_RETURN_VALUE_OK:
                 break;
-            case TM_RETURN_VALUE_EXECUTION_CANCELLED:
+            case TM_RETURN_VALUE_EXEC_CANCELLED:
                 PRINT(0, this,
                       "\n****************************************\nMain "
                       "thread: "
@@ -581,7 +581,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
                 layerStats[succState.layerNumber].knotsInLayer - 1, 1)) {
             case TM_RETURN_VALUE_OK:
                 break;
-            case TM_RETURN_VALUE_EXECUTION_CANCELLED:
+            case TM_RETURN_VALUE_EXEC_CANCELLED:
                 PRINT(0, this,
                       "\n****************************************\nMain "
                       "thread: "
@@ -742,7 +742,7 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
                                             (void **)&retroVars, 0)) {
     case TM_RETURN_VALUE_OK:
         break;
-    case TM_RETURN_VALUE_EXECUTION_CANCELLED:
+    case TM_RETURN_VALUE_EXEC_CANCELLED:
         PRINT(0, this,
               "\n****************************************\nMain thread: "
               "Execution cancelled by "
@@ -847,7 +847,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParameter)
             while (threadVars->statesToProcess[curNumPlies]->takeBytes(
                 sizeof(StateAdress), (unsigned char *)&curState)) {
                 // execution canceled by user?
-                if (m->threadManager.wasExecutionCancelled()) {
+                if (m->threadManager.wasExecCancelled()) {
                     PRINT(0, m,
                           "\n****************************************\nSub-"
                           "thread no. "
@@ -856,7 +856,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParameter)
                                  "user!\n**************************************"
                                  "**"
                                  "\n");
-                    return TM_RETURN_VALUE_EXECUTION_CANCELLED;
+                    return TM_RETURN_VALUE_EXEC_CANCELLED;
                 }
 
                 // get value of current state

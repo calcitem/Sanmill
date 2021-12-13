@@ -164,7 +164,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
         depthOfFullTree = maxDepthOfTree;
         layerInDatabase = false;
         calcDatabase = true;
-        threadManager.unCancelExecution();
+        threadManager.unCancelExec();
         arrayInfos.vectorArrays.resize(ArrayInfo::arrayTypeCount *
                                            skvfHeader.LayerCount,
                                        arrayInfos.listArrays.end());
@@ -296,7 +296,7 @@ bool MiniMax::calcLayer(unsigned int layerNumber)
 //-----------------------------------------------------------------------------
 void MiniMax::pauseDatabaseCalculation()
 {
-    threadManager.pauseExecution();
+    threadManager.pauseExec();
 }
 
 //-----------------------------------------------------------------------------
@@ -307,7 +307,7 @@ void MiniMax::cancelDatabaseCalculation()
 {
     // when returning from executeParallelLoop() all function shall quit
     // immediately up to calculateDatabase()
-    threadManager.cancelExecution();
+    threadManager.cancelExec();
 }
 
 //-----------------------------------------------------------------------------
@@ -316,7 +316,7 @@ void MiniMax::cancelDatabaseCalculation()
 //-----------------------------------------------------------------------------
 bool MiniMax::wasDatabaseCalculationCancelled()
 {
-    return threadManager.wasExecutionCancelled();
+    return threadManager.wasExecCancelled();
 }
 
 #endif // MADWEASEL_MUEHLE_PERFECT_AI

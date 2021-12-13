@@ -158,10 +158,10 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
         layerStats[alphaBetaVars.layerNumber].knotsInLayer - 1, 1)) {
     case TM_RETURN_VALUE_OK:
         break;
-    case TM_RETURN_VALUE_EXECUTION_CANCELLED:
+    case TM_RETURN_VALUE_EXEC_CANCELLED:
         PRINT(0, this,
               "\n****************************************\nMain thread: "
-              "Execution cancelled by "
+              "Exec cancelled by "
               "user!\n****************************************\n");
         SAFE_DELETE(invalidArray);
         return false;
@@ -322,7 +322,7 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
         layerStats[alphaBetaVars.layerNumber].knotsInLayer - 1, 1)) {
     case TM_RETURN_VALUE_OK:
         break;
-    case TM_RETURN_VALUE_EXECUTION_CANCELLED:
+    case TM_RETURN_VALUE_EXEC_CANCELLED:
         PRINT(0, this,
               "\n****************************************\nMain thread: "
               "Execution cancelled by "
