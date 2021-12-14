@@ -44,3 +44,4 @@ lib/generated_plugin_registrant.dart
 
 # Sanmill Settings
 sanmill_settings.json
+.run/
