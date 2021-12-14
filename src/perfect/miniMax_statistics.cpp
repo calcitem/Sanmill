@@ -153,7 +153,7 @@ void MiniMax::showLayerStats(unsigned int layerNumber)
     unsigned int statsValueCounter[] = {0, 0, 0, 0};
     TwoBit curStateValue;
 
-    // calc and show statistics
+    // calculate and show statistics
     for (curState.layerNumber = layerNumber, curState.stateNumber = 0;
          curState.stateNumber < layerStats[curState.layerNumber].knotsInLayer;
          curState.stateNumber++) {
@@ -173,7 +173,7 @@ void MiniMax::showLayerStats(unsigned int layerNumber)
         statsValueCounter[SKV_VALUE_INVALID];
 
     PRINT(1, this, endl << "FINAL STATISTICS OF LAYER " << layerNumber);
-    PRINT(1, this, (getOutputInformation(layerNumber)));
+    PRINT(1, this, (getOutputInfo(layerNumber)));
     PRINT(1, this,
           " number  states: " << layerStats[curState.layerNumber].knotsInLayer);
     PRINT(1, this,
@@ -231,9 +231,9 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
     text += "succeedingLayers[1]\n";
 
     statsValueCounter = new unsigned int[4 * skvfHeader.LayerCount];
-    curCalculationActionId = MM_ACTION_CALC_LAYER_STATS;
+    curCalcActionId = MM_ACTION_CALC_LAYER_STATS;
 
-    // calc and show statistics
+    // calculate and show statistics
     for (layerInDatabase = false, curState.layerNumber = 0;
          curState.layerNumber < skvfHeader.LayerCount; curState.layerNumber++) {
         // status output
@@ -246,7 +246,7 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
         statsValueCounter[4 * curState.layerNumber + SKV_VALUE_GAME_DRAWN] = 0;
         statsValueCounter[4 * curState.layerNumber + SKV_VALUE_INVALID] = 0;
 
-        // only calc stats of completed layers
+        // only calculate stats of completed layers
         if (layerStats[curState.layerNumber].layerIsCompletedAndInFile) {
             for (curState.stateNumber = 0;
                  curState.stateNumber <
@@ -265,8 +265,7 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
         // add line
         sprintf_s(
             line, "%d\t%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
-            curState.layerNumber,
-            getOutputInformation(curState.layerNumber).c_str(),
+            curState.layerNumber, getOutputInfo(curState.layerNumber).c_str(),
             statsValueCounter[4 * curState.layerNumber + SKV_VALUE_GAME_WON],
             statsValueCounter[4 * curState.layerNumber + SKV_VALUE_GAME_LOST],
             statsValueCounter[4 * curState.layerNumber + SKV_VALUE_GAME_DRAWN],
@@ -314,7 +313,7 @@ MiniMax::ArrayInfoChange MiniMax::getArrayInfoForUpdate()
 //-----------------------------------------------------------------------------
 LPWSTR MiniMax::getCurActionStr()
 {
-    switch (curCalculationActionId) {
+    switch (curCalcActionId) {
     case MM_ACTION_INIT_RETRO_ANAL:
         return (LPWSTR)L"initiating retro-analysis";
     case MM_ACTION_PREPARE_COUNT_ARRAY:

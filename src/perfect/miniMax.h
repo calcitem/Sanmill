@@ -230,7 +230,7 @@ public:
 
     struct PlyInfoFileHeader
     {
-        // true if ply information has been calculated for all game states
+        // true if ply info has been calculated for all game states
         bool plyInfoCompleted;
 
         // number of layers
@@ -437,12 +437,12 @@ public:
     void closeDatabase();
     void unloadAllLayers();
     void unloadAllPlyInfos();
-    void pauseDatabaseCalculation();
-    void cancelDatabaseCalculation();
-    bool wasDatabaseCalculationCancelled();
+    void pauseDatabaseCalc();
+    void cancelDatabaseCalc();
+    bool wasDatabaseCalcCancelled();
 
     // Virtual Functions
-    virtual void prepareBestChoiceCalculation()
+    virtual void prepareBestChoiceCalc()
     {
         while (true) {
         }
@@ -465,11 +465,11 @@ public:
         }
     };
 
-    virtual void storeValueOfMove(unsigned int threadNo,
-                                  unsigned int idPossibility,
-                                  void *pPossibilities, TwoBit value,
-                                  unsigned int *freqValuesSubMoves,
-                                  PlyInfoVarType plyInfo)
+    virtual void storeMoveValue(unsigned int threadNo,
+                                unsigned int idPossibility,
+                                void *pPossibilities, TwoBit value,
+                                unsigned int *freqValuesSubMoves,
+                                PlyInfoVarType plyInfo)
     { }
 
     virtual void move(unsigned int threadNo, unsigned int idPossibility,
@@ -520,7 +520,7 @@ public:
         return 0;
     };
 
-    virtual string getOutputInformation(unsigned int layerNum)
+    virtual string getOutputInfo(unsigned int layerNum)
     {
         while (true) {
         }
@@ -592,21 +592,20 @@ public:
         }
     };
 
-    virtual void printMoveInformation(unsigned int threadNo,
-                                      unsigned int idPossibility,
-                                      void *pPossibilities)
+    virtual void printMoveInfo(unsigned int threadNo,
+                               unsigned int idPossibility, void *pPossibilities)
     {
         while (true) {
         }
     };
 
-    virtual void prepareDatabaseCalculation()
+    virtual void prepareDatabaseCalc()
     {
         while (true) {
         }
     };
 
-    virtual void wrapUpDatabaseCalculation(bool calculationAborted)
+    virtual void wrapUpDatabaseCalc(bool calcAborted)
     {
         while (true) {
         }
@@ -959,12 +958,12 @@ private:
     // pointer passed when calling userPrintFunc
     void *pDataForUserPrintFunc = nullptr;
 
-    // information about the arrays in memory
+    // info about the arrays in memory
     ArrayInfoContainer arrayInfos;
 
     // thread specific or non-constant variables
 
-    // memory in bytes used for storing: ply information, short knot value and
+    // memory in bytes used for storing: ply info, short knot value and
     // ...
     LONGLONG memoryUsed2 = 0;
 
@@ -980,7 +979,7 @@ private:
     unsigned int curCalculatedLayer = 0;
 
     // one of ...
-    unsigned int curCalculationActionId = 0;
+    unsigned int curCalcActionId = 0;
 
     // true if the current considered layer has already been calculated and
     // stored in the database
@@ -990,11 +989,11 @@ private:
     // which getBestChoice() has been called
     void *pRootPossibilities = nullptr;
 
-    // array of size [] containing general layer information and the skv of all
+    // array of size [] containing general layer info and the skv of all
     // layers
     LayerStats *layerStats = nullptr;
 
-    // array of size [] containing ply information
+    // array of size [] containing ply info
     PlyInfo *plyInfos = nullptr;
 
 #if 0

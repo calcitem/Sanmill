@@ -25,7 +25,7 @@ bool MiniMax::calcKnotValuesByAlphaBeta(unsigned int layerNumber)
     PRINT(1, this,
           "*** Calculate layer " << layerNumber
                                  << " by alpha-beta-algorithmn ***" << endl);
-    curCalculationActionId = MM_ACTION_PERFORM_ALPHA_BETA;
+    curCalcActionId = MM_ACTION_PERFORM_ALPHA_BETA;
 
     // initialization
     PRINT(2, this, "  Bytes in memory: " << memoryUsed2 << endl);
@@ -82,7 +82,7 @@ void MiniMax::alphaBetaSaveInDatabase(unsigned int threadNo,
         // get state number
         sysStateNumber = symStateNumbers[i];
 
-        // don't save original state twice
+        // don't save orig state twice
         if (sysStateNumber == stateNumber)
             continue;
 
@@ -102,7 +102,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     // locals
     BufferedFile *invalidArray;
 
-    // true if the initialization information is already available in a file
+    // true if the initialization info is already available in a file
     bool initAlreadyDone = false;
 
     stringstream ssInvArrayDir;
@@ -112,8 +112,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     PRINT(1, this,
           endl << "  *** Signing of invalid states for layer "
                << alphaBetaVars.layerNumber << " ("
-               << (getOutputInformation(alphaBetaVars.layerNumber))
-               << ") which has "
+               << (getOutputInfo(alphaBetaVars.layerNumber)) << ") which has "
                << layerStats[alphaBetaVars.layerNumber].knotsInLayer
                << " knots ***");
 
@@ -533,7 +532,7 @@ bool MiniMax::alphaBetaTryDatabase(Knot *knot, RunAlphaBetaVars *rabVars,
         readPlyInfoFromDatabase(layerNumber, stateNumber, plyInfo);
 
         // it was possible to achieve an invalid state using move(),
-        // so the original state was an invalid one
+        // so the orig state was an invalid one
         if ((tilLevel < fullTreeDepth && invalidLayerOrStateNumber) ||
             (tilLevel < fullTreeDepth && shortKnotValue == SKV_VALUE_INVALID &&
              subLayerInDatabaseAndCompleted) ||
@@ -606,8 +605,8 @@ void MiniMax::alphaBetaTryPossibilities(Knot *knot, RunAlphaBetaVars *rabVars,
     for (curPoss = 0; curPoss < knot->possibilityCount; curPoss++) {
         // output
         if (tilLevel == fullTreeDepth && !calcDatabase) {
-            printMoveInformation(rabVars->curThreadNo, idPossibility[curPoss],
-                                 pPossibilities);
+            printMoveInfo(rabVars->curThreadNo, idPossibility[curPoss],
+                          pPossibilities);
             rabVars->freqValuesSubMoves[SKV_VALUE_INVALID] = 0;
             rabVars->freqValuesSubMoves[SKV_VALUE_GAME_LOST] = 0;
             rabVars->freqValuesSubMoves[SKV_VALUE_GAME_DRAWN] = 0;
@@ -637,11 +636,11 @@ void MiniMax::alphaBetaTryPossibilities(Knot *knot, RunAlphaBetaVars *rabVars,
                     rabVars->freqValuesSubMoves[SKV_VALUE_GAME_WON];
             }
             if (hFileShortKnotValues != nullptr && layerInDatabase) {
-                storeValueOfMove(rabVars->curThreadNo, idPossibility[curPoss],
-                                 pPossibilities,
-                                 knot->branches[curPoss].shortValue,
-                                 rabVars->freqValuesSubMoves,
-                                 knot->branches[curPoss].plyInfo);
+                storeMoveValue(rabVars->curThreadNo, idPossibility[curPoss],
+                               pPossibilities,
+                               knot->branches[curPoss].shortValue,
+                               rabVars->freqValuesSubMoves,
+                               knot->branches[curPoss].plyInfo);
                 PRINT(0, this,
                       "\t: "
                           << ((knot->branches[curPoss].shortValue ==
@@ -842,7 +841,7 @@ void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars,
     if (tilLevel == fullTreeDepth && !calcDatabase) {
         // check every possible move
         for (nBestChoices = 0, i = 0; i < knot->possibilityCount; i++) {
-            // use information in database
+            // use info in database
             if (layerInDatabase && hFileShortKnotValues != nullptr) {
                 // selected move with equal knot value
                 if (knot->branches[i].shortValue == knot->shortValue) {

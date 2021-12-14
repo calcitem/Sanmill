@@ -94,7 +94,7 @@ public:
     bool comparePlayers(Player *playerA, Player *playerB);
     void printBoard();
     bool startPlacingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
-                           int curPlayer, bool placingPhase);
+                           int curPlayer, bool isPlacingPhase);
     bool putPiece(unsigned int pos, int player);
     bool placingPhaseHasFinished();
     void getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom,
@@ -111,9 +111,9 @@ public:
     bool isCurPlayerHuman();
     bool isOpponentPlayerHuman();
 
-    bool inPlacingPhase() { return field.placingPhase; }
+    bool inPlacingPhase() { return field.isPlacingPhase; }
 
-    unsigned int mustPieceBeRemoved() { return field.pieceMustBeRemoved; }
+    unsigned int mustPieceBeRemoved() { return field.pieceMustBeRemovedCount; }
 
     int getWinner() { return winner; }
 
@@ -131,7 +131,7 @@ public:
 
     unsigned int getMovesDone() { return movesDone; }
 
-    unsigned int getPiecesSetCount() { return field.piecesSet; }
+    unsigned int getPiecesSetCount() { return field.piecePlacedCount; }
 
     int getBeginningPlayer() { return beginningPlayer; }
 

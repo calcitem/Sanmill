@@ -74,7 +74,7 @@ struct InitRetroAnalysisVars
     unsigned int statsValueCounter[SKV_VALUE_COUNT];
     BufferedFile *bufferedFile;
     RetroAnalysisVars *retroVars;
-    bool initAlreadyDone; // true if the initialization information is already
+    bool initAlreadyDone; // true if the initialization info is already
                           // available in a file
 };
 

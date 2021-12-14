@@ -27,7 +27,7 @@ s\*********************************************************************/
 bool MiniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int> &layersToCalc)
 {
     // locals
-    bool abortCalculation = false;
+    bool abortCalc = false;
     unsigned int curLayer = 0;    // Counter variable
     unsigned int curSubLayer = 0; // Counter variable
     unsigned int plyCounter = 0;  // Counter variable
@@ -85,14 +85,14 @@ bool MiniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int> &layersToCalc)
     // initialization
     PRINT(2, this, "  Bytes in memory: " << memoryUsed2 << endl);
     if (!initRetroAnalysis(retroVars)) {
-        abortCalculation = true;
+        abortCalc = true;
         goto freeMem;
     }
 
     // prepare count arrays
     PRINT(2, this, "  Bytes in memory: " << memoryUsed2 << endl);
     if (!prepareCountArrays(retroVars)) {
-        abortCalculation = true;
+        abortCalc = true;
         goto freeMem;
     }
 
@@ -103,7 +103,7 @@ bool MiniMax::calcKnotValuesByRetroAnalysis(vector<unsigned int> &layersToCalc)
     // iteration
     PRINT(2, this, "  Bytes in memory: " << memoryUsed2 << endl);
     if (!performRetroAnalysis(retroVars)) {
-        abortCalculation = true;
+        abortCalc = true;
         goto freeMem;
     }
 
@@ -137,10 +137,10 @@ freeMem:
         SAFE_DELETE_ARRAY(retroVars.countArrays[curLayer]);
     }
 
-    if (!abortCalculation)
+    if (!abortCalc)
         PRINT(2, this, "  Bytes in memory: " << memoryUsed2);
 
-    return !abortCalculation;
+    return !abortCalc;
 }
 
 //-----------------------------------------------------------------------------
@@ -168,7 +168,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 
     BufferedFile *initArray;
 
-    // true if the initialization information is already available in a file
+    // true if the initialization info is already available in a file
     bool initAlreadyDone = false;
 
     // process each layer
@@ -176,10 +176,10 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
          curLayerId++) {
         // set current processed layer number
         layerNumber = retroVars.layersToCalculate[curLayerId];
-        curCalculationActionId = MM_ACTION_INIT_RETRO_ANAL;
+        curCalcActionId = MM_ACTION_INIT_RETRO_ANAL;
         PRINT(1, this,
               endl << "  *** Initialization of layer " << layerNumber << " ("
-                   << (getOutputInformation(layerNumber)) << ") which has "
+                   << (getOutputInfo(layerNumber)) << ") which has "
                    << layerStats[layerNumber].knotsInLayer << " knots ***");
 
         // file names
@@ -389,7 +389,7 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
     PRINT(2, this,
           "  *** Prepare count arrays for layers " << ssLayers.str() << " ***"
                                                    << endl);
-    curCalculationActionId = MM_ACTION_PREPARE_COUNT_ARRAY;
+    curCalcActionId = MM_ACTION_PREPARE_COUNT_ARRAY;
 
     // prepare count arrays
     CreateDirectoryA(ssCountArrayPath.str().c_str(), nullptr);
@@ -450,7 +450,7 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
             }
         }
 
-        // calc values
+        // calculate values
         if (!calcNumSucceeders(retroVars)) {
             CloseHandle(hFileCountArray);
             return false;
@@ -538,7 +538,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
             if (stateProcessedCount < layerStats[layerNumber].knotsInLayer)
                 return falseOrStop();
 
-            // don't calc layers twice
+            // don't calculate layers twice
         } else {
             return falseOrStop();
         }
@@ -735,7 +735,7 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 
     PRINT(2, this, "  *** Begin Iteration ***");
     stateProcessedCount = 0;
-    curCalculationActionId = MM_ACTION_PERFORM_RETRO_ANAL;
+    curCalcActionId = MM_ACTION_PERFORM_RETRO_ANAL;
 
     // process each state in the current layer
     switch (threadManager.execInParallel(performRetroAnalysisThreadProc,

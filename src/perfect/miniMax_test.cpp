@@ -31,14 +31,14 @@ bool MiniMax::testLayer(unsigned int layerNumber)
     // output
     PRINT(1, this,
           endl << "*** Test each state in layer: " << layerNumber << " ***");
-    PRINT(1, this, (getOutputInformation(layerNumber)));
+    PRINT(1, this, (getOutputInfo(layerNumber)));
 
     // prepare params for multithreading
     skvfHeader.completed = false;
     layerInDatabase = false;
     stateProcessedCount = 0;
     curCalculatedLayer = layerNumber;
-    curCalculationActionId = MM_ACTION_TESTING_LAYER;
+    curCalcActionId = MM_ACTION_TESTING_LAYER;
     TestLayersVars *tlVars = new TestLayersVars[threadManager.getThreadCount()];
 
     for (curThreadNo = 0; curThreadNo < threadManager.getThreadCount();
@@ -154,7 +154,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
         }
     }
 
-    // debug information
+    // debug info
     if (m->verbosity > 5) {
         PRINT(5, m, "layer: " << layerNumber << " state: " << stateNumber);
         m->printBoard(threadNo, shortValueInDatabase);
@@ -204,7 +204,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
                                        subPlyInfos[i]);
             hasCurPlayerChanged[i] = (m->getOpponentLevel(threadNo) == true);
 
-            // debug information
+            // debug info
             if (m->verbosity > 5) {
                 PRINT(5, m,
                       "layer: " << tmpLayerNumber
@@ -496,11 +496,11 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
     // output
     PRINT(1, this,
           endl << "*** Test each state in layer: " << layerNumber << " ***");
-    PRINT(1, this, (getOutputInformation(layerNumber)));
+    PRINT(1, this, (getOutputInfo(layerNumber)));
 
     // prepare params for multithreading
     stateProcessedCount = 0;
-    curCalculationActionId = MM_ACTION_TESTING_LAYER;
+    curCalcActionId = MM_ACTION_TESTING_LAYER;
     TestLayersVars *tlVars = new TestLayersVars[threadManager.getThreadCount()];
 
     for (curThreadNo = 0; curThreadNo < threadManager.getThreadCount();
@@ -701,7 +701,7 @@ bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
           endl << "testIfSymmetricStatesHaveSameValue - TEST EACH STATE IN "
                   "LAYER: "
                << layerNumber);
-    PRINT(1, this, (getOutputInformation(layerNumber)));
+    PRINT(1, this, (getOutputInfo(layerNumber)));
     skvfHeader.completed = false;
 
     for (layerInDatabase = false, stateNumber = 0;

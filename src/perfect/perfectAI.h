@@ -29,14 +29,17 @@ constexpr auto MAX_NUM_PIECES_REMOVED_MINUS_1 = 2;
 
 // 10 x 10 since each color can range from 0 to 9 pieces
 // x2 since there is the placing phase and the moving phase
-constexpr auto NUM_LAYERS = 200;
-constexpr auto MAX_NUM_SUB_LAYERS = 100;
+constexpr auto LAYER_COUNT = 200;
+constexpr auto SUB_LAYER_COUNT_MAX = 100;
+
 constexpr auto LAYER_INDEX_PLACING_PHASE = 1;
 constexpr auto LAYER_INDEX_MOVING_PHASE = 0;
-constexpr auto NOT_INDEXED = 4294967295;
-constexpr auto MAX_DEPTH_OF_TREE = 100;
-constexpr auto NUM_PIECES_PER_PLAYER = 9;
-constexpr auto NUM_PIECES_PER_PLAYER_PLUS_ONE = 10;
+constexpr auto NOT_INDEXED = UINT_MAX;
+
+constexpr auto TREE_DEPTH_MAX = 100;
+
+constexpr auto PIECE_PER_PLAYER_COUNT = 9;
+constexpr auto PIECE_PER_PLAYER_PLUS_ONE_COUNT = 10;
 
 // The Four Groups (the board position is divided in four groups A,B,C,D)
 constexpr auto nSquaresGroupA = 4;
@@ -67,10 +70,10 @@ enum SymOperation {
     SO_INV_LEFT = 9,
     SO_INV_RIGHT = 10,
     SO_INV_180 = 11,
-    SO_INV_MIR_VERT = 12,
-    SO_INV_MIR_HORI = 13,
-    SO_INV_MIR_DIAG_1 = 14,
-    SO_INV_MIR_DIAG_2 = 15,
+    SO_INV_MIRROR_VERT = 12,
+    SO_INV_MIRROR_HORI = 13,
+    SO_INV_MIRROR_DIAG_1 = 14,
+    SO_INV_MIRROR_DIAG_2 = 15,
     SO_COUNT = 16,
 };
 
@@ -82,8 +85,10 @@ protected:
     {
         unsigned int minIndex;
         unsigned int maxIndex;
-        unsigned int nWhitePiecesGroupCD, nBlackPiecesGroupCD;
-        unsigned int nWhitePiecesGroupAB, nBlackPiecesGroupAB;
+        unsigned int nWhitePiecesGroupCD;
+        unsigned int nBlackPiecesGroupCD;
+        unsigned int nWhitePiecesGroupAB;
+        unsigned int nBlackPiecesGroupAB;
     };
 
     struct Layer
@@ -91,11 +96,11 @@ protected:
         unsigned int whitePieceCount;
         unsigned int blackPieceCount;
         unsigned int subLayerCount;
-        unsigned int subLayerIndexAB[NUM_PIECES_PER_PLAYER_PLUS_ONE]
-                                    [NUM_PIECES_PER_PLAYER_PLUS_ONE];
-        unsigned int subLayerIndexCD[NUM_PIECES_PER_PLAYER_PLUS_ONE]
-                                    [NUM_PIECES_PER_PLAYER_PLUS_ONE];
-        SubLayer subLayer[MAX_NUM_SUB_LAYERS];
+        unsigned int subLayerIndexAB[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
+                                    [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
+        unsigned int subLayerIndexCD[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
+                                    [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
+        SubLayer subLayer[SUB_LAYER_COUNT_MAX];
     };
 
     struct Possibility
@@ -109,15 +114,15 @@ protected:
         float floatValue;
         TwoBit shortValue;
         bool gameHasFinished;
-        bool placingPhase;
+        bool isPlacingPhase;
         int fieldFrom, fieldTo; // value of board
         unsigned int from, to;  // index of board
         unsigned int curPieceCount, oppPieceCount;
         unsigned int curPosMoves, oppPosMoves;
         unsigned int curMissPieces, oppMissPieces;
-        unsigned int piecesSet;
-        unsigned int pieceMustBeRemoved;
-        unsigned int piecePartOfMill[SQUARE_NB];
+        unsigned int piecePlacedCount;
+        unsigned int pieceMustBeRemovedCount;
+        unsigned int piecePartOfMillCount[SQUARE_NB];
         Player *curPlayer, *oppPlayer;
     };
 
@@ -130,38 +135,38 @@ protected:
     // constant variables for state addressing in the database
 
     // the layers
-    Layer layer[NUM_LAYERS];
+    Layer layer[LAYER_COUNT];
 
     // indices of layer [moving/placing phase][number of white pieces][number of
     // black pieces]
-    unsigned int layerIndex[2][NUM_PIECES_PER_PLAYER_PLUS_ONE]
-                           [NUM_PIECES_PER_PLAYER_PLUS_ONE];
+    unsigned int layerIndex[2][PIECE_PER_PLAYER_PLUS_ONE_COUNT]
+                           [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
 
-    unsigned int nPositionsCD[NUM_PIECES_PER_PLAYER_PLUS_ONE]
-                             [NUM_PIECES_PER_PLAYER_PLUS_ONE];
+    unsigned int nPositionsCD[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
+                             [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
 
-    unsigned int nPositionsAB[NUM_PIECES_PER_PLAYER_PLUS_ONE]
-                             [NUM_PIECES_PER_PLAYER_PLUS_ONE];
+    unsigned int nPositionsAB[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
+                             [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
 
     unsigned int indexAB[MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B];
 
     unsigned int indexCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D];
 
-    // index of symmetry operation used to get from the original state to the
+    // index of symmetry operation used to get from the orig state to the
     // current one
-    unsigned char symmetryOperationCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D];
+    unsigned char symOperationCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D];
 
     // 3^0, 3^1, 3^2, ...
     unsigned int powerOfThree[nSquaresGroupC + nSquaresGroupD];
 
     // Matrix used for application of the symmetry operations
-    unsigned int symmetryOperationTable[SO_COUNT][SQUARE_NB];
+    unsigned int symOperationTable[SO_COUNT][SQUARE_NB];
 
-    unsigned int *originalStateCD[NUM_PIECES_PER_PLAYER_PLUS_ONE]
-                                 [NUM_PIECES_PER_PLAYER_PLUS_ONE];
+    unsigned int *origStateCD[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
+                             [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
 
-    unsigned int *originalStateAB[NUM_PIECES_PER_PLAYER_PLUS_ONE]
-                                 [NUM_PIECES_PER_PLAYER_PLUS_ONE];
+    unsigned int *origStateAB[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
+                             [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
 
     // index of the reverse symmetry operation
     unsigned int reverseSymOperation[SO_COUNT];
@@ -173,7 +178,7 @@ protected:
     unsigned int mOverN[SQUARE_NB + 1][SQUARE_NB + 1];
 
     // contains the value of the situation, which will be achieved by that move
-    unsigned char valueOfMove[SQUARE_NB * SQUARE_NB];
+    unsigned char moveValue[SQUARE_NB * SQUARE_NB];
 
     // contains the value of the situation, which will be achieved by that move
     unsigned short plyInfoForOutput[SQUARE_NB * SQUARE_NB];
@@ -182,7 +187,7 @@ protected:
     unsigned int incidencesValuesSubMoves[SQUARE_NB * SQUARE_NB][4];
 
     // array for state numbers
-    unsigned int symmetricStateNumberArray[SO_COUNT];
+    unsigned int symStateNumberArray[SO_COUNT];
 
     // dir containing the database files
     string databaseDir;
@@ -267,10 +272,10 @@ protected:
     unsigned int getNumberOfLayers();
     unsigned int getNumberOfKnotsInLayer(unsigned int layerNum);
     int64_t mOverN_Function(unsigned int m, unsigned int n);
-    void applySymmetryOperationOnField(unsigned char symmetryOperationNumber,
-                                       unsigned int *sourceField,
-                                       unsigned int *destField);
-    bool isSymOperationInvariantOnGroupCD(unsigned int symmetryOperation,
+    void applySymOperationOnField(unsigned char symOperationNumber,
+                                  unsigned int *sourceField,
+                                  unsigned int *destField);
+    bool isSymOperationInvariantOnGroupCD(unsigned int symOperation,
                                           int *theField);
     bool shallRetroAnalysisBeUsed(unsigned int layerNum);
     void getSuccLayers(unsigned int layerNum, unsigned int *amountOfSuccLayers,
@@ -290,7 +295,7 @@ protected:
     bool checkGetPredThanGetPoss();
 
     // Virtual Functions
-    void prepareBestChoiceCalculation();
+    void prepareBestChoiceCalc();
     void getSituationValue(unsigned int threadNo, float &floatValue,
                            TwoBit &shortValue);
     void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel);
@@ -303,20 +308,20 @@ protected:
               bool opponentsMove, void *pBackup, void *pPossibilities);
     void move(unsigned int threadNo, unsigned int idPossibility,
               bool opponentsMove, void **pBackup, void *pPossibilities);
-    void printMoveInformation(unsigned int threadNo, unsigned int idPossibility,
-                              void *pPossibilities);
-    void storeValueOfMove(unsigned int threadNo, unsigned int idPossibility,
-                          void *pPossibilities, unsigned char value,
-                          unsigned int *freqValuesSubMoves,
-                          PlyInfoVarType plyInfo);
+    void printMoveInfo(unsigned int threadNo, unsigned int idPossibility,
+                       void *pPossibilities);
+    void storeMoveValue(unsigned int threadNo, unsigned int idPossibility,
+                        void *pPossibilities, unsigned char value,
+                        unsigned int *freqValuesSubMoves,
+                        PlyInfoVarType plyInfo);
     void getSymStateNumWithDoubles(unsigned int threadNo,
                                    unsigned int *nSymmetricStates,
                                    unsigned int **symStateNumbers);
     void printBoard(unsigned int threadNo, unsigned char value);
-    string getOutputInformation(unsigned int layerNum);
+    string getOutputInfo(unsigned int layerNum);
     unsigned int getPartnerLayer(unsigned int layerNum);
-    void prepareDatabaseCalculation();
-    void wrapUpDatabaseCalculation(bool calculationAborted);
+    void prepareDatabaseCalc();
+    void wrapUpDatabaseCalc(bool calcuAborted);
 
 public:
     // Constructor / destructor
