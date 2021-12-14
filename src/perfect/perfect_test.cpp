@@ -28,7 +28,7 @@ extern PerfectAI *ai;
 
 const unsigned int startTestFromLayer = 0;
 
-const unsigned int endTestAtLayer = NUM_LAYERS - 1;
+const unsigned int endTestAtLayer = LAYER_COUNT - 1;
 
 const bool calculateDatabase = false;
 
@@ -68,7 +68,7 @@ int perfect_main(void)
 
     if (calculateDatabase) {
         // calculate
-        ai->calculateDatabase(MAX_DEPTH_OF_TREE, false);
+        ai->calculateDatabase(TREE_DEPTH_MAX, false);
 
         // test database
         cout << endl << "Begin test starting from layer: ";

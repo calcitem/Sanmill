@@ -51,7 +51,7 @@ public:
     // target board position of a possible move
     Square posTo[POSIBILE_MOVE_COUNT_MAX];
 
-    void copyPlayer(Player *destination);
+    void copyPlayer(Player *dest);
 };
 
 class fieldStruct
@@ -90,10 +90,10 @@ public:
     unsigned int warnings[SQUARE_NB];
 
     // true if piece can be moved in this direction
-    bool pieceMoveAble[SQUARE_NB][MD_NB];
+    bool isPieceMovable[SQUARE_NB][MD_NB];
 
     // the number of mills, of which this piece is part of
-    unsigned int piecePartOfMill[SQUARE_NB];
+    unsigned int piecePartOfMillCount[SQUARE_NB];
 
     // static array containing the index of the neighbor or "size"
     unsigned int connectedSquare[SQUARE_NB][4];
@@ -101,27 +101,27 @@ public:
     // static array containing the two neighbors of each squares
     unsigned int neighbor[SQUARE_NB][2][2];
 
-    // number of pieces set in the placing phase
-    unsigned int piecesSet;
+    // number of pieces placed in the placing phase
+    unsigned int piecePlacedCount;
 
-    // true if piecesSet < 18
-    bool placingPhase;
+    // true if piecePlacedCount < 18
+    bool isPlacingPhase;
 
     // number of pieces which must be removed by the current player
-    unsigned int pieceMustBeRemoved;
+    unsigned int pieceMustBeRemovedCount;
 
     // pointers to the current and opponent player
     Player *curPlayer, *oppPlayer;
 
     // useful functions
     void printBoard();
-    void copyBoard(fieldStruct *destination);
+    void copyBoard(fieldStruct *dest);
     void createBoard();
     void deleteBoard();
 
 private:
     // helper functions
-    char GetCharFromPiece(int piece);
+    char getCharFromPiece(int piece);
     void setConnection(unsigned int index, int firstDirection,
                        int secondDirection, int thirdDirection,
                        int fourthDirection);

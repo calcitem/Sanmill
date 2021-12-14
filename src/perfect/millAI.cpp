@@ -25,17 +25,18 @@ void fieldStruct::printBoard()
     char c[SQUARE_NB];
 
     for (index = 0; index < SQUARE_NB; index++)
-        c[index] = GetCharFromPiece(this->board[index]);
+        c[index] = getCharFromPiece(this->board[index]);
 
     cout << "current player          : "
-         << GetCharFromPiece(this->curPlayer->id) << " has "
+         << getCharFromPiece(this->curPlayer->id) << " has "
          << this->curPlayer->pieceCount << " pieces\n";
     cout << "opponent player         : "
-         << GetCharFromPiece(this->oppPlayer->id) << " has "
+         << getCharFromPiece(this->oppPlayer->id) << " has "
          << this->oppPlayer->pieceCount << " pieces\n";
-    cout << "Num Pieces to be removed: " << this->pieceMustBeRemoved << "\n";
+    cout << "Num Pieces to be removed: " << this->pieceMustBeRemovedCount
+         << "\n";
     cout << "placing phase           : "
-         << (this->placingPhase ? "true" : "false");
+         << (this->isPlacingPhase ? "true" : "false");
     cout << "\n";
     cout << "\n   a-----b-----c   " << c[0] << "-----" << c[1] << "-----"
          << c[2];
@@ -67,10 +68,10 @@ void fieldStruct::printBoard()
 }
 
 //-----------------------------------------------------------------------------
-// GetCharFromPiece()
+// getCharFromPiece()
 //
 //-----------------------------------------------------------------------------
-char fieldStruct::GetCharFromPiece(int piece)
+char fieldStruct::getCharFromPiece(int piece)
 {
     switch (piece) {
     case fieldStruct::playerOne:
@@ -93,27 +94,26 @@ char fieldStruct::GetCharFromPiece(int piece)
 // copyBoard()
 // Only copies the values without array creation.
 //-----------------------------------------------------------------------------
-void fieldStruct::copyBoard(fieldStruct *destination)
+void fieldStruct::copyBoard(fieldStruct *dest)
 {
     unsigned int i, j;
 
-    this->curPlayer->copyPlayer(destination->curPlayer);
-    this->oppPlayer->copyPlayer(destination->oppPlayer);
+    this->curPlayer->copyPlayer(dest->curPlayer);
+    this->oppPlayer->copyPlayer(dest->oppPlayer);
 
-    destination->piecesSet = this->piecesSet;
-    destination->placingPhase = this->placingPhase;
-    destination->pieceMustBeRemoved = this->pieceMustBeRemoved;
+    dest->piecePlacedCount = this->piecePlacedCount;
+    dest->isPlacingPhase = this->isPlacingPhase;
+    dest->pieceMustBeRemovedCount = this->pieceMustBeRemovedCount;
 
     for (i = 0; i < SQUARE_NB; i++) {
-        destination->board[i] = this->board[i];
-        destination->warnings[i] = this->warnings[i];
-        destination->piecePartOfMill[i] = this->piecePartOfMill[i];
+        dest->board[i] = this->board[i];
+        dest->warnings[i] = this->warnings[i];
+        dest->piecePartOfMillCount[i] = this->piecePartOfMillCount[i];
 
         for (j = 0; j < MD_NB; j++) {
-            destination->connectedSquare[i][j] = this->connectedSquare[i][j];
-            destination->pieceMoveAble[i][j] = this->pieceMoveAble[i][j];
-            destination->neighbor[i][j / 2][j % 2] =
-                this->neighbor[i][j / 2][j % 2];
+            dest->connectedSquare[i][j] = this->connectedSquare[i][j];
+            dest->isPieceMovable[i][j] = this->isPieceMovable[i][j];
+            dest->neighbor[i][j / 2][j % 2] = this->neighbor[i][j / 2][j % 2];
         }
     }
 }
@@ -122,21 +122,21 @@ void fieldStruct::copyBoard(fieldStruct *destination)
 // copyPlayer()
 // Only copies the values without array creation.
 //-----------------------------------------------------------------------------
-void Player::copyPlayer(Player *destination)
+void Player::copyPlayer(Player *dest)
 {
     unsigned int i;
 
-    destination->removedPiecesCount = this->removedPiecesCount;
-    destination->pieceCount = this->pieceCount;
-    destination->id = this->id;
-    destination->warning = this->warning;
-    destination->possibleMovesCount = this->possibleMovesCount;
+    dest->removedPiecesCount = this->removedPiecesCount;
+    dest->pieceCount = this->pieceCount;
+    dest->id = this->id;
+    dest->warning = this->warning;
+    dest->possibleMovesCount = this->possibleMovesCount;
 
     for (i = 0; i < POSIBILE_MOVE_COUNT_MAX; i++)
-        destination->posFrom[i] = this->posFrom[i];
+        dest->posFrom[i] = this->posFrom[i];
 
     for (i = 0; i < POSIBILE_MOVE_COUNT_MAX; i++)
-        destination->posTo[i] = this->posTo[i];
+        dest->posTo[i] = this->posTo[i];
 }
 
 //-----------------------------------------------------------------------------
@@ -153,9 +153,9 @@ void fieldStruct::createBoard()
     oppPlayer = new Player;
 
     curPlayer->id = playerOne;
-    piecesSet = 0;
-    pieceMustBeRemoved = 0;
-    placingPhase = true;
+    piecePlacedCount = 0;
+    pieceMustBeRemovedCount = 0;
+    isPlacingPhase = true;
     curPlayer->warning = (curPlayer->id == playerOne) ? playerOneWarning :
                                                         playerTwoWarning;
     oppPlayer->id = (curPlayer->id == playerOne) ? playerTwo : playerOne;
@@ -172,11 +172,11 @@ void fieldStruct::createBoard()
     for (i = 0; i < SQUARE_NB; i++) {
         board[i] = squareIsFree;
         warnings[i] = noWarning;
-        piecePartOfMill[i] = 0;
-        pieceMoveAble[i][MD_CLOCKWISE] = false;
-        pieceMoveAble[i][MD_ANTICLOCKWISE] = false;
-        pieceMoveAble[i][MD_INWARD] = false;
-        pieceMoveAble[i][MD_OUTWARD] = false;
+        piecePartOfMillCount[i] = 0;
+        isPieceMovable[i][MD_CLOCKWISE] = false;
+        isPieceMovable[i][MD_ANTICLOCKWISE] = false;
+        isPieceMovable[i][MD_INWARD] = false;
+        isPieceMovable[i][MD_OUTWARD] = false;
     }
 
     // set connections

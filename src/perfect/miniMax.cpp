@@ -126,7 +126,7 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice,
     tva.curThreadNo = 0;
 
     // prepare the situation
-    prepareBestChoiceCalculation();
+    prepareBestChoiceCalc();
 
     // First make a tree until the desired level
     letTheTreeGrow(&root, &tva, fullTreeDepth, FPKV_MIN_VALUE, FPKV_MAX_VALUE);
@@ -145,7 +145,7 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice,
 void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
 {
     // locals
-    bool abortCalculation = false;
+    bool abortCalc = false;
     this->onlyPrepareLayer = onlyPrepLayer;
     lastCalculatedLayer.clear();
 
@@ -154,7 +154,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
     PRINT(1, this, "*************************");
 
     // call preparation function of parent class
-    prepareDatabaseCalculation();
+    prepareDatabaseCalc();
 
     // when database not completed then do it
     if (hFileShortKnotValues != nullptr && skvfHeader.completed == false) {
@@ -183,7 +183,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
                 continue;
 
             // calculate
-            abortCalculation = (!calcLayer(curCalculatedLayer));
+            abortCalc = (!calcLayer(curCalculatedLayer));
 
             // release memory
             unloadAllLayers();
@@ -192,7 +192,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
             // don't save layer and header when only preparing layers
             if (onlyPrepLayer)
                 return;
-            if (abortCalculation)
+            if (abortCalc)
                 break;
 
             // save header
@@ -204,7 +204,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
         if (onlyPrepLayer)
             return;
 
-        if (!abortCalculation) {
+        if (!abortCalc) {
             // calculate layer statistics
             calcLayerStatistics((char *)"statistics.txt");
 
@@ -216,16 +216,16 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
         }
 
         // free memory
-        curCalculationActionId = MM_ACTION_NONE;
+        curCalcActionId = MM_ACTION_NONE;
     } else {
         PRINT(1, this, "\nThe database is already fully calculated.\n");
     }
 
     // call warp-up function of parent class
-    wrapUpDatabaseCalculation(abortCalculation);
+    wrapUpDatabaseCalc(abortCalc);
 
     PRINT(1, this, "*************************");
-    PRINT(1, this, "* Calculation finished  *");
+    PRINT(1, this, "* Calc finished  *");
     PRINT(1, this, "*************************");
 }
 
@@ -277,7 +277,7 @@ bool MiniMax::calcLayer(unsigned int layerNumber)
         }
     }
 
-    // update output information
+    // update output info
     EnterCriticalSection(&csOsPrint);
     if (shallRetroAnalysisBeUsed(layerNumber) &&
         layerNumber != layerStats[layerNumber].partnerLayer) {
@@ -290,19 +290,19 @@ bool MiniMax::calcLayer(unsigned int layerNumber)
 }
 
 //-----------------------------------------------------------------------------
-// pauseDatabaseCalculation()
+// pauseDatabaseCalc()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::pauseDatabaseCalculation()
+void MiniMax::pauseDatabaseCalc()
 {
     threadManager.pauseExec();
 }
 
 //-----------------------------------------------------------------------------
-// cancelDatabaseCalculation()
+// cancelDatabaseCalc()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::cancelDatabaseCalculation()
+void MiniMax::cancelDatabaseCalc()
 {
     // when returning from execParallelLoop() all function shall quit
     // immediately up to calculateDatabase()
@@ -310,10 +310,10 @@ void MiniMax::cancelDatabaseCalculation()
 }
 
 //-----------------------------------------------------------------------------
-// wasDatabaseCalculationCancelled()
+// wasDatabaseCalcCancelled()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::wasDatabaseCalculationCancelled()
+bool MiniMax::wasDatabaseCalcCancelled()
 {
     return threadManager.wasExecCancelled();
 }

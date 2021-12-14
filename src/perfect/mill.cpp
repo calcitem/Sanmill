@@ -112,11 +112,11 @@ void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
 //
 //-----------------------------------------------------------------------------
 bool Mill::startPlacingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
-                             int curPlayer, bool placingPhase)
+                             int curPlayer, bool isPlacingPhase)
 {
     beginNewGame(firstPlayerAI, secondPlayerAI, curPlayer);
 
-    field.placingPhase = placingPhase;
+    field.isPlacingPhase = isPlacingPhase;
 
     return true;
 }
@@ -137,13 +137,13 @@ void Mill::setUpCalcPossibleMoves(Player *player)
             if (field.board[i] != player->id)
                 continue;
 
-            // is destination free ?
+            // is dest free ?
             if (field.board[j] != field.squareIsFree)
                 continue;
 
             // when current player has only 3 pieces he is allowed to spring his
             // piece
-            if (player->pieceCount > 3 || field.placingPhase) {
+            if (player->pieceCount > 3 || field.isPlacingPhase) {
                 // determine moving direction
                 for (k = 0, movingDirection = 4; k < 4; k++)
                     if (field.connectedSquare[i][k] == j)
@@ -175,9 +175,9 @@ void Mill::setUpSetWarningAndMill(unsigned int piece,
     if (rowOwner != field.squareIsFree &&
         field.board[firstNeighbor] == rowOwner &&
         field.board[secondNeighbor] == rowOwner) {
-        field.piecePartOfMill[piece]++;
-        field.piecePartOfMill[firstNeighbor]++;
-        field.piecePartOfMill[secondNeighbor]++;
+        field.piecePartOfMillCount[piece]++;
+        field.piecePartOfMillCount[firstNeighbor]++;
+        field.piecePartOfMillCount[secondNeighbor]++;
     }
 }
 
@@ -204,11 +204,11 @@ bool Mill::putPiece(unsigned int pos, int player)
     // set piece
     field.board[pos] = player;
     myPlayer->pieceCount++;
-    field.piecesSet++;
+    field.piecePlacedCount++;
 
     // placing phase finished ?
-    if (field.piecesSet == 18)
-        field.placingPhase = false;
+    if (field.piecePlacedCount == 18)
+        field.isPlacingPhase = false;
 
     // calculate possible moves
     setUpCalcPossibleMoves(field.curPlayer);
@@ -216,7 +216,7 @@ bool Mill::putPiece(unsigned int pos, int player)
 
     // zero
     for (i = 0; i < SQUARE_NB; i++)
-        field.piecePartOfMill[i] = 0;
+        field.piecePartOfMillCount[i] = 0;
 
     // go in every direction
     for (i = 0; i < SQUARE_NB; i++) {
@@ -228,42 +228,42 @@ bool Mill::putPiece(unsigned int pos, int player)
 
     // since every mill was detected 3 times
     for (i = 0; i < SQUARE_NB; i++)
-        field.piecePartOfMill[i] /= 3;
+        field.piecePartOfMillCount[i] /= 3;
 
     // count completed mills
     for (i = 0; i < SQUARE_NB; i++) {
         if (field.board[i] == field.curPlayer->id)
-            nCurPlayerMills += field.piecePartOfMill[i];
+            nCurPlayerMills += field.piecePartOfMillCount[i];
         else
-            nOpponentPlayerMills += field.piecePartOfMill[i];
+            nOpponentPlayerMills += field.piecePartOfMillCount[i];
     }
     nCurPlayerMills /= 3;
     nOpponentPlayerMills /= 3;
 
-    // piecesSet & removedPiecesCount
-    if (field.placingPhase) {
+    // piecePlacedCount & removedPiecesCount
+    if (field.isPlacingPhase) {
         // ... This calculation is not correct! It is possible that some mills
         // did not cause a piece removal.
         field.curPlayer->removedPiecesCount = nOpponentPlayerMills;
         field.oppPlayer->removedPiecesCount = nCurPlayerMills -
-                                              field.pieceMustBeRemoved;
-        field.piecesSet = field.curPlayer->pieceCount +
-                          field.oppPlayer->pieceCount +
-                          field.curPlayer->removedPiecesCount +
-                          field.oppPlayer->removedPiecesCount;
+                                              field.pieceMustBeRemovedCount;
+        field.piecePlacedCount = field.curPlayer->pieceCount +
+                                 field.oppPlayer->pieceCount +
+                                 field.curPlayer->removedPiecesCount +
+                                 field.oppPlayer->removedPiecesCount;
     } else {
-        field.piecesSet = 18;
+        field.piecePlacedCount = 18;
         field.curPlayer->removedPiecesCount = 9 - field.curPlayer->pieceCount;
         field.oppPlayer->removedPiecesCount = 9 - field.oppPlayer->pieceCount;
     }
 
     // when opponent is unable to move than current player has won
-    if ((!field.curPlayer->possibleMovesCount) && (!field.placingPhase) &&
-        (!field.pieceMustBeRemoved) && (field.curPlayer->pieceCount > 3))
+    if ((!field.curPlayer->possibleMovesCount) && (!field.isPlacingPhase) &&
+        (!field.pieceMustBeRemovedCount) && (field.curPlayer->pieceCount > 3))
         winner = field.oppPlayer->id;
-    else if ((field.curPlayer->pieceCount < 3) && (!field.placingPhase))
+    else if ((field.curPlayer->pieceCount < 3) && (!field.isPlacingPhase))
         winner = field.oppPlayer->id;
-    else if ((field.oppPlayer->pieceCount < 3) && (!field.placingPhase))
+    else if ((field.oppPlayer->pieceCount < 3) && (!field.isPlacingPhase))
         winner = field.curPlayer->id;
     else
         winner = 0;
@@ -388,7 +388,7 @@ void Mill::getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom,
     theField.createBoard();
     field.copyBoard(&theField);
     if (AI != nullptr &&
-        (field.placingPhase || field.curPlayer->possibleMovesCount > 0) &&
+        (field.isPlacingPhase || field.curPlayer->possibleMovesCount > 0) &&
         winner == 0)
         AI->play(&theField, pushFrom, pushTo);
     theField.deleteBoard();
@@ -410,7 +410,7 @@ void Mill::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 
     // assert(theField.oppPlayer->id >= -1 && theField.oppPlayer->id <= 1);
 
-    if ((field.placingPhase || field.curPlayer->possibleMovesCount > 0) &&
+    if ((field.isPlacingPhase || field.curPlayer->possibleMovesCount > 0) &&
         winner == 0) {
         if (field.curPlayer->id == field.playerOne) {
             if (playerOneAI != nullptr)
@@ -453,12 +453,12 @@ bool Mill::isNormalMovePossible(unsigned int from, unsigned int to,
     if (field.board[from] != player->id)
         return false;
 
-    // is destination free ?
+    // is dest free ?
     if (field.board[to] != field.squareIsFree)
         return false;
 
     // when current player has only 3 pieces he is allowed to spring his piece
-    if (player->pieceCount > 3 || field.placingPhase) {
+    if (player->pieceCount > 3 || field.isPlacingPhase) {
         // determine moving direction
         for (i = 0, movingDirection = 4; i < 4; i++)
             if (field.connectedSquare[from][i] == to)
@@ -505,14 +505,14 @@ void Mill::generateMoves(Player *player)
         }
     }
 
-    // pieceMoveAble
+    // isPieceMovable
     for (from = SQ_0; from < SQUARE_NB; ++from) {
         for (md = MD_BEGIN; md < MD_NB; ++md) {
             if (field.board[from] == player->id) {
-                field.pieceMoveAble[from][md] = isNormalMovePossible(
+                field.isPieceMovable[from][md] = isNormalMovePossible(
                     from, field.connectedSquare[from][md], player);
             } else {
-                field.pieceMoveAble[from][md] = false;
+                field.isPieceMovable[from][md] = false;
             }
         }
     }
@@ -535,11 +535,11 @@ void Mill::setWarningAndMill(unsigned int piece, unsigned int firstNeighbor,
     if (rowOwner != field.squareIsFree &&
         field.board[firstNeighbor] == rowOwner &&
         field.board[secondNeighbor] == rowOwner) {
-        field.piecePartOfMill[piece]++;
-        field.piecePartOfMill[firstNeighbor]++;
-        field.piecePartOfMill[secondNeighbor]++;
+        field.piecePartOfMillCount[piece]++;
+        field.piecePartOfMillCount[firstNeighbor]++;
+        field.piecePartOfMillCount[secondNeighbor]++;
         if (isNewPiece)
-            field.pieceMustBeRemoved = 1;
+            field.pieceMustBeRemovedCount = 1;
     }
 
     // warning ?
@@ -566,12 +566,12 @@ void Mill::updateMillsAndWarnings(unsigned int newPiece)
 
     // zero
     for (i = 0; i < SQUARE_NB; i++)
-        field.piecePartOfMill[i] = 0;
+        field.piecePartOfMillCount[i] = 0;
 
     for (i = 0; i < SQUARE_NB; i++)
         field.warnings[i] = field.noWarning;
 
-    field.pieceMustBeRemoved = 0;
+    field.pieceMustBeRemovedCount = 0;
 
     // go in every direction
     for (i = 0; i < SQUARE_NB; i++) {
@@ -583,15 +583,15 @@ void Mill::updateMillsAndWarnings(unsigned int newPiece)
 
     // since every mill was detected 3 times
     for (i = 0; i < SQUARE_NB; i++)
-        field.piecePartOfMill[i] /= 3;
+        field.piecePartOfMillCount[i] /= 3;
 
     // no piece must be removed if each belongs to a mill
     for (atLeastOnePieceRemoveAble = false, i = 0; i < SQUARE_NB; i++)
-        if (field.piecePartOfMill[i] == 0 &&
+        if (field.piecePartOfMillCount[i] == 0 &&
             field.board[i] == field.oppPlayer->id)
             atLeastOnePieceRemoveAble = true;
     if (!atLeastOnePieceRemoveAble)
-        field.pieceMustBeRemoved = 0;
+        field.pieceMustBeRemovedCount = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -609,7 +609,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         return false;
 
     // handle the remove of a piece
-    if (field.pieceMustBeRemoved) {
+    if (field.pieceMustBeRemovedCount) {
         // param ok ?
         if (pushFrom >= SQUARE_NB)
             return false;
@@ -619,7 +619,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
             return false;
 
         // is piece not part of mill?
-        if (field.piecePartOfMill[pushFrom])
+        if (field.piecePartOfMillCount[pushFrom])
             return false;
 
         // remove piece
@@ -628,38 +628,38 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         field.board[pushFrom] = field.squareIsFree;
         field.oppPlayer->removedPiecesCount++;
         field.oppPlayer->pieceCount--;
-        field.pieceMustBeRemoved--;
+        field.pieceMustBeRemovedCount--;
         movesDone++;
 
         // is the game finished ?
-        if ((field.oppPlayer->pieceCount < 3) && (!field.placingPhase))
+        if ((field.oppPlayer->pieceCount < 3) && (!field.isPlacingPhase))
             winner = field.curPlayer->id;
 
         // update warnings & mills
         updateMillsAndWarnings(SQUARE_NB);
 
-        // calc possibilities
+        // calculate possibilities
         generateMoves(field.curPlayer);
         generateMoves(field.oppPlayer);
 
         // is opponent unable to move ?
-        if (field.oppPlayer->possibleMovesCount == 0 && !field.placingPhase)
+        if (field.oppPlayer->possibleMovesCount == 0 && !field.isPlacingPhase)
             winner = field.curPlayer->id;
 
         // next player
-        if (!field.pieceMustBeRemoved)
+        if (!field.pieceMustBeRemovedCount)
             setNextPlayer();
 
         // everything is ok
         return true;
 
         // handle placing phase
-    } else if (field.placingPhase) {
+    } else if (field.isPlacingPhase) {
         // param ok ?
         if (pushTo >= SQUARE_NB)
             return false;
 
-        // is destination free ?
+        // is dest free ?
         if (field.board[pushTo] != field.squareIsFree)
             return false;
 
@@ -668,7 +668,7 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         moveLogTo[movesDone] = pushTo;
         field.board[pushTo] = field.curPlayer->id;
         field.curPlayer->pieceCount++;
-        field.piecesSet++;
+        field.piecePlacedCount++;
         movesDone++;
 
         // update warnings & mills
@@ -679,15 +679,15 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         generateMoves(field.oppPlayer);
 
         // placing phase finished ?
-        if (field.piecesSet == 18)
-            field.placingPhase = false;
+        if (field.piecePlacedCount == 18)
+            field.isPlacingPhase = false;
 
         // is opponent unable to move ?
-        if (field.oppPlayer->possibleMovesCount == 0 && !field.placingPhase)
+        if (field.oppPlayer->possibleMovesCount == 0 && !field.isPlacingPhase)
             winner = field.curPlayer->id;
 
         // next player
-        if (!field.pieceMustBeRemoved)
+        if (!field.pieceMustBeRemovedCount)
             setNextPlayer();
 
         // everything is ok
@@ -709,16 +709,16 @@ bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
         // update warnings & mills
         updateMillsAndWarnings(pushTo);
 
-        // calc possibilities
+        // calculate possibilities
         generateMoves(field.curPlayer);
         generateMoves(field.oppPlayer);
 
         // is opponent unable to move ?
-        if (field.oppPlayer->possibleMovesCount == 0 && !field.placingPhase)
+        if (field.oppPlayer->possibleMovesCount == 0 && !field.isPlacingPhase)
             winner = field.curPlayer->id;
 
         // next player
-        if (!field.pieceMustBeRemoved)
+        if (!field.pieceMustBeRemovedCount)
             setNextPlayer();
 
         // everything is ok
@@ -737,13 +737,13 @@ bool Mill::setCurGameState(fieldStruct *curState)
     winner = 0;
     movesDone = 0;
 
-    if ((field.curPlayer->pieceCount < 3) && (!field.placingPhase))
+    if ((field.curPlayer->pieceCount < 3) && (!field.isPlacingPhase))
         winner = field.oppPlayer->id;
 
-    if ((field.oppPlayer->pieceCount < 3) && (!field.placingPhase))
+    if ((field.oppPlayer->pieceCount < 3) && (!field.isPlacingPhase))
         winner = field.curPlayer->id;
 
-    if ((field.curPlayer->possibleMovesCount == 0) && (!field.placingPhase))
+    if ((field.curPlayer->possibleMovesCount == 0) && (!field.isPlacingPhase))
         winner = field.oppPlayer->id;
 
     return true;
@@ -751,7 +751,7 @@ bool Mill::setCurGameState(fieldStruct *curState)
 
 //-----------------------------------------------------------------------------
 // compareWithField()
-// Compares the current 'board' variable with the passed one. 'pieceMoveAble[]'
+// Compares the current 'board' variable with the passed one. 'isPieceMovable[]'
 // is ignored.
 //-----------------------------------------------------------------------------
 bool Mill::compareWithField(fieldStruct *compareField)
@@ -769,18 +769,19 @@ bool Mill::compareWithField(fieldStruct *compareField)
         ret = false;
     }
 
-    if (field.piecesSet != compareField->piecesSet) {
-        cout << "error - piecesSet differs!" << std::endl;
+    if (field.piecePlacedCount != compareField->piecePlacedCount) {
+        cout << "error - piecePlacedCount differs!" << std::endl;
         ret = false;
     }
 
-    if (field.placingPhase != compareField->placingPhase) {
-        cout << "error - placingPhase differs!" << std::endl;
+    if (field.isPlacingPhase != compareField->isPlacingPhase) {
+        cout << "error - isPlacingPhase differs!" << std::endl;
         ret = false;
     }
 
-    if (field.pieceMustBeRemoved != compareField->pieceMustBeRemoved) {
-        cout << "error - pieceMustBeRemoved differs!" << std::endl;
+    if (field.pieceMustBeRemovedCount !=
+        compareField->pieceMustBeRemovedCount) {
+        cout << "error - pieceMustBeRemovedCount differs!" << std::endl;
         ret = false;
     }
 
@@ -795,7 +796,8 @@ bool Mill::compareWithField(fieldStruct *compareField)
             ret = false;
         }
 
-        if (field.piecePartOfMill[i] != compareField->piecePartOfMill[i]) {
+        if (field.piecePartOfMillCount[i] !=
+            compareField->piecePartOfMillCount[i]) {
             cout << "error - piecePart[] differs!" << std::endl;
             ret = false;
         }
@@ -807,9 +809,9 @@ bool Mill::compareWithField(fieldStruct *compareField)
                 ret = false;
             }
 
-            // if (board.pieceMoveAble[i][j] !=
-            // compareField->pieceMoveAble[i][j])
-            //     { cout << "error - pieceMoveAble differs!" << endl; ret =
+            // if (board.isPieceMovable[i][j] !=
+            // compareField->isPieceMovable[i][j])
+            //     { cout << "error - isPieceMovable differs!" << endl; ret =
             //     false; }
 
             if (field.neighbor[i][j / 2][j % 2] !=

@@ -29,7 +29,7 @@ void MiniMax::closeDatabase()
         hFileShortKnotValues = nullptr;
     }
 
-    // close ply information file
+    // close ply info file
     if (hFilePlyInfo != nullptr) {
         unloadAllPlyInfos();
         SAFE_DELETE_ARRAY(plyInfos);
@@ -418,7 +418,7 @@ void MiniMax::saveLayerToFile(unsigned int layerNumber)
     // save layer if there are any states
     if (myLss->sizeInBytes) {
         // short knot values & ply info
-        curCalculationActionId = MM_ACTION_SAVING_LAYER_TO_FILE;
+        curCalcActionId = MM_ACTION_SAVING_LAYER_TO_FILE;
         saveBytesToFile(hFileShortKnotValues,
                         skvfHeader.headerAndStatsSize + myLss->layerOffset,
                         myLss->sizeInBytes, myLss->shortKnotValueByte);
