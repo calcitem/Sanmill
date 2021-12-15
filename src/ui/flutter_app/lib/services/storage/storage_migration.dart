@@ -33,7 +33,7 @@ class _DatabaseMigrator {
 
   /// The current DB version.
   /// It will get initialized by [migrate] with the saved value.
-  static late final int _currentVersion;
+  static late final int? _currentVersion;
 
   /// The list of migrations
   static const _migrations = [
@@ -59,13 +59,21 @@ class _DatabaseMigrator {
 
     _databaseBox = await Hive.openBox(_databaseBoxName);
 
-    _currentVersion = _databaseBox.get(
-      _versionKey,
-      defaultValue: (!LocalDatabaseService.preferences.usesHiveDB) ? 0 : 1,
-    ) as int;
+    // TODO: [Leptopoda] don't migrate the db on first startup
 
-    for (int i = _currentVersion; i < _newVersion; i++) {
-      await _migrations[i].call();
+    _currentVersion = _databaseBox.get(_versionKey) as int?;
+
+    if (_currentVersion != null) {
+      if (await _DatabaseV1.usesV1) {
+        _currentVersion = 0;
+      } else if (LocalDatabaseService.preferences.usesHiveDB) {
+        _currentVersion = 1;
+      }
+      logger.v("$_tag: current version is $_currentVersion");
+
+      for (int i = _currentVersion!; i < _newVersion; i++) {
+        await _migrations[i].call();
+      }
     }
 
     await _databaseBox.put(_versionKey, _newVersion);
@@ -76,7 +84,7 @@ class _DatabaseMigrator {
   ///
   /// - Calls the [_DatabaseV1.migrateDB] to migrate from KV storage.
   static Future<void> _migrateToHive() async {
-    assert(_currentVersion <= 0);
+    assert(_currentVersion! <= 0);
 
     await _DatabaseV1.migrateDB();
     logger.i("$_tag migrated from KV");
@@ -89,7 +97,7 @@ class _DatabaseMigrator {
   /// This reflects the deprecation of drawerBackgroundColor.
   /// - **Painting STyle:**: Migrates [LocalDatabaseService.display] to use Flutters [PaintingStyle] enum instead of an int representation.
   static Future<void> _migrateFromV1() async {
-    assert(_currentVersion <= 1);
+    assert(_currentVersion! <= 1);
 
     final _prefs = LocalDatabaseService.preferences;
     LocalDatabaseService.preferences = _prefs.copyWith(
@@ -124,15 +132,26 @@ class _DatabaseV1 {
 
   static const _tag = "[KV store Migration]";
 
-  static Future<File> _getFile() async {
+  static Future<File?> _getFile() async {
     final fileName = Constants.settingsFilename;
     final docDir = await getApplicationDocumentsDirectory();
 
-    return File("${docDir.path}/$fileName");
+    final file = File("${docDir.path}/$fileName");
+    if (await file.exists()) {
+      return file;
+    }
+  }
+
+  /// checks wether the current db is still the old kv store by checking the availability of the json file
+  static Future<bool> get usesV1 async {
+    final file = await _getFile();
+    logger.i("$_tag still uses v1: ${file != null}");
+    return file != null;
   }
 
   /// loads the preferences from the old data store
   static Future<Map<String, dynamic>?> _loadFile(File _file) async {
+    assert(await usesV1);
     logger.v("$_tag Loading $_file ...");
 
     try {
@@ -146,10 +165,13 @@ class _DatabaseV1 {
   }
 
   /// migrates the deprecated Settings to the new [LocalDatabaseService]
+  /// it won't do anything if the
   static Future<void> migrateDB() async {
     logger.i("$_tag migrate from KV");
     final _file = await _getFile();
-    final _json = await _loadFile(_file);
+    assert(_file != null);
+
+    final _json = await _loadFile(_file!);
     if (_json != null) {
       LocalDatabaseService.colorSettings = ColorSettings.fromJson(_json);
       LocalDatabaseService.display = Display.fromJson(_json);
@@ -161,13 +183,10 @@ class _DatabaseV1 {
 
   /// deletes the old settings file
   static Future<void> _deleteFile(File _file) async {
+    assert(await usesV1);
     logger.v("$_tag deleting Settings...");
 
-    if (await _file.exists()) {
-      await _file.delete();
-      logger.i("$_tag $_file deleted");
-    } else {
-      logger.i("$_tag $_file does not exist");
-    }
+    await _file.delete();
+    logger.i("$_tag $_file deleted");
   }
 }
