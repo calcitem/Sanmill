@@ -39,6 +39,6 @@ extension CustomStringBuffer on StringBuffer {
   }
 
   void writeSpace([Object? obj = ""]) {
-    writeln("$obj ");
+    write("$obj ");
   }
 }
