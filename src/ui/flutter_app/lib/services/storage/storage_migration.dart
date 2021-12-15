@@ -142,7 +142,7 @@ class _DatabaseV1 {
     }
   }
 
-  /// checks wether the current db is still the old kv store by checking the availability of the json file
+  /// checks whether the current db is still the old kv store by checking the availability of the json file
   static Future<bool> get usesV1 async {
     final file = await _getFile();
     logger.i("$_tag still uses v1: ${file != null}");
