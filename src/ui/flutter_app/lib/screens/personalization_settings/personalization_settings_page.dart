@@ -55,8 +55,9 @@ class PersonalizationSettingsPage extends StatelessWidget {
   void setPointStyle(BuildContext context, Display _display) {
     void _callback(PaintingStyle? pointStyle) {
       Navigator.pop(context);
-
-      LocalDatabaseService.display = _display.copyWith(pointStyle: pointStyle);
+      LocalDatabaseService.display = pointStyle == null
+          ? _display.copyWithNull(pointStyle: true)
+          : _display.copyWith(pointStyle: pointStyle);
 
       logger.v("[config] pointStyle: $pointStyle");
     }

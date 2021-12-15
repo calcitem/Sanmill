@@ -458,6 +458,7 @@ class _GamePageState extends State<GamePage>
       margin: const EdgeInsets.symmetric(vertical: AppTheme.boardMargin),
       child: _Board(
         width: boardWidth,
+        // TODO: [Leptopoda] consider moving this into the Board itself and find another solution for [engineToGo()]
         onBoardTap: extracted.onBoardTap,
         animation: _animation,
       ),
