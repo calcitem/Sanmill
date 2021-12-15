@@ -138,7 +138,7 @@ class AboutPage extends StatelessWidget {
   }
 
   Future<void> _launchURL(BuildContext context, URL url) async {
-    if (!EnvironmentConfig.monkeyTest) {
+    if (!EnvironmentConfig.test) {
       if (Localizations.localeOf(context).languageCode.startsWith("zh_")) {
         await launch(url.url);
       } else {
