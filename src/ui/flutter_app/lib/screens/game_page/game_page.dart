@@ -39,10 +39,10 @@ import 'package:sanmill/shared/scaffold_messenger.dart';
 import 'package:sanmill/shared/string_buffer_helper.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
-part 'package:sanmill/screens/game_page/board.dart';
-part 'package:sanmill/screens/game_page/info_dialog.dart';
-part 'package:sanmill/screens/game_page/move_list_dialog.dart';
-part 'package:sanmill/screens/game_page/result_alert.dart';
+part './board.dart';
+part './info_dialog.dart';
+part './move_list_dialog.dart';
+part './result_alert.dart';
 
 // TODO: [Leptopoda] extract more widgets
 // TODO: [Leptopoda] change layout (landscape mode, padding on small devices)
@@ -158,7 +158,7 @@ class _GamePageState extends State<GamePage>
     _showTip(S.of(context).gameImported, snackBar: true);
   }
 
-  Future<void> _exportGame() async {
+  Future<void> _exportGame(BuildContext context) async {
     Navigator.pop(context);
 
     await Clipboard.setData(
@@ -166,7 +166,7 @@ class _GamePageState extends State<GamePage>
     );
 
     ScaffoldMessenger.of(context)
-        .showSnackBar(CustomSnackBar(S.of(context).moveHistoryCopied));
+        .showSnackBarClear(S.of(context).moveHistoryCopied);
   }
 
   void _showGameOptions() => showModalBottomSheet(
@@ -195,7 +195,7 @@ class _GamePageState extends State<GamePage>
             ),
             const CustomSpacer(),
             SimpleDialogOption(
-              onPressed: _exportGame,
+              onPressed: () => _exportGame(context),
               child: Text(
                 S.of(context).exportGame,
                 style: AppTheme.simpleDialogOptionTextStyle,
@@ -370,6 +370,7 @@ class _GamePageState extends State<GamePage>
       barrierDismissible: true,
       builder: (_) => _MoveListDialog(
         takeBackCallback: _takeBackN,
+        exportGame: _exportGame,
       ),
     );
   }

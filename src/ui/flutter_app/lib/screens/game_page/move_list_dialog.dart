@@ -16,15 +16,17 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of 'package:sanmill/screens/game_page/game_page.dart';
+part of './game_page.dart';
 
 class _MoveListDialog extends StatelessWidget {
   const _MoveListDialog({
     required this.takeBackCallback,
+    required this.exportGame,
     Key? key,
   }) : super(key: key);
 
   final Function(int) takeBackCallback;
+  final Function(BuildContext context) exportGame;
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +61,7 @@ class _MoveListDialog extends StatelessWidget {
             S.of(context).copy,
             style: AppTheme.moveHistoryTextStyle,
           ),
-          onPressed: () async {
-            await Clipboard.setData(ClipboardData(text: moveHistoryText));
-            // ignore: use_build_context_synchronously
-            ScaffoldMessenger.of(context)
-                // ignore: use_build_context_synchronously
-                .showSnackBarClear(S.of(context).moveHistoryCopied);
-          },
+          onPressed: () => exportGame(context),
         ),
         TextButton(
           child: Text(
