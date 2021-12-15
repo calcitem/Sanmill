@@ -111,7 +111,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     if (_drawerIndex == index && _drawerIndex != _DrawerIndex.feedback) return;
 
     if (index == _DrawerIndex.feedback) {
-      if (!EnvironmentConfig.monkeyTest) {
+      if (!EnvironmentConfig.test) {
         if (Platform.isWindows) {
           return logger.w("flutter_email_sender does not support Windows.");
         } else {
