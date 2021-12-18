@@ -20,7 +20,7 @@ using std::cout;
 using std::string;
 
 // general functions
-bool readAsciiData(HANDLE hFile, double *pData, unsigned int numValues,
+bool readAsciiData(HANDLE hFile, double *pData, uint32_t numValues,
                    unsigned char decimalSeperator,
                    unsigned char columnSeparator);
 
@@ -47,7 +47,7 @@ public:
     MyString &assign(const char *cStr);
     MyString &assign(const WCHAR *cStr);
 
-    static int hiBit(unsigned int n);
+    static int hiBit(uint32_t n);
 };
 
 #endif // STRLIB_H_INCLUDED

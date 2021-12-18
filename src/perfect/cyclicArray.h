@@ -35,35 +35,35 @@ private:
     unsigned char *curWritingPointer;
 
     // size in bytes of a block
-    unsigned int blockSize;
+    uint32_t blockSize;
 
     // index of the block, where reading is taking place
-    unsigned int curReadingBlock;
+    uint32_t curReadingBlock;
 
     // index of the block, where writing is taking place
-    unsigned int curWritingBlock;
+    uint32_t curWritingBlock;
 
     // amount of blocks
-    unsigned int blockCount;
+    uint32_t blockCount;
 
     // true if curReadingBlock > curWritingBlock, false otherwise
     bool readWriteInSameRound;
 
     // Functions
-    void writeDataToFile(HANDLE hFile, int64_t offset, unsigned int sizeInBytes,
+    void writeDataToFile(HANDLE hFile, int64_t offset, uint32_t sizeInBytes,
                          void *pData);
-    void readDataFromFile(HANDLE hFile, int64_t offset,
-                          unsigned int sizeInBytes, void *pData);
+    void readDataFromFile(HANDLE hFile, int64_t offset, uint32_t sizeInBytes,
+                          void *pData);
 
 public:
     // Constructor / destructor
-    CyclicArray(unsigned int blockSizeInBytes, unsigned int nBlocks,
+    CyclicArray(uint32_t blockSizeInBytes, uint32_t nBlocks,
                 const char *fileName);
     ~CyclicArray();
 
     // Functions
-    bool addBytes(unsigned int nBytes, unsigned char *pData);
-    bool takeBytes(unsigned int nBytes, unsigned char *pData);
+    bool addBytes(uint32_t nBytes, unsigned char *pData);
+    bool takeBytes(uint32_t nBytes, unsigned char *pData);
     bool loadFile(const char *fileName, LONGLONG &nBytesLoaded);
     bool saveFile(const char *fileName);
     bool bytesAvailable();

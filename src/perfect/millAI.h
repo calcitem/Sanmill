@@ -34,16 +34,16 @@ public:
     int id;
 
     // static
-    unsigned int warning;
+    uint32_t warning;
 
     // number of pieces of this player on the board
-    unsigned int pieceCount;
+    uint32_t pieceCount;
 
     // number of pieces, which where stolen by the opponent
-    unsigned int removedPiecesCount;
+    uint32_t removedPiecesCount;
 
     // amount of possible moves
-    unsigned int possibleMovesCount;
+    uint32_t possibleMovesCount;
 
     // source board position of a possible move
     Square posFrom[POSIBILE_MOVE_COUNT_MAX];
@@ -72,11 +72,11 @@ public:
 
     // so the bitwise or-operation can be applied, without interacting with
     // playerOne & Two
-    static const unsigned int noWarning = 0;
-    static const unsigned int playerOneWarning = 2;
-    static const unsigned int playerTwoWarning = 4;
-    static const unsigned int playerBothWarning = 6;
-    static const unsigned int piecePerPlayerCount = 9;
+    static const uint32_t noWarning = 0;
+    static const uint32_t playerOneWarning = 2;
+    static const uint32_t playerTwoWarning = 4;
+    static const uint32_t playerBothWarning = 6;
+    static const uint32_t piecePerPlayerCount = 9;
 
     // only a nonzero value
     static const int gameDrawn = 3;
@@ -87,28 +87,28 @@ public:
     int board[SQUARE_NB];
 
     // array containing the warnings for each board position
-    unsigned int warnings[SQUARE_NB];
+    uint32_t warnings[SQUARE_NB];
 
     // true if piece can be moved in this direction
     bool isPieceMovable[SQUARE_NB][MD_NB];
 
     // the number of mills, of which this piece is part of
-    unsigned int piecePartOfMillCount[SQUARE_NB];
+    uint32_t piecePartOfMillCount[SQUARE_NB];
 
     // static array containing the index of the neighbor or "size"
-    unsigned int connectedSquare[SQUARE_NB][4];
+    uint32_t connectedSquare[SQUARE_NB][4];
 
     // static array containing the two neighbors of each squares
-    unsigned int neighbor[SQUARE_NB][2][2];
+    uint32_t neighbor[SQUARE_NB][2][2];
 
     // number of pieces placed in the placing phase
-    unsigned int piecePlacedCount;
+    uint32_t piecePlacedCount;
 
     // true if piecePlacedCount < 18
     bool isPlacingPhase;
 
     // number of pieces which must be removed by the current player
-    unsigned int pieceMustBeRemovedCount;
+    uint32_t pieceMustBeRemovedCount;
 
     // pointers to the current and opponent player
     Player *curPlayer, *oppPlayer;
@@ -122,12 +122,11 @@ public:
 private:
     // helper functions
     char getCharFromPiece(int piece);
-    void setConnection(unsigned int index, int firstDirection,
-                       int secondDirection, int thirdDirection,
-                       int fourthDirection);
-    void setNeighbor(unsigned int index, unsigned int firstNeighbor0,
-                     unsigned int secondNeighbor0, unsigned int firstNeighbor1,
-                     unsigned int secondNeighbor1);
+    void setConnection(uint32_t index, int firstDirection, int secondDirection,
+                       int thirdDirection, int fourthDirection);
+    void setNeighbor(uint32_t index, uint32_t firstNeighbor0,
+                     uint32_t secondNeighbor0, uint32_t firstNeighbor1,
+                     uint32_t secondNeighbor1);
 };
 
 #ifdef __clang__ // TODO(calcitem)
@@ -146,8 +145,8 @@ public:
     ~MillAI() { dummyField.deleteBoard(); }
 
     // Functions
-    virtual void play(fieldStruct *theField, unsigned int *pushFrom,
-                      unsigned int *pushTo) = 0;
+    virtual void play(fieldStruct *theField, uint32_t *pushFrom,
+                      uint32_t *pushTo) = 0;
 };
 
 #endif // MUEHLE_AI_H_INCLUDED

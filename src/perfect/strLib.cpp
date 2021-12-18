@@ -16,7 +16,7 @@
 // hiBit()
 //
 //-----------------------------------------------------------------------------
-int MyString::hiBit(unsigned int n)
+int MyString::hiBit(uint32_t n)
 {
     n |= (n >> 1);
     n |= (n >> 2);
@@ -99,7 +99,7 @@ MyString &MyString::assign(const char *cStr)
     // locals
     size_t convertedChars = 0;
     size_t newLen = strlen(cStr);
-    size_t newReserved = (size_t)hiBit((unsigned int)newLen) * 2;
+    size_t newReserved = (size_t)hiBit((uint32_t)newLen) * 2;
 
     if (reserved < newReserved)
         this->~MyString();
@@ -128,7 +128,7 @@ MyString &MyString::assign(const WCHAR *cStr)
     // locals
     size_t retval;
     size_t newLen = wcslen(cStr);
-    size_t newReserved = (size_t)hiBit((unsigned int)newLen) * 2;
+    size_t newReserved = (size_t)hiBit((uint32_t)newLen) * 2;
 
     if (reserved < newReserved)
         this->~MyString();
@@ -152,21 +152,21 @@ MyString &MyString::assign(const WCHAR *cStr)
 // readAsciiData()
 // This functions reads in a table of floating point values faster than "cin".
 //-----------------------------------------------------------------------------
-bool readAsciiData(HANDLE hFile, double *pData, unsigned int nValues,
+bool readAsciiData(HANDLE hFile, double *pData, uint32_t nValues,
                    unsigned char decSeperator, unsigned char colSeparator)
 {
     // constants
-    const unsigned int maxValLenInBytes = 32;
-    const unsigned int bufSize = 1000;
+    const uint32_t maxValLenInBytes = 32;
+    const uint32_t bufSize = 1000;
 
     // locals
     DWORD dwBytesRead;
     unsigned char buf[bufSize];
     unsigned char *curByte = &buf[0];
-    unsigned int curReadVal = 0;
-    unsigned int actualBufSize = 0;
-    unsigned int curBufPos = bufSize;
-    unsigned int decPos = 0;
+    uint32_t curReadVal = 0;
+    uint32_t actualBufSize = 0;
+    uint32_t curBufPos = bufSize;
+    uint32_t decPos = 0;
 
     // ATTENTION: Only allows 8 digits before the decimal point
     int integralVal = 0;

@@ -109,8 +109,8 @@ bool MiniMax::falseOrStop()
 // Returns the best choice if the database has been opened and
 // calculates the best choice for that if database is not open.
 //-----------------------------------------------------------------------------
-void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice,
-                             unsigned int branchCountMax)
+void *MiniMax::getBestChoice(uint32_t tilLevel, uint32_t *choice,
+                             uint32_t branchCountMax)
 {
     // set global vars
     fullTreeDepth = tilLevel;
@@ -122,7 +122,7 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice,
     Knot root;
     AlphaBetaGlobalVars alphaBetaVars(this, getLayerNumber(0));
     RunAlphaBetaVars tva(this, &alphaBetaVars, alphaBetaVars.layerNumber);
-    srand((unsigned int)time(nullptr));
+    srand((uint32_t)time(nullptr));
     tva.curThreadNo = 0;
 
     // prepare the situation
@@ -142,7 +142,7 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice,
 // calculateDatabase()
 // Calculates the database, which must be already open.
 //-----------------------------------------------------------------------------
-void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
+void MiniMax::calculateDatabase(uint32_t maxDepthOfTree, bool onlyPrepLayer)
 {
     // locals
     bool abortCalc = false;
@@ -233,10 +233,10 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
 // calcLayer()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::calcLayer(unsigned int layerNumber)
+bool MiniMax::calcLayer(uint32_t layerNumber)
 {
     // locals
-    vector<unsigned int> layersToCalc;
+    vector<uint32_t> layersToCalc;
 
     // moves can be done reverse, leading to too depth searching trees
     if (shallRetroAnalysisBeUsed(layerNumber)) {

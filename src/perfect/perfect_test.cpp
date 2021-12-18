@@ -26,9 +26,9 @@ using std::iostream;
 extern Mill *mill;
 extern PerfectAI *ai;
 
-const unsigned int startTestFromLayer = 0;
+const uint32_t startTestFromLayer = 0;
 
-const unsigned int endTestAtLayer = LAYER_COUNT - 1;
+const uint32_t endTestAtLayer = LAYER_COUNT - 1;
 
 const bool calculateDatabase = false;
 
@@ -42,8 +42,8 @@ int perfect_main(void)
     bool playerOneHuman = false;
     bool playerTwoHuman = false;
     char ch[100];
-    unsigned int from;
-    unsigned int to;
+    uint32_t from;
+    uint32_t to;
 
     mill = new Mill();
     ai = new PerfectAI(PERFECT_AI_DATABASE_DIR);

@@ -38,7 +38,7 @@ struct RetroAnalysisThreadVars
     // Number of states in 'statesToProcess' which have to be processed
     int64_t stateToProcessCount;
 
-    unsigned int threadNo;
+    uint32_t threadNo;
 };
 
 // constant during calculation
@@ -54,7 +54,7 @@ struct RetroAnalysisVars
     vector<bool> layerInitialized;
 
     // layers which shall be calculated
-    vector<unsigned int> layersToCalculate;
+    vector<uint32_t> layersToCalculate;
 
     // total numbers of knots which have to be stored in memory
     int64_t totalKnotCount;
@@ -68,10 +68,10 @@ struct RetroAnalysisVars
 struct InitRetroAnalysisVars
 {
     MiniMax *pMiniMax;
-    unsigned int curThreadNo;
-    unsigned int layerNumber;
+    uint32_t curThreadNo;
+    uint32_t layerNumber;
     LONGLONG statesProcessed;
-    unsigned int statsValueCounter[SKV_VALUE_COUNT];
+    uint32_t statsValueCounter[SKV_VALUE_COUNT];
     BufferedFile *bufferedFile;
     RetroAnalysisVars *retroVars;
     bool initAlreadyDone; // true if the initialization info is already
@@ -81,25 +81,25 @@ struct InitRetroAnalysisVars
 struct addSuccLayersVars
 {
     MiniMax *pMiniMax;
-    unsigned int curThreadNo;
-    unsigned int statsValueCounter[SKV_VALUE_COUNT];
-    unsigned int layerNumber;
+    uint32_t curThreadNo;
+    uint32_t statsValueCounter[SKV_VALUE_COUNT];
+    uint32_t layerNumber;
     RetroAnalysisVars *retroVars;
 };
 
 struct RetroAnalysisPredVars
 {
-    unsigned int predStateNumbers;
-    unsigned int predLayerNumbers;
-    unsigned int predSymOp;
+    uint32_t predStateNumbers;
+    uint32_t predLayerNumbers;
+    uint32_t predSymOp;
     bool playerToMoveChanged;
 };
 
 struct AddNumSucceedersVars
 {
     MiniMax *pMiniMax;
-    unsigned int curThreadNo;
-    unsigned int layerNumber;
+    uint32_t curThreadNo;
+    uint32_t layerNumber;
     LONGLONG statesProcessed;
     RetroAnalysisVars *retroVars;
     RetroAnalysisPredVars *predVars;

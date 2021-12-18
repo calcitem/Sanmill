@@ -16,7 +16,7 @@
 // calcKnotValuesByAlphaBeta()
 // return value is true if calculation is stopped either by user or by an error
 //-----------------------------------------------------------------------------
-bool MiniMax::calcKnotValuesByAlphaBeta(unsigned int layerNumber)
+bool MiniMax::calcKnotValuesByAlphaBeta(uint32_t layerNumber)
 {
     // locals
     AlphaBetaGlobalVars alphaBetaVars(this, layerNumber); // multi-thread vars
@@ -50,17 +50,15 @@ bool MiniMax::calcKnotValuesByAlphaBeta(unsigned int layerNumber)
 // saveKnotValueInDatabase()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::alphaBetaSaveInDatabase(unsigned int threadNo,
-                                      unsigned int layerNumber,
-                                      unsigned int stateNumber,
-                                      TwoBit knotValue, PlyInfoVarType plyValue,
-                                      bool invertValue)
+void MiniMax::alphaBetaSaveInDatabase(uint32_t threadNo, uint32_t layerNumber,
+                                      uint32_t stateNumber, TwoBit knotValue,
+                                      PlyInfoVarType plyValue, bool invertValue)
 {
     // locals
-    unsigned int *symStateNumbers = nullptr;
-    unsigned int symStateCount;
-    unsigned int sysStateNumber;
-    unsigned int i;
+    uint32_t *symStateNumbers = nullptr;
+    uint32_t symStateCount;
+    uint32_t sysStateNumber;
+    uint32_t i;
 
     // invert value ?
     if (knotValue > SKV_VALUE_GAME_WON) {
@@ -212,7 +210,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 // and knotAlreadyCalculated to true or false, whether setSituation() returns
 // true or false
 //-----------------------------------------------------------------------------
-DWORD MiniMax::initAlphaBetaThreadProc(void *pParam, unsigned int index)
+DWORD MiniMax::initAlphaBetaThreadProc(void *pParam, uint32_t index)
 {
     // locals
     InitAlphaBetaVars *iabVars = (InitAlphaBetaVars *)pParam;
@@ -362,7 +360,7 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 // runAlphaBetaThreadProc()
 //
 //-----------------------------------------------------------------------------
-DWORD MiniMax::runAlphaBetaThreadProc(void *pParam, unsigned int index)
+DWORD MiniMax::runAlphaBetaThreadProc(void *pParam, uint32_t index)
 {
     // locals
     RunAlphaBetaVars *rabVars = (RunAlphaBetaVars *)pParam;
@@ -412,14 +410,14 @@ DWORD MiniMax::runAlphaBetaThreadProc(void *pParam, unsigned int index)
 //
 //-----------------------------------------------------------------------------
 void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars,
-                             unsigned int tilLevel, float alpha, float beta)
+                             uint32_t tilLevel, float alpha, float beta)
 {
     // Locals
     void *pPossibilities;
-    unsigned int *idPossibility;
-    unsigned int layerNumber = 0; // layer number of current state
-    unsigned int stateNumber = 0; // state number of current state
-    unsigned int maxWonfreqValuesSubMoves = 0;
+    uint32_t *idPossibility;
+    uint32_t layerNumber = 0; // layer number of current state
+    uint32_t stateNumber = 0; // state number of current state
+    uint32_t maxWonfreqValuesSubMoves = 0;
 
     // standard values
     knot->branches =
@@ -511,9 +509,8 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars,
 // knot->isOpponentLevel must be set and valid.
 //-----------------------------------------------------------------------------
 bool MiniMax::alphaBetaTryDatabase(Knot *knot, RunAlphaBetaVars *rabVars,
-                                   unsigned int tilLevel,
-                                   unsigned int &layerNumber,
-                                   unsigned int &stateNumber)
+                                   uint32_t tilLevel, uint32_t &layerNumber,
+                                   uint32_t &stateNumber)
 {
     // locals
     bool invalidLayerOrStateNumber;
@@ -592,15 +589,15 @@ bool MiniMax::alphaBetaTryDatabase(Knot *knot, RunAlphaBetaVars *rabVars,
 //
 //-----------------------------------------------------------------------------
 void MiniMax::alphaBetaTryPossibilities(Knot *knot, RunAlphaBetaVars *rabVars,
-                                        unsigned int tilLevel,
-                                        unsigned int *idPossibility,
+                                        uint32_t tilLevel,
+                                        uint32_t *idPossibility,
                                         void *pPossibilities,
-                                        unsigned int &maxWonfreqValuesSubMoves,
+                                        uint32_t &maxWonfreqValuesSubMoves,
                                         float &alpha, float &beta)
 {
     // locals
     void *pBackup;
-    unsigned int curPoss;
+    uint32_t curPoss;
 
     for (curPoss = 0; curPoss < knot->possibilityCount; curPoss++) {
         // output
@@ -705,8 +702,8 @@ void MiniMax::alphaBetaCalcKnotValue(Knot *knot)
 {
     // locals
     float maxValue = knot->branches[0].floatValue;
-    unsigned int maxBranch = 0;
-    unsigned int i;
+    uint32_t maxBranch = 0;
+    uint32_t i;
 
     // opponent tries to minimize the value
     if (knot->isOpponentLevel) {
@@ -742,8 +739,8 @@ void MiniMax::alphaBetaCalcKnotValue(Knot *knot)
 void MiniMax::alphaBetaCalcPlyInfo(Knot *knot)
 {
     // locals
-    unsigned int i;
-    unsigned int maxBranch;
+    uint32_t i;
+    uint32_t maxBranch;
     PlyInfoVarType maxPlyInfo;
     TwoBit shortKnotValue;
 
@@ -826,16 +823,16 @@ void MiniMax::alphaBetaCalcPlyInfo(Knot *knot)
 // select randomly one of the best moves, if they are equivalent
 //-----------------------------------------------------------------------------
 void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars,
-                                      unsigned int tilLevel,
-                                      unsigned int *idPossibility,
-                                      unsigned int maxWonfreqValuesSubMoves)
+                                      uint32_t tilLevel,
+                                      uint32_t *idPossibility,
+                                      uint32_t maxWonfreqValuesSubMoves)
 {
     // locals
     float dif;
-    unsigned int nBestChoices = 0;
-    unsigned int *bestBranches = new unsigned int[maxNumBranches];
-    unsigned int i;
-    unsigned int maxBranch;
+    uint32_t nBestChoices = 0;
+    uint32_t *bestBranches = new uint32_t[maxNumBranches];
+    uint32_t i;
+    uint32_t maxBranch;
 
     // select randomly one of the best moves, if they are equivalent
     if (tilLevel == fullTreeDepth && !calcDatabase) {
