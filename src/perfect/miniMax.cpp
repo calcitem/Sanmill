@@ -42,12 +42,12 @@ MiniMax::MiniMax()
     locale locale("German_Switzerland");
     cout.imbue(locale);
 
-    // for io operations per second measurement
+    // for I/O operations per second measurement
     QueryPerformanceFrequency(&frequency);
-    nReadSkvOperations = 0;
-    nWriteSkvOperations = 0;
-    nReadPlyOperations = 0;
-    nWritePlyOperations = 0;
+    nReadSkvOps = 0;
+    nWriteSkvOps = 0;
+    nReadPlyOps = 0;
+    nWritePlyOps = 0;
 
     if (MEASURE_ONLY_IO) {
         readSkvInterval.QuadPart = 0;

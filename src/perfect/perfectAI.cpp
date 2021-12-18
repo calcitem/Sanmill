@@ -176,10 +176,10 @@ unsigned int soTableMirrorDiag2[] = {
 // clang-format on
 
 // define the four groups
-unsigned int squareIndexGroupA[] = {3, 5, 20, 18};
-unsigned int squareIndexGroupB[8] = {4, 13, 19, 10};
-unsigned int squareIndexGroupC[] = {0, 2, 23, 21, 6, 8, 17, 15};
-unsigned int squareIndexGroupD[] = {1, 7, 14, 12, 22, 16, 9, 11};
+unsigned int squareIdxGroupA[] = {3, 5, 20, 18};
+unsigned int squareIdxGroupB[8] = {4, 13, 19, 10};
+unsigned int squareIdxGroupC[] = {0, 2, 23, 21, 6, 8, 17, 15};
+unsigned int squareIdxGroupD[] = {1, 7, 14, 12, 22, 16, 9, 11};
 
 unsigned int fieldPosIsOfGroup[] = {GROUP_C, GROUP_D, GROUP_C, GROUP_A, GROUP_B,
                                     GROUP_A, GROUP_C, GROUP_D, GROUP_C, GROUP_D,
@@ -445,14 +445,14 @@ PerfectAI::PerfectAI(const char *dir)
                     myField[i] = FREE_SQUARE;
 
                 // make board
-                myField[squareIndexGroupA[0]] = (stateAB / powerOfThree[7]) % 3;
-                myField[squareIndexGroupA[1]] = (stateAB / powerOfThree[6]) % 3;
-                myField[squareIndexGroupA[2]] = (stateAB / powerOfThree[5]) % 3;
-                myField[squareIndexGroupA[3]] = (stateAB / powerOfThree[4]) % 3;
-                myField[squareIndexGroupB[4]] = (stateAB / powerOfThree[3]) % 3;
-                myField[squareIndexGroupB[5]] = (stateAB / powerOfThree[2]) % 3;
-                myField[squareIndexGroupB[6]] = (stateAB / powerOfThree[1]) % 3;
-                myField[squareIndexGroupB[7]] = (stateAB / powerOfThree[0]) % 3;
+                myField[squareIdxGroupA[0]] = (stateAB / powerOfThree[7]) % 3;
+                myField[squareIdxGroupA[1]] = (stateAB / powerOfThree[6]) % 3;
+                myField[squareIdxGroupA[2]] = (stateAB / powerOfThree[5]) % 3;
+                myField[squareIdxGroupA[3]] = (stateAB / powerOfThree[4]) % 3;
+                myField[squareIdxGroupB[4]] = (stateAB / powerOfThree[3]) % 3;
+                myField[squareIdxGroupB[5]] = (stateAB / powerOfThree[2]) % 3;
+                myField[squareIdxGroupB[6]] = (stateAB / powerOfThree[1]) % 3;
+                myField[squareIdxGroupB[7]] = (stateAB / powerOfThree[0]) % 3;
 
                 // count black and white pieces
                 for (a = 0, i = 0; i < SQUARE_NB; i++)
@@ -502,28 +502,22 @@ PerfectAI::PerfectAI(const char *dir)
                     myField[i] = FREE_SQUARE;
 
                 // make board
-                myField[squareIndexGroupC[0]] = (stateCD / powerOfThree[15]) %
-                                                3;
-                myField[squareIndexGroupC[1]] = (stateCD / powerOfThree[14]) %
-                                                3;
-                myField[squareIndexGroupC[2]] = (stateCD / powerOfThree[13]) %
-                                                3;
-                myField[squareIndexGroupC[3]] = (stateCD / powerOfThree[12]) %
-                                                3;
-                myField[squareIndexGroupC[4]] = (stateCD / powerOfThree[11]) %
-                                                3;
-                myField[squareIndexGroupC[5]] = (stateCD / powerOfThree[10]) %
-                                                3;
-                myField[squareIndexGroupC[6]] = (stateCD / powerOfThree[9]) % 3;
-                myField[squareIndexGroupC[7]] = (stateCD / powerOfThree[8]) % 3;
-                myField[squareIndexGroupD[0]] = (stateCD / powerOfThree[7]) % 3;
-                myField[squareIndexGroupD[1]] = (stateCD / powerOfThree[6]) % 3;
-                myField[squareIndexGroupD[2]] = (stateCD / powerOfThree[5]) % 3;
-                myField[squareIndexGroupD[3]] = (stateCD / powerOfThree[4]) % 3;
-                myField[squareIndexGroupD[4]] = (stateCD / powerOfThree[3]) % 3;
-                myField[squareIndexGroupD[5]] = (stateCD / powerOfThree[2]) % 3;
-                myField[squareIndexGroupD[6]] = (stateCD / powerOfThree[1]) % 3;
-                myField[squareIndexGroupD[7]] = (stateCD / powerOfThree[0]) % 3;
+                myField[squareIdxGroupC[0]] = (stateCD / powerOfThree[15]) % 3;
+                myField[squareIdxGroupC[1]] = (stateCD / powerOfThree[14]) % 3;
+                myField[squareIdxGroupC[2]] = (stateCD / powerOfThree[13]) % 3;
+                myField[squareIdxGroupC[3]] = (stateCD / powerOfThree[12]) % 3;
+                myField[squareIdxGroupC[4]] = (stateCD / powerOfThree[11]) % 3;
+                myField[squareIdxGroupC[5]] = (stateCD / powerOfThree[10]) % 3;
+                myField[squareIdxGroupC[6]] = (stateCD / powerOfThree[9]) % 3;
+                myField[squareIdxGroupC[7]] = (stateCD / powerOfThree[8]) % 3;
+                myField[squareIdxGroupD[0]] = (stateCD / powerOfThree[7]) % 3;
+                myField[squareIdxGroupD[1]] = (stateCD / powerOfThree[6]) % 3;
+                myField[squareIdxGroupD[2]] = (stateCD / powerOfThree[5]) % 3;
+                myField[squareIdxGroupD[3]] = (stateCD / powerOfThree[4]) % 3;
+                myField[squareIdxGroupD[4]] = (stateCD / powerOfThree[3]) % 3;
+                myField[squareIdxGroupD[5]] = (stateCD / powerOfThree[2]) % 3;
+                myField[squareIdxGroupD[6]] = (stateCD / powerOfThree[1]) % 3;
+                myField[squareIdxGroupD[7]] = (stateCD / powerOfThree[0]) % 3;
 
                 // count black and white pieces
                 for (a = 0, i = 0; i < SQUARE_NB; i++)
@@ -551,22 +545,22 @@ PerfectAI::PerfectAI(const char *dir)
                     applySymOperationOnField(i, myField, symField);
 
                     symStateCD =
-                        symField[squareIndexGroupC[0]] * powerOfThree[15] +
-                        symField[squareIndexGroupC[1]] * powerOfThree[14] +
-                        symField[squareIndexGroupC[2]] * powerOfThree[13] +
-                        symField[squareIndexGroupC[3]] * powerOfThree[12] +
-                        symField[squareIndexGroupC[4]] * powerOfThree[11] +
-                        symField[squareIndexGroupC[5]] * powerOfThree[10] +
-                        symField[squareIndexGroupC[6]] * powerOfThree[9] +
-                        symField[squareIndexGroupC[7]] * powerOfThree[8] +
-                        symField[squareIndexGroupD[0]] * powerOfThree[7] +
-                        symField[squareIndexGroupD[1]] * powerOfThree[6] +
-                        symField[squareIndexGroupD[2]] * powerOfThree[5] +
-                        symField[squareIndexGroupD[3]] * powerOfThree[4] +
-                        symField[squareIndexGroupD[4]] * powerOfThree[3] +
-                        symField[squareIndexGroupD[5]] * powerOfThree[2] +
-                        symField[squareIndexGroupD[6]] * powerOfThree[1] +
-                        symField[squareIndexGroupD[7]] * powerOfThree[0];
+                        symField[squareIdxGroupC[0]] * powerOfThree[15] +
+                        symField[squareIdxGroupC[1]] * powerOfThree[14] +
+                        symField[squareIdxGroupC[2]] * powerOfThree[13] +
+                        symField[squareIdxGroupC[3]] * powerOfThree[12] +
+                        symField[squareIdxGroupC[4]] * powerOfThree[11] +
+                        symField[squareIdxGroupC[5]] * powerOfThree[10] +
+                        symField[squareIdxGroupC[6]] * powerOfThree[9] +
+                        symField[squareIdxGroupC[7]] * powerOfThree[8] +
+                        symField[squareIdxGroupD[0]] * powerOfThree[7] +
+                        symField[squareIdxGroupD[1]] * powerOfThree[6] +
+                        symField[squareIdxGroupD[2]] * powerOfThree[5] +
+                        symField[squareIdxGroupD[3]] * powerOfThree[4] +
+                        symField[squareIdxGroupD[4]] * powerOfThree[3] +
+                        symField[squareIdxGroupD[5]] * powerOfThree[2] +
+                        symField[squareIdxGroupD[6]] * powerOfThree[1] +
+                        symField[squareIdxGroupD[7]] * powerOfThree[0];
 
                     if (stateCD != symStateCD) {
                         indexCD[symStateCD] = nPositionsCD[a][b];
@@ -1941,36 +1935,36 @@ PerfectAI::ThreadVars::getLayerAndStateNumber(unsigned int &layerNum,
     }
 
     // calculate stateCD
-    stateCD = myField[squareIndexGroupC[0]] * parent->powerOfThree[15] +
-              myField[squareIndexGroupC[1]] * parent->powerOfThree[14] +
-              myField[squareIndexGroupC[2]] * parent->powerOfThree[13] +
-              myField[squareIndexGroupC[3]] * parent->powerOfThree[12] +
-              myField[squareIndexGroupC[4]] * parent->powerOfThree[11] +
-              myField[squareIndexGroupC[5]] * parent->powerOfThree[10] +
-              myField[squareIndexGroupC[6]] * parent->powerOfThree[9] +
-              myField[squareIndexGroupC[7]] * parent->powerOfThree[8] +
-              myField[squareIndexGroupD[0]] * parent->powerOfThree[7] +
-              myField[squareIndexGroupD[1]] * parent->powerOfThree[6] +
-              myField[squareIndexGroupD[2]] * parent->powerOfThree[5] +
-              myField[squareIndexGroupD[3]] * parent->powerOfThree[4] +
-              myField[squareIndexGroupD[4]] * parent->powerOfThree[3] +
-              myField[squareIndexGroupD[5]] * parent->powerOfThree[2] +
-              myField[squareIndexGroupD[6]] * parent->powerOfThree[1] +
-              myField[squareIndexGroupD[7]] * parent->powerOfThree[0];
+    stateCD = myField[squareIdxGroupC[0]] * parent->powerOfThree[15] +
+              myField[squareIdxGroupC[1]] * parent->powerOfThree[14] +
+              myField[squareIdxGroupC[2]] * parent->powerOfThree[13] +
+              myField[squareIdxGroupC[3]] * parent->powerOfThree[12] +
+              myField[squareIdxGroupC[4]] * parent->powerOfThree[11] +
+              myField[squareIdxGroupC[5]] * parent->powerOfThree[10] +
+              myField[squareIdxGroupC[6]] * parent->powerOfThree[9] +
+              myField[squareIdxGroupC[7]] * parent->powerOfThree[8] +
+              myField[squareIdxGroupD[0]] * parent->powerOfThree[7] +
+              myField[squareIdxGroupD[1]] * parent->powerOfThree[6] +
+              myField[squareIdxGroupD[2]] * parent->powerOfThree[5] +
+              myField[squareIdxGroupD[3]] * parent->powerOfThree[4] +
+              myField[squareIdxGroupD[4]] * parent->powerOfThree[3] +
+              myField[squareIdxGroupD[5]] * parent->powerOfThree[2] +
+              myField[squareIdxGroupD[6]] * parent->powerOfThree[1] +
+              myField[squareIdxGroupD[7]] * parent->powerOfThree[0];
 
     // apply symmetry operation on group A&B
     parent->applySymOperationOnField(parent->symOperationCD[stateCD], myField,
                                      symField);
 
     // calculate stateAB
-    stateAB = symField[squareIndexGroupA[0]] * parent->powerOfThree[7] +
-              symField[squareIndexGroupA[1]] * parent->powerOfThree[6] +
-              symField[squareIndexGroupA[2]] * parent->powerOfThree[5] +
-              symField[squareIndexGroupA[3]] * parent->powerOfThree[4] +
-              symField[squareIndexGroupB[0]] * parent->powerOfThree[3] +
-              symField[squareIndexGroupB[1]] * parent->powerOfThree[2] +
-              symField[squareIndexGroupB[2]] * parent->powerOfThree[1] +
-              symField[squareIndexGroupB[3]] * parent->powerOfThree[0];
+    stateAB = symField[squareIdxGroupA[0]] * parent->powerOfThree[7] +
+              symField[squareIdxGroupA[1]] * parent->powerOfThree[6] +
+              symField[squareIdxGroupA[2]] * parent->powerOfThree[5] +
+              symField[squareIdxGroupA[3]] * parent->powerOfThree[4] +
+              symField[squareIdxGroupB[0]] * parent->powerOfThree[3] +
+              symField[squareIdxGroupB[1]] * parent->powerOfThree[2] +
+              symField[squareIdxGroupB[2]] * parent->powerOfThree[1] +
+              symField[squareIdxGroupB[3]] * parent->powerOfThree[0];
 
     // calculate index
     stateNumber =
@@ -2059,31 +2053,31 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
     stateAB = origStateAB[wAB][bAB][stateNumberWithInAB];
 
     // set myField from stateCD and stateAB
-    myField[squareIndexGroupA[0]] = (stateAB / powerOfThree[7]) % 3;
-    myField[squareIndexGroupA[1]] = (stateAB / powerOfThree[6]) % 3;
-    myField[squareIndexGroupA[2]] = (stateAB / powerOfThree[5]) % 3;
-    myField[squareIndexGroupA[3]] = (stateAB / powerOfThree[4]) % 3;
-    myField[squareIndexGroupB[0]] = (stateAB / powerOfThree[3]) % 3;
-    myField[squareIndexGroupB[1]] = (stateAB / powerOfThree[2]) % 3;
-    myField[squareIndexGroupB[2]] = (stateAB / powerOfThree[1]) % 3;
-    myField[squareIndexGroupB[3]] = (stateAB / powerOfThree[0]) % 3;
+    myField[squareIdxGroupA[0]] = (stateAB / powerOfThree[7]) % 3;
+    myField[squareIdxGroupA[1]] = (stateAB / powerOfThree[6]) % 3;
+    myField[squareIdxGroupA[2]] = (stateAB / powerOfThree[5]) % 3;
+    myField[squareIdxGroupA[3]] = (stateAB / powerOfThree[4]) % 3;
+    myField[squareIdxGroupB[0]] = (stateAB / powerOfThree[3]) % 3;
+    myField[squareIdxGroupB[1]] = (stateAB / powerOfThree[2]) % 3;
+    myField[squareIdxGroupB[2]] = (stateAB / powerOfThree[1]) % 3;
+    myField[squareIdxGroupB[3]] = (stateAB / powerOfThree[0]) % 3;
 
-    myField[squareIndexGroupC[0]] = (stateCD / powerOfThree[15]) % 3;
-    myField[squareIndexGroupC[1]] = (stateCD / powerOfThree[14]) % 3;
-    myField[squareIndexGroupC[2]] = (stateCD / powerOfThree[13]) % 3;
-    myField[squareIndexGroupC[3]] = (stateCD / powerOfThree[12]) % 3;
-    myField[squareIndexGroupC[4]] = (stateCD / powerOfThree[11]) % 3;
-    myField[squareIndexGroupC[5]] = (stateCD / powerOfThree[10]) % 3;
-    myField[squareIndexGroupC[6]] = (stateCD / powerOfThree[9]) % 3;
-    myField[squareIndexGroupC[7]] = (stateCD / powerOfThree[8]) % 3;
-    myField[squareIndexGroupD[0]] = (stateCD / powerOfThree[7]) % 3;
-    myField[squareIndexGroupD[1]] = (stateCD / powerOfThree[6]) % 3;
-    myField[squareIndexGroupD[2]] = (stateCD / powerOfThree[5]) % 3;
-    myField[squareIndexGroupD[3]] = (stateCD / powerOfThree[4]) % 3;
-    myField[squareIndexGroupD[4]] = (stateCD / powerOfThree[3]) % 3;
-    myField[squareIndexGroupD[5]] = (stateCD / powerOfThree[2]) % 3;
-    myField[squareIndexGroupD[6]] = (stateCD / powerOfThree[1]) % 3;
-    myField[squareIndexGroupD[7]] = (stateCD / powerOfThree[0]) % 3;
+    myField[squareIdxGroupC[0]] = (stateCD / powerOfThree[15]) % 3;
+    myField[squareIdxGroupC[1]] = (stateCD / powerOfThree[14]) % 3;
+    myField[squareIdxGroupC[2]] = (stateCD / powerOfThree[13]) % 3;
+    myField[squareIdxGroupC[3]] = (stateCD / powerOfThree[12]) % 3;
+    myField[squareIdxGroupC[4]] = (stateCD / powerOfThree[11]) % 3;
+    myField[squareIdxGroupC[5]] = (stateCD / powerOfThree[10]) % 3;
+    myField[squareIdxGroupC[6]] = (stateCD / powerOfThree[9]) % 3;
+    myField[squareIdxGroupC[7]] = (stateCD / powerOfThree[8]) % 3;
+    myField[squareIdxGroupD[0]] = (stateCD / powerOfThree[7]) % 3;
+    myField[squareIdxGroupD[1]] = (stateCD / powerOfThree[6]) % 3;
+    myField[squareIdxGroupD[2]] = (stateCD / powerOfThree[5]) % 3;
+    myField[squareIdxGroupD[3]] = (stateCD / powerOfThree[4]) % 3;
+    myField[squareIdxGroupD[4]] = (stateCD / powerOfThree[3]) % 3;
+    myField[squareIdxGroupD[5]] = (stateCD / powerOfThree[2]) % 3;
+    myField[squareIdxGroupD[6]] = (stateCD / powerOfThree[1]) % 3;
+    myField[squareIdxGroupD[7]] = (stateCD / powerOfThree[0]) % 3;
 
     // apply symmetry operation on group A&B
     applySymOperationOnField(reverseSymOperation[symOperationCD[stateCD]],
@@ -2497,52 +2491,52 @@ bool PerfectAI::isSymOperationInvariantOnGroupCD(unsigned int symOperation,
     // locals
     unsigned int i;
 
-    i = squareIndexGroupC[0];
+    i = squareIdxGroupC[0];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupC[1];
+    i = squareIdxGroupC[1];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupC[2];
+    i = squareIdxGroupC[2];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupC[3];
+    i = squareIdxGroupC[3];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupC[4];
+    i = squareIdxGroupC[4];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupC[5];
+    i = squareIdxGroupC[5];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupC[6];
+    i = squareIdxGroupC[6];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupC[7];
+    i = squareIdxGroupC[7];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupD[0];
+    i = squareIdxGroupD[0];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupD[1];
+    i = squareIdxGroupD[1];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupD[2];
+    i = squareIdxGroupD[2];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupD[3];
+    i = squareIdxGroupD[3];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupD[4];
+    i = squareIdxGroupD[4];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupD[5];
+    i = squareIdxGroupD[5];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupD[6];
+    i = squareIdxGroupD[6];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
-    i = squareIndexGroupD[7];
+    i = squareIdxGroupD[7];
     if (theField[i] != theField[symOperationTable[symOperation][i]])
         return false;
 

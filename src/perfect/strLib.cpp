@@ -98,8 +98,8 @@ MyString &MyString::assign(const char *cStr)
 {
     // locals
     size_t convertedChars = 0;
-    size_t newLength = strlen(cStr);
-    size_t newReserved = (size_t)hiBit((unsigned int)newLength) * 2;
+    size_t newLen = strlen(cStr);
+    size_t newReserved = (size_t)hiBit((unsigned int)newLen) * 2;
 
     if (reserved < newReserved)
         this->~MyString();
@@ -111,10 +111,10 @@ MyString &MyString::assign(const char *cStr)
         strW = new WCHAR[newReserved];
 
     reserved = newReserved;
-    length = newLength;
+    length = newLen;
 
     strcpy_s(strA, newReserved, cStr);
-    mbstowcs_s(&convertedChars, strW, newLength + 1, cStr, _TRUNCATE);
+    mbstowcs_s(&convertedChars, strW, newLen + 1, cStr, _TRUNCATE);
 
     return *this;
 }
@@ -126,9 +126,9 @@ MyString &MyString::assign(const char *cStr)
 MyString &MyString::assign(const WCHAR *cStr)
 {
     // locals
-    size_t returnValue;
-    size_t newLength = wcslen(cStr);
-    size_t newReserved = (size_t)hiBit((unsigned int)newLength) * 2;
+    size_t retval;
+    size_t newLen = wcslen(cStr);
+    size_t newReserved = (size_t)hiBit((unsigned int)newLen) * 2;
 
     if (reserved < newReserved)
         this->~MyString();
@@ -140,10 +140,10 @@ MyString &MyString::assign(const WCHAR *cStr)
         strW = new WCHAR[newReserved];
 
     reserved = newReserved;
-    length = newLength;
+    length = newLen;
 
     wcscpy_s(strW, newReserved, cStr);
-    wcstombs_s(&returnValue, strA, newLength + 1, cStr, newLength + 1);
+    wcstombs_s(&retval, strA, newLen + 1, cStr, newLen + 1);
 
     return *this;
 }
@@ -153,33 +153,32 @@ MyString &MyString::assign(const WCHAR *cStr)
 // This functions reads in a table of floating point values faster than "cin".
 //-----------------------------------------------------------------------------
 bool readAsciiData(HANDLE hFile, double *pData, unsigned int nValues,
-                   unsigned char decimalSeperator,
-                   unsigned char columnSeparator)
+                   unsigned char decSeperator, unsigned char colSeparator)
 {
     // constants
-    const unsigned int maxValueLengthInBytes = 32;
-    const unsigned int bufferSize = 1000;
+    const unsigned int maxValLenInBytes = 32;
+    const unsigned int bufSize = 1000;
 
     // locals
     DWORD dwBytesRead;
-    unsigned char buffer[bufferSize];
-    unsigned char *curByte = &buffer[0];
-    unsigned int curReadValue = 0;
-    unsigned int actualBufferSize = 0;
-    unsigned int curBufferPos = bufferSize;
-    unsigned int decimalPos = 0;
+    unsigned char buf[bufSize];
+    unsigned char *curByte = &buf[0];
+    unsigned int curReadVal = 0;
+    unsigned int actualBufSize = 0;
+    unsigned int curBufPos = bufSize;
+    unsigned int decPos = 0;
 
     // ATTENTION: Only allows 8 digits before the decimal point
-    int integralValue = 0;
+    int integralVal = 0;
 
     // ATTENTION: Only allows 8 digits before the decimal point
-    int fractionalValue = 0;
+    int fractionalVal = 0;
 
-    int exponentialValue = 1;
-    bool valIsNegative = false;
-    bool expIsNegative = false;
-    bool decimalPlace = false;
-    bool exponent = false;
+    int expVal = 1;
+    bool valIsNeg = false;
+    bool expIsNeg = false;
+    bool decPlace = false;
+    bool exp = false;
     double fractionalFactor[] = {0,           0.1,         0.01,
                                  0.001,       0.0001,      0.00001,
                                  0.000001,    0.0000001,   0.00000001,
@@ -188,170 +187,169 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int nValues,
     // read each value
     do {
         // read from buffer if necessary
-        if (curBufferPos >= bufferSize - maxValueLengthInBytes) {
-            memcpy(&buffer[0], &buffer[curBufferPos],
-                   bufferSize - curBufferPos);
-            if (!ReadFile(hFile, &buffer[bufferSize - curBufferPos],
-                          curBufferPos, &dwBytesRead, nullptr))
+        if (curBufPos >= bufSize - maxValLenInBytes) {
+            memcpy(&buf[0], &buf[curBufPos], bufSize - curBufPos);
+            if (!ReadFile(hFile, &buf[bufSize - curBufPos], curBufPos,
+                          &dwBytesRead, nullptr))
                 return false;
-            actualBufferSize = bufferSize - curBufferPos + dwBytesRead;
-            curBufferPos = 0;
-            curByte = &buffer[curBufferPos];
+            actualBufSize = bufSize - curBufPos + dwBytesRead;
+            curBufPos = 0;
+            curByte = &buf[curBufPos];
         }
 
         // process current byte
         switch (*curByte) {
         case '-':
-            if (exponent) {
-                expIsNegative = true;
+            if (exp) {
+                expIsNeg = true;
             } else {
-                valIsNegative = true;
+                valIsNeg = true;
             }
             break;
         case '+': /* ignore */
             break;
         case 'e':
         case 'E':
-            exponent = true;
-            decimalPlace = false;
+            exp = true;
+            decPlace = false;
             break;
         case '0':
-            if (decimalPlace) {
-                fractionalValue *= 10;
-                fractionalValue += 0;
-                decimalPos++;
-            } else if (exponent) {
-                exponentialValue *= 10;
-                exponentialValue += 0;
+            if (decPlace) {
+                fractionalVal *= 10;
+                fractionalVal += 0;
+                decPos++;
+            } else if (exp) {
+                expVal *= 10;
+                expVal += 0;
             } else {
-                integralValue *= 10;
-                integralValue += 0;
+                integralVal *= 10;
+                integralVal += 0;
             }
             break;
         case '1':
-            if (decimalPlace) {
-                fractionalValue *= 10;
-                fractionalValue += 1;
-                decimalPos++;
-            } else if (exponent) {
-                exponentialValue *= 10;
-                exponentialValue += 1;
+            if (decPlace) {
+                fractionalVal *= 10;
+                fractionalVal += 1;
+                decPos++;
+            } else if (exp) {
+                expVal *= 10;
+                expVal += 1;
             } else {
-                integralValue *= 10;
-                integralValue += 1;
+                integralVal *= 10;
+                integralVal += 1;
             }
             break;
         case '2':
-            if (decimalPlace) {
-                fractionalValue *= 10;
-                fractionalValue += 2;
-                decimalPos++;
-            } else if (exponent) {
-                exponentialValue *= 10;
-                exponentialValue += 2;
+            if (decPlace) {
+                fractionalVal *= 10;
+                fractionalVal += 2;
+                decPos++;
+            } else if (exp) {
+                expVal *= 10;
+                expVal += 2;
             } else {
-                integralValue *= 10;
-                integralValue += 2;
+                integralVal *= 10;
+                integralVal += 2;
             }
             break;
         case '3':
-            if (decimalPlace) {
-                fractionalValue *= 10;
-                fractionalValue += 3;
-                decimalPos++;
-            } else if (exponent) {
-                exponentialValue *= 10;
-                exponentialValue += 3;
+            if (decPlace) {
+                fractionalVal *= 10;
+                fractionalVal += 3;
+                decPos++;
+            } else if (exp) {
+                expVal *= 10;
+                expVal += 3;
             } else {
-                integralValue *= 10;
-                integralValue += 3;
+                integralVal *= 10;
+                integralVal += 3;
             }
             break;
         case '4':
-            if (decimalPlace) {
-                fractionalValue *= 10;
-                fractionalValue += 4;
-                decimalPos++;
-            } else if (exponent) {
-                exponentialValue *= 10;
-                exponentialValue += 4;
+            if (decPlace) {
+                fractionalVal *= 10;
+                fractionalVal += 4;
+                decPos++;
+            } else if (exp) {
+                expVal *= 10;
+                expVal += 4;
             } else {
-                integralValue *= 10;
-                integralValue += 4;
+                integralVal *= 10;
+                integralVal += 4;
             }
             break;
         case '5':
-            if (decimalPlace) {
-                fractionalValue *= 10;
-                fractionalValue += 5;
-                decimalPos++;
-            } else if (exponent) {
-                exponentialValue *= 10;
-                exponentialValue += 5;
+            if (decPlace) {
+                fractionalVal *= 10;
+                fractionalVal += 5;
+                decPos++;
+            } else if (exp) {
+                expVal *= 10;
+                expVal += 5;
             } else {
-                integralValue *= 10;
-                integralValue += 5;
+                integralVal *= 10;
+                integralVal += 5;
             }
             break;
         case '6':
-            if (decimalPlace) {
-                fractionalValue *= 10;
-                fractionalValue += 6;
-                decimalPos++;
-            } else if (exponent) {
-                exponentialValue *= 10;
-                exponentialValue += 6;
+            if (decPlace) {
+                fractionalVal *= 10;
+                fractionalVal += 6;
+                decPos++;
+            } else if (exp) {
+                expVal *= 10;
+                expVal += 6;
             } else {
-                integralValue *= 10;
-                integralValue += 6;
+                integralVal *= 10;
+                integralVal += 6;
             }
             break;
         case '7':
-            if (decimalPlace) {
-                fractionalValue *= 10;
-                fractionalValue += 7;
-                decimalPos++;
-            } else if (exponent) {
-                exponentialValue *= 10;
-                exponentialValue += 7;
+            if (decPlace) {
+                fractionalVal *= 10;
+                fractionalVal += 7;
+                decPos++;
+            } else if (exp) {
+                expVal *= 10;
+                expVal += 7;
             } else {
-                integralValue *= 10;
-                integralValue += 7;
+                integralVal *= 10;
+                integralVal += 7;
             }
             break;
         case '8':
-            if (decimalPlace) {
-                fractionalValue *= 10;
-                fractionalValue += 8;
-                decimalPos++;
-            } else if (exponent) {
-                exponentialValue *= 10;
-                exponentialValue += 8;
+            if (decPlace) {
+                fractionalVal *= 10;
+                fractionalVal += 8;
+                decPos++;
+            } else if (exp) {
+                expVal *= 10;
+                expVal += 8;
             } else {
-                integralValue *= 10;
-                integralValue += 8;
+                integralVal *= 10;
+                integralVal += 8;
             }
             break;
         case '9':
-            if (decimalPlace) {
-                fractionalValue *= 10;
-                fractionalValue += 9;
-                decimalPos++;
-            } else if (exponent) {
-                exponentialValue *= 10;
-                exponentialValue += 9;
+            if (decPlace) {
+                fractionalVal *= 10;
+                fractionalVal += 9;
+                decPos++;
+            } else if (exp) {
+                expVal *= 10;
+                expVal += 9;
             } else {
-                integralValue *= 10;
-                integralValue += 9;
+                integralVal *= 10;
+                integralVal += 9;
             }
             break;
         default:
-            if (*curByte == decimalSeperator) {
-                decimalPlace = true;
-                exponent = false;
-            } else if (*curByte == columnSeparator) {
+            if (*curByte == decSeperator) {
+                decPlace = true;
+                exp = false;
+            } else if (*curByte == colSeparator) {
                 // everything ok?
-                if (decimalPos > 8) {
+                if (decPos > 8) {
                     cout << "ERROR in function readAsciiData(): Too many "
                             "digits on decimal place. Maximum is 8 !"
                          << std::endl;
@@ -359,33 +357,32 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int nValues,
                 }
 
                 // calculate final value
-                (*pData) = integralValue;
-                if (decimalPos) {
-                    (*pData) += fractionalValue * fractionalFactor[decimalPos];
+                (*pData) = integralVal;
+                if (decPos) {
+                    (*pData) += fractionalVal * fractionalFactor[decPos];
                 }
 
-                if (valIsNegative) {
+                if (valIsNeg) {
                     (*pData) *= -1;
                 }
 
-                if (exponent) {
-                    (*pData) *= pow(10,
-                                    expIsNegative ? -1 * exponentialValue : 1);
+                if (exp) {
+                    (*pData) *= pow(10, expIsNeg ? -1 * expVal : 1);
                 }
 
                 // init
-                valIsNegative = false;
-                expIsNegative = false;
-                decimalPlace = false;
-                exponent = false;
-                integralValue = 0;
-                fractionalValue = 0;
-                exponentialValue = 1;
-                decimalPos = 0;
+                valIsNeg = false;
+                expIsNeg = false;
+                decPlace = false;
+                exp = false;
+                integralVal = 0;
+                fractionalVal = 0;
+                expVal = 1;
+                decPos = 0;
 
                 // save value
                 pData++;
-                curReadValue++;
+                curReadVal++;
             } else {
                 // do nothing
             }
@@ -393,13 +390,13 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int nValues,
         }
 
         // consider next byte
-        curBufferPos++;
+        curBufPos++;
         curByte++;
 
         // buffer overrun?
-        if (curBufferPos >= actualBufferSize)
+        if (curBufPos >= actualBufSize)
             return false;
-    } while (curReadValue < nValues);
+    } while (curReadVal < nValues);
 
     // quit
     return true;
