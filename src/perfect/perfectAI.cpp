@@ -539,7 +539,7 @@ PerfectAI::PerfectAI(const char *dir)
                 symOpCD[stateCD] = SO_DO_NOTHING;
                 origStateCD_tmp[a][b][nPositionsCD[a][b]] = stateCD;
 
-                // mark all symmetric states
+                // mark all sym states
                 for (i = 0; i < SO_COUNT; i++) {
                     applySymOpOnField(i, myField, symField);
 
@@ -2260,7 +2260,7 @@ void PerfectAI::getSuccLayers(unsigned int layerNum,
 //
 //-----------------------------------------------------------------------------
 void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo,
-                                          unsigned int *nSymmetricStates,
+                                          unsigned int *nSymStates,
                                           unsigned int **symStateNumbers)
 {
     // locals
@@ -2270,7 +2270,7 @@ void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo,
     unsigned int i, symOp;
     unsigned int layerNum, stateNum;
 
-    *nSymmetricStates = 0;
+    *nSymStates = 0;
     *symStateNumbers = symStateNumberArray;
 
     // save current board
@@ -2279,7 +2279,7 @@ void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo,
         origPartOfMill[i] = tv->field->piecePartOfMillCount[i];
     }
 
-    // add all symmetric states
+    // add all sym states
     for (symOp = 0; symOp < SO_COUNT; symOp++) {
         // apply symmetry operation
         applySymOpOnField(symOp, (unsigned int *)origField,
@@ -2288,8 +2288,8 @@ void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo,
                           (unsigned int *)tv->field->piecePartOfMillCount);
 
         getLayerAndStateNumber(threadNo, layerNum, stateNum);
-        symStateNumberArray[*nSymmetricStates] = stateNum;
-        (*nSymmetricStates)++;
+        symStateNumberArray[*nSymStates] = stateNum;
+        (*nSymStates)++;
     }
 
     // restore orig board
@@ -2447,7 +2447,7 @@ void PerfectAI::ThreadVars::storePredecessor(unsigned int nMillsCurPlayer,
         for (i = 0; i < SQUARE_NB; i++)
             origField[i] = field->board[i];
 
-        // add all symmetric states
+        // add all sym states
         for (symOp = 0; symOp < SO_COUNT; symOp++) {
             // ...
             if (symOp == SO_DO_NOTHING ||

@@ -679,7 +679,7 @@ bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
     PlyInfoVarType nPliesTillSymState;
     unsigned int stateNumber = 0;
     unsigned int *symStateNumbers = nullptr;
-    unsigned int nSymmetricStates;
+    unsigned int nSymStates;
     unsigned int i;
 
     // database open?
@@ -696,9 +696,9 @@ bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
         goto errorInDatabase;
     }
 
-    // test if each state has symmetric states with the same value
+    // test if each state has sym states with the same value
     PRINT(1, this,
-          endl << "testIfSymmetricStatesHaveSameValue - TEST EACH STATE IN "
+          endl << "testIfSymStatesHaveSameValue - TEST EACH STATE IN "
                   "LAYER: "
                << layerNumber);
     PRINT(1, this, (getOutputInfo(layerNumber)));
@@ -729,12 +729,11 @@ bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
                 continue;
         }
 
-        // get numbers of symmetric states
-        getSymStateNumWithDoubles(threadNo, &nSymmetricStates,
-                                  &symStateNumbers);
+        // get numbers of sym states
+        getSymStateNumWithDoubles(threadNo, &nSymStates, &symStateNumbers);
 
-        // save value for all symmetric states
-        for (i = 0; i < nSymmetricStates; i++) {
+        // save value for all sym states
+        for (i = 0; i < nSymStates; i++) {
             readKnotValueFromDatabase(layerNumber, symStateNumbers[i],
                                       shortValueOfSymState);
             readPlyInfoFromDatabase(layerNumber, symStateNumbers[i],
@@ -750,8 +749,8 @@ bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
 
                 PRINT(1, this, "");
                 PRINT(1, this,
-                      "symmetric state " << symStateNumbers[i] << " has value "
-                                         << (int)shortValueOfSymState);
+                      "sym state " << symStateNumbers[i] << " has value "
+                                   << (int)shortValueOfSymState);
                 setSituation(threadNo, layerNumber, symStateNumbers[i]);
                 printBoard(threadNo, shortValueOfSymState);
 

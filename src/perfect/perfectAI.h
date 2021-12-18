@@ -313,7 +313,7 @@ protected:
                         unsigned int *freqValuesSubMoves,
                         PlyInfoVarType plyInfo);
     void getSymStateNumWithDoubles(unsigned int threadNo,
-                                   unsigned int *nSymmetricStates,
+                                   unsigned int *nSymStates,
                                    unsigned int **symStateNumbers);
     void printBoard(unsigned int threadNo, unsigned char value);
     string getOutputInfo(unsigned int layerNum);

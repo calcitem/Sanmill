@@ -571,7 +571,7 @@ public:
     };
 
     virtual void getSymStateNumWithDoubles(unsigned int threadNo,
-                                           unsigned int *nSymmetricStates,
+                                           unsigned int *nSymStates,
                                            unsigned int **symStateNumbers)
     {
         while (true) {
