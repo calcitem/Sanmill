@@ -28,10 +28,10 @@ private:
 
     // Array of size [threadCount*blockSize] containing the data of the block,
     // where reading is taking place
-    unsigned char *readBuffer;
+    unsigned char *readBuf;
 
-    // '' - access by [threadNo*bufferSize+position]
-    unsigned char *writeBuffer;
+    // '' - access by [threadNo*bufSize+position]
+    unsigned char *writeBuf;
 
     // Array of size [threadCount] with pointers to the byte which is currently
     // read
@@ -39,12 +39,12 @@ private:
     // ''
     int64_t *curWritingPointer;
 
-    unsigned int *bytesInReadBuffer;
+    unsigned int *bytesInReadBuf;
 
-    unsigned int *bytesInWriteBuffer;
+    unsigned int *bytesInWriteBuf;
 
-    // size in bytes of a buffer
-    unsigned int bufferSize;
+    // size in bytes of a buf
+    unsigned int bufSize;
 
     // size in bytes
     int64_t fileSize;
@@ -59,7 +59,7 @@ private:
 
 public:
     // Constructor / destructor
-    BufferedFile(unsigned int threadCount, unsigned int bufferSizeInBytes,
+    BufferedFile(unsigned int threadCount, unsigned int bufSizeInBytes,
                  const char *fileName);
     ~BufferedFile();
 

@@ -13,7 +13,7 @@
 
 struct RetroAnalysisQueueState
 {
-    // state stored in the retro analysis queue. the queue is a buffer
+    // state stored in the retro analysis queue. the queue is a buf
     // containing states to be passed to
     // 'RetroAnalysisThreadVars::statesToProcess'
     StateNumberVarType stateNumber;

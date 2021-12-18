@@ -14,7 +14,7 @@
 
 //-----------------------------------------------------------------------------
 // CyclicArray()
-// Creates a cyclic array. The passed file is used as temporary data buffer for
+// Creates a cyclic array. The passed file is used as temporary data buf for
 // the cyclic array.
 //-----------------------------F------------------------------------------------
 CyclicArray::CyclicArray(unsigned int blockSizeInBytes, unsigned int nBlocks,
