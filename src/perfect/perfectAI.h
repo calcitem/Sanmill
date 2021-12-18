@@ -284,11 +284,6 @@ protected:
     uint32_t getLayerAndStateNumber(uint32_t threadNo, uint32_t &layerNum,
                                     uint32_t &stateNumber);
 
-    // integrity test functions
-    bool checkMoveAndSetSituation();
-    bool checkGetPossThanGetPred();
-    bool checkGetPredThanGetPoss();
-
     // Virtual Functions
     void prepareBestChoiceCalc();
     void getSituationValue(uint32_t threadNo, float &floatValue,
@@ -323,8 +318,6 @@ public:
     // Functions
     bool setDatabasePath(const char *dir);
     void play(fieldStruct *theField, uint32_t *pushFrom, uint32_t *pushTo);
-    void getField(uint32_t layerNum, uint32_t stateNumber, fieldStruct *field,
-                  bool *gameHasFinished);
     void getLayerAndStateNumber(uint32_t &layerNum, uint32_t &stateNumber);
 
     // Testing functions

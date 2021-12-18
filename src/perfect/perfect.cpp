@@ -117,8 +117,6 @@ void to_perfect_move(Move move, uint32_t &from, uint32_t &to)
     }
 }
 
-void to_perfect_postition(Position &pos) { }
-
 Move perfect_search()
 {
     bool ret = false;

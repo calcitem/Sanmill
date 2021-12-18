@@ -64,9 +64,6 @@ public:
     // Functions
     bool addBytes(uint32_t nBytes, unsigned char *pData);
     bool takeBytes(uint32_t nBytes, unsigned char *pData);
-    bool loadFile(const char *fileName, LONGLONG &nBytesLoaded);
-    bool saveFile(const char *fileName);
-    bool bytesAvailable();
 };
 
 #endif // CYLCIC_ARRAY_H_INCLUDED

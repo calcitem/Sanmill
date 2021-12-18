@@ -19,11 +19,6 @@
 using std::cout;
 using std::string;
 
-// general functions
-bool readAsciiData(HANDLE hFile, double *pData, uint32_t numValues,
-                   unsigned char decimalSeperator,
-                   unsigned char columnSeparator);
-
 class MyString
 {
 private:
@@ -42,8 +37,6 @@ public:
     explicit MyString(const WCHAR *cStr);
     ~MyString();
 
-    const char *c_strA();
-    const WCHAR *c_strW();
     MyString &assign(const char *cStr);
     MyString &assign(const WCHAR *cStr);
 
