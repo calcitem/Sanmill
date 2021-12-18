@@ -16,7 +16,7 @@
 // showMemoryStatus()
 //
 //-----------------------------------------------------------------------------
-unsigned int MiniMax::getThreadCount()
+uint32_t MiniMax::getThreadCount()
 {
     return threadManager.getThreadCount();
 }
@@ -34,9 +34,9 @@ bool MiniMax::anyFreshlyCalculatedLayer()
 // getLastCalculatedLayer()
 // called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
-unsigned int MiniMax::getLastCalculatedLayer()
+uint32_t MiniMax::getLastCalculatedLayer()
 {
-    unsigned int tmp = lastCalculatedLayer.front();
+    uint32_t tmp = lastCalculatedLayer.front();
     lastCalculatedLayer.pop_front();
     return tmp;
 }
@@ -45,7 +45,7 @@ unsigned int MiniMax::getLastCalculatedLayer()
 // isLayerInDatabase()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::isLayerInDatabase(unsigned int layerNum)
+bool MiniMax::isLayerInDatabase(uint32_t layerNum)
 {
     if (layerStats == nullptr)
         return false;
@@ -56,7 +56,7 @@ bool MiniMax::isLayerInDatabase(unsigned int layerNum)
 // getLayerSizeInBytes()
 //
 //-----------------------------------------------------------------------------
-int64_t MiniMax::getLayerSizeInBytes(unsigned int layerNum)
+int64_t MiniMax::getLayerSizeInBytes(uint32_t layerNum)
 {
     if (plyInfos == nullptr || layerStats == nullptr)
         return 0;
@@ -68,7 +68,7 @@ int64_t MiniMax::getLayerSizeInBytes(unsigned int layerNum)
 // getWonStateCount()
 //
 //-----------------------------------------------------------------------------
-MiniMax::StateNumberVarType MiniMax::getWonStateCount(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getWonStateCount(uint32_t layerNum)
 {
     if (layerStats == nullptr)
         return 0;
@@ -79,7 +79,7 @@ MiniMax::StateNumberVarType MiniMax::getWonStateCount(unsigned int layerNum)
 // getLostStateCount()
 //
 //-----------------------------------------------------------------------------
-MiniMax::StateNumberVarType MiniMax::getLostStateCount(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getLostStateCount(uint32_t layerNum)
 {
     if (layerStats == nullptr)
         return 0;
@@ -90,7 +90,7 @@ MiniMax::StateNumberVarType MiniMax::getLostStateCount(unsigned int layerNum)
 // getDrawnStateCount()
 //
 //-----------------------------------------------------------------------------
-MiniMax::StateNumberVarType MiniMax::getDrawnStateCount(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getDrawnStateCount(uint32_t layerNum)
 {
     if (layerStats == nullptr)
         return 0;
@@ -101,7 +101,7 @@ MiniMax::StateNumberVarType MiniMax::getDrawnStateCount(unsigned int layerNum)
 // getInvalidStateCount()
 //
 //-----------------------------------------------------------------------------
-MiniMax::StateNumberVarType MiniMax::getInvalidStateCount(unsigned int layerNum)
+MiniMax::StateNumberVarType MiniMax::getInvalidStateCount(uint32_t layerNum)
 {
     if (layerStats == nullptr)
         return 0;
@@ -146,11 +146,11 @@ void MiniMax::setOutputStream(ostream *theStream,
 // showLayerStats()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::showLayerStats(unsigned int layerNumber)
+void MiniMax::showLayerStats(uint32_t layerNumber)
 {
     // locals
     StateAdress curState;
-    unsigned int statsValueCounter[] = {0, 0, 0, 0};
+    uint32_t statsValueCounter[] = {0, 0, 0, 0};
     TwoBit curStateValue;
 
     // calculate and show statistics
@@ -195,7 +195,7 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
     HANDLE statFile;
     DWORD dwBytesWritten;
     StateAdress curState;
-    unsigned int *statsValueCounter;
+    uint32_t *statsValueCounter;
     TwoBit curStateValue;
     char line[10000];
     string text("");
@@ -230,7 +230,7 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
     text += "succeedingLayers[0]\t";
     text += "succeedingLayers[1]\n";
 
-    statsValueCounter = new unsigned int[4 * skvfHeader.LayerCount];
+    statsValueCounter = new uint32_t[4 * skvfHeader.LayerCount];
     curCalcActionId = MM_ACTION_CALC_LAYER_STATS;
 
     // calculate and show statistics
@@ -339,7 +339,7 @@ LPWSTR MiniMax::getCurActionStr()
 // getCurCalculatedLayer()
 // called by MAIN-thread in pMiniMax->csOsPrint critical-section
 //-----------------------------------------------------------------------------
-void MiniMax::getCurCalculatedLayer(vector<unsigned int> &layers)
+void MiniMax::getCurCalculatedLayer(vector<uint32_t> &layers)
 {
     // when retro-analysis is used than two layers are calculated at the same
     // time
@@ -359,9 +359,8 @@ void MiniMax::getCurCalculatedLayer(vector<unsigned int> &layers)
 // Caution: layerNumber and type must be a unique pair!
 //       called by single CALCULATION-thread
 //-----------------------------------------------------------------------------
-void MiniMax::ArrayInfoContainer::addArray(unsigned int layerNumber,
-                                           unsigned int type, int64_t size,
-                                           int64_t compressedSize)
+void MiniMax::ArrayInfoContainer::addArray(uint32_t layerNumber, uint32_t type,
+                                           int64_t size, int64_t compressedSize)
 {
     // create new info object and add to list
     EnterCriticalSection(&c->csOsPrint);
@@ -377,7 +376,7 @@ void MiniMax::ArrayInfoContainer::addArray(unsigned int layerNumber,
     // notify change
     ArrayInfoChange aic;
     aic.arrayInfo = &listArrays.back();
-    aic.itemIndex = (unsigned int)listArrays.size() - 1;
+    aic.itemIndex = (uint32_t)listArrays.size() - 1;
     arrayInfosToBeUpdated.push_back(aic);
 
     // save pointer of info in vector for direct access
@@ -396,8 +395,8 @@ void MiniMax::ArrayInfoContainer::addArray(unsigned int layerNumber,
 // ArrayInfoContainer::removeArray()
 // called by single CALCULATION-thread
 //-----------------------------------------------------------------------------
-void MiniMax::ArrayInfoContainer::removeArray(unsigned int layerNumber,
-                                              unsigned int type, int64_t size,
+void MiniMax::ArrayInfoContainer::removeArray(uint32_t layerNumber,
+                                              uint32_t type, int64_t size,
                                               int64_t compressedSize)
 {
     // find info object in list
@@ -417,8 +416,7 @@ void MiniMax::ArrayInfoContainer::removeArray(unsigned int layerNumber,
             // notify change
             ArrayInfoChange aic;
             aic.arrayInfo = nullptr;
-            aic.itemIndex = (unsigned int)std::distance(listArrays.begin(),
-                                                        itr);
+            aic.itemIndex = (uint32_t)std::distance(listArrays.begin(), itr);
             arrayInfosToBeUpdated.push_back(aic);
 
             // delete tem from list
@@ -438,8 +436,8 @@ void MiniMax::ArrayInfoContainer::removeArray(unsigned int layerNumber,
 // ArrayInfoContainer::updateArray()
 // called by mutiple CALCULATION-thread
 //-----------------------------------------------------------------------------
-void MiniMax::ArrayInfoContainer::updateArray(unsigned int layerNumber,
-                                              unsigned int type)
+void MiniMax::ArrayInfoContainer::updateArray(uint32_t layerNumber,
+                                              uint32_t type)
 {
     // find info object in list
     list<ArrayInfo>::iterator itr =
@@ -452,7 +450,7 @@ void MiniMax::ArrayInfoContainer::updateArray(unsigned int layerNumber,
 
         ArrayInfoChange aic;
         aic.arrayInfo = &(*itr);
-        aic.itemIndex = (unsigned int)std::distance(listArrays.begin(), itr);
+        aic.itemIndex = (uint32_t)std::distance(listArrays.begin(), itr);
         arrayInfosToBeUpdated.push_back(aic);
 
         // update GUI

@@ -17,11 +17,11 @@
 // Creates a cyclic array. The passed file is used as temporary data buf for
 // the cyclic array.
 //-----------------------------------------------------------------------------
-BufferedFile::BufferedFile(unsigned int nThreads, unsigned int bufSizeInBytes,
+BufferedFile::BufferedFile(uint32_t nThreads, uint32_t bufSizeInBytes,
                            const char *fileName)
 {
     // locals
-    unsigned int curThread;
+    uint32_t curThread;
 
     // Init blocks
     bufSize = bufSizeInBytes;
@@ -30,8 +30,8 @@ BufferedFile::BufferedFile(unsigned int nThreads, unsigned int bufSizeInBytes,
     writeBuf = new unsigned char[nThreads * bufSize];
     curWritingPointer = new int64_t[nThreads];
     curReadingPointer = new int64_t[nThreads];
-    bytesInReadBuf = new unsigned int[nThreads];
-    bytesInWriteBuf = new unsigned int[nThreads];
+    bytesInReadBuf = new uint32_t[nThreads];
+    bytesInWriteBuf = new uint32_t[nThreads];
 
     for (curThread = 0; curThread < nThreads; curThread++) {
         curReadingPointer[curThread] = 0;
@@ -100,7 +100,7 @@ int64_t BufferedFile::getFileSize()
 //-----------------------------------------------------------------------------
 bool BufferedFile::flushBuffers()
 {
-    for (unsigned int th = 0; th < threadCount; th++) {
+    for (uint32_t th = 0; th < threadCount; th++) {
         writeDataToFile(hFile, curWritingPointer[th] - bytesInWriteBuf[th],
                         bytesInWriteBuf[th], &writeBuf[th * bufSize + 0]);
         bytesInWriteBuf[th] = 0;
@@ -114,11 +114,11 @@ bool BufferedFile::flushBuffers()
 // Writes 'sizeInBytes'-bytes to the position 'offset' to the file.
 //-----------------------------------------------------------------------------
 void BufferedFile::writeDataToFile(HANDLE fd, int64_t offset,
-                                   unsigned int sizeInBytes, void *pData)
+                                   uint32_t sizeInBytes, void *pData)
 {
     DWORD dwBytesWritten;
     LARGE_INTEGER liDistanceToMove;
-    unsigned int restingBytes = sizeInBytes;
+    uint32_t restingBytes = sizeInBytes;
 
     liDistanceToMove.QuadPart = offset;
 
@@ -147,11 +147,11 @@ void BufferedFile::writeDataToFile(HANDLE fd, int64_t offset,
 // Reads 'sizeInBytes'-bytes from the position 'offset' of the file.
 //-----------------------------------------------------------------------------
 void BufferedFile::readDataFromFile(HANDLE fd, int64_t offset,
-                                    unsigned int sizeInBytes, void *pData)
+                                    uint32_t sizeInBytes, void *pData)
 {
     DWORD dwBytesRead;
     LARGE_INTEGER liDistanceToMove;
-    unsigned int restingBytes = sizeInBytes;
+    uint32_t restingBytes = sizeInBytes;
 
     liDistanceToMove.QuadPart = offset;
 
@@ -178,7 +178,7 @@ void BufferedFile::readDataFromFile(HANDLE fd, int64_t offset,
 // writeBytes()
 //
 //-----------------------------------------------------------------------------
-bool BufferedFile::writeBytes(unsigned int nBytes, unsigned char *pData)
+bool BufferedFile::writeBytes(uint32_t nBytes, unsigned char *pData)
 {
     return writeBytes(0, curWritingPointer[0], nBytes, pData);
 }
@@ -187,8 +187,8 @@ bool BufferedFile::writeBytes(unsigned int nBytes, unsigned char *pData)
 // writeBytes()
 //
 //-----------------------------------------------------------------------------
-bool BufferedFile::writeBytes(unsigned int threadNo, int64_t positionInFile,
-                              unsigned int nBytes, unsigned char *pData)
+bool BufferedFile::writeBytes(uint32_t threadNo, int64_t positionInFile,
+                              uint32_t nBytes, unsigned char *pData)
 {
     // params ok?
     if (threadNo >= threadCount)
@@ -224,7 +224,7 @@ bool BufferedFile::writeBytes(unsigned int threadNo, int64_t positionInFile,
 // takeBytes()
 //
 //-----------------------------------------------------------------------------
-bool BufferedFile::readBytes(unsigned int nBytes, unsigned char *pData)
+bool BufferedFile::readBytes(uint32_t nBytes, unsigned char *pData)
 {
     return readBytes(0, curReadingPointer[0], nBytes, pData);
 }
@@ -233,8 +233,8 @@ bool BufferedFile::readBytes(unsigned int nBytes, unsigned char *pData)
 // takeBytes()
 //
 //-----------------------------------------------------------------------------
-bool BufferedFile::readBytes(unsigned int threadNo, int64_t positionInFile,
-                             unsigned int nBytes, unsigned char *pData)
+bool BufferedFile::readBytes(uint32_t threadNo, int64_t positionInFile,
+                             uint32_t nBytes, unsigned char *pData)
 {
     // params ok?
     if (threadNo >= threadCount)
@@ -249,8 +249,7 @@ bool BufferedFile::readBytes(unsigned int threadNo, int64_t positionInFile,
         bytesInReadBuf[threadNo] < nBytes) {
         bytesInReadBuf[threadNo] = ((positionInFile + bufSize <= fileSize) ?
                                         bufSize :
-                                        (unsigned int)(fileSize -
-                                                       positionInFile));
+                                        (uint32_t)(fileSize - positionInFile));
         if (bytesInReadBuf[threadNo] < nBytes)
             return false;
         readDataFromFile(

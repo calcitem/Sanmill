@@ -17,7 +17,7 @@
 // Creates a cyclic array. The passed file is used as temporary data buf for
 // the cyclic array.
 //-----------------------------F------------------------------------------------
-CyclicArray::CyclicArray(unsigned int blockSizeInBytes, unsigned int nBlocks,
+CyclicArray::CyclicArray(uint32_t blockSizeInBytes, uint32_t nBlocks,
                          const char *fileName)
 {
     // Init blocks
@@ -64,11 +64,11 @@ CyclicArray::~CyclicArray()
 // Writes 'sizeInBytes'-bytes to the position 'offset' to the file.
 //-----------------------------------------------------------------------------
 void CyclicArray::writeDataToFile(HANDLE fd, int64_t offset,
-                                  unsigned int sizeInBytes, void *pData)
+                                  uint32_t sizeInBytes, void *pData)
 {
     DWORD dwBytesWritten;
     LARGE_INTEGER liDistanceToMove;
-    unsigned int restingBytes = sizeInBytes;
+    uint32_t restingBytes = sizeInBytes;
 
     liDistanceToMove.QuadPart = offset;
 
@@ -93,11 +93,11 @@ void CyclicArray::writeDataToFile(HANDLE fd, int64_t offset,
 // Reads 'sizeInBytes'-bytes from the position 'offset' of the file.
 //-----------------------------------------------------------------------------
 void CyclicArray::readDataFromFile(HANDLE fd, int64_t offset,
-                                   unsigned int sizeInBytes, void *pData)
+                                   uint32_t sizeInBytes, void *pData)
 {
     DWORD dwBytesRead;
     LARGE_INTEGER liDistanceToMove;
-    unsigned int restingBytes = sizeInBytes;
+    uint32_t restingBytes = sizeInBytes;
 
     liDistanceToMove.QuadPart = offset;
 
@@ -123,10 +123,10 @@ void CyclicArray::readDataFromFile(HANDLE fd, int64_t offset,
 //       the data of the whole block is written to the file and the next block
 //       is considered for writing.
 //-----------------------------------------------------------------------------
-bool CyclicArray::addBytes(unsigned int nBytes, unsigned char *pData)
+bool CyclicArray::addBytes(uint32_t nBytes, unsigned char *pData)
 {
     // locals
-    unsigned int bytesWritten = 0;
+    uint32_t bytesWritten = 0;
 
     // write each byte
     while (bytesWritten < nBytes) {
@@ -186,10 +186,10 @@ bool CyclicArray::bytesAvailable()
 // block,
 //       the data of the next whole block is read from the file.
 //-----------------------------------------------------------------------------
-bool CyclicArray::takeBytes(unsigned int nBytes, unsigned char *pData)
+bool CyclicArray::takeBytes(uint32_t nBytes, unsigned char *pData)
 {
     // locals
-    unsigned int bytesRead = 0;
+    uint32_t bytesRead = 0;
 
     // read each byte
     while (bytesRead < nBytes) {
@@ -244,9 +244,9 @@ bool CyclicArray::loadFile(const char *fileName, LONGLONG &nBytesLoaded)
     LARGE_INTEGER largeInt;
     LONGLONG maxFileSize = ((LONGLONG)blockSize) * ((LONGLONG)blockCount);
     LONGLONG curOffset = 0;
-    unsigned int nblocksInFile;
-    unsigned int curBlock;
-    unsigned int nBytesInLastBlock;
+    uint32_t nblocksInFile;
+    uint32_t curBlock;
+    uint32_t nBytesInLastBlock;
     nBytesLoaded = 0;
 
     // cyclic array file must be open
@@ -278,10 +278,8 @@ bool CyclicArray::loadFile(const char *fileName, LONGLONG &nBytesLoaded)
     curReadingBlock = 0;
     curWritingBlock = 0;
 
-    nblocksInFile = (unsigned int)(largeInt.QuadPart / ((LONGLONG)blockSize)) +
-                    1;
-    nBytesInLastBlock = (unsigned int)(largeInt.QuadPart %
-                                       ((LONGLONG)blockSize));
+    nblocksInFile = (uint32_t)(largeInt.QuadPart / ((LONGLONG)blockSize)) + 1;
+    nBytesInLastBlock = (uint32_t)(largeInt.QuadPart % ((LONGLONG)blockSize));
     dataInFile = new unsigned char[blockSize];
 
     //
@@ -318,8 +316,8 @@ bool CyclicArray::saveFile(const char *fileName)
     unsigned char *dataInFile;
     HANDLE hSaveFile;
     LONGLONG curOffset;
-    unsigned int curBlock;
-    unsigned int bytesToWrite;
+    uint32_t curBlock;
+    uint32_t bytesToWrite;
     void *pointer;
 
     // cyclic array file must be open
@@ -347,15 +345,14 @@ bool CyclicArray::saveFile(const char *fileName)
         // copy current block
         if (curBlock == curWritingBlock && curBlock == curReadingBlock) {
             pointer = curReadingPointer;
-            bytesToWrite = (unsigned int)(curWritingPointer -
-                                          curReadingPointer);
+            bytesToWrite = (uint32_t)(curWritingPointer - curReadingPointer);
         } else if (curBlock == curWritingBlock) {
             pointer = writingBlock;
-            bytesToWrite = (unsigned int)(curWritingPointer - writingBlock);
+            bytesToWrite = (uint32_t)(curWritingPointer - writingBlock);
         } else if (curBlock == curReadingBlock) {
             pointer = curReadingPointer;
             bytesToWrite = blockSize -
-                           (unsigned int)(curReadingPointer - readingBlock);
+                           (uint32_t)(curReadingPointer - readingBlock);
         } else {
             readDataFromFile(hFile, ((int64_t)curBlock) * ((int64_t)blockSize),
                              blockSize, dataInFile);

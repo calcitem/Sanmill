@@ -19,7 +19,7 @@
 ThreadManager::ThreadManager()
 {
     // locals
-    unsigned int th;
+    uint32_t th;
     SYSTEM_INFO m_si = {0};
 
     GetSystemInfo(&m_si);
@@ -51,7 +51,7 @@ ThreadManager::ThreadManager()
 ThreadManager::~ThreadManager()
 {
     // locals
-    unsigned int th;
+    uint32_t th;
 
     for (th = 0; th < threadCount; th++) {
         CloseHandle(hBarrier[th]);
@@ -77,7 +77,7 @@ ThreadManager::~ThreadManager()
 // waitForOtherThreads()
 //
 //-----------------------------------------------------------------------------
-void ThreadManager::waitForOtherThreads(unsigned int threadNo)
+void ThreadManager::waitForOtherThreads(uint32_t threadNo)
 {
     // wait if other threads are still waiting at the barrier
 
@@ -169,7 +169,7 @@ void ThreadManager::waitForOtherThreads(unsigned int threadNo)
 // getThreadCount()
 //
 //-----------------------------------------------------------------------------
-unsigned int ThreadManager::getThreadCount()
+uint32_t ThreadManager::getThreadCount()
 {
     return threadCount;
 }
@@ -178,25 +178,25 @@ unsigned int ThreadManager::getThreadCount()
 // setThreadCount()
 //
 //-----------------------------------------------------------------------------
-bool ThreadManager::setThreadCount(unsigned int newNumThreads)
+bool ThreadManager::setThreadCount(uint32_t newNumThreads)
 {
     // cancel if any thread running
     EnterCriticalSection(&csBarrier);
 
-    for (unsigned int th = 0; th < threadCount; th++) {
+    for (uint32_t th = 0; th < threadCount; th++) {
         if (hThread[th]) {
             LeaveCriticalSection(&csBarrier);
             return false;
         }
     }
 
-    for (unsigned int th = 0; th < threadCount; th++) {
+    for (uint32_t th = 0; th < threadCount; th++) {
         CloseHandle(hBarrier[th]);
     }
 
     threadCount = newNumThreads;
 
-    for (unsigned int th = 0; th < threadCount; th++) {
+    for (uint32_t th = 0; th < threadCount; th++) {
         hBarrier[th] = CreateEvent(nullptr, false, false, nullptr);
     }
 
@@ -211,7 +211,7 @@ bool ThreadManager::setThreadCount(unsigned int newNumThreads)
 //-----------------------------------------------------------------------------
 void ThreadManager::pauseExec()
 {
-    for (unsigned int curThread = 0; curThread < threadCount; curThread++) {
+    for (uint32_t curThread = 0; curThread < threadCount; curThread++) {
         // unsuspend all threads
         if (!execPaused) {
             SuspendThread(hThread[curThread]);
@@ -262,11 +262,11 @@ bool ThreadManager::wasExecCancelled()
 // getThreadId()
 // Returns a number from 0 to 'threadCount'-1. Returns 0 if the function fails.
 //-----------------------------------------------------------------------------
-unsigned int ThreadManager::getThreadNumber()
+uint32_t ThreadManager::getThreadNumber()
 {
     // locals
     DWORD curThreadId = GetCurrentThreadId();
-    unsigned int th;
+    uint32_t th;
 
     for (th = 0; th < threadCount; th++) {
         if (curThreadId == threadId[th]) {
@@ -281,12 +281,11 @@ unsigned int ThreadManager::getThreadNumber()
 // execInParallel()
 // lpParam is an array of size threadCount.
 //-----------------------------------------------------------------------------
-unsigned int ThreadManager::execInParallel(DWORD threadProc(void *pParam),
-                                           void *pParam,
-                                           unsigned int paramStructSize)
+uint32_t ThreadManager::execInParallel(DWORD threadProc(void *pParam),
+                                       void *pParam, uint32_t paramStructSize)
 {
     // locals
-    unsigned int th;
+    uint32_t th;
     SIZE_T dwStackSize = 0;
 
     // params ok?
@@ -347,11 +346,11 @@ unsigned int ThreadManager::execInParallel(DWORD threadProc(void *pParam),
 // finalValue  - this value is part of the iteration, meaning that index ranges
 // from initValue to finalValue including both border values
 //-----------------------------------------------------------------------------
-unsigned int
-ThreadManager::execParallelLoop(DWORD threadProc(void *pParam, unsigned index),
-                                void *pParam, unsigned int paramStructSize,
-                                unsigned int schedType, int initValue,
-                                int finalValue, int increment)
+uint32_t ThreadManager::execParallelLoop(DWORD threadProc(void *pParam,
+                                                          unsigned index),
+                                         void *pParam, uint32_t paramStructSize,
+                                         uint32_t schedType, int initValue,
+                                         int finalValue, int increment)
 {
     // params ok?
     if (execCancelled == true)
@@ -372,7 +371,7 @@ ThreadManager::execParallelLoop(DWORD threadProc(void *pParam, unsigned index),
     // locals
 
     // the threads are enumerated from 0 to threadCount-1
-    unsigned int th;
+    uint32_t th;
 
     // total number of iterations
     int nIterations = (finalValue - initValue) / increment + 1;

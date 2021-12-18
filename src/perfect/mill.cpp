@@ -100,8 +100,8 @@ void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
     movesDone = 0;
     playerOneAI = firstPlayerAI;
     playerTwoAI = secondPlayerAI;
-    moveLogFrom = new unsigned int[MOVE_COUNT_MAX];
-    moveLogTo = new unsigned int[MOVE_COUNT_MAX];
+    moveLogFrom = new uint32_t[MOVE_COUNT_MAX];
+    moveLogTo = new uint32_t[MOVE_COUNT_MAX];
 
     // remember initField
     field.copyBoard(&initField);
@@ -129,7 +129,7 @@ bool Mill::startPlacingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
 void Mill::setUpCalcPossibleMoves(Player *player)
 {
     // locals
-    unsigned int i, j, k, movingDirection;
+    uint32_t i, j, k, movingDirection;
 
     for (player->possibleMovesCount = 0, i = 0; i < SQUARE_NB; i++) {
         for (j = 0; j < SQUARE_NB; j++) {
@@ -164,9 +164,8 @@ void Mill::setUpCalcPossibleMoves(Player *player)
 // setUpSetWarningAndMill()
 //
 //-----------------------------------------------------------------------------
-void Mill::setUpSetWarningAndMill(unsigned int piece,
-                                  unsigned int firstNeighbor,
-                                  unsigned int secondNeighbor)
+void Mill::setUpSetWarningAndMill(uint32_t piece, uint32_t firstNeighbor,
+                                  uint32_t secondNeighbor)
 {
     // locals
     int rowOwner = field.board[piece];
@@ -185,11 +184,11 @@ void Mill::setUpSetWarningAndMill(unsigned int piece,
 // putPiece()
 // Put a piece onto the board during the placing phase.
 //-----------------------------------------------------------------------------
-bool Mill::putPiece(unsigned int pos, int player)
+bool Mill::putPiece(uint32_t pos, int player)
 {
     // locals
-    unsigned int i;
-    unsigned int nCurPlayerMills = 0, nOpponentPlayerMills = 0;
+    uint32_t i;
+    uint32_t nCurPlayerMills = 0, nOpponentPlayerMills = 0;
     Player *myPlayer = (player == field.curPlayer->id) ? field.curPlayer :
                                                          field.oppPlayer;
 
@@ -290,7 +289,7 @@ bool Mill::placingPhaseHasFinished()
 //-----------------------------------------------------------------------------
 bool Mill::getField(int *pField)
 {
-    unsigned int index;
+    uint32_t index;
 
     // if no log is available than no game is in progress and board is invalid
     if (moveLogFrom == nullptr)
@@ -311,10 +310,9 @@ bool Mill::getField(int *pField)
 // Copy the whole history of moves into the passed arrays, which must be of size
 // [MOVE_COUNT_MAX].
 //-----------------------------------------------------------------------------
-void Mill::getLog(unsigned int &nMovesDone, unsigned int *from,
-                  unsigned int *to)
+void Mill::getLog(uint32_t &nMovesDone, uint32_t *from, uint32_t *to)
 {
-    unsigned int index;
+    uint32_t index;
 
     nMovesDone = movesDone;
 
@@ -379,8 +377,8 @@ void Mill::setAI(int player, MillAI *AI)
 // getChoiceOfSpecialAI()
 // Returns the move the passed AI would do.
 //-----------------------------------------------------------------------------
-void Mill::getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom,
-                                unsigned int *pushTo)
+void Mill::getChoiceOfSpecialAI(MillAI *AI, uint32_t *pushFrom,
+                                uint32_t *pushTo)
 {
     fieldStruct theField;
     *pushFrom = SQUARE_NB;
@@ -398,7 +396,7 @@ void Mill::getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom,
 // getComputersChoice()
 // Returns the move the AI of the current player would do.
 //-----------------------------------------------------------------------------
-void Mill::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
+void Mill::getComputersChoice(uint32_t *pushFrom, uint32_t *pushTo)
 {
     fieldStruct theField;
     *pushFrom = SQUARE_NB;
@@ -437,11 +435,10 @@ void Mill::getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo)
 // 'Normal' in this context means, by moving the piece along a connection
 // without jumping.
 //-----------------------------------------------------------------------------
-bool Mill::isNormalMovePossible(unsigned int from, unsigned int to,
-                                Player *player)
+bool Mill::isNormalMovePossible(uint32_t from, uint32_t to, Player *player)
 {
     // locals
-    unsigned int movingDirection, i;
+    uint32_t movingDirection, i;
 
     // param ok ?
     if (from >= SQUARE_NB)
@@ -480,7 +477,7 @@ bool Mill::isNormalMovePossible(unsigned int from, unsigned int to,
 void Mill::generateMoves(Player *player)
 {
     // locals
-    unsigned int i;
+    uint32_t i;
     Square from, to;
     MoveDirection md;
 
@@ -522,14 +519,14 @@ void Mill::generateMoves(Player *player)
 // setWarningAndMill()
 //
 //-----------------------------------------------------------------------------
-void Mill::setWarningAndMill(unsigned int piece, unsigned int firstNeighbor,
-                             unsigned int secondNeighbor, bool isNewPiece)
+void Mill::setWarningAndMill(uint32_t piece, uint32_t firstNeighbor,
+                             uint32_t secondNeighbor, bool isNewPiece)
 {
     // locals
     int rowOwner = field.board[piece];
-    unsigned int rowOwnerWarning = (rowOwner == field.playerOne) ?
-                                       field.playerOneWarning :
-                                       field.playerTwoWarning;
+    uint32_t rowOwnerWarning = (rowOwner == field.playerOne) ?
+                                   field.playerOneWarning :
+                                   field.playerTwoWarning;
 
     // mill closed ?
     if (rowOwner != field.squareIsFree &&
@@ -558,10 +555,10 @@ void Mill::setWarningAndMill(unsigned int piece, unsigned int firstNeighbor,
 // updateMillsAndWarnings()
 //
 //-----------------------------------------------------------------------------
-void Mill::updateMillsAndWarnings(unsigned int newPiece)
+void Mill::updateMillsAndWarnings(uint32_t newPiece)
 {
     // locals
-    unsigned int i;
+    uint32_t i;
     bool atLeastOnePieceRemoveAble;
 
     // zero
@@ -598,7 +595,7 @@ void Mill::updateMillsAndWarnings(unsigned int newPiece)
 // doMove()
 //
 //-----------------------------------------------------------------------------
-bool Mill::doMove(unsigned int pushFrom, unsigned int pushTo)
+bool Mill::doMove(uint32_t pushFrom, uint32_t pushTo)
 {
     // avoid index override
     if (movesDone >= MOVE_COUNT_MAX)
@@ -756,7 +753,7 @@ bool Mill::setCurGameState(fieldStruct *curState)
 //-----------------------------------------------------------------------------
 bool Mill::compareWithField(fieldStruct *compareField)
 {
-    unsigned int i, j;
+    uint32_t i, j;
     bool ret = true;
 
     if (!comparePlayers(field.curPlayer, compareField->curPlayer)) {
@@ -831,7 +828,7 @@ bool Mill::compareWithField(fieldStruct *compareField)
 //-----------------------------------------------------------------------------
 bool Mill::comparePlayers(Player *playerA, Player *playerB)
 {
-    // unsigned int i;
+    // uint32_t i;
     bool ret = true;
 
     if (playerA->removedPiecesCount != playerB->removedPiecesCount) {
@@ -888,10 +885,10 @@ void Mill::printBoard()
 void Mill::undoMove(void)
 {
     // locals
-    unsigned int *moveLogFrom_bak = new unsigned int[movesDone];
-    unsigned int *moveLogTo_bak = new unsigned int[movesDone];
-    unsigned int movesDone_bak = movesDone;
-    unsigned int i;
+    uint32_t *moveLogFrom_bak = new uint32_t[movesDone];
+    uint32_t *moveLogTo_bak = new uint32_t[movesDone];
+    uint32_t movesDone_bak = movesDone;
+    uint32_t i;
 
     // at least one move must be done
     if (movesDone) {

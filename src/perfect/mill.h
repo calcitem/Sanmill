@@ -44,7 +44,7 @@ private:
     // Variables
 
     // array containing the history of moves done
-    unsigned int *moveLogFrom, *moveLogTo, movesDone;
+    uint32_t *moveLogFrom, *moveLogTo, movesDone;
 
     // class-pointer to the AI of player one
     MillAI *playerOneAI;
@@ -70,11 +70,10 @@ private:
     void exit();
     void setNextPlayer();
     void generateMoves(Player *player);
-    void updateMillsAndWarnings(unsigned int newPiece);
-    bool isNormalMovePossible(unsigned int from, unsigned int to,
-                              Player *player);
-    void setWarningAndMill(unsigned int piece, unsigned int firstNeighbor,
-                           unsigned int secondNeighbor, bool isNewPiece);
+    void updateMillsAndWarnings(uint32_t newPiece);
+    bool isNormalMovePossible(uint32_t from, uint32_t to, Player *player);
+    void setWarningAndMill(uint32_t piece, uint32_t firstNeighbor,
+                           uint32_t secondNeighbor, bool isNewPiece);
 
 public:
     // Constructor / destructor
@@ -87,60 +86,56 @@ public:
     void beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
                       int curPlayer);
     void setAI(int player, MillAI *AI);
-    bool doMove(unsigned int pushFrom, unsigned int pushTo);
-    void getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo);
+    bool doMove(uint32_t pushFrom, uint32_t pushTo);
+    void getComputersChoice(uint32_t *pushFrom, uint32_t *pushTo);
     bool setCurGameState(fieldStruct *curState);
     bool compareWithField(fieldStruct *compareField);
     bool comparePlayers(Player *playerA, Player *playerB);
     void printBoard();
     bool startPlacingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
                            int curPlayer, bool isPlacingPhase);
-    bool putPiece(unsigned int pos, int player);
+    bool putPiece(uint32_t pos, int player);
     bool placingPhaseHasFinished();
-    void getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom,
-                              unsigned int *pushTo);
+    void getChoiceOfSpecialAI(MillAI *AI, uint32_t *pushFrom, uint32_t *pushTo);
     void setUpCalcPossibleMoves(Player *player);
-    void setUpSetWarningAndMill(unsigned int piece, unsigned int firstNeighbor,
-                                unsigned int secondNeighbor);
+    void setUpSetWarningAndMill(uint32_t piece, uint32_t firstNeighbor,
+                                uint32_t secondNeighbor);
     void calcRestingPieceCount(int &nWhitePiecesResting,
                                int &nBlackPiecesResting);
 
     // getter
-    void getLog(unsigned int &nMovesDone, unsigned int *from, unsigned int *to);
+    void getLog(uint32_t &nMovesDone, uint32_t *from, uint32_t *to);
     bool getField(int *pField);
     bool isCurPlayerHuman();
     bool isOpponentPlayerHuman();
 
     bool inPlacingPhase() { return field.isPlacingPhase; }
 
-    unsigned int mustPieceBeRemoved() { return field.pieceMustBeRemovedCount; }
+    uint32_t mustPieceBeRemoved() { return field.pieceMustBeRemovedCount; }
 
     int getWinner() { return winner; }
 
     int getCurPlayer() { return field.curPlayer->id; }
 
-    unsigned int getLastMoveFrom()
+    uint32_t getLastMoveFrom()
     {
         return (movesDone ? moveLogFrom[movesDone - 1] : SQUARE_NB);
     }
 
-    unsigned int getLastMoveTo()
+    uint32_t getLastMoveTo()
     {
         return (movesDone ? moveLogTo[movesDone - 1] : SQUARE_NB);
     }
 
-    unsigned int getMovesDone() { return movesDone; }
+    uint32_t getMovesDone() { return movesDone; }
 
-    unsigned int getPiecesSetCount() { return field.piecePlacedCount; }
+    uint32_t getPiecesSetCount() { return field.piecePlacedCount; }
 
     int getBeginningPlayer() { return beginningPlayer; }
 
-    unsigned int getCurPlayerPieceCount()
-    {
-        return field.curPlayer->pieceCount;
-    }
+    uint32_t getCurPlayerPieceCount() { return field.curPlayer->pieceCount; }
 
-    unsigned int getOpponentPlayerPieceCount()
+    uint32_t getOpponentPlayerPieceCount()
     {
         return field.oppPlayer->pieceCount;
     }

@@ -16,11 +16,11 @@
 // testLayer()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::testLayer(unsigned int layerNumber)
+bool MiniMax::testLayer(uint32_t layerNumber)
 {
     // Locals
-    unsigned int curThreadNo;
-    unsigned int returnValue;
+    uint32_t curThreadNo;
+    uint32_t returnValue;
 
     // database open?
     if (hFileShortKnotValues == nullptr || hFilePlyInfo == nullptr) {
@@ -101,9 +101,9 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
     // locals
     TestLayersVars *tlVars = (TestLayersVars *)pParam;
     MiniMax *m = tlVars->pMiniMax;
-    unsigned int layerNumber = tlVars->layerNumber;
-    unsigned int stateNumber = index;
-    unsigned int threadNo = tlVars->curThreadNo;
+    uint32_t layerNumber = tlVars->layerNumber;
+    uint32_t stateNumber = index;
+    uint32_t threadNo = tlVars->curThreadNo;
     TwoBit *subValueInDatabase = tlVars->subValueInDatabase;
     PlyInfoVarType *subPlyInfos = tlVars->subPlyInfos;
     bool *hasCurPlayerChanged = tlVars->hasCurPlayerChanged;
@@ -112,10 +112,10 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
     TwoBit shortValueInGame;
     float floatValueInGame;
     PlyInfoVarType min, max;
-    unsigned int possibilityCount;
-    unsigned int i, j;
-    unsigned int tmpStateNumber, tmpLayerNumber;
-    unsigned int *idPossibility;
+    uint32_t possibilityCount;
+    uint32_t i, j;
+    uint32_t tmpStateNumber, tmpLayerNumber;
+    uint32_t *idPossibility;
     void *pPossibilities;
     void *pBackup;
     bool isOpponentLevel;
@@ -458,7 +458,7 @@ errorInDatabase:
 // testState()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::testState(unsigned int layerNumber, unsigned int stateNumber)
+bool MiniMax::testState(uint32_t layerNumber, uint32_t stateNumber)
 {
     // locals
     TestLayersVars tlVars;
@@ -487,11 +487,11 @@ bool MiniMax::testState(unsigned int layerNumber, unsigned int stateNumber)
 // testSetSituationAndGetPoss()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
+bool MiniMax::testSetSituationAndGetPoss(uint32_t layerNumber)
 {
     // Locals
-    unsigned int curThreadNo;
-    unsigned int returnValue;
+    uint32_t curThreadNo;
+    uint32_t returnValue;
 
     // output
     PRINT(1, this,
@@ -559,15 +559,15 @@ bool MiniMax::testSetSituationAndGetPoss(unsigned int layerNumber)
 // testSetSituationThreadProc()
 //
 //-----------------------------------------------------------------------------
-DWORD MiniMax::testSetSituationThreadProc(void *pParam, unsigned int index)
+DWORD MiniMax::testSetSituationThreadProc(void *pParam, uint32_t index)
 {
     // locals
     TestLayersVars *tlVars = (TestLayersVars *)pParam;
     MiniMax *m = tlVars->pMiniMax;
-    unsigned int *idPossibility;
+    uint32_t *idPossibility;
     void *pPossibilities;
     void *pBackup;
-    unsigned int curPoss;
+    uint32_t curPoss;
     float floatValue;
     StateAdress curState;
     StateAdress subState;
@@ -631,7 +631,7 @@ DWORD MiniMax::testSetSituationThreadProc(void *pParam, unsigned int index)
                     knot.isOpponentLevel, &pBackup, pPossibilities);
 
             // get state number of succeeding state
-            unsigned int i;
+            uint32_t i;
             m->getLayerAndStateNumber(tlVars->curThreadNo, i,
                                       subState.stateNumber);
             subState.layerNumber = i;
@@ -669,18 +669,18 @@ DWORD MiniMax::testSetSituationThreadProc(void *pParam, unsigned int index)
 // testIfSymStatesHaveSameValue()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::testIfSymStatesHaveSameValue(unsigned int layerNumber)
+bool MiniMax::testIfSymStatesHaveSameValue(uint32_t layerNumber)
 {
     // Locals
-    unsigned int threadNo = 0;
+    uint32_t threadNo = 0;
     TwoBit shortValueInDatabase;
     TwoBit shortValueOfSymState;
     PlyInfoVarType nPliesTillCurState;
     PlyInfoVarType nPliesTillSymState;
-    unsigned int stateNumber = 0;
-    unsigned int *symStateNumbers = nullptr;
-    unsigned int nSymStates;
-    unsigned int i;
+    uint32_t stateNumber = 0;
+    uint32_t *symStateNumbers = nullptr;
+    uint32_t nSymStates;
+    uint32_t i;
 
     // database open?
     if (hFileShortKnotValues == nullptr || hFilePlyInfo == nullptr) {

@@ -21,7 +21,7 @@ using namespace std;
 void fieldStruct::printBoard()
 {
     // locals
-    unsigned int index;
+    uint32_t index;
     char c[SQUARE_NB];
 
     for (index = 0; index < SQUARE_NB; index++)
@@ -96,7 +96,7 @@ char fieldStruct::getCharFromPiece(int piece)
 //-----------------------------------------------------------------------------
 void fieldStruct::copyBoard(fieldStruct *dest)
 {
-    unsigned int i, j;
+    uint32_t i, j;
 
     this->curPlayer->copyPlayer(dest->curPlayer);
     this->oppPlayer->copyPlayer(dest->oppPlayer);
@@ -124,7 +124,7 @@ void fieldStruct::copyBoard(fieldStruct *dest)
 //-----------------------------------------------------------------------------
 void Player::copyPlayer(Player *dest)
 {
-    unsigned int i;
+    uint32_t i;
 
     dest->removedPiecesCount = this->removedPiecesCount;
     dest->pieceCount = this->pieceCount;
@@ -147,7 +147,7 @@ void Player::copyPlayer(Player *dest)
 void fieldStruct::createBoard()
 {
     // locals
-    unsigned int i;
+    uint32_t i;
 
     curPlayer = new Player;
     oppPlayer = new Player;
@@ -252,7 +252,7 @@ void fieldStruct::deleteBoard()
 // setConnection()
 //
 //-----------------------------------------------------------------------------
-inline void fieldStruct::setConnection(unsigned int index, int firstDirection,
+inline void fieldStruct::setConnection(uint32_t index, int firstDirection,
                                        int secondDirection, int thirdDirection,
                                        int fourthDirection)
 {
@@ -266,11 +266,10 @@ inline void fieldStruct::setConnection(unsigned int index, int firstDirection,
 // setNeighbor()
 //
 //-----------------------------------------------------------------------------
-inline void fieldStruct::setNeighbor(unsigned int index,
-                                     unsigned int firstNeighbor0,
-                                     unsigned int secondNeighbor0,
-                                     unsigned int firstNeighbor1,
-                                     unsigned int secondNeighbor1)
+inline void fieldStruct::setNeighbor(uint32_t index, uint32_t firstNeighbor0,
+                                     uint32_t secondNeighbor0,
+                                     uint32_t firstNeighbor1,
+                                     uint32_t secondNeighbor1)
 {
     neighbor[index][0][0] = firstNeighbor0;
     neighbor[index][0][1] = secondNeighbor0;

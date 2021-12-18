@@ -41,21 +41,21 @@ private:
     // structures
     struct ForLoop
     {
-        unsigned int schedType;
+        uint32_t schedType;
         int increment;
         int initValue;
         int finalValue;
         void *pParam;
         DWORD(*threadProc)
-        (void *pParam, unsigned int index); // pointer to the user function
-                                            // to be executed by the threads
+        (void *pParam, uint32_t index); // pointer to the user function
+                                        // to be executed by the threads
         ThreadManager *threadManager;
     };
 
     // Variables
-    unsigned int threadCount; // number of threads
-    HANDLE *hThread; // array of size 'threadCount' containing the thread
-                     // handles
+    uint32_t threadCount; // number of threads
+    HANDLE *hThread;      // array of size 'threadCount' containing the thread
+                          // handles
     DWORD *threadId; // array of size 'threadCount' containing the thread ids
     bool termineAllThreads;
     bool execPaused;    // switch for the
@@ -65,7 +65,7 @@ private:
     HANDLE hEventBarrierPassedByEverybody;
     HANDLE *hBarrier; // array of size 'threadCount' containing the event
                       // handles for the barrier
-    unsigned int threadPassedBarrierCount;
+    uint32_t threadPassedBarrierCount;
     CRITICAL_SECTION csBarrier;
 
     // functions
@@ -75,7 +75,7 @@ public:
     class ThreadVarsArrayItem
     {
     public:
-        unsigned int curThreadNo;
+        uint32_t curThreadNo;
 
         virtual void initElement() { }
 
@@ -88,15 +88,15 @@ public:
     class ThreadVarsArray
     {
     public:
-        unsigned int threadCount;
+        uint32_t threadCount;
         varType *item;
 
-        ThreadVarsArray(unsigned int threadCnt, varType &master)
+        ThreadVarsArray(uint32_t threadCnt, varType &master)
         {
             this->threadCount = threadCnt;
             this->item = new varType[threadCnt];
 
-            for (unsigned int th = 0; th < threadCnt; th++) {
+            for (uint32_t th = 0; th < threadCnt; th++) {
                 item[th].curThreadNo = th;
                 item[th].initElement(master);
                 // if 'curThreadNo' is overwritten in 'initElement()'
@@ -106,7 +106,7 @@ public:
 
         ~ThreadVarsArray()
         {
-            for (unsigned int th = 0; th < threadCount; th++) {
+            for (uint32_t th = 0; th < threadCount; th++) {
                 item[th].destroyElement();
             }
 
@@ -115,11 +115,11 @@ public:
 
         void *getPointerToArray() { return (void *)item; }
 
-        unsigned int getArraySize() { return sizeof(varType); }
+        uint32_t getArraySize() { return sizeof(varType); }
 
         void reduce()
         {
-            for (unsigned int th = 0; th < threadCount; th++) {
+            for (uint32_t th = 0; th < threadCount; th++) {
                 item[th].reduce();
             }
         };
@@ -130,11 +130,11 @@ public:
     ~ThreadManager();
 
     // Functions
-    unsigned int getThreadNumber();
-    unsigned int getThreadCount();
+    uint32_t getThreadNumber();
+    uint32_t getThreadCount();
 
-    bool setThreadCount(unsigned int newThreadCount);
-    void waitForOtherThreads(unsigned int threadNo);
+    bool setThreadCount(uint32_t newThreadCount);
+    void waitForOtherThreads(uint32_t threadNo);
     void pauseExec();  // un-/suspend all threads
     void cancelExec(); // termineAllThreads auf true
     bool wasExecCancelled();
@@ -151,13 +151,12 @@ public:
 #endif
 
     // execute
-    unsigned int execInParallel(DWORD threadProc(void *pParam), void *pParam,
-                                unsigned int paramStructSize);
-    unsigned int execParallelLoop(DWORD threadProc(void *pParam,
-                                                   unsigned int index),
-                                  void *pParam, unsigned int paramStructSize,
-                                  unsigned int schedType, int initValue,
-                                  int finalValue, int increment);
+    uint32_t execInParallel(DWORD threadProc(void *pParam), void *pParam,
+                            uint32_t paramStructSize);
+    uint32_t execParallelLoop(DWORD threadProc(void *pParam, uint32_t index),
+                              void *pParam, uint32_t paramStructSize,
+                              uint32_t schedType, int initValue, int finalValue,
+                              int increment);
 };
 
 #endif // THREADMANAGER_H_INCLUDED

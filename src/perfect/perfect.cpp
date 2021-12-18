@@ -58,7 +58,7 @@ int perfect_reset(void)
     return 0;
 }
 
-Square from_perfect_sq(unsigned int sq)
+Square from_perfect_sq(uint32_t sq)
 {
     Square map[] = {SQ_31, SQ_24, SQ_25, SQ_23, SQ_16, SQ_17, SQ_15,
                     SQ_8,  SQ_9,  SQ_30, SQ_22, SQ_14, SQ_10, SQ_18,
@@ -68,7 +68,7 @@ Square from_perfect_sq(unsigned int sq)
     return map[sq];
 }
 
-Move from_perfect_move(unsigned int from, unsigned int to)
+Move from_perfect_move(uint32_t from, uint32_t to)
 {
     Move ret = MOVE_NONE;
 
@@ -99,7 +99,7 @@ unsigned to_perfect_sq(Square sq)
     return map[sq];
 }
 
-void to_perfect_move(Move move, unsigned int &from, unsigned int &to)
+void to_perfect_move(Move move, uint32_t &from, uint32_t &to)
 {
     Square f = from_sq(move);
     Square t = to_sq(move);
@@ -122,7 +122,7 @@ void to_perfect_postition(Position &pos) { }
 Move perfect_search()
 {
     bool ret = false;
-    unsigned int from = 24, to = 24;
+    uint32_t from = 24, to = 24;
     // sync_cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << sync_endl;
     // mill->printBoard();
     // sync_cout << "========================" << sync_endl;
@@ -154,7 +154,7 @@ Move perfect_search()
 bool perfect_do_move(Move move)
 {
     bool ret;
-    unsigned int from, to;
+    uint32_t from, to;
 
     to_perfect_move(move, from, to);
 
@@ -164,7 +164,7 @@ bool perfect_do_move(Move move)
 
 bool perfect_command(const char *cmd)
 {
-    unsigned int ruleNo = 0;
+    uint32_t ruleNo = 0;
     unsigned t = 0;
     int step = 0;
     File file1 = FILE_A, file2 = FILE_A;
