@@ -56,8 +56,8 @@ constexpr auto MAX_ANZ_POSITION_D = (81 * 81);
 
 constexpr auto FREE_SQUARE = 0;
 
-// Symmetry Operations
-enum SymOperation {
+// Symmetry Ops
+enum SymOp {
     SO_TURN_LEFT = 0,
     SO_TURN_180 = 1,
     SO_TURN_RIGHT = 2,
@@ -154,13 +154,13 @@ protected:
 
     // index of symmetry operation used to get from the orig state to the
     // current one
-    unsigned char symOperationCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D];
+    unsigned char symOpCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D];
 
     // 3^0, 3^1, 3^2, ...
     unsigned int powerOfThree[nSquaresGroupC + nSquaresGroupD];
 
     // Matrix used for application of the symmetry operations
-    unsigned int symOperationTable[SO_COUNT][SQUARE_NB];
+    unsigned int symOpTable[SO_COUNT][SQUARE_NB];
 
     unsigned int *origStateCD[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
                              [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
@@ -169,10 +169,10 @@ protected:
                              [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
 
     // index of the reverse symmetry operation
-    unsigned int reverseSymOperation[SO_COUNT];
+    unsigned int reverseSymOp[SO_COUNT];
 
     // symmetry operation, which is identical to applying those two in the index
-    unsigned int concSymOperation[SO_COUNT][SO_COUNT];
+    unsigned int concSymOp[SO_COUNT][SO_COUNT];
 
     // m over n
     unsigned int mOverN[SQUARE_NB + 1][SQUARE_NB + 1];
@@ -272,11 +272,9 @@ protected:
     unsigned int getNumberOfLayers();
     unsigned int getNumberOfKnotsInLayer(unsigned int layerNum);
     int64_t mOverN_Function(unsigned int m, unsigned int n);
-    void applySymOperationOnField(unsigned char symOperationNumber,
-                                  unsigned int *sourceField,
-                                  unsigned int *destField);
-    bool isSymOperationInvariantOnGroupCD(unsigned int symOperation,
-                                          int *theField);
+    void applySymOpOnField(unsigned char symOpNumber, unsigned int *sourceField,
+                           unsigned int *destField);
+    bool isSymOpInvariantOnGroupCD(unsigned int symOp, int *theField);
     bool shallRetroAnalysisBeUsed(unsigned int layerNum);
     void getSuccLayers(unsigned int layerNum, unsigned int *amountOfSuccLayers,
                        unsigned int *succeedingLayers);
@@ -332,11 +330,6 @@ public:
     bool setDatabasePath(const char *dir);
     void play(fieldStruct *theField, unsigned int *pushFrom,
               unsigned int *pushTo);
-    void getValueOfMoves(unsigned char *moveValue,
-                         unsigned int *freqValuesSubMoves,
-                         PlyInfoVarType *plyInfo, unsigned int *moveQuality,
-                         unsigned char &knotValue,
-                         PlyInfoVarType &bestAmountOfPlies);
     void getField(unsigned int layerNum, unsigned int stateNumber,
                   fieldStruct *field, bool *gameHasFinished);
     void getLayerAndStateNumber(unsigned int &layerNum,

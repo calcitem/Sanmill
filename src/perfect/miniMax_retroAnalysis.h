@@ -91,7 +91,7 @@ struct RetroAnalysisPredVars
 {
     unsigned int predStateNumbers;
     unsigned int predLayerNumbers;
-    unsigned int predSymOperation;
+    unsigned int predSymOp;
     bool playerToMoveChanged;
 };
 
