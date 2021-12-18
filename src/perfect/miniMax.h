@@ -391,7 +391,6 @@ public:
                       int64_t compressedSize);
         void removeArray(uint32_t layerNumber, uint32_t type, int64_t size,
                          int64_t compressedSize);
-        void updateArray(uint32_t layerNumber, uint32_t type);
     };
 
     /*** public functions
@@ -402,29 +401,12 @@ public:
     virtual ~MiniMax();
 
     // Testing functions
-    bool testState(uint32_t layerNumber, uint32_t stateNumber);
     bool testLayer(uint32_t layerNumber);
     bool testIfSymStatesHaveSameValue(uint32_t layerNumber);
-    bool testSetSituationAndGetPoss(uint32_t layerNumber);
 
     // Statistics
     bool calcLayerStatistics(char *statisticsFileName);
-    void showMemoryStatus();
     uint32_t getThreadCount();
-    bool anyFreshlyCalculatedLayer();
-    uint32_t getLastCalculatedLayer();
-    StateNumberVarType getWonStateCount(uint32_t layerNum);
-    StateNumberVarType getLostStateCount(uint32_t layerNum);
-    StateNumberVarType getDrawnStateCount(uint32_t layerNum);
-    StateNumberVarType getInvalidStateCount(uint32_t layerNum);
-    bool isLayerInDatabase(uint32_t layerNum);
-    int64_t getLayerSizeInBytes(uint32_t layerNum);
-    void setOutputStream(ostream *theStream, void (*printFunc)(void *pUserData),
-                         void *pUserData);
-    bool anyArrayInfoToUpdate();
-    ArrayInfoChange getArrayInfoForUpdate();
-    void getCurCalculatedLayer(vector<uint32_t> &layers);
-    LPWSTR getCurActionStr();
 
     // Main function for getting the best choice
     void *getBestChoice(uint32_t tilLevel, uint32_t *choice,
@@ -437,9 +419,6 @@ public:
     void closeDatabase();
     void unloadAllLayers();
     void unloadAllPlyInfos();
-    void pauseDatabaseCalc();
-    void cancelDatabaseCalc();
-    bool wasDatabaseCalcCancelled();
 
     // Virtual Functions
     virtual void prepareBestChoiceCalc()
@@ -1053,7 +1032,6 @@ private:
 
     // Testing functions
     static DWORD testLayerThreadProc(void *pParam, uint32_t index);
-    static DWORD testSetSituationThreadProc(void *pParam, uint32_t index);
 
     // Alpha-Beta-Algorithm
     bool calcKnotValuesByAlphaBeta(uint32_t layerNumber);

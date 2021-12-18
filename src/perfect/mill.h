@@ -85,30 +85,12 @@ public:
     void resetGame();
     void beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
                       int curPlayer);
-    void setAI(int player, MillAI *AI);
     bool doMove(uint32_t pushFrom, uint32_t pushTo);
     void getComputersChoice(uint32_t *pushFrom, uint32_t *pushTo);
-    bool setCurGameState(fieldStruct *curState);
-    bool compareWithField(fieldStruct *compareField);
     bool comparePlayers(Player *playerA, Player *playerB);
     void printBoard();
-    bool startPlacingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
-                           int curPlayer, bool isPlacingPhase);
-    bool putPiece(uint32_t pos, int player);
-    bool placingPhaseHasFinished();
-    void getChoiceOfSpecialAI(MillAI *AI, uint32_t *pushFrom, uint32_t *pushTo);
-    void setUpCalcPossibleMoves(Player *player);
-    void setUpSetWarningAndMill(uint32_t piece, uint32_t firstNeighbor,
-                                uint32_t secondNeighbor);
-    void calcRestingPieceCount(int &nWhitePiecesResting,
-                               int &nBlackPiecesResting);
 
     // getter
-    void getLog(uint32_t &nMovesDone, uint32_t *from, uint32_t *to);
-    bool getField(int *pField);
-    bool isCurPlayerHuman();
-    bool isOpponentPlayerHuman();
-
     bool inPlacingPhase() { return field.isPlacingPhase; }
 
     uint32_t mustPieceBeRemoved() { return field.pieceMustBeRemovedCount; }

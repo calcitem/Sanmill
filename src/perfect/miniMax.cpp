@@ -289,33 +289,4 @@ bool MiniMax::calcLayer(uint32_t layerNumber)
     return true;
 }
 
-//-----------------------------------------------------------------------------
-// pauseDatabaseCalc()
-//
-//-----------------------------------------------------------------------------
-void MiniMax::pauseDatabaseCalc()
-{
-    threadManager.pauseExec();
-}
-
-//-----------------------------------------------------------------------------
-// cancelDatabaseCalc()
-//
-//-----------------------------------------------------------------------------
-void MiniMax::cancelDatabaseCalc()
-{
-    // when returning from execParallelLoop() all function shall quit
-    // immediately up to calculateDatabase()
-    threadManager.cancelExec();
-}
-
-//-----------------------------------------------------------------------------
-// wasDatabaseCalcCancelled()
-//
-//-----------------------------------------------------------------------------
-bool MiniMax::wasDatabaseCalcCancelled()
-{
-    return threadManager.wasExecCancelled();
-}
-
 #endif // MADWEASEL_MUEHLE_PERFECT_AI
