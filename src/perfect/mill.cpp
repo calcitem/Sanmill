@@ -289,17 +289,17 @@ bool Mill::placingPhaseHasFinished()
 //-----------------------------------------------------------------------------
 bool Mill::getField(int *pField)
 {
-    uint32_t index;
+    uint32_t i;
 
     // if no log is available than no game is in progress and board is invalid
     if (moveLogFrom == nullptr)
         return false;
 
-    for (index = 0; index < SQUARE_NB; index++) {
-        if (field.warnings[index] != field.noWarning)
-            pField[index] = (int)field.warnings[index];
+    for (i = 0; i < SQUARE_NB; i++) {
+        if (field.warnings[i] != field.noWarning)
+            pField[i] = (int)field.warnings[i];
         else
-            pField[index] = field.board[index];
+            pField[i] = field.board[i];
     }
 
     return true;
@@ -312,13 +312,13 @@ bool Mill::getField(int *pField)
 //-----------------------------------------------------------------------------
 void Mill::getLog(uint32_t &nMovesDone, uint32_t *from, uint32_t *to)
 {
-    uint32_t index;
+    uint32_t i;
 
     nMovesDone = movesDone;
 
-    for (index = 0; index < movesDone; index++) {
-        from[index] = moveLogFrom[index];
-        to[index] = moveLogTo[index];
+    for (i = 0; i < movesDone; i++) {
+        from[i] = moveLogFrom[i];
+        to[i] = moveLogTo[i];
     }
 }
 

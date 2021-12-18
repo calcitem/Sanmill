@@ -21,11 +21,11 @@ using namespace std;
 void fieldStruct::printBoard()
 {
     // locals
-    uint32_t index;
+    uint32_t sq;
     char c[SQUARE_NB];
 
-    for (index = 0; index < SQUARE_NB; index++)
-        c[index] = getCharFromPiece(this->board[index]);
+    for (sq = 0; sq < SQUARE_NB; sq++)
+        c[sq] = getCharFromPiece(this->board[sq]);
 
     cout << "current player          : "
          << getCharFromPiece(this->curPlayer->id) << " has "

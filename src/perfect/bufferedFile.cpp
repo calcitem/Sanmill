@@ -28,14 +28,14 @@ BufferedFile::BufferedFile(uint32_t nThreads, uint32_t bufSizeInBytes,
     nThreads = nThreads;
     readBuf = new unsigned char[nThreads * bufSize];
     writeBuf = new unsigned char[nThreads * bufSize];
-    curWritingPointer = new int64_t[nThreads];
-    curReadingPointer = new int64_t[nThreads];
+    curWritingPtr = new int64_t[nThreads];
+    curReadingPtr = new int64_t[nThreads];
     bytesInReadBuf = new uint32_t[nThreads];
     bytesInWriteBuf = new uint32_t[nThreads];
 
     for (curThread = 0; curThread < nThreads; curThread++) {
-        curReadingPointer[curThread] = 0;
-        curWritingPointer[curThread] = 0;
+        curReadingPtr[curThread] = 0;
+        curWritingPtr[curThread] = 0;
         bytesInReadBuf[curThread] = 0;
         bytesInWriteBuf[curThread] = 0;
     }
@@ -71,8 +71,8 @@ BufferedFile::~BufferedFile()
     // delete arrays
     delete[] readBuf;
     delete[] writeBuf;
-    delete[] curReadingPointer;
-    delete[] curWritingPointer;
+    delete[] curReadingPtr;
+    delete[] curWritingPtr;
     delete[] bytesInReadBuf;
     delete[] bytesInWriteBuf;
 
@@ -101,7 +101,7 @@ int64_t BufferedFile::getFileSize()
 bool BufferedFile::flushBuffers()
 {
     for (uint32_t th = 0; th < threadCount; th++) {
-        writeDataToFile(hFile, curWritingPointer[th] - bytesInWriteBuf[th],
+        writeDataToFile(hFile, curWritingPtr[th] - bytesInWriteBuf[th],
                         bytesInWriteBuf[th], &writeBuf[th * bufSize + 0]);
         bytesInWriteBuf[th] = 0;
     }
@@ -180,7 +180,7 @@ void BufferedFile::readDataFromFile(HANDLE fd, int64_t offset,
 //-----------------------------------------------------------------------------
 bool BufferedFile::writeBytes(uint32_t nBytes, unsigned char *pData)
 {
-    return writeBytes(0, curWritingPointer[0], nBytes, pData);
+    return writeBytes(0, curWritingPtr[0], nBytes, pData);
 }
 
 //-----------------------------------------------------------------------------
@@ -201,10 +201,10 @@ bool BufferedFile::writeBytes(uint32_t threadNo, int64_t positionInFile,
 
     // if buf full or not sequential write operation write buf to file
     if (bytesInWriteBuf[threadNo] &&
-        (positionInFile != curWritingPointer[threadNo] ||
+        (positionInFile != curWritingPtr[threadNo] ||
          bytesInWriteBuf[threadNo] + nBytes >= bufSize)) {
         writeDataToFile(hFile,
-                        curWritingPointer[threadNo] - bytesInWriteBuf[threadNo],
+                        curWritingPtr[threadNo] - bytesInWriteBuf[threadNo],
                         bytesInWriteBuf[threadNo],
                         &writeBuf[threadNo * bufSize + 0]);
         bytesInWriteBuf[threadNo] = 0;
@@ -214,7 +214,7 @@ bool BufferedFile::writeBytes(uint32_t threadNo, int64_t positionInFile,
     memcpy(&writeBuf[threadNo * bufSize + bytesInWriteBuf[threadNo]], pData,
            nBytes);
     bytesInWriteBuf[threadNo] += nBytes;
-    curWritingPointer[threadNo] = positionInFile + nBytes;
+    curWritingPtr[threadNo] = positionInFile + nBytes;
 
     // everything ok
     return true;
@@ -226,7 +226,7 @@ bool BufferedFile::writeBytes(uint32_t threadNo, int64_t positionInFile,
 //-----------------------------------------------------------------------------
 bool BufferedFile::readBytes(uint32_t nBytes, unsigned char *pData)
 {
-    return readBytes(0, curReadingPointer[0], nBytes, pData);
+    return readBytes(0, curReadingPtr[0], nBytes, pData);
 }
 
 //-----------------------------------------------------------------------------
@@ -245,7 +245,7 @@ bool BufferedFile::readBytes(uint32_t threadNo, int64_t positionInFile,
 
     // read from file into buf if not enough data in buf or if it is not
     // an sequential reading operation?
-    if (positionInFile != curReadingPointer[threadNo] ||
+    if (positionInFile != curReadingPtr[threadNo] ||
         bytesInReadBuf[threadNo] < nBytes) {
         bytesInReadBuf[threadNo] = ((positionInFile + bufSize <= fileSize) ?
                                         bufSize :
@@ -261,7 +261,7 @@ bool BufferedFile::readBytes(uint32_t threadNo, int64_t positionInFile,
            &readBuf[threadNo * bufSize + bufSize - bytesInReadBuf[threadNo]],
            nBytes);
     bytesInReadBuf[threadNo] -= nBytes;
-    curReadingPointer[threadNo] = positionInFile + nBytes;
+    curReadingPtr[threadNo] = positionInFile + nBytes;
 
     // everything ok
     return true;
