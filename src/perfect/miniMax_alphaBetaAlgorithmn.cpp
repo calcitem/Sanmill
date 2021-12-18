@@ -58,7 +58,7 @@ void MiniMax::alphaBetaSaveInDatabase(unsigned int threadNo,
 {
     // locals
     unsigned int *symStateNumbers = nullptr;
-    unsigned int symmetricStateCount;
+    unsigned int symStateCount;
     unsigned int sysStateNumber;
     unsigned int i;
 
@@ -71,14 +71,14 @@ void MiniMax::alphaBetaSaveInDatabase(unsigned int threadNo,
         knotValue = skvPerspectiveMatrix[knotValue][PL_TO_MOVE_UNCHANGED];
 
     // get numbers of symmetric states
-    getSymStateNumWithDoubles(threadNo, &symmetricStateCount, &symStateNumbers);
+    getSymStateNumWithDoubles(threadNo, &symStateCount, &symStateNumbers);
 
     // save
     saveKnotValueInDatabase(layerNumber, stateNumber, knotValue);
     savePlyInfoInDatabase(layerNumber, stateNumber, plyValue);
 
     // save value for all symmetric states
-    for (i = 0; i < symmetricStateCount; i++) {
+    for (i = 0; i < symStateCount; i++) {
         // get state number
         sysStateNumber = symStateNumbers[i];
 
