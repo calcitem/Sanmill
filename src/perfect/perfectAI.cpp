@@ -264,7 +264,7 @@ PerfectAI::PerfectAI(const char *dir)
                           MAX_ANZ_POSITION_D,
                       &dwBytesRead, nullptr))
             return;
-        if (!ReadFile(hFilePreCalcVars, symOperationCD,
+        if (!ReadFile(hFilePreCalcVars, symOpCD,
                       sizeof(unsigned char) * MAX_ANZ_POSITION_C *
                           MAX_ANZ_POSITION_D,
                       &dwBytesRead, nullptr))
@@ -273,14 +273,14 @@ PerfectAI::PerfectAI(const char *dir)
                       sizeof(unsigned int) * (nSquaresGroupC + nSquaresGroupD),
                       &dwBytesRead, nullptr))
             return;
-        if (!ReadFile(hFilePreCalcVars, symOperationTable,
+        if (!ReadFile(hFilePreCalcVars, symOpTable,
                       sizeof(unsigned int) * SQUARE_NB * SO_COUNT, &dwBytesRead,
                       nullptr))
             return;
-        if (!ReadFile(hFilePreCalcVars, reverseSymOperation,
+        if (!ReadFile(hFilePreCalcVars, reverseSymOp,
                       sizeof(unsigned int) * SO_COUNT, &dwBytesRead, nullptr))
             return;
-        if (!ReadFile(hFilePreCalcVars, concSymOperation,
+        if (!ReadFile(hFilePreCalcVars, concSymOp,
                       sizeof(unsigned int) * SO_COUNT * SO_COUNT, &dwBytesRead,
                       nullptr))
             return;
@@ -353,41 +353,41 @@ PerfectAI::PerfectAI(const char *dir)
 
         // symmetry operation table
         for (i = 0; i < SQUARE_NB; i++) {
-            symOperationTable[SO_TURN_LEFT][i] = soTableTurnLeft[i];
-            symOperationTable[SO_TURN_180][i] = soTableTurn180[i];
-            symOperationTable[SO_TURN_RIGHT][i] = soTableTurnRight[i];
-            symOperationTable[SO_DO_NOTHING][i] = soTableDoNothing[i];
-            symOperationTable[SO_INVERT][i] = soTableInvert[i];
-            symOperationTable[SO_MIRROR_VERT][i] = soTableMirrorVert[i];
-            symOperationTable[SO_MIRROR_HORI][i] = soTableMirrorHori[i];
-            symOperationTable[SO_MIRROR_DIAG_1][i] = soTableMirrorDiag1[i];
-            symOperationTable[SO_MIRROR_DIAG_2][i] = soTableMirrorDiag2[i];
-            symOperationTable[SO_INV_LEFT][i] = soTableInvLeft[i];
-            symOperationTable[SO_INV_RIGHT][i] = soTableInvRight[i];
-            symOperationTable[SO_INV_180][i] = soTableInv180[i];
-            symOperationTable[SO_INV_MIRROR_VERT][i] = soTableInvMirHori[i];
-            symOperationTable[SO_INV_MIRROR_HORI][i] = soTableInvMirVert[i];
-            symOperationTable[SO_INV_MIRROR_DIAG_1][i] = soTableInvMirDiag1[i];
-            symOperationTable[SO_INV_MIRROR_DIAG_2][i] = soTableInvMirDiag2[i];
+            symOpTable[SO_TURN_LEFT][i] = soTableTurnLeft[i];
+            symOpTable[SO_TURN_180][i] = soTableTurn180[i];
+            symOpTable[SO_TURN_RIGHT][i] = soTableTurnRight[i];
+            symOpTable[SO_DO_NOTHING][i] = soTableDoNothing[i];
+            symOpTable[SO_INVERT][i] = soTableInvert[i];
+            symOpTable[SO_MIRROR_VERT][i] = soTableMirrorVert[i];
+            symOpTable[SO_MIRROR_HORI][i] = soTableMirrorHori[i];
+            symOpTable[SO_MIRROR_DIAG_1][i] = soTableMirrorDiag1[i];
+            symOpTable[SO_MIRROR_DIAG_2][i] = soTableMirrorDiag2[i];
+            symOpTable[SO_INV_LEFT][i] = soTableInvLeft[i];
+            symOpTable[SO_INV_RIGHT][i] = soTableInvRight[i];
+            symOpTable[SO_INV_180][i] = soTableInv180[i];
+            symOpTable[SO_INV_MIRROR_VERT][i] = soTableInvMirHori[i];
+            symOpTable[SO_INV_MIRROR_HORI][i] = soTableInvMirVert[i];
+            symOpTable[SO_INV_MIRROR_DIAG_1][i] = soTableInvMirDiag1[i];
+            symOpTable[SO_INV_MIRROR_DIAG_2][i] = soTableInvMirDiag2[i];
         }
 
         // reverse symmetry operation
-        reverseSymOperation[SO_TURN_LEFT] = SO_TURN_RIGHT;
-        reverseSymOperation[SO_TURN_180] = SO_TURN_180;
-        reverseSymOperation[SO_TURN_RIGHT] = SO_TURN_LEFT;
-        reverseSymOperation[SO_DO_NOTHING] = SO_DO_NOTHING;
-        reverseSymOperation[SO_INVERT] = SO_INVERT;
-        reverseSymOperation[SO_MIRROR_VERT] = SO_MIRROR_VERT;
-        reverseSymOperation[SO_MIRROR_HORI] = SO_MIRROR_HORI;
-        reverseSymOperation[SO_MIRROR_DIAG_1] = SO_MIRROR_DIAG_1;
-        reverseSymOperation[SO_MIRROR_DIAG_2] = SO_MIRROR_DIAG_2;
-        reverseSymOperation[SO_INV_LEFT] = SO_INV_RIGHT;
-        reverseSymOperation[SO_INV_RIGHT] = SO_INV_LEFT;
-        reverseSymOperation[SO_INV_180] = SO_INV_180;
-        reverseSymOperation[SO_INV_MIRROR_VERT] = SO_INV_MIRROR_VERT;
-        reverseSymOperation[SO_INV_MIRROR_HORI] = SO_INV_MIRROR_HORI;
-        reverseSymOperation[SO_INV_MIRROR_DIAG_1] = SO_INV_MIRROR_DIAG_1;
-        reverseSymOperation[SO_INV_MIRROR_DIAG_2] = SO_INV_MIRROR_DIAG_2;
+        reverseSymOp[SO_TURN_LEFT] = SO_TURN_RIGHT;
+        reverseSymOp[SO_TURN_180] = SO_TURN_180;
+        reverseSymOp[SO_TURN_RIGHT] = SO_TURN_LEFT;
+        reverseSymOp[SO_DO_NOTHING] = SO_DO_NOTHING;
+        reverseSymOp[SO_INVERT] = SO_INVERT;
+        reverseSymOp[SO_MIRROR_VERT] = SO_MIRROR_VERT;
+        reverseSymOp[SO_MIRROR_HORI] = SO_MIRROR_HORI;
+        reverseSymOp[SO_MIRROR_DIAG_1] = SO_MIRROR_DIAG_1;
+        reverseSymOp[SO_MIRROR_DIAG_2] = SO_MIRROR_DIAG_2;
+        reverseSymOp[SO_INV_LEFT] = SO_INV_RIGHT;
+        reverseSymOp[SO_INV_RIGHT] = SO_INV_LEFT;
+        reverseSymOp[SO_INV_180] = SO_INV_180;
+        reverseSymOp[SO_INV_MIRROR_VERT] = SO_INV_MIRROR_VERT;
+        reverseSymOp[SO_INV_MIRROR_HORI] = SO_INV_MIRROR_HORI;
+        reverseSymOp[SO_INV_MIRROR_DIAG_1] = SO_INV_MIRROR_DIAG_1;
+        reverseSymOp[SO_INV_MIRROR_DIAG_2] = SO_INV_MIRROR_DIAG_2;
 
         // concatenated symmetry operations
         for (a = 0; a < SO_COUNT; a++) {
@@ -396,14 +396,13 @@ PerfectAI::PerfectAI(const char *dir)
                 for (c = 0; c < SO_COUNT; c++) {
                     // look if b(a(state)) == c(state)
                     for (i = 0; i < SQUARE_NB; i++) {
-                        if (symOperationTable[c][i] !=
-                            symOperationTable[a][symOperationTable[b][i]])
+                        if (symOpTable[c][i] != symOpTable[a][symOpTable[b][i]])
                             break;
                     }
 
                     // match found?
                     if (i == SQUARE_NB) {
-                        concSymOperation[a][b] = c;
+                        concSymOp[a][b] = c;
                         break;
                     }
                 }
@@ -537,12 +536,12 @@ PerfectAI::PerfectAI(const char *dir)
 
                 // mark orig state
                 indexCD[stateCD] = nPositionsCD[a][b];
-                symOperationCD[stateCD] = SO_DO_NOTHING;
+                symOpCD[stateCD] = SO_DO_NOTHING;
                 origStateCD_tmp[a][b][nPositionsCD[a][b]] = stateCD;
 
                 // mark all symmetric states
                 for (i = 0; i < SO_COUNT; i++) {
-                    applySymOperationOnField(i, myField, symField);
+                    applySymOpOnField(i, myField, symField);
 
                     symStateCD =
                         symField[squareIdxGroupC[0]] * powerOfThree[15] +
@@ -564,7 +563,7 @@ PerfectAI::PerfectAI(const char *dir)
 
                     if (stateCD != symStateCD) {
                         indexCD[symStateCD] = nPositionsCD[a][b];
-                        symOperationCD[symStateCD] = reverseSymOperation[i];
+                        symOpCD[symStateCD] = reverseSymOp[i];
                     }
                 }
 
@@ -787,19 +786,19 @@ PerfectAI::PerfectAI(const char *dir)
                   sizeof(unsigned int) * MAX_ANZ_POSITION_C *
                       MAX_ANZ_POSITION_D,
                   &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, symOperationCD,
+        WriteFile(hFilePreCalcVars, symOpCD,
                   sizeof(unsigned char) * MAX_ANZ_POSITION_C *
                       MAX_ANZ_POSITION_D,
                   &dwBytesWritten, nullptr);
         WriteFile(hFilePreCalcVars, powerOfThree,
                   sizeof(unsigned int) * (nSquaresGroupC + nSquaresGroupD),
                   &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, symOperationTable,
+        WriteFile(hFilePreCalcVars, symOpTable,
                   sizeof(unsigned int) * SQUARE_NB * SO_COUNT, &dwBytesWritten,
                   nullptr);
-        WriteFile(hFilePreCalcVars, reverseSymOperation,
+        WriteFile(hFilePreCalcVars, reverseSymOp,
                   sizeof(unsigned int) * SO_COUNT, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, concSymOperation,
+        WriteFile(hFilePreCalcVars, concSymOp,
                   sizeof(unsigned int) * SO_COUNT * SO_COUNT, &dwBytesWritten,
                   nullptr);
         WriteFile(hFilePreCalcVars, mOverN,
@@ -1639,116 +1638,6 @@ void PerfectAI::storeMoveValue(unsigned int threadNo,
 }
 
 //-----------------------------------------------------------------------------
-// getValueOfMoves()
-//
-//-----------------------------------------------------------------------------
-void PerfectAI::getValueOfMoves(unsigned char *moveValue,
-                                unsigned int *freqValuesSubMoves,
-                                PlyInfoVarType *plyInfo,
-                                unsigned int *moveQuality,
-                                unsigned char &knotValue,
-                                PlyInfoVarType &bestAmountOfPlies)
-{
-    // locals
-    unsigned int moveQualities[SQUARE_NB * SQUARE_NB]; // 0 is
-                                                       // bad, 1
-                                                       // is
-                                                       // good
-    unsigned int i, j;
-
-    // set an invalid default value
-    knotValue = SKV_VALUE_COUNT;
-
-    // calculate knotValue
-    for (i = 0; i < SQUARE_NB; i++) {
-        for (j = 0; j < SQUARE_NB; j++) {
-            if (moveValue[i * SQUARE_NB + j] == SKV_VALUE_GAME_WON) {
-                knotValue = SKV_VALUE_GAME_WON;
-                i = SQUARE_NB;
-                j = SQUARE_NB;
-            } else if (moveValue[i * SQUARE_NB + j] == SKV_VALUE_GAME_DRAWN) {
-                knotValue = SKV_VALUE_GAME_DRAWN;
-            } else if (moveValue[i * SQUARE_NB + j] == SKV_VALUE_GAME_LOST &&
-                       knotValue != SKV_VALUE_GAME_DRAWN) {
-                knotValue = SKV_VALUE_GAME_LOST;
-            }
-        }
-    }
-
-    // calculate move bestAmountOfPlies
-    if (knotValue == SKV_VALUE_GAME_WON) {
-        bestAmountOfPlies = PLYINFO_VALUE_INVALID;
-
-        for (i = 0; i < SQUARE_NB; i++) {
-            for (j = 0; j < SQUARE_NB; j++) {
-                if (moveValue[i * SQUARE_NB + j] == SKV_VALUE_GAME_WON) {
-                    if (bestAmountOfPlies >=
-                        plyInfoForOutput[i * SQUARE_NB + j]) {
-                        bestAmountOfPlies = plyInfoForOutput[i * SQUARE_NB + j];
-                    }
-                }
-            }
-        }
-    } else if (knotValue == SKV_VALUE_GAME_LOST) {
-        bestAmountOfPlies = 0;
-
-        for (i = 0; i < SQUARE_NB; i++) {
-            for (j = 0; j < SQUARE_NB; j++) {
-                if (moveValue[i * SQUARE_NB + j] == SKV_VALUE_GAME_LOST) {
-                    if (bestAmountOfPlies <=
-                        plyInfoForOutput[i * SQUARE_NB + j]) {
-                        bestAmountOfPlies = plyInfoForOutput[i * SQUARE_NB + j];
-                    }
-                }
-            }
-        }
-    } else if (knotValue == SKV_VALUE_GAME_DRAWN) {
-        bestAmountOfPlies = 0;
-
-        for (i = 0; i < SQUARE_NB; i++) {
-            for (j = 0; j < SQUARE_NB; j++) {
-                if (moveValue[i * SQUARE_NB + j] == SKV_VALUE_GAME_DRAWN) {
-                    if (bestAmountOfPlies <=
-                        incidencesValuesSubMoves[i * SQUARE_NB + j]
-                                                [SKV_VALUE_GAME_WON]) {
-                        bestAmountOfPlies =
-                            incidencesValuesSubMoves[i * SQUARE_NB + j]
-                                                    [SKV_VALUE_GAME_WON];
-                    }
-                }
-            }
-        }
-    }
-
-    // zero move qualities
-    for (i = 0; i < SQUARE_NB; i++) {
-        for (j = 0; j < SQUARE_NB; j++) {
-            if ((moveValue[i * SQUARE_NB + j] == knotValue &&
-                 bestAmountOfPlies == plyInfoForOutput[i * SQUARE_NB + j] &&
-                 knotValue != SKV_VALUE_GAME_DRAWN) ||
-                (moveValue[i * SQUARE_NB + j] == knotValue &&
-                 bestAmountOfPlies ==
-                     incidencesValuesSubMoves[i * SQUARE_NB + j]
-                                             [SKV_VALUE_GAME_WON] &&
-                 knotValue == SKV_VALUE_GAME_DRAWN)) {
-                moveQualities[i * SQUARE_NB + j] = 1;
-            } else {
-                moveQualities[i * SQUARE_NB + j] = 0;
-            }
-        }
-    }
-
-    // copy
-    memcpy(moveQuality, moveQualities,
-           sizeof(unsigned int) * SQUARE_NB * SQUARE_NB);
-    memcpy(plyInfo, plyInfoForOutput,
-           sizeof(PlyInfoVarType) * SQUARE_NB * SQUARE_NB);
-    memcpy(moveValue, moveValue, sizeof(unsigned char) * SQUARE_NB * SQUARE_NB);
-    memcpy(freqValuesSubMoves, incidencesValuesSubMoves,
-           sizeof(unsigned int) * SQUARE_NB * SQUARE_NB * 4);
-}
-
-//-----------------------------------------------------------------------------
 // printMoveInfo()
 //
 //-----------------------------------------------------------------------------
@@ -1853,15 +1742,15 @@ int64_t PerfectAI::mOverN_Function(unsigned int m, unsigned int n)
 }
 
 //-----------------------------------------------------------------------------
-// applySymOperationOnField()
+// applySymOpOnField()
 // called very often
 //-----------------------------------------------------------------------------
-void PerfectAI::applySymOperationOnField(unsigned char symOperationNumber,
-                                         unsigned int *sourceField,
-                                         unsigned int *destField)
+void PerfectAI::applySymOpOnField(unsigned char symOpNumber,
+                                  unsigned int *sourceField,
+                                  unsigned int *destField)
 {
     for (unsigned int i = 0; i < SQUARE_NB; i++) {
-        destField[i] = sourceField[symOperationTable[symOperationNumber][i]];
+        destField[i] = sourceField[symOpTable[symOpNumber][i]];
     }
 }
 
@@ -1953,8 +1842,7 @@ PerfectAI::ThreadVars::getLayerAndStateNumber(unsigned int &layerNum,
               myField[squareIdxGroupD[7]] * parent->powerOfThree[0];
 
     // apply symmetry operation on group A&B
-    parent->applySymOperationOnField(parent->symOperationCD[stateCD], myField,
-                                     symField);
+    parent->applySymOpOnField(parent->symOpCD[stateCD], myField, symField);
 
     // calculate stateAB
     stateAB = symField[squareIdxGroupA[0]] * parent->powerOfThree[7] +
@@ -1977,7 +1865,7 @@ PerfectAI::ThreadVars::getLayerAndStateNumber(unsigned int &layerNum,
         parent->indexCD[stateCD] * MAX_NUM_PIECES_REMOVED_MINUS_1 +
         field->pieceMustBeRemovedCount;
 
-    return parent->symOperationCD[stateCD];
+    return parent->symOpCD[stateCD];
 }
 
 //-----------------------------------------------------------------------------
@@ -2080,8 +1968,7 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum,
     myField[squareIdxGroupD[7]] = (stateCD / powerOfThree[0]) % 3;
 
     // apply symmetry operation on group A&B
-    applySymOperationOnField(reverseSymOperation[symOperationCD[stateCD]],
-                             myField, symField);
+    applySymOpOnField(reverseSymOp[symOpCD[stateCD]], myField, symField);
 
     // translate symField[] to board->board[]
     for (i = 0; i < SQUARE_NB; i++) {
@@ -2289,11 +2176,9 @@ void PerfectAI::getField(unsigned int layerNum, unsigned int stateNumber,
 //
 //-----------------------------------------------------------------------------
 void PerfectAI::getLayerAndStateNumber(
-    unsigned int &layerNum,
-    unsigned int &stateNumber /*, unsigned int& symOperation*/)
+    unsigned int &layerNum, unsigned int &stateNumber /*, unsigned int& symOp*/)
 {
-    /*symOperation = */ threadVars[0].getLayerAndStateNumber(layerNum,
-                                                             stateNumber);
+    /*symOp = */ threadVars[0].getLayerAndStateNumber(layerNum, stateNumber);
 }
 
 //-----------------------------------------------------------------------------
@@ -2382,7 +2267,7 @@ void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo,
     ThreadVars *tv = &threadVars[threadNo];
     int origField[SQUARE_NB];
     unsigned int origPartOfMill[SQUARE_NB];
-    unsigned int i, symOperation;
+    unsigned int i, symOp;
     unsigned int layerNum, stateNum;
 
     *nSymmetricStates = 0;
@@ -2395,13 +2280,12 @@ void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo,
     }
 
     // add all symmetric states
-    for (symOperation = 0; symOperation < SO_COUNT; symOperation++) {
+    for (symOp = 0; symOp < SO_COUNT; symOp++) {
         // apply symmetry operation
-        applySymOperationOnField(symOperation, (unsigned int *)origField,
-                                 (unsigned int *)tv->field->board);
-        applySymOperationOnField(
-            symOperation, (unsigned int *)origPartOfMill,
-            (unsigned int *)tv->field->piecePartOfMillCount);
+        applySymOpOnField(symOp, (unsigned int *)origField,
+                          (unsigned int *)tv->field->board);
+        applySymOpOnField(symOp, (unsigned int *)origPartOfMill,
+                          (unsigned int *)tv->field->piecePartOfMillCount);
 
         getLayerAndStateNumber(threadNo, layerNum, stateNum);
         symStateNumberArray[*nSymmetricStates] = stateNum;
@@ -2482,62 +2366,61 @@ bool PerfectAI::ThreadVars::fieldIntegrityOK(
 }
 
 //-----------------------------------------------------------------------------
-// isSymOperationInvariantOnGroupCD()
+// isSymOpInvariantOnGroupCD()
 //
 //-----------------------------------------------------------------------------
-bool PerfectAI::isSymOperationInvariantOnGroupCD(unsigned int symOperation,
-                                                 int *theField)
+bool PerfectAI::isSymOpInvariantOnGroupCD(unsigned int symOp, int *theField)
 {
     // locals
     unsigned int i;
 
     i = squareIdxGroupC[0];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupC[1];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupC[2];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupC[3];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupC[4];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupC[5];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupC[6];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupC[7];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupD[0];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupD[1];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupD[2];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupD[3];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupD[4];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupD[5];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupD[6];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
     i = squareIdxGroupD[7];
-    if (theField[i] != theField[symOperationTable[symOperation][i]])
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
 
     return true;
@@ -2554,7 +2437,7 @@ void PerfectAI::ThreadVars::storePredecessor(unsigned int nMillsCurPlayer,
 {
     // locals
     int origField[SQUARE_NB];
-    unsigned int i, symOperation, symOpApplied;
+    unsigned int i, symOp, symOpApplied;
     unsigned int predLayerNum, predStateNum;
     unsigned int origAmountOfPred = *amountOfPred;
 
@@ -2565,20 +2448,18 @@ void PerfectAI::ThreadVars::storePredecessor(unsigned int nMillsCurPlayer,
             origField[i] = field->board[i];
 
         // add all symmetric states
-        for (symOperation = 0; symOperation < SO_COUNT; symOperation++) {
+        for (symOp = 0; symOp < SO_COUNT; symOp++) {
             // ...
-            if (symOperation == SO_DO_NOTHING ||
-                parent->isSymOperationInvariantOnGroupCD(symOperation,
-                                                         origField)) {
+            if (symOp == SO_DO_NOTHING ||
+                parent->isSymOpInvariantOnGroupCD(symOp, origField)) {
                 // apply symmetry operation
-                parent->applySymOperationOnField(symOperation,
-                                                 (unsigned int *)origField,
-                                                 (unsigned int *)field->board);
+                parent->applySymOpOnField(symOp, (unsigned int *)origField,
+                                          (unsigned int *)field->board);
 
                 symOpApplied = getLayerAndStateNumber(predLayerNum,
                                                       predStateNum);
-                predVars[*amountOfPred].predSymOperation =
-                    parent->concSymOperation[symOperation][symOpApplied];
+                predVars[*amountOfPred].predSymOp =
+                    parent->concSymOp[symOp][symOpApplied];
                 predVars[*amountOfPred].predLayerNumbers = predLayerNum;
                 predVars[*amountOfPred].predStateNumbers = predStateNum;
                 predVars[*amountOfPred].playerToMoveChanged =
@@ -3158,16 +3039,16 @@ bool PerfectAI::checkGetPredThanGetPoss()
                     for (k = 0; k < SQUARE_NB; k++)
                         symField[k] = tv->field->board[k];
 
-                    applySymOperationOnField(
-                        reverseSymOperation[predVars[j].predSymOperation],
+                    applySymOpOnField(
+                        reverseSymOp[predVars[j].predSymOp],
                         (unsigned int*)symField,
                         (unsigned int*)tv->field->board);
 
                     for (k = 0; k < SQUARE_NB; k++)
                         symField[k] = tv->field->piecePartOfMillCount[k];
 
-                    applySymOperationOnField(
-                        reverseSymOperation[predVars[j].predSymOperation],
+                    applySymOpOnField(
+                        reverseSymOp[predVars[j].predSymOp],
                         (unsigned int*)symField,
                         (unsigned int*)tv->field->piecePartOfMillCount);
                     cout << "predecessor" << endl;
@@ -3199,15 +3080,15 @@ bool PerfectAI::checkGetPredThanGetPoss()
                 for (k = 0; k < SQUARE_NB; k++)
                     symField[k] = tv->field->board[k];
 
-                applySymOperationOnField(
-                    reverseSymOperation[predVars[j].predSymOperation],
-                    (unsigned int *)symField, (unsigned int *)tv->field->board);
+                applySymOpOnField(reverseSymOp[predVars[j].predSymOp],
+                                  (unsigned int *)symField,
+                                  (unsigned int *)tv->field->board);
 
                 for (k = 0; k < SQUARE_NB; k++)
                     symField[k] = tv->field->piecePartOfMillCount[k];
 
-                applySymOperationOnField(
-                    reverseSymOperation[predVars[j].predSymOperation],
+                applySymOpOnField(
+                    reverseSymOp[predVars[j].predSymOp],
                     (unsigned int *)symField,
                     (unsigned int *)tv->field->piecePartOfMillCount);
 
@@ -3257,16 +3138,15 @@ bool PerfectAI::checkGetPredThanGetPoss()
                     for (k = 0; k < SQUARE_NB; k++)
                         symField[k] = tv->field->board[k];
 
-                    applySymOperationOnField(
-                        reverseSymOperation[predVars[j].predSymOperation],
-                        (unsigned int *)symField,
-                        (unsigned int *)tv->field->board);
+                    applySymOpOnField(reverseSymOp[predVars[j].predSymOp],
+                                      (unsigned int *)symField,
+                                      (unsigned int *)tv->field->board);
 
                     for (k = 0; k < SQUARE_NB; k++)
                         symField[k] = tv->field->piecePartOfMillCount[k];
 
-                    applySymOperationOnField(
-                        reverseSymOperation[predVars[j].predSymOperation],
+                    applySymOpOnField(
+                        reverseSymOp[predVars[j].predSymOp],
                         (unsigned int *)symField,
                         (unsigned int *)tv->field->piecePartOfMillCount);
 
@@ -3309,16 +3189,15 @@ bool PerfectAI::checkGetPredThanGetPoss()
                     for (k = 0; k < SQUARE_NB; k++)
                         symField[k] = tv->field->board[k];
 
-                    applySymOperationOnField(
-                        reverseSymOperation[predVars[j].predSymOperation],
-                        (unsigned int *)symField,
-                        (unsigned int *)tv->field->board);
+                    applySymOpOnField(reverseSymOp[predVars[j].predSymOp],
+                                      (unsigned int *)symField,
+                                      (unsigned int *)tv->field->board);
 
                     for (k = 0; k < SQUARE_NB; k++)
                         symField[k] = tv->field->piecePartOfMillCount[k];
 
-                    applySymOperationOnField(
-                        reverseSymOperation[predVars[j].predSymOperation],
+                    applySymOpOnField(
+                        reverseSymOp[predVars[j].predSymOp],
                         (unsigned int *)symField,
                         (unsigned int *)tv->field->piecePartOfMillCount);
 

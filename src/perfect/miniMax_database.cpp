@@ -437,7 +437,7 @@ void MiniMax::saveLayerToFile(unsigned int layerNumber)
 // measureIops()
 //
 //-----------------------------------------------------------------------------
-inline void MiniMax::measureIops(int64_t &nOperations, LARGE_INTEGER &interval,
+inline void MiniMax::measureIops(int64_t &nOps, LARGE_INTEGER &interval,
                                  LARGE_INTEGER &curTimeBefore, char text[])
 {
     // locals
@@ -445,7 +445,7 @@ inline void MiniMax::measureIops(int64_t &nOperations, LARGE_INTEGER &interval,
 
     if (!MEASURE_IOPS)
         return;
-    nOperations++; // ... not thread-safe !!!
+    nOps++; // ... not thread-safe !!!
 
     // only the time for the io-operation is considered and accumulated
     if (MEASURE_ONLY_IO) {
@@ -457,22 +457,22 @@ inline void MiniMax::measureIops(int64_t &nOperations, LARGE_INTEGER &interval,
         if (totalTimeGone >= 5.0) {
             PRINT(0, this,
                   text << "operations per second for last interval: "
-                       << (int)(nOperations / totalTimeGone));
+                       << (int)(nOps / totalTimeGone));
             interval.QuadPart = 0; // ... not thread-safe !!!
-            nOperations = 0;       // ... not thread-safe !!!
+            nOps = 0;              // ... not thread-safe !!!
         }
         // the whole time passed since the beginning of the interval is
         // considered
-    } else if (nOperations >= MEASURE_TIME_FREQUENCY) {
+    } else if (nOps >= MEASURE_TIME_FREQUENCY) {
         QueryPerformanceCounter(&curTimeAfter);
         double totalTimeGone = (double)(curTimeAfter.QuadPart -
                                         interval.QuadPart) /
                                frequency.QuadPart; // ... not thread-safe !!!
         PRINT(0, this,
               text << "operations per second for last interval: "
-                   << nOperations / totalTimeGone);
+                   << nOps / totalTimeGone);
         interval.QuadPart = curTimeAfter.QuadPart; // ... not thread-safe !!!
-        nOperations = 0;                           // ... not thread-safe !!!
+        nOps = 0;                                  // ... not thread-safe !!!
     }
 }
 
@@ -593,7 +593,7 @@ void MiniMax::readKnotValueFromDatabase(unsigned int layerNumber,
         databaseByte = myLss->shortKnotValueByte[stateNumber / 4];
 
         // measure io-operations per second
-        measureIops(nReadSkvOperations, readSkvInterval, curTimeBefore,
+        measureIops(nReadSkvOps, readSkvInterval, curTimeBefore,
                     (char *)"Read  knot value ");
     }
 
@@ -680,7 +680,7 @@ void MiniMax::readPlyInfoFromDatabase(unsigned int layerNumber,
         value = myPis->plyInfo[stateNumber];
 
         // measure io-operations per second
-        measureIops(nReadPlyOperations, readPlyInterval, curTimeBefore,
+        measureIops(nReadPlyOps, readPlyInterval, curTimeBefore,
                     (char *)"Read  ply info   ");
     }
 }
@@ -763,7 +763,7 @@ void MiniMax::saveKnotValueInDatabase(unsigned int layerNumber,
              curShortKnotValueLong);
 
     // measure io-operations per second
-    measureIops(nWriteSkvOperations, writeSkvInterval, curTimeBefore,
+    measureIops(nWriteSkvOps, writeSkvInterval, curTimeBefore,
                 (char *)"Write knot value ");
 }
 
@@ -835,7 +835,7 @@ void MiniMax::savePlyInfoInDatabase(unsigned int layerNumber,
     myPis->plyInfo[stateNumber] = value;
 
     // measure io-operations per second
-    measureIops(nWritePlyOperations, writePlyInterval, curTimeBefore,
+    measureIops(nWritePlyOps, writePlyInterval, curTimeBefore,
                 (char *)"Write ply info   ");
 }
 

@@ -347,7 +347,7 @@ public:
     {
         unsigned int predStateNumbers;
         unsigned int predLayerNumbers;
-        unsigned int predSymOperation;
+        unsigned int predSymOp;
         bool playerToMoveChanged;
     };
 
@@ -1007,16 +1007,16 @@ private:
     // database I/O operations per second
 
     // number of read operations done since start of the program
-    int64_t nReadSkvOperations = 0;
+    int64_t nReadSkvOps = 0;
 
     // number of write operations done since start of the program
-    int64_t nWriteSkvOperations = 0;
+    int64_t nWriteSkvOps = 0;
 
     // number of read operations done since start of the program
-    int64_t nReadPlyOperations = 0;
+    int64_t nReadPlyOps = 0;
 
     // number of write operations done since start of the program
-    int64_t nWritePlyOperations = 0;
+    int64_t nWritePlyOps = 0;
 
     // time of interval for read operations
     LARGE_INTEGER readSkvInterval;
@@ -1057,7 +1057,7 @@ private:
     void saveBytesToFile(HANDLE hFile, int64_t offset, unsigned int nBytes,
                          void *pBytes);
     void saveLayerToFile(unsigned int layerNumber);
-    inline void measureIops(int64_t &nOperations, LARGE_INTEGER &interval,
+    inline void measureIops(int64_t &nOps, LARGE_INTEGER &interval,
                             LARGE_INTEGER &curTimeBefore, char text[]);
 
     // Testing functions
