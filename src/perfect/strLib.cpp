@@ -186,7 +186,7 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int nValues,
 
     // read each value
     do {
-        // read from buffer if necessary
+        // read from buf if necessary
         if (curBufPos >= bufSize - maxValLenInBytes) {
             memcpy(&buf[0], &buf[curBufPos], bufSize - curBufPos);
             if (!ReadFile(hFile, &buf[bufSize - curBufPos], curBufPos,
@@ -393,7 +393,7 @@ bool readAsciiData(HANDLE hFile, double *pData, unsigned int nValues,
         curBufPos++;
         curByte++;
 
-        // buffer overrun?
+        // buf overrun?
         if (curBufPos >= actualBufSize)
             return false;
     } while (curReadVal < nValues);
