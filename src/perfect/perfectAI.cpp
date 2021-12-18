@@ -1603,26 +1603,26 @@ void PerfectAI::storeMoveValue(uint32_t threadNo, uint32_t idPossibility,
 {
     // locals
     ThreadVars *tv = &threadVars[threadNo];
-    uint32_t index;
+    uint32_t i;
     Possibility *tmpPossibility = (Possibility *)pPossibilities;
 
     if (tv->field->pieceMustBeRemovedCount)
-        index = idPossibility;
+        i = idPossibility;
     else if (tv->field->isPlacingPhase)
-        index = idPossibility;
+        i = idPossibility;
     else
-        index = tmpPossibility->from[idPossibility] * SQUARE_NB +
-                tmpPossibility->to[idPossibility];
+        i = tmpPossibility->from[idPossibility] * SQUARE_NB +
+            tmpPossibility->to[idPossibility];
 
-    plyInfoForOutput[index] = plyInfo;
-    moveValue[index] = value;
-    incidencesValuesSubMoves[index][SKV_VALUE_INVALID] =
+    plyInfoForOutput[i] = plyInfo;
+    moveValue[i] = value;
+    incidencesValuesSubMoves[i][SKV_VALUE_INVALID] =
         freqValuesSubMoves[SKV_VALUE_INVALID];
-    incidencesValuesSubMoves[index][SKV_VALUE_GAME_LOST] =
+    incidencesValuesSubMoves[i][SKV_VALUE_GAME_LOST] =
         freqValuesSubMoves[SKV_VALUE_GAME_LOST];
-    incidencesValuesSubMoves[index][SKV_VALUE_GAME_DRAWN] =
+    incidencesValuesSubMoves[i][SKV_VALUE_GAME_DRAWN] =
         freqValuesSubMoves[SKV_VALUE_GAME_DRAWN];
-    incidencesValuesSubMoves[index][SKV_VALUE_GAME_WON] =
+    incidencesValuesSubMoves[i][SKV_VALUE_GAME_WON] =
         freqValuesSubMoves[SKV_VALUE_GAME_WON];
 }
 

@@ -29,10 +29,10 @@ private:
     unsigned char *writingBlock;
 
     // pointer to the byte which is currently read
-    unsigned char *curReadingPointer;
+    unsigned char *curReadingPtr;
 
     // ''
-    unsigned char *curWritingPointer;
+    unsigned char *curWritingPtr;
 
     // size in bytes of a block
     uint32_t blockSize;

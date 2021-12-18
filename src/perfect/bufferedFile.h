@@ -35,9 +35,9 @@ private:
 
     // Array of size [threadCount] with pointers to the byte which is currently
     // read
-    int64_t *curReadingPointer;
+    int64_t *curReadingPtr;
     // ''
-    int64_t *curWritingPointer;
+    int64_t *curWritingPtr;
 
     uint32_t *bytesInReadBuf;
 

@@ -479,16 +479,15 @@ DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParam)
 {
     // locals
     ForLoop *forLoopParams = (ForLoop *)lpParam;
-    int index;
+    int i;
 
     switch (forLoopParams->schedType) {
     case TM_SCHED_STATIC:
-        for (index = forLoopParams->initValue;
-             (forLoopParams->increment < 0) ?
-                 index >= forLoopParams->finalValue :
-                 index <= forLoopParams->finalValue;
-             index += forLoopParams->increment) {
-            switch (forLoopParams->threadProc(forLoopParams->pParam, index)) {
+        for (i = forLoopParams->initValue;
+             (forLoopParams->increment < 0) ? i >= forLoopParams->finalValue :
+                                              i <= forLoopParams->finalValue;
+             i += forLoopParams->increment) {
+            switch (forLoopParams->threadProc(forLoopParams->pParam, i)) {
             case TM_RETVAL_OK:
                 break;
             case TM_RETVAL_TERMINATE_ALL_THREADS:
