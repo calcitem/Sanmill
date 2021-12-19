@@ -112,7 +112,7 @@ constexpr auto PRED_LAYER_COUNT_MAX = 2;
 constexpr auto SKV_FILE_HEADER_CODE = 0xF4F5;
 constexpr auto PLYINFO_HEADER_CODE = 0xF3F2;
 
-// print progress every n-th processed knot
+// print progress every n-thread processed knot
 constexpr auto OUTPUT_EVERY_N_STATES = 10000000;
 
 // BLOCK_SIZE_IN_CYCLIC_ARRAY*sizeof(stateAdressStruct) = block size
@@ -133,7 +133,7 @@ constexpr auto PL_TO_MOVE_CHANGED = 1;
 // skvPerspectiveMatrix[][]
 constexpr auto PL_TO_MOVE_UNCHANGED = 0;
 
-// for io operations per second: measure time every n-th operations
+// for io operations per second: measure time every n-thread operations
 constexpr auto MEASURE_TIME_FREQUENCY = 100000;
 
 // true or false - for measurement of the input/output operations per

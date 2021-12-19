@@ -96,18 +96,18 @@ public:
             this->threadCount = threadCnt;
             this->item = new varType[threadCnt];
 
-            for (uint32_t th = 0; th < threadCnt; th++) {
-                item[th].curThreadNo = th;
-                item[th].initElement(master);
+            for (uint32_t thd = 0; thd < threadCnt; thd++) {
+                item[thd].curThreadNo = thd;
+                item[thd].initElement(master);
                 // if 'curThreadNo' is overwritten in 'initElement()'
-                item[th].curThreadNo = th;
+                item[thd].curThreadNo = thd;
             }
         };
 
         ~ThreadVarsArray()
         {
-            for (uint32_t th = 0; th < threadCount; th++) {
-                item[th].destroyElement();
+            for (uint32_t thd = 0; thd < threadCount; thd++) {
+                item[thd].destroyElement();
             }
 
             delete[] item;
@@ -119,8 +119,8 @@ public:
 
         void reduce()
         {
-            for (uint32_t th = 0; th < threadCount; th++) {
-                item[th].reduce();
+            for (uint32_t thd = 0; thd < threadCount; thd++) {
+                item[thd].reduce();
             }
         };
     };
