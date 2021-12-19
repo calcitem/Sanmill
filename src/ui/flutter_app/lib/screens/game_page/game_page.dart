@@ -170,15 +170,7 @@ class GamePage extends StatelessWidget {
     final screenPaddingH = _getScreenPaddingH(context);
 
     return Scaffold(
-      appBar: AppBar(
-        leading: DrawerIcon.of(context)?.icon,
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        iconTheme: const IconThemeData(
-          color: AppTheme.drawerAnimationIconColor,
-        ),
-      ),
-      extendBodyBehindAppBar: true,
+      appBar: _GameHeader(gameMode: gameMode),
       backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: screenPaddingH),
@@ -196,7 +188,6 @@ class GamePage extends StatelessWidget {
 
             return Column(
               children: <Widget>[
-                GameHeader(gameMode: gameMode),
                 Container(
                   margin: const EdgeInsets.symmetric(
                     vertical: AppTheme.boardMargin,

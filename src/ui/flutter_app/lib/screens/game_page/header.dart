@@ -18,13 +18,64 @@
 
 part of './game_page.dart';
 
-class GameHeader extends StatelessWidget {
-  const GameHeader({
-    required this.gameMode,
+class _GameHeader extends StatefulWidget implements PreferredSizeWidget {
+  _GameHeader({
     Key? key,
+    required this.gameMode,
+    this.toolbarHeight,
   }) : super(key: key);
 
+  @override
+  final Size preferredSize = Size.fromHeight(
+    kToolbarHeight +
+        LocalDatabaseService.display.boardTop +
+        (Constants.isLargeScreen ? 39.0 : 0.0),
+  );
+  final double? toolbarHeight;
   final GameMode gameMode;
+
+  @override
+  State<_GameHeader> createState() => _GameHeaderState();
+}
+
+class _GameHeaderState extends State<_GameHeader> {
+  ScrollNotificationObserverState? _scrollNotificationObserver;
+  bool _scrolledUnder = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_scrollNotificationObserver != null) {
+      _scrollNotificationObserver!.removeListener(_handleScrollNotification);
+    }
+    _scrollNotificationObserver = ScrollNotificationObserver.of(context);
+    if (_scrollNotificationObserver != null) {
+      _scrollNotificationObserver!.addListener(_handleScrollNotification);
+    }
+  }
+
+  @override
+  void dispose() {
+    if (_scrollNotificationObserver != null) {
+      _scrollNotificationObserver!.removeListener(_handleScrollNotification);
+      _scrollNotificationObserver = null;
+    }
+    super.dispose();
+  }
+
+  void _handleScrollNotification(ScrollNotification notification) {
+    if (notification is ScrollUpdateNotification) {
+      final bool oldScrolledUnder = _scrolledUnder;
+      _scrolledUnder = notification.depth == 0 &&
+          notification.metrics.extentBefore > 0 &&
+          notification.metrics.axis == Axis.vertical;
+      if (_scrolledUnder != oldScrolledUnder) {
+        setState(() {
+          // React to a change in MaterialState.scrolledUnder
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,39 +86,52 @@ class GameHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(gameMode.leftHeaderIcon),
+          Icon(widget.gameMode.leftHeaderIcon),
           Icon(
             MillController().gameInstance.sideToMove.icon,
           ),
-          Icon(gameMode.rightHeaderIcon),
+          Icon(widget.gameMode.rightHeaderIcon),
         ],
       ),
     );
 
-    return BlockSemantics(
-      child: Container(
-        margin: EdgeInsets.only(
-          top: LocalDatabaseService.display.boardTop +
-              (Constants.isLargeScreen ? 39.0 : 0.0),
+    final divider = Container(
+      height: 4,
+      width: 180,
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        color: LocalDatabaseService.colorSettings.boardBackgroundColor,
+        borderRadius: BorderRadius.circular(2),
+      ),
+    );
+
+    final Widget appBar = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        SizedBox(
+          height: kToolbarHeight,
+          child: Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: DrawerIcon.of(context)!.icon,
+          ),
         ),
-        child: Column(
-          children: <Widget>[
-            iconRow,
-            Container(
-              height: 4,
-              width: 180,
-              margin: const EdgeInsets.only(bottom: 10),
-              decoration: BoxDecoration(
-                color: LocalDatabaseService.colorSettings.boardBackgroundColor,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: _HeaderTip(),
-            ),
-          ],
+        BlockSemantics(
+          child: Column(
+            children: <Widget>[
+              iconRow,
+              divider,
+              const _HeaderTip(),
+            ],
+          ),
         ),
+      ],
+    );
+
+    return Align(
+      alignment: Alignment.topCenter,
+      child: SafeArea(
+        bottom: false,
+        child: appBar,
       ),
     );
   }
@@ -100,11 +164,14 @@ class _HeaderStateTip extends State<_HeaderTip> {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      message ?? S.of(context).welcome,
-      maxLines: 1,
-      style: TextStyle(
-        color: LocalDatabaseService.colorSettings.messageColor,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Text(
+        message ?? S.of(context).welcome,
+        maxLines: 1,
+        style: TextStyle(
+          color: LocalDatabaseService.colorSettings.messageColor,
+        ),
       ),
     );
   }
