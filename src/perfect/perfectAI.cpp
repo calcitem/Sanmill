@@ -845,14 +845,14 @@ PerfectAI::PerfectAI(const char *dir)
 PerfectAI::~PerfectAI()
 {
     // locals
-    uint32_t curThread;
+    uint32_t th;
 
     // release memory
-    for (curThread = 0; curThread < getThreadCount(); curThread++) {
-        SAFE_DELETE_ARRAY(threadVars[curThread].oldStates);
-        SAFE_DELETE_ARRAY(threadVars[curThread].idPossibilities);
-        SAFE_DELETE_ARRAY(threadVars[curThread].possibilities);
-        threadVars[curThread].field->deleteBoard();
+    for (th = 0; th < getThreadCount(); th++) {
+        SAFE_DELETE_ARRAY(threadVars[th].oldStates);
+        SAFE_DELETE_ARRAY(threadVars[th].idPossibilities);
+        SAFE_DELETE_ARRAY(threadVars[th].possibilities);
+        threadVars[th].field->deleteBoard();
     }
     SAFE_DELETE_ARRAY(threadVars);
 }
@@ -943,13 +943,13 @@ void PerfectAI::play(fieldStruct *theField, uint32_t *pushFrom,
 void PerfectAI::prepareDatabaseCalc()
 {
     // only prepare layers?
-    uint32_t curThread;
+    uint32_t th;
 
     // create a temporary board
-    for (curThread = 0; curThread < getThreadCount(); curThread++) {
-        threadVars[curThread].field = new fieldStruct();
-        threadVars[curThread].field->createBoard();
-        setOpponentLevel(curThread, false);
+    for (th = 0; th < getThreadCount(); th++) {
+        threadVars[th].field = new fieldStruct();
+        threadVars[th].field->createBoard();
+        setOpponentLevel(th, false);
     }
 
     // open database file
@@ -963,13 +963,13 @@ void PerfectAI::prepareDatabaseCalc()
 void PerfectAI::wrapUpDatabaseCalc(bool calcuAborted)
 {
     // locals
-    uint32_t curThread;
+    uint32_t th;
 
     // release memory
-    for (curThread = 0; curThread < getThreadCount(); curThread++) {
-        threadVars[curThread].field->deleteBoard();
-        SAFE_DELETE(threadVars[curThread].field);
-        threadVars[curThread].field = &dummyField;
+    for (th = 0; th < getThreadCount(); th++) {
+        threadVars[th].field->deleteBoard();
+        SAFE_DELETE(threadVars[th].field);
+        threadVars[th].field = &dummyField;
     }
 }
 
@@ -1020,11 +1020,11 @@ bool PerfectAI::setDatabasePath(const char *dir)
 //-----------------------------------------------------------------------------
 void PerfectAI::prepareBestChoiceCalc()
 {
-    for (uint32_t curThread = 0; curThread < getThreadCount(); curThread++) {
-        threadVars[curThread].floatValue = 0.0f;
-        threadVars[curThread].shortValue = SKV_VALUE_INVALID;
-        threadVars[curThread].gameHasFinished = false;
-        threadVars[curThread].curSearchDepth = 0;
+    for (uint32_t th = 0; th < getThreadCount(); th++) {
+        threadVars[th].floatValue = 0.0f;
+        threadVars[th].shortValue = SKV_VALUE_INVALID;
+        threadVars[th].gameHasFinished = false;
+        threadVars[th].curSearchDepth = 0;
     }
 }
 

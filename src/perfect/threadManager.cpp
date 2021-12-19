@@ -211,13 +211,13 @@ bool ThreadManager::setThreadCount(uint32_t newNumThreads)
 //-----------------------------------------------------------------------------
 void ThreadManager::pauseExec()
 {
-    for (uint32_t curThread = 0; curThread < threadCount; curThread++) {
+    for (uint32_t th = 0; th < threadCount; th++) {
         // unsuspend all threads
         if (!execPaused) {
-            SuspendThread(hThread[curThread]);
+            SuspendThread(hThread[th]);
             // suspend all threads
         } else {
-            ResumeThread(hThread[curThread]);
+            ResumeThread(hThread[th]);
         }
     }
 
