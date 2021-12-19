@@ -6,6 +6,7 @@ on:
     paths:
       - 'src/ui/qt/**'
   pull_request:
+    types: [review_requested, ready_for_review]
     paths:
       - 'src/ui/qt/**'
 
