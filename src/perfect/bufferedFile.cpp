@@ -21,7 +21,7 @@ BufferedFile::BufferedFile(uint32_t nThreads, uint32_t bufSizeInBytes,
                            const char *fileName)
 {
     // locals
-    uint32_t curThread;
+    uint32_t th;
 
     // Init blocks
     bufSize = bufSizeInBytes;
@@ -33,11 +33,11 @@ BufferedFile::BufferedFile(uint32_t nThreads, uint32_t bufSizeInBytes,
     bytesInReadBuf = new uint32_t[nThreads];
     bytesInWriteBuf = new uint32_t[nThreads];
 
-    for (curThread = 0; curThread < nThreads; curThread++) {
-        curReadingPtr[curThread] = 0;
-        curWritingPtr[curThread] = 0;
-        bytesInReadBuf[curThread] = 0;
-        bytesInWriteBuf[curThread] = 0;
+    for (th = 0; th < nThreads; th++) {
+        curReadingPtr[th] = 0;
+        curWritingPtr[th] = 0;
+        bytesInReadBuf[th] = 0;
+        bytesInWriteBuf[th] = 0;
     }
 
     InitializeCriticalSection(&csIO);
