@@ -107,11 +107,10 @@ class Position {
     // TODO: [Leptopoda] maybe initialize it in the controller
     // seems like this is causing the stack overflow
     controller.recorder = _GameRecorder(controller);
-    controller.recorder.lastPositionWithRemove = _fen;
   }
 
   /// Returns a FEN representation of the position.
-  String get _fen {
+  String get fen {
     final buffer = StringBuffer();
 
     // Piece placement data
@@ -973,17 +972,5 @@ class Position {
     assert(!moves.contains('-('));
 
     return moves.isNotEmpty ? moves.substring(1) : null;
-  }
-
-  String? get moveHistoryText => controller.recorder._buildMoveHistoryText();
-
-  ExtMove? get lastMove => controller.recorder.lastMove;
-
-// TODO: [Calzitem] why isn't the latest _fen representation used?
-  String get lastPositionWithRemove {
-    print("debug old: ${controller.recorder.lastPositionWithRemove}");
-    print("debug fen: $_fen");
-    return _fen;
-    return controller.recorder.lastPositionWithRemove;
   }
 }

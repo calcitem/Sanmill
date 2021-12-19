@@ -24,13 +24,10 @@ part of '../mill.dart';
 class _GameRecorder {
   // TODO: [Leptopoda] use null
   int cur = -1;
-  late String lastPositionWithRemove;
   List<ExtMove> moves = <ExtMove>[];
   final MillController controller;
 
-  _GameRecorder(this.controller) {
-    // lastPositionWithRemove = controller.position._fen;
-  }
+  _GameRecorder(this.controller);
 
   Future<void> import(BuildContext context) async =>
       _ImportService(controller).importGame(context);
@@ -64,10 +61,6 @@ class _GameRecorder {
 
     moves.add(extMove);
     cur++;
-
-    if (extMove.type == _MoveType.remove) {
-      lastPositionWithRemove = controller.position._fen;
-    }
   }
 
   int get moveCount => moves.length;
@@ -76,7 +69,9 @@ class _GameRecorder {
 
   ExtMove? get lastEffectiveMove => cur == -1 ? null : moves[cur];
 
-  String? _buildMoveHistoryText({int cols = 2}) {
+  String? get moveHistoryText {
+    const int cols = 2;
+
     if (moves.isEmpty) {
       return null;
     }

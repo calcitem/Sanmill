@@ -32,7 +32,7 @@ class MoveOptionsModal extends StatelessWidget {
 
   Future<void> _moveNow(BuildContext context) async {
     Navigator.pop(context);
-    await extracted.engineToGo(isMoveNow: true);
+    // await extracted.engineToGo(isMoveNow: true);
   }
 
   @override
@@ -78,7 +78,7 @@ class MoveOptionsModal extends StatelessWidget {
           ),
           const CustomSpacer(),
         ],
-        if (MillController().position.moveHistoryText != null) ...[
+        if (MillController().recorder.moveHistoryText != null) ...[
           SimpleDialogOption(
             onPressed: () => _showMoveList(context),
             child: Text(

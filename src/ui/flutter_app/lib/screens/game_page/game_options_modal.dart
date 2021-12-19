@@ -31,7 +31,7 @@ class GameOptionsModal extends StatelessWidget {
 
     if (MillController().gameInstance.isAiToMove) {
       logger.v("$_tag New game, AI to move.");
-      extracted.engineToGo(isMoveNow: false);
+      // extracted.engineToGo(isMoveNow: false);
     }
   }
 

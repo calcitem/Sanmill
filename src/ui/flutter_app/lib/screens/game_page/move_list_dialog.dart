@@ -25,7 +25,7 @@ class _MoveListDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = MillController();
 
-    final moveHistoryText = controller.position.moveHistoryText!;
+    final moveHistoryText = controller.recorder.moveHistoryText!;
     final end = controller.gameInstance.moveHistory.length - 1;
     ScaffoldMessenger.of(context).clearSnackBars();
 

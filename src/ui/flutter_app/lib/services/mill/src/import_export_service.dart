@@ -32,7 +32,7 @@ class _ImportService {
     Navigator.pop(context);
 
     await Clipboard.setData(
-      ClipboardData(text: controller.position.moveHistoryText),
+      ClipboardData(text: controller.recorder.moveHistoryText),
     );
 
     ScaffoldMessenger.of(context)

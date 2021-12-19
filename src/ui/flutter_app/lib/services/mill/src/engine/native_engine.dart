@@ -210,7 +210,7 @@ class NativeEngine extends Engine {
 
   // TODO: [Leptopoda] don't pass around the position object as we can access it through [controller.position]
   String _getPositionFen(Position position) {
-    final startPosition = position.lastPositionWithRemove;
+    final startPosition = position.fen;
     final moves = position._movesSinceLastRemove;
 
     final StringBuffer posFenStr = StringBuffer("position fen $startPosition");
