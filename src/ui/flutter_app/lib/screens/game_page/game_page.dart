@@ -53,7 +53,7 @@ class GamePage extends StatelessWidget {
   void _showGameOptions(BuildContext context) => showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
-        builder: (_) => const GameOptionsModal(),
+        builder: (_) => const _GameOptionsModal(),
       );
 
   void _showSettings(BuildContext context) => Navigator.push(
@@ -64,7 +64,7 @@ class GamePage extends StatelessWidget {
   void _showMoveOptions(BuildContext context) => showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
-        builder: (_) => const MoveOptionsModal(),
+        builder: (_) => const _MoveOptionsModal(),
       );
 
   void _showInfo(BuildContext context) => showDialog(

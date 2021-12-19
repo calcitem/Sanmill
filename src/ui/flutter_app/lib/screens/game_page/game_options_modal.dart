@@ -18,8 +18,8 @@
 
 part of './game_page.dart';
 
-class GameOptionsModal extends StatelessWidget {
-  const GameOptionsModal({Key? key}) : super(key: key);
+class _GameOptionsModal extends StatelessWidget {
+  const _GameOptionsModal({Key? key}) : super(key: key);
   static const String _tag = "[game_options]";
 
   Future<void> _startNew(BuildContext context) async {
