@@ -24,13 +24,13 @@ import 'dart:async';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/array_helper.dart';
+import 'package:sanmill/shared/scaffold_messenger.dart';
 import 'package:sanmill/shared/string_buffer_helper.dart';
 
 part 'src/controller.dart';
@@ -44,3 +44,7 @@ part 'src/position.dart';
 part 'src/recorder.dart';
 part 'src/types.dart';
 part 'src/zobrist.dart';
+part 'src/history_navigation.dart';
+part 'src/tip_state.dart';
+
+// TODO: [Leptopoda] separate the ui from the logic

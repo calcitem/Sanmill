@@ -141,7 +141,7 @@ class _CustomDrawerState extends State<CustomDrawer>
       textDirection: Directionality.of(context),
       child: ValueListenableBuilder<CustomDrawerValue>(
         valueListenable: _controller,
-        // TODO: [Leptopdoa] why isn't it working with GestureDetector?
+        // TODO: [Leptopoda] why isn't it working with GestureDetector?
         builder: (_, value, child) => InkWell(
           onTap: _controller.hideDrawer,
           focusColor: Colors.transparent,

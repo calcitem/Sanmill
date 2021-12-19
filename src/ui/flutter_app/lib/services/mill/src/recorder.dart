@@ -24,19 +24,19 @@ part of '../mill.dart';
 class _GameRecorder {
   // TODO: [Leptopoda] use null
   int cur = -1;
-  String lastPositionWithRemove;
+  late String lastPositionWithRemove;
   List<ExtMove> moves = <ExtMove>[];
   final MillController controller;
 
-  _GameRecorder(
-    this.controller, {
-    this.cur = -1,
-    required this.lastPositionWithRemove,
-  });
+  _GameRecorder(this.controller) {
+    // lastPositionWithRemove = controller.position._fen;
+  }
 
-// TODO [Leptopoda] make param a List<Move> and change the return type
-  String? import(String moveList) =>
-      _ImportService(controller).import(moveList);
+  Future<void> import(BuildContext context) async =>
+      _ImportService(controller).importGame(context);
+
+  Future<void> export(BuildContext context) async =>
+      _ImportService(controller).exportGame(context);
 
   void clear() {
     moves.clear();
@@ -55,8 +55,7 @@ class _GameRecorder {
     moves.removeRange(cur + 1, moves.length);
   }
 
-  // TODO: [Leptopoda] don't pass around the position object as we can access it through [controller.position]
-  void moveIn(ExtMove extMove, Position position) {
+  void moveIn(ExtMove extMove) {
     if (moves.lastF == extMove) {
       //assert(false);
       // TODO: WAR
@@ -67,7 +66,7 @@ class _GameRecorder {
     cur++;
 
     if (extMove.type == _MoveType.remove) {
-      lastPositionWithRemove = position._fen;
+      lastPositionWithRemove = controller.position._fen;
     }
   }
 

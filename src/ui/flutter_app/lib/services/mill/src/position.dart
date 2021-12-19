@@ -41,9 +41,6 @@ class Position {
   List<PieceColor> _board = List.filled(sqNumber, PieceColor.none);
   List<PieceColor> _grid = List.filled(7 * 7, PieceColor.none);
 
-  // TODO: [Leptopoda] move it into the controller
-  late _GameRecorder recorder;
-
   Map<PieceColor, int> pieceInHandCount = {
     PieceColor.white: -1,
     PieceColor.black: -1
@@ -107,9 +104,10 @@ class Position {
     _setPosition(); // TODO
 
     // TODO
-    // TODO: [Leptopoda] make the recorder get the fen itself as it is public so we don't need to pas it around...
+    // TODO: [Leptopoda] maybe initialize it in the controller
     // seems like this is causing the stack overflow
-    recorder = _GameRecorder(controller, lastPositionWithRemove: _fen);
+    controller.recorder = _GameRecorder(controller);
+    controller.recorder.lastPositionWithRemove = _fen;
   }
 
   /// Returns a FEN representation of the position.
@@ -248,7 +246,7 @@ class Position {
 
     extMove = m;
 
-    recorder.moveIn(m, this); // TODO: Is Right?
+    controller.recorder.moveIn(m); // TODO: Is Right?
 
     return true;
   }
@@ -884,8 +882,6 @@ class Position {
     _adjacentSquares = _Mills.adjacentSquaresInit;
     _millTable = _Mills.millTableInit;
     _currentSquare = 0;
-
-    return;
   }
 
   int? get _pieceOnBoardCount {
@@ -917,12 +913,12 @@ class Position {
   Future<_HistoryResponse?> gotoHistory(HistoryMove move, [int? index]) async {
     final int moveIndex = move.gotoHistoryIndex(index);
 
-    if (recorder.cur == moveIndex) {
+    if (controller.recorder.cur == moveIndex) {
       logger.i("[goto] cur is equal to moveIndex.");
       return _HistoryResponse.equal;
     }
 
-    if (moveIndex < -1 || recorder.moveCount <= moveIndex) {
+    if (moveIndex < -1 || controller.recorder.moveCount <= moveIndex) {
       logger.i("[goto] moveIndex is out of range.");
       return _HistoryResponse.outOfRange;
     }
@@ -932,7 +928,7 @@ class Position {
     // Backup context
     final gameModeBackup = controller.gameInstance.gameMode;
     controller.gameInstance.gameMode = GameMode.humanVsHuman;
-    final historyBack = recorder.moves;
+    final historyBack = controller.recorder.moves;
     controller.gameInstance.newGame();
 
     _HistoryResponse? error;
@@ -947,8 +943,8 @@ class Position {
 
     // Restore context
     controller.gameInstance.gameMode = gameModeBackup;
-    recorder.moves = historyBack;
-    recorder.cur = moveIndex;
+    controller.recorder.moves = historyBack;
+    controller.recorder.cur = moveIndex;
 
     Audios.isTemporaryMute = false;
     await move.gotoHistoryPlaySound();
@@ -960,16 +956,16 @@ class Position {
     final buffer = StringBuffer();
     int posAfterLastRemove = 0;
 
-    for (i = recorder.moveCount - 1; i >= 0; i--) {
-      if (recorder.moves[i].move[0] == "-") break;
+    for (i = controller.recorder.moveCount - 1; i >= 0; i--) {
+      if (controller.recorder.moves[i].move[0] == "-") break;
     }
 
     if (i >= 0) {
       posAfterLastRemove = i + 1;
     }
 
-    for (int i = posAfterLastRemove; i < recorder.moveCount; i++) {
-      buffer.write(" ${recorder.moves[i].move}");
+    for (int i = posAfterLastRemove; i < controller.recorder.moveCount; i++) {
+      buffer.write(" ${controller.recorder.moves[i].move}");
     }
 
     final String moves = buffer.toString();
@@ -979,9 +975,15 @@ class Position {
     return moves.isNotEmpty ? moves.substring(1) : null;
   }
 
-  String? get moveHistoryText => recorder._buildMoveHistoryText();
+  String? get moveHistoryText => controller.recorder._buildMoveHistoryText();
 
-  ExtMove? get lastMove => recorder.lastMove;
+  ExtMove? get lastMove => controller.recorder.lastMove;
 
-  String? get lastPositionWithRemove => recorder.lastPositionWithRemove;
+// TODO: [Calzitem] why isn't the latest _fen representation used?
+  String get lastPositionWithRemove {
+    print("debug old: ${controller.recorder.lastPositionWithRemove}");
+    print("debug fen: $_fen");
+    return _fen;
+    return controller.recorder.lastPositionWithRemove;
+  }
 }

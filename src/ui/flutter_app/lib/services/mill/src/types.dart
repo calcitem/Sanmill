@@ -94,22 +94,23 @@ extension PieceColorExtension on PieceColor {
       case PieceColor.draw:
         return S.of(context).isDraw;
       case PieceColor.nobody:
-        return controller.position.phase.getTip(context);
+        return MillController().position.phase.getTip(context);
       case PieceColor.none:
       case PieceColor.ban:
     }
   }
 
   GameResult get result {
+    final isAi = MillController().gameInstance._isAi[this]!;
     switch (this) {
       case PieceColor.white:
-        if (controller.gameInstance._isAi[this]!) {
+        if (isAi) {
           return GameResult.lose;
         } else {
           return GameResult.win;
         }
       case PieceColor.black:
-        if (controller.gameInstance._isAi[this]!) {
+        if (isAi) {
           return GameResult.lose;
         } else {
           return GameResult.win;
@@ -122,7 +123,9 @@ extension PieceColorExtension on PieceColor {
   }
 
   IconData get icon {
-    return controller.position.phase == Phase.gameOver ? _arrow : _chevron;
+    return MillController().position.phase == Phase.gameOver
+        ? _arrow
+        : _chevron;
   }
 
   IconData get _chevron {
@@ -256,7 +259,7 @@ extension GameResultExtension on GameResult {
   String winString(BuildContext context) {
     switch (this) {
       case GameResult.win:
-        return controller.gameInstance.gameMode == GameMode.humanVsAi
+        return MillController().gameInstance.gameMode == GameMode.humanVsAi
             ? S.of(context).youWin
             : S.of(context).gameOver;
       case GameResult.lose:
@@ -305,22 +308,24 @@ enum HistoryMove { forwardAll, backAll, forward, backN, backOne }
 
 extension HistoryMoveExtension on HistoryMove {
   int gotoHistoryIndex([int? amount]) {
+    final controller = MillController();
+
     switch (this) {
       case HistoryMove.forwardAll:
-        return controller.position.recorder.moveCount - 1;
+        return controller.recorder.moveCount - 1;
       case HistoryMove.backAll:
         return -1;
       case HistoryMove.forward:
-        return controller.position.recorder.cur + 1;
+        return controller.recorder.cur + 1;
       case HistoryMove.backN:
         assert(amount != null);
-        int _index = controller.position.recorder.cur - amount!;
+        int _index = controller.recorder.cur - amount!;
         if (_index < -1) {
           _index = -1;
         }
         return _index;
       case HistoryMove.backOne:
-        return controller.position.recorder.cur - 1;
+        return controller.recorder.cur - 1;
     }
   }
 

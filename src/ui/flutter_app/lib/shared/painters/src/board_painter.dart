@@ -19,7 +19,12 @@
 part of '../painters.dart';
 
 class BoardPainter extends PiecesBasePainter {
-  BoardPainter({required double width}) : super(width: width);
+  BoardPainter({
+    required this.controller,
+    required double width,
+  }) : super(width: width);
+
+  final MillController controller;
 
   @override
   void paint(Canvas canvas, Size size) => _doPaint(canvas, thePaint);

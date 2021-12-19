@@ -19,17 +19,12 @@
 part of './game_page.dart';
 
 class _MoveListDialog extends StatelessWidget {
-  const _MoveListDialog({
-    required this.takeBackCallback,
-    required this.exportGame,
-    Key? key,
-  }) : super(key: key);
-
-  final Function(int) takeBackCallback;
-  final Function(BuildContext context) exportGame;
+  const _MoveListDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = MillController();
+
     final moveHistoryText = controller.position.moveHistoryText!;
     final end = controller.gameInstance.moveHistory.length - 1;
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -61,7 +56,7 @@ class _MoveListDialog extends StatelessWidget {
             S.of(context).copy,
             style: AppTheme.moveHistoryTextStyle,
           ),
-          onPressed: () => exportGame(context),
+          onPressed: () => controller.recorder.export(context),
         ),
         TextButton(
           child: Text(
@@ -80,6 +75,7 @@ class _MoveListDialog extends StatelessWidget {
       builder: (context) => NumberPicker(end: end),
     );
     assert(selectValue != null);
-    takeBackCallback(selectValue!);
+    // ignore: use_build_context_synchronously
+    await HistoryNavigator.takeBackN(context, selectValue!);
   }
 }

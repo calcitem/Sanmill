@@ -18,14 +18,14 @@
 
 part of './game_page.dart';
 
-class _GameResultAlert extends StatelessWidget {
-  _GameResultAlert({
+class GameResultAlert extends StatelessWidget {
+  GameResultAlert({
     required this.winner,
     required this.onRestart,
     Key? key,
   }) : super(key: key);
 
-  final GameMode gameMode = controller.gameInstance.gameMode;
+  final GameMode gameMode = MillController().gameInstance.gameMode;
   final PieceColor winner;
   final VoidCallback onRestart;
 
@@ -39,6 +39,7 @@ class _GameResultAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = MillController();
     controller.position.result = _gameResult;
 
     final String dialogTitle = _gameResult.winString(context);

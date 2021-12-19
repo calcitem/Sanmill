@@ -18,40 +18,64 @@
 
 part of './game_page.dart';
 
-/// Board Tap Callback
-///
-/// This function gets called once a valid [square] on the board has been tapped.
-typedef BoardTapCallback = Future<void> Function(int square);
-
-class _Board extends StatelessWidget {
+class _Board extends StatefulWidget {
   final double width;
   final double height;
-  final BoardTapCallback onBoardTap;
-  final Animation<double> animation;
   static const String _tag = "[board]";
 
   const _Board({
     required this.width,
-    required this.onBoardTap,
-    required this.animation,
   }) : height = width;
 
   @override
+  State<_Board> createState() => _BoardState();
+}
+
+class _BoardState extends State<_Board> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(
+        seconds: LocalDatabaseService.display.animationDuration.toInt(),
+      ),
+    );
+
+    // sqrt(1.618) = 1.272
+    _animation = Tween(begin: 1.27, end: 1.0).animate(_animationController);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final controller = MillController();
+
+    final tapHandler = TapHandler(
+      animationController: _animationController,
+      context: context,
+    );
+
     const padding = AppTheme.boardPadding;
     final _prefs = LocalDatabaseService.preferences;
 
     final customPaint = AnimatedBuilder(
-      animation: animation,
+      animation: _animation,
       builder: (_, child) {
         return CustomPaint(
-          painter: BoardPainter(width: width),
+          painter: BoardPainter(
+            width: widget.width,
+            controller: controller,
+          ),
           foregroundPainter: PiecesPainter(
-            width: width,
+            width: widget.width,
             position: controller.position,
             focusIndex: controller.gameInstance.focusIndex,
             blurIndex: controller.gameInstance.blurIndex,
-            animationValue: animation.value,
+            animationValue: _animation.value,
           ),
           child: child,
         );
@@ -62,8 +86,8 @@ class _Board extends StatelessWidget {
     );
 
     final boardContainer = Container(
-      width: width,
-      height: height,
+      width: widget.width,
+      height: widget.height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppTheme.boardBorderRadius),
         color: LocalDatabaseService.colorSettings.boardBackgroundColor,
@@ -71,39 +95,37 @@ class _Board extends StatelessWidget {
       child: customPaint,
     );
 
-    return RepaintBoundary(
-      child: GestureDetector(
-        child: boardContainer,
-        onTapUp: (d) async {
-          final gridWidth = width - padding * 2;
-          final squareWidth = gridWidth / 7;
-          final dx = d.localPosition.dx;
-          final dy = d.localPosition.dy;
+    return GestureDetector(
+      child: boardContainer,
+      onTapUp: (d) async {
+        final gridWidth = widget.width - padding * 2;
+        final squareWidth = gridWidth / 7;
+        final dx = d.localPosition.dx;
+        final dy = d.localPosition.dy;
 
-          final column = (dx - padding) ~/ squareWidth;
-          if (column < 0 || column > 6) {
-            return logger.v("$_tag Tap on column $column (ignored).");
-          }
+        final column = (dx - padding) ~/ squareWidth;
+        if (column < 0 || column > 6) {
+          return logger.v("${_Board._tag} Tap on column $column (ignored).");
+        }
 
-          final row = (dy - padding) ~/ squareWidth;
-          if (row < 0 || row > 6) {
-            return logger.v("$_tag Tap on row $row (ignored).");
-          }
+        final row = (dy - padding) ~/ squareWidth;
+        if (row < 0 || row > 6) {
+          return logger.v("${_Board._tag} Tap on row $row (ignored).");
+        }
 
-          final index = row * 7 + column;
-          final int? square = indexToSquare[index];
+        final index = row * 7 + column;
+        final int? square = indexToSquare[index];
 
-          if (square == null) {
-            return logger.v(
-              "$_tag Tap not on a square ($row, $column) (ignored).",
-            );
-          }
+        if (square == null) {
+          return logger.v(
+            "${_Board._tag} Tap not on a square ($row, $column) (ignored).",
+          );
+        }
 
-          logger.v("$_tag Tap on ($row, $column) <$index>");
+        logger.v("${_Board._tag} Tap on ($row, $column) <$index>");
 
-          await onBoardTap(square);
-        },
-      ),
+        await tapHandler.onBoardTap(square);
+      },
     );
   }
 }
@@ -272,7 +294,9 @@ class _BoardNotation extends StatelessWidget {
       if (checkPoints[i] == 0) {
         pieceDesc.add(S.of(context).noPoint);
       } else {
-        pieceDesc.add(controller.position.pieceOnGrid(i).pieceName(context));
+        pieceDesc.add(
+          MillController().position.pieceOnGrid(i).pieceName(context),
+        );
       }
     }
 

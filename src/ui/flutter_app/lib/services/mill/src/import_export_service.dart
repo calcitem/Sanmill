@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 /*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
@@ -25,6 +27,40 @@ class _ImportService {
   final MillController controller;
 
   const _ImportService(this.controller);
+
+  Future<void> exportGame(BuildContext context) async {
+    Navigator.pop(context);
+
+    await Clipboard.setData(
+      ClipboardData(text: controller.position.moveHistoryText),
+    );
+
+    ScaffoldMessenger.of(context)
+        .showSnackBarClear(S.of(context).moveHistoryCopied);
+  }
+
+  Future<void> importGame(BuildContext context) async {
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).clearSnackBars();
+
+    final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
+
+    if (data?.text == null) return;
+
+    await HistoryNavigator.takeBackAll(context, pop: false);
+    final importFailedStr = _import(data!.text!);
+
+    if (importFailedStr != null) {
+      return MillController().tip.showTip(
+            S.of(context).cannotImport(importFailedStr),
+            snackBar: true,
+          );
+    }
+
+    await HistoryNavigator.stepForwardAll(context, pop: false);
+
+    MillController().tip.showTip(S.of(context).gameImported, snackBar: true);
+  }
 
   static String? _wmdNotationToMoveString(String wmd) {
     if (wmd.length == 3 && wmd[0] == "x") {
@@ -137,10 +173,10 @@ class _ImportService {
     return false;
   }
 
-// TODO [Leptopoda] make param a List<Move> and change the return type
-  String? import(String moveList) {
+  // TODO [Leptopoda] make param a List<Move> and change the return type
+  String? _import(String moveList) {
     // TODO: [Leptopoda] clean up
-    controller.position.recorder.clear();
+    controller.recorder.clear();
     logger.v("Clipboard text: $moveList");
 
     if (_isDalmaxMoveList(moveList)) {
@@ -195,7 +231,7 @@ class _ImportService {
         i = "$i.";
       }
 
-      // TODO: [Leptopdoa] deduplicate
+      // TODO: [Leptopoda] deduplicate
       if (i.isNotEmpty && !i.endsWith(".")) {
         if (i.length == 5 && i[2] == "x") {
           // "a1xc3"
@@ -244,12 +280,12 @@ class _ImportService {
 
     if (newHistory.isNotEmpty) {
       // TODO: [Leptopoda] clean up
-      controller.position.recorder.moves = newHistory;
+      controller.recorder.moves = newHistory;
     }
   }
 
   String? _importDalmax(String moveList) {
-    return import(moveList.substring(moveList.indexOf("1. ")));
+    return _import(moveList.substring(moveList.indexOf("1. ")));
   }
 
   String? _importPlayOk(String moveList) {
@@ -300,7 +336,7 @@ class _ImportService {
 
     if (newHistory.isNotEmpty) {
       // TODO: [Leptopoda] clean up
-      controller.position.recorder.moves = newHistory;
+      controller.recorder.moves = newHistory;
     }
 
     return null;
@@ -317,6 +353,6 @@ class _ImportService {
       start = 0;
     }
 
-    return import(moveList.substring(start));
+    return _import(moveList.substring(start));
   }
 }

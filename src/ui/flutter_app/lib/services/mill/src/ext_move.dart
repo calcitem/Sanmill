@@ -47,7 +47,7 @@ class ExtMove {
     _checkLegal();
 
     if (move[0] == "-" && move.length == "-(1,2)".length) {
-      // TODO: [Leptopdoa] let [_MoveType] parse the move
+      // TODO: [Leptopoda] let [_MoveType] parse the move
       type = _MoveType.remove;
       from = _fromFile = _fromRank = _invalidMove;
       _toFile = int.parse(move[2]);

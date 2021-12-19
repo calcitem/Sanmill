@@ -18,25 +18,28 @@
 
 part of '../mill.dart';
 
-// TODO: [Leptopoda] add constructor
-final MillController controller = MillController();
-
-// TODO: [Leptopoda] maybe make this a utility class ¿?
 class MillController {
   static const _tag = "[Controller]";
 
   late final _Game gameInstance;
   late final Position position;
   late final Engine engine;
-  // late _GameRecorder recorder;
+  late final HeaderTipState tip;
+  late _GameRecorder recorder;
 
   bool _initialized = false;
   bool get initialized => _initialized;
 
-  MillController() {
-    gameInstance = _Game(this);
+  static final _instance = MillController._();
+
+  factory MillController() => _instance;
+
+  MillController._() {
     position = Position(this);
+    gameInstance = _Game(this);
     engine = NativeEngine(this);
+    // recorder = _GameRecorder(this);
+    tip = HeaderTipState();
   }
 
   Future<void> start() async {
