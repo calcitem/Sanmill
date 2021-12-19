@@ -28,7 +28,7 @@ class GitInformation {
   final String? revision;
 
   /// Construct a [GitInformation] from a [branch] and [revision]
-  GitInformation({required this.branch, required this.revision});
+  const GitInformation({required this.branch, required this.revision});
 }
 
 /// Get the [GitInformation] for the local git repository
