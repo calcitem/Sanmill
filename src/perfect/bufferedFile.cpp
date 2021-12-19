@@ -21,7 +21,7 @@ BufferedFile::BufferedFile(uint32_t nThreads, uint32_t bufSizeInBytes,
                            const char *fileName)
 {
     // locals
-    uint32_t th;
+    uint32_t thd;
 
     // Init blocks
     bufSize = bufSizeInBytes;
@@ -33,11 +33,11 @@ BufferedFile::BufferedFile(uint32_t nThreads, uint32_t bufSizeInBytes,
     bytesInReadBuf = new uint32_t[nThreads];
     bytesInWriteBuf = new uint32_t[nThreads];
 
-    for (th = 0; th < nThreads; th++) {
-        curReadingPtr[th] = 0;
-        curWritingPtr[th] = 0;
-        bytesInReadBuf[th] = 0;
-        bytesInWriteBuf[th] = 0;
+    for (thd = 0; thd < nThreads; thd++) {
+        curReadingPtr[thd] = 0;
+        curWritingPtr[thd] = 0;
+        bytesInReadBuf[thd] = 0;
+        bytesInWriteBuf[thd] = 0;
     }
 
     InitializeCriticalSection(&csIO);
@@ -100,10 +100,10 @@ int64_t BufferedFile::getFileSize()
 //-----------------------------------------------------------------------------
 bool BufferedFile::flushBuffers()
 {
-    for (uint32_t th = 0; th < threadCount; th++) {
-        writeDataToFile(hFile, curWritingPtr[th] - bytesInWriteBuf[th],
-                        bytesInWriteBuf[th], &writeBuf[th * bufSize + 0]);
-        bytesInWriteBuf[th] = 0;
+    for (uint32_t thd = 0; thd < threadCount; thd++) {
+        writeDataToFile(hFile, curWritingPtr[thd] - bytesInWriteBuf[thd],
+                        bytesInWriteBuf[thd], &writeBuf[thd * bufSize + 0]);
+        bytesInWriteBuf[thd] = 0;
     }
 
     return true;
