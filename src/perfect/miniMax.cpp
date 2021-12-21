@@ -38,10 +38,6 @@ MiniMax::MiniMax()
     InitializeCriticalSection(&csDatabase);
     InitializeCriticalSection(&csOsPrint);
 
-    // Thousands separator
-    locale locale("German_Switzerland");
-    cout.imbue(locale);
-
     // for I/O operations per second measurement
     QueryPerformanceFrequency(&frequency);
     nReadSkvOps = 0;
