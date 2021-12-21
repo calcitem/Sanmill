@@ -210,8 +210,8 @@ PerfectAI::PerfectAI(const char *dir)
     stringstream ssPreCalcVarsFilePath;
     PreCalcedVarsFileHeader preCalcVarsHeader;
 
-    //
     threadVars = new ThreadVars[getThreadCount()];
+    std::memset(threadVars, 0, sizeof(ThreadVars) * getThreadCount());
 
     for (uint32_t thd = 0; thd < getThreadCount(); thd++) {
         threadVars[thd].parent = this;

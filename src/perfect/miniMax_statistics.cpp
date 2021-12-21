@@ -110,6 +110,8 @@ bool MiniMax::calcLayerStatistics(char *statisticsFileName)
     text += "succeedingLayers[1]\n";
 
     statsValueCounter = new uint32_t[4 * skvfHeader.LayerCount];
+    std::memset(statsValueCounter, 0,
+                sizeof(uint32_t) * 4 * skvfHeader.LayerCount);
     curCalcActionId = MM_ACTION_CALC_LAYER_STATS;
 
     // calculate and show statistics

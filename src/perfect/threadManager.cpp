@@ -29,8 +29,11 @@ ThreadManager::ThreadManager()
     execCancelled = false;
     threadCount = m_si.dwNumberOfProcessors;
     hThread = new HANDLE[threadCount];
+    std::memset(hThread, 0, sizeof(HANDLE) * threadCount);
     threadId = new DWORD[threadCount];
+    std::memset(threadId, 0, sizeof(DWORD) * threadCount);
     hBarrier = new HANDLE[threadCount];
+    std::memset(hBarrier, 0, sizeof(HANDLE) * threadCount);
     threadPassedBarrierCount = 0;
     termineAllThreads = false;
 
@@ -383,6 +386,7 @@ uint32_t ThreadManager::execParallelLoop(DWORD threadProc(void *pParam,
     SIZE_T dwStackSize = 0;
 
     ForLoop *forLoopParams = new ForLoop[threadCount];
+    std::memset(forLoopParams, 0, sizeof(ForLoop) * threadCount);
 
     // globals
     termineAllThreads = false;

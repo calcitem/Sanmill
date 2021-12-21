@@ -27,11 +27,17 @@ BufferedFile::BufferedFile(uint32_t nThreads, uint32_t bufSizeInBytes,
     bufSize = bufSizeInBytes;
     nThreads = nThreads;
     readBuf = new unsigned char[nThreads * bufSize];
+    std::memset(readBuf, 0, nThreads * bufSize);
     writeBuf = new unsigned char[nThreads * bufSize];
+    std::memset(writeBuf, 0, nThreads * bufSize);
     curWritingPtr = new int64_t[nThreads];
+    std::memset(curWritingPtr, 0, sizeof(int64_t) * nThreads);
     curReadingPtr = new int64_t[nThreads];
+    std::memset(curReadingPtr, 0, sizeof(int64_t) * nThreads);
     bytesInReadBuf = new uint32_t[nThreads];
+    std::memset(bytesInReadBuf, 0, sizeof(uint32_t) * nThreads);
     bytesInWriteBuf = new uint32_t[nThreads];
+    std::memset(bytesInWriteBuf, 0, sizeof(uint32_t) * nThreads);
 
     for (thd = 0; thd < nThreads; thd++) {
         curReadingPtr[thd] = 0;

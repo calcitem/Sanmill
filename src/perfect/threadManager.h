@@ -98,6 +98,7 @@ public:
         {
             this->threadCount = threadCnt;
             this->item = new varType[threadCnt];
+            // std::memset(this->item, 0, sizeof(varType) * threadCnt);
 
             for (uint32_t thd = 0; thd < threadCnt; thd++) {
                 item[thd].curThreadNo = thd;

@@ -831,6 +831,7 @@ void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars,
     float dif;
     uint32_t nBestChoices = 0;
     uint32_t *bestBranches = new uint32_t[maxNumBranches];
+    std::memset(bestBranches, 0, sizeof(uint32_t) * maxNumBranches);
     uint32_t i;
     uint32_t maxBranch;
 

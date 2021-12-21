@@ -40,6 +40,8 @@ bool MiniMax::testLayer(uint32_t layerNumber)
     curCalculatedLayer = layerNumber;
     curCalcActionId = MM_ACTION_TESTING_LAYER;
     TestLayersVars *tlVars = new TestLayersVars[threadManager.getThreadCount()];
+    std::memset(tlVars, 0,
+                sizeof(TestLayersVars) * threadManager.getThreadCount());
 
     for (curThreadNo = 0; curThreadNo < threadManager.getThreadCount();
          curThreadNo++) {
@@ -48,8 +50,14 @@ bool MiniMax::testLayer(uint32_t layerNumber)
         tlVars[curThreadNo].layerNumber = layerNumber;
         tlVars[curThreadNo].statesProcessed = 0;
         tlVars[curThreadNo].subValueInDatabase = new TwoBit[maxNumBranches];
+        std::memset(tlVars[curThreadNo].subValueInDatabase, 0,
+                    sizeof(TwoBit) * maxNumBranches);
         tlVars[curThreadNo].subPlyInfos = new PlyInfoVarType[maxNumBranches];
+        std::memset(tlVars[curThreadNo].subPlyInfos, 0,
+                    sizeof(PlyInfoVarType) * maxNumBranches);
         tlVars[curThreadNo].hasCurPlayerChanged = new bool[maxNumBranches];
+        std::memset(tlVars[curThreadNo].hasCurPlayerChanged, 0,
+                    sizeof(bool) * maxNumBranches);
     }
 
     // process each state in the current layer

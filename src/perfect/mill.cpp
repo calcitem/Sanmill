@@ -101,7 +101,9 @@ void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
     playerOneAI = firstPlayerAI;
     playerTwoAI = secondPlayerAI;
     moveLogFrom = new uint32_t[MOVE_COUNT_MAX];
+    std::memset(moveLogFrom, 0, sizeof(uint32_t) * MOVE_COUNT_MAX);
     moveLogTo = new uint32_t[MOVE_COUNT_MAX];
+    std::memset(moveLogTo, 0, sizeof(uint32_t) * MOVE_COUNT_MAX);
 
     // remember initField
     field.copyBoard(&initField);
@@ -515,7 +517,9 @@ void Mill::undoMove(void)
 {
     // locals
     uint32_t *moveLogFrom_bak = new uint32_t[movesDone];
+    std::memset(moveLogFrom_bak, 0, sizeof(uint32_t) * movesDone);
     uint32_t *moveLogTo_bak = new uint32_t[movesDone];
+    std::memset(moveLogTo_bak, 0, sizeof(uint32_t) * movesDone);
     uint32_t movesDone_bak = movesDone;
     uint32_t i;
 

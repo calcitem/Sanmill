@@ -277,6 +277,7 @@ void MiniMax::openSkvFile(const char *dir, uint32_t branchCountMax)
                                             skvfHeader.LayerCount +
                                         sizeof(SkvFileHeader);
         layerStats = new LayerStats[skvfHeader.LayerCount];
+        std::memset(layerStats, 0, sizeof(LayerStats) * skvfHeader.LayerCount);
         layerStats[0].layerOffset = 0;
 
         for (i = 0; i < skvfHeader.LayerCount; i++) {
@@ -306,6 +307,7 @@ void MiniMax::openSkvFile(const char *dir, uint32_t branchCountMax)
         // read layer stats
     } else {
         layerStats = new LayerStats[skvfHeader.LayerCount];
+        std::memset(layerStats, 0, sizeof(LayerStats) * skvfHeader.LayerCount);
         if (!ReadFile(hFileShortKnotValues, layerStats,
                       sizeof(LayerStats) * skvfHeader.LayerCount, &dwBytesRead,
                       nullptr))
@@ -368,6 +370,7 @@ void MiniMax::openPlyInfoFile(const char *dir)
                                                   plyInfoHeader.LayerCount +
                                               sizeof(plyInfoHeader);
         plyInfos = new PlyInfo[plyInfoHeader.LayerCount];
+        std::memset(plyInfos, 0, sizeof(PlyInfo) * plyInfoHeader.LayerCount);
         plyInfos[0].layerOffset = 0;
 
         for (i = 0; i < plyInfoHeader.LayerCount; i++) {
@@ -391,6 +394,7 @@ void MiniMax::openPlyInfoFile(const char *dir)
         // read layer stats
     } else {
         plyInfos = new PlyInfo[plyInfoHeader.LayerCount];
+        std::memset(plyInfos, 0, sizeof(PlyInfo) * plyInfoHeader.LayerCount);
         if (!ReadFile(hFilePlyInfo, plyInfos,
                       sizeof(PlyInfo) * plyInfoHeader.LayerCount, &dwBytesRead,
                       nullptr))
@@ -553,6 +557,8 @@ void MiniMax::readKnotValueFromDatabase(uint32_t layerNumber,
                 // file into memory, set default value otherwise
                 myLss->shortKnotValueByte =
                     new unsigned char[myLss->sizeInBytes];
+                std::memset(myLss->shortKnotValueByte, 0,
+                            sizeof(unsigned char) * myLss->sizeInBytes);
                 if (myLss->layerIsCompletedAndInFile) {
                     loadBytesFromFile(
                         hFileShortKnotValues,
@@ -642,6 +648,8 @@ void MiniMax::readPlyInfoFromDatabase(uint32_t layerNumber,
                 // if layer is in database and completed, then load layer from
                 // file into memory; set default value otherwise
                 myPis->plyInfo = new PlyInfoVarType[myPis->knotsInLayer];
+                std::memset(myPis->plyInfo, 0,
+                            sizeof(PlyInfoVarType) * myPis->knotsInLayer);
                 if (myPis->plyInfoIsCompletedAndInFile) {
                     loadBytesFromFile(hFilePlyInfo,
                                       plyInfoHeader.headerAndPlyInfosSize +
@@ -803,6 +811,8 @@ void MiniMax::savePlyInfoInDatabase(uint32_t layerNumber, uint32_t stateNumber,
             // reserve memory for this layer & create array for ply info with
             // default value
             myPis->plyInfo = new PlyInfoVarType[myPis->knotsInLayer];
+            std::memset(myPis->plyInfo, 0 /* TODO: defValue */,
+                        sizeof(PlyInfoVarType) * myPis->knotsInLayer);
 
             for (curKnot = 0; curKnot < myPis->knotsInLayer; curKnot++) {
                 myPis->plyInfo[curKnot] = defValue;

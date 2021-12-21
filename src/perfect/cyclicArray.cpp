@@ -24,7 +24,9 @@ CyclicArray::CyclicArray(uint32_t blockSizeInBytes, uint32_t nBlocks,
     blockSize = blockSizeInBytes;
     blockCount = nBlocks;
     readingBlock = new unsigned char[blockSize];
+    std::memset(readingBlock, 0, blockSize);
     writingBlock = new unsigned char[blockSize];
+    std::memset(writingBlock, 0, blockSize);
     curReadingPtr = writingBlock;
     curWritingPtr = writingBlock;
     readWriteInSameRound = true;

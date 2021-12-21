@@ -739,8 +739,14 @@ private:
             *this = master;
             branchArray = new Knot[alphaBetaVars->pMiniMax->maxNumBranches *
                                    alphaBetaVars->pMiniMax->fullTreeDepth];
+            std::memset(branchArray, 0,
+                        sizeof(Knot) * alphaBetaVars->pMiniMax->maxNumBranches *
+                            alphaBetaVars->pMiniMax->fullTreeDepth);
             freqValuesSubMovesBranchWon =
                 new uint32_t[alphaBetaVars->pMiniMax->maxNumBranches];
+            std::memset(freqValuesSubMovesBranchWon, 0,
+                        sizeof(uint32_t) *
+                            alphaBetaVars->pMiniMax->maxNumBranches);
         };
     };
 

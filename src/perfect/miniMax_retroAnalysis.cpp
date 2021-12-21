@@ -411,13 +411,15 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
                                .knotsInLayer;
         retroVars.countArrays[curLayer] =
             new CountArrayVarType[nKnotsInCurLayer];
+        std::memset(retroVars.countArrays[curLayer], 0,
+                    sizeof(CountArrayVarType) * nKnotsInCurLayer);
         memoryUsed2 += nKnotsInCurLayer * sizeof(CountArrayVarType);
         arrayInfos.addArray(retroVars.layersToCalculate[curLayer],
                             ArrayInfo::arrayType_countArray,
                             nKnotsInCurLayer * sizeof(CountArrayVarType), 0);
     }
 
-    // load file if already existend
+    // load file if already existed
     if (GetFileSizeEx(hFileCountArray, &fileSize) &&
         fileSize.QuadPart == retroVars.knotToCalcCount) {
         PRINT(2, this,
