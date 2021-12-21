@@ -443,11 +443,11 @@ PerfectAI::PerfectAI(const char *dir)
                 nPositionsAB[a][b] =
                     mOverN[nSquaresGroupA + nSquaresGroupB][a] *
                     mOverN[nSquaresGroupA + nSquaresGroupB - a][b];
-                origStateAB[a][b] =
-                    new uint32_t[MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B];
+                // TODO(calcitem): Size is related to
+                // PerfectAI::getNumberOfKnotsInLayer
+                origStateAB[a][b] = new uint32_t[8 * 1024 * 1024];
                 std::memset(origStateAB[a][b], 0,
-                            sizeof(uint32_t) * MAX_ANZ_POSITION_A *
-                                MAX_ANZ_POSITION_B);
+                            sizeof(uint32_t) * 8 * 1024 * 1024);
                 nPositionsAB[a][b] = 0;
             }
         }
