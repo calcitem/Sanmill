@@ -30,7 +30,11 @@ const uint32_t startTestFromLayer = 0;
 
 const uint32_t endTestAtLayer = LAYER_COUNT - 1;
 
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI_CALCULATE_DATABASE
+const bool calculateDatabase = true;
+#else
 const bool calculateDatabase = false;
+#endif
 
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI_TEST
 int main(void)
