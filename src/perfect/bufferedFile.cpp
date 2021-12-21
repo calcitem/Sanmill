@@ -190,9 +190,12 @@ bool BufferedFile::writeBytes(uint32_t nBytes, unsigned char *pData)
 bool BufferedFile::writeBytes(uint32_t threadNo, int64_t positionInFile,
                               uint32_t nBytes, unsigned char *pData)
 {
+#if 0
+    // TODO(calcitem): Use ThreadManager.threadCount instead of threadCount
     // params ok?
     if (threadNo >= threadCount)
         return false;
+#endif
 
     if (pData == nullptr)
         return false;
