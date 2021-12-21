@@ -505,7 +505,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
 
         // process layer ...
         if (!succCalculated[layerNumber]) {
-            // prepare params for multithreading
+            // prepare params for multi threading
             succCalculated[layerNumber] = true;
             stateProcessedCount = 0;
             ThreadManager::ThreadVarsArray<AddNumSucceedersVars> tva(
@@ -524,7 +524,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
                 PRINT(0, this,
                       "\n****************************************\nMain "
                       "thread: "
-                      "Execution cancelled by "
+                      "Execution canceled by "
                       "user!\n****************************************\n");
                 return false;
             default:
@@ -702,6 +702,11 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, uint32_t index)
         long curCountLong, newCountLong;
 
         do {
+#if 0
+            cout << "predState.stateNumber = " << predState.stateNumber << endl;
+            cout << "pCountValue = " << pCountValue << endl;
+#endif
+
             curCountLong = *pCountValue;
             long temp = (curCountLong & mask) >> nBitsToShift;
             countValue = (CountArrayVarType)temp;
