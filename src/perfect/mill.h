@@ -44,13 +44,13 @@ private:
     // Variables
 
     // array containing the history of moves done
-    uint32_t *moveLogFrom, *moveLogTo, movesDone;
+    uint32_t *moveLogFrom {nullptr}, *moveLogTo {nullptr}, movesDone {0};
 
     // class-pointer to the AI of player one
-    MillAI *playerOneAI;
+    MillAI *playerOneAI {nullptr};
 
     // class-pointer to the AI of player two
-    MillAI *playerTwoAI;
+    MillAI *playerTwoAI {nullptr};
 
     // current board
     fieldStruct field;
@@ -61,10 +61,10 @@ private:
 
     // playerId of the player who has won the game. zero if game is still
     // running.
-    int winner;
+    int winner {0};
 
     // playerId of the player who makes the first move
-    int beginningPlayer;
+    int beginningPlayer {0};
 
     // Functions
     void exit();

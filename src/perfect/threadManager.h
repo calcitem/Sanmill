@@ -41,31 +41,34 @@ private:
     // structures
     struct ForLoop
     {
-        uint32_t schedType;
-        int increment;
-        int initValue;
-        int finalValue;
-        void *pParam;
+        uint32_t schedType {0};
+        int increment {0};
+        int initValue {0};
+        int finalValue {0};
+        void *pParam {nullptr};
         DWORD(*threadProc)
         (void *pParam, uint32_t index); // pointer to the user function
                                         // to be executed by the threads
-        ThreadManager *threadManager;
+        ThreadManager *threadManager {nullptr};
     };
 
     // Variables
-    uint32_t threadCount; // number of threads
-    HANDLE *hThread;      // array of size 'threadCount' containing the thread
-                          // handles
-    DWORD *threadId; // array of size 'threadCount' containing the thread ids
-    bool termineAllThreads;
-    bool execPaused;    // switch for the
-    bool execCancelled; // true when cancelExec() was called
+    uint32_t threadCount {0};  // number of threads
+    HANDLE *hThread {nullptr}; // array of size 'threadCount' containing the
+                               // thread
+                               // handles
+    DWORD *threadId {nullptr}; // array of size 'threadCount' containing the
+                               // thread ids
+    bool termineAllThreads {false};
+    bool execPaused {false};    // switch for the
+    bool execCancelled {false}; // true when cancelExec() was called
 
     // barrier stuff
-    HANDLE hEventBarrierPassedByEverybody;
-    HANDLE *hBarrier; // array of size 'threadCount' containing the event
-                      // handles for the barrier
-    uint32_t threadPassedBarrierCount;
+    HANDLE hEventBarrierPassedByEverybody {nullptr};
+    HANDLE *hBarrier {nullptr}; // array of size 'threadCount' containing the
+                                // event
+                                // handles for the barrier
+    uint32_t threadPassedBarrierCount {0};
     CRITICAL_SECTION csBarrier;
 
     // functions
@@ -75,7 +78,7 @@ public:
     class ThreadVarsArrayItem
     {
     public:
-        uint32_t curThreadNo;
+        uint32_t curThreadNo {0};
 
         virtual void initElement() { }
 
@@ -88,8 +91,8 @@ public:
     class ThreadVarsArray
     {
     public:
-        uint32_t threadCount;
-        varType *item;
+        uint32_t threadCount {0};
+        varType *item {nullptr};
 
         ThreadVarsArray(uint32_t threadCnt, varType &master)
         {

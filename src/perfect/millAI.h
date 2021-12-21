@@ -31,25 +31,27 @@ class Player
 {
 public:
     // static
-    int id;
+    int id {0};
 
     // static
-    uint32_t warning;
+    uint32_t warning {0};
 
     // number of pieces of this player on the board
-    uint32_t pieceCount;
+    uint32_t pieceCount {0};
 
     // number of pieces, which where stolen by the opponent
-    uint32_t removedPiecesCount;
+    uint32_t removedPiecesCount {0};
 
     // amount of possible moves
-    uint32_t possibleMovesCount;
+    uint32_t possibleMovesCount {0};
 
     // source board position of a possible move
-    Square posFrom[POSIBILE_MOVE_COUNT_MAX];
+    // TODO(calcitem): {SQUARE_INVALID}
+    Square posFrom[POSIBILE_MOVE_COUNT_MAX] {SQUARE_NB};
 
     // target board position of a possible move
-    Square posTo[POSIBILE_MOVE_COUNT_MAX];
+    // TODO(calcitem): {SQUARE_INVALID}
+    Square posTo[POSIBILE_MOVE_COUNT_MAX] {SQUARE_NB};
 
     void copyPlayer(Player *dest);
 };
@@ -84,34 +86,34 @@ public:
     // variables
 
     // one of the values above for each board position
-    int board[SQUARE_NB];
+    int board[SQUARE_NB] {0};
 
     // array containing the warnings for each board position
-    uint32_t warnings[SQUARE_NB];
+    uint32_t warnings[SQUARE_NB] {0};
 
     // true if piece can be moved in this direction
-    bool isPieceMovable[SQUARE_NB][MD_NB];
+    bool isPieceMovable[SQUARE_NB][MD_NB] {{false}};
 
     // the number of mills, of which this piece is part of
-    uint32_t piecePartOfMillCount[SQUARE_NB];
+    uint32_t piecePartOfMillCount[SQUARE_NB] {0};
 
     // static array containing the index of the neighbor or "size"
-    uint32_t connectedSquare[SQUARE_NB][4];
+    uint32_t connectedSquare[SQUARE_NB][4] {{0}};
 
     // static array containing the two neighbors of each squares
-    uint32_t neighbor[SQUARE_NB][2][2];
+    uint32_t neighbor[SQUARE_NB][2][2] {{{0}}};
 
     // number of pieces placed in the placing phase
-    uint32_t piecePlacedCount;
+    uint32_t piecePlacedCount {0};
 
     // true if piecePlacedCount < 18
-    bool isPlacingPhase;
+    bool isPlacingPhase {false};
 
     // number of pieces which must be removed by the current player
-    uint32_t pieceMustBeRemovedCount;
+    uint32_t pieceMustBeRemovedCount {0};
 
     // pointers to the current and opponent player
-    Player *curPlayer, *oppPlayer;
+    Player *curPlayer {nullptr}, *oppPlayer {nullptr};
 
     // useful functions
     void printBoard();

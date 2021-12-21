@@ -23,31 +23,31 @@ private:
     HANDLE hFile; // Handle of the file
     // Array of size [blockSize] containing the data of the block, where reading
     // is taking place
-    unsigned char *readingBlock;
+    unsigned char *readingBlock {nullptr};
 
     // ''
-    unsigned char *writingBlock;
+    unsigned char *writingBlock {nullptr};
 
     // pointer to the byte which is currently read
-    unsigned char *curReadingPtr;
+    unsigned char *curReadingPtr {nullptr};
 
     // ''
-    unsigned char *curWritingPtr;
+    unsigned char *curWritingPtr {nullptr};
 
     // size in bytes of a block
-    uint32_t blockSize;
+    uint32_t blockSize {0};
 
     // index of the block, where reading is taking place
-    uint32_t curReadingBlock;
+    uint32_t curReadingBlock {0};
 
     // index of the block, where writing is taking place
-    uint32_t curWritingBlock;
+    uint32_t curWritingBlock {0};
 
     // amount of blocks
-    uint32_t blockCount;
+    uint32_t blockCount {0};
 
     // true if curReadingBlock > curWritingBlock, false otherwise
-    bool readWriteInSameRound;
+    bool readWriteInSameRound {false};
 
     // Functions
     void writeDataToFile(HANDLE hFile, int64_t offset, uint32_t sizeInBytes,
