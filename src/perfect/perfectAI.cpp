@@ -316,9 +316,11 @@ PerfectAI::PerfectAI(const char *dir)
             for (b = 0; b <= PIECE_PER_PLAYER_COUNT; b++) {
                 if (a + b > nSquaresGroupA + nSquaresGroupB)
                     continue;
-                origStateAB[a][b] = new uint32_t[nPositionsAB[a][b]];
+                origStateAB[a][b] =
+                    new uint32_t[MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B];
                 std::memset(origStateAB[a][b], 0,
-                            sizeof(uint32_t) * nPositionsAB[a][b]);
+                            sizeof(uint32_t) * MAX_ANZ_POSITION_A *
+                                MAX_ANZ_POSITION_B);
                 if (!ReadFile(hFilePreCalcVars, origStateAB[a][b],
                               sizeof(uint32_t) * nPositionsAB[a][b],
                               &dwBytesRead, nullptr))
@@ -331,9 +333,11 @@ PerfectAI::PerfectAI(const char *dir)
             for (b = 0; b <= PIECE_PER_PLAYER_COUNT; b++) {
                 if (a + b > nSquaresGroupC + nSquaresGroupD)
                     continue;
-                origStateCD[a][b] = new uint32_t[nPositionsCD[a][b]];
+                origStateCD[a][b] =
+                    new uint32_t[MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B];
                 std::memset(origStateCD[a][b], 0,
-                            sizeof(uint32_t) * nPositionsCD[a][b]);
+                            sizeof(uint32_t) * MAX_ANZ_POSITION_A *
+                                MAX_ANZ_POSITION_B);
                 if (!ReadFile(hFilePreCalcVars, origStateCD[a][b],
                               sizeof(uint32_t) * nPositionsCD[a][b],
                               &dwBytesRead, nullptr))
@@ -439,9 +443,11 @@ PerfectAI::PerfectAI(const char *dir)
                 nPositionsAB[a][b] =
                     mOverN[nSquaresGroupA + nSquaresGroupB][a] *
                     mOverN[nSquaresGroupA + nSquaresGroupB - a][b];
-                origStateAB[a][b] = new uint32_t[nPositionsAB[a][b]];
+                origStateAB[a][b] =
+                    new uint32_t[MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B];
                 std::memset(origStateAB[a][b], 0,
-                            sizeof(uint32_t) * nPositionsAB[a][b]);
+                            sizeof(uint32_t) * MAX_ANZ_POSITION_A *
+                                MAX_ANZ_POSITION_B);
                 nPositionsAB[a][b] = 0;
             }
         }
@@ -481,7 +487,7 @@ PerfectAI::PerfectAI(const char *dir)
                 if (a + b > nSquaresGroupA + nSquaresGroupB)
                     continue;
 
-                // mark orig state
+                // mark original state
                 indexAB[stateAB] = nPositionsAB[a][b];
                 origStateAB[a][b][nPositionsAB[a][b]] = stateAB;
 
@@ -500,6 +506,10 @@ PerfectAI::PerfectAI(const char *dir)
                 origStateCD_tmp[a][b] =
                     new uint32_t[mOverN[nSquaresGroupC + nSquaresGroupD][a] *
                                  mOverN[nSquaresGroupC + nSquaresGroupD - a][b]];
+                std::memset(origStateCD_tmp[a][b], 0,
+                            sizeof(uint32_t) *
+                                mOverN[nSquaresGroupC + nSquaresGroupD][a] *
+                                mOverN[nSquaresGroupC + nSquaresGroupD - a][b]);
                 nPositionsCD[a][b] = 0;
             }
         }
@@ -593,9 +603,13 @@ PerfectAI::PerfectAI(const char *dir)
             for (b = 0; b <= PIECE_PER_PLAYER_COUNT; b++) {
                 if (a + b > nSquaresGroupC + nSquaresGroupD)
                     continue;
-                origStateCD[a][b] = new uint32_t[nPositionsCD[a][b]];
+                origStateCD[a][b] =
+                    new uint32_t[mOverN[nSquaresGroupC + nSquaresGroupD][a] *
+                                 mOverN[nSquaresGroupC + nSquaresGroupD - a][b]];
                 std::memset(origStateCD[a][b], 0,
-                            sizeof(uint32_t) * nPositionsCD[a][b]);
+                            sizeof(uint32_t) *
+                                mOverN[nSquaresGroupC + nSquaresGroupD][a] *
+                                mOverN[nSquaresGroupC + nSquaresGroupD - a][b]);
                 for (i = 0; i < nPositionsCD[a][b]; i++)
                     origStateCD[a][b][i] = origStateCD_tmp[a][b][i];
                 SAFE_DELETE_ARRAY(origStateCD_tmp[a][b]);
