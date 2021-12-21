@@ -213,9 +213,16 @@ PerfectAI::PerfectAI(const char *dir)
         threadVars[thd].parent = this;
         threadVars[thd].field = &dummyField;
         threadVars[thd].possibilities = new Possibility[TREE_DEPTH_MAX + 1];
+        std::memset(threadVars[thd].possibilities, 0,
+                    sizeof(Possibility) * (TREE_DEPTH_MAX + 1));
         threadVars[thd].oldStates = new Backup[TREE_DEPTH_MAX + 1];
+        std::memset(threadVars[thd].oldStates, 0,
+                    sizeof(Backup) * (TREE_DEPTH_MAX + 1));
         threadVars[thd].idPossibilities =
             new uint32_t[(TREE_DEPTH_MAX + 1) * POSIBILE_MOVE_COUNT_MAX];
+        std::memset(threadVars[thd].idPossibilities, 0,
+                    sizeof(uint32_t) *
+                        ((TREE_DEPTH_MAX + 1) * POSIBILE_MOVE_COUNT_MAX));
     }
 
     // Open File, which contains the precalculated vars
@@ -306,6 +313,8 @@ PerfectAI::PerfectAI(const char *dir)
                 if (a + b > nSquaresGroupA + nSquaresGroupB)
                     continue;
                 origStateAB[a][b] = new uint32_t[nPositionsAB[a][b]];
+                std::memset(origStateAB[a][b], 0,
+                            sizeof(uint32_t) * nPositionsAB[a][b]);
                 if (!ReadFile(hFilePreCalcVars, origStateAB[a][b],
                               sizeof(uint32_t) * nPositionsAB[a][b],
                               &dwBytesRead, nullptr))
@@ -319,6 +328,8 @@ PerfectAI::PerfectAI(const char *dir)
                 if (a + b > nSquaresGroupC + nSquaresGroupD)
                     continue;
                 origStateCD[a][b] = new uint32_t[nPositionsCD[a][b]];
+                std::memset(origStateCD[a][b], 0,
+                            sizeof(uint32_t) * nPositionsCD[a][b]);
                 if (!ReadFile(hFilePreCalcVars, origStateCD[a][b],
                               sizeof(uint32_t) * nPositionsCD[a][b],
                               &dwBytesRead, nullptr))
@@ -425,6 +436,8 @@ PerfectAI::PerfectAI(const char *dir)
                     mOverN[nSquaresGroupA + nSquaresGroupB][a] *
                     mOverN[nSquaresGroupA + nSquaresGroupB - a][b];
                 origStateAB[a][b] = new uint32_t[nPositionsAB[a][b]];
+                std::memset(origStateAB[a][b], 0,
+                            sizeof(uint32_t) * nPositionsAB[a][b]);
                 nPositionsAB[a][b] = 0;
             }
         }
@@ -577,6 +590,8 @@ PerfectAI::PerfectAI(const char *dir)
                 if (a + b > nSquaresGroupC + nSquaresGroupD)
                     continue;
                 origStateCD[a][b] = new uint32_t[nPositionsCD[a][b]];
+                std::memset(origStateCD[a][b], 0,
+                            sizeof(uint32_t) * nPositionsCD[a][b]);
                 for (i = 0; i < nPositionsCD[a][b]; i++)
                     origStateCD[a][b][i] = origStateCD_tmp[a][b][i];
                 SAFE_DELETE_ARRAY(origStateCD_tmp[a][b]);

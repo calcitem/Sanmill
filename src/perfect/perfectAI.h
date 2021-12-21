@@ -83,111 +83,111 @@ protected:
     // struct
     struct SubLayer
     {
-        uint32_t minIndex;
-        uint32_t maxIndex;
-        uint32_t nWhitePiecesGroupCD;
-        uint32_t nBlackPiecesGroupCD;
-        uint32_t nWhitePiecesGroupAB;
-        uint32_t nBlackPiecesGroupAB;
+        uint32_t minIndex {0};
+        uint32_t maxIndex {0};
+        uint32_t nWhitePiecesGroupCD {0};
+        uint32_t nBlackPiecesGroupCD {0};
+        uint32_t nWhitePiecesGroupAB {0};
+        uint32_t nBlackPiecesGroupAB {0};
     };
 
     struct Layer
     {
-        uint32_t whitePieceCount;
-        uint32_t blackPieceCount;
-        uint32_t subLayerCount;
+        uint32_t whitePieceCount {0};
+        uint32_t blackPieceCount {0};
+        uint32_t subLayerCount {0};
         uint32_t subLayerIndexAB[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
-                                [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
+                                [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{0}};
         uint32_t subLayerIndexCD[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
-                                [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
-        SubLayer subLayer[SUB_LAYER_COUNT_MAX];
+                                [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{0}};
+        SubLayer subLayer[SUB_LAYER_COUNT_MAX] {};
     };
 
     struct Possibility
     {
-        uint32_t from[POSIBILE_MOVE_COUNT_MAX];
-        uint32_t to[POSIBILE_MOVE_COUNT_MAX];
+        uint32_t from[POSIBILE_MOVE_COUNT_MAX] {0};
+        uint32_t to[POSIBILE_MOVE_COUNT_MAX] {0};
     };
 
     struct Backup
     {
-        float floatValue;
-        TwoBit shortValue;
-        bool gameHasFinished;
-        bool isPlacingPhase;
-        int fieldFrom, fieldTo; // value of board
-        uint32_t from, to;      // index of board
-        uint32_t curPieceCount, oppPieceCount;
-        uint32_t curPosMoves, oppPosMoves;
-        uint32_t curMissPieces, oppMissPieces;
-        uint32_t piecePlacedCount;
-        uint32_t pieceMustBeRemovedCount;
-        uint32_t piecePartOfMillCount[SQUARE_NB];
-        Player *curPlayer, *oppPlayer;
+        float floatValue {0.0f};
+        TwoBit shortValue {0};
+        bool gameHasFinished {false};
+        bool isPlacingPhase {false};
+        int fieldFrom {0}, fieldTo {0}; // value of board
+        uint32_t from {0}, to {0};      // index of board
+        uint32_t curPieceCount {0}, oppPieceCount {0};
+        uint32_t curPosMoves {0}, oppPosMoves {0};
+        uint32_t curMissPieces {0}, oppMissPieces {0};
+        uint32_t piecePlacedCount {0};
+        uint32_t pieceMustBeRemovedCount {0};
+        uint32_t piecePartOfMillCount[SQUARE_NB] {0};
+        Player *curPlayer {nullptr}, *oppPlayer {nullptr};
     };
 
     // preCalcedVars.dat
     struct PreCalcedVarsFileHeader
     {
-        uint32_t sizeInBytes;
+        uint32_t sizeInBytes {0};
     };
 
     // constant variables for state addressing in the database
 
     // the layers
-    Layer layer[LAYER_COUNT];
+    Layer layer[LAYER_COUNT] {0};
 
     // indices of layer [moving/placing phase][number of white pieces][number of
     // black pieces]
     uint32_t layerIndex[2][PIECE_PER_PLAYER_PLUS_ONE_COUNT]
-                       [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
+                       [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{{0}}};
 
     uint32_t nPositionsCD[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
-                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
+                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{0}};
 
     uint32_t nPositionsAB[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
-                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
+                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{0}};
 
-    uint32_t indexAB[MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B];
+    uint32_t indexAB[MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B] {0};
 
-    uint32_t indexCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D];
+    uint32_t indexCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D] {0};
 
     // index of symmetry operation used to get from the orig state to the
     // current one
-    unsigned char symOpCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D];
+    unsigned char symOpCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D] {0};
 
     // 3^0, 3^1, 3^2, ...
-    uint32_t powerOfThree[nSquaresGroupC + nSquaresGroupD];
+    uint32_t powerOfThree[nSquaresGroupC + nSquaresGroupD] {0};
 
     // Matrix used for application of the symmetry operations
-    uint32_t symOpTable[SO_COUNT][SQUARE_NB];
+    uint32_t symOpTable[SO_COUNT][SQUARE_NB] {{0}};
 
     uint32_t *origStateCD[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
-                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
+                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{0}};
 
     uint32_t *origStateAB[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
-                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT];
+                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{0}};
 
     // index of the reverse symmetry operation
-    uint32_t reverseSymOp[SO_COUNT];
+    uint32_t reverseSymOp[SO_COUNT] {0};
 
     // symmetry operation, which is identical to applying those two in the index
-    uint32_t concSymOp[SO_COUNT][SO_COUNT];
+    uint32_t concSymOp[SO_COUNT][SO_COUNT] {{0}};
 
     // m over n
-    uint32_t mOverN[SQUARE_NB + 1][SQUARE_NB + 1];
+    uint32_t mOverN[SQUARE_NB + 1][SQUARE_NB + 1] {{0}};
 
     // contains the value of the situation, which will be achieved by that move
-    unsigned char moveValue[SQUARE_NB * SQUARE_NB];
+    unsigned char moveValue[SQUARE_NB * SQUARE_NB] {0};
 
     // contains the value of the situation, which will be achieved by that move
-    unsigned short plyInfoForOutput[SQUARE_NB * SQUARE_NB];
+    unsigned short plyInfoForOutput[SQUARE_NB * SQUARE_NB] {0};
 
     // contains the number of ...
-    uint32_t incidencesValuesSubMoves[SQUARE_NB * SQUARE_NB][4];
+    uint32_t incidencesValuesSubMoves[SQUARE_NB * SQUARE_NB][4] {{0}};
 
     // array for state numbers
-    uint32_t symStateNumberArray[SO_COUNT];
+    uint32_t symStateNumberArray[SO_COUNT] {0};
 
     // dir containing the database files
     string databaseDir;
@@ -197,35 +197,35 @@ protected:
     {
     public:
         // pointer of the current board [changed by move()]
-        fieldStruct *field;
+        fieldStruct *field {nullptr};
 
         // value of current situation for board->curPlayer
-        float floatValue;
+        float floatValue {0.0f};
 
-        TwoBit shortValue;
+        TwoBit shortValue {0};
 
         // someone has won or current board is full
-        bool gameHasFinished;
+        bool gameHasFinished {false};
 
         // id of the player who called the play()-function
-        int ownId;
+        int ownId {0};
 
         // current level
-        uint32_t curSearchDepth;
+        uint32_t curSearchDepth {0};
 
         // search depth where the whole tree is explored
-        uint32_t fullTreeDepth;
+        uint32_t fullTreeDepth {0};
 
         // returned pointer of getPossibilities()-function
-        uint32_t *idPossibilities;
+        uint32_t *idPossibilities {nullptr};
 
         // for undo()-function
-        Backup *oldStates;
+        Backup *oldStates {nullptr};
 
         // for getPossNormalMove()-function
-        Possibility *possibilities;
+        Possibility *possibilities {nullptr};
 
-        PerfectAI *parent;
+        PerfectAI *parent {nullptr};
 
         // constructor
         ThreadVars();
