@@ -181,11 +181,15 @@ uint32_t squareIdxGroupB[8] = {4, 13, 19, 10};
 uint32_t squareIdxGroupC[] = {0, 2, 23, 21, 6, 8, 17, 15};
 uint32_t squareIdxGroupD[] = {1, 7, 14, 12, 22, 16, 9, 11};
 
-uint32_t fieldPosIsOfGroup[] = {GROUP_C, GROUP_D, GROUP_C, GROUP_A, GROUP_B,
-                                GROUP_A, GROUP_C, GROUP_D, GROUP_C, GROUP_D,
-                                GROUP_B, GROUP_D, GROUP_D, GROUP_B, GROUP_D,
-                                GROUP_C, GROUP_D, GROUP_C, GROUP_A, GROUP_B,
-                                GROUP_A, GROUP_C, GROUP_D, GROUP_C};
+// clang-format off
+uint32_t fieldPosIsOfGroup[] = { GROUP_C,                GROUP_D,                GROUP_C,
+                                         GROUP_A,        GROUP_B,        GROUP_A,
+                                                 GROUP_C,GROUP_D,GROUP_C,
+                                 GROUP_D,GROUP_B,GROUP_D,        GROUP_D,GROUP_B,GROUP_D,
+                                                 GROUP_C,GROUP_D,GROUP_C,
+                                         GROUP_A,        GROUP_B,        GROUP_A,
+                                 GROUP_C,                GROUP_D,                GROUP_C };
+// clang-format on
 
 //-----------------------------------------------------------------------------
 // PerfectAI()
