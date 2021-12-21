@@ -23,10 +23,10 @@ class MyString
 {
 private:
     // variables
-    WCHAR *strW = nullptr;
-    char *strA = nullptr;
-    size_t length = 0;
-    size_t reserved = 0;
+    WCHAR *strW {nullptr};
+    char *strA {nullptr};
+    size_t length {0};
+    size_t reserved {0};
 
     // functions
 

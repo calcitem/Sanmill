@@ -216,31 +216,31 @@ public:
     struct SkvFileHeader
     {
         // true if all states have been calculated
-        bool completed;
+        bool completed {false};
 
         // number of layers
-        uint32_t LayerCount;
+        uint32_t LayerCount {0};
 
         // = SKV_FILE_HEADER_CODE
-        uint32_t headerCode;
+        uint32_t headerCode {0};
 
         // size in bytes of this struct plus the stats
-        uint32_t headerAndStatsSize;
+        uint32_t headerAndStatsSize {0};
     };
 
     struct PlyInfoFileHeader
     {
         // true if ply info has been calculated for all game states
-        bool plyInfoCompleted;
+        bool plyInfoCompleted {false};
 
         // number of layers
-        uint32_t LayerCount;
+        uint32_t LayerCount {0};
 
         // = PLYINFO_HEADER_CODE
-        uint32_t headerCode;
+        uint32_t headerCode {0};
 
         // size in bytes of this struct plus...
-        uint32_t headerAndPlyInfosSize;
+        uint32_t headerAndPlyInfosSize {0};
     };
 
     // this struct is created for each layer
@@ -248,116 +248,116 @@ public:
     {
         // the array plyInfo[] exists in memory. does not necessary mean that it
         // contains only valid values
-        bool plyInfoIsLoaded;
+        bool plyInfoIsLoaded {false};
 
         // the array plyInfo[] contains only fully calculated valid values
-        bool plyInfoIsCompletedAndInFile;
+        bool plyInfoIsCompletedAndInFile {false};
 
         // position of this struct in the ply info file
-        int64_t layerOffset;
+        int64_t layerOffset {0};
 
         // size of this struct plus the array plyInfo[]
-        uint32_t sizeInBytes;
+        uint32_t sizeInBytes {0};
 
         // number of knots of the corresponding layer
         StateNumberVarType knotsInLayer;
 
         // array of size [knotsInLayer] containing the ply info for each knot in
         // this layer
-        PlyInfoVarType *plyInfo;
+        PlyInfoVarType *plyInfo {nullptr};
 
         // compressed array containing the ply info for each knot in this layer
         // compressorClass::compressedArrayClass* plyInfoCompressed;
 
-        void *plyInfoCompressed; // dummy pointer for padding
+        void *plyInfoCompressed {nullptr}; // dummy pointer for padding
     };
 
     struct LayerStats
     {
         // the array shortKnotValueByte[] exists in memory. does not necessary
         // mean that it contains only valid values
-        bool layerIsLoaded;
+        bool layerIsLoaded {false};
 
         // the array shortKnotValueByte[] contains only fully calculated valid
         // values
-        bool layerIsCompletedAndInFile;
+        bool layerIsCompletedAndInFile {false};
 
         // position of this struct in the short knot value file
-        int64_t layerOffset;
+        int64_t layerOffset {0};
 
         // number of succeeding layers. states of other layers are connected by
         // a move of a player
-        uint32_t succeedingLayerCount;
+        uint32_t succeedingLayerCount {0};
 
         // array containing the layer ids of the succeeding layers
-        uint32_t succeedingLayers[PRED_LAYER_COUNT_MAX];
+        uint32_t succeedingLayers[PRED_LAYER_COUNT_MAX] {0};
 
         // layer id relevant when switching current and opponent player
-        uint32_t partnerLayer;
+        uint32_t partnerLayer {0};
 
         // number of knots of the corresponding layer
-        StateNumberVarType knotsInLayer;
+        StateNumberVarType knotsInLayer {0};
 
         // number of won states in this layer
-        StateNumberVarType wonStateCount;
+        StateNumberVarType wonStateCount {0};
 
         // number of lost states in this layer
-        StateNumberVarType lostStateCount;
+        StateNumberVarType lostStateCount {0};
 
         // number of drawn states in this layer
-        StateNumberVarType drawnStateCount;
+        StateNumberVarType drawnStateCount {0};
 
         // number of invalid states in this layer
-        StateNumberVarType invalidStateCount;
+        StateNumberVarType invalidStateCount {0};
 
         // (knotsInLayer + 3) / 4
-        uint32_t sizeInBytes;
+        uint32_t sizeInBytes {0};
 
         // array of size [sizeInBytes] containing the short knot values
-        TwoBit *shortKnotValueByte;
+        TwoBit *shortKnotValueByte {nullptr};
 
         // compressed array containing the short knot values
         // compressorClass::compressedArrayClass* skvCompressed;
 
         // dummy pointer for padding
-        void *skvCompressed;
+        void *skvCompressed {nullptr};
     };
 
     struct StateAdress
     {
-        StateNumberVarType stateNumber; // state id within the corresponding
-                                        // layer
-        unsigned char layerNumber;      // layer id
+        StateNumberVarType stateNumber {0}; // state id within the corresponding
+                                            // layer
+        unsigned char layerNumber {0};      // layer id
     };
 
     struct Knot
     {
-        bool isOpponentLevel;      // the current considered knot belongs to an
-                                   // opponent game state
-        float floatValue;          // Value of knot (for normal mode)
-        TwoBit shortValue;         // Value of knot (for database)
-        uint32_t bestMoveId;       // for calling class
-        uint32_t bestBranch;       // branch with highest value
-        uint32_t possibilityCount; // number of branches
-        PlyInfoVarType plyInfo;    // number of moves till win/lost
-        Knot *branches;            // pointer to branches
+        bool isOpponentLevel {false};  // the current considered knot belongs to
+                                       // an opponent game state
+        float floatValue {0.0f};       // Value of knot (for normal mode)
+        TwoBit shortValue {0};         // Value of knot (for database)
+        uint32_t bestMoveId {0};       // for calling class
+        uint32_t bestBranch {0};       // branch with highest value
+        uint32_t possibilityCount {0}; // number of branches
+        PlyInfoVarType plyInfo;        // number of moves till win/lost
+        Knot *branches {nullptr};      // pointer to branches
     };
 
     struct RetroAnalysisPredVars
     {
-        uint32_t predStateNumbers;
-        uint32_t predLayerNumbers;
-        uint32_t predSymOp;
-        bool playerToMoveChanged;
+        uint32_t predStateNumbers {0};
+        uint32_t predLayerNumbers {0};
+        uint32_t predSymOp {0};
+        bool playerToMoveChanged {false};
     };
 
     struct ArrayInfo
     {
-        uint32_t type;
-        int64_t sizeInBytes;
-        int64_t compressedSizeInBytes;
-        uint32_t belongsToLayer;
-        uint32_t updateCounter;
+        uint32_t type {0};
+        int64_t sizeInBytes {0};
+        int64_t compressedSizeInBytes {0};
+        uint32_t belongsToLayer {0};
+        uint32_t updateCounter {0};
 
         static const uint32_t arrayType_invalid = 0;
         static const uint32_t arrayType_knotAlreadyCalculated = 1;
@@ -371,21 +371,21 @@ public:
 
     struct ArrayInfoChange
     {
-        uint32_t itemIndex;
-        ArrayInfo *arrayInfo;
+        uint32_t itemIndex {0};
+        ArrayInfo *arrayInfo {nullptr};
     };
 
     struct ArrayInfoContainer
     {
-        MiniMax *c;
-        list<ArrayInfoChange> arrayInfosToBeUpdated;
+        MiniMax *c {nullptr};
+        list<ArrayInfoChange> arrayInfosToBeUpdated {};
 
         // [itemIndex]
-        list<ArrayInfo> listArrays;
+        list<ArrayInfo> listArrays {};
 
         // [layerNumber*ArrayInfo::arrayTypeCount + type]
 
-        vector<list<ArrayInfo>::iterator> vectorArrays;
+        vector<list<ArrayInfo>::iterator> vectorArrays {};
 
         void addArray(uint32_t layerNumber, uint32_t type, int64_t size,
                       int64_t compressedSize);

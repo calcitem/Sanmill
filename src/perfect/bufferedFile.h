@@ -21,33 +21,33 @@ private:
     // Variables
 
     // Handle of the file
-    HANDLE hFile;
+    HANDLE hFile {nullptr};
 
     // number of threads
-    uint32_t threadCount;
+    uint32_t threadCount {0};
 
     // Array of size [threadCount*blockSize] containing the data of the block,
     // where reading is taking place
-    unsigned char *readBuf;
+    unsigned char *readBuf {nullptr};
 
     // '' - access by [threadNo*bufSize+position]
-    unsigned char *writeBuf;
+    unsigned char *writeBuf {nullptr};
 
     // Array of size [threadCount] with pointers to the byte which is currently
     // read
-    int64_t *curReadingPtr;
+    int64_t *curReadingPtr {nullptr};
     // ''
-    int64_t *curWritingPtr;
+    int64_t *curWritingPtr {nullptr};
 
-    uint32_t *bytesInReadBuf;
+    uint32_t *bytesInReadBuf {nullptr};
 
-    uint32_t *bytesInWriteBuf;
+    uint32_t *bytesInWriteBuf {nullptr};
 
     // size in bytes of a buf
-    uint32_t bufSize;
+    uint32_t bufSize {0};
 
     // size in bytes
-    int64_t fileSize;
+    int64_t fileSize {0};
 
     CRITICAL_SECTION csIO;
 
