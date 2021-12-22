@@ -974,10 +974,6 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "fonts": "글꼴",
-  "@fonts": {
-    "description": "Fonts"
-  },
   "showAnalysisGraph": "분석 그래프 표시",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
