@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Отмяна на",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Отмяна на опцията",
   "@undoOption": {
     "description": "Undo option"
