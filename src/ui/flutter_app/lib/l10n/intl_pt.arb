@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "Demissão de AI se a maioria perder",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "Mova-se aleatoriamente",
   "@shufflingEnabled": {
     "description": "Random move"
