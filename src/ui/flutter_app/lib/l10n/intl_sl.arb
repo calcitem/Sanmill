@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Možnost Razveljavi",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Premik lahko razveljavite.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
