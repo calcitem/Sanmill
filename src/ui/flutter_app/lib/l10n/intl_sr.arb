@@ -300,10 +300,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "Име играча",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "О томе",
   "@about": {
     "description": "About"
