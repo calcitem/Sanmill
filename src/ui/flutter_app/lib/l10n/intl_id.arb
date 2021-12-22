@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Gerakan putar ulang otomatis",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "Anda berada di akhir daftar pemindahan.",
   "@atEnd": {
     "description": "At the end of the move list."
