@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "startRecording": "Mulai merekam",
-  "@startRecording": {
-    "description": "Start recording"
-  },
   "recording": "Merekam...",
   "@recording": {
     "description": "Recording..."
