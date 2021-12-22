@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "Det finns tre pjäser på en linje.",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "Välj din pjäs som ska flyttas.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
