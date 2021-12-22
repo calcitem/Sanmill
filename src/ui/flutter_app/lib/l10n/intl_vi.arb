@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "Ba quân cờ trên một đường thẳng.",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "Vui lòng chọn cầm đồ của riêng bạn để di chuyển.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
