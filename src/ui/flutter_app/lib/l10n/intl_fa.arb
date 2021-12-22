@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "اعلامیه های شخص ثالث",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "نسخه برنامه",
   "@appVersion": {
     "description": "App Version"
