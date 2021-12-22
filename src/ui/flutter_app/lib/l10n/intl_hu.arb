@@ -300,10 +300,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "Játékos neve",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "Az alkalmazásról",
   "@about": {
     "description": "About"
