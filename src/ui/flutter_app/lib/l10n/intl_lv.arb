@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "openingBook": "Atklāšanas grāmata",
-  "@openingBook": {
-    "description": "Opening Book"
-  },
   "misc": "Dažādi",
   "@misc": {
     "description": "Miscellaneous"
