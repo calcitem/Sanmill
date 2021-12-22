@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Batalkan opsi",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Dimungkinkan untuk membatalkan gerakan.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
