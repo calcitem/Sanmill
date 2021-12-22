@@ -300,10 +300,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "Ponovno zaženete trenutno igro?",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "O spletni strani",
   "@about": {
     "description": "About"
