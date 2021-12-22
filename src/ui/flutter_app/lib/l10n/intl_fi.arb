@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Peruuta vaihtoehto",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Siirto on mahdollista peruuttaa.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
