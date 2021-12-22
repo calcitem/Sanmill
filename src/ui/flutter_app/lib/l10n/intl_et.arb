@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "openingBook": "Avamisraamat",
-  "@openingBook": {
-    "description": "Opening Book"
-  },
   "misc": "Mitmesugused",
   "@misc": {
     "description": "Miscellaneous"
