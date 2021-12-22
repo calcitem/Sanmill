@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "ಒಂದು ಸಾಲಿನಲ್ಲಿ ಮೂರು ತುಣುಕುಗಳಿವೆ.",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "ಸರಿಸಲು ನಿಮ್ಮ ತುಣುಕು ಆಯ್ಕೆಮಾಡಿ.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
