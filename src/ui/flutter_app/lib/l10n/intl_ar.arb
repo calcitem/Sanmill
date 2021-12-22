@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "الغاء التحميل",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "خيار التراجع",
   "@undoOption": {
     "description": "Undo option"
