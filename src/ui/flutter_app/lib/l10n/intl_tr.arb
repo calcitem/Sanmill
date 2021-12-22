@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Geri alma",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Seçeneği geri al",
   "@undoOption": {
     "description": "Undo option"
