@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "openingBook": "Отварање књиге",
-  "@openingBook": {
-    "description": "Opening Book"
-  },
   "misc": "Остало",
   "@misc": {
     "description": "Miscellaneous"
