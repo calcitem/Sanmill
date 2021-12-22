@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "Khai báo của bên thứ ba",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "Phiên bản ứng dụng",
   "@appVersion": {
     "description": "App Version"
