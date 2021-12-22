@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "অটো পুনরায় প্লে চালান",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "আপনি সরানো তালিকার শেষে রয়েছেন।",
   "@atEnd": {
     "description": "At the end of the move list."
