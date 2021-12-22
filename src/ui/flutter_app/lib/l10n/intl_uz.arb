@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "showRecording": "Yozuvni ko'rsatish",
-  "@showRecording": {
-    "description": "Show recording"
-  },
   "noRecording": "Yozuv yo‘q.",
   "@noRecording": {
     "description": "No recording."
