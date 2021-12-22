@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Visszavonási lehetőség",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Lehetőség egy lépés visszavonására.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
