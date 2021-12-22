@@ -750,10 +750,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Undo",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Undo option",
   "@undoOption": {
     "description": "Undo option"
