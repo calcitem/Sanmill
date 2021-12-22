@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "残局库自学习",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "使用开局库",
   "@openingBook": {
     "description": "Opening Book"
