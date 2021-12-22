@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Opção de desfazer",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "É possível desfazer um movimento.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
