@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Automatické přehrávání tahů",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "Na konci seznamu přesunutí.",
   "@atEnd": {
     "description": "At the end of the move list."
