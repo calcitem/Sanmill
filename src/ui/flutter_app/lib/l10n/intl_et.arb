@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "Kolmanda osapoole teated",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "Rakenduse versioon",
   "@appVersion": {
     "description": "App Version"
