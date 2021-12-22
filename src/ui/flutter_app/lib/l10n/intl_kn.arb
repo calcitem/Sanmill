@@ -974,10 +974,6 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "fonts": "ಫಾಂಟ್‌ಗಳು",
-  "@fonts": {
-    "description": "Fonts"
-  },
   "showAnalysisGraph": "ವಿಶ್ಲೇಷಣೆ ಗ್ರಾಫ್ ತೋರಿಸಿ",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
