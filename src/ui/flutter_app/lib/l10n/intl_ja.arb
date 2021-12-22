@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "そして",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "コンセント",
   "@undoOption": {
     "description": "Undo option"
