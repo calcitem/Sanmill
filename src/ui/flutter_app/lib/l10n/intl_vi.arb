@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "showRecording": "Ghi âm phát lại",
-  "@showRecording": {
-    "description": "Show recording"
-  },
   "noRecording": "Không tua lại.",
   "@noRecording": {
     "description": "No recording."
