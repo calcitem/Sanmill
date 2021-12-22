@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption_Detail": "కదలికను చర్యరద్దు చేయడం సాధ్యమే.",
-  "@undoOption_Detail": {
-    "description": "It is possible to undo a move."
-  },
   "takeBack": "వెనక్కి తీసుకో",
   "@takeBack": {
     "description": "Take back"
