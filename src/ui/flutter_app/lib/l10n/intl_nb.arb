@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Automatisk avspilling av bevegelser",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "Du er på slutten av trekklisten.",
   "@atEnd": {
     "description": "At the end of the move list."
