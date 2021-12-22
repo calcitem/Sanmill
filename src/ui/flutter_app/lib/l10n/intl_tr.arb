@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "Çoğu Kaybederse AI İstifa Et",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "rastgele hareket",
   "@shufflingEnabled": {
     "description": "Random move"
