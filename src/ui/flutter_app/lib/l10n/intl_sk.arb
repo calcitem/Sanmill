@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Automatické prehrávanie ťahov",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "Ste na konci zoznamu ťahov.",
   "@atEnd": {
     "description": "At the end of the move list."
