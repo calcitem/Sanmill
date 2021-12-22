@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "제 3 자 선언",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "앱 버전",
   "@appVersion": {
     "description": "App Version"
