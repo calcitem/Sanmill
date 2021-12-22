@@ -172,10 +172,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "गर्भपात",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "विचारधारा...",
   "@thinking": {
     "description": "Thinking..."
