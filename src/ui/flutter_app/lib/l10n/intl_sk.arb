@@ -300,10 +300,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "Reštartovať aktuálnu hru?",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "O stránke",
   "@about": {
     "description": "About"
