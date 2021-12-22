@@ -76,10 +76,6 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "copyright": "Të drejtat e autorit © 2021 Studio Calcitem",
-  "@copyright": {
-    "description": "Copyright"
-  },
   "tipSelectWrong": "Zgjidhni pjesën e gabuar.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
