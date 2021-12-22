@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "Vienā līnijā ir trīs figūras.",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "Izvēlieties savu figūru, ko pārvietot.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
