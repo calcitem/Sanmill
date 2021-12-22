@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Отмяна на опцията",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Възможно е да отмените даден ход.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
