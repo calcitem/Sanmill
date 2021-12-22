@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "Harmadik fél közleményei",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "App verzió",
   "@appVersion": {
     "description": "App Version"
