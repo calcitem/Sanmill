@@ -76,10 +76,6 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "copyright": "Mualliflik huquqi © 2021 Calcitem Studio",
-  "@copyright": {
-    "description": "Copyright"
-  },
   "tipSelectWrong": "Noto'g'ri qismni tanlang.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
