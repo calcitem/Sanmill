@@ -300,10 +300,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "phân tích",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "Tên người chơi",
   "@about": {
     "description": "About"
