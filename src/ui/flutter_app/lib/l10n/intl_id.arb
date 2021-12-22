@@ -300,10 +300,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "Restart the current game?",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "About",
   "@about": {
     "description": "About"
