@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "startRecording": "Starta inspelning",
-  "@startRecording": {
-    "description": "Start recording"
-  },
   "recording": "Inspelning...",
   "@recording": {
     "description": "Recording..."
