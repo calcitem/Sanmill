@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption_Detail": "কোনও পদক্ষেপ পূর্বাবস্থায় ফেলা সম্ভব।",
-  "@undoOption_Detail": {
-    "description": "It is possible to undo a move."
-  },
   "takeBack": "প্রত্যাহার করা",
   "@takeBack": {
     "description": "Take back"
