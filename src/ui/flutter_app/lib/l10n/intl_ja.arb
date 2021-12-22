@@ -974,10 +974,6 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "fonts": "フォント",
-  "@fonts": {
-    "description": "Fonts"
-  },
   "showAnalysisGraph": "分析グラフを表示する",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
