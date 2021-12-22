@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "শিখুন এন্ডগেম",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "খোলার বই",
   "@openingBook": {
     "description": "Opening Book"
