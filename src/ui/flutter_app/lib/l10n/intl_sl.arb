@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "V liniji so tri figure.",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "Izberite figuro, ki jo želite premakniti.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
