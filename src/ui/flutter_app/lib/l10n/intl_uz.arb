@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Bekor qilish",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Bekor qilish opsiyasi",
   "@undoOption": {
     "description": "Undo option"
