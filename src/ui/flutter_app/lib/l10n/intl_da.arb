@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Fortryd",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Mulighed for at fortryde",
   "@undoOption": {
     "description": "Undo option"
