@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "stopRecording": "Ufhöre ufznäh",
-  "@stopRecording": {
-    "description": "Stop recording"
-  },
   "showRecording": "Ufnahm ahzeige",
   "@showRecording": {
     "description": "Show recording"
