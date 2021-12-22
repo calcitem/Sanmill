@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "તૃતીય-પક્ષ સૂચનાઓ",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "એપ્લિકેશન સંસ્કરણ",
   "@appVersion": {
     "description": "App Version"
