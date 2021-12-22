@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "Di chuyển máy ngẫu nhiên",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "Thư viện trò chơi tự học",
   "@openingBook": {
     "description": "Opening Book"
