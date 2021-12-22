@@ -974,10 +974,6 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "fonts": "Γραμματοσειρές",
-  "@fonts": {
-    "description": "Fonts"
-  },
   "showAnalysisGraph": "Εμφάνιση γραφήματος ανάλυσης",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
