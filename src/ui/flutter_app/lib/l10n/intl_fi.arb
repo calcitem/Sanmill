@@ -1,1256 +1,1271 @@
 {
-    "@@locale": "fi",
-    "appName": "Mill",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Tervetuloa",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "Kyllä",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Ei",
-    "@no": {
-        "description": "No"
-    },
-    "game": "Peli",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Ihminen tekoälyä vastaan",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Ihminen ihmistä vastaan",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "AI Vs AI",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Ihminen vastaan pilvi",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Ihminen vastaan LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Testi LAN:n kautta",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Siirrä",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " Moves",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Siirtolista",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Siirtolista",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Ei tietuetta",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "OK",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "Vahvista",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "Peruuta",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Copyright © 2021 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Valitse väärä kappale.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Aseta palat paikoilleen.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Et voi sijoittaa sitä tähän.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Sinä sijoitit.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Poista pala.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Et voi poistaa sitä.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Sinä poistit.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Siirrä pala.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Et voi sijoittaa nappulaa tähän.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Et voi siirtää nappulaa tähän.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Mylly! Ota vastustajan nappula.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Jatka vastustajan nappulan ottamista.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Valitse yksi vastustajan nappuloista.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Et voi poistaa nappulaa myllystä.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "Kappale voi liikkua 1 pisteen verran.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Et voi siirtää vastustajan nappuloita.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "Rivissä on kolme nappulaa.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Valitse siirrettävä nappula.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "Sinulla on kolme nappulaa jäljellä.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Voit siirtyä mihin tahansa kohtaan.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " Siirtyäksesi.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "Pelaaja 1 voittaa!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "Pelaaja 2 voittaa!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Voitti",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "Hävinnyt",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "Keskeytetty",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Ajattelen...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "Uusi peli",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Tuo peli",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Vie peli",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Leikepöydältä tuotu peli.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Ei voi tuoda",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Liikkeet ja säännöt eivät täsmää.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Aloita tallennus",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Tallennus...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Lopeta tallennus",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Näytä tallennus",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "Ei tallennusta.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Odota.",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Käynnistätkö nykyisen pelin uudelleen?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Käynnistä uudelleen",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "Peli alkoi, aseta",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Analysointi ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "Virhe",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "Voittosuhde",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "Pisteet",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "Pelaaja 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "Pelaaja 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " Kappalemäärä on alle kolme.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " eroaa.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " ei ole oikea tapa lähteä.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "Lauta on täynnä, eikä mitään keinoa jatkaa.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Aika loppui",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "Siirtovaiheessa yhtään nappulaa ei ole poistettu viimeisen tietyn siirtomäärän aikana.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "Se on tasapeli, koska lauta on täynnä.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "Se on tasapeli kolminkertaisen toiston vuoksi.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "Peli on ohi! Tuntematon syy.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "Game Over",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "Sinä voitit! Onnittelut!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "Haastatko vaikeamman tason? Uusi taso on taso ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "Hävisit!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "Analysoi",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "Käynnistätkö nykyisen pelin uudelleen?",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "Tietoja",
-    "@about": {
-        "description": "About"
-    },
-    "version": "Versio",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "Kiitos",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Asetukset",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Asetukset",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "Asetukset",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Vaikeustaso",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "Tekoälyn ajatteluaika",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Vaikeustaso",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Äänitehosteet",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "Äänien toistaminen pelissä",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Pidä mykkä, kun otat takaisin",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Ääni",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Ensimmäinen siirto",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Ihminen",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "AI",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "Vaihtoehtoinen",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "Automaattinen pelin uudelleenkäynnistys, kun peli on ohi",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Vaihda ensimmäinen siirto automaattisesti",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "Tekoäly eroaa, jos useimmat häviävät",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Satunnainen siirto",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Opi loppupeli",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Avauskirja",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "Miscellaneous",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "Säännöt",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Kunkin pelaajan nappuloiden määrä",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Kuinka monta nappulaa kullakin pelaajalla on?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Lentävän nappulan numero",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "Jos lentäminen on käytössä, kun pelaajan nappulamäärä vähenee tiettyyn lukumäärään, hänen nappulansa voivat vapaasti siirtyä mihin tahansa tyhjään pisteeseen sen sijaan, että ne olisivat rajoitettuja viereisiin pisteisiin, kuten muussa pelissä.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Vähintään nappuloita",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Diagonaaliviivat",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Lisää pelilaudalle neljä vinoviivaa.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Merkitse ja viivytä nappuloiden poistamista",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "Sijoitusvaiheessa poistettujen nappuloiden pisteitä ei voi enää sijoittaa.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Toinen pelaaja siirtyy ensin",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Pelaaja, joka liikkuu toisena sijoitusvaiheessa, liikkuu ensimmäisenä siirtovaiheessa.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Monta poistoa",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Jos pelaaja sulkee useamman kuin yhden myllyn kerralla, hän poistaa suljettujen myllyjen määrän.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Myllyjen tuhoaminen",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "Oletusarvoisesti pelaajien on ensin poistettava kaikki muut nappulat ennen nappulan poistamista muodostetusta myllystä. Ota tämä vaihtoehto käyttöön, jos haluat poistaa rajoituksen käytöstä.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Toinen pelaaja häviää, kun lauta on täynnä.",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Kun lauta on täynnä sijoitusvaiheen lopussa, ensimmäisenä sijoittava osapuoli häviää pelin. Muussa tapauksessa peli on tasapeli.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Häviää, kun ei ole laillisia siirtoja",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Pelaaja häviää, jos hänen vastustajansa estää ne niin, ettei niitä voi siirtää. Vaihda puoli siirtoon, jos tämä vaihtoehto on poistettu käytöstä.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Lentävä",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Jos pelaajalla on jäljellä vain kolme tai neljä (määritettävissä olevaa) nappulaa, hän voi siirtää nappulan mihin tahansa vapaaseen pisteeseen.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "N-siirron sääntö",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "Peli päättyy tasapeliin, jos kumpikaan pelaaja ei ole poistanut nappulaa tietyn määrän siirtoja aikana.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Rollback",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "Valitse",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "Kopioi",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Siirtohistoria kopioidaan leikepöydälle",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Ohje",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Palaute",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "Poistu",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Sääntöasetukset",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "Väri",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Taulun väri",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Kappaleen väri",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Taustan väri",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Pelilaudan viivan väri",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Pelaajan 1 palan väri",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Pelaajan 2 palan väri",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Viestin väri",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "AI on laiska",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Näytä kädessä olevien nappuloiden määrä",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Näytä merkinnät laudalla",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Näytä historian navigointityökalurivi",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "Näytä",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Laudan reunaviivan leveys",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Laudan sisäisen viivan leveys",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Kappaleen leveys",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "Fontin koko",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "WMD-merkintä",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Palauta",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Palauta oletusasetukset",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "Sovellus poistuu.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "Sinun on suljettava sovellus välittömästi ja avattava se uudelleen, jotta se tulee voimaan.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Valitse",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "Info",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "Vihje",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "pelaaja",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "Pelaaja 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "Pelaaja 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Pelaaminen",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Aseta nappula paikalleen napauttamalla mitä tahansa käytettävissä olevaa pistettä.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Siirrä nappulaa napauttamalla sitä.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Siirrä nappulaa napauttamalla nappulaan liittyvää pistettä.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Napauta vastustajan yhtä nappulaa poistaaksesi sen.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Sinun on ensin luotava mylly, ennen kuin voit poistaa kappaleen.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Sinun on pelattava kappaleillasi.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "Tilastot",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Pelejä yhteensä",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "Tulokset",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Ei voi poistaa myllystä.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "vasen",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Yksityisyyden suoja",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Lue huolellisesti ja varmista, että ymmärrät tämän täysin ja hyväksyt sen ",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Jos et hyväksy tätä käytäntöä, älä käytä tätä sovellusta. Sovelluksen käyttäminen tarkoittaa, että hyväksyt nämä ehdot.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " ja ",
-    "accept": "Hyväksyn",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "Kumoa",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "Peruuta vaihtoehto",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Siirto on mahdollista peruuttaa.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Ota takaisin",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Takaisin ottaminen",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Odottaminen",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Astu eteenpäin",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Ota kaikki takaisin",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Vaihe eteenpäin kaikki",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Siirtykää nyt",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Valmis.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Crack-mill",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "Jos pelaajalla on vain paloja myllyissä, myllyissä olevat palat eivät lukitu poistettaviksi.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Animaation kesto",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Ei ole",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Teema",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Pelin tavoitteena on jättää vastustajalle vähemmän kuin kolme nappulaa tai ei yhtään laillista siirtoa.\n\nPeli päättyy automaattisesti tasapeliin, jos asema esiintyy kolmannen kerran tai ei poista viimeisen 100 (määritettävissä olevan) siirron aikana.\n\nPeli etenee kolmessa vaiheessa:\n\n1. Asetetaan nappuloita vapaisiin pisteisiin.\n2. Kappaleiden siirtäminen viereisiin pisteisiin\n3. (valinnainen vaihe) nappuloiden siirtäminen mihin tahansa tyhjään pisteeseen, kun pelaaja on vähentänyt pelaajamääränsä kolmeen nappulaan.\n\nSijoittaminen\n\nPeli alkaa tyhjällä pelilaudalla, joka koostuu ruudukosta, jossa on kaksikymmentäneljä pistettä. Pelaajat asettavat vuorotellen nappulansa tyhjiin pisteisiin, kunnes jokainen pelaaja on asettanut kaikki nappulat pelilaudalle. Jos pelaaja saa asetettua kolme nappulaansa suoraan, hänellä on \"\"mylly\"\" ja hän voi poistaa yhden vastustajan nappulan pelilaudalta.\n\nJoissakin säännöissä pelaajien on ensin poistettava kaikki muut nappulat, ennen kuin he voivat poistaa nappulan muodostuneesta myllystä.\n\nJoissakin säännöissä ei voi sijoitusvaiheessa sijoittaa kappaleita uudelleen poistettujen kappaleiden pisteisiin.\n\nKun olet käyttänyt kaikki palat, pelaajat siirtyvät vuorotellen.\n\nLiikkuminen\n\nSiirtääkseen pelaaja siirtää yhden nappulansa laudan linjaa pitkin vapaaseen viereiseen pisteeseen. Jos hän ei pysty tähän, hän on hävinnyt pelin. Kuten sijoitusvaiheessa, pelaaja, joka asettaa kolme nappulaansa pelilaudan linjalle, saa myllyn ja voi poistaa yhden vastustajan nappulan. Jos pelaajalla on vain kaksi nappulaa, hänellä ei ole mahdollisuutta muodostaa uusia myllyjä ja hän häviää pelin. Pelaaja voi hävitä myös silloin, kun hänellä on enemmän kuin kolme nappulaa, jos hänen vastustajansa estää häntä liikkumasta.\n\nLentävä\n\nJoissakin sääntömuunnelmissa, kun pelaajalla on enää kolme nappulaa jäljellä, hänen nappulansa voivat lentää, hyppiä tai hypätä mihin tahansa vapaaseen pisteeseen, ei vain vierekkäisiin pisteisiin.\n",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "Versiotiedot",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "Lisenssi",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Lähdekoodi",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Kolmannen osapuolen ilmoitukset",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "Sovelluksen versio",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "Yleinen",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "Advanced",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "Sijoittaminen",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Siirtäminen",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Poistaminen",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "Pelin loppuminen",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "Tekoälyn pelityyli",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Passiivinen",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "Aikakatkaisu",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Personointi",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "Kehittäjille",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Kehittäjätila",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Hyödynnä inhimillistä kokemusta",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Ota huomioon kappaleiden liikkuvuus",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Palojen määrä",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "kädessä",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "laudalla",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "Laudan siirtäminen ylhäältäpäin",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Nyt ei ole tekoälyn vuoro.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "Tekoäly ei ajattele.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Automaattinen uudelleenpeluu siirtyy",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "Olet siirtolistasi lopussa.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Poistu napauttamalla uudelleen takaisin.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Ympäristömuuttujat",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Lisää",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Se on kokeellinen ominaisuus.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Kokeilut",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Avoimen lähdekoodin lisenssit",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Kieli",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "Oletuskieli",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Kappaleet voivat liikkua sijoitusvaiheessa",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Pelissä ei ole erillisiä sijoitus- ja siirtovaiheita, eli pelaajat voivat jokaisella siirrolla päättää, haluavatko he sijoittaa nappulan pelilaudalle vai siirtää yhden nappulansa (kunhan heillä on jäljellä nappuloita sijoitettavaksi).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Valikon väri",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Valikon tekstin väri",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Valikon taustaväri",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Valikon kohokohdan väri",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Päätyökalurivin taustaväri",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "päätyökalurivin kuvakkeen väri",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Navigointityökalurivin taustaväri",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Navigointityökalurivin kuvakkeen väri",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Piilota työkalurivi automaattisesti",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Työkalupalkin sijainti näytöllä",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Alkuun",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Pohja",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Keskusta",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Yksivärinen",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Kuva",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Valitse kuvasi",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Kevyt",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "Tumma",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Teemat",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Nykyinen teema",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Tallenna teema",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "Fontit",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Näytä analyysikaavio",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Analyysi",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "Tallentaa pelin",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Lataa peli",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "Asennusasento",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Näytä lailliset siirrot",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Näytä viimeinen siirto",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Näytä nuolet",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "Kappaleita",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Näytä analyysi",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Langat",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "Ota mukaan",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Auta parantamaan käännöksiä",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "Opetusohjelma",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Classic Mill",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Sekoitettu mylly",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Ceylon Mill",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Mylly voidaan rikkoa ja tehdä uudelleen toistuvasti",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Jos pelaaja rikkoo myllyn uuden myllyn luomiseksi välittömästi, pelaaja voi siirtää tällaisen kappaleen takaisin alkuperäiseen risteykseen seuraavalla liikkeellään, jos se tekee uuden myllyn.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Peli vedetään, jos pelaajalla on kolme nappulaa ja kymmenen siirron jälkeen kumpikaan pelaaja ei poista vastustajan nappuloita",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kun pelaaja on pudonnut kolmeen nappulaan eikä kumpikaan pelaaja voi poistaa vastustajan nappulaa kymmenen siirron sisällä, peli on tasapeli.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "kiinni",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Valkoinen pala",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "Musta pala",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Kieltokohta",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "Tyhjä kohta",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Ei järkeä",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Sijoitusvaihe",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Muuttovaihe",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Lentävä vaihe",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Sivu liikkua",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Viimeinen liike",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Valittu",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Päävalikko",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Esteettömyys",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Näytönlukuohjelman tuki",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "Se on tasapeli",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "Tasapeli",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Kappaleen korostusväri",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "Algoritmi",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "Poista sijoittamaton kappale",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Jos pelaaja muodostaa myllyn sijoitusvaiheessa, hän poistaa vastustajan sijoittamattoman palan ja jatkaa siirtoa.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "Loppupelin N-Move-sääntö",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Jos kummallakin pelaajalla on vain kolme palaa ja kumpikaan pelaaja ei poista palaa tietyn liikkeen sisällä, peli arvotaan.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Kummallakin pelaajalla on vain kolme palaa, eikä kumpikaan pelaaja poista palaa tietyn liikkeen sisällä.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Kolminkertainen toistosääntö",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Peli arvotaan, jos asema sijoittuu kolmatta kertaa.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Mill! Jatka liikkeen tekemistä.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Point -tyyli",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Pisteen leveys",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Kiinteä",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Ontto",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "Suomalainen",
-    "@languageName": {
-        "description": "The name of the current language"
+  "@@locale": "fi",
+  "appName": "Mill",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Tervetuloa",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Kyllä",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Ei",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Peli",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Ihminen tekoälyä vastaan",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Ihminen ihmistä vastaan",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI Vs AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Ihminen vastaan pilvi",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Ihminen vastaan LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Testi LAN:n kautta",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Siirrä",
+  "@move": {
+    "description": "Move"
+  },
+  "moves": " Moves",
+  "@moves": {
+    "description": " Moves"
+  },
+  "showMoveList": "Siirtolista",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Siirtolista",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Ei tietuetta",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Vahvista",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Peruuta",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "copyright": "Copyright © 2021 Calcitem Studio",
+  "@copyright": {
+    "description": "Copyright"
+  },
+  "tipSelectWrong": "Valitse väärä kappale.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Aseta palat paikoilleen.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Et voi sijoittaa sitä tähän.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Sinä sijoitit.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Poista pala.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Et voi poistaa sitä.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Sinä poistit.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Siirrä pala.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Et voi sijoittaa nappulaa tähän.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Et voi siirtää nappulaa tähän.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Mylly! Ota vastustajan nappula.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Jatka vastustajan nappulan ottamista.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Valitse yksi vastustajan nappuloista.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Et voi poistaa nappulaa myllystä.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Kappale voi liikkua 1 pisteen verran.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Et voi siirtää vastustajan nappuloita.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipThreePiecesInLine": "Rivissä on kolme nappulaa.",
+  "@tipThreePiecesInLine": {
+    "description": "There are 3 pieces in a line."
+  },
+  "tipSelectPieceToMove": "Valitse siirrettävä nappula.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Sinulla on kolme nappulaa jäljellä.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Voit siirtyä mihin tahansa kohtaan.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": " Siirtyäksesi.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Pelaaja 1 voittaa!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Pelaaja 2 voittaa!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Voitti",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Hävinnyt",
+  "@lost": {
+    "description": "Lost"
+  },
+  "aborted": "Keskeytetty",
+  "@aborted": {
+    "description": "Aborted"
+  },
+  "thinking": "Ajattelen...",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Uusi peli",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Tuo peli",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Vie peli",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Leikepöydältä tuotu peli.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Ei voi tuoda",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Liikkeet ja säännöt eivät täsmää.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "startRecording": "Aloita tallennus",
+  "@startRecording": {
+    "description": "Start recording"
+  },
+  "recording": "Tallennus...",
+  "@recording": {
+    "description": "Recording..."
+  },
+  "stopRecording": "Lopeta tallennus",
+  "@stopRecording": {
+    "description": "Stop recording"
+  },
+  "showRecording": "Näytä tallennus",
+  "@showRecording": {
+    "description": "Show recording"
+  },
+  "noRecording": "Ei tallennusta.",
+  "@noRecording": {
+    "description": "No recording."
+  },
+  "pleaseWait": "Odota.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Käynnistätkö nykyisen pelin uudelleen?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Käynnistä uudelleen",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Peli alkoi, aseta",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Analysointi ...",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Virhe",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Voittosuhde",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Pisteet",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Pelaaja 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Pelaaja 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": " Kappalemäärä on alle kolme.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": " eroaa.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": " ei ole oikea tapa lähteä.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Lauta on täynnä, eikä mitään keinoa jatkaa.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Aika loppui",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "Siirtovaiheessa yhtään nappulaa ei ole poistettu viimeisen tietyn siirtomäärän aikana.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Se on tasapeli, koska lauta on täynnä.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Se on tasapeli kolminkertaisen toiston vuoksi.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Peli on ohi! Tuntematon syy.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Game Over",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Sinä voitit! Onnittelut!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Haastatko vaikeamman tason? Uusi taso on taso ",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Hävisit!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Analysoi",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "playerName": "Käynnistätkö nykyisen pelin uudelleen?",
+  "@playerName": {
+    "description": "Player Name"
+  },
+  "about": "Tietoja",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Versio",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Kiitos",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Asetukset",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Asetukset",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "Asetukset",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "Vaikeustaso",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Tekoälyn ajatteluaika",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Vaikeustaso",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Äänitehosteet",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Äänien toistaminen pelissä",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Pidä mykkä, kun otat takaisin",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Ääni",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Ensimmäinen siirto",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Ihminen",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Vaihtoehtoinen",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Automaattinen pelin uudelleenkäynnistys, kun peli on ohi",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Vaihda ensimmäinen siirto automaattisesti",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "resignIfMostLose": "Tekoäly eroaa, jos useimmat häviävät",
+  "@resignIfMostLose": {
+    "description": "AI Resign if Most Lose"
+  },
+  "shufflingEnabled": "Satunnainen siirto",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "learnEndgame": "Opi loppupeli",
+  "@learnEndgame": {
+    "description": "Learn Endgame"
+  },
+  "openingBook": "Avauskirja",
+  "@openingBook": {
+    "description": "Opening Book"
+  },
+  "misc": "Miscellaneous",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Säännöt",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Kunkin pelaajan nappuloiden määrä",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Kuinka monta nappulaa kullakin pelaajalla on?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Lentävän nappulan numero",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Jos lentäminen on käytössä, kun pelaajan nappulamäärä vähenee tiettyyn lukumäärään, hänen nappulansa voivat vapaasti siirtyä mihin tahansa tyhjään pisteeseen sen sijaan, että ne olisivat rajoitettuja viereisiin pisteisiin, kuten muussa pelissä.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Vähintään nappuloita",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Diagonaaliviivat",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Lisää pelilaudalle neljä vinoviivaa.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Merkitse ja viivytä nappuloiden poistamista",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "Sijoitusvaiheessa poistettujen nappuloiden pisteitä ei voi enää sijoittaa.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Toinen pelaaja siirtyy ensin",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Pelaaja, joka liikkuu toisena sijoitusvaiheessa, liikkuu ensimmäisenä siirtovaiheessa.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Monta poistoa",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Jos pelaaja sulkee useamman kuin yhden myllyn kerralla, hän poistaa suljettujen myllyjen määrän.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Myllyjen tuhoaminen",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Oletusarvoisesti pelaajien on ensin poistettava kaikki muut nappulat ennen nappulan poistamista muodostetusta myllystä. Ota tämä vaihtoehto käyttöön, jos haluat poistaa rajoituksen käytöstä.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Toinen pelaaja häviää, kun lauta on täynnä.",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Kun lauta on täynnä sijoitusvaiheen lopussa, ensimmäisenä sijoittava osapuoli häviää pelin. Muussa tapauksessa peli on tasapeli.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Häviää, kun ei ole laillisia siirtoja",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Pelaaja häviää, jos hänen vastustajansa estää ne niin, ettei niitä voi siirtää. Vaihda puoli siirtoon, jos tämä vaihtoehto on poistettu käytöstä.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Lentävä",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Jos pelaajalla on jäljellä vain kolme tai neljä (määritettävissä olevaa) nappulaa, hän voi siirtää nappulan mihin tahansa vapaaseen pisteeseen.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N-siirron sääntö",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Peli päättyy tasapeliin, jos kumpikaan pelaaja ei ole poistanut nappulaa tietyn määrän siirtoja aikana.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Rollback",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Valitse",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Kopioi",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Siirtohistoria kopioidaan leikepöydälle",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Ohje",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Palaute",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Poistu",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Sääntöasetukset",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Väri",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Taulun väri",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Kappaleen väri",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Taustan väri",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Pelilaudan viivan väri",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Pelaajan 1 palan väri",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Pelaajan 2 palan väri",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Viestin väri",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "aiIsLazy": "AI on laiska",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "Näytä kädessä olevien nappuloiden määrä",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Näytä merkinnät laudalla",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Näytä historian navigointityökalurivi",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Näytä",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Laudan reunaviivan leveys",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Laudan sisäisen viivan leveys",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Kappaleen leveys",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Fontin koko",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD-merkintä",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Palauta",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Palauta oletusasetukset",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "exitApp": "Sovellus poistuu.",
+  "@exitApp": {
+    "description": "The app will exit."
+  },
+  "exitAppManually": "Sinun on suljettava sovellus välittömästi ja avattava se uudelleen, jotta se tulee voimaan.",
+  "@exitAppManually": {
+    "description": "You have to close immediately and reopen the app to take effect."
+  },
+  "pick": "Valitse",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Info",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Vihje",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "pelaaja",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Pelaaja 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Pelaaja 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Pelaaminen",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Aseta nappula paikalleen napauttamalla mitä tahansa käytettävissä olevaa pistettä.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Siirrä nappulaa napauttamalla sitä.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Siirrä nappulaa napauttamalla nappulaan liittyvää pistettä.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Napauta vastustajan yhtä nappulaa poistaaksesi sen.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Sinun on ensin luotava mylly, ennen kuin voit poistaa kappaleen.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Sinun on pelattava kappaleillasi.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Tilastot",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Pelejä yhteensä",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Tulokset",
+  "@results": {
+    "description": "Results"
+  },
+  "cannotRemoveFromMill": "Ei voi poistaa myllystä.",
+  "@cannotRemoveFromMill": {
+    "description": "Cannot remove from the mill."
+  },
+  "left": "vasen",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Yksityisyyden suoja",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Lue huolellisesti ja varmista, että ymmärrät tämän täysin ja hyväksyt sen ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Jos et hyväksy tätä käytäntöä, älä käytä tätä sovellusta. Sovelluksen käyttäminen tarkoittaa, että hyväksyt nämä ehdot.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " ja ",
+  "@and": {},
+  "accept": "Hyväksyn",
+  "@accept": {
+    "description": "Accept"
+  },
+  "undo": "Kumoa",
+  "@undo": {
+    "description": "Undo"
+  },
+  "undoOption": "Peruuta vaihtoehto",
+  "@undoOption": {
+    "description": "Undo option"
+  },
+  "undoOption_Detail": "Siirto on mahdollista peruuttaa.",
+  "@undoOption_Detail": {
+    "description": "It is possible to undo a move."
+  },
+  "takeBack": "Ota takaisin",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Takaisin ottaminen",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Odottaminen",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Astu eteenpäin",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Ota kaikki takaisin",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Vaihe eteenpäin kaikki",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Siirtykää nyt",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Valmis.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Crack-mill",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Jos pelaajalla on vain paloja myllyissä, myllyissä olevat palat eivät lukitu poistettaviksi.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Animaation kesto",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Ei ole",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Teema",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Pelin tavoitteena on jättää vastustajalle vähemmän kuin kolme nappulaa tai ei yhtään laillista siirtoa.\n\nPeli päättyy automaattisesti tasapeliin, jos asema esiintyy kolmannen kerran tai ei poista viimeisen 100 (määritettävissä olevan) siirron aikana.\n\nPeli etenee kolmessa vaiheessa:\n\n1. Asetetaan nappuloita vapaisiin pisteisiin.\n2. Kappaleiden siirtäminen viereisiin pisteisiin\n3. (valinnainen vaihe) nappuloiden siirtäminen mihin tahansa tyhjään pisteeseen, kun pelaaja on vähentänyt pelaajamääränsä kolmeen nappulaan.\n\nSijoittaminen\n\nPeli alkaa tyhjällä pelilaudalla, joka koostuu ruudukosta, jossa on kaksikymmentäneljä pistettä. Pelaajat asettavat vuorotellen nappulansa tyhjiin pisteisiin, kunnes jokainen pelaaja on asettanut kaikki nappulat pelilaudalle. Jos pelaaja saa asetettua kolme nappulaansa suoraan, hänellä on \"\"mylly\"\" ja hän voi poistaa yhden vastustajan nappulan pelilaudalta.\n\nJoissakin säännöissä pelaajien on ensin poistettava kaikki muut nappulat, ennen kuin he voivat poistaa nappulan muodostuneesta myllystä.\n\nJoissakin säännöissä ei voi sijoitusvaiheessa sijoittaa kappaleita uudelleen poistettujen kappaleiden pisteisiin.\n\nKun olet käyttänyt kaikki palat, pelaajat siirtyvät vuorotellen.\n\nLiikkuminen\n\nSiirtääkseen pelaaja siirtää yhden nappulansa laudan linjaa pitkin vapaaseen viereiseen pisteeseen. Jos hän ei pysty tähän, hän on hävinnyt pelin. Kuten sijoitusvaiheessa, pelaaja, joka asettaa kolme nappulaansa pelilaudan linjalle, saa myllyn ja voi poistaa yhden vastustajan nappulan. Jos pelaajalla on vain kaksi nappulaa, hänellä ei ole mahdollisuutta muodostaa uusia myllyjä ja hän häviää pelin. Pelaaja voi hävitä myös silloin, kun hänellä on enemmän kuin kolme nappulaa, jos hänen vastustajansa estää häntä liikkumasta.\n\nLentävä\n\nJoissakin sääntömuunnelmissa, kun pelaajalla on enää kolme nappulaa jäljellä, hänen nappulansa voivat lentää, hyppiä tai hypätä mihin tahansa vapaaseen pisteeseen, ei vain vierekkäisiin pisteisiin.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Versiotiedot",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Lisenssi",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Lähdekoodi",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "thirdPartyNotices": "Kolmannen osapuolen ilmoitukset",
+  "@thirdPartyNotices": {
+    "description": "Third-party notices"
+  },
+  "appVersion": "Sovelluksen versio",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Yleinen",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Advanced",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Sijoittaminen",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Siirtäminen",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Poistaminen",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Pelin loppuminen",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Tekoälyn pelityyli",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Passiivinen",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Aikakatkaisu",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "Personointi",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "forDevelopers": "Kehittäjille",
+  "@forDevelopers": {
+    "description": "For developers"
+  },
+  "developerMode": "Kehittäjätila",
+  "@developerMode": {
+    "description": "Developer mode"
+  },
+  "drawOnHumanExperience": "Hyödynnä inhimillistä kokemusta",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Ota huomioon kappaleiden liikkuvuus",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Palojen määrä",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "kädessä",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "laudalla",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Laudan siirtäminen ylhäältäpäin",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Nyt ei ole tekoälyn vuoro.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "Tekoäly ei ajattele.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "autoReplay": "Automaattinen uudelleenpeluu siirtyy",
+  "@autoReplay": {
+    "description": "Auto re-play moves"
+  },
+  "atEnd": "Olet siirtolistasi lopussa.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Poistu napauttamalla uudelleen takaisin.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "environmentVariables": "Ympäristömuuttujat",
+  "@environmentVariables": {
+    "description": "Environment variables"
+  },
+  "more": "Lisää",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Se on kokeellinen ominaisuus.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Kokeilut",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Avoimen lähdekoodin lisenssit",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Kieli",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Oletuskieli",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Kappaleet voivat liikkua sijoitusvaiheessa",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Pelissä ei ole erillisiä sijoitus- ja siirtovaiheita, eli pelaajat voivat jokaisella siirrolla päättää, haluavatko he sijoittaa nappulan pelilaudalle vai siirtää yhden nappulansa (kunhan heillä on jäljellä nappuloita sijoitettavaksi).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Valikon väri",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Valikon tekstin väri",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerBackgroundColor": "Valikon taustaväri",
+  "@drawerBackgroundColor": {
+    "description": "Menu background color"
+  },
+  "drawerHighlightItemColor": "Valikon kohokohdan väri",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Päätyökalurivin taustaväri",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "päätyökalurivin kuvakkeen väri",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Navigointityökalurivin taustaväri",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Navigointityökalurivin kuvakkeen väri",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Piilota työkalurivi automaattisesti",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Työkalupalkin sijainti näytöllä",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Alkuun",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Pohja",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Keskusta",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Yksivärinen",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Kuva",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Valitse kuvasi",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Kevyt",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Tumma",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Teemat",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Nykyinen teema",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Tallenna teema",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "fonts": "Fontit",
+  "@fonts": {
+    "description": "Fonts"
+  },
+  "showAnalysisGraph": "Näytä analyysikaavio",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Analyysi",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Tallentaa pelin",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Lataa peli",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Asennusasento",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Näytä lailliset siirrot",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Näytä viimeinen siirto",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Näytä nuolet",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Kappaleita",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Näytä analyysi",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Langat",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Ota mukaan",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Auta parantamaan käännöksiä",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Opetusohjelma",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Classic Mill",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Sekoitettu mylly",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Ceylon Mill",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Mylly voidaan rikkoa ja tehdä uudelleen toistuvasti",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Jos pelaaja rikkoo myllyn uuden myllyn luomiseksi välittömästi, pelaaja voi siirtää tällaisen kappaleen takaisin alkuperäiseen risteykseen seuraavalla liikkeellään, jos se tekee uuden myllyn.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Peli vedetään, jos pelaajalla on kolme nappulaa ja kymmenen siirron jälkeen kumpikaan pelaaja ei poista vastustajan nappuloita",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kun pelaaja on pudonnut kolmeen nappulaan eikä kumpikaan pelaaja voi poistaa vastustajan nappulaa kymmenen siirron sisällä, peli on tasapeli.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "kiinni",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Valkoinen pala",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Musta pala",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Kieltokohta",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Tyhjä kohta",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Ei järkeä",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Sijoitusvaihe",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Muuttovaihe",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Lentävä vaihe",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Sivu liikkua",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Viimeinen liike",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Valittu",
+  "@selected": {
+    "description": "Selected"
+  },
+  "mainMenu": "Päävalikko",
+  "@mainMenu": {
+    "description": "Main menu"
+  },
+  "accessibility": "Esteettömyys",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Näytönlukuohjelman tuki",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Se on tasapeli",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Tasapeli",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Kappaleen korostusväri",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algoritmi",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "Poista sijoittamaton kappale",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Jos pelaaja muodostaa myllyn sijoitusvaiheessa, hän poistaa vastustajan sijoittamattoman palan ja jatkaa siirtoa.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "Loppupelin N-Move-sääntö",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Jos kummallakin pelaajalla on vain kolme palaa ja kumpikaan pelaaja ei poista palaa tietyn liikkeen sisällä, peli arvotaan.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Kummallakin pelaajalla on vain kolme palaa, eikä kumpikaan pelaaja poista palaa tietyn liikkeen sisällä.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Kolminkertainen toistosääntö",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Peli arvotaan, jos asema sijoittuu kolmatta kertaa.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Mill! Jatka liikkeen tekemistä.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Point -tyyli",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Pisteen leveys",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Kiinteä",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Ontto",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Suomalainen",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "move_number": "{count,plural, =0{siirto}=1{{count} siirto}other{{count} siirtoa}}",
+  "@move_number": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  },
+  "gameSettings": "Pelin asetukset",
+  "@gameSettings": {
+    "description": "Settings to change the behaviour of the game."
+  }
 }
