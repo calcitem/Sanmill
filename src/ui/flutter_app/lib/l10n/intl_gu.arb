@@ -300,10 +300,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "વર્તમાન રમતને ફરીથી પ્રારંભ કરો?",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "વિશે",
   "@about": {
     "description": "About"
