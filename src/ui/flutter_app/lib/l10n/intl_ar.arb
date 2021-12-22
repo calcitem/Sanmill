@@ -1,1256 +1,1253 @@
 {
-    "@@locale": "ar",
-    "appName": "مطحنة",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "مرحبا",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "نعم",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "لا",
-    "@no": {
-        "description": "No"
-    },
-    "game": "لعبة",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "لاعب ضد الآلة",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "لاعب ضد لاعب",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "آلة ضد آلة",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "الإنسان مقابل السحابة",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "الإنسان مقابل LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "اختبار عبر LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "الحركة",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": "  التحركات",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "قائمة الحركات",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "قائمة النقل",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "لا سجلات",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "حسنا",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "تأكيد",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "إلغاء",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "حقوق النشر © 2021 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "حدد القطعة الخاطئة.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "ضع قطعك.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "لا يمكنك وضعها هنا.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "تم وضعه.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "انزع قطعة.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "لا يمكنك إزالتها.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "إزالة.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "حرك قطعة.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "لا يمكنك وضع قطعتك هنا.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "لا يمكنك تحريك قطعتك الى هنا.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "مطحنة! خذ قطعة خصمك.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "استمر في أخذ قطعة خصمك.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "اختر إحدى قطع خصمك.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "لا يمكنك إزالة قطعة من المطحنة.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "يمكن أن تتحرك القطعة بمقدار نقطة واحدة.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "لا يمكنك تحريك قطع خصمك.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "هناك 3 قطع في خط واحد.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "حدد قطعتك لنقلها.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "لديك 3 قطع متبقية.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "يمكنك الانتقال إلى أي نقطة تريدها.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " للانتقال.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "اللاعب 1 يفوز!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "اللاعب 2 يفوز!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "فوز",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "خسارة",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "أجهضت",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "يفكر ...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "لعبة جديدة",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "استيراد اللعبة",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "تصدير اللعبة",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "تم استيراد اللعبة من الحافظة.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "لا يمكن الاستيراد",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "التحركات والقواعد غير متطابقة.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "ابدأ التسجيل",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "تسجيل...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "إيقاف التسجيل",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "إظهار التسجيل",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "لا تسجيل.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "برجاء الإنتظار...",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "إعادة تشغيل اللعبة الحالية؟",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "إعادة تشغيل",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "بدأت اللعبة ، من فضلك ضع",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "جاري التحليل ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "خطأ",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "معدل الفوز",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "نتيجة",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "اللاعب 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "اللاعب 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " عدد القطع أقل من ثلاثة.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": "  استقيل.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": "  لا توجد طريقة للذهاب.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "اللوحة ممتلئة ، ولا توجد طريقة للذهاب.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "انتهى الوقت",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "في مرحلة الحركة ، لم تتم إزالة أي قطعة في آخر عدد محدد من الحركات.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "إنه تعادل لأن اللوحة ممتلئة.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "إنه تعادل بسبب التكرار الثلاثي.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "انتهت اللعبة! سبب غير معلوم.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "انتهت اللعبة",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "فزت! تهانينا!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "تحدي المستوى الأصعب؟\nسيكون المستوى الجديد هو المستوى ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "لقد خسرت!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "حلل",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "اسم اللاعب",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "حول",
-    "@about": {
-        "description": "About"
-    },
-    "version": "إصدار",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "شكرا",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "إعدادات",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "خيارات",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "التفضيلات",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "مستوى الصعوبة",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "وقت التفكير للذكاء الاصطناعي",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "الصعوبة",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "مؤثرات صوتية",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "تشغيل الأصوات في اللعبة",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "حافظ على الصمت عند التراجع",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "نغمة",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "الخطوة الأولى",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "لاعب",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "آلة",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "البديل",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "إعادة تشغيل اللعبة تلقائيًا عند انتهاء اللعبة",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "تبديل لون القطعة المرة القادمة",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "استقيل منظمة العفو الدولية إذا خسر معظمها",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "حركة عشوائية",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "تعلم نهاية اللعبة",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "كتاب الافتتاح",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "متفرقات",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "قواعد",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "عدد القطع التي يمتلكها كل لاعب",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "كم عدد القطع التي يمتلكها كل لاعب؟",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "عدد القطع",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "إذا تم تمكين الطيران ، عندما يتم تقليل عدد قطع اللاعب إلى عدد قطع معين ، فإن قطعه تكون حرة في الانتقال إلى أي نقطة غير مشغولة ، بدلاً من أن تكون مقيدة بالنقاط المجاورة كما هو الحال في بقية اللعبة.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "قطع على الأقل",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "خطوط قطرية",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "أضف أربعة خطوط قطرية إلى اللوحة.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "وضع علامة وتأخير إزالة القطع",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "في مرحلة الوضع ، لن يكون من الممكن وضع نقاط القطع التي تم إزالتها.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "اللاعب الثاني يتحرك أولاً",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "اللاعب الذي ينتقل إلى المركز الثاني في مرحلة الترتيب يتحرك أولاً في مرحلة الحركة.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "متعدد الإزالة",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "إذا أغلق اللاعب أكثر من مطحنة في وقت واحد ، فسيكون قادرًا على إزالة عدد المطاحن التي أغلقتها.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "تدمير المطاحن",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "بشكل افتراضي ، يجب على اللاعبين إزالة أي قطع أخرى أولاً قبل إزالة قطعة من مطحنة مشكلة. قم بتمكين هذا الخيار لتعطيل التحديد.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "اللاعب الثاني يخسر عندما تكون اللوحة ممتلئة",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "في نهاية مرحلة الترتيب ، عندما تكون اللوحة ممتلئة ، يخسر الجانب الذي يضع اللعبة أولاً ، وإلا فإن اللعبة تكون تعادلًا.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "تخسر عندما لا توجد حركات قانونية",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "سيخسر اللاعب إذا قام خصمه بحظرهم بحيث لا يمكن نقلهم. قم بتغيير الجانب للتحرك إذا تم تعطيل هذا الخيار.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "طيران",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "إذا كان لدى اللاعب ثلاث أو أربع قطع (قابلة للتكوين) فقط ، فيمكنه تحريك القطعة إلى أي نقطة حرة.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "حكم N- التحرك",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "يتم تعادُل اللعبة إذا لم تتم إزالة في عدد معين من النقلات من قبل كل لاعب.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "تراجع",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "الرجاء التحديد",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "نسخ",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "تم نسخ سجل الحركات إلى الحافظة",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "مساعدة",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "تعليق",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "خروج",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "إعدادات القاعدة",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "اللون",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "لون اللوحة",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "لون القطعة",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "لون الخلفية",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "لون خط اللوحة",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "لون قطعة اللاعب 1",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "لون قطعة اللاعب 2",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "لون الرسالة",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "الذكاء الاصطناعي كسول",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "عرض عدد القطع في متناول اليد",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "عرض الملاحظات على لوحة اللعب",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "إظهار شريط التنقل في السجل",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "عرض",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "عرض حدود اللوحة",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "عرض الخط الداخلي لللوحة",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "عرض القطعة",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "حجم الخط",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "التدوين القياسي",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "استعادة",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "استعادة الإعدادات الافتراضية",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "سيتم الخروج من التطبيق.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "يجب عليك إغلاق التطبيق على الفور وإعادة فتحه لتطبيق التغييرات.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "اختر",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "معلومات",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "تلميح",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "لاعب",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "اللاعب 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "اللاعب 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "كيف ألعب",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "اضغط على أي نقطة متاحة لوضع القطعة.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "اضغط على قطعة لتحريكها.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "اضغط على النقطة المتصلة بالقطعة لتحريكها.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "اضغط على قطعة الخصم لإزالتها.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "تحتاج إلى إنشاء طاحونة أولاً قبل أن تتمكن من إزالة قطعة.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "أنت بحاجة للعب بالقطع الخاصة بك.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "إحصائيات",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "إجمالي الألعاب",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "نتائج",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "لا يمكن إزالته من الطاحونة.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "غادر",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "سياسة الخصوصية",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "يرجى القراءة بعناية والتأكد من فهمك التام لهذا الأمر والموافقة عليه",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". إذا كنت لا توافق على هذه السياسة ، يرجى عدم استخدام هذا التطبيق. استخدام التطبيق يعني قبولك لهذه الشروط.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " و ",
-    "accept": "قبول",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "الغاء التحميل",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "خيار التراجع",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "من الممكن التراجع عن هذه الخطوة.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "استرجع",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "يتراجع...",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "منتظر...",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "خطوة للامام",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "استرد كل شيء",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "خطوة إلى الأمام كل شيء",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "تحرك الآن",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "تم.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "مطحنة الكراك",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "إذا كان لدى اللاعب قطع فقط في المطاحن ، فلن يتم قفل القطع الموجودة في المطاحن لإزالتها.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "مدة الرسوم المتحركة",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "بدون",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "سمة",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "تهدف اللعبة إلى ترك الخصم بأقل من ثلاث قطع أو عدم وجود حركات قانونية.\n\nيتم رسم اللعبة تلقائيًا في حالة حدوث مركز للمرة الثالثة ، أو إذا لم تتم إزالة في آخر 100 حركة (قابلة للتكوين).\n\nتستمر اللعبة على ثلاث مراحل:\n\n1. وضع القطع على النقاط الشاغرة\n2. تحريك القطع إلى النقاط المجاورة\n3. (مرحلة اختيارية) تحريك القطع إلى أي نقطة شاغرة عندما يتم تخفيض اللاعب إلى ثلاث قطع\n\nوضع\n\nتبدأ اللعبة بلوحة فارغة تتكون من شبكة بأربع وعشرين نقطة. يتناوب اللاعبون على وضع قطعهم على نقاط شاغرة حتى يضع كل لاعب كل القطع على اللوحة. إذا تمكن اللاعب من وضع ثلاث قطع من قطعه في خط مستقيم ، فسيكون لديه \"طاحونة\" ويمكنه إزالة إحدى قطع خصمه من اللوحة.\n\nفي بعض متغيرات القواعد ، يجب على اللاعبين إزالة أي قطع أخرى أولاً قبل إزالة قطعة من طاحونة مشكلة.\n\nفي بعض متغيرات القواعد ، قد لا يتم وضع جميع النقاط التي تمت إزالتها مرة أخرى في مرحلة الوضع.\n\nبمجرد استخدام جميع القطع ، يتناوب اللاعبون على التحرك.\n\nمتحرك\n\nللتحرك ، يقوم اللاعب بتحريك إحدى قطعه على طول خط اللوحة إلى نقطة مجاورة شاغرة. إذا لم يستطع فعل ذلك ، فقد خسر المباراة. كما هو الحال في مرحلة التسديد ، فإن اللاعب الذي يقوم بمحاذاة ثلاث من قطعه على خط لوح لديه مطحنة ويمكنه إزالة إحدى قطع خصمه. أي لاعب يتقلص إلى قطعتين وليس لديه خيار لتشكيل طواحين جديدة ، وبالتالي يخسر اللعبة. يمكن للاعب أيضًا أن يخسر بأكثر من ثلاث قطع إذا قام خصمه بحظرها بحيث لا يمكن نقلها.\n\nطيران\n\nفي بعض المتغيرات من القواعد ، بمجرد أن يتبقى للاعب ثلاث قطع فقط ، قد \"تطير\" قطعه أو \"تقفز\" أو \"تقفز\" إلى أي نقاط شاغرة ، وليس فقط النقاط المجاورة.",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "معلومات الإصدار",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "رخصة",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "الشفرة المصدرية",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "إشعارات الطرف الثالث",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "نسخة التطبيق",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "عام",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "متقدم",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "وضع القطع",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "الحركة",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "الازالة",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "اللعبة فوق الشرط",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "أسلوب لعب الذكاء الاصطناعي",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "مبني للمجهول",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "نفذ الوقت",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "إضفاء الطابع الشخصي",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "للمطورين",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "وضع المطور",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "ارسم من التجربة الإنسانية",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "ضع في اعتبارك إمكانية تحريك القطع",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "عدد القطع",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "فى اليد",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "على اللوحة",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "إزاحة اللوحة من الأعلى",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "لم يحن دور الآلة.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "الذكاء الاصطناعي لا يفكر.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "حركات إعادة التشغيل التلقائي",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "في نهاية قائمة الحركة.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "انقر مرة أخرى للمغادرة.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "متغيرات البيئة",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "أكثر",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "هذه ميزة تجريبية.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "التجارب",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "تراخيص مفتوحة المصدر",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "لغة",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "اللغة الافتراضية",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "يمكن أن تتحرك القطع في مرحلة الوضع",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "لا توجد مراحل وضع وتحريك مميزة ، أي يمكن للاعبين أن يقرروا في كل حركة ما إذا كانوا يريدون وضع قطعة على اللوحة أو نقل إحدى قطعهم (طالما أن لديهم قطعًا متبقية لوضعها).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "لون القائمة",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "لون نص القائمة",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "لون خلفية القائمة",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "لون عنصر تسليط الضوء على القائمة",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "لون خلفية شريط الأدوات الرئيسي",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "لون رمز شريط الأدوات الرئيسي",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "لون خلفية شريط أدوات التنقل",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "لون رمز شريط أدوات التنقل",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "إخفاء شريط الأدوات تلقائيًا",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "موقع شريط الأدوات على الشاشة",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "بالاعلى",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "بالأسفل",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "بالمنتصف",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "اللون الصامد",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "صورة",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "اختر صورتك",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "ضوء",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "داكن",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "ثيمات",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "الموضوع الحالي",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "حفظ الموضوع",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "الخطوط",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "إظهار الرسم البياني للتحليل",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "تحليل",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "حفظ اللعبة",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "تحميل لعبة",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "وضع الإعداد",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "إظهار التحركات القانونية",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "عرض الخطوة الأخيرة",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "عرض الاسهم",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "قطع",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "عرض التحليل",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "الخيوط",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "شارك",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "ساعد في تحسين الترجمة",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "تعليمي",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "المطحنة الكلاسيكية",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "مطحنة مختلطة",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "مطحنة سيلان",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "قد يتم كسر المطحنة وإعادة صنعها بشكل متكرر",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "إذا كسر لاعب طاحونة لإنشاء طاحونة جديدة على الفور ، فيمكن لهذا اللاعب إعادة هذه القطعة إلى التقاطع الأصلي في حركته التالية إذا قام بعمل طاحونة جديدة.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "تُعادل اللعبة إذا كان للاعب ثلاث قطع وبعد عشر نقلات لا يزيل أي لاعب قطع الخصم",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "عندما ينخفض اللاعب إلى ثلاث قطع ، ولا يمكن لأي لاعب إزالة قطعة الخصم في غضون عشر نقلات ، تكون اللعبة بمثابة تعادل.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "قريب",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "قطعة بيضاء",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "قطعة سوداء",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "نقطة الحظر",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "نقطة فارغة",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "لا جدوى",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "مرحلة الوضع",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "مرحلة تحريك القطع",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "مرحلة الطيران",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "جانب للتحرك",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "الحركة الاخيرة",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "المحدد",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "القائمة الرئيسية",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "إمكانية الوصول",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "دعم قارئ الشاشة",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "إنه تعادل",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "تعادل",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "لون تسليط الضوء على قطعة",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "الخوارزمية",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "قم بإزالة القطعة غير الموضوعة",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "إذا قام اللاعب بتشكيل الطاحونة في مرحلة التسوية ، فسوف يقوم بإزالة القطعة غير الموضوعة للخصم ويستمر في التحرك.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "قاعدة N-Move في نهاية اللعبة",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "إذا كان لدى أي من اللاعبين ثلاث قطع فقط ولم يقم أي من اللاعبين بإزالة قطعة في حركة معينة ، يتم تعادُل اللعبة.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "يمتلك أي لاعب ثلاث قطع فقط ولا يزيل أي لاعب قطعة في حركة معينة.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "حكم التكرار الثلاثي",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "يتم تعادل اللعبة إذا حدث مركز للمرة الثالثة.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "مطحنة! استمر في اتخاذ خطوة.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "نمط النقطة",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "عرض النقطة",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "صلب",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "أجوف",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "عربى",
-    "@languageName": {
-        "description": "The name of the current language"
-    }
+  "@@locale": "ar",
+  "appName": "مطحنة",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "مرحبا",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "نعم",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "لا",
+  "@no": {
+    "description": "No"
+  },
+  "game": "لعبة",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "لاعب ضد الآلة",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "لاعب ضد لاعب",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "آلة ضد آلة",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "الإنسان مقابل السحابة",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "الإنسان مقابل LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "اختبار عبر LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "الحركة",
+  "@move": {
+    "description": "Move"
+  },
+  "moves": "  التحركات",
+  "@moves": {
+    "description": " Moves"
+  },
+  "showMoveList": "قائمة الحركات",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "قائمة النقل",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "لا سجلات",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "حسنا",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "تأكيد",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "إلغاء",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "حدد القطعة الخاطئة.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "ضع قطعك.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "لا يمكنك وضعها هنا.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "تم وضعه.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "انزع قطعة.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "لا يمكنك إزالتها.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "إزالة.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "حرك قطعة.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "لا يمكنك وضع قطعتك هنا.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "لا يمكنك تحريك قطعتك الى هنا.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "مطحنة! خذ قطعة خصمك.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "استمر في أخذ قطعة خصمك.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "اختر إحدى قطع خصمك.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "لا يمكنك إزالة قطعة من المطحنة.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "يمكن أن تتحرك القطعة بمقدار نقطة واحدة.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "لا يمكنك تحريك قطع خصمك.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipThreePiecesInLine": "هناك 3 قطع في خط واحد.",
+  "@tipThreePiecesInLine": {
+    "description": "There are 3 pieces in a line."
+  },
+  "tipSelectPieceToMove": "حدد قطعتك لنقلها.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "لديك 3 قطع متبقية.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "يمكنك الانتقال إلى أي نقطة تريدها.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": " للانتقال.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "اللاعب 1 يفوز!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "اللاعب 2 يفوز!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "فوز",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "خسارة",
+  "@lost": {
+    "description": "Lost"
+  },
+  "aborted": "أجهضت",
+  "@aborted": {
+    "description": "Aborted"
+  },
+  "thinking": "يفكر ...",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "لعبة جديدة",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "استيراد اللعبة",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "تصدير اللعبة",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "تم استيراد اللعبة من الحافظة.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "لا يمكن الاستيراد",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "التحركات والقواعد غير متطابقة.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "startRecording": "ابدأ التسجيل",
+  "@startRecording": {
+    "description": "Start recording"
+  },
+  "recording": "تسجيل...",
+  "@recording": {
+    "description": "Recording..."
+  },
+  "stopRecording": "إيقاف التسجيل",
+  "@stopRecording": {
+    "description": "Stop recording"
+  },
+  "showRecording": "إظهار التسجيل",
+  "@showRecording": {
+    "description": "Show recording"
+  },
+  "noRecording": "لا تسجيل.",
+  "@noRecording": {
+    "description": "No recording."
+  },
+  "pleaseWait": "برجاء الإنتظار...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "إعادة تشغيل اللعبة الحالية؟",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "إعادة تشغيل",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "بدأت اللعبة ، من فضلك ضع",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "جاري التحليل ...",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "خطأ",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "معدل الفوز",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "نتيجة",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "اللاعب 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "اللاعب 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": " عدد القطع أقل من ثلاثة.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "  استقيل.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "  لا توجد طريقة للذهاب.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "اللوحة ممتلئة ، ولا توجد طريقة للذهاب.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "انتهى الوقت",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "في مرحلة الحركة ، لم تتم إزالة أي قطعة في آخر عدد محدد من الحركات.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "إنه تعادل لأن اللوحة ممتلئة.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "إنه تعادل بسبب التكرار الثلاثي.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "انتهت اللعبة! سبب غير معلوم.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "انتهت اللعبة",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "فزت! تهانينا!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "تحدي المستوى الأصعب؟\nسيكون المستوى الجديد هو المستوى ",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "لقد خسرت!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "حلل",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "playerName": "اسم اللاعب",
+  "@playerName": {
+    "description": "Player Name"
+  },
+  "about": "حول",
+  "@about": {
+    "description": "About"
+  },
+  "version": "إصدار",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "شكرا",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "إعدادات",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "خيارات",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "التفضيلات",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "مستوى الصعوبة",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "وقت التفكير للذكاء الاصطناعي",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "الصعوبة",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "مؤثرات صوتية",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "تشغيل الأصوات في اللعبة",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "حافظ على الصمت عند التراجع",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "نغمة",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "الخطوة الأولى",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "لاعب",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "آلة",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "البديل",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "إعادة تشغيل اللعبة تلقائيًا عند انتهاء اللعبة",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "تبديل لون القطعة المرة القادمة",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "resignIfMostLose": "استقيل منظمة العفو الدولية إذا خسر معظمها",
+  "@resignIfMostLose": {
+    "description": "AI Resign if Most Lose"
+  },
+  "shufflingEnabled": "حركة عشوائية",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "learnEndgame": "تعلم نهاية اللعبة",
+  "@learnEndgame": {
+    "description": "Learn Endgame"
+  },
+  "openingBook": "كتاب الافتتاح",
+  "@openingBook": {
+    "description": "Opening Book"
+  },
+  "misc": "متفرقات",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "قواعد",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "عدد القطع التي يمتلكها كل لاعب",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "كم عدد القطع التي يمتلكها كل لاعب؟",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "عدد القطع",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "إذا تم تمكين الطيران ، عندما يتم تقليل عدد قطع اللاعب إلى عدد قطع معين ، فإن قطعه تكون حرة في الانتقال إلى أي نقطة غير مشغولة ، بدلاً من أن تكون مقيدة بالنقاط المجاورة كما هو الحال في بقية اللعبة.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "قطع على الأقل",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "خطوط قطرية",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "أضف أربعة خطوط قطرية إلى اللوحة.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "وضع علامة وتأخير إزالة القطع",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "في مرحلة الوضع ، لن يكون من الممكن وضع نقاط القطع التي تم إزالتها.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "اللاعب الثاني يتحرك أولاً",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "اللاعب الذي ينتقل إلى المركز الثاني في مرحلة الترتيب يتحرك أولاً في مرحلة الحركة.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "متعدد الإزالة",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "إذا أغلق اللاعب أكثر من مطحنة في وقت واحد ، فسيكون قادرًا على إزالة عدد المطاحن التي أغلقتها.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "تدمير المطاحن",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "بشكل افتراضي ، يجب على اللاعبين إزالة أي قطع أخرى أولاً قبل إزالة قطعة من مطحنة مشكلة. قم بتمكين هذا الخيار لتعطيل التحديد.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "اللاعب الثاني يخسر عندما تكون اللوحة ممتلئة",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "في نهاية مرحلة الترتيب ، عندما تكون اللوحة ممتلئة ، يخسر الجانب الذي يضع اللعبة أولاً ، وإلا فإن اللعبة تكون تعادلًا.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "تخسر عندما لا توجد حركات قانونية",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "سيخسر اللاعب إذا قام خصمه بحظرهم بحيث لا يمكن نقلهم. قم بتغيير الجانب للتحرك إذا تم تعطيل هذا الخيار.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "طيران",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "إذا كان لدى اللاعب ثلاث أو أربع قطع (قابلة للتكوين) فقط ، فيمكنه تحريك القطعة إلى أي نقطة حرة.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "حكم N- التحرك",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "يتم تعادُل اللعبة إذا لم تتم إزالة في عدد معين من النقلات من قبل كل لاعب.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "تراجع",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "الرجاء التحديد",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "نسخ",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "تم نسخ سجل الحركات إلى الحافظة",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "مساعدة",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "تعليق",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "خروج",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "إعدادات القاعدة",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "اللون",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "لون اللوحة",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "لون القطعة",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "لون الخلفية",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "لون خط اللوحة",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "لون قطعة اللاعب 1",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "لون قطعة اللاعب 2",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "لون الرسالة",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "aiIsLazy": "الذكاء الاصطناعي كسول",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "عرض عدد القطع في متناول اليد",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "عرض الملاحظات على لوحة اللعب",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "إظهار شريط التنقل في السجل",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "عرض",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "عرض حدود اللوحة",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "عرض الخط الداخلي لللوحة",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "عرض القطعة",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "حجم الخط",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "التدوين القياسي",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "استعادة",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "استعادة الإعدادات الافتراضية",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "exitApp": "سيتم الخروج من التطبيق.",
+  "@exitApp": {
+    "description": "The app will exit."
+  },
+  "exitAppManually": "يجب عليك إغلاق التطبيق على الفور وإعادة فتحه لتطبيق التغييرات.",
+  "@exitAppManually": {
+    "description": "You have to close immediately and reopen the app to take effect."
+  },
+  "pick": "اختر",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "معلومات",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "تلميح",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "لاعب",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "اللاعب 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "اللاعب 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "كيف ألعب",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "اضغط على أي نقطة متاحة لوضع القطعة.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "اضغط على قطعة لتحريكها.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "اضغط على النقطة المتصلة بالقطعة لتحريكها.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "اضغط على قطعة الخصم لإزالتها.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "تحتاج إلى إنشاء طاحونة أولاً قبل أن تتمكن من إزالة قطعة.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "أنت بحاجة للعب بالقطع الخاصة بك.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "إحصائيات",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "إجمالي الألعاب",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "نتائج",
+  "@results": {
+    "description": "Results"
+  },
+  "cannotRemoveFromMill": "لا يمكن إزالته من الطاحونة.",
+  "@cannotRemoveFromMill": {
+    "description": "Cannot remove from the mill."
+  },
+  "left": "غادر",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "سياسة الخصوصية",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "يرجى القراءة بعناية والتأكد من فهمك التام لهذا الأمر والموافقة عليه",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". إذا كنت لا توافق على هذه السياسة ، يرجى عدم استخدام هذا التطبيق. استخدام التطبيق يعني قبولك لهذه الشروط.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " و ",
+  "@and": {},
+  "accept": "قبول",
+  "@accept": {
+    "description": "Accept"
+  },
+  "undo": "الغاء التحميل",
+  "@undo": {
+    "description": "Undo"
+  },
+  "undoOption": "خيار التراجع",
+  "@undoOption": {
+    "description": "Undo option"
+  },
+  "undoOption_Detail": "من الممكن التراجع عن هذه الخطوة.",
+  "@undoOption_Detail": {
+    "description": "It is possible to undo a move."
+  },
+  "takeBack": "استرجع",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "يتراجع...",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "منتظر...",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "خطوة للامام",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "استرد كل شيء",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "خطوة إلى الأمام كل شيء",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "تحرك الآن",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "تم.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "مطحنة الكراك",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "إذا كان لدى اللاعب قطع فقط في المطاحن ، فلن يتم قفل القطع الموجودة في المطاحن لإزالتها.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "مدة الرسوم المتحركة",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "بدون",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "سمة",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "تهدف اللعبة إلى ترك الخصم بأقل من ثلاث قطع أو عدم وجود حركات قانونية.\n\nيتم رسم اللعبة تلقائيًا في حالة حدوث مركز للمرة الثالثة ، أو إذا لم تتم إزالة في آخر 100 حركة (قابلة للتكوين).\n\nتستمر اللعبة على ثلاث مراحل:\n\n1. وضع القطع على النقاط الشاغرة\n2. تحريك القطع إلى النقاط المجاورة\n3. (مرحلة اختيارية) تحريك القطع إلى أي نقطة شاغرة عندما يتم تخفيض اللاعب إلى ثلاث قطع\n\nوضع\n\nتبدأ اللعبة بلوحة فارغة تتكون من شبكة بأربع وعشرين نقطة. يتناوب اللاعبون على وضع قطعهم على نقاط شاغرة حتى يضع كل لاعب كل القطع على اللوحة. إذا تمكن اللاعب من وضع ثلاث قطع من قطعه في خط مستقيم ، فسيكون لديه \"طاحونة\" ويمكنه إزالة إحدى قطع خصمه من اللوحة.\n\nفي بعض متغيرات القواعد ، يجب على اللاعبين إزالة أي قطع أخرى أولاً قبل إزالة قطعة من طاحونة مشكلة.\n\nفي بعض متغيرات القواعد ، قد لا يتم وضع جميع النقاط التي تمت إزالتها مرة أخرى في مرحلة الوضع.\n\nبمجرد استخدام جميع القطع ، يتناوب اللاعبون على التحرك.\n\nمتحرك\n\nللتحرك ، يقوم اللاعب بتحريك إحدى قطعه على طول خط اللوحة إلى نقطة مجاورة شاغرة. إذا لم يستطع فعل ذلك ، فقد خسر المباراة. كما هو الحال في مرحلة التسديد ، فإن اللاعب الذي يقوم بمحاذاة ثلاث من قطعه على خط لوح لديه مطحنة ويمكنه إزالة إحدى قطع خصمه. أي لاعب يتقلص إلى قطعتين وليس لديه خيار لتشكيل طواحين جديدة ، وبالتالي يخسر اللعبة. يمكن للاعب أيضًا أن يخسر بأكثر من ثلاث قطع إذا قام خصمه بحظرها بحيث لا يمكن نقلها.\n\nطيران\n\nفي بعض المتغيرات من القواعد ، بمجرد أن يتبقى للاعب ثلاث قطع فقط ، قد \"تطير\" قطعه أو \"تقفز\" أو \"تقفز\" إلى أي نقاط شاغرة ، وليس فقط النقاط المجاورة.",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "معلومات الإصدار",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "رخصة",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "الشفرة المصدرية",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "thirdPartyNotices": "إشعارات الطرف الثالث",
+  "@thirdPartyNotices": {
+    "description": "Third-party notices"
+  },
+  "appVersion": "نسخة التطبيق",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "عام",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "متقدم",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "وضع القطع",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "الحركة",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "الازالة",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "اللعبة فوق الشرط",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "أسلوب لعب الذكاء الاصطناعي",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "مبني للمجهول",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "نفذ الوقت",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "إضفاء الطابع الشخصي",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "forDevelopers": "للمطورين",
+  "@forDevelopers": {
+    "description": "For developers"
+  },
+  "developerMode": "وضع المطور",
+  "@developerMode": {
+    "description": "Developer mode"
+  },
+  "drawOnHumanExperience": "ارسم من التجربة الإنسانية",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "ضع في اعتبارك إمكانية تحريك القطع",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "عدد القطع",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "فى اليد",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "على اللوحة",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "إزاحة اللوحة من الأعلى",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "لم يحن دور الآلة.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "الذكاء الاصطناعي لا يفكر.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "autoReplay": "حركات إعادة التشغيل التلقائي",
+  "@autoReplay": {
+    "description": "Auto re-play moves"
+  },
+  "atEnd": "في نهاية قائمة الحركة.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "انقر مرة أخرى للمغادرة.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "environmentVariables": "متغيرات البيئة",
+  "@environmentVariables": {
+    "description": "Environment variables"
+  },
+  "more": "أكثر",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "هذه ميزة تجريبية.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "التجارب",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "تراخيص مفتوحة المصدر",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "لغة",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "اللغة الافتراضية",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "يمكن أن تتحرك القطع في مرحلة الوضع",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "لا توجد مراحل وضع وتحريك مميزة ، أي يمكن للاعبين أن يقرروا في كل حركة ما إذا كانوا يريدون وضع قطعة على اللوحة أو نقل إحدى قطعهم (طالما أن لديهم قطعًا متبقية لوضعها).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "لون القائمة",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "لون نص القائمة",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerBackgroundColor": "لون خلفية القائمة",
+  "@drawerBackgroundColor": {
+    "description": "Menu background color"
+  },
+  "drawerHighlightItemColor": "لون عنصر تسليط الضوء على القائمة",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "لون خلفية شريط الأدوات الرئيسي",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "لون رمز شريط الأدوات الرئيسي",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "لون خلفية شريط أدوات التنقل",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "لون رمز شريط أدوات التنقل",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "إخفاء شريط الأدوات تلقائيًا",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "موقع شريط الأدوات على الشاشة",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "بالاعلى",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "بالأسفل",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "بالمنتصف",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "اللون الصامد",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "صورة",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "اختر صورتك",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "ضوء",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "داكن",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "ثيمات",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "الموضوع الحالي",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "حفظ الموضوع",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "fonts": "الخطوط",
+  "@fonts": {
+    "description": "Fonts"
+  },
+  "showAnalysisGraph": "إظهار الرسم البياني للتحليل",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "تحليل",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "حفظ اللعبة",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "تحميل لعبة",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "وضع الإعداد",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "إظهار التحركات القانونية",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "عرض الخطوة الأخيرة",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "عرض الاسهم",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "قطع",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "عرض التحليل",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "الخيوط",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "شارك",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "ساعد في تحسين الترجمة",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "تعليمي",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "المطحنة الكلاسيكية",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "مطحنة مختلطة",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "مطحنة سيلان",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "قد يتم كسر المطحنة وإعادة صنعها بشكل متكرر",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "إذا كسر لاعب طاحونة لإنشاء طاحونة جديدة على الفور ، فيمكن لهذا اللاعب إعادة هذه القطعة إلى التقاطع الأصلي في حركته التالية إذا قام بعمل طاحونة جديدة.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "تُعادل اللعبة إذا كان للاعب ثلاث قطع وبعد عشر نقلات لا يزيل أي لاعب قطع الخصم",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "عندما ينخفض اللاعب إلى ثلاث قطع ، ولا يمكن لأي لاعب إزالة قطعة الخصم في غضون عشر نقلات ، تكون اللعبة بمثابة تعادل.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "قريب",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "قطعة بيضاء",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "قطعة سوداء",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "نقطة الحظر",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "نقطة فارغة",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "لا جدوى",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "مرحلة الوضع",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "مرحلة تحريك القطع",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "مرحلة الطيران",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "جانب للتحرك",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "الحركة الاخيرة",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "المحدد",
+  "@selected": {
+    "description": "Selected"
+  },
+  "mainMenu": "القائمة الرئيسية",
+  "@mainMenu": {
+    "description": "Main menu"
+  },
+  "accessibility": "إمكانية الوصول",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "دعم قارئ الشاشة",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "إنه تعادل",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "تعادل",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "لون تسليط الضوء على قطعة",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "الخوارزمية",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "قم بإزالة القطعة غير الموضوعة",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "إذا قام اللاعب بتشكيل الطاحونة في مرحلة التسوية ، فسوف يقوم بإزالة القطعة غير الموضوعة للخصم ويستمر في التحرك.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "قاعدة N-Move في نهاية اللعبة",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "إذا كان لدى أي من اللاعبين ثلاث قطع فقط ولم يقم أي من اللاعبين بإزالة قطعة في حركة معينة ، يتم تعادُل اللعبة.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "يمتلك أي لاعب ثلاث قطع فقط ولا يزيل أي لاعب قطعة في حركة معينة.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "حكم التكرار الثلاثي",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "يتم تعادل اللعبة إذا حدث مركز للمرة الثالثة.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "مطحنة! استمر في اتخاذ خطوة.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "نمط النقطة",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "عرض النقطة",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "صلب",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "أجوف",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "عربى",
+  "@languageName": {
+    "description": "The name of the current language"
+  }
 }
