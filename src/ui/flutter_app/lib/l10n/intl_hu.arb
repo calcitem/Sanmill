@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "A lépegetés automatikus visszajátszása",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "A lépegetés lista végén.",
   "@atEnd": {
     "description": "At the end of the move list."
