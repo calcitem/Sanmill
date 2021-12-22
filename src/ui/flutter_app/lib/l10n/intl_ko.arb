@@ -1,1256 +1,1257 @@
 {
-    "@@locale": "ko",
-    "appName": "Mill",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "어서 오십시오",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "예",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "아니",
-    "@no": {
-        "description": "No"
-    },
-    "game": "경기",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "인간-기계 전투",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "2 인 전투",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "기계 전투",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "클라우드에 도전",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "온라인 배틀",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "네트워크 테스트",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "움직임",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": "단계",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "체스 기록보기",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "체스 기록",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "아직 트릭이 없습니다",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "확인",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "확인",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "취소",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "저작권 © 2021 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "잘못된 아이",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "정착하십시오",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "여기에 떨어질 수 없어",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "이미 정착",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "먹어 줘",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "이거 먹을 수 없어",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "먹다",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "제발 가줘",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "여기에 떨어지지 마십시오",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "여기로 이동할 수 없습니다.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "세 아들을 연속해서 먹어주세요",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "계속 먹어주세요",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "상대방의 말을 선택하세요",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "세 게임 체인에서 폰을 먹을 수 없습니다.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "인접한 공석으로 걸어주세요.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "상대방의 말을 움직일 수 없습니다.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "한 줄에 세 개의 체스 조각",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "이동할 자신의 폰을 선택하세요",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "3 개만 남음",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "모든 공석으로 날아갈 수 있음",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": "체스를하다",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "플레이어 1이 승리합니다!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "플레이어 2가 승리합니다!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "승리",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "부정",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "일시 정지",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "다른 사람이 ...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "새로운 라운드 시작",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "게임 가져 오기",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "게임 내보내기",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "게임 기록을 클립 보드에서 가져 왔습니다",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "가져올 수 없습니다",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "이동이 게임 규칙과 일치하지 않습니다.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "녹음 시작",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "녹음...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "녹음 중지",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "재생 녹음",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "재생 안함",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "잠시만 기다려주세요 ...",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "다시 시작?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "재시작",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "게임이 시작됩니다.",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "상황 분석 중 ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "오류",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "승률",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "점수",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "첫 손",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "백 핸드",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": "남은 조각이 3 개 미만입니다.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": "주다.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": "갈 길이 없습니다.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "체스 판이 꽉 차서 갈 길이 없었습니다.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "초과 근무는 부정적입니다.",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "이동 단계에서 규칙에 지정된 단계 수 내에 샷이 없으면 연속 된 여러 단계에 대해 동점이됩니다.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "체스 판이 꽉 차서 갈 길이없고, 동점이됩니다.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "위치를 반복하고 세 번 그립니다.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "게임이 끝났습니다. 이유를 알 수 없습니다!",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "게임 끝",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "우승을 축하합니다",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "앞으로 난이도가 높아질까요?\n증가 된 난이도는",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "당신은진다",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "분석",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "선수 이름",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "의 위에",
-    "@about": {
-        "description": "About"
-    },
-    "version": "버전",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "감사",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "설정",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "옵션",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "게임 설정",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "난이도",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "기계 사고 시간",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "게임 난이도",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "소리",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "체스를 할 때 소리 재생",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "게임 후회할 때 음소거 유지",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "신속한 사운드",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "선",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "인류",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "기계",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "번갈아",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "게임 종료시 자동으로 다시 시작",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "시작시 손 자동 교환",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "기계가 분명히 열등 할 때 자동으로 패배를 인정",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "무작위 기계 이동",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "엔드 게임 라이브러리자가 학습",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "여는 라이브러리 사용",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "다른",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "체스 규칙",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "체스 말의 수",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "두 플레이어가 소유 한 폰 수를 설정합니다.",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "얼마나 많은 아이들이 날 수 있습니까?",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "날아 다니는 말이 허용되면 플레이어는 한쪽에 말이 많이 남아있을 때 날 수 있습니다.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "몇 조각 미만, 게임에서 패배",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "삭감",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "보드에 4 개의 슬래시를 추가합니다.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "금지 점",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "스윙 스테이지에서는 먹은 조각이 표시되며 당분간 제거되지 않습니다. 양측이 체스 말을 배치 한 후, 그들은 통합되어 표시된 모든 체스 말을 제거하고 이동 단계에 들어갑니다.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "백 스윙",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "스윙 스테이지에서 먼저 스윙하는 파티가 스윙 스테이지에서 먼저 이동합니다.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "더 먹어",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "동시에 여러 개의 트라이어드가 형성되면 여러 개의 트라이어드가 형성되어 서로의 자녀를 먹을 수 있습니다.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "세 번째 연속 아들을 먹을 수 있습니다",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "기본적으로 상대방의 모든 자녀가 세 번째 대회에 참가하지 않는 한 세 번의 대회에서 자녀를 먹을 수 없습니다. 이 제한을 제거하려면이 옵션을 켜십시오.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "보드가 가득 차면",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "12 피스 체스의 경우, 스윙 스테이지가 끝날 때 보드가 가득 차고 어느 플레이어도 피스를 가지고 있지 않으면 첫 번째 플레이어가 무승부 대신 패배합니다.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "갈 길이 없을 때 패배",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "이동 단계에서는 갈 길이 없을 때 상대를 향하여 이동을 계속하는 대신 체스를 잃습니다.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Feizi",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "한 파티에 의해 3 개 또는 4 개의 (구성 가능한) 체스 말이 남아있을 때,이 파티는 그 말을 체스 판의 빈 위치로 이동할 수 있습니다.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "N 단계 규칙",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "샷이 없을 때 동점으로 판단 할 연속 단계 수를 지정합니다.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "롤백",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "선택하세요",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "부",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "게임 기록이 클립 보드에 복사되었습니다.",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "도움",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "피드백",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "그만두 다",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "규칙 설정",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "색깔",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "바둑판 색상",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "체스 조각 색상",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "배경색",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "선 색상",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "첫 번째 무버의 색상",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "뒤 체스 말의 색상",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "프롬프트 메시지 색상",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "기계가 선도 할 때의 게으름",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "손에 남아있는 조각의 수를 보여주세요",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "보드 가장자리에 좌표 표시",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "이동 탐색 도구 모음 표시",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "디스플레이",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "바둑판 프레임 선 너비",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "체스 판 내부의 선 너비",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "조각 크기",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "글꼴 크기",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "표준 게임 기록 형식",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "초기화",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "기본 설정 복원",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "앱이 종료됩니다.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "기본 구성을 적용하려면 프로그램을 즉시 종료하고 다시 열어야합니다.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "고르다",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "정보",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "신속한",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "플레이어",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "첫 손",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "백 핸드",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "게임 방법",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "체스 말을 놓으려면 보드의 교차점을 클릭하십시오.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "이동하려는 조각을 선택하십시오.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "조각을 이동하려면이 조각에 인접한 지점을 클릭하십시오.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "상대방의 말 중 하나를 클릭하여 조각을 가져옵니다.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "상대방의 말을 가져 가기 전에 먼저 3 경기를 구성해야합니다.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "자신의 폰을 가져 가야합니다.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "통계",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "디스크 수",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "결과",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "당신은 Sanlian의 아들을 먹을 수 없습니다.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "남은",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "개인 정보 정책",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "다음을 포함하되 이에 국한되지 않는 \"사용자 계약\"및 \"개인 정보 보호 정책\"의 조건을주의 깊게 읽고 완전히 이해하십시오.\n당사가 귀하에게 제공하는 서비스를 개선하기 위해 귀하의 명시 적 승인에 따라 당사는 귀하의 장치 모델, 진단 데이터, 이메일 주소 등과 같은 정보를 얻을 수 있습니다. 귀하는 승인을 거부하거나 취소 할 권리가 있습니다. 진단 데이터 전송을 요청할 때마다 팝업 창을 통해 귀하의 명시 적 동의를 얻습니다.\n당신은 읽을 수있다 \"",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": "\"더 알아보기. 동의하면 \"동의\"를 클릭하여 서비스 수락을 시작하십시오.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": "\"와\"",
-    "accept": "동의하다",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "후회 체스",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "후회 체스",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "후회 허용",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "물러서",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "롤백",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "기다려주세요",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "한 걸음 앞으로",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "끝으로 돌아 가기",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "끝으로 이동",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "지금 체스 플레이",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "수행하다",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "세 개를 연속으로 먹을 수 없습니다.",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "상대방의 아들이 모두 세 번째 회사에 있으면 아들을 먹을 수 없습니다.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "애니메이션 기간",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "아니",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "테마",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Mill는 매우 오래된 지적 게임으로, 게임의 목표는 남은 조각이 3 개 미만으로 상대방을 먹게하는 것입니다.\n\n위치가 세 번 반복되거나 100 번 연속 이동 (구성 가능)에 비트가 없으면 무승부가됩니다.\n\n게임은 세 단계로 나뉩니다.\n\n1. 빈 자리에서 스윙;\n2. 체스 말을 인접한 빈 위치로 이동합니다.\n3. 체스 말이 3 개 밖에 남지 않았을 때, \"말을 날릴 수 있습니다\"(선택 사항).\n\n스윙 스테이지\n\n체스 판에는 24 개의 빈 자리가 있습니다. 플레이어는 손에 자녀가 없을 때까지 자녀를 빈 위치에 번갈아 가며 놓습니다. 한 파티가 자신의 말을 3 개 연속으로 배열하면 \"쓰리 컴\"을 형성하고 상대방의 말을 캡처 한 다음 체스를 계속할 수 있다고합니다.\n\n특정 규칙 변형은 \"3 중대\"에 속하지 않은 상대의 아들 만 먹을 수 있다고 규정하고 있습니다.\n\n진자 단계에서는 어느 쪽도 먹은 아이가있는 빈 공간에서 스윙 할 수없는 몇 가지 규칙 변형이 있습니다.\n\n양손의 체스 말이 끝나면 이동 단계로 들어갑니다.\n\n워킹 스테이지\n\n플레이어는 자신의 폰을 인접한 지점으로 이동합니다. 갈 아이가 없으면 잃을 것입니다. 진자 스테이지와 유사하게 \"3 경기\"를 구성 할 때 상대방의 말을 캡처 할 수 있습니다. 한쪽에 폰이 두 개만 남아있는 경우 패배가 결정되고 게임은 패배로 선언됩니다. 체스 판에 3 개 이상의 말이 있지만 이동할 말이 없으면 패배자로 선언됩니다.\n\n발가락 단계\n\n규칙의 일부 변형에서, 파티에 3 개의 조각이 남아 있으면 빈 위치가 인접했는지 여부에 관계없이 빈 위치로 \"날아갈\"수 있습니다.",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "버전 정보",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "사용자 동의",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "특허",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "소스 코드",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "제 3 자 선언",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "앱 버전",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "전통적인",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "많은",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "흔들리는 추",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "보행",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "아이를 먹어",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "최종 조건",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "기계의 체스 스타일",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "수동태",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "시간 초과",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "모양 설정",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "개발자 옵션",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "개발자 모드",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "인간의 경험을 바탕으로",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "체스 말의 능력 향상을 고려하십시오",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "체스 말의 수",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "손에",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "체스 판에서",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "보드와 상단 가장자리 사이의 거리",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "이제 컴퓨터가 체스를 할 차례가 아닙니다.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "컴퓨터는 생각하지 않습니다",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "자동 재생",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "끝이다",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "애플리케이션을 종료하려면 리턴 키를 다시 누르십시오.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "환경 변수",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "더",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "이것은 아직 실험적인 기능입니다.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "실험적 기능",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "오픈 소스 라이선스",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "표시 언어",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "기본 언어",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "진자 단계에서 걸을 수 있습니다",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "유 각기와 보행기 사이에는 엄격한 경계가 없습니다. 즉, 플레이어는 움직일 때마다 움직일 것인지 움직일 것인지 결정할 수 있습니다 (움직일 수있는 조각이 남아있는 한).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "메뉴 색상",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "메뉴 텍스트 색상",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "메뉴 배경색",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "메뉴 하이라이트 항목 색상",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "기본 도구 모음 배경색",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "기본 도구 모음 아이콘 색상",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "탐색 도구 모음 배경색",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "탐색 도구 모음 아이콘 색상",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "도구 모음 자동 숨기기",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "화면의 도구 모음 위치",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "상단",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "바닥",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "센터",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "단색",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "그림",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "사진을 선택하세요",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "빛",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "어두운",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "테마",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "현재 테마",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "테마 저장",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "글꼴",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "분석 그래프 표시",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "분석",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "게임을 저장",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "게임 로드",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "설정 위치",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "합법적인 움직임 표시",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "마지막 이동 표시",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "화살표 표시",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "조각",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "분석 표시",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "스레드",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "참여하다",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "번역 개선에 참여",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "지도 시간",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "클래식 밀",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "혼합 밀",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "실론 밀",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "밀은 부서지고 반복적으로 다시 만들어질 수 있습니다.",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "플레이어가 즉시 새 공장을 만들기 위해 공장을 부수는 경우, 그러한 플레이어는 새 공장을 만드는 경우 다음 이동에서 그러한 조각을 원래 접합으로 다시 이동할 수 있습니다.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "플레이어가 3개의 피스를 가지고 있고 10번의 이동 후에 어느 플레이어도 상대방의 피스를 제거하지 않으면 게임이 무승부입니다.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "플레이어의 기물이 세 개로 줄어들고 두 플레이어 모두 10번의 이동 이내에 상대방의 말을 제거할 수 없는 경우 게임은 무승부입니다.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "닫다",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "흰색 조각",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "검은 조각",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "금지 포인트",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "빈 점",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "포인트 없음",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "배치 단계",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "이동 단계",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "비행 단계",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "이동할 면",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "마지막 이동",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "선택된",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "메인 메뉴",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "접근성",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "스크린 리더 지원",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "추첨입니다",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "그리다",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "체크 하이라이트 색상",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "연산",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "배치되지 않은 조각 제거",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "플레이어가 배치 단계에서 밀을 형성하면 상대의 배치되지 않은 조각을 제거하고 계속 이동합니다.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "엔드게임 N-무브 규칙",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "한 플레이어가 3개의 말만 가지고 있고 두 플레이어 모두 특정 이동 내에서 말을 제거하지 않으면 게임이 무승부입니다.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "어느 플레이어든 3개의 말만 가지고 있고 어느 플레이어도 특정 이동 내에서 말을 제거하지 않습니다.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "삼중 반복 규칙",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "위치가 세 번째 발생하면 게임이 무승부입니다.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "밀! 계속 움직이세요.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "포인트 스타일",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "포인트 너비",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "단단한",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "구멍",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "한국어",
-    "@languageName": {
-        "description": "The name of the current language"
-    }
+  "@@locale": "ko",
+  "appName": "모리스",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "어서 오십시오",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "예",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "아니",
+  "@no": {
+    "description": "No"
+  },
+  "game": "경기",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "인간-기계 전투",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "2 인 전투",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "기계 전투",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "클라우드에 도전",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "온라인 배틀",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "네트워크 테스트",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "움직임",
+  "@move": {
+    "description": "Move"
+  },
+  "moves": "단계",
+  "@moves": {
+    "description": " Moves"
+  },
+  "showMoveList": "체스 기록보기",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "체스 기록",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "아직 트릭이 없습니다",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "확인",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "확인",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "취소",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "copyright": "저작권 © 2021 Calcitem Studio",
+  "@copyright": {
+    "description": "Copyright"
+  },
+  "tipSelectWrong": "잘못된 아이",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "정착하십시오",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "여기에 떨어질 수 없어",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "이미 정착",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "먹어 줘",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "이거 먹을 수 없어",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "먹다",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "제발 가줘",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "여기에 떨어지지 마십시오",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "여기로 이동할 수 없습니다.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "세 아들을 연속해서 먹어주세요",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "계속 먹어주세요",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "상대방의 말을 선택하세요",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "세 게임 체인에서 폰을 먹을 수 없습니다.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "인접한 공석으로 걸어주세요.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "상대방의 말을 움직일 수 없습니다.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipThreePiecesInLine": "한 줄에 세 개의 체스 조각",
+  "@tipThreePiecesInLine": {
+    "description": "There are 3 pieces in a line."
+  },
+  "tipSelectPieceToMove": "이동할 자신의 폰을 선택하세요",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "3 개만 남음",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "모든 공석으로 날아갈 수 있음",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "체스를하다",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "플레이어 1이 승리합니다!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "플레이어 2가 승리합니다!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "승리",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "부정",
+  "@lost": {
+    "description": "Lost"
+  },
+  "aborted": "일시 정지",
+  "@aborted": {
+    "description": "Aborted"
+  },
+  "thinking": "다른 사람이 ...",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "새로운 라운드 시작",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "게임 가져 오기",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "게임 내보내기",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "게임 기록을 클립 보드에서 가져 왔습니다",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "가져올 수 없습니다",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "이동이 게임 규칙과 일치하지 않습니다.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "startRecording": "녹음 시작",
+  "@startRecording": {
+    "description": "Start recording"
+  },
+  "recording": "녹음...",
+  "@recording": {
+    "description": "Recording..."
+  },
+  "stopRecording": "녹음 중지",
+  "@stopRecording": {
+    "description": "Stop recording"
+  },
+  "showRecording": "재생 녹음",
+  "@showRecording": {
+    "description": "Show recording"
+  },
+  "noRecording": "재생 안함",
+  "@noRecording": {
+    "description": "No recording."
+  },
+  "pleaseWait": "잠시만 기다려주세요 ...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "다시 시작?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "재시작",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "게임이 시작됩니다.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "상황 분석 중 ...",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "오류",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "승률",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "점수",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "첫 손",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "백 핸드",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "남은 조각이 3 개 미만입니다.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "주다.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "갈 길이 없습니다.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "체스 판이 꽉 차서 갈 길이 없었습니다.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "초과 근무는 부정적입니다.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "이동 단계에서 규칙에 지정된 단계 수 내에 샷이 없으면 연속 된 여러 단계에 대해 동점이됩니다.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "체스 판이 꽉 차서 갈 길이없고, 동점이됩니다.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "위치를 반복하고 세 번 그립니다.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "게임이 끝났습니다. 이유를 알 수 없습니다!",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "게임 끝",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "우승을 축하합니다",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "앞으로 난이도가 높아질까요?\n증가 된 난이도는",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "당신은진다",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "분석",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "playerName": "선수 이름",
+  "@playerName": {
+    "description": "Player Name"
+  },
+  "about": "의 위에",
+  "@about": {
+    "description": "About"
+  },
+  "version": "버전",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "감사",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "설정",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "옵션",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "게임 설정",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "난이도",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "기계 사고 시간",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "게임 난이도",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "소리",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "체스를 할 때 소리 재생",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "게임 후회할 때 음소거 유지",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "신속한 사운드",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "선",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "인류",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "기계",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "번갈아",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "게임 종료시 자동으로 다시 시작",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "시작시 손 자동 교환",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "resignIfMostLose": "기계가 분명히 열등 할 때 자동으로 패배를 인정",
+  "@resignIfMostLose": {
+    "description": "AI Resign if Most Lose"
+  },
+  "shufflingEnabled": "무작위 기계 이동",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "learnEndgame": "엔드 게임 라이브러리자가 학습",
+  "@learnEndgame": {
+    "description": "Learn Endgame"
+  },
+  "openingBook": "여는 라이브러리 사용",
+  "@openingBook": {
+    "description": "Opening Book"
+  },
+  "misc": "다른",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "체스 규칙",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "체스 말의 수",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "두 플레이어가 소유 한 폰 수를 설정합니다.",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "얼마나 많은 아이들이 날 수 있습니까?",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "날아 다니는 말이 허용되면 플레이어는 한쪽에 말이 많이 남아있을 때 날 수 있습니다.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "몇 조각 미만, 게임에서 패배",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "삭감",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "보드에 4 개의 슬래시를 추가합니다.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "금지 점",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "스윙 스테이지에서는 먹은 조각이 표시되며 당분간 제거되지 않습니다. 양측이 체스 말을 배치 한 후, 그들은 통합되어 표시된 모든 체스 말을 제거하고 이동 단계에 들어갑니다.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "백 스윙",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "스윙 스테이지에서 먼저 스윙하는 파티가 스윙 스테이지에서 먼저 이동합니다.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "더 먹어",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "동시에 여러 개의 트라이어드가 형성되면 여러 개의 트라이어드가 형성되어 서로의 자녀를 먹을 수 있습니다.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "세 번째 연속 아들을 먹을 수 있습니다",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "기본적으로 상대방의 모든 자녀가 세 번째 대회에 참가하지 않는 한 세 번의 대회에서 자녀를 먹을 수 없습니다. 이 제한을 제거하려면이 옵션을 켜십시오.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "보드가 가득 차면",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "12 피스 체스의 경우, 스윙 스테이지가 끝날 때 보드가 가득 차고 어느 플레이어도 피스를 가지고 있지 않으면 첫 번째 플레이어가 무승부 대신 패배합니다.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "갈 길이 없을 때 패배",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "이동 단계에서는 갈 길이 없을 때 상대를 향하여 이동을 계속하는 대신 체스를 잃습니다.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Feizi",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "한 파티에 의해 3 개 또는 4 개의 (구성 가능한) 체스 말이 남아있을 때,이 파티는 그 말을 체스 판의 빈 위치로 이동할 수 있습니다.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N 단계 규칙",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "샷이 없을 때 동점으로 판단 할 연속 단계 수를 지정합니다.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "롤백",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "선택하세요",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "부",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "게임 기록이 클립 보드에 복사되었습니다.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "도움",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "피드백",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "그만두 다",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "규칙 설정",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "색깔",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "바둑판 색상",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "체스 조각 색상",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "배경색",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "선 색상",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "첫 번째 무버의 색상",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "뒤 체스 말의 색상",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "프롬프트 메시지 색상",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "aiIsLazy": "기계가 선도 할 때의 게으름",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "손에 남아있는 조각의 수를 보여주세요",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "보드 가장자리에 좌표 표시",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "이동 탐색 도구 모음 표시",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "디스플레이",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "바둑판 프레임 선 너비",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "체스 판 내부의 선 너비",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "조각 크기",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "글꼴 크기",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "표준 게임 기록 형식",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "초기화",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "기본 설정 복원",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "exitApp": "앱이 종료됩니다.",
+  "@exitApp": {
+    "description": "The app will exit."
+  },
+  "exitAppManually": "기본 구성을 적용하려면 프로그램을 즉시 종료하고 다시 열어야합니다.",
+  "@exitAppManually": {
+    "description": "You have to close immediately and reopen the app to take effect."
+  },
+  "pick": "고르다",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "정보",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "신속한",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "플레이어",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "첫 손",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "백 핸드",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "게임 방법",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "체스 말을 놓으려면 보드의 교차점을 클릭하십시오.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "이동하려는 조각을 선택하십시오.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "조각을 이동하려면이 조각에 인접한 지점을 클릭하십시오.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "상대방의 말 중 하나를 클릭하여 조각을 가져옵니다.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "상대방의 말을 가져 가기 전에 먼저 3 경기를 구성해야합니다.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "자신의 폰을 가져 가야합니다.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "통계",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "디스크 수",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "결과",
+  "@results": {
+    "description": "Results"
+  },
+  "cannotRemoveFromMill": "당신은 Sanlian의 아들을 먹을 수 없습니다.",
+  "@cannotRemoveFromMill": {
+    "description": "Cannot remove from the mill."
+  },
+  "left": "남은",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "개인 정보 정책",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "다음을 포함하되 이에 국한되지 않는 \"사용자 계약\"및 \"개인 정보 보호 정책\"의 조건을주의 깊게 읽고 완전히 이해하십시오.\n당사가 귀하에게 제공하는 서비스를 개선하기 위해 귀하의 명시 적 승인에 따라 당사는 귀하의 장치 모델, 진단 데이터, 이메일 주소 등과 같은 정보를 얻을 수 있습니다. 귀하는 승인을 거부하거나 취소 할 권리가 있습니다. 진단 데이터 전송을 요청할 때마다 팝업 창을 통해 귀하의 명시 적 동의를 얻습니다.\n당신은 읽을 수있다 \"",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": "\"더 알아보기. 동의하면 \"동의\"를 클릭하여 서비스 수락을 시작하십시오.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": "\"와\"",
+  "@and": {},
+  "accept": "동의하다",
+  "@accept": {
+    "description": "Accept"
+  },
+  "undo": "후회 체스",
+  "@undo": {
+    "description": "Undo"
+  },
+  "undoOption": "후회 체스",
+  "@undoOption": {
+    "description": "Undo option"
+  },
+  "undoOption_Detail": "후회 허용",
+  "@undoOption_Detail": {
+    "description": "It is possible to undo a move."
+  },
+  "takeBack": "물러서",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "롤백",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "기다려주세요",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "한 걸음 앞으로",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "끝으로 돌아 가기",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "끝으로 이동",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "지금 체스 플레이",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "수행하다",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "세 개를 연속으로 먹을 수 없습니다.",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "상대방의 아들이 모두 세 번째 회사에 있으면 아들을 먹을 수 없습니다.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "애니메이션 기간",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "아니",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "테마",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Mill는 매우 오래된 지적 게임으로, 게임의 목표는 남은 조각이 3 개 미만으로 상대방을 먹게하는 것입니다.\n\n위치가 세 번 반복되거나 100 번 연속 이동 (구성 가능)에 비트가 없으면 무승부가됩니다.\n\n게임은 세 단계로 나뉩니다.\n\n1. 빈 자리에서 스윙;\n2. 체스 말을 인접한 빈 위치로 이동합니다.\n3. 체스 말이 3 개 밖에 남지 않았을 때, \"말을 날릴 수 있습니다\"(선택 사항).\n\n스윙 스테이지\n\n체스 판에는 24 개의 빈 자리가 있습니다. 플레이어는 손에 자녀가 없을 때까지 자녀를 빈 위치에 번갈아 가며 놓습니다. 한 파티가 자신의 말을 3 개 연속으로 배열하면 \"쓰리 컴\"을 형성하고 상대방의 말을 캡처 한 다음 체스를 계속할 수 있다고합니다.\n\n특정 규칙 변형은 \"3 중대\"에 속하지 않은 상대의 아들 만 먹을 수 있다고 규정하고 있습니다.\n\n진자 단계에서는 어느 쪽도 먹은 아이가있는 빈 공간에서 스윙 할 수없는 몇 가지 규칙 변형이 있습니다.\n\n양손의 체스 말이 끝나면 이동 단계로 들어갑니다.\n\n워킹 스테이지\n\n플레이어는 자신의 폰을 인접한 지점으로 이동합니다. 갈 아이가 없으면 잃을 것입니다. 진자 스테이지와 유사하게 \"3 경기\"를 구성 할 때 상대방의 말을 캡처 할 수 있습니다. 한쪽에 폰이 두 개만 남아있는 경우 패배가 결정되고 게임은 패배로 선언됩니다. 체스 판에 3 개 이상의 말이 있지만 이동할 말이 없으면 패배자로 선언됩니다.\n\n발가락 단계\n\n규칙의 일부 변형에서, 파티에 3 개의 조각이 남아 있으면 빈 위치가 인접했는지 여부에 관계없이 빈 위치로 \"날아갈\"수 있습니다.",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "버전 정보",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "사용자 동의",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "특허",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "소스 코드",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "thirdPartyNotices": "제 3 자 선언",
+  "@thirdPartyNotices": {
+    "description": "Third-party notices"
+  },
+  "appVersion": "앱 버전",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "전통적인",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "많은",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "흔들리는 추",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "보행",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "아이를 먹어",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "최종 조건",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "기계의 체스 스타일",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "수동태",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "시간 초과",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "모양 설정",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "forDevelopers": "개발자 옵션",
+  "@forDevelopers": {
+    "description": "For developers"
+  },
+  "developerMode": "개발자 모드",
+  "@developerMode": {
+    "description": "Developer mode"
+  },
+  "drawOnHumanExperience": "인간의 경험을 바탕으로",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "체스 말의 능력 향상을 고려하십시오",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "체스 말의 수",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "손에",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "체스 판에서",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "보드와 상단 가장자리 사이의 거리",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "이제 컴퓨터가 체스를 할 차례가 아닙니다.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "컴퓨터는 생각하지 않습니다",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "autoReplay": "자동 재생",
+  "@autoReplay": {
+    "description": "Auto re-play moves"
+  },
+  "atEnd": "끝이다",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "애플리케이션을 종료하려면 리턴 키를 다시 누르십시오.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "environmentVariables": "환경 변수",
+  "@environmentVariables": {
+    "description": "Environment variables"
+  },
+  "more": "더",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "이것은 아직 실험적인 기능입니다.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "실험적 기능",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "오픈 소스 라이선스",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "표시 언어",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "기본 언어",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "진자 단계에서 걸을 수 있습니다",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "유 각기와 보행기 사이에는 엄격한 경계가 없습니다. 즉, 플레이어는 움직일 때마다 움직일 것인지 움직일 것인지 결정할 수 있습니다 (움직일 수있는 조각이 남아있는 한).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "메뉴 색상",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "메뉴 텍스트 색상",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerBackgroundColor": "메뉴 배경색",
+  "@drawerBackgroundColor": {
+    "description": "Menu background color"
+  },
+  "drawerHighlightItemColor": "메뉴 하이라이트 항목 색상",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "기본 도구 모음 배경색",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "기본 도구 모음 아이콘 색상",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "탐색 도구 모음 배경색",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "탐색 도구 모음 아이콘 색상",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "도구 모음 자동 숨기기",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "화면의 도구 모음 위치",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "상단",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "바닥",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "센터",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "단색",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "그림",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "사진을 선택하세요",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "빛",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "어두운",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "테마",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "현재 테마",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "테마 저장",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "fonts": "글꼴",
+  "@fonts": {
+    "description": "Fonts"
+  },
+  "showAnalysisGraph": "분석 그래프 표시",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "분석",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "게임을 저장",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "게임 로드",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "설정 위치",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "합법적인 움직임 표시",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "마지막 이동 표시",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "화살표 표시",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "조각",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "분석 표시",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "스레드",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "참여하다",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "번역 개선에 참여",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "지도 시간",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "클래식 밀",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "혼합 밀",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "실론 밀",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "밀은 부서지고 반복적으로 다시 만들어질 수 있습니다.",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "플레이어가 즉시 새 공장을 만들기 위해 공장을 부수는 경우, 그러한 플레이어는 새 공장을 만드는 경우 다음 이동에서 그러한 조각을 원래 접합으로 다시 이동할 수 있습니다.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "플레이어가 3개의 피스를 가지고 있고 10번의 이동 후에 어느 플레이어도 상대방의 피스를 제거하지 않으면 게임이 무승부입니다.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "플레이어의 기물이 세 개로 줄어들고 두 플레이어 모두 10번의 이동 이내에 상대방의 말을 제거할 수 없는 경우 게임은 무승부입니다.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "닫다",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "흰색 조각",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "검은 조각",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "금지 포인트",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "빈 점",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "포인트 없음",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "배치 단계",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "이동 단계",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "비행 단계",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "이동할 면",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "마지막 이동",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "선택된",
+  "@selected": {
+    "description": "Selected"
+  },
+  "mainMenu": "메인 메뉴",
+  "@mainMenu": {
+    "description": "Main menu"
+  },
+  "accessibility": "접근성",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "스크린 리더 지원",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "추첨입니다",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "그리다",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "체크 하이라이트 색상",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "연산",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "배치되지 않은 조각 제거",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "플레이어가 배치 단계에서 밀을 형성하면 상대의 배치되지 않은 조각을 제거하고 계속 이동합니다.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "엔드게임 N-무브 규칙",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "한 플레이어가 3개의 말만 가지고 있고 두 플레이어 모두 특정 이동 내에서 말을 제거하지 않으면 게임이 무승부입니다.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "어느 플레이어든 3개의 말만 가지고 있고 어느 플레이어도 특정 이동 내에서 말을 제거하지 않습니다.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "삼중 반복 규칙",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "위치가 세 번째 발생하면 게임이 무승부입니다.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "밀! 계속 움직이세요.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "포인트 스타일",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "포인트 너비",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "단단한",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "구멍",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "한국어",
+  "@languageName": {
+    "description": "The name of the current language"
+  }
 }
