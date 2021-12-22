@@ -76,10 +76,6 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "copyright": "Bản quyền © 2021 Calcitem Studio",
-  "@copyright": {
-    "description": "Copyright"
-  },
   "tipSelectWrong": "Phần được chọn là sai.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
