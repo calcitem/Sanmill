@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "マシンが明らかに不利な場合は自動的に譲歩する",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "マシンのランダムな動き",
   "@shufflingEnabled": {
     "description": "Random move"
