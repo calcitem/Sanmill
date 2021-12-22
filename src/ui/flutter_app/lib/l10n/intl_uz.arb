@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "Ko'pchilik yo'qotsa, sun'iy intellekt iste'fosi",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "Tasodifiy harakatlaning",
   "@shufflingEnabled": {
     "description": "Random move"
