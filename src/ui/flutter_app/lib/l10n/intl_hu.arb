@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "Tanulja meg a Végjátékot",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "Nyitókönyv",
   "@openingBook": {
     "description": "Opening Book"
