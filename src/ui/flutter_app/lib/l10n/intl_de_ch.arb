@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "recording": "Ufzeichnig..",
-  "@recording": {
-    "description": "Recording..."
-  },
   "stopRecording": "Ufhöre ufznäh",
   "@stopRecording": {
     "description": "Stop recording"
