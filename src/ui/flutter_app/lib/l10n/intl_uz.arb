@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "stopRecording": "Yozishni to'xtatish",
-  "@stopRecording": {
-    "description": "Stop recording"
-  },
   "showRecording": "Yozuvni ko'rsatish",
   "@showRecording": {
     "description": "Show recording"
