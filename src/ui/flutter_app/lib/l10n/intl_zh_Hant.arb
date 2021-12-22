@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "openingBook": "使用開局庫",
-  "@openingBook": {
-    "description": "Opening Book"
-  },
   "misc": "其他",
   "@misc": {
     "description": "Miscellaneous"
