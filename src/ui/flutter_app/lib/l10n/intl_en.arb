@@ -356,10 +356,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "Player Name",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "About",
   "@about": {
     "description": "About"
