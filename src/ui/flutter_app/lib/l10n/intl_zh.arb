@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "showRecording": "回放录制",
-  "@showRecording": {
-    "description": "Show recording"
-  },
   "noRecording": "没有可回放的",
   "@noRecording": {
     "description": "No recording."
