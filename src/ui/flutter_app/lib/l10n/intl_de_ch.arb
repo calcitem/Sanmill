@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Rückgängig",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Rückgängig",
   "@undoOption": {
     "description": "Undo option"
