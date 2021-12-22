@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "AI atkāpjas, ja lielākā daļa zaudē",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "Nejaušs gājiens",
   "@shufflingEnabled": {
     "description": "Random move"
