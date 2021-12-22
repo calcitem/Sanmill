@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Αναίρεση",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Επιλογή αναίρεσης",
   "@undoOption": {
     "description": "Undo option"
