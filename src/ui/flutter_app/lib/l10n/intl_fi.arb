@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Kumoa",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Peruuta vaihtoehto",
   "@undoOption": {
     "description": "Undo option"
