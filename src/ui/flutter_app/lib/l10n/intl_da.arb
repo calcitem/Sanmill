@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Mulighed for at fortryde",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Det er muligt at fortryde en flytning.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
