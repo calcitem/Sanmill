@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "stopRecording": "Ndaloni regjistrimin",
-  "@stopRecording": {
-    "description": "Stop recording"
-  },
   "showRecording": "Shfaq regjistrimin",
   "@showRecording": {
     "description": "Show recording"
