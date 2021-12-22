@@ -1038,10 +1038,6 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "fonts": "Fonts",
-  "@fonts": {
-    "description": "Fonts"
-  },
   "showAnalysisGraph": "Show analysis graph",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
