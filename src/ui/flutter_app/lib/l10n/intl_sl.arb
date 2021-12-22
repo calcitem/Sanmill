@@ -1,1256 +1,1253 @@
 {
-    "@@locale": "sl",
-    "appName": "Mlin",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Dobrodošli",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "Da",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Ne",
-    "@no": {
-        "description": "No"
-    },
-    "game": "Igra",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Človek proti umetni inteligenci",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Človek proti človeku",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "UI proti UI",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Človek proti oblaku",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Človek proti lokalnemu omrežju",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Preizkus prek omrežja LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Premik",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " Premiki",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Seznam premikov",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Seznam premikov",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Brez zapisa",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "V REDU",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "Potrdi",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "Prekliči",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Avtorske pravice © 2021 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Izberite napačen kos.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Postavite svoje kose.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Tukaj ga ne morete postaviti.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Postavili ste.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Odstranite košček.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Ne morete ga odstraniti.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Odstranili ste ga.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Premaknite figuro.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Figurice ne morete postaviti na to mesto.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Figurice ne morete premakniti sem.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Mlin! Vzemite nasprotnikovo figuro.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Nadaljujte z jemanjem nasprotnikove figure.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Izberite eno od nasprotnikovih figur.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Figurice ne morete odstraniti iz mlina.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "Figura se lahko premakne za 1 točko.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Nasprotnikove figure ne morete premakniti.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "V liniji so tri figure.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Izberite figuro, ki jo želite premakniti.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "Na voljo imate še tri figure.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Premaknete se lahko na poljubno točko.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " za premikanje.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "Igralec 1 zmaga!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "Igralec 2 zmaga!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Zmaga",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "Izgubljeno",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "Prekinjeno",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Razmišljanje...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "Nova igra",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Uvoz igre",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Izvozi igro",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Uvoz igre iz odložišča.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Ni mogoče uvoziti",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Poteze in pravila se ne ujemajo.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Začnite snemati",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Snemanje...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Ustavite snemanje",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Prikaži snemanje",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "Ni snemanja.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Počakajte.",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Ponovno zaženete trenutno igro?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Ponovno zaženite",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "Igra se je začela, prosimo, postavite",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Analiza ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "Napaka",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "Stopnja zmage",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "Rezultat",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "Igralec 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "Igralec 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " število kosov je manjše od treh.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " odstopi.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " ni prava pot.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "Igralna plošča je polna in ni možnosti za nadaljevanje.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Čas se je iztekel",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "V fazi premikanja v zadnjem določenem številu potez ni bila odstranjena nobena figura.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "To je remi, ker je igralna plošča polna.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "Zaradi trikratnega ponavljanja je neodločen rezultat.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "Konec igre! Neznani razlog.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "Konec igre",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "Zmagal si! Čestitamo!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "Izziv težje ravni? Nova stopnja bo stopnja ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "Izgubili ste!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "Analizirajte",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "Ponovno zaženete trenutno igro?",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "O spletni strani",
-    "@about": {
-        "description": "About"
-    },
-    "version": "Različica",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "Hvala",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Nastavitve",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Možnosti",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "Nastavitve",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Stopnja težavnosti",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "Čas razmišljanja umetne inteligence",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Težavnost",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Zvočni učinki",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "Predvajanje zvokov v igri",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Pri vračanju umiri zvok",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Ton",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Prva poteza",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Človek",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "UI",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "Nadomestna",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "Samodejni ponovni zagon igre, ko je igra končana",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Samodejna sprememba prve poteze",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "AI odstopi, če večina izgubi",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Naključna poteza",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Naučite se konca igre",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Otvoritvena knjiga",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "Različne",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "Pravila",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Število figur, ki jih ima vsak igralec",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Koliko figur ima vsak igralec?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Številka leteče figure",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "Če je omogočeno letenje, se lahko igralec, ko se število njegovih figur zmanjša na določeno število, prosto premakne na katero koli nezasedeno točko, namesto da bi bil omejen na sosednje točke kot v preostalem delu igre.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Najmanj figur",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Diagonalne črte",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Igralni plošči dodajte štiri diagonalne črte.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Označite in odložite odstranitev figur",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "V fazi postavljanja točk odstranjenih figur ne bo več mogoče postaviti.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Drugi igralec se premakne prvi",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Igralec, ki se v fazi postavljanja premakne kot drugi, se v fazi premikanja premakne prvi.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Večkratno odstranjevanje",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Če igralec zapre več kot en mlin naenkrat, odstrani toliko mlinov, kolikor jih je zaprl.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Uničenje mlinov",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "Privzeto morajo igralci najprej odstraniti vse druge kose, preden odstranijo kos iz oblikovanega mlina. Če to možnost omogočite, to omejitev onemogočite.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Drugi igralec izgubi, ko je igralna plošča polna",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Ko je igralna plošča ob koncu faze postavljanja polna, izgubi stran, ki je prva postavila mlinček. V nasprotnem primeru je igra neodločena.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Izgubi, ko ni dovoljenih potez",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Igralec izgubi, če ga nasprotnik blokira, tako da ga ni mogoče premakniti. Če je ta možnost onemogočena, spremenite stran za premikanje.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Leteči",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Če ima igralec na voljo le še tri ali štiri (nastavljive) figure, lahko premakne figuro na katero koli prosto točko.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "Pravilo N premikov",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "Igra je izenačena, če vsak igralec v določenem številu potez ni odstranil nobene figure.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Vrnitev",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "Izberite",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "Kopiraj",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Zgodovina potez se kopira v odložišče",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Pomoč",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Povratne informacije",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "Izhod",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Nastavitve pravila",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "Barva",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Barva table",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Barva kosa",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Barva ozadja",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Barva črte table",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Barva figurice igralca 1",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Barva kosa igralca 2",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Barva sporočila",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "UI je lena",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Prikaži število kosov v roki",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Prikaži zapise na igralni plošči",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Prikaži navigacijsko orodno vrstico za zgodovino",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "Prikaži",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Širina meje table",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Širina notranje črte table",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Širina kosa",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "Velikost pisave",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "Zapis WMD",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Obnovitev",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Obnovi privzete nastavitve",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "Aplikacija se zaključi.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "Da bi se učinek upošteval, morate aplikacijo takoj zapreti in jo znova odpreti.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Izberite",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "Info",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "Namig",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "igralec",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "Igralec 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "Igralec 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Kako igrati",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Tapnite katero koli razpoložljivo točko, da postavite figuro.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Tapnite figuro, da jo premaknete.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Tapnite točko, ki je povezana s figuro, da jo premaknete.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Tapnite na eno nasprotnikovo figuro, da jo odstranite.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Preden lahko odstranite figuro, morate najprej ustvariti mlin.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Igrati morate s svojimi figurami.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "Statistika",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Skupno število iger",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "Rezultati",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Ni mogoče odstraniti iz mlina.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "levo",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Politika zasebnosti",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Pozorno preberite in se prepričajte, da jo v celoti razumete in se z njo strinjate ",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Če se s tem pravilnikom ne strinjate, te aplikacije ne uporabljajte. Uporaba aplikacije pomeni, da se strinjate s temi pogoji.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " in . ",
-    "accept": "Sprejmite",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "Razveljavi",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "Možnost Razveljavi",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Premik lahko razveljavite.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Vzemite nazaj",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Vračanje nazaj",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Čakanje",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Korak naprej",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Vzemi vse nazaj",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Korak naprej vsi",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Premaknite se zdaj",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Končano.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Mlin na krek",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "Če ima igralec samo kose v mlinih, se kosi v mlinih ne bodo zaklenili za odstranitev.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Trajanje animacije",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Ni",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Tema",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Cilj igre je, da nasprotnik ostane z manj kot tremi figurami ali brez dovoljenih potez.\n\nČe se položaj pojavi tretjič ali če v zadnjih 100 (nastavljivih) potezah ne odstrani nobene figure, se igra samodejno izenači.\n\nIgra poteka v treh fazah:\n\n1. Postavljanje figur na prosta mesta\n2. Premikanje figur na sosednje točke\n3. (neobvezna faza) Premikanje figur na katero koli prosto točko, ko se igralec zmanjša na tri figure\n\nPostavljanje\n\nIgra se začne s prazno igralno ploščo, ki jo sestavlja mreža s štiriindvajsetimi točkami. Igralci izmenično postavljajo svoje figure na proste točke, dokler vsak igralec ne postavi vseh figur na ploščo. Če lahko igralec postavi tri svoje figure naravnost, ima \"mlin\" in lahko odstrani eno nasprotnikovo figuro z deske.\n\nV nekaterih pravilih morajo igralci najprej odstraniti vse druge figure, preden odstranijo figuro iz oblikovanega mlina.\n\nV nekaterih pravilih v fazi postavljanja ni mogoče ponovno postaviti figur na točke odstranjenih figur.\n\nKo uporabite vse figure, se igralci izmenično premikajo.\n\nPremikanje\n\nZa premikanje igralec premakne eno od svojih figur vzdolž linije na plošči do proste sosednje točke. Če mu to ne uspe, je izgubil igro. Tako kot v fazi postavljanja ima igralec, ki postavi tri svoje figure na linijo deske, mlin in lahko odstrani eno od nasprotnikovih figur. Vsak igralec, ki zmanjša število figur na dve, nima možnosti oblikovanja novih mlinov in tako izgubi igro. Igralec lahko izgubi tudi, če ima več kot tri figure, če mu nasprotnik onemogoči premikanje.\n\nLeteči\n\nV nekaterih različicah pravil lahko igralec, ko ima le še tri figure, s svojimi figurami leti, skače ali skače na vse proste točke, ne le na sosednje.",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "Informacije o različici",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "Licenca",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Izvorna koda",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Obvestila tretjih oseb",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "Različica aplikacije",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "Splošno",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "Napredno",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "Nameščanje",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Premikanje",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Odstranjevanje",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "Pogoj za konec igre",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "Igralni slog umetne inteligence",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Pasivni",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "Časovni interval",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Personalizacija",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "Za razvijalce",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Način za razvijalce",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Črpajte iz človeških izkušenj",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Upoštevajte mobilnost delov",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Število kosov",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "v roki",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "na igralni plošči",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "Odmik deske od vrha",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Umetna inteligenca ni na potezi.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "UI ne razmišlja.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Samodejno ponovno predvajanje potez",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "Ste na koncu seznama potez.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Ponovno se dotaknite nazaj, če želite oditi.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Spremenljivke okolja",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Več",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Gre za eksperimentalno funkcijo.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Eksperimenti",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Odprtokodne licence",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Jezik",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "Privzet jezik",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Koščki se lahko premikajo v fazi postavljanja",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Ni ločenih faz postavljanja in premikanja, tj. igralci se lahko pri vsaki potezi odločijo, ali želijo postaviti figuro na igralno ploščo ali premakniti eno od svojih figur (če imajo še preostale figure za postavitev).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Barva menija",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Barva besedila menija",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Barva ozadja menija",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Barva elementa v meniju",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Barva ozadja glavne orodne vrstice",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "barva ikone glavne orodne vrstice",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Barva ozadja orodne vrstice za krmarjenje",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Barva ikone v orodni vrstici za krmarjenje",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Samodejno skrij orodno vrstico",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Lokacija orodne vrstice na zaslonu",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Na vrh",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Spodaj",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Center",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Enobarvna",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Slika",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Izberite svojo sliko",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Svetloba",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "Temno",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Teme",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Trenutna tema",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Shrani temo",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "Pisave",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Prikaži graf analize",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Analiza",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "Shranite igro",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Naloži igro",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "Položaj za nastavitev",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Pokažite zakonite poteze",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Pokaži zadnjo potezo",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Pokaži puščice",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "Kosi",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Prikaži analizo",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Niti",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "Sodelujte",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Pomagajte izboljšati prevajanje",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "Vadnica",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Klasični mlin",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Mešani mlin",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Cejlonski mlin",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Mlin se lahko večkrat zlomi in predela",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Če igralec razbije mlin, da takoj ustvari nov mlin, lahko tak igralec pri naslednjem premiku tak kos premakne nazaj na prvotni spoj, če naredi nov mlin.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Igra se izžreba, če ima igralec tri figure in po desetih potezah noben igralec ne odstrani nasprotnikovih figur",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Ko je igralec na treh delih in noben igralec ne more odstraniti nasprotnikove figure v desetih potezah, je igra neodločena.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "Zapri",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Beli kos",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "Črni kos",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Točka prepovedi",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "Prazna točka",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Nima smisla",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Faza postavitve",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Faza premikanja",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Faza letenja",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Stran za premikanje",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Zadnja poteza",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Izbrano",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Glavni meni",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Dostopnost",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Podpora za bralnik zaslona",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "To je neodločeno",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "Žrebanje",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Barva poudarka kosa",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "Algoritem",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "Odstranite nenastavljen kos",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Če igralec v fazi postavitve oblikuje mlin, bo odstranil nasprotnikov nezameščen kos in nadaljeval s potezo.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "End-game N-Move pravilo",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Če ima kateri od igralcev le tri figure in noben od njih ne odstrani kosa v določenih potezah, je igra neodločena.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Vsak igralec ima samo tri figure in noben igralec ne odstrani figure v določenih potezah.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Pravilo trikratnega ponavljanja",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Igra se izenači, če se položaj pojavi tretjič.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Mlin! Še naprej se premikajte.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Stil točke",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Širina točke",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Trdno",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Votlo",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "Slovenščina",
-    "@languageName": {
-        "description": "The name of the current language"
-    }
+  "@@locale": "sl",
+  "appName": "Mlin",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Dobrodošli",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Da",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Ne",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Igra",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Človek proti umetni inteligenci",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Človek proti človeku",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "UI proti UI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Človek proti oblaku",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Človek proti lokalnemu omrežju",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Preizkus prek omrežja LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Premik",
+  "@move": {
+    "description": "Move"
+  },
+  "moves": " Premiki",
+  "@moves": {
+    "description": " Moves"
+  },
+  "showMoveList": "Seznam premikov",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Seznam premikov",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Brez zapisa",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "V REDU",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Potrdi",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Prekliči",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Izberite napačen kos.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Postavite svoje kose.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Tukaj ga ne morete postaviti.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Postavili ste.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Odstranite košček.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Ne morete ga odstraniti.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Odstranili ste ga.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Premaknite figuro.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Figurice ne morete postaviti na to mesto.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Figurice ne morete premakniti sem.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Mlin! Vzemite nasprotnikovo figuro.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Nadaljujte z jemanjem nasprotnikove figure.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Izberite eno od nasprotnikovih figur.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Figurice ne morete odstraniti iz mlina.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Figura se lahko premakne za 1 točko.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Nasprotnikove figure ne morete premakniti.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipThreePiecesInLine": "V liniji so tri figure.",
+  "@tipThreePiecesInLine": {
+    "description": "There are 3 pieces in a line."
+  },
+  "tipSelectPieceToMove": "Izberite figuro, ki jo želite premakniti.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Na voljo imate še tri figure.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Premaknete se lahko na poljubno točko.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": " za premikanje.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Igralec 1 zmaga!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Igralec 2 zmaga!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Zmaga",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Izgubljeno",
+  "@lost": {
+    "description": "Lost"
+  },
+  "aborted": "Prekinjeno",
+  "@aborted": {
+    "description": "Aborted"
+  },
+  "thinking": "Razmišljanje...",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Nova igra",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Uvoz igre",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Izvozi igro",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Uvoz igre iz odložišča.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Ni mogoče uvoziti",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Poteze in pravila se ne ujemajo.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "startRecording": "Začnite snemati",
+  "@startRecording": {
+    "description": "Start recording"
+  },
+  "recording": "Snemanje...",
+  "@recording": {
+    "description": "Recording..."
+  },
+  "stopRecording": "Ustavite snemanje",
+  "@stopRecording": {
+    "description": "Stop recording"
+  },
+  "showRecording": "Prikaži snemanje",
+  "@showRecording": {
+    "description": "Show recording"
+  },
+  "noRecording": "Ni snemanja.",
+  "@noRecording": {
+    "description": "No recording."
+  },
+  "pleaseWait": "Počakajte.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Ponovno zaženete trenutno igro?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Ponovno zaženite",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Igra se je začela, prosimo, postavite",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Analiza ...",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Napaka",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Stopnja zmage",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Rezultat",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Igralec 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Igralec 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": " število kosov je manjše od treh.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": " odstopi.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": " ni prava pot.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Igralna plošča je polna in ni možnosti za nadaljevanje.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Čas se je iztekel",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "V fazi premikanja v zadnjem določenem številu potez ni bila odstranjena nobena figura.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "To je remi, ker je igralna plošča polna.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Zaradi trikratnega ponavljanja je neodločen rezultat.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Konec igre! Neznani razlog.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Konec igre",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Zmagal si! Čestitamo!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Izziv težje ravni? Nova stopnja bo stopnja ",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Izgubili ste!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Analizirajte",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "playerName": "Ponovno zaženete trenutno igro?",
+  "@playerName": {
+    "description": "Player Name"
+  },
+  "about": "O spletni strani",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Različica",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Hvala",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Nastavitve",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Možnosti",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "Nastavitve",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "Stopnja težavnosti",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Čas razmišljanja umetne inteligence",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Težavnost",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Zvočni učinki",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Predvajanje zvokov v igri",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Pri vračanju umiri zvok",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Ton",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Prva poteza",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Človek",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "UI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Nadomestna",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Samodejni ponovni zagon igre, ko je igra končana",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Samodejna sprememba prve poteze",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "resignIfMostLose": "AI odstopi, če večina izgubi",
+  "@resignIfMostLose": {
+    "description": "AI Resign if Most Lose"
+  },
+  "shufflingEnabled": "Naključna poteza",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "learnEndgame": "Naučite se konca igre",
+  "@learnEndgame": {
+    "description": "Learn Endgame"
+  },
+  "openingBook": "Otvoritvena knjiga",
+  "@openingBook": {
+    "description": "Opening Book"
+  },
+  "misc": "Različne",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Pravila",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Število figur, ki jih ima vsak igralec",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Koliko figur ima vsak igralec?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Številka leteče figure",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Če je omogočeno letenje, se lahko igralec, ko se število njegovih figur zmanjša na določeno število, prosto premakne na katero koli nezasedeno točko, namesto da bi bil omejen na sosednje točke kot v preostalem delu igre.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Najmanj figur",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Diagonalne črte",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Igralni plošči dodajte štiri diagonalne črte.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Označite in odložite odstranitev figur",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "V fazi postavljanja točk odstranjenih figur ne bo več mogoče postaviti.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Drugi igralec se premakne prvi",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Igralec, ki se v fazi postavljanja premakne kot drugi, se v fazi premikanja premakne prvi.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Večkratno odstranjevanje",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Če igralec zapre več kot en mlin naenkrat, odstrani toliko mlinov, kolikor jih je zaprl.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Uničenje mlinov",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Privzeto morajo igralci najprej odstraniti vse druge kose, preden odstranijo kos iz oblikovanega mlina. Če to možnost omogočite, to omejitev onemogočite.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Drugi igralec izgubi, ko je igralna plošča polna",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Ko je igralna plošča ob koncu faze postavljanja polna, izgubi stran, ki je prva postavila mlinček. V nasprotnem primeru je igra neodločena.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Izgubi, ko ni dovoljenih potez",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Igralec izgubi, če ga nasprotnik blokira, tako da ga ni mogoče premakniti. Če je ta možnost onemogočena, spremenite stran za premikanje.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Leteči",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Če ima igralec na voljo le še tri ali štiri (nastavljive) figure, lahko premakne figuro na katero koli prosto točko.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "Pravilo N premikov",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Igra je izenačena, če vsak igralec v določenem številu potez ni odstranil nobene figure.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Vrnitev",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Izberite",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Kopiraj",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Zgodovina potez se kopira v odložišče",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Pomoč",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Povratne informacije",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Izhod",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Nastavitve pravila",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Barva",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Barva table",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Barva kosa",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Barva ozadja",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Barva črte table",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Barva figurice igralca 1",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Barva kosa igralca 2",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Barva sporočila",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "aiIsLazy": "UI je lena",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "Prikaži število kosov v roki",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Prikaži zapise na igralni plošči",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Prikaži navigacijsko orodno vrstico za zgodovino",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Prikaži",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Širina meje table",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Širina notranje črte table",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Širina kosa",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Velikost pisave",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "Zapis WMD",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Obnovitev",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Obnovi privzete nastavitve",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "exitApp": "Aplikacija se zaključi.",
+  "@exitApp": {
+    "description": "The app will exit."
+  },
+  "exitAppManually": "Da bi se učinek upošteval, morate aplikacijo takoj zapreti in jo znova odpreti.",
+  "@exitAppManually": {
+    "description": "You have to close immediately and reopen the app to take effect."
+  },
+  "pick": "Izberite",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Info",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Namig",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "igralec",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Igralec 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Igralec 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Kako igrati",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Tapnite katero koli razpoložljivo točko, da postavite figuro.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Tapnite figuro, da jo premaknete.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Tapnite točko, ki je povezana s figuro, da jo premaknete.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Tapnite na eno nasprotnikovo figuro, da jo odstranite.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Preden lahko odstranite figuro, morate najprej ustvariti mlin.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Igrati morate s svojimi figurami.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistika",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Skupno število iger",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Rezultati",
+  "@results": {
+    "description": "Results"
+  },
+  "cannotRemoveFromMill": "Ni mogoče odstraniti iz mlina.",
+  "@cannotRemoveFromMill": {
+    "description": "Cannot remove from the mill."
+  },
+  "left": "levo",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Politika zasebnosti",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Pozorno preberite in se prepričajte, da jo v celoti razumete in se z njo strinjate ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Če se s tem pravilnikom ne strinjate, te aplikacije ne uporabljajte. Uporaba aplikacije pomeni, da se strinjate s temi pogoji.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " in . ",
+  "@and": {},
+  "accept": "Sprejmite",
+  "@accept": {
+    "description": "Accept"
+  },
+  "undo": "Razveljavi",
+  "@undo": {
+    "description": "Undo"
+  },
+  "undoOption": "Možnost Razveljavi",
+  "@undoOption": {
+    "description": "Undo option"
+  },
+  "undoOption_Detail": "Premik lahko razveljavite.",
+  "@undoOption_Detail": {
+    "description": "It is possible to undo a move."
+  },
+  "takeBack": "Vzemite nazaj",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Vračanje nazaj",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Čakanje",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Korak naprej",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Vzemi vse nazaj",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Korak naprej vsi",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Premaknite se zdaj",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Končano.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Mlin na krek",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Če ima igralec samo kose v mlinih, se kosi v mlinih ne bodo zaklenili za odstranitev.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Trajanje animacije",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Ni",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Tema",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Cilj igre je, da nasprotnik ostane z manj kot tremi figurami ali brez dovoljenih potez.\n\nČe se položaj pojavi tretjič ali če v zadnjih 100 (nastavljivih) potezah ne odstrani nobene figure, se igra samodejno izenači.\n\nIgra poteka v treh fazah:\n\n1. Postavljanje figur na prosta mesta\n2. Premikanje figur na sosednje točke\n3. (neobvezna faza) Premikanje figur na katero koli prosto točko, ko se igralec zmanjša na tri figure\n\nPostavljanje\n\nIgra se začne s prazno igralno ploščo, ki jo sestavlja mreža s štiriindvajsetimi točkami. Igralci izmenično postavljajo svoje figure na proste točke, dokler vsak igralec ne postavi vseh figur na ploščo. Če lahko igralec postavi tri svoje figure naravnost, ima \"mlin\" in lahko odstrani eno nasprotnikovo figuro z deske.\n\nV nekaterih pravilih morajo igralci najprej odstraniti vse druge figure, preden odstranijo figuro iz oblikovanega mlina.\n\nV nekaterih pravilih v fazi postavljanja ni mogoče ponovno postaviti figur na točke odstranjenih figur.\n\nKo uporabite vse figure, se igralci izmenično premikajo.\n\nPremikanje\n\nZa premikanje igralec premakne eno od svojih figur vzdolž linije na plošči do proste sosednje točke. Če mu to ne uspe, je izgubil igro. Tako kot v fazi postavljanja ima igralec, ki postavi tri svoje figure na linijo deske, mlin in lahko odstrani eno od nasprotnikovih figur. Vsak igralec, ki zmanjša število figur na dve, nima možnosti oblikovanja novih mlinov in tako izgubi igro. Igralec lahko izgubi tudi, če ima več kot tri figure, če mu nasprotnik onemogoči premikanje.\n\nLeteči\n\nV nekaterih različicah pravil lahko igralec, ko ima le še tri figure, s svojimi figurami leti, skače ali skače na vse proste točke, ne le na sosednje.",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Informacije o različici",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Licenca",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Izvorna koda",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "thirdPartyNotices": "Obvestila tretjih oseb",
+  "@thirdPartyNotices": {
+    "description": "Third-party notices"
+  },
+  "appVersion": "Različica aplikacije",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Splošno",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Napredno",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Nameščanje",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Premikanje",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Odstranjevanje",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Pogoj za konec igre",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Igralni slog umetne inteligence",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Pasivni",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Časovni interval",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "Personalizacija",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "forDevelopers": "Za razvijalce",
+  "@forDevelopers": {
+    "description": "For developers"
+  },
+  "developerMode": "Način za razvijalce",
+  "@developerMode": {
+    "description": "Developer mode"
+  },
+  "drawOnHumanExperience": "Črpajte iz človeških izkušenj",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Upoštevajte mobilnost delov",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Število kosov",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "v roki",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "na igralni plošči",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Odmik deske od vrha",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Umetna inteligenca ni na potezi.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "UI ne razmišlja.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "autoReplay": "Samodejno ponovno predvajanje potez",
+  "@autoReplay": {
+    "description": "Auto re-play moves"
+  },
+  "atEnd": "Ste na koncu seznama potez.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Ponovno se dotaknite nazaj, če želite oditi.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "environmentVariables": "Spremenljivke okolja",
+  "@environmentVariables": {
+    "description": "Environment variables"
+  },
+  "more": "Več",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Gre za eksperimentalno funkcijo.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Eksperimenti",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Odprtokodne licence",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Jezik",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Privzet jezik",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Koščki se lahko premikajo v fazi postavljanja",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Ni ločenih faz postavljanja in premikanja, tj. igralci se lahko pri vsaki potezi odločijo, ali želijo postaviti figuro na igralno ploščo ali premakniti eno od svojih figur (če imajo še preostale figure za postavitev).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Barva menija",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Barva besedila menija",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerBackgroundColor": "Barva ozadja menija",
+  "@drawerBackgroundColor": {
+    "description": "Menu background color"
+  },
+  "drawerHighlightItemColor": "Barva elementa v meniju",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Barva ozadja glavne orodne vrstice",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "barva ikone glavne orodne vrstice",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Barva ozadja orodne vrstice za krmarjenje",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Barva ikone v orodni vrstici za krmarjenje",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Samodejno skrij orodno vrstico",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Lokacija orodne vrstice na zaslonu",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Na vrh",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Spodaj",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Center",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Enobarvna",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Slika",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Izberite svojo sliko",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Svetloba",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Temno",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Teme",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Trenutna tema",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Shrani temo",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "fonts": "Pisave",
+  "@fonts": {
+    "description": "Fonts"
+  },
+  "showAnalysisGraph": "Prikaži graf analize",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Analiza",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Shranite igro",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Naloži igro",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Položaj za nastavitev",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Pokažite zakonite poteze",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Pokaži zadnjo potezo",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Pokaži puščice",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Kosi",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Prikaži analizo",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Niti",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Sodelujte",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Pomagajte izboljšati prevajanje",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Vadnica",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Klasični mlin",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Mešani mlin",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Cejlonski mlin",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Mlin se lahko večkrat zlomi in predela",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Če igralec razbije mlin, da takoj ustvari nov mlin, lahko tak igralec pri naslednjem premiku tak kos premakne nazaj na prvotni spoj, če naredi nov mlin.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Igra se izžreba, če ima igralec tri figure in po desetih potezah noben igralec ne odstrani nasprotnikovih figur",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Ko je igralec na treh delih in noben igralec ne more odstraniti nasprotnikove figure v desetih potezah, je igra neodločena.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Zapri",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Beli kos",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Črni kos",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Točka prepovedi",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Prazna točka",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Nima smisla",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Faza postavitve",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Faza premikanja",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Faza letenja",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Stran za premikanje",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Zadnja poteza",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Izbrano",
+  "@selected": {
+    "description": "Selected"
+  },
+  "mainMenu": "Glavni meni",
+  "@mainMenu": {
+    "description": "Main menu"
+  },
+  "accessibility": "Dostopnost",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Podpora za bralnik zaslona",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "To je neodločeno",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Žrebanje",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Barva poudarka kosa",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algoritem",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "Odstranite nenastavljen kos",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Če igralec v fazi postavitve oblikuje mlin, bo odstranil nasprotnikov nezameščen kos in nadaljeval s potezo.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "End-game N-Move pravilo",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Če ima kateri od igralcev le tri figure in noben od njih ne odstrani kosa v določenih potezah, je igra neodločena.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Vsak igralec ima samo tri figure in noben igralec ne odstrani figure v določenih potezah.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Pravilo trikratnega ponavljanja",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Igra se izenači, če se položaj pojavi tretjič.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Mlin! Še naprej se premikajte.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Stil točke",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Širina točke",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Trdno",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Votlo",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Slovenščina",
+  "@languageName": {
+    "description": "The name of the current language"
+  }
 }
