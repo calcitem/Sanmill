@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "ИИ уходит в отставку, если большинство проиграло",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "Случайный ход",
   "@shufflingEnabled": {
     "description": "Random move"
