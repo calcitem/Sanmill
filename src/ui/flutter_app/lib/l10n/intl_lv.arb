@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "Trešo pušu paziņojumi",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "Lietotnes versija",
   "@appVersion": {
     "description": "App Version"
