@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "openingBook": "খোলার বই",
-  "@openingBook": {
-    "description": "Opening Book"
-  },
   "misc": "বিবিধ",
   "@misc": {
     "description": "Miscellaneous"
