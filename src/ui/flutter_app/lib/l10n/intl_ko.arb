@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "엔드 게임 라이브러리자가 학습",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "여는 라이브러리 사용",
   "@openingBook": {
     "description": "Opening Book"
