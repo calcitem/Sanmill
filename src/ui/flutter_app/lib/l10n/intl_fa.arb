@@ -172,10 +172,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "صرف نظر شد",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "فكر كردن...",
   "@thinking": {
     "description": "Thinking..."
