@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Možnosť Zrušiť",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Presun je možné vrátiť späť.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
