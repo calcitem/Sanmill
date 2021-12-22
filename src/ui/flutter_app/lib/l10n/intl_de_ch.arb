@@ -1,1256 +1,1267 @@
 {
-    "@@locale": "de_CH",
-    "appName": "Mühli",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Härzlech Wiukomme",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "Jo",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Nei",
-    "@no": {
-        "description": "No"
-    },
-    "game": "Spiu",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Mönsch gäge Computer",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Mönsch gäge Mönsch",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "Computer gäge Computer",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Mönsch gäge Cloud",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Mönsch gäge LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Test übr LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Ziehe",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " Zieht",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Zuglischte",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Zuglischte",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Ke Rekord",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "OK",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "Bestätige",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "Abbräche",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Copyright © 2021 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Fausch Stei usgwäut.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Setz di Stei.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Hie chasch du nid setze.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Platziert.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Nimm e Stei wäg.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Chame nid wägnäh.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Wäggnoh.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Zieh e Stei.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Du chasch di Stei nid dohie setze.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Du chasch di Stei nid dohi zieh.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Mühli! Nimm e gägnerische Stei.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Nimm nomou e gägnerische Stei.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Wäuh e gägnerische Stei.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Du chasch e Stei us dr Mühli näh.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "E Stei cha nur 1 Fäud wit zoge wärde.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Du chasch e gägnerische Stei näh.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "Es si 3 Steine ire Reihe.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Wäuh e Stei zum zieh.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "Du hesch no 3 Steine übrig.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Du chasch ah jedi beliebigi Position springe.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " isch am Zug.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "Spieler 1 gwünnt!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "Spieler 2 gwünnt!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Gwunne",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "Verlore",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "Abbroche",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Dänke noche..",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "Nöis Spiu",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Spiu importiere",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Spiu exportiere",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Spiu us dr Zwischeablag importiert.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Cha nid importiert wärde.",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Regle und Zug stimme nid überih.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Starte Ufnahm",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Ufzeichnig..",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Ufhöre ufznäh",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Ufnahm ahzeige",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "Ke Ufnahm.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Bitte warte..",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Spiu neu ahfoh?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Nöistart",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "Spiu gstartet, bitte Stei platziere",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Analüsiere..",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "Fähler",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "Gwünnquote",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "Pünkt",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "Spieler 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "Spieler 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " het weniger aus 3 Steine.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " git uf.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " cha nüm zieh.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "zBrätt isch vou.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Zit isch ume.",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "I dr Bewegigsphase isch i de letschde bestimmte Ahzauh Züg ke Stei empfärnt worde.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "Unentschide wiu zBrätt vou isch.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "Unentschide wäge drümou Wiederhout.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "Spiu verbi! Wägemne umbekannte Grund.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "Spiu verbi",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "Gratuliere, du hesch gwunnä!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "E schwäreri Stufe probiere? Neui Stufe: ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "Du hesch verlore!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "Analüsiere",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "Spielername",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "Übr",
-    "@about": {
-        "description": "About"
-    },
-    "version": "Version",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "Danksägige",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Ihstellige",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Optione",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "Ihstellige",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Schwierigkeitsstufe",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "Bedänkzit Computer",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Schwierigkeit",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Tön",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "Tön bim spiele abspiele",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Bim Zrügnäh stumm blibe",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Ton",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Erschti Zug",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Mönsch",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "Computer",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "Abwächslend",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "Nach Spiuändi outomatisch neustarte",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Dr erscht Zug outomatisch ändere",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "Computer tritt zrüg, we die meischte verlüre",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Zuefauszüg",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Ändspiu lerne",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Eröffnigsbuech",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "Verschidenigs",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "Regle",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Ahzauh Steine für jede Spieler",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Wieviu Steine für jede Spieler?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Ahzauh flügende Steine",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "Wenn flüge aktiviert isch und e Spieler uf e bestimmti Steizauh reduziert wird, chöi sini Steine frei zu jedem unbesetzte Punkt bewegt wärde. Anstatt wie süsch im Spiu zum Nochberspunkt.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Steine mindistens",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Diagonali Linie",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Vier diagonali Linie zum Brätt hinzuefüege.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Pünkt vo entfärnte Steine sperre",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "I dr Setzphase chöi kenni Steine uf Pünkt vo entfärnte Steine gsetzt wärde.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Dr zwöit Spieler zieht zerscht",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Dr i dr Setzphase zwöiti Spieler zieht i dr Zugphase zerscht.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Mehrfaches Entfärne",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Wenn ein Spieler mehr als eine Mühle gleichzeitig schließt, darf er entsprechend viele Steine entfernen.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Mühlen zerstören",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "Normalerweise müssen Spieler alle freien Steine entfernen, bevor Steine aus einer Mühle entfernt werden dürfen. Diese Option hebt diese Beschränkung auf.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Zweiter Spieler verliert wenn das Brett voll ist",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Wenn das Brett am Ende der Setzphase voll ist, verliert der Spieler, der zuerst gezogen hat. Sonst unentschieden.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Verlieren wenn kein Zug möglich ist",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Der Spieler verliert, wenn der Gegner ihn so blockiert, daß er keinen Steine mehr bewegen kann. Wenn die Option deaktiviert ist wird die Seite gewechselt.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Flüge",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Wenn dr Spieler no drü Steine het, darf e Stei am beliebige Ort zoge wärde.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "N-Züge-Regel",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "Das Spiel ist unentschieden, wenn in einer bestimmten Anzahl von Zügen von jedem Spieler keine Entfernung erfolgt ist.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Rollback",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "Bitte uswähle",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "Kopiere",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Zugverlouf i dr Zwüscheablag kopiert",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Hiuf",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Feedback",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "Beände",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Regle",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "Farbe",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Brättfarb",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Steifarb",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Hingergrundfarb",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Liniefarb",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Steifarb Spieler 1",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Steifarb Spieler 2",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Nachrichtefarb",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "Computer isch fuuh",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Ahzauh a Steine uf dr Hang ahzeige",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Notize ufem Brätt ahzeige",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Symboulischte für dVerloufsnavigation ahzeige",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "Darstöuig",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Liniebreiti Spiubrättrand",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Inneri Liniebreiti vom Spiubrätt",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Steigrössi",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "Schriftgrössi",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "WMD-Notation",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Widrhärstöue",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Standardihstöuige widrhärstöue",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "dApp wird beändet.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "Du muesch dApp sofort beände u neustarte, um dIhstellige chasch benutze",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Näh",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "Info",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "Hiwiis",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "Spieler",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "Spieler 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "Spieler 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Spiuahleitig",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Tippe auf einen freien Punkt, um den Stein zu setzen.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Tippe auf einen Stein, um ihn zu ziehen.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Tippe auf einen mit einem Stein verbundenen Punkt, um ihn zu ziehen.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Tippe auf einen gegnerischen Stein, um ihn zu entfernen.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Du musst erst eine Mühle machen, bevor du einen Stein entfernen kannst.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Du musst mit deinen eigenen Steinen spielen.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "Statistike",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Gsamtzauh Spiu",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "Ergäbniss",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Cha nid us ener Mühli entfärnt wärde.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "links",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Dateschutzerklärig",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Bitte lies sorgfältig und stelle sicher, daß du alles verstanden hast und zustimmst ",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Wenn du den Bestimmungen nicht zustimmst, darfst du diese App nicht benutzen. Die Benutzung der App impliziert, daß du diesen Bestimmungen zustimmst.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " u ",
-    "accept": "Akzeptiere",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "Rückgängig",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "Rückgängig",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Es isch müglech, e Zug rückgängig zmache.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Zrugnäh",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Zrügnäh..",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Warte..",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Schritt füre",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Aues zrugnäh",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Aues widrhole",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Itz zieh",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Fertig.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Crack-Mühli",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "Wenn ein Spieler nur Steine in Mühlen hat, können diese Steine entfernt werden.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Animationsdur",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Nüd",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Thema",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Das Ziel des Spiels ist es, daß der Gegner weniger als drei Steine hat oder sich nicht mehr bewegen kann.\n\nDas Spiel endet automatisch unentschieden, wenn eine Spielposition das dritte mal auftritt, oder wenn in den letzten 100 (konfigurierbar) Zügen kein Stein entfernt wurde.\n\nDas Spiel läuft in drei Phasen ab:\n\n1. Steine auf freie Punkte setzen\n2. Steine auf angrenzende Punkte schieben\n3. (optionale Phase) Steine auf beliebige freie Punkte setzen wenn der Spieler nur noch drei Steine hat\n\nSetzphase\n\nDas Spiel beginnt mit einem leeren Spielbrett, das aus einem Gitter mit vierundzwanzig Punkten besteht. Die Spieler setzen abwechselnd Steine auf freie Punkte, bis jeder Spieler alle Steine gesetzt hat. Wenn ein Spieler drei Steine in einer geraden Linie setzt, dann hat er eine \"Mühle\" und darf einen gegnerischen Stein vom Spielbrett nehmen.\n\nIn einigen Regelvarianten müssen die Spieler alle anderen Steine entfernen, bevor ein Stein aus einer Mühle genommen werden kann.\n\nIn einigen Regelvarianten dürfen Steine in der Setzphase nicht wieder auf Punkte gesetzt werden, von denen bereits Steine genommen wurden.\n\nWenn alle Steine gesetzt worden sind, ziehen die Spieler abwechselnd einen Stein.\n\nZugphase\n\nBeim Ziehen bewegt ein Spieler einen seiner Steine entlang einer Linie zum nächsten freien Punkt. Wenn er das nicht kann, hat er verloren. Genau wie in der Setzphase führen drei Steine in einer Linie zu einer Mühle, und der Spieler darf einen der gegnerischen Steine entfernen. Ein Spieler mit nur zwei Steinen kann keine Mühlen mehr bekommen und verliert deshalb. Ein Spieler kann auch mit mehr als drei Steinen verlieren, wenn sein Gegner ihn so blockiert hat, daß er seine Steine nicht mehr bewegen kann.\n\nEndphase\n\nIn einigen Regelvarianten kann ein Spieler, dem nur noch drei Steine verbleiben, mit seinen Steinen auf jeden freien Punkt \"fliegen\", \"hüpfen\" oder \"springen\", nicht nur auf benachbarte.\n\n",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "Versionsinformatione",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "Lizänz",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Queucode",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Drittahbieterhiwis",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "App-Version",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "Genereu",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "Fortgschritte",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "Setze",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Bewege",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Entfärne",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "Spiubedienige",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "Spiustiu vom Computer",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Passiv",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "Zitlimit",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Personalisierige",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "Für Entwickler",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Entwicklermodus",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Uf Mönschlechi Erfahrige zrüggrife",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Verbessern Sie die Beweglichkeit von Steinen",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Ahzauh Steine für jede Spieler",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "i dr Hang",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "ufem Spiubrätt",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "Abstang Spiubrätt vo obe",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Dr Computer isch nid am Zug.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "Computer dänkt nid.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Spiuzüg outomatisch widrhole",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "Am Ändi vor Spiuzuglischte.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Nomou drücke um zbeände.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Umgäbigsvariable",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Meh",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Das isch e experimentäui Funktion.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Experimente",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Open Source Lizänze",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Sproch",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "Standardsproch",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Die Steine können sich in der Setzphase bewegen",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Es gibt keine getrennten Setz- und Zugphasen, d.h. die Spieler können bei jedem Zug entscheiden, ob sie einen Stein auf dem Brett setzen oder einen ihrer Steine bewegen wollen (solange sie noch Steine zum Setzen haben).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Menüfarbe",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Menütextfarbe",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Menühintergrundfarbe",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Farbe des Menümarkierungselements",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Hintergrundfarbe der Hauptsymbolleiste",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "Symbolfarbe der Hauptsymbolleiste",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Hintergrundfarbe der Navigationsleiste",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Symbolfarbe der Navigationssymbolleiste",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Symbolleiste automatisch ausblenden",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Position der Symbolleiste auf dem Bildschirm",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Obe",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Ungersite",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Mitti",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Eifarbig",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Biud",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Wäuh dis Biud",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Häu",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "Dunku",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Themene",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Itzigs Thema",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Thema Spichere",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "Schriftarte",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Analüsegrafik ahzeige",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Analyse",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "Spiu spichere",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Spiu lade",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "Ufsteuigsposition",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Legaui Züg ahzeige",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Letscht Zug ahzeige",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Pfile ahzeige",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "Stück",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Analüse ahzeige",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Theme",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "Mach doch mit",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Hiuf doch mit, um dÜbersetzig zverbessere",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "Ihfüerig",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Klassisches Mühli",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Gmischtes Mühli",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Ceylon-Mühli",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Mühle kann wiederholt gebrochen und neu hergestellt werden",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Wenn ein Spieler eine Mühle zerstört, um sofort eine neue Mühle zu bauen, kann dieser Spieler diesen Stein in seinem nächsten Zug zurück zur ursprünglichen Kreuzung bewegen, wenn er eine neue Mühle baut.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Das Spiel ist unentschieden, wenn ein Spieler drei Steine hat und nach zehn Zügen keiner der Spieler die Steine des Gegners entfernt remove",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Wenn ein Spieler nur noch drei Steine übrig hat und keiner der Spieler einen gegnerischen Stein innerhalb von zehn Zügen entfernen kann, ist das Spiel unentschieden.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "Nah dran",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Weißes Stück",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "Schwarzes Stück",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Sperrpunkt",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "Leerer Punkt",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Kein Punkt",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Platzierungsphase",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Bewegungsphase",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Flugphase",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Seite zum Bewegen",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Letzter Zug",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Ausgewählt",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Hauptmenü",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Barrierefreiheit",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Unterstützung für Bildschirmlesegeräte",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "Es ist ein Unentschieden!",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "Zeichnen",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Farbe des Stein-Highlights",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "Algorithmus",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "Entfernen Sie nicht platzierte Steine",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Wenn ein Spieler in der Platzierungsphase die Mühle bildet, entfernt er den nicht platzierten Stein des Gegners und macht weiter seinen Zug.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "Endspiel N-Züge-Regel",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Wenn einer der beiden Spieler nur drei Steine hat und keiner der beiden Spieler innerhalb eines bestimmten Zuges einen Stein entfernt, ist das Spiel unentschieden.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Jeder der beiden Spieler hat nur drei Steine und keiner der beiden Spieler entfernt einen Stein innerhalb eines bestimmten Zuges.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Dreifache Wiederholungsregel",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Das Spiel ist unentschieden, wenn eine Stellung zum dritten Mal auftritt.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Mühle! Bewegen Sie sich weiter.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Punkt-Stil",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Breite der Punkte",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Solide",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Hohle",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "Schweizerdeutsch",
-    "@languageName": {
-        "description": "The name of the current language"
+  "@@locale": "de_CH",
+  "appName": "Mühli",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Härzlech Wiukomme",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Jo",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Nei",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Spiu",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Mönsch gäge Computer",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Mönsch gäge Mönsch",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "Computer gäge Computer",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Mönsch gäge Cloud",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Mönsch gäge LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Test übr LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Ziehe",
+  "@move": {
+    "description": "Move"
+  },
+  "moves": " Zieht",
+  "@moves": {
+    "description": " Moves"
+  },
+  "showMoveList": "Zuglischte",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Zuglischte",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Ke Rekord",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Bestätige",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Abbräche",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "copyright": "Copyright © 2021 Calcitem Studio",
+  "@copyright": {
+    "description": "Copyright"
+  },
+  "tipSelectWrong": "Fausch Stei usgwäut.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Setz di Stei.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Hie chasch du nid setze.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Platziert.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Nimm e Stei wäg.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Chame nid wägnäh.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Wäggnoh.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Zieh e Stei.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Du chasch di Stei nid dohie setze.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Du chasch di Stei nid dohi zieh.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Mühli! Nimm e gägnerische Stei.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Nimm nomou e gägnerische Stei.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Wäuh e gägnerische Stei.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Du chasch e Stei us dr Mühli näh.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "E Stei cha nur 1 Fäud wit zoge wärde.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Du chasch e gägnerische Stei näh.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipThreePiecesInLine": "Es si 3 Steine ire Reihe.",
+  "@tipThreePiecesInLine": {
+    "description": "There are 3 pieces in a line."
+  },
+  "tipSelectPieceToMove": "Wäuh e Stei zum zieh.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Du hesch no 3 Steine übrig.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Du chasch ah jedi beliebigi Position springe.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": " isch am Zug.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Spieler 1 gwünnt!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Spieler 2 gwünnt!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Gwunne",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Verlore",
+  "@lost": {
+    "description": "Lost"
+  },
+  "aborted": "Abbroche",
+  "@aborted": {
+    "description": "Aborted"
+  },
+  "thinking": "Dänke noche..",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Nöis Spiu",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Spiu importiere",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Spiu exportiere",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Spiu us dr Zwischeablag importiert.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Cha nid importiert wärde.",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Regle und Zug stimme nid überih.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "startRecording": "Starte Ufnahm",
+  "@startRecording": {
+    "description": "Start recording"
+  },
+  "recording": "Ufzeichnig..",
+  "@recording": {
+    "description": "Recording..."
+  },
+  "stopRecording": "Ufhöre ufznäh",
+  "@stopRecording": {
+    "description": "Stop recording"
+  },
+  "showRecording": "Ufnahm ahzeige",
+  "@showRecording": {
+    "description": "Show recording"
+  },
+  "noRecording": "Ke Ufnahm.",
+  "@noRecording": {
+    "description": "No recording."
+  },
+  "pleaseWait": "Bitte warte..",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Spiu neu ahfoh?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Nöistart",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Spiu gstartet, bitte Stei platziere",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Analüsiere..",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Fähler",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Gwünnquote",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Pünkt",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Spieler 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Spieler 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": " het weniger aus 3 Steine.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": " git uf.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": " cha nüm zieh.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "zBrätt isch vou.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Zit isch ume.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "I dr Bewegigsphase isch i de letschde bestimmte Ahzauh Züg ke Stei empfärnt worde.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Unentschide wiu zBrätt vou isch.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Unentschide wäge drümou Wiederhout.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Spiu verbi! Wägemne umbekannte Grund.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Spiu verbi",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Gratuliere, du hesch gwunnä!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "E schwäreri Stufe probiere? Neui Stufe: ",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Du hesch verlore!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Analüsiere",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "playerName": "Spielername",
+  "@playerName": {
+    "description": "Player Name"
+  },
+  "about": "Übr",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Version",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Danksägige",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Ihstellige",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Optione",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "Ihstellige",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "Schwierigkeitsstufe",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Bedänkzit Computer",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Schwierigkeit",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Tön",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Tön bim spiele abspiele",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Bim Zrügnäh stumm blibe",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Ton",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Erschti Zug",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Mönsch",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "Computer",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Abwächslend",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Nach Spiuändi outomatisch neustarte",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Dr erscht Zug outomatisch ändere",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "resignIfMostLose": "Computer tritt zrüg, we die meischte verlüre",
+  "@resignIfMostLose": {
+    "description": "AI Resign if Most Lose"
+  },
+  "shufflingEnabled": "Zuefauszüg",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "learnEndgame": "Ändspiu lerne",
+  "@learnEndgame": {
+    "description": "Learn Endgame"
+  },
+  "openingBook": "Eröffnigsbuech",
+  "@openingBook": {
+    "description": "Opening Book"
+  },
+  "misc": "Verschidenigs",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Regle",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Ahzauh Steine für jede Spieler",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Wieviu Steine für jede Spieler?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Ahzauh flügende Steine",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Wenn flüge aktiviert isch und e Spieler uf e bestimmti Steizauh reduziert wird, chöi sini Steine frei zu jedem unbesetzte Punkt bewegt wärde. Anstatt wie süsch im Spiu zum Nochberspunkt.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Steine mindistens",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Diagonali Linie",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Vier diagonali Linie zum Brätt hinzuefüege.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Pünkt vo entfärnte Steine sperre",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "I dr Setzphase chöi kenni Steine uf Pünkt vo entfärnte Steine gsetzt wärde.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Dr zwöit Spieler zieht zerscht",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Dr i dr Setzphase zwöiti Spieler zieht i dr Zugphase zerscht.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Mehrfaches Entfärne",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Wenn ein Spieler mehr als eine Mühle gleichzeitig schließt, darf er entsprechend viele Steine entfernen.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Mühlen zerstören",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Normalerweise müssen Spieler alle freien Steine entfernen, bevor Steine aus einer Mühle entfernt werden dürfen. Diese Option hebt diese Beschränkung auf.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Zweiter Spieler verliert wenn das Brett voll ist",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Wenn das Brett am Ende der Setzphase voll ist, verliert der Spieler, der zuerst gezogen hat. Sonst unentschieden.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Verlieren wenn kein Zug möglich ist",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Der Spieler verliert, wenn der Gegner ihn so blockiert, daß er keinen Steine mehr bewegen kann. Wenn die Option deaktiviert ist wird die Seite gewechselt.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Flüge",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Wenn dr Spieler no drü Steine het, darf e Stei am beliebige Ort zoge wärde.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N-Züge-Regel",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Das Spiel ist unentschieden, wenn in einer bestimmten Anzahl von Zügen von jedem Spieler keine Entfernung erfolgt ist.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Rollback",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Bitte uswähle",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Kopiere",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Zugverlouf i dr Zwüscheablag kopiert",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Hiuf",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Feedback",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Beände",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Regle",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Farbe",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Brättfarb",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Steifarb",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Hingergrundfarb",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Liniefarb",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Steifarb Spieler 1",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Steifarb Spieler 2",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Nachrichtefarb",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "aiIsLazy": "Computer isch fuuh",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "Ahzauh a Steine uf dr Hang ahzeige",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Notize ufem Brätt ahzeige",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Symboulischte für dVerloufsnavigation ahzeige",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Darstöuig",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Liniebreiti Spiubrättrand",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Inneri Liniebreiti vom Spiubrätt",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Steigrössi",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Schriftgrössi",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD-Notation",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Widrhärstöue",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Standardihstöuige widrhärstöue",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "exitApp": "dApp wird beändet.",
+  "@exitApp": {
+    "description": "The app will exit."
+  },
+  "exitAppManually": "Du muesch dApp sofort beände u neustarte, um dIhstellige chasch benutze",
+  "@exitAppManually": {
+    "description": "You have to close immediately and reopen the app to take effect."
+  },
+  "pick": "Näh",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Info",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Hiwiis",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "Spieler",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Spieler 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Spieler 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Spiuahleitig",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Tippe auf einen freien Punkt, um den Stein zu setzen.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Tippe auf einen Stein, um ihn zu ziehen.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Tippe auf einen mit einem Stein verbundenen Punkt, um ihn zu ziehen.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Tippe auf einen gegnerischen Stein, um ihn zu entfernen.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Du musst erst eine Mühle machen, bevor du einen Stein entfernen kannst.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Du musst mit deinen eigenen Steinen spielen.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistike",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Gsamtzauh Spiu",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Ergäbniss",
+  "@results": {
+    "description": "Results"
+  },
+  "cannotRemoveFromMill": "Cha nid us ener Mühli entfärnt wärde.",
+  "@cannotRemoveFromMill": {
+    "description": "Cannot remove from the mill."
+  },
+  "left": "links",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Dateschutzerklärig",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Bitte lies sorgfältig und stelle sicher, daß du alles verstanden hast und zustimmst ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Wenn du den Bestimmungen nicht zustimmst, darfst du diese App nicht benutzen. Die Benutzung der App impliziert, daß du diesen Bestimmungen zustimmst.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " u ",
+  "@and": {},
+  "accept": "Akzeptiere",
+  "@accept": {
+    "description": "Accept"
+  },
+  "undo": "Rückgängig",
+  "@undo": {
+    "description": "Undo"
+  },
+  "undoOption": "Rückgängig",
+  "@undoOption": {
+    "description": "Undo option"
+  },
+  "undoOption_Detail": "Es isch müglech, e Zug rückgängig zmache.",
+  "@undoOption_Detail": {
+    "description": "It is possible to undo a move."
+  },
+  "takeBack": "Zrugnäh",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Zrügnäh..",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Warte..",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Schritt füre",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Aues zrugnäh",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Aues widrhole",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Itz zieh",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Fertig.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Crack-Mühli",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Wenn ein Spieler nur Steine in Mühlen hat, können diese Steine entfernt werden.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Animationsdur",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Nüd",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Thema",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Das Ziel des Spiels ist es, daß der Gegner weniger als drei Steine hat oder sich nicht mehr bewegen kann.\n\nDas Spiel endet automatisch unentschieden, wenn eine Spielposition das dritte mal auftritt, oder wenn in den letzten 100 (konfigurierbar) Zügen kein Stein entfernt wurde.\n\nDas Spiel läuft in drei Phasen ab:\n\n1. Steine auf freie Punkte setzen\n2. Steine auf angrenzende Punkte schieben\n3. (optionale Phase) Steine auf beliebige freie Punkte setzen wenn der Spieler nur noch drei Steine hat\n\nSetzphase\n\nDas Spiel beginnt mit einem leeren Spielbrett, das aus einem Gitter mit vierundzwanzig Punkten besteht. Die Spieler setzen abwechselnd Steine auf freie Punkte, bis jeder Spieler alle Steine gesetzt hat. Wenn ein Spieler drei Steine in einer geraden Linie setzt, dann hat er eine \"Mühle\" und darf einen gegnerischen Stein vom Spielbrett nehmen.\n\nIn einigen Regelvarianten müssen die Spieler alle anderen Steine entfernen, bevor ein Stein aus einer Mühle genommen werden kann.\n\nIn einigen Regelvarianten dürfen Steine in der Setzphase nicht wieder auf Punkte gesetzt werden, von denen bereits Steine genommen wurden.\n\nWenn alle Steine gesetzt worden sind, ziehen die Spieler abwechselnd einen Stein.\n\nZugphase\n\nBeim Ziehen bewegt ein Spieler einen seiner Steine entlang einer Linie zum nächsten freien Punkt. Wenn er das nicht kann, hat er verloren. Genau wie in der Setzphase führen drei Steine in einer Linie zu einer Mühle, und der Spieler darf einen der gegnerischen Steine entfernen. Ein Spieler mit nur zwei Steinen kann keine Mühlen mehr bekommen und verliert deshalb. Ein Spieler kann auch mit mehr als drei Steinen verlieren, wenn sein Gegner ihn so blockiert hat, daß er seine Steine nicht mehr bewegen kann.\n\nEndphase\n\nIn einigen Regelvarianten kann ein Spieler, dem nur noch drei Steine verbleiben, mit seinen Steinen auf jeden freien Punkt \"fliegen\", \"hüpfen\" oder \"springen\", nicht nur auf benachbarte.\n\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Versionsinformatione",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Lizänz",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Queucode",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "thirdPartyNotices": "Drittahbieterhiwis",
+  "@thirdPartyNotices": {
+    "description": "Third-party notices"
+  },
+  "appVersion": "App-Version",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Genereu",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Fortgschritte",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Setze",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Bewege",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Entfärne",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Spiubedienige",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Spiustiu vom Computer",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Passiv",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Zitlimit",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "Personalisierige",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "forDevelopers": "Für Entwickler",
+  "@forDevelopers": {
+    "description": "For developers"
+  },
+  "developerMode": "Entwicklermodus",
+  "@developerMode": {
+    "description": "Developer mode"
+  },
+  "drawOnHumanExperience": "Uf Mönschlechi Erfahrige zrüggrife",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Verbessern Sie die Beweglichkeit von Steinen",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Ahzauh Steine für jede Spieler",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "i dr Hang",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "ufem Spiubrätt",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Abstang Spiubrätt vo obe",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Dr Computer isch nid am Zug.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "Computer dänkt nid.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "autoReplay": "Spiuzüg outomatisch widrhole",
+  "@autoReplay": {
+    "description": "Auto re-play moves"
+  },
+  "atEnd": "Am Ändi vor Spiuzuglischte.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Nomou drücke um zbeände.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "environmentVariables": "Umgäbigsvariable",
+  "@environmentVariables": {
+    "description": "Environment variables"
+  },
+  "more": "Meh",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Das isch e experimentäui Funktion.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Experimente",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Open Source Lizänze",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Sproch",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Standardsproch",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Die Steine können sich in der Setzphase bewegen",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Es gibt keine getrennten Setz- und Zugphasen, d.h. die Spieler können bei jedem Zug entscheiden, ob sie einen Stein auf dem Brett setzen oder einen ihrer Steine bewegen wollen (solange sie noch Steine zum Setzen haben).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Menüfarbe",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Menütextfarbe",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerBackgroundColor": "Menühintergrundfarbe",
+  "@drawerBackgroundColor": {
+    "description": "Menu background color"
+  },
+  "drawerHighlightItemColor": "Farbe des Menümarkierungselements",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Hintergrundfarbe der Hauptsymbolleiste",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Symbolfarbe der Hauptsymbolleiste",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Hintergrundfarbe der Navigationsleiste",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Symbolfarbe der Navigationssymbolleiste",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Symbolleiste automatisch ausblenden",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Position der Symbolleiste auf dem Bildschirm",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Obe",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Ungersite",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Mitti",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Eifarbig",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Biud",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Wäuh dis Biud",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Häu",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Dunku",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Themene",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Itzigs Thema",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Thema Spichere",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "fonts": "Schriftarte",
+  "@fonts": {
+    "description": "Fonts"
+  },
+  "showAnalysisGraph": "Analüsegrafik ahzeige",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Analyse",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Spiu spichere",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Spiu lade",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Ufsteuigsposition",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Legaui Züg ahzeige",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Letscht Zug ahzeige",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Pfile ahzeige",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Stück",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Analüse ahzeige",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Theme",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Mach doch mit",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Hiuf doch mit, um dÜbersetzig zverbessere",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Ihfüerig",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Klassisches Mühli",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Gmischtes Mühli",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Ceylon-Mühli",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Mühle kann wiederholt gebrochen und neu hergestellt werden",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Wenn ein Spieler eine Mühle zerstört, um sofort eine neue Mühle zu bauen, kann dieser Spieler diesen Stein in seinem nächsten Zug zurück zur ursprünglichen Kreuzung bewegen, wenn er eine neue Mühle baut.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Das Spiel ist unentschieden, wenn ein Spieler drei Steine hat und nach zehn Zügen keiner der Spieler die Steine des Gegners entfernt remove",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Wenn ein Spieler nur noch drei Steine übrig hat und keiner der Spieler einen gegnerischen Stein innerhalb von zehn Zügen entfernen kann, ist das Spiel unentschieden.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Nah dran",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Weißes Stück",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Schwarzes Stück",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Sperrpunkt",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Leerer Punkt",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Kein Punkt",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Platzierungsphase",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Bewegungsphase",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Flugphase",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Seite zum Bewegen",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Letzter Zug",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Ausgewählt",
+  "@selected": {
+    "description": "Selected"
+  },
+  "mainMenu": "Hauptmenü",
+  "@mainMenu": {
+    "description": "Main menu"
+  },
+  "accessibility": "Barrierefreiheit",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Unterstützung für Bildschirmlesegeräte",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Es ist ein Unentschieden!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Zeichnen",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Farbe des Stein-Highlights",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algorithmus",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "Entfernen Sie nicht platzierte Steine",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Wenn ein Spieler in der Platzierungsphase die Mühle bildet, entfernt er den nicht platzierten Stein des Gegners und macht weiter seinen Zug.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "Endspiel N-Züge-Regel",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Wenn einer der beiden Spieler nur drei Steine hat und keiner der beiden Spieler innerhalb eines bestimmten Zuges einen Stein entfernt, ist das Spiel unentschieden.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Jeder der beiden Spieler hat nur drei Steine und keiner der beiden Spieler entfernt einen Stein innerhalb eines bestimmten Zuges.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Dreifache Wiederholungsregel",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Das Spiel ist unentschieden, wenn eine Stellung zum dritten Mal auftritt.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Mühle! Bewegen Sie sich weiter.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Punkt-Stil",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Breite der Punkte",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Solide",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Hohle",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Schweizerdeutsch",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "move_number": "{count,plural, =0{Zug}=1{{count} Zug}other{{count} Züge}}",
+  "@move_number": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  }
 }
