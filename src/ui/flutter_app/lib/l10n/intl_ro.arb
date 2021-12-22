@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "stopRecording": "Oprește înregistrarea",
-  "@stopRecording": {
-    "description": "Stop recording"
-  },
   "showRecording": "Afișează înregistrarea",
   "@showRecording": {
     "description": "Show recording"
