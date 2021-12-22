@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Opcija poništavanja",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Moguće je poništiti potez.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
