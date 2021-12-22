@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "પૂર્વવત્ કરો વિકલ્પ",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "ચાલને પૂર્વવત્ કરવી શક્ય છે.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
