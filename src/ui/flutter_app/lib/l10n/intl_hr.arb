@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Automatska ponovna reprodukcija poteza",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "Na kraju popisa poteza.",
   "@atEnd": {
     "description": "At the end of the move list."
