@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "AI παραιτείται αν χάσουν οι περισσότεροι",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "Τυχαία κίνηση",
   "@shufflingEnabled": {
     "description": "Random move"
