@@ -76,10 +76,6 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "copyright": "কপিরাইট © 2021 ক্যালসিটেম স্টুডিও",
-  "@copyright": {
-    "description": "Copyright"
-  },
   "tipSelectWrong": "ভুল টুকরা নির্বাচন করুন।",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
