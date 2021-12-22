@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "showRecording": "ರೆಕಾರ್ಡಿಂಗ್ ತೋರಿಸಿ",
-  "@showRecording": {
-    "description": "Show recording"
-  },
   "noRecording": "ರೆಕಾರ್ಡಿಂಗ್ ಇಲ್ಲ.",
   "@noRecording": {
     "description": "No recording."
