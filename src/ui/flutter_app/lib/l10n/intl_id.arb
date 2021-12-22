@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "Pelajari Endgame",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "Buku Pembuka",
   "@openingBook": {
     "description": "Opening Book"
