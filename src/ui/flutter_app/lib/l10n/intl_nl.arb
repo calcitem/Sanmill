@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "stopRecording": "Opname stoppen",
-  "@stopRecording": {
-    "description": "Stop recording"
-  },
   "showRecording": "Opname tonen",
   "@showRecording": {
     "description": "Show recording"
