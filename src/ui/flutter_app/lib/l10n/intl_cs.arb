@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "vrátit",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Možnost Zpět",
   "@undoOption": {
     "description": "Undo option"
