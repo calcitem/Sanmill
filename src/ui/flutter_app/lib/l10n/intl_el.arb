@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "Μάθετε το τελικό παιχνίδι",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "Βιβλίο ανοίγματος",
   "@openingBook": {
     "description": "Opening Book"
