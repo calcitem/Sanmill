@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "Rivissä on kolme nappulaa.",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "Valitse siirrettävä nappula.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
