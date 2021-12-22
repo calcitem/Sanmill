@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "AI ลาออกหากแพ้มากที่สุด",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "สุ่มย้าย",
   "@shufflingEnabled": {
     "description": "Random move"
