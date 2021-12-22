@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "自動重播",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "已經到底了",
   "@atEnd": {
     "description": "At the end of the move list."
