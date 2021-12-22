@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "มีสามชิ้นในบรรทัด",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "เลือกชิ้นส่วนของคุณเพื่อย้าย",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
