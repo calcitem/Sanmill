@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Spiuzüg outomatisch widrhole",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "Am Ändi vor Spiuzuglischte.",
   "@atEnd": {
     "description": "At the end of the move list."
