@@ -974,10 +974,6 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "fonts": "Lettertypen",
-  "@fonts": {
-    "description": "Fonts"
-  },
   "showAnalysisGraph": "Analysegrafiek weergeven",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
