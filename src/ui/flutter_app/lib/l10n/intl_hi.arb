@@ -300,10 +300,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "खिलाड़ी का नाम",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "तकरीबन",
   "@about": {
     "description": "About"
