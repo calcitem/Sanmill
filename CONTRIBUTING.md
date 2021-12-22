@@ -10,3 +10,6 @@ Welcome! We're a pretty friendly community, and we're thrilled that you want to 
 
 4. Submit a pull request to get changes from your branch into `dev`.  Mention which bug is being resolved in the description.
 
+Before submitting a pull request for review, please ensure it is appropriately formatted. We use `format.sh` script. You can simply run it.
+
+Note that this modifies the files but doesn’t commit them – you’ll likely want to run `git commit --amend -a` to update the last commit with all pending changes.
