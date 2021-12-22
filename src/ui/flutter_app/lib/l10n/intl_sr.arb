@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "АИ Дајте оставку ако се највише изгуби",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "Случајан потез",
   "@shufflingEnabled": {
     "description": "Random move"
