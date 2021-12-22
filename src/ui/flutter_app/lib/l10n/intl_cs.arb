@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "Naučte se koncovku",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "Úvodní kniha",
   "@openingBook": {
     "description": "Opening Book"
