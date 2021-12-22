@@ -180,10 +180,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "Aborted",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "Thinking...",
   "@thinking": {
     "description": "Thinking..."
