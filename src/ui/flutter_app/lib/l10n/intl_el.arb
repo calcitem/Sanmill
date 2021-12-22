@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Επιλογή αναίρεσης",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Είναι δυνατή η αναίρεση μιας κίνησης.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
