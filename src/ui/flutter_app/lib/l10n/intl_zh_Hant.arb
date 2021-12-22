@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "悔棋",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "悔棋",
   "@undoOption": {
     "description": "Undo option"
