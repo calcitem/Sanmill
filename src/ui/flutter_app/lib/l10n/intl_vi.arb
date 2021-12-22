@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Tự động phát lại",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "Bạn đang ở cuối danh sách di chuyển.",
   "@atEnd": {
     "description": "At the end of the move list."
