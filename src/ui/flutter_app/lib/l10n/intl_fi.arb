@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "stopRecording": "Lopeta tallennus",
-  "@stopRecording": {
-    "description": "Stop recording"
-  },
   "showRecording": "Näytä tallennus",
   "@showRecording": {
     "description": "Show recording"
