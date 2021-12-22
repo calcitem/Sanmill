@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption_Detail": "Có thể hoàn tác một động thái.",
-  "@undoOption_Detail": {
-    "description": "It is possible to undo a move."
-  },
   "takeBack": "Cờ vua hối hận",
   "@takeBack": {
     "description": "Take back"
