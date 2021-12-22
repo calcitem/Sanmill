@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "startRecording": "Yozib olishni boshlang",
-  "@startRecording": {
-    "description": "Start recording"
-  },
   "recording": "Yozib olinmoqda ...",
   "@recording": {
     "description": "Recording..."
