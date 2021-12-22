@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Automatisch herspelen van zetten",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "Aan het eind van de zettenlijst.",
   "@atEnd": {
     "description": "At the end of the move list."
