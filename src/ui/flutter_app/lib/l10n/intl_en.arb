@@ -918,10 +918,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Auto re-play moves",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "You are at the end of the move list.",
   "@atEnd": {
     "description": "At the end of the move list."
