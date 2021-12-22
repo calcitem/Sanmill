@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "recording": "Εγγραφή...",
-  "@recording": {
-    "description": "Recording..."
-  },
   "stopRecording": "Διακοπή εγγραφής",
   "@stopRecording": {
     "description": "Stop recording"
