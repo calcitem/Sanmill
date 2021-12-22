@@ -172,10 +172,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "中斷",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "對方思考中...",
   "@thinking": {
     "description": "Thinking..."
