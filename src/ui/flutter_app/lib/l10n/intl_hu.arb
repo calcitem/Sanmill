@@ -172,10 +172,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "Feladva",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "Gondolkodás...",
   "@thinking": {
     "description": "Thinking..."
