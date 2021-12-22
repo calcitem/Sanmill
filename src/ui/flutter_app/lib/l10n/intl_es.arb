@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Deshacer",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Opción de deshacer",
   "@undoOption": {
     "description": "Undo option"
