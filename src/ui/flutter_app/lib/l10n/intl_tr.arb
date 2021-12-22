@@ -300,10 +300,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "Oyuncu ismi",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "hakkında",
   "@about": {
     "description": "About"
