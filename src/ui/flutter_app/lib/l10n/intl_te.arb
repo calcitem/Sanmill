@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "చర్యరద్దు చేయండి",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "ఎంపికను అన్డు చేయండి",
   "@undoOption": {
     "description": "Undo option"
