@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption_Detail": "È possibile annullare uno spostamento.",
-  "@undoOption_Detail": {
-    "description": "It is possible to undo a move."
-  },
   "takeBack": "Riprendere",
   "@takeBack": {
     "description": "Take back"
