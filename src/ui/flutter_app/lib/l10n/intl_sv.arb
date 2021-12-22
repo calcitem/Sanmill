@@ -974,10 +974,6 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "fonts": "Typsnitt",
-  "@fonts": {
-    "description": "Fonts"
-  },
   "showAnalysisGraph": "Visa analysdiagram",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
