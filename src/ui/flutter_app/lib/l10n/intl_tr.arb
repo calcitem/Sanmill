@@ -172,10 +172,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "iptal edildi",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "düşünmek...",
   "@thinking": {
     "description": "Thinking..."
