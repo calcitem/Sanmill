@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "Il y a 3 pièces en ligne.",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "Sélectionnez votre pièce à déplacer.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
