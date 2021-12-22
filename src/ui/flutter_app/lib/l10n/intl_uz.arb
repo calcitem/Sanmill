@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "Uchinchi tomon xabarnomalari",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "Ilova versiyasi",
   "@appVersion": {
     "description": "App Version"
