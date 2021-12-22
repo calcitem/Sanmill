@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "openingBook": "Libri i hapjes",
-  "@openingBook": {
-    "description": "Opening Book"
-  },
   "misc": "Të ndryshme",
   "@misc": {
     "description": "Miscellaneous"
