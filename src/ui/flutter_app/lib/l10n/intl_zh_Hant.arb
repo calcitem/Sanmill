@@ -974,10 +974,6 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "fonts": "字體",
-  "@fonts": {
-    "description": "Fonts"
-  },
   "showAnalysisGraph": "顯示分析圖",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
