@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "기계가 분명히 열등 할 때 자동으로 패배를 인정",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "무작위 기계 이동",
   "@shufflingEnabled": {
     "description": "Random move"
