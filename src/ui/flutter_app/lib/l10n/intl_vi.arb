@@ -172,10 +172,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "Làm gián đoạn",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "Người kia đang nghĩ ...",
   "@thinking": {
     "description": "Thinking..."
