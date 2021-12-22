@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "เลิกทำตัวเลือก",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "เป็นไปได้ที่จะเลิกทำการย้าย",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
