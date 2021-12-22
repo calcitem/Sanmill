@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "recording": "Merekam...",
-  "@recording": {
-    "description": "Recording..."
-  },
   "stopRecording": "Stop merekam",
   "@stopRecording": {
     "description": "Stop recording"
