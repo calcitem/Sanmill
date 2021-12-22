@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "Opi loppupeli",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "Avauskirja",
   "@openingBook": {
     "description": "Opening Book"
