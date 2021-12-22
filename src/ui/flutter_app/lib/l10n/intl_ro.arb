@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "Învățați butucul",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "Carte de deschidere",
   "@openingBook": {
     "description": "Opening Book"
