@@ -1,1256 +1,1253 @@
 {
-    "@@locale": "sv",
-    "appName": "Kvarn",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Välkommen",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "Ja",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Nej",
-    "@no": {
-        "description": "No"
-    },
-    "game": "Spel",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Människan mot AI",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Människan mot människan",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "AI mot AI",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Människan mot molnet",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Människan mot LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Test via LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Flytta",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " Flyttar",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Förteckning över flyttningar",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Förteckning över rörelser",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Ingen registrering",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "OK",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "Bekräfta",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "Avbryt",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Copyright © 2021 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Du har valt fel bit.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Placera dina bitar.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Du kan inte placera den här.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Du har placerat.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Ta bort en bit.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Du kan inte ta bort den.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Du har tagit bort den.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Flytta en pjäs.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Du kan inte placera din pjäs här.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Du kan inte flytta din pjäs hit.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Mill! Ta din motståndares pjäs.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Fortsätt att ta din motståndares pjäs.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Välj en av din motståndares pjäser.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Du kan inte ta bort en pjäs från en kvarn.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "En pjäs kan förflytta sig 1 poäng.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Du kan inte flytta din motståndares pjäser.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "Det finns tre pjäser på en linje.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Välj din pjäs som ska flyttas.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "Du har tre bitar kvar.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Du kan flytta till vilken punkt du vill.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " för att flytta.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "Spelare 1 vinner!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "Spelare 2 vinner!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Vann",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "Förlorat",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "Avbruten",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Tänker...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "Nytt spel",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Importera spel",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Exportera spel",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Spel som importeras från klippbordet.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Kan inte importera",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Flyttningar och regler stämmer inte överens.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Starta inspelning",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Inspelning...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Stoppa inspelningen",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Visa inspelning",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "Ingen inspelning.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Vänligen vänta.",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Starta om det pågående spelet?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Starta om",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "Spelet har startat, var god och placera",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Analyserar ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "Fel",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "Vinstfrekvens",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "Poäng",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "Spelare 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "Spelare 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " Antalet pjäser är mindre än tre.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " avgå.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " är ingen väg att gå.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "Brädet är fullt, och det finns inget sätt att gå.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Tiden är slut.",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "I flyttfasen har ingen pjäs tagits bort under det senaste specifika antalet drag.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "Det är oavgjort eftersom brädet är fullt.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "Det är oavgjort på grund av trefaldig upprepning.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "Spelet är slut! Okänd orsak.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "Spelet är slut.",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "Du vinner! Grattis!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "Vill du utmana en svårare nivå? Den nya nivån kommer att vara nivå ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "Du förlorar!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "Analysera",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "Starta om det pågående spelet?",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "Om",
-    "@about": {
-        "description": "About"
-    },
-    "version": "Version",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "Tack",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Inställningar",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Alternativ",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "Inställningar",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Svårighetsnivå",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "AI:s tanketid",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Svårighetsgrad",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Ljudeffekter",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "Spela upp ljud i spelet",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Håll tyst när du tar tillbaka",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Ton",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Första drag",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Människan",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "AI",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "Alternativt",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "Automatisk omstart av spelet när spelet är slut",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Automatisk ändring av första drag",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "AI avgår om de flesta förlorar",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Slumpmässigt drag",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Lär dig slutspelet",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Öppningsbok",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "Diverse",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "Regler",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Antalet pjäser som varje spelare har",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Hur många pjäser har varje spelare?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Numret på den flygande pjäsen",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "Om flygande är aktiverat, när en spelare är reducerad till ett visst antal pjäser, är hennes pjäser fria att flytta sig till vilken oockuperad punkt som helst istället för att begränsas till intilliggande punkter som i resten av spelet.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Minst antal bitar",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Diagonala linjer",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Lägg till fyra diagonala linjer på brädet.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Markera och fördröja borttagandet av pjäser.",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "I placeringsfasen kommer punkterna för borttagna pjäser inte längre att kunna placeras.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Den andra spelaren flyttar först",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Den spelare som flyttar näst längst i placeringsfasen flyttar först i flyttfasen.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Flera flyttningar",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Om en spelare stänger mer än en kvarn på en gång, tar hon bort det antal kvarnar hon stängt.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Förstör kvarnar",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "Som standard måste spelarna först ta bort alla andra pjäser innan de tar bort en pjäs från en bildad kvarn. Aktivera det här alternativet för att inaktivera begränsningen.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Den andra spelaren förlorar när brädet är fullt.",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "När brädet är fullt i slutet av placeringsfasen förlorar den sida som placerar först spelet. I annat fall är spelet oavgjort.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Förlorar när det inte finns några lagliga drag",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Spelaren förlorar om motståndaren blockerar dem så att de inte kan flyttas. Byt sida för att flytta om det här alternativet är inaktiverat.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Flygande",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Om en spelare bara har tre eller fyra (konfigurerbara) pjäser kvar kan hon flytta pjäsen till vilken fri punkt som helst.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "N-förflyttningsregeln",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "Spelet är oavgjort om det inte har skett någon flyttning inom ett visst antal drag av varje spelare.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Rollback",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "Välj",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "Kopiera",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Flyghistorik kopieras till urklipp",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Hjälp",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Återkoppling",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "Avsluta",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Inställningar för regler",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "Färg",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Styrelsens färg",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Färg på pjäsen",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Bakgrundsfärg",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Färg på brädans linje",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Spelare 1 pjäsens färg",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Spelare 2 pjäsens färg",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Färg på meddelandet",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "AI är lat",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Visa antalet bitar på handen",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Visa noteringar på brädet",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Visa navigationsverktyg för historik",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "Visa",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Bredd på brädans gränslinje",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Bredden på den inre linjen på brädet",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Bredd på bit",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "Teckensnittsstorlek",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "WMD-notation",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Återställ",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Återställer standardinställningar",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "Appen avslutas.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "Du måste stänga omedelbart och öppna appen igen för att det ska få effekt.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Välj",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "Info",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "Tips",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "spelare",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "Spelare 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "Spelare 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Hur man spelar",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Tryck på en tillgänglig punkt för att placera pjäsen.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Tryck på en pjäs för att flytta den.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Tryck på en punkt som är kopplad till en pjäs för att flytta den.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Tryck på motståndarens en pjäs för att ta bort den.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Du måste skapa en kvarn först innan du kan ta bort en pjäs.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Du måste spela med dina pjäser.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "Statistik",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Totalt antal spel",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "Resultat",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Det går inte att ta bort från kvarnen.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "vänster",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Integritetspolicy",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Läs igenom noggrant och se till att du förstår och godkänner denna helt och hållet. ",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Om du inte godkänner denna policy får du inte använda denna app. Att använda appen innebär att du accepterar dessa villkor.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " och ",
-    "accept": "Acceptera",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "Ångra",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "Alternativet Ångra",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Det är möjligt att ångra en flyttning.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Ta tillbaka",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Ta tillbaka",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Vänta",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Steg framåt",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Ta tillbaka allt",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Alla steg framåt",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Flytta dig nu",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Klart.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Crack-mill",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "Om en spelare bara har pjäser i kvarnar, kommer pjäserna i kvarnarna inte att låsas för att tas bort.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Animationens varaktighet",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Ingen",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Tema",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Målet är att motståndaren ska ha färre än tre pjäser eller inga lagliga drag kvar.\n\nSpelet är automatiskt oavgjort om en position uppträder för tredje gången eller om ingen flyttning sker under de senaste 100 (konfigurerbara) dragen.\n\nSpelet pågår i tre faser:\n\n1. Placering av pjäser på lediga punkter.\n2. Flyttning av pjäser till angränsande punkter\n3. (valfri fas) Flytta pjäser till en ledig punkt när spelaren har tre pjäser kvar.\n\nPlacering av\n\nSpelet börjar med en tom bräda som består av ett rutnät med tjugofyra punkter. Spelarna turas om att placera sina pjäser på lediga punkter tills varje spelare har placerat alla pjäser på brädet. Om en spelare kan placera tre av sina pjäser rakt har han en \"kvarn\" och får ta bort en av motståndarens pjäser från brädet.\n\nI vissa regler måste spelarna först ta bort alla andra pjäser innan de tar bort en pjäs från en bildad kvarn.\n\nI vissa regler kan man inte placera pjäserna till de borttagna pjäsernas punkter igen i placeringsfasen.\n\nNär använda alla pjäser turas spelarna om att flytta.\n\nFlyttning\n\nFör att flytta flyttar en spelare en av sina pjäser längs en brädlinje till en ledig intilliggande punkt. Om han inte kan göra det har han förlorat spelet. Precis som i placeringsfasen har en spelare som ställer in tre av sina pjäser på en brädlinje en kvarn och får ta bort en av motståndarens pjäser. En spelare som reduceras till två pjäser har ingen möjlighet att bilda nya kvarnar och förlorar därmed spelet. En spelare kan också förlora om han har fler än tre pjäser om hans motståndare hindrar dem från att röra sig.\n\nFlygande\n\nI vissa varianter av reglerna kan en spelare, när han bara har tre bitar kvar, få sina bitar att flyga, hoppa eller hoppa till alla lediga punkter, inte bara till intilliggande punkter.",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "Information om version",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "Licens",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Källkod",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Meddelanden från tredje part",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "Version av appen",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "Allmänt",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "Avancerad",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "Placering av",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Flytta",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Ta bort",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "Villkor för game over",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "AI:s spelstil",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Passiv",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "Timeout",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Personalisering",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "För utvecklare",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Utvecklarläge",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Dra nytta av den mänskliga erfarenheten",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Beakta rörligheten hos delarna",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Antal bitar",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "i handen",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "på brädet",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "Brädet är förskjutet från toppen",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Det är inte AI:s tur.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "KI tänker inte.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Automatisk återspelning av drag",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "Du är i slutet av draglistan.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Tryck tillbaka igen för att gå vidare.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Miljövariabler",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Mer",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Det är en experimentell funktion.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Experiment",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Licenser för öppen källkod",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Språk",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "Standardspråk",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Bitarna kan röra sig under placeringsfasen",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Det finns inga separata placerings- och flyttningsfaser, dvs. spelarna kan vid varje drag bestämma om de vill placera en pjäs på brädet eller flytta en av sina pjäser (så länge de har kvarvarande pjäser att placera).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Menyfärg",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Menyens textfärg",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Meny bakgrundsfärg",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Meny markera objektets färg",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Huvudfärg för verktygsfältet",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "huvudverktygsfältets ikonfärg",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Navigationsverktygsfältets bakgrundsfärg",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Navigationsverktygsfältets ikonfärg",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Dölj verktygsfältet automatiskt",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Verktygsfältets placering på skärmen",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Topp",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Botten",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Centrum",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Enfärgade",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Bild",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Välj din bild",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Ljus",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "Mörk",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Teman",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Aktuellt tema",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Spara tema",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "Typsnitt",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Visa analysdiagram",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Analys",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "Spara spelet",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Belastnings spel",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "Inställningsposition",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Visa lagliga drag",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Visa sista drag",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Visa pilar",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "Bitar",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Visa analys",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Trådar",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "Bli involverad",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Hjälp till att förbättra översättningen",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "Handledning",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Klassisk kvarn",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Blandad kvarn",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Ceylon kvarn",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Kvarnen kan brytas om och göras om upprepade gånger",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Om en spelare bryter en kvarn för att skapa en ny kvarn omedelbart, kan en sådan spelare flytta en sådan bit tillbaka till den ursprungliga korsningen i sitt nästa drag om den gör en ny kvarn.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spelet dras om en spelare har tre delar och efter tio drag tar ingen spelare bort motståndarens bitar",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "När en spelare är nere i tre delar, och ingen spelare kan ta bort en motståndares bit inom tio drag, är spelet oavgjort.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "Stänga",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Vit bit",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "Svart bit",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Förbudspunkt",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "Tom punkt",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Ingen idé",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Placeringsfas",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Flyttfas",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Flygande fas",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Sida att flytta",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Sista drag",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Vald",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Huvudmeny",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Tillgänglighet",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Skärmläsarstöd",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "Det är oavgjort!",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "Dra",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Del markera färg",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "Algoritm",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "Ta bort oplacerad bit",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Om en spelare bildar kvarnen i placeringsfasen, tar hon bort motståndarens oplacerade bit och fortsätter att göra ett drag.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "Slutspel N-Move regel",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Om endera spelaren bara har tre bitar och ingen av spelarna tar bort en bit inom ett specifikt drag, lottas spelet.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Endera spelaren har bara tre delar och ingen av spelarna tar bort en bit inom ett specifikt drag.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Trefaldig upprepningsregel",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Spelet lottas om en position inträffar för tredje gången.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Kvarn! Fortsätt att göra ett drag.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Poängstil",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Punktbredd",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Fast",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Ihålig",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "Svenska",
-    "@languageName": {
-        "description": "The name of the current language"
-    }
+  "@@locale": "sv",
+  "appName": "Kvarn",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Välkommen",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Ja",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Nej",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Spel",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Människan mot AI",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Människan mot människan",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI mot AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Människan mot molnet",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Människan mot LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Test via LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Flytta",
+  "@move": {
+    "description": "Move"
+  },
+  "moves": " Flyttar",
+  "@moves": {
+    "description": " Moves"
+  },
+  "showMoveList": "Förteckning över flyttningar",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Förteckning över rörelser",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Ingen registrering",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Bekräfta",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Avbryt",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Du har valt fel bit.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Placera dina bitar.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Du kan inte placera den här.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Du har placerat.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Ta bort en bit.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Du kan inte ta bort den.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Du har tagit bort den.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Flytta en pjäs.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Du kan inte placera din pjäs här.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Du kan inte flytta din pjäs hit.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Mill! Ta din motståndares pjäs.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Fortsätt att ta din motståndares pjäs.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Välj en av din motståndares pjäser.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Du kan inte ta bort en pjäs från en kvarn.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "En pjäs kan förflytta sig 1 poäng.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Du kan inte flytta din motståndares pjäser.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipThreePiecesInLine": "Det finns tre pjäser på en linje.",
+  "@tipThreePiecesInLine": {
+    "description": "There are 3 pieces in a line."
+  },
+  "tipSelectPieceToMove": "Välj din pjäs som ska flyttas.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Du har tre bitar kvar.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Du kan flytta till vilken punkt du vill.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": " för att flytta.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Spelare 1 vinner!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Spelare 2 vinner!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Vann",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Förlorat",
+  "@lost": {
+    "description": "Lost"
+  },
+  "aborted": "Avbruten",
+  "@aborted": {
+    "description": "Aborted"
+  },
+  "thinking": "Tänker...",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Nytt spel",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Importera spel",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Exportera spel",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Spel som importeras från klippbordet.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Kan inte importera",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Flyttningar och regler stämmer inte överens.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "startRecording": "Starta inspelning",
+  "@startRecording": {
+    "description": "Start recording"
+  },
+  "recording": "Inspelning...",
+  "@recording": {
+    "description": "Recording..."
+  },
+  "stopRecording": "Stoppa inspelningen",
+  "@stopRecording": {
+    "description": "Stop recording"
+  },
+  "showRecording": "Visa inspelning",
+  "@showRecording": {
+    "description": "Show recording"
+  },
+  "noRecording": "Ingen inspelning.",
+  "@noRecording": {
+    "description": "No recording."
+  },
+  "pleaseWait": "Vänligen vänta.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Starta om det pågående spelet?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Starta om",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Spelet har startat, var god och placera",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Analyserar ...",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Fel",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Vinstfrekvens",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Poäng",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Spelare 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Spelare 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": " Antalet pjäser är mindre än tre.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": " avgå.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": " är ingen väg att gå.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Brädet är fullt, och det finns inget sätt att gå.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Tiden är slut.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "I flyttfasen har ingen pjäs tagits bort under det senaste specifika antalet drag.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Det är oavgjort eftersom brädet är fullt.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Det är oavgjort på grund av trefaldig upprepning.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Spelet är slut! Okänd orsak.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Spelet är slut.",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Du vinner! Grattis!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Vill du utmana en svårare nivå? Den nya nivån kommer att vara nivå ",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Du förlorar!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Analysera",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "playerName": "Starta om det pågående spelet?",
+  "@playerName": {
+    "description": "Player Name"
+  },
+  "about": "Om",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Version",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Tack",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Inställningar",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Alternativ",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "Inställningar",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "Svårighetsnivå",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI:s tanketid",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Svårighetsgrad",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Ljudeffekter",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Spela upp ljud i spelet",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Håll tyst när du tar tillbaka",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Ton",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Första drag",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Människan",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Alternativt",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Automatisk omstart av spelet när spelet är slut",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Automatisk ändring av första drag",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "resignIfMostLose": "AI avgår om de flesta förlorar",
+  "@resignIfMostLose": {
+    "description": "AI Resign if Most Lose"
+  },
+  "shufflingEnabled": "Slumpmässigt drag",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "learnEndgame": "Lär dig slutspelet",
+  "@learnEndgame": {
+    "description": "Learn Endgame"
+  },
+  "openingBook": "Öppningsbok",
+  "@openingBook": {
+    "description": "Opening Book"
+  },
+  "misc": "Diverse",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Regler",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Antalet pjäser som varje spelare har",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Hur många pjäser har varje spelare?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Numret på den flygande pjäsen",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Om flygande är aktiverat, när en spelare är reducerad till ett visst antal pjäser, är hennes pjäser fria att flytta sig till vilken oockuperad punkt som helst istället för att begränsas till intilliggande punkter som i resten av spelet.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Minst antal bitar",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Diagonala linjer",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Lägg till fyra diagonala linjer på brädet.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Markera och fördröja borttagandet av pjäser.",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "I placeringsfasen kommer punkterna för borttagna pjäser inte längre att kunna placeras.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Den andra spelaren flyttar först",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Den spelare som flyttar näst längst i placeringsfasen flyttar först i flyttfasen.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Flera flyttningar",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Om en spelare stänger mer än en kvarn på en gång, tar hon bort det antal kvarnar hon stängt.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Förstör kvarnar",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Som standard måste spelarna först ta bort alla andra pjäser innan de tar bort en pjäs från en bildad kvarn. Aktivera det här alternativet för att inaktivera begränsningen.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Den andra spelaren förlorar när brädet är fullt.",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "När brädet är fullt i slutet av placeringsfasen förlorar den sida som placerar först spelet. I annat fall är spelet oavgjort.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Förlorar när det inte finns några lagliga drag",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Spelaren förlorar om motståndaren blockerar dem så att de inte kan flyttas. Byt sida för att flytta om det här alternativet är inaktiverat.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Flygande",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Om en spelare bara har tre eller fyra (konfigurerbara) pjäser kvar kan hon flytta pjäsen till vilken fri punkt som helst.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N-förflyttningsregeln",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Spelet är oavgjort om det inte har skett någon flyttning inom ett visst antal drag av varje spelare.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Rollback",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Välj",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Kopiera",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Flyghistorik kopieras till urklipp",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Hjälp",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Återkoppling",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Avsluta",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Inställningar för regler",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Färg",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Styrelsens färg",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Färg på pjäsen",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Bakgrundsfärg",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Färg på brädans linje",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Spelare 1 pjäsens färg",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Spelare 2 pjäsens färg",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Färg på meddelandet",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "aiIsLazy": "AI är lat",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "Visa antalet bitar på handen",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Visa noteringar på brädet",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Visa navigationsverktyg för historik",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Visa",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Bredd på brädans gränslinje",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Bredden på den inre linjen på brädet",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Bredd på bit",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Teckensnittsstorlek",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD-notation",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Återställ",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Återställer standardinställningar",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "exitApp": "Appen avslutas.",
+  "@exitApp": {
+    "description": "The app will exit."
+  },
+  "exitAppManually": "Du måste stänga omedelbart och öppna appen igen för att det ska få effekt.",
+  "@exitAppManually": {
+    "description": "You have to close immediately and reopen the app to take effect."
+  },
+  "pick": "Välj",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Info",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Tips",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "spelare",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Spelare 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Spelare 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Hur man spelar",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Tryck på en tillgänglig punkt för att placera pjäsen.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Tryck på en pjäs för att flytta den.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Tryck på en punkt som är kopplad till en pjäs för att flytta den.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Tryck på motståndarens en pjäs för att ta bort den.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Du måste skapa en kvarn först innan du kan ta bort en pjäs.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Du måste spela med dina pjäser.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistik",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Totalt antal spel",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Resultat",
+  "@results": {
+    "description": "Results"
+  },
+  "cannotRemoveFromMill": "Det går inte att ta bort från kvarnen.",
+  "@cannotRemoveFromMill": {
+    "description": "Cannot remove from the mill."
+  },
+  "left": "vänster",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Integritetspolicy",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Läs igenom noggrant och se till att du förstår och godkänner denna helt och hållet. ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Om du inte godkänner denna policy får du inte använda denna app. Att använda appen innebär att du accepterar dessa villkor.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " och ",
+  "@and": {},
+  "accept": "Acceptera",
+  "@accept": {
+    "description": "Accept"
+  },
+  "undo": "Ångra",
+  "@undo": {
+    "description": "Undo"
+  },
+  "undoOption": "Alternativet Ångra",
+  "@undoOption": {
+    "description": "Undo option"
+  },
+  "undoOption_Detail": "Det är möjligt att ångra en flyttning.",
+  "@undoOption_Detail": {
+    "description": "It is possible to undo a move."
+  },
+  "takeBack": "Ta tillbaka",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Ta tillbaka",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Vänta",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Steg framåt",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Ta tillbaka allt",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Alla steg framåt",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Flytta dig nu",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Klart.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Crack-mill",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Om en spelare bara har pjäser i kvarnar, kommer pjäserna i kvarnarna inte att låsas för att tas bort.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Animationens varaktighet",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Ingen",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Tema",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Målet är att motståndaren ska ha färre än tre pjäser eller inga lagliga drag kvar.\n\nSpelet är automatiskt oavgjort om en position uppträder för tredje gången eller om ingen flyttning sker under de senaste 100 (konfigurerbara) dragen.\n\nSpelet pågår i tre faser:\n\n1. Placering av pjäser på lediga punkter.\n2. Flyttning av pjäser till angränsande punkter\n3. (valfri fas) Flytta pjäser till en ledig punkt när spelaren har tre pjäser kvar.\n\nPlacering av\n\nSpelet börjar med en tom bräda som består av ett rutnät med tjugofyra punkter. Spelarna turas om att placera sina pjäser på lediga punkter tills varje spelare har placerat alla pjäser på brädet. Om en spelare kan placera tre av sina pjäser rakt har han en \"kvarn\" och får ta bort en av motståndarens pjäser från brädet.\n\nI vissa regler måste spelarna först ta bort alla andra pjäser innan de tar bort en pjäs från en bildad kvarn.\n\nI vissa regler kan man inte placera pjäserna till de borttagna pjäsernas punkter igen i placeringsfasen.\n\nNär använda alla pjäser turas spelarna om att flytta.\n\nFlyttning\n\nFör att flytta flyttar en spelare en av sina pjäser längs en brädlinje till en ledig intilliggande punkt. Om han inte kan göra det har han förlorat spelet. Precis som i placeringsfasen har en spelare som ställer in tre av sina pjäser på en brädlinje en kvarn och får ta bort en av motståndarens pjäser. En spelare som reduceras till två pjäser har ingen möjlighet att bilda nya kvarnar och förlorar därmed spelet. En spelare kan också förlora om han har fler än tre pjäser om hans motståndare hindrar dem från att röra sig.\n\nFlygande\n\nI vissa varianter av reglerna kan en spelare, när han bara har tre bitar kvar, få sina bitar att flyga, hoppa eller hoppa till alla lediga punkter, inte bara till intilliggande punkter.",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Information om version",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Licens",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Källkod",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "thirdPartyNotices": "Meddelanden från tredje part",
+  "@thirdPartyNotices": {
+    "description": "Third-party notices"
+  },
+  "appVersion": "Version av appen",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Allmänt",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Avancerad",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Placering av",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Flytta",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Ta bort",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Villkor för game over",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI:s spelstil",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Passiv",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Timeout",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "Personalisering",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "forDevelopers": "För utvecklare",
+  "@forDevelopers": {
+    "description": "For developers"
+  },
+  "developerMode": "Utvecklarläge",
+  "@developerMode": {
+    "description": "Developer mode"
+  },
+  "drawOnHumanExperience": "Dra nytta av den mänskliga erfarenheten",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Beakta rörligheten hos delarna",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Antal bitar",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "i handen",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "på brädet",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Brädet är förskjutet från toppen",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Det är inte AI:s tur.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "KI tänker inte.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "autoReplay": "Automatisk återspelning av drag",
+  "@autoReplay": {
+    "description": "Auto re-play moves"
+  },
+  "atEnd": "Du är i slutet av draglistan.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Tryck tillbaka igen för att gå vidare.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "environmentVariables": "Miljövariabler",
+  "@environmentVariables": {
+    "description": "Environment variables"
+  },
+  "more": "Mer",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Det är en experimentell funktion.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Experiment",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Licenser för öppen källkod",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Språk",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Standardspråk",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Bitarna kan röra sig under placeringsfasen",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Det finns inga separata placerings- och flyttningsfaser, dvs. spelarna kan vid varje drag bestämma om de vill placera en pjäs på brädet eller flytta en av sina pjäser (så länge de har kvarvarande pjäser att placera).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Menyfärg",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Menyens textfärg",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerBackgroundColor": "Meny bakgrundsfärg",
+  "@drawerBackgroundColor": {
+    "description": "Menu background color"
+  },
+  "drawerHighlightItemColor": "Meny markera objektets färg",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Huvudfärg för verktygsfältet",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "huvudverktygsfältets ikonfärg",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Navigationsverktygsfältets bakgrundsfärg",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Navigationsverktygsfältets ikonfärg",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Dölj verktygsfältet automatiskt",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Verktygsfältets placering på skärmen",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Topp",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Botten",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Centrum",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Enfärgade",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Bild",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Välj din bild",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Ljus",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Mörk",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Teman",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Aktuellt tema",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Spara tema",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "fonts": "Typsnitt",
+  "@fonts": {
+    "description": "Fonts"
+  },
+  "showAnalysisGraph": "Visa analysdiagram",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Analys",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Spara spelet",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Belastnings spel",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Inställningsposition",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Visa lagliga drag",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Visa sista drag",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Visa pilar",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Bitar",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Visa analys",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Trådar",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Bli involverad",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Hjälp till att förbättra översättningen",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Handledning",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Klassisk kvarn",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Blandad kvarn",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Ceylon kvarn",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Kvarnen kan brytas om och göras om upprepade gånger",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Om en spelare bryter en kvarn för att skapa en ny kvarn omedelbart, kan en sådan spelare flytta en sådan bit tillbaka till den ursprungliga korsningen i sitt nästa drag om den gör en ny kvarn.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spelet dras om en spelare har tre delar och efter tio drag tar ingen spelare bort motståndarens bitar",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "När en spelare är nere i tre delar, och ingen spelare kan ta bort en motståndares bit inom tio drag, är spelet oavgjort.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Stänga",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Vit bit",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Svart bit",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Förbudspunkt",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Tom punkt",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Ingen idé",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Placeringsfas",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Flyttfas",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Flygande fas",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Sida att flytta",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Sista drag",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Vald",
+  "@selected": {
+    "description": "Selected"
+  },
+  "mainMenu": "Huvudmeny",
+  "@mainMenu": {
+    "description": "Main menu"
+  },
+  "accessibility": "Tillgänglighet",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Skärmläsarstöd",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Det är oavgjort!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Dra",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Del markera färg",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algoritm",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "Ta bort oplacerad bit",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Om en spelare bildar kvarnen i placeringsfasen, tar hon bort motståndarens oplacerade bit och fortsätter att göra ett drag.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "Slutspel N-Move regel",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Om endera spelaren bara har tre bitar och ingen av spelarna tar bort en bit inom ett specifikt drag, lottas spelet.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Endera spelaren har bara tre delar och ingen av spelarna tar bort en bit inom ett specifikt drag.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Trefaldig upprepningsregel",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Spelet lottas om en position inträffar för tredje gången.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Kvarn! Fortsätt att göra ett drag.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Poängstil",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Punktbredd",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Fast",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Ihålig",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Svenska",
+  "@languageName": {
+    "description": "The name of the current language"
+  }
 }
