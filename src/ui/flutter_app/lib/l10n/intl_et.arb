@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "showRecording": "Näita salvestust",
-  "@showRecording": {
-    "description": "Show recording"
-  },
   "noRecording": "Salvestust ei toimu.",
   "@noRecording": {
     "description": "No recording."
