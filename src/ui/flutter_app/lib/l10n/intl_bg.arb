@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "stopRecording": "Спиране на записа",
-  "@stopRecording": {
-    "description": "Stop recording"
-  },
   "showRecording": "Покажи записа",
   "@showRecording": {
     "description": "Show recording"
