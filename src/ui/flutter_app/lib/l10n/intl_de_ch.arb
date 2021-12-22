@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "showRecording": "Ufnahm ahzeige",
-  "@showRecording": {
-    "description": "Show recording"
-  },
   "noRecording": "Ke Ufnahm.",
   "@noRecording": {
     "description": "No recording."
