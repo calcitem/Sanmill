@@ -172,10 +172,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "Pārtraukts",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "Domājot...",
   "@thinking": {
     "description": "Thinking..."
