@@ -974,10 +974,6 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "fonts": "Betűtípusok",
-  "@fonts": {
-    "description": "Fonts"
-  },
   "showAnalysisGraph": "Elemzési grafikon megjelenítése",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
