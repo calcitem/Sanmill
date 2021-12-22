@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Автоматическое повторение ходов",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "В конце списка ходов.",
   "@atEnd": {
     "description": "At the end of the move list."
