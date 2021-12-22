@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "openingBook": "開設ライブラリーの利用",
-  "@openingBook": {
-    "description": "Opening Book"
-  },
   "misc": "その他",
   "@misc": {
     "description": "Miscellaneous"
