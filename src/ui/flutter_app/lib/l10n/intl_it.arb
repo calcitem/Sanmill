@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Mosse auto-riproducibili",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "Alla fine della lista delle mosse.",
   "@atEnd": {
     "description": "At the end of the move list."
