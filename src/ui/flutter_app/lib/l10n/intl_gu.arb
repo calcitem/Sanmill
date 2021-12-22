@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "એક લીટીમાં ત્રણ ટુકડાઓ છે.",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "ખસેડવા માટે તમારા ભાગને પસંદ કરો.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
