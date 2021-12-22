@@ -76,10 +76,6 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "copyright": "Copyright © 2021 Calcitem Studio",
-  "@copyright": {
-    "description": "Copyright"
-  },
   "tipSelectWrong": "ディスクの選択ミス",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
