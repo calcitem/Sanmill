@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "recording": "Regjistrimi ...",
-  "@recording": {
-    "description": "Recording..."
-  },
   "stopRecording": "Ndaloni regjistrimin",
   "@stopRecording": {
     "description": "Stop recording"
