@@ -438,10 +438,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "AI Resign if Most Lose",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "Move randomly",
   "@shufflingEnabled": {
     "description": "Random move"
