@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Ongedaan maken",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Optie ongedaan maken",
   "@undoOption": {
     "description": "Undo option"
