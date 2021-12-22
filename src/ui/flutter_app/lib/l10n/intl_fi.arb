@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "startRecording": "Aloita tallennus",
-  "@startRecording": {
-    "description": "Start recording"
-  },
   "recording": "Tallennus...",
   "@recording": {
     "description": "Recording..."
