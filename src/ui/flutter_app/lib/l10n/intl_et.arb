@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Tühista",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Tagasivõtmise võimalus",
   "@undoOption": {
     "description": "Undo option"
