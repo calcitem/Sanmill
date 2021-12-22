@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "ರದ್ದುಗೊಳಿಸಿ",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "ಆಯ್ಕೆಯನ್ನು ರದ್ದುಗೊಳಿಸಿ",
   "@undoOption": {
     "description": "Undo option"
