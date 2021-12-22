@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption_Detail": "Istnieje możliwość cofnięcia wykonanego ruchu.",
-  "@undoOption_Detail": {
-    "description": "It is possible to undo a move."
-  },
   "takeBack": "Cofnij",
   "@takeBack": {
     "description": "Take back"
