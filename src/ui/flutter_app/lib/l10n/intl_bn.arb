@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "stopRecording": "রেকর্ডিং বন্ধ করুন",
-  "@stopRecording": {
-    "description": "Stop recording"
-  },
   "showRecording": "রেকর্ডিং দেখান",
   "@showRecording": {
     "description": "Show recording"
