@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Možnost Zpět",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Je možné tah vrátit zpět.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
