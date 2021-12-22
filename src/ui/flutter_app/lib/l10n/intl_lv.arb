@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "recording": "Ierakstīšana...",
-  "@recording": {
-    "description": "Recording..."
-  },
   "stopRecording": "Pārtraukt ierakstīšanu",
   "@stopRecording": {
     "description": "Stop recording"
