@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "showRecording": "แสดงการบันทึก",
-  "@showRecording": {
-    "description": "Show recording"
-  },
   "noRecording": "ไม่มีการบันทึก",
   "@noRecording": {
     "description": "No recording."
