@@ -1185,5 +1185,15 @@
   "languageName": "Dansk",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "move_number": "{count,plural, =0{Bevæge sig}=1{{count} Bevæge sig}other{{count} Flytter sig}}",
+  "@move_number": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
