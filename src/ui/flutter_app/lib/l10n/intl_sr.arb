@@ -172,10 +172,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "Прекинуто",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "Размишљам ...",
   "@thinking": {
     "description": "Thinking..."
