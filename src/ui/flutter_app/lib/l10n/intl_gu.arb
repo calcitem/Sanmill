@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "જો મોસ્ટ ગુમાવે તો એઆઈ રાજીનામું",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "રેન્ડમ ચાલ",
   "@shufflingEnabled": {
     "description": "Random move"
