@@ -172,10 +172,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "Abort qilindi",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "Fikrlash ...",
   "@thinking": {
     "description": "Thinking..."
