@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "Ekzistojnë 3 pjesë në një linjë.",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "Zgjidhni pjesën tuaj për të lëvizur.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
