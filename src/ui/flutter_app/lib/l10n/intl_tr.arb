@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "showRecording": "Kaydı göster",
-  "@showRecording": {
-    "description": "Show recording"
-  },
   "noRecording": "Kayıt yok.",
   "@noRecording": {
     "description": "No recording."
