@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Atcelt",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Atcelšanas iespēja",
   "@undoOption": {
     "description": "Undo option"
