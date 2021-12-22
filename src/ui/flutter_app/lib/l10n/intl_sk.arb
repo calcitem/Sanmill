@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "AI odstúpiť, ak väčšina prehrá",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "Náhodný ťah",
   "@shufflingEnabled": {
     "description": "Random move"
