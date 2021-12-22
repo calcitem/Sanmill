@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "Bir qatorda uchta qism mavjud.",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "Ko'chirish uchun qismingizni tanlang.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
