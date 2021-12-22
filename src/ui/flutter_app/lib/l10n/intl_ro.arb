@@ -974,10 +974,6 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "fonts": "Fonturi",
-  "@fonts": {
-    "description": "Fonts"
-  },
   "showAnalysisGraph": "Afișați graficul de analiză",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
