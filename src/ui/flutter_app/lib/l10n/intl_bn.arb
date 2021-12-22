@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "সর্বাধিক হারালে এআই পদত্যাগ করুন",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "এলোমেলো পদক্ষেপ",
   "@shufflingEnabled": {
     "description": "Random move"
