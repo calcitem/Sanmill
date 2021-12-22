@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "stopRecording": "ರೆಕಾರ್ಡಿಂಗ್ ನಿಲ್ಲಿಸಿ",
-  "@stopRecording": {
-    "description": "Stop recording"
-  },
   "showRecording": "ರೆಕಾರ್ಡಿಂಗ್ ತೋರಿಸಿ",
   "@showRecording": {
     "description": "Show recording"
