@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "เลิกทำ",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "เลิกทำตัวเลือก",
   "@undoOption": {
     "description": "Undo option"
