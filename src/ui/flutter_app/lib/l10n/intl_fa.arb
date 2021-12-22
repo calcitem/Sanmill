@@ -974,10 +974,6 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "fonts": "قلم ها",
-  "@fonts": {
-    "description": "Fonts"
-  },
   "showAnalysisGraph": "نمودار تجزیه و تحلیل را نشان دهید",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
