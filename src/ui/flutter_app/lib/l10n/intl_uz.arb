@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "openingBook": "Kitob ochilmoqda",
-  "@openingBook": {
-    "description": "Opening Book"
-  },
   "misc": "Turli xil",
   "@misc": {
     "description": "Miscellaneous"
