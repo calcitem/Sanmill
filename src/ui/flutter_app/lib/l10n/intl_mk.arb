@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "ОИ дајте оставка ако најмногу изгубат",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "Случаен потег",
   "@shufflingEnabled": {
     "description": "Random move"
