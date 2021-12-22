@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "Sužinoti žaidimo pabaigą",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "Atidarymo knyga",
   "@openingBook": {
     "description": "Opening Book"
