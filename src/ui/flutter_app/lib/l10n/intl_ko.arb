@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "후회 체스",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "후회 체스",
   "@undoOption": {
     "description": "Undo option"
