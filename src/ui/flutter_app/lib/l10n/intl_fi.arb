@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "Tekoäly eroaa, jos useimmat häviävät",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "Satunnainen siirto",
   "@shufflingEnabled": {
     "description": "Random move"
