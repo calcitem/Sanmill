@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Ångra",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Alternativet Ångra",
   "@undoOption": {
     "description": "Undo option"
