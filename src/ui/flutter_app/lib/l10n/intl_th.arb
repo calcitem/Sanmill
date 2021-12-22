@@ -172,10 +172,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "ยกเลิกแล้ว",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "กำลังคิด...",
   "@thinking": {
     "description": "Thinking..."
