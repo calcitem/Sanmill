@@ -172,10 +172,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "Ματαιώθηκε",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "Σκέφτομαι...",
   "@thinking": {
     "description": "Thinking..."
