@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption_Detail": "Possibleshtë e mundur të zhbësh një lëvizje.",
-  "@undoOption_Detail": {
-    "description": "It is possible to undo a move."
-  },
   "takeBack": "Merrni mbrapa",
   "@takeBack": {
     "description": "Take back"
