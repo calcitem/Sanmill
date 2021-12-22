@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption_Detail": "Het is mogelijk om een verhuizing ongedaan te maken.",
-  "@undoOption_Detail": {
-    "description": "It is possible to undo a move."
-  },
   "takeBack": "Terugnemen",
   "@takeBack": {
     "description": "Take back"
