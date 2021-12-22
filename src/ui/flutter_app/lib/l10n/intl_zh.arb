@@ -76,10 +76,6 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "copyright": "版权所有 © 2021 Calcitem Studio",
-  "@copyright": {
-    "description": "Copyright"
-  },
   "tipSelectWrong": "选择的子不对",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
