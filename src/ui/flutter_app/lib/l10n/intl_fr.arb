@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "showRecording": "Afficher l'enregistrement",
-  "@showRecording": {
-    "description": "Show recording"
-  },
   "noRecording": "Pas d'enregistrement.",
   "@noRecording": {
     "description": "No recording."
