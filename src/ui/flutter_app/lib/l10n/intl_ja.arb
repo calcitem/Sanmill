@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "自己学習型ゲームバンク",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "開設ライブラリーの利用",
   "@openingBook": {
     "description": "Opening Book"
