@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "サードパーティーステートメント",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "アプリケーションのバージョン",
   "@appVersion": {
     "description": "App Version"
