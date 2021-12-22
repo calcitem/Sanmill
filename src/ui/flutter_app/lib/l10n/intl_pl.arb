@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Cofnij",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Opcja Cofnij",
   "@undoOption": {
     "description": "Undo option"
