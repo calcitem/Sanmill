@@ -1,1256 +1,1253 @@
 {
-    "@@locale": "mk",
-    "appName": "Мил",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Добредојде",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "Да",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Не",
-    "@no": {
-        "description": "No"
-    },
-    "game": "Игра",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Човечки наспроти АИ",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Хуман наспроти хуман",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "АИ наспроти АИ",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Човечки Облак",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Човечки VS LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Тест преку LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Движете се",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " Се движи",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Премести список",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Премести список",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Нема запис",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "добро",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "Потврди",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "Откажи",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Авторски права © 2021 Студио Калцитем",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Изберете погрешно парче.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Ставете ги вашите парчиња.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Не можете да го поставите тука.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Вие поставивте.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Отстранете парче.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Не можете да го отстраните.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Вие отстранети.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Поместете парче.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Не можете да го поставите вашето парче овде.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Не можете да го преместите вашето парче овде.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Мил! Земете го парчето на вашиот противник.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Продолжете да ги земате парчињата на противникот.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Изберете една од деловите на вашиот противник.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Не можете да отстраните парче од мелницата.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "Парче може да помести 1 поен.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Не можете да ги поместите фигурите на противникот.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "Постојат три парчиња во линија.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Изберете го вашето парче за движење.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "Имате уште три парчиња.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Може да се преселите во која било точка што ви се допаѓа.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " да се движат.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "Играчот 1 победи!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "Играчот 2 победи!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Победи",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "Изгубени",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "Прекинато",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Размислувајќи ...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "Нова игра",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Увезете игра",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Извозна игра",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Игра е увезена од таблата со исечоци.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Не може да се увезе",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Потезите и правилата не се совпаѓаат.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Започнете со снимање",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Снимање ...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Стоп за снимање",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Прикажи снимка",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "Без снимање.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Ве молам почекајте.",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Да се ​​рестартира тековната игра?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Рестарт",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "Играта започна, ве молиме, поставете",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Анализирајќи ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "Грешка",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "Стапка на победа",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "Резултат",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "Играч 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "Играч 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " бројот на парчиња е помал од три.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " поднесе оставка.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " не е начин да се оди.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "Одборот е полн, и нема начин да се оди.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Времето заврши",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "Во фаза на движење, ниту едно парче не е отстрането во последниот специфичен број на потези.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "Тоа е Извлекување бидејќи таблата е полна.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "Тоа е ждрепка заради тројно повторување.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "Играта заврши! Непозната причина.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "Играта заврши",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "Ти Победи! Честитки",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "Предизвик потешко ниво? Новото ниво ќе биде на ниво",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "Ти губиш!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "Анализирај",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "Да се ​​рестартира тековната игра?",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "За",
-    "@about": {
-        "description": "About"
-    },
-    "version": "Верзија",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "Благодарам",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Поставки",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Опции",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "Преференции",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Ниво на тешкотија",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "Време на размислување за ВИ",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Тешкотија",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Звучни ефекти",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "Играјте звуци во играта",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Чувајте неми кога враќате",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Тон",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Прв потег",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Човечки",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "АИ",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "Наизменично",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "Автоматско рестартирајте ја играта кога ќе заврши играта",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Автоматско менување на првиот потег",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "ОИ дајте оставка ако најмногу изгубат",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Случаен потег",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Научете Endgame",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Книга за отворање",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "Разно",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "Правила",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Број на парчиња што ги има секој играч",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Колку парчиња има секој играч?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Бројот на летачкото парче",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "Ако Летањето е овозможено, кога играчот ќе се сведе на одредено сметање на парчиња, нејзините фигури можат слободно да се преселат во која било неокупирана точка, наместо да бидат ограничени на соседните точки како во остатокот од играта.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Парчиња најмалку",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Дијагонални линии",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Додадете четири дијагонални линии на таблата.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Обележете и одложете ги отстранувањата",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "Во фазата на поставување, точките на отстранетите парчиња повеќе нема да можат да се поставуваат.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Вториот играч се движи прв",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Играчот кој се движи втор во фазата на поставување се движи прв во фаза на движење.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Повеќе-отстранување",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Ако играч затвори повеќе од една мелница одеднаш, таа ќе го отстрани бројот на мелници што ги затвори.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Уништи мелници",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "Стандардно, играчите мора прво да отстранат други парчиња пред да извадат парче од формираната мелница. Овозможете ја оваа опција за да го оневозможите ограничувањето.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Вториот играч губи кога таблата е полна",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Кога таблата е полна на крајот од фазата на поставување, страната што прво се поставува ја губи играта. Инаку, играта е нерешена.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Изгуби кога нема законски потези",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Играчот ќе изгуби ако неговиот противник ги блокира за да не можат да бидат поместени. Променете ја страната за да се преместите ако оваа опција е оневозможена.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Летање",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Ако на играч и останат само три или четири (конфигурираат) парчиња, таа може да го премести парчето во која било слободна точка.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "Правило за движење со N",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "Играта е извлечена ако не се отстрани одреден број потези од секој играч.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Враќање назад",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "Ве молиме изберете",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "Копирај",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Преместете ја историјата копирана во таблата со исечоци",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Помош",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Повратни информации",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "Излез",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Поставки за правилата",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "Боја",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Боја на табла",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Боја на парче",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Боја на позадина",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Боја на линијата на таблата",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Плеер 1 парче боја",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Плеер 2 парче боја",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Боја на пораката",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "АИ е мрзлив",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Покажете број на парчиња во рака",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Прикажи нотации на бродот",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Покажи лента со алатки за навигација во историјата",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "Екран",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Ширина на границата на таблата",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Ширина на внатрешната линија на таблата",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Ширина на парче",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "Големина на фонтот",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "Нотација на WMD",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Врати",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Вратете ги стандардните поставки",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "Апликацијата ќе излезе.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "Треба веднаш да ја затворите и повторно да ја отворите апликацијата за да стапи на сила.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Трансферот",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "Инфо",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "Навестување",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "играч",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "Играч 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "Играч 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Како да играш",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Допрете на која било достапна точка за да го поставите парчето.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Допрете на парче за да го преместите.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Допрете на точка поврзана со парче за да ја поместите.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Допрете на едното парче на противникот за да го отстраните.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Прво треба да креирате мелница пред да отстраните парче.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Треба да си играте со вашите парчиња.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "Статистика",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Вкупно игри",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "Резултати",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Не може да се отстрани од мелницата.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "лево",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Политика за приватност",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Прочитајте внимателно и проверете дали целосно го разбирате и согласувате со ова",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Ако не се согласувате со оваа политика, не користете ја оваа апликација. Користењето на апликацијата подразбира дека ги прифаќате овие услови.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " и",
-    "accept": "Прифати",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "Врати",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "Врати опција",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Можно е да се поништи потег.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Врати се назад",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Враќање назад",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Чекајќи",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Чекор напред",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Вратете ги сите",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Чекор напред сите",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Премести се сега",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Направено.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Мелница за пукнатини",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "Ако играч има само парчиња во мелници, парчињата во мелниците нема да се заклучат за да се отстранат.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Времетраење на анимацијата",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Ништо",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Тема",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Играта има за цел да го остави противникот со помалку од три парчиња или без законски потези.\n\nИграта автоматски црта ако се појави позиција по трет пат или не се отстрани во последните 100 потези (може да се конфигурира).\n\nИграта тече во три фази:\n\n1. Поставување парчиња на празни места\n2. Преместување парчиња во соседните точки\n3. (факултативна фаза) Преместување на парчињата во која било празна точка при намалување на плеерот на три дела\n\nПоставување\n\nИграта започнува со празна табла, која се состои од мрежа со дваесет и четири поени. Играчите наизменично ги поставуваат своите парчиња на празни места додека секој играч не ги постави сите парчиња на таблата. Ако играчот може да стави три свои фигури исправено, тој има „мелница“ и може да отстрани еден од неговите парчиња од таблата.\n\nСпоред некои правила, играчите мора прво да отстранат други парчиња пред да извадат парче од формираната мелница.\n\nВо некои правила не можете повторно да ги поставите парчињата до точките на отстранетите парчиња во фазата на поставување.\n\nОткако ќе ги користат сите парчиња, играчите се движат наизменично.\n\nСе движат\n\nЗа да се придвижи, играчот преместува една од неговите парчиња по линија на табла до празна соседна точка. Ако не може да го стори тоа, тој ја загуби играта. Како и во фазата на поставување, играч кој усогласува три свои парчиња на линија на табла, има воденица и може да отстрани една од неговите парчиња. Секој играч намалува на две парчиња, нема опција да формира нови мелници и со тоа ја губи играта. Играчот исто така може да изгуби кога има повеќе од три парчиња ако неговиот противник ги блокира во движење.\n\nЛетање\n\nВо некои варијанти на правила, штом играчот остане само три парчиња, неговите парчиња можат да летаат, да скокаат или да скокаат на празни места, не само на соседните.",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "Информации за верзијата",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "ЕУЛА",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "Лиценца",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Изворен код",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Известувања од трети страни",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "Верзија на апликација",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "Генерал",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "Напредно",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "Поставување",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Се движат",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Отстранување",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "Игра над состојба",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "Стил на играчката на АИ",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Пасивно",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "Тајм аут",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Персонализација",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "За програмерите",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Режим на програмер",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Извлечете го човечкото искуство",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Размислете за подвижноста на парчињата",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Број на парчиња",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "во рака",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "на бродот",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "Офсет на таблата од врвот",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Не е редот на АИ.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "АИ не размислува.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Автоматско репродуцирање потези",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "Вие сте на крајот од списокот за преместување.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Допрете назад за да заминете.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Променливи на животната средина",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Повеќе",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Тоа е експериментална карактеристика.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Експерименти",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Лиценци со отворен извор",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Јазик",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "Стандарден јазик",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Парчињата можат да се движат во фазата на поставување",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Нема посебни фази на поставување и движење, т.е. играчите можат да одлучат на секој потег дали сакаат да постават парче на таблата или да поместат некое од нивните парчиња (сè додека ги имаат останатите парчиња за поставување).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Боја на менито",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Боја на текст во менито",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Боја на позадина во менито",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Боја на обележана мени",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Боја на главната лента со алатки",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "боја на иконата на главната лента со алатки",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Боја на позадина во лентата со алатки за навигација",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Боја на иконата во лентата со алатки за навигација",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Автоматски скријте ја лентата со алатки",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Локација на лентата со алатки на екранот",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Врв",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Дното",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Центар",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Цврста боја",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Слика",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Изберете ја вашата слика",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Светлина",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "Темно",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Теми",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Тековна тема",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Зачувај тема",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "Фонтови",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Прикажи графикон за анализа",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Анализа",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "Зачувај игра",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Играта се вчитува",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "Позиција за поставување",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Покажете законски потези",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Покажете го последниот потег",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Покажи стрели",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "Парчиња",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Покажи анализа",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Теми",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "Вклучете се",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Помогнете да се подобри преводот",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "Упатство за употреба",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Класичен мелница",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Мешана воденица",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Мелница за цејлон",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Мелницата може постојано да се крши и да се преработува",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Ако играч скрши мелница за да создаде нова мелница веднаш, таквиот плеер може да го премести таквиот дел назад во првобитната клучка во неговиот следен потег, ако направи нов мелница.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Играта се извлекува ако играчот има три парчиња и по десет потези ниту еден играч не ги отстранува противничките парчиња",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Кога играчот е спуштен на три дела, и ниту еден играч не може да отстрани противнички парче во рок од десет потези, играта е нерешена.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "Затвори",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Бело парче",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "Црно парче",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Забрана точка",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "Празна точка",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Без смисла",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Фаза на поставување",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Фаза на движење",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Фаза на летање",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Страна за движење",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Последен потег",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Избрано",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Главно мени",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Пристапност",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Поддршка за читач на екран",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "Тоа е Нерешено",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "Нацртај",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Боја за истакнување на парче",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "Алгоритам",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "Отстранете го непоставеното парче",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Ако играчот ја формира воденицата во фазата на пласман, таа ќе го отстрани непласираното парче на противничката и ќе продолжи да прави потег.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "Правило за крајна игра N-Move",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Ако било кој играч има само три дела и ниту еден играч не отстрани парче во рамките на одреден потег, играта е извлечена.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Секој играч има само три парчиња и ниту еден играч не отстранува парче во одреден потег.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Трикратно правило за повторување",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Играта е извлечена ако се појави позиција по трет пат.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Мил! Продолжете да направите потег.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Стил на точка",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Ширина на точка",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Цврсти",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Шупливи",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "Македонски",
-    "@languageName": {
-        "description": "The name of the current language"
-    }
+  "@@locale": "mk",
+  "appName": "Мил",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Добредојде",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Да",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Не",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Игра",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Човечки наспроти АИ",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Хуман наспроти хуман",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "АИ наспроти АИ",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Човечки Облак",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Човечки VS LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Тест преку LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Движете се",
+  "@move": {
+    "description": "Move"
+  },
+  "moves": " Се движи",
+  "@moves": {
+    "description": " Moves"
+  },
+  "showMoveList": "Премести список",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Премести список",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Нема запис",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "добро",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Потврди",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Откажи",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Изберете погрешно парче.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Ставете ги вашите парчиња.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Не можете да го поставите тука.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Вие поставивте.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Отстранете парче.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Не можете да го отстраните.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Вие отстранети.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Поместете парче.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Не можете да го поставите вашето парче овде.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Не можете да го преместите вашето парче овде.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Мил! Земете го парчето на вашиот противник.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Продолжете да ги земате парчињата на противникот.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Изберете една од деловите на вашиот противник.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Не можете да отстраните парче од мелницата.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Парче може да помести 1 поен.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Не можете да ги поместите фигурите на противникот.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipThreePiecesInLine": "Постојат три парчиња во линија.",
+  "@tipThreePiecesInLine": {
+    "description": "There are 3 pieces in a line."
+  },
+  "tipSelectPieceToMove": "Изберете го вашето парче за движење.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Имате уште три парчиња.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Може да се преселите во која било точка што ви се допаѓа.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": " да се движат.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Играчот 1 победи!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Играчот 2 победи!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Победи",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Изгубени",
+  "@lost": {
+    "description": "Lost"
+  },
+  "aborted": "Прекинато",
+  "@aborted": {
+    "description": "Aborted"
+  },
+  "thinking": "Размислувајќи ...",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Нова игра",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Увезете игра",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Извозна игра",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Игра е увезена од таблата со исечоци.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Не може да се увезе",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Потезите и правилата не се совпаѓаат.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "startRecording": "Започнете со снимање",
+  "@startRecording": {
+    "description": "Start recording"
+  },
+  "recording": "Снимање ...",
+  "@recording": {
+    "description": "Recording..."
+  },
+  "stopRecording": "Стоп за снимање",
+  "@stopRecording": {
+    "description": "Stop recording"
+  },
+  "showRecording": "Прикажи снимка",
+  "@showRecording": {
+    "description": "Show recording"
+  },
+  "noRecording": "Без снимање.",
+  "@noRecording": {
+    "description": "No recording."
+  },
+  "pleaseWait": "Ве молам почекајте.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Да се ​​рестартира тековната игра?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Рестарт",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Играта започна, ве молиме, поставете",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Анализирајќи ...",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Грешка",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Стапка на победа",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Резултат",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Играч 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Играч 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": " бројот на парчиња е помал од три.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": " поднесе оставка.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": " не е начин да се оди.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Одборот е полн, и нема начин да се оди.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Времето заврши",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "Во фаза на движење, ниту едно парче не е отстрането во последниот специфичен број на потези.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Тоа е Извлекување бидејќи таблата е полна.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Тоа е ждрепка заради тројно повторување.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Играта заврши! Непозната причина.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Играта заврши",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Ти Победи! Честитки",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Предизвик потешко ниво? Новото ниво ќе биде на ниво",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Ти губиш!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Анализирај",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "playerName": "Да се ​​рестартира тековната игра?",
+  "@playerName": {
+    "description": "Player Name"
+  },
+  "about": "За",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Верзија",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Благодарам",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Поставки",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Опции",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "Преференции",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "Ниво на тешкотија",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Време на размислување за ВИ",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Тешкотија",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Звучни ефекти",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Играјте звуци во играта",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Чувајте неми кога враќате",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Тон",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Прв потег",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Човечки",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "АИ",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Наизменично",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Автоматско рестартирајте ја играта кога ќе заврши играта",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Автоматско менување на првиот потег",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "resignIfMostLose": "ОИ дајте оставка ако најмногу изгубат",
+  "@resignIfMostLose": {
+    "description": "AI Resign if Most Lose"
+  },
+  "shufflingEnabled": "Случаен потег",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "learnEndgame": "Научете Endgame",
+  "@learnEndgame": {
+    "description": "Learn Endgame"
+  },
+  "openingBook": "Книга за отворање",
+  "@openingBook": {
+    "description": "Opening Book"
+  },
+  "misc": "Разно",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Правила",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Број на парчиња што ги има секој играч",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Колку парчиња има секој играч?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Бројот на летачкото парче",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Ако Летањето е овозможено, кога играчот ќе се сведе на одредено сметање на парчиња, нејзините фигури можат слободно да се преселат во која било неокупирана точка, наместо да бидат ограничени на соседните точки како во остатокот од играта.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Парчиња најмалку",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Дијагонални линии",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Додадете четири дијагонални линии на таблата.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Обележете и одложете ги отстранувањата",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "Во фазата на поставување, точките на отстранетите парчиња повеќе нема да можат да се поставуваат.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Вториот играч се движи прв",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Играчот кој се движи втор во фазата на поставување се движи прв во фаза на движење.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Повеќе-отстранување",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Ако играч затвори повеќе од една мелница одеднаш, таа ќе го отстрани бројот на мелници што ги затвори.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Уништи мелници",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Стандардно, играчите мора прво да отстранат други парчиња пред да извадат парче од формираната мелница. Овозможете ја оваа опција за да го оневозможите ограничувањето.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Вториот играч губи кога таблата е полна",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Кога таблата е полна на крајот од фазата на поставување, страната што прво се поставува ја губи играта. Инаку, играта е нерешена.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Изгуби кога нема законски потези",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Играчот ќе изгуби ако неговиот противник ги блокира за да не можат да бидат поместени. Променете ја страната за да се преместите ако оваа опција е оневозможена.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Летање",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Ако на играч и останат само три или четири (конфигурираат) парчиња, таа може да го премести парчето во која било слободна точка.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "Правило за движење со N",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Играта е извлечена ако не се отстрани одреден број потези од секој играч.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Враќање назад",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Ве молиме изберете",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Копирај",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Преместете ја историјата копирана во таблата со исечоци",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Помош",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Повратни информации",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Излез",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Поставки за правилата",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Боја",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Боја на табла",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Боја на парче",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Боја на позадина",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Боја на линијата на таблата",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Плеер 1 парче боја",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Плеер 2 парче боја",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Боја на пораката",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "aiIsLazy": "АИ е мрзлив",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "Покажете број на парчиња во рака",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Прикажи нотации на бродот",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Покажи лента со алатки за навигација во историјата",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Екран",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Ширина на границата на таблата",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Ширина на внатрешната линија на таблата",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Ширина на парче",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Големина на фонтот",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "Нотација на WMD",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Врати",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Вратете ги стандардните поставки",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "exitApp": "Апликацијата ќе излезе.",
+  "@exitApp": {
+    "description": "The app will exit."
+  },
+  "exitAppManually": "Треба веднаш да ја затворите и повторно да ја отворите апликацијата за да стапи на сила.",
+  "@exitAppManually": {
+    "description": "You have to close immediately and reopen the app to take effect."
+  },
+  "pick": "Трансферот",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Инфо",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Навестување",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "играч",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Играч 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Играч 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Како да играш",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Допрете на која било достапна точка за да го поставите парчето.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Допрете на парче за да го преместите.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Допрете на точка поврзана со парче за да ја поместите.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Допрете на едното парче на противникот за да го отстраните.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Прво треба да креирате мелница пред да отстраните парче.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Треба да си играте со вашите парчиња.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Статистика",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Вкупно игри",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Резултати",
+  "@results": {
+    "description": "Results"
+  },
+  "cannotRemoveFromMill": "Не може да се отстрани од мелницата.",
+  "@cannotRemoveFromMill": {
+    "description": "Cannot remove from the mill."
+  },
+  "left": "лево",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Политика за приватност",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Прочитајте внимателно и проверете дали целосно го разбирате и согласувате со ова",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Ако не се согласувате со оваа политика, не користете ја оваа апликација. Користењето на апликацијата подразбира дека ги прифаќате овие услови.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " и",
+  "@and": {},
+  "accept": "Прифати",
+  "@accept": {
+    "description": "Accept"
+  },
+  "undo": "Врати",
+  "@undo": {
+    "description": "Undo"
+  },
+  "undoOption": "Врати опција",
+  "@undoOption": {
+    "description": "Undo option"
+  },
+  "undoOption_Detail": "Можно е да се поништи потег.",
+  "@undoOption_Detail": {
+    "description": "It is possible to undo a move."
+  },
+  "takeBack": "Врати се назад",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Враќање назад",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Чекајќи",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Чекор напред",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Вратете ги сите",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Чекор напред сите",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Премести се сега",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Направено.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Мелница за пукнатини",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Ако играч има само парчиња во мелници, парчињата во мелниците нема да се заклучат за да се отстранат.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Времетраење на анимацијата",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Ништо",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Тема",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Играта има за цел да го остави противникот со помалку од три парчиња или без законски потези.\n\nИграта автоматски црта ако се појави позиција по трет пат или не се отстрани во последните 100 потези (може да се конфигурира).\n\nИграта тече во три фази:\n\n1. Поставување парчиња на празни места\n2. Преместување парчиња во соседните точки\n3. (факултативна фаза) Преместување на парчињата во која било празна точка при намалување на плеерот на три дела\n\nПоставување\n\nИграта започнува со празна табла, која се состои од мрежа со дваесет и четири поени. Играчите наизменично ги поставуваат своите парчиња на празни места додека секој играч не ги постави сите парчиња на таблата. Ако играчот може да стави три свои фигури исправено, тој има „мелница“ и може да отстрани еден од неговите парчиња од таблата.\n\nСпоред некои правила, играчите мора прво да отстранат други парчиња пред да извадат парче од формираната мелница.\n\nВо некои правила не можете повторно да ги поставите парчињата до точките на отстранетите парчиња во фазата на поставување.\n\nОткако ќе ги користат сите парчиња, играчите се движат наизменично.\n\nСе движат\n\nЗа да се придвижи, играчот преместува една од неговите парчиња по линија на табла до празна соседна точка. Ако не може да го стори тоа, тој ја загуби играта. Како и во фазата на поставување, играч кој усогласува три свои парчиња на линија на табла, има воденица и може да отстрани една од неговите парчиња. Секој играч намалува на две парчиња, нема опција да формира нови мелници и со тоа ја губи играта. Играчот исто така може да изгуби кога има повеќе од три парчиња ако неговиот противник ги блокира во движење.\n\nЛетање\n\nВо некои варијанти на правила, штом играчот остане само три парчиња, неговите парчиња можат да летаат, да скокаат или да скокаат на празни места, не само на соседните.",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Информации за верзијата",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "ЕУЛА",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Лиценца",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Изворен код",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "thirdPartyNotices": "Известувања од трети страни",
+  "@thirdPartyNotices": {
+    "description": "Third-party notices"
+  },
+  "appVersion": "Верзија на апликација",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Генерал",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Напредно",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Поставување",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Се движат",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Отстранување",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Игра над состојба",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Стил на играчката на АИ",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Пасивно",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Тајм аут",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "Персонализација",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "forDevelopers": "За програмерите",
+  "@forDevelopers": {
+    "description": "For developers"
+  },
+  "developerMode": "Режим на програмер",
+  "@developerMode": {
+    "description": "Developer mode"
+  },
+  "drawOnHumanExperience": "Извлечете го човечкото искуство",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Размислете за подвижноста на парчињата",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Број на парчиња",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "во рака",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "на бродот",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Офсет на таблата од врвот",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Не е редот на АИ.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "АИ не размислува.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "autoReplay": "Автоматско репродуцирање потези",
+  "@autoReplay": {
+    "description": "Auto re-play moves"
+  },
+  "atEnd": "Вие сте на крајот од списокот за преместување.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Допрете назад за да заминете.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "environmentVariables": "Променливи на животната средина",
+  "@environmentVariables": {
+    "description": "Environment variables"
+  },
+  "more": "Повеќе",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Тоа е експериментална карактеристика.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Експерименти",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Лиценци со отворен извор",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Јазик",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Стандарден јазик",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Парчињата можат да се движат во фазата на поставување",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Нема посебни фази на поставување и движење, т.е. играчите можат да одлучат на секој потег дали сакаат да постават парче на таблата или да поместат некое од нивните парчиња (сè додека ги имаат останатите парчиња за поставување).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Боја на менито",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Боја на текст во менито",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerBackgroundColor": "Боја на позадина во менито",
+  "@drawerBackgroundColor": {
+    "description": "Menu background color"
+  },
+  "drawerHighlightItemColor": "Боја на обележана мени",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Боја на главната лента со алатки",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "боја на иконата на главната лента со алатки",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Боја на позадина во лентата со алатки за навигација",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Боја на иконата во лентата со алатки за навигација",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Автоматски скријте ја лентата со алатки",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Локација на лентата со алатки на екранот",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Врв",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Дното",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Центар",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Цврста боја",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Слика",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Изберете ја вашата слика",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Светлина",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Темно",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Теми",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Тековна тема",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Зачувај тема",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "fonts": "Фонтови",
+  "@fonts": {
+    "description": "Fonts"
+  },
+  "showAnalysisGraph": "Прикажи графикон за анализа",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Анализа",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Зачувај игра",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Играта се вчитува",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Позиција за поставување",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Покажете законски потези",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Покажете го последниот потег",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Покажи стрели",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Парчиња",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Покажи анализа",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Теми",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Вклучете се",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Помогнете да се подобри преводот",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Упатство за употреба",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Класичен мелница",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Мешана воденица",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Мелница за цејлон",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Мелницата може постојано да се крши и да се преработува",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Ако играч скрши мелница за да создаде нова мелница веднаш, таквиот плеер може да го премести таквиот дел назад во првобитната клучка во неговиот следен потег, ако направи нов мелница.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Играта се извлекува ако играчот има три парчиња и по десет потези ниту еден играч не ги отстранува противничките парчиња",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Кога играчот е спуштен на три дела, и ниту еден играч не може да отстрани противнички парче во рок од десет потези, играта е нерешена.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Затвори",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Бело парче",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Црно парче",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Забрана точка",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Празна точка",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Без смисла",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Фаза на поставување",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Фаза на движење",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Фаза на летање",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Страна за движење",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Последен потег",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Избрано",
+  "@selected": {
+    "description": "Selected"
+  },
+  "mainMenu": "Главно мени",
+  "@mainMenu": {
+    "description": "Main menu"
+  },
+  "accessibility": "Пристапност",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Поддршка за читач на екран",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Тоа е Нерешено",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Нацртај",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Боја за истакнување на парче",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Алгоритам",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "Отстранете го непоставеното парче",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Ако играчот ја формира воденицата во фазата на пласман, таа ќе го отстрани непласираното парче на противничката и ќе продолжи да прави потег.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "Правило за крајна игра N-Move",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Ако било кој играч има само три дела и ниту еден играч не отстрани парче во рамките на одреден потег, играта е извлечена.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Секој играч има само три парчиња и ниту еден играч не отстранува парче во одреден потег.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Трикратно правило за повторување",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Играта е извлечена ако се појави позиција по трет пат.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Мил! Продолжете да направите потег.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Стил на точка",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Ширина на точка",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Цврсти",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Шупливи",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Македонски",
+  "@languageName": {
+    "description": "The name of the current language"
+  }
 }
