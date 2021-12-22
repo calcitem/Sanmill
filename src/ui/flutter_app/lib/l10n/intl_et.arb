@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "stopRecording": "Salvestamise peatamine",
-  "@stopRecording": {
-    "description": "Stop recording"
-  },
   "showRecording": "Näita salvestust",
   "@showRecording": {
     "description": "Show recording"
