@@ -300,10 +300,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "Επανεκκίνηση του τρέχοντος παιχνιδιού;",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "Σχετικά με το",
   "@about": {
     "description": "About"
