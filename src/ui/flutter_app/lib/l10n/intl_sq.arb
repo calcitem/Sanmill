@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Zhbëj",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Zhbëj opsionin",
   "@undoOption": {
     "description": "Undo option"
