@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Spielzüge automatisch wiederholen",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "Am Ende der Spielzugliste",
   "@atEnd": {
     "description": "At the end of the move list."
