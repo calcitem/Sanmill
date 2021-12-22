@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Répétition automatique des coups",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "À la fin de la liste des mouvements.",
   "@atEnd": {
     "description": "At the end of the move list."
