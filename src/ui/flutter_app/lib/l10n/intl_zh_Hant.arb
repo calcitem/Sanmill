@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "stopRecording": "停止錄製",
-  "@stopRecording": {
-    "description": "Stop recording"
-  },
   "showRecording": "重播錄製",
   "@showRecording": {
     "description": "Show recording"
