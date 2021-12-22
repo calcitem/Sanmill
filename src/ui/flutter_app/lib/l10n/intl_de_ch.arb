@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Rückgängig",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Es isch müglech, e Zug rückgängig zmache.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
