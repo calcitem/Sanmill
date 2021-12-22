@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "với",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "đồng ý",
   "@undoOption": {
     "description": "Undo option"
