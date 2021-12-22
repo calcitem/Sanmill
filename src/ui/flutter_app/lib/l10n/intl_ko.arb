@@ -172,10 +172,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "일시 정지",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "다른 사람이 ...",
   "@thinking": {
     "description": "Thinking..."
