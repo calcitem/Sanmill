@@ -750,10 +750,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption_Detail": "It is possible to undo a move.",
-  "@undoOption_Detail": {
-    "description": "It is possible to undo a move."
-  },
   "takeBack": "Take back",
   "@takeBack": {
     "description": "Take back"
