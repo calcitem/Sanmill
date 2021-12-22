@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "Endgame-ni o'rganing",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "Kitob ochilmoqda",
   "@openingBook": {
     "description": "Opening Book"
