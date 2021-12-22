@@ -300,10 +300,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "Numele jucatorului",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "Despre aplicație",
   "@about": {
     "description": "About"
