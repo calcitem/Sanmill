@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption_Detail": "Могуће је опозвати потез.",
-  "@undoOption_Detail": {
-    "description": "It is possible to undo a move."
-  },
   "takeBack": "Вратити",
   "@takeBack": {
     "description": "Take back"
