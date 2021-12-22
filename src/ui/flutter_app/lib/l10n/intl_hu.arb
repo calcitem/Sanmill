@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "3 korong van egyvonalban.",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "Válasszon lépéshez egy korongot.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
