@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "openingBook": "Buku Pembuka",
-  "@openingBook": {
-    "description": "Opening Book"
-  },
   "misc": "lain-lain",
   "@misc": {
     "description": "Miscellaneous"
