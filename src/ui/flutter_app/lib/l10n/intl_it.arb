@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "startRecording": "Avvia la registrazione",
-  "@startRecording": {
-    "description": "Start recording"
-  },
   "recording": "Registrazione...",
   "@recording": {
     "description": "Recording..."
