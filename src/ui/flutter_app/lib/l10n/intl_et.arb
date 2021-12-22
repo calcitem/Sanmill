@@ -300,10 +300,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "Käivitage praegune mäng uuesti?",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "Umbes",
   "@about": {
     "description": "About"
