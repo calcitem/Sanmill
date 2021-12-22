@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "한 줄에 세 개의 체스 조각",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "이동할 자신의 폰을 선택하세요",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
