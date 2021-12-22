@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "Terdapat tiga keping dalam satu baris.",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "Pilih bahagian anda untuk bergerak.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
