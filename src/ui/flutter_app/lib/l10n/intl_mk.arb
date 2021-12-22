@@ -300,10 +300,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "Да се ​​рестартира тековната игра?",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "За",
   "@about": {
     "description": "About"
