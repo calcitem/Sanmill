@@ -974,10 +974,6 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "fonts": "Фонтови",
-  "@fonts": {
-    "description": "Fonts"
-  },
   "showAnalysisGraph": "Прикажи графикон за анализа",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
