@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "خيار التراجع",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "من الممكن التراجع عن هذه الخطوة.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
