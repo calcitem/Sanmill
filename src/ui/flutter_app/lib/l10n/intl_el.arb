@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "openingBook": "Βιβλίο ανοίγματος",
-  "@openingBook": {
-    "description": "Opening Book"
-  },
   "misc": "Διάφορα",
   "@misc": {
     "description": "Miscellaneous"
