@@ -974,10 +974,6 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "fonts": "Phông chữ",
-  "@fonts": {
-    "description": "Fonts"
-  },
   "showAnalysisGraph": "Hiển thị đồ thị phân tích",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
