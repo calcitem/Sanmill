@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "showRecording": "Näytä tallennus",
-  "@showRecording": {
-    "description": "Show recording"
-  },
   "noRecording": "Ei tallennusta.",
   "@noRecording": {
     "description": "No recording."
