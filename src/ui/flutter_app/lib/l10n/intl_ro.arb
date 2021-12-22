@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Anularea obțiunii",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Este posibil să anulezi o mutare",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
