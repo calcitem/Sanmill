@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption_Detail": "Det är möjligt att ångra en flyttning.",
-  "@undoOption_Detail": {
-    "description": "It is possible to undo a move."
-  },
   "takeBack": "Ta tillbaka",
   "@takeBack": {
     "description": "Take back"
