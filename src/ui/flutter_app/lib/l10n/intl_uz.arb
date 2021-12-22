@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Bekor qilish opsiyasi",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Harakatni bekor qilish mumkin.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
