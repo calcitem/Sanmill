@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "三顆棋子排成一線",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "請選擇要移動的己方棋子",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
