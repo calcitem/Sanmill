@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "startRecording": "Začít nahrávat",
-  "@startRecording": {
-    "description": "Start recording"
-  },
   "recording": "Záznam...",
   "@recording": {
     "description": "Recording..."
