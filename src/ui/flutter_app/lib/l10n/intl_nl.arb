@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "Mededelingen van derden",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "App-versie",
   "@appVersion": {
     "description": "App Version"
