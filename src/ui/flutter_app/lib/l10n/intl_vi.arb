@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "Tự động trao đổi tay khi bắt đầu",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "Tự động thừa nhận thất bại khi máy rõ ràng kém hơn",
   "@shufflingEnabled": {
     "description": "Random move"
