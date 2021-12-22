@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "openingBook": "เปิดหนังสือ",
-  "@openingBook": {
-    "description": "Opening Book"
-  },
   "misc": "เบ็ดเตล็ด",
   "@misc": {
     "description": "Miscellaneous"
