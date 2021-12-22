@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Visszavonás",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Visszavonási lehetőség",
   "@undoOption": {
     "description": "Undo option"
