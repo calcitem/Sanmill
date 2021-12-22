@@ -1263,9 +1263,5 @@
         "example": "3"
       }
     }
-  },
-  "gameSettings": "Impostazioni del gioco",
-  "@gameSettings": {
-    "description": "Settings to change the behaviour of the game."
   }
 }
