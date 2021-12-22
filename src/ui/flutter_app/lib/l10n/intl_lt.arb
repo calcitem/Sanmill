@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "Vienoje linijoje yra trys figūros.",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "Pasirinkite figūrėlę, kurią norite perkelti.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
