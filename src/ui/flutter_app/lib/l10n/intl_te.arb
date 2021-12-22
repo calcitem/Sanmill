@@ -172,10 +172,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "రద్దు చేయబడింది",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "ఆలోచిస్తూ ...",
   "@thinking": {
     "description": "Thinking..."
