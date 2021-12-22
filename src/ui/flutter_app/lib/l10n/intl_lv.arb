@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "Uzzināt spēles beigas",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "Atklāšanas grāmata",
   "@openingBook": {
     "description": "Opening Book"
