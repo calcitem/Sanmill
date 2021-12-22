@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "گزینه واگرد",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "واگرد یک حرکت امکان پذیر است.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
