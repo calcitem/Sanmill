@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "recording": "Kayıt...",
-  "@recording": {
-    "description": "Recording..."
-  },
   "stopRecording": "Kaydetmeyi bırak",
   "@stopRecording": {
     "description": "Stop recording"
