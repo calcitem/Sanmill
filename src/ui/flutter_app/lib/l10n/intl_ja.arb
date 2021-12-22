@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "startRecording": "録音開始",
-  "@startRecording": {
-    "description": "Start recording"
-  },
   "recording": "録音中ですが...。",
   "@recording": {
     "description": "Recording..."
