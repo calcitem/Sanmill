@@ -172,10 +172,6 @@
   "@lost": {
     "description": "Lost"
   },
-  "aborted": "U ndërpre",
-  "@aborted": {
-    "description": "Aborted"
-  },
   "thinking": "Duke menduar ...",
   "@thinking": {
     "description": "Thinking..."
