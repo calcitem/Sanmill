@@ -1254,10 +1254,6 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "gameSettings": "Spill-innstillinger",
-  "@gameSettings": {
-    "description": "Settings to change the behaviour of the game."
-  },
   "move_number": "{count,plural, =0{trekk}=1{{count} trekk}other{{count} trekk}}",
   "@move_number": {
     "description": "Moves to take back",
