@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "ಆಯ್ಕೆಯನ್ನು ರದ್ದುಗೊಳಿಸಿ",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "ನಡೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲು ಸಾಧ್ಯವಿದೆ.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
