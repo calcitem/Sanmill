@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "openingBook": "Nyitókönyv",
-  "@openingBook": {
-    "description": "Opening Book"
-  },
   "misc": "Vegyes",
   "@misc": {
     "description": "Miscellaneous"
