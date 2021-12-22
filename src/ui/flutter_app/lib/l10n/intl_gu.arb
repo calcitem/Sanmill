@@ -1,1256 +1,1257 @@
 {
-    "@@locale": "gu",
-    "appName": "મિલ",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "સ્વાગત છે",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "હા",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "ના",
-    "@no": {
-        "description": "No"
-    },
-    "game": "રમત",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "માનવ વિ એ",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "માનવ વિ માનવ",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "એઆઈ વિ એ.આઇ.",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "માનવ વિ મેઘ",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "હ્યુમન વિ લ LANન",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "લ LANન દ્વારા પરીક્ષણ કરો",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "ચાલ",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " ચાલ",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "સૂચિ ખસેડો",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "સૂચિ ખસેડો",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "કોઈ રેકોર્ડ નથી",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "બરાબર",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "પુષ્ટિ કરો",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "રદ કરો",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Copyright © 2021 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "ખોટો ભાગ પસંદ કરો.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "તમારા ટુકડા મૂકો.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "તમે તેને અહીં મૂકી શકતા નથી.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "તમે મૂક્યા.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "એક ભાગ કા Removeો.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "તમે તેને દૂર કરી શકતા નથી.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "તમે દૂર કર્યું.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "એક ભાગ ખસેડો.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "તમે તમારો ભાગ અહીં મૂકી શકતા નથી.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "તમે તમારા ભાગને અહીં ખસેડી શકતા નથી.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "મિલ! તમારા વિરોધીનો ભાગ લો.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "તમારા વિરોધીનો ટુકડો લેવાનું ચાલુ રાખો.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "તમારા વિરોધીના ટુકડાઓમાંથી એક પસંદ કરો.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "તમે મિલમાંથી કોઈ ભાગ કા cannotી શકતા નથી.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "એક ભાગ 1 પોઇન્ટ ખસેડી શકે છે.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "તમે તમારા વિરોધીના ટુકડાઓ ખસેડી શકતા નથી.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "એક લીટીમાં ત્રણ ટુકડાઓ છે.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "ખસેડવા માટે તમારા ભાગને પસંદ કરો.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "તમારી પાસે ત્રણ ટુકડાઓ બાકી છે.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "તમને ગમે તે બિંદુ પર જઈ શકો છો.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " ખસેડવા.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "પ્લેયર 1 જીતે!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "ખેલાડી 2 જીતે!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "જીત્યો",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "ખોવાઈ ગઈ",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "છોડી દીધી",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "વિચારી રહ્યું છે ...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "નવી રમત",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "આયાત રમત",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "રમત નિકાસ કરો",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "રમત ક્લિપબોર્ડથી આયાત કરી.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "આયાત કરી શકાતી નથી",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "ચાલ અને નિયમો મેળ ખાતા નથી.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "રેકોર્ડિંગ પ્રારંભ કરો",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "રેકોર્ડિંગ ...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "રેકોર્ડિંગ બંધ કરો",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "રેકોર્ડિંગ બતાવો",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "કોઈ રેકોર્ડિંગ નથી.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "મહેરબાની કરી રાહ જુવો.",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "વર્તમાન રમતને ફરીથી પ્રારંભ કરો?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "ફરી થી શરૂ કરવું",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "રમત શરૂ થઈ, કૃપા કરીને મૂકો",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "વિશ્લેષણ કરી રહ્યું છે ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "ભૂલ",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "વિન રેટ",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "સ્કોર",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "ખેલાડી 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "ખેલાડી 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " ભાગ ગણતરી ત્રણ કરતા ઓછી છે.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " રાજીનામું.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " જવાનો કોઈ રસ્તો નથી.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "બોર્ડ ભરેલું છે, અને જવા માટે કોઈ રસ્તો નથી.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "સમય સમાપ્ત",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "ચાલતા તબક્કામાં, ચાલની છેલ્લી વિશિષ્ટ સંખ્યામાં કોઈ ભાગ કા pieceી નાખ્યો નથી.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "તે ડ્રો છે કારણ કે બોર્ડ ભરેલું છે.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "તે ત્રિકોણ પુનરાવર્તનને કારણે દોરો છે.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "ખેલ ખતમ! અજ્ Unknownાત કારણ.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "ખેલ ખતમ",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "તમે જીતી ગયા! અભિનંદન!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "પડકાર કઠણ સ્તર? નવું કક્ષા સ્તરનું રહેશે",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "તમે ગુમાવશો!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "વિશ્લેષણ કરો",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "વર્તમાન રમતને ફરીથી પ્રારંભ કરો?",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "વિશે",
-    "@about": {
-        "description": "About"
-    },
-    "version": "સંસ્કરણ",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "આભાર",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "સેટિંગ્સ",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "વિકલ્પો",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "પસંદગીઓ",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "મુશ્કેલી સ્તર",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "એઆઈ વિચારવાનો સમય",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "મુશ્કેલી",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "ધ્વનિ અસરો",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "રમતમાં અવાજો ચલાવો",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "પાછા લેતી વખતે મ્યૂટ રાખો",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "સ્વર",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "પ્રથમ ચાલ",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "માનવ",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "એઆઈ",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "વૈકલ્પિક",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "જ્યારે રમત સમાપ્ત થાય ત્યારે રમતને ફરીથી પ્રારંભ કરો",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "ઓટો ચેન્જ ફર્સ્ટ મૂવ",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "જો મોસ્ટ ગુમાવે તો એઆઈ રાજીનામું",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "રેન્ડમ ચાલ",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "એન્ડગેમ શીખો",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "ખુલી પુસ્તક",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "પરચુરણ",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "નિયમો",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "દરેક ખેલાડીના ટુકડાઓની સંખ્યા",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "દરેક ખેલાડીના કેટલા ટુકડાઓ છે?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "ઉડતી ભાગની સંખ્યા",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "જો ફ્લાઇંગ સક્ષમ કરવામાં આવે છે, જ્યારે કોઈ ખેલાડીને કોઈ વિશિષ્ટ ભાગની ગણતરી કરવામાં આવે છે, ત્યારે તેના ટુકડાઓ બાકીની રમતની જેમ અડીને આવેલા બિંદુઓ સુધી મર્યાદિત રહેવાને બદલે કોઈપણ અનકiedપિડ પોઇન્ટ પર જવા માટે મુક્ત છે.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "ઓછામાં ઓછા ટુકડાઓ",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "કર્ણ રેખાઓ",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "બોર્ડમાં ચાર કર્ણ રેખાઓ ઉમેરો.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "ટુકડાઓ દૂર કરવા માટે માર્ક કરો અને વિલંબ કરો",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "પ્લેસિંગ તબક્કામાં, દૂર કરેલા ટુકડાઓના પોઇન્ટ હવે મૂકવામાં સમર્થ હશે નહીં.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "બીજો ખેલાડી પહેલા આગળ વધે છે",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "પ્લેસિંગ જે પ્લેસિંગ તબક્કામાં બીજા સ્થાને આવે છે તે ચાલતા તબક્કામાં પહેલા ફરે છે.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "બહુ-દૂર કરો",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "જો કોઈ ખેલાડી એક સાથે એક મિલ કરતાં વધુ બંધ કરે છે, તો તેણી બંધ કરેલી મિલોની સંખ્યા દૂર કરશે.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "મિલોનો નાશ કરો",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "ડિફ defaultલ્ટ રૂપે, રચાયેલી મિલમાંથી કોઈ ભાગ કા removingતા પહેલા ખેલાડીઓએ પહેલા કોઈપણ અન્ય ટુકડાઓ કા mustવા જ જોઈએ. મર્યાદાને અક્ષમ કરવા માટે આ વિકલ્પને સક્ષમ કરો.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "જ્યારે બોર્ડ ભરાતું હોય ત્યારે બીજો ખેલાડી ગુમાવે છે",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "જ્યારે બોર્ડ પ્લેસિંગના તબક્કે પૂર્ણ થાય છે, ત્યારે બાજુ જે રમતને પહેરે છે તે રમતને ગુમાવે છે. નહિંતર, રમત ડ્રો છે.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "કોઈ કાનૂની ચાલ નહીં ત્યારે ગુમાવો",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "ખેલાડી હારી જશે જો તેના વિરોધી તેમને અવરોધિત કરે છે જેથી તેઓ ખસેડી ન શકાય. જો આ વિકલ્પ અક્ષમ હોય તો ખસેડવા માટે બાજુ બદલો.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "ઉડતી",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "જો કોઈ ખેલાડી પાસે ફક્ત ત્રણ કે ચાર (રૂપરેખાંકિત) ટુકડાઓ બાકી હોય, તો તે ભાગને કોઈપણ મુક્ત સ્થાને ખસેડી શકે છે.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "એન-મૂવ નિયમ",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "આ રમત દોરવામાં આવે છે જો દરેક ખેલાડી દ્વારા વિશિષ્ટ સંખ્યામાં ચાલમાં કોઈ દૂર કરવામાં આવ્યું નથી.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "રોલબેક",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "કૃપા કરી પસંદ કરો",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "નકલ કરો",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "ક્લિપબોર્ડ પર ક historyપિ કરેલો ઇતિહાસ ખસેડો",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "સહાય કરો",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "પ્રતિસાદ",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "બહાર નીકળો",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "નિયમ સેટિંગ્સ",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "રંગ",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "બોર્ડનો રંગ",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "પીસ રંગ",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "પૃષ્ઠભૂમિ રંગ",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "બોર્ડ લાઇન રંગ",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "પ્લેયર 1 પીસ રંગ",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "પ્લેયર 2 પીસ રંગ",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "સંદેશનો રંગ",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "એઆઈ આળસુ છે",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "હાથમાં ટુકડાઓ ગણતરી બતાવો",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "બોર્ડ પર સૂચનો બતાવો",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "ઇતિહાસ સંશોધક ટૂલબાર બતાવો",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "દર્શાવો",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "બોર્ડર બોર્ડરલાઈનની પહોળાઈ",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "બોર્ડની આંતરિક લાઇન પહોળાઈ",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "પીસ પહોળાઈ",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "અક્ષર ની જાડાઈ",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "ડબલ્યુએમડી નોટેશન",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "પુનઃસ્થાપિત",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "ડિફ defaultલ્ટ સેટિંગ્સને પુનર્સ્થાપિત કરો",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "એપ્લિકેશન બહાર નીકળી જશે.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "અસરને અમલમાં મૂકવા માટે તમારે તરત જ બંધ કરવું પડશે અને એપ્લિકેશનને ફરીથી ખોલવી પડશે.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "ચૂંટો",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "માહિતી",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "ઈશારો",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "ખેલાડી",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "ખેલાડી 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "ખેલાડી 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "કેમનું રમવાનું",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "ભાગ મૂકવા માટે કોઈપણ ઉપલબ્ધ બિંદુ પર ટેપ કરો.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "તેને ખસેડવા માટે ટુકડા પર ટેપ કરો.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "તેને ખસેડવા માટે ભાગથી જોડાયેલા બિંદુ પર ટેપ કરો.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "દૂર કરવા માટે વિરોધીના એક ટુકડા પર ટેપ કરો.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "તમે કોઈ ભાગ કા canી શકો તે પહેલાં તમારે પહેલા મિલ બનાવવાની જરૂર છે.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "તમારે તમારા ટુકડાઓ સાથે રમવાની જરૂર છે.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "આંકડા",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "કુલ રમતો",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "પરિણામો",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "મીલમાંથી કાnotી શકાતું નથી.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "ડાબી",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "ગોપનીયતા નીતિ",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "કૃપા કરીને કાળજીપૂર્વક વાંચો અને ખાતરી કરો કે તમે આને સમજો છો અને તેની સાથે સંમત છો",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". જો તમે આ નીતિથી સંમત નથી, તો કૃપા કરીને આ એપ્લિકેશનનો ઉપયોગ કરશો નહીં. એપ્લિકેશનનો ઉપયોગ સૂચિત કરે છે કે તમે આ શરતો સ્વીકારો છો.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " અને",
-    "accept": "સ્વીકારો",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "પૂર્વવત્ કરો",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "પૂર્વવત્ કરો વિકલ્પ",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "ચાલને પૂર્વવત્ કરવી શક્ય છે.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "પાછા લેવા",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "પાછા લઈ રહ્યા છે",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "રાહ જોવી",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "આગળ વધવુ",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "બધા પાછા લો",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "બધા આગળ વધો",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "હવે ખસેડો",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "થઈ ગયું.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "ક્રેક-મિલ",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "જો કોઈ ખેલાડીના મિલમાં ફક્ત ટુકડાઓ હોય, તો મિલોના ટુકડાઓ દૂર કરવા માટે લ notક કરવામાં આવશે નહીં.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "એનિમેશન અવધિ",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "કંઈ નહીં",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "થીમ",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "રમતનો હેતુ ત્રણથી ઓછા ટુકડાઓ અથવા કોઈ કાનૂની ચાલ વિના વિરોધીને છોડવાનો છે.\n\nરમત આપોઆપ ખેંચે છે જો કોઈ સ્થિતિ ત્રીજી વખત આવે અથવા છેલ્લા 100 (રૂપરેખાંકિત) ચાલમાં કોઈ દૂર ન કરે.\n\nઆ રમત ત્રણ તબક્કામાં આગળ વધે છે:\n\n1. ખાલી પોઇન્ટ્સ પર ટુકડાઓ મૂકીને\n2. ટુકડાઓ અડીને આવેલા બિંદુઓ પર ખસેડવું\n(. (વૈકલ્પિક તબક્કો) જ્યારે ખાલી ખેલાડીને ત્રણ ટુકડાઓમાં ઘટાડે ત્યારે કોઈપણ ખાલી પોઇન્ટ પર ટુકડાઓ ખસેડવું\n\nમૂકીને\n\nરમત ખાલી બોર્ડથી શરૂ થાય છે, જેમાં ચોવીસ પોઇન્ટ સાથે ગ્રીડનો સમાવેશ થાય છે. ખેલાડીઓ ખાલી પોઇન્ટ પર તેમના ટુકડાઓ મૂકી વળાંક લે છે ત્યાં સુધી દરેક ખેલાડીએ બોર્ડ પર તમામ ટુકડાઓ મૂક્યા ન હોય. જો કોઈ ખેલાડી તેના ત્રણ ટુકડાઓ સીધા મૂકી શકે છે, તો તેની પાસે \"મિલ\" છે અને તે તેના વિરોધીના ટુકડાને બોર્ડમાંથી કા .ી શકે છે.\n\nકેટલાક નિયમોમાં, ખેલાડીઓએ બનેલી મીલમાંથી કોઈ ટુકડો દૂર કરતા પહેલા પહેલા કોઈપણ અન્ય ટુકડાઓ કા removeવા જ જોઇએ.\n\nતમે કેટલાક નિયમોમાં પ્લેસિંગ તબક્કામાં ફરીથી કા piecesેલા ટુકડાઓનાં બિંદુઓ પર ટુકડાઓ મૂકી શકતા નથી.\n\nએકવાર બધા ટુકડાઓનો ઉપયોગ કર્યા પછી, ખેલાડીઓ ફરતા વારા લે છે.\n\nખસેડવું\n\nખસેડવા માટે, એક ખેલાડી તેના એક ટુકડાને બોર્ડ લાઇન સાથે ખાલી અડીને આવેલા સ્થાને લઈ જાય છે. જો તે આમ ન કરી શકે, તો તે રમત હારી ગયો છે. પ્લેસિંગ ફેઝની જેમ, એક પ્લેયર જે તેના ત્રણ ટુકડાઓ બોર્ડ લાઇન પર ગોઠવે છે તેની મિલ હોય છે અને તે તેના વિરોધીના ટુકડાઓમાંથી એક કા removeી શકે છે. કોઈપણ ખેલાડી બે ટુકડાઓ ઘટાડે છે, નવી મિલો બનાવવાનો કોઈ વિકલ્પ નથી, અને આ રીતે તે રમત ગુમાવે છે. જો તેના વિરોધી તેમને ખસેડવામાં અવરોધે છે ત્યારે ત્રણ કરતાં વધુ ટુકડાઓ જ્યારે પણ ખેલાડી ગુમાવી શકે છે.\n\nઉડતી\n\nનિયમોના કેટલાક પ્રકારોમાં, એકવાર જ્યારે ખેલાડી પાસે ફક્ત ત્રણ ટુકડાઓ બાકી હોય, તો તેના ટુકડાઓ ઉડી શકે છે, હોપ કરી શકે છે અથવા કોઈપણ ખાલી બિંદુઓ પર જઇ શકે છે, ફક્ત અડીને જ નહીં.",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "સંસ્કરણ માહિતી",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "લાઇસન્સ",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "સ્ત્રોત કોડ",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "તૃતીય-પક્ષ સૂચનાઓ",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "એપ્લિકેશન સંસ્કરણ",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "જનરલ",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "અદ્યતન",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "મૂકીને",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "ખસેડવું",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "દૂર કરી રહ્યું છે",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "શરત રમત",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "એઆઈની પ્લેસ્ટાઇલ",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "નિષ્ક્રીય",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "સમયસમાપ્તિ",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "વૈયક્તિકરણ",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "વિકાસકર્તાઓ માટે",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "વિકાસકર્તા મોડ",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "માનવ અનુભવ દોરો",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "ટુકડાઓની ગતિશીલતા ધ્યાનમાં લો",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "પીસ ગણતરી",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "હાથમાં",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "બોર્ડ પર",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "ટોચ પરથી બોર્ડ ઓફસેટ",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "એઆઈનો વારો નથી.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "એઆઈ વિચારી રહ્યો નથી.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "સ્વત re ફરીથી ચલાવવાની ચાલ",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "તમે ચાલ સૂચિના અંતમાં છો.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "જવા માટે ફરીથી ટેપ કરો.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "પર્યાવરણીય ચલો",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "વધુ",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "તે એક પ્રાયોગિક સુવિધા છે.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "પ્રયોગો",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "ખુલ્લા સ્રોત લાઇસેંસિસ",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "ભાષા",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "ડિફોલ્ટ ભાષા",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "ટુકડાઓ પ્લેસિંગ તબક્કામાં ખસેડી શકે છે",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "ત્યાં કોઈ વિશિષ્ટ પ્લેસિંગ અને મૂવિંગ તબક્કાઓ નથી, એટલે કે, ખેલાડીઓ દરેક ચાલ પર નિર્ણય લઈ શકે છે કે શું તેઓ બોર્ડ પર કોઈ ભાગ મૂકવા માંગે છે અથવા તેમના ટુકડાઓમાંથી એક ખસેડવા માંગે છે (જ્યાં સુધી તેમની પાસે બાકીના ટુકડાઓ મૂકવા બાકી છે).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "મેનુ રંગ",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "મેનુ ટેક્સ્ટ રંગ",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "મેનુ પૃષ્ઠભૂમિ રંગ",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "મેનુ પ્રકાશિત આઇટમનો રંગ",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "મુખ્ય ટૂલબાર પૃષ્ઠભૂમિ રંગ",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "મુખ્ય ટૂલબાર ચિહ્ન રંગ",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "નેવિગેશન ટૂલબાર પૃષ્ઠભૂમિ રંગ",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "નેવિગેશન ટૂલબાર આયકન રંગ",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "ટૂલબારને આપમેળે છુપાવો",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "સ્ક્રીન પર ટૂલબાર સ્થાન",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "ટોચ",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "નીચે",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "કેન્દ્ર",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "પાકો રંગ",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "ચિત્ર",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "તમારું ચિત્ર પસંદ કરો",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "પ્રકાશ",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "શ્યામ",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "થીમ્સ",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "વર્તમાન થીમ",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "થીમ સાચવો",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "ફontsન્ટ્સ",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "વિશ્લેષણ ગ્રાફ બતાવો",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "વિશ્લેષણ",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "રમત સાચવો",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "રમત લોડ કરો",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "સેટઅપ પોઝિશન",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "કાનૂની ચાલ બતાવો",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "છેલ્લી ચાલ બતાવો",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "તીર બતાવો",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "ટુકડાઓ",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "વિશ્લેષણ બતાવો",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "થ્રેડો",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "સામેલ કરો",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "ભાષાંતર સુધારવામાં સહાય કરો",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "ટ્યુટોરિયલ",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "ઉત્તમ નમૂનાના મિલ",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "મિશ્રિત મિલ",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "સિલોન મિલ",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "મીલ તૂટી શકે છે અને ફરીથી રિમેડ થઈ શકે છે",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "જો કોઈ ખેલાડી તરત જ નવી મિલ બનાવવા માટે મિલ તોડી નાખે છે, તો આવી ખેલાડી જો નવી મિલ બનાવે છે, તો તે આગળની ચાલમાં આવા ભાગને પાછલા મૂળ જંકશન પર ખસેડી શકે છે.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "રમત દોરવામાં આવે છે જો કોઈ ખેલાડી પાસે ત્રણ ટુકડાઓ હોય અને દસ ચાલ પછી કોઈ પણ ખેલાડી વિરોધીના ટુકડાને દૂર કરે નહીં",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "જ્યારે કોઈ ખેલાડી ત્રણ ટુકડાઓ નીચે હોય, અને કોઈ પણ ખેલાડી દસ ચાલની અંદર વિરોધીનો ભાગ કા .ી શકે નહીં, ત્યારે રમત ડ્રો છે.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "બંધ",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "સફેદ ટુકડો",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "કાળો ટુકડો",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "પ્રતિબંધ બિંદુ",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "ખાલી બિંદુ",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "કોઈ મુદ્દો નથી",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "મૂકવાનો તબક્કો",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "ખસેડવાનો તબક્કો",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "ઉડવાનો તબક્કો",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "બાજુ ખસેડવા માટે",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "છેલ્લી ચાલ",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "પસંદ કરેલ",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "મુખ્ય મેનુ",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "ઉપલ્બધતા",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "સ્ક્રીન રીડર સપોર્ટ",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "તે એક ડ્રો છે",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "દોરો",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "પીસ હાઇલાઇટ કલર",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "અલ્ગોરિધમ",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "સ્થાનાંતરિત ભાગ દૂર કરો",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "જો કોઈ ખેલાડી પ્લેસિંગ તબક્કામાં મિલની રચના કરે છે, તો તે વિરોધીના સ્થાનાંતરિત ભાગને દૂર કરશે અને ચાલ ચાલુ રાખશે.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "એન્ડગેમ એન-મૂવ નિયમ",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "જો કોઈ પણ ખેલાડી પાસે માત્ર ત્રણ ટુકડા હોય અને કોઈ પણ ખેલાડી કોઈ ચોક્કસ ચાલની અંદર એક ટુકડો કાી નાંખે તો રમત દોરવામાં આવે છે.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "ક્યાં તો ખેલાડી પાસે માત્ર ત્રણ ટુકડાઓ હોય છે અને ન તો ખેલાડી ચોક્કસ ચાલની અંદર એક ભાગને દૂર કરે છે.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "ત્રણ ગણો પુનરાવર્તન નિયમ",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "જો ત્રીજી વખત પોઝિશન આવે તો રમત ડ્રો થાય છે.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "મિલ! ચાલ ચાલુ રાખો.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "પોઇન્ટ શૈલી",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "પોઇન્ટ પહોળાઈ",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "ઘન",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "હોલો",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "ગુજરાતી",
-    "@languageName": {
-        "description": "The name of the current language"
-    }
+  "@@locale": "gu",
+  "appName": "મિલ",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "સ્વાગત છે",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "હા",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "ના",
+  "@no": {
+    "description": "No"
+  },
+  "game": "રમત",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "માનવ વિ એ",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "માનવ વિ માનવ",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "એઆઈ વિ એ.આઇ",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "માનવ વિ મેઘ",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "હ્યુમન વિ લ LANન",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "લ LANન દ્વારા પરીક્ષણ કરો",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "ચાલ",
+  "@move": {
+    "description": "Move"
+  },
+  "moves": " ચાલ",
+  "@moves": {
+    "description": " Moves"
+  },
+  "showMoveList": "સૂચિ ખસેડો",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "સૂચિ ખસેડો",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "કોઈ રેકોર્ડ નથી",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "બરાબર",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "પુષ્ટિ કરો",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "રદ કરો",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "copyright": "Copyright © 2021 Calcitem Studio",
+  "@copyright": {
+    "description": "Copyright"
+  },
+  "tipSelectWrong": "ખોટો ભાગ પસંદ કરો.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "તમારા ટુકડા મૂકો.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "તમે તેને અહીં મૂકી શકતા નથી.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "તમે મૂક્યા.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "એક ભાગ કા Removeો.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "તમે તેને દૂર કરી શકતા નથી.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "તમે દૂર કર્યું.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "એક ભાગ ખસેડો.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "તમે તમારો ભાગ અહીં મૂકી શકતા નથી.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "તમે તમારા ભાગને અહીં ખસેડી શકતા નથી.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "મિલ! તમારા વિરોધીનો ભાગ લો.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "તમારા વિરોધીનો ટુકડો લેવાનું ચાલુ રાખો.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "તમારા વિરોધીના ટુકડાઓમાંથી એક પસંદ કરો.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "તમે મિલમાંથી કોઈ ભાગ કા cannotી શકતા નથી.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "એક ભાગ 1 પોઇન્ટ ખસેડી શકે છે.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "તમે તમારા વિરોધીના ટુકડાઓ ખસેડી શકતા નથી.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipThreePiecesInLine": "એક લીટીમાં ત્રણ ટુકડાઓ છે.",
+  "@tipThreePiecesInLine": {
+    "description": "There are 3 pieces in a line."
+  },
+  "tipSelectPieceToMove": "ખસેડવા માટે તમારા ભાગને પસંદ કરો.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "તમારી પાસે ત્રણ ટુકડાઓ બાકી છે.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "તમને ગમે તે બિંદુ પર જઈ શકો છો.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": " ખસેડવા.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "પ્લેયર 1 જીતે!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "ખેલાડી 2 જીતે!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "જીત્યો",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "ખોવાઈ ગઈ",
+  "@lost": {
+    "description": "Lost"
+  },
+  "aborted": "છોડી દીધી",
+  "@aborted": {
+    "description": "Aborted"
+  },
+  "thinking": "વિચારી રહ્યું છે ...",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "નવી રમત",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "આયાત રમત",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "રમત નિકાસ કરો",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "રમત ક્લિપબોર્ડથી આયાત કરી.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "આયાત કરી શકાતી નથી",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "ચાલ અને નિયમો મેળ ખાતા નથી.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "startRecording": "રેકોર્ડિંગ પ્રારંભ કરો",
+  "@startRecording": {
+    "description": "Start recording"
+  },
+  "recording": "રેકોર્ડિંગ ...",
+  "@recording": {
+    "description": "Recording..."
+  },
+  "stopRecording": "રેકોર્ડિંગ બંધ કરો",
+  "@stopRecording": {
+    "description": "Stop recording"
+  },
+  "showRecording": "રેકોર્ડિંગ બતાવો",
+  "@showRecording": {
+    "description": "Show recording"
+  },
+  "noRecording": "કોઈ રેકોર્ડિંગ નથી.",
+  "@noRecording": {
+    "description": "No recording."
+  },
+  "pleaseWait": "મહેરબાની કરી રાહ જુવો.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "વર્તમાન રમતને ફરીથી પ્રારંભ કરો?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "ફરી થી શરૂ કરવું",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "રમત શરૂ થઈ, કૃપા કરીને મૂકો",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "વિશ્લેષણ કરી રહ્યું છે ...",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "ભૂલ",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "વિન રેટ",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "સ્કોર",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "ખેલાડી 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "ખેલાડી 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": " ભાગ ગણતરી ત્રણ કરતા ઓછી છે.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": " રાજીનામું.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": " જવાનો કોઈ રસ્તો નથી.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "બોર્ડ ભરેલું છે, અને જવા માટે કોઈ રસ્તો નથી.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "સમય સમાપ્ત",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "ચાલતા તબક્કામાં, ચાલની છેલ્લી વિશિષ્ટ સંખ્યામાં કોઈ ભાગ કા pieceી નાખ્યો નથી.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "તે ડ્રો છે કારણ કે બોર્ડ ભરેલું છે.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "તે ત્રિકોણ પુનરાવર્તનને કારણે દોરો છે.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "ખેલ ખતમ! અજ્ Unknownાત કારણ.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "ખેલ ખતમ",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "તમે જીતી ગયા! અભિનંદન!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "પડકાર કઠણ સ્તર? નવું કક્ષા સ્તરનું રહેશે",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "તમે ગુમાવશો!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "વિશ્લેષણ કરો",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "playerName": "વર્તમાન રમતને ફરીથી પ્રારંભ કરો?",
+  "@playerName": {
+    "description": "Player Name"
+  },
+  "about": "વિશે",
+  "@about": {
+    "description": "About"
+  },
+  "version": "સંસ્કરણ",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "આભાર",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "સેટિંગ્સ",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "વિકલ્પો",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "પસંદગીઓ",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "મુશ્કેલી સ્તર",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "એઆઈ વિચારવાનો સમય",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "મુશ્કેલી",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "ધ્વનિ અસરો",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "રમતમાં અવાજો ચલાવો",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "પાછા લેતી વખતે મ્યૂટ રાખો",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "સ્વર",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "પ્રથમ ચાલ",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "માનવ",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "એઆઈ",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "વૈકલ્પિક",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "જ્યારે રમત સમાપ્ત થાય ત્યારે રમતને ફરીથી પ્રારંભ કરો",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "ઓટો ચેન્જ ફર્સ્ટ મૂવ",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "resignIfMostLose": "જો મોસ્ટ ગુમાવે તો એઆઈ રાજીનામું",
+  "@resignIfMostLose": {
+    "description": "AI Resign if Most Lose"
+  },
+  "shufflingEnabled": "રેન્ડમ ચાલ",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "learnEndgame": "એન્ડગેમ શીખો",
+  "@learnEndgame": {
+    "description": "Learn Endgame"
+  },
+  "openingBook": "ખુલી પુસ્તક",
+  "@openingBook": {
+    "description": "Opening Book"
+  },
+  "misc": "પરચુરણ",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "નિયમો",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "દરેક ખેલાડીના ટુકડાઓની સંખ્યા",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "દરેક ખેલાડીના કેટલા ટુકડાઓ છે?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "ઉડતી ભાગની સંખ્યા",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "જો ફ્લાઇંગ સક્ષમ કરવામાં આવે છે, જ્યારે કોઈ ખેલાડીને કોઈ વિશિષ્ટ ભાગની ગણતરી કરવામાં આવે છે, ત્યારે તેના ટુકડાઓ બાકીની રમતની જેમ અડીને આવેલા બિંદુઓ સુધી મર્યાદિત રહેવાને બદલે કોઈપણ અનકiedપિડ પોઇન્ટ પર જવા માટે મુક્ત છે.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "ઓછામાં ઓછા ટુકડાઓ",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "કર્ણ રેખાઓ",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "બોર્ડમાં ચાર કર્ણ રેખાઓ ઉમેરો.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "ટુકડાઓ દૂર કરવા માટે માર્ક કરો અને વિલંબ કરો",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "પ્લેસિંગ તબક્કામાં, દૂર કરેલા ટુકડાઓના પોઇન્ટ હવે મૂકવામાં સમર્થ હશે નહીં.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "બીજો ખેલાડી પહેલા આગળ વધે છે",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "પ્લેસિંગ જે પ્લેસિંગ તબક્કામાં બીજા સ્થાને આવે છે તે ચાલતા તબક્કામાં પહેલા ફરે છે.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "બહુ-દૂર કરો",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "જો કોઈ ખેલાડી એક સાથે એક મિલ કરતાં વધુ બંધ કરે છે, તો તેણી બંધ કરેલી મિલોની સંખ્યા દૂર કરશે.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "મિલોનો નાશ કરો",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "ડિફ defaultલ્ટ રૂપે, રચાયેલી મિલમાંથી કોઈ ભાગ કા removingતા પહેલા ખેલાડીઓએ પહેલા કોઈપણ અન્ય ટુકડાઓ કા mustવા જ જોઈએ. મર્યાદાને અક્ષમ કરવા માટે આ વિકલ્પને સક્ષમ કરો.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "જ્યારે બોર્ડ ભરાતું હોય ત્યારે બીજો ખેલાડી ગુમાવે છે",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "જ્યારે બોર્ડ પ્લેસિંગના તબક્કે પૂર્ણ થાય છે, ત્યારે બાજુ જે રમતને પહેરે છે તે રમતને ગુમાવે છે. નહિંતર, રમત ડ્રો છે.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "કોઈ કાનૂની ચાલ નહીં ત્યારે ગુમાવો",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "ખેલાડી હારી જશે જો તેના વિરોધી તેમને અવરોધિત કરે છે જેથી તેઓ ખસેડી ન શકાય. જો આ વિકલ્પ અક્ષમ હોય તો ખસેડવા માટે બાજુ બદલો.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "ઉડતી",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "જો કોઈ ખેલાડી પાસે ફક્ત ત્રણ કે ચાર (રૂપરેખાંકિત) ટુકડાઓ બાકી હોય, તો તે ભાગને કોઈપણ મુક્ત સ્થાને ખસેડી શકે છે.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "એન-મૂવ નિયમ",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "આ રમત દોરવામાં આવે છે જો દરેક ખેલાડી દ્વારા વિશિષ્ટ સંખ્યામાં ચાલમાં કોઈ દૂર કરવામાં આવ્યું નથી.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "રોલબેક",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "કૃપા કરી પસંદ કરો",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "નકલ કરો",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "ક્લિપબોર્ડ પર ક historyપિ કરેલો ઇતિહાસ ખસેડો",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "સહાય કરો",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "પ્રતિસાદ",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "બહાર નીકળો",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "નિયમ સેટિંગ્સ",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "રંગ",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "બોર્ડનો રંગ",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "પીસ રંગ",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "પૃષ્ઠભૂમિ રંગ",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "બોર્ડ લાઇન રંગ",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "પ્લેયર 1 પીસ રંગ",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "પ્લેયર 2 પીસ રંગ",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "સંદેશનો રંગ",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "aiIsLazy": "એઆઈ આળસુ છે",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "હાથમાં ટુકડાઓ ગણતરી બતાવો",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "બોર્ડ પર સૂચનો બતાવો",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "ઇતિહાસ સંશોધક ટૂલબાર બતાવો",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "દર્શાવો",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "બોર્ડર બોર્ડરલાઈનની પહોળાઈ",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "બોર્ડની આંતરિક લાઇન પહોળાઈ",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "પીસ પહોળાઈ",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "અક્ષર ની જાડાઈ",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "ડબલ્યુએમડી નોટેશન",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "પુનઃસ્થાપિત",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "ડિફ defaultલ્ટ સેટિંગ્સને પુનર્સ્થાપિત કરો",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "exitApp": "એપ્લિકેશન બહાર નીકળી જશે.",
+  "@exitApp": {
+    "description": "The app will exit."
+  },
+  "exitAppManually": "અસરને અમલમાં મૂકવા માટે તમારે તરત જ બંધ કરવું પડશે અને એપ્લિકેશનને ફરીથી ખોલવી પડશે.",
+  "@exitAppManually": {
+    "description": "You have to close immediately and reopen the app to take effect."
+  },
+  "pick": "ચૂંટો",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "માહિતી",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "ઈશારો",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "ખેલાડી",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "ખેલાડી 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "ખેલાડી 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "કેમનું રમવાનું",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "ભાગ મૂકવા માટે કોઈપણ ઉપલબ્ધ બિંદુ પર ટેપ કરો.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "તેને ખસેડવા માટે ટુકડા પર ટેપ કરો.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "તેને ખસેડવા માટે ભાગથી જોડાયેલા બિંદુ પર ટેપ કરો.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "દૂર કરવા માટે વિરોધીના એક ટુકડા પર ટેપ કરો.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "તમે કોઈ ભાગ કા canી શકો તે પહેલાં તમારે પહેલા મિલ બનાવવાની જરૂર છે.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "તમારે તમારા ટુકડાઓ સાથે રમવાની જરૂર છે.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "આંકડા",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "કુલ રમતો",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "પરિણામો",
+  "@results": {
+    "description": "Results"
+  },
+  "cannotRemoveFromMill": "મીલમાંથી કાnotી શકાતું નથી.",
+  "@cannotRemoveFromMill": {
+    "description": "Cannot remove from the mill."
+  },
+  "left": "ડાબી",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "ગોપનીયતા નીતિ",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "કૃપા કરીને કાળજીપૂર્વક વાંચો અને ખાતરી કરો કે તમે આને સમજો છો અને તેની સાથે સંમત છો",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". જો તમે આ નીતિથી સંમત નથી, તો કૃપા કરીને આ એપ્લિકેશનનો ઉપયોગ કરશો નહીં. એપ્લિકેશનનો ઉપયોગ સૂચિત કરે છે કે તમે આ શરતો સ્વીકારો છો.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " અને",
+  "@and": {},
+  "accept": "સ્વીકારો",
+  "@accept": {
+    "description": "Accept"
+  },
+  "undo": "પૂર્વવત્ કરો",
+  "@undo": {
+    "description": "Undo"
+  },
+  "undoOption": "પૂર્વવત્ કરો વિકલ્પ",
+  "@undoOption": {
+    "description": "Undo option"
+  },
+  "undoOption_Detail": "ચાલને પૂર્વવત્ કરવી શક્ય છે.",
+  "@undoOption_Detail": {
+    "description": "It is possible to undo a move."
+  },
+  "takeBack": "પાછા લેવા",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "પાછા લઈ રહ્યા છે",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "રાહ જોવી",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "આગળ વધવુ",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "બધા પાછા લો",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "બધા આગળ વધો",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "હવે ખસેડો",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "થઈ ગયું.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "ક્રેક-મિલ",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "જો કોઈ ખેલાડીના મિલમાં ફક્ત ટુકડાઓ હોય, તો મિલોના ટુકડાઓ દૂર કરવા માટે લ notક કરવામાં આવશે નહીં.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "એનિમેશન અવધિ",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "કંઈ નહીં",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "થીમ",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "રમતનો હેતુ ત્રણથી ઓછા ટુકડાઓ અથવા કોઈ કાનૂની ચાલ વિના વિરોધીને છોડવાનો છે.\n\nરમત આપોઆપ ખેંચે છે જો કોઈ સ્થિતિ ત્રીજી વખત આવે અથવા છેલ્લા 100 (રૂપરેખાંકિત) ચાલમાં કોઈ દૂર ન કરે.\n\nઆ રમત ત્રણ તબક્કામાં આગળ વધે છે:\n\n1. ખાલી પોઇન્ટ્સ પર ટુકડાઓ મૂકીને\n2. ટુકડાઓ અડીને આવેલા બિંદુઓ પર ખસેડવું\n(. (વૈકલ્પિક તબક્કો) જ્યારે ખાલી ખેલાડીને ત્રણ ટુકડાઓમાં ઘટાડે ત્યારે કોઈપણ ખાલી પોઇન્ટ પર ટુકડાઓ ખસેડવું\n\nમૂકીને\n\nરમત ખાલી બોર્ડથી શરૂ થાય છે, જેમાં ચોવીસ પોઇન્ટ સાથે ગ્રીડનો સમાવેશ થાય છે. ખેલાડીઓ ખાલી પોઇન્ટ પર તેમના ટુકડાઓ મૂકી વળાંક લે છે ત્યાં સુધી દરેક ખેલાડીએ બોર્ડ પર તમામ ટુકડાઓ મૂક્યા ન હોય. જો કોઈ ખેલાડી તેના ત્રણ ટુકડાઓ સીધા મૂકી શકે છે, તો તેની પાસે \"મિલ\" છે અને તે તેના વિરોધીના ટુકડાને બોર્ડમાંથી કા .ી શકે છે.\n\nકેટલાક નિયમોમાં, ખેલાડીઓએ બનેલી મીલમાંથી કોઈ ટુકડો દૂર કરતા પહેલા પહેલા કોઈપણ અન્ય ટુકડાઓ કા removeવા જ જોઇએ.\n\nતમે કેટલાક નિયમોમાં પ્લેસિંગ તબક્કામાં ફરીથી કા piecesેલા ટુકડાઓનાં બિંદુઓ પર ટુકડાઓ મૂકી શકતા નથી.\n\nએકવાર બધા ટુકડાઓનો ઉપયોગ કર્યા પછી, ખેલાડીઓ ફરતા વારા લે છે.\n\nખસેડવું\n\nખસેડવા માટે, એક ખેલાડી તેના એક ટુકડાને બોર્ડ લાઇન સાથે ખાલી અડીને આવેલા સ્થાને લઈ જાય છે. જો તે આમ ન કરી શકે, તો તે રમત હારી ગયો છે. પ્લેસિંગ ફેઝની જેમ, એક પ્લેયર જે તેના ત્રણ ટુકડાઓ બોર્ડ લાઇન પર ગોઠવે છે તેની મિલ હોય છે અને તે તેના વિરોધીના ટુકડાઓમાંથી એક કા removeી શકે છે. કોઈપણ ખેલાડી બે ટુકડાઓ ઘટાડે છે, નવી મિલો બનાવવાનો કોઈ વિકલ્પ નથી, અને આ રીતે તે રમત ગુમાવે છે. જો તેના વિરોધી તેમને ખસેડવામાં અવરોધે છે ત્યારે ત્રણ કરતાં વધુ ટુકડાઓ જ્યારે પણ ખેલાડી ગુમાવી શકે છે.\n\nઉડતી\n\nનિયમોના કેટલાક પ્રકારોમાં, એકવાર જ્યારે ખેલાડી પાસે ફક્ત ત્રણ ટુકડાઓ બાકી હોય, તો તેના ટુકડાઓ ઉડી શકે છે, હોપ કરી શકે છે અથવા કોઈપણ ખાલી બિંદુઓ પર જઇ શકે છે, ફક્ત અડીને જ નહીં.",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "સંસ્કરણ માહિતી",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "લાઇસન્સ",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "સ્ત્રોત કોડ",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "thirdPartyNotices": "તૃતીય-પક્ષ સૂચનાઓ",
+  "@thirdPartyNotices": {
+    "description": "Third-party notices"
+  },
+  "appVersion": "એપ્લિકેશન સંસ્કરણ",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "જનરલ",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "અદ્યતન",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "મૂકીને",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "ખસેડવું",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "દૂર કરી રહ્યું છે",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "શરત રમત",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "એઆઈની પ્લેસ્ટાઇલ",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "નિષ્ક્રીય",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "સમયસમાપ્તિ",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "વૈયક્તિકરણ",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "forDevelopers": "વિકાસકર્તાઓ માટે",
+  "@forDevelopers": {
+    "description": "For developers"
+  },
+  "developerMode": "વિકાસકર્તા મોડ",
+  "@developerMode": {
+    "description": "Developer mode"
+  },
+  "drawOnHumanExperience": "માનવ અનુભવ દોરો",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "ટુકડાઓની ગતિશીલતા ધ્યાનમાં લો",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "પીસ ગણતરી",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "હાથમાં",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "બોર્ડ પર",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "ટોચ પરથી બોર્ડ ઓફસેટ",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "એઆઈનો વારો નથી.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "એઆઈ વિચારી રહ્યો નથી.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "autoReplay": "સ્વત re ફરીથી ચલાવવાની ચાલ",
+  "@autoReplay": {
+    "description": "Auto re-play moves"
+  },
+  "atEnd": "તમે ચાલ સૂચિના અંતમાં છો.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "જવા માટે ફરીથી ટેપ કરો.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "environmentVariables": "પર્યાવરણીય ચલો",
+  "@environmentVariables": {
+    "description": "Environment variables"
+  },
+  "more": "વધુ",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "તે એક પ્રાયોગિક સુવિધા છે.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "પ્રયોગો",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "ખુલ્લા સ્રોત લાઇસેંસિસ",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "ભાષા",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "ડિફોલ્ટ ભાષા",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "ટુકડાઓ પ્લેસિંગ તબક્કામાં ખસેડી શકે છે",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "ત્યાં કોઈ વિશિષ્ટ પ્લેસિંગ અને મૂવિંગ તબક્કાઓ નથી, એટલે કે, ખેલાડીઓ દરેક ચાલ પર નિર્ણય લઈ શકે છે કે શું તેઓ બોર્ડ પર કોઈ ભાગ મૂકવા માંગે છે અથવા તેમના ટુકડાઓમાંથી એક ખસેડવા માંગે છે (જ્યાં સુધી તેમની પાસે બાકીના ટુકડાઓ મૂકવા બાકી છે).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "મેનુ રંગ",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "મેનુ ટેક્સ્ટ રંગ",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerBackgroundColor": "મેનુ પૃષ્ઠભૂમિ રંગ",
+  "@drawerBackgroundColor": {
+    "description": "Menu background color"
+  },
+  "drawerHighlightItemColor": "મેનુ પ્રકાશિત આઇટમનો રંગ",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "મુખ્ય ટૂલબાર પૃષ્ઠભૂમિ રંગ",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "મુખ્ય ટૂલબાર ચિહ્ન રંગ",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "નેવિગેશન ટૂલબાર પૃષ્ઠભૂમિ રંગ",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "નેવિગેશન ટૂલબાર આયકન રંગ",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "ટૂલબારને આપમેળે છુપાવો",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "સ્ક્રીન પર ટૂલબાર સ્થાન",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "ટોચ",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "નીચે",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "કેન્દ્ર",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "પાકો રંગ",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "ચિત્ર",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "તમારું ચિત્ર પસંદ કરો",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "પ્રકાશ",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "શ્યામ",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "થીમ્સ",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "વર્તમાન થીમ",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "થીમ સાચવો",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "fonts": "ફontsન્ટ્સ",
+  "@fonts": {
+    "description": "Fonts"
+  },
+  "showAnalysisGraph": "વિશ્લેષણ ગ્રાફ બતાવો",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "વિશ્લેષણ",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "રમત સાચવો",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "રમત લોડ કરો",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "સેટઅપ પોઝિશન",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "કાનૂની ચાલ બતાવો",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "છેલ્લી ચાલ બતાવો",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "તીર બતાવો",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "ટુકડાઓ",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "વિશ્લેષણ બતાવો",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "થ્રેડો",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "સામેલ કરો",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "ભાષાંતર સુધારવામાં સહાય કરો",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "ટ્યુટોરિયલ",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "ઉત્તમ નમૂનાના મિલ",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "મિશ્રિત મિલ",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "સિલોન મિલ",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "મીલ તૂટી શકે છે અને ફરીથી રિમેડ થઈ શકે છે",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "જો કોઈ ખેલાડી તરત જ નવી મિલ બનાવવા માટે મિલ તોડી નાખે છે, તો આવી ખેલાડી જો નવી મિલ બનાવે છે, તો તે આગળની ચાલમાં આવા ભાગને પાછલા મૂળ જંકશન પર ખસેડી શકે છે.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "રમત દોરવામાં આવે છે જો કોઈ ખેલાડી પાસે ત્રણ ટુકડાઓ હોય અને દસ ચાલ પછી કોઈ પણ ખેલાડી વિરોધીના ટુકડાને દૂર કરે નહીં",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "જ્યારે કોઈ ખેલાડી ત્રણ ટુકડાઓ નીચે હોય, અને કોઈ પણ ખેલાડી દસ ચાલની અંદર વિરોધીનો ભાગ કા .ી શકે નહીં, ત્યારે રમત ડ્રો છે.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "બંધ",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "સફેદ ટુકડો",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "કાળો ટુકડો",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "પ્રતિબંધ બિંદુ",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "ખાલી બિંદુ",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "કોઈ મુદ્દો નથી",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "મૂકવાનો તબક્કો",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "ખસેડવાનો તબક્કો",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "ઉડવાનો તબક્કો",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "બાજુ ખસેડવા માટે",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "છેલ્લી ચાલ",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "પસંદ કરેલ",
+  "@selected": {
+    "description": "Selected"
+  },
+  "mainMenu": "મુખ્ય મેનુ",
+  "@mainMenu": {
+    "description": "Main menu"
+  },
+  "accessibility": "ઉપલ્બધતા",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "સ્ક્રીન રીડર સપોર્ટ",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "તે એક ડ્રો છે",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "દોરો",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "પીસ હાઇલાઇટ કલર",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "અલ્ગોરિધમ",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "સ્થાનાંતરિત ભાગ દૂર કરો",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "જો કોઈ ખેલાડી પ્લેસિંગ તબક્કામાં મિલની રચના કરે છે, તો તે વિરોધીના સ્થાનાંતરિત ભાગને દૂર કરશે અને ચાલ ચાલુ રાખશે.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "એન્ડગેમ એન-મૂવ નિયમ",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "જો કોઈ પણ ખેલાડી પાસે માત્ર ત્રણ ટુકડા હોય અને કોઈ પણ ખેલાડી કોઈ ચોક્કસ ચાલની અંદર એક ટુકડો કાી નાંખે તો રમત દોરવામાં આવે છે.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "ક્યાં તો ખેલાડી પાસે માત્ર ત્રણ ટુકડાઓ હોય છે અને ન તો ખેલાડી ચોક્કસ ચાલની અંદર એક ભાગને દૂર કરે છે.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "ત્રણ ગણો પુનરાવર્તન નિયમ",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "જો ત્રીજી વખત પોઝિશન આવે તો રમત ડ્રો થાય છે.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "મિલ! ચાલ ચાલુ રાખો.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "પોઇન્ટ શૈલી",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "પોઇન્ટ પહોળાઈ",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "ઘન",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "હોલો",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "ગુજરાતી",
+  "@languageName": {
+    "description": "The name of the current language"
+  }
 }
