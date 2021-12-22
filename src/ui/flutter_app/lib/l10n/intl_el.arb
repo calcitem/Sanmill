@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "showRecording": "Εμφάνιση εγγραφής",
-  "@showRecording": {
-    "description": "Show recording"
-  },
   "noRecording": "Δεν υπάρχει εγγραφή.",
   "@noRecording": {
     "description": "No recording."
