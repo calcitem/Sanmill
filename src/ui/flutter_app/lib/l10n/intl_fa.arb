@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "واگرد",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "گزینه واگرد",
   "@undoOption": {
     "description": "Undo option"
