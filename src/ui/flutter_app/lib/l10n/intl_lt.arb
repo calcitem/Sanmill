@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "stopRecording": "Sustabdyti įrašymą",
-  "@stopRecording": {
-    "description": "Stop recording"
-  },
   "showRecording": "Rodyti įrašymą",
   "@showRecording": {
     "description": "Show recording"
