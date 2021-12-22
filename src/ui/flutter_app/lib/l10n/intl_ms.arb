@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Buat asal",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Buat asal pilihan",
   "@undoOption": {
     "description": "Undo option"
