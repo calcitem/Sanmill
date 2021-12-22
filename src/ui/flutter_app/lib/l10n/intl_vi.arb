@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "openingBook": "Thư viện trò chơi tự học",
-  "@openingBook": {
-    "description": "Opening Book"
-  },
   "misc": "Sử dụng thư viện mở",
   "@misc": {
     "description": "Miscellaneous"
