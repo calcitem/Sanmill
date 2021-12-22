@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "Известия от трети страни",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "Версия на приложението",
   "@appVersion": {
     "description": "App Version"
