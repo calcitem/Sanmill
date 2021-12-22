@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "đồng ý",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Có thể hoàn tác một động thái.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
