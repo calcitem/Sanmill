@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "Pemberitahuan pihak ketiga",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "Versi Aplikasi",
   "@appVersion": {
     "description": "App Version"
