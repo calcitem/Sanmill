@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "ಸ್ವಯಂ ಮರು-ಪ್ಲೇ ಚಲನೆಗಳು",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "ನೀವು ಚಲಿಸುವ ಪಟ್ಟಿಯ ಕೊನೆಯಲ್ಲಿದ್ದೀರಿ.",
   "@atEnd": {
     "description": "At the end of the move list."
