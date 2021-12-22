@@ -76,10 +76,6 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "copyright": "Copyright © 2021 Calcitem Studio",
-  "@copyright": {
-    "description": "Copyright"
-  },
   "tipSelectWrong": "Seleziona il pezzo sbagliato.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
