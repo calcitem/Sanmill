@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undo": "Poništi",
-  "@undo": {
-    "description": "Undo"
-  },
   "undoOption": "Opcija poništavanja",
   "@undoOption": {
     "description": "Undo option"
