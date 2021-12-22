@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "Apprendre la fin de partie",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "Livre d'ouverture",
   "@openingBook": {
     "description": "Opening Book"
