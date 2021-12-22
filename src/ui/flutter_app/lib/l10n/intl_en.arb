@@ -822,10 +822,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "Third-party notices",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "App Version",
   "@appVersion": {
     "description": "App Version"
