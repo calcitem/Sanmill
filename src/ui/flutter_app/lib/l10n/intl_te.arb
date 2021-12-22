@@ -974,10 +974,6 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "fonts": "ఫాంట్లు",
-  "@fonts": {
-    "description": "Fonts"
-  },
   "showAnalysisGraph": "విశ్లేషణ గ్రాఫ్ చూపించు",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
