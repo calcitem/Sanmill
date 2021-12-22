@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "recording": "Ghi âm...",
-  "@recording": {
-    "description": "Recording..."
-  },
   "stopRecording": "Dừng ghi",
   "@stopRecording": {
     "description": "Stop recording"
