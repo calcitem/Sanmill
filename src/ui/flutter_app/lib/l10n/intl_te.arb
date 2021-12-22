@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "ఒక వరుసలో మూడు ముక్కలు ఉన్నాయి.",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "తరలించడానికి మీ భాగాన్ని ఎంచుకోండి.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
