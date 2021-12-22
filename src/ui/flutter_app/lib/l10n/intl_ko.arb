@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "openingBook": "여는 라이브러리 사용",
-  "@openingBook": {
-    "description": "Opening Book"
-  },
   "misc": "다른",
   "@misc": {
     "description": "Miscellaneous"
