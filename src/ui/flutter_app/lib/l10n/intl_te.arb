@@ -380,10 +380,6 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "learnEndgame": "ఎండ్‌గేమ్ నేర్చుకోండి",
-  "@learnEndgame": {
-    "description": "Learn Endgame"
-  },
   "openingBook": "ఓపెనింగ్ బుక్",
   "@openingBook": {
     "description": "Opening Book"
