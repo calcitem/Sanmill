@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "তৃতীয় পক্ষের নোটিশ",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "অ্যাপ্লিকেশন সংস্করণ",
   "@appVersion": {
     "description": "App Version"
