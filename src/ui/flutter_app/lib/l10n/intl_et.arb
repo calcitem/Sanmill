@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption": "Tagasivõtmise võimalus",
-  "@undoOption": {
-    "description": "Undo option"
-  },
   "undoOption_Detail": "Liikumist on võimalik tühistada.",
   "@undoOption_Detail": {
     "description": "It is possible to undo a move."
