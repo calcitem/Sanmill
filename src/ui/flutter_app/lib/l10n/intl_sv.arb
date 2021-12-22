@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "recording": "Inspelning...",
-  "@recording": {
-    "description": "Recording..."
-  },
   "stopRecording": "Stoppa inspelningen",
   "@stopRecording": {
     "description": "Stop recording"
