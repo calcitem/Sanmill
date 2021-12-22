@@ -300,10 +300,6 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "playerName": "Nazwa gracza",
-  "@playerName": {
-    "description": "Player Name"
-  },
   "about": "Informacje o",
   "@about": {
     "description": "About"
