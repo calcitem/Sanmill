@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "ประกาศบุคคลที่สาม",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "เวอร์ชันแอป App",
   "@appVersion": {
     "description": "App Version"
