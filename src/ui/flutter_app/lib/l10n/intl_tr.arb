@@ -762,10 +762,6 @@
   "@sourceCode": {
     "description": "Source code"
   },
-  "thirdPartyNotices": "Üçüncü taraf bildirimleri",
-  "@thirdPartyNotices": {
-    "description": "Third-party notices"
-  },
   "appVersion": "Uygulama sürümü",
   "@appVersion": {
     "description": "App Version"
