@@ -690,10 +690,6 @@
   "@accept": {
     "description": "Accept"
   },
-  "undoOption_Detail": "Pārvietošanu ir iespējams atsaukt.",
-  "@undoOption_Detail": {
-    "description": "It is possible to undo a move."
-  },
   "takeBack": "Atgriezt",
   "@takeBack": {
     "description": "Take back"
