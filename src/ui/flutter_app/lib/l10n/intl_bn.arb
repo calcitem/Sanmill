@@ -140,10 +140,6 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipThreePiecesInLine": "একটি লাইনে তিনটি টুকরা রয়েছে।",
-  "@tipThreePiecesInLine": {
-    "description": "There are 3 pieces in a line."
-  },
   "tipSelectPieceToMove": "সরানোর জন্য আপনার টুকরাটি নির্বাচন করুন।",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
