@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Автоматично преиграване на ходовете",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "Намирате се в края на списъка с ходове.",
   "@atEnd": {
     "description": "At the end of the move list."
