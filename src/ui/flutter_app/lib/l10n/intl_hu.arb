@@ -376,10 +376,6 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "resignIfMostLose": "Ai elismeri nyilvánvalónak tartott hátrányát",
-  "@resignIfMostLose": {
-    "description": "AI Resign if Most Lose"
-  },
   "shufflingEnabled": "Véletlenszerű lépés",
   "@shufflingEnabled": {
     "description": "Random move"
