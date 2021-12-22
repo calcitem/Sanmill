@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "حركات إعادة التشغيل التلقائي",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "في نهاية قائمة الحركة.",
   "@atEnd": {
     "description": "At the end of the move list."
