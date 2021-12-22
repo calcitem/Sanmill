@@ -200,10 +200,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "showRecording": "Felvétel megjelenítése",
-  "@showRecording": {
-    "description": "Show recording"
-  },
   "noRecording": "Nincs felvétel.",
   "@noRecording": {
     "description": "No recording."
