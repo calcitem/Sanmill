@@ -846,10 +846,6 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "autoReplay": "Аутоматска поновна репродукција потеза",
-  "@autoReplay": {
-    "description": "Auto re-play moves"
-  },
   "atEnd": "На крају сте листе за премештање.",
   "@atEnd": {
     "description": "At the end of the move list."
