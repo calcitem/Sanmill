@@ -439,7 +439,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "A második játékos veszít, ha a tábla megtelt.",
+  "isWhiteLoseButNotDrawWhenBoardFull": "A második játékos veszít, ha a tábla megtelt",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Visszavenni...",
+  "takingBack": "Visszavenni…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Várakozás...",
+  "waiting": "Várakozás…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -997,7 +997,7 @@
   "@tutorial": {
     "description": "Tutorial"
   },
-  "classicMill": "Classic Mill",
+  "classicMill": "Klasszikus Malom",
   "@classicMill": {
     "description": "Classic Mill"
   },
@@ -1017,7 +1017,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "A játék sorsolásra kerül, ha egy játékosnak három darabja van, és tíz mozdulat után egyik játékos sem távolítja el az ellenfél darabjait.",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "A játék sorsolásra kerül, ha egy játékosnak három darabja van, és tíz mozdulat után egyik játékos sem távolítja el az ellenfél darabjait",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
