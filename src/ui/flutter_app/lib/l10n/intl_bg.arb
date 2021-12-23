@@ -239,19 +239,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " отстъпва.",
+  "loseReasonResign": "{player} отстъпва.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " не е начин да се откажеш.",
+  "loseReasonNoWay": "{player} няма как да отиде.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Дъската е пълна и няма начин да се отиде.",
+  "loseReasonBoardIsFull": "Платката е пълна и {player} няма как да отиде.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Времето свърши",
+  "loseReasonTimeOver": "Времето свърши, {player} загубен.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Предизвикайте по-трудно ниво? Новото ниво ще бъде ниво ",
+  "challengeHarderLevel": "Предизвикайте по-трудно ниво? Новото ниво ще бъде ниво {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Версия",
+  "version": "Версия: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Историята на ходовете се копира в клипборда",
+  "moveHistoryCopied": "Историята на ходовете се копира в клипборда.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Изберете",
+  "pick": "Изберете {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Връщане назад",
+  "takingBack": "Връщане назад…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Изчакване",
+  "waiting": "Изчакване…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -705,7 +705,7 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "Crack-mill",
+  "crackMill": "Крек-мелница",
   "@crackMill": {
     "description": "Crack-mill"
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Брой парчета",
+  "pieceCount": "Брой парчета:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "в ръка",
+  "inHand": "{player} в ръка: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "на дъската",
+  "onBoard": "{player} на борда: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -925,7 +925,7 @@
   "@light": {
     "description": "Light"
   },
-  "dark": "Dark",
+  "dark": "Тъмно",
   "@dark": {
     "description": "Dark"
   },
@@ -1017,7 +1017,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Играта е реми, ако един от играчите има три фигури и след десет хода никой от тях не премахне фигурите на противника.",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Играта е реми, ако един от играчите има три фигури и след десет хода никой от тях не премахне фигурите на противника",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Страна за движение",
+  "sideToMove": "Страна за движение: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Последен ход",
+  "lastMove": "Последен ход: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "Това е равенство",
+  "isDraw": "Това е равенство!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "български",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Преместване}other{{count} Ходове}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
