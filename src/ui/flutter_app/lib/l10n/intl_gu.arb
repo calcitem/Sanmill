@@ -239,19 +239,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " રાજીનામું.",
+  "loseReasonResign": "{player} રાજીનામું.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " જવાનો કોઈ રસ્તો નથી.",
+  "loseReasonNoWay": "{player} પાસે જવાનો કોઈ રસ્તો નથી.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "બોર્ડ ભરેલું છે, અને જવા માટે કોઈ રસ્તો નથી.",
+  "loseReasonBoardIsFull": "બોર્ડ ભરાઈ ગયું છે, અને {player} પાસે જવાનો કોઈ રસ્તો નથી.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "સમય સમાપ્ત",
+  "loseReasonTimeOver": "સમય પૂરો થયો, {player} ખોવાઈ ગયો.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "પડકાર કઠણ સ્તર? નવું કક્ષા સ્તરનું રહેશે",
+  "challengeHarderLevel": "કઠણ સ્તરને પડકારો? નવું સ્તર લેવલ {level} હશે!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "સંસ્કરણ",
+  "version": "સંસ્કરણ: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "ક્લિપબોર્ડ પર ક historyપિ કરેલો ઇતિહાસ ખસેડો",
+  "moveHistoryCopied": "ક્લિપબોર્ડ પર ક historyપિ કરેલો ઇતિહાસ ખસેડો.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "ચૂંટો",
+  "pick": "ચૂંટો {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -659,7 +659,7 @@
   "@privacyPolicy": {
     "description": "Privacy Policy"
   },
-  "privacyPolicy_Detail_1": "કૃપા કરીને કાળજીપૂર્વક વાંચો અને ખાતરી કરો કે તમે આને સમજો છો અને તેની સાથે સંમત છો",
+  "privacyPolicy_Detail_1": "કૃપા કરીને કાળજીપૂર્વક વાંચો અને ખાતરી કરો કે તમે આને સમજો છો અને તેની સાથે સંમત છો ",
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
@@ -667,7 +667,7 @@
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
-  "and": " અને",
+  "and": " અને ",
   "@and": {},
   "accept": "સ્વીકારો",
   "@accept": {
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "પાછા લઈ રહ્યા છે",
+  "takingBack": "પાછા લઈ રહ્યા છે…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "રાહ જોવી",
+  "waiting": "રાહ જોવી…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "પીસ ગણતરી",
+  "pieceCount": "પીસ ગણતરી:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "હાથમાં",
+  "inHand": "{player} હાથમાં: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "બોર્ડ પર",
+  "onBoard": "બોર્ડ પર {player}: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "બાજુ ખસેડવા માટે",
+  "sideToMove": "ખસેડવા માટે બાજુ: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "છેલ્લી ચાલ",
+  "lastMove": "છેલ્લી ચાલ: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "તે એક ડ્રો છે",
+  "isDraw": "તે એક ડ્રો છે!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "ગુજરાતી",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{ખસેડો}=1{{count} ખસેડો}other{{count} ચાલ}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
