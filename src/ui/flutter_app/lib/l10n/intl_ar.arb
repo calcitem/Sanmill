@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " للانتقال.",
+  "tipToMove": "{player} للتحرك.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "يفكر ...",
+  "thinking": "يفكر…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "لا يمكن الاستيراد",
+  "cannotImport": "لا يمكن استيراد {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -208,15 +208,15 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "بدأت اللعبة ، من فضلك ضع",
+  "gameStarted": "بدأت اللعبة ، من فضلك ضع.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "جاري التحليل ...",
+  "analyzing": "جاري التحليل…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "خطأ",
+  "error": "خطأ: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "نتيجة",
+  "score": "نتيجة:",
   "@score": {
     "description": "Score"
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "للمطورين",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "وضع المطور",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "انقر مرة أخرى للمغادرة.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "متغيرات البيئة",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "أكثر",
   "@more": {
