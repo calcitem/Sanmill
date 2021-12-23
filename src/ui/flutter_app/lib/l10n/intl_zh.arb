@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "行棋",
+  "tipToMove": "轮到{player}行棋",
   "@tipToMove": {
     "description": " to move."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "无法导入",
+  "cannotImport": "无法导入{invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -1165,5 +1165,15 @@
   "languageName": "简体中文",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{步}=1{{count} 步}other{{count} 步}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
