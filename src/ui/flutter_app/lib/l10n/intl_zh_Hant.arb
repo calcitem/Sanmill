@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "主菜單",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "無障礙",
   "@accessibility": {
     "description": "Accessibility"
