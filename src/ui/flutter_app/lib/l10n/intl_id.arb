@@ -171,7 +171,7 @@
   "@thinking": {
     "description": "Thinking..."
   },
-  "newGame": "New game",
+  "newGame": "Permainan baru",
   "@newGame": {
     "description": "New game"
   },
@@ -191,11 +191,11 @@
   "@cannotImport": {
     "description": "Cannot import"
   },
-  "movesAndRulesNotMatch": "Moves and rules do not match.",
+  "movesAndRulesNotMatch": "Gerakan dan aturan tidak cocok.",
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "pleaseWait": "Please wait.",
+  "pleaseWait": "Tunggu sebentar.",
   "@pleaseWait": {
     "description": "Please wait..."
   },
@@ -211,7 +211,7 @@
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Analyzing…",
+  "analyzing": "Menganalisa…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
@@ -227,11 +227,11 @@
   "@score": {
     "description": "Score"
   },
-  "white": "Player 1",
+  "white": "Pemain 1",
   "@white": {
     "description": "Player 1"
   },
-  "black": "Player 2",
+  "black": "Pemain 2",
   "@black": {
     "description": "Player 2"
   },
@@ -239,71 +239,71 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " resign.",
+  "loseReasonResign": "{player} resign.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " is no way to go.",
+  "loseReasonNoWay": "{player} tidak ada jalan lain.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "The board is full, and no way to go.",
+  "loseReasonBoardIsFull": "Papan sudah penuh, dan {player} tidak ada jalan lagi.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Time Over",
+  "loseReasonTimeOver": "Waktu telah berakhir, {player} hilang.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
-  "drawReasonRule50": "In the moving phase, no piece has been removed in the last specific number of moves.",
+  "drawReasonRule50": "Dalam fase bergerak, tidak ada bidak yang dikeluarkan dalam jumlah gerakan spesifik terakhir.",
   "@drawReasonRule50": {
     "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
-  "drawReasonBoardIsFull": "It is a Draw because the board is full.",
+  "drawReasonBoardIsFull": "Ini adalah Seri karena papan penuh.",
   "@drawReasonBoardIsFull": {
     "description": "It is a Draw because the board is full"
   },
-  "drawReasonThreefoldRepetition": "It is a Draw because of threefold repetition.",
+  "drawReasonThreefoldRepetition": "Ini adalah Seri karena pengulangan tiga kali lipat.",
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
-  "gameOverUnknownReason": "Game Over! Unknown reason.",
+  "gameOverUnknownReason": "Tamat! Alasan yang tidak diketahui.",
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
-  "gameOver": "Game Over",
+  "gameOver": "Tamat",
   "@gameOver": {
     "description": "Game Over"
   },
-  "youWin": "You win! Congratulations!",
+  "youWin": "Kamu menang! Selamat!",
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Challenge harder level? The new level will be level ",
+  "challengeHarderLevel": "Tantang level yang lebih sulit? Level baru akan menjadi level {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
-  "youLose": "You Lose!",
+  "youLose": "Kamu kalah!",
   "@youLose": {
     "description": "You Lose!"
   },
-  "analyze": "Analyze",
+  "analyze": "Menganalisa",
   "@analyze": {
     "description": "Analyze"
   },
-  "about": "About",
+  "about": "Tentang",
   "@about": {
     "description": "About"
   },
-  "version": "Version",
+  "version": "Versi: {versionNumber}",
   "@version": {
     "description": "Version"
   },
-  "thanks": "Thanks",
+  "thanks": "Terima kasih",
   "@thanks": {
     "description": "Thanks"
   },
-  "settings": "Settings",
+  "settings": "Pengaturan",
   "@settings": {
     "description": "Settings"
   },
@@ -311,19 +311,19 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Preferences",
+  "preferences": "Preferensi",
   "@preferences": {
     "description": "Preferences"
   },
-  "skillLevel": "Difficulty level",
+  "skillLevel": "Tingkat kesulitan",
   "@skillLevel": {
     "description": "Difficulty level"
   },
-  "moveTime": "AI thinking time",
+  "moveTime": "waktu berpikir AI",
   "@moveTime": {
     "description": "AI thinking time"
   },
-  "difficulty": "Difficulty",
+  "difficulty": "Kesulitan",
   "@difficulty": {
     "description": "Difficulty"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Pindahkan riwayat yang disalin ke papan klip",
+  "moveHistoryCopied": "Pindahkan riwayat yang disalin ke papan klip.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Memilih",
+  "pick": "Pilih {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -659,7 +659,7 @@
   "@privacyPolicy": {
     "description": "Privacy Policy"
   },
-  "privacyPolicy_Detail_1": "Harap baca dengan seksama dan pastikan Anda sepenuhnya memahami dan setuju dengan ini",
+  "privacyPolicy_Detail_1": "Harap baca dengan seksama dan pastikan Anda sepenuhnya memahami dan setuju dengan ini ",
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
@@ -667,7 +667,7 @@
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
-  "and": "  dan",
+  "and": " dan ",
   "@and": {},
   "accept": "Menerima",
   "@accept": {
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Mengambil kembali",
+  "takingBack": "Mengambil kembali…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Menunggu",
+  "waiting": "Menunggu…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Jumlah potongan",
+  "pieceCount": "Jumlah potongan:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "di tangan",
+  "inHand": "{player} di tangan: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "di atas kapal",
+  "onBoard": "{player} di pesawat: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Sisi untuk bergerak",
+  "sideToMove": "Sisi untuk bergerak: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Langkah terakhir",
+  "lastMove": "Langkah terakhir: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "Ini adalah undian",
+  "isDraw": "Ini adalah undian!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "Indonesia",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{bergerak}=1{{count} bergerak}other{{count} bergerak}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
