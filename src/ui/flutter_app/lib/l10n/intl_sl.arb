@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": " Premiki",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Seznam premikov",
   "@showMoveList": {
     "description": "Move list"
