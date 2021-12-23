@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "Menyu fon rangi",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "Menyu element rangini ajratib ko'rsatish",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
