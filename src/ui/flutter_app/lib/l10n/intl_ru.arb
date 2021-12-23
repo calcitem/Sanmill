@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": " Переезды",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Список перемещений",
   "@showMoveList": {
     "description": "Move list"
