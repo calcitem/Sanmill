@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "メインメニュー",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "アクセシビリティ",
   "@accessibility": {
     "description": "Accessibility"
