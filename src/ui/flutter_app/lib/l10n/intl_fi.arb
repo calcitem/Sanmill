@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "Sovellus poistuu.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "Sinun on suljettava sovellus välittömästi ja avattava se uudelleen, jotta se tulee voimaan.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
