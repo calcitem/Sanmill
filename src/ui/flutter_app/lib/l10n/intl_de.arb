@@ -440,7 +440,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Zweiter Spieler verliert wenn das Brett voll ist.",
+  "isWhiteLoseButNotDrawWhenBoardFull": "Zweiter Spieler verliert wenn das Brett voll ist",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -484,7 +484,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Zugverlauf in die Zwischenablage kopiert",
+  "moveHistoryCopied": "Zugverlauf in die Zwischenablage kopiert.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -1030,7 +1030,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Das Spiel ist unentschieden, wenn ein Spieler drei Steine hat und nach zehn Zügen keiner der Spieler die Steine des Gegners entfernt remove",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Das Spiel ist unentschieden, wenn ein Spieler drei Steine hat und nach zehn Zügen keiner der Spieler die Steine des Gegners entfernt remove.",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
