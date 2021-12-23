@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "અસરને અમલમાં મૂકવા માટે તમારે તરત જ બંધ કરવું પડશે અને એપ્લિકેશનને ફરીથી ખોલવી પડશે.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "ચૂંટો",
   "@pick": {
     "description": "Pick "
