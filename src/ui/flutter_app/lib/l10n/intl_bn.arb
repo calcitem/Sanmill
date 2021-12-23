@@ -239,19 +239,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " পদত্যাগ.",
+  "loseReasonResign": "{player} পদত্যাগ.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " কোন উপায় হয় না।",
+  "loseReasonNoWay": "{player} যাওয়ার কোন উপায় নেই।",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "বোর্ডটি পূর্ণ, এবং যাওয়ার কোনও উপায় নেই।",
+  "loseReasonBoardIsFull": "বোর্ড পূর্ণ, এবং {player} যাওয়ার কোন উপায় নেই।",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "সময় শেষ",
+  "loseReasonTimeOver": "সময় শেষ, {player} হারিয়ে গেছে।",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "কঠিন স্তরের চ্যালেঞ্জ? নতুন স্তর স্তর হবে",
+  "challengeHarderLevel": "কঠিন স্তর চ্যালেঞ্জ? নতুন লেভেল হবে লেভেল {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "সংস্করণ",
+  "version": "সংস্করণ: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -395,7 +395,7 @@
   "@flyPieceCount_Detail": {
     "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
-  "piecesAtLeastCount": "টুকরো টুকরো",
+  "piecesAtLeastCount": "অন্তত টুকরা",
   "@piecesAtLeastCount": {
     "description": "Pieces At Least"
   },
@@ -439,7 +439,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "বোর্ড পূর্ণ হলে দ্বিতীয় প্লেয়ার হেরে যায়।",
+  "isWhiteLoseButNotDrawWhenBoardFull": "বোর্ড পূর্ণ হলে দ্বিতীয় প্লেয়ার হেরে যায়",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "ক্লিপবোর্ডে অনুলিপি করা ইতিহাস",
+  "moveHistoryCopied": "ক্লিপবোর্ডে অনুলিপি করা ইতিহাস.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "বাছাই",
+  "pick": "বাছাই করুন {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -627,7 +627,7 @@
   "@toRemovePiece": {
     "description": "Tap on the opponent's one piece to remove."
   },
-  "needToCreateMillFirst": "কোনও টুকরো অপসারণ করার আগে আপনাকে প্রথমে মিল তৈরি করতে হবে need",
+  "needToCreateMillFirst": "আপনি একটি টুকরা অপসারণ করার আগে আপনাকে প্রথমে একটি মিল তৈরি করতে হবে।",
   "@needToCreateMillFirst": {
     "description": "You need to create a mill first before you can remove a piece."
   },
@@ -659,7 +659,7 @@
   "@privacyPolicy": {
     "description": "Privacy Policy"
   },
-  "privacyPolicy_Detail_1": "দয়া করে মনোযোগ সহকারে পড়ুন এবং নিশ্চিত হন যে আপনি এটির সাথে পুরোপুরি বুঝতে পেরেছেন এবং এতে সম্মত হন",
+  "privacyPolicy_Detail_1": "দয়া করে মনোযোগ সহকারে পড়ুন এবং নিশ্চিত হন যে আপনি এটির সাথে পুরোপুরি বুঝতে পেরেছেন এবং এতে সম্মত হন ",
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
@@ -667,7 +667,7 @@
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
-  "and": " এবং",
+  "and": " এবং ",
   "@and": {},
   "accept": "গ্রহণ করুন",
   "@accept": {
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "ফিরে গ্রহণ",
+  "takingBack": "ফিরে গ্রহণ…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "অপেক্ষা করছি",
+  "waiting": "অপেক্ষা করছি…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "টুকরো গণনা",
+  "pieceCount": "টুকরো গণনা:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "হাতের মধ্যে",
+  "inHand": "{player} হাতে: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "বোর্ডে",
+  "onBoard": "বোর্ডে {player}: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -857,7 +857,7 @@
   "@mayMoveInPlacingPhase": {
     "description": "The pieces can move in the placing phase"
   },
-  "mayMoveInPlacingPhase_Detail": "এখানে কোনও পৃথক স্থাপন এবং চলমান পর্যায় নেই, অর্থাত্ খেলোয়াড়রা প্রতিটি পদক্ষেপে সিদ্ধান্ত নিতে পারেন তারা বোর্ডে কোনও টুকরো রাখতে চান বা তাদের কোনও টুকরা স্থানান্তরিত করতে চান (যতক্ষণ না তাদের কাছে টুকরো টুকরো টুকরো স্থান রয়েছে)।",
+  "mayMoveInPlacingPhase_Detail": "কোনও স্বতন্ত্র প্লেসিং এবং চলমান পর্যায় নেই, অর্থাৎ, খেলোয়াড়রা প্রতিটি পদক্ষেপে সিদ্ধান্ত নিতে পারে যে তারা বোর্ডে একটি টুকরো রাখতে চায় নাকি তাদের একটি টুকরো সরাতে চায় (যতক্ষণ পর্যন্ত তাদের বাকি টুকরোগুলি স্থাপন করতে হয়)।",
   "@mayMoveInPlacingPhase_Detail": {
     "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
   },
@@ -1021,7 +1021,7 @@
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "যখন কোনও খেলোয়াড় তিন টুকরো হয়ে যায় এবং কোনও খেলোয়াড়ই প্রতিপক্ষের টুকরোটিকে দশটি চালের মধ্যে সরিয়ে ফেলতে পারে না, খেলাটি ড্র the",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "যখন কোনও খেলোয়াড় তিন টুকরো হয়ে যায় এবং কোনও খেলোয়াড়ই প্রতিপক্ষের টুকরোটিকে দশটি চালের মধ্যে সরিয়ে ফেলতে পারে না, খেলাটি ড্র the.",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
     "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "সরাতে সাইড",
+  "sideToMove": "পাশ সরানোর জন্য: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "শেষ পদক্ষেপ",
+  "lastMove": "শেষ পদক্ষেপ: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "এটি একটি ড্র",
+  "isDraw": "এটি একটি ড্র!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "বাংলা",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Move}other{{count} মুভস}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
