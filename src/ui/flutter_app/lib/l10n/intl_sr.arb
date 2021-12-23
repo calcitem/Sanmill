@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "померити.",
+  "tipToMove": "[Кс0Кс] за померање.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Размишљам ...",
+  "thinking": "Размишљам…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Није могуће увести",
+  "cannotImport": "Није могуће увести {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -208,15 +208,15 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Игра је започела, молим вас",
+  "gameStarted": "Игра је започела, молим вас.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Анализира се ...",
+  "analyzing": "Анализира се…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Грешка",
+  "error": "Грешка: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Сцоре",
+  "score": "Сцоре:",
   "@score": {
     "description": "Score"
   },
@@ -236,7 +236,7 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "број комада је мањи од три.",
+  "loseReasonlessThanThree": "[Кс0Кс] број комада је мањи од три.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "За програмере",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "Девелопер моде",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "Додирните поново да бисте изашли.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "Променљиве околине",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "Више",
   "@more": {
