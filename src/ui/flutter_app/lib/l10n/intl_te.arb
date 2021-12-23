@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " తరలించడానికి.",
+  "tipToMove": "{player} తరలించడానికి.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "ఆలోచిస్తూ ...",
+  "thinking": "ఆలోచిస్తూ…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "దిగుమతి చేయలేరు",
+  "cannotImport": "దిగుమతి చేయడం సాధ్యపడదు {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -208,15 +208,15 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "ఆట ప్రారంభమైంది, దయచేసి ఉంచండి",
+  "gameStarted": "ఆట ప్రారంభమైంది, దయచేసి ఉంచండి.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "విశ్లేషిస్తోంది ...",
+  "analyzing": "విశ్లేషిస్తోంది…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "లోపం",
+  "error": "లోపం: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "స్కోరు",
+  "score": "స్కోరు:",
   "@score": {
     "description": "Score"
   },
@@ -236,7 +236,7 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " ముక్కల సంఖ్య మూడు కన్నా తక్కువ.",
+  "loseReasonlessThanThree": "{player} ముక్కల సంఖ్య మూడు కంటే తక్కువ.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "డెవలపర్‌ల కోసం",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "డెవలపర్ మోడ్",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "బయలుదేరడానికి మళ్ళీ నొక్కండి.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "ఎన్విరాన్మెంట్ వేరియబుల్స్",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "మరింత",
   "@more": {
