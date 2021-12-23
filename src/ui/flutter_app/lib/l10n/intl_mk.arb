@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "Треба веднаш да ја затворите и повторно да ја отворите апликацијата за да стапи на сила.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Трансферот",
   "@pick": {
     "description": "Pick "
