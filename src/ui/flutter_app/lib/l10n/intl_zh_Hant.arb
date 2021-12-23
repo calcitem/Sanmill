@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "行棋",
+  "tipToMove": "輪到{player}行棋",
   "@tipToMove": {
     "description": " to move."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "無法導入",
+  "cannotImport": "無法導入{invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -216,7 +216,7 @@
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "錯誤",
+  "error": "錯誤：{message}",
   "@error": {
     "description": "Error"
   },
@@ -236,23 +236,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "剩餘棋子少於3枚。",
+  "loseReasonlessThanThree": "{player}的剩餘棋子少於3枚。",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "認輸了。",
+  "loseReasonResign": "{player}認輸了。",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "無路可走。",
+  "loseReasonNoWay": "{player}無路可走。",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "因棋盤擺滿而無路可走。",
+  "loseReasonBoardIsFull": "{player}因棋盤擺滿而無路可走。",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "超時判負。",
+  "loseReasonTimeOver": "{player}超時判負。",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -268,7 +268,7 @@
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
-  "gameOverUnknownReason": "遊戲結束，原因未知！",
+  "gameOverUnknownReason": "遊戲結束！原因未知。",
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
@@ -280,7 +280,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "後續提升難度嗎？\n提升後的難度等級將為",
+  "challengeHarderLevel": "後續提升難度嗎？提升後的難度等級將為{level}級！",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -296,7 +296,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "版本",
+  "version": "版本：{versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -384,7 +384,7 @@
   "@piecesCount": {
     "description": "The number of pieces each player has"
   },
-  "piecesCount_Detail": "設定對弈雙方分別擁有的棋子數。",
+  "piecesCount_Detail": "對弈雙方分別擁有的棋子數為？",
   "@piecesCount_Detail": {
     "description": "How many pieces does each player have?"
   },
@@ -584,7 +584,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "選擇",
+  "pick": "選擇{element}",
   "@pick": {
     "description": "Pick "
   },
@@ -810,11 +810,11 @@
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "手上",
+  "inHand": "{player}手上：{count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "棋盤上",
+  "onBoard": "{player}棋盤上：{count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1074,11 +1074,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "輪到",
+  "sideToMove": "輪到{player}行棋",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "最後一著",
+  "lastMove": "最後一著：{move}",
   "@lastMove": {
     "description": "Last move"
   },
