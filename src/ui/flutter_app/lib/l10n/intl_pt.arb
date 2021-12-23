@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "O pedido sairá.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "Você tem que fechar e reabrir imediatamente o pedido para que ele tenha efeito.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
