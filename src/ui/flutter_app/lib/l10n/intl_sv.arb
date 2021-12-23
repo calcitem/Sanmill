@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " för att flytta.",
+  "tipToMove": "{player} för att flytta.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Tänker...",
+  "thinking": "Tänker…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Kan inte importera",
+  "cannotImport": "Det går inte att importera {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -208,15 +208,15 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Spelet har startat, var god och placera",
+  "gameStarted": "Spelet har startat, var god och placera.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Analyserar ...",
+  "analyzing": "Analyserar…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Fel",
+  "error": "Fel: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Poäng",
+  "score": "Poäng:",
   "@score": {
     "description": "Score"
   },
@@ -236,7 +236,7 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " Antalet pjäser är mindre än tre.",
+  "loseReasonlessThanThree": "Antalet {player} är mindre än tre.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "För utvecklare",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "Utvecklarläge",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "Tryck tillbaka igen för att gå vidare.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "Miljövariabler",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "Mer",
   "@more": {
