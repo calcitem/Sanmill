@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "Galvenā izvēlne",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "Pieejamība",
   "@accessibility": {
     "description": "Accessibility"
