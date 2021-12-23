@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "Ei tallennusta.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "Odota.",
   "@pleaseWait": {
     "description": "Please wait..."
