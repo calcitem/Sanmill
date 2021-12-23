@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "Ilova chiqadi.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "Zudlik bilan yopishingiz va kuchga kirishi uchun dasturni qayta ochishingiz kerak.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
