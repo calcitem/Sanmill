@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "Морате одмах да затворите и поново отворите апликацију да би ступила на снагу.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Пицк",
   "@pick": {
     "description": "Pick "
