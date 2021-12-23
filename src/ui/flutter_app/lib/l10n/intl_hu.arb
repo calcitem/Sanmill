@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "A menü háttérszíne",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "A menü kiemelésének színe",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
