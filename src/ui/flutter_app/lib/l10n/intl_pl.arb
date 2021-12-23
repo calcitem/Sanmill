@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "Musisz natychmiast zamknąć i ponownie otworzyć aplikację, aby zaczęła działać.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Wybierz",
   "@pick": {
     "description": "Pick "
