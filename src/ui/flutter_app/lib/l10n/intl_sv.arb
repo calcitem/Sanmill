@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "Meny bakgrundsfärg",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "Meny markera objektets färg",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
