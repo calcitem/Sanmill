@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "Žádný záznam.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "Prosím, čekejte...",
   "@pleaseWait": {
     "description": "Please wait..."
