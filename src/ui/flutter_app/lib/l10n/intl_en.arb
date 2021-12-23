@@ -960,10 +960,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "Menu background color",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "Menu highlight item color",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
