@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "Uygulamadan çıkacaktır.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "Etkinleşmesi için uygulamayı hemen kapatmanız ve yeniden açmanız gerekir.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
