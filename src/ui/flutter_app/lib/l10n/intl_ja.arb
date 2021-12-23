@@ -271,7 +271,7 @@
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
-  "gameOver": "ゲームオーバー。",
+  "gameOver": "ゲームオーバー",
   "@gameOver": {
     "description": "Game Over"
   },
@@ -283,7 +283,7 @@
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
-  "youLose": "あなたの負けです。",
+  "youLose": "あなたの負けです！",
   "@youLose": {
     "description": "You Lose!"
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "後悔しないために",
+  "takingBack": "後悔しないために…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "戻る",
+  "waiting": "戻る…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -797,7 +797,7 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "ピース数",
+  "pieceCount": "ピース数:",
   "@pieceCount": {
     "description": "Piece count"
   },
@@ -1017,7 +1017,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "プレイヤーが3つの駒を持っていて、10回移動した後、どちらのプレイヤーも対戦相手の駒を削除しない場合、ゲームは引き分けになります。",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "プレイヤーが3つの駒を持っていて、10回移動した後、どちらのプレイヤーも対戦相手の駒を削除しない場合、ゲームは引き分けになります",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "引き分けです",
+  "isDraw": "引き分けです！",
   "@isDraw": {
     "description": "It is a Draw!"
   },
