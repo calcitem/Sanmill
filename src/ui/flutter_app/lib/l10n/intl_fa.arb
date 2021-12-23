@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "رنگ پس زمینه منو",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "رنگ مورد برجسته منو",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
