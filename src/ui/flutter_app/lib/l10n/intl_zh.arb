@@ -384,7 +384,7 @@
   "@piecesCount": {
     "description": "The number of pieces each player has"
   },
-  "piecesCount_Detail": "设置对弈双方分别拥有的棋子数。",
+  "piecesCount_Detail": "对弈双方分别拥有的棋子数为？",
   "@piecesCount_Detail": {
     "description": "How many pieces does each player have?"
   },
@@ -584,7 +584,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "选择",
+  "pick": "选择{element}",
   "@pick": {
     "description": "Pick "
   },
@@ -810,11 +810,11 @@
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "手上",
+  "inHand": "{player}手上：{count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "棋盘上",
+  "onBoard": "{player}棋盘上：{count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1074,11 +1074,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "轮到",
+  "sideToMove": "轮到{player}行棋",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "最后一着",
+  "lastMove": "最后一着：{move}",
   "@lastMove": {
     "description": "Last move"
   },
