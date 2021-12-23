@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " per muovere.",
+  "tipToMove": "{player} per muoversi.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Pensare...",
+  "thinking": "Pensare…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Impossibile importare",
+  "cannotImport": "Impossibile importare {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -208,15 +208,15 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Gioco iniziato, si prega di posizionare",
+  "gameStarted": "Gioco iniziato, si prega di posizionare.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Analisi ...",
+  "analyzing": "Analisi…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Errore",
+  "error": "Errore: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Punteggio",
+  "score": "Punteggio:",
   "@score": {
     "description": "Score"
   },
@@ -236,7 +236,7 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " Il numero di pezzi è inferiore a tre.",
+  "loseReasonlessThanThree": "{player} il conteggio dei pezzi è inferiore a tre.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "Per gli sviluppatori",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "Modalità sviluppatore",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "Tocca di nuovo per uscire.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "Variabili ambientali",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "Più",
   "@more": {
