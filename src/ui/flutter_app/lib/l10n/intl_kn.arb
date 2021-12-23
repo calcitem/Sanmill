@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": " ಚಲಿಸುತ್ತದೆ",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "ಪಟ್ಟಿಯನ್ನು ಸರಿಸಿ",
   "@showMoveList": {
     "description": "Move list"
