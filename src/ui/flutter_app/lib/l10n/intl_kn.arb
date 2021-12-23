@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "ಮೆನು ಹಿನ್ನೆಲೆ ಬಣ್ಣ",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "ಮೆನು ಐಟಂ ಬಣ್ಣವನ್ನು ಹೈಲೈಟ್ ಮಾಡುತ್ತದೆ",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
