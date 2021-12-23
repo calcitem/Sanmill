@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": " Perkelia",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Judesių sąrašas",
   "@showMoveList": {
     "description": "Move list"
