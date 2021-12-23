@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "Aby se aplikace projevila, musíte ji okamžitě zavřít a znovu ji otevřít.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Výběr",
   "@pick": {
     "description": "Pick "
