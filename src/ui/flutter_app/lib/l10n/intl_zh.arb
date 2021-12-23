@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "App 将退出。",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "您需要立即退出并重新打开本程序才能使默认配置生效。",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
