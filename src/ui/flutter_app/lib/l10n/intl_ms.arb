@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "Menu utama",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "Kebolehcapaian",
   "@accessibility": {
     "description": "Accessibility"
