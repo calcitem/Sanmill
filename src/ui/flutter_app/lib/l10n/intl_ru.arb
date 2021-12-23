@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "Для вступления в силу необходимо немедленно закрыть и снова открыть приложение.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Выбрать",
   "@pick": {
     "description": "Pick "
