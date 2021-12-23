@@ -235,23 +235,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " عدد القطع أقل من ثلاثة.",
+  "loseReasonlessThanThree": "{player} عدد القطع أقل من ثلاثة.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "  استقيل.",
+  "loseReasonResign": "استقال {player}.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "  لا توجد طريقة للذهاب.",
+  "loseReasonNoWay": "{player} ليس لديه طريقة للذهاب.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "اللوحة ممتلئة ، ولا توجد طريقة للذهاب.",
+  "loseReasonBoardIsFull": "اللوحة ممتلئة ، وليس أمام {player} طريقة للذهاب.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "انتهى الوقت",
+  "loseReasonTimeOver": "انتهى الوقت ، ضاعت {player}.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "تحدي المستوى الأصعب؟\nسيكون المستوى الجديد هو المستوى ",
+  "challengeHarderLevel": "التحدي الأصعب المستوى؟ المستوى الجديد سيكون المستوى {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "إصدار",
+  "version": "الإصدار: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "تم نسخ سجل الحركات إلى الحافظة",
+  "moveHistoryCopied": "تم نسخ سجل الحركات إلى الحافظة.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "اختر",
+  "pick": "اختر {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -659,7 +659,7 @@
   "@privacyPolicy": {
     "description": "Privacy Policy"
   },
-  "privacyPolicy_Detail_1": "يرجى القراءة بعناية والتأكد من فهمك التام لهذا الأمر والموافقة عليه",
+  "privacyPolicy_Detail_1": "يرجى القراءة بعناية والتأكد من فهمك التام لهذا الأمر والموافقة عليه ",
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "يتراجع...",
+  "takingBack": "يتراجع…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "منتظر...",
+  "waiting": "منتظر…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -725,7 +725,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "تهدف اللعبة إلى ترك الخصم بأقل من ثلاث قطع أو عدم وجود حركات قانونية.\n\nيتم رسم اللعبة تلقائيًا في حالة حدوث مركز للمرة الثالثة ، أو إذا لم تتم إزالة في آخر 100 حركة (قابلة للتكوين).\n\nتستمر اللعبة على ثلاث مراحل:\n\n1. وضع القطع على النقاط الشاغرة\n2. تحريك القطع إلى النقاط المجاورة\n3. (مرحلة اختيارية) تحريك القطع إلى أي نقطة شاغرة عندما يتم تخفيض اللاعب إلى ثلاث قطع\n\nوضع\n\nتبدأ اللعبة بلوحة فارغة تتكون من شبكة بأربع وعشرين نقطة. يتناوب اللاعبون على وضع قطعهم على نقاط شاغرة حتى يضع كل لاعب كل القطع على اللوحة. إذا تمكن اللاعب من وضع ثلاث قطع من قطعه في خط مستقيم ، فسيكون لديه \"طاحونة\" ويمكنه إزالة إحدى قطع خصمه من اللوحة.\n\nفي بعض متغيرات القواعد ، يجب على اللاعبين إزالة أي قطع أخرى أولاً قبل إزالة قطعة من طاحونة مشكلة.\n\nفي بعض متغيرات القواعد ، قد لا يتم وضع جميع النقاط التي تمت إزالتها مرة أخرى في مرحلة الوضع.\n\nبمجرد استخدام جميع القطع ، يتناوب اللاعبون على التحرك.\n\nمتحرك\n\nللتحرك ، يقوم اللاعب بتحريك إحدى قطعه على طول خط اللوحة إلى نقطة مجاورة شاغرة. إذا لم يستطع فعل ذلك ، فقد خسر المباراة. كما هو الحال في مرحلة التسديد ، فإن اللاعب الذي يقوم بمحاذاة ثلاث من قطعه على خط لوح لديه مطحنة ويمكنه إزالة إحدى قطع خصمه. أي لاعب يتقلص إلى قطعتين وليس لديه خيار لتشكيل طواحين جديدة ، وبالتالي يخسر اللعبة. يمكن للاعب أيضًا أن يخسر بأكثر من ثلاث قطع إذا قام خصمه بحظرها بحيث لا يمكن نقلها.\n\nطيران\n\nفي بعض المتغيرات من القواعد ، بمجرد أن يتبقى للاعب ثلاث قطع فقط ، قد \"تطير\" قطعه أو \"تقفز\" أو \"تقفز\" إلى أي نقاط شاغرة ، وليس فقط النقاط المجاورة.",
+  "helpContent": "تهدف اللعبة إلى ترك الخصم بأقل من ثلاث قطع أو عدم وجود حركات قانونية.\n\nيتم رسم اللعبة تلقائيًا في حالة حدوث مركز للمرة الثالثة ، أو إذا لم تتم إزالة في آخر 100 حركة (قابلة للتكوين).\n\nتستمر اللعبة على ثلاث مراحل:\n\n1. وضع القطع على النقاط الشاغرة\n2. تحريك القطع إلى النقاط المجاورة\n3. (مرحلة اختيارية) تحريك القطع إلى أي نقطة شاغرة عندما يتم تخفيض اللاعب إلى ثلاث قطع\n\nوضع\n\nتبدأ اللعبة بلوحة فارغة تتكون من شبكة بأربع وعشرين نقطة. يتناوب اللاعبون على وضع قطعهم على نقاط شاغرة حتى يضع كل لاعب كل القطع على اللوحة. إذا تمكن اللاعب من وضع ثلاث قطع من قطعه في خط مستقيم ، فسيكون لديه \"طاحونة\" ويمكنه إزالة إحدى قطع خصمه من اللوحة.\n\nفي بعض متغيرات القواعد ، يجب على اللاعبين إزالة أي قطع أخرى أولاً قبل إزالة قطعة من طاحونة مشكلة.\n\nفي بعض متغيرات القواعد ، قد لا يتم وضع جميع النقاط التي تمت إزالتها مرة أخرى في مرحلة الوضع.\n\nبمجرد استخدام جميع القطع ، يتناوب اللاعبون على التحرك.\n\nمتحرك\n\nللتحرك ، يقوم اللاعب بتحريك إحدى قطعه على طول خط اللوحة إلى نقطة مجاورة شاغرة. إذا لم يستطع فعل ذلك ، فقد خسر المباراة. كما هو الحال في مرحلة التسديد ، فإن اللاعب الذي يقوم بمحاذاة ثلاث من قطعه على خط لوح لديه مطحنة ويمكنه إزالة إحدى قطع خصمه. أي لاعب يتقلص إلى قطعتين وليس لديه خيار لتشكيل طواحين جديدة ، وبالتالي يخسر اللعبة. يمكن للاعب أيضًا أن يخسر بأكثر من ثلاث قطع إذا قام خصمه بحظرها بحيث لا يمكن نقلها.\n\nطيران\n\nفي بعض المتغيرات من القواعد ، بمجرد أن يتبقى للاعب ثلاث قطع فقط ، قد \"تطير\" قطعه أو \"تقفز\" أو \"تقفز\" إلى أي نقاط شاغرة ، وليس فقط النقاط المجاورة.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "عدد القطع",
+  "pieceCount": "عدد القطع:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "فى اليد",
+  "inHand": "{player} في متناول اليد: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "على اللوحة",
+  "onBoard": "{player} على متن الطائرة: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "جانب للتحرك",
+  "sideToMove": "جانب للتحرك: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "الحركة الاخيرة",
+  "lastMove": "آخر حركة: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "إنه تعادل",
+  "isDraw": "إنه قرعة!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "عربى",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{نقل}=1{{count} نقل}other{{count} التحركات}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
