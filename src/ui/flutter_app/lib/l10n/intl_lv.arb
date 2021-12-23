@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "Lai tas stātos spēkā, lietotne ir nekavējoties jāaizver un jāatver no jauna.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Izvēlieties",
   "@pick": {
     "description": "Pick "
