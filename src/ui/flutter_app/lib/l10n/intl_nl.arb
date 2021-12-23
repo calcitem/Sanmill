@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": " Verplaatsen",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Verhuis lijst",
   "@showMoveList": {
     "description": "Move list"
