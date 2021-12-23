@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " isch am Zug.",
+  "tipToMove": "{player} zu bewegen.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Cha nid importiert wärde.",
+  "cannotImport": "{invalidMove} kann nicht importiert werden",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -216,7 +216,7 @@
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Fähler",
+  "error": "Fehler: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Pünkt",
+  "score": "Pünkt:",
   "@score": {
     "description": "Score"
   },
@@ -236,23 +236,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " het weniger aus 3 Steine.",
+  "loseReasonlessThanThree": "{player} Stückzahl ist kleiner als drei.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " git uf.",
+  "loseReasonResign": "{player} ist zurückgetreten.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " cha nüm zieh.",
+  "loseReasonNoWay": "{player} hat keinen Weg zu gehen.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "zBrätt isch vou.",
+  "loseReasonBoardIsFull": "Das Brett ist voll, und {player} hat keine Möglichkeit mehr zu gehen.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Zit isch ume.",
+  "loseReasonTimeOver": "Die Zeit ist vorbei, {player} verloren.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -280,7 +280,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "E schwäreri Stufe probiere? Neui Stufe: ",
+  "challengeHarderLevel": "Schwierigeres Level herausfordern? Das neue Level wird das Level {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -296,7 +296,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Version",
+  "version": "Version: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -440,7 +440,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Zweiter Spieler verliert wenn das Brett voll ist",
+  "isWhiteLoseButNotDrawWhenBoardFull": "Zweiter Spieler verliert wenn das Brett voll ist.",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -584,7 +584,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Näh",
+  "pick": "{element} näh",
   "@pick": {
     "description": "Pick "
   },
@@ -806,15 +806,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Ahzauh Steine für jede Spieler",
+  "pieceCount": "Ahzauh Steine für jede Spieler:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "i dr Hang",
+  "inHand": "{player} in der Hand: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "ufem Spiubrätt",
+  "onBoard": "{player} an Bord: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1074,11 +1074,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Seite zum Bewegen",
+  "sideToMove": "Zu bewegende Seite: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Letzter Zug",
+  "lastMove": "Letzter Zug: {move}",
   "@lastMove": {
     "description": "Last move"
   },
