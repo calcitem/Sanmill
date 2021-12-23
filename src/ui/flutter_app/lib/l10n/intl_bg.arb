@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": " Премествания",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Списък с ходове",
   "@showMoveList": {
     "description": "Move list"
