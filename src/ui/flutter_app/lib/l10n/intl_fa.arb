@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": " اُمین حرکت",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "لیست حرکت",
   "@showMoveList": {
     "description": "Move list"
