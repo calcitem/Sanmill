@@ -225,7 +225,7 @@ class _GamePageState extends State<GamePage>
         context: context,
         backgroundColor: Colors.transparent,
         builder: (context) => SimpleDialog(
-          semanticLabel: S.of(context).move_number(0),
+          semanticLabel: S.of(context).move,
           backgroundColor: Colors.transparent,
           children: <Widget>[
             if (!LocalDatabaseService
@@ -482,7 +482,7 @@ class _GamePageState extends State<GamePage>
     final moveButton = ToolbarItem.icon(
       onPressed: _showMoveOptions,
       icon: const Icon(FluentIcons.calendar_agenda_24_regular),
-      label: Text(S.of(context).move_number(0)),
+      label: Text(S.of(context).move),
     );
 
     final infoButton = ToolbarItem.icon(
