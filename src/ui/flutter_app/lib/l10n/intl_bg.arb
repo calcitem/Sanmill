@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " да се преместите.",
+  "tipToMove": "{player} за преместване.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Мислене...",
+  "thinking": "Мислене…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Не може да се импортира",
+  "cannotImport": "Не може да се импортира {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -208,15 +208,15 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Играта започна, моля, поставете",
+  "gameStarted": "Играта започна, моля, поставете.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Анализиране на ...",
+  "analyzing": "Анализиране на…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Грешка",
+  "error": "Грешка: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Резултат",
+  "score": "Резултат:",
   "@score": {
     "description": "Score"
   },
@@ -236,7 +236,7 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " Броят на фигурите е по-малък от три.",
+  "loseReasonlessThanThree": "Броят на {player} е по-малък от три.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "За разработчици",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "Режим за разработчици",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "Докоснете отново назад, за да излезете.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "Променливи на средата",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "Още",
   "@more": {
