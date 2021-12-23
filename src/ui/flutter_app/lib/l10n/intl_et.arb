@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "Te peate rakenduse kohe sulgema ja uuesti avama, et see jõustuks.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Valige",
   "@pick": {
     "description": "Pick "
