@@ -1165,15 +1165,5 @@
   "languageName": "繁體中文",
   "@languageName": {
     "description": "The name of the current language"
-  },
-  "move_number": "{count,plural, =0{步}=1{{count} 步}other{{count} 步}}",
-  "@move_number": {
-    "description": "Moves to take back",
-    "placeholders": {
-      "count": {
-        "description": "Number of Moves",
-        "example": "3"
-      }
-    }
   }
 }
