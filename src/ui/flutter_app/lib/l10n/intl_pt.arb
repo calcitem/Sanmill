@@ -235,23 +235,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " O número de peças é inferior a três.",
+  "loseReasonlessThanThree": "A contagem de peças {player} é inferior a três.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " retiros.",
+  "loseReasonResign": "{player} retiros.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " não consegue encontrar um meio de avançar.",
+  "loseReasonNoWay": "{player} não tem como ir.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "O quadro está cheio, não há como ir.",
+  "loseReasonBoardIsFull": "A placa está cheia e {player} não tem como ir.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "O tempo acabou",
+  "loseReasonTimeOver": "O tempo acabou, {player} perdido.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -259,7 +259,7 @@
   "@drawReasonRule50": {
     "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
-  "drawReasonBoardIsFull": "É um sorteio porque o quadro está cheio",
+  "drawReasonBoardIsFull": "É um sorteio porque o quadro está cheio.",
   "@drawReasonBoardIsFull": {
     "description": "It is a Draw because the board is full"
   },
@@ -271,7 +271,7 @@
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
-  "gameOver": "O jogo acabou.",
+  "gameOver": "O jogo acabou",
   "@gameOver": {
     "description": "Game Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Desafiar um nível mais difícil? Aumentará a dificuldade para ",
+  "challengeHarderLevel": "Desafie o nível mais difícil? O novo nível será nível {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Versão",
+  "version": "Versão: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -439,7 +439,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "O segundo jogador perde quando o tabuleiro está cheio.",
+  "isWhiteLoseButNotDrawWhenBoardFull": "O segundo jogador perde quando o tabuleiro está cheio",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Selecione",
+  "pick": "Escolha {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Apoio...",
+  "takingBack": "Apoio…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Espere...",
+  "waiting": "Espere…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -725,7 +725,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "O objetivo do jogo é deixar o adversário com menos de três peças ou sem movimentos legais.\n\nO jogo é automaticamente sorteado se o jogo for reposicionado pela terceira vez, ou se nenhum retiro tiver sido feito nas últimas 100 jogadas (configurável).\n\nO jogo é jogado em três fases:\n\n1. colocação de peças em pontos vazios 2.\n2. Peças em movimento para pontos adjacentes\n3. (fase opcional) Movimento das peças para qualquer ponto livre quando o jogador fica com três peças.\n\nColocação\n\nO jogo começa com um tabuleiro vazio, que consiste em uma grade com vinte e quatro pontos. Os jogadores se revezam para colocar suas peças nos pontos livres até que cada jogador tenha colocado todas as peças no tabuleiro. Se um jogador consegue colocar três de suas peças em linha reta, ele tem um \"moinho\" e pode remover uma das peças de seu oponente do tabuleiro.\n\nEm algumas variações, acontece que os jogadores devem primeiro remover quaisquer outras peças antes de remover uma peça de um moinho formado.\n\nEm algumas variantes, há uma regra de que todos os pontos das peças removidas não podem ser devolvidos ao quadro na fase de colocação.\n\nUma vez que todas as peças tenham sido utilizadas, os jogadores se revezam para se mover.\n\nMovimento\n\nPara se mover, um jogador move uma de suas peças ao longo de uma linha no tabuleiro para um ponto adjacente livre. Se ele não pode fazer isso, perdeu o jogo. Como na fase de preparação, um jogador que alinha três de suas peças em uma linha no tabuleiro tem um moinho e pode remover uma das peças de seu oponente. Qualquer jogador que subtrai duas peças não tem opção de formar novos moinhos e perde o jogo. Um jogador também pode perder com mais de três peças se seu oponente as bloquear de se mover.\n\nVôo\n\nEm uma variante comum, uma vez que um jogador tenha apenas três peças, suas peças podem \"voar\", \"pular\" ou \"saltar\" para qualquer ponto livre, não apenas adjacentes.",
+  "helpContent": "O objetivo do jogo é deixar o adversário com menos de três peças ou sem movimentos legais.\n\nO jogo é automaticamente sorteado se o jogo for reposicionado pela terceira vez, ou se nenhum retiro tiver sido feito nas últimas 100 jogadas (configurável).\n\nO jogo é jogado em três fases:\n\n1. colocação de peças em pontos vazios 2.\n2. Peças em movimento para pontos adjacentes\n3. (fase opcional) Movimento das peças para qualquer ponto livre quando o jogador fica com três peças.\n\nColocação\n\nO jogo começa com um tabuleiro vazio, que consiste em uma grade com vinte e quatro pontos. Os jogadores se revezam para colocar suas peças nos pontos livres até que cada jogador tenha colocado todas as peças no tabuleiro. Se um jogador consegue colocar três de suas peças em linha reta, ele tem um \"moinho\" e pode remover uma das peças de seu oponente do tabuleiro.\n\nEm algumas variações, acontece que os jogadores devem primeiro remover quaisquer outras peças antes de remover uma peça de um moinho formado.\n\nEm algumas variantes, há uma regra de que todos os pontos das peças removidas não podem ser devolvidos ao quadro na fase de colocação.\n\nUma vez que todas as peças tenham sido utilizadas, os jogadores se revezam para se mover.\n\nMovimento\n\nPara se mover, um jogador move uma de suas peças ao longo de uma linha no tabuleiro para um ponto adjacente livre. Se ele não pode fazer isso, perdeu o jogo. Como na fase de preparação, um jogador que alinha três de suas peças em uma linha no tabuleiro tem um moinho e pode remover uma das peças de seu oponente. Qualquer jogador que subtrai duas peças não tem opção de formar novos moinhos e perde o jogo. Um jogador também pode perder com mais de três peças se seu oponente as bloquear de se mover.\n\nVôo\n\nEm uma variante comum, uma vez que um jogador tenha apenas três peças, suas peças podem \"voar\", \"pular\" ou \"saltar\" para qualquer ponto livre, não apenas adjacentes.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Contagem de peças",
+  "pieceCount": "Contagem de peças:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "na mão",
+  "inHand": "{player} em mãos: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "no quadro",
+  "onBoard": "{player} a bordo: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1009,7 +1009,7 @@
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
-  "mayBreakAndRemakeMillRepeatedly": "O moinho pode ser quebrado e refeito repetidamente.",
+  "mayBreakAndRemakeMillRepeatedly": "O moinho pode ser quebrado e refeito repetidamente",
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
@@ -1017,7 +1017,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "O jogo é empatado se um jogador tiver três peças e depois de dez jogadas nenhum dos jogadores remove as peças do adversário.",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "O jogo é empatado se um jogador tiver três peças e depois de dez jogadas nenhum dos jogadores remove as peças do adversário",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Lado para mover",
+  "sideToMove": "Lado para mover: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Última jogada",
+  "lastMove": "Última jogada: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "É um empate.",
+  "isDraw": "É um empate!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "Português",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Jogada}=1{{count} Jogada}other{{count} Movimentos}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
