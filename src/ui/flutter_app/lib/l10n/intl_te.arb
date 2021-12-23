@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "అమలులోకి రావడానికి మీరు వెంటనే మూసివేసి అనువర్తనాన్ని తిరిగి తెరవాలి.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "ఎంచుకోండి",
   "@pick": {
     "description": "Pick "
