@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": " Flytninger",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Liste over flytninger",
   "@showMoveList": {
     "description": "Move list"
