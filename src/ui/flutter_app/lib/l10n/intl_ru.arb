@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " переместиться.",
+  "tipToMove": "{player} двигаться.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Размышления...",
+  "thinking": "Размышления…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Невозможно импортировать",
+  "cannotImport": "Невозможно импортировать {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -208,15 +208,15 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Игра началась, пожалуйста, поместите",
+  "gameStarted": "Игра началась, пожалуйста, поместите.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Анализ ...",
+  "analyzing": "Анализ…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Ошибка",
+  "error": "Ошибка: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Очки",
+  "score": "Очки:",
   "@score": {
     "description": "Score"
   },
@@ -236,7 +236,7 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " количество фигур меньше трех.",
+  "loseReasonlessThanThree": "{player} количество штук меньше трех.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "Для разработчиков",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "Режим разработчика",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "Нажмите назад еще раз, чтобы выйти.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "Переменные окружения",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "Больше",
   "@more": {
