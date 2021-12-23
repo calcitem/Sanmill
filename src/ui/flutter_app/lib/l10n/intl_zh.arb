@@ -216,7 +216,7 @@
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "错误",
+  "error": "错误：{message}",
   "@error": {
     "description": "Error"
   },
@@ -236,23 +236,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "剩余棋子少于3枚。",
+  "loseReasonlessThanThree": "{player}的剩余棋子少于3枚。",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "认输了。",
+  "loseReasonResign": "{player}认输了。",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "无路可走。",
+  "loseReasonNoWay": "{player}无路可走。",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "因棋盘摆满而无路可走。",
+  "loseReasonBoardIsFull": "{player}因棋盘摆满而无路可走。",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "超时判负。",
+  "loseReasonTimeOver": "{player}超时判负。",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -268,7 +268,7 @@
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
-  "gameOverUnknownReason": "游戏结束，原因未知！",
+  "gameOverUnknownReason": "游戏结束！原因未知。",
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
@@ -276,11 +276,11 @@
   "@gameOver": {
     "description": "Game Over"
   },
-  "youWin": "恭喜你赢了",
+  "youWin": "恭喜你赢了！",
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "后续提升难度吗？\n提升后的难度等级将为",
+  "challengeHarderLevel": "后续提升难度吗？提升后的难度等级将为{level}级！",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -296,7 +296,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "版本",
+  "version": "版本：{version_number}",
   "@version": {
     "description": "Version"
   },
