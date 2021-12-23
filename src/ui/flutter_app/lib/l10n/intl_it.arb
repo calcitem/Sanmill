@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "Nessuna registrazione.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "Si prega di attendere...",
   "@pleaseWait": {
     "description": "Please wait..."
