@@ -283,7 +283,7 @@
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
-  "youLose": "你輸了",
+  "youLose": "你輸了！",
   "@youLose": {
     "description": "You Lose!"
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "回退中",
+  "takingBack": "回退中…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "請稍等",
+  "waiting": "請稍等…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -1017,7 +1017,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "一方剩下三個棋子並十步內雙方均未吃子則和棋。",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "一方剩下三個棋子並十步內雙方均未吃子則和棋",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "It is a Draw",
+  "isDraw": "和棋",
   "@isDraw": {
     "description": "It is a Draw!"
   },
