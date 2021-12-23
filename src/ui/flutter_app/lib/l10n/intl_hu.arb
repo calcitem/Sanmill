@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "Az alkalmazás kilép.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "Azonnali bezárás után újra meg kell nyitnia az alkalmazást.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
