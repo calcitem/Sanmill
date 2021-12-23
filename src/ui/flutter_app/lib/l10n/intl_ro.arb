@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " a muta.",
+  "tipToMove": "{player} pentru a muta.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Nu se poate importa",
+  "cannotImport": "Nu se poate importa {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -216,7 +216,7 @@
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Eroare",
+  "error": "Eroare: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Scor",
+  "score": "Scor:",
   "@score": {
     "description": "Score"
   },
@@ -236,23 +236,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " numărul pieselor este mai mic de trei.",
+  "loseReasonlessThanThree": "{player} numărul de piese este mai mic de trei.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "renunțare.",
+  "loseReasonResign": "{player} a demisionat.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " nu este o cale liberă.",
+  "loseReasonNoWay": "{player} nu are cum să meargă.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Tabla s-a umplut, nu are câmp liber.",
+  "loseReasonBoardIsFull": "Placa este plină și {player} nu are nicio cale de rezolvat.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Timpul a expirat",
+  "loseReasonTimeOver": "Timpul a trecut, {player} pierdut.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -280,7 +280,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Provocare la un nivel mai greu?\nNoul nivel va fi Level: ",
+  "challengeHarderLevel": "Provocare la nivel mai greu? Noul nivel va fi nivelul {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -296,7 +296,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Versiune",
+  "version": "Versiune: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -484,7 +484,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Istoricul mutărilor copiat în clipboard",
+  "moveHistoryCopied": "Istoricul mutărilor copiat în clipboard.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -548,7 +548,7 @@
   "@isNotationsShown": {
     "description": "Show notations on board"
   },
-  "isHistoryNavigationToolbarShown": "Afișați istoricul navigației pe  bara de instrumente",
+  "isHistoryNavigationToolbarShown": "Afișați istoricul navigației pe bara de instrumente",
   "@isHistoryNavigationToolbarShown": {
     "description": "Show history navigation toolbar"
   },
@@ -584,7 +584,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Alege",
+  "pick": "Alege {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -620,7 +620,7 @@
   "@toSelectPiece": {
     "description": "Tap on a piece to move it."
   },
-  "toMovePiece": "Atinge punctul pe care vrei să plasezi piesa",
+  "toMovePiece": "Atinge punctul pe care vrei să plasezi piesa.",
   "@toMovePiece": {
     "description": "Tap on point connected to piece to move it."
   },
@@ -806,15 +806,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Numărul de piese",
+  "pieceCount": "Numărul de piese:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "în mână",
+  "inHand": "{player} în mână: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "pe tablă",
+  "onBoard": "{player} la bord: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1030,7 +1030,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Jocul este extras dacă un jucător are trei piese și după zece mutări niciunul dintre jucători nu elimină piesele adversarului",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Jocul este extras dacă un jucător are trei piese și după zece mutări niciunul dintre jucători nu elimină piesele adversarului.",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
@@ -1074,11 +1074,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Partea de mișcare",
+  "sideToMove": "Partea de mișcare: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Ultima mișcare",
+  "lastMove": "Ultima mișcare: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1161,5 +1161,15 @@
   "languageName": "Română",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Mișcare}=1{{count} Mișcare}other{{count} Mișcări}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
