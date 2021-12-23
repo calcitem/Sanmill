@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "Boja pozadine izbornika",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "Boja stavke isticanja izbornika",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
