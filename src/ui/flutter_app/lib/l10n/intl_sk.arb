@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "Hlavné menu",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "Prístupnosť",
   "@accessibility": {
     "description": "Accessibility"
