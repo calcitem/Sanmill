@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "Salvestust ei toimu.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "Palun oodake.",
   "@pleaseWait": {
     "description": "Please wait..."
