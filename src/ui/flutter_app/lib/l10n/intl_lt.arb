@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "Turite iš karto uždaryti ir vėl atidaryti programą, kad ji pradėtų veikti.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Pasirinkite",
   "@pick": {
     "description": "Pick "
