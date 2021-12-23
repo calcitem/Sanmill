@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": "Lépések",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Lépéslista áttekintése",
   "@showMoveList": {
     "description": "Move list"
