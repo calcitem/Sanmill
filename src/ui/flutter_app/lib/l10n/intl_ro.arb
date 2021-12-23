@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Luând înapoi ...",
+  "takingBack": "Luând înapoi…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Aşteptare...",
+  "waiting": "Aşteptare…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -1017,7 +1017,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Jocul este extras dacă un jucător are trei piese și după zece mutări niciunul dintre jucători nu elimină piesele adversarului.",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Jocul este extras dacă un jucător are trei piese și după zece mutări niciunul dintre jucători nu elimină piesele adversarului",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
