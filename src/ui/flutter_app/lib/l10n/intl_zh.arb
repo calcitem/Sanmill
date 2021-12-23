@@ -296,7 +296,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "版本：{version_number}",
+  "version": "版本：{versionNumber}",
   "@version": {
     "description": "Version"
   },
