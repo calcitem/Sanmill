@@ -1195,5 +1195,15 @@
         "example": "3"
       }
     }
+  },
+  "moveNumber": "{count,plural, =0{Zug}=1{{count} Zug}other{{count} Züge}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
