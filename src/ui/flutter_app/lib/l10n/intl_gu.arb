@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "કોઈ રેકોર્ડિંગ નથી.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "મહેરબાની કરી રાહ જુવો.",
   "@pleaseWait": {
     "description": "Please wait..."
