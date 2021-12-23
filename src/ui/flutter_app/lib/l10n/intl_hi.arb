@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "मुख्य मेनू",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "सरल उपयोग",
   "@accessibility": {
     "description": "Accessibility"
