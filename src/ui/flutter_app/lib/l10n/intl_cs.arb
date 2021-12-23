@@ -239,19 +239,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "  odstoupit.",
+  "loseReasonResign": "{player} rezignoval.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "  není způsob, jak jít.",
+  "loseReasonNoWay": "{player} nemá kam jít.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Deska je plná, není kam jít.",
+  "loseReasonBoardIsFull": "Deska je plná a {player} nemá kam jít.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Čas vypršel",
+  "loseReasonTimeOver": "Čas vypršel, {player} ztraceno.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -259,7 +259,7 @@
   "@drawReasonRule50": {
     "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
-  "drawReasonBoardIsFull": "Jedná se o Draw, protože hrací deska je plná",
+  "drawReasonBoardIsFull": "Jedná se o Draw, protože hrací deska je plná.",
   "@drawReasonBoardIsFull": {
     "description": "It is a Draw because the board is full"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Vyzvat na těžší úroveň?\nNová úroveň bude Úroveň ",
+  "challengeHarderLevel": "Vyzvat těžší úroveň? Nová úroveň bude úroveň {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Verze",
+  "version": "Verze: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Přesunout historii zkopírovanou do schránky",
+  "moveHistoryCopied": "Přesunout historii zkopírovanou do schránky.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Výběr",
+  "pick": "Vyberte {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -659,7 +659,7 @@
   "@privacyPolicy": {
     "description": "Privacy Policy"
   },
-  "privacyPolicy_Detail_1": "Přečtěte si pozorně a ujistěte se, že tomu plně rozumíte a souhlasíte s tím",
+  "privacyPolicy_Detail_1": "Přečtěte si pozorně a ujistěte se, že tomu plně rozumíte a souhlasíte s tím ",
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Vzít zpět...",
+  "takingBack": "Vzít zpět…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Čekání...",
+  "waiting": "Čekání…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -705,7 +705,7 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "Crack-mill",
+  "crackMill": "Crack-mlýn",
   "@crackMill": {
     "description": "Crack-mill"
   },
@@ -725,7 +725,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Cílem hry je nechat soupeře s méně než třemi kusy nebo bez legálních tahů.\n\nHra se automaticky losuje, pokud dojde k pozici již potřetí, nebo pokud během posledních 100 (konfigurovatelných) tahů nedošlo k odebrání.\n\nHra probíhá ve třech fázích:\n\n1. Ukládání dílků na volná místa\n2. Přesunutí kusů do sousedních bodů\n3. (volitelná fáze) Přesouvání figurek na libovolné volné místo, když byl hráč snížen na tři figurky\n\nUmístění\n\nHra začíná prázdnou deskou, kterou tvoří mřížka s dvaceti čtyřmi body. Hráči se střídají při umisťování svých figurek na volné body, dokud každý hráč neumístí všechny figurky na hrací plochu. Pokud hráč může umístit tři své figurky do přímky, má „mlýn“ a může odstranit jednu ze svých soupeřových figurek z hrací plochy.\n\nV některých variantách pravidel musí hráči nejprve odebrat všechny další figurky, než odeberou figurku z formovaného mlýna.\n\nV některých variantách pravidel nemusí být všechny body odstraněných figurek znovu umístěny do umisťovací fráze.\n\nJakmile jsou použity všechny figurky, hráči se střídají v pohybu.\n\nStěhování\n\nHráč se pohybuje jedním ze svých kamenů po palubní linii na volné sousední místo. Pokud tak nemůže učinit, prohrál hru. Stejně jako ve fázi umístění má hráč, který zarovná tři své figurky na hrací čáru, mlýn a může odstranit jednu ze svých soupeřových figurek. Každý hráč se sníží na dva kusy a nemá možnost vytvářet nové mlýny, a tak prohrává. Hráč může také prohrát s více než třemi kameny, pokud je jeho protivník zablokuje, takže jimi nelze hýbat.\n\nLétající\n\nV některých variantách pravidel, jakmile hráči zbývají pouze tři kameny, mohou jeho kameny „létat“, „skákat“ nebo „skákat“ na libovolná volná místa, nejen na sousední.",
+  "helpContent": "Cílem hry je nechat soupeře s méně než třemi kusy nebo bez legálních tahů.\n\nHra se automaticky losuje, pokud dojde k pozici již potřetí, nebo pokud během posledních 100 (konfigurovatelných) tahů nedošlo k odebrání.\n\nHra probíhá ve třech fázích:\n\n1. Ukládání dílků na volná místa\n2. Přesunutí kusů do sousedních bodů\n3. (volitelná fáze) Přesouvání figurek na libovolné volné místo, když byl hráč snížen na tři figurky\n\nUmístění\n\nHra začíná prázdnou deskou, kterou tvoří mřížka s dvaceti čtyřmi body. Hráči se střídají při umisťování svých figurek na volné body, dokud každý hráč neumístí všechny figurky na hrací plochu. Pokud hráč může umístit tři své figurky do přímky, má „mlýn“ a může odstranit jednu ze svých soupeřových figurek z hrací plochy.\n\nV některých variantách pravidel musí hráči nejprve odebrat všechny další figurky, než odeberou figurku z formovaného mlýna.\n\nV některých variantách pravidel nemusí být všechny body odstraněných figurek znovu umístěny do umisťovací fráze.\n\nJakmile jsou použity všechny figurky, hráči se střídají v pohybu.\n\nStěhování\n\nHráč se pohybuje jedním ze svých kamenů po palubní linii na volné sousední místo. Pokud tak nemůže učinit, prohrál hru. Stejně jako ve fázi umístění má hráč, který zarovná tři své figurky na hrací čáru, mlýn a může odstranit jednu ze svých soupeřových figurek. Každý hráč se sníží na dva kusy a nemá možnost vytvářet nové mlýny, a tak prohrává. Hráč může také prohrát s více než třemi kameny, pokud je jeho protivník zablokuje, takže jimi nelze hýbat.\n\nLétající\n\nV některých variantách pravidel, jakmile hráči zbývají pouze tři kameny, mohou jeho kameny „létat“, „skákat“ nebo „skákat“ na libovolná volná místa, nejen na sousední.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Počet kusů",
+  "pieceCount": "Počet kusů:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "v ruce",
+  "inHand": "{player} v ruce: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "na palubě",
+  "onBoard": "{player} na palubě: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -925,7 +925,7 @@
   "@light": {
     "description": "Light"
   },
-  "dark": "Dark",
+  "dark": "Temný",
   "@dark": {
     "description": "Dark"
   },
@@ -1017,7 +1017,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Hra je nerozhodná, pokud má hráč tři figurky a po deseti tazích žádný z hráčů neodstraní soupeřovy figurky.",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Hra je nerozhodná, pokud má hráč tři figurky a po deseti tazích žádný z hráčů neodstraní soupeřovy figurky",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Strana k pohybu",
+  "sideToMove": "Strana k pohybu: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Poslední tah",
+  "lastMove": "Poslední tah: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "Čeština",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Hýbat se}=1{{count} Hýbat se}other{{count} Pohyby}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
