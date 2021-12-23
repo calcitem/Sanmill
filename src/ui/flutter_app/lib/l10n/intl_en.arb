@@ -500,7 +500,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "The second player loses when the board is full.",
+  "isWhiteLoseButNotDrawWhenBoardFull": "The second player loses when the board is full",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -544,7 +544,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Move history copied to clipboard",
+  "moveHistoryCopied": "Move history copied to clipboard.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
