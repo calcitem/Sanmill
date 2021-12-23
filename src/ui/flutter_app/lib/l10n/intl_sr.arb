@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": "  Покрет",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Листа померања",
   "@showMoveList": {
     "description": "Move list"
