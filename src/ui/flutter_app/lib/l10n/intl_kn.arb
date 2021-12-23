@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "ಮುಖ್ಯ ಪಟ್ಟಿ",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "ಪ್ರವೇಶಿಸುವಿಕೆ",
   "@accessibility": {
     "description": "Accessibility"
