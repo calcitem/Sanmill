@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "เมนูหลัก",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "การเข้าถึง",
   "@accessibility": {
     "description": "Accessibility"
