@@ -239,19 +239,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " dimettersi.",
+  "loseReasonResign": "{player} dimettersi.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " non c'è modo di andare.",
+  "loseReasonNoWay": "{player} non ha modo di andare.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Il tabellone è pieno, non c'è modo di andare.",
+  "loseReasonBoardIsFull": "Il tabellone è pieno e {player} non ha modo di andare.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Tempo scaduto",
+  "loseReasonTimeOver": "Il tempo è finito, {player} ha perso.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -271,7 +271,7 @@
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
-  "gameOver": "Game Over",
+  "gameOver": "Gioco finito",
   "@gameOver": {
     "description": "Game Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Sfidare un livello più difficile?\nIl nuovo livello sarà il livello ",
+  "challengeHarderLevel": "Sfida livello più difficile? Il nuovo livello sarà il livello {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Versione",
+  "version": "Versione: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -439,7 +439,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Il secondo giocatore perde quando il tabellone è pieno.",
+  "isWhiteLoseButNotDrawWhenBoardFull": "Il secondo giocatore perde quando il tabellone è pieno",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -471,7 +471,7 @@
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
-  "rollback": "Rollback",
+  "rollback": "Replica",
   "@rollback": {
     "description": "Rollback"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Storia delle mosse copiata negli appunti",
+  "moveHistoryCopied": "Storia delle mosse copiata negli appunti.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -491,7 +491,7 @@
   "@help": {
     "description": "Help"
   },
-  "feedback": "Feedback",
+  "feedback": "Risposta",
   "@feedback": {
     "description": "Feedback"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Scegli",
+  "pick": "Scegli {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Riprendere...",
+  "takingBack": "Riprendere…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Aspettare...",
+  "waiting": "Aspettare…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -705,7 +705,7 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "Crack-mill",
+  "crackMill": "Crepa-mill",
   "@crackMill": {
     "description": "Crack-mill"
   },
@@ -781,7 +781,7 @@
   "@passive": {
     "description": "Passive"
   },
-  "timeout": "Timeout",
+  "timeout": "Tempo scaduto",
   "@timeout": {
     "description": "Timeout"
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Conteggio dei pezzi",
+  "pieceCount": "Conteggio dei pezzi:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "in mano",
+  "inHand": "{player} in mano: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "sulla tavola",
+  "onBoard": "{player} a bordo: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Lato da spostare",
+  "sideToMove": "Lato da spostare: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Ultima mossa",
+  "lastMove": "Ultima mossa: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "È un pareggio",
+  "isDraw": "È un pareggio!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
