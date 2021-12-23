@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": " Beveger seg",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Flytt liste",
   "@showMoveList": {
     "description": "Move list"
