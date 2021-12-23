@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "Боја позадине менија",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "Боја ставке истицања менија",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
