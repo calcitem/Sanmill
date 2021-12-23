@@ -152,11 +152,11 @@
   "@tipToMove": {
     "description": " to move."
   },
-  "whiteWin": "先手必勝",
+  "whiteWin": "先手必勝！",
   "@whiteWin": {
     "description": "Player 1 wins!"
   },
-  "blackWin": "クイーンの動きが勝つ",
+  "blackWin": "クイーンの動きが勝つ！",
   "@blackWin": {
     "description": "Player 2 wins!"
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "相手が考えているのは...。",
+  "thinking": "相手が考えているのは…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "ゲームがクリップボードからインポートされている",
+  "gameImported": "ゲームがクリップボードからインポートされている。",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
@@ -212,7 +212,7 @@
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "ポジションを分析しています...",
+  "analyzing": "ポジションを分析しています…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "スコア",
+  "score": "スコア:",
   "@score": {
     "description": "Score"
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "開発オプション",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "デベロッパーモード",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "もう一度returnを押してアプリケーションを終了する",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "環境変数",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "さらに",
   "@more": {
