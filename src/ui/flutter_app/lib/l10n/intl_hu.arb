@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Gondolkodás...",
+  "thinking": "Gondolkodás…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -208,11 +208,11 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "A játék indul, kérjük, rakjon",
+  "gameStarted": "A játék indul, kérjük, rakjon.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Elemzés...",
+  "analyzing": "Elemzés…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "Fejlesztőknek",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "fejlesztői mód",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "Koppintson újra a távozáshoz.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "Környezeti változók",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "Több",
   "@more": {
