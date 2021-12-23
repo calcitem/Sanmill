@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": "  Pohyby",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Přesunout seznam",
   "@showMoveList": {
     "description": "Move list"
