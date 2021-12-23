@@ -239,19 +239,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " loobuda.",
+  "loseReasonResign": "{player} loobuda.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " ei ole võimalik.",
+  "loseReasonNoWay": "{player}-l pole enam teed.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Laud on täis ja ei saa minna.",
+  "loseReasonBoardIsFull": "Tahvel on täis ja {player}-l pole enam teed.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Aeg on läbi",
+  "loseReasonTimeOver": "Aeg on möödas, {player} kadunud.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Väljakutse raskem tase? Uus tase on tase ",
+  "challengeHarderLevel": "Kas väljakutse raskem tase? Uueks tasemeks on {level} tase!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Versioon",
+  "version": "Versioon: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Liigutuste ajalugu kopeeritakse lõikelauale",
+  "moveHistoryCopied": "Liigutuste ajalugu kopeeritakse lõikelauale.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Valige",
+  "pick": "Valige {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Tagasi võtmine",
+  "takingBack": "Tagasi võtmine…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Ootamine",
+  "waiting": "Ootamine…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -705,7 +705,7 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "Crack-mill",
+  "crackMill": "Crack-veski",
   "@crackMill": {
     "description": "Crack-mill"
   },
@@ -725,7 +725,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Mängu eesmärk on jätta vastasele vähem kui kolm tükki või mitte ühtegi seaduslikku käiku.\n\nMängus tehakse automaatselt viik, kui positsioon tekib kolmandat korda või ei eemaldata viimase 100 (konfigureeritava) käigu jooksul.\n\nMäng kulgeb kolmes etapis:\n\n1. Mängijate paigutamine vabadele punktidele\n2. Mänguosade liigutamine naaberpunktidesse.\n3. (valikuline etapp) Mängijate arvu vähendamisel kolmele mängujoonele mängujoonte liigutamine mis tahes vabale punktile.\n\npaigutamine.\n\nMäng algab tühja lauaga, mis koosneb kahekümne nelja punktiga ruudustikust. Mängijad paigutavad kordamööda oma mänguasju vabadele punktidele, kuni iga mängija on paigutanud kõik mänguasjad lauale. Kui mängija suudab panna kolm oma tükki otse, on tal \"veski\" ja ta võib ühe oma vastasmängija tükki laualt eemaldada.\n\nMõnede reeglite kohaselt peavad mängijad enne moodustatud veski eemaldamist esmalt eemaldama kõik teised tükid.\n\nMõne reegli puhul ei saa paigutusfaasis eemaldatud tükke uuesti punktidesse paigutada.\n\nKui kasutada kõik tükid, liiguvad mängijad kordamööda.\n\nLiikumine\n\nLiigutamiseks liigutab mängija ühe oma mänguasja piki lauajooni vabasse naaberpunkti. Kui ta ei saa seda teha, on ta mängu kaotanud. Nagu ka asetamisfaasis, on mängijal, kes paigutab kolm oma mänguasja lauajoonele, veski ja ta võib eemaldada ühe oma vastasmängija mänguasja. Iga mängija, kes vähendab oma mängujoonte arvu kahele tükile, ei saa moodustada uusi veskeid ja kaotab seega mängu. Mängija võib kaotada ka siis, kui rohkem kui kolm tükki, kui vastane blokeerib nende liikumise.\n\nLendavad\n\nMõne reegli variandi puhul võivad mängija, kui tal on alles jäänud ainult kolm tükki, tema tükid lennata, hüpata või hüpata mis tahes vabadesse punktidesse, mitte ainult kõrvuti asuvatesse punktidesse.",
+  "helpContent": "Mängu eesmärk on jätta vastasele vähem kui kolm tükki või mitte ühtegi seaduslikku käiku.\n\nMängus tehakse automaatselt viik, kui positsioon tekib kolmandat korda või ei eemaldata viimase 100 (konfigureeritava) käigu jooksul.\n\nMäng kulgeb kolmes etapis:\n\n1. Mängijate paigutamine vabadele punktidele\n2. Mänguosade liigutamine naaberpunktidesse.\n3. (valikuline etapp) Mängijate arvu vähendamisel kolmele mängujoonele mängujoonte liigutamine mis tahes vabale punktile.\n\npaigutamine.\n\nMäng algab tühja lauaga, mis koosneb kahekümne nelja punktiga ruudustikust. Mängijad paigutavad kordamööda oma mänguasju vabadele punktidele, kuni iga mängija on paigutanud kõik mänguasjad lauale. Kui mängija suudab panna kolm oma tükki otse, on tal \"veski\" ja ta võib ühe oma vastasmängija tükki laualt eemaldada.\n\nMõnede reeglite kohaselt peavad mängijad enne moodustatud veski eemaldamist esmalt eemaldama kõik teised tükid.\n\nMõne reegli puhul ei saa paigutusfaasis eemaldatud tükke uuesti punktidesse paigutada.\n\nKui kasutada kõik tükid, liiguvad mängijad kordamööda.\n\nLiikumine\n\nLiigutamiseks liigutab mängija ühe oma mänguasja piki lauajooni vabasse naaberpunkti. Kui ta ei saa seda teha, on ta mängu kaotanud. Nagu ka asetamisfaasis, on mängijal, kes paigutab kolm oma mänguasja lauajoonele, veski ja ta võib eemaldada ühe oma vastasmängija mänguasja. Iga mängija, kes vähendab oma mängujoonte arvu kahele tükile, ei saa moodustada uusi veskeid ja kaotab seega mängu. Mängija võib kaotada ka siis, kui rohkem kui kolm tükki, kui vastane blokeerib nende liikumise.\n\nLendavad\n\nMõne reegli variandi puhul võivad mängija, kui tal on alles jäänud ainult kolm tükki, tema tükid lennata, hüpata või hüpata mis tahes vabadesse punktidesse, mitte ainult kõrvuti asuvatesse punktidesse.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -781,7 +781,7 @@
   "@passive": {
     "description": "Passive"
   },
-  "timeout": "Timeout",
+  "timeout": "Aeg maha",
   "@timeout": {
     "description": "Timeout"
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Tükkide arv",
+  "pieceCount": "Tükkide arv:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "käes",
+  "inHand": "{player} käes: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "laual",
+  "onBoard": "{player} pardal: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Külg liikumiseks",
+  "sideToMove": "Liigutatav külg: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Viimane käik",
+  "lastMove": "Viimane käik: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "See on viik",
+  "isDraw": "See on viik!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "Eestlane",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Teisalda}other{{count} Liigutused}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
