@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": "  ย้าย",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "ย้ายรายการ",
   "@showMoveList": {
     "description": "Move list"
