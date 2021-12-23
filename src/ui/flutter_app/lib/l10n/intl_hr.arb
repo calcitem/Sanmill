@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "Morate odmah zatvoriti i ponovo otvoriti aplikaciju da bi stupila na snagu.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Odabrati",
   "@pick": {
     "description": "Pick "
