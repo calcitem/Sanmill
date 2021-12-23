@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": "步",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "显示棋谱",
   "@showMoveList": {
     "description": "Move list"
