@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "デフォルトの設定を有効にするには、すぐにアプリを終了して再起動する必要があります。",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "セレクト",
   "@pick": {
     "description": "Pick "
