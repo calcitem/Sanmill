@@ -239,19 +239,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " avgå.",
+  "loseReasonResign": "{player} avgå.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " är ingen väg att gå.",
+  "loseReasonNoWay": "{player} har ingen väg att gå.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Brädet är fullt, och det finns inget sätt att gå.",
+  "loseReasonBoardIsFull": "Brädan är full och {player} har ingen väg att gå.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Tiden är slut.",
+  "loseReasonTimeOver": "Tiden är förbi, {player} förlorad.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -271,7 +271,7 @@
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
-  "gameOver": "Spelet är slut.",
+  "gameOver": "Spelet är slut",
   "@gameOver": {
     "description": "Game Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Vill du utmana en svårare nivå? Den nya nivån kommer att vara nivå ",
+  "challengeHarderLevel": "Utmana hårdare nivå? Den nya nivån kommer att vara nivå {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Version",
+  "version": "Version: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -407,7 +407,7 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Markera och fördröja borttagandet av pjäser.",
+  "hasBannedLocations": "Markera och fördröja borttagandet av pjäser",
   "@hasBannedLocations": {
     "description": "Mark and delay removing pieces"
   },
@@ -439,7 +439,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Den andra spelaren förlorar när brädet är fullt.",
+  "isWhiteLoseButNotDrawWhenBoardFull": "Den andra spelaren förlorar när brädet är fullt",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -471,7 +471,7 @@
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
-  "rollback": "Rollback",
+  "rollback": "Rulla tillbaka",
   "@rollback": {
     "description": "Rollback"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Flyghistorik kopieras till urklipp",
+  "moveHistoryCopied": "Flyghistorik kopieras till urklipp.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Välj",
+  "pick": "Välj {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Ta tillbaka",
+  "takingBack": "Ta tillbaka…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Vänta",
+  "waiting": "Vänta…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -705,7 +705,7 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "Crack-mill",
+  "crackMill": "Sprickkvarn",
   "@crackMill": {
     "description": "Crack-mill"
   },
@@ -725,7 +725,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Målet är att motståndaren ska ha färre än tre pjäser eller inga lagliga drag kvar.\n\nSpelet är automatiskt oavgjort om en position uppträder för tredje gången eller om ingen flyttning sker under de senaste 100 (konfigurerbara) dragen.\n\nSpelet pågår i tre faser:\n\n1. Placering av pjäser på lediga punkter.\n2. Flyttning av pjäser till angränsande punkter\n3. (valfri fas) Flytta pjäser till en ledig punkt när spelaren har tre pjäser kvar.\n\nPlacering av\n\nSpelet börjar med en tom bräda som består av ett rutnät med tjugofyra punkter. Spelarna turas om att placera sina pjäser på lediga punkter tills varje spelare har placerat alla pjäser på brädet. Om en spelare kan placera tre av sina pjäser rakt har han en \"kvarn\" och får ta bort en av motståndarens pjäser från brädet.\n\nI vissa regler måste spelarna först ta bort alla andra pjäser innan de tar bort en pjäs från en bildad kvarn.\n\nI vissa regler kan man inte placera pjäserna till de borttagna pjäsernas punkter igen i placeringsfasen.\n\nNär använda alla pjäser turas spelarna om att flytta.\n\nFlyttning\n\nFör att flytta flyttar en spelare en av sina pjäser längs en brädlinje till en ledig intilliggande punkt. Om han inte kan göra det har han förlorat spelet. Precis som i placeringsfasen har en spelare som ställer in tre av sina pjäser på en brädlinje en kvarn och får ta bort en av motståndarens pjäser. En spelare som reduceras till två pjäser har ingen möjlighet att bilda nya kvarnar och förlorar därmed spelet. En spelare kan också förlora om han har fler än tre pjäser om hans motståndare hindrar dem från att röra sig.\n\nFlygande\n\nI vissa varianter av reglerna kan en spelare, när han bara har tre bitar kvar, få sina bitar att flyga, hoppa eller hoppa till alla lediga punkter, inte bara till intilliggande punkter.",
+  "helpContent": "Målet är att motståndaren ska ha färre än tre pjäser eller inga lagliga drag kvar.\n\nSpelet är automatiskt oavgjort om en position uppträder för tredje gången eller om ingen flyttning sker under de senaste 100 (konfigurerbara) dragen.\n\nSpelet pågår i tre faser:\n\n1. Placering av pjäser på lediga punkter.\n2. Flyttning av pjäser till angränsande punkter\n3. (valfri fas) Flytta pjäser till en ledig punkt när spelaren har tre pjäser kvar.\n\nPlacering av\n\nSpelet börjar med en tom bräda som består av ett rutnät med tjugofyra punkter. Spelarna turas om att placera sina pjäser på lediga punkter tills varje spelare har placerat alla pjäser på brädet. Om en spelare kan placera tre av sina pjäser rakt har han en \"kvarn\" och får ta bort en av motståndarens pjäser från brädet.\n\nI vissa regler måste spelarna först ta bort alla andra pjäser innan de tar bort en pjäs från en bildad kvarn.\n\nI vissa regler kan man inte placera pjäserna till de borttagna pjäsernas punkter igen i placeringsfasen.\n\nNär använda alla pjäser turas spelarna om att flytta.\n\nFlyttning\n\nFör att flytta flyttar en spelare en av sina pjäser längs en brädlinje till en ledig intilliggande punkt. Om han inte kan göra det har han förlorat spelet. Precis som i placeringsfasen har en spelare som ställer in tre av sina pjäser på en brädlinje en kvarn och får ta bort en av motståndarens pjäser. En spelare som reduceras till två pjäser har ingen möjlighet att bilda nya kvarnar och förlorar därmed spelet. En spelare kan också förlora om han har fler än tre pjäser om hans motståndare hindrar dem från att röra sig.\n\nFlygande\n\nI vissa varianter av reglerna kan en spelare, när han bara har tre bitar kvar, få sina bitar att flyga, hoppa eller hoppa till alla lediga punkter, inte bara till intilliggande punkter.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -781,7 +781,7 @@
   "@passive": {
     "description": "Passive"
   },
-  "timeout": "Timeout",
+  "timeout": "Paus",
   "@timeout": {
     "description": "Timeout"
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Antal bitar",
+  "pieceCount": "Antal bitar:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "i handen",
+  "inHand": "{player} i handen: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "på brädet",
+  "onBoard": "{player} ombord: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Sida att flytta",
+  "sideToMove": "Sida att flytta: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Sista drag",
+  "lastMove": "Sista draget: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "Svenska",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Flytta}=1{{count} Flytta}other{{count} Rör sig}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
