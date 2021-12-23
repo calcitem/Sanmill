@@ -648,10 +648,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "The app will exit.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "You have to close immediately and reopen the app to take effect.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
