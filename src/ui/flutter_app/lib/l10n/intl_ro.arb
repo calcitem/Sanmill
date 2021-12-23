@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": " Mutări",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Vezi lista de mutări",
   "@showMoveList": {
     "description": "Move list"
