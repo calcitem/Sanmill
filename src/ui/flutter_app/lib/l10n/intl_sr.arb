@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "Нема снимања.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "Сачекајте.",
   "@pleaseWait": {
     "description": "Please wait..."
