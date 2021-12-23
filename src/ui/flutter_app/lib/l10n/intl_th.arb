@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "คุณต้องปิดทันทีและเปิดแอปอีกครั้งจึงจะมีผล",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "เลือก",
   "@pick": {
     "description": "Pick "
