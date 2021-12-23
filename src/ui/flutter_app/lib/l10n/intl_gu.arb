@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": " ચાલ",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "સૂચિ ખસેડો",
   "@showMoveList": {
     "description": "Move list"
