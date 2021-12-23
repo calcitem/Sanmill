@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "Цвят на фона на менюто",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "Цвят на елемента за подчертаване на менюто",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
