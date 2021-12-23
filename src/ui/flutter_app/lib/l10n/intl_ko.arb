@@ -71,15 +71,15 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "잘못된 아이",
+  "tipSelectWrong": "잘못된 아이。",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "정착하십시오",
+  "tipPlace": "정착하십시오.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "여기에 떨어질 수 없어",
+  "tipBanPlace": "여기에 떨어질 수 없어.",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
@@ -87,23 +87,23 @@
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "먹어 줘",
+  "tipRemove": "먹어 줘.",
   "@tipRemove": {
     "description": "Remove a piece."
   },
-  "tipBanRemove": "이거 먹을 수 없어",
+  "tipBanRemove": "이거 먹을 수 없어.",
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "먹다",
+  "tipRemoved": "먹다.",
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipMove": "제발 가줘",
+  "tipMove": "제발 가줘.",
   "@tipMove": {
     "description": "Move a piece."
   },
-  "tipCannotPlace": "여기에 떨어지지 마십시오",
+  "tipCannotPlace": "여기에 떨어지지 마십시오.",
   "@tipCannotPlace": {
     "description": "You can't place your piece here."
   },
@@ -111,15 +111,15 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "세 아들을 연속해서 먹어주세요",
+  "tipMill": "세 아들을 연속해서 먹어주세요.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
-  "tipContinueMill": "계속 먹어주세요",
+  "tipContinueMill": "계속 먹어주세요.",
   "@tipContinueMill": {
     "description": "Continue to take your opponent's piece."
   },
-  "tipSelectOpponentsPiece": "상대방의 말을 선택하세요",
+  "tipSelectOpponentsPiece": "상대방의 말을 선택하세요.",
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
@@ -135,11 +135,11 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipSelectPieceToMove": "이동할 자신의 폰을 선택하세요",
+  "tipSelectPieceToMove": "이동할 자신의 폰을 선택하세요.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "3 개만 남음",
+  "tipHaveThreePiecesLeft": "3 개만 남음.",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
@@ -235,23 +235,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "남은 조각이 3 개 미만입니다.",
+  "loseReasonlessThanThree": "{player} 개수가 3개 미만입니다.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "주다.",
+  "loseReasonResign": "{player} 사임했습니다.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "갈 길이 없습니다.",
+  "loseReasonNoWay": "{player}는 갈 길이 없습니다.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "체스 판이 꽉 차서 갈 길이 없었습니다.",
+  "loseReasonBoardIsFull": "보드가 가득 차서 {player}가 갈 곳이 없습니다.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "초과 근무는 부정적입니다.",
+  "loseReasonTimeOver": "시간은 끝났습니다. {player}를 잃었습니다.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -267,7 +267,7 @@
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
-  "gameOverUnknownReason": "게임이 끝났습니다. 이유를 알 수 없습니다!",
+  "gameOverUnknownReason": "게임 끝! 알 수 없는 이유입니다.",
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
@@ -275,15 +275,15 @@
   "@gameOver": {
     "description": "Game Over"
   },
-  "youWin": "우승을 축하합니다",
+  "youWin": "네가 이겼다! 축하합니다!",
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "앞으로 난이도가 높아질까요?\n증가 된 난이도는",
+  "challengeHarderLevel": "더 어려운 레벨에 도전하시겠습니까? 새로운 레벨은 {level} 레벨입니다!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
-  "youLose": "당신은진다",
+  "youLose": "당신은진다!",
   "@youLose": {
     "description": "You Lose!"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "버전",
+  "version": "버전: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -383,11 +383,11 @@
   "@piecesCount": {
     "description": "The number of pieces each player has"
   },
-  "piecesCount_Detail": "두 플레이어가 소유 한 폰 수를 설정합니다.",
+  "piecesCount_Detail": "각 플레이어는 몇 개의 조각을 가지고 있습니까?",
   "@piecesCount_Detail": {
     "description": "How many pieces does each player have?"
   },
-  "flyPieceCount": "얼마나 많은 아이들이 날 수 있습니까?",
+  "flyPieceCount": "날아가는 조각의 수",
   "@flyPieceCount": {
     "description": "The number of the flying piece"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "고르다",
+  "pick": "{element} 선택",
   "@pick": {
     "description": "Pick "
   },
@@ -659,7 +659,7 @@
   "@privacyPolicy": {
     "description": "Privacy Policy"
   },
-  "privacyPolicy_Detail_1": "다음을 포함하되 이에 국한되지 않는 \"사용자 계약\"및 \"개인 정보 보호 정책\"의 조건을주의 깊게 읽고 완전히 이해하십시오.\n당사가 귀하에게 제공하는 서비스를 개선하기 위해 귀하의 명시 적 승인에 따라 당사는 귀하의 장치 모델, 진단 데이터, 이메일 주소 등과 같은 정보를 얻을 수 있습니다. 귀하는 승인을 거부하거나 취소 할 권리가 있습니다. 진단 데이터 전송을 요청할 때마다 팝업 창을 통해 귀하의 명시 적 동의를 얻습니다.\n당신은 읽을 수있다 \"",
+  "privacyPolicy_Detail_1": "다음을 포함하되 이에 국한되지 않는 \"사용자 계약\"및 \"개인 정보 보호 정책\"의 조건을주의 깊게 읽고 완전히 이해하십시오.\n당사가 귀하에게 제공하는 서비스를 개선하기 위해 귀하의 명시 적 승인에 따라 당사는 귀하의 장치 모델, 진단 데이터, 이메일 주소 등과 같은 정보를 얻을 수 있습니다. 귀하는 승인을 거부하거나 취소 할 권리가 있습니다. 진단 데이터 전송을 요청할 때마다 팝업 창을 통해 귀하의 명시 적 동의를 얻습니다.\n당신은 읽을 수있다 \" ",
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
@@ -667,7 +667,7 @@
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
-  "and": "\"와\"",
+  "and": " \"와\" ",
   "@and": {},
   "accept": "동의하다",
   "@accept": {
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "롤백",
+  "takingBack": "롤백…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "기다려주세요",
+  "waiting": "기다려주세요…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -701,11 +701,11 @@
   "@moveNow": {
     "description": "Move now"
   },
-  "done": "수행하다",
+  "done": "수행하다.",
   "@done": {
     "description": "Done."
   },
-  "crackMill": "세 개를 연속으로 먹을 수 없습니다.",
+  "crackMill": "세 개를 연속으로 먹을 수 없습니다",
   "@crackMill": {
     "description": "Crack-mill"
   },
@@ -725,7 +725,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Mill는 매우 오래된 지적 게임으로, 게임의 목표는 남은 조각이 3 개 미만으로 상대방을 먹게하는 것입니다.\n\n위치가 세 번 반복되거나 100 번 연속 이동 (구성 가능)에 비트가 없으면 무승부가됩니다.\n\n게임은 세 단계로 나뉩니다.\n\n1. 빈 자리에서 스윙;\n2. 체스 말을 인접한 빈 위치로 이동합니다.\n3. 체스 말이 3 개 밖에 남지 않았을 때, \"말을 날릴 수 있습니다\"(선택 사항).\n\n스윙 스테이지\n\n체스 판에는 24 개의 빈 자리가 있습니다. 플레이어는 손에 자녀가 없을 때까지 자녀를 빈 위치에 번갈아 가며 놓습니다. 한 파티가 자신의 말을 3 개 연속으로 배열하면 \"쓰리 컴\"을 형성하고 상대방의 말을 캡처 한 다음 체스를 계속할 수 있다고합니다.\n\n특정 규칙 변형은 \"3 중대\"에 속하지 않은 상대의 아들 만 먹을 수 있다고 규정하고 있습니다.\n\n진자 단계에서는 어느 쪽도 먹은 아이가있는 빈 공간에서 스윙 할 수없는 몇 가지 규칙 변형이 있습니다.\n\n양손의 체스 말이 끝나면 이동 단계로 들어갑니다.\n\n워킹 스테이지\n\n플레이어는 자신의 폰을 인접한 지점으로 이동합니다. 갈 아이가 없으면 잃을 것입니다. 진자 스테이지와 유사하게 \"3 경기\"를 구성 할 때 상대방의 말을 캡처 할 수 있습니다. 한쪽에 폰이 두 개만 남아있는 경우 패배가 결정되고 게임은 패배로 선언됩니다. 체스 판에 3 개 이상의 말이 있지만 이동할 말이 없으면 패배자로 선언됩니다.\n\n발가락 단계\n\n규칙의 일부 변형에서, 파티에 3 개의 조각이 남아 있으면 빈 위치가 인접했는지 여부에 관계없이 빈 위치로 \"날아갈\"수 있습니다.",
+  "helpContent": "Mill는 매우 오래된 지적 게임으로, 게임의 목표는 남은 조각이 3 개 미만으로 상대방을 먹게하는 것입니다.\n\n위치가 세 번 반복되거나 100 번 연속 이동 (구성 가능)에 비트가 없으면 무승부가됩니다.\n\n게임은 세 단계로 나뉩니다.\n\n1. 빈 자리에서 스윙;\n2. 체스 말을 인접한 빈 위치로 이동합니다.\n3. 체스 말이 3 개 밖에 남지 않았을 때, \"말을 날릴 수 있습니다\"(선택 사항).\n\n스윙 스테이지\n\n체스 판에는 24 개의 빈 자리가 있습니다. 플레이어는 손에 자녀가 없을 때까지 자녀를 빈 위치에 번갈아 가며 놓습니다. 한 파티가 자신의 말을 3 개 연속으로 배열하면 \"쓰리 컴\"을 형성하고 상대방의 말을 캡처 한 다음 체스를 계속할 수 있다고합니다.\n\n특정 규칙 변형은 \"3 중대\"에 속하지 않은 상대의 아들 만 먹을 수 있다고 규정하고 있습니다.\n\n진자 단계에서는 어느 쪽도 먹은 아이가있는 빈 공간에서 스윙 할 수없는 몇 가지 규칙 변형이 있습니다.\n\n양손의 체스 말이 끝나면 이동 단계로 들어갑니다.\n\n워킹 스테이지\n\n플레이어는 자신의 폰을 인접한 지점으로 이동합니다. 갈 아이가 없으면 잃을 것입니다. 진자 스테이지와 유사하게 \"3 경기\"를 구성 할 때 상대방의 말을 캡처 할 수 있습니다. 한쪽에 폰이 두 개만 남아있는 경우 패배가 결정되고 게임은 패배로 선언됩니다. 체스 판에 3 개 이상의 말이 있지만 이동할 말이 없으면 패배자로 선언됩니다.\n\n발가락 단계\n\n규칙의 일부 변형에서, 파티에 3 개의 조각이 남아 있으면 빈 위치가 인접했는지 여부에 관계없이 빈 위치로 \"날아갈\"수 있습니다.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "체스 말의 수",
+  "pieceCount": "체스 말의 수:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "손에",
+  "inHand": "{player} 손에: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "체스 판에서",
+  "onBoard": "{player} 기내: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -817,11 +817,11 @@
   "@notAIsTurn": {
     "description": "It is not the AI's turn."
   },
-  "aiIsNotThinking": "컴퓨터는 생각하지 않습니다",
+  "aiIsNotThinking": "컴퓨터는 생각하지 않습니다.",
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "atEnd": "끝이다",
+  "atEnd": "끝이다.",
   "@atEnd": {
     "description": "At the end of the move list."
   },
@@ -1009,7 +1009,7 @@
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
-  "mayBreakAndRemakeMillRepeatedly": "밀은 부서지고 반복적으로 다시 만들어질 수 있습니다.",
+  "mayBreakAndRemakeMillRepeatedly": "밀은 부서지고 반복적으로 다시 만들어질 수 있습니다",
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
@@ -1017,7 +1017,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "플레이어가 3개의 피스를 가지고 있고 10번의 이동 후에 어느 플레이어도 상대방의 피스를 제거하지 않으면 게임이 무승부입니다.",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "플레이어가 3개의 피스를 가지고 있고 10번의 이동 후에 어느 플레이어도 상대방의 피스를 제거하지 않으면 게임이 무승부입니다",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "이동할 면",
+  "sideToMove": "이동할 측면: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "마지막 이동",
+  "lastMove": "마지막 이동: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "추첨입니다",
+  "isDraw": "추첨입니다!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "한국어",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{이동하다}=1{{count} 이동하다}other{{count} 움직임}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
