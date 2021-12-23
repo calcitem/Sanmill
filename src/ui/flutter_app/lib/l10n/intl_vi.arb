@@ -235,23 +235,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "Còn lại ít hơn 3 cái.",
+  "loseReasonlessThanThree": "Số mảnh {player} nhỏ hơn ba.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "Cho vào.",
+  "loseReasonResign": "{player} đã từ chức.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "Không có cách nào để đi.",
+  "loseReasonNoWay": "{player} không còn đường để đi.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Không còn đường để đi vì bàn cờ đã đầy.",
+  "loseReasonBoardIsFull": "Hội đồng quản trị đã đầy và {player} không còn đường để đi.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Hết giờ, {player} đã thua",
+  "loseReasonTimeOver": "Hết giờ, {player} đã thua。",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -275,15 +275,15 @@
   "@gameOver": {
     "description": "Game Over"
   },
-  "youWin": "Chúc mừng bạn đã chiến thắng",
+  "youWin": "Bạn thắng! Xin chúc mừng!",
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "“Theo dõi có khó hơn không?",
+  "challengeHarderLevel": "Thử thách mức độ khó hơn? Cấp độ mới sẽ là cấp độ {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
-  "youLose": "Mức độ khó tăng dần sẽ là \"",
+  "youLose": "Mức độ khó tăng dần sẽ là \"!",
   "@youLose": {
     "description": "You Lose!"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "trên",
+  "version": "Phiên bản: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -383,7 +383,7 @@
   "@piecesCount": {
     "description": "The number of pieces each player has"
   },
-  "piecesCount_Detail": "Số quân cờ",
+  "piecesCount_Detail": "Mỗi người chơi có bao nhiêu mảnh?",
   "@piecesCount_Detail": {
     "description": "How many pieces does each player have?"
   },
@@ -439,7 +439,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Theo mặc định, bạn không thể ăn một con trong cuộc thi ba người trừ khi tất cả con của đối thủ đang trong cuộc thi thứ ba. Bật tùy chọn này để loại bỏ hạn chế này.",
+  "isWhiteLoseButNotDrawWhenBoardFull": "Theo mặc định, bạn không thể ăn một con trong cuộc thi ba người trừ khi tất cả con của đối thủ đang trong cuộc thi thứ ba. Bật tùy chọn này để loại bỏ hạn chế này",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Bản ghi trò chơi đã được sao chép vào khay nhớ tạm",
+  "moveHistoryCopied": "Bản ghi trò chơi đã được sao chép vào khay nhớ tạm.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "lựa chọn",
+  "pick": "Chọn {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -659,7 +659,7 @@
   "@privacyPolicy": {
     "description": "Privacy Policy"
   },
-  "privacyPolicy_Detail_1": "Vui lòng đọc kỹ và hiểu đầy đủ các điều khoản của Thỏa thuận Người dùng \"và\" Chính sách Bảo mật \", bao gồm nhưng không giới hạn ở:",
+  "privacyPolicy_Detail_1": "Vui lòng đọc kỹ và hiểu đầy đủ các điều khoản của Thỏa thuận Người dùng \"và\" Chính sách Bảo mật \", bao gồm nhưng không giới hạn ở: ",
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
@@ -667,7 +667,7 @@
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
-  "and": "Bạn có thể đọc \"\"",
+  "and": " và ",
   "@and": {},
   "accept": "Chấp nhận",
   "@accept": {
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Lấy lại...",
+  "takingBack": "Lấy lại…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Chờ...",
+  "waiting": "Chờ…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Số quân cờ",
+  "pieceCount": "Số quân cờ:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "Trên tay",
+  "inHand": "{player} trong tay: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "Trên bàn cờ",
+  "onBoard": "{player} trên tàu: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Bên cạnh để di chuyển",
+  "sideToMove": "Bên để di chuyển: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Di chuyển lần cuối",
+  "lastMove": "Chiêu cuối: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "Đó là một trận hòa",
+  "isDraw": "Đó là một trận hòa!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "Tiếng Việt",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Di chuyển}=1{{count} Di chuyển} other{{count} Di chuyển}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
