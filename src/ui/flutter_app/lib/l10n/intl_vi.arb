@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "Màu nền menu",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "Màu của mục đánh dấu menu",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
