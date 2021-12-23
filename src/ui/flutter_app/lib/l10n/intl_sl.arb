@@ -239,19 +239,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " odstopi.",
+  "loseReasonResign": "{player} odstopi.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " ni prava pot.",
+  "loseReasonNoWay": "{player} nima poti.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Igralna plošča je polna in ni možnosti za nadaljevanje.",
+  "loseReasonBoardIsFull": "Plošča je polna in {player} nima poti.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Čas se je iztekel",
+  "loseReasonTimeOver": "Čas je mimo, {player} izgubljen.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Izziv težje ravni? Nova stopnja bo stopnja ",
+  "challengeHarderLevel": "Izzvati težjo stopnjo? Nova raven bo raven {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Različica",
+  "version": "Različica: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Zgodovina potez se kopira v odložišče",
+  "moveHistoryCopied": "Zgodovina potez se kopira v odložišče.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Izberite",
+  "pick": "Izberite {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Vračanje nazaj",
+  "takingBack": "Vračanje nazaj…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Čakanje",
+  "waiting": "Čakanje…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Število kosov",
+  "pieceCount": "Število kosov:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "v roki",
+  "inHand": "{player} v roki: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "na igralni plošči",
+  "onBoard": "{player} na krovu: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Stran za premikanje",
+  "sideToMove": "Stran za premikanje: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Zadnja poteza",
+  "lastMove": "Zadnja poteza: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "To je neodločeno",
+  "isDraw": "To je neodločeno!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "Slovenščina",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Premakni}=1{{count} Premakni}other{{count} Premiki}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
