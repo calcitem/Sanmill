@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "Peamenüü",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "Juurdepääsetavus",
   "@accessibility": {
     "description": "Accessibility"
