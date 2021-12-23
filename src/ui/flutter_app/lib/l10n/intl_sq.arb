@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "Aplikacioni do të dalë.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "Duhet të mbylleni menjëherë dhe të rihapni aplikacionin që të hyjë në fuqi.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
