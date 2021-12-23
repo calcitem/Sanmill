@@ -239,19 +239,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " rezignovať.",
+  "loseReasonResign": "{player} rezignovať.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " nie je spôsob, ako odísť.",
+  "loseReasonNoWay": "{player} nemá kam ísť.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Doska je plná a nie je možné ísť.",
+  "loseReasonBoardIsFull": "Doska je plná a {player} nemá kam ísť.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Čas skončil",
+  "loseReasonTimeOver": "Čas sa skončil, {player} stratený.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Vyzvite ťažšiu úroveň? Nová úroveň bude úroveň ",
+  "challengeHarderLevel": "Vyzvite ťažšiu úroveň? Nová úroveň bude úroveň {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Verzia",
+  "version": "Verzia: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -471,7 +471,7 @@
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
-  "rollback": "Rollback",
+  "rollback": "Vrátenie späť",
   "@rollback": {
     "description": "Rollback"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "História ťahov sa skopíruje do schránky",
+  "moveHistoryCopied": "História ťahov sa skopíruje do schránky.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Vyberte stránku",
+  "pick": "Vyberte {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Vrátenie späť",
+  "takingBack": "Vrátenie späť…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Čakanie",
+  "waiting": "Čakanie…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -705,7 +705,7 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "Crack-mill",
+  "crackMill": "Trhací mlyn",
   "@crackMill": {
     "description": "Crack-mill"
   },
@@ -725,7 +725,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Cieľom hry je nechať súpera s menej ako tromi figúrkami alebo bez legálnych ťahov.\n\nHra automaticky remizuje, ak sa pozícia vyskytne tretíkrát alebo sa v posledných 100 (konfigurovateľných) ťahoch neodstráni.\n\nHra prebieha v troch fázach:\n\n1. Umiestnenie figúrok na voľné body\n2. Presun figúrok na susedné body\n3. (voliteľná fáza) Presun figúrok na ľubovoľný voľný bod pri znížení počtu figúrok hráča na tri\n\nUmiestnenie\n\nHra sa začína s prázdnou hracou plochou, ktorú tvorí mriežka s dvadsiatimi štyrmi bodmi. Hráči sa striedajú v umiestňovaní svojich figúrok na voľné body, kým každý hráč neumiestni všetky figúrky na hraciu plochu. Ak hráč dokáže umiestniť tri svoje figúrky rovno, má \"mlyn\" a môže odstrániť jednu zo súperových figúrok z hracej plochy.\n\nV niektorých pravidlách musia hráči pred odstránením figúrky z vytvoreného mlyna najprv odstrániť všetky ostatné figúrky.\n\nV niektorých pravidlách nie je možné vo fáze umiestňovania figúrky opäť umiestniť na miesta odstránených figúrok.\n\nPo použití všetkých figúrok sa hráči striedajú v pohybe.\n\nPresun\n\nNa presun hráč posunie jednu zo svojich figúrok po línii hracej plochy na voľný susedný bod. Ak tak nemôže urobiť, prehral hru. Rovnako ako vo fáze umiestňovania, hráč, ktorý postaví tri svoje figúrky na líniu hracej plochy, má mlyn a môže odstrániť jednu zo súperových figúrok. Ktorýkoľvek hráč zníži počet figúrok na dve, nemá možnosť vytvoriť nové mlyny, a tým prehráva hru. Hráč môže prehrať aj vtedy, keď má viac ako tri figúrky, ak mu súper blokuje pohyb.\n\nLietajúce\n\nV niektorých variantoch pravidiel platí, že akonáhle hráčovi zostanú len tri figúrky, môžu jeho figúrky lietať, skákať alebo preskakovať na ľubovoľné voľné body, nielen na susedné.",
+  "helpContent": "Cieľom hry je nechať súpera s menej ako tromi figúrkami alebo bez legálnych ťahov.\n\nHra automaticky remizuje, ak sa pozícia vyskytne tretíkrát alebo sa v posledných 100 (konfigurovateľných) ťahoch neodstráni.\n\nHra prebieha v troch fázach:\n\n1. Umiestnenie figúrok na voľné body\n2. Presun figúrok na susedné body\n3. (voliteľná fáza) Presun figúrok na ľubovoľný voľný bod pri znížení počtu figúrok hráča na tri\n\nUmiestnenie\n\nHra sa začína s prázdnou hracou plochou, ktorú tvorí mriežka s dvadsiatimi štyrmi bodmi. Hráči sa striedajú v umiestňovaní svojich figúrok na voľné body, kým každý hráč neumiestni všetky figúrky na hraciu plochu. Ak hráč dokáže umiestniť tri svoje figúrky rovno, má \"mlyn\" a môže odstrániť jednu zo súperových figúrok z hracej plochy.\n\nV niektorých pravidlách musia hráči pred odstránením figúrky z vytvoreného mlyna najprv odstrániť všetky ostatné figúrky.\n\nV niektorých pravidlách nie je možné vo fáze umiestňovania figúrky opäť umiestniť na miesta odstránených figúrok.\n\nPo použití všetkých figúrok sa hráči striedajú v pohybe.\n\nPresun\n\nNa presun hráč posunie jednu zo svojich figúrok po línii hracej plochy na voľný susedný bod. Ak tak nemôže urobiť, prehral hru. Rovnako ako vo fáze umiestňovania, hráč, ktorý postaví tri svoje figúrky na líniu hracej plochy, má mlyn a môže odstrániť jednu zo súperových figúrok. Ktorýkoľvek hráč zníži počet figúrok na dve, nemá možnosť vytvoriť nové mlyny, a tým prehráva hru. Hráč môže prehrať aj vtedy, keď má viac ako tri figúrky, ak mu súper blokuje pohyb.\n\nLietajúce\n\nV niektorých variantoch pravidiel platí, že akonáhle hráčovi zostanú len tri figúrky, môžu jeho figúrky lietať, skákať alebo preskakovať na ľubovoľné voľné body, nielen na susedné.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Počet kusov",
+  "pieceCount": "Počet kusov:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "v ruke",
+  "inHand": "{player} v ruke: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "na hracej ploche",
+  "onBoard": "{player} na palube: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Strana na pohyb",
+  "sideToMove": "Strana na pohyb: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Posledný ťah",
+  "lastMove": "Posledný ťah: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "Jedná sa o remízu",
+  "isDraw": "Jedná sa o remízu!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "Slovák",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Pohybujte sa}=1{{count} Pohybujte sa}other{{count} Pohyby}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
