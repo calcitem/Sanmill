@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "आपको तुरंत बंद करना होगा और प्रभावी होने के लिए ऐप को फिर से खोलना होगा।",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "चुनना",
   "@pick": {
     "description": "Pick "
