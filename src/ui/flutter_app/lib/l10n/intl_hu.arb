@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "Azonnali bezárás után újra meg kell nyitnia az alkalmazást.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Válasszon",
   "@pick": {
     "description": "Pick "
