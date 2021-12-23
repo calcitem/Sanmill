@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": "  Pokreće se",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Lista za premještanje",
   "@showMoveList": {
     "description": "Move list"
