@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": " Μετακινήσεις",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Λίστα κινήσεων",
   "@showMoveList": {
     "description": "Move list"
