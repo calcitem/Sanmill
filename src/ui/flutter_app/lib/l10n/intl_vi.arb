@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "Bạn cần thoát và mở lại chương trình ngay lập tức để cấu hình mặc định có hiệu lực.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "lựa chọn",
   "@pick": {
     "description": "Pick "
