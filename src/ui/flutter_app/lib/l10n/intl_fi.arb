@@ -147,7 +147,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " Siirtyäksesi.",
+  "tipToMove": "{player} siirtääksesi.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -235,23 +235,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " Kappalemäärä on alle kolme.",
+  "loseReasonlessThanThree": "{player} kappalemäärä on pienempi kuin kolme.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " eroaa.",
+  "loseReasonResign": "{player} eroaa.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " ei ole oikea tapa lähteä.",
+  "loseReasonNoWay": "{player} ei voi edetä.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Lauta on täynnä, eikä mitään keinoa jatkaa.",
+  "loseReasonBoardIsFull": "Lauta on täynnä, eikä {player}:llä ole mitään tietä.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Aika loppui",
+  "loseReasonTimeOver": "Aika on ohi, {player} menetetty.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -271,7 +271,7 @@
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
-  "gameOver": "Game Over",
+  "gameOver": "Peli ohi",
   "@gameOver": {
     "description": "Game Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Haastatko vaikeamman tason? Uusi taso on taso ",
+  "challengeHarderLevel": "Haasta kovempi taso? Uusi taso on taso {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Versio",
+  "version": "Versio: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -371,7 +371,7 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "misc": "Miscellaneous",
+  "misc": "Sekalaista",
   "@misc": {
     "description": "Miscellaneous"
   },
@@ -439,7 +439,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Toinen pelaaja häviää, kun lauta on täynnä.",
+  "isWhiteLoseButNotDrawWhenBoardFull": "Toinen pelaaja häviää, kun lauta on täynnä",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -471,7 +471,7 @@
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
-  "rollback": "Rollback",
+  "rollback": "Palautus",
   "@rollback": {
     "description": "Rollback"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Siirtohistoria kopioidaan leikepöydälle",
+  "moveHistoryCopied": "Siirtohistoria kopioidaan leikepöydälle.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Valitse",
+  "pick": "Valitse {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Takaisin ottaminen",
+  "takingBack": "Takaisin ottaminen…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Odottaminen",
+  "waiting": "Odottaminen…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -705,7 +705,7 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "Crack-mill",
+  "crackMill": "Crack-mylly",
   "@crackMill": {
     "description": "Crack-mill"
   },
@@ -753,7 +753,7 @@
   "@general": {
     "description": "General"
   },
-  "advanced": "Advanced",
+  "advanced": "Pitkälle kehittynyt",
   "@advanced": {
     "description": "Advanced"
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Palojen määrä",
+  "pieceCount": "Palojen määrä:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "kädessä",
+  "inHand": "{player} kädessä: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "laudalla",
+  "onBoard": "{player} laivalla: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -997,7 +997,7 @@
   "@tutorial": {
     "description": "Tutorial"
   },
-  "classicMill": "Classic Mill",
+  "classicMill": "Klassinen mylly",
   "@classicMill": {
     "description": "Classic Mill"
   },
@@ -1005,7 +1005,7 @@
   "@mixedMill": {
     "description": "Mixed Mill"
   },
-  "ceylonMill": "Ceylon Mill",
+  "ceylonMill": "Ceylonin tehdas",
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Sivu liikkua",
+  "sideToMove": "Siirrettävä puoli: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Viimeinen liike",
+  "lastMove": "Viimeisin siirto: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "Se on tasapeli",
+  "isDraw": "Se on tasapeli!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
