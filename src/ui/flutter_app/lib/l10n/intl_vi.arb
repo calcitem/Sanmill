@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "Không tua lại.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "Vui lòng đợi ...",
   "@pleaseWait": {
     "description": "Please wait..."
