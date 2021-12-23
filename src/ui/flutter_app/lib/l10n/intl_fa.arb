@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "برنامه بسته خواهد شد",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "شما باید برنامه را بلافاصله ببندید و دوباره باز کنید تا اثر بگذارد.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
