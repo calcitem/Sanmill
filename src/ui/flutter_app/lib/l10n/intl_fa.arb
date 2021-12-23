@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "منوی اصلی",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "دسترسی",
   "@accessibility": {
     "description": "Accessibility"
