@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "অ্যাপটি প্রস্থান করবে।",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "কার্যকর হওয়ার জন্য আপনাকে তত্ক্ষণাত বন্ধ করতে হবে এবং অ্যাপটি আবার খুলতে হবে।",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
