@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "Η εφαρμογή θα τερματίσει.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "Πρέπει να κλείσετε αμέσως και να ανοίξετε ξανά την εφαρμογή για να ισχύσει.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
