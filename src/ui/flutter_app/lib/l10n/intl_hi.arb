@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": "  चालें",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "सूची ले जाएँ",
   "@showMoveList": {
     "description": "Move list"
