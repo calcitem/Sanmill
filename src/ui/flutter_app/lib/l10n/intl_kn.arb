@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "ರೆಕಾರ್ಡಿಂಗ್ ಇಲ್ಲ.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "ದಯಮಾಡಿ ನಿರೀಕ್ಷಿಸಿ.",
   "@pleaseWait": {
     "description": "Please wait..."
