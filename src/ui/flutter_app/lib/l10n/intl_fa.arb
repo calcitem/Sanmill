@@ -1030,7 +1030,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "اگر بازیکنی سه قطعه داشته باشد و پس از ده حرکت بازیکنان مهره های حریف را بردارند بازی به تساوی می رسد",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "اگر بازیکنی سه قطعه داشته باشد و پس از ده حرکت بازیکنان مهره های حریف را بردارند بازی به تساوی می رسد.",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
