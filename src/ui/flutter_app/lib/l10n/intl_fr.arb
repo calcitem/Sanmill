@@ -239,19 +239,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " démissionner.",
+  "loseReasonResign": "{player} démissionner.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " Il n'y a pas moyen de partir.",
+  "loseReasonNoWay": "{player} n'a aucun chemin à parcourir.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "L'échiquier est plein, il n'y a pas moyen d'y aller.",
+  "loseReasonBoardIsFull": "Le tableau est plein et {player} n'a aucun chemin à parcourir.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Temps écoulé",
+  "loseReasonTimeOver": "Le temps est écoulé, {player} perdu.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Défier un niveau plus difficile ?\nLe nouveau niveau sera le niveau ",
+  "challengeHarderLevel": "Défi niveau plus difficile? Le nouveau niveau sera le niveau {level} !",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Version",
+  "version": "Version : {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -355,7 +355,7 @@
   "@ai": {
     "description": "AI"
   },
-  "alternate": "Alternate",
+  "alternate": "Alterner",
   "@alternate": {
     "description": "Alternate"
   },
@@ -439,7 +439,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Le deuxième joueur perd lorsque le plateau est plein.",
+  "isWhiteLoseButNotDrawWhenBoardFull": "Le deuxième joueur perd lorsque le plateau est plein",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "L'historique des coups est copié dans le presse-papiers",
+  "moveHistoryCopied": "L'historique des coups est copié dans le presse-papiers.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Choisissez",
+  "pick": "Choisissez {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Nombre de pièces",
+  "pieceCount": "Nombre de pièces :",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "en main",
+  "inHand": "{player} en main : {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "sur l'échiquier",
+  "onBoard": "{player} à bord : {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Côté à déplacer",
+  "sideToMove": "Côté à déplacer : {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Dernier coup",
+  "lastMove": "Dernier coup : {move}",
   "@lastMove": {
     "description": "Last move"
   },
