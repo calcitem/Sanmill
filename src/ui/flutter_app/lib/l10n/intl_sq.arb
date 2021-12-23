@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "Ngjyra e sfondit të menysë",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "Ngjyrosni ngjyrën e artikullit në meny",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
