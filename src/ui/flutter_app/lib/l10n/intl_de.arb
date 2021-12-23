@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " ist am Zug.",
+  "tipToMove": "{player} zu bewegen.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Kann nicht importieren",
+  "cannotImport": "Kann nicht importieren {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -216,7 +216,7 @@
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Fehler",
+  "error": "Fehler: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Punkte",
+  "score": "Punkte:",
   "@score": {
     "description": "Score"
   },
@@ -236,23 +236,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " hat weniger als 3 Steine.",
+  "loseReasonlessThanThree": "{player} Stückzahl ist kleiner als drei.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " gibt auf.",
+  "loseReasonResign": "{player} ist zurückgetreten.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " kann nicht mehr ziehen.",
+  "loseReasonNoWay": "{player} hat keine Möglichkeit zu gehen.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Das Brett ist voll.",
+  "loseReasonBoardIsFull": "Das Board ist voll und {player} hat keine Möglichkeit.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Die Zeit ist um.",
+  "loseReasonTimeOver": "Die Zeit ist vorbei, {player} verloren.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -280,7 +280,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Eine schwerere Stufe probieren?\nNeue Stufe:  ",
+  "challengeHarderLevel": "Schwierigeres Level herausfordern? Das neue Level wird Level {level} sein!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -296,7 +296,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Version",
+  "version": "Version: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -340,7 +340,7 @@
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"
   },
-  "tone": "Tone",
+  "tone": "Ton",
   "@tone": {
     "description": "Tone"
   },
@@ -440,7 +440,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Zweiter Spieler verliert wenn das Brett voll ist",
+  "isWhiteLoseButNotDrawWhenBoardFull": "Zweiter Spieler verliert wenn das Brett voll ist.",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -584,7 +584,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Nehmen",
+  "pick": "{element} nehmen",
   "@pick": {
     "description": "Pick "
   },
@@ -806,15 +806,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Anzahl Steine",
+  "pieceCount": "Anzahl Steine:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "auf der Hand",
+  "inHand": "{player} in der Hand: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "auf dem Spielbrett",
+  "onBoard": "{player} an Bord: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -822,7 +822,7 @@
   "@boardTop": {
     "description": "Board offset from the top"
   },
-  "notAIsTurn": "Der Computer ist nicht am Zug",
+  "notAIsTurn": "Der Computer ist nicht am Zug.",
   "@notAIsTurn": {
     "description": "It is not the AI's turn."
   },
@@ -830,7 +830,7 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "atEnd": "Am Ende der Spielzugliste",
+  "atEnd": "Am Ende der Spielzugliste.",
   "@atEnd": {
     "description": "At the end of the move list."
   },
@@ -1074,11 +1074,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Wer soll umziehen",
+  "sideToMove": "Seite zum Verschieben: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Letzter Zug",
+  "lastMove": "Letzter Zug: {move}",
   "@lastMove": {
     "description": "Last move"
   },
