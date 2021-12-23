@@ -648,10 +648,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "You have to close immediately and reopen the app to take effect.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Pick {element}",
   "@pick": {
     "description": "Used in the color picker.",
