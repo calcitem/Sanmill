@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "Yozuv yo‘q.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "Iltimos kuting.",
   "@pleaseWait": {
     "description": "Please wait..."
