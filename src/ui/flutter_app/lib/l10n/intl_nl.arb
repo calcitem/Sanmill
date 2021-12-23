@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "Hoofdmenu",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "Toegankelijkheid",
   "@accessibility": {
     "description": "Accessibility"
