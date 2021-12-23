@@ -147,7 +147,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "  për të lëvizur.",
+  "tipToMove": "{player} për të lëvizur.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -235,23 +235,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "  numërimi i pjesëve është më pak se tre.",
+  "loseReasonlessThanThree": "Numri i pjesëve {player} është më pak se tre.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "jep dorëheqjen",
+  "loseReasonResign": "{player} dha dorëheqjen.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "  nuk ka asnjë mënyrë për të shkuar.",
+  "loseReasonNoWay": "{player} nuk ka se si të shkojë.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Bordi është plot, nuk ka si të shkojë.",
+  "loseReasonBoardIsFull": "Bordi është plot dhe {player} nuk ka se si të shkojë.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Koha e mbaruar",
+  "loseReasonTimeOver": "Koha ka mbaruar, {player} ka humbur.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -259,7 +259,7 @@
   "@drawReasonRule50": {
     "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
-  "drawReasonBoardIsFull": "Isshtë një Vizatim sepse tabela është plot",
+  "drawReasonBoardIsFull": "Isshtë një Vizatim sepse tabela është plot。",
   "@drawReasonBoardIsFull": {
     "description": "It is a Draw because the board is full"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Sfidoni nivelin më të vështirë? Niveli i ri do të jetë Niveli",
+  "challengeHarderLevel": "Sfidoni nivelin më të vështirë? Niveli i ri do të jetë niveli {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Version",
+  "version": "Versioni: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Zhvendos historinë e kopjuar në clipboard",
+  "moveHistoryCopied": "Zhvendos historinë e kopjuar në clipboard.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Zgjidh",
+  "pick": "Zgjidh {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -659,7 +659,7 @@
   "@privacyPolicy": {
     "description": "Privacy Policy"
   },
-  "privacyPolicy_Detail_1": "Ju lutemi lexoni me kujdes dhe sigurohuni që e kuptoni plotësisht dhe pajtoheni me këtë",
+  "privacyPolicy_Detail_1": "Ju lutemi lexoni me kujdes dhe sigurohuni që e kuptoni plotësisht dhe pajtoheni me këtë ",
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
@@ -667,7 +667,7 @@
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
-  "and": "  dhe",
+  "and": " dhe ",
   "@and": {},
   "accept": "Pranoj",
   "@accept": {
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Marrja mbrapa",
+  "takingBack": "Marrja mbrapa…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Ne pritje",
+  "waiting": "Ne pritje…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -701,7 +701,7 @@
   "@moveNow": {
     "description": "Move now"
   },
-  "done": "Bërë",
+  "done": "Bërë.",
   "@done": {
     "description": "Done."
   },
@@ -725,7 +725,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Loja synon ta lërë kundërshtarin me më pak se tre pjesë ose pa lëvizje ligjore.\n\nLoja tërheq automatikisht nëse një pozicion ndodh për herë të tretë ose nuk bën asnjë heqje në 100 lëvizjet e fundit (të konfigurueshme).\n\nLoja vazhdon në tre faza:\n\n1. Vendosja e pjesëve në pikat e lira\n2. Lëvizja e pjesëve në pikat ngjitur\n3. (faza opsionale) Zhvendosja e pjesëve në çdo pikë të lirë kur zvogëloni lojtarin në tre pjesë\n\nVendosja\n\nLoja fillon me një tabelë bosh, e cila përbëhet nga një rrjet me njëzet e katër pikë. Lojtarët vendosin me radhë pjesët e tyre në pikat e lira derisa secili lojtar të vendosë të gjitha pjesët në tabelë. Nëse një lojtar mund të vendosë tre nga pjesët e tij drejt, ai ka një \"mulli\" dhe mund të heqë një nga pjesët e kundërshtarit të tij nga bordi.\n\nNë disa rregulla, lojtarët duhet të heqin çdo pjesë tjetër së pari para se të heqin një copë nga një mulli i formuar.\n\nJu nuk mund t'i vendosni copat në pikat e pjesëve të hequra përsëri në fazën e vendosjes në disa rregulla.\n\nPasi të përdorin të gjitha pjesët, lojtarët lëvizin me radhë.\n\nLëviz\n\nPër të lëvizur, një lojtar lëviz një nga pjesët e tij përgjatë një linje bordi në një pikë të zbrazët ngjitur. Nëse nuk mund ta bëjë këtë, ai e ka humbur lojën. Ashtu si në fazën e vendosjes, një lojtar që rendit tre nga pjesët e tij në një bord të bordit ka një mulli dhe mund të heqë një nga pjesët e kundërshtarit të tij. Çdo lojtar zvogëlohet në dy pjesë, nuk ka mundësi të formojë mullinj të rinj dhe kështu e humb lojën. Një lojtar gjithashtu mund të humbasë kur më shumë se tre pjesë nëse kundërshtari i tij i bllokon ata të lëvizin.\n\nFluturimi\n\nNë disa variante të rregullave, pasi një lojtar të ketë vetëm tre pjesë, pjesët e tij mund të fluturojnë, të kërcejnë ose të kërcejnë në ndonjë pikë të lirë, jo vetëm ato ngjitur.",
+  "helpContent": "Loja synon ta lërë kundërshtarin me më pak se tre pjesë ose pa lëvizje ligjore.\n\nLoja tërheq automatikisht nëse një pozicion ndodh për herë të tretë ose nuk bën asnjë heqje në 100 lëvizjet e fundit (të konfigurueshme).\n\nLoja vazhdon në tre faza:\n\n1. Vendosja e pjesëve në pikat e lira\n2. Lëvizja e pjesëve në pikat ngjitur\n3. (faza opsionale) Zhvendosja e pjesëve në çdo pikë të lirë kur zvogëloni lojtarin në tre pjesë\n\nVendosja\n\nLoja fillon me një tabelë bosh, e cila përbëhet nga një rrjet me njëzet e katër pikë. Lojtarët vendosin me radhë pjesët e tyre në pikat e lira derisa secili lojtar të vendosë të gjitha pjesët në tabelë. Nëse një lojtar mund të vendosë tre nga pjesët e tij drejt, ai ka një \"mulli\" dhe mund të heqë një nga pjesët e kundërshtarit të tij nga bordi.\n\nNë disa rregulla, lojtarët duhet të heqin çdo pjesë tjetër së pari para se të heqin një copë nga një mulli i formuar.\n\nJu nuk mund t'i vendosni copat në pikat e pjesëve të hequra përsëri në fazën e vendosjes në disa rregulla.\n\nPasi të përdorin të gjitha pjesët, lojtarët lëvizin me radhë.\n\nLëviz\n\nPër të lëvizur, një lojtar lëviz një nga pjesët e tij përgjatë një linje bordi në një pikë të zbrazët ngjitur. Nëse nuk mund ta bëjë këtë, ai e ka humbur lojën. Ashtu si në fazën e vendosjes, një lojtar që rendit tre nga pjesët e tij në një bord të bordit ka një mulli dhe mund të heqë një nga pjesët e kundërshtarit të tij. Çdo lojtar zvogëlohet në dy pjesë, nuk ka mundësi të formojë mullinj të rinj dhe kështu e humb lojën. Një lojtar gjithashtu mund të humbasë kur më shumë se tre pjesë nëse kundërshtari i tij i bllokon ata të lëvizin.\n\nFluturimi\n\nNë disa variante të rregullave, pasi një lojtar të ketë vetëm tre pjesë, pjesët e tij mund të fluturojnë, të kërcejnë ose të kërcejnë në ndonjë pikë të lirë, jo vetëm ato ngjitur.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Numërimi i pjesëve",
+  "pieceCount": "Numërimi i pjesëve:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "në dorë",
+  "inHand": "{player} në dorë: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "në bord",
+  "onBoard": "{player} në bord: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Anash për të lëvizur",
+  "sideToMove": "Ana për të lëvizur: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Lëvizja e fundit",
+  "lastMove": "Lëvizja e fundit: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "Shtë një barazim",
+  "isDraw": "Shtë një barazim!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "Shqiptare",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Lëviz}=1{{count} Lëviz}other{{count} Lëviz}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
