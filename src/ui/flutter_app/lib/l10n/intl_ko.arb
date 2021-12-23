@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "기본 구성을 적용하려면 프로그램을 즉시 종료하고 다시 열어야합니다.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "고르다",
   "@pick": {
     "description": "Pick "
