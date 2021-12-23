@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "재생 안함",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "잠시만 기다려주세요 ...",
   "@pleaseWait": {
     "description": "Please wait..."
