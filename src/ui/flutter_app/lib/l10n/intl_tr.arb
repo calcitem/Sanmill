@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "Menü arka plan rengi",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "Menü vurgulama öğesi rengi",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
