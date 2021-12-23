@@ -484,7 +484,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "棋谱已复制到剪贴板",
+  "moveHistoryCopied": "棋谱已复制到剪贴板。",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -1030,7 +1030,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "一方剩下三个棋子并十步内双方均未吃子则和棋",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "一方剩下三个棋子并十步内双方均未吃子则和棋。",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
