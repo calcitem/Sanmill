@@ -152,11 +152,11 @@
   "@tipToMove": {
     "description": " to move."
   },
-  "whiteWin": "先手方胜",
+  "whiteWin": "先手方胜！",
   "@whiteWin": {
     "description": "Player 1 wins!"
   },
-  "blackWin": "后手方胜",
+  "blackWin": "后手方胜！",
   "@blackWin": {
     "description": "Player 2 wins!"
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "对方思考中...",
+  "thinking": "对方思考中…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "棋谱已从剪贴板导入",
+  "gameImported": "棋谱已从剪贴板导入。",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
@@ -212,7 +212,7 @@
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "正在分析局面...",
+  "analyzing": "正在分析局面…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "比分",
+  "score": "比分：",
   "@score": {
     "description": "Score"
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "开发者选项",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "开发者模式",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "再次按返回键退出应用",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "环境变量",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "更多",
   "@more": {
