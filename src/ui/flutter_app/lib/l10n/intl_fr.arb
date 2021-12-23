@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " pour bouger.",
+  "tipToMove": "{player} pour se déplacer.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Impossible d'importer",
+  "cannotImport": "Impossible d'importer {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -208,7 +208,7 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Jeu commencé, veuillez placer",
+  "gameStarted": "Jeu commencé, veuillez placer.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
@@ -216,7 +216,7 @@
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Erreur",
+  "error": "Erreur : {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Score",
+  "score": "Score :",
   "@score": {
     "description": "Score"
   },
@@ -236,7 +236,7 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " Le nombre de pièces est inférieur à trois.",
+  "loseReasonlessThanThree": "Le nombre de pièces {player} est inférieur à trois.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "Pour les développeurs",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "Mode développeur",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "Rappuyez pour quitter.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "Variables d'environnement",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "Plus",
   "@more": {
