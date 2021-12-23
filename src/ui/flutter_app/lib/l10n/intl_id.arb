@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "  untuk bergerak.",
+  "tipToMove": "{player} untuk bergerak.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Thinking...",
+  "thinking": "Berpikir…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -184,11 +184,11 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Game imported from the clipboard.",
+  "gameImported": "Game yang diimpor dari clipboard.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Cannot import",
+  "cannotImport": "Tidak dapat mengimpor {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -200,7 +200,7 @@
   "@pleaseWait": {
     "description": "Please wait..."
   },
-  "restartGame": "Restart the current game?",
+  "restartGame": "Mulai ulang game saat ini?",
   "@restartGame": {
     "description": "Restart current game?"
   },
@@ -208,15 +208,15 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Game started, please place",
+  "gameStarted": "Permainan dimulai, silakan tempat.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Analyzing ...",
+  "analyzing": "Analyzing…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Error",
+  "error": "Error: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Score",
+  "score": "Score:",
   "@score": {
     "description": "Score"
   },
@@ -236,7 +236,7 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " piece count is less than three.",
+  "loseReasonlessThanThree": "{player} jumlah potongan kurang dari tiga.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "Untuk pengembang",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "mode pengembang",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "Ketuk kembali lagi untuk pergi.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "Variabel lingkungan",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "Lebih",
   "@more": {
