@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "Aplikacija se zaključi.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "Da bi se učinek upošteval, morate aplikacijo takoj zapreti in jo znova odpreti.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
