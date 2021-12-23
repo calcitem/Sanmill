@@ -36,7 +36,7 @@
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": " Személy Vs. LAN",
+  "humanVsLAN": "Személy Vs. LAN",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " lépni.",
+  "tipToMove": "{player} a mozgáshoz.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Nem lehet importálni",
+  "cannotImport": "Nem lehet importálni {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -216,7 +216,7 @@
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Hiba",
+  "error": "Hiba: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Eredmény",
+  "score": "Eredmény:",
   "@score": {
     "description": "Score"
   },
@@ -236,23 +236,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "háromnál kevesebb korong.",
+  "loseReasonlessThanThree": "Az {player} darabszám kevesebb, mint három.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " feladás",
+  "loseReasonResign": "{player} lemondott.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " nincs szabad út.",
+  "loseReasonNoWay": "Az {player}-nek nincs más útja.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "A játéktábla betelt, nincs szabad mező.",
+  "loseReasonBoardIsFull": "A tábla megtelt, és az {player}-nek nincs útja.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Lejárt az idő",
+  "loseReasonTimeOver": "Az idő lejárt, {player} elveszett.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -280,7 +280,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Kihívás nehezebb szintre?\nAz új szint - Level ",
+  "challengeHarderLevel": "Kihívás nehezebb szinten? Az új szint az {level} szint lesz!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -296,7 +296,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Verzió",
+  "version": "Verzió: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -340,7 +340,7 @@
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"
   },
-  "tone": "Tone",
+  "tone": "Hang",
   "@tone": {
     "description": "Tone"
   },
@@ -440,7 +440,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "A második játékos veszít, ha a tábla megtelt",
+  "isWhiteLoseButNotDrawWhenBoardFull": "A második játékos veszít, ha a tábla megtelt.",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -584,7 +584,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Válasszon",
+  "pick": "Válasszon {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -726,7 +726,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "A játék célja, hogy az ellenfélnek kevesebb, mint három korongja maradjon, vagy beszoruljon, azaz ne tudjon legálisan lépni egyetlen koronggal sem.\n\nA játék automatikusan felfüggesztődik, ha egymás után háromszor ismétlődik ugyanaz a lépés, vagy ha 100 (konfigurálható) lépés alatt nem történik korongeltávolítás.\n\nA játék három szakaszban halad:\n\n1. Korongok felrakása a tábla üres mezőire\n2. Korongok lépegetése a táblán \n3. (opcionális szakasz) Ugrálás a táblán bármely üres mezőre, ha a játékosnak csak három korongja maradt.\n\nFelrakás\n\nA játék egy üres táblával kezdődik, amelyen egy huszonnégy mezőből álló rács van. A játékosok felváltva rakják a korongjaikat az üres mezőkre, amíg azok el nem fogynak. Ha egy játékos három korongját képes egyvonalba helyezni, akkor \"Malom\" van, és eltávolíthatja a tábláról ellenfelének egyik korongját.\n\nA szabályok egyes változataiban a játékosok az ellenfél malmából nem vehetnek el korongot, kivéve ha az ellenfél minden korongja malomban áll.\n\nA szabályok egyes változataiban az eltávolított korongok, ugyanazon játék közben, nem rakhatók vissza a táblára.\n\nMiután az összes korong felrakódott, a játékosok felváltva lépegetnek.\n\nLépegetés\n\nLépegetéskor a játékos az egyik korongját egy vonal mentén csakis a közvetlenül mellette levő üres mezőre tolhatja. Ha ezt egyetlen koronggal sem teheti, akkor beszorult és elveszítette a játékot. Akárcsak a felrakási fázisban, malmot létesít az a játékos is, akinek lépegetéssel egyvonalba sikerül elhelyezni három korongot, s így ezúttal is eltávolíthatja az ellenfél egyik korongját. Ha bármelyik játékosnak csak két korongja marad, tehát nincs lehetősége malmot létrehozni, elveszítette a játékot. Egy játékos háromnál több darabbal is veszíthet, ha ellenfele lezárja, azaz egyetlen koronggal sem léphet.\n\nUgrálás\n\nA szabályok egyes változataiban, ha egy játékosnak csak három korongja marad, akkor ezekkel nemcsak szomszédos, hanem bármely üres mezőre ugorhat.\n\n",
+  "helpContent": "A játék célja, hogy az ellenfélnek kevesebb, mint három korongja maradjon, vagy beszoruljon, azaz ne tudjon legálisan lépni egyetlen koronggal sem.\n\nA játék automatikusan felfüggesztődik, ha egymás után háromszor ismétlődik ugyanaz a lépés, vagy ha 100 (konfigurálható) lépés alatt nem történik korongeltávolítás.\n\nA játék három szakaszban halad:\n\n1. Korongok felrakása a tábla üres mezőire\n2. Korongok lépegetése a táblán \n3. (opcionális szakasz) Ugrálás a táblán bármely üres mezőre, ha a játékosnak csak három korongja maradt.\n\nFelrakás\n\nA játék egy üres táblával kezdődik, amelyen egy huszonnégy mezőből álló rács van. A játékosok felváltva rakják a korongjaikat az üres mezőkre, amíg azok el nem fogynak. Ha egy játékos három korongját képes egyvonalba helyezni, akkor \"Malom\" van, és eltávolíthatja a tábláról ellenfelének egyik korongját.\n\nA szabályok egyes változataiban a játékosok az ellenfél malmából nem vehetnek el korongot, kivéve ha az ellenfél minden korongja malomban áll.\n\nA szabályok egyes változataiban az eltávolított korongok, ugyanazon játék közben, nem rakhatók vissza a táblára.\n\nMiután az összes korong felrakódott, a játékosok felváltva lépegetnek.\n\nLépegetés\n\nLépegetéskor a játékos az egyik korongját egy vonal mentén csakis a közvetlenül mellette levő üres mezőre tolhatja. Ha ezt egyetlen koronggal sem teheti, akkor beszorult és elveszítette a játékot. Akárcsak a felrakási fázisban, malmot létesít az a játékos is, akinek lépegetéssel egyvonalba sikerül elhelyezni három korongot, s így ezúttal is eltávolíthatja az ellenfél egyik korongját. Ha bármelyik játékosnak csak két korongja marad, tehát nincs lehetősége malmot létrehozni, elveszítette a játékot. Egy játékos háromnál több darabbal is veszíthet, ha ellenfele lezárja, azaz egyetlen koronggal sem léphet.\n\nUgrálás\n\nA szabályok egyes változataiban, ha egy játékosnak csak három korongja marad, akkor ezekkel nemcsak szomszédos, hanem bármely üres mezőre ugorhat.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -806,15 +806,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Korongszám",
+  "pieceCount": "Korongszám:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "kézben",
+  "inHand": "{player} kézben: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "táblán",
+  "onBoard": "{player} a fedélzeten: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -822,7 +822,7 @@
   "@boardTop": {
     "description": "Board offset from the top"
   },
-  "notAIsTurn": "Nem AI van soron",
+  "notAIsTurn": "Nem AI van soron.",
   "@notAIsTurn": {
     "description": "It is not the AI's turn."
   },
@@ -1030,7 +1030,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "A játék sorsolásra kerül, ha egy játékosnak három darabja van, és tíz mozdulat után egyik játékos sem távolítja el az ellenfél darabjait",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "A játék sorsolásra kerül, ha egy játékosnak három darabja van, és tíz mozdulat után egyik játékos sem távolítja el az ellenfél darabjait.",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
@@ -1074,11 +1074,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Oldalt mozgatni",
+  "sideToMove": "Oldal mozgatandó: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Utolsó lépés",
+  "lastMove": "Utolsó lépés: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1161,5 +1161,15 @@
   "languageName": "Magyar",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Mozog}=1{{count} Mozog}other{{count} Mozdul}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
