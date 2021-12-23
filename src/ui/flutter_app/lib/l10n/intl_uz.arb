@@ -1,1256 +1,1162 @@
 {
-    "@@locale": "uz",
-    "appName": "Mill",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Xush kelibsiz",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "Ha",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Yo'q",
-    "@no": {
-        "description": "No"
-    },
-    "game": "O'yin",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Inson va boshqalar A.I.",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Inson va boshqalar Inson",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "AI va boshqalar. A.I.",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Inson va boshqalar Bulut",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Inson va boshqalar LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "LAN orqali sinab ko'ring",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Ko'chirish",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": "  Harakatlar",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Ro'yxatni ko'chirish",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Ro'yxatni ko'chirish",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Yozuv yo'q",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "OK",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "Tasdiqlang",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "Bekor qilish",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Mualliflik huquqi © 2021 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Noto'g'ri qismni tanlang.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Parchalaringizni joylashtiring.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Siz uni bu erga joylashtirolmaysiz.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Siz joylashtirdingiz.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Bir qismni olib tashlang.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Siz uni olib tashlay olmaysiz.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Siz olib tashladingiz.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Bir qismni siljiting.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Siz o'zingizning buyumingizni bu erda joylashtirolmaysiz.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Siz asaringizni bu erda ko'chira olmaysiz.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Tegirmon! Raqibingizning qismini oling.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Raqibingizning qismini olishga davom eting.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Raqibingizning qismlaridan birini tanlang.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Siz tegirmondan biron bir qismni olib tashlay olmaysiz.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "Bir parcha 1 nuqtani siljitishi mumkin.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Siz raqibingizning qismlarini siljita olmaysiz.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "Bir qatorda uchta qism mavjud.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Ko'chirish uchun qismingizni tanlang.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "Sizda uchta dona qoldi.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Siz xohlagan nuqtaga o'tishingiz mumkin.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " harakatlanmoq.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "1-o'yinchi g'alaba qozonadi!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "2-o'yinchi g'alaba qozondi!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Yutuq",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "Yo'qotilgan",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "Abort qilindi",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Fikrlash ...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "Yangi o'yin",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Import o'yin",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Eksport o'yini",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Bufer buferdan import qilingan.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Import qilinmadi",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Harakatlar va qoidalar mos kelmaydi.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Yozib olishni boshlang",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Yozib olinmoqda ...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Yozishni to'xtatish",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Yozuvni ko'rsatish",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "Yozuv yo‘q.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Iltimos kuting.",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Joriy o'yinni qayta boshlaysizmi?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Qayta ishga tushirish",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "O'yin boshlandi, iltimos joylashtiring",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Tahlil qilinmoqda ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "Xato",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "G'oliblik darajasi",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "Xol",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "1-o'yinchi",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "2-o'yinchi",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " dona soni uchdan kam.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " iste'foga chiqish.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " borishning iloji yo'q.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "Kengash to'la, va borish uchun hech qanday yo'l yo'q.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Vaqt tugadi",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "Harakatlanuvchi bosqichda, so'nggi aniq sonli harakatlarda biron bir qism olib tashlanmagan.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "Bu Draw, chunki taxta to'la.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "Bu uch marta takrorlanganligi sababli chizilgan.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "O'yin tugadi! Noma'lum sabab.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "O'yin tugadi",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "Siz yutdingiz! Tabriklaymiz!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "Qiyinroq darajani tanlaysizmi? Yangi daraja daraja bo'ladi",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "Yutqazdingiz!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "Tahlil qiling",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "Aktyor nomi",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "Haqida",
-    "@about": {
-        "description": "About"
-    },
-    "version": "Versiya",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "Rahmat",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Sozlamalar",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Variantlar",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "Afzalliklar",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Qiyinchilik darajasi",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "AI fikrlash vaqti",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Qiyinchilik",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Ovoz effektlari",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "O'yindagi tovushlarni ijro eting",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Orqaga olayotganda sukut saqlang",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Ohang",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Birinchi harakat",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Inson",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "A.I.",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "Muqobil",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "O'yin tugashi bilan o'yinni avtomatik ravishda qayta boshlash",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Avtomatik o'zgartirish birinchi harakat",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "Ko'pchilik yo'qotsa, sun'iy intellekt iste'fosi",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Tasodifiy harakatlaning",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Endgame-ni o'rganing",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Kitob ochilmoqda",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "Turli xil",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "Qoidalar",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Har bir o'yinchining soni",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Har bir o'yinchi nechta donadan iborat?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Uchib ketadigan parcha soni",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "Agar \"Uchish\" funksiyasi yoqilgan bo'lsa, o'yinchi ma'lum bir qism soniga kamaytirilganda, uning qismlari o'yinning qolgan qismidagi kabi qo'shni nuqtalarda cheklanish o'rniga har qanday bo'sh joyga ko'chib o'tishlari mumkin.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Kamida bo'laklar",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Diagonal chiziqlar",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Taxtaga to'rtta diagonal chiziq qo'shing.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Parchalarni olib tashlashni belgilang va kechiktiring",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "Joylashtirish bosqichida olib tashlangan qismlarning nuqtalari endi joylashtirilmaydi.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Ikkinchi o'yinchi birinchi bo'lib harakat qiladi",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Joylashtirish bosqichida ikkinchi harakat qilgan o'yinchi harakatlanayotgan bosqichda birinchi bo'lib harakat qiladi.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Ko'p o'chirish",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Agar o'yinchi bir vaqtning o'zida bir nechta tegirmonni yopsa, u yopilgan tegirmonlar sonini olib tashlaydi.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Tegirmonlarni yo'q qiling",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "Odatiy bo'lib, o'yinchilar shakllangan tegirmondan biron bir qismni olib tashlashdan oldin, boshqa qismlarni olib tashlashlari kerak. Cheklovni o'chirish uchun ushbu parametrni yoqing.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Ikkinchi o'yinchi taxta to'ldirilganda yutqazadi.",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Joylashtirish bosqichi oxirida taxta to'ldirilganda, birinchi bo'lib joylashadigan tomon o'yinni yo'qotadi. Aks holda, o'yin durang.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Hech qanday qonuniy harakatlar bo'lmaganida yo'qotish",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Raqibi ularni harakatga keltirmaslik uchun to'sib qo'ysa, o'yinchi yutqazadi. Ushbu parametr o'chirilgan bo'lsa, harakatlanish uchun yon tomonni o'zgartiring.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Uchish",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Agar o'yinchida faqat uchta yoki to'rtta (sozlanishi) qism qolsa, u buyumni istalgan bo'sh nuqtaga ko'chirishi mumkin.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "N-harakat qoidasi",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "O'yin, ma'lum miqdordagi harakatlarda olib tashlanmagan bo'lsa, chiziladi.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Orqaga qaytarish",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "Iltimos tanlang",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "Nusxalash",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Buferga ko'chirilgan tarixni ko'chirish",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Yordam bering",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Fikr-mulohaza",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "Chiqish",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Qoida sozlamalari",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "Rang",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Kengash rangi",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Parcha rangi",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Fon rangi",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Kengash chizig'i rangi",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Aktyor 1 dona rang",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Aktyor 2 dona rang",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Xabar rangi",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "AI dangasa",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Qo'ldagi buyumlar sonini ko'rsating",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Bortdagi yozuvlarni ko'rsatish",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Tarix navigatsiyasi asboblar panelini ko'rsatish",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "Displey",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Kengashning chegara kengligi",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Kengashning ichki chizig'i kengligi",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Parcha kengligi",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "Shrift hajmi",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "WMD belgisi",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Qayta tiklash",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Standart sozlamalarni tiklang",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "Ilova chiqadi.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "Zudlik bilan yopishingiz va kuchga kirishi uchun dasturni qayta ochishingiz kerak.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Tanlang",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "Ma'lumot",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "Maslahat",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "o'yinchi",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "1-o'yinchi",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "2-o'yinchi",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Qanday o'ynash kerak",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Parchani joylashtirish uchun mavjud nuqtani bosing.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Uni siljitish uchun biron joyga teging.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Parchani siljitish uchun unga ulangan nuqtani bosing.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Olib tashlash uchun raqibning bitta qismiga teging.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Parchani olib tashlashdan oldin avval siz tegirmonni yaratishingiz kerak.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Sizning qismlaringiz bilan o'ynashingiz kerak.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "Statistika",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Jami o'yinlar",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "Natijalar",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Siz uni tegirmondan olib tashlay olmaysiz.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "chap",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Maxfiylik siyosati",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Iltimos, diqqat bilan o'qing va buni to'liq tushunganingizga va rozi ekanligingizga ishonch hosil qiling",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Agar siz ushbu Siyosatga rozi bo'lmasangiz, iltimos, ushbu ilovadan foydalanmang. Ilovadan foydalanish ushbu shartlarni qabul qilishingizni anglatadi.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " va",
-    "accept": "Qabul qiling",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "Bekor qilish",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "Bekor qilish opsiyasi",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Harakatni bekor qilish mumkin.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Qaytarib ol",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Orqaga ...",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Kutilmoqda ...",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Oldinga qadam",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Barchasini qaytarib oling",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Barchasini oldinga qadam qo'ying",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Hozir harakatlaning",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Bajarildi",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Yoriq tegirmoni",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "Agar o'yinchi tegirmonda faqat bitta bo'lakka ega bo'lsa, tegirmondagi qismlarni olib tashlash uchun qulflanmaydi.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Animatsiya davomiyligi",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Yo'q",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Mavzu",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "O'yin raqibni uchta bo'lakdan kam yoki qonuniy harakatlarsiz qoldirishga qaratilgan.\n\nAgar pozitsiya uchinchi marta sodir bo'lsa yoki so'nggi 100 ta harakatni olib tashlamasa, o'yin avtomatik ravishda tortiladi.\n\nO'yin uch bosqichda davom etadi:\n\n1. Bo'sh joylarga qismlarni joylashtirish\n2. Parchalarni qo'shni nuqtalarga ko'chirish\n3. (ixtiyoriy bosqich) Pleyerni uch qismga qisqartirganda qismlarni istalgan bo'sh joyga ko'chirish\n\nJoylashtirish\n\nO'yin bo'sh taxta bilan boshlanadi, u yigirma to'rt ochko to'plangan panjaradan iborat. Aktyorlar har bir o'yinchi barcha qismlarni taxtaga qo'yguncha navbat bilan o'z qismlarini bo'sh joylarga qo'yishadi. Agar o'yinchi uchta qismini to'g'ri qo'yishi mumkin bo'lsa, unda \"tegirmon\" bor va u raqibining bitta qismini taxtadan olib tashlashi mumkin.\n\nBa'zi bir qoidalarda, o'yinchilar shakllangan tegirmondan biron bir qismni olib tashlashdan oldin boshqa qismlarni olib tashlashlari kerak.\n\nSiz ba'zi qoidalarda joylashtirish bosqichida qismlarni olib tashlangan qismlarga yana joylashtirolmaysiz.\n\nBarcha qismlardan foydalangandan so'ng, o'yinchilar navbat bilan harakat qilishadi.\n\nKo'chirish\n\nKo'chirish uchun o'yinchi o'z qismlaridan birini taxta chizig'i bo'ylab bo'sh qo'shni nuqtaga olib boradi. Agar u buni qila olmasa, u o'yinni yutqazgan. Uchta bo'lagini taxta chizig'iga tekislagan o'yinchi tegirmonga ega va joylashtirish bosqichidagi kabi raqibining birini olib tashlashi mumkin. Har qanday o'yinchi ikki qismga qisqartiradi, yangi tegirmonlarni yaratish imkoniyati yo'q va shu bilan o'yinni yo'qotadi. Raqib ularni harakatlanishiga to'sqinlik qilsa, o'yinchi uchta bo'lakdan ko'proq yutqazishi mumkin.\n\nUchish\n\nQoidalarning ba'zi bir variantlarida, agar o'yinchida faqat uchta bo'lak qolsa, uning qismlari uchib ketishi, sakrashi yoki faqat qo'shni bo'lgan joylarga emas, balki har qanday bo'sh joyga sakrashi mumkin.",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "Versiya haqida ma'lumot",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "Litsenziya",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Manba kodi",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Uchinchi tomon xabarnomalari",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "Ilova versiyasi",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "Umumiy",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "Ilg'or",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "Joylashtirish",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Ko'chirish",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Olib tashlash",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "O'yin tugadi",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "AI ning o'yin uslubi",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Passiv",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "Taym-aut; turib qolish; tanaffus",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Shaxsiylashtirish",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "Ishlab chiquvchilar uchun",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Tuzuvchi rejimi",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Inson tajribasidan foydalaning",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Parchalarning harakatchanligini ko'rib chiqing",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Parcha soni",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "qo'lda",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "transport vosita ichida",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "Kengash tepadan ofset",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Bu navbat AI emas.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "AI o'ylamaydi.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Avtomatik qayta harakatlanish",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "Siz ko'chirish ro'yxatining oxiridasiz.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Ketish uchun yana bir marta bosing.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Atrof muhit o'zgaruvchilari",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Ko'proq",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Bu eksperimental xususiyat.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Tajribalar",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Ochiq manbali litsenziyalar",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Til",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "Standart til",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Parchalar joylashtirish bosqichida harakatlanishi mumkin",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Alohida joylashtirish va harakatlanish bosqichlari mavjud emas, ya'ni o'yinchilar har bir harakatda taxtaga biror qism qo'yishni xohlaydilarmi yoki ularning qismlaridan birini ko'chirishni xohlaydilarmi (agar ular joylashtiriladigan qoldiqlari bo'lsa).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Menyu rangi",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Menyu matni rangi",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Menyu fon rangi",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Menyu element rangini ajratib ko'rsatish",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Asosiy asboblar paneli fon rangi",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "asosiy asboblar paneli piktogramma rangi",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Navigatsiya asboblar panelining fon rangi",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Navigatsiya asboblar paneli piktogramma rangi",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Asboblar panelini avtomatik ravishda yashirish",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Asboblar panelining ekrandagi joylashuvi",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Yuqori",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Pastki",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Markaz",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Qattiq rang",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Rasm",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Rasmingizni tanlang",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Engil",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "To'q",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Mavzular",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Joriy mavzu",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Mavzuni saqlash",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "Shriftlar",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Tahlil grafikasini ko'rsatish",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Tahlil",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "O'yinni saqlang",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "O'yinni yuklang",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "O'rnatish pozitsiyasi",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Qonuniy harakatlarni ko'rsating",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Oxirgi harakatni ko'rsating",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Oklarni ko'rsatish",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "Parchalar",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Tahlilni ko'rsatish",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Iplar",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "Qo'shilmoq",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Tarjimani yaxshilashga yordam bering",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "Qo'llanma",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Klassik tegirmon",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Aralash tegirmon",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Seylon tegirmoni",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Tegirmon buzilib, qayta tiklanishi mumkin",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Agar o'yinchi darhol yangi tegirmon yaratish uchun tegirmonni sindirib tashlasa, bunday o'yinchi yangi tegirmon qilsa, keyingi harakatida bunday buyumni asl bog'lanish joyiga qaytarishi mumkin.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Agar o'yinchi uchta bo'lakka ega bo'lsa va o'nta harakatdan so'ng ikkala o'yinchi ham raqib qismlarini olib tashlamasa, o'yin o'tkaziladi",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Agar o'yinchi uchta bo'lakka tushib qolsa va hech bir o'yinchi raqibning qismini o'nta harakat davomida olib tashlay olmasa, o'yin durang bo'ladi.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "Yopish",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Oq bo'lak",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "Qora parcha",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Taqiqlanish nuqtasi",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "Bo'sh nuqta",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Gap yo'q",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Joylashtirish bosqichi",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Harakatlanish bosqichi",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Uchish bosqichi",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Harakatlanadigan tomon",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Oxirgi harakat",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Tanlangan",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Asosiy menyu",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Maxsus imkoniyatlar",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Ekranni o'quvchini qo'llab -quvvatlash",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "Bu durang",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "Chizma",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Rangni ajratib ko'rsatish",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "Algoritm",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "O'rnatilmagan qismni olib tashlang",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Agar o'yinchi joylashtirish bosqichida tegirmonni hosil qilsa, u raqibning joylanmagan qismini olib tashlaydi va harakatni davom ettiradi.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "Endgame N-Move qoidasi",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Agar har bir o'yinchi faqat uchta bo'lakka ega bo'lsa va hech bir o'yinchi biron bir harakatni olib tashlamasa, o'yin chiziladi.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Ikkala o'yinchi ham faqat uchta bo'lakka ega va hech bir o'yinchi ma'lum bir harakatda bo'lakni olib tashlamaydi.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Uch marta takrorlash qoidasi",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Agar pozitsiya uchinchi marta sodir bo'lsa, o'yin durang o'ynaydi.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Tegirmon! Harakat qilishni davom ettiring.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Nuqtalar uslubi",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Nuqta kengligi",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Qattiq",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Ichi bo'sh",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "O'zbek",
-    "@languageName": {
-        "description": "The name of the current language"
+  "appName": "Tegirmon",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Xush kelibsiz",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Ha",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Yo'q",
+  "@no": {
+    "description": "No"
+  },
+  "game": "O'yin",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Inson va boshqalar A.I",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Inson va boshqalar Inson",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI va boshqalar. AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Inson va boshqalar Bulut",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Inson va boshqalar LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "LAN orqali sinab ko'ring",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Ko'chirish",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Ro'yxatni ko'chirish",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Ro'yxatni ko'chirish",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Yozuv yo'q",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Tasdiqlang",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Bekor qilish",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Noto'g'ri qismni tanlang.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Parchalaringizni joylashtiring.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Siz uni bu erga joylashtirolmaysiz.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Siz joylashtirdingiz.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Bir qismni olib tashlang.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Siz uni olib tashlay olmaysiz.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Siz olib tashladingiz.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Bir qismni siljiting.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Siz o'zingizning buyumingizni bu erda joylashtirolmaysiz.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Siz asaringizni bu erda ko'chira olmaysiz.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Tegirmon! Raqibingizning qismini oling.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Raqibingizning qismini olishga davom eting.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Raqibingizning qismlaridan birini tanlang.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Siz tegirmondan biron bir qismni olib tashlay olmaysiz.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Bir parcha 1 nuqtani siljitishi mumkin.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Siz raqibingizning qismlarini siljita olmaysiz.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Ko'chirish uchun qismingizni tanlang.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Sizda uchta dona qoldi.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Siz xohlagan nuqtaga o'tishingiz mumkin.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "harakat qilish uchun {player}.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "1-o'yinchi g'alaba qozonadi!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "2-o'yinchi g'alaba qozondi!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Yutuq",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Yo'qotilgan",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Fikrlash…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Yangi o'yin",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Import o'yin",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Eksport o'yini",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Bufer buferdan import qilingan.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Import qilib boʻlmadi {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Harakatlar va qoidalar mos kelmaydi.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Iltimos kuting.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Joriy o'yinni qayta boshlaysizmi?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Qayta ishga tushirish",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "O'yin boshlandi, iltimos joylashtiring.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Tahlil qilinmoqda…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Xato: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "G'oliblik darajasi",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Xol:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "1-o'yinchi",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "2-o'yinchi",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} parchalar soni uchtadan kam.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} iste'foga chiqish.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} uchun hech qanday yo'l yo'q.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Doska to‘lgan va {player} ning borishga imkoni yo‘q.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Vaqt tugadi, {player} yutqazdi.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "Harakatlanuvchi bosqichda, so'nggi aniq sonli harakatlarda biron bir qism olib tashlanmagan.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Bu Draw, chunki taxta to'la.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Bu uch marta takrorlanganligi sababli chizilgan.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "O'yin tugadi! Noma'lum sabab.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "O'yin tugadi",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Siz yutdingiz! Tabriklaymiz!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Qattiqroq darajaga duch kelasizmi? Yangi daraja {level} darajasida bo'ladi!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Yutqazdingiz!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Tahlil qiling",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Haqida",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Versiya: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Rahmat",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Sozlamalar",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Variantlar",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "Afzalliklar",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "Qiyinchilik darajasi",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI fikrlash vaqti",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Qiyinchilik",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Ovoz effektlari",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "O'yindagi tovushlarni ijro eting",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Orqaga olayotganda sukut saqlang",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Ohang",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Birinchi harakat",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Inson",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "A.I.",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Muqobil",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "O'yin tugashi bilan o'yinni avtomatik ravishda qayta boshlash",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Avtomatik o'zgartirish birinchi harakat",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Tasodifiy harakatlaning",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Turli xil",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Qoidalar",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Har bir o'yinchining soni",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Har bir o'yinchi nechta donadan iborat?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Uchib ketadigan parcha soni",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Agar \"Uchish\" funksiyasi yoqilgan bo'lsa, o'yinchi ma'lum bir qism soniga kamaytirilganda, uning qismlari o'yinning qolgan qismidagi kabi qo'shni nuqtalarda cheklanish o'rniga har qanday bo'sh joyga ko'chib o'tishlari mumkin.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Kamida bo'laklar",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Diagonal chiziqlar",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Taxtaga to'rtta diagonal chiziq qo'shing.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Parchalarni olib tashlashni belgilang va kechiktiring",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "Joylashtirish bosqichida olib tashlangan qismlarning nuqtalari endi joylashtirilmaydi.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Ikkinchi o'yinchi birinchi bo'lib harakat qiladi",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Joylashtirish bosqichida ikkinchi harakat qilgan o'yinchi harakatlanayotgan bosqichda birinchi bo'lib harakat qiladi.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Ko'p o'chirish",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Agar o'yinchi bir vaqtning o'zida bir nechta tegirmonni yopsa, u yopilgan tegirmonlar sonini olib tashlaydi.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Tegirmonlarni yo'q qiling",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Odatiy bo'lib, o'yinchilar shakllangan tegirmondan biron bir qismni olib tashlashdan oldin, boshqa qismlarni olib tashlashlari kerak. Cheklovni o'chirish uchun ushbu parametrni yoqing.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Ikkinchi o'yinchi taxta to'ldirilganda yutqazadi",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Joylashtirish bosqichi oxirida taxta to'ldirilganda, birinchi bo'lib joylashadigan tomon o'yinni yo'qotadi. Aks holda, o'yin durang.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Hech qanday qonuniy harakatlar bo'lmaganida yo'qotish",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Raqibi ularni harakatga keltirmaslik uchun to'sib qo'ysa, o'yinchi yutqazadi. Ushbu parametr o'chirilgan bo'lsa, harakatlanish uchun yon tomonni o'zgartiring.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Uchish",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Agar o'yinchida faqat uchta yoki to'rtta (sozlanishi) qism qolsa, u buyumni istalgan bo'sh nuqtaga ko'chirishi mumkin.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N-harakat qoidasi",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "O'yin, ma'lum miqdordagi harakatlarda olib tashlanmagan bo'lsa, chiziladi.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Orqaga qaytarish",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Iltimos tanlang",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Nusxalash",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Buferga ko'chirilgan tarixni ko'chirish.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Yordam bering",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Fikr-mulohaza",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Chiqish",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Qoida sozlamalari",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Rang",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Kengash rangi",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Parcha rangi",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Fon rangi",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Kengash chizig'i rangi",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Aktyor 1 dona rang",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Aktyor 2 dona rang",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Xabar rangi",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "aiIsLazy": "AI dangasa",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "Qo'ldagi buyumlar sonini ko'rsating",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Bortdagi yozuvlarni ko'rsatish",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Tarix navigatsiyasi asboblar panelini ko'rsatish",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Displey",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Kengashning chegara kengligi",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Kengashning ichki chizig'i kengligi",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Parcha kengligi",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Shrift hajmi",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD belgisi",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Qayta tiklash",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Standart sozlamalarni tiklang",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "{element} ni tanlang",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Ma'lumot",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Maslahat",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "o'yinchi",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "1-o'yinchi",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "2-o'yinchi",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Qanday o'ynash kerak",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Parchani joylashtirish uchun mavjud nuqtani bosing.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Uni siljitish uchun biron joyga teging.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Parchani siljitish uchun unga ulangan nuqtani bosing.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Olib tashlash uchun raqibning bitta qismiga teging.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Parchani olib tashlashdan oldin avval siz tegirmonni yaratishingiz kerak.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Sizning qismlaringiz bilan o'ynashingiz kerak.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistika",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Jami o'yinlar",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Natijalar",
+  "@results": {
+    "description": "Results"
+  },
+  "cannotRemoveFromMill": "Siz uni tegirmondan olib tashlay olmaysiz.",
+  "@cannotRemoveFromMill": {
+    "description": "Cannot remove from the mill."
+  },
+  "left": "chap",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Maxfiylik siyosati",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Iltimos, diqqat bilan o'qing va buni to'liq tushunganingizga va rozi ekanligingizga ishonch hosil qiling ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Agar siz ushbu Siyosatga rozi bo'lmasangiz, iltimos, ushbu ilovadan foydalanmang. Ilovadan foydalanish ushbu shartlarni qabul qilishingizni anglatadi.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " va ",
+  "@and": {},
+  "accept": "Qabul qiling",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Qaytarib ol",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Orqaga…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Kutilmoqda…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Oldinga qadam",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Barchasini qaytarib oling",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Barchasini oldinga qadam qo'ying",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Hozir harakatlaning",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Bajarildi.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Yoriq tegirmoni",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Agar o'yinchi tegirmonda faqat bitta bo'lakka ega bo'lsa, tegirmondagi qismlarni olib tashlash uchun qulflanmaydi.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Animatsiya davomiyligi",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Yo'q",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Mavzu",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "O'yin raqibni uchta bo'lakdan kam yoki qonuniy harakatlarsiz qoldirishga qaratilgan.\n\nAgar pozitsiya uchinchi marta sodir bo'lsa yoki so'nggi 100 ta harakatni olib tashlamasa, o'yin avtomatik ravishda tortiladi.\n\nO'yin uch bosqichda davom etadi:\n\n1. Bo'sh joylarga qismlarni joylashtirish\n2. Parchalarni qo'shni nuqtalarga ko'chirish\n3. (ixtiyoriy bosqich) Pleyerni uch qismga qisqartirganda qismlarni istalgan bo'sh joyga ko'chirish\n\nJoylashtirish\n\nO'yin bo'sh taxta bilan boshlanadi, u yigirma to'rt ochko to'plangan panjaradan iborat. Aktyorlar har bir o'yinchi barcha qismlarni taxtaga qo'yguncha navbat bilan o'z qismlarini bo'sh joylarga qo'yishadi. Agar o'yinchi uchta qismini to'g'ri qo'yishi mumkin bo'lsa, unda \"tegirmon\" bor va u raqibining bitta qismini taxtadan olib tashlashi mumkin.\n\nBa'zi bir qoidalarda, o'yinchilar shakllangan tegirmondan biron bir qismni olib tashlashdan oldin boshqa qismlarni olib tashlashlari kerak.\n\nSiz ba'zi qoidalarda joylashtirish bosqichida qismlarni olib tashlangan qismlarga yana joylashtirolmaysiz.\n\nBarcha qismlardan foydalangandan so'ng, o'yinchilar navbat bilan harakat qilishadi.\n\nKo'chirish\n\nKo'chirish uchun o'yinchi o'z qismlaridan birini taxta chizig'i bo'ylab bo'sh qo'shni nuqtaga olib boradi. Agar u buni qila olmasa, u o'yinni yutqazgan. Uchta bo'lagini taxta chizig'iga tekislagan o'yinchi tegirmonga ega va joylashtirish bosqichidagi kabi raqibining birini olib tashlashi mumkin. Har qanday o'yinchi ikki qismga qisqartiradi, yangi tegirmonlarni yaratish imkoniyati yo'q va shu bilan o'yinni yo'qotadi. Raqib ularni harakatlanishiga to'sqinlik qilsa, o'yinchi uchta bo'lakdan ko'proq yutqazishi mumkin.\n\nUchish\n\nQoidalarning ba'zi bir variantlarida, agar o'yinchida faqat uchta bo'lak qolsa, uning qismlari uchib ketishi, sakrashi yoki faqat qo'shni bo'lgan joylarga emas, balki har qanday bo'sh joyga sakrashi mumkin.",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Versiya haqida ma'lumot",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Litsenziya",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Manba kodi",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Ilova versiyasi",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Umumiy",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Ilg'or",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Joylashtirish",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Ko'chirish",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Olib tashlash",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "O'yin tugadi",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI ning o'yin uslubi",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Passiv",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Taym-aut; turib qolish; tanaffus",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "Shaxsiylashtirish",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "drawOnHumanExperience": "Inson tajribasidan foydalaning",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Parchalarning harakatchanligini ko'rib chiqing",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Parcha soni:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} qo'lda: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} bortda: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Kengash tepadan ofset",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Bu navbat AI emas.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI o'ylamaydi.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Siz ko'chirish ro'yxatining oxiridasiz.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Ketish uchun yana bir marta bosing.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "Ko'proq",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Bu eksperimental xususiyat.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Tajribalar",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Ochiq manbali litsenziyalar",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Til",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Standart til",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Parchalar joylashtirish bosqichida harakatlanishi mumkin",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Alohida joylashtirish va harakatlanish bosqichlari mavjud emas, ya'ni o'yinchilar har bir harakatda taxtaga biror qism qo'yishni xohlaydilarmi yoki ularning qismlaridan birini ko'chirishni xohlaydilarmi (agar ular joylashtiriladigan qoldiqlari bo'lsa).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Menyu rangi",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Menyu matni rangi",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Menyu element rangini ajratib ko'rsatish",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Asosiy asboblar paneli fon rangi",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "asosiy asboblar paneli piktogramma rangi",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Navigatsiya asboblar panelining fon rangi",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Navigatsiya asboblar paneli piktogramma rangi",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Asboblar panelini avtomatik ravishda yashirish",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Asboblar panelining ekrandagi joylashuvi",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Yuqori",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Pastki",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Markaz",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Qattiq rang",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Rasm",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Rasmingizni tanlang",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Engil",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "To'q",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Mavzular",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Joriy mavzu",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Mavzuni saqlash",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Tahlil grafikasini ko'rsatish",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Tahlil",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "O'yinni saqlang",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "O'yinni yuklang",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "O'rnatish pozitsiyasi",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Qonuniy harakatlarni ko'rsating",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Oxirgi harakatni ko'rsating",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Oklarni ko'rsatish",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Parchalar",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Tahlilni ko'rsatish",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Iplar",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Qo'shilmoq",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Tarjimani yaxshilashga yordam bering",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Qo'llanma",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Klassik tegirmon",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Aralash tegirmon",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Seylon tegirmoni",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Tegirmon buzilib, qayta tiklanishi mumkin",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Agar o'yinchi darhol yangi tegirmon yaratish uchun tegirmonni sindirib tashlasa, bunday o'yinchi yangi tegirmon qilsa, keyingi harakatida bunday buyumni asl bog'lanish joyiga qaytarishi mumkin.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Agar o'yinchi uchta bo'lakka ega bo'lsa va o'nta harakatdan so'ng ikkala o'yinchi ham raqib qismlarini olib tashlamasa, o'yin o'tkaziladi",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Agar o'yinchi uchta bo'lakka tushib qolsa va hech bir o'yinchi raqibning qismini o'nta harakat davomida olib tashlay olmasa, o'yin durang bo'ladi.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Yopish",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Oq bo'lak",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Qora parcha",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Taqiqlanish nuqtasi",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Bo'sh nuqta",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Gap yo'q",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Joylashtirish bosqichi",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Harakatlanish bosqichi",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Uchish bosqichi",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Ko'chish uchun tomon: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Oxirgi harakat: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Tanlangan",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Maxsus imkoniyatlar",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Ekranni o'quvchini qo'llab -quvvatlash",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Bu durang!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Chizma",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Rangni ajratib ko'rsatish",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algoritm",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "O'rnatilmagan qismni olib tashlang",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Agar o'yinchi joylashtirish bosqichida tegirmonni hosil qilsa, u raqibning joylanmagan qismini olib tashlaydi va harakatni davom ettiradi.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "Endgame N-Move qoidasi",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Agar har bir o'yinchi faqat uchta bo'lakka ega bo'lsa va hech bir o'yinchi biron bir harakatni olib tashlamasa, o'yin chiziladi.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Ikkala o'yinchi ham faqat uchta bo'lakka ega va hech bir o'yinchi ma'lum bir harakatda bo'lakni olib tashlamaydi.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Uch marta takrorlash qoidasi",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Agar pozitsiya uchinchi marta sodir bo'lsa, o'yin durang o'ynaydi.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Tegirmon! Harakat qilishni davom ettiring.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Nuqtalar uslubi",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Nuqta kengligi",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Qattiq",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Ichi bo'sh",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "O'zbek",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count, plural, =0{Ko'chirish}=1{{count} Ko'chirish}other{{count} Ko'chirish}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  }
 }

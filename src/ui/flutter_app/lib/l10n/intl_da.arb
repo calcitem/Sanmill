@@ -1,1256 +1,1162 @@
 {
-    "@@locale": "da",
-    "appName": "Mølle",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Velkommen",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "Ja",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Nej",
-    "@no": {
-        "description": "No"
-    },
-    "game": "Spil",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Menneske Vs AI",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Menneske Vs menneske",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "AI Vs AI",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Menneske mod sky",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Menneske mod LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Test via LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Flyt",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " Flytninger",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Liste over flytninger",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Liste over flytninger",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Ingen registrering",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "OK",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "Bekræft",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "Annuller",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Copyright © 2021 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Vælg det forkerte stykke.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Placer dine brikker.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Du kan ikke placere den her.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Du har placeret.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Fjern en brik.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Du kan ikke fjerne den.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Du har fjernet.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Flyt en brik.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Du kan ikke placere din brik her.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Du kan ikke flytte din brik her.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Mølle! Tag din modstanders brik.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Fortsæt med at tage din modstanders brik.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Vælg en af din modstanders brikker.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Du kan ikke fjerne en brik fra en mølle.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "En brik kan flytte 1 point.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Du kan ikke flytte din modstanders brikker.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "Der er tre brikker i en række.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Vælg din brik til at flytte.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "Du har tre brikker tilbage.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Du kan flytte til et hvilket som helst punkt, du vil.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " at flytte.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "Spiller 1 vinder!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "Spiller 2 vinder!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Vundet",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "Tabt",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "Afbrudt",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Tænker...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "Nyt spil",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Import af spil",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Eksportere spil",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Spil importeret fra udklipsholderen.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Kan ikke importere",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Bevægelser og regler stemmer ikke overens.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Start optagelse",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Optagelse...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Stop optagelse",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Vis optagelse",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "Ingen optagelse.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Vent venligst.",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Genstarter du det aktuelle spil?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Genstart",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "Spillet er startet, placer venligst",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Analyserer ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "Fejl",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "Vinderrate",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "Score",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "Spiller 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "Spiller 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " Antallet af brikker er mindre end tre.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " træde tilbage.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " er ikke en måde at gøre det på.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "Brættet er fuldt, og der er ingen måde at gå videre på.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Tid over",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "I trækfasen er der ikke blevet fjernet nogen brik i det sidste bestemte antal træk.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "Det er uafgjort, fordi brættet er fuldt.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "Det er uafgjort på grund af tredobbelt gentagelse.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "Game Over! Ukendt årsag.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "Game Over",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "Du vinder! Tillykke!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "Udfordre sværere niveau? Det nye niveau vil være niveau ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "Du taber!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "Analyser",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "Genstart det aktuelle spil?",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "Om",
-    "@about": {
-        "description": "About"
-    },
-    "version": "Version",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "Tak",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Indstillinger",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Indstillinger",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "Præferencer",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Sværhedsgrad",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "AI-tanketid",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Sværhedsgrad",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Lydeffekter",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "Afspilning af lyde i spillet",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Hold lydløs, når du tager tilbage",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Tone",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Første træk",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Menneske",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "AI",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "Alternativt",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "Automatisk genstart af spillet, når spillet er slut",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Automatisk ændring af første træk",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "AI træder tilbage, hvis de fleste taber",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Tilfældigt træk",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Lær slutspillet",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Åbningsbog",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "Diverse",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "Regler",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Antallet af brikker, som hver spiller har",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Hvor mange brikker har hver spiller?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Nummeret på den flyvende brik",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "Hvis flyvende er aktiveret, kan en spiller, når han er reduceret til et bestemt antal brikker, frit flytte sine brikker til et hvilket som helst ubesat punkt i stedet for at være begrænset til tilstødende punkter som i resten af spillet.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Brikker Mindst",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Diagonale linjer",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Tilføj fire diagonale linjer til brættet.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Markér og forsinke fjernelsen af brikker",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "I placeringsfasen vil punkterne for fjernede brikker ikke længere kunne placeres.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Den anden spiller flytter først",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Den spiller, der flytter som den anden i placeringsfasen, flytter først i flyttefasen.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Multi-remove",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Hvis en spiller lukker mere end én mølle på én gang, fjerner hun det antal møller, hun har lukket.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Ødelægge møller",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "Som standard skal spillerne først fjerne alle andre brikker, før de fjerner en brik fra en dannet mølle. Aktiver denne indstilling for at deaktivere denne begrænsning.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Den anden spiller taber, når brættet er fuldt",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Når brættet er fuldt ved slutningen af placeringsfasen, taber den side, der placerer først, spillet. Ellers er spillet uafgjort.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Taber, når der ikke er nogen lovlige træk",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Spilleren taber, hvis hans modstander blokerer dem, så de ikke kan flyttes. Skift side til at flytte, hvis denne indstilling er deaktiveret.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Flyvende",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Hvis en spiller kun har tre eller fire (konfigurerbar) brikker tilbage, kan han flytte brikken til et hvilket som helst frit punkt.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "N-træk-reglen",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "Spillet er uafgjort, hvis der ikke har været nogen flytning i et bestemt antal træk af hver spiller.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Rollback",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "Vælg venligst",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "Kopier",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Trækhistorik kopieres til udklipsholderen",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Hjælp",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Feedback",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "Afslut",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Regelindstillinger",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "Farve",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Farve på tavlen",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Farve på brikker",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Baggrundsfarve",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Farve på brættets linje",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Spiller 1 brik farve",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Farve på brik til spiller 2",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Farve på besked",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "AI er doven",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Vis antallet af brikker på hånden",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Vis noteringer på brættet",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Vis historik navigationsværktøjslinje",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "Vis",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Bredde af brætgrænserne",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Bredden af den indre linje på brættet",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Stykkebredde",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "Skriftstørrelse",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "WMD-notation",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Gendan",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Gendanner standardindstillingerne",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "Appen afsluttes.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "Du skal straks lukke og genåbne appen for at få effekt.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Vælg",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "Info",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "Hint",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "spiller",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "Spiller 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "Spiller 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Sådan spiller du",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Tryk på et vilkårligt punkt for at placere brikken.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Tryk på en brik for at flytte den.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Tryk på et punkt, der er forbundet med en brik, for at flytte den.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Tryk på modstanderens ene brik for at fjerne.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Du skal først oprette en mølle, før du kan fjerne en brik.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Du er nødt til at spille med dine brikker.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "Statistik",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Samlede spil",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "Resultater",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Kan ikke fjerne fra møllen.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "venstre",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Politik om beskyttelse af personlige oplysninger",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Læs venligst omhyggeligt og sørg for, at du fuldt ud forstår og accepterer dette ",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Hvis du ikke accepterer denne politik, skal du ikke bruge denne app. Brug af appen indebærer, at du accepterer disse vilkår.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " og ",
-    "accept": "Accepter",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "Fortryd",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "Mulighed for at fortryde",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Det er muligt at fortryde en flytning.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Tag tilbage",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Tilbageførsel",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Venter",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Træd fremad",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Tag alt tilbage",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Fremadgående alle",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Flyt dig nu",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Færdig.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Knæk-mølle",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "Hvis en spiller kun har brikker i møller, vil brikkerne i møllerne ikke blive låst for at blive fjernet.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Animationens varighed",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Ingen",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Tema",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Spillet har til formål at efterlade modstanderen med færre end tre brikker eller ingen lovlige træk.\n\nSpillet er automatisk uafgjort, hvis en stilling opstår for tredje gang eller ikke fjernes i de sidste 100 (konfigurerbare) træk.\n\nSpillet forløber i tre faser:\n\n1. Placering af brikker på ledige punkter\n2. Flytning af brikker til tilstødende punkter\n3. (valgfri fase) Flytning af brikker til et hvilket som helst ledigt punkt, når spilleren er reduceret til tre brikker\n\nPlacering af\n\nSpillet begynder med et tomt bræt, som består af et gitter med fireogtyve punkter. Spillerne skiftes til at placere deres brikker på de ledige punkter, indtil hver spiller har placeret alle brikker på brættet. Hvis en spiller kan placere tre af sine brikker lige, har han en \"mølle\" og kan fjerne en af sine modstanderes brikker fra brættet.\n\nI nogle regler skal spillerne først fjerne alle andre brikker, før de kan fjerne en brik fra en dannet mølle.\n\nI nogle regler kan man ikke placere brikkerne til de punkter, hvor brikkerne er fjernet, igen i placeringsfasen.\n\nNår bruge alle brikker, skiftes spillerne til at flytte.\n\nFlytning\n\nFor at flytte flytter en spiller en af sine brikker langs en brætlinje til et ledigt tilstødende punkt. Hvis han ikke kan gøre det, har han tabt spillet. Som i placeringsfasen har en spiller, der placerer tre af sine brikker på en brætlinje, en mølle og kan fjerne en af sine modstanderes brikker. En spiller, der reduceres til to brikker, har ikke mulighed for at danne nye møller og taber dermed spillet. En spiller kan også tabe, når han har mere end tre brikker, hvis hans modstander blokerer dem for at flytte dem.\n\nFlyvende\n\nI nogle varianter af reglerne kan en spiller, når han kun har tre brikker tilbage, flyve, hoppe eller springe til alle ledige punkter, ikke kun tilstødende punkter.",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "Version info",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "Licens",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Kildekode",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Meddelelser fra tredjeparter",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "App-version",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "Generelt",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "Avanceret",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "Placering af",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Flytning af",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Fjernelse af",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "Game over-tilstand",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "AI's spillestil",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Passiv",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "Timeout",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Personalisering",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "For udviklere",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Udviklertilstand",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Udnyt den menneskelige erfaring",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Overvej mobiliteten af dele",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Antal stykker",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "i hånden",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "på brættet",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "Brættet er forskudt fra toppen",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Det er ikke AI's tur.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "AI tænker ikke.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Automatisk genafspilning af træk",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "Du er i slutningen af træklisten.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Tryk tilbage igen for at gå.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Miljøvariabler",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Mere",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Det er en eksperimentel funktion.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Eksperimenter",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Open source-licenser",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Sprog",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "Standardsprog",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Brikkerne kan bevæge sig i placeringsfasen",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Der er ingen særskilte placerings- og flyttefaser, dvs. spillerne kan ved hvert træk beslutte, om de vil placere en brik på brættet eller flytte en af deres brikker (så længe de har resterende brikker til at placere).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Menufarve",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Menufarve på menuen",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Menu baggrundsfarve",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Menuhøjde elementfarve",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Hovedværktøjslinjens baggrundsfarve",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "hovedværktøjslinjens ikonfarve",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Navigationsværktøjslinjens baggrundsfarve",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Navigationsværktøjslinjens ikonfarve",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Skjul værktøjslinjen automatisk",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Værktøjslinjens placering på skærmen",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Top",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Bund",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Centrum",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Solid farve",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Billede",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Vælg dit billede",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Lys",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "Mørk",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Temaer",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Aktuelt tema",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Gem tema",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "Skrifttyper",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Vis analysegraf",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Analyse",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "Gem spil",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Indlæs spil",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "Opsætningsposition",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Vis juridiske træk",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Vis sidste træk",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Vis pile",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "Stykker",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Vis analyse",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Tråde",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "Bliv involveret",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Hjælp med at forbedre oversættelsen",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "Vejledning",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Klassisk mølle",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Blandet mølle",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Ceylon Mill",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Mølle kan blive brudt og genskabt gentagne gange",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Hvis en spiller bryder en mølle for at oprette en ny mølle med det samme, kan en sådan spiller flytte et sådant stykke tilbage til det oprindelige kryds i sit næste træk, hvis det opretter en ny mølle.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spillet trækkes, hvis en spiller har tre brikker, og efter ti træk fjerner ingen spiller modstanderens brikker",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Når en spiller er nede i tre stykker, og ingen af spillerne kan fjerne en modstanders stykke inden for ti træk, er spillet uafgjort.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "Tæt",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Hvidt stykke",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "Sort stykke",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Forbudspunkt",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "Tomt punkt",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Ingen pointe",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Placeringsfase",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Flyttefase",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Flyvende fase",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Siden skal flyttes",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Sidste træk",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Valgte",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Hovedmenu",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Tilgængelighed",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Understøttelse af skærmlæser",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "Det er uafgjort",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "Tegne",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Stykke fremhæve farve",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "Algoritme",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "Fjern uplaceret stykke",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Hvis en spiller danner møllen i placeringsfasen, vil hun fjerne modstanderens uplacerede brik og fortsætte med at foretage et træk.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "Slutspil N-Move-regel",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Hvis en spiller kun har tre brikker, og ingen af spillerne fjerner en brik inden for et bestemt træk, trækkes spillet.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Hver spiller har kun tre brikker, og ingen af spillerne fjerner en brik inden for et bestemt træk.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Tredobbelt gentagelsesregel",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Spillet trækkes, hvis en position opstår for tredje gang.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Mølle! Fortsæt med at gøre et træk.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Point stil",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Punktbredde",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Solid",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Hul",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "Dansk",
-    "@languageName": {
-        "description": "The name of the current language"
+  "appName": "Mølle",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Velkommen",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Ja",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Nej",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Spil",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Menneske Vs AI",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Menneske Vs menneske",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI Vs AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Menneske mod sky",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Menneske mod LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Test via LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Flyt",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Liste over flytninger",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Liste over flytninger",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Ingen registrering",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Bekræft",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Annuller",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Vælg det forkerte stykke.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Placer dine brikker.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Du kan ikke placere den her.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Du har placeret.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Fjern en brik.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Du kan ikke fjerne den.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Du har fjernet.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Flyt en brik.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Du kan ikke placere din brik her.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Du kan ikke flytte din brik her.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Mølle! Tag din modstanders brik.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Fortsæt med at tage din modstanders brik.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Vælg en af din modstanders brikker.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Du kan ikke fjerne en brik fra en mølle.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "En brik kan flytte 1 point.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Du kan ikke flytte din modstanders brikker.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Vælg din brik til at flytte.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Du har tre brikker tilbage.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Du kan flytte til et hvilket som helst punkt, du vil.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} for at flytte.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Spiller 1 vinder!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Spiller 2 vinder!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Vundet",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Tabt",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Tænker…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Nyt spil",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Import af spil",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Eksportere spil",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Spil importeret fra udklipsholderen.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Kan ikke importere {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Bevægelser og regler stemmer ikke overens.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Vent venligst.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Genstarter du det aktuelle spil?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Genstart",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Spillet er startet, placer venligst.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Analyserer…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Fejl: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Vinderrate",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Score:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Spiller 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Spiller 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} stykantal er mindre end tre.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} træde tilbage.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} har ingen vej at gå.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Boardet er fyldt, og {player} har ingen vej at gå.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Tiden er forbi, {player} tabt.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "I trækfasen er der ikke blevet fjernet nogen brik i det sidste bestemte antal træk.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Det er uafgjort, fordi brættet er fuldt.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Det er uafgjort på grund af tredobbelt gentagelse.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Game Over! Ukendt årsag.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Game over",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Du vinder! Tillykke!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Udfordre hårdere niveau? Det nye niveau vil være niveau {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Du taber!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Analyser",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Om",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Version: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Tak",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Indstillinger",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Indstillinger",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "Præferencer",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "Sværhedsgrad",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI-tanketid",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Sværhedsgrad",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Lydeffekter",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Afspilning af lyde i spillet",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Hold lydløs, når du tager tilbage",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Tone",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Første træk",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Menneske",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Alternativt",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Automatisk genstart af spillet, når spillet er slut",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Automatisk ændring af første træk",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Tilfældigt træk",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Diverse",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Regler",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Antallet af brikker, som hver spiller har",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Hvor mange brikker har hver spiller?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Nummeret på den flyvende brik",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Hvis flyvende er aktiveret, kan en spiller, når han er reduceret til et bestemt antal brikker, frit flytte sine brikker til et hvilket som helst ubesat punkt i stedet for at være begrænset til tilstødende punkter som i resten af spillet.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Brikker Mindst",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Diagonale linjer",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Tilføj fire diagonale linjer til brættet.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Markér og forsinke fjernelsen af brikker",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "I placeringsfasen vil punkterne for fjernede brikker ikke længere kunne placeres.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Den anden spiller flytter først",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Den spiller, der flytter som den anden i placeringsfasen, flytter først i flyttefasen.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Multi-fjern",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Hvis en spiller lukker mere end én mølle på én gang, fjerner hun det antal møller, hun har lukket.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Ødelægge møller",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Som standard skal spillerne først fjerne alle andre brikker, før de fjerner en brik fra en dannet mølle. Aktiver denne indstilling for at deaktivere denne begrænsning.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Den anden spiller taber, når brættet er fuldt",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Når brættet er fuldt ved slutningen af placeringsfasen, taber den side, der placerer først, spillet. Ellers er spillet uafgjort.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Taber, når der ikke er nogen lovlige træk",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Spilleren taber, hvis hans modstander blokerer dem, så de ikke kan flyttes. Skift side til at flytte, hvis denne indstilling er deaktiveret.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Flyvende",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Hvis en spiller kun har tre eller fire (konfigurerbar) brikker tilbage, kan han flytte brikken til et hvilket som helst frit punkt.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N-træk-reglen",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Spillet er uafgjort, hvis der ikke har været nogen flytning i et bestemt antal træk af hver spiller.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Rul tilbage",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Vælg venligst",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Kopier",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Trækhistorik kopieres til udklipsholderen.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Hjælp",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Feedback",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Afslut",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Regelindstillinger",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Farve",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Farve på tavlen",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Farve på brikker",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Baggrundsfarve",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Farve på brættets linje",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Spiller 1 brik farve",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Farve på brik til spiller 2",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Farve på besked",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "aiIsLazy": "AI er doven",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "Vis antallet af brikker på hånden",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Vis noteringer på brættet",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Vis historik navigationsværktøjslinje",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Vis",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Bredde af brætgrænserne",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Bredden af den indre linje på brættet",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Stykkebredde",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Skriftstørrelse",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD-notation",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Gendan",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Gendanner standardindstillingerne",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Vælg {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Info",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Tip",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "spiller",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Spiller 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Spiller 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Sådan spiller du",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Tryk på et vilkårligt punkt for at placere brikken.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Tryk på en brik for at flytte den.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Tryk på et punkt, der er forbundet med en brik, for at flytte den.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Tryk på modstanderens ene brik for at fjerne.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Du skal først oprette en mølle, før du kan fjerne en brik.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Du er nødt til at spille med dine brikker.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistik",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Samlede spil",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Resultater",
+  "@results": {
+    "description": "Results"
+  },
+  "cannotRemoveFromMill": "Kan ikke fjerne fra møllen.",
+  "@cannotRemoveFromMill": {
+    "description": "Cannot remove from the mill."
+  },
+  "left": "venstre",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Politik om beskyttelse af personlige oplysninger",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Læs venligst omhyggeligt og sørg for, at du fuldt ud forstår og accepterer dette ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Hvis du ikke accepterer denne politik, skal du ikke bruge denne app. Brug af appen indebærer, at du accepterer disse vilkår.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " og ",
+  "@and": {},
+  "accept": "Accepter",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Tag tilbage",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Tilbageførsel…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Venter…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Træd fremad",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Tag alt tilbage",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Fremadgående alle",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Flyt dig nu",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Færdig.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Knæk-mølle",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Hvis en spiller kun har brikker i møller, vil brikkerne i møllerne ikke blive låst for at blive fjernet.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Animationens varighed",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Ingen",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Tema",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Spillet har til formål at efterlade modstanderen med færre end tre brikker eller ingen lovlige træk.\n\nSpillet er automatisk uafgjort, hvis en stilling opstår for tredje gang eller ikke fjernes i de sidste 100 (konfigurerbare) træk.\n\nSpillet forløber i tre faser:\n\n1. Placering af brikker på ledige punkter\n2. Flytning af brikker til tilstødende punkter\n3. (valgfri fase) Flytning af brikker til et hvilket som helst ledigt punkt, når spilleren er reduceret til tre brikker\n\nPlacering af\n\nSpillet begynder med et tomt bræt, som består af et gitter med fireogtyve punkter. Spillerne skiftes til at placere deres brikker på de ledige punkter, indtil hver spiller har placeret alle brikker på brættet. Hvis en spiller kan placere tre af sine brikker lige, har han en \"mølle\" og kan fjerne en af sine modstanderes brikker fra brættet.\n\nI nogle regler skal spillerne først fjerne alle andre brikker, før de kan fjerne en brik fra en dannet mølle.\n\nI nogle regler kan man ikke placere brikkerne til de punkter, hvor brikkerne er fjernet, igen i placeringsfasen.\n\nNår bruge alle brikker, skiftes spillerne til at flytte.\n\nFlytning\n\nFor at flytte flytter en spiller en af sine brikker langs en brætlinje til et ledigt tilstødende punkt. Hvis han ikke kan gøre det, har han tabt spillet. Som i placeringsfasen har en spiller, der placerer tre af sine brikker på en brætlinje, en mølle og kan fjerne en af sine modstanderes brikker. En spiller, der reduceres til to brikker, har ikke mulighed for at danne nye møller og taber dermed spillet. En spiller kan også tabe, når han har mere end tre brikker, hvis hans modstander blokerer dem for at flytte dem.\n\nFlyvende\n\nI nogle varianter af reglerne kan en spiller, når han kun har tre brikker tilbage, flyve, hoppe eller springe til alle ledige punkter, ikke kun tilstødende punkter.",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Version info",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Licens",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Kildekode",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "App-version",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Generelt",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Avanceret",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Placering af",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Flytning af",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Fjernelse af",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Game over-tilstand",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI's spillestil",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Passiv",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Tiden er gået",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "Personalisering",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "drawOnHumanExperience": "Udnyt den menneskelige erfaring",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Overvej mobiliteten af dele",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Antal stykker:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} i hånden: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} ombord: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Brættet er forskudt fra toppen",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Det er ikke AI's tur.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI tænker ikke.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Du er i slutningen af træklisten.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Tryk tilbage igen for at gå.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "Mere",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Det er en eksperimentel funktion.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Eksperimenter",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Open source-licenser",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Sprog",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Standardsprog",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Brikkerne kan bevæge sig i placeringsfasen",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Der er ingen særskilte placerings- og flyttefaser, dvs. spillerne kan ved hvert træk beslutte, om de vil placere en brik på brættet eller flytte en af deres brikker (så længe de har resterende brikker til at placere).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Menufarve",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Menufarve på menuen",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Menuhøjde elementfarve",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Hovedværktøjslinjens baggrundsfarve",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "hovedværktøjslinjens ikonfarve",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Navigationsværktøjslinjens baggrundsfarve",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Navigationsværktøjslinjens ikonfarve",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Skjul værktøjslinjen automatisk",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Værktøjslinjens placering på skærmen",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Top",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Bund",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Centrum",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Solid farve",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Billede",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Vælg dit billede",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Lys",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Mørk",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Temaer",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Aktuelt tema",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Gem tema",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Vis analysegraf",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Analyse",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Gem spil",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Indlæs spil",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Opsætningsposition",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Vis juridiske træk",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Vis sidste træk",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Vis pile",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Stykker",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Vis analyse",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Tråde",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Bliv involveret",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Hjælp med at forbedre oversættelsen",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Vejledning",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Klassisk mølle",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Blandet mølle",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Ceylon Mølle",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Mølle kan blive brudt og genskabt gentagne gange",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Hvis en spiller bryder en mølle for at oprette en ny mølle med det samme, kan en sådan spiller flytte et sådant stykke tilbage til det oprindelige kryds i sit næste træk, hvis det opretter en ny mølle.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spillet trækkes, hvis en spiller har tre brikker, og efter ti træk fjerner ingen spiller modstanderens brikker",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Når en spiller er nede i tre stykker, og ingen af spillerne kan fjerne en modstanders stykke inden for ti træk, er spillet uafgjort.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Tæt",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Hvidt stykke",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Sort stykke",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Forbudspunkt",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Tomt punkt",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Ingen pointe",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Placeringsfase",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Flyttefase",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Flyvende fase",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Side at flytte: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Sidste træk: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Valgte",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Tilgængelighed",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Understøttelse af skærmlæser",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Det er uafgjort!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Tegne",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Stykke fremhæve farve",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algoritme",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "Fjern uplaceret stykke",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Hvis en spiller danner møllen i placeringsfasen, vil hun fjerne modstanderens uplacerede brik og fortsætte med at foretage et træk.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "Slutspil N-Move-regel",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Hvis en spiller kun har tre brikker, og ingen af spillerne fjerner en brik inden for et bestemt træk, trækkes spillet.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Hver spiller har kun tre brikker, og ingen af spillerne fjerner en brik inden for et bestemt træk.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Tredobbelt gentagelsesregel",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Spillet trækkes, hvis en position opstår for tredje gang.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Mølle! Fortsæt med at gøre et træk.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Point stil",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Punktbredde",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Solid",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Hul",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Dansk",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Bevæge sig}=1{{count} Bevæge sig}other{{count} Flytter sig}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  }
 }

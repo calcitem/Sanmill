@@ -1,1256 +1,1162 @@
 {
-    "@@locale": "id",
-    "appName": "Mill",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Selamat datang",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "Iya",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Tidak",
-    "@no": {
-        "description": "No"
-    },
-    "game": "Permainan",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Manusia Vs AI",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Manusia Vs Manusia",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "AI Vs AI",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Manusia Vs Awan",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Manusia Vs LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Tes Melalui LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Pindah",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": "  bergerak",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Pindahkan daftar",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Pindahkan daftar",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Tidak ada catatan",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "Ok",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "Konfirmasi",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "Membatalkan",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Hak Cipta © 2021 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Pilih bagian yang salah.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Tempatkan potongan Anda.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Anda tidak dapat menempatkannya di sini.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Anda menempatkan.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Hapus sepotong.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Anda tidak dapat menghapusnya.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Anda dihapus.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Pindahkan sepotong.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Anda tidak dapat menempatkan bagian Anda di sini.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Anda tidak dapat memindahkan bagian Anda di sini.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Pabrik! Ambil bagian lawan.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Lanjutkan untuk mengambil bagian lawan.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Pilih salah satu bidak lawan.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Anda tidak dapat menghapus sepotong dari penggilingan.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "Sebuah bidak dapat bergerak 1 poin.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Anda tidak dapat memindahkan bidak lawan.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "Ada tiga bagian dalam satu baris.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Pilih bagian Anda untuk dipindahkan.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "Anda memiliki tiga potong tersisa.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Anda dapat pindah ke titik mana pun yang Anda suka.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": "  untuk bergerak.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "Player 1 menang!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "Player 2 menang!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Menang",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "Kalah",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "Aborted",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Thinking...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "New game",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Impor game",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Ekspor game",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Game imported from the clipboard.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Cannot import",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Moves and rules do not match.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Mulai merekam",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Merekam...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Stop merekam",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Show recording",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "No recording.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Please wait.",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Restart the current game?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Restart",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "Game started, please place",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Analyzing ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "Error",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "Win Rate",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "Score",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "Player 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "Player 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " piece count is less than three.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " resign.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " is no way to go.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "The board is full, and no way to go.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Time Over",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "In the moving phase, no piece has been removed in the last specific number of moves.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "It is a Draw because the board is full.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "It is a Draw because of threefold repetition.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "Game Over! Unknown reason.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "Game Over",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "You win! Congratulations!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "Challenge harder level? The new level will be level ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "You Lose!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "Analyze",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "Restart the current game?",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "About",
-    "@about": {
-        "description": "About"
-    },
-    "version": "Version",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "Thanks",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Settings",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Options",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "Preferences",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Difficulty level",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "AI thinking time",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Difficulty",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Efek suara",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "Mainkan suara dalam game",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Tetap bisu saat mengambil kembali",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Nada",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Langkah pertama",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Manusia",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "AI",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "Bergantian",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "Mulai ulang game secara otomatis saat game berakhir",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Ubah Otomatis Langkah Pertama",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "AI Resign Jika Paling Kalah",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Gerakan acak",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Pelajari Endgame",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Buku Pembuka",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "lain-lain",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "Aturan",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Jumlah bidak yang dimiliki setiap pemain",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Berapa bagian yang dimiliki setiap pemain?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Jumlah potongan terbang",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "Jika Terbang diaktifkan, ketika seorang pemain dikurangi menjadi jumlah bidak tertentu, bidaknya bebas untuk berpindah ke titik kosong mana pun alih-alih dibatasi ke poin yang berdekatan seperti di sisa permainan.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Potongan Setidaknya",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Garis diagonal",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Tambahkan empat garis diagonal ke papan.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Tandai dan tunda menghapus potongan",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "Pada fase penempatan, titik-titik potongan yang dilepas tidak lagi dapat ditempatkan.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Pemain kedua bergerak lebih dulu",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Pemain yang bergerak kedua di fase penempatan bergerak pertama di fase bergerak.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Multi-hapus",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Jika seorang pemain menutup lebih dari satu penggilingan sekaligus, dia akan menghapus jumlah penggilingan yang dia tutup.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Hancurkan pabrik",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "Secara default, pemain harus mengeluarkan bidak lain terlebih dahulu sebelum mengeluarkan bidak dari penggilingan yang terbentuk. Aktifkan opsi ini untuk menonaktifkan batasan.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Pemain kedua kalah saat papan penuh",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Ketika papan penuh pada akhir fase penempatan, pihak yang menempatkan pertama kalah dalam permainan. Jika tidak, permainannya seri.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Kalah ketika tidak ada langkah hukum",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Pemain akan kalah jika lawannya menghalanginya sehingga tidak bisa digerakkan. Ubah sisi untuk bergerak jika opsi ini dinonaktifkan.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Penerbangan",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Jika seorang pemain hanya memiliki tiga atau empat bidak (yang dapat dikonfigurasi), dia dapat memindahkan bidak tersebut ke titik bebas mana pun.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "Aturan gerakan-N",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "Permainan ditarik jika tidak ada penghapusan dalam jumlah gerakan tertentu oleh setiap pemain.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Kembalikan",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "Silahkan pilih",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "Salinan",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Pindahkan riwayat yang disalin ke papan klip",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Tolong",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Umpan balik",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "keluar",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Pengaturan Aturan",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "Warna",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Warna papan",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Warna potongan",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Warna latar belakang",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Warna garis papan",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Pemain 1 buah warna",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Warna pemain 2 buah",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Warna pesan",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "AI itu Malas",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Tunjukkan jumlah potongan di tangan",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Tampilkan notasi di papan",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Tampilkan bilah alat navigasi riwayat",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "Tampilan",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Lebar garis batas papan",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Lebar garis dalam papan Board",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Lebar potongan",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "Ukuran huruf",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "notasi WMD",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Mengembalikan",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Kembalikan pengaturan default",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "Aplikasi akan keluar.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "Anda harus segera menutup dan membuka kembali aplikasi agar berlaku.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Memilih",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "Info",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "Petunjuk",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "pemain",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "Pemain 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "Pemain 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Cara bermain",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Ketuk titik mana pun yang tersedia untuk menempatkan potongan.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Ketuk sepotong untuk memindahkannya.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Ketuk titik yang terhubung ke bagian untuk memindahkannya.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Ketuk salah satu bagian lawan untuk menghapus.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Anda perlu membuat gilingan terlebih dahulu sebelum Anda dapat menghapus sepotong.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Anda harus bermain dengan bidak Anda.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "Statistik",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Total permainan",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "Hasil",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Tidak dapat menghapus dari pabrik.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "kiri",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Kebijakan pribadi",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Harap baca dengan seksama dan pastikan Anda sepenuhnya memahami dan setuju dengan ini",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Jika Anda tidak setuju dengan Kebijakan ini, jangan gunakan Aplikasi ini. Menggunakan Aplikasi menyiratkan bahwa Anda menerima persyaratan ini.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": "  dan",
-    "accept": "Menerima",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "Membuka",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "Batalkan opsi",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Dimungkinkan untuk membatalkan gerakan.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Ambil kembali",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Mengambil kembali",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Menunggu",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Maju",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Ambil kembali semua",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Maju semua",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Pindah sekarang",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Selesai.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Crack-mill",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "Jika pemain hanya memiliki bidak di penggilingan, bidak di penggilingan tidak akan terkunci untuk dilepas.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Durasi animasi",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Tidak ada",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Tema",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Permainan ini bertujuan untuk meninggalkan lawan dengan kurang dari tiga potong atau tidak ada gerakan hukum.\n\nPermainan secara otomatis menarik jika posisi terjadi untuk ketiga kalinya atau tidak menghapus dalam 100 gerakan terakhir (yang dapat dikonfigurasi).\n\nPermainan berlangsung dalam tiga fase:\n\n1. Menempatkan potongan di titik kosong\n2. Memindahkan potongan ke titik yang berdekatan\n3. (fase opsional) Memindahkan bidak ke titik kosong mana pun saat mengurangi pemain menjadi tiga bidak\n\nPenempatan\n\nPermainan dimulai dengan papan kosong, yang terdiri dari kotak dengan dua puluh empat poin. Pemain bergiliran menempatkan bidak mereka di titik kosong sampai setiap pemain menempatkan semua bidak di papan. Jika seorang pemain dapat menempatkan tiga bidaknya secara lurus, ia memiliki \"mill\" dan dapat mengeluarkan salah satu bidak lawannya dari papan.\n\nDalam beberapa aturan, pemain harus mengeluarkan bidak lain terlebih dahulu sebelum mengeluarkan bidak dari penggilingan yang terbentuk.\n\nAnda tidak dapat menempatkan potongan ke titik potongan yang dihapus lagi dalam fase penempatan dalam beberapa aturan.\n\nSetelah menggunakan semua bidak, pemain bergiliran bergerak.\n\nBergerak\n\nUntuk bergerak, seorang pemain memindahkan salah satu bidaknya di sepanjang garis papan ke titik kosong yang berdekatan. Jika dia tidak bisa melakukannya, dia kalah dalam permainan. Seperti pada fase penempatan, seorang pemain yang menyejajarkan tiga bidaknya pada garis papan memiliki gilingan dan boleh mengeluarkan salah satu bidak lawannya. Setiap pemain mengurangi menjadi dua bagian, tidak memiliki pilihan untuk membentuk pabrik baru, dan dengan demikian kehilangan permainan. Seorang pemain juga bisa kalah ketika lebih dari tiga buah jika lawannya menghalangi mereka untuk bergerak.\n\nPenerbangan\n\nDalam beberapa varian aturan, setelah pemain hanya memiliki tiga bidak yang tersisa, bidaknya dapat terbang, melompat, atau melompat ke titik kosong mana pun, tidak hanya yang berdekatan.",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "Informasi versi",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "Lisensi",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Kode sumber",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Pemberitahuan pihak ketiga",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "Versi Aplikasi",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "Umum",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "Maju",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "Penempatan",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Bergerak",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Menghapus",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "Kondisi game over",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "Gaya bermain AI",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Pasif",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "Waktu habis",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Personalisasi",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "Untuk pengembang",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "mode pengembang",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Menggambar pada pengalaman manusia",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Pertimbangkan mobilitas potongan",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Jumlah potongan",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "di tangan",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "di atas kapal",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "Papan offset dari atas",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Ini bukan giliran AI.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "AI tidak berpikir.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Gerakan putar ulang otomatis",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "Anda berada di akhir daftar pemindahan.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Ketuk kembali lagi untuk pergi.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Variabel lingkungan",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Lebih",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Ini adalah fitur eksperimental.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Eksperimen",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Lisensi sumber terbuka",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Bahasa",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "Bahasa default",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Potongan dapat bergerak dalam fase penempatan",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Tidak ada fase penempatan dan pemindahan yang berbeda, yaitu, para pemain dapat memutuskan pada setiap gerakan apakah mereka ingin menempatkan bidak di papan atau memindahkan salah satu bidak mereka (selama mereka memiliki bidak yang tersisa untuk ditempatkan).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Warna menu",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Warna teks menu",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Warna latar belakang menu",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Warna item sorotan menu",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Warna latar belakang bilah alat utama",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "warna ikon bilah alat utama",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Warna latar belakang bilah alat navigasi",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Warna ikon bilah alat navigasi",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Sembunyikan bilah alat secara otomatis",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Lokasi bilah alat di layar",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Puncak",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Bawah",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Pusat",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Warna solid",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Gambar",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Pilih gambar Anda",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Cahaya",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "Gelap",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Tema",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Tema saat ini",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Simpan tema",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "font",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Tampilkan grafik analisis",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Analisis",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "Simpan permainan",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Muat permainan",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "Posisi pengaturan",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Tunjukkan langkah hukum",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Tampilkan gerakan terakhir",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Tampilkan panah",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "Potongan",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Tampilkan analisis",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Utas",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "Terlibat",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Bantu tingkatkan terjemahan",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "tutorial",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Pabrik Klasik",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Pabrik Campuran",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Pabrik Ceylon",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Pabrik mungkin rusak dan dibuat ulang berulang kali",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Jika seorang pemain memecahkan gilingan untuk segera membuat gilingan baru, pemain tersebut dapat memindahkan potongan tersebut kembali ke persimpangan awal pada langkah berikutnya jika pemain tersebut membuat gilingan baru.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Permainan dinyatakan seri jika seorang pemain memiliki tiga buah bidak dan setelah sepuluh gerakan tidak ada pemain yang mengambil bidak lawan",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Ketika seorang pemain turun menjadi tiga bagian, dan tidak ada pemain yang dapat menghapus bagian lawan dalam sepuluh gerakan, permainannya seri.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "Menutup",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Potongan putih",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "potongan hitam",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Titik larangan",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "titik kosong",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Tidak ada poin",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Menempatkan fase",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Fase bergerak",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Fase terbang",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Sisi untuk bergerak",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Langkah terakhir",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Terpilih",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Menu utama",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Aksesibilitas",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Dukungan pembaca layar",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "Ini adalah undian",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "Seri",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Warna sorot potongan",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "algoritma",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "Hapus bagian yang tidak ditempatkan",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Jika seorang pemain membentuk penggilingan di fase penempatan, dia akan menghapus bidak lawan yang belum ditempatkan dan terus bergerak.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "Aturan N-Move Endgame",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Jika salah satu pemain hanya memiliki tiga bidak dan tidak ada pemain yang mengeluarkan bidak dalam gerakan tertentu, permainan dinyatakan seri.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Salah satu pemain hanya memiliki tiga bidak dan tidak ada pemain yang mengeluarkan bidak dalam gerakan tertentu.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Aturan pengulangan tiga kali lipat",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Permainan dinyatakan seri jika terjadi posisi untuk ketiga kalinya.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Pabrik! Terus lakukan gerakan.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Gaya titik",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Lebar titik",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Padat",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Kosong",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "Indonesia",
-    "@languageName": {
-        "description": "The name of the current language"
+  "appName": "Mill",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Selamat datang",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Iya",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Tidak",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Permainan",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Manusia Vs AI",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Manusia Vs Manusia",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI Vs AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Manusia Vs Awan",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Manusia Vs LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Tes Melalui LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Pindah",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Pindahkan daftar",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Pindahkan daftar",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Tidak ada catatan",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "Ok",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Konfirmasi",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Membatalkan",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Pilih bagian yang salah.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Tempatkan potongan Anda.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Anda tidak dapat menempatkannya di sini.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Anda menempatkan.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Hapus sepotong.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Anda tidak dapat menghapusnya.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Anda dihapus.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Pindahkan sepotong.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Anda tidak dapat menempatkan bagian Anda di sini.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Anda tidak dapat memindahkan bagian Anda di sini.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Pabrik! Ambil bagian lawan.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Lanjutkan untuk mengambil bagian lawan.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Pilih salah satu bidak lawan.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Anda tidak dapat menghapus sepotong dari penggilingan.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Sebuah bidak dapat bergerak 1 poin.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Anda tidak dapat memindahkan bidak lawan.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Pilih bagian Anda untuk dipindahkan.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Anda memiliki tiga potong tersisa.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Anda dapat pindah ke titik mana pun yang Anda suka.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} untuk bergerak.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Player 1 menang!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Player 2 menang!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Menang",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Kalah",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Berpikir…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Permainan baru",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Impor game",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Ekspor game",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Game yang diimpor dari clipboard.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Tidak dapat mengimpor {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Gerakan dan aturan tidak cocok.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Tunggu sebentar.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Mulai ulang game saat ini?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Restart",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Permainan dimulai, silakan tempat.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Menganalisa…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Error: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Win Rate",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Score:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Pemain 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Pemain 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} jumlah potongan kurang dari tiga.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} resign.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} tidak ada jalan lain.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Papan sudah penuh, dan {player} tidak ada jalan lagi.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Waktu telah berakhir, {player} hilang.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "Dalam fase bergerak, tidak ada bidak yang dikeluarkan dalam jumlah gerakan spesifik terakhir.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Ini adalah Seri karena papan penuh.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Ini adalah Seri karena pengulangan tiga kali lipat.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Tamat! Alasan yang tidak diketahui.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Tamat",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Kamu menang! Selamat!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Tantang level yang lebih sulit? Level baru akan menjadi level {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Kamu kalah!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Menganalisa",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Tentang",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Versi: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Terima kasih",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Pengaturan",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Options",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "Preferensi",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "Tingkat kesulitan",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "waktu berpikir AI",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Kesulitan",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Efek suara",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Mainkan suara dalam game",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Tetap bisu saat mengambil kembali",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Nada",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Langkah pertama",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Manusia",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Bergantian",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Mulai ulang game secara otomatis saat game berakhir",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Ubah Otomatis Langkah Pertama",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Gerakan acak",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "lain-lain",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Aturan",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Jumlah bidak yang dimiliki setiap pemain",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Berapa bagian yang dimiliki setiap pemain?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Jumlah potongan terbang",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Jika Terbang diaktifkan, ketika seorang pemain dikurangi menjadi jumlah bidak tertentu, bidaknya bebas untuk berpindah ke titik kosong mana pun alih-alih dibatasi ke poin yang berdekatan seperti di sisa permainan.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Potongan Setidaknya",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Garis diagonal",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Tambahkan empat garis diagonal ke papan.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Tandai dan tunda menghapus potongan",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "Pada fase penempatan, titik-titik potongan yang dilepas tidak lagi dapat ditempatkan.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Pemain kedua bergerak lebih dulu",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Pemain yang bergerak kedua di fase penempatan bergerak pertama di fase bergerak.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Multi-hapus",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Jika seorang pemain menutup lebih dari satu penggilingan sekaligus, dia akan menghapus jumlah penggilingan yang dia tutup.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Hancurkan pabrik",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Secara default, pemain harus mengeluarkan bidak lain terlebih dahulu sebelum mengeluarkan bidak dari penggilingan yang terbentuk. Aktifkan opsi ini untuk menonaktifkan batasan.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Pemain kedua kalah saat papan penuh",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Ketika papan penuh pada akhir fase penempatan, pihak yang menempatkan pertama kalah dalam permainan. Jika tidak, permainannya seri.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Kalah ketika tidak ada langkah hukum",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Pemain akan kalah jika lawannya menghalanginya sehingga tidak bisa digerakkan. Ubah sisi untuk bergerak jika opsi ini dinonaktifkan.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Penerbangan",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Jika seorang pemain hanya memiliki tiga atau empat bidak (yang dapat dikonfigurasi), dia dapat memindahkan bidak tersebut ke titik bebas mana pun.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "Aturan gerakan-N",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Permainan ditarik jika tidak ada penghapusan dalam jumlah gerakan tertentu oleh setiap pemain.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Kembalikan",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Silahkan pilih",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Salinan",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Pindahkan riwayat yang disalin ke papan klip.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Tolong",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Umpan balik",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "keluar",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Pengaturan Aturan",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Warna",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Warna papan",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Warna potongan",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Warna latar belakang",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Warna garis papan",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Pemain 1 buah warna",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Warna pemain 2 buah",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Warna pesan",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "aiIsLazy": "AI itu Malas",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "Tunjukkan jumlah potongan di tangan",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Tampilkan notasi di papan",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Tampilkan bilah alat navigasi riwayat",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Tampilan",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Lebar garis batas papan",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Lebar garis dalam papan Board",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Lebar potongan",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Ukuran huruf",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "notasi WMD",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Mengembalikan",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Kembalikan pengaturan default",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Pilih {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Info",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Petunjuk",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "pemain",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Pemain 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Pemain 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Cara bermain",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Ketuk titik mana pun yang tersedia untuk menempatkan potongan.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Ketuk sepotong untuk memindahkannya.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Ketuk titik yang terhubung ke bagian untuk memindahkannya.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Ketuk salah satu bagian lawan untuk menghapus.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Anda perlu membuat gilingan terlebih dahulu sebelum Anda dapat menghapus sepotong.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Anda harus bermain dengan bidak Anda.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistik",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Total permainan",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Hasil",
+  "@results": {
+    "description": "Results"
+  },
+  "cannotRemoveFromMill": "Tidak dapat menghapus dari pabrik.",
+  "@cannotRemoveFromMill": {
+    "description": "Cannot remove from the mill."
+  },
+  "left": "kiri",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Kebijakan pribadi",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Harap baca dengan seksama dan pastikan Anda sepenuhnya memahami dan setuju dengan ini ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Jika Anda tidak setuju dengan Kebijakan ini, jangan gunakan Aplikasi ini. Menggunakan Aplikasi menyiratkan bahwa Anda menerima persyaratan ini.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " dan ",
+  "@and": {},
+  "accept": "Menerima",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Ambil kembali",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Mengambil kembali…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Menunggu…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Maju",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Ambil kembali semua",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Maju semua",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Pindah sekarang",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Selesai.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Crack-mill",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Jika pemain hanya memiliki bidak di penggilingan, bidak di penggilingan tidak akan terkunci untuk dilepas.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Durasi animasi",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Tidak ada",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Tema",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Permainan ini bertujuan untuk meninggalkan lawan dengan kurang dari tiga potong atau tidak ada gerakan hukum.\n\nPermainan secara otomatis menarik jika posisi terjadi untuk ketiga kalinya atau tidak menghapus dalam 100 gerakan terakhir (yang dapat dikonfigurasi).\n\nPermainan berlangsung dalam tiga fase:\n\n1. Menempatkan potongan di titik kosong\n2. Memindahkan potongan ke titik yang berdekatan\n3. (fase opsional) Memindahkan bidak ke titik kosong mana pun saat mengurangi pemain menjadi tiga bidak\n\nPenempatan\n\nPermainan dimulai dengan papan kosong, yang terdiri dari kotak dengan dua puluh empat poin. Pemain bergiliran menempatkan bidak mereka di titik kosong sampai setiap pemain menempatkan semua bidak di papan. Jika seorang pemain dapat menempatkan tiga bidaknya secara lurus, ia memiliki \"mill\" dan dapat mengeluarkan salah satu bidak lawannya dari papan.\n\nDalam beberapa aturan, pemain harus mengeluarkan bidak lain terlebih dahulu sebelum mengeluarkan bidak dari penggilingan yang terbentuk.\n\nAnda tidak dapat menempatkan potongan ke titik potongan yang dihapus lagi dalam fase penempatan dalam beberapa aturan.\n\nSetelah menggunakan semua bidak, pemain bergiliran bergerak.\n\nBergerak\n\nUntuk bergerak, seorang pemain memindahkan salah satu bidaknya di sepanjang garis papan ke titik kosong yang berdekatan. Jika dia tidak bisa melakukannya, dia kalah dalam permainan. Seperti pada fase penempatan, seorang pemain yang menyejajarkan tiga bidaknya pada garis papan memiliki gilingan dan boleh mengeluarkan salah satu bidak lawannya. Setiap pemain mengurangi menjadi dua bagian, tidak memiliki pilihan untuk membentuk pabrik baru, dan dengan demikian kehilangan permainan. Seorang pemain juga bisa kalah ketika lebih dari tiga buah jika lawannya menghalangi mereka untuk bergerak.\n\nPenerbangan\n\nDalam beberapa varian aturan, setelah pemain hanya memiliki tiga bidak yang tersisa, bidaknya dapat terbang, melompat, atau melompat ke titik kosong mana pun, tidak hanya yang berdekatan.",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Informasi versi",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Lisensi",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Kode sumber",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Versi Aplikasi",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Umum",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Maju",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Penempatan",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Bergerak",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Menghapus",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Kondisi game over",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Gaya bermain AI",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Pasif",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Waktu habis",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "Personalisasi",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "drawOnHumanExperience": "Menggambar pada pengalaman manusia",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Pertimbangkan mobilitas potongan",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Jumlah potongan:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} di tangan: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} di pesawat: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Papan offset dari atas",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Ini bukan giliran AI.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI tidak berpikir.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Anda berada di akhir daftar pemindahan.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Ketuk kembali lagi untuk pergi.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "Lebih",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Ini adalah fitur eksperimental.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Eksperimen",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Lisensi sumber terbuka",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Bahasa",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Bahasa default",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Potongan dapat bergerak dalam fase penempatan",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Tidak ada fase penempatan dan pemindahan yang berbeda, yaitu, para pemain dapat memutuskan pada setiap gerakan apakah mereka ingin menempatkan bidak di papan atau memindahkan salah satu bidak mereka (selama mereka memiliki bidak yang tersisa untuk ditempatkan).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Warna menu",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Warna teks menu",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Warna item sorotan menu",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Warna latar belakang bilah alat utama",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "warna ikon bilah alat utama",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Warna latar belakang bilah alat navigasi",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Warna ikon bilah alat navigasi",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Sembunyikan bilah alat secara otomatis",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Lokasi bilah alat di layar",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Puncak",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Bawah",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Pusat",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Warna solid",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Gambar",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Pilih gambar Anda",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Cahaya",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Gelap",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Tema",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Tema saat ini",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Simpan tema",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Tampilkan grafik analisis",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Analisis",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Simpan permainan",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Muat permainan",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Posisi pengaturan",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Tunjukkan langkah hukum",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Tampilkan gerakan terakhir",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Tampilkan panah",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Potongan",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Tampilkan analisis",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Utas",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Terlibat",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Bantu tingkatkan terjemahan",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "tutorial",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Pabrik Klasik",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Pabrik Campuran",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Pabrik Ceylon",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Pabrik mungkin rusak dan dibuat ulang berulang kali",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Jika seorang pemain memecahkan gilingan untuk segera membuat gilingan baru, pemain tersebut dapat memindahkan potongan tersebut kembali ke persimpangan awal pada langkah berikutnya jika pemain tersebut membuat gilingan baru.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Permainan dinyatakan seri jika seorang pemain memiliki tiga buah bidak dan setelah sepuluh gerakan tidak ada pemain yang mengambil bidak lawan",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Ketika seorang pemain turun menjadi tiga bagian, dan tidak ada pemain yang dapat menghapus bagian lawan dalam sepuluh gerakan, permainannya seri.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Menutup",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Potongan putih",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "potongan hitam",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Titik larangan",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "titik kosong",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Tidak ada poin",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Menempatkan fase",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Fase bergerak",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Fase terbang",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Sisi untuk bergerak: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Langkah terakhir: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Terpilih",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Aksesibilitas",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Dukungan pembaca layar",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Ini adalah undian!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Seri",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Warna sorot potongan",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "algoritma",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "Hapus bagian yang tidak ditempatkan",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Jika seorang pemain membentuk penggilingan di fase penempatan, dia akan menghapus bidak lawan yang belum ditempatkan dan terus bergerak.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "Aturan N-Move Endgame",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Jika salah satu pemain hanya memiliki tiga bidak dan tidak ada pemain yang mengeluarkan bidak dalam gerakan tertentu, permainan dinyatakan seri.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Salah satu pemain hanya memiliki tiga bidak dan tidak ada pemain yang mengeluarkan bidak dalam gerakan tertentu.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Aturan pengulangan tiga kali lipat",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Permainan dinyatakan seri jika terjadi posisi untuk ketiga kalinya.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Pabrik! Terus lakukan gerakan.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Gaya titik",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Lebar titik",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Padat",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Kosong",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Indonesia",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{bergerak}=1{{count} bergerak}other{{count} bergerak}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  }
 }

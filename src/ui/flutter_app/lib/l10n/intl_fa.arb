@@ -1,1256 +1,1162 @@
 {
-    "@@locale": "fa",
-    "appName": "دوز",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "خوش آمدید!",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "آره",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "نه",
-    "@no": {
-        "description": "No"
-    },
-    "game": "بازی",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "انسان در برابر رایانه",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "انسان در برابر انسان",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "رایانه در برابر رایانه",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "انسان در برابر فضای ابری",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "انسان در برابر LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Test Via LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "حرکت",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " اُمین حرکت",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "لیست حرکت",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "لیست حرکت",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "بدون سابقه",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "خوب",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "تایید",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "لغو",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Copyright © 2021 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "مهره اشتباه را انتخاب کنید.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "مهره‌های خود را قرار دهید.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "نمی‌توان در اینجا قرار داد.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "قرار داده شده.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "یک مهره را بردارید.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "قابل حذف نیست",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "حذف شده.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "یک مهره را حرکت دهید",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "نمی توانید مهره خود را اینجا قرار دهید.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "نمی توانید مهره خود را به اینجا منتقل کنید.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "دوز! یک مهره حریف خود را بردارید.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "برای برداشتن مهره حریف ادامه دهید.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "یکی از مهره های حریف خود را انتخاب کنید.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "نمی‌توانید مهره‌ای از یک دوز را بردارید.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "میتوانید مهره‌ای را یک خانه حرکت دهید.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "نمی‌توانید مهره های حریف را حرکت دهید.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "3 مهره در یک خط وجود دارد.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "مهره‌ای برای حرکت‌دادن انتخاب کنید.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "فقط ۳ مهره برای شما باقیمانده.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "می توانید به هر خانه‌ای که دوست دارید بروید.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " حرکت کردن",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "بازیکن ۱ برنده است!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "بازیکن ۲ برنده است!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "برنده شد",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "باخت",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "صرف نظر شد",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "فكر كردن...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "بازی جدید",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "وارد کردن بازی",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "صادر کردن بازی",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "بازی از بریده‌دان وارد شده است.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "وارد کردن امکان پذیر نیست",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "حرکات و قوانین با هم مطابقت ندارند.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "آغاز ضبط کردن",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "درحال ضبط...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "ضبط کردن را متوقف کنید",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "ضبط را نشان دهید",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "ضبط نشده",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "شکیبا باشید...",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "راه‌اندازی مجدد بازی فعلی؟",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "راه اندازی مجدد",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "بازی شروع شده است ، لطفا مهره‌ای را قرار دهید",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "در حال تجزیه و تحلیل ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "خطا",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "درصد برد",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "امتیاز",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "بازیکن ۱",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "بازیکن ۲",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " تعداد قطعات کمتر از سه است.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " استعفا",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " راهی برای رفتن نیست",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "صفحه بازی پر شده ، راهی برای رفتن نیست.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "وقت تمام شد",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "در مرحله حرکت کردن ، هیچ مهره‌ای در آخرین تعداد حرکت خاص حذف نشده است.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "نتیجه مساوی است.چون تخته پر است.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "نتیجه مساوی است ب دلیل سه بار تکرار",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "بازی تمام شد! دلیل ناشناخته.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "بازی تمام شد",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "تبریک! شما برنده شدید!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "چالش سطح سخت تر؟ مرحله ی بعدی: ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "تو باختی!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "تجزیه و تحلیل",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "نام بازیکن",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "درباره",
-    "@about": {
-        "description": "About"
-    },
-    "version": "نسخه",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "با تشکر از",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "تنظیمات",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "گزینه ها",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "تنظیمات بازی",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "سطح دشواری",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "زمان تفکر رایانه‌ای",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "دشواری",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "جلوه‌های صوتی",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "پخش صداها در بازی",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "حفظ حالت بی صدا هنگام بازگشت به عقب",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "لحن",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "حرکت اول",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "انسان",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "هوش مصنوعی",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "جایگزین",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "راه‌اندازی دوباره بازی بصورت خودکار وقتی بازی تمام شد",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "تغییر خودکار حرکت اول",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "AI Resign if Most Lose",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "حرکت تصادفی",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Learn Endgame",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Opening Book",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "متفرقه",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "قوانین",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "تعداد مهره های هر بازیکن",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "هر بازیکن چند مهره دارد؟",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "تعداد مهره‌های پروازی",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "اگر پرواز کردن فعال باشد ، هنگامی که مهره های بازیکن به تعداد خاصی کاهش یابد ، مهره های او آزاد هستند و به جای محدود شدن به نقاط مجاور ، می توانند ‌به هر نقطه اشغال نشده منتقل شوند.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "حداقل مهره‌ها",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "خطوط مورب",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "افزودن چهار خط مورب به تخته بازی",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "برداشتن(حذف) مهره‌ها را علامت گذاشته و به تأخیر بیندازید",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "در مرحله جای‌گذاری مهره‌ها ، نقاط مهره‌های برداشته شده دیگر قادر به پذیرش مهره جدید نخواهند بود.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "بازیکن دوم ابتدا حرکت می کند",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "بازیکنی که در مرحله جای‌گذاری مهره‌ها در نوبت دوم حرکت می کند در مرحله حرکت دادن مهره‌ها اول حرکت می کند.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "حذف چندگانه مهره‌ها",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "اگر یک بازیکن یک باره بیش از یک دوز را حاصل شود ، می تواند به تعداد دوز هایی که حاصل شده، مهره‌های حریف را بردارد.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "نابودسازی دوزها",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "به طور پیش فرض ، بازیکنان باید قبل از برداشتن مهره‌ای از دوز تشکیل شده ، سایر مهره‌ها را حذف کنند. برای غیرفعال کردن محدودیت ، این گزینه را فعال کنید.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "هنگامی که تخته پر میشود بازیکن دوم می‌بازد",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "در پایان مرحله جای‌گذاری مهره‌ها ، وقتی تخته پر است ، طرفی که ابتدا مهره‌ای قرار می‌دهد بازی را می‌بازد ، در غیر این صورت بازی مساوی است.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "وقتی حرکت مجازی وجود ندارد می‌بازید.",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "بازیکن شکست می‌خورد اگر حریف مانع جابجایی مهره‌های او شود . تغییر طرف حرکت در صورت غیرفعال بودن گزینه.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "پرواز کردن",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "اگر بازیکن فقط سه یا چهار مهره (با قابلیت تنظیم) باقی داشته باشد ، می تواند مهره را به هر نقطه آزاد منتقل کند.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "قانون N حرکت",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "چنانچه در شمار خاصی از حرکات، مهره‌ای از سوی هر یک از بازیکنان حذف نشده باشد ، بازی مساوی می شود.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "بازگشت به عقب",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "لطفا انتخاب کنید",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "کپی",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "تاریخچه انتقال به بریده‌دان کپی شده",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "کمک",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "بازخورد",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "خروج",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "تنظیمات قوانین",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "رنگ",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "رنگ تخته",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "رنگ مهره",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "رنگ پس زمینه",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "رنگ خطوط تخته",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "رنگ مهره بازیکن ۱",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "رنگ مهره بازیکن ۲",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "رنگ پیام",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "هوش مصنوعی تنبل است",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "نشان‌دادن تعداد مهره‌های موجود در دست",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "نمایش مختصات",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "نمایش نوار ابزار پیمایش تاریخچه",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "نمایش دادن",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "عرض خطوط مرزی تخته",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "عرض خطوط داخلی تخته",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "عرض مهره",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "اندازه فونت",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "علامت گذاری استاندارد",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "بازگرداندن",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "بازیابی تنظیمات پیشفرض",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "برنامه بسته خواهد شد",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "شما باید برنامه را بلافاصله ببندید و دوباره باز کنید تا اثر بگذارد.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "انتخاب",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "اطلاعات",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "راهنمایی",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "بازیکن",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "بازیکن ۱",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "بازیکن ۲",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "بازی دوز چیست ؟",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "برای قرار دادن مهره ، روی هر خانه(نقطه) موجود ضربه بزنید.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "برای حرکت دادن یک مهره روی آن ضربه بزنید.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "برای حرکت دادن یک مهره روی خانه(نقطه) مجاور ضربه بزنید.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "برای حذف کردن مهره حریف روی آن ضربه بزنید.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "قبل از اینکه بتوانید مهره ای را حذف کنید ، ابتدا باید یک دوز ایجاد کنید.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "شما باید با مهره های خودتان بازی کنید.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "آمار",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "کل بازیهای انجام شده",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "نتایج",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "شما نمیتوانید مهره‌ای از یک دوز را حذف کنید.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "ترک کرد",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "سیاست حفظ حریم خصوصی",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "لطفاً با دقت مطالعه کنید و اطمینان حاصل کنید که آن را کاملاً درک کرده و با آن موافق هستید ",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". اگر با این سیاست موافق نیستید ، لطفاً از این برنامه استفاده نکنید. استفاده از برنامه به معنای پذیرفتن این شرایط است. ما گاهی اوقات این شرایط را به روز می کنیم ، بنابراین لطفا در آینده به آنها مراجعه کنید.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " و ",
-    "accept": "پذیرفتن",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "واگرد",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "گزینه واگرد",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "واگرد یک حرکت امکان پذیر است.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "پس گرفتن",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "در حال پس گرفتن... ",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "چشم به راه...",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "قدم به جلو",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "پس گرفتن همه",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "جلو رفتن تا انتها",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "حالا حرکت کن",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "انجام شده.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "دوز را در هم بشکنید",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "اگر بازیکنی فقط دارای مهره‌هایی در دوز ها باید، قطعات موجود در آسیاب برای برداشته شدن قفل نمی شوند.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "مدت زمان انیمیشن",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "هیچ‌یک",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "پوسته",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "هدف بازی این است که بازی کن حریف را با کمتر از سه مهره بازی یا بدون هیچ راهی برای حرکت، شکست دهد.\n\nاگر در آخرین ۱۰۰ حرکت باقی مانده هیچ مهره ای حذف نشود یا یک محل سه بار پیش بیاید، بازی به طور اتوماتیک مساوی می‌شود\n\nاین بازی سه فاز دارد:\n۱. مهره ها روی نقاط خالی قرار میگیرند\n۲. مهره ها به نقاط کنارشان قابل حرکتند\n۳. (اختیاری) حرکت مهره ها به هریک از نقاط خالی در هنگام کم کردن مهره های حریف\n\nگذاشتن مهره ها:\nبازی با یک تخته خالی شروع می‌شود که شامل یک جدول با ۲۴ نقطه است\nبازیکن ها به ترتیب مهره های خود را روی نقاط خالی میگذارند تا تمامی مهره هایشان رو تخته باشد. اگر بازی کنی بتواند سه تا از مهره هایش را به طور خط مستقیم قرار دهد شانس برداشتن یکی از مهره های حریف را به دست میاورد که به اصطلاح میل می‌گیرد \n\nدر بعضی شرایط بازی، بازیکن باید اول تمامی مهره های دیگر را از تخته بردارد تا بتواند میل داشته باشد\n\nدر بعضی شرایط نمیتوانید مهره هایتان را در نقاطی قرار دهید که قبلا رویشان مهره دیگری بوده\n\nبعد از این که تمامی مهره ها رو تخته قرار گیرد بازیکنان به ترتیب می‌توانند مهره هایشان را حرکت بدهند\n\nحرکت دادن\nبرای حرکت دادن بازی کن باید مهره خود را در در نقطه خالی که توسط یک خط به نقطه خودش وصل است منتقل کند\nاگر نتواند بازی را باخته است\nبازیکنی که سه تا از مهره هایش را کنار هم روی یک خط قرار دهد میل می‌گیرد در فاز مهره گذاری و می‌تواند یکی از مهره های حریف را حذف کند \nهر بازی کنی که مهره هایش به دو عدد برسد دیگر شانس میل کردن ندارد و در نتیجه بازی را میبازد\nبازیکنانی که سه مهره دارند ولی بازیکن دیگری جلوی حرکت مهره هایشان را گرفته باشد هم بازی را میبازد\n\nپرواز\n\nدر بعضی موارد بازی، اگر برای بازیکنی فقط سه مهره باقی مانده باشد، مهره هایش می‌توانند پرواز کنند یا روی هر نقطه خالی بپرند حتی اگر نقاط خالی کنارشان نباشد",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "اطلاعات نسخه",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "مجوز",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "کد منبع",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "اعلامیه های شخص ثالث",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "نسخه برنامه",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "عمومی",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "پیشرفته",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "جای‌گذاری",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "در حال حرکت",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "حذف کردن",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "شرایط Game Over",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "سبک بازی هوش مصنوعی",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "منفعل",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "مهلت زمانی",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "تنظیمات ظاهر",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "برای توسعه دهندگان",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "حالت توسعه دهنده",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "استفاده از تجربه انسان",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "در نظر گرفتن تحرک مهره‌ها",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "تعداد مهره‌ها",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "در دست",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "روی تخته بازی",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "فاصله تخته بازی از بالا",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "نوبت رایانه نیست.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "هوش مصنوعی در حال فکر کردن نیست",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "پخش خودکار حرکات",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "در پایان لیست حرکت ها قرار دارید.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "برای خروج از برنامه ، دوباره روی دکمه برگشت ضربه بزنید.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "متغیرهای محیطی",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "بیشتر",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "این یک ویژگی تجربی است.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "آزمایش",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "مجوزهای منبع آزاد",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "زبان",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "زبان پیش فرض",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "مهره ها می توانند در مرحله جای‌گذاری حرکت کنند",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "هیچ مرحله مشخصی برای قرار دادن و حرکت وجود ندارد ، به عنوان مثال بازیکنان می توانند در هر حرکت تصمیم بگیرند که آیا می خواهند مهره ای را روی صفحه قرار دهند یا یکی از مهره های خود را حرکت دهند (به شرط اینکه مهره هایی برای قرار دادن باقی مانده باشد).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "رنگ منو",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "رنگ متن منو",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "رنگ پس زمینه منو",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "رنگ مورد برجسته منو",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "رنگ زمینه اصلی نوار ابزار",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "رنگ نماد نوار ابزار اصلی",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "رنگ زمینه نوار ابزار پیمایش",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "رنگ نماد نوار ابزار پیمایش",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "به طور خودکار نوار ابزار را مخفی کنید",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "مکان نوار ابزار روی صفحه",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "بالا",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "پایین",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "مرکز",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "رنگ جامد",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "تصویر",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "عکس خود را انتخاب کنید",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "سبک",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "تاریک",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "مضامین",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "موضوع فعلی",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "ذخیره موضوع",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "قلم ها",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "نمودار تجزیه و تحلیل را نشان دهید",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "تحلیل و بررسی",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "ذخیره بازی",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "بازی را بارگذاری کنید",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "موقعیت راه اندازی",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "حرکات قانونی را نشان دهید",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "آخرین حرکت را نشان دهید",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "پیکان ها را نشان دهید",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "قطعات",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "تجزیه و تحلیل را نشان دهید",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "موضوعات",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "مشارکت کنید",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "به بهبود ترجمه کمک کنید",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "آموزش",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "آسیاب کلاسیک",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "آسیاب مخلوط",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "آسیاب سیلان",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "آسیاب ممکن است بارها شکسته و دوباره ساخته شود",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "اگر بازیکنی آسیاب را بشکند تا بلافاصله آسیاب جدیدی ایجاد کند ، اگر یک آسیاب جدید ایجاد کند ، در حرکت بعدی خود می تواند چنین قطعه ای را به محل اصلی برگرداند.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "اگر بازیکنی سه قطعه داشته باشد و پس از ده حرکت بازیکنان مهره های حریف را بردارند بازی به تساوی می رسد",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "هنگامی که یک بازیکن به سه قطعه کاهش می یابد و هیچ یک از بازیکنان نمی توانند در طی ده حرکت قطعه حریف را بردارند ، بازی مساوی است.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "نزدیک",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "قطعه سفید",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "قطعه مشکی",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "نقطه ممنوعیت",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "نقطه خالی",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "فایده ای نداره",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "فاز قرار دادن",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "فاز متحرک",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "مرحله پرواز",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "جهت حرکت",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "آخرین حرکت",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "انتخاب شد",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "منوی اصلی",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "دسترسی",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "پشتیبانی از صفحه خوان",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "!قرعه کشی است",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "قرعه کشی",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "رنگ برجسته آجیل",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "الگوریتم",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "مهره گذاشته‌نشده را از دور خارج کنید",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "اگر بازیکنی در مرحله کذاشتن مهره ها به یک دوز دست یابد، مهره‌ی گذاشته نشده حریف را برداشته و به حرکت ادامه میدهد",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "قانون N حرکت در پایان بازی",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "اگر هریک از بازیکنان فقط سه مهره داشته باشد و هیچ یک از بازیکنان مهره ای را در حرکات خاص حذف نکنند ، بازی مساوی می شود.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "هر یک از بازیکنان فقط سه مهره دارد و هیچ یک از بازیکنان مهره ای را در حرکات خاص بر نمی دارد.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "قانون تکرار سه گانه",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "اگر موقعیتی برای سومین بار رخ دهد ، بازی قرعه کشی می شود.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "دوز! به حرکت خود ادامه دهید.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "سبک نقطه",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "عرض نقطه",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "جامد",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "توخالی",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "فارسی",
-    "@languageName": {
-        "description": "The name of the current language"
+  "appName": "دوز",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "خوش آمدید",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "آره",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "نه",
+  "@no": {
+    "description": "No"
+  },
+  "game": "بازی",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "انسان در برابر رایانه",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "انسان در برابر انسان",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "رایانه در برابر رایانه",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "انسان در برابر فضای ابری",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "انسان در برابر LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "تست از طریق شبکه",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "حرکت",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "لیست حرکت",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "لیست حرکت",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "بدون سابقه",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "خوب",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "تایید",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "لغو",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "مهره اشتباه را انتخاب کنید.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "مهره‌های خود را قرار دهید.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "نمی‌توان در اینجا قرار داد.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "قرار داده شده.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "یک مهره را بردارید.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "قابل حذف نیست.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "حذف شده.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "یک مهره را حرکت دهید.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "نمی توانید مهره خود را اینجا قرار دهید.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "نمی توانید مهره خود را به اینجا منتقل کنید.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "دوز! یک مهره حریف خود را بردارید.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "برای برداشتن مهره حریف ادامه دهید.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "یکی از مهره های حریف خود را انتخاب کنید.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "نمی‌توانید مهره‌ای از یک دوز را بردارید.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "میتوانید مهره‌ای را یک خانه حرکت دهید.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "نمی‌توانید مهره های حریف را حرکت دهید.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "مهره‌ای برای حرکت‌دادن انتخاب کنید.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "فقط ۳ مهره برای شما باقیمانده.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "می توانید به هر خانه‌ای که دوست دارید بروید.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} برای حرکت.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "بازیکن ۱ برنده است!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "بازیکن ۲ برنده است!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "برنده شد",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "باخت",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "فكر كردن…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "بازی جدید",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "وارد کردن بازی",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "صادر کردن بازی",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "بازی از بریده‌دان وارد شده است.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "نمی تواند وارد {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "حرکات و قوانین با هم مطابقت ندارند.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "شکیبا باشید...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "راه‌اندازی مجدد بازی فعلی؟",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "راه اندازی مجدد",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "بازی شروع شده است ، لطفا مهره‌ای را قرار دهید.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "در حال تجزیه و تحلیل…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "خطا: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "درصد برد",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "امتیاز:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "بازیکن ۱",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "بازیکن ۲",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} تعداد قطعات کمتر از سه است.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} استعفا داد.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} راهی برای رفتن ندارد.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "برد پر است و {player} راهی برای رفتن ندارد.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "زمان تمام شد، {player} از دست رفت.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "در مرحله حرکت کردن ، هیچ مهره‌ای در آخرین تعداد حرکت خاص حذف نشده است.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "نتیجه مساوی است.چون تخته پر است.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "نتیجه مساوی است ب دلیل سه بار تکرار.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "بازی تمام شد! دلیل ناشناخته.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "بازی تمام شد",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "تبریک! شما برنده شدید!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "سطح سخت تر را به چالش بکشید؟ سطح جدید سطح {level} خواهد بود!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "تو باختی!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "تجزیه و تحلیل",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "درباره",
+  "@about": {
+    "description": "About"
+  },
+  "version": "نسخه: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "با تشکر از",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "تنظیمات",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "گزینه ها",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "تنظیمات بازی",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "سطح دشواری",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "زمان تفکر رایانه‌ای",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "دشواری",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "جلوه‌های صوتی",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "پخش صداها در بازی",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "حفظ حالت بی صدا هنگام بازگشت به عقب",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "لحن",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "حرکت اول",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "انسان",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "هوش مصنوعی",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "جایگزین",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "راه‌اندازی دوباره بازی بصورت خودکار وقتی بازی تمام شد",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "تغییر خودکار حرکت اول",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "حرکت تصادفی",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "متفرقه",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "قوانین",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "تعداد مهره های هر بازیکن",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "هر بازیکن چند مهره دارد؟",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "تعداد مهره‌های پروازی",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "اگر پرواز کردن فعال باشد ، هنگامی که مهره های بازیکن به تعداد خاصی کاهش یابد ، مهره های او آزاد هستند و به جای محدود شدن به نقاط مجاور ، می توانند ‌به هر نقطه اشغال نشده منتقل شوند.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "حداقل مهره‌ها",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "خطوط مورب",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "افزودن چهار خط مورب به تخته بازی.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "برداشتن(حذف) مهره‌ها را علامت گذاشته و به تأخیر بیندازید",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "در مرحله جای‌گذاری مهره‌ها ، نقاط مهره‌های برداشته شده دیگر قادر به پذیرش مهره جدید نخواهند بود.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "بازیکن دوم ابتدا حرکت می کند",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "بازیکنی که در مرحله جای‌گذاری مهره‌ها در نوبت دوم حرکت می کند در مرحله حرکت دادن مهره‌ها اول حرکت می کند.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "حذف چندگانه مهره‌ها",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "اگر یک بازیکن یک باره بیش از یک دوز را حاصل شود ، می تواند به تعداد دوز هایی که حاصل شده، مهره‌های حریف را بردارد.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "نابودسازی دوزها",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "به طور پیش فرض ، بازیکنان باید قبل از برداشتن مهره‌ای از دوز تشکیل شده ، سایر مهره‌ها را حذف کنند. برای غیرفعال کردن محدودیت ، این گزینه را فعال کنید.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "هنگامی که تخته پر میشود بازیکن دوم می‌بازد",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "در پایان مرحله جای‌گذاری مهره‌ها ، وقتی تخته پر است ، طرفی که ابتدا مهره‌ای قرار می‌دهد بازی را می‌بازد ، در غیر این صورت بازی مساوی است.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "وقتی حرکت مجازی وجود ندارد می‌بازید",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "بازیکن شکست می‌خورد اگر حریف مانع جابجایی مهره‌های او شود . تغییر طرف حرکت در صورت غیرفعال بودن گزینه.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "پرواز کردن",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "اگر بازیکن فقط سه یا چهار مهره (با قابلیت تنظیم) باقی داشته باشد ، می تواند مهره را به هر نقطه آزاد منتقل کند.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "قانون N حرکت",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "چنانچه در شمار خاصی از حرکات، مهره‌ای از سوی هر یک از بازیکنان حذف نشده باشد ، بازی مساوی می شود.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "بازگشت به عقب",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "لطفا انتخاب کنید",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "کپی",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "تاریخچه انتقال به بریده‌دان کپی شده.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "کمک",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "بازخورد",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "خروج",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "تنظیمات قوانین",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "رنگ",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "رنگ تخته",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "رنگ مهره",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "رنگ پس زمینه",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "رنگ خطوط تخته",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "رنگ مهره بازیکن ۱",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "رنگ مهره بازیکن ۲",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "رنگ پیام",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "aiIsLazy": "هوش مصنوعی تنبل است",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "نشان‌دادن تعداد مهره‌های موجود در دست",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "نمایش مختصات",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "نمایش نوار ابزار پیمایش تاریخچه",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "نمایش دادن",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "عرض خطوط مرزی تخته",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "عرض خطوط داخلی تخته",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "عرض مهره",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "اندازه فونت",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "علامت گذاری استاندارد",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "بازگرداندن",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "بازیابی تنظیمات پیشفرض",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "انتخاب {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "اطلاعات",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "راهنمایی",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "بازیکن",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "بازیکن ۱",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "بازیکن ۲",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "بازی دوز چیست",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "برای قرار دادن مهره ، روی هر خانه(نقطه) موجود ضربه بزنید.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "برای حرکت دادن یک مهره روی آن ضربه بزنید.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "برای حرکت دادن یک مهره روی خانه(نقطه) مجاور ضربه بزنید.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "برای حذف کردن مهره حریف روی آن ضربه بزنید.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "قبل از اینکه بتوانید مهره ای را حذف کنید ، ابتدا باید یک دوز ایجاد کنید.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "شما باید با مهره های خودتان بازی کنید.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "آمار",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "کل بازیهای انجام شده",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "نتایج",
+  "@results": {
+    "description": "Results"
+  },
+  "cannotRemoveFromMill": "شما نمیتوانید مهره‌ای از یک دوز را حذف کنید.",
+  "@cannotRemoveFromMill": {
+    "description": "Cannot remove from the mill."
+  },
+  "left": "ترک کرد",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "سیاست حفظ حریم خصوصی",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "لطفاً با دقت مطالعه کنید و اطمینان حاصل کنید که آن را کاملاً درک کرده و با آن موافق هستید ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". اگر با این سیاست موافق نیستید ، لطفاً از این برنامه استفاده نکنید. استفاده از برنامه به معنای پذیرفتن این شرایط است. ما گاهی اوقات این شرایط را به روز می کنیم ، بنابراین لطفا در آینده به آنها مراجعه کنید.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " و ",
+  "@and": {},
+  "accept": "پذیرفتن",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "پس گرفتن",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "در حال پس گرفتن…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "چشم به راه…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "قدم به جلو",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "پس گرفتن همه",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "جلو رفتن تا انتها",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "حالا حرکت کن",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "انجام شده.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "دوز را در هم بشکنید",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "اگر بازیکنی فقط دارای مهره‌هایی در دوز ها باید، قطعات موجود در آسیاب برای برداشته شدن قفل نمی شوند.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "مدت زمان انیمیشن",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "هیچ‌یک",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "پوسته",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "هدف بازی این است که بازی کن حریف را با کمتر از سه مهره بازی یا بدون هیچ راهی برای حرکت، شکست دهد.\n\nاگر در آخرین ۱۰۰ حرکت باقی مانده هیچ مهره ای حذف نشود یا یک محل سه بار پیش بیاید، بازی به طور اتوماتیک مساوی می‌شود\n\nاین بازی سه فاز دارد:\n۱. مهره ها روی نقاط خالی قرار میگیرند\n۲. مهره ها به نقاط کنارشان قابل حرکتند\n۳. (اختیاری) حرکت مهره ها به هریک از نقاط خالی در هنگام کم کردن مهره های حریف\n\nگذاشتن مهره ها:\nبازی با یک تخته خالی شروع می‌شود که شامل یک جدول با ۲۴ نقطه است\nبازیکن ها به ترتیب مهره های خود را روی نقاط خالی میگذارند تا تمامی مهره هایشان رو تخته باشد. اگر بازی کنی بتواند سه تا از مهره هایش را به طور خط مستقیم قرار دهد شانس برداشتن یکی از مهره های حریف را به دست میاورد که به اصطلاح میل می‌گیرد \n\nدر بعضی شرایط بازی، بازیکن باید اول تمامی مهره های دیگر را از تخته بردارد تا بتواند میل داشته باشد\n\nدر بعضی شرایط نمیتوانید مهره هایتان را در نقاطی قرار دهید که قبلا رویشان مهره دیگری بوده\n\nبعد از این که تمامی مهره ها رو تخته قرار گیرد بازیکنان به ترتیب می‌توانند مهره هایشان را حرکت بدهند\n\nحرکت دادن\nبرای حرکت دادن بازی کن باید مهره خود را در در نقطه خالی که توسط یک خط به نقطه خودش وصل است منتقل کند\nاگر نتواند بازی را باخته است\nبازیکنی که سه تا از مهره هایش را کنار هم روی یک خط قرار دهد میل می‌گیرد در فاز مهره گذاری و می‌تواند یکی از مهره های حریف را حذف کند \nهر بازی کنی که مهره هایش به دو عدد برسد دیگر شانس میل کردن ندارد و در نتیجه بازی را میبازد\nبازیکنانی که سه مهره دارند ولی بازیکن دیگری جلوی حرکت مهره هایشان را گرفته باشد هم بازی را میبازد\n\nپرواز\n\nدر بعضی موارد بازی، اگر برای بازیکنی فقط سه مهره باقی مانده باشد، مهره هایش می‌توانند پرواز کنند یا روی هر نقطه خالی بپرند حتی اگر نقاط خالی کنارشان نباشد",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "اطلاعات نسخه",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "مجوز",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "کد منبع",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "نسخه برنامه",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "عمومی",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "پیشرفته",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "جای‌گذاری",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "در حال حرکت",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "حذف کردن",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "شرایط Game Over",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "سبک بازی هوش مصنوعی",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "منفعل",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "مهلت زمانی",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "تنظیمات ظاهر",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "drawOnHumanExperience": "استفاده از تجربه انسان",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "در نظر گرفتن تحرک مهره‌ها",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "تعداد مهره‌ها:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} در دست: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} در کشتی: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "فاصله تخته بازی از بالا",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "نوبت رایانه نیست.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "هوش مصنوعی در حال فکر کردن نیست.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "در پایان لیست حرکت ها قرار دارید.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "برای خروج از برنامه ، دوباره روی دکمه برگشت ضربه بزنید.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "بیشتر",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "این یک ویژگی تجربی است.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "آزمایش",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "مجوزهای منبع آزاد",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "زبان",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "زبان پیش فرض",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "مهره ها می توانند در مرحله جای‌گذاری حرکت کنند",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "هیچ مرحله مشخصی برای قرار دادن و حرکت وجود ندارد ، به عنوان مثال بازیکنان می توانند در هر حرکت تصمیم بگیرند که آیا می خواهند مهره ای را روی صفحه قرار دهند یا یکی از مهره های خود را حرکت دهند (به شرط اینکه مهره هایی برای قرار دادن باقی مانده باشد).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "رنگ منو",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "رنگ متن منو",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "رنگ مورد برجسته منو",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "رنگ زمینه اصلی نوار ابزار",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "رنگ نماد نوار ابزار اصلی",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "رنگ زمینه نوار ابزار پیمایش",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "رنگ نماد نوار ابزار پیمایش",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "به طور خودکار نوار ابزار را مخفی کنید",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "مکان نوار ابزار روی صفحه",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "بالا",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "پایین",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "مرکز",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "رنگ جامد",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "تصویر",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "عکس خود را انتخاب کنید",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "سبک",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "تاریک",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "مضامین",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "موضوع فعلی",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "ذخیره موضوع",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "نمودار تجزیه و تحلیل را نشان دهید",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "تحلیل و بررسی",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "ذخیره بازی",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "بازی را بارگذاری کنید",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "موقعیت راه اندازی",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "حرکات قانونی را نشان دهید",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "آخرین حرکت را نشان دهید",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "پیکان ها را نشان دهید",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "قطعات",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "تجزیه و تحلیل را نشان دهید",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "موضوعات",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "مشارکت کنید",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "به بهبود ترجمه کمک کنید",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "آموزش",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "آسیاب کلاسیک",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "آسیاب مخلوط",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "آسیاب سیلان",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "آسیاب ممکن است بارها شکسته و دوباره ساخته شود",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "اگر بازیکنی آسیاب را بشکند تا بلافاصله آسیاب جدیدی ایجاد کند ، اگر یک آسیاب جدید ایجاد کند ، در حرکت بعدی خود می تواند چنین قطعه ای را به محل اصلی برگرداند.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "اگر بازیکنی سه قطعه داشته باشد و پس از ده حرکت بازیکنان مهره های حریف را بردارند بازی به تساوی می رسد",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "هنگامی که یک بازیکن به سه قطعه کاهش می یابد و هیچ یک از بازیکنان نمی توانند در طی ده حرکت قطعه حریف را بردارند ، بازی مساوی است.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "نزدیک",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "قطعه سفید",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "قطعه مشکی",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "نقطه ممنوعیت",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "نقطه خالی",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "فایده ای نداره",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "فاز قرار دادن",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "فاز متحرک",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "مرحله پرواز",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "سمت برای حرکت: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "آخرین حرکت: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "انتخاب شد",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "دسترسی",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "پشتیبانی از صفحه خوان",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "قرعه کشی است!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "قرعه کشی",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "رنگ برجسته آجیل",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "الگوریتم",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "مهره گذاشته‌نشده را از دور خارج کنید",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "اگر بازیکنی در مرحله کذاشتن مهره ها به یک دوز دست یابد، مهره‌ی گذاشته نشده حریف را برداشته و به حرکت ادامه میدهد.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "قانون N حرکت در پایان بازی",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "اگر هریک از بازیکنان فقط سه مهره داشته باشد و هیچ یک از بازیکنان مهره ای را در حرکات خاص حذف نکنند ، بازی مساوی می شود.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "هر یک از بازیکنان فقط سه مهره دارد و هیچ یک از بازیکنان مهره ای را در حرکات خاص بر نمی دارد.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "قانون تکرار سه گانه",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "اگر موقعیتی برای سومین بار رخ دهد ، بازی قرعه کشی می شود.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "دوز! به حرکت خود ادامه دهید.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "سبک نقطه",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "عرض نقطه",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "جامد",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "توخالی",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "فارسی",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{حرکت}=1{{count} حرکت}other{{count} حرکت می کند}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  }
 }

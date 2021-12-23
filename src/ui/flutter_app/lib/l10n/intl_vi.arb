@@ -1,1256 +1,1162 @@
 {
-    "@@locale": "vi",
-    "appName": "Mill",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "chào mừng",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "Đúng",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Không",
-    "@no": {
-        "description": "No"
-    },
-    "game": "trò chơi",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Thách thức máy",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Trận chiến hai người chơi",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "Máy chiến đấu",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Thách thức đám mây",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Trận chiến trực tuyến",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Kiểm tra mạng lưới",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Di chuyển",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": "bươc",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Hiển thị kỷ lục cờ vua",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Kỷ lục cờ vua",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Chưa có thủ thuật nào",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "Đồng ý",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "xác nhận",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "hủy bỏ",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Bản quyền © 2021 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Con sai",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Hãy giải quyết",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Không thể rơi ở đây",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Đã giải quyết xong",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Hãy ăn đi",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Không thể ăn cái này",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Ăn",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Xin hãy đi đi",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Đừng thả ở đây",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Không thể chuyển đến đây",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Ba con trai liên tiếp, hãy ăn thịt con trai",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Hãy tiếp tục ăn",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Hãy chọn quân cờ của đối thủ",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Không thể ăn các quân cờ trong một chuỗi ba trò chơi",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "Vui lòng đi bộ đến chỗ trống liền kề",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Không thể di chuyển quân cờ của đối thủ",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "Ba quân cờ trên một đường thẳng",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Vui lòng chọn cầm đồ của riêng bạn để di chuyển",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "Chỉ còn 3 miếng",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Có thể bay đến bất kỳ vị trí tuyển dụng nào",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": "Chơi cờ",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "Người chơi 1 thắng!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "Người chơi 2 thắng!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Thắng lợi",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "tiêu cực",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "Làm gián đoạn",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Người kia đang nghĩ ...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "Bắt đầu một vòng mới",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Nhập trò chơi",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Xuất trò chơi",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Bản ghi trò chơi đã được nhập từ khay nhớ tạm",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Không thể nhập",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Nước đi không phù hợp với luật chơi",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Bắt đầu ghi âm",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Ghi âm...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Dừng ghi",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Ghi âm phát lại",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "Không tua lại",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Vui lòng đợi ...",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Bắt đầu lại?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Khởi động lại",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "Trò chơi bắt đầu, vui lòng thả",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Phân tích tình hình ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "lỗi",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "Tỉ lệ chiến thắng",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "ghi bàn",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "Đầu tay",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "Tay sau",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": "Còn lại ít hơn 3 cái.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": "Cho vào.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": "Không có cách nào để đi.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "Không còn đường để đi vì bàn cờ đã đầy.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Làm thêm giờ được đánh giá là tiêu cực.",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "Trong giai đoạn di chuyển, nếu không có cú đánh nào trong số bước theo quy định của luật, thì một trận hòa sẽ được thực hiện cho nhiều bước liên tiếp.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "Bàn cờ đầy, không còn đường đi, thế cờ hòa.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "Lặp lại vị trí và vẽ ba lần.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "Trò chơi kết thúc, không rõ lý do!",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "trò chơi kết thúc",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "Chúc mừng bạn đã chiến thắng",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "“Theo dõi có khó hơn không?",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "Mức độ khó tăng dần sẽ là \"",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "bạn đã thua",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "phân tích",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "Tên người chơi",
-    "@about": {
-        "description": "About"
-    },
-    "version": "trên",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "phiên bản",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Cảm ơn",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Thiết lập",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "Tùy chọn",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Cài đặt trò chơi",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "Cấp độ khó",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Thời gian tư duy máy móc",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Độ khó của trò chơi",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "âm thanh",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Phát âm thanh khi chơi cờ",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Giữ tắt tiếng khi hối tiếc về trò chơi",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Âm thanh nhắc nhở",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Bước đi đầu tiên",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "Nhân loại",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "máy móc",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "luân phiên",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Tự động khởi động lại khi kết thúc trò chơi",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "Tự động trao đổi tay khi bắt đầu",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Tự động thừa nhận thất bại khi máy rõ ràng kém hơn",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Di chuyển máy ngẫu nhiên",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Thư viện trò chơi tự học",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "Sử dụng thư viện mở",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "khác",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Luật chơi cờ vua",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Số quân cờ",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Đặt số lượng tốt thuộc sở hữu của cả hai bên trong trò chơi.",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "Có bao nhiêu trẻ em có thể bay",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Nếu các mảnh bay được phép, người chơi có thể bay khi còn lại nhiều mảnh ở một bên.",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Ít hơn một vài miếng, mất",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Gạch chéo",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Thêm bốn dấu gạch chéo trên bảng.",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "Điểm bị cấm",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Trong giai đoạn đu dây, các miếng ăn được đánh dấu và sẽ không bị loại bỏ trong thời gian này. Sau khi hai bên đặt quân cờ sẽ thống nhất loại bỏ hết quân cờ đã đánh dấu, rồi bước vào giai đoạn đi nước bước.",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Xoay lưng",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Bên đu trước trong giai đoạn đu sẽ di chuyển đầu tiên trong giai đoạn đu.",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Ăn nhiều hơn",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Nếu nhiều bộ ba được hình thành cùng một lúc, thì sự hình thành của một số bộ ba sẽ có thể ăn thịt của nhau.",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "Bạn được phép ăn các con trai của đời thứ ba liên tiếp",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Theo mặc định, bạn không thể ăn một con trong cuộc thi ba người trừ khi tất cả con của đối thủ đang trong cuộc thi thứ ba. Bật tùy chọn này để loại bỏ hạn chế này.",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Khi bàn cờ đầy, người thua được xếp trước",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Đối với cờ vua mười hai quân, khi kết thúc giai đoạn đánh cờ, nếu bàn cờ đầy và không có người chơi nào còn quân cờ, thì người chơi đầu tiên sẽ thua thay vì hòa.",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Đánh mất khi không còn đường để đi",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Trong nước đi, khi không còn đường đi, thua nước cờ, thay vào đó đối phương quay sang đối phương để tiếp tục nước đi.",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Feizi",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "Khi một bên còn lại ba hoặc bốn quân cờ (có thể cấu hình), bên này có thể di chuyển quân đến bất kỳ vị trí trống nào trên bàn cờ.",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "Quy tắc N-bước",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Khôi phục",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "xin vui lòng chọn",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "sao chép",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Bản ghi trò chơi đã được sao chép vào khay nhớ tạm",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Cứu giúp",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Phản hồi",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "rơi ra ngoài",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Cài đặt quy tắc",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "màu sắc",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Màu bàn cờ",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Quân cờ màu",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "màu nền",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Màu đường kẻ",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Màu của trình di chuyển đầu tiên",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Màu của quân cờ sau",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Màu thông báo nhắc nhở",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "Sự lười biếng khi máy đang dẫn đầu",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Hiển thị số quân cờ còn lại trong tay",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Hiển thị tọa độ trên cạnh của bảng",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Hiển thị thanh công cụ điều hướng di chuyển",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "trưng bày",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Chiều rộng đường khung bàn cờ",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Chiều rộng dòng bên trong bàn cờ",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Kích thước mảnh",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "cỡ chữ",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "Định dạng bản ghi trò chơi tiêu chuẩn",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Cài lại",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Khôi phục lại các thiết lập mặc định",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "Ứng dụng sẽ thoát.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "Bạn cần thoát và mở lại chương trình ngay lập tức để cấu hình mặc định có hiệu lực.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "lựa chọn",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "thông tin",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "lời nhắc",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "Người chơi",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "Đầu tay",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "Tay sau",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Cách chơi",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Bấm vào giao điểm trên bàn cờ để đặt quân cờ.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Vui lòng chọn phần bạn muốn di chuyển.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Bấm vào điểm tiếp giáp với quân cờ này để di chuyển quân cờ.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Bấm vào một trong các quân cờ của đối thủ để lấy một quân cờ.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Bạn cần phải hình thành một trận đấu ba trước khi bạn có thể lấy các quân cờ của đối thủ.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Bạn cần phải cầm đồ của riêng bạn.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "số liệu thống kê",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Số đĩa",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "kết quả",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Bạn không thể ăn các con trai của Sanlian.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "Còn lại",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Chính sách bảo mật",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Vui lòng đọc kỹ và hiểu đầy đủ các điều khoản của Thỏa thuận Người dùng \"và\" Chính sách Bảo mật \", bao gồm nhưng không giới hạn ở:",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": "Để cải thiện các dịch vụ mà chúng tôi cung cấp cho bạn, dựa trên sự ủy quyền rõ ràng của bạn, chúng tôi có thể lấy thông tin như kiểu thiết bị, dữ liệu chẩn đoán, địa chỉ email của bạn, v.v. Bạn có quyền từ chối hoặc hủy bỏ ủy quyền. Chúng tôi sẽ nhận được sự đồng ý rõ ràng của bạn thông qua một cửa sổ bật lên trước mỗi yêu cầu gửi dữ liệu chẩn đoán.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": "Bạn có thể đọc \"\"",
-    "accept": "》 Tìm hiểu thêm. Nếu bạn đồng ý, vui lòng nhấp vào \"Đồng ý\" để bắt đầu chấp nhận dịch vụ của chúng tôi.",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "với",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "đồng ý",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Cờ vua hối hận",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Cờ vua hối hận",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Cho phép hối tiếc",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Lùi lại một bước",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Lăn trở lại",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Vui lòng đợi",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Tiến một bước",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Quay lại phần cuối",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Đi đến cuối",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Chơi cờ ngay bây giờ",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "thực hiện",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Không được phép ăn cả ba món liên tiếp",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "không có",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Thời lượng hoạt ảnh",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Morris là một trò chơi trí óc rất cũ. Mục tiêu của trò chơi là để cho đối thủ bị ăn khi còn lại ít hơn ba quân cờ.\n\nNếu vị trí được lặp lại ba lần hoặc nếu không có bit nào trong một trăm lần di chuyển liên tiếp (có thể định cấu hình), một trận hòa sẽ được thực hiện.\n\nTrò chơi được chia thành ba giai đoạn:\n\n1. Đánh đu vào chỗ trống;\n2. Di chuyển quân cờ đến vị trí trống liền kề;\n3. Khi chỉ còn ba quân cờ, bạn có thể \"đánh bay quân cờ\" (không bắt buộc).\n\nSân khấu xích đu\n\nCó hai mươi bốn điểm trống trên bàn cờ. Người chơi luân phiên đặt con trai của họ vào các vị trí trống cho đến khi họ không có con trai trong tay. Nếu một bên sắp xếp ba quân cờ của mình liên tiếp, được cho là tạo thành thế \"ba quân đến\", bên đó có thể bắt được quân cờ của đối phương, và sau đó tiếp tục chơi cờ.\n\nMột số biến thể của quy tắc quy định rằng chỉ những con của đối thủ không thuộc “tam ty” mới được ăn thịt, trừ khi tất cả con của đối thủ đều ở “tam ty”.\n\nCũng có một số biến thể của luật lệ quy định rằng trong pha đu dây, không bên nào được đu vào chỗ trống mà trẻ bị ăn thịt.\n\nKhi quân cờ ở cả hai tay kết thúc, nó bước vào giai đoạn di chuyển.\n\nGiai đoạn đi bộ\n\nNgười chơi di chuyển con tốt của mình đến một điểm liền kề. Nếu không có con để đi, thì bạn sẽ thua cuộc. Tương tự như giai đoạn con lắc, các quân cờ của đối thủ có thể bị bắt khi tạo thành thế “tam hợp”. Khi chỉ còn hai con tốt ở một bên, phần thua được xác định và trò chơi được tuyên bố là thất bại. Nếu trên bàn cờ có nhiều hơn ba quân nhưng không có quân nào để di chuyển thì cũng sẽ bị tuyên bố là thua cuộc.\n\nGiai đoạn ngón chân\n\nTrong một số biến thể của các quy tắc, một khi một bên còn lại ba quân cờ, nó có thể \"bay\" đến bất kỳ vị trí trống nào, bất kể vị trí trống đó có liền kề hay không.",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "版本信息",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "sự thỏa thuận của người dùng",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "giấy phép",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Mã nguồn",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Khai báo của bên thứ ba",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "Phiên bản ứng dụng",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "thông thường",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "nâng cao",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "Con lắc",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Đi dạo",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Ăn một đứa trẻ",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "Điều kiện cuối cùng",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "Phong cách cờ vua của máy",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Bị động",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "hết giờ",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Cài đặt hiển thị",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "tùy chọn nhà phát triển",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Chế độ nhà phát triển",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Rút kinh nghiệm của con người",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Nâng cao khả năng của các quân cờ",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Số quân cờ",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "Trên tay",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "Trên bàn cờ",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "Khoảng cách giữa bảng và cạnh trên",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Bây giờ không đến lượt máy tính chơi cờ vua",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "Máy tính không suy nghĩ",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Tự động phát lại",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "Kết thúc rồi",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Nhấn phím quay lại một lần nữa để thoát ứng dụng.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Biến môi trường",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Hơn",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Đây vẫn là một tính năng thử nghiệm.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Các tính năng thử nghiệm",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Giấy phép nguồn mở",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Ngôn ngữ hiển thị",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "ngôn ngữ mặc định",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Bạn có thể đi bộ trong giai đoạn con lắc",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Không có ranh giới nghiêm ngặt giữa sân khấu xích đu và sân khấu đi bộ. Tức là người chơi có thể quyết định ra quân hay di chuyển trong mỗi nước đi (miễn là còn lại quân cờ để thực hiện một nước đi).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Màu menu",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Màu văn bản menu",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Màu nền menu",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Màu của mục đánh dấu menu",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Màu nền của thanh công cụ chính",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "màu biểu tượng chính của thanh công cụ",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Màu nền của thanh công cụ điều hướng",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Màu biểu tượng thanh công cụ điều hướng",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Tự động ẩn thanh công cụ",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Vị trí thanh công cụ trên màn hình",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Hàng đầu",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Dưới cùng",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Trung tâm",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Màu đồng nhất",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Hình ảnh",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Chọn hình ảnh của bạn",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Ánh sáng",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "Tối",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Chủ đề",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Chủ đề hiện tại",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Lưu chủ đề",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "Phông chữ",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Hiển thị đồ thị phân tích",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Phân tích",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "Lưu trò chơi",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Tải trò chơi",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "Thiết lập vị trí",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Hiển thị các động thái hợp pháp",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Hiển thị nước đi cuối cùng",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Hiển thị mũi tên",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "Miếng",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Hiển thị phân tích",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Chủ đề",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "Tham gia",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Giúp cải thiện bản dịch",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "Hướng dẫn",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Cối xay cổ điển",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Nhà máy hỗn hợp",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Nhà máy Ceylon",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Cối xay có thể bị hỏng và làm lại nhiều lần",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Nếu người chơi phá cối xay để tạo cối xay mới ngay lập tức, người chơi đó có thể di chuyển mảnh đó trở lại điểm giao nhau ban đầu trong nước đi tiếp theo của mình nếu nó tạo ra cối xay mới.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Trò chơi được rút ra nếu một người chơi có ba quân cờ và sau mười nước đi không người chơi nào loại bỏ quân cờ của đối thủ",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Khi một người chơi hạ được ba quân cờ và không người chơi nào có thể loại bỏ quân cờ của đối thủ trong vòng mười nước đi, trò chơi sẽ hòa.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "Gần",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Mảnh trắng",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "Mảnh đen",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Cấm điểm",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "Điểm trống",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Không có điểm",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Giai đoạn đặt",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Giai đoạn di chuyển",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Giai đoạn bay",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Bên cạnh để di chuyển",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Di chuyển lần cuối",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Đã chọn",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Thực đơn chính",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Khả năng tiếp cận",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Hỗ trợ trình đọc màn hình",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "Đó là một trận hòa",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "Vẽ",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Màu nổi bật mảnh",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "Thuật toán",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "Loại bỏ mảnh không có vị trí",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Nếu một người chơi hình thành cối xay trong giai đoạn đặt, cô ấy sẽ loại bỏ quân cờ của đối thủ và tiếp tục di chuyển.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "Quy tắc N-Move của Endgame",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Nếu một trong hai người chơi chỉ có ba quân cờ và không người chơi nào loại bỏ quân cờ trong một nước đi cụ thể, trò chơi sẽ được rút ra.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Một trong hai người chơi chỉ có ba quân cờ và không người chơi nào loại bỏ quân cờ trong một nước đi cụ thể.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Quy tắc lặp lại gấp ba lần",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Trò chơi được rút ra nếu một vị trí xảy ra lần thứ ba.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Cối xay! Tiếp tục di chuyển.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Phong cách điểm",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Chiều rộng điểm",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Chất rắn",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Rỗng",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "Tiếng Việt",
-    "@languageName": {
-        "description": "The name of the current language"
+  "appName": "Mill",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "chào mừng",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Đúng",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Không",
+  "@no": {
+    "description": "No"
+  },
+  "game": "trò chơi",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Thách thức máy",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Trận chiến hai người chơi",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "Máy chiến đấu",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Thách thức đám mây",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Trận chiến trực tuyến",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Kiểm tra mạng lưới",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Di chuyển",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Hiển thị kỷ lục cờ vua",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Kỷ lục cờ vua",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Chưa có thủ thuật nào",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "Đồng ý",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "xác nhận",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "hủy bỏ",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Phần được chọn là sai.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Hãy đặt các quân cờ.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Bạn không thể đặt quân cờ ở đây.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Bạn đã đặt một quân cờ.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Hãy lấy đi một trong những quân cờ của đối thủ.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Bạn không thể lấy con tốt của đối thủ.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Bạn đã loại bỏ quân cờ của đối thủ.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Hãy di chuyển một quân cờ.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Bạn không thể đặt quân cờ ở đây.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Bạn không thể di chuyển quân cờ ở đây.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Ba quân cờ được nối với nhau, hãy bỏ quân cờ của đối thủ.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Hãy tiếp tục loại bỏ quân cờ của đối thủ.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Hãy chọn quân cờ của đối thủ.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Không thể ăn các quân cờ trong một chuỗi ba trò chơi.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Vui lòng đi bộ đến chỗ trống liền kề.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Không thể di chuyển quân cờ của đối thủ.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Vui lòng chọn cầm đồ của riêng bạn để di chuyển.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Chỉ còn 3 miếng.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Có thể bay đến bất kỳ vị trí tuyển dụng nào.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} để di chuyển.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Người chơi 1 thắng!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Người chơi 2 thắng!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Thắng lợi",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "tiêu cực",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Người kia đang nghĩ…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Bắt đầu một vòng mới",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Nhập trò chơi",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Xuất trò chơi",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Bản ghi trò chơi đã được nhập từ khay nhớ tạm.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Không thể nhập {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Nước đi không phù hợp với luật chơi.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Vui lòng đợi ...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Bắt đầu lại?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Khởi động lại",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Trò chơi bắt đầu, vui lòng thả.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Phân tích tình hình…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "lỗi: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Tỉ lệ chiến thắng",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "ghi bàn:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Đầu tay",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Tay sau",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "Số mảnh {player} nhỏ hơn ba.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} đã từ chức.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} không còn đường để đi.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Hội đồng quản trị đã đầy và {player} không còn đường để đi.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Hết giờ, {player} đã thua。",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "Trong giai đoạn di chuyển, nếu không có cú đánh nào trong số bước theo quy định của luật, thì một trận hòa sẽ được thực hiện cho nhiều bước liên tiếp.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Bàn cờ đầy, không còn đường đi, thế cờ hòa.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Lặp lại vị trí và vẽ ba lần.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Trò chơi kết thúc, không rõ lý do.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "trò chơi kết thúc",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Bạn thắng! Xin chúc mừng!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Thử thách mức độ khó hơn? Cấp độ mới sẽ là cấp độ {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Mức độ khó tăng dần sẽ là \"!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "bạn đã thua",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Tên người chơi",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Phiên bản: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "phiên bản",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Cảm ơn",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Thiết lập",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "Tùy chọn",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "Cài đặt trò chơi",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Cấp độ khó",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Thời gian tư duy máy móc",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Độ khó của trò chơi",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "âm thanh",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Phát âm thanh khi chơi cờ",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Giữ tắt tiếng khi hối tiếc về trò chơi",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Âm thanh nhắc nhở",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Bước đi đầu tiên",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "Nhân loại",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "máy móc",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "luân phiên",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Tự động khởi động lại khi kết thúc trò chơi",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Tự động thừa nhận thất bại khi máy rõ ràng kém hơn",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Sử dụng thư viện mở",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "khác",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Luật chơi cờ vua",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Mỗi người chơi có bao nhiêu mảnh?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Đặt số lượng tốt thuộc sở hữu của cả hai bên trong trò chơi",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Có bao nhiêu trẻ em có thể bay.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Ít hơn một vài miếng, mất trò chơi",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Ít hơn một vài miếng, mất",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Thêm bốn đường chéo vào bảng.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Thêm bốn dấu gạch chéo trên bảng",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "Trong giai đoạn đu dây, các miếng ăn được đánh dấu và sẽ không bị loại bỏ trong thời gian này. Sau khi hai bên đặt quân cờ sẽ thống nhất loại bỏ hết quân cờ đã đánh dấu, rồi bước vào giai đoạn đi nước bước.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Người chơi thứ hai di chuyển đầu tiên",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Người chơi đứng thứ hai trong pha đặt bóng sẽ di chuyển đầu tiên trong pha di chuyển.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Nhiều loại bỏ",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Nếu một người chơi đóng nhiều hơn một nhà máy cùng một lúc, cô ấy sẽ xóa số nhà máy mà mình đã đóng.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Phá hủy các nhà máy",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Theo mặc định, người chơi phải loại bỏ bất kỳ mảnh nào khác trước khi lấy một mảnh ra khỏi nhà máy đã hình thành. Bật tùy chọn này để vô hiệu hóa giới hạn.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Theo mặc định, bạn không thể ăn một con trong cuộc thi ba người trừ khi tất cả con của đối thủ đang trong cuộc thi thứ ba. Bật tùy chọn này để loại bỏ hạn chế này",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Khi bảng đầy vào cuối giai đoạn đặt, bên đặt trước sẽ thua trò chơi. Nếu không, trò chơi là một trận hòa.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Thua khi không có nước đi hợp pháp",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Người chơi sẽ thua nếu đối thủ của mình chặn chúng để chúng không thể di chuyển được. Thay đổi bên để di chuyển nếu tùy chọn này bị tắt.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Bay",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Nếu một người chơi chỉ còn lại ba hoặc bốn quân cờ (có thể định cấu hình), người chơi có thể di chuyển quân cờ đến bất kỳ điểm tự do nào.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "Quy tắc N-di chuyển",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Trò chơi được rút ra nếu không có sự loại bỏ trong một số nước đi cụ thể.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Khôi phục",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "xin vui lòng chọn",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "sao chép",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Bản ghi trò chơi đã được sao chép vào khay nhớ tạm.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Cứu giúp",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Phản hồi",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "rơi ra ngoài",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Cài đặt quy tắc",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "màu sắc",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Màu bàn cờ",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Quân cờ màu",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "màu nền",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Màu đường kẻ",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Màu của trình di chuyển đầu tiên",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Màu của quân cờ sau",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Màu thông báo nhắc nhở",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "aiIsLazy": "Sự lười biếng khi máy đang dẫn đầu",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "Hiển thị số quân cờ còn lại trong tay",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Hiển thị tọa độ trên cạnh của bảng",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Hiển thị thanh công cụ điều hướng di chuyển",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "trưng bày",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Chiều rộng đường khung bàn cờ",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Chiều rộng dòng bên trong bàn cờ",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Kích thước mảnh",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "cỡ chữ",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "Định dạng bản ghi trò chơi tiêu chuẩn",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Cài lại",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Khôi phục lại các thiết lập mặc định",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Chọn {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "thông tin",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "lời nhắc",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "Người chơi",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Đầu tay",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Tay sau",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Cách chơi",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Bấm vào giao điểm trên bàn cờ để đặt quân cờ.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Vui lòng chọn phần bạn muốn di chuyển.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Bấm vào điểm tiếp giáp với quân cờ này để di chuyển quân cờ.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Bấm vào một trong các quân cờ của đối thủ để lấy một quân cờ.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Bạn cần phải hình thành một trận đấu ba trước khi bạn có thể lấy các quân cờ của đối thủ.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Bạn cần phải cầm đồ của riêng bạn.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "số liệu thống kê",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Số đĩa",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "kết quả",
+  "@results": {
+    "description": "Results"
+  },
+  "cannotRemoveFromMill": "Bạn không thể ăn các con trai của Sanlian.",
+  "@cannotRemoveFromMill": {
+    "description": "Cannot remove from the mill."
+  },
+  "left": "Còn lại",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Chính sách bảo mật",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Vui lòng đọc kỹ và hiểu đầy đủ các điều khoản của Thỏa thuận Người dùng \"và\" Chính sách Bảo mật \", bao gồm nhưng không giới hạn ở: ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": "Để cải thiện các dịch vụ mà chúng tôi cung cấp cho bạn, dựa trên sự ủy quyền rõ ràng của bạn, chúng tôi có thể lấy thông tin như kiểu thiết bị, dữ liệu chẩn đoán, địa chỉ email của bạn, v.v. Bạn có quyền từ chối hoặc hủy bỏ ủy quyền. Chúng tôi sẽ nhận được sự đồng ý rõ ràng của bạn thông qua một cửa sổ bật lên trước mỗi yêu cầu gửi dữ liệu chẩn đoán.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " và ",
+  "@and": {},
+  "accept": "Chấp nhận",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Cờ vua hối hận",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Lấy lại…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Chờ…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Lăn trở lại",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Vui lòng đợi",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Tiến một bước",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Quay lại phần cuối",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Làm xong.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Chơi cờ ngay bây giờ",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Nếu người chơi chỉ có quân cờ trong cối xay, thì các quân cờ trong cối xay sẽ không khóa để loại bỏ.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Không được phép ăn cả ba món liên tiếp",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "không có",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Thời lượng hoạt ảnh",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Trò chơi nhằm mục đích bỏ lại đối thủ với ít hơn ba quân cờ hoặc không có nước đi hợp pháp.\n\nTrò chơi tự động hòa nếu một vị trí xảy ra lần thứ ba hoặc không loại bỏ được trong 100 nước đi (có thể cấu hình) cuối cùng.\n\nTrò chơi diễn ra trong ba giai đoạn:\n\n1. Đặt các mảnh vào các điểm trống\n2. Di chuyển các mảnh đến các điểm liền kề\n3. (giai đoạn tùy chọn) Di chuyển quân cờ đến bất kỳ điểm trống nào khi giảm người chơi xuống ba quân\n\nĐặt\n\nTrò chơi bắt đầu với một bảng trống, bao gồm một lưới có hai mươi bốn điểm. Người chơi lần lượt đặt các quân cờ của mình vào các điểm trống cho đến khi mỗi người chơi đã đặt hết các quân cờ trên bàn cờ. Nếu một người chơi có thể đặt thẳng ba quân cờ của mình, anh ta có một \"cối xay\" và có thể loại bỏ một trong các quân cờ của đối thủ khỏi bàn cờ.\n\nTrong một số quy tắc, người chơi phải loại bỏ bất kỳ quân cờ nào khác trước khi lấy một quân cờ ra khỏi nhà máy đã hình thành.\n\nBạn không thể đặt các quân cờ đến điểm của các quân cờ đã loại bỏ một lần nữa trong giai đoạn đặt theo một số quy tắc.\n\nSau khi sử dụng tất cả các quân cờ, người chơi sẽ lần lượt di chuyển.\n\nĐộng\n\nĐể di chuyển, một người chơi di chuyển một trong các quân cờ của mình dọc theo đường bàn cờ đến một điểm liền kề còn trống. Nếu anh ta không thể làm như vậy, anh ta đã thua trò chơi. Một người chơi sắp xếp ba quân cờ của mình trên một đường bàn cờ có một cây cối xay và có thể loại bỏ một trong các quân cờ của đối thủ như trong giai đoạn đặt. Bất kỳ người chơi nào giảm xuống còn hai mảnh, không có tùy chọn để thành lập các nhà máy mới, và do đó thua trò chơi. Một người chơi cũng có thể thua khi có nhiều hơn ba quân cờ nếu đối thủ của anh ta chặn chúng di chuyển.\n\nBay\n\nTrong một số biến thể của luật chơi, một khi người chơi chỉ còn lại ba quân cờ, các quân cờ của anh ta có thể bay, nhảy hoặc nhảy đến bất kỳ điểm nào còn trống, không chỉ những điểm liền kề.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "版本信息",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "sự thỏa thuận của người dùng",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "giấy phép",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Mã nguồn",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Phiên bản ứng dụng",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "thông thường",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "nâng cao",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Con lắc",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Đi dạo",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Ăn một đứa trẻ",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Điều kiện cuối cùng",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Phong cách cờ vua của máy",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Bị động",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "hết giờ",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "Cài đặt hiển thị",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "drawOnHumanExperience": "Rút kinh nghiệm của con người",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Nâng cao khả năng của các quân cờ",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Số quân cờ:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} trong tay: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} trên tàu: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Khoảng cách giữa bảng và cạnh trên",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Không đến lượt AI.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI không suy nghĩ.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Bạn đang ở cuối danh sách di chuyển.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Nhấn phím quay lại một lần nữa để thoát ứng dụng.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "Hơn",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Đây vẫn là một tính năng thử nghiệm.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Các tính năng thử nghiệm",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Giấy phép nguồn mở",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Ngôn ngữ hiển thị",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "ngôn ngữ mặc định",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Bạn có thể đi bộ trong giai đoạn con lắc",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Không có ranh giới nghiêm ngặt giữa sân khấu xích đu và sân khấu đi bộ. Tức là người chơi có thể quyết định ra quân hay di chuyển trong mỗi nước đi (miễn là còn lại quân cờ để thực hiện một nước đi).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Màu menu",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Màu văn bản menu",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Màu của mục đánh dấu menu",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Màu nền của thanh công cụ chính",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "màu biểu tượng chính của thanh công cụ",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Màu nền của thanh công cụ điều hướng",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Màu biểu tượng thanh công cụ điều hướng",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Tự động ẩn thanh công cụ",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Vị trí thanh công cụ trên màn hình",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Hàng đầu",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Dưới cùng",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Trung tâm",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Màu đồng nhất",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Hình ảnh",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Chọn hình ảnh của bạn",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Ánh sáng",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Tối",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Chủ đề",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Chủ đề hiện tại",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Lưu chủ đề",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Hiển thị đồ thị phân tích",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Phân tích",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Lưu trò chơi",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Tải trò chơi",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Thiết lập vị trí",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Hiển thị các động thái hợp pháp",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Hiển thị nước đi cuối cùng",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Hiển thị mũi tên",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Miếng",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Hiển thị phân tích",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Chủ đề",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Tham gia",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Giúp cải thiện bản dịch",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Hướng dẫn",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Cối xay cổ điển",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Nhà máy hỗn hợp",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Nhà máy Ceylon",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Cối xay có thể bị hỏng và làm lại nhiều lần",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Nếu người chơi phá cối xay để tạo cối xay mới ngay lập tức, người chơi đó có thể di chuyển mảnh đó trở lại điểm giao nhau ban đầu trong nước đi tiếp theo của mình nếu nó tạo ra cối xay mới.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Trò chơi được rút ra nếu một người chơi có ba quân cờ và sau mười nước đi không người chơi nào loại bỏ quân cờ của đối thủ",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Khi một người chơi hạ được ba quân cờ và không người chơi nào có thể loại bỏ quân cờ của đối thủ trong vòng mười nước đi, trò chơi sẽ hòa.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Gần",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Mảnh trắng",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Mảnh đen",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Cấm điểm",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Điểm trống",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Không có điểm",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Giai đoạn đặt",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Giai đoạn di chuyển",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Giai đoạn bay",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Bên để di chuyển: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Chiêu cuối: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Đã chọn",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Khả năng tiếp cận",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Hỗ trợ trình đọc màn hình",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Đó là một trận hòa!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Vẽ",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Màu nổi bật mảnh",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Thuật toán",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "Loại bỏ mảnh không có vị trí",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Nếu một người chơi hình thành cối xay trong giai đoạn đặt, cô ấy sẽ loại bỏ quân cờ của đối thủ và tiếp tục di chuyển.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "Quy tắc N-Move của Endgame",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Nếu một trong hai người chơi chỉ có ba quân cờ và không người chơi nào loại bỏ quân cờ trong một nước đi cụ thể, trò chơi sẽ được rút ra.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Một trong hai người chơi chỉ có ba quân cờ và không người chơi nào loại bỏ quân cờ trong một nước đi cụ thể.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Quy tắc lặp lại gấp ba lần",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Trò chơi được rút ra nếu một vị trí xảy ra lần thứ ba.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Cối xay! Tiếp tục di chuyển.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Phong cách điểm",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Chiều rộng điểm",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Chất rắn",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Rỗng",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Tiếng Việt",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Di chuyển}=1{{count} Di chuyển} other{{count} Di chuyển}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  }
 }

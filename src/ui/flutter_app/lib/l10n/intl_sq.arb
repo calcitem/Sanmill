@@ -1,1256 +1,1162 @@
 {
-    "@@locale": "sq",
-    "appName": "Mulliri",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Mirëseardhje",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "po",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Jo",
-    "@no": {
-        "description": "No"
-    },
-    "game": "Lojë",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Njeriu Vs AI",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Njeriu Vs Njeriu",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "AI Vs AI",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Re njerëzore Vs",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "LAN i njeriut Vs",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Test përmes LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Lëviz",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": "  Lëviz",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Zhvendos listën",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Zhvendos listën",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Asnje rekord",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "Ne rregull",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "Konfirmo",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "Anulo",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Të drejtat e autorit © 2021 Studio Calcitem",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Zgjidhni pjesën e gabuar.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Vendosni pjesët tuaja.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Nuk mund ta vendos këtu.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Vendosur",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Hiqni një copë.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Ju nuk mund ta hiqni atë.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Ju hiqët.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Lëviz një copë.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Ju nuk mund ta vendosni copën tuaj këtu.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Ju nuk mund ta lëvizni copën tuaj këtu.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Mulli! Merrni copën e kundërshtarit tuaj.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Vazhdoni të merrni pjesën e kundërshtarit tuaj.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Zgjidhni një nga pjesët e kundërshtarit tuaj.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Ju nuk mund të hiqni një copë nga një mulli.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "Një pjesë mund të lëvizë 1 pikë.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Ju nuk mund të lëvizni copat e kundërshtarit tuaj.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "Ekzistojnë 3 pjesë në një linjë.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Zgjidhni pjesën tuaj për të lëvizur.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "Ju kanë mbetur 3 copë.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Ju mund të lëvizni në çdo pikë që ju pëlqen.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": "  për të lëvizur.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "Lojtari 1 fiton!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "Lojtari 2 fiton!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Fitoi",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "I humbur",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "U ndërpre",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Duke menduar ...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "Lojë e re",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Importo lojën",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Lojë eksportuese",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Lojë e importuar nga kujtesa e fragmenteve.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Nuk mund të importohet",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Lëvizjet dhe rregullat nuk përputhen.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Filloni regjistrimin",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Regjistrimi ...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Ndaloni regjistrimin",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Shfaq regjistrimin",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "Pa regjistrim.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Te lutem prit...",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Të riniset loja aktuale?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Rifillo, fillo përsëri",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "Loja filloi, ju lutem vendosni",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Duke analizuar ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "Gabim",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "Fito fitimin",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "Rezultati",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "Lojtari 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "Lojtari 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": "  numërimi i pjesëve është më pak se tre.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": "jep dorëheqjen",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": "  nuk ka asnjë mënyrë për të shkuar.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "Bordi është plot, nuk ka si të shkojë.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Koha e mbaruar",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "Në fazën e lëvizjes, asnjë pjesë nuk është hequr në numrin e fundit specifik të lëvizjeve.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "Isshtë një Vizatim sepse tabela është plot",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "Isshtë një barazim për shkak të përsëritjes së trefishtë.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "Loja mbaroi! Arsye e panjohur.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "Loja mbaroi",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "Ti fitove! Urime!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "Sfidoni nivelin më të vështirë? Niveli i ri do të jetë Niveli",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "Ti humbe!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "Analizoni",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "Emri i lojtarit",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "Rreth",
-    "@about": {
-        "description": "About"
-    },
-    "version": "Version",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "Faleminderit",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Cilësimet",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Opsione",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "Preferencat",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Niveli i vështirësisë",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "Koha e të menduarit në AI",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Vështirësia",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Efektet e zërit",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "Luaj tingujt në lojë",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Mbani memec kur merrni përsëri",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Ton",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Lëvizja e parë",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Njeriu",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "AI",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "Alternative",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "Rinis automatikisht lojën kur loja mbaron",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Ndryshimi automatik i lëvizjes së parë",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "Dorëheqja e AI nëse Humbin Më Shumë",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Lëvizje e rastësishme",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Mëso Endgame",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Libri i hapjes",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "Të ndryshme",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "Rregullat",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Numri i pjesëve që ka secili lojtar",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Sa pjesë ka secili lojtar?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Numri i pjesës fluturuese",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "Nëse Fluturimi është i aktivizuar, kur një lojtar zvogëlohet në një numër specifik të pjesëve, pjesët e saj janë të lira të lëvizin në çdo pikë të zënë në vend që të kufizohen në pikat ngjitur si në pjesën tjetër të lojës.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Pjesë Të paktën",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Vijat diagonale",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Shtoni katër vija diagonale në tabelë.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Shënoni dhe vononi heqjen e pjesëve",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "Në fazën e vendosjes, pikat e pjesëve të hequra nuk do të mund të vendosen më.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Lojtari i dytë lëviz i pari",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Lojtari që lëviz i dyti në fazën e vendosjes lëviz i pari në fazën e lëvizjes.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Shumë-hiqni",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Nëse një lojtar mbyll më shumë se një mulli në të njëjtën kohë, ajo do të jetë në gjendje të heq numrin e mullinjve që mbylli.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Shkatërroni mullinjtë",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "Si parazgjedhje, lojtarët duhet të heqin çdo pjesë tjetër së pari para se të heqin një copë nga një mulli i formuar. Aktivizoni këtë mundësi për të çaktivizuar kufizimin.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Lojtari i dytë humbet kur bordi është i mbushur",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Në fund të fazës së vendosjes, kur tabela është e mbushur, pala që vendoset e para humb lojën, përndryshe, loja është barazim.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Humb kur nuk ka lëvizje ligjore",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Lojtari do të humbasë nëse kundërshtari i bllokon ata në mënyrë që ata të mos lëvizen. Ndryshoni anën për të lëvizur nëse ky opsion është me aftësi të kufizuara.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Fluturimi",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Nëse një lojtar i kanë mbetur vetëm tre ose katër pjesë (të rregullueshme), ajo mund ta zhvendosë pjesën në ndonjë pikë të lirë.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "Rregulli i lëvizjes N",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "Loja është tërhequr nëse nuk ka pasur heqje në një numër të caktuar lëvizjesh nga secili lojtar.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Rikthim mbrapa",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "Ju lutem zgjidhni",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "Kopjoni",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Zhvendos historinë e kopjuar në clipboard",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Ndihmoni",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Reagime",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "Dalja",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Cilësimet e Rregullave",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "Ngjyrë",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Ngjyra e bordit",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Ngjyra e copës",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Ngjyrë e sfondit",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Ngjyra e vijës së bordit",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Lojtar 1 ngjyrë copë",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Lojtar 2 ngjyra copë",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Ngjyra e mesazhit",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "AI është dembel",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Trego numrin e pjesëve në dorë",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Trego shënimet në bord",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Shfaq shiritin e mjeteve të navigimit të historisë",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "Ekran",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Gjerësia e kufirit të bordit",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Gjerësia e linjës së brendshme të bordit",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Gjerësia e copës",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "Përmasa e germave",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "Shënimi i WMD",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Rikthe",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Rikthe cilësimet e parazgjedhura",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "Aplikacioni do të dalë.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "Duhet të mbylleni menjëherë dhe të rihapni aplikacionin që të hyjë në fuqi.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Zgjidh",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "Info",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "Aluzion",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "lojtar",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "Lojtari 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "Lojtari 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Si të luajmë",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Trokitni lehtë mbi çdo pikë të disponueshme për të vendosur pjesën.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Trokitni lehtë mbi një pjesë për ta lëvizur.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Trokitni lehtë mbi pikën e lidhur me copë për ta lëvizur.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Trokitni lehtë mbi një pjesë të kundërshtarit për ta hequr.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Së pari duhet të krijoni një mulli përpara se të hiqni një copë.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Ju duhet të luani me pjesët tuaja.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "Statistikat",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Lojërat totale",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "Rezultatet",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Nuk mund të hiqet nga mulli.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "u largua",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Politika e privatësisë",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Ju lutemi lexoni me kujdes dhe sigurohuni që e kuptoni plotësisht dhe pajtoheni me këtë",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Nëse nuk jeni dakord me këtë politikë, ju lutemi mos e përdorni këtë Aplikacion. Përdorimi i Aplikacionit nënkupton që ju t'i pranoni këto kushte.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": "  dhe",
-    "accept": "Pranoj",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "Zhbëj",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "Zhbëj opsionin",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Possibleshtë e mundur të zhbësh një lëvizje.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Merrni mbrapa",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Marrja mbrapa",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Ne pritje",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Hap përpara",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Merrni mbrapa të gjitha",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Hapi përpara të gjithë",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Lëviz tani",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Bërë",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Mulli plasaritje",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "Nëse një lojtar ka vetëm copa në mulli, pjesët në mulli nuk do të bllokohen për t'u hequr.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Kohëzgjatja e animacionit",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Asnje",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Tema",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Loja synon ta lërë kundërshtarin me më pak se tre pjesë ose pa lëvizje ligjore.\n\nLoja tërheq automatikisht nëse një pozicion ndodh për herë të tretë ose nuk bën asnjë heqje në 100 lëvizjet e fundit (të konfigurueshme).\n\nLoja vazhdon në tre faza:\n\n1. Vendosja e pjesëve në pikat e lira\n2. Lëvizja e pjesëve në pikat ngjitur\n3. (faza opsionale) Zhvendosja e pjesëve në çdo pikë të lirë kur zvogëloni lojtarin në tre pjesë\n\nVendosja\n\nLoja fillon me një tabelë bosh, e cila përbëhet nga një rrjet me njëzet e katër pikë. Lojtarët vendosin me radhë pjesët e tyre në pikat e lira derisa secili lojtar të vendosë të gjitha pjesët në tabelë. Nëse një lojtar mund të vendosë tre nga pjesët e tij drejt, ai ka një \"mulli\" dhe mund të heqë një nga pjesët e kundërshtarit të tij nga bordi.\n\nNë disa rregulla, lojtarët duhet të heqin çdo pjesë tjetër së pari para se të heqin një copë nga një mulli i formuar.\n\nJu nuk mund t'i vendosni copat në pikat e pjesëve të hequra përsëri në fazën e vendosjes në disa rregulla.\n\nPasi të përdorin të gjitha pjesët, lojtarët lëvizin me radhë.\n\nLëviz\n\nPër të lëvizur, një lojtar lëviz një nga pjesët e tij përgjatë një linje bordi në një pikë të zbrazët ngjitur. Nëse nuk mund ta bëjë këtë, ai e ka humbur lojën. Ashtu si në fazën e vendosjes, një lojtar që rendit tre nga pjesët e tij në një bord të bordit ka një mulli dhe mund të heqë një nga pjesët e kundërshtarit të tij. Çdo lojtar zvogëlohet në dy pjesë, nuk ka mundësi të formojë mullinj të rinj dhe kështu e humb lojën. Një lojtar gjithashtu mund të humbasë kur më shumë se tre pjesë nëse kundërshtari i tij i bllokon ata të lëvizin.\n\nFluturimi\n\nNë disa variante të rregullave, pasi një lojtar të ketë vetëm tre pjesë, pjesët e tij mund të fluturojnë, të kërcejnë ose të kërcejnë në ndonjë pikë të lirë, jo vetëm ato ngjitur.",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "Informacioni i versionit",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "Liçensë",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Kodi i burimit",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Njoftimet e palëve të treta",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "Versioni i aplikacionit",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "Gjeneral",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "Avancuar",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "Vendosja",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Lëviz",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Po hiqet",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "Kushti mbi lojën",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "Stili i lojës së AI",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Pasiv",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "Koha e pritjes",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Personalizimi",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "Për zhvilluesit",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Modaliteti i zhvilluesit",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Vizatoni në përvojën njerëzore",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Konsideroni lëvizjen e pjesëve",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Numërimi i pjesëve",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "në dorë",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "në bord",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "Kompensimi i bordit nga lart",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Nuk është radha e AI-së.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "AI nuk po mendon.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Luaj automatikisht lëvizjet",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "Në fund të listës së lëvizjeve.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Trokit përsëri përsëri për t'u larguar.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Variablat e mjedisit",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Më shumë",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Kjo është një tipar eksperimental.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Eksperimentet",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Licencat me burim të hapur",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Gjuhe",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "Gjuha e paracaktuar",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Pjesët mund të lëvizin në fazën e vendosjes",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Nuk ka faza të dallueshme të vendosjes dhe lëvizjes, d.m.th. lojtarët mund të vendosin në çdo lëvizje nëse duan të vendosin një copë në tabelë ose të zhvendosin një nga pjesët e tyre (për sa kohë që kanë pjesët e mbetura për t'u vendosur).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Ngjyra e menysë",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Ngjyra e tekstit të menusë",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Ngjyra e sfondit të menysë",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Ngjyrosni ngjyrën e artikullit në meny",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Ngjyra kryesore e sfondit të shiritit të veglave",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "ngjyra kryesore e ikonës së shiritit të veglave",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Ngjyra e sfondit të shiritit të mjeteve të navigimit",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Ngjyra e ikonës së shiritit të mjeteve të navigimit",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Fshihni automatikisht shiritin e veglave",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Vendndodhja e shiritit të mjeteve në ekran",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Top",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Fund",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Qendra",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Ngjyra e ngurtë",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Foto",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Zgjidhni foton tuaj",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Drita",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "E errët",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Temat",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Tema aktuale",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Ruaj temën",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "Shkronjat",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Të tregojë grafikun e analizës",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Analiza",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "Ruaj lojën",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Ngarko lojën",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "Pozicioni i konfigurimit",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Trego lëvizjet ligjore",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Shfaq lëvizjen e fundit",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Trego shigjeta",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "Copëza",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Trego analizën",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Threads",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "Perfshihesh",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Ndihmoni në përmirësimin e përkthimit",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "Tutorial",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Mulli klasik",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Mulli i përzier",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Mulliri i Ceilonit",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Mulli mund të thyhet dhe të ribëhet vazhdimisht",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Nëse një lojtar thyen një mulli për të krijuar menjëherë një mulli të ri, një lojtar i tillë mund ta zhvendosë pjesën e tij përsëri në kryqëzimin origjinal në lëvizjen e tij të radhës nëse bën një mulli të ri.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Loja barazohet nëse një lojtar ka tre pjesë dhe pas dhjetë lëvizjeve asnjë lojtar nuk heq pjesët e kundërshtarit",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kur një lojtar është në tre copa, dhe asnjë lojtar nuk mund të heqë një pjesë të kundërshtarit brenda dhjetë lëvizjeve, loja është një barazim.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "Mbylle",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Copë e bardhë",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "Copë e zezë",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Pika e ndalimit",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "Pika bosh",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Pa pikë",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Faza e vendosjes",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Faza e lëvizjes",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Faza e fluturimit",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Anash për të lëvizur",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Lëvizja e fundit",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Zgjedhur",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Menuja kryesore",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Aksesueshmëria",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Mbështetje për lexuesin e ekranit",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "Shtë një barazim",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "Barazim",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Ngjyra e theksimit të copës",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "Algoritmi",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "Hiqni copën e pavendosur",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Nëse një lojtar formon mullirin në fazën e vendosjes, ajo do të heqë pjesën e pavendosur të kundërshtarit dhe do të vazhdojë të bëjë një lëvizje.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "Rregulli i End-lojës N-Move",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Nëse secili lojtar ka vetëm tre pjesë dhe asnjë lojtar nuk heq një pjesë brenda një lëvizjeje të caktuar, loja barazohet.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Secili lojtar ka vetëm tre pjesë dhe asnjë lojtar nuk heq një pjesë brenda një lëvizjeje të caktuar.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Rregulli i trefishtë i përsëritjes",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Loja tërhiqet nëse një pozicion ndodh për herë të tretë.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Mulliri! Vazhdoni të bëni një lëvizje.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Stili i pikës",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Gjerësia e pikës",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Të ngurta",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Zgavër",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "Shqiptare",
-    "@languageName": {
-        "description": "The name of the current language"
+  "appName": "Mulliri",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Mirëseardhje",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "po",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Jo",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Lojë",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Njeriu Vs AI",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Njeriu Vs Njeriu",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI Vs AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Re njerëzore Vs",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "LAN i njeriut Vs",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Test përmes LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Lëviz",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Zhvendos listën",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Zhvendos listën",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Asnje rekord",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "Ne rregull",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Konfirmo",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Anulo",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Zgjidhni pjesën e gabuar.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Vendosni pjesët tuaja.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Nuk mund ta vendos këtu.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Ju vendosët një copë shahu.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Hiqni një copë.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Ju nuk mund ta hiqni atë.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Ju hiqët.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Lëviz një copë.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Ju nuk mund ta vendosni copën tuaj këtu.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Ju nuk mund ta lëvizni copën tuaj këtu.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Mulli! Merrni copën e kundërshtarit tuaj.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Vazhdoni të merrni pjesën e kundërshtarit tuaj.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Zgjidhni një nga pjesët e kundërshtarit tuaj.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Ju nuk mund të hiqni një copë nga një mulli.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Një pjesë mund të lëvizë 1 pikë.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Ju nuk mund të lëvizni copat e kundërshtarit tuaj.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Zgjidhni pjesën tuaj për të lëvizur.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Ju kanë mbetur 3 copë.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Ju mund të lëvizni në çdo pikë që ju pëlqen.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} për të lëvizur.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Lojtari 1 fiton!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Lojtari 2 fiton!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Fitoi",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "I humbur",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Duke menduar…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Lojë e re",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Importo lojën",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Lojë eksportuese",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Lojë e importuar nga kujtesa e fragmenteve.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Nuk mund të importohet {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Lëvizjet dhe rregullat nuk përputhen.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Te lutem prit...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Të riniset loja aktuale?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Rifillo, fillo përsëri",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Loja filloi, ju lutem vendosni.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Duke analizuar…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Gabim: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Fito fitimin",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Rezultati:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Lojtari 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Lojtari 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "Numri i pjesëve {player} është më pak se tre.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} dha dorëheqjen.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} nuk ka se si të shkojë.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Bordi është plot dhe {player} nuk ka se si të shkojë.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Koha ka mbaruar, {player} ka humbur.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "Në fazën e lëvizjes, asnjë pjesë nuk është hequr në numrin e fundit specifik të lëvizjeve.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Isshtë një Vizatim sepse tabela është plot。",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Isshtë një barazim për shkak të përsëritjes së trefishtë.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Loja mbaroi! Arsye e panjohur.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Loja mbaroi",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Ti fitove! Urime!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Sfidoni nivelin më të vështirë? Niveli i ri do të jetë niveli {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Ti humbe!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Analizoni",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Rreth",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Versioni: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Faleminderit",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Cilësimet",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Opsione",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "Preferencat",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "Niveli i vështirësisë",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Koha e të menduarit në AI",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Vështirësia",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Efektet e zërit",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Luaj tingujt në lojë",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Mbani memec kur merrni përsëri",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Ton",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Lëvizja e parë",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Njeriu",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Alternative",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Rinis automatikisht lojën kur loja mbaron",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Ndryshimi automatik i lëvizjes së parë",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Lëvizje e rastësishme",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Të ndryshme",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Rregullat",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Numri i pjesëve që ka secili lojtar",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Sa pjesë ka secili lojtar?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Numri i pjesës fluturuese",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Nëse Fluturimi është i aktivizuar, kur një lojtar zvogëlohet në një numër specifik të pjesëve, pjesët e saj janë të lira të lëvizin në çdo pikë të zënë në vend që të kufizohen në pikat ngjitur si në pjesën tjetër të lojës.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Pjesë Të paktën",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Vijat diagonale",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Shtoni katër vija diagonale në tabelë.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Shënoni dhe vononi heqjen e pjesëve",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "Në fazën e vendosjes, pikat e pjesëve të hequra nuk do të mund të vendosen më.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Lojtari i dytë lëviz i pari",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Lojtari që lëviz i dyti në fazën e vendosjes lëviz i pari në fazën e lëvizjes.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Shumë-hiqni",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Nëse një lojtar mbyll më shumë se një mulli në të njëjtën kohë, ajo do të jetë në gjendje të heq numrin e mullinjve që mbylli.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Shkatërroni mullinjtë",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Si parazgjedhje, lojtarët duhet të heqin çdo pjesë tjetër së pari para se të heqin një copë nga një mulli i formuar. Aktivizoni këtë mundësi për të çaktivizuar kufizimin.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Lojtari i dytë humbet kur bordi është i mbushur",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Në fund të fazës së vendosjes, kur tabela është e mbushur, pala që vendoset e para humb lojën, përndryshe, loja është barazim.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Humb kur nuk ka lëvizje ligjore",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Lojtari do të humbasë nëse kundërshtari i bllokon ata në mënyrë që ata të mos lëvizen. Ndryshoni anën për të lëvizur nëse ky opsion është me aftësi të kufizuara.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Fluturimi",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Nëse një lojtar i kanë mbetur vetëm tre ose katër pjesë (të rregullueshme), ajo mund ta zhvendosë pjesën në ndonjë pikë të lirë.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "Rregulli i lëvizjes N",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Loja është tërhequr nëse nuk ka pasur heqje në një numër të caktuar lëvizjesh nga secili lojtar.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Rikthim mbrapa",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Ju lutem zgjidhni",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Kopjoni",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Zhvendos historinë e kopjuar në clipboard.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Ndihmoni",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Reagime",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Dalja",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Cilësimet e Rregullave",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Ngjyrë",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Ngjyra e bordit",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Ngjyra e copës",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Ngjyrë e sfondit",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Ngjyra e vijës së bordit",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Lojtar 1 ngjyrë copë",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Lojtar 2 ngjyra copë",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Ngjyra e mesazhit",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "aiIsLazy": "AI është dembel",
+  "@aiIsLazy": {
+    "description": "AI is Lazy"
+  },
+  "isPieceCountInHandShown": "Trego numrin e pjesëve në dorë",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Trego shënimet në bord",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Shfaq shiritin e mjeteve të navigimit të historisë",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Ekran",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Gjerësia e kufirit të bordit",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Gjerësia e linjës së brendshme të bordit",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Gjerësia e copës",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Përmasa e germave",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "Shënimi i WMD",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Rikthe",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Rikthe cilësimet e parazgjedhura",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Zgjidh {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Info",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Aluzion",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "lojtar",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Lojtari 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Lojtari 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Si të luajmë",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Trokitni lehtë mbi çdo pikë të disponueshme për të vendosur pjesën.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Trokitni lehtë mbi një pjesë për ta lëvizur.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Trokitni lehtë mbi pikën e lidhur me copë për ta lëvizur.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Trokitni lehtë mbi një pjesë të kundërshtarit për ta hequr.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Së pari duhet të krijoni një mulli përpara se të hiqni një copë.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Ju duhet të luani me pjesët tuaja.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistikat",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Lojërat totale",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Rezultatet",
+  "@results": {
+    "description": "Results"
+  },
+  "cannotRemoveFromMill": "Nuk mund të hiqet nga mulli.",
+  "@cannotRemoveFromMill": {
+    "description": "Cannot remove from the mill."
+  },
+  "left": "u largua",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Politika e privatësisë",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Ju lutemi lexoni me kujdes dhe sigurohuni që e kuptoni plotësisht dhe pajtoheni me këtë ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Nëse nuk jeni dakord me këtë politikë, ju lutemi mos e përdorni këtë Aplikacion. Përdorimi i Aplikacionit nënkupton që ju t'i pranoni këto kushte.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " dhe ",
+  "@and": {},
+  "accept": "Pranoj",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Merrni mbrapa",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Marrja mbrapa…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Ne pritje…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Hap përpara",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Merrni mbrapa të gjitha",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Hapi përpara të gjithë",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Lëviz tani",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Bërë.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Mulli plasaritje",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Nëse një lojtar ka vetëm copa në mulli, pjesët në mulli nuk do të bllokohen për t'u hequr.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Kohëzgjatja e animacionit",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Asnje",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Tema",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Loja synon ta lërë kundërshtarin me më pak se tre pjesë ose pa lëvizje ligjore.\n\nLoja tërheq automatikisht nëse një pozicion ndodh për herë të tretë ose nuk bën asnjë heqje në 100 lëvizjet e fundit (të konfigurueshme).\n\nLoja vazhdon në tre faza:\n\n1. Vendosja e pjesëve në pikat e lira\n2. Lëvizja e pjesëve në pikat ngjitur\n3. (faza opsionale) Zhvendosja e pjesëve në çdo pikë të lirë kur zvogëloni lojtarin në tre pjesë\n\nVendosja\n\nLoja fillon me një tabelë bosh, e cila përbëhet nga një rrjet me njëzet e katër pikë. Lojtarët vendosin me radhë pjesët e tyre në pikat e lira derisa secili lojtar të vendosë të gjitha pjesët në tabelë. Nëse një lojtar mund të vendosë tre nga pjesët e tij drejt, ai ka një \"mulli\" dhe mund të heqë një nga pjesët e kundërshtarit të tij nga bordi.\n\nNë disa rregulla, lojtarët duhet të heqin çdo pjesë tjetër së pari para se të heqin një copë nga një mulli i formuar.\n\nJu nuk mund t'i vendosni copat në pikat e pjesëve të hequra përsëri në fazën e vendosjes në disa rregulla.\n\nPasi të përdorin të gjitha pjesët, lojtarët lëvizin me radhë.\n\nLëviz\n\nPër të lëvizur, një lojtar lëviz një nga pjesët e tij përgjatë një linje bordi në një pikë të zbrazët ngjitur. Nëse nuk mund ta bëjë këtë, ai e ka humbur lojën. Ashtu si në fazën e vendosjes, një lojtar që rendit tre nga pjesët e tij në një bord të bordit ka një mulli dhe mund të heqë një nga pjesët e kundërshtarit të tij. Çdo lojtar zvogëlohet në dy pjesë, nuk ka mundësi të formojë mullinj të rinj dhe kështu e humb lojën. Një lojtar gjithashtu mund të humbasë kur më shumë se tre pjesë nëse kundërshtari i tij i bllokon ata të lëvizin.\n\nFluturimi\n\nNë disa variante të rregullave, pasi një lojtar të ketë vetëm tre pjesë, pjesët e tij mund të fluturojnë, të kërcejnë ose të kërcejnë në ndonjë pikë të lirë, jo vetëm ato ngjitur.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Informacioni i versionit",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Liçensë",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Kodi i burimit",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Versioni i aplikacionit",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Gjeneral",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Avancuar",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Vendosja",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Lëviz",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Po hiqet",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Kushti mbi lojën",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Stili i lojës së AI",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Pasiv",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Koha e pritjes",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "Personalizimi",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "drawOnHumanExperience": "Vizatoni në përvojën njerëzore",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Konsideroni lëvizjen e pjesëve",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Numërimi i pjesëve:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} në dorë: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} në bord: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Kompensimi i bordit nga lart",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Nuk është radha e AI-së.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI nuk po mendon.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Në fund të listës së lëvizjeve.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Trokit përsëri përsëri për t'u larguar.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "Më shumë",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Kjo është një tipar eksperimental.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Eksperimentet",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Licencat me burim të hapur",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Gjuhe",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Gjuha e paracaktuar",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Pjesët mund të lëvizin në fazën e vendosjes",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Nuk ka faza të dallueshme të vendosjes dhe lëvizjes, d.m.th. lojtarët mund të vendosin në çdo lëvizje nëse duan të vendosin një copë në tabelë ose të zhvendosin një nga pjesët e tyre (për sa kohë që kanë pjesët e mbetura për t'u vendosur).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Ngjyra e menysë",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Ngjyra e tekstit të menusë",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Ngjyrosni ngjyrën e artikullit në meny",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Ngjyra kryesore e sfondit të shiritit të veglave",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "ngjyra kryesore e ikonës së shiritit të veglave",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Ngjyra e sfondit të shiritit të mjeteve të navigimit",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Ngjyra e ikonës së shiritit të mjeteve të navigimit",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Fshihni automatikisht shiritin e veglave",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Vendndodhja e shiritit të mjeteve në ekran",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Top",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Fund",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Qendra",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Ngjyra e ngurtë",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Foto",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Zgjidhni foton tuaj",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Drita",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "E errët",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Temat",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Tema aktuale",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Ruaj temën",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Të tregojë grafikun e analizës",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Analiza",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Ruaj lojën",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Ngarko lojën",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Pozicioni i konfigurimit",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Trego lëvizjet ligjore",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Shfaq lëvizjen e fundit",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Trego shigjeta",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Copëza",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Trego analizën",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Threads",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Perfshihesh",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Ndihmoni në përmirësimin e përkthimit",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Tutorial",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Mulli klasik",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Mulli i përzier",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Mulliri i Ceilonit",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Mulli mund të thyhet dhe të ribëhet vazhdimisht",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Nëse një lojtar thyen një mulli për të krijuar menjëherë një mulli të ri, një lojtar i tillë mund ta zhvendosë pjesën e tij përsëri në kryqëzimin origjinal në lëvizjen e tij të radhës nëse bën një mulli të ri.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Loja barazohet nëse një lojtar ka tre pjesë dhe pas dhjetë lëvizjeve asnjë lojtar nuk heq pjesët e kundërshtarit",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kur një lojtar është në tre copa, dhe asnjë lojtar nuk mund të heqë një pjesë të kundërshtarit brenda dhjetë lëvizjeve, loja është një barazim.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Mbylle",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Copë e bardhë",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Copë e zezë",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Pika e ndalimit",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Pika bosh",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Pa pikë",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Faza e vendosjes",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Faza e lëvizjes",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Faza e fluturimit",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Ana për të lëvizur: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Lëvizja e fundit: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Zgjedhur",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Aksesueshmëria",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Mbështetje për lexuesin e ekranit",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Shtë një barazim!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Barazim",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Ngjyra e theksimit të copës",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algoritmi",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "Hiqni copën e pavendosur",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Nëse një lojtar formon mullirin në fazën e vendosjes, ajo do të heqë pjesën e pavendosur të kundërshtarit dhe do të vazhdojë të bëjë një lëvizje.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "Rregulli i End-lojës N-Move",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Nëse secili lojtar ka vetëm tre pjesë dhe asnjë lojtar nuk heq një pjesë brenda një lëvizjeje të caktuar, loja barazohet.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Secili lojtar ka vetëm tre pjesë dhe asnjë lojtar nuk heq një pjesë brenda një lëvizjeje të caktuar.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Rregulli i trefishtë i përsëritjes",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Loja tërhiqet nëse një pozicion ndodh për herë të tretë.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Mulliri! Vazhdoni të bëni një lëvizje.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Stili i pikës",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Gjerësia e pikës",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Të ngurta",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Zgavër",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Shqiptare",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Lëviz}=1{{count} Lëviz}other{{count} Lëviz}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  }
 }
