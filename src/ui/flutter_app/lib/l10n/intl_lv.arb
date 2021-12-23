@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "Nav ierakstīšanas.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "Lūdzu, uzgaidiet.",
   "@pleaseWait": {
     "description": "Please wait..."
