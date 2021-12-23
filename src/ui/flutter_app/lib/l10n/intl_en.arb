@@ -294,7 +294,7 @@
       }
     }
   },
-  "loseReasonTimeOver": "Time Over, {player} lost",
+  "loseReasonTimeOver": "Time is over, {player} lost.",
   "@loseReasonTimeOver": {
     "description": "Time Over",
     "placeholders": {
