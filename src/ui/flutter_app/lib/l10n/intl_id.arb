@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "Anda harus segera menutup dan membuka kembali aplikasi agar berlaku.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Memilih",
   "@pick": {
     "description": "Pick "
