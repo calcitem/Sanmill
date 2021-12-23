@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": "bươc",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Hiển thị kỷ lục cờ vua",
   "@showMoveList": {
     "description": "Move list"
