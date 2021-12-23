@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": "ムーブ",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "ゲームを表示する",
   "@showMoveList": {
     "description": "Move list"
