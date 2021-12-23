@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": " కదులుతుంది",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "జాబితాను తరలించండి",
   "@showMoveList": {
     "description": "Move list"
