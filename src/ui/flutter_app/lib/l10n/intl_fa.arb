@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "فكر كردن...",
+  "thinking": "فكر كردن…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -208,11 +208,11 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "بازی شروع شده است ، لطفا مهره‌ای را قرار دهید",
+  "gameStarted": "بازی شروع شده است ، لطفا مهره‌ای را قرار دهید.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "در حال تجزیه و تحلیل ...",
+  "analyzing": "در حال تجزیه و تحلیل…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "امتیاز",
+  "score": "امتیاز:",
   "@score": {
     "description": "Score"
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "برای توسعه دهندگان",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "حالت توسعه دهنده",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "برای خروج از برنامه ، دوباره روی دکمه برگشت ضربه بزنید.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "متغیرهای محیطی",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "بیشتر",
   "@more": {
