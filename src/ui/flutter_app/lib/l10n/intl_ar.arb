@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "يجب عليك إغلاق التطبيق على الفور وإعادة فتحه لتطبيق التغييرات.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "اختر",
   "@pick": {
     "description": "Pick "
