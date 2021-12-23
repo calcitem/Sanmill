@@ -440,7 +440,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "盤面がいっぱいになると、最初にディスクを置いた人が負けになります。",
+  "isWhiteLoseButNotDrawWhenBoardFull": "盤面がいっぱいになると、最初にディスクを置いた人が負けになります",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -484,7 +484,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "ゲームがクリップボードにコピーされました",
+  "moveHistoryCopied": "ゲームがクリップボードにコピーされました。",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
