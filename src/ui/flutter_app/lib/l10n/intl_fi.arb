@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "Sinun on suljettava sovellus välittömästi ja avattava se uudelleen, jotta se tulee voimaan.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Valitse",
   "@pick": {
     "description": "Pick "
