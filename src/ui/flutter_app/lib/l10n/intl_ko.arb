@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "메인 메뉴",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "접근성",
   "@accessibility": {
     "description": "Accessibility"
