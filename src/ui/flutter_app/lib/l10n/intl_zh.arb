@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "没有可回放的",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "请稍候...",
   "@pleaseWait": {
     "description": "Please wait..."
