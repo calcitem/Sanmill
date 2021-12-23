@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "Programma beigs darbību.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "Lai tas stātos spēkā, lietotne ir nekavējoties jāaizver un jāatver no jauna.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
