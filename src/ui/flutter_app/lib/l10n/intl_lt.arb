@@ -235,23 +235,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " figūrų skaičius yra mažesnis nei trys.",
+  "loseReasonlessThanThree": "{player} vienetų skaičius yra mažesnis nei trys.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " atsistatydino.",
+  "loseReasonResign": "{player} atsistatydino.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " tai nėra tinkamas būdas.",
+  "loseReasonNoWay": "{player} nebėra kelio.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Lenta yra pilna, ir nėra būdo eiti.",
+  "loseReasonBoardIsFull": "Lenta pilna, o {player} nebėra kelio.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Laikas baigėsi",
+  "loseReasonTimeOver": "Laikas baigėsi, {player} prarastas.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Iššūkis sunkesniam lygiui? Naujas lygis bus lygis ",
+  "challengeHarderLevel": "Iššūkis sunkesnis lygis? Naujas lygis bus {level} lygis!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Versija",
+  "version": "Versija: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Ėjimų istorija nukopijuojama į iškarpinę",
+  "moveHistoryCopied": "Ėjimų istorija nukopijuojama į iškarpinę.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Pasirinkite",
+  "pick": "Pasirinkite {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Grįžimas atgal",
+  "takingBack": "Grįžimas atgal…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Laukimas",
+  "waiting": "Laukimas…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -725,7 +725,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Žaidimo tikslas - palikti priešininką su mažiau nei trimis figūromis arba neturėti jokių teisėtų ėjimų.\n\nŽaidimas automatiškai sužaidžiamas lygiosiomis, jei pozicija pasitaiko trečią kartą arba per paskutinius 100 (konfigūruojamų) ėjimų nėra pašalinama.\n\nŽaidimas vyksta trimis etapais:\n\n1. Figūrų statymas į laisvus taškus\n2. Figūrėlių perkėlimas į gretimus taškus\n3. (neprivalomas etapas) Figūrėlių perkėlimas į bet kurį laisvą tašką, kai žaidėjas turi mažiau nei tris figūrėles\n\nDėliojimas\n\nŽaidimas pradedamas tuščia lenta, kurią sudaro tinklelis su dvidešimt keturiais taškais. Žaidėjai paeiliui deda savo figūrėles į laisvus taškus, kol kiekvienas žaidėjas padeda visas figūrėles ant lentos. Jei žaidėjas gali pastatyti tris savo figūrėles tiesiai, jis turi \"malūnėlį\" ir gali pašalinti nuo lentos vieną priešininko figūrėlę.\n\nPagal kai kurias taisykles žaidėjai, prieš pašalindami figūrėlę iš suformuoto malūno, pirmiausia turi pašalinti visas kitas figūrėles.\n\nKai kuriose taisyklėse negalima vėl dėti figūrų į pašalintų figūrų taškus dėjimo etape.\n\nPanaudoję visas figūrėles, žaidėjai juda paeiliui.\n\nJudėjimas\n\nNorėdamas judėti, žaidėjas perkelia vieną savo figūrėlę išilgai lentos linijos į laisvą gretimą tašką. Jei jam nepavyksta to padaryti, jis pralaimėjo žaidimą. Kaip ir padėjimo etape, žaidėjas, kuris ant lentos linijos pastato tris savo figūrėles, turi malūną ir gali pašalinti vieną iš priešininko figūrėlių. Bet kuris žaidėjas, sumažinęs savo figūrų skaičių iki dviejų, neturi galimybės suformuoti naujų malūnų, todėl pralaimi žaidimą. Žaidėjas taip pat gali pralaimėti, kai turi daugiau nei tris figūrėles, jei priešininkas blokuoja jų judėjimą.\n\nSkraidantys\n\nKai kuriuose taisyklių variantuose, kai žaidėjui lieka tik trys figūrėlės, jo figūrėlės gali skristi, šokinėti ar šokinėti į bet kuriuos laisvus taškus, ne tik į gretimus.",
+  "helpContent": "Žaidimo tikslas - palikti priešininką su mažiau nei trimis figūromis arba neturėti jokių teisėtų ėjimų.\n\nŽaidimas automatiškai sužaidžiamas lygiosiomis, jei pozicija pasitaiko trečią kartą arba per paskutinius 100 (konfigūruojamų) ėjimų nėra pašalinama.\n\nŽaidimas vyksta trimis etapais:\n\n1. Figūrų statymas į laisvus taškus\n2. Figūrėlių perkėlimas į gretimus taškus\n3. (neprivalomas etapas) Figūrėlių perkėlimas į bet kurį laisvą tašką, kai žaidėjas turi mažiau nei tris figūrėles\n\nDėliojimas\n\nŽaidimas pradedamas tuščia lenta, kurią sudaro tinklelis su dvidešimt keturiais taškais. Žaidėjai paeiliui deda savo figūrėles į laisvus taškus, kol kiekvienas žaidėjas padeda visas figūrėles ant lentos. Jei žaidėjas gali pastatyti tris savo figūrėles tiesiai, jis turi \"malūnėlį\" ir gali pašalinti nuo lentos vieną priešininko figūrėlę.\n\nPagal kai kurias taisykles žaidėjai, prieš pašalindami figūrėlę iš suformuoto malūno, pirmiausia turi pašalinti visas kitas figūrėles.\n\nKai kuriose taisyklėse negalima vėl dėti figūrų į pašalintų figūrų taškus dėjimo etape.\n\nPanaudoję visas figūrėles, žaidėjai juda paeiliui.\n\nJudėjimas\n\nNorėdamas judėti, žaidėjas perkelia vieną savo figūrėlę išilgai lentos linijos į laisvą gretimą tašką. Jei jam nepavyksta to padaryti, jis pralaimėjo žaidimą. Kaip ir padėjimo etape, žaidėjas, kuris ant lentos linijos pastato tris savo figūrėles, turi malūną ir gali pašalinti vieną iš priešininko figūrėlių. Bet kuris žaidėjas, sumažinęs savo figūrų skaičių iki dviejų, neturi galimybės suformuoti naujų malūnų, todėl pralaimi žaidimą. Žaidėjas taip pat gali pralaimėti, kai turi daugiau nei tris figūrėles, jei priešininkas blokuoja jų judėjimą.\n\nSkraidantys\n\nKai kuriuose taisyklių variantuose, kai žaidėjui lieka tik trys figūrėlės, jo figūrėlės gali skristi, šokinėti ar šokinėti į bet kuriuos laisvus taškus, ne tik į gretimus.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Gabalėlių skaičius",
+  "pieceCount": "Gabalėlių skaičius:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "laikant rankoje",
+  "inHand": "{player} rankoje: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "ant lentos",
+  "onBoard": "{player} laive: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Šonas judėti",
+  "sideToMove": "Perkeliama pusė: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Paskutinis ėjimas",
+  "lastMove": "Paskutinis žingsnis: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "Tai Lygiosios",
+  "isDraw": "Tai Lygiosios!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "Lietuvis",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Perkelti}other{{count} Juda}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
