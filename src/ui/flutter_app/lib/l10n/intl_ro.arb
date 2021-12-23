@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Cugetare...",
+  "thinking": "Cugetare…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -208,11 +208,11 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Jocul a început, te rog așează piesă",
+  "gameStarted": "Jocul a început, te rog așează piesă.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Analizare...",
+  "analyzing": "Analizare…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "Pentru dezvoltatori",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "Modul dezvoltator",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "Atingeți din nou pentru a putea muta.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "Variabile de mediu",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "Mai mult",
   "@more": {
