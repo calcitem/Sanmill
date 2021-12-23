@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "메뉴 배경색",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "메뉴 하이라이트 항목 색상",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
