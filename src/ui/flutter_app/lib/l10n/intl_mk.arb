@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " да се движат.",
+  "tipToMove": "{player} за движење.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Размислувајќи ...",
+  "thinking": "Размислувајќи…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Не може да се увезе",
+  "cannotImport": "Не може да се увезе {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -200,7 +200,7 @@
   "@pleaseWait": {
     "description": "Please wait..."
   },
-  "restartGame": "Да се ​​рестартира тековната игра?",
+  "restartGame": "Да ја рестартираш актуелната игра?",
   "@restartGame": {
     "description": "Restart current game?"
   },
@@ -208,15 +208,15 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Играта започна, ве молиме, поставете",
+  "gameStarted": "Играта започна, ве молиме, поставете.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Анализирајќи ...",
+  "analyzing": "Анализирајќи…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Грешка",
+  "error": "Грешка: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Резултат",
+  "score": "Резултат:",
   "@score": {
     "description": "Score"
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "За програмерите",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "Режим на програмер",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "Допрете назад за да заминете.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "Променливи на животната средина",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "Повеќе",
   "@more": {
