@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "Du musst die App sofort beenden und neustarten, damit die Einstellungen benutzt werden",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Nehmen",
   "@pick": {
     "description": "Pick "
