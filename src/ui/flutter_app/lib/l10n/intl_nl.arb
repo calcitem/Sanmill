@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " om te zetten.",
+  "tipToMove": "{player} om te verplaatsen.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Ik denk...",
+  "thinking": "Ik denk…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Kan niet importeren",
+  "cannotImport": "Kan {invalidMove} niet importeren",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -208,15 +208,15 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Spel gestart, gelieve te plaatsen",
+  "gameStarted": "Spel gestart, gelieve te plaatsen.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Analyseren ...",
+  "analyzing": "Analyseren…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Fout",
+  "error": "Fout: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Score",
+  "score": "Score:",
   "@score": {
     "description": "Score"
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "Voor ontwikkelaars",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "Ontwikkelaar modus",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "Tik opnieuw om te vertrekken.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "Omgevingsvariabelen",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "Meer",
   "@more": {
