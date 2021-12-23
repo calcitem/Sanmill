@@ -350,11 +350,11 @@
   "@about": {
     "description": "About"
   },
-  "version": "Version: {version_number}",
+  "version": "Version: {versionNumber}",
   "@version": {
     "description": "Version",
     "placeholders": {
-      "version_number": {
+      "versionNumber": {
         "description": "The current version",
         "example": "1.1.38"
       }
