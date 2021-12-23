@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "Izvēlnes fona krāsa",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "Izvēlnes izcelšanas vienuma krāsa",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
