@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "ಕಾರ್ಯಗತಗೊಳ್ಳಲು ನೀವು ತಕ್ಷಣ ಮುಚ್ಚಬೇಕು ಮತ್ತು ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಮತ್ತೆ ತೆರೆಯಬೇಕು.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "ಆಯ್ಕೆ",
   "@pick": {
     "description": "Pick "
