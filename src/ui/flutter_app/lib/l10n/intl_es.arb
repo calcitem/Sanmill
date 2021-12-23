@@ -144,11 +144,11 @@
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "Puede moverse a cualquier punto que prefiera",
+  "tipCanMoveToAnyPoint": "Puede moverse a cualquier punto que prefiera.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": " para mover.",
+  "tipToMove": "{player} para moverse.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "No se puede importar",
+  "cannotImport": "No se puede importar {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -216,7 +216,7 @@
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Error",
+  "error": "Error: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Puntaje",
+  "score": "Puntaje:",
   "@score": {
     "description": "Score"
   },
@@ -236,23 +236,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": " El número de piezas es inferior a tres.",
+  "loseReasonlessThanThree": "{player} el número de piezas es inferior a tres.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " se retira.",
+  "loseReasonResign": "{player} dimitió.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " no encuentra forma de avanzar.",
+  "loseReasonNoWay": "{player} no tiene camino a seguir.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "El tablero está lleno, no hay manera de ir.",
+  "loseReasonBoardIsFull": "La placa está llena y {player} no tiene camino por recorrer.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Se acabó el tiempo",
+  "loseReasonTimeOver": "Se acabó el tiempo, {player} perdido.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -260,7 +260,7 @@
   "@drawReasonRule50": {
     "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
-  "drawReasonBoardIsFull": "Es un Empate porque el tablero está lleno",
+  "drawReasonBoardIsFull": "Es un Empate porque el tablero está lleno.",
   "@drawReasonBoardIsFull": {
     "description": "It is a Draw because the board is full"
   },
@@ -280,7 +280,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "¿Desafiar un nivel más difícil? Incrementará la dificultad a ",
+  "challengeHarderLevel": "¿Desafiar el nivel más difícil? ¡El nuevo nivel será el nivel {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -296,7 +296,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Versión",
+  "version": "Versión: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -584,7 +584,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Seleccione",
+  "pick": "Seleccione {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -806,15 +806,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Recuento de piezas",
+  "pieceCount": "Recuento de piezas:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "en la mano",
+  "inHand": "{player} en mano: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "en el tablero",
+  "onBoard": "{player} a bordo: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1074,11 +1074,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Lado para mover",
+  "sideToMove": "Lado para mover: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Última jugada",
+  "lastMove": "Última jugada: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1094,7 +1094,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "Es un empate.",
+  "isDraw": "Es un empate!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1161,5 +1161,15 @@
   "languageName": "Español",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Move}other{{count} Moves}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
