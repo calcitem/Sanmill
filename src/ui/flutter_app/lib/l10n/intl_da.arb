@@ -239,19 +239,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " træde tilbage.",
+  "loseReasonResign": "{player} træde tilbage.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " er ikke en måde at gøre det på.",
+  "loseReasonNoWay": "{player} har ingen vej at gå.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Brættet er fuldt, og der er ingen måde at gå videre på.",
+  "loseReasonBoardIsFull": "Boardet er fyldt, og {player} har ingen vej at gå.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Tid over",
+  "loseReasonTimeOver": "Tiden er forbi, {player} tabt.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -271,7 +271,7 @@
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
-  "gameOver": "Game Over",
+  "gameOver": "Game over",
   "@gameOver": {
     "description": "Game Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Udfordre sværere niveau? Det nye niveau vil være niveau ",
+  "challengeHarderLevel": "Udfordre hårdere niveau? Det nye niveau vil være niveau {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Version",
+  "version": "Version: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -423,7 +423,7 @@
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
   },
-  "mayRemoveMultiple": "Multi-remove",
+  "mayRemoveMultiple": "Multi-fjern",
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
@@ -471,7 +471,7 @@
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
-  "rollback": "Rollback",
+  "rollback": "Rul tilbage",
   "@rollback": {
     "description": "Rollback"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Trækhistorik kopieres til udklipsholderen",
+  "moveHistoryCopied": "Trækhistorik kopieres til udklipsholderen.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Vælg",
+  "pick": "Vælg {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -591,7 +591,7 @@
   "@info": {
     "description": "Info"
   },
-  "hint": "Hint",
+  "hint": "Tip",
   "@hint": {
     "description": "Hint"
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Tilbageførsel",
+  "takingBack": "Tilbageførsel…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Venter",
+  "waiting": "Venter…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -781,7 +781,7 @@
   "@passive": {
     "description": "Passive"
   },
-  "timeout": "Timeout",
+  "timeout": "Tiden er gået",
   "@timeout": {
     "description": "Timeout"
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Antal stykker",
+  "pieceCount": "Antal stykker:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "i hånden",
+  "inHand": "{player} i hånden: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "på brættet",
+  "onBoard": "{player} ombord: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1005,7 +1005,7 @@
   "@mixedMill": {
     "description": "Mixed Mill"
   },
-  "ceylonMill": "Ceylon Mill",
+  "ceylonMill": "Ceylon Mølle",
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Siden skal flyttes",
+  "sideToMove": "Side at flytte: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Sidste træk",
+  "lastMove": "Sidste træk: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "Det er uafgjort",
+  "isDraw": "Det er uafgjort!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
