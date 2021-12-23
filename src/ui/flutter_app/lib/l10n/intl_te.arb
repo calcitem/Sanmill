@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "రికార్డింగ్ లేదు.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "దయచేసి వేచి ఉండండి.",
   "@pleaseWait": {
     "description": "Please wait..."
