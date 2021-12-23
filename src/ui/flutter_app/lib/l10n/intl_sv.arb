@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "Huvudmeny",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "Tillgänglighet",
   "@accessibility": {
     "description": "Accessibility"
