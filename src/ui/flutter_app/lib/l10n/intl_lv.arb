@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": " Pārvietojas",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Pārvietojumu saraksts",
   "@showMoveList": {
     "description": "Move list"
