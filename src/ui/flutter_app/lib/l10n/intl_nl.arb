@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitAppManually": "U moet de app onmiddellijk sluiten en opnieuw openen om effect te hebben.",
-  "@exitAppManually": {
-    "description": "You have to close immediately and reopen the app to take effect."
-  },
   "pick": "Kies",
   "@pick": {
     "description": "Pick "
