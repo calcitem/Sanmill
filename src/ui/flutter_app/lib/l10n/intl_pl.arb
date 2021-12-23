@@ -239,19 +239,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " zrezygnuj.",
+  "loseReasonResign": "{player} zrezygnuj.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " nie ma możliwości przejścia.",
+  "loseReasonNoWay": "{player} nie ma drogi.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Plansza jest pełna, nie ma możliwości przejścia.",
+  "loseReasonBoardIsFull": "Plansza jest pełna i {player} nie ma dokąd pójść.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Czas minął",
+  "loseReasonTimeOver": "Czas się skończył, {player} stracone.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -271,7 +271,7 @@
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
-  "gameOver": "Game Over",
+  "gameOver": "Koniec gry",
   "@gameOver": {
     "description": "Game Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Wyzwanie trudniejszy poziom?\nNowym poziomem będzie poziom ",
+  "challengeHarderLevel": "Zmierz się z trudniejszym poziomem? Nowy poziom będzie poziomem {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Wersja",
+  "version": "Wersja: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -423,7 +423,7 @@
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
   },
-  "mayRemoveMultiple": "Multi-remove",
+  "mayRemoveMultiple": "Wielokrotne usuwanie",
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
@@ -471,7 +471,7 @@
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
-  "rollback": "Rollback",
+  "rollback": "Wycofanie",
   "@rollback": {
     "description": "Rollback"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Historia ruchów skopiowana do schowka",
+  "moveHistoryCopied": "Historia ruchów skopiowana do schowka.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Wybierz",
+  "pick": "Wybierz {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Cofnij...",
+  "takingBack": "Cofnij…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Czekanie...",
+  "waiting": "Czekanie…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -697,7 +697,7 @@
   "@stepForwardAll": {
     "description": "Step forward all"
   },
-  "moveNow": "Teraz.",
+  "moveNow": "Rusz się teraz",
   "@moveNow": {
     "description": "Move now"
   },
@@ -781,7 +781,7 @@
   "@passive": {
     "description": "Passive"
   },
-  "timeout": "Timeout",
+  "timeout": "Koniec czasu",
   "@timeout": {
     "description": "Timeout"
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Liczba elementów",
+  "pieceCount": "Liczba elementów:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "w ręku",
+  "inHand": "{player} w ręku: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "na planszy",
+  "onBoard": "{player} na pokładzie: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Strona do ruchu",
+  "sideToMove": "Strona do przesunięcia: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Ostatni ruch",
+  "lastMove": "Ostatni ruch: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "Polskie",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{ruch}=1{{count} ruch}other{{count} ruch}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
