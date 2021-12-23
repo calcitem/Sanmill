@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "Λειτουργία για προγραμματιστές",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "Αξιοποίηση της ανθρώπινης εμπειρίας",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

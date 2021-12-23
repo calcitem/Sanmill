@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "fejlesztői mód",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "Használja a személyes tapasztalatokat",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

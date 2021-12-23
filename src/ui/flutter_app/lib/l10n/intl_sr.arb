@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "Девелопер моде",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "Ослоните се на људско искуство",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

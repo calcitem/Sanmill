@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "개발자 모드",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "인간의 경험을 바탕으로",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

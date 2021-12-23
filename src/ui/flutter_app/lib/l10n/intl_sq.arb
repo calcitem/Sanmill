@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "Modaliteti i zhvilluesit",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "Vizatoni në përvojën njerëzore",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

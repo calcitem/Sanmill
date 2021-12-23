@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "Tuzuvchi rejimi",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "Inson tajribasidan foydalaning",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

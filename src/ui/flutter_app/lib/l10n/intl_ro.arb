@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "Modul dezvoltator",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "Apelare la experiența umană",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

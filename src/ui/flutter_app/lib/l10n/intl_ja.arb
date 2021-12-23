@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "デベロッパーモード",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "人間の経験を借りる",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

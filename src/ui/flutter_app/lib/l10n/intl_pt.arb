@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "Modo desenvolvedor",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "Com base na experiência humana",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

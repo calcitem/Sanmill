@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "Arendusrežiim",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "Toetudes inimkogemusele",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

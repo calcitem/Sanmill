@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "โหมดนักพัฒนา",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "วาดบนประสบการณ์ของมนุษย์",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

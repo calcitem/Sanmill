@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "डेवलपर मोड",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "मानव अनुभव पर ड्रा करें",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

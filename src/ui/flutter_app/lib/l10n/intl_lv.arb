@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "Izstrādātāja režīms",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "Izmanto cilvēka pieredzi",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

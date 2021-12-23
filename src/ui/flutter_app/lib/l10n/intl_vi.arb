@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "Chế độ nhà phát triển",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "Rút kinh nghiệm của con người",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

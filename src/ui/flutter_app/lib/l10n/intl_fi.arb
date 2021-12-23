@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "Kehittäjätila",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "Hyödynnä inhimillistä kokemusta",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"

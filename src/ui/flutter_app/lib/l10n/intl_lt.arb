@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "developerMode": "Kūrėjo režimas",
-  "@developerMode": {
-    "description": "Developer mode"
-  },
   "drawOnHumanExperience": "Remkitės žmogaus patirtimi",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"
