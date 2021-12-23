@@ -239,19 +239,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " atkāpšanās.",
+  "loseReasonResign": "{player} atkāpšanās.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " nav veids, kā iet.",
+  "loseReasonNoWay": "{player} vairs nav kā iet.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Dēlis ir pilns, un nav iespējams aiziet.",
+  "loseReasonBoardIsFull": "Dēlis ir pilns, un {player} vairs nav kur iet.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Laiks beidzies",
+  "loseReasonTimeOver": "Laiks ir beidzies, {player} zaudēts.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Izaicināt grūtāku līmeni? Jaunais līmenis būs līmenis ",
+  "challengeHarderLevel": "Izaicinājums grūtāks līmenis? Jaunais līmenis būs {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Versija",
+  "version": "Versija: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -439,7 +439,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Otrais spēlētājs zaudē, kad tāfele ir pilna.",
+  "isWhiteLoseButNotDrawWhenBoardFull": "Otrais spēlētājs zaudē, kad tāfele ir pilna",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Pārvietojumu vēsture tiek kopēta uz starpliktuvi",
+  "moveHistoryCopied": "Pārvietojumu vēsture tiek kopēta uz starpliktuvi.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Izvēlieties",
+  "pick": "Izvēlieties {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Atgriešanās",
+  "takingBack": "Atgriešanās…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Gaidīšana",
+  "waiting": "Gaidīšana…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -705,11 +705,11 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "Crack-mill",
+  "crackMill": "Plaisu dzirnavas",
   "@crackMill": {
     "description": "Crack-mill"
   },
-  "crackMill_Detail": "Ja spēlētājam ir tikai gabaliņi dzirnavās, dzirnavās esošie gabaliņi netiks bloķēti, lai tos noņemtu.",
+  "crackMill_Detail": "Ja spēlētājam ir tikai gabali dzirnavās, dzirnavās esošie gabali netiks bloķēti, lai tos noņemtu.",
   "@crackMill_Detail": {
     "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Gabalu skaits",
+  "pieceCount": "Gabalu skaits:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "rokā",
+  "inHand": "{player} rokā: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "uz galda",
+  "onBoard": "{player} uz borta: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -997,7 +997,7 @@
   "@tutorial": {
     "description": "Tutorial"
   },
-  "classicMill": "Classic Mill",
+  "classicMill": "Klasiskās dzirnavas",
   "@classicMill": {
     "description": "Classic Mill"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Puse, lai pārvietotos",
+  "sideToMove": "Pārvietojama puse: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Pēdējais gājiens",
+  "lastMove": "Pēdējais gājiens: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "Tas ir neizšķirts",
+  "isDraw": "Tas ir neizšķirts!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "Latvietis",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Pārvietot}=1{{count} Pārvietot}other{{count} Kustības}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
