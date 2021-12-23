@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "Geen opname.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "Even wachten...",
   "@pleaseWait": {
     "description": "Please wait..."
