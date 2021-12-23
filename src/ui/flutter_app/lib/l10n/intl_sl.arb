@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "Barva ozadja menija",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "Barva elementa v meniju",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
