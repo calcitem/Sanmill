@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "Glavni izbornik",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "Pristupačnost",
   "@accessibility": {
     "description": "Accessibility"
