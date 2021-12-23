@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "Thực đơn chính",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "Khả năng tiếp cận",
   "@accessibility": {
     "description": "Accessibility"
