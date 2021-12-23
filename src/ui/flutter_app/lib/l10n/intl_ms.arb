@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": "  Bergerak",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Pindahkan senarai",
   "@showMoveList": {
     "description": "Move list"
