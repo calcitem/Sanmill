@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": "  hareket eder",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Listeyi taşı",
   "@showMoveList": {
     "description": "Move list"
