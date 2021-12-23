@@ -19,7 +19,7 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Inson va boshqalar A.I.",
+  "humanVsAi": "Inson va boshqalar A.I",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
@@ -239,19 +239,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": " iste'foga chiqish.",
+  "loseReasonResign": "{player} iste'foga chiqish.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": " borishning iloji yo'q.",
+  "loseReasonNoWay": "{player} uchun hech qanday yo'l yo'q.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Kengash to'la, va borish uchun hech qanday yo'l yo'q.",
+  "loseReasonBoardIsFull": "Doska to‘lgan va {player} ning borishga imkoni yo‘q.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Vaqt tugadi",
+  "loseReasonTimeOver": "Vaqt tugadi, {player} yutqazdi.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Qiyinroq darajani tanlaysizmi? Yangi daraja daraja bo'ladi",
+  "challengeHarderLevel": "Qattiqroq darajaga duch kelasizmi? Yangi daraja {level} darajasida bo'ladi!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -295,7 +295,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Versiya",
+  "version": "Versiya: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -439,7 +439,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Ikkinchi o'yinchi taxta to'ldirilganda yutqazadi.",
+  "isWhiteLoseButNotDrawWhenBoardFull": "Ikkinchi o'yinchi taxta to'ldirilganda yutqazadi",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Buferga ko'chirilgan tarixni ko'chirish",
+  "moveHistoryCopied": "Buferga ko'chirilgan tarixni ko'chirish.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -583,7 +583,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Tanlang",
+  "pick": "{element} ni tanlang",
   "@pick": {
     "description": "Pick "
   },
@@ -659,7 +659,7 @@
   "@privacyPolicy": {
     "description": "Privacy Policy"
   },
-  "privacyPolicy_Detail_1": "Iltimos, diqqat bilan o'qing va buni to'liq tushunganingizga va rozi ekanligingizga ishonch hosil qiling",
+  "privacyPolicy_Detail_1": "Iltimos, diqqat bilan o'qing va buni to'liq tushunganingizga va rozi ekanligingizga ishonch hosil qiling ",
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
@@ -667,7 +667,7 @@
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
-  "and": " va",
+  "and": " va ",
   "@and": {},
   "accept": "Qabul qiling",
   "@accept": {
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Orqaga ...",
+  "takingBack": "Orqaga…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Kutilmoqda ...",
+  "waiting": "Kutilmoqda…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -701,7 +701,7 @@
   "@moveNow": {
     "description": "Move now"
   },
-  "done": "Bajarildi",
+  "done": "Bajarildi.",
   "@done": {
     "description": "Done."
   },
@@ -797,15 +797,15 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Parcha soni",
+  "pieceCount": "Parcha soni:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "qo'lda",
+  "inHand": "{player} qo'lda: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "transport vosita ichida",
+  "onBoard": "{player} bortda: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1061,11 +1061,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Harakatlanadigan tomon",
+  "sideToMove": "Ko'chish uchun tomon: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Oxirgi harakat",
+  "lastMove": "Oxirgi harakat: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1081,7 +1081,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "Bu durang",
+  "isDraw": "Bu durang!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1148,5 +1148,15 @@
   "languageName": "O'zbek",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count, plural, =0{Ko'chirish}=1{{count} Ko'chirish}other{{count} Ko'chirish}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
