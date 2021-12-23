@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "Ana menü",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "Ulaşılabilirlik",
   "@accessibility": {
     "description": "Accessibility"
