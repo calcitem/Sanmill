@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "Főmenü",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "Megközelíthetőség",
   "@accessibility": {
     "description": "Accessibility"
