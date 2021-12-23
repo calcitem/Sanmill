@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "Valikon taustaväri",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "Valikon kohokohdan väri",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
