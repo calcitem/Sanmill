@@ -1176,10 +1176,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "Main menu",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "Accessibility",
   "@accessibility": {
     "description": "Accessibility"
