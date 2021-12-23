@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "Aplikácia sa ukončí.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "Aby sa to prejavilo, musíte aplikáciu okamžite zavrieť a znova otvoriť.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
