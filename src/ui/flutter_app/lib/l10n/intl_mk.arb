@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "Главно мени",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "Пристапност",
   "@accessibility": {
     "description": "Accessibility"
