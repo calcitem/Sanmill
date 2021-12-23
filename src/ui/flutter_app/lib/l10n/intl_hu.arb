@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "Nincs felvétel.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "Kérem várjon...",
   "@pleaseWait": {
     "description": "Please wait..."
