@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "ไม่มีการบันทึก",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "โปรดรอ.",
   "@pleaseWait": {
     "description": "Please wait..."
