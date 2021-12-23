@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "Appen afsluttes.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "Du skal straks lukke og genåbne appen for at få effekt.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
