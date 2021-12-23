@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "Meniu fono spalva",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "Meniu paryškinti elemento spalvą",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
