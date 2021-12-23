@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "  ย้าย.",
+  "tipToMove": "{player} เพื่อย้าย",
   "@tipToMove": {
     "description": " to move."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "กำลังคิด...",
+  "thinking": "กำลังคิด…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "นำเข้าไม่ได้",
+  "cannotImport": "ไม่สามารถนำเข้า {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -200,7 +200,7 @@
   "@pleaseWait": {
     "description": "Please wait..."
   },
-  "restartGame": "เริ่มเกมปัจจุบันใหม่หรือไม่",
+  "restartGame": "เริ่มเกมปัจจุบันใหม่หรือไม่?",
   "@restartGame": {
     "description": "Restart current game?"
   },
@@ -208,15 +208,15 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "เกมเริ่มแล้ว โปรดวาง",
+  "gameStarted": "เกมเริ่มแล้ว โปรดวาง.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "กำลังวิเคราะห์ ...",
+  "analyzing": "กำลังวิเคราะห์…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "ผิดพลาด",
+  "error": "ผิดพลาด: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "คะแนน",
+  "score": "คะแนน:",
   "@score": {
     "description": "Score"
   },
@@ -236,7 +236,7 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "  จำนวนชิ้นน้อยกว่าสาม",
+  "loseReasonlessThanThree": "{player} จำนวนชิ้นน้อยกว่าสาม",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "สำหรับนักพัฒนา",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "โหมดนักพัฒนา",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "แตะกลับอีกครั้งเพื่อออก",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "ตัวแปรสภาพแวดล้อม",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "มากกว่า",
   "@more": {
