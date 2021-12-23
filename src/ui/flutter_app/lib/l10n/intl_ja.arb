@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "アプリが終了します。",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "デフォルトの設定を有効にするには、すぐにアプリを終了して再起動する必要があります。",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
