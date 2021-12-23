@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "Tiada rakaman.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "Sila tunggu.",
   "@pleaseWait": {
     "description": "Please wait..."
