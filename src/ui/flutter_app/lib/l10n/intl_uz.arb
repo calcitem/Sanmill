@@ -48,10 +48,6 @@
   "@move": {
     "description": "Move"
   },
-  "moves": "  Harakatlar",
-  "@moves": {
-    "description": " Moves"
-  },
   "showMoveList": "Ro'yxatni ko'chirish",
   "@showMoveList": {
     "description": "Move list"
