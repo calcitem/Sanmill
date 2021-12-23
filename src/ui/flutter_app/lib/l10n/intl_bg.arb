@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "Приложението ще излезе.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "Трябва да затворите веднага и да отворите отново приложението, за да се прояви ефектът.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
