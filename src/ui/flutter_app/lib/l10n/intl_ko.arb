@@ -144,11 +144,11 @@
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "모든 공석으로 날아갈 수 있음",
+  "tipCanMoveToAnyPoint": "모든 공석으로 날아갈 수 있음.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "체스를하다",
+  "tipToMove": "{player} 이동합니다.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "다른 사람이 ...",
+  "thinking": "다른 사람이…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -184,11 +184,11 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "게임 기록을 클립 보드에서 가져 왔습니다",
+  "gameImported": "게임 기록을 클립 보드에서 가져 왔습니다.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "가져올 수 없습니다",
+  "cannotImport": "가져올 수 없음 {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -212,11 +212,11 @@
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "상황 분석 중 ...",
+  "analyzing": "상황 분석 중…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "오류",
+  "error": "오류: {message}",
   "@error": {
     "description": "Error"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "점수",
+  "score": "점수:",
   "@score": {
     "description": "Score"
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "개발자 옵션",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "개발자 모드",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "애플리케이션을 종료하려면 리턴 키를 다시 누르십시오.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "환경 변수",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "더",
   "@more": {
