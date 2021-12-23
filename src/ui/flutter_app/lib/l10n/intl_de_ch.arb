@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "dApp wird beändet.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "Du muesch dApp sofort beände u neustarte, um dIhstellige chasch benutze",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
