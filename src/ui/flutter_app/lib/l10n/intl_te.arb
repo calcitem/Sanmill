@@ -886,10 +886,6 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerBackgroundColor": "మెనూ నేపథ్య రంగు",
-  "@drawerBackgroundColor": {
-    "description": "Menu background color"
-  },
   "drawerHighlightItemColor": "మెను అంశం రంగును హైలైట్ చేస్తుంది",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
