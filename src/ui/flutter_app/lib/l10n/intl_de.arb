@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Denke nach...",
+  "thinking": "Denke nach…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -208,11 +208,11 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Spiel begonnen, bitte Stein platzieren",
+  "gameStarted": "Spiel begonnen, bitte Stein platzieren.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Analysiere ...",
+  "analyzing": "Analysiere…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
@@ -790,10 +790,6 @@
   "@personalization": {
     "description": "Personalization"
   },
-  "forDevelopers": "Für Entwickler",
-  "@forDevelopers": {
-    "description": "For developers"
-  },
   "developerMode": "Entwicklermodus",
   "@developerMode": {
     "description": "Developer mode"
@@ -837,10 +833,6 @@
   "tapBackAgainToLeave": "Nochmal drücken, um zu beenden.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
-  },
-  "environmentVariables": "Umgebungsvariablen",
-  "@environmentVariables": {
-    "description": "Environment variables"
   },
   "more": "Mehr",
   "@more": {
