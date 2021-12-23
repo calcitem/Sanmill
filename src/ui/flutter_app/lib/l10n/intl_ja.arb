@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "移動",
+  "tipToMove": "{player}移動します。",
   "@tipToMove": {
     "description": " to move."
   },
@@ -188,7 +188,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "インポートできない",
+  "cannotImport": "{invalidMove}をインポートできません",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -216,7 +216,7 @@
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "エラーです。",
+  "error": "エラー：{message}",
   "@error": {
     "description": "Error"
   },
@@ -236,23 +236,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "残り3枚以下です。",
+  "loseReasonlessThanThree": "{player}個数が3個未満です。",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "負けを認めた。",
+  "loseReasonResign": "{player}は辞任しました。",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "出口はない。",
+  "loseReasonNoWay": "{player}は行く方法がありません。",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "盤面がいっぱいで出口がない。",
+  "loseReasonBoardIsFull": "ボードがいっぱいで、{player}は行く方法がありません。",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "タイムアウトが成立する。",
+  "loseReasonTimeOver": "時間が終わり、{player}を失いました。",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -276,11 +276,11 @@
   "@gameOver": {
     "description": "Game Over"
   },
-  "youWin": "優勝おめでとうございます。",
+  "youWin": "優勝おめでとうございます！",
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "その後の難易度アップは？\nアップグレード後の難易度は",
+  "challengeHarderLevel": "より難しいレベルに挑戦しますか？新しいレベルはレベル{level}になります！",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -296,7 +296,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "バージョン",
+  "version": "バージョン: {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -384,7 +384,7 @@
   "@piecesCount": {
     "description": "The number of pieces each player has"
   },
-  "piecesCount_Detail": "各プレイヤーが持っているディスクの枚数を設定します。",
+  "piecesCount_Detail": "各プレイヤーは何個持っていますか？",
   "@piecesCount_Detail": {
     "description": "How many pieces does each player have?"
   },
@@ -432,7 +432,7 @@
   "@mayRemoveMultiple_Detail": {
     "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
-  "mayRemoveFromMillsAlways": "トリプレットからピースを取ることは可能です。",
+  "mayRemoveFromMillsAlways": "トリプレットからピースを取ることは可能です",
   "@mayRemoveFromMillsAlways": {
     "description": "Destroy mills"
   },
@@ -584,7 +584,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "セレクト",
+  "pick": "{element}を選択",
   "@pick": {
     "description": "Pick "
   },
@@ -670,7 +670,7 @@
   },
   "and": "を読むことができます。",
   "@and": {},
-  "accept": "をご覧ください。 同意いただける場合は、「同意する」をクリックしていただくと、当社のサービスの提供が開始されます。",
+  "accept": "承認",
   "@accept": {
     "description": "Accept"
   },
@@ -690,7 +690,7 @@
   "@stepForward": {
     "description": "Step forward"
   },
-  "takeBackAll": "お待ちください。",
+  "takeBackAll": "お待ちください",
   "@takeBackAll": {
     "description": "Take back all"
   },
@@ -698,7 +698,7 @@
   "@stepForwardAll": {
     "description": "Step forward all"
   },
-  "moveNow": "最後に戻る。",
+  "moveNow": "最後に戻る",
   "@moveNow": {
     "description": "Move now"
   },
@@ -706,7 +706,7 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "すぐに動く。",
+  "crackMill": "すぐに動く",
   "@crackMill": {
     "description": "Crack-mill"
   },
@@ -810,11 +810,11 @@
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "手には",
+  "inHand": "手持ちの{player}：{count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "ボード上",
+  "onBoard": "{player}搭載：{count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1074,11 +1074,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "振り向く",
+  "sideToMove": "移動する側：{player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "最後の動き",
+  "lastMove": "最後の動き：{move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1161,5 +1161,15 @@
   "languageName": "日本語",
   "@languageName": {
     "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{ステップ}=1{{count} ステップ}other{{count} ステップ}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
   }
 }
