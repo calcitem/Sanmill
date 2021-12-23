@@ -588,10 +588,6 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "exitApp": "Programėlė išeis.",
-  "@exitApp": {
-    "description": "The app will exit."
-  },
   "exitAppManually": "Turite iš karto uždaryti ir vėl atidaryti programą, kad ji pradėtų veikti.",
   "@exitAppManually": {
     "description": "You have to close immediately and reopen the app to take effect."
