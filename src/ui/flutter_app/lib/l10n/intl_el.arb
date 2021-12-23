@@ -196,10 +196,6 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "noRecording": "Δεν υπάρχει εγγραφή.",
-  "@noRecording": {
-    "description": "No recording."
-  },
   "pleaseWait": "Παρακαλώ περιμένετε.",
   "@pleaseWait": {
     "description": "Please wait..."
