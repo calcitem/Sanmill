@@ -1090,10 +1090,6 @@
   "@selected": {
     "description": "Selected"
   },
-  "mainMenu": "Κυρίως μενού",
-  "@mainMenu": {
-    "description": "Main menu"
-  },
   "accessibility": "Προσιτότητα",
   "@accessibility": {
     "description": "Accessibility"
