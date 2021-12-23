@@ -439,7 +439,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "هنگامی که تخته پر میشود بازیکن دوم می‌بازد.",
+  "isWhiteLoseButNotDrawWhenBoardFull": "هنگامی که تخته پر میشود بازیکن دوم می‌بازد",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "تاریخچه انتقال به بریده‌دان کپی شده",
+  "moveHistoryCopied": "تاریخچه انتقال به بریده‌دان کپی شده.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -677,11 +677,11 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "در حال پس گرفتن...",
+  "takingBack": "در حال پس گرفتن…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "چشم به راه...",
+  "waiting": "چشم به راه…",
   "@waiting": {
     "description": "Waiting..."
   },
@@ -1017,7 +1017,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "اگر بازیکنی سه قطعه داشته باشد و پس از ده حرکت بازیکنان مهره های حریف را بردارند بازی به تساوی می رسد.",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "اگر بازیکنی سه قطعه داشته باشد و پس از ده حرکت بازیکنان مهره های حریف را بردارند بازی به تساوی می رسد",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
@@ -1149,7 +1149,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{Move}=1{{count} Move}other{{count} Moves}}",
+  "moveNumber": "{count,plural, =0{حرکت}=1{{count} حرکت}other{{count} حرکت می کند}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
