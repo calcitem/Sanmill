@@ -1,4 +1,3 @@
 v1.0.24
 
 * Soporte considerando la movilidad de las piezas.
-
