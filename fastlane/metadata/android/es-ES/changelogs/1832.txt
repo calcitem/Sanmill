@@ -1,4 +1,3 @@
 v1.0.11
 
 * Apoyar Paso adelante & Retomar todo & Paso adelante todo.
-
