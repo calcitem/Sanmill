@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "Computer isch fuuh",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "Ahzauh a Steine uf dr Hang ahzeige",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "Ergäbniss",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "Cha nid us ener Mühli entfärnt wärde.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "links",
   "@left": {

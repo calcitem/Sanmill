@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "AI itu Malas",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "Tunjukkan jumlah potongan di tangan",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "Hasil",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "Tidak dapat menghapus dari pabrik.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "kiri",
   "@left": {

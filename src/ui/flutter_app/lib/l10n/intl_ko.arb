@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "기계가 선도 할 때의 게으름",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "손에 남아있는 조각의 수를 보여주세요",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "결과",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "당신은 Sanlian의 아들을 먹을 수 없습니다.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "남은",
   "@left": {

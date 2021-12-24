@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "AI లేజీ",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "చేతిలో ఉన్న ముక్కల సంఖ్యను చూపించు",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "ఫలితాలు",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "మీరు దానిని మిల్లు నుండి తొలగించలేరు.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "ఎడమ",
   "@left": {

@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "هوش مصنوعی تنبل است",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "نشان‌دادن تعداد مهره‌های موجود در دست",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "نتایج",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "شما نمیتوانید مهره‌ای از یک دوز را حذف کنید.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "ترک کرد",
   "@left": {

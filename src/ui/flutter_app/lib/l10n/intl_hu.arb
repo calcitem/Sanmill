@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "AI szánalmat mutat",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "A kézben lévő korongszám megjelenítése",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "Eredmények",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "Nem lehet eltávolítani a malomból.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "bal",
   "@left": {

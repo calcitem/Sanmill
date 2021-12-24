@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "AI on laisk",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "Näita käes olevate tükikeste arvu",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "Tulemused",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "Ei saa eemaldada veskist.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "vasakule",
   "@left": {

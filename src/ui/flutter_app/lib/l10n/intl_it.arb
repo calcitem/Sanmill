@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "L'intelligenza artificiale è pigra",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "Mostra il conteggio dei pezzi in mano",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "Risultati",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "Impossibile rimuovere dal mulino.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "sinistra",
   "@left": {

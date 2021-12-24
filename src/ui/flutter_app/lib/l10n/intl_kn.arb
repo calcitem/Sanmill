@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "ಎಐ ಲೇಜಿ",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "ಕೈಯಲ್ಲಿರುವ ತುಂಡುಗಳ ಸಂಖ್ಯೆಯನ್ನು ತೋರಿಸಿ",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "ಫಲಿತಾಂಶಗಳು",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "ನೀವು ಅದನ್ನು ಗಿರಣಿಯಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "ಎಡ",
   "@left": {

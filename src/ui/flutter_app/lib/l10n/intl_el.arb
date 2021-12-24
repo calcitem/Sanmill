@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "Η AI είναι τεμπέλης",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "Εμφάνιση του αριθμού των κομματιών στο χέρι",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "Αποτελέσματα",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "Δεν μπορείτε να αφαιρέσετε από τον μύλο.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "αριστερά",
   "@left": {
