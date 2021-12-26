@@ -27,9 +27,7 @@ class _GameHeader extends StatefulWidget implements PreferredSizeWidget {
 
   @override
   final Size preferredSize = Size.fromHeight(
-    kToolbarHeight +
-        LocalDatabaseService.display.boardTop +
-        (Constants.isLargeScreen ? 39.0 : 0.0),
+    kToolbarHeight + LocalDatabaseService.display.boardTop,
   );
   final double? toolbarHeight;
   final GameMode gameMode;
@@ -105,27 +103,26 @@ class _GameHeaderState extends State<_GameHeader> {
       ),
     );
 
-    final Widget appBar = Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        SizedBox(
-          height: kToolbarHeight,
-          child: Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: DrawerIcon.of(context)!.icon,
+    final appBar = Stack(children: [
+      Align(
+        alignment: AlignmentDirectional.topStart,
+        child: DrawerIcon.of(context)!.icon,
+      ),
+      Center(
+        child: BlockSemantics(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Column(
+              children: <Widget>[
+                iconRow,
+                divider,
+                const _HeaderTip(),
+              ],
+            ),
           ),
         ),
-        BlockSemantics(
-          child: Column(
-            children: <Widget>[
-              iconRow,
-              divider,
-              const _HeaderTip(),
-            ],
-          ),
-        ),
-      ],
-    );
+      ),
+    ]);
 
     return Align(
       alignment: Alignment.topCenter,
