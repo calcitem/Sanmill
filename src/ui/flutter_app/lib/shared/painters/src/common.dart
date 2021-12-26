@@ -34,6 +34,19 @@ Offset pointFromIndex(int index, Size size) {
   return offsetFromPoint(Offset(column, row), size);
 }
 
+/// calculates the index of the given point
+int indexFromPoint(Offset point) {
+  return (point.dy * 7 + point.dx).toInt();
+}
+
+/// Calculates the pressed point
+Offset pointFromOffset(Offset offset, double dimension) {
+  final point = (offset - const Offset(boardMargin, boardMargin)) /
+      ((dimension - boardMargin * 2) / 6);
+
+  return point.round();
+}
+
 /// Calculates the offset for the given position
 Offset offsetFromPoint(Offset point, Size size) {
   return (point * (size.width - boardMargin * 2) / 6) +
@@ -78,4 +91,8 @@ extension _PathExtension on Path {
     moveTo(p1.dx, p1.dy);
     lineTo(p2.dx, p2.dy);
   }
+}
+
+extension _OffsetExtension on Offset {
+  Offset round() => Offset(dx.roundToDouble(), dy.roundToDouble());
 }

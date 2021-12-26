@@ -103,26 +103,28 @@ class _GameHeaderState extends State<_GameHeader> {
       ),
     );
 
-    final appBar = Stack(children: [
-      Align(
-        alignment: AlignmentDirectional.topStart,
-        child: DrawerIcon.of(context)!.icon,
-      ),
-      Center(
-        child: BlockSemantics(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Column(
-              children: <Widget>[
-                iconRow,
-                divider,
-                const _HeaderTip(),
-              ],
+    final appBar = Stack(
+      children: [
+        Align(
+          alignment: AlignmentDirectional.topStart,
+          child: DrawerIcon.of(context)!.icon,
+        ),
+        Center(
+          child: BlockSemantics(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Column(
+                children: <Widget>[
+                  iconRow,
+                  divider,
+                  const _HeaderTip(),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    ]);
+      ],
+    );
 
     return Align(
       alignment: Alignment.topCenter,

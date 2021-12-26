@@ -77,40 +77,24 @@ class _BoardState extends State<_Board> with SingleTickerProviderStateMixin {
     return LayoutBuilder(
       builder: (context, constrains) {
         final dimension = constrains.maxWidth;
-        const padding = AppTheme.boardPadding;
 
         return SizedBox.square(
           dimension: dimension,
           child: GestureDetector(
             child: customPaint,
             onTapUp: (d) async {
-              final gridWidth = dimension - padding * 2;
-              final squareWidth = gridWidth / 7;
-              // TODO: [Leptopoda] directly store the offset so we can work with it while painting
-              final dx = d.localPosition.dx;
-              final dy = d.localPosition.dy;
-
-              final column = (dx - padding) ~/ squareWidth;
-              if (column < 0 || column > 6) {
-                return logger
-                    .v("${_Board._tag} Tap on column $column (ignored).");
-              }
-
-              final row = (dy - padding) ~/ squareWidth;
-              if (row < 0 || row > 6) {
-                return logger.v("${_Board._tag} Tap on row $row (ignored).");
-              }
-
-              final index = row * 7 + column;
+              // TODO: [Leptopoda] directly work with the offset (sqare) and remove the abstraction like square or index
+              final index =
+                  indexFromPoint(pointFromOffset(d.localPosition, dimension));
               final int? square = indexToSquare[index];
 
               if (square == null) {
                 return logger.v(
-                  "${_Board._tag} Tap not on a square ($row, $column) (ignored).",
+                  "${_Board._tag} Tap not on a square $index (ignored).",
                 );
               }
 
-              logger.v("${_Board._tag} Tap on ($row, $column) <$index>");
+              logger.v("${_Board._tag} Tap on <$index>");
 
               await tapHandler.onBoardTap(square);
             },
