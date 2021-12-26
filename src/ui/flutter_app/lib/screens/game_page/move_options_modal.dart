@@ -50,6 +50,7 @@ class _MoveOptionsModal extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
+          const CustomSpacer(),
           SimpleDialogOption(
             onPressed: () => HistoryNavigator.stepForward(context),
             child: Text(
