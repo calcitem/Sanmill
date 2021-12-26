@@ -596,10 +596,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "AI is Lazy",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "Show count of unplaced pieces",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -713,10 +709,6 @@
   "results": "Results",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "You can not remove it from the mill.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "left",
   "@left": {

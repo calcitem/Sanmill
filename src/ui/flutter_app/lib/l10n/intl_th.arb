@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "AI ขี้เกียจ",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "แสดงจำนวนชิ้นในมือ",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "ผล",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "คุณไม่สามารถเอามันออกจากโรงสี",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "ซ้าย",
   "@left": {

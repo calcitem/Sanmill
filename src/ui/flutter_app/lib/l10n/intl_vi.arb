@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "Sự lười biếng khi máy đang dẫn đầu",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "Hiển thị số quân cờ còn lại trong tay",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "kết quả",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "Bạn không thể ăn các con trai của Sanlian.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "Còn lại",
   "@left": {

@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "AI je lenivá",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "Zobrazenie počtu dielikov v ruke",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "Výsledky",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "Nemožno odstrániť z mlyna.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "vľavo",
   "@left": {

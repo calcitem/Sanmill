@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "Mākslīgais intelekts ir slinks",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "Rādīt rokā esošo figūru skaitu",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "Rezultāti",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "Nevar izņemt no dzirnavām.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "pa kreisi",
   "@left": {

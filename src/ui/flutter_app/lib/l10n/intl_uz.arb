@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "AI dangasa",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "Qo'ldagi buyumlar sonini ko'rsating",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "Natijalar",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "Siz uni tegirmondan olib tashlay olmaysiz.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "chap",
   "@left": {

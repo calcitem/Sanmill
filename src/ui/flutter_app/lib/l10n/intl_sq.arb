@@ -535,10 +535,6 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "aiIsLazy": "AI është dembel",
-  "@aiIsLazy": {
-    "description": "AI is Lazy"
-  },
   "isPieceCountInHandShown": "Trego numrin e pjesëve në dorë",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
@@ -646,10 +642,6 @@
   "results": "Rezultatet",
   "@results": {
     "description": "Results"
-  },
-  "cannotRemoveFromMill": "Nuk mund të hiqet nga mulli.",
-  "@cannotRemoveFromMill": {
-    "description": "Cannot remove from the mill."
   },
   "left": "u largua",
   "@left": {
