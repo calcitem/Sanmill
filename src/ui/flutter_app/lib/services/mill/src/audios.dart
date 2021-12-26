@@ -21,39 +21,40 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/assets/assets.gen.dart';
 import 'package:sanmill/services/logger.dart';
+import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:soundpool/soundpool.dart';
 
 enum Sound { draw, fly, go, illegal, lose, mill, place, remove, select, win }
 
 class Audios {
-  const Audios._();
-  //static AudioPlayer? _player;
-  static final Soundpool _soundpool = Soundpool.fromOptions();
-  static bool _initialized = false;
-  static int _alarmSoundStreamId = 0;
-  static late final int _drawSoundId;
-  static late final int _flySoundId;
-  static late final int _goSoundId;
-  static late final int _illegalSoundId;
-  static late final int _loseSoundId;
-  static late final int _millSoundId;
-  static late final int _placeSoundId;
-  static late final int _removeSoundId;
-  static late final int _selectSoundId;
-  static late final int _winSoundId;
-  static bool isTemporaryMute = false;
+  static final _instance = Audios._();
+
+  factory Audios() => _instance;
+
+  Audios._();
+
+  final Soundpool _soundpool = Soundpool.fromOptions();
+  int _alarmSoundStreamId = 0;
+  late final int _drawSoundId;
+  late final int _flySoundId;
+  late final int _goSoundId;
+  late final int _illegalSoundId;
+  late final int _loseSoundId;
+  late final int _millSoundId;
+  late final int _placeSoundId;
+  late final int _removeSoundId;
+  late final int _selectSoundId;
+  late final int _winSoundId;
+  bool isTemporaryMute = false;
 
   static const _tag = "[audio]";
 
-  static Future<void> loadSounds() async {
+  Future<void> loadSounds() async {
+    assert(!MillController().initialized);
+
     if (Platform.isWindows) {
       logger.w("$_tag Audio Player does not support Windows.");
-      return;
-    }
-
-    if (_initialized) {
-      logger.i("$_tag Audio Player is already initialized.");
       return;
     }
 
@@ -96,11 +97,9 @@ class Audios {
     _winSoundId = await _soundpool.load(
       await rootBundle.load(Assets.audios.win),
     );
-
-    _initialized = true;
   }
 
-  static Future<void> _playSound(Sound sound) async {
+  Future<void> _playSound(Sound sound) async {
     assert(!Platform.isWindows);
 
     final int soundId;
@@ -141,7 +140,7 @@ class Audios {
     _alarmSoundStreamId = await _soundpool.play(soundId);
   }
 
-  static Future<void> _stopSound() async {
+  Future<void> _stopSound() async {
     assert(!Platform.isWindows);
 
     if (_alarmSoundStreamId > 0) {
@@ -149,17 +148,18 @@ class Audios {
     }
   }
 
-  static void disposePool() {
+  void disposePool() {
     assert(!Platform.isWindows);
 
     _soundpool.dispose();
   }
 
-  static Future<void> playTone(Sound sound) async {
+  Future<void> playTone(Sound sound) async {
+    assert(MillController().initialized);
+
     if (!LocalDatabaseService.preferences.toneEnabled ||
         isTemporaryMute ||
-        LocalDatabaseService.preferences.screenReaderSupport ||
-        !_initialized) {
+        LocalDatabaseService.preferences.screenReaderSupport) {
       return;
     }
 

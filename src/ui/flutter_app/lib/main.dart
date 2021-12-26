@@ -30,7 +30,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/display.dart';
 import 'package:sanmill/screens/home.dart';
-import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/logger.dart';
@@ -75,7 +74,6 @@ class SanmillApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final globalScaffoldKey = GlobalKey<ScaffoldState>();
-    Audios.loadSounds();
 
     return ValueListenableBuilder(
       valueListenable: LocalDatabaseService.listenDisplay,

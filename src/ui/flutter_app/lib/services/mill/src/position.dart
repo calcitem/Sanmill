@@ -378,7 +378,7 @@ class Position {
             _changeSideToMove();
           }
           controller.gameInstance.focusIndex = squareToIndex[s];
-          await Audios.playTone(Sound.place);
+          await Audios().playTone(Sound.place);
         } else {
           pieceToRemoveCount =
               LocalDatabaseService.rules.mayRemoveMultiple ? n : 1;
@@ -412,7 +412,7 @@ class Position {
           }
 
           controller.gameInstance.focusIndex = squareToIndex[s];
-          await Audios.playTone(Sound.mill);
+          await Audios().playTone(Sound.mill);
         }
         break;
       case Phase.moving:
@@ -461,14 +461,14 @@ class Position {
           if (_gameOver) return true;
           controller.gameInstance.focusIndex = squareToIndex[s];
 
-          await Audios.playTone(Sound.place);
+          await Audios().playTone(Sound.place);
         } else {
           pieceToRemoveCount =
               LocalDatabaseService.rules.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
           action = Act.remove;
           controller.gameInstance.focusIndex = squareToIndex[s];
-          await Audios.playTone(Sound.mill);
+          await Audios().playTone(Sound.mill);
         }
 
         break;
@@ -500,7 +500,7 @@ class Position {
 
     _revertKey(s);
 
-    await Audios.playTone(Sound.remove);
+    await Audios().playTone(Sound.remove);
 
     if (LocalDatabaseService.rules.hasBannedLocations &&
         phase == Phase.placing) {
@@ -922,7 +922,7 @@ class Position {
       return _HistoryResponse.outOfRange;
     }
 
-    Audios.isTemporaryMute = true;
+    Audios().isTemporaryMute = true;
 
     // Backup context
     final gameModeBackup = controller.gameInstance.gameMode;
@@ -945,7 +945,7 @@ class Position {
     controller.recorder.moves = historyBack;
     controller.recorder.cur = moveIndex;
 
-    Audios.isTemporaryMute = false;
+    Audios().isTemporaryMute = false;
     await move.gotoHistoryPlaySound();
     return error;
   }

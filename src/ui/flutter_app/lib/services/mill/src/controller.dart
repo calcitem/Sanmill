@@ -46,6 +46,7 @@ class MillController {
     if (_initialized) return;
 
     await engine.startup();
+    await Audios().loadSounds();
 
     _initialized = true;
     logger.i("$_tag initialized");

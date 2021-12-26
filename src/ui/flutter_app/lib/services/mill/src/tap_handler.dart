@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/game_page/game_page.dart';
-import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/mill/mill.dart';
+import 'package:sanmill/services/mill/src/audios.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/scaffold_messenger.dart';
 
@@ -114,7 +114,7 @@ class TapHandler {
           }
           switch (position.selectPiece(sq)) {
             case SelectionResponse.ok:
-              await Audios.playTone(Sound.select);
+              await Audios().playTone(Sound.select);
               controller.gameInstance.select(squareToIndex[sq]!);
               ret = true;
               logger.v("[tap] selectPiece: [$sq]");
@@ -138,7 +138,7 @@ class TapHandler {
               break;
             // TODO: [Leptopoda] deduplicate
             case SelectionResponse.illegalPhase:
-              await Audios.playTone(Sound.illegal);
+              await Audios().playTone(Sound.illegal);
               logger.v("[tap] selectPiece: skip [$sq]");
               if (position.phase != Phase.gameOver) {
                 MillController()
@@ -147,21 +147,21 @@ class TapHandler {
               }
               break;
             case SelectionResponse.canOnlyMoveToAdjacentEmptyPoints:
-              await Audios.playTone(Sound.illegal);
+              await Audios().playTone(Sound.illegal);
               logger.v("[tap] selectPiece: skip [$sq]");
               MillController()
                   .tip
                   .showTip(S.of(context).tipCanMoveOnePoint, snackBar: true);
               break;
             case SelectionResponse.pleaseSelectOurPieceToMove:
-              await Audios.playTone(Sound.illegal);
+              await Audios().playTone(Sound.illegal);
               logger.v("[tap] selectPiece: skip [$sq]");
               MillController()
                   .tip
                   .showTip(S.of(context).tipSelectPieceToMove, snackBar: true);
               break;
             case SelectionResponse.illegalAction:
-              await Audios.playTone(Sound.illegal);
+              await Audios().playTone(Sound.illegal);
               logger.v("[tap] selectPiece: skip [$sq]");
               MillController()
                   .tip
@@ -193,7 +193,7 @@ class TapHandler {
               }
               break;
             case RemoveResponse.cannotRemoveOurPiece:
-              await Audios.playTone(Sound.illegal);
+              await Audios().playTone(Sound.illegal);
               logger.i(
                 "[tap] removePiece: Cannot Remove our pieces, skip [$sq]",
               );
@@ -203,7 +203,7 @@ class TapHandler {
                   );
               break;
             case RemoveResponse.cannotRemovePieceFromMill:
-              await Audios.playTone(Sound.illegal);
+              await Audios().playTone(Sound.illegal);
               logger.i(
                 "[tap] removePiece: Cannot remove piece from Mill, skip [$sq]",
               );
@@ -215,7 +215,7 @@ class TapHandler {
             case RemoveResponse.illegalPhase:
             case RemoveResponse.illegalAction:
             case RemoveResponse.noPieceToRemove:
-              await Audios.playTone(Sound.illegal);
+              await Audios().playTone(Sound.illegal);
               logger.v("[tap] removePiece: skip [$sq]");
               if (position.phase != Phase.gameOver) {
                 MillController()

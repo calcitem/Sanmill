@@ -334,11 +334,11 @@ extension HistoryMoveExtension on HistoryMove {
       switch (this) {
         case HistoryMove.forwardAll:
         case HistoryMove.forward:
-          return Audios.playTone(Sound.place);
+          return Audios().playTone(Sound.place);
         case HistoryMove.backAll:
         case HistoryMove.backN:
         case HistoryMove.backOne:
-          return Audios.playTone(Sound.remove);
+          return Audios().playTone(Sound.remove);
       }
     }
   }
