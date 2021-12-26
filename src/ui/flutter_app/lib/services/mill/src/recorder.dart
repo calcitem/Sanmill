@@ -70,44 +70,45 @@ class _GameRecorder {
   ExtMove? get lastEffectiveMove => cur == -1 ? null : moves[cur];
 
   String? get moveHistoryText {
-    const int cols = 2;
-
-    if (moves.isEmpty) {
-      return null;
-    }
+    if (moves.isEmpty) return null;
 
     final StringBuffer moveHistory = StringBuffer();
-
-    String num = "";
     int k = 1;
-    for (var i = 0; i <= cur; i++) {
-      if (LocalDatabaseService.display.standardNotationEnabled) {
-        if (k % cols == 1) {
-          num = "${(k + 1) ~/ 2}.    ";
-          if (k < 9 * cols) {
-            num = " $num ";
-          }
-        }
-        if (i + 1 <= cur && moves[i + 1].type == _MoveType.remove) {
-          moveHistory.write(
-            "$num${moves[i].notation}${moves[i + 1].notation}    ",
-          );
-          i++;
-        } else {
-          moveHistory.write("$num${moves[i].notation}    ");
-        }
-        k++;
-      } else {
-        moveHistory.write("${i < 9 ? " " : ""}${i + 1}. ${moves[i].move}　");
+    int i = 0;
+
+    void buildStandardNotation() {
+      const separator = "    ";
+
+      if (i <= cur) {
+        moveHistory.write(separator);
+        moveHistory.write(moves[i++].notation);
       }
 
-      if (LocalDatabaseService.display.standardNotationEnabled) {
-        if ((k + 1) % cols == 0) moveHistory.writeln();
-      } else {
-        if ((i + 1) % cols == 0) moveHistory.writeln();
+      if (i <= cur && moves[i].type == _MoveType.remove) {
+        moveHistory.write(moves[i++].notation);
       }
     }
 
-    return moveHistory.toString().replaceAll("    \n", "\n");
+    while (i <= cur) {
+      moveHistory.writeNumber(k++);
+      if (LocalDatabaseService.display.standardNotationEnabled) {
+        buildStandardNotation();
+        buildStandardNotation();
+      } else {
+        const separator = " ";
+        moveHistory.write(separator);
+        moveHistory.write(moves[i++].move);
+
+        if (i <= cur) {
+          moveHistory.write(separator);
+          moveHistory.writeNumber(k++);
+          moveHistory.write(separator);
+          moveHistory.write(moves[i++].move);
+        }
+      }
+      moveHistory.writeln();
+    }
+
+    return moveHistory.toString();
   }
 }
