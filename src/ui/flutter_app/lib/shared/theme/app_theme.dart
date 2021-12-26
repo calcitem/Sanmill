@@ -146,9 +146,8 @@ class AppTheme {
   );
 
   static const double boardMargin = 10.0;
-  static const double boardScreenPaddingH = 10.0;
   static const double boardBorderRadius = 5.0;
-  static const double boardPadding = 5.0;
+  static const double boardPadding = 25.0;
 
   static TextStyle settingsHeaderStyle = TextStyle(
     color: _settingsHeaderTextColor,

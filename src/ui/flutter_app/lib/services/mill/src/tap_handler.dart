@@ -9,6 +9,8 @@ import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/scaffold_messenger.dart';
 
+// TODO: [Leptopoda] to fix the big piece we have to reset the selectedPiece by setting it to null :)
+
 class TapHandler {
   final AnimationController animationController;
   final BuildContext context;

@@ -18,246 +18,202 @@
 
 part of '../painters.dart';
 
-class BoardPainter extends PiecesBasePainter {
-  BoardPainter({
-    required this.controller,
-    required double width,
-  }) : super(width: width);
-
-  final MillController controller;
-
-  @override
-  void paint(Canvas canvas, Size size) => _doPaint(canvas, thePaint);
+/// Custom Board Painter
+///
+/// Painter to draw the Board. The pieces are drawn by [PiecesPainter].
+/// It asserts the Canvas to be a square.
+class BoardPainter extends CustomPainter {
+  BoardPainter();
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
+  void paint(Canvas canvas, Size size) {
+    assert(size.width == size.height);
 
-  void _doPaint(Canvas canvas, Paint paint) {
+    final position = MillController().position;
+    final colors = LocalDatabaseService.colorSettings;
+    final paint = Paint();
+
     paint.strokeWidth = LocalDatabaseService.display.boardBorderLineWidth;
-    paint.color = LocalDatabaseService.colorSettings.boardLineColor;
+    paint.color = Color.lerp(
+      colors.boardBackgroundColor,
+      colors.boardLineColor,
+      colors.boardLineColor.opacity,
+    )!
+        .withOpacity(1);
     paint.style = PaintingStyle.stroke;
 
+    _drawBackground(canvas, size);
+
     if (LocalDatabaseService.display.isPieceCountInHandShown &&
-        controller.position.phase == Phase.placing) {
-      final int pieceInHandCount;
-      if (controller.position.pieceOnBoardCount[PieceColor.white] == 0 &&
-          controller.position.pieceOnBoardCount[PieceColor.black] == 0) {
-        pieceInHandCount = LocalDatabaseService.rules.piecesCount;
-      } else {
-        pieceInHandCount =
-            controller.position.pieceInHandCount[PieceColor.black]!;
-      }
-
-      final TextSpan textSpan = TextSpan(
-        style: TextStyle(
-          fontSize: 48,
-          color: LocalDatabaseService.colorSettings.boardLineColor,
-        ), // TODO
-        text: pieceInHandCount.toString(),
-      );
-
-      final TextPainter textPainter = TextPainter(
-        text: textSpan,
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr,
-      );
-
-      textPainter.layout();
-
-      textPainter.paint(
-        canvas,
-        _offset.translate(
-          _squareWidth * 3 - textPainter.width / 2,
-          _squareWidth * 3 - textPainter.height / 2,
-        ),
-      );
+        position.phase == Phase.placing) {
+      _drawPieceCount(position, canvas, size);
     }
 
-    if (LocalDatabaseService.display.isNotationsShown) {
-      const String verticalNotations = "abcdefg";
-      const String horizontalNotations = "7654321";
-
-      for (int i = 0; i < 7; i++) {
-        final String notationV = verticalNotations[i];
-        final String notationH = horizontalNotations[i];
-
-        final TextSpan notationSpanV = TextSpan(
-          style: AppTheme.notationTextStyle, // TODO
-          text: notationV,
-        );
-
-        final TextSpan notationSpanH = TextSpan(
-          style: AppTheme.notationTextStyle, // TODO
-          text: notationH,
-        );
-
-        final TextPainter notationPainterV = TextPainter(
-          text: notationSpanV,
-          textAlign: TextAlign.center,
-          textDirection: TextDirection.ltr,
-        );
-
-        final TextPainter notationPainterH = TextPainter(
-          text: notationSpanH,
-          textAlign: TextAlign.center,
-          textDirection: TextDirection.ltr,
-        );
-
-        notationPainterV.layout();
-        notationPainterH.layout();
-
-        final offset = (width - _squareWidth * 6) / 4;
-
-        // Show notations "a b c d e f" on board
-        if (EnvironmentConfig.devMode) {
-          notationPainterV.paint(
-            canvas,
-            _offset.translate(
-              _squareWidth * i - notationPainterV.width / 2,
-              -offset - notationPainterV.height / 2,
-            ),
-          );
-        }
-
-        notationPainterV.paint(
-          canvas,
-          _offset.translate(
-            _squareWidth * i - notationPainterV.width / 2,
-            _squareWidth * 6 + offset - notationPainterV.height / 2,
-          ),
-        );
-
-        // Show notations "1 2 3 4 5 6 7" on board
-        notationPainterH.paint(
-          canvas,
-          _offset.translate(
-            -offset - notationPainterH.width / 2,
-            _squareWidth * i - notationPainterH.height / 2,
-          ),
-        );
-
-        if (EnvironmentConfig.devMode) {
-          notationPainterH.paint(
-            canvas,
-            _offset.translate(
-              _squareWidth * 6 + offset - notationPainterH.width / 2,
-              _squareWidth * i - notationPainterH.height / 2,
-            ),
-          );
-        }
-      }
+    if (LocalDatabaseService.display.isNotationsShown ||
+        EnvironmentConfig.devMode) {
+      _drawNotations(canvas, size);
     }
 
-    final points = [
-      _offset + Offset(_squareWidth * 0, _squareWidth * 0), // 0
-      _offset + Offset(_squareWidth * 0, _squareWidth * 3), // 1
-      _offset + Offset(_squareWidth * 0, _squareWidth * 6), // 2
-      _offset + Offset(_squareWidth * 1, _squareWidth * 1), // 3
-      _offset + Offset(_squareWidth * 1, _squareWidth * 3), // 4
-      _offset + Offset(_squareWidth * 1, _squareWidth * 5), // 5
-      _offset + Offset(_squareWidth * 2, _squareWidth * 2), // 6
-      _offset + Offset(_squareWidth * 2, _squareWidth * 3), // 7
-      _offset + Offset(_squareWidth * 2, _squareWidth * 4), // 8
-      _offset + Offset(_squareWidth * 3, _squareWidth * 0), // 9
-      _offset + Offset(_squareWidth * 3, _squareWidth * 1), // 10
-      _offset + Offset(_squareWidth * 3, _squareWidth * 2), // 11
-      _offset + Offset(_squareWidth * 3, _squareWidth * 4), // 12
-      _offset + Offset(_squareWidth * 3, _squareWidth * 5), // 13
-      _offset + Offset(_squareWidth * 3, _squareWidth * 6), // 14
-      _offset + Offset(_squareWidth * 4, _squareWidth * 2), // 15
-      _offset + Offset(_squareWidth * 4, _squareWidth * 3), // 16
-      _offset + Offset(_squareWidth * 4, _squareWidth * 4), // 17
-      _offset + Offset(_squareWidth * 5, _squareWidth * 1), // 18
-      _offset + Offset(_squareWidth * 5, _squareWidth * 3), // 19
-      _offset + Offset(_squareWidth * 5, _squareWidth * 5), // 20
-      _offset + Offset(_squareWidth * 6, _squareWidth * 0), // 21
-      _offset + Offset(_squareWidth * 6, _squareWidth * 3), // 22
-      _offset + Offset(_squareWidth * 6, _squareWidth * 6), // 23
-    ];
+    final List<Offset> offset =
+        points.map((e) => offsetFromPoint(e, size)).toList();
 
-    // File C
-    canvas.drawRect(
-      Rect.fromLTWH(_offset.dx, _offset.dy, _squareWidth * 6, _squareWidth * 6),
-      paint,
-    );
-
-    paint.strokeWidth = LocalDatabaseService.display.boardInnerLineWidth;
-    final double bias = paint.strokeWidth / 2;
-
-    // File B
-    canvas.drawRect(
-      Rect.fromLTWH(
-        _offset.dx + _squareWidth * 1,
-        _offset.dy + _squareWidth * 1,
-        _squareWidth * 4,
-        _squareWidth * 4,
-      ),
-      paint,
-    );
-
-    // File A
-    canvas.drawRect(
-      Rect.fromLTWH(
-        _offset.dx + _squareWidth * 2,
-        _offset.dy + _squareWidth * 2,
-        _squareWidth * 2,
-        _squareWidth * 2,
-      ),
-      paint,
-    );
-
-    // Middle horizontal lines (offsetX to Right)
-    canvas.drawLine(
-      points[1].translate(-bias, 0),
-      points[7].translate(bias, 0),
-      paint,
-    );
-
-    canvas.drawLine(
-      points[16].translate(-bias, 0),
-      points[22].translate(bias, 0),
-      paint,
-    );
-
-    // Middle horizontal lines (offsetY to Bottom)
-    canvas.drawLine(
-      points[9].translate(0, -bias),
-      points[11].translate(0, bias),
-      paint,
-    );
-
-    canvas.drawLine(
-      points[12].translate(0, -bias),
-      points[14].translate(0, bias),
-      paint,
-    );
+    _drawLines(offset, canvas, paint);
 
     // Point
     if (LocalDatabaseService.display.pointStyle != null) {
-      paint.style = LocalDatabaseService.display.pointStyle!;
-      _drawPoint(points, canvas, paint);
-    }
-
-    if (LocalDatabaseService.rules.hasDiagonalLines) {
-      // offsetY offsetX diagonal line
-      canvas.drawLine(points[0], points[6], paint);
-
-      // lower right diagonal line
-      canvas.drawLine(points[17], points[23], paint);
-
-      // offsetY right diagonal line
-      canvas.drawLine(points[21], points[15], paint);
-
-      // lower offsetX diagonal line
-      canvas.drawLine(points[8], points[2], paint);
+      _drawPoints(offset, canvas, paint);
     }
   }
 
-  static void _drawPoint(List<Offset> points, Canvas canvas, Paint paint) {
+  /// Draws the background of the Board.
+  static void _drawBackground(Canvas canvas, Size size) {
+    final paint = Paint();
+    paint.color = LocalDatabaseService.colorSettings.boardBackgroundColor;
+
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
+        const Radius.circular(AppTheme.boardBorderRadius),
+      ),
+      paint,
+    );
+  }
+
+  /// Draws the lines of the Board.
+  static void _drawLines(List<Offset> offset, Canvas canvas, Paint paint) {
+    // File C
+    canvas.drawRect(Rect.fromPoints(offset[0], offset[23]), paint);
+
+    paint.strokeWidth = LocalDatabaseService.display.boardInnerLineWidth;
+
+    final path = Path();
+    // File B
+    path.addRect(Rect.fromPoints(offset[3], offset[20]));
+
+    // File A
+    path.addRect(Rect.fromPoints(offset[6], offset[17]));
+
+    // Middle horizontal lines (offsetX to Right)
+    path.addLine(offset[1], offset[7]);
+    path.addLine(offset[16], offset[22]);
+
+    // Middle horizontal lines (offsetY to Bottom)
+    path.addLine(offset[9], offset[11]);
+    path.addLine(offset[12], offset[14]);
+
+    if (LocalDatabaseService.rules.hasDiagonalLines) {
+      // offsetY offsetX diagonal line
+      path.addLine(offset[0], offset[6]);
+
+      // lower right diagonal line
+      path.addLine(offset[17], offset[23]);
+
+      // offsetY right diagonal line
+      path.addLine(offset[21], offset[15]);
+
+      // lower offsetX diagonal line
+      path.addLine(offset[8], offset[2]);
+    }
+
+    canvas.drawPath(path, paint);
+  }
+
+  /// Draws the points representing each field.
+  static void _drawPoints(List<Offset> points, Canvas canvas, Paint paint) {
+    paint.style = LocalDatabaseService.display.pointStyle!;
     final double pointRadius = LocalDatabaseService.display.pointWidth;
 
     for (final point in points) {
       canvas.drawCircle(point, pointRadius, paint);
     }
   }
+
+  /// Draws the [position.pieceOnBoardCount] in the middle of the Board.
+  static void _drawPieceCount(Position position, Canvas canvas, Size size) {
+    final int pieceInHandCount;
+    if (position.pieceOnBoardCount[PieceColor.white] == 0 &&
+        position.pieceOnBoardCount[PieceColor.black] == 0) {
+      pieceInHandCount = LocalDatabaseService.rules.piecesCount;
+    } else {
+      pieceInHandCount = position.pieceInHandCount[PieceColor.black]!;
+    }
+
+    final TextSpan textSpan = TextSpan(
+      style: TextStyle(
+        fontSize: 48,
+        color: LocalDatabaseService.colorSettings.boardLineColor,
+      ), // TODO
+      text: pieceInHandCount.toString(),
+    );
+
+    final TextPainter textPainter = TextPainter(
+      text: textSpan,
+      textAlign: TextAlign.center,
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout();
+
+    textPainter.paint(
+      canvas,
+      size.center(
+        -Offset(textPainter.width, textPainter.height) / 2,
+      ),
+    );
+  }
+
+  /// Draws the numbering of the fields displayed at the side.
+  static void _drawNotations(Canvas canvas, Size size) {
+    for (int i = 0; i < verticalNotations.length - 1; i++) {
+      final TextSpan notationSpanV = TextSpan(
+        style: AppTheme.notationTextStyle, // TODO
+        text: verticalNotations[i],
+      );
+
+      final TextSpan notationSpanH = TextSpan(
+        style: AppTheme.notationTextStyle, // TODO
+        text: horizontalNotations[i],
+      );
+
+      final TextPainter notationPainterH = TextPainter(
+        text: notationSpanV,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      );
+
+      final TextPainter notationPainterV = TextPainter(
+        text: notationSpanH,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      );
+
+      notationPainterH.layout();
+      notationPainterV.layout();
+
+      final horizontalOffset =
+          size.height - (boardMargin + notationPainterH.height) / 2;
+      final verticalOffset = (boardMargin - notationPainterV.width) / 2;
+
+      // Show notations "a b c d e f" on board
+      notationPainterH.paint(
+        canvas,
+        Offset(
+          offsetFromInt(i, size) - notationPainterH.width / 2,
+          horizontalOffset,
+        ),
+      );
+
+      // Show notations "1 2 3 4 5 6 7" on board
+      notationPainterV.paint(
+        canvas,
+        Offset(
+          verticalOffset,
+          offsetFromInt(i, size) - notationPainterV.height / 2,
+        ),
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

@@ -18,14 +18,13 @@
 
 part of './game_page.dart';
 
+/// Game Board
+///
+/// The board the game is played on. This widget will also handle the input from the user.
 class _Board extends StatefulWidget {
-  final double width;
-  final double height;
   static const String _tag = "[board]";
 
-  const _Board({
-    required this.width,
-  }) : height = width;
+  const _Board({Key? key}) : super(key: key);
 
   @override
   State<_Board> createState() => _BoardState();
@@ -52,86 +51,81 @@ class _BoardState extends State<_Board> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final controller = MillController();
-
     final tapHandler = TapHandler(
       animationController: _animationController,
       context: context,
     );
 
-    const padding = AppTheme.boardPadding;
-    final _prefs = LocalDatabaseService.preferences;
-
     final customPaint = AnimatedBuilder(
       animation: _animation,
       builder: (_, child) {
         return CustomPaint(
-          painter: BoardPainter(
-            width: widget.width,
-            controller: controller,
-          ),
+          painter: BoardPainter(),
           foregroundPainter: PiecesPainter(
-            width: widget.width,
-            position: controller.position,
-            focusIndex: controller.gameInstance.focusIndex,
-            blurIndex: controller.gameInstance.blurIndex,
+            focusIndex: MillController().gameInstance.focusIndex,
+            blurIndex: MillController().gameInstance.blurIndex,
             animationValue: _animation.value,
           ),
           child: child,
         );
       },
-      child: EnvironmentConfig.devMode || _prefs.screenReaderSupport
-          ? const _BoardNotation()
+      child: LocalDatabaseService.preferences.screenReaderSupport
+          ? const _BoardSemantics()
           : null,
     );
 
-    final boardContainer = Container(
-      width: widget.width,
-      height: widget.height,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppTheme.boardBorderRadius),
-        color: LocalDatabaseService.colorSettings.boardBackgroundColor,
-      ),
-      child: customPaint,
-    );
+    return LayoutBuilder(
+      builder: (context, constrains) {
+        final dimension = constrains.maxWidth;
+        const padding = AppTheme.boardPadding;
 
-    return GestureDetector(
-      child: boardContainer,
-      onTapUp: (d) async {
-        final gridWidth = widget.width - padding * 2;
-        final squareWidth = gridWidth / 7;
-        final dx = d.localPosition.dx;
-        final dy = d.localPosition.dy;
+        return SizedBox.square(
+          dimension: dimension,
+          child: GestureDetector(
+            child: customPaint,
+            onTapUp: (d) async {
+              final gridWidth = dimension - padding * 2;
+              final squareWidth = gridWidth / 7;
+              // TODO: [Leptopoda] directly store the offset so we can work with it while painting
+              final dx = d.localPosition.dx;
+              final dy = d.localPosition.dy;
 
-        final column = (dx - padding) ~/ squareWidth;
-        if (column < 0 || column > 6) {
-          return logger.v("${_Board._tag} Tap on column $column (ignored).");
-        }
+              final column = (dx - padding) ~/ squareWidth;
+              if (column < 0 || column > 6) {
+                return logger
+                    .v("${_Board._tag} Tap on column $column (ignored).");
+              }
 
-        final row = (dy - padding) ~/ squareWidth;
-        if (row < 0 || row > 6) {
-          return logger.v("${_Board._tag} Tap on row $row (ignored).");
-        }
+              final row = (dy - padding) ~/ squareWidth;
+              if (row < 0 || row > 6) {
+                return logger.v("${_Board._tag} Tap on row $row (ignored).");
+              }
 
-        final index = row * 7 + column;
-        final int? square = indexToSquare[index];
+              final index = row * 7 + column;
+              final int? square = indexToSquare[index];
 
-        if (square == null) {
-          return logger.v(
-            "${_Board._tag} Tap not on a square ($row, $column) (ignored).",
-          );
-        }
+              if (square == null) {
+                return logger.v(
+                  "${_Board._tag} Tap not on a square ($row, $column) (ignored).",
+                );
+              }
 
-        logger.v("${_Board._tag} Tap on ($row, $column) <$index>");
+              logger.v("${_Board._tag} Tap on ($row, $column) <$index>");
 
-        await tapHandler.onBoardTap(square);
+              await tapHandler.onBoardTap(square);
+            },
+          ),
+        );
       },
     );
   }
 }
 
-class _BoardNotation extends StatelessWidget {
-  const _BoardNotation({Key? key}) : super(key: key);
+/// Semantics for the Board
+///
+/// This Widget only contains [Semantics] nodes to help impaired people interact with the [_Board].
+class _BoardSemantics extends StatelessWidget {
+  const _BoardSemantics({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -145,18 +139,16 @@ class _BoardNotation extends StatelessWidget {
       children: List.generate(
         7 * 7,
         (index) => Center(
-          child: Text(
-            _squareDesc[index],
-            style: const TextStyle(
-              color:
-                  EnvironmentConfig.devMode ? Colors.red : Colors.transparent,
-            ),
+          child: Semantics(
+            // TODO: [Calcitem] add more descriptive informations
+            label: _squareDesc[index],
           ),
         ),
       ),
     );
   }
 
+  /// Builds a list of Strings representing the label of each semantic node.
   List<String> _buildSquareDescription(BuildContext context) {
     final List<String> coordinates = [];
     final List<String> pieceDesc = [];
@@ -280,12 +272,10 @@ class _BoardNotation extends StatelessWidget {
       1
     ];
 
-    const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
-    const ranks = ['7', '6', '5', '4', '3', '2', '1'];
     final ltr = Directionality.of(context) == TextDirection.ltr;
 
-    for (final file in ltr ? files : files.reversed) {
-      for (final rank in ranks) {
+    for (final file in ltr ? verticalNotations : verticalNotations.reversed) {
+      for (final rank in horizontalNotations) {
         coordinates.add("$file$rank");
       }
     }

@@ -45,7 +45,8 @@ class Display {
     this.pointStyle,
     @Deprecated("Use [pointStyle] instead.") this.oldPointStyle = 0,
     this.pointWidth = 10.0,
-    this.pieceWidth = 0.9,
+    this.pieceWidth = 0.1,
+    @Deprecated("Use [pieceWidth] instead.") this.oldPieceWidth = 0.9,
     this.fontSize = 16.0,
     this.boardTop = 36.0,
     this.animationDuration = 0.0,
@@ -91,8 +92,12 @@ class Display {
   @HiveField(8)
   final double pointWidth;
 
-  @HiveField(9)
+  @HiveField(14)
   final double pieceWidth;
+
+  @Deprecated("Use [pieceWidth] instead.")
+  @HiveField(9)
+  final double oldPieceWidth;
 
   @HiveField(10)
   final double fontSize;

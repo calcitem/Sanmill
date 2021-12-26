@@ -23,6 +23,15 @@ class GamePageToolBar extends StatelessWidget {
   final Color? backgroundColor;
   final Color? itemColor;
 
+  static const _padding = EdgeInsets.symmetric(vertical: 2);
+  static const _margin = EdgeInsets.symmetric(vertical: 0.5);
+
+  /// Gets the calculated height this widget adds to it's children.
+  /// To get the abolute height add the surrounding [ButtonThemeData.height].
+  static double get height {
+    return (_padding.vertical + _margin.vertical) * 2;
+  }
+
   const GamePageToolBar({
     Key? key,
     required this.children,
@@ -37,8 +46,8 @@ class GamePageToolBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         color: backgroundColor,
       ),
-      margin: const EdgeInsets.symmetric(vertical: 0.5),
-      padding: const EdgeInsets.symmetric(vertical: 2),
+      margin: _margin,
+      padding: _padding,
       child: ToolbarItemTheme(
         data: ToolbarItemThemeData(
           style: ToolbarItem.styleFrom(primary: itemColor),

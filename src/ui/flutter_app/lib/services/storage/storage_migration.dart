@@ -59,8 +59,6 @@ class _DatabaseMigrator {
 
     _databaseBox = await Hive.openBox(_databaseBoxName);
 
-    // TODO: [Leptopoda] don't migrate the db on first startup
-
     _currentVersion = _databaseBox.get(_versionKey) as int?;
 
     if (_currentVersion != null) {
@@ -95,7 +93,8 @@ class _DatabaseMigrator {
   /// - **Algorithm to enum:** Migrates [LocalDatabaseService.preferences] to use the new Algorithm enum instead of an int representation.
   /// - **Drawer background color:** Migrates [LocalDatabaseService.colorSettings] to merge the drawerBackgroundColor and drawerColor.
   /// This reflects the deprecation of drawerBackgroundColor.
-  /// - **Painting STyle:**: Migrates [LocalDatabaseService.display] to use Flutters [PaintingStyle] enum instead of an int representation.
+  /// - **Painting Style:**: Migrates [LocalDatabaseService.display] to use Flutters [PaintingStyle] enum instead of an int representation.
+  /// - **Piece Width:**: Migrates [LocalDatabaseService.display] to use a more direct piece width representation so no further calculation is needed.
   static Future<void> _migrateFromV1() async {
     assert(_currentVersion! <= 1);
 
@@ -119,6 +118,10 @@ class _DatabaseMigrator {
         pointStyle: PaintingStyle.values[_display.oldPointStyle - 1],
       );
     }
+
+    LocalDatabaseService.display = _display.copyWith(
+      pieceWidth: _display.oldPieceWidth / 9,
+    );
 
     logger.v("$_tag migrated from v1");
   }

@@ -18,86 +18,122 @@
 
 part of '../painters.dart';
 
+/// Pice Information
+///
+/// Holds parameters needed to paint each piece.
 @immutable
 class _PiecePaintParam {
+  /// The color of the piece.
   final PieceColor piece;
+
+  /// The position the pice is placed at.
+  ///
+  /// This reopresents the final position on the canvas.
+  /// To extract this information from the board index use [pointFromIndex].
   final Offset pos;
   final bool animated;
+  final double diameter;
 
-  late final Color borderColor;
-  late final Color pieceColor;
-  late final Color blurPositionColor;
-
-  _PiecePaintParam({
+  const _PiecePaintParam({
     required this.piece,
     required this.pos,
     required this.animated,
-  }) {
+    required this.diameter,
+  });
+
+  // TODO: [Leptopoda] consider putting this into the PieceColorExtension
+  /// Gets the border color of the current piece type.
+  Color get borderColor {
     switch (piece) {
       case PieceColor.white:
-        borderColor = AppTheme.whitePieceBorderColor;
-        pieceColor = LocalDatabaseService.colorSettings.whitePieceColor;
-        blurPositionColor =
-            LocalDatabaseService.colorSettings.whitePieceColor.withOpacity(0.1);
-        break;
+        return AppTheme.whitePieceBorderColor;
       case PieceColor.black:
-        borderColor = AppTheme.blackPieceBorderColor;
-        pieceColor = LocalDatabaseService.colorSettings.blackPieceColor;
-        blurPositionColor =
-            LocalDatabaseService.colorSettings.blackPieceColor.withOpacity(0.1);
-        break;
+        return AppTheme.blackPieceBorderColor;
       default:
+        throw Error();
     }
   }
+
+  // TODO: [Leptopoda] consider putting this into the PieceColorExtension
+  /// Gets the color of the current piece
+  Color get pieceColor {
+    final colorSettings = LocalDatabaseService.colorSettings;
+    switch (piece) {
+      case PieceColor.white:
+        return colorSettings.whitePieceColor;
+      case PieceColor.black:
+        return colorSettings.blackPieceColor;
+      default:
+        throw Error();
+    }
+  }
+
+  // TODO: [Leptopoda] consider putting this into the PieceColorExtension
+  /// Gets the color for the blured position
+  Color get blurPositionColor => pieceColor.withOpacity(0.1);
 }
 
-class PiecesPainter extends PiecesBasePainter {
-  final Position position;
+/// Custom Piece Painter
+///
+/// Painter to draw each piece in [MillController.position] on the Board.
+/// The board is drawn by [BoardPainter].
+/// It asserts the Canvas to be a square.
+class PiecesPainter extends CustomPainter {
+  /// The index of the currently focused (selected) piece.
+  /// If null no Piece is marked selected.
   final int? focusIndex;
+
+  /// The index representation of the position the last piece moved from.
   final int? blurIndex;
+
+  /// The value representing the piece animation when placing.
   final double animationValue;
 
-  late final double _pieceWidth;
-  late final double _animatedPieceWidth;
-
   PiecesPainter({
-    required double width,
-    required this.position,
     this.focusIndex,
     this.blurIndex,
     required this.animationValue,
-  }) : super(width: width) {
-    _pieceWidth = _squareWidth * LocalDatabaseService.display.pieceWidth;
-    _animatedPieceWidth =
-        _squareWidth * LocalDatabaseService.display.pieceWidth * animationValue;
-  }
+  });
 
   @override
-  void paint(Canvas canvas, Size size) => _doPaint(canvas, thePaint);
+  void paint(Canvas canvas, Size size) {
+    assert(size.width == size.height);
 
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
-
-  void _doPaint(Canvas canvas, Paint paint) {
+    final paint = Paint();
     final shadowPath = Path();
     final piecesToDraw = <_PiecePaintParam>[];
+
+    final _pieceWidth = size.width * LocalDatabaseService.display.pieceWidth;
+    final _animatedPieceWidth = _pieceWidth * animationValue;
 
     // Draw pieces on board
     for (var row = 0; row < 7; row++) {
       for (var col = 0; col < 7; col++) {
         final index = row * 7 + col;
-        final piece = position.pieceOnGrid(index); // No Pieces when initial
+
+        final piece = MillController()
+            .position
+            .pieceOnGrid(index); // No Pieces when initial
 
         if (piece == PieceColor.none) continue;
 
-        final pos = _offset.translate(_squareWidth * col, _squareWidth * row);
+        final pos = pointFromIndex(index, size);
         final animated = focusIndex == index;
 
-        piecesToDraw
-            .add(_PiecePaintParam(piece: piece, pos: pos, animated: animated));
+        piecesToDraw.add(
+          _PiecePaintParam(
+            piece: piece,
+            pos: pos,
+            animated: animated,
+            diameter: _pieceWidth,
+          ),
+        );
 
         shadowPath.addOval(
-          Rect.fromCenter(center: pos, width: _pieceWidth, height: _pieceWidth),
+          Rect.fromCircle(
+            center: pos,
+            radius: (animated ? _animatedPieceWidth : _pieceWidth) / 2,
+          ),
         );
       }
     }
@@ -107,58 +143,62 @@ class PiecesPainter extends PiecesBasePainter {
     paint.style = PaintingStyle.fill;
 
     late Color blurPositionColor;
-    for (final pps in piecesToDraw) {
+    for (final piece in piecesToDraw) {
+      assert(
+        piece.piece == PieceColor.black || piece.piece == PieceColor.white,
+      );
+      blurPositionColor = piece.blurPositionColor;
+
       final pieceRadius = _pieceWidth / 2;
       final pieceInnerRadius = pieceRadius * 0.99;
 
       final animatedPieceRadius = _animatedPieceWidth / 2;
       final animatedPieceInnerRadius = animatedPieceRadius * 0.99;
 
-      blurPositionColor = pps.blurPositionColor;
-
       // Draw Border of Piece
-      paint.color = pps.borderColor;
+      paint.color = piece.borderColor;
       canvas.drawCircle(
-        pps.pos,
-        pps.animated ? animatedPieceRadius : pieceRadius,
+        piece.pos,
+        piece.animated ? animatedPieceRadius : pieceRadius,
         paint,
       );
-      paint.color = pps.pieceColor;
+      // Draw the piece
+      paint.color = piece.pieceColor;
       canvas.drawCircle(
-        pps.pos,
-        pps.animated ? animatedPieceInnerRadius : pieceInnerRadius,
+        piece.pos,
+        piece.animated ? animatedPieceInnerRadius : pieceInnerRadius,
         paint,
       );
     }
 
     // draw focus and blur position
     if (focusIndex != null) {
-      final row = focusIndex! ~/ 7;
-      final column = focusIndex! % 7;
-
       paint.color = LocalDatabaseService.colorSettings.pieceHighlightColor;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;
 
       canvas.drawCircle(
-        _offset.translate(column * _squareWidth, row * _squareWidth),
+        pointFromIndex(focusIndex!, size),
         _animatedPieceWidth / 2,
         paint,
       );
     }
 
     if (blurIndex != null) {
-      final row = blurIndex! ~/ 7;
-      final column = blurIndex! % 7;
-
       paint.color = blurPositionColor;
       paint.style = PaintingStyle.fill;
 
       canvas.drawCircle(
-        _offset.translate(column * _squareWidth, row * _squareWidth),
+        pointFromIndex(blurIndex!, size),
         _animatedPieceWidth / 2 * 0.8,
         paint,
       );
     }
   }
+
+  @override
+  bool shouldRepaint(PiecesPainter oldDelegate) =>
+      focusIndex != oldDelegate.focusIndex ||
+      blurIndex != oldDelegate.blurIndex ||
+      animationValue != oldDelegate.animationValue;
 }

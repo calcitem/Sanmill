@@ -21,7 +21,6 @@ import 'package:flutter/material.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/preferences.dart';
 import 'package:sanmill/screens/game_settings/game_settings_page.dart';
-import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/services/mill/src/tap_handler.dart';
@@ -44,11 +43,62 @@ part './game_options_modal.dart';
 part './move_options_modal.dart';
 part './header.dart';
 
-// TODO: [Leptopoda] change layout (landscape mode, padding on small devices)
 class GamePage extends StatelessWidget {
   final GameMode gameMode;
 
   const GamePage(this.gameMode, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = MillController();
+
+    controller.gameInstance.gameMode = gameMode;
+
+    return Scaffold(
+      appBar: _GameHeader(gameMode: gameMode),
+      backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
+      body: FutureBuilder(
+        future: controller.start(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          }
+
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              var toolbarHeight =
+                  GamePageToolBar.height + ButtonTheme.of(context).height;
+              if (LocalDatabaseService
+                  .display.isHistoryNavigationToolbarShown) {
+                toolbarHeight *= 2;
+              }
+
+              // constraints of the game board but applied to the entire child
+              final maxWidth = constraints.maxWidth - AppTheme.boardMargin;
+              final maxHeight = constraints.maxHeight - toolbarHeight;
+              final BoxConstraints constraint = BoxConstraints(
+                maxWidth: (maxHeight < maxWidth) ? maxHeight : maxWidth,
+              );
+
+              return Center(
+                child: ConstrainedBox(
+                  constraints: constraint,
+                  child: const _Game(),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+// TODO: [Leptopoda] change layout (landscape mode, padding on small devices)
+class _Game extends StatelessWidget {
+  const _Game({Key? key}) : super(key: key);
 
   void _showGameOptions(BuildContext context) => showModalBottomSheet(
         context: context,
@@ -72,21 +122,6 @@ class GamePage extends StatelessWidget {
         barrierDismissible: true,
         builder: (_) => const _InfoDialog(),
       );
-
-  double _getScreenPaddingH(BuildContext context) {
-    // when screen's height/width rate is less than 16/9, limit width of board
-    final windowSize = MediaQuery.of(context).size;
-    final double height = windowSize.height;
-    double width = windowSize.width;
-
-    // TODO: [Leptopoda] maybe use windowSize.aspectRatio
-    if (height / width < 16.0 / 9.0) {
-      width = height * 9 / 16;
-      return (windowSize.width - width) / 2 - AppTheme.boardMargin;
-    } else {
-      return AppTheme.boardScreenPaddingH;
-    }
-  }
 
   List<Widget> toolbarItems(BuildContext context) {
     final gameButton = ToolbarItem.icon(
@@ -164,59 +199,24 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = MillController();
-
-    controller.gameInstance.gameMode = gameMode;
-    final screenPaddingH = _getScreenPaddingH(context);
-
-    return Scaffold(
-      appBar: _GameHeader(gameMode: gameMode),
-      backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: screenPaddingH),
-        child: FutureBuilder(
-          future: controller.start(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            }
-            final screenPaddingH = _getScreenPaddingH(context);
-            final boardWidth =
-                MediaQuery.of(context).size.width - screenPaddingH * 2;
-
-            return Column(
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: AppTheme.boardMargin,
-                  ),
-                  child: _Board(
-                    width: boardWidth,
-                  ),
-                ),
-                if (LocalDatabaseService
-                    .display.isHistoryNavigationToolbarShown)
-                  GamePageToolBar(
-                    backgroundColor: LocalDatabaseService
-                        .colorSettings.navigationToolbarBackgroundColor,
-                    itemColor: LocalDatabaseService
-                        .colorSettings.navigationToolbarIconColor,
-                    children: historyNavToolbarItems(context),
-                  ),
-                GamePageToolBar(
-                  backgroundColor: LocalDatabaseService
-                      .colorSettings.mainToolbarBackgroundColor,
-                  itemColor:
-                      LocalDatabaseService.colorSettings.mainToolbarIconColor,
-                  children: toolbarItems(context),
-                ),
-              ],
-            );
-          },
+    return Column(
+      children: <Widget>[
+        const _Board(),
+        if (LocalDatabaseService.display.isHistoryNavigationToolbarShown)
+          GamePageToolBar(
+            backgroundColor: LocalDatabaseService
+                .colorSettings.navigationToolbarBackgroundColor,
+            itemColor:
+                LocalDatabaseService.colorSettings.navigationToolbarIconColor,
+            children: historyNavToolbarItems(context),
+          ),
+        GamePageToolBar(
+          backgroundColor:
+              LocalDatabaseService.colorSettings.mainToolbarBackgroundColor,
+          itemColor: LocalDatabaseService.colorSettings.mainToolbarIconColor,
+          children: toolbarItems(context),
         ),
-      ),
+      ],
     );
   }
 }
