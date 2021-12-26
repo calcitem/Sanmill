@@ -1,13 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:flutter/material.dart';
-import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/screens/game_page/game_page.dart';
-import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/services/mill/mill.dart';
-import 'package:sanmill/services/mill/src/audios.dart';
-import 'package:sanmill/services/storage/storage.dart';
-import 'package:sanmill/shared/scaffold_messenger.dart';
+part of '../mill.dart';
 
 // TODO: [Leptopoda] to fix the big piece we have to reset the selectedPiece by setting it to null :)
 

@@ -16,14 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'dart:io';
-
-import 'package:flutter/services.dart';
-import 'package:sanmill/generated/assets/assets.gen.dart';
-import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/services/mill/mill.dart';
-import 'package:sanmill/services/storage/storage.dart';
-import 'package:soundpool/soundpool.dart';
+part of '../mill.dart';
 
 enum Sound { draw, fly, go, illegal, lose, mill, place, remove, select, win }
 
