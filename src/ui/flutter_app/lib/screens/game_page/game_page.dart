@@ -53,8 +53,8 @@ class GamePage extends StatelessWidget {
     controller.gameInstance.gameMode = gameMode;
 
     return Scaffold(
-      appBar: _GameHeader(gameMode: gameMode),
-      backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
+      appBar: GameHeader(gameMode: gameMode),
+      backgroundColor: DB().colorSettings.darkBackgroundColor,
       body: FutureBuilder(
         future: controller.start(),
         builder: (context, snapshot) {
@@ -71,8 +71,7 @@ class GamePage extends StatelessWidget {
               builder: (context, constraints) {
                 var toolbarHeight =
                     GamePageToolBar.height + ButtonTheme.of(context).height;
-                if (LocalDatabaseService
-                    .display.isHistoryNavigationToolbarShown) {
+                if (DB().display.isHistoryNavigationToolbarShown) {
                   toolbarHeight *= 2;
                 }
 
@@ -205,19 +204,17 @@ class _Game extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        const _Board(),
-        if (LocalDatabaseService.display.isHistoryNavigationToolbarShown)
+        const Board(),
+        if (DB().display.isHistoryNavigationToolbarShown)
           GamePageToolBar(
-            backgroundColor: LocalDatabaseService
-                .colorSettings.navigationToolbarBackgroundColor,
-            itemColor:
-                LocalDatabaseService.colorSettings.navigationToolbarIconColor,
+            backgroundColor:
+                DB().colorSettings.navigationToolbarBackgroundColor,
+            itemColor: DB().colorSettings.navigationToolbarIconColor,
             children: historyNavToolbarItems(context),
           ),
         GamePageToolBar(
-          backgroundColor:
-              LocalDatabaseService.colorSettings.mainToolbarBackgroundColor,
-          itemColor: LocalDatabaseService.colorSettings.mainToolbarIconColor,
+          backgroundColor: DB().colorSettings.mainToolbarBackgroundColor,
+          itemColor: DB().colorSettings.mainToolbarIconColor,
           children: toolbarItems(context),
         ),
       ],

@@ -330,7 +330,7 @@ extension HistoryMoveExtension on HistoryMove {
   }
 
   Future<void> gotoHistoryPlaySound() async {
-    if (!LocalDatabaseService.preferences.keepMuteWhenTakingBack) {
+    if (!DB().preferences.keepMuteWhenTakingBack) {
       switch (this) {
         case HistoryMove.forwardAll:
         case HistoryMove.forward:

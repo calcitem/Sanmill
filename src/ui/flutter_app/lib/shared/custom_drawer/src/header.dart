@@ -29,14 +29,14 @@ class CustomDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Color> _animatedTextsColors = [
-      LocalDatabaseService.colorSettings.drawerTextColor,
+      DB().colorSettings.drawerTextColor,
       Colors.black,
       Colors.blue,
       Colors.yellow,
       Colors.red,
-      LocalDatabaseService.colorSettings.darkBackgroundColor,
-      LocalDatabaseService.colorSettings.boardBackgroundColor,
-      LocalDatabaseService.colorSettings.drawerHighlightItemColor,
+      DB().colorSettings.darkBackgroundColor,
+      DB().colorSettings.boardBackgroundColor,
+      DB().colorSettings.drawerHighlightItemColor,
     ];
 
     final animation = AnimatedTextKit(

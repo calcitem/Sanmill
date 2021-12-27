@@ -213,7 +213,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   void _showPrivacyDialog() {
-    if (!LocalDatabaseService.preferences.isPrivacyPolicyAccepted &&
+    if (!DB().preferences.isPrivacyPolicyAccepted &&
         Localizations.localeOf(context).languageCode.startsWith("zh")) {
       showDialog(
         context: context,

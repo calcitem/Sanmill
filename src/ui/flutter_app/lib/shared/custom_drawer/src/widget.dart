@@ -102,7 +102,7 @@ class _CustomDrawerState extends State<CustomDrawer>
       child: FractionallySizedBox(
         widthFactor: _openRatio,
         child: Material(
-          color: LocalDatabaseService.colorSettings.drawerColor,
+          color: DB().colorSettings.drawerColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -196,7 +196,7 @@ class _CustomDrawerState extends State<CustomDrawer>
           width: MediaQuery.of(context).size.width * _openRatio * 0.9,
           height: 46,
           decoration: BoxDecoration(
-            color: LocalDatabaseService.colorSettings.drawerHighlightItemColor,
+            color: DB().colorSettings.drawerHighlightItemColor,
             borderRadius: const BorderRadiusDirectional.horizontal(
               end: Radius.circular(_overlayRadius),
             ),

@@ -41,7 +41,7 @@ class _MoveOptionsModal extends StatelessWidget {
       semanticLabel: S.of(context).move_number(0),
       backgroundColor: Colors.transparent,
       children: <Widget>[
-        if (!LocalDatabaseService.display.isHistoryNavigationToolbarShown) ...[
+        if (!DB().display.isHistoryNavigationToolbarShown) ...[
           SimpleDialogOption(
             onPressed: () => HistoryNavigator.takeBack(context),
             child: Text(
@@ -99,7 +99,7 @@ class _MoveOptionsModal extends StatelessWidget {
           ),
         ),
         const CustomSpacer(),
-        if (LocalDatabaseService.preferences.screenReaderSupport)
+        if (DB().preferences.screenReaderSupport)
           SimpleDialogOption(
             child: Text(
               S.of(context).close,

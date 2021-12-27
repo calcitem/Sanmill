@@ -16,23 +16,14 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of '../mill.dart';
+import 'package:flutter/material.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 
-class HeaderTipState with ChangeNotifier {
-  HeaderTipState();
-
-  String? _message;
-  bool showSnackBar = false;
-
-  String? get message => _message;
-
-  void showTip(String tip, {bool snackBar = false}) {
-    logger.v("[tip] $tip");
-    if (DB().preferences.screenReaderSupport && snackBar) {
-      showSnackBar = true;
-    }
-
-    _message = tip;
-    notifyListeners();
-  }
+Widget makeTestableWidget(Widget child, [Locale locale = const Locale("en")]) {
+  return MaterialApp(
+    localizationsDelegates: S.localizationsDelegates,
+    supportedLocales: S.supportedLocales,
+    locale: locale,
+    home: Scaffold(body: child),
+  );
 }

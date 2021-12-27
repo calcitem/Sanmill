@@ -19,7 +19,8 @@
 import 'dart:convert' show jsonDecode;
 import 'dart:io' show File;
 
-import 'package:flutter/foundation.dart' show ValueListenable, kIsWeb;
+import 'package:flutter/foundation.dart'
+    show ValueListenable, kIsWeb, visibleForTesting;
 import 'package:flutter/material.dart' show Color, Locale, PaintingStyle;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -34,8 +35,13 @@ import 'package:sanmill/shared/constants.dart';
 part 'package:sanmill/services/storage/storage_migration.dart';
 
 /// Helpers to handle local data storage
-class LocalDatabaseService {
-  const LocalDatabaseService._();
+class DB {
+  @visibleForTesting
+  static DB instance = const DB._();
+
+  factory DB() => instance;
+
+  const DB._();
 
   /// [ColorSettings] box reference
   static late final Box<ColorSettings> _colorSettingsBox;
@@ -100,15 +106,15 @@ class LocalDatabaseService {
   }
 
   /// listens to changes inside the settings Box
-  static ValueListenable<Box<ColorSettings>> get listenColorSettings =>
+  ValueListenable<Box<ColorSettings>> get listenColorSettings =>
       _colorSettingsBox.listenable(keys: [colorSettingsKey]);
 
   /// saves the given [colors] to the settings Box
-  static set colorSettings(ColorSettings colors) =>
+  set colorSettings(ColorSettings colors) =>
       _colorSettingsBox.put(colorSettingsKey, colors);
 
   /// gets the given [ColorSettings] from the settings Box
-  static ColorSettings get colorSettings =>
+  ColorSettings get colorSettings =>
       _colorSettingsBox.get(colorSettingsKey) ?? const ColorSettings();
 
   /// initialize the [Display] reference
@@ -120,14 +126,14 @@ class LocalDatabaseService {
   }
 
   /// listens to changes inside the settings Box
-  static ValueListenable<Box<Display>> get listenDisplay =>
+  ValueListenable<Box<Display>> get listenDisplay =>
       _displayBox.listenable(keys: [displayKey]);
 
   /// saves the given [display] to the settings Box
-  static set display(Display display) => _displayBox.put(displayKey, display);
+  set display(Display display) => _displayBox.put(displayKey, display);
 
   /// gets the given [Display] from the settings Box
-  static Display get display => _displayBox.get(displayKey) ?? const Display();
+  Display get display => _displayBox.get(displayKey) ?? const Display();
 
   /// initialize the [Preferences] reference
   static Future<void> _initPreferences() async {
@@ -137,15 +143,15 @@ class LocalDatabaseService {
   }
 
   /// listens to changes inside the settings Box
-  static ValueListenable<Box<Preferences>> get listenPreferences =>
+  ValueListenable<Box<Preferences>> get listenPreferences =>
       _preferencesBox.listenable(keys: [preferencesKey]);
 
   /// saves the given [settings] to the settings Box
-  static set preferences(Preferences settings) =>
+  set preferences(Preferences settings) =>
       _preferencesBox.put(preferencesKey, settings);
 
   /// gets the given [Preferences] from the settings Box
-  static Preferences get preferences =>
+  Preferences get preferences =>
       _preferencesBox.get(preferencesKey) ?? const Preferences();
 
   /// initialize the [Rules] reference
@@ -155,12 +161,12 @@ class LocalDatabaseService {
   }
 
   /// listens to changes inside the settings Box
-  static ValueListenable<Box<Rules>> get listenRules =>
+  ValueListenable<Box<Rules>> get listenRules =>
       _rulesBox.listenable(keys: [rulesKey]);
 
   /// saves the given [rules] to the settings Box
-  static set rules(Rules rules) => _rulesBox.put(rulesKey, rules);
+  set rules(Rules rules) => _rulesBox.put(rulesKey, rules);
 
   /// gets the given [Rules] from the settings Box
-  static Rules get rules => _rulesBox.get(rulesKey) ?? Rules();
+  Rules get rules => _rulesBox.get(rulesKey) ?? Rules();
 }

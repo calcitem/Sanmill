@@ -18,30 +18,53 @@
 
 part of '../mill.dart';
 
+/// Mill Controller
+///
+/// A singleton class that holds all objects and methods needed to play Mill.
+///
+/// Controlls:
+/// * the tip [HeaderTipState]
+/// * the engine [Engine]
+/// * the position [Position]
+/// * the game instance [_Game]
+/// * the recorder [_GameRecorder]
 class MillController {
   static const _tag = "[Controller]";
 
-  late final _Game gameInstance;
-  late final Position position;
-  late final Engine engine;
-  late final HeaderTipState tip;
+  late _Game gameInstance;
+  late Position position;
+  late Engine engine;
+  late HeaderTipState tip;
   late _GameRecorder recorder;
 
   bool _initialized = false;
   bool get initialized => _initialized;
 
-  static final _instance = MillController._();
+  @visibleForTesting
+  static MillController instance = MillController._();
 
-  factory MillController() => _instance;
+  factory MillController() => instance;
 
+  /// Mill Controller
+  ///
+  /// A singleton class that holds all objects and methods needed to play Mill.
+  ///
+  /// Controlls:
+  /// * the tip [HeaderTipState]
+  /// * the engine [Engine]
+  /// * the position [Position]
+  /// * the game instance [_Game]
+  /// * the recorder [_GameRecorder]
+  ///
+  /// All listed objects should not be crated outside of this scope.
   MillController._() {
-    position = Position(this);
-    gameInstance = _Game(this);
-    engine = NativeEngine(this);
-    // recorder = _GameRecorder(this);
-    tip = HeaderTipState();
+    _init();
   }
 
+  @visibleForTesting
+  MillController.empty();
+
+  /// Starts up the controller. It will initialize the audio subsystem and heat the engine.
   Future<void> start() async {
     if (_initialized) return;
 
@@ -52,6 +75,23 @@ class MillController {
     logger.i("$_tag initialized");
   }
 
+  /// Resets the controller.
+  ///
+  /// This method is suitable to use for starting a new game.
+  void reset() {
+    _init();
+  }
+
+  /// Initializes the controller.
+  void _init() {
+    position = Position(this);
+    gameInstance = _Game(this);
+    engine = NativeEngine(this);
+    // recorder = _GameRecorder(this);
+    tip = HeaderTipState();
+  }
+
+  /// Disposes the current controller and shuts down the engine.
   void dispose() {
     engine.shutdown();
 

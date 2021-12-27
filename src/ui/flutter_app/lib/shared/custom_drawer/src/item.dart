@@ -40,8 +40,8 @@ class CustomDrawerItem<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: drawerHighlightTextColor
     final _color = selected
-        ? LocalDatabaseService.colorSettings.drawerTextColor
-        : LocalDatabaseService.colorSettings.drawerTextColor;
+        ? DB().colorSettings.drawerTextColor
+        : DB().colorSettings.drawerTextColor;
 
     final listItemIcon = Icon(
       icon.icon,

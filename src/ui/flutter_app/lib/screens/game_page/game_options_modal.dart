@@ -68,7 +68,7 @@ class _GameOptionsModal extends StatelessWidget {
           ),
         ),
         const CustomSpacer(),
-        if (LocalDatabaseService.preferences.screenReaderSupport)
+        if (DB().preferences.screenReaderSupport)
           SimpleDialogOption(
             child: Text(
               S.of(context).close,

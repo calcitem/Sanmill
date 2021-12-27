@@ -21,16 +21,17 @@ part of './game_page.dart';
 /// Game Board
 ///
 /// The board the game is played on. This widget will also handle the input from the user.
-class _Board extends StatefulWidget {
+@visibleForTesting
+class Board extends StatefulWidget {
   static const String _tag = "[board]";
 
-  const _Board({Key? key}) : super(key: key);
+  const Board({Key? key}) : super(key: key);
 
   @override
-  State<_Board> createState() => _BoardState();
+  State<Board> createState() => _BoardState();
 }
 
-class _BoardState extends State<_Board> with SingleTickerProviderStateMixin {
+class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -41,7 +42,7 @@ class _BoardState extends State<_Board> with SingleTickerProviderStateMixin {
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(
-        seconds: LocalDatabaseService.display.animationDuration.toInt(),
+        seconds: DB().display.animationDuration.toInt(),
       ),
     );
 
@@ -69,9 +70,8 @@ class _BoardState extends State<_Board> with SingleTickerProviderStateMixin {
           child: child,
         );
       },
-      child: LocalDatabaseService.preferences.screenReaderSupport
-          ? const _BoardSemantics()
-          : null,
+      child:
+          DB().preferences.screenReaderSupport ? const _BoardSemantics() : null,
     );
 
     return LayoutBuilder(
@@ -90,11 +90,11 @@ class _BoardState extends State<_Board> with SingleTickerProviderStateMixin {
 
               if (square == null) {
                 return logger.v(
-                  "${_Board._tag} Tap not on a square $index (ignored).",
+                  "${Board._tag} Tap not on a square $index (ignored).",
                 );
               }
 
-              logger.v("${_Board._tag} Tap on <$index>");
+              logger.v("${Board._tag} Tap on <$index>");
 
               await tapHandler.onBoardTap(square);
             },
@@ -113,7 +113,7 @@ class _BoardState extends State<_Board> with SingleTickerProviderStateMixin {
 
 /// Semantics for the Board
 ///
-/// This Widget only contains [Semantics] nodes to help impaired people interact with the [_Board].
+/// This Widget only contains [Semantics] nodes to help impaired people interact with the [Board].
 class _BoardSemantics extends StatelessWidget {
   const _BoardSemantics({Key? key}) : super(key: key);
 

@@ -23,7 +23,7 @@ import 'package:sanmill/services/storage/storage.dart';
 /// Extends the StringBuffer Object with some convenience methods used through the app.
 extension CustomStringBuffer on StringBuffer {
   void writeComma([Object? obj = ""]) {
-    if (LocalDatabaseService.preferences.screenReaderSupport) {
+    if (DB().preferences.screenReaderSupport) {
       writeln("$obj,");
     } else {
       writeln(obj);
@@ -31,7 +31,7 @@ extension CustomStringBuffer on StringBuffer {
   }
 
   void writePeriod([Object? obj = ""]) {
-    if (LocalDatabaseService.preferences.screenReaderSupport) {
+    if (DB().preferences.screenReaderSupport) {
       writeln("$obj.");
     } else {
       writeln(obj);

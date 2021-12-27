@@ -64,8 +64,7 @@ class TapHandler {
                   .showTip(S.of(context).tipMill, snackBar: true);
             } else {
               if (gameMode == GameMode.humanVsAi) {
-                if (LocalDatabaseService
-                    .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
+                if (DB().rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                   MillController()
                       .tip
                       .showTip(S.of(context).continueToMakeMove);
@@ -73,8 +72,7 @@ class TapHandler {
                   MillController().tip.showTip(S.of(context).tipPlaced);
                 }
               } else {
-                if (LocalDatabaseService
-                    .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
+                if (DB().rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                   // TODO: HumanVsHuman - Change tip
                   MillController().tip.showTip(S.of(context).tipPlaced);
                 } else {
@@ -114,9 +112,9 @@ class TapHandler {
 
               final us = controller.gameInstance.sideToMove;
               if (position.phase == Phase.moving &&
-                  LocalDatabaseService.rules.mayFly &&
+                  DB().rules.mayFly &&
                   (controller.position.pieceOnBoardCount[us] ==
-                          LocalDatabaseService.rules.flyPieceCount ||
+                          DB().rules.flyPieceCount ||
                       controller.position.pieceOnBoardCount[us] == 3)) {
                 logger.v("[tap] May fly.");
                 MillController().tip.showTip(
@@ -238,8 +236,7 @@ class TapHandler {
           if (position.posKeyHistory.isEmpty ||
               position.posKeyHistory.last != position.st.key) {
             position.posKeyHistory.add(position.st.key);
-            if (LocalDatabaseService.rules.threefoldRepetitionRule &&
-                position.hasGameCycle) {
+            if (DB().rules.threefoldRepetitionRule && position.hasGameCycle) {
               position.setGameOver(
                 PieceColor.draw,
                 GameOverReason.drawThreefoldRepetition,
@@ -291,7 +288,7 @@ class TapHandler {
     }
 
     while ((controller.position.winner == PieceColor.nobody ||
-            LocalDatabaseService.preferences.isAutoRestart) &&
+            DB().preferences.isAutoRestart) &&
         controller.gameInstance.isAiToMove) {
       if (gameMode == GameMode.aiVsAi) {
         MillController().tip.showTip(
@@ -302,7 +299,7 @@ class TapHandler {
 
         final String? n = controller.recorder.lastMove?.notation;
 
-        if (LocalDatabaseService.preferences.screenReaderSupport &&
+        if (DB().preferences.screenReaderSupport &&
             controller.position.action != Act.remove &&
             n != null) {
           ScaffoldMessenger.of(context)
@@ -331,7 +328,7 @@ class TapHandler {
           animationController.animateTo(1.0);
 
           _showResult();
-          if (LocalDatabaseService.preferences.screenReaderSupport) {
+          if (DB().preferences.screenReaderSupport) {
             ScaffoldMessenger.of(context).showSnackBar(
               CustomSnackBar("${S.of(context).ai}: ${extMove.notation}"),
             );
@@ -345,7 +342,7 @@ class TapHandler {
           MillController().tip.showTip(S.of(context).error(response.type));
       }
 
-      if (LocalDatabaseService.preferences.isAutoRestart &&
+      if (DB().preferences.isAutoRestart &&
           controller.position.winner != PieceColor.nobody) {
         controller.gameInstance.newGame();
       }
@@ -359,8 +356,7 @@ class TapHandler {
       MillController().tip.showTip(message);
     }
 
-    if (!LocalDatabaseService.preferences.isAutoRestart &&
-        winner != PieceColor.nobody) {
+    if (!DB().preferences.isAutoRestart && winner != PieceColor.nobody) {
       showDialog(
         context: context,
         builder: (_) => GameResultAlert(

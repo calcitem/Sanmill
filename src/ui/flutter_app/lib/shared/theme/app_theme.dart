@@ -90,7 +90,7 @@ class AppTheme {
 
   static final _textTheme = TextTheme(
     bodyText2: TextStyle(
-      fontSize: LocalDatabaseService.display.fontSize,
+      fontSize: DB().display.fontSize,
     ),
   );
 
@@ -99,29 +99,29 @@ class AppTheme {
   );
 
   static TextStyle simpleDialogOptionTextStyle = TextStyle(
-    fontSize: LocalDatabaseService.display.fontSize + 4.0,
+    fontSize: DB().display.fontSize + 4.0,
     color: _simpleDialogOptionTextColor,
   );
 
   static TextStyle moveHistoryTextStyle = TextStyle(
-    fontSize: LocalDatabaseService.display.fontSize + 2.0,
+    fontSize: DB().display.fontSize + 2.0,
     height: 1.5,
     color: _moveHistoryTextColor,
   );
 
   static TextStyle drawerHeaderTextStyle = TextStyle(
-    fontSize: LocalDatabaseService.display.fontSize + 16,
+    fontSize: DB().display.fontSize + 16,
     fontWeight: FontWeight.w600,
   );
 
   static TextStyle dialogTitleTextStyle = TextStyle(
-    fontSize: LocalDatabaseService.display.fontSize + 4,
+    fontSize: DB().display.fontSize + 4,
     color: _appPrimaryColor,
   );
 
   static final TextStyle notationTextStyle = TextStyle(
     fontSize: 20,
-    color: LocalDatabaseService.colorSettings.boardLineColor,
+    color: DB().colorSettings.boardLineColor,
   );
 
   static const listTileSubtitleStyle = TextStyle(
@@ -133,7 +133,7 @@ class AppTheme {
   );
 
   static final mainToolbarTextStyle = TextStyle(
-    color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
+    color: DB().colorSettings.mainToolbarIconColor,
   );
 
   static const helpTextStyle = TextStyle(
@@ -151,11 +151,11 @@ class AppTheme {
 
   static TextStyle settingsHeaderStyle = TextStyle(
     color: _settingsHeaderTextColor,
-    fontSize: LocalDatabaseService.display.fontSize + 4,
+    fontSize: DB().display.fontSize + 4,
   );
 
   static TextStyle settingsTextStyle = TextStyle(
-    fontSize: LocalDatabaseService.display.fontSize,
+    fontSize: DB().display.fontSize,
   );
 
   static const double sizedBoxHeight = 16.0;

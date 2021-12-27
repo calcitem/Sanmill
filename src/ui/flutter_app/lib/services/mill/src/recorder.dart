@@ -91,7 +91,7 @@ class _GameRecorder {
 
     while (i <= cur) {
       moveHistory.writeNumber(k++);
-      if (LocalDatabaseService.display.standardNotationEnabled) {
+      if (DB().display.standardNotationEnabled) {
         buildStandardNotation();
         buildStandardNotation();
       } else {

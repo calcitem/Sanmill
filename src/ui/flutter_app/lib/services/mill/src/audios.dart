@@ -150,9 +150,9 @@ class Audios {
   Future<void> playTone(Sound sound) async {
     assert(MillController().initialized);
 
-    if (!LocalDatabaseService.preferences.toneEnabled ||
+    if (!DB().preferences.toneEnabled ||
         isTemporaryMute ||
-        LocalDatabaseService.preferences.screenReaderSupport) {
+        DB().preferences.screenReaderSupport) {
       return;
     }
 

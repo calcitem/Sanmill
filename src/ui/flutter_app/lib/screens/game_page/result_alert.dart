@@ -44,8 +44,7 @@ class GameResultAlert extends StatelessWidget {
 
     final String dialogTitle = _gameResult.winString(context);
 
-    final bool isTopLevel =
-        LocalDatabaseService.preferences.skillLevel == 30; // TODO: 30
+    final bool isTopLevel = DB().preferences.skillLevel == 30; // TODO: 30
 
     final content = StringBuffer(
       controller.position.gameOverReason
@@ -62,7 +61,7 @@ class GameResultAlert extends StatelessWidget {
       content.writeln();
       content.writeln(
         S.of(context).challengeHarderLevel(
-              LocalDatabaseService.preferences.skillLevel + 1,
+              DB().preferences.skillLevel + 1,
             ),
       );
 
@@ -72,11 +71,10 @@ class GameResultAlert extends StatelessWidget {
             S.of(context).yes,
           ),
           onPressed: () async {
-            final _pref = LocalDatabaseService.preferences;
-            LocalDatabaseService.preferences =
-                _pref.copyWith(skillLevel: _pref.skillLevel + 1);
+            final _pref = DB().preferences;
+            DB().preferences = _pref.copyWith(skillLevel: _pref.skillLevel + 1);
             logger.v(
-              "[config] skillLevel: ${LocalDatabaseService.preferences.skillLevel}",
+              "[config] skillLevel: ${DB().preferences.skillLevel}",
             );
 
             Navigator.pop(context);

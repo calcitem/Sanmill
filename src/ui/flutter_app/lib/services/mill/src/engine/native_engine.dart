@@ -32,7 +32,7 @@ class NativeEngine extends Engine {
 
   @override
   Future<void> startup() async {
-    LocalDatabaseService.listenPreferences.addListener(() => setOptions());
+    DB().listenPreferences.addListener(() => setOptions());
 
     await _platform.invokeMethod("startup");
     await _waitResponse(["uciok"]);
@@ -54,7 +54,7 @@ class NativeEngine extends Engine {
 
   @override
   Future<void> shutdown() async {
-    LocalDatabaseService.listenPreferences.removeListener(() => setOptions());
+    DB().listenPreferences.removeListener(() => setOptions());
 
     _isActive = false;
     await _platform.invokeMethod("shutdown");
@@ -111,7 +111,7 @@ class NativeEngine extends Engine {
     int sleep = 100,
     int times = 0,
   }) async {
-    final _pref = LocalDatabaseService.preferences;
+    final _pref = DB().preferences;
 
     var timeLimit = EnvironmentConfig.devMode ? 100 : 6000;
 
@@ -164,8 +164,8 @@ class NativeEngine extends Engine {
   Future<void> setOptions() async {
     logger.i("$_tag reloaded engine options");
 
-    final _pref = LocalDatabaseService.preferences;
-    final _rules = LocalDatabaseService.rules;
+    final _pref = DB().preferences;
+    final _rules = DB().rules;
 
     await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
     await _sendOptions("Algorithm", _pref.algorithm?.index ?? 2);

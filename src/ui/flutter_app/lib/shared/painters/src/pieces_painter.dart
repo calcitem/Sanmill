@@ -57,7 +57,7 @@ class _PiecePaintParam {
   // TODO: [Leptopoda] consider putting this into the PieceColorExtension
   /// Gets the color of the current piece
   Color get pieceColor {
-    final colorSettings = LocalDatabaseService.colorSettings;
+    final colorSettings = DB().colorSettings;
     switch (piece) {
       case PieceColor.white:
         return colorSettings.whitePieceColor;
@@ -103,7 +103,7 @@ class PiecesPainter extends CustomPainter {
     final shadowPath = Path();
     final piecesToDraw = <_PiecePaintParam>[];
 
-    final _pieceWidth = size.width * LocalDatabaseService.display.pieceWidth;
+    final _pieceWidth = size.width * DB().display.pieceWidth;
     final _animatedPieceWidth = _pieceWidth * animationValue;
 
     // Draw pieces on board
@@ -173,7 +173,7 @@ class PiecesPainter extends CustomPainter {
 
     // draw focus and blur position
     if (focusIndex != null) {
-      paint.color = LocalDatabaseService.colorSettings.pieceHighlightColor;
+      paint.color = DB().colorSettings.pieceHighlightColor;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;
 

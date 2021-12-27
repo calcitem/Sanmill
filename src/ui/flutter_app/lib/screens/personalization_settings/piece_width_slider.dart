@@ -26,10 +26,10 @@ class _PieceWidthSlider extends StatelessWidget {
     return Semantics(
       label: S.of(context).pieceWidth,
       child: ValueListenableBuilder(
-        valueListenable: LocalDatabaseService.listenDisplay,
+        valueListenable: DB().listenDisplay,
         builder: (context, Box<Display> displayBox, _) {
           final Display _display = displayBox.get(
-            LocalDatabaseService.colorSettingsKey,
+            DB.colorSettingsKey,
             defaultValue: const Display(),
           )!;
 
@@ -41,8 +41,7 @@ class _PieceWidthSlider extends StatelessWidget {
             label: _display.pieceWidth.toStringAsFixed(1),
             onChanged: (value) {
               logger.v("[config] pieceWidth value: $value");
-              LocalDatabaseService.display =
-                  _display.copyWith(pieceWidth: value);
+              DB().display = _display.copyWith(pieceWidth: value);
             },
           );
         },

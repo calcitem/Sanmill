@@ -43,8 +43,7 @@ class PrivacyDialog extends StatelessWidget {
   const PrivacyDialog({Key? key}) : super(key: key);
 
   void _setPrivacyPolicyAccepted() {
-    LocalDatabaseService.preferences = LocalDatabaseService.preferences
-        .copyWith(isPrivacyPolicyAccepted: true);
+    DB().preferences = DB().preferences.copyWith(isPrivacyPolicyAccepted: true);
 
     debugPrint("[config] isPrivacyPolicyAccepted: true");
   }
@@ -56,7 +55,7 @@ class PrivacyDialog extends StatelessWidget {
       "The current locale must start with 'zh'",
     );
     assert(
-      !LocalDatabaseService.preferences.isPrivacyPolicyAccepted,
+      !DB().preferences.isPrivacyPolicyAccepted,
       "The privacy policy must not be accepted",
     );
 

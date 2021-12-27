@@ -18,25 +18,25 @@
 
 part of './game_page.dart';
 
-class _GameHeader extends StatefulWidget implements PreferredSizeWidget {
-  _GameHeader({
+@visibleForTesting
+class GameHeader extends StatefulWidget implements PreferredSizeWidget {
+  GameHeader({
     Key? key,
     required this.gameMode,
-    this.toolbarHeight,
   }) : super(key: key);
 
   @override
   final Size preferredSize = Size.fromHeight(
-    kToolbarHeight + LocalDatabaseService.display.boardTop,
+    kToolbarHeight + DB().display.boardTop,
   );
-  final double? toolbarHeight;
+
   final GameMode gameMode;
 
   @override
-  State<_GameHeader> createState() => _GameHeaderState();
+  State<GameHeader> createState() => _GameHeaderState();
 }
 
-class _GameHeaderState extends State<_GameHeader> {
+class _GameHeaderState extends State<GameHeader> {
   ScrollNotificationObserverState? _scrollNotificationObserver;
   bool _scrolledUnder = false;
 
@@ -79,7 +79,7 @@ class _GameHeaderState extends State<_GameHeader> {
   Widget build(BuildContext context) {
     final iconRow = IconTheme(
       data: IconThemeData(
-        color: LocalDatabaseService.colorSettings.messageColor,
+        color: DB().colorSettings.messageColor,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -98,7 +98,7 @@ class _GameHeaderState extends State<_GameHeader> {
       width: 180,
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: LocalDatabaseService.colorSettings.boardBackgroundColor,
+        color: DB().colorSettings.boardBackgroundColor,
         borderRadius: BorderRadius.circular(2),
       ),
     );
@@ -117,7 +117,7 @@ class _GameHeaderState extends State<_GameHeader> {
                 children: <Widget>[
                   iconRow,
                   divider,
-                  const _HeaderTip(),
+                  const HeaderTip(),
                 ],
               ),
             ),
@@ -136,14 +136,15 @@ class _GameHeaderState extends State<_GameHeader> {
   }
 }
 
-class _HeaderTip extends StatefulWidget {
-  const _HeaderTip({Key? key}) : super(key: key);
+@visibleForTesting
+class HeaderTip extends StatefulWidget {
+  const HeaderTip({Key? key}) : super(key: key);
 
   @override
   _HeaderStateTip createState() => _HeaderStateTip();
 }
 
-class _HeaderStateTip extends State<_HeaderTip> {
+class _HeaderStateTip extends State<HeaderTip> {
   String? message;
 
   void showTip() {
@@ -168,9 +169,7 @@ class _HeaderStateTip extends State<_HeaderTip> {
       child: Text(
         message ?? S.of(context).welcome,
         maxLines: 1,
-        style: TextStyle(
-          color: LocalDatabaseService.colorSettings.messageColor,
-        ),
+        style: TextStyle(color: DB().colorSettings.messageColor),
       ),
     );
   }

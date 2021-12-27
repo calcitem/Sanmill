@@ -26,10 +26,10 @@ class _AnimationDurationSlider extends StatelessWidget {
     return Semantics(
       label: S.of(context).animationDuration,
       child: ValueListenableBuilder(
-        valueListenable: LocalDatabaseService.listenDisplay,
+        valueListenable: DB().listenDisplay,
         builder: (context, Box<Display> displayBox, _) {
           final Display _display = displayBox.get(
-            LocalDatabaseService.colorSettingsKey,
+            DB.colorSettingsKey,
             defaultValue: const Display(),
           )!;
 
@@ -40,8 +40,7 @@ class _AnimationDurationSlider extends StatelessWidget {
             label: _display.animationDuration.toStringAsFixed(1),
             onChanged: (value) {
               logger.v("[config] AnimationDuration value: $value");
-              LocalDatabaseService.display =
-                  _display.copyWith(animationDuration: value);
+              DB().display = _display.copyWith(animationDuration: value);
             },
           );
         },

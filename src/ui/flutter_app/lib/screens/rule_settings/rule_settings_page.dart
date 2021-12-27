@@ -42,7 +42,7 @@ class RuleSettingsPage extends StatelessWidget {
     void _callback(int? piecesCount) {
       Navigator.pop(context);
 
-      LocalDatabaseService.rules = _rules.copyWith(piecesCount: piecesCount);
+      DB().rules = _rules.copyWith(piecesCount: piecesCount);
 
       logger.v("[config] piecesCount = $piecesCount");
     }
@@ -60,7 +60,7 @@ class RuleSettingsPage extends StatelessWidget {
     void _callback(int? nMoveRule) {
       Navigator.pop(context);
 
-      LocalDatabaseService.rules = _rules.copyWith(nMoveRule: nMoveRule);
+      DB().rules = _rules.copyWith(nMoveRule: nMoveRule);
 
       logger.v("[config] nMoveRule = $nMoveRule");
     }
@@ -78,8 +78,7 @@ class RuleSettingsPage extends StatelessWidget {
     void _callback(int? endgameNMoveRule) {
       Navigator.pop(context);
 
-      LocalDatabaseService.rules =
-          _rules.copyWith(endgameNMoveRule: endgameNMoveRule);
+      DB().rules = _rules.copyWith(endgameNMoveRule: endgameNMoveRule);
 
       logger.v("[config] endgameNMoveRule = $endgameNMoveRule");
     }
@@ -97,8 +96,7 @@ class RuleSettingsPage extends StatelessWidget {
     void _callback(int? flyPieceCount) {
       Navigator.pop(context);
 
-      LocalDatabaseService.rules =
-          _rules.copyWith(flyPieceCount: flyPieceCount);
+      DB().rules = _rules.copyWith(flyPieceCount: flyPieceCount);
 
       logger.v("[config] flyPieceCount = $flyPieceCount");
     }
@@ -113,40 +111,38 @@ class RuleSettingsPage extends StatelessWidget {
   }
 
   void _setHasDiagonalLines(Rules _rules, bool value) {
-    LocalDatabaseService.rules = _rules.copyWith(hasDiagonalLines: value);
+    DB().rules = _rules.copyWith(hasDiagonalLines: value);
 
     logger.v("[config] hasDiagonalLines: $value");
   }
 
   void _setAllowFlyingAllowed(Rules _rules, bool value) {
-    LocalDatabaseService.rules = _rules.copyWith(mayFly: value);
+    DB().rules = _rules.copyWith(mayFly: value);
 
     logger.v("[config] mayFly: $value");
   }
 
   void _setThreefoldRepetitionRule(Rules _rules, bool value) {
-    LocalDatabaseService.rules =
-        _rules.copyWith(threefoldRepetitionRule: value);
+    DB().rules = _rules.copyWith(threefoldRepetitionRule: value);
 
     logger.v("[config] threefoldRepetitionRule: $value");
   }
 
   // Placing
   void _setHasBannedLocations(Rules _rules, bool value) {
-    LocalDatabaseService.rules = _rules.copyWith(hasBannedLocations: value);
+    DB().rules = _rules.copyWith(hasBannedLocations: value);
 
     logger.v("[config] hasBannedLocations: $value");
   }
 
   void _setIsWhiteLoseButNotDrawWhenBoardFull(Rules _rules, bool value) {
-    LocalDatabaseService.rules =
-        _rules.copyWith(isWhiteLoseButNotDrawWhenBoardFull: value);
+    DB().rules = _rules.copyWith(isWhiteLoseButNotDrawWhenBoardFull: value);
 
     logger.v("[config] isWhiteLoseButNotDrawWhenBoardFull: $value");
   }
 
   void _setMayOnlyRemoveUnplacedPieceInPlacingPhase(Rules _rules, bool value) {
-    LocalDatabaseService.rules =
+    DB().rules =
         _rules.copyWith(mayOnlyRemoveUnplacedPieceInPlacingPhase: value);
 
     logger.v("[config] mayOnlyRemoveUnplacedPieceInPlacingPhase: $value");
@@ -158,7 +154,7 @@ class RuleSettingsPage extends StatelessWidget {
     Rules _rules,
     bool value,
   ) {
-    LocalDatabaseService.rules = _rules.copyWith(mayMoveInPlacingPhase: value);
+    DB().rules = _rules.copyWith(mayMoveInPlacingPhase: value);
 
     logger.v("[config] mayMoveInPlacingPhase: $value");
 
@@ -169,35 +165,33 @@ class RuleSettingsPage extends StatelessWidget {
   }
 
   void _setIsDefenderMoveFirst(Rules _rules, bool value) {
-    LocalDatabaseService.rules = _rules.copyWith(isDefenderMoveFirst: value);
+    DB().rules = _rules.copyWith(isDefenderMoveFirst: value);
 
     logger.v("[config] isDefenderMoveFirst: $value");
   }
 
   void _setIsLoseButNotChangeSideWhenNoWay(Rules _rules, bool value) {
-    LocalDatabaseService.rules =
-        _rules.copyWith(isLoseButNotChangeSideWhenNoWay: value);
+    DB().rules = _rules.copyWith(isLoseButNotChangeSideWhenNoWay: value);
 
     logger.v("[config] isLoseButNotChangeSideWhenNoWay: $value");
   }
 
   // Removing
   void _setAllowRemovePieceInMill(Rules _rules, bool value) {
-    LocalDatabaseService.rules =
-        _rules.copyWith(mayRemoveFromMillsAlways: value);
+    DB().rules = _rules.copyWith(mayRemoveFromMillsAlways: value);
 
     logger.v("[config] mayRemoveFromMillsAlways: $value");
   }
 
   void _setAllowRemoveMultiPiecesWhenCloseMultiMill(Rules _rules, bool value) {
-    LocalDatabaseService.rules = _rules.copyWith(mayRemoveMultiple: value);
+    DB().rules = _rules.copyWith(mayRemoveMultiple: value);
 
     logger.v("[config] mayRemoveMultiple: $value");
   }
 
   Widget _buildRules(BuildContext context, Box<Rules> rulesBox, _) {
     final Rules _rules = rulesBox.get(
-      LocalDatabaseService.rulesKey,
+      DB.rulesKey,
       defaultValue: Rules(),
     )!;
     return Column(
@@ -345,7 +339,7 @@ class RuleSettingsPage extends StatelessWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: ValueListenableBuilder(
-          valueListenable: LocalDatabaseService.listenRules,
+          valueListenable: DB().listenRules,
           builder: _buildRules,
         ),
       ),

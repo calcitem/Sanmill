@@ -22,15 +22,13 @@ class _Mills {
   const _Mills._();
 
   static List<List<int>> get adjacentSquaresInit {
-    return LocalDatabaseService.rules.hasDiagonalLines
+    return DB().rules.hasDiagonalLines
         ? _adjacentSquaresDiagonal
         : _adjacentSquares;
   }
 
   static List<List<List<int>>> get millTableInit {
-    return LocalDatabaseService.rules.hasDiagonalLines
-        ? _millTableDiagonal
-        : _millTable;
+    return DB().rules.hasDiagonalLines ? _millTableDiagonal : _millTable;
   }
 
   // Note: Not follow order of MoveDirection array

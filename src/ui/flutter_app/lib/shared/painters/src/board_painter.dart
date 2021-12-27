@@ -30,10 +30,10 @@ class BoardPainter extends CustomPainter {
     assert(size.width == size.height);
 
     final position = MillController().position;
-    final colors = LocalDatabaseService.colorSettings;
+    final colors = DB().colorSettings;
     final paint = Paint();
 
-    paint.strokeWidth = LocalDatabaseService.display.boardBorderLineWidth;
+    paint.strokeWidth = DB().display.boardBorderLineWidth;
     paint.color = Color.lerp(
       colors.boardBackgroundColor,
       colors.boardLineColor,
@@ -44,13 +44,12 @@ class BoardPainter extends CustomPainter {
 
     _drawBackground(canvas, size);
 
-    if (LocalDatabaseService.display.isPieceCountInHandShown &&
+    if (DB().display.isPieceCountInHandShown &&
         position.phase == Phase.placing) {
       _drawPieceCount(position, canvas, size);
     }
 
-    if (LocalDatabaseService.display.isNotationsShown ||
-        EnvironmentConfig.devMode) {
+    if (DB().display.isNotationsShown || EnvironmentConfig.devMode) {
       _drawNotations(canvas, size);
     }
 
@@ -60,7 +59,7 @@ class BoardPainter extends CustomPainter {
     _drawLines(offset, canvas, paint);
 
     // Point
-    if (LocalDatabaseService.display.pointStyle != null) {
+    if (DB().display.pointStyle != null) {
       _drawPoints(offset, canvas, paint);
     }
   }
@@ -68,7 +67,7 @@ class BoardPainter extends CustomPainter {
   /// Draws the background of the Board.
   static void _drawBackground(Canvas canvas, Size size) {
     final paint = Paint();
-    paint.color = LocalDatabaseService.colorSettings.boardBackgroundColor;
+    paint.color = DB().colorSettings.boardBackgroundColor;
 
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -84,7 +83,7 @@ class BoardPainter extends CustomPainter {
     // File C
     canvas.drawRect(Rect.fromPoints(offset[0], offset[23]), paint);
 
-    paint.strokeWidth = LocalDatabaseService.display.boardInnerLineWidth;
+    paint.strokeWidth = DB().display.boardInnerLineWidth;
 
     final path = Path();
     // File B
@@ -101,7 +100,7 @@ class BoardPainter extends CustomPainter {
     path.addLine(offset[9], offset[11]);
     path.addLine(offset[12], offset[14]);
 
-    if (LocalDatabaseService.rules.hasDiagonalLines) {
+    if (DB().rules.hasDiagonalLines) {
       // offsetY offsetX diagonal line
       path.addLine(offset[0], offset[6]);
 
@@ -120,8 +119,8 @@ class BoardPainter extends CustomPainter {
 
   /// Draws the points representing each field.
   static void _drawPoints(List<Offset> points, Canvas canvas, Paint paint) {
-    paint.style = LocalDatabaseService.display.pointStyle!;
-    final double pointRadius = LocalDatabaseService.display.pointWidth;
+    paint.style = DB().display.pointStyle!;
+    final double pointRadius = DB().display.pointWidth;
 
     for (final point in points) {
       canvas.drawCircle(point, pointRadius, paint);
@@ -133,7 +132,7 @@ class BoardPainter extends CustomPainter {
     final int pieceInHandCount;
     if (position.pieceOnBoardCount[PieceColor.white] == 0 &&
         position.pieceOnBoardCount[PieceColor.black] == 0) {
-      pieceInHandCount = LocalDatabaseService.rules.piecesCount;
+      pieceInHandCount = DB().rules.piecesCount;
     } else {
       pieceInHandCount = position.pieceInHandCount[PieceColor.black]!;
     }
@@ -141,7 +140,7 @@ class BoardPainter extends CustomPainter {
     final TextSpan textSpan = TextSpan(
       style: TextStyle(
         fontSize: 48,
-        color: LocalDatabaseService.colorSettings.boardLineColor,
+        color: DB().colorSettings.boardLineColor,
       ), // TODO
       text: pieceInHandCount.toString(),
     );

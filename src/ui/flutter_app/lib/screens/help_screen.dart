@@ -12,7 +12,7 @@ class HelpScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
+        backgroundColor: DB().colorSettings.darkBackgroundColor,
         leading: DrawerIcon.of(context)?.icon,
         title: Text(
           S.of(context).howToPlay,
@@ -22,7 +22,7 @@ class HelpScreen extends StatelessWidget {
           color: AppTheme.helpTextColor,
         ),
       ),
-      backgroundColor: LocalDatabaseService.colorSettings.darkBackgroundColor,
+      backgroundColor: DB().colorSettings.darkBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Text(

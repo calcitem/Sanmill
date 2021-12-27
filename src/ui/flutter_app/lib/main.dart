@@ -50,7 +50,7 @@ Future<void> main() async {
     enableFlutterDriverExtension();
   }
 
-  await LocalDatabaseService.initStorage();
+  await DB.initStorage();
 
   _initUI();
 
@@ -76,10 +76,10 @@ class SanmillApp extends StatelessWidget {
     final globalScaffoldKey = GlobalKey<ScaffoldState>();
 
     return ValueListenableBuilder(
-      valueListenable: LocalDatabaseService.listenDisplay,
+      valueListenable: DB().listenDisplay,
       builder: (BuildContext context, Box<Display> displayBox, child) {
         final Display _display = displayBox.get(
-          LocalDatabaseService.displayKey,
+          DB.displayKey,
           defaultValue: const Display(),
         )!;
         return BetterFeedback(

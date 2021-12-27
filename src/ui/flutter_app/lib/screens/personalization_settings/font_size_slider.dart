@@ -26,10 +26,10 @@ class _FontSizeSlider extends StatelessWidget {
     return Semantics(
       label: S.of(context).fontSize,
       child: ValueListenableBuilder(
-        valueListenable: LocalDatabaseService.listenDisplay,
+        valueListenable: DB().listenDisplay,
         builder: (context, Box<Display> displayBox, _) {
           final Display _display = displayBox.get(
-            LocalDatabaseService.colorSettingsKey,
+            DB.colorSettingsKey,
             defaultValue: const Display(),
           )!;
 
@@ -41,7 +41,7 @@ class _FontSizeSlider extends StatelessWidget {
             label: _display.fontSize.toStringAsFixed(1),
             onChanged: (value) {
               logger.v("[config] fontSize value: $value");
-              LocalDatabaseService.display = _display.copyWith(fontSize: value);
+              DB().display = _display.copyWith(fontSize: value);
             },
           );
         },

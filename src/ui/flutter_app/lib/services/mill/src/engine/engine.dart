@@ -38,7 +38,7 @@ extension GameModeExtension on GameMode {
   IconData get leftHeaderIcon {
     switch (this) {
       case GameMode.humanVsAi:
-        if (LocalDatabaseService.preferences.aiMovesFirst) {
+        if (DB().preferences.aiMovesFirst) {
           return FluentIcons.bot_24_filled;
         } else {
           return FluentIcons.person_24_filled;
@@ -62,7 +62,7 @@ extension GameModeExtension on GameMode {
   IconData get rightHeaderIcon {
     switch (this) {
       case GameMode.humanVsAi:
-        if (LocalDatabaseService.preferences.aiMovesFirst) {
+        if (DB().preferences.aiMovesFirst) {
           return FluentIcons.person_24_filled;
         } else {
           return FluentIcons.bot_24_filled;
@@ -87,8 +87,8 @@ extension GameModeExtension on GameMode {
       case GameMode.humanVsAi:
       case GameMode.testViaLAN:
         return {
-          PieceColor.white: LocalDatabaseService.preferences.aiMovesFirst,
-          PieceColor.black: !LocalDatabaseService.preferences.aiMovesFirst,
+          PieceColor.white: DB().preferences.aiMovesFirst,
+          PieceColor.black: !DB().preferences.aiMovesFirst,
         };
       case GameMode.humanVsHuman:
       case GameMode.humanVsLAN:

@@ -55,14 +55,13 @@ class GameSettingsPage extends StatelessWidget {
       );
 
   void _setWhoMovesFirst(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences =
-        _preferences.copyWith(aiMovesFirst: value);
+    DB().preferences = _preferences.copyWith(aiMovesFirst: value);
 
     logger.v("$_tag aiMovesFirst: $value");
   }
 
   void _setAiIsLazy(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences = _preferences.copyWith(aiIsLazy: value);
+    DB().preferences = _preferences.copyWith(aiIsLazy: value);
 
     logger.v("$_tag aiIsLazy: $value");
   }
@@ -71,8 +70,7 @@ class GameSettingsPage extends StatelessWidget {
     void _callback(Algorithms? algorithm) {
       Navigator.pop(context);
 
-      LocalDatabaseService.preferences =
-          _preferences.copyWith(algorithm: algorithm);
+      DB().preferences = _preferences.copyWith(algorithm: algorithm);
 
       logger.v("$_tag algorithm = $algorithm");
     }
@@ -87,57 +85,50 @@ class GameSettingsPage extends StatelessWidget {
   }
 
   void _setDrawOnHumanExperience(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences =
-        _preferences.copyWith(drawOnHumanExperience: value);
+    DB().preferences = _preferences.copyWith(drawOnHumanExperience: value);
 
     logger.v("$_tag drawOnHumanExperience: $value");
   }
 
   void _setConsiderMobility(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences =
-        _preferences.copyWith(considerMobility: value);
+    DB().preferences = _preferences.copyWith(considerMobility: value);
 
     logger.v("$_tag considerMobility: $value");
   }
 
   void _setIsAutoRestart(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences =
-        _preferences.copyWith(isAutoRestart: value);
+    DB().preferences = _preferences.copyWith(isAutoRestart: value);
 
     logger.v("$_tag isAutoRestart: $value");
   }
 
   void _setShufflingEnabled(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences =
-        _preferences.copyWith(shufflingEnabled: value);
+    DB().preferences = _preferences.copyWith(shufflingEnabled: value);
 
     logger.v("$_tag shufflingEnabled: $value");
   }
 
   void _setTone(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences =
-        _preferences.copyWith(toneEnabled: value);
+    DB().preferences = _preferences.copyWith(toneEnabled: value);
 
     logger.v("$_tag toneEnabled: $value");
   }
 
   void _setKeepMuteWhenTakingBack(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences =
-        _preferences.copyWith(keepMuteWhenTakingBack: value);
+    DB().preferences = _preferences.copyWith(keepMuteWhenTakingBack: value);
 
     logger.v("$_tag keepMuteWhenTakingBack: $value");
   }
 
   void _setScreenReaderSupport(Preferences _preferences, bool value) {
-    LocalDatabaseService.preferences =
-        _preferences.copyWith(screenReaderSupport: value);
+    DB().preferences = _preferences.copyWith(screenReaderSupport: value);
 
     logger.v("$_tag screenReaderSupport: $value");
   }
 
   Column _buildPrefs(BuildContext context, Box<Preferences> prefBox, _) {
     final Preferences _preferences = prefBox.get(
-      LocalDatabaseService.preferencesKey,
+      DB.preferencesKey,
       defaultValue: const Preferences(),
     )!;
 
@@ -162,7 +153,7 @@ class GameSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile(
               titleString: S.of(context).skillLevel,
-              //trailingString: "L" + LocalDatabaseService.preferences.skillLevel.toString(),
+              //trailingString: "L" + DB().preferences.skillLevel.toString(),
               onTap: () => _setSkillLevel(context),
             ),
             SettingsListTile(
@@ -265,7 +256,7 @@ class GameSettingsPage extends StatelessWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: ValueListenableBuilder(
-          valueListenable: LocalDatabaseService.listenPreferences,
+          valueListenable: DB().listenPreferences,
           builder: _buildPrefs,
         ),
       ),

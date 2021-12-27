@@ -173,16 +173,14 @@ class Position {
       score[PieceColor.draw] = score[PieceColor.draw]! + 1;
 
       // TODO: WAR to judge rule50
-      if (LocalDatabaseService.rules.nMoveRule > 0 &&
-          posKeyHistory.length >= LocalDatabaseService.rules.nMoveRule - 1) {
+      if (DB().rules.nMoveRule > 0 &&
+          posKeyHistory.length >= DB().rules.nMoveRule - 1) {
         gameOverReason = GameOverReason.drawRule50;
-      } else if (LocalDatabaseService.rules.endgameNMoveRule <
-              LocalDatabaseService.rules.nMoveRule &&
+      } else if (DB().rules.endgameNMoveRule < DB().rules.nMoveRule &&
           _isThreeEndgame &&
-          posKeyHistory.length >=
-              LocalDatabaseService.rules.endgameNMoveRule - 1) {
+          posKeyHistory.length >= DB().rules.endgameNMoveRule - 1) {
         gameOverReason = GameOverReason.drawEndgameRule50;
-      } else if (LocalDatabaseService.rules.threefoldRepetitionRule) {
+      } else if (DB().rules.threefoldRepetitionRule) {
         gameOverReason = GameOverReason.drawThreefoldRepetition; // TODO: Sure?
       } else {
         gameOverReason = GameOverReason.drawBoardIsFull; // TODO: Sure?
@@ -231,8 +229,7 @@ class Position {
     if (record != null && record!.move.length > "-(1,2)".length) {
       if (st.key != posKeyHistory.lastF) {
         posKeyHistory.add(st.key);
-        if (LocalDatabaseService.rules.threefoldRepetitionRule &&
-            hasGameCycle) {
+        if (DB().rules.threefoldRepetitionRule && hasGameCycle) {
           setGameOver(
             PieceColor.draw,
             GameOverReason.drawThreefoldRepetition,
@@ -287,8 +284,8 @@ class Position {
 
     pieceOnBoardCount[PieceColor.white] =
         pieceOnBoardCount[PieceColor.black] = 0;
-    pieceInHandCount[PieceColor.white] = pieceInHandCount[PieceColor.black] =
-        LocalDatabaseService.rules.piecesCount;
+    pieceInHandCount[PieceColor.white] =
+        pieceInHandCount[PieceColor.black] = DB().rules.piecesCount;
     pieceToRemoveCount = 0;
 
     // TODO:
@@ -365,11 +362,11 @@ class Position {
             phase = Phase.moving;
             action = Act.select;
 
-            if (LocalDatabaseService.rules.hasBannedLocations) {
+            if (DB().rules.hasBannedLocations) {
               _removeBanStones();
             }
 
-            if (!LocalDatabaseService.rules.isDefenderMoveFirst) {
+            if (!DB().rules.isDefenderMoveFirst) {
               _changeSideToMove();
             }
 
@@ -380,12 +377,10 @@ class Position {
           controller.gameInstance.focusIndex = squareToIndex[s];
           await Audios().playTone(Sound.place);
         } else {
-          pieceToRemoveCount =
-              LocalDatabaseService.rules.mayRemoveMultiple ? n : 1;
+          pieceToRemoveCount = DB().rules.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
 
-          if (LocalDatabaseService
-                  .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
+          if (DB().rules.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
               pieceInHandCount[_them] != null) {
             pieceInHandCount[_them] =
                 pieceInHandCount[_them]! - 1; // Or pieceToRemoveCount?
@@ -401,7 +396,7 @@ class Position {
               phase = Phase.moving;
               action = Act.select;
 
-              if (LocalDatabaseService.rules.isDefenderMoveFirst) {
+              if (DB().rules.isDefenderMoveFirst) {
                 _changeSideToMove();
               }
 
@@ -419,9 +414,8 @@ class Position {
         if (_checkIfGameIsOver()) return true;
 
         // if illegal
-        if (pieceOnBoardCount[sideToMove]! >
-                LocalDatabaseService.rules.flyPieceCount ||
-            !LocalDatabaseService.rules.mayFly) {
+        if (pieceOnBoardCount[sideToMove]! > DB().rules.flyPieceCount ||
+            !DB().rules.mayFly) {
           int md;
 
           for (md = 0; md < moveDirectionNumber; md++) {
@@ -463,8 +457,7 @@ class Position {
 
           await Audios().playTone(Sound.place);
         } else {
-          pieceToRemoveCount =
-              LocalDatabaseService.rules.mayRemoveMultiple ? n : 1;
+          pieceToRemoveCount = DB().rules.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
           action = Act.remove;
           controller.gameInstance.focusIndex = squareToIndex[s];
@@ -492,7 +485,7 @@ class Position {
       return RemoveResponse.cannotRemoveOurPiece;
     }
 
-    if (!LocalDatabaseService.rules.mayRemoveFromMillsAlways &&
+    if (!DB().rules.mayRemoveFromMillsAlways &&
         _potentialMillsCount(s, PieceColor.nobody) > 0 &&
         !_isAllInMills(sideToMove.opponent)) {
       return RemoveResponse.cannotRemovePieceFromMill;
@@ -502,8 +495,7 @@ class Position {
 
     await Audios().playTone(Sound.remove);
 
-    if (LocalDatabaseService.rules.hasBannedLocations &&
-        phase == Phase.placing) {
+    if (DB().rules.hasBannedLocations && phase == Phase.placing) {
       // Remove and put ban
       _board[s] = _grid[squareToIndex[s]!] = PieceColor.ban;
       _updateKey(s);
@@ -520,7 +512,7 @@ class Position {
     }
 
     if (pieceOnBoardCount[_them]! + pieceInHandCount[_them]! <
-        LocalDatabaseService.rules.piecesAtLeastCount) {
+        DB().rules.piecesAtLeastCount) {
       setGameOver(sideToMove, GameOverReason.loseLessThanThree);
       return RemoveResponse.ok;
     }
@@ -540,11 +532,11 @@ class Position {
         phase = Phase.moving;
         action = Act.select;
 
-        if (LocalDatabaseService.rules.hasBannedLocations) {
+        if (DB().rules.hasBannedLocations) {
           _removeBanStones();
         }
 
-        if (LocalDatabaseService.rules.isDefenderMoveFirst) {
+        if (DB().rules.isDefenderMoveFirst) {
           _checkIfGameIsOver();
           return RemoveResponse.ok;
         }
@@ -626,16 +618,15 @@ class Position {
       return true;
     }
 
-    if (LocalDatabaseService.rules.nMoveRule > 0 &&
-        posKeyHistory.length >= LocalDatabaseService.rules.nMoveRule) {
+    if (DB().rules.nMoveRule > 0 &&
+        posKeyHistory.length >= DB().rules.nMoveRule) {
       setGameOver(PieceColor.draw, GameOverReason.drawRule50);
       return true;
     }
 
-    if (LocalDatabaseService.rules.endgameNMoveRule <
-            LocalDatabaseService.rules.nMoveRule &&
+    if (DB().rules.endgameNMoveRule < DB().rules.nMoveRule &&
         _isThreeEndgame &&
-        posKeyHistory.length >= LocalDatabaseService.rules.endgameNMoveRule) {
+        posKeyHistory.length >= DB().rules.endgameNMoveRule) {
       setGameOver(PieceColor.draw, GameOverReason.drawEndgameRule50);
       return true;
     }
@@ -643,7 +634,7 @@ class Position {
     if (pieceOnBoardCount[PieceColor.white]! +
             pieceOnBoardCount[PieceColor.black]! >=
         rankNumber * fileNumber) {
-      if (LocalDatabaseService.rules.isWhiteLoseButNotDrawWhenBoardFull) {
+      if (DB().rules.isWhiteLoseButNotDrawWhenBoardFull) {
         setGameOver(PieceColor.black, GameOverReason.loseBoardIsFull);
       } else {
         setGameOver(PieceColor.draw, GameOverReason.drawBoardIsFull);
@@ -653,7 +644,7 @@ class Position {
     }
 
     if (phase == Phase.moving && action == Act.select && _isAllSurrounded) {
-      if (LocalDatabaseService.rules.isLoseButNotChangeSideWhenNoWay) {
+      if (DB().rules.isLoseButNotChangeSideWhenNoWay) {
         setGameOver(
           sideToMove.opponent,
           GameOverReason.loseNoWay,
@@ -669,7 +660,7 @@ class Position {
   }
 
   void _removeBanStones() {
-    assert(LocalDatabaseService.rules.hasBannedLocations);
+    assert(DB().rules.hasBannedLocations);
 
     int s = 0;
 
@@ -809,9 +800,8 @@ class Position {
     }
 
     // Can fly
-    if (pieceOnBoardCount[sideToMove]! <=
-            LocalDatabaseService.rules.flyPieceCount &&
-        LocalDatabaseService.rules.mayFly) {
+    if (pieceOnBoardCount[sideToMove]! <= DB().rules.flyPieceCount &&
+        DB().rules.mayFly) {
       return false;
     }
 
@@ -835,11 +825,9 @@ class Position {
 
   int get _nPiecesInHand {
     pieceInHandCount[PieceColor.white] =
-        LocalDatabaseService.rules.piecesCount -
-            pieceOnBoardCount[PieceColor.white]!;
+        DB().rules.piecesCount - pieceOnBoardCount[PieceColor.white]!;
     pieceInHandCount[PieceColor.black] =
-        LocalDatabaseService.rules.piecesCount -
-            pieceOnBoardCount[PieceColor.black]!;
+        DB().rules.piecesCount - pieceOnBoardCount[PieceColor.black]!;
 
     return pieceOnBoardCount[PieceColor.white]! +
         pieceOnBoardCount[PieceColor.black]!;
@@ -894,10 +882,8 @@ class Position {
       }
     }
 
-    if (pieceOnBoardCount[PieceColor.white]! >
-            LocalDatabaseService.rules.piecesCount ||
-        pieceOnBoardCount[PieceColor.black]! >
-            LocalDatabaseService.rules.piecesCount) {
+    if (pieceOnBoardCount[PieceColor.white]! > DB().rules.piecesCount ||
+        pieceOnBoardCount[PieceColor.black]! > DB().rules.piecesCount) {
       return null;
     }
 

@@ -26,10 +26,10 @@ class _SkillLevelSlider extends StatelessWidget {
     return Semantics(
       label: S.of(context).skillLevel,
       child: ValueListenableBuilder(
-        valueListenable: LocalDatabaseService.listenPreferences,
+        valueListenable: DB().listenPreferences,
         builder: (context, Box<Preferences> prefBox, _) {
           final Preferences _preferences = prefBox.get(
-            LocalDatabaseService.preferencesKey,
+            DB.preferencesKey,
             defaultValue: const Preferences(),
           )!;
 
@@ -40,7 +40,7 @@ class _SkillLevelSlider extends StatelessWidget {
             divisions: 29,
             label: _preferences.skillLevel.toString(),
             onChanged: (value) {
-              LocalDatabaseService.preferences =
+              DB().preferences =
                   _preferences.copyWith(skillLevel: value.toInt());
               logger.v("Skill level Slider value: $value");
             },
