@@ -3,7 +3,7 @@
   "@appName": {
     "description": "The app name"
   },
-  "welcome": "Üdvözöljük",
+  "welcome": "Üdvözöljük!",
   "@welcome": {
     "description": "Welcome"
   },
@@ -19,23 +19,23 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Személy Vs. AI",
+  "humanVsAi": "Ember a gép ellen",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "Személy Vs. Személy",
+  "humanVsHuman": "Ember ember ellen",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "AI Vs. AI",
+  "aiVsAi": "Gép a gép ellen",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Személy Vs. Felhő",
+  "humanVsCloud": "Ember a felhő ellen",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": "Személy Vs. LAN",
+  "humanVsLAN": "Ember a helyi hálózat ellen",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
@@ -55,35 +55,35 @@
   "@moveList": {
     "description": "Move list"
   },
-  "noGameRecord": "Nincs játékrögzítés",
+  "noGameRecord": "Nincs feljegyzés",
   "@noGameRecord": {
     "description": "No record"
   },
-  "ok": "Ok",
+  "ok": "Rendben",
   "@ok": {
     "description": "OK"
   },
-  "confirm": "Megerősítés",
+  "confirm": "Jóváhagy",
   "@confirm": {
     "description": "Confirm"
   },
-  "cancel": "Visszavonás",
+  "cancel": "Mégsem",
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Helytelen korongot válasszon.",
+  "tipSelectWrong": "Válassza ki a rossz helyen lévő korongot!",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Rakjon le korongot.",
+  "tipPlace": "Rakjon le egy korongot!",
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "Nem rakható ide.",
+  "tipBanPlace": "A korongot nem lehet odarakni.",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Lerakva.",
+  "tipPlaced": "Lerakott egy korongot.",
   "@tipPlaced": {
     "description": "Placed."
   },
@@ -1137,7 +1137,7 @@
   "@hollow": {
     "description": "Hollow"
   },
-  "languageName": "Magyar",
+  "languageName": "magyar",
   "@languageName": {
     "description": "The name of the current language"
   },
