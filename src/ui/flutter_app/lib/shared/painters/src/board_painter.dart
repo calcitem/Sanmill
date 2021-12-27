@@ -164,7 +164,7 @@ class BoardPainter extends CustomPainter {
 
   /// Draws the numbering of the fields displayed at the side.
   static void _drawNotations(Canvas canvas, Size size) {
-    for (int i = 0; i < verticalNotations.length - 1; i++) {
+    for (int i = 0; i < verticalNotations.length; i++) {
       final TextSpan notationSpanV = TextSpan(
         style: AppTheme.notationTextStyle, // TODO
         text: verticalNotations[i],
