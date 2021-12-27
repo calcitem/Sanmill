@@ -64,29 +64,34 @@ class GamePage extends StatelessWidget {
             );
           }
 
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              var toolbarHeight =
-                  GamePageToolBar.height + ButtonTheme.of(context).height;
-              if (LocalDatabaseService
-                  .display.isHistoryNavigationToolbarShown) {
-                toolbarHeight *= 2;
-              }
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppTheme.boardMargin),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                var toolbarHeight =
+                    GamePageToolBar.height + ButtonTheme.of(context).height;
+                if (LocalDatabaseService
+                    .display.isHistoryNavigationToolbarShown) {
+                  toolbarHeight *= 2;
+                }
 
-              // constraints of the game board but applied to the entire child
-              final maxWidth = constraints.maxWidth - AppTheme.boardMargin;
-              final maxHeight = constraints.maxHeight - toolbarHeight;
-              final BoxConstraints constraint = BoxConstraints(
-                maxWidth: (maxHeight < maxWidth) ? maxHeight : maxWidth,
-              );
+                // constraints of the game board but applied to the entire child
+                final maxWidth = constraints.maxWidth;
+                final maxHeight = constraints.maxHeight - toolbarHeight;
+                final BoxConstraints constraint = BoxConstraints(
+                  maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
+                      ? maxHeight
+                      : maxWidth,
+                );
 
-              return Center(
-                child: ConstrainedBox(
-                  constraints: constraint,
-                  child: const _Game(),
-                ),
-              );
-            },
+                return Center(
+                  child: ConstrainedBox(
+                    constraints: constraint,
+                    child: const _Game(),
+                  ),
+                );
+              },
+            ),
           );
         },
       ),

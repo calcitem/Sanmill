@@ -193,7 +193,7 @@ class _CustomDrawerState extends State<CustomDrawer>
         position: _overlaySlideAnimation,
         textDirection: Directionality.of(context),
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.75 - 64,
+          width: MediaQuery.of(context).size.width * _openRatio * 0.9,
           height: 46,
           decoration: BoxDecoration(
             color: LocalDatabaseService.colorSettings.drawerHighlightItemColor,
