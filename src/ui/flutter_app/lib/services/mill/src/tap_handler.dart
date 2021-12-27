@@ -361,20 +361,23 @@ class TapHandler {
 
     if (!LocalDatabaseService.preferences.isAutoRestart &&
         winner != PieceColor.nobody) {
-      GameResultAlert(
-        winner: winner,
-        // TODO: [Leptopoda] the only reason not having the function in the GameAlert is engineToGo ;)
-        onRestart: () {
-          controller.gameInstance.newGame();
-          MillController()
-              .tip
-              .showTip(S.of(context).gameStarted, snackBar: true);
+      showDialog(
+        context: context,
+        builder: (_) => GameResultAlert(
+          winner: winner,
+          // TODO: [Leptopoda] the only reason not having the function in the GameAlert is engineToGo ;)
+          onRestart: () {
+            controller.gameInstance.newGame();
+            MillController()
+                .tip
+                .showTip(S.of(context).gameStarted, snackBar: true);
 
-          if (controller.gameInstance.isAiToMove) {
-            logger.i("$_tag New game, AI to move.");
-            engineToGo(isMoveNow: false);
-          }
-        },
+            if (controller.gameInstance.isAiToMove) {
+              logger.i("$_tag New game, AI to move.");
+              engineToGo(isMoveNow: false);
+            }
+          },
+        ),
       );
     }
   }

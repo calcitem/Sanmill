@@ -360,7 +360,7 @@ class Position {
 
           if (pieceInHandCount[PieceColor.white] == 0 &&
               pieceInHandCount[PieceColor.black] == 0) {
-            if (_gameOver) return true;
+            if (_checkIfGameIsOver()) return true;
 
             phase = Phase.moving;
             action = Act.select;
@@ -373,7 +373,7 @@ class Position {
               _changeSideToMove();
             }
 
-            if (_gameOver) return true;
+            if (_checkIfGameIsOver()) return true;
           } else {
             _changeSideToMove();
           }
@@ -396,7 +396,7 @@ class Position {
 
             if (pieceInHandCount[PieceColor.white] == 0 &&
                 pieceInHandCount[PieceColor.black] == 0) {
-              if (_gameOver) return true;
+              if (_checkIfGameIsOver()) return true;
 
               phase = Phase.moving;
               action = Act.select;
@@ -405,7 +405,7 @@ class Position {
                 _changeSideToMove();
               }
 
-              if (_gameOver) return true;
+              if (_checkIfGameIsOver()) return true;
             }
           } else {
             action = Act.remove;
@@ -416,7 +416,7 @@ class Position {
         }
         break;
       case Phase.moving:
-        if (_gameOver) return true;
+        if (_checkIfGameIsOver()) return true;
 
         // if illegal
         if (pieceOnBoardCount[sideToMove]! >
@@ -458,7 +458,7 @@ class Position {
           action = Act.select;
           _changeSideToMove();
 
-          if (_gameOver) return true;
+          if (_checkIfGameIsOver()) return true;
           controller.gameInstance.focusIndex = squareToIndex[s];
 
           await Audios().playTone(Sound.place);
@@ -545,7 +545,7 @@ class Position {
         }
 
         if (LocalDatabaseService.rules.isDefenderMoveFirst) {
-          _gameOver;
+          _checkIfGameIsOver();
           return RemoveResponse.ok;
         }
       } else {
@@ -556,7 +556,7 @@ class Position {
     }
 
     _changeSideToMove();
-    _gameOver;
+    _checkIfGameIsOver();
 
     return RemoveResponse.ok;
   }
@@ -621,10 +621,7 @@ class Position {
         pieceOnBoardCount[PieceColor.black] == 3;
   }
 
-  // TODO: [Leptopoda] this method seems to be more than  a getter
-  // we should probably return it to not be a getter and rename it to avoid confusion
-  // The original name was: checkIfGameIsOver()
-  bool get _gameOver {
+  bool _checkIfGameIsOver() {
     if (phase == Phase.ready || phase == Phase.gameOver) {
       return true;
     }
