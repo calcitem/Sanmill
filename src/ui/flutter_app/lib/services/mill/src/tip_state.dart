@@ -32,7 +32,7 @@ class HeaderTipState with ChangeNotifier {
       showSnackBar = true;
     }
 
-    _message = message;
+    _message = tip;
     notifyListeners();
   }
 }
