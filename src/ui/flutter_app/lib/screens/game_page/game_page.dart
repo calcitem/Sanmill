@@ -65,7 +65,8 @@ class GamePage extends StatelessWidget {
           }
 
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppTheme.boardMargin),
+            padding:
+                const EdgeInsets.symmetric(horizontal: AppTheme.boardMargin),
             child: LayoutBuilder(
               builder: (context, constraints) {
                 var toolbarHeight =

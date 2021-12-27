@@ -103,6 +103,12 @@ class _BoardState extends State<_Board> with SingleTickerProviderStateMixin {
       },
     );
   }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 }
 
 /// Semantics for the Board
