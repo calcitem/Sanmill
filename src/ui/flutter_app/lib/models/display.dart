@@ -23,6 +23,7 @@ import 'package:flutter/material.dart' show Locale, immutable;
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sanmill/services/storage/adapters/adapters.dart';
+import 'package:sanmill/services/storage/storage.dart';
 
 part 'display.g.dart';
 
@@ -45,8 +46,7 @@ class Display {
     this.pointStyle,
     @Deprecated("Use [pointStyle] instead.") this.oldPointStyle = 0,
     this.pointWidth = 10.0,
-    this.pieceWidth = 0.1,
-    @Deprecated("Use [pieceWidth] instead.") this.oldPieceWidth = 0.9,
+    this.pieceWidth = 0.9 / MigrationValues.pieceWidth,
     this.fontSize = 16.0,
     this.boardTop = 36.0,
     this.animationDuration = 0.0,
@@ -92,12 +92,8 @@ class Display {
   @HiveField(8)
   final double pointWidth;
 
-  @HiveField(14)
-  final double pieceWidth;
-
-  @Deprecated("Use [pieceWidth] instead.")
   @HiveField(9)
-  final double oldPieceWidth;
+  final double pieceWidth;
 
   @HiveField(10)
   final double fontSize;

@@ -33,9 +33,9 @@ class _PieceWidthSlider extends StatelessWidget {
             defaultValue: const Display(),
           )!;
 
-          // multiplied by 9 to represent the old behavior
+          // multiplied by 6 to represent the old behavior
           return Slider(
-            value: _display.pieceWidth * 9,
+            value: _display.pieceWidth * MigrationValues.pieceWidth,
             min: 0.5,
             divisions: 50,
             label: _display.pieceWidth.toStringAsFixed(1),

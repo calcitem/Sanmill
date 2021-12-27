@@ -20,6 +20,16 @@
 
 part of 'package:sanmill/services/storage/storage.dart';
 
+/// Database Migration Values
+///
+/// Values that define how much the DB is altered.
+class MigrationValues {
+  const MigrationValues._();
+
+  /// [Display.pieceWidth] migration value.
+  static const pieceWidth = 7;
+}
+
 /// Database Migrator
 ///
 /// This class provides helper methods to migrate database versions.
@@ -120,7 +130,7 @@ class _DatabaseMigrator {
     }
 
     LocalDatabaseService.display = _display.copyWith(
-      pieceWidth: _display.oldPieceWidth / 9,
+      pieceWidth: _display.pieceWidth / MigrationValues.pieceWidth,
     );
 
     logger.v("$_tag migrated from v1");
