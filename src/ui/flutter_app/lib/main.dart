@@ -24,6 +24,7 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_driver/driver_extension.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:path_provider/path_provider.dart';
@@ -66,8 +67,6 @@ Future<void> main() async {
   }
 }
 
-RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
-
 class SanmillApp extends StatelessWidget {
   const SanmillApp({Key? key}) : super(key: key);
 
@@ -82,6 +81,7 @@ class SanmillApp extends StatelessWidget {
           DB.displayKey,
           defaultValue: const Display(),
         )!;
+
         return BetterFeedback(
           localizationsDelegates: const [
             ...S.localizationsDelegates,
@@ -95,13 +95,20 @@ class SanmillApp extends StatelessWidget {
             navigatorKey:
                 EnvironmentConfig.catcher ? Catcher.navigatorKey : null,
             key: globalScaffoldKey,
-            navigatorObservers: [routeObserver],
             localizationsDelegates: S.localizationsDelegates,
             supportedLocales: S.supportedLocales,
             locale: _display.languageCode,
             theme: AppTheme.lightThemeData,
             darkTheme: AppTheme.darkThemeData,
-            debugShowCheckedModeBanner: false,
+            debugShowCheckedModeBanner: EnvironmentConfig.devMode,
+            builder: (context, child) {
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(
+                  textScaleFactor: _display.fontScale,
+                ),
+                child: child!,
+              );
+            },
             home: child,
           ),
         );
@@ -109,6 +116,7 @@ class SanmillApp extends StatelessWidget {
       child: Builder(
         builder: (context) {
           setSpecialCountryAndRegion(context);
+
           return Scaffold(
             body: DoubleBackToCloseApp(
               snackBar: SnackBar(

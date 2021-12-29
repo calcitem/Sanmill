@@ -28,6 +28,9 @@ class MigrationValues {
 
   /// [Display.pieceWidth] migration value.
   static const pieceWidth = 7;
+
+  /// [Display.fontScale] migration value.
+  static const fontScale = 16;
 }
 
 /// Database Migrator
@@ -100,11 +103,12 @@ class _DatabaseMigrator {
 
   /// Migration 1 - Sanmill version 1.1.38+2196 - 2021-11-09
   ///
-  /// - **Algorithm to enum:** Migrates [DB().preferences] to use the new Algorithm enum instead of an int representation.
-  /// - **Drawer background color:** Migrates [DB().colorSettings] to merge the drawerBackgroundColor and drawerColor.
+  /// - **Algorithm to enum:** Migrates [DB.preferences] to use the new Algorithm enum instead of an int representation.
+  /// - **Drawer background color:** Migrates [DB.colorSettings] to merge the drawerBackgroundColor and drawerColor.
   /// This reflects the deprecation of drawerBackgroundColor.
-  /// - **Painting Style:**: Migrates [DB().display] to use Flutters [PaintingStyle] enum instead of an int representation.
-  /// - **Piece Width:**: Migrates [DB().display] to use a more direct piece width representation so no further calculation is needed.
+  /// - **Painting Style:**: Migrates [DB.display] to use Flutters [PaintingStyle] enum instead of an int representation.
+  /// - **Piece Width:**: Migrates [DB.display] to use a more direct piece width representation so no further calculation is needed.
+  /// - **Font Size:**: Migrates [DB.display] store a font scale factor instead of the absolute size.
   static Future<void> _migrateFromV1() async {
     assert(_currentVersion! <= 1);
 
@@ -123,14 +127,13 @@ class _DatabaseMigrator {
     );
 
     final _display = DB().display;
-    if (_display.oldPointStyle != 0) {
-      DB().display = _display.copyWith(
-        pointStyle: PaintingStyle.values[_display.oldPointStyle - 1],
-      );
-    }
 
     DB().display = _display.copyWith(
+      pointStyle: (_display.oldPointStyle != 0)
+          ? PaintingStyle.values[_display.oldPointStyle - 1]
+          : null,
       pieceWidth: _display.pieceWidth / MigrationValues.pieceWidth,
+      fontScale: _display.fontScale / MigrationValues.fontScale,
     );
 
     logger.v("$_tag migrated from v1");

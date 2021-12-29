@@ -31,51 +31,37 @@ class _GameOptionsModal extends StatelessWidget {
 
     if (MillController().gameInstance.isAiToMove) {
       logger.v("$_tag New game, AI to move.");
+
+      // TODO: [Leptopoda] xD
+
       // extracted.engineToGo(isMoveNow: false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
+    return GamePageDialog(
       semanticLabel: S.of(context).game,
-      backgroundColor: Colors.transparent,
       children: <Widget>[
         SimpleDialogOption(
           onPressed: () => _startNew(context),
-          child: Text(
-            S.of(context).newGame,
-            style: AppTheme.simpleDialogOptionTextStyle,
-            textAlign: TextAlign.center,
-          ),
+          child: Text(S.of(context).newGame),
         ),
         const CustomSpacer(),
         SimpleDialogOption(
           onPressed: () => MillController().recorder.import(context),
-          child: Text(
-            S.of(context).importGame,
-            style: AppTheme.simpleDialogOptionTextStyle,
-            textAlign: TextAlign.center,
-          ),
+          child: Text(S.of(context).importGame),
         ),
         const CustomSpacer(),
         SimpleDialogOption(
           onPressed: () => MillController().recorder.export(context),
-          child: Text(
-            S.of(context).exportGame,
-            style: AppTheme.simpleDialogOptionTextStyle,
-            textAlign: TextAlign.center,
-          ),
+          child: Text(S.of(context).exportGame),
         ),
         const CustomSpacer(),
         if (DB().preferences.screenReaderSupport)
           SimpleDialogOption(
-            child: Text(
-              S.of(context).close,
-              style: AppTheme.simpleDialogOptionTextStyle,
-              textAlign: TextAlign.center,
-            ),
             onPressed: () => Navigator.pop(context),
+            child: Text(S.of(context).close),
           ),
       ],
     );

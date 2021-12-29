@@ -117,24 +117,21 @@ class _InfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      backgroundColor: AppTheme.infoDialogBackgroundColor,
-      content: SingleChildScrollView(
-        child: Text(
-          _infoText(context),
-          style: AppTheme.moveHistoryTextStyle,
+    return GamePageActionSheet(
+      child: AlertDialog(
+        content: SingleChildScrollView(
+          child: Text(_infoText(context)),
         ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: Text(
-            S.of(context).ok,
-            key: const Key('infoDialogOkButton'),
-            style: AppTheme.moveHistoryTextStyle,
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              S.of(context).ok,
+              key: const Key('infoDialogOkButton'),
+            ),
+            onPressed: () => Navigator.pop(context),
           ),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

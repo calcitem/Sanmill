@@ -18,41 +18,21 @@
 
 part of '../settings.dart';
 
-class SettingsCard extends StatelessWidget {
-  const SettingsCard({
+class SettingsList extends StatelessWidget {
+  const SettingsList({
     Key? key,
     required this.children,
-    required this.title,
   }) : super(key: key);
 
-  final Widget title;
   final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textStyle = theme.textTheme.headline6!.apply(
-      color: AppTheme.settingsHeaderTextColor,
-    );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        DefaultTextStyle(
-          style: textStyle,
-          textAlign: TextAlign.start,
-          child: title,
-        ),
-        Card(
-          child: ListView.separated(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (_, index) => children[index],
-            separatorBuilder: (_, __) => const Divider(),
-            itemCount: children.length,
-          ),
-        ),
-      ],
+    return ListView.separated(
+      padding: const EdgeInsets.all(16),
+      itemBuilder: (_, i) => children[i],
+      separatorBuilder: (_, i) => const CustomSpacer(),
+      itemCount: children.length,
     );
   }
 }

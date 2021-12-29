@@ -25,7 +25,6 @@ import 'package:sanmill/models/preferences.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
-import 'package:sanmill/shared/custom_spacer.dart';
 import 'package:sanmill/shared/settings/settings.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
@@ -126,17 +125,16 @@ class GameSettingsPage extends StatelessWidget {
     logger.v("$_tag screenReaderSupport: $value");
   }
 
-  Column _buildPrefs(BuildContext context, Box<Preferences> prefBox, _) {
+  SettingsList _buildPrefs(BuildContext context, Box<Preferences> prefBox, _) {
     final Preferences _preferences = prefBox.get(
       DB.preferencesKey,
       defaultValue: const Preferences(),
     )!;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return SettingsList(
       children: [
-        Text(S.of(context).whoMovesFirst, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
+          title: Text(S.of(context).whoMovesFirst),
           children: <Widget>[
             SettingsListTile.switchTile(
               value: !_preferences.aiMovesFirst,
@@ -147,9 +145,8 @@ class GameSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const CustomSpacer(),
-        Text(S.of(context).difficulty, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
+          title: Text(S.of(context).difficulty),
           children: <Widget>[
             SettingsListTile(
               titleString: S.of(context).skillLevel,
@@ -162,9 +159,8 @@ class GameSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const CustomSpacer(),
-        Text(S.of(context).aisPlayStyle, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
+          title: Text(S.of(context).aisPlayStyle),
           children: <Widget>[
             SettingsListTile(
               titleString: S.of(context).algorithm,
@@ -193,9 +189,8 @@ class GameSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const CustomSpacer(),
-        Text(S.of(context).playSounds, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
+          title: Text(S.of(context).playSounds),
           children: <Widget>[
             SettingsListTile.switchTile(
               value: _preferences.toneEnabled,
@@ -209,9 +204,8 @@ class GameSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const CustomSpacer(),
-        Text(S.of(context).accessibility, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
+          title: Text(S.of(context).accessibility),
           children: <Widget>[
             SettingsListTile.switchTile(
               value: _preferences.screenReaderSupport,
@@ -220,9 +214,8 @@ class GameSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const CustomSpacer(),
-        Text(S.of(context).misc, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
+          title: Text(S.of(context).misc),
           children: <Widget>[
             SettingsListTile.switchTile(
               value: _preferences.isAutoRestart,
@@ -231,9 +224,8 @@ class GameSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const CustomSpacer(),
-        Text(S.of(context).restore, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
+          title: Text(S.of(context).restore),
           children: <Widget>[
             SettingsListTile(
               titleString: S.of(context).restoreDefaultSettings,
@@ -253,12 +245,9 @@ class GameSettingsPage extends StatelessWidget {
         leading: DrawerIcon.of(context)?.icon,
         title: Text(S.of(context).preferences),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: ValueListenableBuilder(
-          valueListenable: DB().listenPreferences,
-          builder: _buildPrefs,
-        ),
+      body: ValueListenableBuilder(
+        valueListenable: DB().listenPreferences,
+        builder: _buildPrefs,
       ),
     );
   }

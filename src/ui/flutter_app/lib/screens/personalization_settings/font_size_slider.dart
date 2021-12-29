@@ -34,14 +34,14 @@ class _FontSizeSlider extends StatelessWidget {
           )!;
 
           return Slider(
-            value: _display.fontSize,
-            min: 16,
-            max: 32,
+            value: _display.fontScale,
+            min: 1,
+            max: 2,
             divisions: 16,
-            label: _display.fontSize.toStringAsFixed(1),
+            label: _display.fontScale.toStringAsFixed(2),
             onChanged: (value) {
               logger.v("[config] fontSize value: $value");
-              DB().display = _display.copyWith(fontSize: value);
+              DB().display = _display.copyWith(fontScale: value);
             },
           );
         },

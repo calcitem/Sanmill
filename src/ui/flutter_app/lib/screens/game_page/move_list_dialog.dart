@@ -29,43 +29,31 @@ class _MoveListDialog extends StatelessWidget {
     final end = controller.gameInstance.moveHistory.length - 1;
     ScaffoldMessenger.of(context).clearSnackBars();
 
-    return AlertDialog(
-      backgroundColor: AppTheme.moveHistoryDialogBackgroundColor,
-      title: Text(
-        S.of(context).moveList,
-        style: AppTheme.moveHistoryTextStyle,
-      ),
-      content: SingleChildScrollView(
-        child: Text(
-          moveHistoryText,
-          style: AppTheme.moveHistoryTextStyle,
-          textDirection: TextDirection.ltr,
+    return GamePageActionSheet(
+      child: AlertDialog(
+        title: Text(S.of(context).moveList),
+        content: SingleChildScrollView(
+          child: Text(
+            moveHistoryText,
+            textDirection: TextDirection.ltr,
+          ),
         ),
-      ),
-      actions: <Widget>[
-        if (end > 0)
-          TextButton(
-            child: Text(
-              S.of(context).rollback,
-              style: AppTheme.moveHistoryTextStyle,
+        actions: <Widget>[
+          if (end > 0)
+            TextButton(
+              child: Text(S.of(context).rollback),
+              onPressed: () async => _rollback(context, end),
             ),
-            onPressed: () async => _rollback(context, end),
+          TextButton(
+            child: Text(S.of(context).copy),
+            onPressed: () => controller.recorder.export(context),
           ),
-        TextButton(
-          child: Text(
-            S.of(context).copy,
-            style: AppTheme.moveHistoryTextStyle,
+          TextButton(
+            child: Text(S.of(context).cancel),
+            onPressed: () => Navigator.pop(context),
           ),
-          onPressed: () => controller.recorder.export(context),
-        ),
-        TextButton(
-          child: Text(
-            S.of(context).cancel,
-            style: AppTheme.moveHistoryTextStyle,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

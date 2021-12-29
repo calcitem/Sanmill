@@ -47,7 +47,7 @@ class Display {
     @Deprecated("Use [pointStyle] instead.") this.oldPointStyle = 0,
     this.pointWidth = 10.0,
     this.pieceWidth = 0.9 / MigrationValues.pieceWidth,
-    this.fontSize = 16.0,
+    this.fontScale = 1.0,
     this.boardTop = 36.0,
     this.animationDuration = 0.0,
   });
@@ -96,7 +96,7 @@ class Display {
   final double pieceWidth;
 
   @HiveField(10)
-  final double fontSize;
+  final double fontScale;
 
   @HiveField(11)
   final double boardTop;

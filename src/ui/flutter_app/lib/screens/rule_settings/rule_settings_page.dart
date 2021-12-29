@@ -24,7 +24,6 @@ import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
-import 'package:sanmill/shared/custom_spacer.dart';
 import 'package:sanmill/shared/scaffold_messenger.dart';
 import 'package:sanmill/shared/settings/settings.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
@@ -194,11 +193,10 @@ class RuleSettingsPage extends StatelessWidget {
       DB.rulesKey,
       defaultValue: Rules(),
     )!;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return SettingsList(
       children: [
-        Text(S.of(context).general, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
+          title: Text(S.of(context).general),
           children: <Widget>[
             SettingsListTile(
               titleString: S.of(context).piecesCount,
@@ -232,9 +230,8 @@ class RuleSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const CustomSpacer(),
-        Text(S.of(context).placing, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
+          title: Text(S.of(context).placing),
           children: <Widget>[
             SettingsListTile.switchTile(
               value: _rules.hasBannedLocations,
@@ -259,9 +256,8 @@ class RuleSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const CustomSpacer(),
-        Text(S.of(context).moving, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
+          title: Text(S.of(context).moving),
           children: <Widget>[
             if (EnvironmentConfig.devMode)
               SettingsListTile.switchTile(
@@ -287,9 +283,8 @@ class RuleSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const CustomSpacer(),
-        Text(S.of(context).mayFly, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
+          title: Text(S.of(context).mayFly),
           children: <Widget>[
             SettingsListTile.switchTile(
               value: _rules.mayFly,
@@ -305,9 +300,8 @@ class RuleSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        const CustomSpacer(),
-        Text(S.of(context).removing, style: AppTheme.settingsHeaderStyle),
         SettingsCard(
+          title: Text(S.of(context).removing),
           children: <Widget>[
             SettingsListTile.switchTile(
               value: _rules.mayRemoveFromMillsAlways,
@@ -336,12 +330,9 @@ class RuleSettingsPage extends StatelessWidget {
         leading: DrawerIcon.of(context)?.icon,
         title: Text(S.of(context).ruleSettings),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: ValueListenableBuilder(
-          valueListenable: DB().listenRules,
-          builder: _buildRules,
-        ),
+      body: ValueListenableBuilder(
+        valueListenable: DB().listenRules,
+        builder: _buildRules,
       ),
     );
   }

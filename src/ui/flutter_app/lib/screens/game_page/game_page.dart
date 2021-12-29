@@ -16,6 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'dart:ui';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
@@ -40,6 +42,7 @@ part './result_alert.dart';
 part './game_options_modal.dart';
 part './move_options_modal.dart';
 part './header.dart';
+part 'game_page_action_sheet.dart';
 
 class GamePage extends StatelessWidget {
   final GameMode gameMode;
@@ -114,6 +117,7 @@ class _Game extends StatelessWidget {
         MaterialPageRoute(builder: (_) => const GameSettingsPage()),
       );
 
+  // TODO: [Leptopdoa] move options into a theme
   void _showMoveOptions(BuildContext context) => showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,

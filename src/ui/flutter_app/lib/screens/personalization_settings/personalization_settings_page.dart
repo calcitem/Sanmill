@@ -25,7 +25,6 @@ import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
-import 'package:sanmill/shared/custom_spacer.dart';
 import 'package:sanmill/shared/settings/settings.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
@@ -115,6 +114,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
     )!;
 
     return SettingsCard(
+      title: Text(S.of(context).color),
       children: <Widget>[
         SettingsListTile.color(
           titleString: S.of(context).boardColor,
@@ -214,6 +214,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
       defaultValue: const Display(),
     )!;
     return SettingsCard(
+      title: Text(S.of(context).display),
       children: <Widget>[
         SettingsListTile(
           titleString: S.of(context).language,
@@ -296,25 +297,17 @@ class PersonalizationSettingsPage extends StatelessWidget {
         leading: DrawerIcon.of(context)?.icon,
         title: Text(S.of(context).personalization),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(S.of(context).display, style: AppTheme.settingsHeaderStyle),
-            ValueListenableBuilder(
-              valueListenable: DB().listenDisplay,
-              builder: _buildDisplay,
-            ),
-            const CustomSpacer(),
-            Text(S.of(context).color, style: AppTheme.settingsHeaderStyle),
-            // TODO [Leptopoda]: remove the value listenable as we access the ColorSettings via Them.of(constant)
-            ValueListenableBuilder(
-              valueListenable: DB().listenColorSettings,
-              builder: _buildColor,
-            ),
-          ],
-        ),
+      body: SettingsList(
+        children: [
+          ValueListenableBuilder(
+            valueListenable: DB().listenDisplay,
+            builder: _buildDisplay,
+          ),
+          ValueListenableBuilder(
+            valueListenable: DB().listenColorSettings,
+            builder: _buildColor,
+          ),
+        ],
       ),
     );
   }

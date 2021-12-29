@@ -37,75 +37,46 @@ class _MoveOptionsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
+    return GamePageDialog(
       semanticLabel: S.of(context).move_number(0),
-      backgroundColor: Colors.transparent,
       children: <Widget>[
         if (!DB().display.isHistoryNavigationToolbarShown) ...[
           SimpleDialogOption(
             onPressed: () => HistoryNavigator.takeBack(context),
-            child: Text(
-              S.of(context).takeBack,
-              style: AppTheme.simpleDialogOptionTextStyle,
-              textAlign: TextAlign.center,
-            ),
+            child: Text(S.of(context).takeBack),
           ),
           const CustomSpacer(),
           SimpleDialogOption(
             onPressed: () => HistoryNavigator.stepForward(context),
-            child: Text(
-              S.of(context).stepForward,
-              style: AppTheme.simpleDialogOptionTextStyle,
-              textAlign: TextAlign.center,
-            ),
+            child: Text(S.of(context).stepForward),
           ),
           const CustomSpacer(),
           SimpleDialogOption(
             onPressed: () => HistoryNavigator.takeBackAll(context),
-            child: Text(
-              S.of(context).takeBackAll,
-              style: AppTheme.simpleDialogOptionTextStyle,
-              textAlign: TextAlign.center,
-            ),
+            child: Text(S.of(context).takeBackAll),
           ),
           const CustomSpacer(),
           SimpleDialogOption(
             onPressed: () => HistoryNavigator.stepForwardAll(context),
-            child: Text(
-              S.of(context).stepForwardAll,
-              style: AppTheme.simpleDialogOptionTextStyle,
-              textAlign: TextAlign.center,
-            ),
+            child: Text(S.of(context).stepForwardAll),
           ),
           const CustomSpacer(),
         ],
         if (MillController().recorder.moveHistoryText != null) ...[
           SimpleDialogOption(
             onPressed: () => _showMoveList(context),
-            child: Text(
-              S.of(context).showMoveList,
-              style: AppTheme.simpleDialogOptionTextStyle,
-              textAlign: TextAlign.center,
-            ),
+            child: Text(S.of(context).showMoveList),
           ),
           const CustomSpacer(),
         ],
         SimpleDialogOption(
           onPressed: () => _moveNow(context),
-          child: Text(
-            S.of(context).moveNow,
-            style: AppTheme.simpleDialogOptionTextStyle,
-            textAlign: TextAlign.center,
-          ),
+          child: Text(S.of(context).moveNow),
         ),
         const CustomSpacer(),
         if (DB().preferences.screenReaderSupport)
           SimpleDialogOption(
-            child: Text(
-              S.of(context).close,
-              style: AppTheme.simpleDialogOptionTextStyle,
-              textAlign: TextAlign.center,
-            ),
+            child: Text(S.of(context).close),
             onPressed: () => Navigator.pop(context),
           ),
       ],

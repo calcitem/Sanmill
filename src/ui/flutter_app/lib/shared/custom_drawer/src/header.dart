@@ -43,7 +43,9 @@ class CustomDrawerHeader extends StatelessWidget {
       animatedTexts: [
         ColorizeAnimatedText(
           title,
-          textStyle: AppTheme.drawerHeaderTextStyle,
+          textStyle: Theme.of(context).textTheme.headline4!.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
           colors: _animatedTextsColors,
           speed: const Duration(seconds: 3),
         ),
