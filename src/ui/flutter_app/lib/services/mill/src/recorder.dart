@@ -30,10 +30,10 @@ class _GameRecorder {
   _GameRecorder(this.controller);
 
   Future<void> import(BuildContext context) async =>
-      _ImportService(controller).importGame(context);
+      ImportService.importGame(context);
 
   Future<void> export(BuildContext context) async =>
-      _ImportService(controller).exportGame(context);
+      ImportService.exportGame(context);
 
   void clear() {
     moves.clear();

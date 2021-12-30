@@ -31,6 +31,8 @@ class _Game {
   // TODO: [Leptopoda] just reassign controller.game with a new Game instance
   void newGame() {
     controller.position.phase = Phase.ready;
+    controller.recorder.clear();
+
     start();
     focusIndex = blurIndex = null;
 
@@ -45,6 +47,7 @@ class _Game {
     return _isAi[sideToMove]!;
   }
 
+  @Deprecated("use [_GameRecorder.moves]")
   List<ExtMove?> moveHistory = [];
 
   int? focusIndex;

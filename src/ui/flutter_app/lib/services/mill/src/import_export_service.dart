@@ -22,24 +22,26 @@ part of '../mill.dart';
 
 // TODO: [Leptopoda] clean up the file
 // TODO: [Leptopoda] change error handling
-class _ImportService {
+@visibleForTesting
+class ImportService {
   static const _tag = "[Importer]";
-  final MillController controller;
 
-  const _ImportService(this.controller);
+  const ImportService._();
 
-  Future<void> exportGame(BuildContext context) async {
+  /// Exports the game to the devices clipboard
+  static Future<void> exportGame(BuildContext context) async {
     Navigator.pop(context);
 
     await Clipboard.setData(
-      ClipboardData(text: controller.recorder.moveHistoryText),
+      ClipboardData(text: MillController().recorder.moveHistoryText),
     );
 
     ScaffoldMessenger.of(context)
         .showSnackBarClear(S.of(context).moveHistoryCopied);
   }
 
-  Future<void> importGame(BuildContext context) async {
+  /// Tries to import the game saved in the devices clipboard
+  static Future<void> importGame(BuildContext context) async {
     Navigator.pop(context);
     ScaffoldMessenger.of(context).clearSnackBars();
 
@@ -48,7 +50,7 @@ class _ImportService {
     if (data?.text == null) return;
 
     await HistoryNavigator.takeBackAll(context, pop: false);
-    final importFailedStr = _import(data!.text!);
+    final importFailedStr = import(data!.text!);
 
     if (importFailedStr != null) {
       return MillController().tip.showTip(
@@ -174,9 +176,10 @@ class _ImportService {
   }
 
   // TODO [Leptopoda] make param a List<Move> and change the return type
-  String? _import(String moveList) {
+  @visibleForTesting
+  static String? import(String moveList) {
     // TODO: [Leptopoda] clean up
-    controller.recorder.clear();
+    MillController().recorder.clear();
     logger.v("Clipboard text: $moveList");
 
     if (_isDalmaxMoveList(moveList)) {
@@ -280,15 +283,15 @@ class _ImportService {
 
     if (newHistory.isNotEmpty) {
       // TODO: [Leptopoda] clean up
-      controller.recorder.moves = newHistory;
+      MillController().recorder.moves = newHistory;
     }
   }
 
-  String? _importDalmax(String moveList) {
-    return _import(moveList.substring(moveList.indexOf("1. ")));
+  static String? _importDalmax(String moveList) {
+    return import(moveList.substring(moveList.indexOf("1. ")));
   }
 
-  String? _importPlayOk(String moveList) {
+  static String? _importPlayOk(String moveList) {
     final List<ExtMove> newHistory = [];
 
     final List<String> list = moveList
@@ -336,13 +339,13 @@ class _ImportService {
 
     if (newHistory.isNotEmpty) {
       // TODO: [Leptopoda] clean up
-      controller.recorder.moves = newHistory;
+      MillController().recorder.moves = newHistory;
     }
 
     return null;
   }
 
-  String? _importGoldToken(String moveList) {
+  static String? _importGoldToken(String moveList) {
     int start = moveList.indexOf("1\t");
 
     if (start == -1) {
@@ -353,6 +356,6 @@ class _ImportService {
       start = 0;
     }
 
-    return _import(moveList.substring(start));
+    return import(moveList.substring(start));
   }
 }
