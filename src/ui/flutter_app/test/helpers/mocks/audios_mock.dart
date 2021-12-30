@@ -17,26 +17,18 @@
 */
 
 import 'package:mockito/mockito.dart';
-import 'package:sanmill/models/color.dart';
-import 'package:sanmill/models/display.dart';
-import 'package:sanmill/models/preferences.dart';
-import 'package:sanmill/models/rules.dart';
-import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/services/mill/mill.dart';
 
-class MockedDB extends Mock implements DB {
-  /// gets the given [ColorSettings] from the settings Box
+class MockedAudios extends Mock implements Audios {
   @override
-  ColorSettings get colorSettings => const ColorSettings();
+  bool isTemporaryMute = false;
 
-  /// gets the given [Display] from the settings Box
   @override
-  Display get display => const Display();
+  Future<void> loadSounds() async {}
 
-  /// gets the given [Preferences] from the settings Box
   @override
-  Preferences get preferences => const Preferences();
+  void disposePool() {}
 
-  /// gets the given [Rules] from the settings Box
   @override
-  Rules get rules => Rules();
+  Future<void> playTone(Sound sound) async {}
 }

@@ -102,11 +102,6 @@ class Position {
     phase = Phase.placing;
 
     _setPosition(); // TODO
-
-    // TODO
-    // TODO: [Leptopoda] maybe initialize it in the controller
-    // seems like this is causing the stack overflow
-    controller.recorder = _GameRecorder(controller);
   }
 
   /// Returns a FEN representation of the position.
@@ -926,7 +921,7 @@ class Position {
     // Restore context
     controller.gameInstance.gameMode = gameModeBackup;
     controller.recorder.moves = historyBack;
-    controller.recorder.cur = moveIndex;
+    controller.recorder.cur = moveIndex;  
 
     Audios().isTemporaryMute = false;
     await move.gotoHistoryPlaySound();

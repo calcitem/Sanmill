@@ -46,7 +46,7 @@ class _MoveListDialog extends StatelessWidget {
             ),
           TextButton(
             child: Text(S.of(context).copy),
-            onPressed: () => controller.recorder.export(context),
+            onPressed: () => MillController.export(context),
           ),
           TextButton(
             child: Text(S.of(context).cancel),

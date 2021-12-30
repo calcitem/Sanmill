@@ -18,12 +18,17 @@
 
 part of '../mill.dart';
 
+/// Sounds the [Audios] can play through [Audios.playTone].
 enum Sound { draw, fly, go, illegal, lose, mill, place, remove, select, win }
 
+/// Audio Service
+///
+/// Service providing a unified abstraction to call different audio backends on our supported platforms.
 class Audios {
-  static final _instance = Audios._();
+  @visibleForTesting
+  static Audios instance = Audios._();
 
-  factory Audios() => _instance;
+  factory Audios() => instance;
 
   Audios._();
 

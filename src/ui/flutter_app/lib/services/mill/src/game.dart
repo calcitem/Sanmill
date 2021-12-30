@@ -47,7 +47,7 @@ class _Game {
     return _isAi[sideToMove]!;
   }
 
-  @Deprecated("use [_GameRecorder.moves]")
+  // @Deprecated("use [_GameRecorder.moves]")
   List<ExtMove?> moveHistory = [];
 
   int? focusIndex;

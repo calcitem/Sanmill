@@ -79,25 +79,18 @@ class _PiecePaintParam {
 /// The board is drawn by [BoardPainter].
 /// It asserts the Canvas to be a square.
 class PiecesPainter extends CustomPainter {
-  /// The index of the currently focused (selected) piece.
-  /// If null no Piece is marked selected.
-  final int? focusIndex;
-
-  /// The index representation of the position the last piece moved from.
-  final int? blurIndex;
-
   /// The value representing the piece animation when placing.
   final double animationValue;
 
   PiecesPainter({
-    this.focusIndex,
-    this.blurIndex,
     required this.animationValue,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
     assert(size.width == size.height);
+    final focusIndex = MillController().gameInstance.focusIndex;
+    final blurIndex = MillController().gameInstance.blurIndex;
 
     final paint = Paint();
     final shadowPath = Path();
@@ -178,7 +171,7 @@ class PiecesPainter extends CustomPainter {
       paint.strokeWidth = 2;
 
       canvas.drawCircle(
-        pointFromIndex(focusIndex!, size),
+        pointFromIndex(focusIndex, size),
         _animatedPieceWidth / 2,
         paint,
       );
@@ -189,7 +182,7 @@ class PiecesPainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
 
       canvas.drawCircle(
-        pointFromIndex(blurIndex!, size),
+        pointFromIndex(blurIndex, size),
         _animatedPieceWidth / 2 * 0.8,
         paint,
       );
@@ -198,7 +191,5 @@ class PiecesPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(PiecesPainter oldDelegate) =>
-      focusIndex != oldDelegate.focusIndex ||
-      blurIndex != oldDelegate.blurIndex ||
       animationValue != oldDelegate.animationValue;
 }

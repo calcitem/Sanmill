@@ -20,8 +20,12 @@
 
 part of '../mill.dart';
 
+/// HistoryNavigator
+///
+/// Helper class to use [Position.gotoHistory] in different scenarios.
+/// This class will also try to handle any errors and visualize the results.
 class HistoryNavigator {
-  HistoryNavigator._();
+  const HistoryNavigator._();
 
   static bool _isGoingToHistory = false;
 
@@ -31,6 +35,8 @@ class HistoryNavigator {
     bool pop = true,
     int? number,
   }) async {
+    assert(move != HistoryMove.backN || number != null);
+
     if (pop) Navigator.pop(context);
     final controller = MillController();
 

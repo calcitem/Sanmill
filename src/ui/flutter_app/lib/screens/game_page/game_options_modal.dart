@@ -49,12 +49,12 @@ class _GameOptionsModal extends StatelessWidget {
         ),
         const CustomSpacer(),
         SimpleDialogOption(
-          onPressed: () => MillController().recorder.import(context),
+          onPressed: () => MillController.import(context),
           child: Text(S.of(context).importGame),
         ),
         const CustomSpacer(),
         SimpleDialogOption(
-          onPressed: () => MillController().recorder.export(context),
+          onPressed: () => MillController.export(context),
           child: Text(S.of(context).exportGame),
         ),
         const CustomSpacer(),

@@ -25,15 +25,8 @@ class _GameRecorder {
   // TODO: [Leptopoda] use null
   int cur = -1;
   List<ExtMove> moves = <ExtMove>[];
-  final MillController controller;
 
-  _GameRecorder(this.controller);
-
-  Future<void> import(BuildContext context) async =>
-      ImportService.importGame(context);
-
-  Future<void> export(BuildContext context) async =>
-      ImportService.exportGame(context);
+  _GameRecorder();
 
   void clear() {
     moves.clear();

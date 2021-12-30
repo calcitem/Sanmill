@@ -16,16 +16,14 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
+import '../helpers/mocks/audios_mock.dart';
 import '../helpers/mocks/storage_mock.dart';
 import '../helpers/test_mills.dart';
 
-@GenerateMocks([Clipboard])
 void main() {
   group("MillController", () {
     test("new game should clear the history", () async {
@@ -39,7 +37,23 @@ void main() {
       // reset the game
       controller.gameInstance.newGame();
 
-      expect(controller.recorder.moves, <ExtMove>[]);
+      expect(controller.recorder.moves, isEmpty);
+    });
+
+    test("take back should clear the focus", () async {
+      // initialize the test
+      DB.instance = MockedDB();
+      Audios.instance = MockedAudios();
+      final controller = MillController();
+      controller.gameInstance.gameMode = GameMode.humanVsHuman;
+
+      // import a game
+      ImportService.import(testMill);
+
+      // reset go back one
+      controller.position.gotoHistory(HistoryMove.backOne);
+
+      expect(MillController().gameInstance.focusIndex, isNull);
     });
   });
 }

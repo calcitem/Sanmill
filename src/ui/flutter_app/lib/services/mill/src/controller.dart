@@ -87,9 +87,17 @@ class MillController {
     position = Position(this);
     gameInstance = _Game(this);
     engine = NativeEngine(this);
-    // recorder = _GameRecorder(this);
+    recorder = _GameRecorder();
     tip = HeaderTipState();
   }
+
+  /// Starts a game import.
+  static Future<void> import(BuildContext context) async =>
+      ImportService.importGame(context);
+
+  /// Starts a game export.
+  static Future<void> export(BuildContext context) async =>
+      ImportService.exportGame(context);
 
   /// Disposes the current controller and shuts down the engine.
   void dispose() {

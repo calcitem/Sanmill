@@ -63,8 +63,6 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
         return CustomPaint(
           painter: BoardPainter(),
           foregroundPainter: PiecesPainter(
-            focusIndex: MillController().gameInstance.focusIndex,
-            blurIndex: MillController().gameInstance.blurIndex,
             animationValue: _animation.value,
           ),
           child: child,
