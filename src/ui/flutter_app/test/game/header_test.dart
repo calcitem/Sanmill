@@ -16,30 +16,62 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/generated/intl/l10n_en.dart';
 import 'package:sanmill/screens/game_page/game_page.dart';
 import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 
 import '../helpers/locale_helper.dart';
 import '../helpers/mocks/storage_mock.dart';
 
 void main() {
-  testWidgets("GameHeader", (WidgetTester tester) async {
-    const testString = "Test";
+  group("GameHeader", () {
+    testWidgets("GameHeader updates tip", (WidgetTester tester) async {
+      const testString = "Test";
 
-    DB.instance = MockedDB();
-    const _screen = HeaderTip();
+      DB.instance = MockedDB();
+      const _screen = HeaderTip();
 
-    await tester.pumpWidget(makeTestableWidget(_screen));
+      await tester.pumpWidget(makeTestableWidget(_screen));
 
-    expect(find.text(SEn().welcome), findsOneWidget);
+      expect(find.text(SEn().welcome), findsOneWidget);
 
-    MillController().tip.showTip(testString);
+      MillController().tip.showTip(testString);
 
-    await tester.pump();
+      await tester.pump();
 
-    expect(find.text(testString), findsOneWidget);
+      expect(find.text(testString), findsOneWidget);
+    });
+
+    testWidgets("GameHeader position", (WidgetTester tester) async {
+      DB.instance = MockedDB();
+
+      const iconKey = Key("DrawerIcon");
+
+      final _screen = DrawerIcon(
+        icon: IconButton(
+          icon: const Icon(
+            Icons.menu,
+            key: iconKey,
+          ),
+          onPressed: () {},
+        ),
+        child: Scaffold(
+          appBar: GameHeader(
+            gameMode: GameMode.humanVsHuman,
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(makeTestableWidget(_screen));
+
+      final icon = tester.getCenter(find.byKey(iconKey));
+      final header = tester.getCenter(find.byKey(const Key("HeaderIconRow")));
+
+      expect(icon.dy, header.dy);
+    });
   });
 }

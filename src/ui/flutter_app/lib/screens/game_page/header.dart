@@ -22,6 +22,7 @@ part of './game_page.dart';
 class GameHeader extends StatefulWidget implements PreferredSizeWidget {
   GameHeader({
     Key? key,
+    // TODO: [Leptopoda] maybe let it get the data from the [MillController].
     required this.gameMode,
   }) : super(key: key);
 
@@ -82,6 +83,7 @@ class _GameHeaderState extends State<GameHeader> {
         color: DB().colorSettings.messageColor,
       ),
       child: Row(
+        key: const Key("HeaderIconRow"),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(widget.gameMode.leftHeaderIcon),
@@ -112,7 +114,7 @@ class _GameHeaderState extends State<GameHeader> {
         Center(
           child: BlockSemantics(
             child: Padding(
-              padding: const EdgeInsets.only(top: 10.0),
+              padding: const EdgeInsets.only(top: 12.0),
               child: Column(
                 children: <Widget>[
                   iconRow,
@@ -164,13 +166,10 @@ class _HeaderStateTip extends State<HeaderTip> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Text(
-        message ?? S.of(context).welcome,
-        maxLines: 1,
-        style: TextStyle(color: DB().colorSettings.messageColor),
-      ),
+    return Text(
+      message ?? S.of(context).welcome,
+      maxLines: 1,
+      style: TextStyle(color: DB().colorSettings.messageColor),
     );
   }
 
