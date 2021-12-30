@@ -106,9 +106,9 @@ class _DatabaseMigrator {
   /// - **Algorithm to enum:** Migrates [DB.preferences] to use the new Algorithm enum instead of an int representation.
   /// - **Drawer background color:** Migrates [DB.colorSettings] to merge the drawerBackgroundColor and drawerColor.
   /// This reflects the deprecation of drawerBackgroundColor.
-  /// - **Painting Style:**: Migrates [DB.display] to use Flutters [PaintingStyle] enum instead of an int representation.
-  /// - **Piece Width:**: Migrates [DB.display] to use a more direct piece width representation so no further calculation is needed.
-  /// - **Font Size:**: Migrates [DB.display] store a font scale factor instead of the absolute size.
+  /// - **Painting Style:** Migrates [DB.display] to use Flutters [PaintingStyle] enum instead of an int representation.
+  /// - **Piece Width:** Migrates [DB.display] to use a more direct piece width representation so no further calculation is needed.
+  /// - **Font Size:** Migrates [DB.display] store a font scale factor instead of the absolute size.
   static Future<void> _migrateFromV1() async {
     assert(_currentVersion! <= 1);
 
