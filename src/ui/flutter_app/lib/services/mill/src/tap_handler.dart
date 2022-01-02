@@ -25,40 +25,22 @@ class TapHandler {
       return logger.v("$_tag Engine type is no human, ignore tapping.");
     }
 
-    final position = controller.position;
-
-    // If nobody has placed, start to go.
-    if (position.phase == Phase.placing &&
-        position.pieceOnBoardCount[PieceColor.white] == 0 &&
-        position.pieceOnBoardCount[PieceColor.black] == 0) {
-      controller.gameInstance.newGame();
-
-      if (controller.gameInstance.isAiToMove) {
-        if (controller.gameInstance.aiIsSearching) {
-          return logger.i("$_tag AI is thinking, skip tapping.");
-        } else {
-          logger.i("[tap] AI is not thinking. AI is to move.");
-          return engineToGo(isMoveNow: false);
-        }
-      }
-    }
-
-    if (controller.gameInstance.isAiToMove ||
-        controller.gameInstance.aiIsSearching) {
+    if (controller.gameInstance._isAiToMove ||
+        controller.gameInstance._aiIsSearching) {
       return logger.i("[tap] AI's turn, skip tapping.");
     }
 
-    if (position.phase == Phase.ready) controller.gameInstance.start();
+    final position = controller.position;
 
     // Human to go
     bool ret = false;
     try {
-      switch (position.action) {
+      switch (position._action) {
         case Act.place:
-          if (await position.putPiece(sq)) {
+          if (await position._putPiece(sq)) {
             animationController.reset();
             animationController.animateTo(1.0);
-            if (position.action == Act.remove) {
+            if (position._action == Act.remove) {
               MillController()
                   .tip
                   .showTip(S.of(context).tipMill, snackBar: true);
@@ -103,10 +85,10 @@ class TapHandler {
                 .showTip(S.of(context).tipCannotPlace, snackBar: true);
             break;
           }
-          switch (position.selectPiece(sq)) {
+          switch (position._selectPiece(sq)) {
             case SelectionResponse.ok:
               await Audios().playTone(Sound.select);
-              controller.gameInstance.select(squareToIndex[sq]!);
+              controller.gameInstance._select(squareToIndex[sq]!);
               ret = true;
               logger.v("[tap] selectPiece: [$sq]");
 
@@ -162,14 +144,14 @@ class TapHandler {
           break;
 
         case Act.remove:
-          switch (await position.removePiece(sq)) {
+          switch (await position._removePiece(sq)) {
             case RemoveResponse.ok:
               animationController.reset();
               animationController.animateTo(1.0);
 
               ret = true;
               logger.v("[tap] removePiece: [$sq]");
-              if (controller.position.pieceToRemoveCount >= 1) {
+              if (controller.position._pieceToRemoveCount >= 1) {
                 MillController()
                     .tip
                     .showTip(S.of(context).tipContinueMill, snackBar: true);
@@ -216,39 +198,37 @@ class TapHandler {
               break;
           }
           break;
-        case Act.none:
       }
 
       if (ret) {
         controller.gameInstance.sideToMove = position.sideToMove;
-        controller.gameInstance.moveHistory.add(position.record);
 
         // TODO: Need Others?
         // Increment ply counters. In particular,
         // rule50 will be reset to zero later on
         // in case of a remove.
-        ++position.gamePly;
+        ++position._gamePly;
         ++position.st.rule50;
         ++position.st.pliesFromNull;
 
-        if (position.record != null &&
-            position.record!.move.length > "-(1,2)".length) {
-          if (position.posKeyHistory.isEmpty ||
-              position.posKeyHistory.last != position.st.key) {
-            position.posKeyHistory.add(position.st.key);
-            if (DB().rules.threefoldRepetitionRule && position.hasGameCycle) {
-              position.setGameOver(
+        if (position._record != null &&
+            position._record!.move.length > "-(1,2)".length) {
+          if (position._posKeyHistory.isEmpty ||
+              position._posKeyHistory.last != position.st.key) {
+            position._posKeyHistory.add(position.st.key);
+            if (DB().rules.threefoldRepetitionRule && position._hasGameCycle) {
+              position._setGameOver(
                 PieceColor.draw,
                 GameOverReason.drawThreefoldRepetition,
               );
             }
           }
         } else {
-          position.posKeyHistory.clear();
+          position._posKeyHistory.clear();
         }
 
         //position.move = m;
-        final ExtMove m = position.record!;
+        final ExtMove m = position._record!;
         controller.recorder.prune();
         controller.recorder.moveIn(m);
 
@@ -266,6 +246,8 @@ class TapHandler {
     }
   }
 
+  // TODO: [Leptopoda] the reference of this method has been removed in a few instances.
+  // We'll need to find a better way for this.
   Future<void> engineToGo({required bool isMoveNow}) async {
     bool _isMoveNow = isMoveNow;
 
@@ -273,7 +255,7 @@ class TapHandler {
     logger.v("[engineToGo] engine type is $gameMode");
 
     if (_isMoveNow) {
-      if (!controller.gameInstance.isAiToMove) {
+      if (!controller.gameInstance._isAiToMove) {
         logger.i("[engineToGo] Human to Move. Cannot get search result now.");
         return ScaffoldMessenger.of(context)
             .showSnackBarClear(S.of(context).notAIsTurn);
@@ -289,7 +271,7 @@ class TapHandler {
 
     while ((controller.position.winner == PieceColor.nobody ||
             DB().preferences.isAutoRestart) &&
-        controller.gameInstance.isAiToMove) {
+        controller.gameInstance._isAiToMove) {
       if (gameMode == GameMode.aiVsAi) {
         MillController().tip.showTip(
               "${controller.position.score[PieceColor.white]} : ${controller.position.score[PieceColor.black]} : ${controller.position.score[PieceColor.draw]}",
@@ -300,7 +282,7 @@ class TapHandler {
         final String? n = controller.recorder.lastMove?.notation;
 
         if (DB().preferences.screenReaderSupport &&
-            controller.position.action != Act.remove &&
+            controller.position._action != Act.remove &&
             n != null) {
           ScaffoldMessenger.of(context)
               .showSnackBar(CustomSnackBar("${S.of(context).human}: $n"));
@@ -323,11 +305,10 @@ class TapHandler {
         case EngineResponseType.move:
           final ExtMove extMove = response.value!;
 
-          await controller.gameInstance.doMove(extMove);
+          await controller.gameInstance._doMove(extMove);
           animationController.reset();
           animationController.animateTo(1.0);
 
-          _showResult();
           if (DB().preferences.screenReaderSupport) {
             ScaffoldMessenger.of(context).showSnackBar(
               CustomSnackBar("${S.of(context).ai}: ${extMove.notation}"),
@@ -342,10 +323,7 @@ class TapHandler {
           MillController().tip.showTip(S.of(context).error(response.type));
       }
 
-      if (DB().preferences.isAutoRestart &&
-          controller.position.winner != PieceColor.nobody) {
-        controller.gameInstance.newGame();
-      }
+      _showResult();
     }
   }
 
@@ -361,18 +339,6 @@ class TapHandler {
         context: context,
         builder: (_) => GameResultAlert(
           winner: winner,
-          // TODO: [Leptopoda] the only reason not having the function in the GameAlert is engineToGo ;)
-          onRestart: () {
-            controller.gameInstance.newGame();
-            MillController()
-                .tip
-                .showTip(S.of(context).gameStarted, snackBar: true);
-
-            if (controller.gameInstance.isAiToMove) {
-              logger.i("$_tag New game, AI to move.");
-              engineToGo(isMoveNow: false);
-            }
-          },
         ),
       );
     }

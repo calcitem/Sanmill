@@ -79,16 +79,33 @@ class MillController {
   ///
   /// This method is suitable to use for starting a new game.
   void reset() {
+    final gameModeBak = gameInstance.gameMode;
     _init();
+    gameInstance.gameMode = gameModeBak;
+  }
+
+  /// Starts the current game.
+  ///
+  /// This method is suitable to use for starting a new game.
+  void _startGame() {
+    // TODO: [Leptopoda] reimplement this
+    // MillController().tip.showTip(S.of(context).gameStarted, snackBar: true);
+    //
+    // if (controller.gameInstance.isAiToMove) {
+    //   logger.i("$_tag New game, AI to move.");
+    //   engineToGo(isMoveNow: false);
+    // }
   }
 
   /// Initializes the controller.
   void _init() {
-    position = Position(this);
-    gameInstance = _Game(this);
-    engine = NativeEngine(this);
+    position = Position();
+    gameInstance = _Game();
+    engine = NativeEngine();
     recorder = _GameRecorder();
     tip = HeaderTipState();
+
+    _startGame();
   }
 
   /// Starts a game import.

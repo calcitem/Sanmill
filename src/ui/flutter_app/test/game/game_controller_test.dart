@@ -26,20 +26,6 @@ import '../helpers/test_mills.dart';
 
 void main() {
   group("MillController", () {
-    test("new game should clear the history", () async {
-      // initialize the test
-      DB.instance = MockedDB();
-      final controller = MillController();
-
-      // import a game
-      ImportService.import(testMill);
-
-      // reset the game
-      controller.gameInstance.newGame();
-
-      expect(controller.recorder.moves, isEmpty);
-    });
-
     test("take back should clear the focus", () async {
       // initialize the test
       DB.instance = MockedDB();

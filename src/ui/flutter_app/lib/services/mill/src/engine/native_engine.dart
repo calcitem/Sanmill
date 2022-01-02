@@ -21,9 +21,7 @@ part of '../../mill.dart';
 // TODO: [Leptopoda] make this a utility class. There shouldn't be multiple engines running
 // TODO: [calcitem] Test AI Vs. AI when the refactoring is complete.
 class NativeEngine extends Engine {
-  final MillController controller;
-
-  NativeEngine(this.controller);
+  NativeEngine();
 
   static const _platform = MethodChannel("com.calcitem.sanmill/engine");
   bool _isActive = false;
@@ -210,7 +208,7 @@ class NativeEngine extends Engine {
 
   // TODO: [Leptopoda] don't pass around the position object as we can access it through [controller.position]
   String _getPositionFen(Position position) {
-    final startPosition = position.fen;
+    final startPosition = position._fen;
     final moves = position._movesSinceLastRemove;
 
     final StringBuffer posFenStr = StringBuffer("position fen $startPosition");

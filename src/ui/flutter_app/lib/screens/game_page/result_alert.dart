@@ -21,13 +21,11 @@ part of './game_page.dart';
 class GameResultAlert extends StatelessWidget {
   GameResultAlert({
     required this.winner,
-    required this.onRestart,
     Key? key,
   }) : super(key: key);
 
   final GameMode gameMode = MillController().gameInstance.gameMode;
   final PieceColor winner;
-  final VoidCallback onRestart;
 
   static const _tag = "[Game Over Alert]";
 
@@ -91,7 +89,7 @@ class GameResultAlert extends StatelessWidget {
           child: Text(S.of(context).restart),
           onPressed: () {
             Navigator.pop(context);
-            onRestart.call();
+            controller.reset();
           },
         ),
         TextButton(

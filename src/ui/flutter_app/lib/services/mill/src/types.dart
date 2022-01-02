@@ -151,13 +151,11 @@ extension PieceColorExtension on PieceColor {
   }
 }
 
-enum Phase { none, ready, placing, moving, gameOver }
+enum Phase { ready, placing, moving, gameOver }
 
 extension PhaseExtension on Phase {
   String get fen {
     switch (this) {
-      case Phase.none:
-        return "n";
       case Phase.ready:
         return "r";
       case Phase.placing:
@@ -175,7 +173,6 @@ extension PhaseExtension on Phase {
         return S.of(context).tipPlace;
       case Phase.moving:
         return S.of(context).tipMove;
-      case Phase.none:
       case Phase.ready:
       case Phase.gameOver:
     }
@@ -187,14 +184,13 @@ extension PhaseExtension on Phase {
         return S.of(context).placingPhase;
       case Phase.moving:
         return S.of(context).movingPhase;
-      case Phase.none:
       case Phase.ready:
       case Phase.gameOver:
     }
   }
 }
 
-enum Act { none, select, place, remove }
+enum Act { select, place, remove }
 
 extension ActExtension on Act {
   String get fen {
@@ -205,8 +201,6 @@ extension ActExtension on Act {
         return "s";
       case Act.remove:
         return "r";
-      case Act.none:
-        return "?";
     }
   }
 }

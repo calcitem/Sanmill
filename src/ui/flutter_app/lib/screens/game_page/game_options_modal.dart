@@ -20,23 +20,6 @@ part of './game_page.dart';
 
 class _GameOptionsModal extends StatelessWidget {
   const _GameOptionsModal({Key? key}) : super(key: key);
-  static const String _tag = "[game_options]";
-
-  Future<void> _startNew(BuildContext context) async {
-    Navigator.pop(context);
-
-    MillController().gameInstance.newGame();
-
-    MillController().tip.showTip(S.of(context).gameStarted, snackBar: true);
-
-    if (MillController().gameInstance.isAiToMove) {
-      logger.v("$_tag New game, AI to move.");
-
-      // TODO: [Leptopoda] xD
-
-      // extracted.engineToGo(isMoveNow: false);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +27,10 @@ class _GameOptionsModal extends StatelessWidget {
       semanticLabel: S.of(context).game,
       children: <Widget>[
         SimpleDialogOption(
-          onPressed: () => _startNew(context),
+          onPressed: () {
+            Navigator.pop(context);
+            MillController().reset();
+          },
           child: Text(S.of(context).newGame),
         ),
         const CustomSpacer(),
