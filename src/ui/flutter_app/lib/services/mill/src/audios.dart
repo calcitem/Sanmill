@@ -44,7 +44,7 @@ class Audios {
   late final int _removeSoundId;
   late final int _selectSoundId;
   late final int _winSoundId;
-  bool isTemporaryMute = false;
+  bool _isTemporaryMute = false;
 
   static const _tag = "[audio]";
 
@@ -156,7 +156,7 @@ class Audios {
     assert(MillController().initialized);
 
     if (!DB().preferences.toneEnabled ||
-        isTemporaryMute ||
+        _isTemporaryMute ||
         DB().preferences.screenReaderSupport) {
       return;
     }
@@ -173,5 +173,13 @@ class Audios {
       logger.e(e.toString());
       rethrow;
     }
+  }
+
+  void mute() {
+    _isTemporaryMute = true;
+  }
+
+  void unMute() {
+    _isTemporaryMute = false;
   }
 }

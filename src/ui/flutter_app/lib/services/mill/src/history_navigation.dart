@@ -27,6 +27,8 @@ part of '../mill.dart';
 class HistoryNavigator {
   const HistoryNavigator._();
 
+  static const _tag = "[HistoryNavigator]";
+
   static bool _isGoingToHistory = false;
 
   static Future<void> _gotoHistory(
@@ -44,24 +46,29 @@ class HistoryNavigator {
 
     if (_isGoingToHistory) {
       return logger.i(
-        "[TakeBack] Is going to history, ignore Take Back button press.",
+        "$_tag Is going to history, ignore Take Back button press.",
       );
     }
 
     _isGoingToHistory = true;
 
-    final response = await controller.position.gotoHistory(move, number);
-    if (response != null) {
+    try {
+      await gotoHistory(move, number);
+    } on _HistoryRangeException {
+      ScaffoldMessenger.of(context).showSnackBarClear(S.of(context).atEnd);
+      logger.i(_HistoryRangeException);
+    } on _HistoryRuleException {
       ScaffoldMessenger.of(context)
-          .showSnackBarClear(response.getString(context));
+          .showSnackBarClear(S.of(context).movesAndRulesNotMatch);
+      logger.i(_HistoryRuleException);
     }
 
     _isGoingToHistory = false;
 
     final String text;
-    final lastEffectiveMove = controller.recorder.lastEffectiveMove;
-    if (lastEffectiveMove?.notation != null) {
-      text = S.of(context).lastMove(lastEffectiveMove!.notation);
+    final lastEffectiveMove = controller.recorder.current;
+    if (lastEffectiveMove != null) {
+      text = S.of(context).lastMove(lastEffectiveMove.notation);
     } else {
       text = S.of(context).atEnd;
     }
@@ -117,4 +124,34 @@ class HistoryNavigator {
         number: n,
         pop: pop,
       );
+
+  /// Moves through the History by replaying all relevant moves.
+  ///
+  /// throws an [_HistoryResponseException] when the moves and rules don't match
+  /// or when the end of the list moves has been reached.
+  static Future<void> gotoHistory(HistoryMove move, [int? index]) async {
+    move.gotoHistory(index);
+
+    Audios().mute();
+
+    // Backup context
+    final gameModeBackup = MillController().gameInstance.gameMode;
+    MillController().gameInstance.gameMode = GameMode.humanVsHuman;
+    final historyBack = MillController().recorder;
+    MillController().reset();
+
+    historyBack.forEachVisible((move) async {
+      if (!(await MillController().gameInstance._doMove(move))) {
+        // TODO: [Leptopoda] start a new game before exiting.
+        throw const _HistoryRuleException();
+      }
+    });
+
+    // Restore context
+    MillController().gameInstance.gameMode = gameModeBackup;
+    MillController().recorder = historyBack;
+
+    Audios().unMute();
+    await move.gotoHistoryPlaySound();
+  }
 }

@@ -16,22 +16,19 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:mockito/mockito.dart';
-import 'package:sanmill/services/mill/mill.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/shared/iterable/array_helper.dart';
 
-class MockedAudios extends Mock implements Audios {
-  @override
-  Future<void> loadSounds() async {}
+void main() {
+  test(
+      "List.lastF should return the last value of the list only if the list is not empty",
+      () {
+    // initialize
+    final list = List.generate(5, (index) => index);
 
-  @override
-  void disposePool() {}
+    expect(list.lastF, 4);
 
-  @override
-  Future<void> playTone(Sound sound) async {}
-
-  @override
-  void mute() {}
-
-  @override
-  void unMute() {}
+    list.clear();
+    expect(list.lastF, isNull);
+  });
 }

@@ -229,8 +229,7 @@ class TapHandler {
 
         //position.move = m;
         final ExtMove m = position._record!;
-        controller.recorder.prune();
-        controller.recorder.moveIn(m);
+        controller.recorder.add(m);
 
         if (position.winner == PieceColor.nobody) {
           engineToGo(isMoveNow: false);
@@ -260,7 +259,7 @@ class TapHandler {
         return ScaffoldMessenger.of(context)
             .showSnackBarClear(S.of(context).notAIsTurn);
       }
-      if (!controller.recorder.isClean) {
+      if (controller.recorder.isNotEmpty) {
         logger.i(
           "[engineToGo] History is not clean. Cannot get search result now.",
         );
@@ -279,7 +278,7 @@ class TapHandler {
       } else {
         MillController().tip.showTip(S.of(context).thinking);
 
-        final String? n = controller.recorder.lastMove?.notation;
+        final String? n = controller.recorder.lastF?.notation;
 
         if (DB().preferences.screenReaderSupport &&
             controller.position._action != Act.remove &&

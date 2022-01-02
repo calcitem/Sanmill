@@ -48,7 +48,7 @@ class _InfoDialog extends StatelessWidget {
       buffer.writeln();
     }
 
-    final String? n1 = controller.recorder.lastMove?.notation;
+    final String? n1 = controller.recorder.current?.notation;
     // Last Move information
     if (n1 != null) {
       // $them is only shown with the screen reader. It is convenient for
@@ -61,7 +61,7 @@ class _InfoDialog extends StatelessWidget {
 
       if (n1.startsWith("x")) {
         buffer.writeln(
-          controller.recorder.moves[controller.recorder.moveCount - 2].notation,
+          controller.recorder[controller.recorder.length - 2].notation,
         );
       }
       buffer.writePeriod(n1);

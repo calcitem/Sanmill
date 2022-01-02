@@ -49,7 +49,10 @@ class ImportService {
 
     if (data?.text == null) return;
 
-    await HistoryNavigator.takeBackAll(context, pop: false);
+    await HistoryNavigator.gotoHistory(HistoryMove.backAll);
+    // TODO: [Leptopoda] use reset game
+    MillController().recorder.clear();
+
     final importFailedStr = import(data!.text!);
 
     if (importFailedStr != null) {
@@ -179,7 +182,6 @@ class ImportService {
   @visibleForTesting
   static String? import(String moveList) {
     // TODO: [Leptopoda] clean up
-    MillController().recorder.clear();
     logger.v("Clipboard text: $moveList");
 
     if (_isDalmaxMoveList(moveList)) {
@@ -194,7 +196,7 @@ class ImportService {
       return _importGoldToken(moveList);
     }
 
-    final List<ExtMove> newHistory = [];
+    final _GameRecorder newHistory = _GameRecorder();
     final List<String> list = moveList
         .toLowerCase()
         .replaceAll("\n", " ")
@@ -282,8 +284,7 @@ class ImportService {
     }
 
     if (newHistory.isNotEmpty) {
-      // TODO: [Leptopoda] clean up
-      MillController().recorder.moves = newHistory;
+      MillController().recorder = newHistory;
     }
   }
 
@@ -292,7 +293,7 @@ class ImportService {
   }
 
   static String? _importPlayOk(String moveList) {
-    final List<ExtMove> newHistory = [];
+    final _GameRecorder newHistory = _GameRecorder();
 
     final List<String> list = moveList
         .replaceAll("\n", " ")
@@ -338,8 +339,7 @@ class ImportService {
     }
 
     if (newHistory.isNotEmpty) {
-      // TODO: [Leptopoda] clean up
-      MillController().recorder.moves = newHistory;
+      MillController().recorder = newHistory;
     }
 
     return null;

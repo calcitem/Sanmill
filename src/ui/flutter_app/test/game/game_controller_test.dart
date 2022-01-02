@@ -26,7 +26,22 @@ import '../helpers/test_mills.dart';
 
 void main() {
   group("MillController", () {
-    test("take back should clear the focus", () async {
+    test("new game should have the same GameMode", () async {
+      const gameMode = GameMode.humanVsAi;
+
+      // initialize the test
+      DB.instance = MockedDB();
+      final controller = MillController();
+
+      controller.gameInstance.gameMode = gameMode;
+
+      // reset the game
+      controller.reset();
+
+      expect(controller.gameInstance.gameMode, gameMode);
+    });
+
+    test("Import should clear the focus", () async {
       // initialize the test
       DB.instance = MockedDB();
       Audios.instance = MockedAudios();
@@ -35,9 +50,6 @@ void main() {
 
       // import a game
       ImportService.import(testMill);
-
-      // reset go back one
-      controller.position.gotoHistory(HistoryMove.backOne);
 
       expect(MillController().gameInstance.focusIndex, isNull);
     });

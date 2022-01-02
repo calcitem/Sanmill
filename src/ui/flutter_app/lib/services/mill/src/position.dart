@@ -219,7 +219,7 @@ class Position {
       _posKeyHistory.clear();
     }
 
-    MillController().recorder.moveIn(m); // TODO: Is Right?
+    MillController().recorder.add(m); // TODO: Is Right?
 
     return true;
   }
@@ -745,65 +745,23 @@ class Position {
     return true;
   }
 
-///////////////////////////////////////////////////////////////////////////////
-  Future<_HistoryResponse?> gotoHistory(HistoryMove move, [int? index]) async {
-    final int moveIndex = move.gotoHistoryIndex(index);
-
-    if (MillController().recorder.cur == moveIndex) {
-      logger.i("[goto] cur is equal to moveIndex.");
-      return _HistoryResponse.equal;
-    }
-
-    if (moveIndex < -1 || MillController().recorder.moveCount <= moveIndex) {
-      logger.i("[goto] moveIndex is out of range.");
-      return _HistoryResponse.outOfRange;
-    }
-
-    Audios().isTemporaryMute = true;
-
-    // Backup context
-    final gameModeBackup = MillController().gameInstance.gameMode;
-    final historyBack = MillController().recorder.moves;
-    MillController().reset();
-    MillController().gameInstance.gameMode = GameMode.humanVsHuman;
-
-    _HistoryResponse? error;
-
-    // TODO: [Leptopoda] throw errors instead of returning bools
-    for (int i = 0; i <= moveIndex; i++) {
-      if (!(await MillController().gameInstance._doMove(historyBack[i]))) {
-        error = _HistoryResponse.error;
-        break;
-      }
-    }
-
-    // Restore context
-    MillController().gameInstance.gameMode = gameModeBackup;
-    MillController().recorder.moves = historyBack;
-    MillController().recorder.cur = moveIndex;
-
-    Audios().isTemporaryMute = false;
-    await move.gotoHistoryPlaySound();
-    return error;
-  }
-
+  ///////////////////////////////////////////////////////////////////////////////
   String? get _movesSinceLastRemove {
-    int i = 0;
+    final recorder = MillController().recorder;
+
+    final iterator = recorder.bidirectionalIterator;
+    iterator.moveToLast();
+
     final buffer = StringBuffer();
-    int posAfterLastRemove = 0;
 
-    for (i = MillController().recorder.moveCount - 1; i >= 0; i--) {
-      if (MillController().recorder.moves[i].move[0] == "-") break;
+    while (iterator.movePrevious()) {
+      if (iterator.current.move[0] == "-") break;
     }
 
-    if (i >= 0) {
-      posAfterLastRemove = i + 1;
-    }
+    if (iterator.current != 0) iterator.moveNext();
 
-    for (int i = posAfterLastRemove;
-        i < MillController().recorder.moveCount;
-        i++) {
-      buffer.write(" ${MillController().recorder.moves[i].move}");
+    while (iterator.moveNext()) {
+      buffer.write(" ${iterator.current.move}");
     }
 
     final String moves = buffer.toString();

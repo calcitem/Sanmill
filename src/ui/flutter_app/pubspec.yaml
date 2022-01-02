@@ -10,6 +10,7 @@ environment:
 dependencies:
   animated_text_kit: ^4.1.1
   catcher: ^0.6.9
+  collection: ^1.15.0
   copy_with_extension: ^2.0.2
   cupertino_icons: ^1.0.4
   device_info_plus_platform_interface: ^2.2.1

@@ -18,53 +18,12 @@
 
 part of '../mill.dart';
 
-// TODO
-// TODO: [Leptopoda] the public facing methods look a lot like the ones Iterable has.
-//We might wanna make GameRecorder one.
-class _GameRecorder {
-  // TODO: [Leptopoda] use null
-  int cur = -1;
-  List<ExtMove> moves = <ExtMove>[];
+class _GameRecorder extends PointedList<ExtMove> {
+  _GameRecorder() : super();
 
-  _GameRecorder();
-
-  void clear() {
-    moves.clear();
-    cur = 0;
-  }
-
-  bool get isClean {
-    return cur == moves.length - 1;
-  }
-
-  void prune() {
-    if (isClean) {
-      return;
-    }
-
-    moves.removeRange(cur + 1, moves.length);
-  }
-
-  void moveIn(ExtMove extMove) {
-    if (moves.lastF == extMove) {
-      //assert(false);
-      // TODO: WAR
-      return;
-    }
-
-    moves.add(extMove);
-    cur++;
-  }
-
-  int get moveCount => moves.length;
-
-  ExtMove? get lastMove => moves.lastF;
-
-  ExtMove? get lastEffectiveMove => cur == -1 ? null : moves[cur];
-
+  // TODO: [Leptopoda] as this is not related to the recorder in general we should probably move this to the import export service.
   String? get moveHistoryText {
-    if (moves.isEmpty) return null;
-
+    if (isEmpty) return null;
     final StringBuffer moveHistory = StringBuffer();
     int k = 1;
     int i = 0;
@@ -72,17 +31,18 @@ class _GameRecorder {
     void buildStandardNotation() {
       const separator = "    ";
 
-      if (i <= cur) {
+      if (i <= index) {
         moveHistory.write(separator);
-        moveHistory.write(moves[i++].notation);
+        moveHistory.write(this[i++].notation);
       }
 
-      if (i <= cur && moves[i].type == _MoveType.remove) {
-        moveHistory.write(moves[i++].notation);
+      if (i <= index && this[i].type == _MoveType.remove) {
+        moveHistory.write(this[i++].notation);
       }
     }
 
-    while (i <= cur) {
+    // TODO: [Leptopoda] migrate to [forEachVisible]
+    while (i <= index) {
       moveHistory.writeNumber(k++);
       if (DB().display.standardNotationEnabled) {
         buildStandardNotation();
@@ -90,13 +50,13 @@ class _GameRecorder {
       } else {
         const separator = " ";
         moveHistory.write(separator);
-        moveHistory.write(moves[i++].move);
+        moveHistory.write(this[i++].move);
 
-        if (i <= cur) {
+        if (i <= index) {
           moveHistory.write(separator);
           moveHistory.writeNumber(k++);
           moveHistory.write(separator);
-          moveHistory.write(moves[i++].move);
+          moveHistory.write(this[i++].move);
         }
       }
       moveHistory.writeln();

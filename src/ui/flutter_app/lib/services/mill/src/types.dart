@@ -267,17 +267,27 @@ extension GameResultExtension on GameResult {
   }
 }
 
-enum _HistoryResponse { equal, outOfRange, error }
+abstract class _HistoryResponseException implements Exception {
+  static const tag = "[_HistoryResponse]";
 
-extension HistoryResponseExtension on _HistoryResponse {
-  String getString(BuildContext context) {
-    switch (this) {
-      case _HistoryResponse.outOfRange:
-      case _HistoryResponse.equal:
-        return S.of(context).atEnd;
-      case _HistoryResponse.error:
-        return S.of(context).movesAndRulesNotMatch;
-    }
+  const _HistoryResponseException();
+}
+
+class _HistoryRuleException extends _HistoryResponseException {
+  const _HistoryRuleException();
+
+  @override
+  String toString() {
+    return "${_HistoryResponseException.tag} cur is equal to moveIndex.";
+  }
+}
+
+class _HistoryRangeException extends _HistoryResponseException {
+  const _HistoryRangeException();
+
+  @override
+  String toString() {
+    return "${_HistoryResponseException.tag} cur is equal to moveIndex.";
   }
 }
 
@@ -301,25 +311,34 @@ enum RemoveResponse {
 enum HistoryMove { forwardAll, backAll, forward, backN, backOne }
 
 extension HistoryMoveExtension on HistoryMove {
-  int gotoHistoryIndex([int? amount]) {
-    final controller = MillController();
+  /// Moves the [_GameRecorder] to the specified position.
+  ///
+  /// Throws [_HistoryResponseException] when trying to access a value outside of the bounds.
+  void gotoHistory([int? amount]) {
+    final current = MillController().recorder.index;
+    final iterator = MillController().recorder.globalIterator;
 
     switch (this) {
       case HistoryMove.forwardAll:
-        return controller.recorder.moveCount - 1;
+        iterator.moveToLast();
+        break;
       case HistoryMove.backAll:
-        return -1;
+        iterator.moveToFirst();
+        break;
       case HistoryMove.forward:
-        return controller.recorder.cur + 1;
-      case HistoryMove.backN:
-        assert(amount != null);
-        int _index = controller.recorder.cur - amount!;
-        if (_index < -1) {
-          _index = -1;
+        if (!iterator.moveNext()) {
+          throw const _HistoryRangeException();
         }
-        return _index;
+        break;
+      case HistoryMove.backN:
+        final _index = current - amount!;
+        assert(_index >= 0);
+        iterator.moveTo(_index);
+        break;
       case HistoryMove.backOne:
-        return controller.recorder.cur - 1;
+        if (!iterator.movePrevious()) {
+          throw const _HistoryRangeException();
+        }
     }
   }
 

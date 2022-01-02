@@ -61,9 +61,6 @@ class MillController {
     _init();
   }
 
-  @visibleForTesting
-  MillController.empty();
-
   /// Starts up the controller. It will initialize the audio subsystem and heat the engine.
   Future<void> start() async {
     if (_initialized) return;
