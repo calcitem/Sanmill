@@ -60,9 +60,7 @@ void main() {
           onPressed: () {},
         ),
         child: Scaffold(
-          appBar: GameHeader(
-            gameMode: GameMode.humanVsHuman,
-          ),
+          appBar: GameHeader(),
         ),
       );
 

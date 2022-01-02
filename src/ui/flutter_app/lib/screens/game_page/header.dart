@@ -20,18 +20,12 @@ part of './game_page.dart';
 
 @visibleForTesting
 class GameHeader extends StatefulWidget implements PreferredSizeWidget {
-  GameHeader({
-    Key? key,
-    // TODO: [Leptopoda] maybe let it get the data from the [MillController].
-    required this.gameMode,
-  }) : super(key: key);
+  GameHeader({Key? key}) : super(key: key);
 
   @override
   final Size preferredSize = Size.fromHeight(
     kToolbarHeight + DB().display.boardTop,
   );
-
-  final GameMode gameMode;
 
   @override
   State<GameHeader> createState() => _GameHeaderState();
@@ -78,6 +72,8 @@ class _GameHeaderState extends State<GameHeader> {
 
   @override
   Widget build(BuildContext context) {
+    final gameInstance = MillController().gameInstance;
+
     final iconRow = IconTheme(
       data: IconThemeData(
         color: DB().colorSettings.messageColor,
@@ -86,11 +82,9 @@ class _GameHeaderState extends State<GameHeader> {
         key: const Key("HeaderIconRow"),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(widget.gameMode.leftHeaderIcon),
-          Icon(
-            MillController().gameInstance.sideToMove.icon,
-          ),
-          Icon(widget.gameMode.rightHeaderIcon),
+          Icon(gameInstance.gameMode.leftHeaderIcon),
+          Icon(gameInstance.sideToMove.icon),
+          Icon(gameInstance.gameMode.rightHeaderIcon),
         ],
       ),
     );
