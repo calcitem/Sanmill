@@ -70,8 +70,7 @@ class ExtMove {
       _toFile = int.parse(move[1]);
       _toRank = int.parse(move[3]);
       to = makeSquare(_toFile, _toRank);
-      // TODO: [Leptopoda] remove stringy thing
-      notation = "${_squareToWmdNotation[to]}";
+      notation = _squareToWmdNotation[to]!;
     } else if (move == "draw") {
       assert(false, "not yet implemented"); // TODO
       logger.v("[TODO] Computer request draw");

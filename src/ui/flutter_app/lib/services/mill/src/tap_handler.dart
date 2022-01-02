@@ -2,8 +2,6 @@
 
 part of '../mill.dart';
 
-// TODO: [Leptopoda] to fix the big piece we have to reset the selectedPiece by setting it to null :)
-
 class TapHandler {
   final AnimationController animationController;
   final BuildContext context;
@@ -25,8 +23,7 @@ class TapHandler {
       return logger.v("$_tag Engine type is no human, ignore tapping.");
     }
 
-    if (controller.gameInstance._isAiToMove ||
-        controller.gameInstance._aiIsSearching) {
+    if (controller.gameInstance._isAiToMove) {
       return logger.i("[tap] AI's turn, skip tapping.");
     }
 

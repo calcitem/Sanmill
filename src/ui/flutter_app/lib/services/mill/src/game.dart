@@ -39,22 +39,6 @@ class _Game {
     PieceColor.black: true,
   };
 
-  final Map<PieceColor, bool> _isSearching = {
-    PieceColor.white: false,
-    PieceColor.black: false
-  };
-
-  // TODO: [Leptopoda] this is very suspicious.
-  //[_isSearching] is private and only used by it's getter. Seems like this is somehow redundant ...
-  bool get _aiIsSearching {
-    logger.i(
-      "$_tag White is searching? ${_isSearching[PieceColor.white]}\n"
-      "$_tag Black is searching? ${_isSearching[PieceColor.black]}\n",
-    );
-
-    return _isSearching[PieceColor.white]! || _isSearching[PieceColor.black]!;
-  }
-
   // TODO: [Leptopoda] make gameMode final and set it through the constructor.
   GameMode _gameMode = GameMode.none;
   GameMode get gameMode => _gameMode;

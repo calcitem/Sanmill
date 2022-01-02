@@ -61,6 +61,8 @@ class HistoryNavigator {
       ScaffoldMessenger.of(context)
           .showSnackBarClear(S.of(context).movesAndRulesNotMatch);
       logger.i(_HistoryRuleException);
+
+      MillController().reset();
     }
 
     _isGoingToHistory = false;
@@ -142,7 +144,6 @@ class HistoryNavigator {
 
     historyBack.forEachVisible((move) async {
       if (!(await MillController().gameInstance._doMove(move))) {
-        // TODO: [Leptopoda] start a new game before exiting.
         throw const _HistoryRuleException();
       }
     });

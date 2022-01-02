@@ -117,7 +117,7 @@ class _Game extends StatelessWidget {
         MaterialPageRoute(builder: (_) => const GameSettingsPage()),
       );
 
-  // TODO: [Leptopdoa] move options into a theme
+  // TODO: [Leptopodoa] move options into a theme
   void _showMoveOptions(BuildContext context) => showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
