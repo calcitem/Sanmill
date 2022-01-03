@@ -78,26 +78,21 @@ class _Game {
   }
 
   void _logStat() {
-    final int total = MillController().position.score[PieceColor.white]! +
-        MillController().position.score[PieceColor.black]! +
-        MillController().position.score[PieceColor.draw]!;
+    final position = MillController().position;
+    final int total = position.score[PieceColor.white]! +
+        position.score[PieceColor.black]! +
+        position.score[PieceColor.draw]!;
 
     double whiteWinRate = 0;
     double blackWinRate = 0;
     double drawRate = 0;
     if (total != 0) {
-      whiteWinRate =
-          MillController().position.score[PieceColor.white]! * 100 / total;
-      blackWinRate =
-          MillController().position.score[PieceColor.black]! * 100 / total;
-      drawRate =
-          MillController().position.score[PieceColor.draw]! * 100 / total;
+      whiteWinRate = position.score[PieceColor.white]! * 100 / total;
+      blackWinRate = position.score[PieceColor.black]! * 100 / total;
+      drawRate = position.score[PieceColor.draw]! * 100 / total;
     }
 
-    final String scoreInfo =
-        "Score: ${MillController().position.score[PieceColor.white]} :"
-        " ${MillController().position.score[PieceColor.black]} :"
-        " ${MillController().position.score[PieceColor.draw]}\ttotal:"
+    final String scoreInfo = "Score: ${position.scoreString}\ttotal:"
         " $total\n$whiteWinRate% : $blackWinRate% : $drawRate%\n";
 
     logger.i("$_tag $scoreInfo");

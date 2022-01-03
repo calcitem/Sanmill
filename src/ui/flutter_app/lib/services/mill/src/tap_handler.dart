@@ -3,20 +3,19 @@
 part of '../mill.dart';
 
 class TapHandler {
+  static const _tag = "[Tap Handler]";
+
   final AnimationController animationController;
   final BuildContext context;
-  final MillController controller = MillController();
+
+  final controller = MillController();
+  final gameMode = MillController().gameInstance.gameMode;
+  final showTip = MillController().tip.showTip;
 
   TapHandler({
     required this.animationController,
     required this.context,
-  }) {
-    gameMode = controller.gameInstance.gameMode;
-  }
-
-  late final GameMode gameMode;
-
-  static const _tag = "[Tap Handler]";
+  });
 
   Future<void> onBoardTap(int sq) async {
     if (gameMode == GameMode.aiVsAi || gameMode == GameMode.testViaLAN) {
@@ -37,24 +36,24 @@ class TapHandler {
           animationController.reset();
           animationController.animateTo(1.0);
           if (position._action == Act.remove) {
-            MillController().tip.showTip(S.of(context).tipMill, snackBar: true);
+            showTip(S.of(context).tipMill, snackBar: true);
           } else {
             if (gameMode == GameMode.humanVsAi) {
               if (DB().rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
-                MillController().tip.showTip(S.of(context).continueToMakeMove);
+                showTip(S.of(context).continueToMakeMove);
               } else {
-                MillController().tip.showTip(S.of(context).tipPlaced);
+                showTip(S.of(context).tipPlaced);
               }
             } else {
               if (DB().rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                 // TODO: HumanVsHuman - Change tip
-                MillController().tip.showTip(S.of(context).tipPlaced);
+                showTip(S.of(context).tipPlaced);
               } else {
                 final side = controller.gameInstance.sideToMove.opponent
                     .playerName(context);
-                MillController().tip.showTip(
-                      S.of(context).tipToMove(side),
-                    );
+                showTip(
+                  S.of(context).tipToMove(side),
+                );
               }
             }
           }
@@ -63,7 +62,7 @@ class TapHandler {
           break;
         } else {
           logger.v("[tap] putPiece: skip [$sq]");
-          MillController().tip.showTip(S.of(context).tipBanPlace);
+          showTip(S.of(context).tipBanPlace);
         }
 
         // If cannot move, retry select, do not break
@@ -72,9 +71,7 @@ class TapHandler {
       select:
       case Act.select:
         if (position.phase == Phase.placing) {
-          MillController()
-              .tip
-              .showTip(S.of(context).tipCannotPlace, snackBar: true);
+          showTip(S.of(context).tipCannotPlace, snackBar: true);
           break;
         }
         switch (position._selectPiece(sq)) {
@@ -84,21 +81,17 @@ class TapHandler {
             ret = true;
             logger.v("[tap] selectPiece: [$sq]");
 
-            final us = controller.gameInstance.sideToMove;
+            final pieceOnBoardCount =
+                position.pieceOnBoardCount[controller.gameInstance.sideToMove];
             if (position.phase == Phase.moving &&
                 DB().rules.mayFly &&
-                (controller.position.pieceOnBoardCount[us] ==
-                        DB().rules.flyPieceCount ||
-                    controller.position.pieceOnBoardCount[us] == 3)) {
+                (pieceOnBoardCount == DB().rules.flyPieceCount ||
+                    pieceOnBoardCount == 3)) {
+              // TODO: [Calcitem, Leptopoda] why is the [DB().rules.flyPieceCount] not respected?
               logger.v("[tap] May fly.");
-              MillController().tip.showTip(
-                    S.of(context).tipCanMoveToAnyPoint,
-                    snackBar: true,
-                  );
+              showTip(S.of(context).tipCanMoveToAnyPoint, snackBar: true);
             } else {
-              MillController()
-                  .tip
-                  .showTip(S.of(context).tipPlace, snackBar: true);
+              showTip(S.of(context).tipPlace, snackBar: true);
             }
             break;
           // TODO: [Leptopoda] deduplicate
@@ -106,31 +99,23 @@ class TapHandler {
             await Audios().playTone(Sound.illegal);
             logger.v("[tap] selectPiece: skip [$sq]");
             if (position.phase != Phase.gameOver) {
-              MillController()
-                  .tip
-                  .showTip(S.of(context).tipCannotMove, snackBar: true);
+              showTip(S.of(context).tipCannotMove, snackBar: true);
             }
             break;
           case SelectionResponse.canOnlyMoveToAdjacentEmptyPoints:
             await Audios().playTone(Sound.illegal);
             logger.v("[tap] selectPiece: skip [$sq]");
-            MillController()
-                .tip
-                .showTip(S.of(context).tipCanMoveOnePoint, snackBar: true);
+            showTip(S.of(context).tipCanMoveOnePoint, snackBar: true);
             break;
           case SelectionResponse.pleaseSelectOurPieceToMove:
             await Audios().playTone(Sound.illegal);
             logger.v("[tap] selectPiece: skip [$sq]");
-            MillController()
-                .tip
-                .showTip(S.of(context).tipSelectPieceToMove, snackBar: true);
+            showTip(S.of(context).tipSelectPieceToMove, snackBar: true);
             break;
           case SelectionResponse.illegalAction:
             await Audios().playTone(Sound.illegal);
             logger.v("[tap] selectPiece: skip [$sq]");
-            MillController()
-                .tip
-                .showTip(S.of(context).tipSelectWrong, snackBar: true);
+            showTip(S.of(context).tipSelectWrong, snackBar: true);
             break;
         }
         break;
@@ -143,17 +128,15 @@ class TapHandler {
 
             ret = true;
             logger.v("[tap] removePiece: [$sq]");
-            if (controller.position._pieceToRemoveCount >= 1) {
-              MillController()
-                  .tip
-                  .showTip(S.of(context).tipContinueMill, snackBar: true);
+            if (position._pieceToRemoveCount >= 1) {
+              showTip(S.of(context).tipContinueMill, snackBar: true);
             } else {
               if (gameMode == GameMode.humanVsAi) {
-                MillController().tip.showTip(S.of(context).tipRemoved);
+                showTip(S.of(context).tipRemoved);
               } else {
                 final them = controller.gameInstance.sideToMove.opponent
                     .playerName(context);
-                MillController().tip.showTip(S.of(context).tipToMove(them));
+                showTip(S.of(context).tipToMove(them));
               }
             }
             break;
@@ -162,20 +145,14 @@ class TapHandler {
             logger.i(
               "[tap] removePiece: Cannot Remove our pieces, skip [$sq]",
             );
-            MillController().tip.showTip(
-                  S.of(context).tipSelectOpponentsPiece,
-                  snackBar: true,
-                );
+            showTip(S.of(context).tipSelectOpponentsPiece, snackBar: true);
             break;
           case RemoveResponse.cannotRemovePieceFromMill:
             await Audios().playTone(Sound.illegal);
             logger.i(
               "[tap] removePiece: Cannot remove piece from Mill, skip [$sq]",
             );
-            MillController().tip.showTip(
-                  S.of(context).tipCannotRemovePieceFromMill,
-                  snackBar: true,
-                );
+            showTip(S.of(context).tipCannotRemovePieceFromMill, snackBar: true);
             break;
           case RemoveResponse.illegalPhase:
           case RemoveResponse.illegalAction:
@@ -183,9 +160,7 @@ class TapHandler {
             await Audios().playTone(Sound.illegal);
             logger.v("[tap] removePiece: skip [$sq]");
             if (position.phase != Phase.gameOver) {
-              MillController()
-                  .tip
-                  .showTip(S.of(context).tipBanRemove, snackBar: true);
+              showTip(S.of(context).tipBanRemove, snackBar: true);
             }
             break;
         }
@@ -219,9 +194,7 @@ class TapHandler {
         position._posKeyHistory.clear();
       }
 
-      //position.move = m;
-      final ExtMove m = position._record!;
-      controller.recorder.add(m);
+      controller.recorder.add(position._record!);
 
       if (position.winner == PieceColor.nobody) {
         engineToGo(isMoveNow: false);
@@ -236,40 +209,38 @@ class TapHandler {
   // TODO: [Leptopoda] the reference of this method has been removed in a few instances.
   // We'll need to find a better way for this.
   Future<void> engineToGo({required bool isMoveNow}) async {
-    bool _isMoveNow = isMoveNow;
+    const _tag = "[engineToGo]";
+
+    final position = controller.position;
 
     // TODO
-    logger.v("[engineToGo] engine type is $gameMode");
+    logger.v("$_tag engine type is $gameMode");
 
-    if (_isMoveNow) {
+    if (isMoveNow) {
       if (!controller.gameInstance._isAiToMove) {
-        logger.i("[engineToGo] Human to Move. Cannot get search result now.");
+        logger.i("$_tag Human to Move. Cannot get search result now.");
         return ScaffoldMessenger.of(context)
             .showSnackBarClear(S.of(context).notAIsTurn);
       }
       if (controller.recorder.isNotEmpty) {
-        logger.i(
-          "[engineToGo] History is not clean. Cannot get search result now.",
-        );
+        logger.i("$_tag History is not clean. Cannot get search result now.");
         return ScaffoldMessenger.of(context)
             .showSnackBarClear(S.of(context).aiIsNotThinking);
       }
     }
 
-    while ((controller.position.winner == PieceColor.nobody ||
+    while ((position.winner == PieceColor.nobody ||
             DB().preferences.isAutoRestart) &&
         controller.gameInstance._isAiToMove) {
       if (gameMode == GameMode.aiVsAi) {
-        MillController().tip.showTip(
-              "${controller.position.score[PieceColor.white]} : ${controller.position.score[PieceColor.black]} : ${controller.position.score[PieceColor.draw]}",
-            );
+        showTip(position.scoreString);
       } else {
-        MillController().tip.showTip(S.of(context).thinking);
+        showTip(S.of(context).thinking);
 
         final String? n = controller.recorder.lastF?.notation;
 
         if (DB().preferences.screenReaderSupport &&
-            controller.position._action != Act.remove &&
+            position._action != Act.remove &&
             n != null) {
           ScaffoldMessenger.of(context)
               .showSnackBar(CustomSnackBar("${S.of(context).human}: $n"));
@@ -277,9 +248,8 @@ class TapHandler {
       }
 
       try {
-        logger.v("[engineToGo] Searching..., isMoveNow: $_isMoveNow");
-        final extMove = await controller.engine.search(moveNow: _isMoveNow);
-        _isMoveNow = false;
+        logger.v("$_tag Searching..., isMoveNow: $isMoveNow");
+        final extMove = await controller.engine.search(moveNow: isMoveNow);
 
         await controller.gameInstance._doMove(extMove);
         animationController.reset();
@@ -291,15 +261,11 @@ class TapHandler {
           );
         }
       } on EngineTimeOutException {
-        logger.i("[engineToGo] Engine response type: timeout");
-
-        return MillController()
-            .tip
-            .showTip(S.of(context).timeout, snackBar: true);
+        logger.i("$_tag Engine response type: timeout");
+        showTip(S.of(context).timeout, snackBar: true);
       } on EngineNoBestMoveException {
-        logger.i("[engineToGo] Engine response type: nobestmove");
-
-        MillController().tip.showTip(S.of(context).error("No best move"));
+        logger.i("$_tag Engine response type: nobestmove");
+        showTip(S.of(context).error("No best move"));
       }
 
       _showResult();
@@ -310,15 +276,13 @@ class TapHandler {
     final winner = controller.position.winner;
     final message = winner.getWinString(context);
     if (message != null) {
-      MillController().tip.showTip(message);
+      showTip(message);
     }
 
     if (!DB().preferences.isAutoRestart && winner != PieceColor.nobody) {
       showDialog(
         context: context,
-        builder: (_) => GameResultAlert(
-          winner: winner,
-        ),
+        builder: (_) => GameResultAlert(winner: winner),
       );
     }
   }

@@ -63,8 +63,11 @@ class Position {
   final Map<PieceColor, int> score = {
     PieceColor.white: 0,
     PieceColor.black: 0,
-    PieceColor.draw: 0
+    PieceColor.draw: 0,
   };
+
+  String get scoreString =>
+      "${score[PieceColor.white]} : ${score[PieceColor.black]} : ${score[PieceColor.draw]}";
 
   int _currentSquare = 0;
 
