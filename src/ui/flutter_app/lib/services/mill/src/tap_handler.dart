@@ -285,38 +285,30 @@ class TapHandler {
         }
       }
 
-      final EngineResponse response;
-      if (!_isMoveNow) {
-        logger.v("[engineToGo] Searching...");
-        response = await controller.engine.search(controller.position);
-      } else {
-        logger.v("[engineToGo] Get search result now...");
-        response = await controller.engine.search(null);
+      try {
+        logger.v("[engineToGo] Searching..., isMoveNow: $_isMoveNow");
+        final extMove = await controller.engine.search(moveNow: _isMoveNow);
         _isMoveNow = false;
-      }
 
-      logger.i("[engineToGo] Engine response type: ${response.type}");
+        await controller.gameInstance._doMove(extMove);
+        animationController.reset();
+        animationController.animateTo(1.0);
 
-      switch (response.type) {
-        case EngineResponseType.move:
-          final ExtMove extMove = response.value!;
+        if (DB().preferences.screenReaderSupport) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            CustomSnackBar("${S.of(context).ai}: ${extMove.notation}"),
+          );
+        }
+      } on EngineTimeOutException {
+        logger.i("[engineToGo] Engine response type: timeout");
 
-          await controller.gameInstance._doMove(extMove);
-          animationController.reset();
-          animationController.animateTo(1.0);
+        return MillController()
+            .tip
+            .showTip(S.of(context).timeout, snackBar: true);
+      } on EngineNoBestMoveException {
+        logger.i("[engineToGo] Engine response type: nobestmove");
 
-          if (DB().preferences.screenReaderSupport) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              CustomSnackBar("${S.of(context).ai}: ${extMove.notation}"),
-            );
-          }
-          break;
-        case EngineResponseType.timeout:
-          return MillController()
-              .tip
-              .showTip(S.of(context).timeout, snackBar: true);
-        case EngineResponseType.nobestmove:
-          MillController().tip.showTip(S.of(context).error(response.type));
+        MillController().tip.showTip(S.of(context).error("No best move"));
       }
 
       _showResult();

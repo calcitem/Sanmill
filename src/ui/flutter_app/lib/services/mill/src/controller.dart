@@ -98,7 +98,7 @@ class MillController {
   void _init() {
     position = Position();
     gameInstance = _Game();
-    engine = NativeEngine();
+    engine = Engine();
     recorder = _GameRecorder();
     tip = HeaderTipState();
 

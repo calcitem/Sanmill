@@ -37,16 +37,15 @@ class GameResultAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = MillController();
-    controller.position.result = _gameResult;
+    final position = MillController().position;
+    position.result = _gameResult;
 
     final String dialogTitle = _gameResult!.winString(context);
 
     final bool isTopLevel = DB().preferences.skillLevel == 30; // TODO: 30
 
     final content = StringBuffer(
-      controller.position.gameOverReason
-          .getName(context, controller.position.winner),
+      position.gameOverReason.getName(context, position.winner),
     );
 
     logger.v("$_tag Game over reason string: $content");
@@ -89,7 +88,7 @@ class GameResultAlert extends StatelessWidget {
           child: Text(S.of(context).restart),
           onPressed: () {
             Navigator.pop(context);
-            controller.reset();
+            MillController().reset();
           },
         ),
         TextButton(

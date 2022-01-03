@@ -39,8 +39,7 @@ import 'package:soundpool/soundpool.dart';
 
 part 'src/audios.dart';
 part 'src/controller.dart';
-part 'src/engine/engine.dart';
-part 'src/engine/native_engine.dart';
+part 'src/engine.dart';
 part 'src/ext_move.dart';
 part 'src/game.dart';
 part 'src/history_navigation.dart';

@@ -174,6 +174,7 @@ class Position {
 
     final ExtMove m = ExtMove(move);
 
+    // TODO: [Leptopoda] the below fuctions should all throw exceptions so the ret and coditional stuff can be removed
     switch (m.type) {
       case _MoveType.remove:
         ret = await _removePiece(m.to) == RemoveResponse.ok;
