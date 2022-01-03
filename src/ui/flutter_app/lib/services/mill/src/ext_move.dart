@@ -18,65 +18,98 @@
 
 part of '../mill.dart';
 
-class ExtMove {
-  // TODO: [Leptopoda] use null to the _invalidMove
-  static const _invalidMove = -1;
+enum _MoveType { place, move, remove }
 
+extension _MoveTypeExtension on _MoveType {
+  static _MoveType parse(String move) {
+    if (move.startsWith("-") && move.length == "-(1,2)".length) {
+      return _MoveType.remove;
+    } else if (move.length == "(1,2)->(3,4)".length) {
+      return _MoveType.move;
+    } else if (move.length == "(1,2)".length) {
+      return _MoveType.place;
+    } else if (move == "draw") {
+      throw UnimplementedError("[TODO] Computer request draw");
+    } else {
+      throw const FormatException();
+    }
+  }
+}
+
+class ExtMove {
   static const _tag = "[Move]";
 
   // Square
-  int from = 0;
-  int to = 0;
+  int get from => type == _MoveType.move
+      ? makeSquare(int.parse(move[1]), int.parse(move[3]))
+      : -1;
+  late final int to;
 
-  // file & rank
-  int _fromFile = 0;
-  int _fromRank = 0;
-  int _toFile = 0;
-  int _toRank = 0;
+  static final Map<int, String> _squareToWmdNotation = {
+    8: "d5",
+    9: "e5",
+    10: "e4",
+    11: "e3",
+    12: "d3",
+    13: "c3",
+    14: "c4",
+    15: "c5",
+    16: "d6",
+    17: "f6",
+    18: "f4",
+    19: "f2",
+    20: "d2",
+    21: "b2",
+    22: "b4",
+    23: "b6",
+    24: "d7",
+    25: "g7",
+    26: "g4",
+    27: "g1",
+    28: "d1",
+    29: "a1",
+    30: "a4",
+    31: "a7"
+  };
 
   // 'move' is the UCI engine's move-string
   final String move;
 
   // "notation" is Standard Notation
-  late final String notation;
+  String get notation {
+    switch (type) {
+      case _MoveType.remove:
+        return "x${_squareToWmdNotation[to]}";
+      case _MoveType.move:
+        return "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}";
+      case _MoveType.place:
+        return _squareToWmdNotation[to]!;
+    }
+  }
 
   late final _MoveType type;
 
-  // TODO: [Leptopoda] attributes should probably be made getters
   ExtMove(this.move) {
     _checkLegal();
 
-    if (move[0] == "-" && move.length == "-(1,2)".length) {
-      // TODO: [Leptopoda] let [_MoveType] parse the move
-      type = _MoveType.remove;
-      from = _fromFile = _fromRank = _invalidMove;
-      _toFile = int.parse(move[2]);
-      _toRank = int.parse(move[4]);
-      to = makeSquare(_toFile, _toRank);
-      notation = "x${_squareToWmdNotation[to]}";
-      //captured = PieceColor.none;
-    } else if (move.length == "(1,2)->(3,4)".length) {
-      type = _MoveType.move;
-      _fromFile = int.parse(move[1]);
-      _fromRank = int.parse(move[3]);
-      from = makeSquare(_fromFile, _fromRank);
-      _toFile = int.parse(move[8]);
-      _toRank = int.parse(move[10]);
-      to = makeSquare(_toFile, _toRank);
-      notation = "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}";
-    } else if (move.length == "(1,2)".length) {
-      type = _MoveType.place;
-      from = _fromFile = _fromRank = _invalidMove;
-      _toFile = int.parse(move[1]);
-      _toRank = int.parse(move[3]);
-      to = makeSquare(_toFile, _toRank);
-      notation = _squareToWmdNotation[to]!;
-    } else if (move == "draw") {
-      assert(false, "not yet implemented"); // TODO
-      logger.v("[TODO] Computer request draw");
-    } else {
-      assert(false);
+    type = _MoveTypeExtension.parse(move);
+
+    final int _toFile;
+    final int _toRank;
+    switch (type) {
+      case _MoveType.remove:
+        _toFile = int.parse(move[2]);
+        _toRank = int.parse(move[4]);
+        break;
+      case _MoveType.move:
+        _toFile = int.parse(move[8]);
+        _toRank = int.parse(move[10]);
+        break;
+      case _MoveType.place:
+        _toFile = int.parse(move[1]);
+        _toRank = int.parse(move[3]);
     }
+    to = makeSquare(_toFile, _toRank);
 
     assert(from != to);
   }

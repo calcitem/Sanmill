@@ -20,8 +20,6 @@ part of '../mill.dart';
 
 int abs(int value) => value > 0 ? value : -value;
 
-enum _MoveType { place, move, remove }
-
 enum PieceColor { none, white, black, ban, nobody, draw }
 
 extension PieceColorExtension on PieceColor {
@@ -449,32 +447,6 @@ Map<int, int> indexToSquare = squareToIndex.map((k, v) => MapEntry(v, k));
         1 X --- X --- X 1
           a b c d e f g
  */
-Map<int, String> _squareToWmdNotation = {
-  8: "d5",
-  9: "e5",
-  10: "e4",
-  11: "e3",
-  12: "d3",
-  13: "c3",
-  14: "c4",
-  15: "c5",
-  16: "d6",
-  17: "f6",
-  18: "f4",
-  19: "f2",
-  20: "d2",
-  21: "b2",
-  22: "b4",
-  23: "b6",
-  24: "d7",
-  25: "g7",
-  26: "g4",
-  27: "g1",
-  28: "d1",
-  29: "a1",
-  30: "a4",
-  31: "a7"
-};
 
 Map<String, String> wmdNotationToMove = {
   "d5": "(1,1)",
