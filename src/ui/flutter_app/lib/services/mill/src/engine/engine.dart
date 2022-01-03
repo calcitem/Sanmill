@@ -31,7 +31,6 @@ enum GameMode {
 
   /// Not Implemented
   testViaLAN,
-  none
 }
 
 extension GameModeExtension on GameMode {
@@ -54,8 +53,6 @@ extension GameModeExtension on GameMode {
         return FluentIcons.person_24_filled;
       case GameMode.testViaLAN:
         return FluentIcons.wifi_1_24_filled;
-      case GameMode.none:
-        throw Exception("No engine selected");
     }
   }
 
@@ -77,8 +74,6 @@ extension GameModeExtension on GameMode {
         return FluentIcons.wifi_1_24_filled;
       case GameMode.testViaLAN:
         return FluentIcons.wifi_1_24_filled;
-      case GameMode.none:
-        throw Exception("No engine selected");
     }
   }
 

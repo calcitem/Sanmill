@@ -40,7 +40,7 @@ class _Game {
   };
 
   // TODO: [Leptopoda] make gameMode final and set it through the constructor.
-  GameMode _gameMode = GameMode.none;
+  late GameMode _gameMode;
   GameMode get gameMode => _gameMode;
 
   set gameMode(GameMode type) {

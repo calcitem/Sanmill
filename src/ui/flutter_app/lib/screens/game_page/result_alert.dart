@@ -29,8 +29,8 @@ class GameResultAlert extends StatelessWidget {
 
   static const _tag = "[Game Over Alert]";
 
-  GameResult get _gameResult {
-    if (gameMode == GameMode.aiVsAi) return GameResult.none;
+  GameResult? get _gameResult {
+    if (gameMode == GameMode.aiVsAi) return null;
 
     return winner.result;
   }
@@ -40,7 +40,7 @@ class GameResultAlert extends StatelessWidget {
     final controller = MillController();
     controller.position.result = _gameResult;
 
-    final String dialogTitle = _gameResult.winString(context);
+    final String dialogTitle = _gameResult!.winString(context);
 
     final bool isTopLevel = DB().preferences.skillLevel == 30; // TODO: 30
 

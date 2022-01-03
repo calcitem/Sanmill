@@ -32,7 +32,7 @@ class Position {
 
   final List<int> _posKeyHistory = [];
 
-  GameResult result = GameResult.pending;
+  GameResult? result;
 
   final List<PieceColor> _board = List.filled(sqNumber, PieceColor.none);
   final List<PieceColor> _grid = List.filled(7 * 7, PieceColor.none);

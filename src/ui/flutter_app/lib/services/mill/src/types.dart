@@ -98,7 +98,7 @@ extension PieceColorExtension on PieceColor {
     }
   }
 
-  GameResult get result {
+  GameResult? get result {
     final isAi = MillController().gameInstance._isAi[this]!;
     switch (this) {
       case PieceColor.white:
@@ -116,7 +116,7 @@ extension PieceColorExtension on PieceColor {
       case PieceColor.draw:
         return GameResult.draw;
       default:
-        return GameResult.none;
+        return null;
     }
   }
 
@@ -245,7 +245,7 @@ extension GameOverReasonExtension on GameOverReason {
   }
 }
 
-enum GameResult { pending, win, lose, draw, none }
+enum GameResult { win, lose, draw }
 
 extension GameResultExtension on GameResult {
   String winString(BuildContext context) {
@@ -258,34 +258,7 @@ extension GameResultExtension on GameResult {
         return S.of(context).gameOver;
       case GameResult.draw:
         return S.of(context).isDraw;
-      case GameResult.pending:
-      case GameResult.none:
-        throw Exception("No winning string available");
     }
-  }
-}
-
-abstract class _HistoryResponseException implements Exception {
-  static const tag = "[_HistoryResponse]";
-
-  const _HistoryResponseException();
-}
-
-class _HistoryRuleException extends _HistoryResponseException {
-  const _HistoryRuleException();
-
-  @override
-  String toString() {
-    return "${_HistoryResponseException.tag} cur is equal to moveIndex.";
-  }
-}
-
-class _HistoryRangeException extends _HistoryResponseException {
-  const _HistoryRangeException();
-
-  @override
-  String toString() {
-    return "${_HistoryResponseException.tag} cur is equal to moveIndex.";
   }
 }
 
@@ -304,55 +277,6 @@ enum RemoveResponse {
   noPieceToRemove,
   cannotRemoveOurPiece,
   cannotRemovePieceFromMill
-}
-
-enum HistoryMove { forwardAll, backAll, forward, backN, backOne }
-
-extension HistoryMoveExtension on HistoryMove {
-  /// Moves the [_GameRecorder] to the specified position.
-  ///
-  /// Throws [_HistoryResponseException] when trying to access a value outside of the bounds.
-  void gotoHistory([int? amount]) {
-    final current = MillController().recorder.index;
-    final iterator = MillController().recorder.globalIterator;
-
-    switch (this) {
-      case HistoryMove.forwardAll:
-        iterator.moveToLast();
-        break;
-      case HistoryMove.backAll:
-        iterator.moveToFirst();
-        break;
-      case HistoryMove.forward:
-        if (!iterator.moveNext()) {
-          throw const _HistoryRangeException();
-        }
-        break;
-      case HistoryMove.backN:
-        final _index = current - amount!;
-        assert(_index >= 0);
-        iterator.moveTo(_index);
-        break;
-      case HistoryMove.backOne:
-        if (!iterator.movePrevious()) {
-          throw const _HistoryRangeException();
-        }
-    }
-  }
-
-  Future<void> gotoHistoryPlaySound() async {
-    if (!DB().preferences.keepMuteWhenTakingBack) {
-      switch (this) {
-        case HistoryMove.forwardAll:
-        case HistoryMove.forward:
-          return Audios().playTone(Sound.place);
-        case HistoryMove.backAll:
-        case HistoryMove.backN:
-        case HistoryMove.backOne:
-          return Audios().playTone(Sound.remove);
-      }
-    }
-  }
 }
 
 const sqBegin = 8;
