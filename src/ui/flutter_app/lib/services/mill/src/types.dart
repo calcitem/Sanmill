@@ -203,6 +203,7 @@ extension ActExtension on Act {
   }
 }
 
+// TODO: [Leptopoda] throw this stuff to faster detect a geme over
 enum GameOverReason {
   loseLessThanThree,
   loseNoWay,
