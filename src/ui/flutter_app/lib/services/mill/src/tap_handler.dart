@@ -74,49 +74,40 @@ class TapHandler {
           showTip(S.of(context).tipCannotPlace, snackBar: true);
           break;
         }
-        switch (position._selectPiece(sq)) {
-          case SelectionResponse.ok:
-            await Audios().playTone(Sound.select);
-            controller.gameInstance._select(squareToIndex[sq]!);
-            ret = true;
-            logger.v("$_tag selectPiece: [$sq]");
 
-            final pieceOnBoardCount =
-                position.pieceOnBoardCount[controller.gameInstance.sideToMove];
-            if (position.phase == Phase.moving &&
-                DB().rules.mayFly &&
-                (pieceOnBoardCount == DB().rules.flyPieceCount ||
-                    pieceOnBoardCount == 3)) {
-              // TODO: [Calcitem, Leptopoda] why is the [DB().rules.flyPieceCount] not respected?
-              logger.v("$_tag May fly.");
-              showTip(S.of(context).tipCanMoveToAnyPoint, snackBar: true);
-            } else {
-              showTip(S.of(context).tipPlace, snackBar: true);
-            }
-            break;
-          // TODO: [Leptopoda] deduplicate
-          case SelectionResponse.illegalPhase:
-            await Audios().playTone(Sound.illegal);
-            logger.v("$_tag selectPiece: skip [$sq]");
-            if (position.phase != Phase.gameOver) {
-              showTip(S.of(context).tipCannotMove, snackBar: true);
-            }
-            break;
-          case SelectionResponse.canOnlyMoveToAdjacentEmptyPoints:
-            await Audios().playTone(Sound.illegal);
-            logger.v("$_tag selectPiece: skip [$sq]");
-            showTip(S.of(context).tipCanMoveOnePoint, snackBar: true);
-            break;
-          case SelectionResponse.pleaseSelectOurPieceToMove:
-            await Audios().playTone(Sound.illegal);
-            logger.v("$_tag selectPiece: skip [$sq]");
-            showTip(S.of(context).tipSelectPieceToMove, snackBar: true);
-            break;
-          case SelectionResponse.illegalAction:
-            await Audios().playTone(Sound.illegal);
-            logger.v("$_tag selectPiece: skip [$sq]");
-            showTip(S.of(context).tipSelectWrong, snackBar: true);
-            break;
+        try {
+          position._selectPiece(sq);
+
+          await Audios().playTone(Sound.select);
+          controller.gameInstance._select(squareToIndex[sq]!);
+          ret = true;
+          logger.v("$_tag selectPiece: [$sq]");
+
+          final pieceOnBoardCount =
+              position.pieceOnBoardCount[controller.gameInstance.sideToMove];
+          if (position.phase == Phase.moving &&
+              DB().rules.mayFly &&
+              (pieceOnBoardCount == DB().rules.flyPieceCount ||
+                  pieceOnBoardCount == 3)) {
+            // TODO: [Calcitem, Leptopoda] why is the [DB().rules.flyPieceCount] not respected?
+            logger.v("$_tag May fly.");
+            showTip(S.of(context).tipCanMoveToAnyPoint, snackBar: true);
+          } else {
+            showTip(S.of(context).tipPlace, snackBar: true);
+          }
+        } on IllegalPhaseException {
+          if (position.phase != Phase.gameOver) {
+            showTip(S.of(context).tipCannotMove, snackBar: true);
+          }
+        } on CanOnlyMoveToAdjacentEmptyPoints {
+          showTip(S.of(context).tipCanMoveOnePoint, snackBar: true);
+        } on SelectOurPieceToMove {
+          showTip(S.of(context).tipSelectPieceToMove, snackBar: true);
+        } on IllegalActionException {
+          showTip(S.of(context).tipSelectWrong, snackBar: true);
+        } finally {
+          await Audios().playTone(Sound.illegal);
+          logger.v("$_tag selectPiece: skip [$sq]");
         }
         break;
 
@@ -141,11 +132,9 @@ class TapHandler {
             }
           }
         } on CanNotRemoveSelfException {
-          await Audios().playTone(Sound.illegal);
           logger.i("$_tag removePiece: Cannot Remove our pieces, skip [$sq]");
           showTip(S.of(context).tipSelectOpponentsPiece, snackBar: true);
         } on CanNotRemoveMillException {
-          await Audios().playTone(Sound.illegal);
           logger.i(
             "$_tag removePiece: Cannot remove piece from Mill, skip [$sq]",
           );
@@ -154,7 +143,6 @@ class TapHandler {
           if (e is IllegalActionException ||
               e is IllegalPhaseException ||
               e is NoPieceToRemoveException) {
-            await Audios().playTone(Sound.illegal);
             logger.v("$_tag removePiece: skip [$sq]");
             if (position.phase != Phase.gameOver) {
               showTip(S.of(context).tipBanRemove, snackBar: true);
@@ -162,6 +150,8 @@ class TapHandler {
           } else {
             rethrow;
           }
+        } finally {
+          await Audios().playTone(Sound.illegal);
         }
     }
 

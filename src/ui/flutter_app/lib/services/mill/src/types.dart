@@ -259,12 +259,12 @@ extension GameResultExtension on GameResult {
   }
 }
 
-enum SelectionResponse {
-  ok,
-  illegalAction,
-  illegalPhase,
-  canOnlyMoveToAdjacentEmptyPoints,
-  pleaseSelectOurPieceToMove
+class CanOnlyMoveToAdjacentEmptyPoints implements Exception {
+  const CanOnlyMoveToAdjacentEmptyPoints();
+}
+
+class SelectOurPieceToMove implements Exception {
+  const SelectOurPieceToMove();
 }
 
 class IllegalActionException implements Exception {

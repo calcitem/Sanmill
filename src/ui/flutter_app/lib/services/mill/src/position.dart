@@ -85,10 +85,12 @@ class Position {
   }
 
   Future<bool> _movePiece(int from, int to) async {
-    if (_selectPiece(from) == SelectionResponse.ok) {
+    try {
+      _selectPiece(from);
       return _putPiece(to);
+    } on Exception {
+      return false;
     }
-    return false;
   }
 
   /// Returns a FEN representation of the position.
@@ -489,26 +491,26 @@ class Position {
     return;
   }
 
-  SelectionResponse _selectPiece(int sq) {
-    if (phase != Phase.moving) return SelectionResponse.illegalPhase;
+  void _selectPiece(int sq) {
+    if (phase != Phase.moving) {
+      throw const IllegalPhaseException();
+    }
 
     if (_action != Act.select && _action != Act.place) {
-      return SelectionResponse.illegalAction;
+      throw const IllegalActionException();
     }
 
     if (_board[sq] == PieceColor.none) {
-      return SelectionResponse.canOnlyMoveToAdjacentEmptyPoints;
+      throw const CanOnlyMoveToAdjacentEmptyPoints();
     }
 
     if (!(_board[sq] == sideToMove)) {
-      return SelectionResponse.pleaseSelectOurPieceToMove;
+      throw const SelectOurPieceToMove();
     }
 
     _currentSquare = sq;
     _action = Act.place;
     MillController().gameInstance.blurIndex = squareToIndex[sq];
-
-    return SelectionResponse.ok;
   }
 
   bool _resign(PieceColor loser) {
