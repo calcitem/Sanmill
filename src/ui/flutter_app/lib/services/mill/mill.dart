@@ -51,5 +51,6 @@ part 'src/tap_handler.dart';
 part 'src/tip_state.dart';
 part 'src/types.dart';
 part 'src/zobrist.dart';
+part 'src/responses.dart';
 
 // TODO: [Leptopoda] separate the ui from the logic

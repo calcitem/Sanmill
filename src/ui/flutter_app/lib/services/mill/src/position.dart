@@ -88,7 +88,7 @@ class Position {
     try {
       _selectPiece(from);
       return _putPiece(to);
-    } on Exception {
+    } on MillResponse {
       return false;
     }
   }
@@ -186,8 +186,8 @@ class Position {
           await _removePiece(m.to);
           ret = true;
           st.rule50 = 0;
-        } on Exception {
-          ret = false;
+        } on MillResponse {
+          return false;
         }
         break;
       case _MoveType.move:
@@ -217,10 +217,7 @@ class Position {
       if (st.key != _posKeyHistory.lastF) {
         _posKeyHistory.add(st.key);
         if (DB().rules.threefoldRepetitionRule && _hasGameCycle) {
-          _setGameOver(
-            PieceColor.draw,
-            GameOverReason.drawThreefoldRepetition,
-          );
+          _setGameOver(PieceColor.draw, GameOverReason.drawThreefoldRepetition);
         }
       }
     } else {
@@ -407,26 +404,26 @@ class Position {
 
   Future<void> _removePiece(int s) async {
     if (phase == Phase.ready || phase == Phase.gameOver) {
-      throw const IllegalPhaseException();
+      throw const IllegalPhase();
     }
 
     if (_action != Act.remove) {
-      throw const IllegalActionException();
+      throw const IllegalAction();
     }
 
     if (_pieceToRemoveCount <= 0) {
-      throw const NoPieceToRemoveException();
+      throw const NoPieceToRemove();
     }
 
     // if piece is not their
     if (!(sideToMove.opponent == _board[s])) {
-      throw const CanNotRemoveSelfException();
+      throw const CanNotRemoveSelf();
     }
 
     if (!DB().rules.mayRemoveFromMillsAlways &&
         _potentialMillsCount(s, PieceColor.nobody) > 0 &&
         !_isAllInMills(sideToMove.opponent)) {
-      throw const CanNotRemoveMillException();
+      throw const CanNotRemoveMill();
     }
 
     _revertKey(s);
@@ -493,11 +490,11 @@ class Position {
 
   void _selectPiece(int sq) {
     if (phase != Phase.moving) {
-      throw const IllegalPhaseException();
+      throw const IllegalPhase();
     }
 
     if (_action != Act.select && _action != Act.place) {
-      throw const IllegalActionException();
+      throw const IllegalAction();
     }
 
     if (_board[sq] == PieceColor.none) {
@@ -581,10 +578,7 @@ class Position {
 
     if (phase == Phase.moving && _action == Act.select && _isAllSurrounded) {
       if (DB().rules.isLoseButNotChangeSideWhenNoWay) {
-        _setGameOver(
-          sideToMove.opponent,
-          GameOverReason.loseNoWay,
-        );
+        _setGameOver(sideToMove.opponent, GameOverReason.loseNoWay);
         return true;
       } else {
         _changeSideToMove(); // TODO: Need?

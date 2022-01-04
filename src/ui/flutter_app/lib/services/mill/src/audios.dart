@@ -164,15 +164,8 @@ class Audios {
     // If the platform is Windows [_initialized] should be false thus this code shouldn't be executed
     assert(!Platform.isWindows);
 
-    try {
-      await _stopSound();
-
-      await _playSound(sound);
-    } catch (e) {
-      // Fallback for all errors
-      logger.e(e.toString());
-      rethrow;
-    }
+    await _stopSound();
+    await _playSound(sound);
   }
 
   void mute() {

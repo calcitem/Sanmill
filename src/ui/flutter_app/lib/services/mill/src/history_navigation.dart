@@ -54,13 +54,13 @@ class HistoryNavigator {
 
     try {
       await gotoHistory(move, number);
-    } on _HistoryRangeException {
+    } on _HistoryRange {
       ScaffoldMessenger.of(context).showSnackBarClear(S.of(context).atEnd);
-      logger.i(_HistoryRangeException);
-    } on _HistoryRuleException {
+      logger.i(_HistoryRange);
+    } on _HistoryRule {
       ScaffoldMessenger.of(context)
           .showSnackBarClear(S.of(context).movesAndRulesNotMatch);
-      logger.i(_HistoryRuleException);
+      logger.i(_HistoryRule);
 
       MillController().reset();
     }
@@ -129,7 +129,7 @@ class HistoryNavigator {
 
   /// Moves through the History by replaying all relevant moves.
   ///
-  /// throws an [_HistoryResponseException] when the moves and rules don't match
+  /// throws an [_HistoryResponse] when the moves and rules don't match
   /// or when the end of the list moves has been reached.
   static Future<void> gotoHistory(HistoryMove move, [int? index]) async {
     move.gotoHistory(index);
@@ -144,7 +144,7 @@ class HistoryNavigator {
 
     historyBack.forEachVisible((move) async {
       if (!(await MillController().gameInstance._doMove(move))) {
-        throw const _HistoryRuleException();
+        throw const _HistoryRule();
       }
     });
 
@@ -162,7 +162,7 @@ enum HistoryMove { forwardAll, backAll, forward, backN, backOne }
 extension HistoryMoveExtension on HistoryMove {
   /// Moves the [_GameRecorder] to the specified position.
   ///
-  /// Throws [_HistoryResponseException] when trying to access a value outside of the bounds.
+  /// Throws [_HistoryResponse] when trying to access a value outside of the bounds.
   void gotoHistory([int? amount]) {
     final current = MillController().recorder.index;
     final iterator = MillController().recorder.globalIterator;
@@ -176,7 +176,7 @@ extension HistoryMoveExtension on HistoryMove {
         break;
       case HistoryMove.forward:
         if (!iterator.moveNext()) {
-          throw const _HistoryRangeException();
+          throw const _HistoryRange();
         }
         break;
       case HistoryMove.backN:
@@ -186,7 +186,7 @@ extension HistoryMoveExtension on HistoryMove {
         break;
       case HistoryMove.backOne:
         if (!iterator.movePrevious()) {
-          throw const _HistoryRangeException();
+          throw const _HistoryRange();
         }
     }
   }
@@ -203,29 +203,5 @@ extension HistoryMoveExtension on HistoryMove {
           return Audios().playTone(Sound.remove);
       }
     }
-  }
-}
-
-abstract class _HistoryResponseException implements Exception {
-  static const tag = "[_HistoryResponse]";
-
-  const _HistoryResponseException();
-}
-
-class _HistoryRuleException extends _HistoryResponseException {
-  const _HistoryRuleException();
-
-  @override
-  String toString() {
-    return "${_HistoryResponseException.tag} cur is equal to moveIndex.";
-  }
-}
-
-class _HistoryRangeException extends _HistoryResponseException {
-  const _HistoryRangeException();
-
-  @override
-  String toString() {
-    return "${_HistoryResponseException.tag} cur is equal to moveIndex.";
   }
 }

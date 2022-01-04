@@ -95,7 +95,7 @@ class TapHandler {
           } else {
             showTip(S.of(context).tipPlace, snackBar: true);
           }
-        } on IllegalPhaseException {
+        } on IllegalPhase {
           if (position.phase != Phase.gameOver) {
             showTip(S.of(context).tipCannotMove, snackBar: true);
           }
@@ -103,7 +103,7 @@ class TapHandler {
           showTip(S.of(context).tipCanMoveOnePoint, snackBar: true);
         } on SelectOurPieceToMove {
           showTip(S.of(context).tipSelectPieceToMove, snackBar: true);
-        } on IllegalActionException {
+        } on IllegalAction {
           showTip(S.of(context).tipSelectWrong, snackBar: true);
         } finally {
           await Audios().playTone(Sound.illegal);
@@ -131,24 +131,18 @@ class TapHandler {
               showTip(S.of(context).tipToMove(them));
             }
           }
-        } on CanNotRemoveSelfException {
+        } on CanNotRemoveSelf {
           logger.i("$_tag removePiece: Cannot Remove our pieces, skip [$sq]");
           showTip(S.of(context).tipSelectOpponentsPiece, snackBar: true);
-        } on CanNotRemoveMillException {
+        } on CanNotRemoveMill {
           logger.i(
             "$_tag removePiece: Cannot remove piece from Mill, skip [$sq]",
           );
           showTip(S.of(context).tipCannotRemovePieceFromMill, snackBar: true);
-        } on Exception catch (e) {
-          if (e is IllegalActionException ||
-              e is IllegalPhaseException ||
-              e is NoPieceToRemoveException) {
-            logger.v("$_tag removePiece: skip [$sq]");
-            if (position.phase != Phase.gameOver) {
-              showTip(S.of(context).tipBanRemove, snackBar: true);
-            }
-          } else {
-            rethrow;
+        } on MillResponse {
+          logger.v("$_tag removePiece: skip [$sq]");
+          if (position.phase != Phase.gameOver) {
+            showTip(S.of(context).tipBanRemove, snackBar: true);
           }
         } finally {
           await Audios().playTone(Sound.illegal);
@@ -248,10 +242,10 @@ class TapHandler {
             CustomSnackBar("${S.of(context).ai}: ${extMove.notation}"),
           );
         }
-      } on EngineTimeOutException {
+      } on EngineTimeOut {
         logger.i("$_tag Engine response type: timeout");
         showTip(S.of(context).timeout, snackBar: true);
-      } on EngineNoBestMoveException {
+      } on EngineNoBestMove {
         logger.i("$_tag Engine response type: nobestmove");
         showTip(S.of(context).error("No best move"));
       }

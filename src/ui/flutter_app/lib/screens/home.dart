@@ -77,7 +77,7 @@ extension _DrawerScreen on _DrawerIndex {
       case _DrawerIndex.personalization:
         return const PersonalizationSettingsPage();
       case _DrawerIndex.feedback:
-        throw Exception(
+        throw ErrorDescription(
           "Feedback screen is not a widget and should be called separately",
         );
       case _DrawerIndex.help:

@@ -52,7 +52,7 @@ extension PieceColorExtension on PieceColor {
         return S.of(context).draw;
       case PieceColor.ban:
       case PieceColor.nobody:
-        throw Exception("Player has no name");
+        throw UnimplementedError("Player has no name");
     }
   }
 
@@ -68,7 +68,7 @@ extension PieceColorExtension on PieceColor {
         return S.of(context).emptyPoint;
       case PieceColor.nobody:
       case PieceColor.draw:
-        throw Exception("No piece name available");
+        throw UnimplementedError("No piece name available");
     }
   }
 
@@ -257,34 +257,6 @@ extension GameResultExtension on GameResult {
         return S.of(context).isDraw;
     }
   }
-}
-
-class CanOnlyMoveToAdjacentEmptyPoints implements Exception {
-  const CanOnlyMoveToAdjacentEmptyPoints();
-}
-
-class SelectOurPieceToMove implements Exception {
-  const SelectOurPieceToMove();
-}
-
-class IllegalActionException implements Exception {
-  const IllegalActionException();
-}
-
-class IllegalPhaseException implements Exception {
-  const IllegalPhaseException();
-}
-
-class NoPieceToRemoveException implements Exception {
-  const NoPieceToRemoveException();
-}
-
-class CanNotRemoveSelfException implements Exception {
-  const CanNotRemoveSelfException();
-}
-
-class CanNotRemoveMillException implements Exception {
-  const CanNotRemoveMillException();
 }
 
 const sqBegin = 8;

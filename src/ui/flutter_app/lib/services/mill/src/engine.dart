@@ -79,7 +79,7 @@ class Engine {
 
     final response = await _waitResponse(["bestmove", "nobestmove"]);
     if (response == null) {
-      throw EngineTimeOutException();
+      throw EngineTimeOut();
     }
 
     logger.v("$_tag response: $response");
@@ -94,10 +94,10 @@ class Engine {
     }
 
     if (response.startsWith("nobestmove")) {
-      throw const EngineNoBestMoveException();
+      throw const EngineNoBestMove();
     }
 
-    throw EngineTimeOutException();
+    throw EngineTimeOut();
   }
 
   Future<String?> _waitResponse(
@@ -294,17 +294,6 @@ extension GameModeExtension on GameMode {
           PieceColor.white: true,
           PieceColor.black: true,
         };
-      default:
-        throw Exception("No engine to set");
     }
   }
-}
-
-class EngineNoBestMoveException implements Exception {
-  const EngineNoBestMoveException();
-}
-
-class EngineTimeOutException extends TimeoutException {
-  EngineTimeOutException([String? message, Duration? duration])
-      : super(message, duration);
 }
