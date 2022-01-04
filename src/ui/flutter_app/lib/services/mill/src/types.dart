@@ -267,13 +267,24 @@ enum SelectionResponse {
   pleaseSelectOurPieceToMove
 }
 
-enum RemoveResponse {
-  ok,
-  illegalAction,
-  illegalPhase,
-  noPieceToRemove,
-  cannotRemoveOurPiece,
-  cannotRemovePieceFromMill
+class IllegalActionException implements Exception {
+  const IllegalActionException();
+}
+
+class IllegalPhaseException implements Exception {
+  const IllegalPhaseException();
+}
+
+class NoPieceToRemoveException implements Exception {
+  const NoPieceToRemoveException();
+}
+
+class CanNotRemoveSelfException implements Exception {
+  const CanNotRemoveSelfException();
+}
+
+class CanNotRemoveMillException implements Exception {
+  const CanNotRemoveMillException();
 }
 
 const sqBegin = 8;

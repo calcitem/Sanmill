@@ -180,10 +180,12 @@ class Position {
     // TODO: [Leptopoda] the below fuctions should all throw exceptions so the ret and coditional stuff can be removed
     switch (m.type) {
       case _MoveType.remove:
-        ret = await _removePiece(m.to) == RemoveResponse.ok;
-        if (ret) {
-          // Reset rule 50 counter
+        try {
+          await _removePiece(m.to);
+          ret = true;
           st.rule50 = 0;
+        } on Exception {
+          ret = false;
         }
         break;
       case _MoveType.move:
@@ -401,24 +403,28 @@ class Position {
     return true;
   }
 
-  Future<RemoveResponse> _removePiece(int s) async {
+  Future<void> _removePiece(int s) async {
     if (phase == Phase.ready || phase == Phase.gameOver) {
-      return RemoveResponse.illegalPhase;
+      throw const IllegalPhaseException();
     }
 
-    if (_action != Act.remove) return RemoveResponse.illegalAction;
+    if (_action != Act.remove) {
+      throw const IllegalActionException();
+    }
 
-    if (_pieceToRemoveCount <= 0) return RemoveResponse.noPieceToRemove;
+    if (_pieceToRemoveCount <= 0) {
+      throw const NoPieceToRemoveException();
+    }
 
     // if piece is not their
     if (!(sideToMove.opponent == _board[s])) {
-      return RemoveResponse.cannotRemoveOurPiece;
+      throw const CanNotRemoveSelfException();
     }
 
     if (!DB().rules.mayRemoveFromMillsAlways &&
         _potentialMillsCount(s, PieceColor.nobody) > 0 &&
         !_isAllInMills(sideToMove.opponent)) {
-      return RemoveResponse.cannotRemovePieceFromMill;
+      throw const CanNotRemoveMillException();
     }
 
     _revertKey(s);
@@ -444,7 +450,7 @@ class Position {
     if (pieceOnBoardCount[_them]! + pieceInHandCount[_them]! <
         DB().rules.piecesAtLeastCount) {
       _setGameOver(sideToMove, GameOverReason.loseLessThanThree);
-      return RemoveResponse.ok;
+      return;
     }
 
     _currentSquare = 0;
@@ -453,7 +459,7 @@ class Position {
     _updateKeyMisc();
 
     if (_pieceToRemoveCount != 0) {
-      return RemoveResponse.ok;
+      return;
     }
 
     if (phase == Phase.placing) {
@@ -468,7 +474,7 @@ class Position {
 
         if (DB().rules.isDefenderMoveFirst) {
           _checkIfGameIsOver();
-          return RemoveResponse.ok;
+          return;
         }
       } else {
         _action = Act.place;
@@ -480,7 +486,7 @@ class Position {
     _changeSideToMove();
     _checkIfGameIsOver();
 
-    return RemoveResponse.ok;
+    return;
   }
 
   SelectionResponse _selectPiece(int sq) {

@@ -23,7 +23,7 @@ class TapHandler {
     }
 
     if (controller.gameInstance._isAiToMove) {
-      return logger.i("[tap] AI's turn, skip tapping.");
+      return logger.i("$_tag AI's turn, skip tapping.");
     }
 
     final position = controller.position;
@@ -58,10 +58,10 @@ class TapHandler {
             }
           }
           ret = true;
-          logger.v("[tap] putPiece: [$sq]");
+          logger.v("$_tag putPiece: [$sq]");
           break;
         } else {
-          logger.v("[tap] putPiece: skip [$sq]");
+          logger.v("$_tag putPiece: skip [$sq]");
           showTip(S.of(context).tipBanPlace);
         }
 
@@ -79,7 +79,7 @@ class TapHandler {
             await Audios().playTone(Sound.select);
             controller.gameInstance._select(squareToIndex[sq]!);
             ret = true;
-            logger.v("[tap] selectPiece: [$sq]");
+            logger.v("$_tag selectPiece: [$sq]");
 
             final pieceOnBoardCount =
                 position.pieceOnBoardCount[controller.gameInstance.sideToMove];
@@ -88,7 +88,7 @@ class TapHandler {
                 (pieceOnBoardCount == DB().rules.flyPieceCount ||
                     pieceOnBoardCount == 3)) {
               // TODO: [Calcitem, Leptopoda] why is the [DB().rules.flyPieceCount] not respected?
-              logger.v("[tap] May fly.");
+              logger.v("$_tag May fly.");
               showTip(S.of(context).tipCanMoveToAnyPoint, snackBar: true);
             } else {
               showTip(S.of(context).tipPlace, snackBar: true);
@@ -97,74 +97,72 @@ class TapHandler {
           // TODO: [Leptopoda] deduplicate
           case SelectionResponse.illegalPhase:
             await Audios().playTone(Sound.illegal);
-            logger.v("[tap] selectPiece: skip [$sq]");
+            logger.v("$_tag selectPiece: skip [$sq]");
             if (position.phase != Phase.gameOver) {
               showTip(S.of(context).tipCannotMove, snackBar: true);
             }
             break;
           case SelectionResponse.canOnlyMoveToAdjacentEmptyPoints:
             await Audios().playTone(Sound.illegal);
-            logger.v("[tap] selectPiece: skip [$sq]");
+            logger.v("$_tag selectPiece: skip [$sq]");
             showTip(S.of(context).tipCanMoveOnePoint, snackBar: true);
             break;
           case SelectionResponse.pleaseSelectOurPieceToMove:
             await Audios().playTone(Sound.illegal);
-            logger.v("[tap] selectPiece: skip [$sq]");
+            logger.v("$_tag selectPiece: skip [$sq]");
             showTip(S.of(context).tipSelectPieceToMove, snackBar: true);
             break;
           case SelectionResponse.illegalAction:
             await Audios().playTone(Sound.illegal);
-            logger.v("[tap] selectPiece: skip [$sq]");
+            logger.v("$_tag selectPiece: skip [$sq]");
             showTip(S.of(context).tipSelectWrong, snackBar: true);
             break;
         }
         break;
 
       case Act.remove:
-        switch (await position._removePiece(sq)) {
-          case RemoveResponse.ok:
-            animationController.reset();
-            animationController.animateTo(1.0);
+        try {
+          await position._removePiece(sq);
 
-            ret = true;
-            logger.v("[tap] removePiece: [$sq]");
-            if (position._pieceToRemoveCount >= 1) {
-              showTip(S.of(context).tipContinueMill, snackBar: true);
+          animationController.reset();
+          animationController.animateTo(1.0);
+
+          ret = true;
+          logger.v("$_tag removePiece: [$sq]");
+          if (position._pieceToRemoveCount >= 1) {
+            showTip(S.of(context).tipContinueMill, snackBar: true);
+          } else {
+            if (gameMode == GameMode.humanVsAi) {
+              showTip(S.of(context).tipRemoved);
             } else {
-              if (gameMode == GameMode.humanVsAi) {
-                showTip(S.of(context).tipRemoved);
-              } else {
-                final them = controller.gameInstance.sideToMove.opponent
-                    .playerName(context);
-                showTip(S.of(context).tipToMove(them));
-              }
+              final them = controller.gameInstance.sideToMove.opponent
+                  .playerName(context);
+              showTip(S.of(context).tipToMove(them));
             }
-            break;
-          case RemoveResponse.cannotRemoveOurPiece:
+          }
+        } on CanNotRemoveSelfException {
+          await Audios().playTone(Sound.illegal);
+          logger.i("$_tag removePiece: Cannot Remove our pieces, skip [$sq]");
+          showTip(S.of(context).tipSelectOpponentsPiece, snackBar: true);
+        } on CanNotRemoveMillException {
+          await Audios().playTone(Sound.illegal);
+          logger.i(
+            "$_tag removePiece: Cannot remove piece from Mill, skip [$sq]",
+          );
+          showTip(S.of(context).tipCannotRemovePieceFromMill, snackBar: true);
+        } on Exception catch (e) {
+          if (e is IllegalActionException ||
+              e is IllegalPhaseException ||
+              e is NoPieceToRemoveException) {
             await Audios().playTone(Sound.illegal);
-            logger.i(
-              "[tap] removePiece: Cannot Remove our pieces, skip [$sq]",
-            );
-            showTip(S.of(context).tipSelectOpponentsPiece, snackBar: true);
-            break;
-          case RemoveResponse.cannotRemovePieceFromMill:
-            await Audios().playTone(Sound.illegal);
-            logger.i(
-              "[tap] removePiece: Cannot remove piece from Mill, skip [$sq]",
-            );
-            showTip(S.of(context).tipCannotRemovePieceFromMill, snackBar: true);
-            break;
-          case RemoveResponse.illegalPhase:
-          case RemoveResponse.illegalAction:
-          case RemoveResponse.noPieceToRemove:
-            await Audios().playTone(Sound.illegal);
-            logger.v("[tap] removePiece: skip [$sq]");
+            logger.v("$_tag removePiece: skip [$sq]");
             if (position.phase != Phase.gameOver) {
               showTip(S.of(context).tipBanRemove, snackBar: true);
             }
-            break;
+          } else {
+            rethrow;
+          }
         }
-        break;
     }
 
     if (ret) {
