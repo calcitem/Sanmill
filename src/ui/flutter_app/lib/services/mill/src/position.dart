@@ -55,7 +55,7 @@ class Position {
   PieceColor _them = PieceColor.black;
   PieceColor _winner = PieceColor.nobody;
 
-  GameOverReason gameOverReason = GameOverReason.none;
+  GameOverReason? gameOverReason;
 
   Phase phase = Phase.placing;
   Act _action = Act.place;

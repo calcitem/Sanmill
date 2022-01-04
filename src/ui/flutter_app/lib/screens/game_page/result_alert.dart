@@ -44,9 +44,10 @@ class GameResultAlert extends StatelessWidget {
 
     final bool isTopLevel = DB().preferences.skillLevel == 30; // TODO: 30
 
-    final content = StringBuffer(
-      position.gameOverReason.getName(context, position.winner),
-    );
+    final reason = position.gameOverReason?.getName(context, position.winner) ??
+        S.of(context).gameOverUnknownReason;
+
+    final content = StringBuffer(reason);
 
     logger.v("$_tag Game over reason string: $content");
 

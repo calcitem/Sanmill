@@ -204,7 +204,6 @@ extension ActExtension on Act {
 }
 
 enum GameOverReason {
-  none,
   loseLessThanThree,
   loseNoWay,
   loseBoardIsFull,
@@ -239,8 +238,6 @@ extension GameOverReasonExtension on GameOverReason {
         return S.of(context).drawReasonBoardIsFull;
       case GameOverReason.drawThreefoldRepetition:
         return S.of(context).drawReasonThreefoldRepetition;
-      case GameOverReason.none:
-        return S.of(context).gameOverUnknownReason;
     }
   }
 }
