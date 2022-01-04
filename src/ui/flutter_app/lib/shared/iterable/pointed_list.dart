@@ -46,7 +46,7 @@ class PointedList<E> extends DelegatingList<E> {
 
   /// Prunes the list from any element currently out of focus.
   ///
-  /// This is equvalent to `removeRange(globalIterator.index + 1, _l.length)`.
+  /// This is equvalent to `removeRange(globalIterator.index + 1, this.length)`.
   void prune() {
     if (_l.isEmpty) return;
     if (globalIterator.index + 1 == _l.length) return;
@@ -58,7 +58,7 @@ class PointedList<E> extends DelegatingList<E> {
   void add(E value) {
     prune();
     _l.add(value);
-    iterator.moveNext();
+    globalIterator.moveNext();
   }
 
   /// Gets the element currently in focus.
@@ -89,7 +89,7 @@ class PointedList<E> extends DelegatingList<E> {
   /// Modifying the underlying collection after creating the new iterator may cause an error the next time [Iterator.moveNext] is called on that iterator. Any modifiable iterable class should specify which operations will break iteration.
   ///
   /// Copied from Iterable.
-  PointedListIterator get bidirectionalIterator => PointedListIterator(_l);
+  PointedListIterator<E> get bidirectionalIterator => PointedListIterator(_l);
 }
 
 /// Pointed List Iterator.
@@ -104,7 +104,7 @@ class PointedListIterator<E> extends BidirectionalIterator<E?> {
 
   @override
   bool moveNext() {
-    if (_index == _parent.length - 1) {
+    if (_index == lastIndex) {
       return false;
     } else {
       _current = _parent[_index++];
@@ -143,6 +143,16 @@ class PointedListIterator<E> extends BidirectionalIterator<E?> {
 
   /// Get's the last valid index.
   int get lastIndex => _parent.length - 1;
+
+  /// Get's wether the list has another element next to the iterator.
+  ///
+  /// This has the benefit of not altering the iterator while still being able to check it.
+  bool get hasNext => _index < lastIndex;
+
+  /// Get's wether the list has another element previous to the iterator.
+  ///
+  /// This has the benefit of not altering the iterator while still being able to check it.
+  bool get hasPrevious => _index >= 0;
 
   @override
   E? get current => _current;

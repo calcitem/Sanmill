@@ -33,13 +33,15 @@ void main() {
       const testString = "Test";
 
       DB.instance = MockedDB();
+      final controller = MillController();
+      controller.gameInstance.gameMode = GameMode.humanVsHuman;
       const _screen = HeaderTip();
 
       await tester.pumpWidget(makeTestableWidget(_screen));
 
       expect(find.text(SEn().welcome), findsOneWidget);
 
-      MillController().tip.showTip(testString);
+      controller.tip.showTip(testString);
 
       await tester.pump();
 
@@ -48,6 +50,8 @@ void main() {
 
     testWidgets("GameHeader position", (WidgetTester tester) async {
       DB.instance = MockedDB();
+      final controller = MillController();
+      controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       const iconKey = Key("DrawerIcon");
 

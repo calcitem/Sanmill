@@ -203,7 +203,7 @@ class Engine {
 
   String _getPositionFen() {
     final startPosition = MillController().position._fen;
-    final moves = MillController().position._movesSinceLastRemove;
+    final moves = MillController().position.movesSinceLastRemove;
 
     final posFenStr = StringBuffer("position fen $startPosition");
 

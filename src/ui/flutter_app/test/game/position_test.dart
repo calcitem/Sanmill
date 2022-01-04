@@ -25,23 +25,11 @@ import '../helpers/mocks/storage_mock.dart';
 import '../helpers/test_mills.dart';
 
 void main() {
-  group("MillController", () {
-    test("new game should have the same GameMode", () async {
-      const gameMode = GameMode.humanVsAi;
+  group("Position", () {
+    test("_movesSinceLastRemove should output the moves since last remove",
+        () async {
+      const testMill = WinnGame();
 
-      // initialize the test
-      DB.instance = MockedDB();
-      final controller = MillController();
-
-      controller.gameInstance.gameMode = gameMode;
-
-      // reset the game
-      controller.reset();
-
-      expect(controller.gameInstance.gameMode, gameMode);
-    });
-
-    test("Import should clear the focus", () async {
       // initialize the test
       DB.instance = MockedDB();
       Audios.instance = MockedAudios();
@@ -49,9 +37,9 @@ void main() {
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       // import a game
-      ImportService.import(const WinnGame().export);
+      ImportService.import(testMill.export);
 
-      expect(MillController().gameInstance.focusIndex, isNull);
+      expect(controller.position.movesSinceLastRemove, testMill.movesSinceRemove);
     });
   });
 }

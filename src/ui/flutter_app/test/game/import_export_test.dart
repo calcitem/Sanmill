@@ -17,6 +17,7 @@
 */
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/models/display.dart';
 import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
@@ -25,23 +26,12 @@ import '../helpers/mocks/storage_mock.dart';
 import '../helpers/test_mills.dart';
 
 void main() {
-  group("MillController", () {
-    test("new game should have the same GameMode", () async {
-      const gameMode = GameMode.humanVsAi;
+  group("Import Export Service", () {
+    test(
+        "import standard notation should populate the recorder with the imported moves",
+        () async {
+      const testMill = WinnGame();
 
-      // initialize the test
-      DB.instance = MockedDB();
-      final controller = MillController();
-
-      controller.gameInstance.gameMode = gameMode;
-
-      // reset the game
-      controller.reset();
-
-      expect(controller.gameInstance.gameMode, gameMode);
-    });
-
-    test("Import should clear the focus", () async {
       // initialize the test
       DB.instance = MockedDB();
       Audios.instance = MockedAudios();
@@ -49,9 +39,41 @@ void main() {
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       // import a game
-      ImportService.import(const WinnGame().export);
+      ImportService.import(testMill.export);
 
-      expect(MillController().gameInstance.focusIndex, isNull);
+      expect(MillController().recorder.toString(), testMill.recorder);
+    });
+
+    test("export standard notation", () async {
+      const testMill = WinnGame();
+
+      // initialize the test
+      DB.instance = MockedDB();
+      Audios.instance = MockedAudios();
+      final controller = MillController();
+      controller.gameInstance.gameMode = GameMode.humanVsHuman;
+
+      // import a game
+      ImportService.import(testMill.export);
+
+      expect(controller.recorder.moveHistoryText, testMill.export);
+    });
+
+    test("export not standard notation", () async {
+      const testMill = WinnGame();
+
+      // initialize the test
+      final mockedDB = MockedDB();
+      mockedDB.display = const Display(standardNotationEnabled: false);
+      DB.instance = mockedDB;
+      Audios.instance = MockedAudios();
+      final controller = MillController();
+      controller.gameInstance.gameMode = GameMode.humanVsHuman;
+
+      // import a game
+      ImportService.import(testMill.export);
+
+      expect(controller.recorder.moveHistoryText, testMill.exportNotStandard);
     });
   });
 }

@@ -51,12 +51,12 @@ void main() {
       final list = PointedList.from(subList);
 
       // move forward two
-      list.globalIterator.moveTo(index - 1);
+      list.globalIterator.moveTo(index);
 
       // prune list
       list.prune();
 
-      final result = List.generate(index, (index) => index);
+      final result = List.generate(index + 1, (index) => index);
       expect(list.toList(), result);
     });
 
@@ -82,29 +82,60 @@ void main() {
 
       expect(list.toList(), []);
     });
+
+    test(
+        "prune should reset the current pointer position to the new last index.",
+        () {
+      const index = 2;
+
+      // initialize
+      final subList = List.generate(10, (index) => index);
+      final list = PointedList.from(subList);
+
+      // move forward two
+      list.globalIterator.moveTo(index);
+
+      // prune list
+      list.prune();
+
+      expect(list.globalIterator.index, index);
+    });
   });
+  group("PointedList.add", () {
+    test("add should add the value next to the current position", () {
+      const index = 2;
+      const value = 3;
 
-  test("PointedList.add should add the value next to the current position", () {
-    const index = 2;
-    const value = 3;
+      // initialize
+      final subList = List.generate(10, (index) => index);
+      final list = PointedList.from(subList);
 
-    // initialize
-    final subList = List.generate(10, (index) => index);
-    final list = PointedList.from(subList);
+      // move to index
+      list.globalIterator.moveTo(index - 1);
 
-    // move to index
-    list.globalIterator.moveTo(index - 1);
+      // add list
+      list.add(value);
 
-    // add list
-    list.add(value);
+      final result = List.generate(index, (index) => index);
+      result.add(value);
+      expect(list.toList(), result);
+    });
 
-    final result = List.generate(index, (index) => index);
-    result.add(value);
-    expect(list.toList(), result);
+    test("add should iterate the global iterator", () {
+      // initialize
+      final subList = List.generate(10, (index) => index);
+      final list = PointedList.from(subList);
+
+      final oldIndex = list.index;
+
+      // add list
+      list.add(5);
+
+      expect(list.index, oldIndex + 1);
+    });
   });
-
   test(
-      "PointedList.forEach should iterate over every entry up to (incliding) the pointer",
+      "PointedList.forEachVisible should iterate over every entry up to (incliding) the pointer",
       () {
     const index = 3;
 

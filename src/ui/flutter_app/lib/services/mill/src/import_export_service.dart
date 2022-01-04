@@ -51,7 +51,7 @@ class ImportService {
 
     await HistoryNavigator.gotoHistory(HistoryMove.backAll);
     // TODO: [Leptopoda] use reset game
-    MillController().recorder.clear();
+    MillController().reset();
 
     final importFailedStr = import(data!.text!);
 

@@ -24,19 +24,40 @@ import 'package:sanmill/models/rules.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
 class MockedDB extends Mock implements DB {
+  ColorSettings _colorSettings = const ColorSettings();
+  Display _display = const Display();
+  Preferences _preferences = const Preferences();
+  Rules _rules = Rules();
+
   /// gets the given [ColorSettings] from the settings Box
   @override
-  ColorSettings get colorSettings => const ColorSettings();
+  ColorSettings get colorSettings => _colorSettings;
+
+  /// saves the given [colors] to the settings Box
+  @override
+  set colorSettings(ColorSettings colors) => _colorSettings = colors;
 
   /// gets the given [Display] from the settings Box
   @override
-  Display get display => const Display();
+  Display get display => _display;
+
+  /// saves the given [display] to the settings Box
+  @override
+  set display(Display display) => _display = display;
 
   /// gets the given [Preferences] from the settings Box
   @override
-  Preferences get preferences => const Preferences();
+  Preferences get preferences => _preferences;
+
+  /// saves the given [settings] to the settings Box
+  @override
+  set preferences(Preferences settings) => _preferences = settings;
 
   /// gets the given [Rules] from the settings Box
   @override
-  Rules get rules => Rules();
+  Rules get rules => _rules;
+
+  /// saves the given [rules] to the settings Box
+  @override
+  set rules(Rules rules) => _rules = rules;
 }

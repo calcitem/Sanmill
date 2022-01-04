@@ -745,23 +745,28 @@ class Position {
     return true;
   }
 
-  ///////////////////////////////////////////////////////////////////////////////
-  String? get _movesSinceLastRemove {
+  @visibleForTesting
+  String? get movesSinceLastRemove {
     final recorder = MillController().recorder;
+    if (recorder.isEmpty) return null;
 
     final iterator = recorder.bidirectionalIterator;
     iterator.moveToLast();
 
     final buffer = StringBuffer();
 
-    while (iterator.movePrevious()) {
-      if (iterator.current.move[0] == "-") break;
+    while (!iterator.current!.move.startsWith("-")) {
+      if (!iterator.movePrevious()) break;
     }
 
-    if (iterator.current != 0) iterator.moveNext();
+    // move forward two to skip the remove
+    if (iterator.index != 0) {
+      iterator.moveNext();
+      iterator.moveNext();
+    }
 
     while (iterator.moveNext()) {
-      buffer.write(" ${iterator.current.move}");
+      buffer.writeSpace(iterator.current!.move);
     }
 
     final String moves = buffer.toString();

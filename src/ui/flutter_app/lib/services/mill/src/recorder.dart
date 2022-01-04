@@ -21,7 +21,18 @@ part of '../mill.dart';
 class _GameRecorder extends PointedList<ExtMove> {
   _GameRecorder() : super();
 
-  // TODO: [Leptopoda] as this is not related to the recorder in general we should probably move this to the import export service.
+  @override
+  String toString() {
+    final buffer = StringBuffer("[ ");
+    for (final move in this) {
+      buffer.write("${move.move}, ");
+    }
+
+    buffer.write("]");
+
+    return buffer.toString();
+  }
+
   String? get moveHistoryText {
     if (isEmpty) return null;
     final StringBuffer moveHistory = StringBuffer();
@@ -41,7 +52,6 @@ class _GameRecorder extends PointedList<ExtMove> {
       }
     }
 
-    // TODO: [Leptopoda] migrate to [forEachVisible]
     while (i <= index) {
       moveHistory.writeNumber(k++);
       if (DB().display.standardNotationEnabled) {
@@ -59,7 +69,10 @@ class _GameRecorder extends PointedList<ExtMove> {
           moveHistory.write(this[i++].move);
         }
       }
-      moveHistory.writeln();
+
+      if (i < index) {
+        moveHistory.writeln();
+      }
     }
 
     return moveHistory.toString();
