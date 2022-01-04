@@ -612,7 +612,7 @@ class Position {
 
   /// Updates square if it hasn't been updated yet.
   int _updateKey(int s) {
-    final PieceColor pieceType = _colorOn(s);
+    final PieceColor pieceType = _board[s];
 
     return st.key ^= _Zobrist.psq[pieceType.index][s];
   }
@@ -631,10 +631,6 @@ class Position {
 
   ///////////////////////////////////////////////////////////////////////////////
 
-  PieceColor _colorOn(int sq) {
-    return _board[sq];
-  }
-
   int _potentialMillsCount(int to, PieceColor c, {int from = 0}) {
     int n = 0;
     PieceColor locbak = PieceColor.none;
@@ -643,7 +639,7 @@ class Position {
     assert(0 <= from && from < sqNumber);
 
     if (_c == PieceColor.nobody) {
-      _c = _colorOn(to);
+      _c = _board[to];
     }
 
     if (from != 0 && from >= sqBegin && from < sqEnd) {
@@ -670,7 +666,7 @@ class Position {
     final List<int?> idx = [0, 0, 0];
     int min = 0;
     int? temp = 0;
-    final PieceColor m = _colorOn(s);
+    final PieceColor m = _board[s];
 
     for (int i = 0; i < idx.length; i++) {
       idx[0] = s;
@@ -734,7 +730,7 @@ class Position {
     }
 
     for (int s = sqBegin; s < sqEnd; s++) {
-      if (!(sideToMove == _colorOn(s))) {
+      if (sideToMove != _board[s]) {
         continue;
       }
 

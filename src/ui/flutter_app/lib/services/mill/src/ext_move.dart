@@ -126,23 +126,23 @@ class ExtMove {
       );
     }
 
-    const String range = "0123456789(,)->";
-
-    if (!(move[0] == "(" || move[0] == "-")) {
+    if (!(move.startsWith("(") || move.startsWith("-"))) {
       throw FormatException(
-        "$_tag Invalid Move: invalid first char. Expected '(' or '-' but got a ${move[0]}",
+        "$_tag Invalid Move: invalid first char. Expected '(' or '-' but got a ${move.characters.first}",
         move,
         0,
       );
     }
 
-    if (move.characters.last != ")") {
+    if (!move.endsWith(")")) {
       throw FormatException(
         "$_tag Invalid Move: invalid last char. Expected a ')' but got a ${move.characters.last}",
         move,
         move.length - 1,
       );
     }
+
+    const String range = "0123456789(,)->";
 
     for (int i = 0; i < move.length; i++) {
       if (!range.contains(move[i])) {
