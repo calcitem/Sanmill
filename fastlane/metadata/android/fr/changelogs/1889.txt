@@ -1,0 +1,3 @@
+v1.0.19
+
+* Ajouter la traduction automatique en farsi (langue persane).

@@ -1,0 +1,3 @@
+v1.1.22
+
+Lorsque les humains contre l'IA, les deux parties ont fait de nombreux mouvements mais n'ont pas pris les pièces de l'adversaire pendant de nombreux mouvements consécutifs, et l'IA sera gelée. Ce problème a été résolu.

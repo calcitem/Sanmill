@@ -1,0 +1,3 @@
+v1.0.12
+
+* Vous pouvez forcer l'IA à se déplacer maintenant lorsque l'IA réfléchit.

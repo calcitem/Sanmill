@@ -1,0 +1,4 @@
+v1.1.36
+
+* Correction du problème d'affichage de la direction des icônes dans la disposition de droite à gauche.
+* Amélioration de la traduction arabe.

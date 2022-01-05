@@ -1,0 +1,6 @@
+v1.1.10
+
+* Correction des problèmes de flèches d'options dans les langues RTL.
+* Améliorer la traduction en farsi (langue persane) (WIP).
+* Améliorer les traductions en anglais.
+* Ajouter des traductions automatiques bulgare/bengali/danois/grec/estonien/finnois/gujarati/croate/indonésien/lituanien/letton/macédonien/malais/néerlandais/slovaque/slovène/albanais/serbe/suédois/télougou/thaï.

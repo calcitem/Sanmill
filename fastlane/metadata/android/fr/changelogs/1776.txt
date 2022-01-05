@@ -1,0 +1,3 @@
+v1.0.4
+
+* Verrouiller l'orientation de l'écran en mode portrait.

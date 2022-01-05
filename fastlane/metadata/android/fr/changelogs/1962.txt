@@ -1,0 +1,3 @@
+v1.1.4
+
+* Prise en charge des langues de réglage en anglais, allemand, persan, hongrois, roumain et chinois.

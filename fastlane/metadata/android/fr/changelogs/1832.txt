@@ -1,0 +1,3 @@
+v1.0.11
+
+* Support Avancez & Reprenez tout & Avancez tous.
