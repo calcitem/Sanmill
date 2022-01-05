@@ -75,7 +75,7 @@
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Rakjon le egy korongot!",
+  "tipPlace": "Rakjon le egy korongot.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
