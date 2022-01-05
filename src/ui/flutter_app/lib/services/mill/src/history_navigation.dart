@@ -54,6 +54,12 @@ class HistoryNavigator {
 
     try {
       await gotoHistory(move, number);
+
+      final lastEffectiveMove = controller.recorder.current;
+      if (lastEffectiveMove != null) {
+        final text = S.of(context).lastMove(lastEffectiveMove.notation);
+        MillController().tip.showTip(text, snackBar: true);
+      }
     } on _HistoryRange {
       ScaffoldMessenger.of(context).showSnackBarClear(S.of(context).atEnd);
       logger.i(_HistoryRange);
@@ -66,16 +72,6 @@ class HistoryNavigator {
     }
 
     _isGoingToHistory = false;
-
-    final String text;
-    final lastEffectiveMove = controller.recorder.current;
-    if (lastEffectiveMove != null) {
-      text = S.of(context).lastMove(lastEffectiveMove.notation);
-    } else {
-      text = S.of(context).atEnd;
-    }
-
-    MillController().tip.showTip(text, snackBar: true);
   }
 
   static Future<void> takeBack(BuildContext context, {bool pop = true}) async =>
@@ -131,6 +127,7 @@ class HistoryNavigator {
   ///
   /// throws an [_HistoryResponse] when the moves and rules don't match
   /// or when the end of the list moves has been reached.
+  @visibleForTesting
   static Future<void> gotoHistory(HistoryMove move, [int? index]) async {
     move.gotoHistory(index);
 
@@ -143,7 +140,7 @@ class HistoryNavigator {
     MillController().reset();
 
     historyBack.forEachVisible((move) async {
-      if (!(await MillController().gameInstance._doMove(move))) {
+      if (!(await MillController().gameInstance.doMove(move))) {
         throw const _HistoryRule();
       }
     });
@@ -172,6 +169,8 @@ extension HistoryMoveExtension on HistoryMove {
         iterator.moveToLast();
         break;
       case HistoryMove.backAll:
+        // TODO: [Leptopoda] because of the way the PointedListIterator is implemented we can only move back until the first piece.
+        // we'll have to evaluate if this is enough as we actually don't need more. Like If you want to move back even further just start a new game.
         iterator.moveToFirst();
         break;
       case HistoryMove.forward:
@@ -180,7 +179,8 @@ extension HistoryMoveExtension on HistoryMove {
         }
         break;
       case HistoryMove.backN:
-        final _index = current - amount!;
+        assert(amount != null && current != null);
+        final _index = current! - amount!;
         assert(_index >= 0);
         iterator.moveTo(_index);
         break;

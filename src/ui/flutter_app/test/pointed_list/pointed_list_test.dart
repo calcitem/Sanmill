@@ -126,7 +126,7 @@ void main() {
       final subList = List.generate(10, (index) => index);
       final list = PointedList.from(subList);
 
-      final oldIndex = list.index;
+      final oldIndex = list.index!;
 
       // add list
       list.add(5);

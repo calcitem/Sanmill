@@ -77,7 +77,7 @@ class _HistoryRule implements _HistoryResponse {
 
   @override
   String toString() {
-    return "${_HistoryResponse.tag} cur is equal to moveIndex.";
+    return "${_HistoryResponse.tag} Moves and rules do not match.";
   }
 }
 

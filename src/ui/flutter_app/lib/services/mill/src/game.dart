@@ -61,12 +61,13 @@ class _Game {
     blurIndex = null;
   }
 
-  Future<bool> _doMove(ExtMove extMove) async {
+  @visibleForTesting
+  Future<bool> doMove(ExtMove extMove) async {
     assert(MillController().position.phase != Phase.ready);
 
     logger.i("$_tag AI do move: $extMove");
 
-    if (!(await MillController().position._doMove(extMove.move))) {
+    if (!(await MillController().position.doMove(extMove.move))) {
       return false;
     }
 

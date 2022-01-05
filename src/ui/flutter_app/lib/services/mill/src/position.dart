@@ -135,7 +135,8 @@ class Position {
     return buffer.toString();
   }
 
-  Future<bool> _doMove(String move) async {
+  @visibleForTesting
+  Future<bool> doMove(String move) async {
     if (move.length > "Player".length &&
         move.substring(0, "Player".length - 1) == "Player") {
       if (move["Player".length] == "1") {
@@ -223,8 +224,6 @@ class Position {
     } else {
       _posKeyHistory.clear();
     }
-
-    MillController().recorder.add(m); // TODO: Is Right?
 
     return true;
   }
@@ -747,6 +746,7 @@ class Position {
     return true;
   }
 
+// TODO: [Leptopoda] verify this is correct
   @visibleForTesting
   String? get movesSinceLastRemove {
     final recorder = MillController().recorder;
@@ -762,10 +762,7 @@ class Position {
     }
 
     // move forward two to skip the remove
-    if (iterator.index != 0) {
-      iterator.moveNext();
-      iterator.moveNext();
-    }
+    if (iterator.index != 0) iterator.moveNext();
 
     while (iterator.moveNext()) {
       buffer.writeSpace(iterator.current!.move);

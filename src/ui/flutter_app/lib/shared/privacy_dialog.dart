@@ -45,6 +45,7 @@ class PrivacyDialog extends StatelessWidget {
   void _setPrivacyPolicyAccepted() {
     DB().preferences = DB().preferences.copyWith(isPrivacyPolicyAccepted: true);
 
+    // TODO: [Leptopoda] use logger
     debugPrint("[config] isPrivacyPolicyAccepted: true");
   }
 

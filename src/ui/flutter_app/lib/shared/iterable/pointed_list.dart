@@ -17,6 +17,7 @@
 */
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 
 /// Pointed List.
 ///
@@ -49,9 +50,9 @@ class PointedList<E> extends DelegatingList<E> {
   /// This is equvalent to `removeRange(globalIterator.index + 1, this.length)`.
   void prune() {
     if (_l.isEmpty) return;
-    if (globalIterator.index + 1 == _l.length) return;
+    if (!globalIterator.hasNext) return;
 
-    _l.removeRange(globalIterator.index + 1, _l.length);
+    _l.removeRange(globalIterator.index! + 1, _l.length);
   }
 
   @override
@@ -69,13 +70,15 @@ class PointedList<E> extends DelegatingList<E> {
   /// Gets the index of the currently focused element.
   ///
   /// This is equivalent to [globalIterator.index].
-  int get index => globalIterator.index;
+  int? get index => globalIterator.index;
 
   /// Iterates over every visible eleemnt.
   ///
   /// This is equivalent to a loop from `0` to `index`.
   void forEachVisible(void Function(E p1) f) {
-    for (int i = 0; i <= index; i++) {
+    if (index == null) return;
+
+    for (int i = 0; i <= index!; i++) {
       f(_l[i]);
     }
   }
@@ -97,35 +100,43 @@ class PointedList<E> extends DelegatingList<E> {
 /// A [BidirectionalIterator] to be used with but not limited to a [PointedList].
 class PointedListIterator<E> extends BidirectionalIterator<E?> {
   final List<E> _parent;
-  E? _current;
-  int _index = 0;
+  int? _index;
 
-  PointedListIterator(this._parent);
+  PointedListIterator(this._parent) {
+    if (_parent.isNotEmpty) {
+      _index = 0;
+    }
+  }
 
   @override
   bool moveNext() {
-    if (_index == lastIndex) {
+    if (!hasNext) {
       return false;
+    } else if (_index == null) {
+      _index = 0;
     } else {
-      _current = _parent[_index++];
-      return true;
+      _index = _index! + 1;
     }
+    return true;
   }
 
   @override
   bool movePrevious() {
-    if (_index == 0) {
+    if (!hasPrevious) {
       return false;
+    } else if (_index == null) {
+      _index = 0;
     } else {
-      _current = _parent[_index--];
-      return true;
+      _index = _index! - 1;
     }
+    return true;
   }
 
   /// Move to the given element.
   void moveTo(int index) {
-    _current = _parent[index];
-    _index = index;
+    if (_parent.isNotEmpty) {
+      _index = index;
+    }
   }
 
   /// Move to the last element.
@@ -138,22 +149,35 @@ class PointedListIterator<E> extends BidirectionalIterator<E?> {
   /// This is equivalent to `moveTo(0)`.
   void moveToFirst() => moveTo(0);
 
-  /// Get's the currently selected index.
-  int get index => _index;
+  /// The currently selected index.
+  int? get index => _index;
 
-  /// Get's the last valid index.
+  /// The last valid index.
   int get lastIndex => _parent.length - 1;
 
-  /// Get's wether the list has another element next to the iterator.
+  /// Whether the list has another element next to the iterator.
   ///
   /// This has the benefit of not altering the iterator while still being able to check it.
-  bool get hasNext => _index < lastIndex;
+  bool get hasNext => _parent.isNotEmpty && _index != lastIndex;
 
-  /// Get's wether the list has another element previous to the iterator.
+  /// Whether the list has another element previous to the iterator.
   ///
   /// This has the benefit of not altering the iterator while still being able to check it.
-  bool get hasPrevious => _index >= 0;
+  bool get hasPrevious => _parent.isNotEmpty && _index != 0;
 
   @override
-  E? get current => _current;
+  E? get current {
+    if (_index != null) {
+      return _parent[_index!];
+    }
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      other is PointedListIterator &&
+      _parent == other._parent &&
+      _index == other._index;
+
+  @override
+  int get hashCode => Object.hash(_parent, _index);
 }

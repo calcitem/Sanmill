@@ -34,7 +34,7 @@ class _GameRecorder extends PointedList<ExtMove> {
   }
 
   String? get moveHistoryText {
-    if (isEmpty) return null;
+    if (isEmpty || index == null) return null;
     final StringBuffer moveHistory = StringBuffer();
     int k = 1;
     int i = 0;
@@ -42,17 +42,17 @@ class _GameRecorder extends PointedList<ExtMove> {
     void buildStandardNotation() {
       const separator = "    ";
 
-      if (i <= index) {
+      if (i <= index!) {
         moveHistory.write(separator);
         moveHistory.write(this[i++].notation);
       }
 
-      if (i <= index && this[i].type == _MoveType.remove) {
+      if (i <= index! && this[i].type == _MoveType.remove) {
         moveHistory.write(this[i++].notation);
       }
     }
 
-    while (i <= index) {
+    while (i <= index!) {
       moveHistory.writeNumber(k++);
       if (DB().display.standardNotationEnabled) {
         buildStandardNotation();
@@ -62,7 +62,7 @@ class _GameRecorder extends PointedList<ExtMove> {
         moveHistory.write(separator);
         moveHistory.write(this[i++].move);
 
-        if (i <= index) {
+        if (i <= index!) {
           moveHistory.write(separator);
           moveHistory.writeNumber(k++);
           moveHistory.write(separator);
@@ -70,7 +70,7 @@ class _GameRecorder extends PointedList<ExtMove> {
         }
       }
 
-      if (i < index) {
+      if (i < index!) {
         moveHistory.writeln();
       }
     }
