@@ -1,0 +1,8 @@
+v1.1.38
+
+* Prise en charge de la suppression de la mise en place des pièces non placées - Si un joueur forme le moulin lors de la phase de placement, il peut supprimer la pièce non placée de l'adversaire et continuer à se déplacer.
+* Prise en charge de la règle Endgame N-Move.
+* Modifiez la condition de jugement de la règle N-move de > à =.
+* Prise en charge du réglage de répétition triple.
+* Autoriser la configuration du style de point et de la largeur du point.
+* Prise en charge de l'importation de la liste de déplacements GoldToken.
