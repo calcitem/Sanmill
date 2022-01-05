@@ -1,0 +1,4 @@
+v1.0.17
+
+* Prise en charge de la taille de la police de réglage (prend effet après le redémarrage de l'application).
+* Garder muet lors de la reprise (configurable).

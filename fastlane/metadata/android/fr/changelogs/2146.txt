@@ -1,0 +1,3 @@
+v1.1.28
+
+L'algorithme d'IA a été amélioré pour augmenter les compétences de l'IA à 180% de l'original.

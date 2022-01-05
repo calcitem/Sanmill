@@ -1,0 +1,3 @@
+v1.1.5
+
+* Ajouter des traductions automatiques arabe/espagnol/français/japonais/coréen/portugais/russe.

@@ -1,0 +1,5 @@
+v1.0.20
+
+* Soutenez Morris Ten/Eleven Men.
+* Vous pouvez définir combien de pièces peuvent voler.
+* Ajouter une barre d'outils de navigation historique.

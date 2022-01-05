@@ -1,0 +1,3 @@
+v1.1.21
+
+* Correction de la direction de l'icône des boutons de reprise et d'avance dans la disposition de droite à gauche.

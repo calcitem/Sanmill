@@ -1,0 +1,3 @@
+v1.0.15
+
+* Prise en charge de l'enregistrement d'écran (expérimental)
