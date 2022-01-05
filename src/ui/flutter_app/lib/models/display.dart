@@ -37,7 +37,8 @@ part 'display.g.dart';
 class Display {
   const Display({
     this.languageCode,
-    this.standardNotationEnabled = true,
+    @Deprecated("Until other export options are implemented this setting shouldn't be used")
+        this.standardNotationEnabled = true,
     this.isPieceCountInHandShown = true,
     this.isNotationsShown = false,
     this.isHistoryNavigationToolbarShown = false,
@@ -60,6 +61,9 @@ class Display {
   )
   final Locale? languageCode;
 
+  @Deprecated(
+    "Until other export options are implemented this setting shouldn't be used",
+  )
   @HiveField(1)
   final bool standardNotationEnabled;
 

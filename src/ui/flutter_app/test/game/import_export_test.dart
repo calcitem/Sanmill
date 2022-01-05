@@ -30,7 +30,7 @@ void main() {
     test(
         "import standard notation should populate the recorder with the imported moves",
         () async {
-      const testMill = WinnGame();
+      const testMill = WinLessThanThreeGame();
 
       // initialize the test
       DB.instance = MockedDB();
@@ -45,7 +45,7 @@ void main() {
     });
 
     test("export standard notation", () async {
-      const testMill = WinnGame();
+      const testMill = WinLessThanThreeGame();
 
       // initialize the test
       DB.instance = MockedDB();
@@ -59,21 +59,26 @@ void main() {
       expect(controller.recorder.moveHistoryText, testMill.export);
     });
 
-    test("export not standard notation", () async {
-      const testMill = WinnGame();
+    test(
+      "export not standard notation",
+      () async {
+        const testMill = WinLessThanThreeGame();
 
-      // initialize the test
-      final mockedDB = MockedDB();
-      mockedDB.display = const Display(standardNotationEnabled: false);
-      DB.instance = mockedDB;
-      Audios.instance = MockedAudios();
-      final controller = MillController();
-      controller.gameInstance.gameMode = GameMode.humanVsHuman;
+        // initialize the test
+        final mockedDB = MockedDB();
+        // ignore: deprecated_member_use_from_same_package
+        mockedDB.display = const Display(standardNotationEnabled: false);
+        DB.instance = mockedDB;
+        Audios.instance = MockedAudios();
+        final controller = MillController();
+        controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
-      // import a game
-      ImportService.import(testMill.export);
+        // import a game
+        ImportService.import(testMill.export);
 
-      expect(controller.recorder.moveHistoryText, testMill.exportNotStandard);
-    });
+        expect(controller.recorder.moveHistoryText, testMill.exportNotStandard);
+      },
+      skip: "deprecated test. See [Display.standardNotationEnabled].",
+    );
   });
 }

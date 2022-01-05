@@ -279,12 +279,6 @@ class PersonalizationSettingsPage extends StatelessWidget {
           titleString: S.of(context).animationDuration,
           onTap: () => setAnimationDuration(context),
         ),
-        SettingsListTile.switchTile(
-          value: DB().display.standardNotationEnabled,
-          onChanged: (val) =>
-              DB().display = _display.copyWith(standardNotationEnabled: val),
-          titleString: S.of(context).standardNotation,
-        ),
       ],
     );
   }

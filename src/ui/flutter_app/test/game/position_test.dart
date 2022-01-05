@@ -28,7 +28,7 @@ void main() {
   group("Position", () {
     test("_movesSinceLastRemove should output the moves since last remove",
         () async {
-      const testMill = WinnGame();
+      const testMill = WinLessThanThreeGame();
 
       // initialize the test
       DB.instance = MockedDB();

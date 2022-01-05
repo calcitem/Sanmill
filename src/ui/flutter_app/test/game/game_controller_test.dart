@@ -49,7 +49,7 @@ void main() {
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       // import a game
-      ImportService.import(const WinnGame().export);
+      ImportService.import(const WinLessThanThreeGame().export);
 
       expect(MillController().gameInstance.focusIndex, isNull);
     });

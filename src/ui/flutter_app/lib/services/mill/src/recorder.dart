@@ -54,21 +54,8 @@ class _GameRecorder extends PointedList<ExtMove> {
 
     while (i <= index!) {
       moveHistory.writeNumber(k++);
-      if (DB().display.standardNotationEnabled) {
-        buildStandardNotation();
-        buildStandardNotation();
-      } else {
-        const separator = " ";
-        moveHistory.write(separator);
-        moveHistory.write(this[i++].move);
-
-        if (i <= index!) {
-          moveHistory.write(separator);
-          moveHistory.writeNumber(k++);
-          moveHistory.write(separator);
-          moveHistory.write(this[i++].move);
-        }
-      }
+      buildStandardNotation();
+      buildStandardNotation();
 
       if (i < index!) {
         moveHistory.writeln();

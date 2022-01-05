@@ -28,8 +28,8 @@ abstract class TestGame {
   String get exportNotStandard;
 }
 
-class WinnGame extends TestGame {
-  const WinnGame();
+class WinLessThanThreeGame extends TestGame {
+  const WinLessThanThreeGame();
 
   @override
   String get export => ' 1.    g1    b4\n'
