@@ -97,3 +97,14 @@ class ImportFormatException extends FormatException with ImportResponse {
   const ImportFormatException([String? source, int? offset])
       : super("Cannot import ", source, offset);
 }
+
+/// Game Over response
+class GameOver {
+  final GameOverReason? reason;
+  final PieceColor winner;
+
+  const GameOver(this.winner, this.reason);
+
+//       logger.i("[position] Game over, $w win, because of $reason");
+
+}

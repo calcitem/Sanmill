@@ -140,9 +140,7 @@ class HistoryNavigator {
     MillController().reset();
 
     historyBack.forEachVisible((move) async {
-      if (!(await MillController().gameInstance.doMove(move))) {
-        throw const _HistoryRule();
-      }
+      await MillController().gameInstance.doMove(move);
     });
 
     // Restore context

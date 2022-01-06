@@ -121,9 +121,7 @@ extension PieceColorExtension on PieceColor {
   }
 
   IconData get icon {
-    return MillController().position.phase == Phase.gameOver
-        ? _arrow
-        : _chevron;
+    return MillController().tip.gameOver ? _arrow : _chevron;
   }
 
   IconData get _chevron {
@@ -149,7 +147,7 @@ extension PieceColorExtension on PieceColor {
   }
 }
 
-enum Phase { ready, placing, moving, gameOver }
+enum Phase { ready, placing, moving }
 
 extension PhaseExtension on Phase {
   String get fen {
@@ -160,8 +158,6 @@ extension PhaseExtension on Phase {
         return "p";
       case Phase.moving:
         return "m";
-      case Phase.gameOver:
-        return "o";
     }
   }
 
@@ -172,7 +168,6 @@ extension PhaseExtension on Phase {
       case Phase.moving:
         return S.of(context).tipMove;
       case Phase.ready:
-      case Phase.gameOver:
     }
   }
 
@@ -183,7 +178,6 @@ extension PhaseExtension on Phase {
       case Phase.moving:
         return S.of(context).movingPhase;
       case Phase.ready:
-      case Phase.gameOver:
     }
   }
 }

@@ -23,6 +23,9 @@ class HeaderTipState with ChangeNotifier {
 
   String? _message;
   bool showSnackBar = false;
+  bool gameOver = false;
+
+  void setGameOver() => gameOver = true;
 
   String? get message => _message;
 

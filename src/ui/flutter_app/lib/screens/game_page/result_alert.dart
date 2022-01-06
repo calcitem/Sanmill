@@ -20,19 +20,19 @@ part of './game_page.dart';
 
 class GameResultAlert extends StatelessWidget {
   GameResultAlert({
-    required this.winner,
+    required this.event,
     Key? key,
   }) : super(key: key);
 
   final GameMode gameMode = MillController().gameInstance.gameMode;
-  final PieceColor winner;
+  final GameOver event;
 
   static const _tag = "[Game Over Alert]";
 
   GameResult? get _gameResult {
     if (gameMode == GameMode.aiVsAi) return null;
 
-    return winner.result;
+    return event.winner.result;
   }
 
   @override
@@ -44,7 +44,7 @@ class GameResultAlert extends StatelessWidget {
 
     final bool isTopLevel = DB().preferences.skillLevel == 30; // TODO: 30
 
-    final reason = position.gameOverReason?.getName(context, position.winner) ??
+    final reason = event.reason?.getName(context, event.winner) ??
         S.of(context).gameOverUnknownReason;
 
     final content = StringBuffer(reason);

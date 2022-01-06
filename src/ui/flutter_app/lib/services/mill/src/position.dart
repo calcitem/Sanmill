@@ -53,9 +53,6 @@ class Position {
   final _StateInfo st = _StateInfo();
 
   PieceColor _them = PieceColor.black;
-  PieceColor _winner = PieceColor.nobody;
-
-  GameOverReason? gameOverReason;
 
   Phase phase = Phase.placing;
   Act _action = Act.place;
@@ -84,12 +81,12 @@ class Position {
     _them = _sideToMove.opponent;
   }
 
-  Future<bool> _movePiece(int from, int to) async {
+  Future<void> _movePiece(int from, int to) async {
     try {
       _selectPiece(from);
       return _putPiece(to);
     } on MillResponse {
-      return false;
+      throw const _HistoryRule();
     }
   }
 
@@ -140,9 +137,9 @@ class Position {
     if (move.length > "Player".length &&
         move.substring(0, "Player".length - 1) == "Player") {
       if (move["Player".length] == "1") {
-        return _resign(PieceColor.white);
+        _CheckResign(PieceColor.white);
       } else {
-        return _resign(PieceColor.black);
+        _CheckResign(PieceColor.black);
       }
     }
 
@@ -152,61 +149,48 @@ class Position {
     }
 
     if (move == "draw") {
-      phase = Phase.gameOver;
-      _winner = PieceColor.draw;
+      const _winner = PieceColor.draw;
 
       score[PieceColor.draw] = score[PieceColor.draw]! + 1;
 
       // TODO: WAR to judge rule50
       if (DB().rules.nMoveRule > 0 &&
           _posKeyHistory.length >= DB().rules.nMoveRule - 1) {
-        gameOverReason = GameOverReason.drawRule50;
+        throw const GameOver(_winner, GameOverReason.drawRule50);
       } else if (DB().rules.endgameNMoveRule < DB().rules.nMoveRule &&
           _isThreeEndgame &&
           _posKeyHistory.length >= DB().rules.endgameNMoveRule - 1) {
-        gameOverReason = GameOverReason.drawEndgameRule50;
+        throw const GameOver(_winner, GameOverReason.drawEndgameRule50);
       } else if (DB().rules.threefoldRepetitionRule) {
-        gameOverReason = GameOverReason.drawThreefoldRepetition; // TODO: Sure?
+        throw const GameOver(
+          _winner,
+          GameOverReason.drawThreefoldRepetition,
+        ); // TODO: Sure?
       } else {
-        gameOverReason = GameOverReason.drawBoardIsFull; // TODO: Sure?
+        throw const GameOver(
+          _winner,
+          GameOverReason.drawBoardIsFull,
+        ); // TODO: Sure?
       }
-
-      return true;
     }
 
     // TODO: Above is diff from position.cpp
 
-    bool ret = false;
-
     final ExtMove m = ExtMove(move);
 
-    // TODO: [Leptopoda] the below fuctions should all throw exceptions so the ret and coditional stuff can be removed
     switch (m.type) {
       case _MoveType.remove:
-        try {
-          await _removePiece(m.to);
-          ret = true;
-          st.rule50 = 0;
-        } on MillResponse {
-          return false;
-        }
+        await _removePiece(m.to);
+        st.rule50 = 0;
         break;
       case _MoveType.move:
-        ret = await _movePiece(m.from, m.to);
-        if (ret) {
-          ++st.rule50;
-        }
+        await _movePiece(m.from, m.to);
+        ++st.rule50;
         break;
       case _MoveType.place:
-        ret = await _putPiece(m.to);
-        if (ret) {
-          // Reset rule 50 counter
-          st.rule50 = 0;
-        }
-    }
-
-    if (!ret) {
-      return false;
+        await _putPiece(m.to);
+        // Reset rule 50 counter
+        st.rule50 = 0;
     }
 
     // Increment ply counters. In particular, rule50 will be reset to zero later on
@@ -218,7 +202,10 @@ class Position {
       if (st.key != _posKeyHistory.lastF) {
         _posKeyHistory.add(st.key);
         if (DB().rules.threefoldRepetitionRule && _hasGameCycle) {
-          _setGameOver(PieceColor.draw, GameOverReason.drawThreefoldRepetition);
+          throw const GameOver(
+            PieceColor.draw,
+            GameOverReason.drawThreefoldRepetition,
+          );
         }
       }
     } else {
@@ -246,15 +233,14 @@ class Position {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-  Future<bool> _putPiece(int s) async {
+  Future<void> _putPiece(int s) async {
     var piece = PieceColor.none;
     final us = _sideToMove;
 
-    if (phase == Phase.gameOver ||
-        _action != Act.place ||
+    if (_action != Act.place ||
         !(sqBegin <= s && s < sqEnd) ||
         _board[s] != PieceColor.none) {
-      return false;
+      throw const _HistoryRule(); // TODO: [Leptopoda] better to throw an InvalidAct
     }
 
     switch (phase) {
@@ -287,7 +273,7 @@ class Position {
 
           if (pieceInHandCount[PieceColor.white] == 0 &&
               pieceInHandCount[PieceColor.black] == 0) {
-            if (_checkIfGameIsOver()) return true;
+            _checkIfGameIsOver();
 
             phase = Phase.moving;
             _action = Act.select;
@@ -300,7 +286,7 @@ class Position {
               _changeSideToMove();
             }
 
-            if (_checkIfGameIsOver()) return true;
+            _checkIfGameIsOver();
           } else {
             _changeSideToMove();
           }
@@ -321,7 +307,7 @@ class Position {
 
             if (pieceInHandCount[PieceColor.white] == 0 &&
                 pieceInHandCount[PieceColor.black] == 0) {
-              if (_checkIfGameIsOver()) return true;
+              _checkIfGameIsOver();
 
               phase = Phase.moving;
               _action = Act.select;
@@ -330,7 +316,7 @@ class Position {
                 _changeSideToMove();
               }
 
-              if (_checkIfGameIsOver()) return true;
+              _checkIfGameIsOver();
             }
           } else {
             _action = Act.remove;
@@ -341,7 +327,7 @@ class Position {
         }
         break;
       case Phase.moving:
-        if (_checkIfGameIsOver()) return true;
+        _checkIfGameIsOver();
 
         // if illegal
         if (pieceOnBoardCount[sideToMove]! > DB().rules.flyPieceCount ||
@@ -357,7 +343,7 @@ class Position {
             logger.i(
               "[position] putPiece: [$s] is not in [$_currentSquare]'s move table.",
             );
-            return false;
+            throw const _HistoryRule();
           }
         }
 
@@ -382,7 +368,7 @@ class Position {
           _action = Act.select;
           _changeSideToMove();
 
-          if (_checkIfGameIsOver()) return true;
+          _checkIfGameIsOver();
           MillController().gameInstance.focusIndex = squareToIndex[s];
 
           await Audios().playTone(Sound.place);
@@ -398,11 +384,10 @@ class Position {
       default:
         assert(false);
     }
-    return true;
   }
 
   Future<void> _removePiece(int s) async {
-    if (phase == Phase.ready || phase == Phase.gameOver) {
+    if (phase == Phase.ready) {
       throw const IllegalPhase();
     }
 
@@ -447,8 +432,7 @@ class Position {
 
     if (pieceOnBoardCount[_them]! + pieceInHandCount[_them]! <
         DB().rules.piecesAtLeastCount) {
-      _setGameOver(sideToMove, GameOverReason.loseLessThanThree);
-      return;
+      throw GameOver(sideToMove, GameOverReason.loseLessThanThree);
     }
 
     _currentSquare = 0;
@@ -456,9 +440,7 @@ class Position {
     _pieceToRemoveCount--;
     _updateKeyMisc();
 
-    if (_pieceToRemoveCount != 0) {
-      return;
-    }
+    if (_pieceToRemoveCount != 0) return;
 
     if (phase == Phase.placing) {
       if (pieceInHandCount[PieceColor.white] == 0 &&
@@ -509,30 +491,9 @@ class Position {
     MillController().gameInstance.blurIndex = squareToIndex[sq];
   }
 
-  bool _resign(PieceColor loser) {
-    if (phase == Phase.ready || phase == Phase.gameOver) {
-      return false;
-    }
-
-    _setGameOver(loser.opponent, GameOverReason.loseResign);
-
-    return true;
-  }
-
-  PieceColor get winner => _winner;
-
-  void _setGameOver(PieceColor w, GameOverReason reason) {
-    phase = Phase.gameOver;
-    gameOverReason = reason;
-    _winner = w;
-
-    logger.i("[position] Game over, $w win, because of $reason");
-    _updateScore();
-  }
-
-  void _updateScore() {
-    if (phase == Phase.gameOver) {
-      score[_winner] = score[_winner]! + 1;
+  void _CheckResign(PieceColor loser) {
+    if (phase != Phase.ready) {
+      throw GameOver(loser.opponent, GameOverReason.loseResign);
     }
   }
 
@@ -545,47 +506,35 @@ class Position {
         pieceOnBoardCount[PieceColor.black] == 3;
   }
 
-  bool _checkIfGameIsOver() {
-    if (phase == Phase.ready || phase == Phase.gameOver) {
-      return true;
-    }
-
+  void _checkIfGameIsOver() {
     if (DB().rules.nMoveRule > 0 &&
         _posKeyHistory.length >= DB().rules.nMoveRule) {
-      _setGameOver(PieceColor.draw, GameOverReason.drawRule50);
-      return true;
+      throw const GameOver(PieceColor.draw, GameOverReason.drawRule50);
     }
 
     if (DB().rules.endgameNMoveRule < DB().rules.nMoveRule &&
         _isThreeEndgame &&
         _posKeyHistory.length >= DB().rules.endgameNMoveRule) {
-      _setGameOver(PieceColor.draw, GameOverReason.drawEndgameRule50);
-      return true;
+      throw const GameOver(PieceColor.draw, GameOverReason.drawEndgameRule50);
     }
 
     if (pieceOnBoardCount[PieceColor.white]! +
             pieceOnBoardCount[PieceColor.black]! >=
         rankNumber * fileNumber) {
       if (DB().rules.isWhiteLoseButNotDrawWhenBoardFull) {
-        _setGameOver(PieceColor.black, GameOverReason.loseBoardIsFull);
+        throw const GameOver(PieceColor.black, GameOverReason.loseBoardIsFull);
       } else {
-        _setGameOver(PieceColor.draw, GameOverReason.drawBoardIsFull);
+        throw const GameOver(PieceColor.draw, GameOverReason.drawBoardIsFull);
       }
-
-      return true;
     }
 
     if (phase == Phase.moving && _action == Act.select && _isAllSurrounded) {
       if (DB().rules.isLoseButNotChangeSideWhenNoWay) {
-        _setGameOver(sideToMove.opponent, GameOverReason.loseNoWay);
-        return true;
+        throw GameOver(sideToMove.opponent, GameOverReason.loseNoWay);
       } else {
         _changeSideToMove(); // TODO: Need?
-        return false;
       }
     }
-
-    return false;
   }
 
   void _removeBanStones() {
