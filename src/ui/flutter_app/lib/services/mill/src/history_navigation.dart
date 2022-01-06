@@ -53,6 +53,8 @@ class HistoryNavigator {
     _isGoingToHistory = true;
 
     try {
+      Audios().mute();
+
       await gotoHistory(move, number);
 
       final lastEffectiveMove = controller.recorder.current;
@@ -60,15 +62,19 @@ class HistoryNavigator {
         final text = S.of(context).lastMove(lastEffectiveMove.notation);
         MillController().tip.showTip(text, snackBar: true);
       }
+
+      Audios().unMute();
+      await move.gotoHistoryPlaySound();
     } on _HistoryRange {
       ScaffoldMessenger.of(context).showSnackBarClear(S.of(context).atEnd);
       logger.i(_HistoryRange);
     } on _HistoryRule {
+      MillController().reset();
       ScaffoldMessenger.of(context)
           .showSnackBarClear(S.of(context).movesAndRulesNotMatch);
       logger.i(_HistoryRule);
-
-      MillController().reset();
+    } finally {
+      Audios().unMute();
     }
 
     _isGoingToHistory = false;
@@ -131,8 +137,6 @@ class HistoryNavigator {
   static Future<void> gotoHistory(HistoryMove move, [int? index]) async {
     move.gotoHistory(index);
 
-    Audios().mute();
-
     // Backup context
     final gameModeBackup = MillController().gameInstance.gameMode;
     MillController().gameInstance.gameMode = GameMode.humanVsHuman;
@@ -148,9 +152,6 @@ class HistoryNavigator {
     // Restore context
     MillController().gameInstance.gameMode = gameModeBackup;
     MillController().recorder = historyBack;
-
-    Audios().unMute();
-    await move.gotoHistoryPlaySound();
   }
 }
 
