@@ -159,7 +159,7 @@ public class MainActivity extends FlutterActivity {
 
             Log.d(TAG_XCRASH, "xCrash SDK init: end");
         } else {
-            Log.d(TAG_XCRASH, "Skip xCrash SDK init because API minSdkVersion >= 19.");
+            Log.d(TAG_XCRASH, "Skip xCrash SDK init because API minSdkVersion < 19.");
         }
 
         // Send all pending crash log files.
