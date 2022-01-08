@@ -36,7 +36,7 @@ class Test : public QDialog
 
 public:
     explicit Test(QWidget *parent = nullptr, QString k = "Key0");
-    ~Test();
+    ~Test() override;
 
     void setKey(QString k) noexcept { key = k; }
 
