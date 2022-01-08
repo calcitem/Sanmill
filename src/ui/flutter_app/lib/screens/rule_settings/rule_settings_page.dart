@@ -189,9 +189,11 @@ class RuleSettingsPage extends StatelessWidget {
   }
 
   Widget _buildRules(BuildContext context, Box<Rules> rulesBox, _) {
+    final locale = DB().display.languageCode;
+
     final Rules _rules = rulesBox.get(
       DB.rulesKey,
-      defaultValue: Rules(),
+      defaultValue: Rules.fromLocale(locale),
     )!;
     return SettingsList(
       children: [

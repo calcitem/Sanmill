@@ -27,7 +27,7 @@ class MockedDB extends Mock implements DB {
   ColorSettings _colorSettings = const ColorSettings();
   Display _display = const Display();
   Preferences _preferences = const Preferences();
-  Rules _rules = Rules();
+  Rules _rules = const Rules();
 
   /// gets the given [ColorSettings] from the settings Box
   @override
