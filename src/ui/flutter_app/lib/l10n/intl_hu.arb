@@ -4,7 +4,7 @@
     "@appName": {
         "description": "The app name"
     },
-    "welcome": "Üdvözöljük",
+    "welcome": "Üdvözöljük!",
     "@welcome": {
         "description": "Welcome"
     },
@@ -20,23 +20,23 @@
     "@game": {
         "description": "Game"
     },
-    "humanVsAi": "Személy Vs. AI",
+    "humanVsAi": "Ember a gép ellen",
     "@humanVsAi": {
         "description": "Human Vs AI"
     },
-    "humanVsHuman": "Személy Vs. Személy",
+    "humanVsHuman": "Ember ember ellen",
     "@humanVsHuman": {
         "description": "Human Vs Human"
     },
-    "aiVsAi": "AI Vs. AI",
+    "aiVsAi": "Gép a gép ellen",
     "@aiVsAi": {
         "description": "AI Vs AI"
     },
-    "humanVsCloud": "Személy Vs. Felhő",
+    "humanVsCloud": "Ember a felhő ellen",
     "@humanVsCloud": {
         "description": "Human Vs Cloud"
     },
-    "humanVsLAN": " Személy Vs. LAN",
+    "humanVsLAN": "Ember a helyi hálózat ellen",
     "@humanVsLAN": {
         "description": "Human Vs LAN"
     },
@@ -60,19 +60,19 @@
     "@moveList": {
         "description": "Move list"
     },
-    "noGameRecord": "Nincs játékrögzítés",
+    "noGameRecord": "Nincs feljegyzés",
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "Ok",
+    "ok": "Rendben",
     "@ok": {
         "description": "OK"
     },
-    "confirm": "Megerősítés",
+    "confirm": "Jóváhagy",
     "@confirm": {
         "description": "Confirm"
     },
-    "cancel": "Visszavonás",
+    "cancel": "Mégsem",
     "@cancel": {
         "description": "Cancel"
     },
@@ -84,15 +84,15 @@
     "@tipSelectWrong": {
         "description": "Select the wrong piece."
     },
-    "tipPlace": "Rakjon le korongot.",
+    "tipPlace": "Rakjon le egy korongot.",
     "@tipPlace": {
         "description": "Place your pieces."
     },
-    "tipBanPlace": "Nem rakható ide.",
+    "tipBanPlace": "A korongot nem lehet odarakni.",
     "@tipBanPlace": {
         "description": "Cannot place it here."
     },
-    "tipPlaced": "Lerakva.",
+    "tipPlaced": "Lerakott egy korongot.",
     "@tipPlaced": {
         "description": "Placed."
     },
@@ -184,7 +184,7 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "thinking": "Gondolkodás...",
+    "thinking": "Gondolkodás…",
     "@thinking": {
         "description": "Thinking..."
     },
@@ -248,7 +248,7 @@
     "@gameStarted": {
         "description": "Game started, please place"
     },
-    "analyzing": "Elemzés...",
+    "analyzing": "Elemzés…",
     "@analyzing": {
         "description": "Analyzing ..."
     },
@@ -380,7 +380,7 @@
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"
     },
-    "tone": "Tone",
+    "tone": "Hang",
     "@tone": {
         "description": "Tone"
     },
@@ -749,11 +749,11 @@
     "@takeBack": {
         "description": "Take back"
     },
-    "takingBack": "Visszavenni...",
+    "takingBack": "Visszavenni…",
     "@takingBack": {
         "description": "Taking back..."
     },
-    "waiting": "Várakozás...",
+    "waiting": "Várakozás…",
     "@waiting": {
         "description": "Waiting..."
     },
@@ -797,7 +797,7 @@
     "@theme": {
         "description": "Theme"
     },
-    "helpContent": "A játék célja, hogy az ellenfélnek kevesebb, mint három korongja maradjon, vagy beszoruljon, azaz ne tudjon legálisan lépni egyetlen koronggal sem.\n\nA játék automatikusan felfüggesztődik, ha egymás után háromszor ismétlődik ugyanaz a lépés, vagy ha 100 (konfigurálható) lépés alatt nem történik korongeltávolítás.\n\nA játék három szakaszban halad:\n\n1. Korongok felrakása a tábla üres mezőire\n2. Korongok lépegetése a táblán \n3. (opcionális szakasz) Ugrálás a táblán bármely üres mezőre, ha a játékosnak csak három korongja maradt.\n\nFelrakás\n\nA játék egy üres táblával kezdődik, amelyen egy huszonnégy mezőből álló rács van. A játékosok felváltva rakják a korongjaikat az üres mezőkre, amíg azok el nem fogynak. Ha egy játékos három korongját képes egyvonalba helyezni, akkor \"Malom\" van, és eltávolíthatja a tábláról ellenfelének egyik korongját.\n\nA szabályok egyes változataiban a játékosok az ellenfél malmából nem vehetnek el korongot, kivéve ha az ellenfél minden korongja malomban áll.\n\nA szabályok egyes változataiban az eltávolított korongok, ugyanazon játék közben, nem rakhatók vissza a táblára.\n\nMiután az összes korong felrakódott, a játékosok felváltva lépegetnek.\n\nLépegetés\n\nLépegetéskor a játékos az egyik korongját egy vonal mentén csakis a közvetlenül mellette levő üres mezőre tolhatja. Ha ezt egyetlen koronggal sem teheti, akkor beszorult és elveszítette a játékot. Akárcsak a felrakási fázisban, malmot létesít az a játékos is, akinek lépegetéssel egyvonalba sikerül elhelyezni három korongot, s így ezúttal is eltávolíthatja az ellenfél egyik korongját. Ha bármelyik játékosnak csak két korongja marad, tehát nincs lehetősége malmot létrehozni, elveszítette a játékot. Egy játékos háromnál több darabbal is veszíthet, ha ellenfele lezárja, azaz egyetlen koronggal sem léphet.\n\nUgrálás\n\nA szabályok egyes változataiban, ha egy játékosnak csak három korongja marad, akkor ezekkel nemcsak szomszédos, hanem bármely üres mezőre ugorhat.\n\n",
+    "helpContent": "A játék célja, hogy az ellenfélnek kevesebb, mint három korongja maradjon, vagy beszoruljon, azaz ne tudjon legálisan lépni egyetlen koronggal sem.\n\nA játék automatikusan felfüggesztődik, ha egymás után háromszor ismétlődik ugyanaz a lépés, vagy ha 100 (konfigurálható) lépés alatt nem történik korongeltávolítás.\n\nA játék három szakaszban halad:\n\n1. Korongok felrakása a tábla üres mezőire\n2. Korongok lépegetése a táblán \n3. (opcionális szakasz) Ugrálás a táblán bármely üres mezőre, ha a játékosnak csak három korongja maradt.\n\nFelrakás\n\nA játék egy üres táblával kezdődik, amelyen egy huszonnégy mezőből álló rács van. A játékosok felváltva rakják a korongjaikat az üres mezőkre, amíg azok el nem fogynak. Ha egy játékos három korongját képes egyvonalba helyezni, akkor \"Malom\" van, és eltávolíthatja a tábláról ellenfelének egyik korongját.\n\nA szabályok egyes változataiban a játékosok az ellenfél malmából nem vehetnek el korongot, kivéve ha az ellenfél minden korongja malomban áll.\n\nA szabályok egyes változataiban az eltávolított korongok, ugyanazon játék közben, nem rakhatók vissza a táblára.\n\nMiután az összes korong felrakódott, a játékosok felváltva lépegetnek.\n\nLépegetés\n\nLépegetéskor a játékos az egyik korongját egy vonal mentén csakis a közvetlenül mellette levő üres mezőre tolhatja. Ha ezt egyetlen koronggal sem teheti, akkor beszorult és elveszítette a játékot. Akárcsak a felrakási fázisban, malmot létesít az a játékos is, akinek lépegetéssel egyvonalba sikerül elhelyezni három korongot, s így ezúttal is eltávolíthatja az ellenfél egyik korongját. Ha bármelyik játékosnak csak két korongja marad, tehát nincs lehetősége malmot létrehozni, elveszítette a játékot. Egy játékos háromnál több darabbal is veszíthet, ha ellenfele lezárja, azaz egyetlen koronggal sem léphet.\n\nUgrálás\n\nA szabályok egyes változataiban, ha egy játékosnak csak három korongja marad, akkor ezekkel nemcsak szomszédos, hanem bármely üres mezőre ugorhat.\n",
     "@helpContent": {
         "description": "Help Content"
     },
@@ -897,7 +897,7 @@
     "@boardTop": {
         "description": "Board offset from the top"
     },
-    "notAIsTurn": "Nem AI van soron",
+    "notAIsTurn": "Nem AI van soron.",
     "@notAIsTurn": {
         "description": "It is not the AI's turn."
     },
@@ -1097,7 +1097,7 @@
     "@tutorial": {
         "description": "Tutorial"
     },
-    "classicMill": "Classic Mill",
+    "classicMill": "Klasszikus Malom",
     "@classicMill": {
         "description": "Classic Mill"
     },

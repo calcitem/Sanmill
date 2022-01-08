@@ -236,7 +236,7 @@ class CroatianStrings extends Strings {
 /// hu
 class HungarianStrings extends Strings {
   @override
-  String get languageName => 'Magyar';
+  String get languageName => 'magyar';
 
   @override
   String get tapBackAgainToLeave =>
