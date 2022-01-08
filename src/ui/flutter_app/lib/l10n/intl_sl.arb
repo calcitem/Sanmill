@@ -76,7 +76,7 @@
     "@cancel": {
         "description": "Cancel"
     },
-    "copyright": "Avtorske pravice © 2021 Calcitem Studio",
+    "copyright": "Avtorske pravice © 2021-2022 Calcitem Studio",
     "@copyright": {
         "description": "Copyright"
     },

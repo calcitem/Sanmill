@@ -76,7 +76,7 @@
     "@cancel": {
         "description": "Cancel"
     },
-    "copyright": "Copyright © 2021 Kalsit Stüdyo",
+    "copyright": "Copyright © 2021-2022 Kalsit Stüdyo",
     "@copyright": {
         "description": "Copyright"
     },

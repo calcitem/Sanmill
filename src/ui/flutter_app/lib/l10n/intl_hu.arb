@@ -76,7 +76,7 @@
     "@cancel": {
         "description": "Cancel"
     },
-    "copyright": "Szerzői jog © 2021 Calcitem Studio",
+    "copyright": "Szerzői jog © 2021-2022 Calcitem Studio",
     "@copyright": {
         "description": "Copyright"
     },

@@ -76,7 +76,7 @@
     "@cancel": {
         "description": "Cancel"
     },
-    "copyright": "Авторски права © 2021 Студио Калцитем",
+    "copyright": "Авторски права © 2021-2022 Студио Калцитем",
     "@copyright": {
         "description": "Copyright"
     },
