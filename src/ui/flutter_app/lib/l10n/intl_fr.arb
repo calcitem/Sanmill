@@ -20,27 +20,27 @@
     "@game": {
         "description": "Game"
     },
-    "humanVsAi": "L'homme contre l'IA",
+    "humanVsAi": "Humain vs IA",
     "@humanVsAi": {
         "description": "Human Vs AI"
     },
-    "humanVsHuman": "Humain contre humain",
+    "humanVsHuman": "Humain vs humain",
     "@humanVsHuman": {
         "description": "Human Vs Human"
     },
-    "aiVsAi": "IA contre IA",
+    "aiVsAi": "IA vs IA",
     "@aiVsAi": {
         "description": "AI Vs AI"
     },
-    "humanVsCloud": "Humain Vs Cloud",
+    "humanVsCloud": "Humain vs Réseau",
     "@humanVsCloud": {
         "description": "Human Vs Cloud"
     },
-    "humanVsLAN": "Humain Vs LAN",
+    "humanVsLAN": "Humain vs Réseau local",
     "@humanVsLAN": {
         "description": "Human Vs LAN"
     },
-    "testViaLAN": "Test via LAN",
+    "testViaLAN": "Test via Réseau local",
     "@testViaLAN": {
         "description": "Test Via LAN"
     },
@@ -60,7 +60,7 @@
     "@moveList": {
         "description": "Move list"
     },
-    "noGameRecord": "Pas d'enregistrement",
+    "noGameRecord": "Aucun enregistrement",
     "@noGameRecord": {
         "description": "No record"
     },
@@ -108,7 +108,7 @@
     "@tipRemoved": {
         "description": "Removed."
     },
-    "tipMove": "Déplacer une pièce.",
+    "tipMove": "Déplacez une pièce.",
     "@tipMove": {
         "description": "Move a piece."
     },
@@ -120,11 +120,11 @@
     "@tipCannotMove": {
         "description": "You can't move your piece here."
     },
-    "tipMill": "Mill ! Prenez la pièce de votre adversaire.",
+    "tipMill": "Moulin ! Prenez la pièce de votre adversaire.",
     "@tipMill": {
         "description": "Mill! Take your opponent's piece."
     },
-    "tipContinueMill": "Continuez à prendre la pièce de votre adversaire.",
+    "tipContinueMill": "Continuez pour prendre la pièce de votre adversaire.",
     "@tipContinueMill": {
         "description": "Continue to take your opponent's piece."
     },
@@ -152,7 +152,7 @@
     "@tipSelectPieceToMove": {
         "description": "Select your piece to move."
     },
-    "tipHaveThreePiecesLeft": "Il vous reste 3 pièces.",
+    "tipHaveThreePiecesLeft": "Il vous reste trois pièces.",
     "@tipHaveThreePiecesLeft": {
         "description": "You have 3 pieces left."
     },
@@ -164,11 +164,11 @@
     "@tipToMove": {
         "description": " to move."
     },
-    "whiteWin": "Le joueur 1 gagne !",
+    "whiteWin": "Joueur 1 gagne !",
     "@whiteWin": {
         "description": "Player 1 wins!"
     },
-    "blackWin": "Le joueur 2 gagne !",
+    "blackWin": "Joueur 2 gagne !",
     "@blackWin": {
         "description": "Player 2 wins!"
     },
@@ -184,15 +184,15 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "thinking": "Penser...",
+    "thinking": "Réfléchit…",
     "@thinking": {
         "description": "Thinking..."
     },
-    "newGame": "Nouveau jeu",
+    "newGame": "Nouvelle partie",
     "@newGame": {
         "description": "New game"
     },
-    "importGame": "Importer un jeu",
+    "importGame": "Importer une partie",
     "@importGame": {
         "description": "Import game"
     },
@@ -200,7 +200,7 @@
     "@exportGame": {
         "description": "Export game"
     },
-    "gameImported": "Jeu importé du presse-papiers.",
+    "gameImported": "Partie importée depuis le presse-papiers.",
     "@gameImported": {
         "description": "Game imported from the clipboard."
     },
@@ -236,19 +236,19 @@
     "@pleaseWait": {
         "description": "Please wait..."
     },
-    "restartGame": "Redémarrer la partie en cours ?",
+    "restartGame": "Recommencer la partie en cours ?",
     "@restartGame": {
         "description": "Restart current game?"
     },
-    "restart": "Redémarrer",
+    "restart": "Recommencer",
     "@restart": {
         "description": "Restart"
     },
-    "gameStarted": "Jeu commencé, veuillez placer",
+    "gameStarted": "Partie commencée, veuillez placer vos pièces.",
     "@gameStarted": {
         "description": "Game started, please place"
     },
-    "analyzing": "Analyse ...",
+    "analyzing": "Analyse…",
     "@analyzing": {
         "description": "Analyzing ..."
     },
@@ -296,15 +296,15 @@
     "@drawReasonRule50": {
         "description": "In the moving phase, no piece has been removed in the last specific number of moves."
     },
-    "drawReasonBoardIsFull": "C'est un match nul parce que l'échiquier est plein.",
+    "drawReasonBoardIsFull": "C'est un match nul car le plateau est plein.",
     "@drawReasonBoardIsFull": {
         "description": "It is a Draw because the board is full"
     },
-    "drawReasonThreefoldRepetition": "C'est un match nul à cause de la triple répétition.",
+    "drawReasonThreefoldRepetition": "C'est un match nul suite à une triple répétition.",
     "@drawReasonThreefoldRepetition": {
         "description": "It is a Draw because of threefold repetition."
     },
-    "gameOverUnknownReason": "Game Over ! Raison inconnue.",
+    "gameOverUnknownReason": "Fin de la partie ! Raison inconnue.",
     "@gameOverUnknownReason": {
         "description": "Game Over! Unknown reason."
     },
@@ -340,7 +340,7 @@
     "@version": {
         "description": "Version"
     },
-    "thanks": "Merci",
+    "thanks": "Remerciements",
     "@thanks": {
         "description": "Thanks"
     },
@@ -376,7 +376,7 @@
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
-    "keepMuteWhenTakingBack": "Garder le silence lors de la reprise",
+    "keepMuteWhenTakingBack": "Rester muet lors de la reprise",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"
     },
@@ -396,11 +396,11 @@
     "@ai": {
         "description": "AI"
     },
-    "alternate": "Alternate",
+    "alternate": "Alterner",
     "@alternate": {
         "description": "Alternate"
     },
-    "isAutoRestart": "Redémarrage automatique du jeu lorsque la partie est terminée",
+    "isAutoRestart": "Relancer automatiquement la partie lorsqu'elle est terminée",
     "@isAutoRestart": {
         "description": "Auto-restart game when game over"
     },
@@ -412,7 +412,7 @@
     "@resignIfMostLose": {
         "description": "AI Resign if Most Lose"
     },
-    "shufflingEnabled": "Coup aléatoire",
+    "shufflingEnabled": "Déplacement aléatoire",
     "@shufflingEnabled": {
         "description": "Random move"
     },
@@ -444,11 +444,11 @@
     "@flyPieceCount": {
         "description": "The number of the flying piece"
     },
-    "flyPieceCount_Detail": "Si l'option Voler est activée, lorsqu'un joueur est réduit à un nombre spécifique de pièces, ses pièces sont libres de se déplacer vers n'importe quel point inoccupé, au lieu d'être limitées aux points adjacents comme dans le reste du jeu.",
+    "flyPieceCount_Detail": "Si l'option de vol est activée, lorsqu'un joueur est réduit à un nombre spécifique de pièces, ses pièces sont libres de se déplacer vers n'importe quel point inoccupé, au lieu d'être limitées aux points adjacents comme dans le reste du jeu.",
     "@flyPieceCount_Detail": {
         "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
     },
-    "piecesAtLeastCount": "Pièces au minimum",
+    "piecesAtLeastCount": "Pièces minimum",
     "@piecesAtLeastCount": {
         "description": "Pieces At Least"
     },
@@ -456,7 +456,7 @@
     "@hasDiagonalLines": {
         "description": "Diagonal lines"
     },
-    "hasDiagonalLines_Detail": "Ajoutez quatre lignes diagonales au plateau.",
+    "hasDiagonalLines_Detail": "Ajoute quatre lignes diagonales au plateau.",
     "@hasDiagonalLines_Detail": {
         "description": "Add four diagonal lines to the board."
     },
@@ -476,7 +476,7 @@
     "@isDefenderMoveFirst_Detail": {
         "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
-    "mayRemoveMultiple": "Déplacement multiple",
+    "mayRemoveMultiple": "Suppression multiple",
     "@mayRemoveMultiple": {
         "description": "Multi-remove"
     },
@@ -492,7 +492,7 @@
     "@mayRemoveFromMillsAlways_Detail": {
         "description": "mayRemoveFromMillsAlways_Detail"
     },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Le deuxième joueur perd lorsque le plateau est plein.",
+    "isWhiteLoseButNotDrawWhenBoardFull": "Le deuxième joueur perd lorsque le plateau est plein",
     "@isWhiteLoseButNotDrawWhenBoardFull": {
         "description": "The second player loses when the board is full"
     },
@@ -508,7 +508,7 @@
     "@isLoseButNotChangeSideWhenNoWay_Detail": {
         "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
     },
-    "mayFly": "Voler",
+    "mayFly": "Vol",
     "@mayFly": {
         "description": "Flying"
     },
@@ -516,11 +516,11 @@
     "@mayFly_Detail": {
         "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
     },
-    "nMoveRule": "Règle du N-move",
+    "nMoveRule": "Règle du mouvement N",
     "@nMoveRule": {
         "description": "N-move rule"
     },
-    "nMoveRule_Detail": "La partie est nulle s'il n'y a pas eu de déplacement dans un nombre spécifique de coups par chaque joueur.",
+    "nMoveRule_Detail": "La partie est nulle s'il n'y a pas eu de déplacement dans un nombre spécifique de mouvements par chaque joueur.",
     "@nMoveRule_Detail": {
         "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
     },
@@ -536,7 +536,7 @@
     "@copy": {
         "description": "Copy"
     },
-    "moveHistoryCopied": "L'historique des coups est copié dans le presse-papiers",
+    "moveHistoryCopied": "L'historique des coups a été copié dans le presse-papiers.",
     "@moveHistoryCopied": {
         "description": "Move history copied to clipboard"
     },
@@ -544,7 +544,7 @@
     "@help": {
         "description": "Help"
     },
-    "feedback": "Feed-back",
+    "feedback": "Commentaires",
     "@feedback": {
         "description": "Feedback"
     },
@@ -568,7 +568,7 @@
     "@pieceColor": {
         "description": "Piece color"
     },
-    "backgroundColor": "Couleur du fond",
+    "backgroundColor": "Couleur de l'arrière-plan",
     "@backgroundColor": {
         "description": "Background color"
     },
@@ -576,15 +576,15 @@
     "@lineColor": {
         "description": "Board line color"
     },
-    "whitePieceColor": "Couleur de la pièce du joueur 1",
+    "whitePieceColor": "Couleur des pièces du Joueur 1",
     "@whitePieceColor": {
         "description": "Player 1 piece color"
     },
-    "blackPieceColor": "Couleur de la pièce du joueur 2",
+    "blackPieceColor": "Couleur des pièces du Joueur 2",
     "@blackPieceColor": {
         "description": "Player 2 piece color"
     },
-    "messageColor": "Couleur du message",
+    "messageColor": "Couleur des messages",
     "@messageColor": {
         "description": "Message color"
     },
@@ -604,7 +604,7 @@
     "@isHistoryNavigationToolbarShown": {
         "description": "Show history navigation toolbar"
     },
-    "display": "Afficher",
+    "display": "Affichage",
     "@display": {
         "description": "Display"
     },
@@ -648,7 +648,7 @@
     "@pick": {
         "description": "Pick "
     },
-    "info": "Info",
+    "info": "Infos",
     "@info": {
         "description": "Info"
     },
@@ -700,7 +700,7 @@
     "@statistics": {
         "description": "Statistics"
     },
-    "totalGames": "Total des parties",
+    "totalGames": "Parties totales",
     "@totalGames": {
         "description": "Total games"
     },
@@ -724,7 +724,7 @@
     "@privacyPolicy_Detail_1": {
         "description": "Privacy Policy Detail 1"
     },
-    "privacyPolicy_Detail_2": ". Si vous n'êtes pas d'accord avec cette politique, veuillez ne pas utiliser cette application. L'utilisation de l'App implique que vous acceptez ces conditions.",
+    "privacyPolicy_Detail_2": ". Si vous n'êtes pas d'accord avec cette politique, veuillez ne pas utiliser cette application. L'utilisation de l'application implique que vous acceptez ces conditions.",
     "@privacyPolicy_Detail_2": {
         "description": "Privacy Policy Detail 2"
     },
@@ -749,11 +749,11 @@
     "@takeBack": {
         "description": "Take back"
     },
-    "takingBack": "Reprendre...",
+    "takingBack": "Reprise…",
     "@takingBack": {
         "description": "Taking back..."
     },
-    "waiting": "Attendre...",
+    "waiting": "En attente…",
     "@waiting": {
         "description": "Waiting..."
     },
@@ -761,19 +761,19 @@
     "@stepForward": {
         "description": "Step forward"
     },
-    "takeBackAll": "Reprendre tout",
+    "takeBackAll": "Tout reprendre",
     "@takeBackAll": {
         "description": "Take back all"
     },
-    "stepForwardAll": "Avancer tous",
+    "stepForwardAll": "Tout avancer",
     "@stepForwardAll": {
         "description": "Step forward all"
     },
-    "moveNow": "Bouger maintenant",
+    "moveNow": "Déplacer maintenant",
     "@moveNow": {
         "description": "Move now"
     },
-    "done": "C'est fait.",
+    "done": "Terminé.",
     "@done": {
         "description": "Done."
     },
@@ -797,11 +797,11 @@
     "@theme": {
         "description": "Theme"
     },
-    "helpContent": "Le jeu vise à laisser l'adversaire avec moins de trois pièces ou aucun coup légal.\n\nLa partie est automatiquement nulle si une position se produit pour la troisième fois, ou si aucun retrait n'a été effectué au cours des 100 derniers coups (configurables).\n\nLe jeu se déroule en trois phases :\n\n1. Placer les pièces sur les points vacants\n2. Déplacement des pièces vers les points adjacents\n3. (phase optionnelle) Déplacement des pièces vers n'importe quel point vacant lorsque le joueur a été réduit à trois pièces.\n\nPlacer\n\nLe jeu commence avec un plateau vide, qui consiste en une grille de vingt-quatre points. Les joueurs placent à tour de rôle leurs pièces sur les points vacants jusqu'à ce que chaque joueur ait placé toutes ses pièces sur le plateau. Si un joueur peut placer trois de ses pièces en ligne droite, il a un \"moulin\" et peut retirer une des pièces de son adversaire du plateau.\n\nDans certaines variantes des règles, les joueurs doivent d'abord retirer toutes les autres pièces avant de retirer une pièce d'un moulin formé.\n\nDans certaines variantes des règles, tous les points des pièces retirées ne peuvent pas être replacés lors de la phase de placement.\n\nUne fois que toutes les pièces ont été utilisées, les joueurs se déplacent à tour de rôle.\n\nDéplacement\n\nPour se déplacer, un joueur déplace une de ses pièces le long d'une ligne du plateau jusqu'à un point adjacent vacant. S'il ne peut pas le faire, il a perdu la partie. Comme dans la phase de placement, un joueur qui aligne trois de ses pièces sur une ligne du plateau dispose d'un moulin et peut retirer une des pièces de son adversaire. Tout joueur réduit à deux pièces et n'a pas la possibilité de former de nouveaux moulins, et perd donc la partie. Un joueur peut également perdre avec plus de trois pièces si son adversaire les bloque de manière à ce qu'elles ne puissent pas être déplacées.\n\nVoler\n\nDans certaines variantes des règles, lorsqu'un joueur n'a plus que trois pièces, ses pièces peuvent \" voler \", \" sauter \" ou \" bondir \" vers n'importe quel point vacant, et pas seulement vers des points adjacents.",
+    "helpContent": "Le jeu vise à laisser l'adversaire avec moins de trois pièces ou aucun coup légal.\n\nLa partie est automatiquement nulle si une position se produit pour la troisième fois, ou si aucun retrait n'a été effectué au cours des 100 derniers coups (configurables).\n\nLe jeu se déroule en trois phases :\n\n1. Placement des pièces sur les points vacants\n2. Déplacement des pièces vers les points adjacents\n3. (Phase optionnelle) Déplacement des pièces vers n'importe quel point vacant lorsque le joueur a été réduit à trois pièces.\n\nPlacement\n\nLe jeu commence avec un plateau vide, qui consiste en une grille de vingt-quatre points. Les joueurs placent à tour de rôle leurs pièces sur les points vacants jusqu'à ce que chaque joueur ait placé toutes ses pièces sur le plateau. Si un joueur peut placer trois de ses pièces en ligne droite, il a un « moulin » et peut retirer une des pièces de son adversaire du plateau.\n\nDans certaines variantes des règles, les joueurs doivent d'abord retirer toutes les autres pièces avant de retirer une pièce d'un moulin formé.\n\nDans certaines variantes des règles, tous les points des pièces retirées ne peuvent pas être replacés lors de la phase de placement.\n\nUne fois que toutes les pièces ont été utilisées, les joueurs se déplacent à tour de rôle.\n\nDéplacement\n\nPour se déplacer, un joueur déplace une de ses pièces le long d'une ligne du plateau jusqu'à un point adjacent vacant. S'il ne peut pas le faire, il a perdu la partie. Comme dans la phase de placement, un joueur qui aligne trois de ses pièces sur une ligne du plateau dispose d'un moulin et peut retirer une des pièces de son adversaire. Tout joueur réduit à deux pièces n'ayant pas la possibilité de former de nouveaux moulins perd donc la partie. Un joueur peut également perdre avec plus de trois pièces si son adversaire les bloque de manière à ce qu'elles ne puissent pas être déplacées.\n\nVol\n\nDans certaines variantes des règles, lorsqu'un joueur n'a plus que trois pièces, ses pièces peuvent « voler », « sauter » ou « bondir » vers n'importe quel point vacant, et pas seulement vers des points adjacents.\n",
     "@helpContent": {
         "description": "Help Content"
     },
-    "versionInfo": "Infos sur la version",
+    "versionInfo": "Informations de version",
     "@versionInfo": {
         "description": "Version info"
     },
@@ -833,11 +833,11 @@
     "@advanced": {
         "description": "Advanced"
     },
-    "placing": "Placer",
+    "placing": "Placement",
     "@placing": {
         "description": "Placing"
     },
-    "moving": "Déplacer",
+    "moving": "Déplacement",
     "@moving": {
         "description": "Moving"
     },
@@ -857,7 +857,7 @@
     "@passive": {
         "description": "Passive"
     },
-    "timeout": "Temps mort",
+    "timeout": "Temps écoulé",
     "@timeout": {
         "description": "Timeout"
     },
@@ -893,7 +893,7 @@
     "@onBoard": {
         "description": "on board"
     },
-    "boardTop": "Décalage de l'échiquier par rapport au sommet",
+    "boardTop": "Décalage du plateau par rapport au haut",
     "@boardTop": {
         "description": "Board offset from the top"
     },
@@ -909,11 +909,11 @@
     "@autoReplay": {
         "description": "Auto re-play moves"
     },
-    "atEnd": "A la fin de la liste des mouvements.",
+    "atEnd": "Vous êtes à la fin de la liste des mouvements.",
     "@atEnd": {
         "description": "At the end of the move list."
     },
-    "tapBackAgainToLeave": "Tapez à nouveau pour quitter.",
+    "tapBackAgainToLeave": "Appuyez à nouveau pour quitter.",
     "@tapBackAgainToLeave": {
         "description": "Tap back again to leave."
     },
@@ -933,7 +933,7 @@
     "@experiments": {
         "description": "Experiments"
     },
-    "ossLicenses": "Licences open source",
+    "ossLicenses": "Licences open-source",
     "@ossLicenses": {
         "description": "Open source licenses"
     },
@@ -957,7 +957,7 @@
     "@drawerColor": {
         "description": "Menu color"
     },
-    "drawerTextColor": "Couleur du texte du menu",
+    "drawerTextColor": "Couleur du texte des menus",
     "@drawerTextColor": {
         "description": "Menu text color"
     },
@@ -973,7 +973,7 @@
     "@mainToolbarBackgroundColor": {
         "description": "Main toolbar background color"
     },
-    "mainToolbarIconColor": "couleur de l'icône de la barre d'outils principale",
+    "mainToolbarIconColor": "Couleur de l'icône de la barre d'outils principale",
     "@mainToolbarIconColor": {
         "description": "main toolbar icon color"
     },
@@ -989,7 +989,7 @@
     "@autoHideToolbar": {
         "description": "Automatically hide the toolbar"
     },
-    "toolbarLocationOnScreen": "Emplacement de la barre d'outils à l'écran",
+    "toolbarLocationOnScreen": "Emplacement de la barre d'outils sur l'écran",
     "@toolbarLocationOnScreen": {
         "description": "Toolbar location on screen"
     },
@@ -1017,7 +1017,7 @@
     "@chooseYourPicture": {
         "description": "Choose your picture"
     },
-    "light": "Lumière",
+    "light": "Clair",
     "@light": {
         "description": "Light"
     },
@@ -1053,7 +1053,7 @@
     "@saveGame": {
         "description": "Save game"
     },
-    "loadGame": "Chargement du jeu",
+    "loadGame": "Chargement de la partie",
     "@loadGame": {
         "description": "Load game"
     },
@@ -1061,7 +1061,7 @@
     "@setupPosition": {
         "description": "Setup position"
     },
-    "showLegalMoves": "Afficher les coups légaux",
+    "showLegalMoves": "Afficher les coups autorisés",
     "@showLegalMoves": {
         "description": "Show legal moves"
     },
@@ -1085,7 +1085,7 @@
     "@threads": {
         "description": "Threads"
     },
-    "getInvolved": "Être impliqué",
+    "getInvolved": "Contribuer",
     "@getInvolved": {
         "description": "Get Involved"
     },
@@ -1097,11 +1097,11 @@
     "@tutorial": {
         "description": "Tutorial"
     },
-    "classicMill": "Moulin Classique",
+    "classicMill": "Moulin classique",
     "@classicMill": {
         "description": "Classic Mill"
     },
-    "mixedMill": "Moulin Mixte",
+    "mixedMill": "Moulin mixte",
     "@mixedMill": {
         "description": "Mixed Mill"
     },
@@ -1109,7 +1109,7 @@
     "@ceylonMill": {
         "description": "Ceylon Mill"
     },
-    "mayBreakAndRemakeMillRepeatedly": "Le moulin peut être cassé et refait à plusieurs reprises",
+    "mayBreakAndRemakeMillRepeatedly": "Le moulin peut être cassé et créé à plusieurs reprises",
     "@mayBreakAndRemakeMillRepeatedly": {
         "description": "Mill may be broken and remade repeatedly"
     },
@@ -1121,11 +1121,11 @@
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
         "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
     },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Lorsqu'un joueur n'a plus que trois pièces et qu'aucun des deux joueurs ne peut retirer la pièce d'un adversaire en dix coups, le jeu est un match nul.",
+    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Lorsqu'un joueur n'a plus que trois pièces et qu'aucun des deux joueurs ne peut retirer la pièce d'un adversaire en dix coups, le jeu nul.",
     "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
         "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
     },
-    "close": "proche",
+    "close": "Fermer",
     "@close": {
         "description": "Close"
     },
@@ -1137,7 +1137,7 @@
     "@blackPiece": {
         "description": "Black piece"
     },
-    "banPoint": "Point d'interdiction",
+    "banPoint": "Point interdit",
     "@banPoint": {
         "description": "Ban point"
     },
@@ -1145,7 +1145,7 @@
     "@emptyPoint": {
         "description": "Empty point"
     },
-    "noPoint": "Pas de point",
+    "noPoint": "Aucun point",
     "@noPoint": {
         "description": "No point"
     },
@@ -1169,7 +1169,7 @@
     "@lastMove": {
         "description": "Last move"
     },
-    "selected": "Choisi",
+    "selected": "Sélectionné",
     "@selected": {
         "description": "Selected"
     },
@@ -1181,19 +1181,19 @@
     "@accessibility": {
         "description": "Accessibility"
     },
-    "screenReaderSupport": "Prise en charge du lecteur d'écran",
+    "screenReaderSupport": "Lecteur d'écran",
     "@screenReaderSupport": {
         "description": "Screen reader support"
     },
-    "isDraw": "C'est un tirage!",
+    "isDraw": "Match nul !",
     "@isDraw": {
         "description": "It is a Draw!"
     },
-    "draw": "Dessiner",
+    "draw": "Match nul",
     "@draw": {
         "description": "Draw"
     },
-    "pieceHighlightColor": "Couleur de surbrillance de la pièce",
+    "pieceHighlightColor": "Couleur d'accentuation des pièces",
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
     },
@@ -1209,7 +1209,7 @@
     "@removeUnplacedPiece_Detail": {
         "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
     },
-    "endgameNMoveRule": "Règle N-Move de fin de partie",
+    "endgameNMoveRule": "Règle des mouvements N de fin de partie",
     "@endgameNMoveRule": {
         "description": "Endgame N-Move rule"
     },
@@ -1229,11 +1229,11 @@
     "@threefoldRepetitionRule_Detail": {
         "description": "The game is drawn if a position occurs for the third time."
     },
-    "continueToMakeMove": "Moulin! Continuez à bouger.",
+    "continueToMakeMove": "Moulin ! Continuez pour effecter un déplacement.",
     "@continueToMakeMove": {
         "description": "Mill! Continue to make a move."
     },
-    "pointStyle": "Style de pointe",
+    "pointStyle": "Style de point",
     "@pointStyle": {
         "description": "Point style"
     },
