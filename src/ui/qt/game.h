@@ -116,7 +116,7 @@ public:
     void appendGameOverReasonToMoveHistory();
     void setTips();
 
-    inline const std::vector<std::string> *move_hostory() const
+    const std::vector<std::string> *move_hostory() const
     {
         return &moveHistory;
     }
@@ -138,6 +138,7 @@ public:
 signals:
 
     // Signal of total disk number change
+
     void nGamesPlayedChanged(const QString &score);
 
     // Player 1 (first hand) signal to change the number of winning sets
@@ -170,6 +171,7 @@ signals:
 public slots:
 
     // Set rules
+
     void setRule(int ruleNo,
                  int stepLimited = std::numeric_limits<uint16_t>::max(),
                  int timeLimited = 0);

@@ -110,10 +110,10 @@ constexpr bool Is64Bit = false;
 #ifdef TRANSPOSITION_TABLE_64BIT_KEY
 typedef uint64_t Key;
 #else
-typedef uint32_t Key;
+using Key = uint32_t;
 #endif /* TRANSPOSITION_TABLE_64BIT_KEY */
 
-typedef uint32_t Bitboard;
+using Bitboard = uint32_t;
 
 constexpr int MAX_MOVES = 72; // (24 - 4 - 3) * 4 = 68
 constexpr int MAX_PLY = 48;
@@ -274,7 +274,8 @@ enum Piece : uint8_t {
     B_PIECE_11 = 0x2B,
     B_PIECE_12 = 0x2C,
 
-    PIECE_NB = 64, // Fix overflow
+    // Fix overflow
+    PIECE_NB = 64,
 };
 
 using Depth = int8_t;
@@ -426,17 +427,17 @@ ENABLE_INCR_OPERATORS_ON(MoveDirection)
 
 constexpr Color operator~(Color c)
 {
-    return Color(c ^ 3); // Toggle color
+    return static_cast<Color>(c ^ 3); // Toggle color
 }
 
 constexpr Square make_square(File f, Rank r)
 {
-    return Square((f << 3) + r - 1);
+    return static_cast<Square>((f << 3) + r - 1);
 }
 
 constexpr Piece make_piece(Color c)
 {
-    return Piece(c << 4);
+    return static_cast<Piece>(c << 4);
 }
 
 constexpr Piece make_piece(Color c, PieceType pt)
@@ -454,7 +455,7 @@ constexpr Piece make_piece(Color c, PieceType pt)
 
 constexpr Color color_of(Piece pc)
 {
-    return Color(pc >> 4);
+    return static_cast<Color>(pc >> 4);
 }
 
 constexpr PieceType type_of(Piece pc)
@@ -481,18 +482,18 @@ constexpr bool is_ok(Square s)
 
 constexpr File file_of(Square s)
 {
-    return File(s >> 3);
+    return static_cast<File>(s >> 3);
 }
 
 constexpr Rank rank_of(Square s)
 {
-    return Rank((s & 0x07) + 1);
+    return static_cast<Rank>((s & 0x07) + 1);
 }
 
 constexpr Square from_sq(Move m)
 {
     if (m < 0)
-        m = (Move)-m;
+        m = static_cast<Move>(-m);
 
     return static_cast<Square>(m >> 8);
 }
@@ -500,16 +501,17 @@ constexpr Square from_sq(Move m)
 constexpr Square to_sq(Move m)
 {
     if (m < 0)
-        m = (Move)-m;
+        m = static_cast<Move>(-m);
 
-    return Square(m & 0x00FF);
+    return static_cast<Square>(m & 0x00FF);
 }
 
 constexpr MoveType type_of(Move m)
 {
     if (m < 0) {
         return MOVETYPE_REMOVE;
-    } else if (m & 0x1f00) {
+    }
+    if (m & 0x1f00) {
         return MOVETYPE_MOVE;
     }
 
@@ -518,7 +520,7 @@ constexpr MoveType type_of(Move m)
 
 constexpr Move make_move(Square from, Square to)
 {
-    return Move((from << 8) + to);
+    return static_cast<Move>((from << 8) + to);
 }
 
 constexpr Move reverse_move(Move m)
@@ -534,7 +536,8 @@ constexpr bool is_ok(Move m)
 /// Based on a congruential pseudo random number generator
 constexpr Key make_key(uint64_t seed)
 {
-    return Key(seed * 6364136223846793005ULL + 1442695040888963407ULL);
+    return static_cast<Key>(seed * 6364136223846793005ULL +
+                            1442695040888963407ULL);
 }
 
 #endif // #ifndef TYPES_H_INCLUDED

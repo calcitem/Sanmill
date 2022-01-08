@@ -163,10 +163,10 @@ protected:
     uint32_t symOpTable[SO_COUNT][SQUARE_NB] {{0}};
 
     uint32_t *origStateCD[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
-                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{0}};
+                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{nullptr}};
 
     uint32_t *origStateAB[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
-                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{0}};
+                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{nullptr}};
 
     // index of the reverse symmetry operation
     uint32_t reverseSymOp[SO_COUNT] {0};
@@ -267,57 +267,60 @@ protected:
     ThreadVars *threadVars;
 
     // database functions
-    uint32_t getNumberOfLayers();
-    uint32_t getNumberOfKnotsInLayer(uint32_t layerNum);
+    uint32_t getNumberOfLayers() override;
+    uint32_t getNumberOfKnotsInLayer(uint32_t layerNum) override;
     int64_t mOverN_Function(uint32_t m, uint32_t n);
     void applySymOpOnField(unsigned char symOpNumber, uint32_t *sourceField,
                            uint32_t *destField);
     bool isSymOpInvariantOnGroupCD(uint32_t symOp, int *theField);
-    bool shallRetroAnalysisBeUsed(uint32_t layerNum);
+    bool shallRetroAnalysisBeUsed(uint32_t layerNum) override;
     void getSuccLayers(uint32_t layerNum, uint32_t *amountOfSuccLayers,
-                       uint32_t *succeedingLayers);
+                       uint32_t *succeedingLayers) override;
     void getPredecessors(uint32_t threadNo, uint32_t *amountOfPred,
-                         RetroAnalysisPredVars *predVars);
+                         RetroAnalysisPredVars *predVars) override;
     bool setSituation(uint32_t threadNo, uint32_t layerNum,
-                      uint32_t stateNumber);
-    uint32_t getLayerNumber(uint32_t threadNo);
+                      uint32_t stateNumber) override;
+    uint32_t getLayerNumber(uint32_t threadNo) override;
     uint32_t getLayerAndStateNumber(uint32_t threadNo, uint32_t &layerNum,
-                                    uint32_t &stateNumber);
+                                    uint32_t &stateNumber) override;
 
     // Virtual Functions
-    void prepareBestChoiceCalc();
+    void prepareBestChoiceCalc() override;
     void getSituationValue(uint32_t threadNo, float &floatValue,
-                           TwoBit &shortValue);
-    void setOpponentLevel(uint32_t threadNo, bool isOpponentLevel);
-    bool getOpponentLevel(uint32_t threadNo);
-    void deletePossibilities(uint32_t threadNo, void *pPossibilities);
+                           TwoBit &shortValue) override;
+    void setOpponentLevel(uint32_t threadNo, bool isOpponentLevel) override;
+    bool getOpponentLevel(uint32_t threadNo) override;
+    void deletePossibilities(uint32_t threadNo, void *pPossibilities) override;
     uint32_t *getPossibilities(uint32_t threadNo, uint32_t *possibilityCount,
-                               bool *opponentsMove, void **pPossibilities);
+                               bool *opponentsMove,
+                               void **pPossibilities) override;
     void undo(uint32_t threadNo, uint32_t idPossibility, bool opponentsMove,
-              void *pBackup, void *pPossibilities);
+              void *pBackup, void *pPossibilities) override;
     void move(uint32_t threadNo, uint32_t idPossibility, bool opponentsMove,
-              void **pBackup, void *pPossibilities);
+              void **pBackup, void *pPossibilities) override;
     void printMoveInfo(uint32_t threadNo, uint32_t idPossibility,
-                       void *pPossibilities);
+                       void *pPossibilities) override;
     void storeMoveValue(uint32_t threadNo, uint32_t idPossibility,
                         void *pPossibilities, unsigned char value,
-                        uint32_t *freqValuesSubMoves, PlyInfoVarType plyInfo);
+                        uint32_t *freqValuesSubMoves,
+                        PlyInfoVarType plyInfo) override;
     void getSymStateNumWithDoubles(uint32_t threadNo, uint32_t *nSymStates,
-                                   uint32_t **symStateNumbers);
-    void printBoard(uint32_t threadNo, unsigned char value);
-    string getOutputInfo(uint32_t layerNum);
-    uint32_t getPartnerLayer(uint32_t layerNum);
-    void prepareDatabaseCalc();
-    void wrapUpDatabaseCalc(bool calcuAborted);
+                                   uint32_t **symStateNumbers) override;
+    void printBoard(uint32_t threadNo, unsigned char value) override;
+    string getOutputInfo(uint32_t layerNum) override;
+    uint32_t getPartnerLayer(uint32_t layerNum) override;
+    void prepareDatabaseCalc() override;
+    void wrapUpDatabaseCalc(bool calcuAborted) override;
 
 public:
     // Constructor / destructor
     explicit PerfectAI(const char *dir);
-    ~PerfectAI();
+    ~PerfectAI() override;
 
     // Functions
     bool setDatabasePath(const char *dir);
-    void play(fieldStruct *theField, uint32_t *pushFrom, uint32_t *pushTo);
+    void play(fieldStruct *theField, uint32_t *pushFrom,
+              uint32_t *pushTo) override;
     void getLayerAndStateNumber(uint32_t &layerNum, uint32_t &stateNumber);
 
     // Testing functions

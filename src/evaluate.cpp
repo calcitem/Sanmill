@@ -25,9 +25,11 @@ class Evaluation
 {
 public:
     Evaluation() = delete;
+
     explicit Evaluation(Position &p) noexcept
         : pos(p)
     { }
+
     Evaluation &operator=(const Evaluation &) = delete;
     Value value();
 

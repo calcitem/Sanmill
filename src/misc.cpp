@@ -30,10 +30,10 @@
 // the calls at compile time), try to load them at runtime. To do this we need
 // first to define the corresponding function pointers.
 extern "C" {
-typedef bool (*fun1_t)(LOGICAL_PROCESSOR_RELATIONSHIP,
-                       PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, PDWORD);
-typedef bool (*fun2_t)(USHORT, PGROUP_AFFINITY);
-typedef bool (*fun3_t)(HANDLE, CONST GROUP_AFFINITY *, PGROUP_AFFINITY);
+using fun1_t = bool (*)(LOGICAL_PROCESSOR_RELATIONSHIP,
+                        PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, PDWORD);
+using fun2_t = bool (*)(USHORT, PGROUP_AFFINITY);
+using fun3_t = bool (*)(HANDLE, CONST GROUP_AFFINITY *, PGROUP_AFFINITY);
 }
 #endif
 
@@ -94,7 +94,10 @@ struct Tie : public streambuf
 
     int sync() override { return logBuf->pubsync(), buf->pubsync(); }
 
-    int overflow(int c) override { return log(buf->sputc((char)c), "<< "); }
+    int overflow(int c) override
+    {
+        return log(buf->sputc(static_cast<char>(c)), "<< ");
+    }
 
     int underflow() override { return buf->sgetc(); }
 
@@ -109,7 +112,7 @@ struct Tie : public streambuf
         if (last == '\n')
             logBuf->sputn(prefix, 3);
 
-        return last = logBuf->sputc((char)c);
+        return last = logBuf->sputc(static_cast<char>(c));
     }
 };
 
@@ -311,8 +314,8 @@ void dbg_print()
              << 100 * hits[1] / hits[0] << endl;
 
     if (means[0])
-        cerr << "Total " << means[0] << " Mean " << (double)means[1] / means[0]
-             << endl;
+        cerr << "Total " << means[0] << " Mean "
+             << static_cast<double>(means[1]) / means[0] << endl;
 }
 
 /// Used to serialize access to std::cout to avoid multiple threads writing at
@@ -355,7 +358,7 @@ void prefetch(void *addr)
 #endif
 
 #if defined(__INTEL_COMPILER) || defined(_MSC_VER)
-    _mm_prefetch((char *)addr, _MM_HINT_T0);
+    _mm_prefetch(static_cast<char *>(addr), _MM_HINT_T0);
 #else
     __builtin_prefetch(addr);
 #endif
@@ -372,9 +375,9 @@ constexpr auto PREFETCH_STRIDE = 4 * L1_CACHE_BYTES;
 void prefetch_range(void *addr, size_t len)
 {
     char *cp = nullptr;
-    const char *end = (char *)addr + len;
+    const char *end = static_cast<char *>(addr) + len;
 
-    for (cp = (char *)addr; cp < end; cp += PREFETCH_STRIDE)
+    for (cp = static_cast<char *>(addr); cp < end; cp += PREFETCH_STRIDE)
         prefetch(cp);
 }
 

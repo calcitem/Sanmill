@@ -33,7 +33,7 @@ struct rdtscp_clock
     using duration = std::chrono::duration<rep, period>;
     using time_point = std::chrono::time_point<rdtscp_clock, duration>;
 
-    static auto now() noexcept -> time_point
+    static time_point now() noexcept
     {
 #if defined(__x86_64__) || defined(__amd64__)
 #ifdef _WIN32
@@ -46,6 +46,7 @@ struct rdtscp_clock
         return time_point(
             duration((static_cast<std::uint64_t>(hi) << 32) | lo));
 #endif // WIN32
+
 #else
         constexpr unsigned int ui = 0;
         return time_point(duration((static_cast<std::uint64_t>(ui))));
@@ -63,6 +64,7 @@ struct timer
     explicit timer(const duration duration) noexcept
         : expiry(Clock::now() + duration)
     { }
+
     explicit timer(const time_point expiry) noexcept
         : expiry(expiry)
     { }
@@ -72,7 +74,7 @@ struct timer
         return now >= expiry;
     }
 
-    auto remaining(time_point now = Clock::now()) const noexcept -> duration
+    duration remaining(time_point now = Clock::now()) const noexcept
     {
         return expiry - now;
     }
@@ -81,14 +83,14 @@ struct timer
 };
 
 template <class Clock = std::chrono::system_clock>
-constexpr auto make_timer(typename Clock::duration duration) -> timer<Clock>
+constexpr timer<Clock> make_timer(typename Clock::duration duration)
 {
     return timer<Clock>(duration);
 }
 
 // Times how long it takes a function to execute using the specified clock.
 template <class Clock = rdtscp_clock, class Func>
-auto time(Func &&function) -> typename Clock::duration
+typename Clock::duration time(Func &&function)
 {
     const auto start = Clock::now();
     function();
@@ -97,7 +99,7 @@ auto time(Func &&function) -> typename Clock::duration
 
 // Samples the given function N times using the specified clock.
 template <std::size_t N, class Clock = rdtscp_clock, class Func>
-auto sample(Func &&function) -> std::array<typename Clock::duration, N>
+std::array<typename Clock::duration, N> sample(Func &&function)
 {
     std::array<typename Clock::duration, N> samples;
 

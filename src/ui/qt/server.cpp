@@ -139,6 +139,7 @@ void Server::sessionOpened()
                                   tr("Unable to start the server: %1.")
                                       .arg(tcpServer->errorString()));
 #endif // !QT_UI_TEST_MODE
+
             close();
             return;
         }

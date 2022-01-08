@@ -37,7 +37,7 @@ void on_clear_hash(const Option &)
 void on_hash_size(const Option &o)
 {
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    TT.resize((size_t)o);
+    TT.resize(static_cast<size_t>(o));
 #endif
 }
 
@@ -48,129 +48,129 @@ void on_logger(const Option &o)
 
 void on_threads(const Option &o)
 {
-    Threads.set((size_t)o);
+    Threads.set(static_cast<size_t>(o));
 }
 
 void on_skill_level(const Option &o)
 {
-    gameOptions.setSkillLevel((int)o);
+    gameOptions.setSkillLevel(static_cast<int>(o));
 }
 
 void on_move_time(const Option &o)
 {
-    gameOptions.setMoveTime((int)o);
+    gameOptions.setMoveTime(static_cast<int>(o));
 }
 
 void on_aiIsLazy(const Option &o)
 {
-    gameOptions.setAiIsLazy((bool)o);
+    gameOptions.setAiIsLazy(o);
 }
 
 void on_random_move(const Option &o)
 {
-    gameOptions.setShufflingEnabled((bool)o);
+    gameOptions.setShufflingEnabled(o);
 }
 
 void on_algorithm(const Option &o)
 {
-    gameOptions.setAlgorithm((int)o);
+    gameOptions.setAlgorithm(static_cast<int>(o));
 }
 
 void on_drawOnHumanExperience(const Option &o)
 {
-    gameOptions.setDrawOnHumanExperience((bool)o);
+    gameOptions.setDrawOnHumanExperience(o);
 }
 
 void on_considerMobility(const Option &o)
 {
-    gameOptions.setConsiderMobility((bool)o);
+    gameOptions.setConsiderMobility(o);
 }
 
 void on_developerMode(const Option &o)
 {
-    gameOptions.setDeveloperMode((bool)o);
+    gameOptions.setDeveloperMode(o);
 }
 
 // Rules
 
 void on_piecesCount(const Option &o)
 {
-    rule.pieceCount = (int)o;
+    rule.pieceCount = static_cast<int>(o);
 }
 
 void on_flyPieceCount(const Option &o)
 {
-    rule.flyPieceCount = (int)o;
+    rule.flyPieceCount = static_cast<int>(o);
 }
 
 void on_piecesAtLeastCount(const Option &o)
 {
-    rule.piecesAtLeastCount = (int)o;
+    rule.piecesAtLeastCount = static_cast<int>(o);
 }
 
 void on_hasDiagonalLines(const Option &o)
 {
-    rule.hasDiagonalLines = (bool)o;
+    rule.hasDiagonalLines = static_cast<bool>(o);
 }
 
 void on_hasBannedLocations(const Option &o)
 {
-    rule.hasBannedLocations = (bool)o;
+    rule.hasBannedLocations = static_cast<bool>(o);
 }
 
 void on_mayMoveInPlacingPhase(const Option &o)
 {
-    rule.mayMoveInPlacingPhase = (bool)o;
+    rule.mayMoveInPlacingPhase = static_cast<bool>(o);
 }
 
 void on_isDefenderMoveFirst(const Option &o)
 {
-    rule.isDefenderMoveFirst = (bool)o;
+    rule.isDefenderMoveFirst = static_cast<bool>(o);
 }
 
 void on_mayRemoveMultiple(const Option &o)
 {
-    rule.mayRemoveMultiple = (bool)o;
+    rule.mayRemoveMultiple = static_cast<bool>(o);
 }
 
 void on_mayRemoveFromMillsAlways(const Option &o)
 {
-    rule.mayRemoveFromMillsAlways = (bool)o;
+    rule.mayRemoveFromMillsAlways = static_cast<bool>(o);
 }
 
 void on_mayOnlyRemoveUnplacedPieceInPlacingPhase(const Option &o)
 {
-    rule.mayOnlyRemoveUnplacedPieceInPlacingPhase = (bool)o;
+    rule.mayOnlyRemoveUnplacedPieceInPlacingPhase = static_cast<bool>(o);
 }
 
 void on_isWhiteLoseButNotDrawWhenBoardFull(const Option &o)
 {
-    rule.isWhiteLoseButNotDrawWhenBoardFull = (bool)o;
+    rule.isWhiteLoseButNotDrawWhenBoardFull = static_cast<bool>(o);
 }
 
 void on_isLoseButNotChangeSideWhenNoWay(const Option &o)
 {
-    rule.isLoseButNotChangeSideWhenNoWay = (bool)o;
+    rule.isLoseButNotChangeSideWhenNoWay = static_cast<bool>(o);
 }
 
 void on_mayFly(const Option &o)
 {
-    rule.mayFly = (bool)o;
+    rule.mayFly = static_cast<bool>(o);
 }
 
 void on_nMoveRule(const Option &o)
 {
-    rule.nMoveRule = (unsigned int)o;
+    rule.nMoveRule = static_cast<unsigned>(o);
 }
 
 void on_endgameNMoveRule(const Option &o)
 {
-    rule.endgameNMoveRule = (unsigned int)o;
+    rule.endgameNMoveRule = static_cast<unsigned>(o);
 }
 
 void on_threefoldRepetitionRule(const Option &o)
 {
-    rule.threefoldRepetitionRule = (bool)o;
+    rule.threefoldRepetitionRule = static_cast<bool>(o);
 }
 
 /// Our case insensitive less() function as required by UCI protocol
@@ -252,8 +252,8 @@ std::ostream &operator<<(std::ostream &os, const OptionsMap &om)
                     os << " default " << o.defaultValue;
 
                 if (o.type == "spin")
-                    os << " default " << int(stof(o.defaultValue)) << " min "
-                       << o.min << " max " << o.max;
+                    os << " default " << static_cast<int>(stof(o.defaultValue))
+                       << " min " << o.min << " max " << o.max;
 
                 break;
             }

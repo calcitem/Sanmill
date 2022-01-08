@@ -278,7 +278,7 @@ void Game::gameReset()
         // The first piece
         md = isInverted ? PieceItem::Models::blackPiece :
                           PieceItem::Models::whitePiece;
-        PieceItem *newP = new PieceItem;
+        auto newP = new PieceItem;
         newP->setModel(md);
         newP->setPos(scene.pos_p1);
         newP->setNum(i + 1);
@@ -828,7 +828,7 @@ void Game::updateTime()
     time_t *ourSeconds = &elapsedSeconds[sideToMove];
     time_t theirSeconds = elapsedSeconds[~sideToMove];
 
-    currentTime = time(NULL);
+    currentTime = time(nullptr);
 
     if (timePoint >= *ourSeconds) {
         *ourSeconds = timePoint;
@@ -1073,7 +1073,8 @@ bool Game::actionPiece(QPointF p)
         // If it's not decided yet
         if (position.get_winner() == NOBODY) {
             resumeAiThreads(position.sideToMove);
-        } else { // If it's decided
+        } else {
+            // If it's decided
             if (gameOptions.getAutoRestart()) {
                 saveScore();
 
@@ -1143,7 +1144,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
         return false;
 #endif // QT_GUI_LIB
 
-    GameSound soundType = GameSound::none;
+    auto soundType = GameSound::none;
 
     switch (position.get_action()) {
     case Action::select:
@@ -1164,6 +1165,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 #ifdef MADWEASEL_MUEHLE_RULE
     if (position.get_phase() != Phase::gameOver) {
 #endif // MADWEASEL_MUEHLE_RULE
+
         debugPrintf("Computer: %s\n\n", cmd.c_str());
 
         moveHistory.emplace_back(cmd);
@@ -1203,12 +1205,13 @@ bool Game::command(const string &cmd, bool update /* = true */)
         moveListModel.insertRow(0);
         moveListModel.setData(moveListModel.index(0), position.get_record());
         currentRow = 0;
-    } else { // For the current position
+    } else {
+        // For the current position
         currentRow = moveListModel.rowCount() - 1;
         // Skip the added rows. The iterator does not support the + operator and
         // can only skip one by one++
         auto i = (move_hostory()->begin());
-        for (int r = 0; i != (move_hostory())->end(); i++) {
+        for (int r = 0; i != (move_hostory())->end(); ++i) {
             if (r++ > currentRow)
                 break;
         }
@@ -1235,7 +1238,8 @@ bool Game::command(const string &cmd, bool update /* = true */)
     // If it's not decided yet
     if (position.get_winner() == NOBODY) {
         resumeAiThreads(position.sideToMove);
-    } else { // If it's decided
+    } else {
+        // If it's decided
         pauseThreads();
 
         gameEndTime = now();
@@ -1251,6 +1255,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
                     (aiThread[WHITE]->sortTime + aiThread[BLACK]->sortTime));
         aiThread[WHITE]->sortTime = aiThread[BLACK]->sortTime = 0;
 #endif // TIME_STAT
+
 #ifdef CYCLE_STAT
         debugPrintf("Sort Cycle: %ld + %ld = %ld\n", aiThread[WHITE]->sortCycle,
                     aiThread[BLACK]->sortCycle,
@@ -1336,9 +1341,9 @@ bool Game::command(const string &cmd, bool update /* = true */)
         whiteWinRate = 0;
         drawRate = 0;
     } else {
-        blackWinRate = (float)position.score[WHITE] * 100 / total;
-        whiteWinRate = (float)position.score[BLACK] * 100 / total;
-        drawRate = (float)position.score_draw * 100 / total;
+        blackWinRate = static_cast<float>(position.score[WHITE]) * 100 / total;
+        whiteWinRate = static_cast<float>(position.score[BLACK]) * 100 / total;
+        drawRate = static_cast<float>(position.score_draw) * 100 / total;
     }
 
     const auto flags = cout.flags();
@@ -1416,7 +1421,8 @@ bool Game::updateScene(Position &p)
         // Traverse the board, find and place the pieces on the board
         for (j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == key) {
-                pos = scene.polar2pos(File(j / RANK_NB), Rank(j % RANK_NB + 1));
+                pos = scene.polar2pos(static_cast<File>(j / RANK_NB),
+                                      static_cast<Rank>(j % RANK_NB + 1));
                 if (piece->pos() != pos) {
                     // Let the moving pieces be at the top level
                     piece->setZValue(1);
@@ -1480,8 +1486,8 @@ bool Game::updateScene(Position &p)
     if (rule.hasBannedLocations && p.get_phase() == Phase::placing) {
         for (int sq = SQ_BEGIN; sq < SQ_END; sq++) {
             if (board[sq] == BAN_PIECE) {
-                pos = scene.polar2pos(File(sq / RANK_NB),
-                                      Rank(sq % RANK_NB + 1));
+                pos = scene.polar2pos(static_cast<File>(sq / RANK_NB),
+                                      static_cast<Rank>(sq % RANK_NB + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
                     pieceList.at(static_cast<size_t>(nTotalPieces++))
                         ->setPos(pos);
@@ -1653,9 +1659,9 @@ inline std::string Game::char_to_string(char ch)
 {
     if (ch == '1') {
         return "White";
-    } else {
-        return "Black";
     }
+
+    return "Black";
 }
 
 void Game::appendGameOverReasonToMoveHistory()

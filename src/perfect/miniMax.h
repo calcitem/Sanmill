@@ -198,16 +198,16 @@ public:
     /*** typedefines
      * ************************************************************************/
     // 2-Bit variable ranging from 0 to 3
-    typedef unsigned char TwoBit;
+    using TwoBit = unsigned char;
 
     // 2 Bytes for saving the ply info
-    typedef unsigned short PlyInfoVarType;
+    using PlyInfoVarType = unsigned short;
 
     // 1 Byte for counting predecessors
-    typedef unsigned char CountArrayVarType;
+    using CountArrayVarType = unsigned char;
 
     // 4 Bytes for addressing states within a layer
-    typedef uint32_t StateNumberVarType;
+    using StateNumberVarType = uint32_t;
 
     /*** protected structures
      * ************************************************************************/
@@ -434,7 +434,7 @@ public:
     {
         while (true) {
         }
-        return 0;
+        return nullptr;
     }; // returns a pointer to the possibility-IDs
 
     virtual void deletePossibilities(uint32_t threadNo, void *pPossibilities)
@@ -536,6 +536,7 @@ public:
         }
         return 0;
     };
+
     virtual uint32_t getLayerNumber(uint32_t threadNo)
     {
         while (true) {
@@ -704,7 +705,7 @@ private:
 
         void initElement(InitAlphaBetaVars &master) { *this = master; }
 
-        void reduce() { reduceDefault(); }
+        void reduce() override { reduceDefault(); }
     };
 
     struct RunAlphaBetaVars : public ThreadManager::ThreadVarsArrayItem,
@@ -732,7 +733,7 @@ private:
             SAFE_DELETE_ARRAY(freqValuesSubMovesBranchWon);
         }
 
-        void reduce() { reduceDefault(); }
+        void reduce() override { reduceDefault(); }
 
         void initElement(RunAlphaBetaVars &master)
         {
@@ -861,7 +862,7 @@ private:
 
         void initElement(InitRetroAnalysisVars &master) { *this = master; };
 
-        void reduce() { reduceDefault(); }
+        void reduce() override { reduceDefault(); }
     };
 
     struct AddNumSucceedersVars : public ThreadManager::ThreadVarsArrayItem,
@@ -879,7 +880,7 @@ private:
 
         void initElement(AddNumSucceedersVars &master) { *this = master; };
 
-        void reduce() { reduceDefault(); }
+        void reduce() override { reduceDefault(); }
     };
 
     /*** private variables
@@ -1073,6 +1074,7 @@ private:
     bool addStateToProcessQueue(retroAnalysisGlobalVars &retroVars,
                                 RetroAnalysisThreadVars &threadVars,
                                 uint32_t plyNumber, StateAdress *pState);
+
     static bool retroAnalysisQueueStateComp(const RetroAnalysisQueueState &a,
                                             const RetroAnalysisQueueState &b)
     {

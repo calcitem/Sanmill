@@ -171,8 +171,6 @@ void Position::init()
 
     Zobrist::side = rng.rand<Key>() << Zobrist::KEY_MISC_BIT >>
                     Zobrist::KEY_MISC_BIT;
-
-    return;
 }
 
 Position::Position()
@@ -464,7 +462,7 @@ void Position::undo_move(Sanmill::Stack<Position> &ss)
 Key Position::key_after(Move m) const
 {
     Key k = st.key;
-    const Square s = static_cast<Square>(to_sq(m));
+    const auto s = to_sq(m);
     const MoveType mt = type_of(m);
 
     if (mt == MOVETYPE_REMOVE) {
@@ -496,7 +494,7 @@ int repetition;
 
 bool Position::has_repeated(Sanmill::Stack<Position> &ss) const
 {
-    for (int i = (int)posKeyHistory.size() - 2; i >= 0; i--) {
+    for (int i = static_cast<int>(posKeyHistory.size()) - 2; i >= 0; i--) {
         if (key() == posKeyHistory[i]) {
             return true;
         }
@@ -625,8 +623,8 @@ bool Position::put_piece(Square s, bool updateRecord)
     }
 
     if (phase == Phase::placing) {
-        piece = (Piece)((0x01 | make_piece(sideToMove)) + rule.pieceCount -
-                        pieceInHandCount[us]);
+        piece = static_cast<Piece>((0x01 | make_piece(sideToMove)) +
+                                   rule.pieceCount - pieceInHandCount[us]);
         pieceInHandCount[us]--;
         pieceOnBoardCount[us]++;
 
@@ -960,7 +958,7 @@ bool Position::command(const char *cmd)
     args = sscanf(cmd, "Player%1u give up!", &t);
 
     if (args == 1) {
-        return resign((Color)t);
+        return resign(static_cast<Color>(t));
     }
 
     if (rule.threefoldRepetitionRule) {
@@ -1035,10 +1033,9 @@ bool Position::check_if_game_is_over()
         if (rule.isLoseButNotChangeSideWhenNoWay) {
             set_gameover(~sideToMove, GameOverReason::loseNoWay);
             return true;
-        } else {
-            change_side_to_move(); // TODO(calcitem): Need?
-            return false;
         }
+        change_side_to_move(); // TODO(calcitem): Need?
+        return false;
     }
 
     return false;
@@ -1054,8 +1051,7 @@ int Position::calculate_mobility_diff()
         if (board[s] == NO_PIECE || board[s] == BAN_PIECE) {
             Square moveSquare;
             for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
-                moveSquare = static_cast<Square>(
-                    MoveList<LEGAL>::adjacentSquares[s][d]);
+                moveSquare = MoveList<LEGAL>::adjacentSquares[s][d];
                 if (moveSquare) {
                     if (board[moveSquare] & W_PIECE) {
                         mobilityWhite++;
@@ -1253,7 +1249,7 @@ int Position::mills_count(Square s)
 bool Position::is_all_in_mills(Color c)
 {
     for (Square i = SQ_BEGIN; i < SQ_END; ++i) {
-        if (board[i] & ((uint8_t)make_piece(c))) {
+        if (board[i] & static_cast<uint8_t>(make_piece(c))) {
             if (!potential_mills_count(i, NOBODY)) {
                 return false;
             }
@@ -1270,14 +1266,13 @@ void Position::surrounded_pieces_count(Square s, int &ourPieceCount,
     Square moveSquare;
 
     for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
-        moveSquare = static_cast<Square>(
-            MoveList<LEGAL>::adjacentSquares[s][d]);
+        moveSquare = MoveList<LEGAL>::adjacentSquares[s][d];
 
         if (!moveSquare) {
             continue;
         }
 
-        const enum Piece pieceType = static_cast<Piece>(board[moveSquare]);
+        const auto pieceType = board[moveSquare];
 
         switch (pieceType) {
         case NO_PIECE:
@@ -1446,8 +1441,8 @@ void Position::mirror(vector<string> &moveHistory, bool cmdChange /*= true*/)
     } else {
         uint64_t llp[3] = {0};
 
-        llp[0] = static_cast<uint64_t>(from_sq((Move)move));
-        llp[1] = to_sq((Move)move);
+        llp[0] = static_cast<uint64_t>(from_sq(move));
+        llp[1] = to_sq(move);
 
         for (int i = 0; i < 2; i++) {
             f = static_cast<int>(llp[i]) / RANK_NB;
@@ -1460,8 +1455,8 @@ void Position::mirror(vector<string> &moveHistory, bool cmdChange /*= true*/)
     }
 
     if (currentSquare != 0) {
-        f = currentSquare / (Square)RANK_NB;
-        r = currentSquare % (Square)RANK_NB;
+        f = currentSquare / static_cast<Square>(RANK_NB);
+        r = currentSquare % static_cast<Square>(RANK_NB);
         r = (RANK_NB - r) % RANK_NB;
         currentSquare = static_cast<Square>(f * RANK_NB + r);
     }
@@ -1542,8 +1537,8 @@ void Position::turn(vector<string> &moveHistory, bool cmdChange /*= true*/)
 
         move = static_cast<Move>(-(f * RANK_NB + r));
     } else {
-        llp[0] = static_cast<uint64_t>(from_sq((Move)move));
-        llp[1] = to_sq((Move)move);
+        llp[0] = static_cast<uint64_t>(from_sq(move));
+        llp[1] = to_sq(move);
 
         for (i = 0; i < 2; i++) {
             f = static_cast<int>(llp[i]) / RANK_NB;
@@ -1561,8 +1556,8 @@ void Position::turn(vector<string> &moveHistory, bool cmdChange /*= true*/)
     }
 
     if (currentSquare != 0) {
-        f = currentSquare / (Square)RANK_NB;
-        r = currentSquare % (Square)RANK_NB;
+        f = currentSquare / static_cast<Square>(RANK_NB);
+        r = currentSquare % static_cast<Square>(RANK_NB);
 
         if (f == 1)
             f = FILE_NB;
@@ -1715,8 +1710,8 @@ void Position::rotate(vector<string> &moveHistory, int degrees,
     } else {
         uint64_t llp[3] = {0};
 
-        llp[0] = static_cast<uint64_t>(from_sq((Move)move));
-        llp[1] = to_sq((Move)move);
+        llp[0] = static_cast<uint64_t>(from_sq(move));
+        llp[1] = to_sq(move);
         f = static_cast<int>(llp[0]) / RANK_NB;
         r = static_cast<int>(llp[0]) % RANK_NB;
         r = (r + RANK_NB - degrees) % RANK_NB;
@@ -1729,8 +1724,8 @@ void Position::rotate(vector<string> &moveHistory, int degrees,
     }
 
     if (currentSquare != 0) {
-        f = currentSquare / (Square)RANK_NB;
-        r = currentSquare % (Square)RANK_NB;
+        f = currentSquare / static_cast<Square>(RANK_NB);
+        r = currentSquare % static_cast<Square>(RANK_NB);
         r = (r + RANK_NB - degrees) % RANK_NB;
         currentSquare = static_cast<Square>(f * RANK_NB + r);
     }

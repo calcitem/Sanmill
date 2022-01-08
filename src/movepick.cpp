@@ -103,11 +103,12 @@ void MovePicker::score()
             // important as close mill (TODO)
             if (rule.hasDiagonalLines &&
                 pos.count<ON_BOARD>(BLACK) < 2 && // patch: only when black 2nd
-                                                  // move
+                // move
                 Position::is_star_square(static_cast<Square>(m))) {
                 cur->value += RATING_STAR_SQUARE;
             }
-        } else { // Remove
+        } else {
+            // Remove
             ourPieceCount = theirPiecesCount = bannedCount = emptyCount = 0;
 
             pos.surrounded_pieces_count(to, ourPieceCount, theirPiecesCount,
@@ -156,7 +157,7 @@ void MovePicker::score()
 Move MovePicker::next_move()
 {
     endMoves = generate<LEGAL>(pos, moves);
-    moveCount = int(endMoves - moves);
+    moveCount = static_cast<int>(endMoves - moves);
 
     score<LEGAL>();
     partial_insertion_sort(moves, endMoves, INT_MIN);

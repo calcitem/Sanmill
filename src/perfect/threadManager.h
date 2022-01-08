@@ -117,7 +117,7 @@ public:
             delete[] item;
         };
 
-        void *getPointerToArray() { return (void *)item; }
+        void *getPointerToArray() { return static_cast<void *>(item); }
 
         uint32_t getArraySize() { return sizeof(varType); }
 
@@ -147,8 +147,8 @@ public:
     // immediately
     void uncancelExec();
 
-// a user function which is called every x-milliseconds during
-// exec between two iterations
+    // a user function which is called every x-milliseconds during
+    // exec between two iterations
 #if 0
     void setCallBackFunction(void userFunction(void *pUser), void *pUser,
                              DWORD milliseconds);

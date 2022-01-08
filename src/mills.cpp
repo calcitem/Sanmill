@@ -370,8 +370,10 @@ void mill_table_init()
 void move_priority_list_shuffle()
 {
     if (gameOptions.getSkillLevel() == 1) {
-        for (auto i = 8; i < 32; i++) { // TODO(calcitem): SQ_BEGIN & SQ_END
-            MoveList<LEGAL>::movePriorityList[i - int(SQ_BEGIN)] = (Square)i;
+        // TODO(calcitem): 8 is SQ_BEGIN & 32 is SQ_END
+        for (auto i = 8; i < 32; i++) {
+            MoveList<LEGAL>::movePriorityList[i - static_cast<int>(SQ_BEGIN)] =
+                static_cast<Square>(i);
         }
         if (gameOptions.getShufflingEnabled()) {
             const uint32_t seed = static_cast<uint32_t>(now());
@@ -471,7 +473,7 @@ Depth get_search_depth(const Position *pos)
     if (!gameOptions.getDeveloperMode()) {
         if (pos->phase == Phase::placing) {
             if (!gameOptions.getDrawOnHumanExperience()) {
-                return (Depth)level;
+                return static_cast<Depth>(level);
             }
 
             const Depth placingDepthTable9[25] = {
@@ -513,16 +515,15 @@ Depth get_search_depth(const Position *pos)
 #endif
 
             if (d == 0) {
-                return (Depth)level;
-            } else {
-                if (level > d) {
-                    return d;
-                } else {
-                    return (Depth)level;
-                }
+                return static_cast<Depth>(level);
             }
-        } else if (pos->phase == Phase::moving) {
-            return (Depth)level;
+            if (level > d) {
+                return d;
+            }
+            return static_cast<Depth>(level);
+        }
+        if (pos->phase == Phase::moving) {
+            return static_cast<Depth>(level);
         }
     }
 

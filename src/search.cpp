@@ -32,10 +32,7 @@ bool is_timeout(TimePoint startTime);
 
 /// Search::init() is called at startup
 
-void Search::init() noexcept
-{
-    return;
-}
+void Search::init() noexcept { }
 
 /// Search::clear() resets search state to its initial value
 
@@ -113,7 +110,7 @@ int Thread::search()
         posKeyHistory.clear();
         rootPos->st.rule50 = 0;
     } else if (rootPos->get_phase() == Phase::moving) {
-        rootPos->st.rule50 = (unsigned int)posKeyHistory.size();
+        rootPos->st.rule50 = static_cast<unsigned>(posKeyHistory.size());
     }
 
     MoveList<LEGAL>::shuffle();
@@ -464,7 +461,8 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                     bestMove = move;
                 }
 
-                if (value < beta) { // Update alpha! Always alpha < beta
+                if (value < beta) {
+                    // Update alpha! Always alpha < beta
                     alpha = value;
                 } else {
                     assert(value >= beta); // Fail high

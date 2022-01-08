@@ -152,6 +152,7 @@ freeMem:
 bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 {
 #ifndef __clang__ // TODO(calcitem)
+
     // locals
 
     // current processed layer within 'layersToCalculate'
@@ -269,6 +270,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
                   << retroVars.statsValueCounter[SKV_VALUE_INVALID]);
     }
 #endif // __clang__
+
     return true;
 }
 
@@ -487,6 +489,7 @@ bool MiniMax::prepareCountArrays(retroAnalysisGlobalVars &retroVars)
 bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
 {
 #ifndef __clang__ // TODO(calcitem)
+
     // locals
     uint32_t curLayerId;   // current processed layer within
                            // 'layersToCalculate'

@@ -66,6 +66,7 @@ Test::Test(QWidget *parent, QString k)
         keyCombo->addItem(QString(appFileName));
     }
 #endif // QT_GUI_LIB
+
 #endif // QT_UI_TEST_MODE
 
     auto keyLabel = new QLabel(tr("&Key:"));
@@ -144,7 +145,7 @@ void Test::attach()
         }
     }
 
-    to = (char *)sharedMemory.data();
+    to = static_cast<char *>(sharedMemory.data());
 
     uuid = createUuidString();
     uuidSize = uuid.size();

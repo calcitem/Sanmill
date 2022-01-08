@@ -97,6 +97,7 @@ void MiniMax::alphaBetaSaveInDatabase(uint32_t threadNo, uint32_t layerNumber,
 bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 {
 #ifndef __clang__ // TODO(calcitem)
+
     // locals
     BufferedFile *invalidArray;
 
@@ -201,6 +202,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
           "    invalid states: "
               << alphaBetaVars.statsValueCounter[SKV_VALUE_INVALID]);
 #endif // __clang__
+
     return true;
 }
 
@@ -295,6 +297,7 @@ DWORD MiniMax::initAlphaBetaThreadProc(void *pParam, uint32_t index)
 bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 {
 #ifndef __clang__ // TODO(calcitem)
+
     // prepare params
     PRINT(1, this,
           "  Calculate layer " << alphaBetaVars.layerNumber
@@ -353,6 +356,7 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
           "    invalid states: "
               << alphaBetaVars.statsValueCounter[SKV_VALUE_INVALID]);
 #endif // __clang__
+
     return true;
 }
 

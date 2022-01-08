@@ -40,7 +40,7 @@ const std::string pretty(Bitboard b);
 
 } // namespace Bitboards
 
-constexpr Bitboard AllSquares = ~Bitboard(0);
+constexpr Bitboard AllSquares = ~static_cast<Bitboard>(0);
 
 constexpr Bitboard FileABB = 0x0000FF00;
 constexpr Bitboard FileBBB = FileABB << (8 * 1);
@@ -159,7 +159,7 @@ inline int popcount(Bitboard b) noexcept
 
 #elif defined(_MSC_VER) || defined(__INTEL_COMPILER)
 
-    return (int)_mm_popcnt_u32(b);
+    return _mm_popcnt_u32(b);
 
 #else // Assumed gcc or compatible compiler
 

@@ -139,7 +139,7 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 #endif // PLAYER_DRAW_SEAT_NUMBER
 }
 
-QPointF BoardItem::nearestPosition(QPointF const pos)
+QPointF BoardItem::nearestPosition(const QPointF pos)
 {
     // The initial closest point is set to (0,0) point
     QPointF nearestPos = QPointF(0, 0);
@@ -159,7 +159,8 @@ QPointF BoardItem::nearestPosition(QPointF const pos)
 
 QPointF BoardItem::polar2pos(File f, Rank r)
 {
-    return position[((int)f - 1) * RANK_NB + (int)r - 1];
+    return position[(static_cast<int>(f) - 1) * RANK_NB + static_cast<int>(r) -
+                    1];
 }
 
 bool BoardItem::pos2polar(QPointF pos, File &f, Rank &r)
@@ -168,8 +169,8 @@ bool BoardItem::pos2polar(QPointF pos, File &f, Rank &r)
     for (int sq = 0; sq < SQUARE_NB; sq++) {
         // If the pos point is near the placing point
         if (QLineF(pos, position[sq]).length() < PIECE_SIZE / 6) {
-            f = File(sq / RANK_NB + 1);
-            r = Rank(sq % RANK_NB + 1);
+            f = static_cast<File>(sq / RANK_NB + 1);
+            r = static_cast<Rank>(sq % RANK_NB + 1);
             return true;
         }
     }

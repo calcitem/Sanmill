@@ -35,11 +35,14 @@ struct TTEntry
 {
     TTEntry() { }
 
-    Value value() const noexcept { return (Value)value8; }
+    Value value() const noexcept { return static_cast<Value>(value8); }
 
-    Depth depth() const noexcept { return (Depth)depth8 + DEPTH_OFFSET; }
+    Depth depth() const noexcept
+    {
+        return static_cast<Depth>(depth8) + DEPTH_OFFSET;
+    }
 
-    Bound bound() const noexcept { return (Bound)(genBound8); }
+    Bound bound() const noexcept { return static_cast<Bound>(genBound8); }
 
 #ifdef TT_MOVE_ENABLE
     Move tt_move() const noexcept { return (Move)(ttMove); }

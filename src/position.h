@@ -229,11 +229,13 @@ inline Piece Position::moved_piece(Move m) const
 }
 
 template <PieceType Pt>
-inline int Position::count(Color c) const
+int Position::count(Color c) const
 {
     if (Pt == ON_BOARD) {
         return pieceOnBoardCount[c];
-    } else if (Pt == IN_HAND) {
+    }
+
+    if (Pt == IN_HAND) {
         return pieceInHandCount[c];
     }
 
@@ -311,7 +313,7 @@ inline bool Position::move_piece(Square from, Square to)
 
 inline Piece *Position::get_board() noexcept
 {
-    return static_cast<Piece *>(board);
+    return board;
 }
 
 inline Square Position::current_square() const

@@ -45,8 +45,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
             }
         } else {
             for (auto direction = MD_BEGIN; direction < MD_NB; ++direction) {
-                to = static_cast<Square>(
-                    MoveList<LEGAL>::adjacentSquares[from][direction]);
+                to = MoveList<LEGAL>::adjacentSquares[from][direction];
                 if (to && !pos.get_board()[to]) {
                     *cur++ = make_move(from, to);
                 }
@@ -66,7 +65,7 @@ ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
 
     for (auto s : MoveList<LEGAL>::movePriorityList) {
         if (!pos.get_board()[s]) {
-            *cur++ = (Move)s;
+            *cur++ = static_cast<Move>(s);
         }
     }
 
@@ -90,7 +89,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
         for (auto i = SQUARE_NB - 1; i >= 0; i--) {
             s = MoveList<LEGAL>::movePriorityList[i];
             if (pos.get_board()[s] & make_piece(them)) {
-                *cur++ = (Move)-s;
+                *cur++ = static_cast<Move>(-s);
             }
         }
 #endif
@@ -103,7 +102,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
         if (pos.get_board()[s] & make_piece(them)) {
             if (rule.mayRemoveFromMillsAlways ||
                 !pos.potential_mills_count(s, NOBODY)) {
-                *cur++ = (Move)-s;
+                *cur++ = static_cast<Move>(-s);
             }
         }
     }

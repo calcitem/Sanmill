@@ -34,6 +34,7 @@ public:
         : next(nullptr)
 #endif
         = default;
+
     HashNode(K key_, V value_)
         :
 #ifndef DISABLE_HASHBUCKET
@@ -43,6 +44,7 @@ public:
         key(key_)
         , value(value_)
     { }
+
     ~HashNode()
     {
 #ifndef DISABLE_HASHBUCKET
@@ -154,7 +156,8 @@ public:
         std::unique_lock<std::shared_timed_mutex> lock(mutex_);
 
 #ifdef DISABLE_HASHBUCKET
-        if (head == nullptr) { // Key not found, nothing to be done
+        if (head == nullptr) {
+            // Key not found, nothing to be done
             return;
         }
 

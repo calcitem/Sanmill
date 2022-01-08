@@ -493,7 +493,6 @@ void MillGameWindow::ruleInfo()
 #else
     ui.labelRule->setText("Move list");
 #endif
-    return;
 }
 
 void MillGameWindow::saveBook(const QString &path)
@@ -590,7 +589,7 @@ void MillGameWindow::on_actionLimited_T_triggered()
         int dStep = comboBox_step->currentData().toInt();
         int dTime = comboBox_time->currentData().toInt();
         if (gStep != dStep || gTime != dTime) {
-            game->setRule(ruleNo, static_cast<int>(dStep),
+            game->setRule(ruleNo, dStep,
                           dTime); // TODO(calcitem): Remove dTime
             game->setMoveTime(dTime);
         }

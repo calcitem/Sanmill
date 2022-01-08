@@ -274,9 +274,9 @@ void Thread::analyze(Color c)
     float blackWinRate, whiteWinRate, drawRate;
 #endif // !QT_GUI_LIB
 
-    const int d = (int)originDepth;
-    const int v = (int)bestvalue;
-    const int lv = (int)lastvalue;
+    const int d = originDepth;
+    const int v = bestvalue;
+    const int lv = lastvalue;
     const bool win = v >= VALUE_MATE;
     const bool lose = v <= -VALUE_MATE;
     const int np = v / VALUE_EACH_PIECE;
@@ -401,13 +401,14 @@ void Thread::analyze(Color c)
         whiteWinRate = 0;
         drawRate = 0;
     } else {
-        blackWinRate = (float)nBlackWin * 100 / total;
-        whiteWinRate = (float)nWhiteWin * 100 / total;
-        drawRate = (float)nDraw * 100 / total;
+        blackWinRate = nBlackWin * 100 / total;
+        whiteWinRate = nWhiteWin * 100 / total;
+        drawRate = nDraw * 100 / total;
     }
 
-    cout << "Score: " << (int)nBlackWin << " : " << (int)nWhiteWin << " : "
-         << (int)nDraw << "\ttotal: " << (int)total << std::endl;
+    cout << "Score: " << static_cast<int>(nBlackWin) << " : "
+         << static_cast<int>(nWhiteWin) << " : " << static_cast<int>(nDraw)
+         << "\ttotal: " << static_cast<int>(total) << std::endl;
     cout << fixed << setprecision(2) << blackWinRate << "% : " << whiteWinRate
          << "% : " << drawRate << "%" << std::endl;
 #endif // !QT_GUI_LIB
@@ -460,6 +461,7 @@ string Thread::next_move()
                     ttHitCount * 100 / hashProbeCount);
     }
 #endif // TRANSPOSITION_TABLE_DEBUG
+
 #endif // TRANSPOSITION_TABLE_ENABLE
 
     return UCI::move(bestMove);
@@ -510,14 +512,16 @@ void Thread::loadEndgameFileToHashMap()
 
 void ThreadPool::set(size_t requested)
 {
-    if (size() > 0) { // destroy any existing thread(s)
+    if (size() > 0) {
+        // destroy any existing thread(s)
         main()->wait_for_search_finished();
 
         while (size() > 0)
             delete back(), pop_back();
     }
 
-    if (requested > 0) { // create new thread(s)
+    if (requested > 0) {
+        // create new thread(s)
         push_back(new MainThread(0));
 
         while (size() < requested)
@@ -526,7 +530,7 @@ void ThreadPool::set(size_t requested)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // Reallocate the hash with the new thread pool size
-        TT.resize(size_t(Options["Hash"]));
+        TT.resize(static_cast<size_t>(Options["Hash"]));
 #endif
 
         // Init thread number dependent search params.
