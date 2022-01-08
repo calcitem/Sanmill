@@ -1,0 +1,5 @@
+v1.1.39
+
+* Mejora el poder de la IA de la fase de movimiento.
+* Mejorar la traducción al francés y al húngaro.
+* Android 4.1.x ya no es compatible.

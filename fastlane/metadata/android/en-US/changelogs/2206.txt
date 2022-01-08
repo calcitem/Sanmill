@@ -1,0 +1,5 @@
+v1.1.39
+
+* Enhance the AI power of the moving phase.
+* Improve French and Hungarian translation.
+* Android 4.1.x is no longer supported.

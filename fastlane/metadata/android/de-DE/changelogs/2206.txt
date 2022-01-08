@@ -1,0 +1,5 @@
+v1.1.39
+
+* Verbessern Sie die KI-Leistung der Bewegungsphase.
+* Verbessern Sie die französische und ungarische Übersetzung.
+* Android 4.1.x wird nicht mehr unterstützt.
