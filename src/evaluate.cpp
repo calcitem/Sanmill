@@ -86,7 +86,7 @@ Value Evaluation::value()
             value += pos.get_mobility_diff();
         }
 
-        value = (pos.piece_on_board_count(WHITE) - pos.piece_on_board_count(BLACK)) * VALUE_EACH_PIECE_ONBOARD;
+        value += (pos.piece_on_board_count(WHITE) - pos.piece_on_board_count(BLACK)) * VALUE_EACH_PIECE_ONBOARD;
 
         switch (pos.get_action()) {
         case Action::select:
