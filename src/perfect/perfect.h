@@ -17,9 +17,9 @@ extern Mill *mill;
 extern PerfectAI *ai;
 
 // Perfect AI
-int perfect_init(void);
-int perfect_exit(void);
-int perfect_reset(void);
+int perfect_init();
+int perfect_exit();
+int perfect_reset();
 Square from_perfect_sq(uint32_t sq);
 Move from_perfect_move(uint32_t from, uint32_t to);
 unsigned to_perfect_sq(Square sq);

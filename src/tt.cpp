@@ -62,7 +62,6 @@ Value TranspositionTable::probe(const Key &key, const Depth &depth,
     switch (tte.bound()) {
     case BOUND_EXACT:
         return tte.value();
-        break;
     case BOUND_UPPER:
         if (tte.value8 <= alpha) {
             return alpha;

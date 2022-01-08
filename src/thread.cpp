@@ -312,7 +312,6 @@ void Thread::analyze(Color c)
             nWhiteWin += 0.5; // TODO(calcitem)
         }
         goto out;
-        break;
     case Phase::none:
         cout << "None phase" << std::endl;
         break;

@@ -56,8 +56,6 @@ protected:
 signals:
     void mouseReleased(QPointF);
 
-public slots:
-
 private:
     BoardItem *board {nullptr};
 };
