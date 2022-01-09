@@ -741,7 +741,7 @@ void Game::flip()
 
     // Update move history
     int row = 0;
-    for (const auto &str : *(move_hostory())) {
+    for (const auto &str : *move_hostory()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
@@ -764,7 +764,7 @@ void Game::mirror()
     // Update move history
     int row = 0;
 
-    for (const auto &str : *(move_hostory())) {
+    for (const auto &str : *move_hostory()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
@@ -789,7 +789,7 @@ void Game::turnRight()
     // Update move history
     int row = 0;
 
-    for (const auto &str : *(move_hostory())) {
+    for (const auto &str : *move_hostory()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
@@ -811,7 +811,7 @@ void Game::turnLeft()
 
     // Update move history
     int row = 0;
-    for (const auto &str : *(move_hostory())) {
+    for (const auto &str : *move_hostory()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
@@ -1051,7 +1051,7 @@ bool Game::actionPiece(QPointF p)
         int k = 0;
 
         // Output command line
-        for (const auto &i : *(move_hostory())) {
+        for (const auto &i : *move_hostory()) {
             // Skip added because the standard list container has no subscripts
             if (k++ <= currentRow)
                 continue;
@@ -1063,7 +1063,7 @@ bool Game::actionPiece(QPointF p)
 #ifndef DO_NOT_PLAY_WIN_SOUND
         const Color winner = position.get_winner();
         if (winner != NOBODY &&
-            (moveListModel.data(moveListModel.index(currentRow - 1)))
+            moveListModel.data(moveListModel.index(currentRow - 1))
                 .toString()
                 .contains("Time over."))
             playSound(GameSound::win, winner);
@@ -1111,7 +1111,7 @@ bool Game::resign()
     int k = 0;
 
     // Output command line
-    for (const auto &i : *(move_hostory())) {
+    for (const auto &i : *move_hostory()) {
         // Skip added because the standard list container has no index
         if (k++ <= currentRow)
             continue;
@@ -1210,8 +1210,8 @@ bool Game::command(const string &cmd, bool update /* = true */)
         currentRow = moveListModel.rowCount() - 1;
         // Skip the added rows. The iterator does not support the + operator and
         // can only skip one by one++
-        auto i = (move_hostory()->begin());
-        for (int r = 0; i != (move_hostory())->end(); ++i) {
+        auto i = move_hostory()->begin();
+        for (int r = 0; i != move_hostory()->end(); ++i) {
             if (r++ > currentRow)
                 break;
         }
@@ -1227,7 +1227,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 #ifndef DO_NOT_PLAY_WIN_SOUND
     const Color winner = position.get_winner();
     if (winner != NOBODY &&
-        (moveListModel.data(moveListModel.index(currentRow - 1)))
+        moveListModel.data(moveListModel.index(currentRow - 1))
             .toString()
             .contains("Time over.")) {
         playSound(GameSound::win, winner);
@@ -1428,8 +1428,7 @@ bool Game::updateScene(Position &p)
                     piece->setZValue(1);
 
                     // Pieces movement animation
-                    auto *animation = new QPropertyAnimation(
-                        piece, "pos");
+                    auto *animation = new QPropertyAnimation(piece, "pos");
                     animation->setDuration(durationTime);
                     animation->setStartValue(piece->pos());
                     animation->setEndValue(pos);
@@ -1444,7 +1443,7 @@ bool Game::updateScene(Position &p)
         }
 
         // If not, place the pieces outside the board
-        if (j == (RANK_NB) * (FILE_NB + 1)) {
+        if (j == RANK_NB * (FILE_NB + 1)) {
             // Judge whether it is a removing seed or an unplaced one
             if (key & W_PIECE) {
                 pos = (key - 0x11 <
@@ -1466,8 +1465,7 @@ bool Game::updateScene(Position &p)
 #ifdef GAME_PLACING_SHOW_REMOVED_PIECES
                 if (position.get_phase() == Phase::moving) {
 #endif
-                    auto *animation = new QPropertyAnimation(
-                        piece, "pos");
+                    auto *animation = new QPropertyAnimation(piece, "pos");
                     animation->setDuration(durationTime);
                     animation->setStartValue(piece->pos());
                     animation->setEndValue(pos);
@@ -1515,8 +1513,8 @@ bool Game::updateScene(Position &p)
     int ipos = p.current_square();
     if (ipos) {
         key = board[p.current_square()];
-        ipos = (key & W_PIECE) ? (key - W_PIECE_1) * 2 :
-                                 (key - B_PIECE_1) * 2 + 1;
+        ipos = key & W_PIECE ? (key - W_PIECE_1) * 2 :
+                               (key - B_PIECE_1) * 2 + 1;
         if (ipos >= 0 && ipos < nTotalPieces) {
             currentPiece = pieceList.at(static_cast<size_t>(ipos));
             currentPiece->setSelected(true);
@@ -1593,7 +1591,7 @@ void Game::saveScore()
         file.close();
     }
 
-    if (!(file.open(QFileDevice::WriteOnly | QFileDevice::Text))) {
+    if (!file.open(QFileDevice::WriteOnly | QFileDevice::Text)) {
         return;
     }
 

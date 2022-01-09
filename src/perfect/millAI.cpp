@@ -74,17 +74,17 @@ void fieldStruct::printBoard()
 char fieldStruct::getCharFromPiece(int piece)
 {
     switch (piece) {
-    case fieldStruct::playerOne:
+    case playerOne:
         return 'o';
-    case fieldStruct::playerTwo:
+    case playerTwo:
         return 'x';
-    case fieldStruct::playerOneWarning:
+    case playerOneWarning:
         return '1';
-    case fieldStruct::playerTwoWarning:
+    case playerTwoWarning:
         return '2';
-    case fieldStruct::playerBothWarning:
+    case playerBothWarning:
         return '3';
-    case fieldStruct::squareIsFree:
+    case squareIsFree:
         return ' ';
     }
     return 'f';
@@ -156,9 +156,9 @@ void fieldStruct::createBoard()
     piecePlacedCount = 0;
     pieceMustBeRemovedCount = 0;
     isPlacingPhase = true;
-    curPlayer->warning = (curPlayer->id == playerOne) ? playerOneWarning :
-                                                        playerTwoWarning;
-    oppPlayer->id = (curPlayer->id == playerOne) ? playerTwo : playerOne;
+    curPlayer->warning = curPlayer->id == playerOne ? playerOneWarning :
+                                                      playerTwoWarning;
+    oppPlayer->id = curPlayer->id == playerOne ? playerTwo : playerOne;
     oppPlayer->warning = (curPlayer->id == playerOne) ? playerTwoWarning :
                                                         playerOneWarning;
     curPlayer->pieceCount = 0;

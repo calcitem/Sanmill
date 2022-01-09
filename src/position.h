@@ -96,8 +96,8 @@ public:
 
     Piece *get_board() noexcept;
     [[nodiscard]] Square current_square() const;
-    [[nodiscard]] enum Phase get_phase() const;
-    [[nodiscard]] enum Action get_action() const;
+    [[nodiscard]] Phase get_phase() const;
+    [[nodiscard]] Action get_action() const;
     [[nodiscard]] const char *get_record() const;
 
     bool reset();
@@ -132,8 +132,8 @@ public:
                                  int &emptyCount);
     [[nodiscard]] bool is_all_surrounded(Color c
 #ifdef MADWEASEL_MUEHLE_RULE
-                           ,
-                           Square from = SQ_0, Square to = SQ_0
+                                         ,
+                                         Square from = SQ_0, Square to = SQ_0
 #endif // MADWEASEL_MUEHLE_RULE
     ) const;
 
@@ -187,8 +187,8 @@ public:
     Color winner;
     GameOverReason gameOverReason {GameOverReason::none};
 
-    enum Phase phase { Phase::none };
-    enum Action action;
+    Phase phase {Phase::none};
+    Action action;
 
     int score[COLOR_NB] {0};
     int score_draw {0};
@@ -321,12 +321,12 @@ inline Square Position::current_square() const
     return currentSquare;
 }
 
-inline enum Phase Position::get_phase() const
+inline Phase Position::get_phase() const
 {
     return phase;
 }
 
-inline enum Action Position::get_action() const
+inline Action Position::get_action() const
 {
     return action;
 }

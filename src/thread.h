@@ -115,7 +115,6 @@ public:
 #endif // TRANSPOSITION_TABLE_DEBUG
 #endif // TRANSPOSITION_TABLE_ENABLE
 
-public:
     Depth originDepth {0};
 
     Move bestMove {MOVE_NONE};
@@ -144,7 +143,7 @@ public:
 
 /// MainThread is a derived class specific for main thread
 
-struct MainThread : public Thread
+struct MainThread : Thread
 {
     using Thread::Thread;
 
@@ -156,7 +155,7 @@ struct MainThread : public Thread
 /// parking and, most importantly, launching a thread. All the access to threads
 /// is done through this class.
 
-struct ThreadPool : public std::vector<Thread *>
+struct ThreadPool : std::vector<Thread *>
 {
     void start_thinking(Position *, bool = false);
     void clear();

@@ -171,10 +171,10 @@ bool MiniMax::isCurStateInDatabase(uint32_t threadNo)
 
     if (hFileShortKnotValues == nullptr) {
         return false;
-    } else {
-        getLayerAndStateNumber(threadNo, layerNum, stateNumber);
-        return layerStats[layerNum].layerIsCompletedAndInFile;
     }
+
+    getLayerAndStateNumber(threadNo, layerNum, stateNumber);
+    return layerStats[layerNum].layerIsCompletedAndInFile;
 }
 
 //-----------------------------------------------------------------------------

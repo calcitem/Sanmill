@@ -88,8 +88,8 @@ struct Rule
 };
 
 constexpr auto N_RULES = 5;
-extern const struct Rule RULES[N_RULES];
-extern struct Rule rule;
+extern const Rule RULES[N_RULES];
+extern Rule rule;
 extern bool set_rule(int ruleIdx) noexcept;
 
 #endif /* RULE_H_INCLUDED */

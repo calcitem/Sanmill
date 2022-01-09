@@ -1026,11 +1026,11 @@ bool PerfectAI::setDatabasePath(const char *dir)
 {
     if (dir == nullptr) {
         return false;
-    } else {
-        cout << "Path to database set to: " << dir << endl;
-        databaseDir.assign(dir);
-        return true;
     }
+
+    cout << "Path to database set to: " << dir << endl;
+    databaseDir.assign(dir);
+    return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -1090,7 +1090,7 @@ uint32_t *PerfectAI::ThreadVars::getPossPlacingPhase(uint32_t *possibilityCount,
     }
 
     // possibilities with cut off
-    for ((*possibilityCount) = 0, i = 0; i < SQUARE_NB; i++) {
+    for (*possibilityCount = 0, i = 0; i < SQUARE_NB; i++) {
         // move possible ?
         if (field->board[i] == field->squareIsFree) {
             // check if a mill is beeing closed
@@ -1107,7 +1107,7 @@ uint32_t *PerfectAI::ThreadVars::getPossPlacingPhase(uint32_t *possibilityCount,
             // Version 15: don't allow to close two mills at once
             // Version 25: don't allow to close a mill, although no piece can be
             // removed from the opponent
-            if ((nMillsBeeingClosed < 2) &&
+            if (nMillsBeeingClosed < 2 &&
                 (nMillsBeeingClosed == 0 || pieceCanBeRemoved)) {
                 idPossibility[*possibilityCount] = i;
                 (*possibilityCount)++;
@@ -1137,7 +1137,7 @@ uint32_t *PerfectAI::ThreadVars::getPossNormalMove(uint32_t *possibilityCount,
 
     // if he is not allowed to spring
     if (field->curPlayer->pieceCount > 3) {
-        for ((*possibilityCount) = 0, from = 0; from < SQUARE_NB; from++) {
+        for (*possibilityCount = 0, from = 0; from < SQUARE_NB; from++) {
             for (dir = 0; dir < MD_NB; dir++) {
                 // dest
                 to = field->connectedSquare[from][dir];
@@ -1157,7 +1157,7 @@ uint32_t *PerfectAI::ThreadVars::getPossNormalMove(uint32_t *possibilityCount,
             }
         }
     } else if (field->curPlayer->pieceCount == 3) {
-        for ((*possibilityCount) = 0, from = 0; from < SQUARE_NB; from++) {
+        for (*possibilityCount = 0, from = 0; from < SQUARE_NB; from++) {
             for (to = 0; to < SQUARE_NB; to++) {
                 // move possible ?
                 if (field->board[from] == field->curPlayer->id &&
@@ -1195,7 +1195,7 @@ uint32_t *PerfectAI::ThreadVars::getPossPieceRemove(uint32_t *possibilityCount,
         &idPossibilities[curSearchDepth * POSIBILE_MOVE_COUNT_MAX];
 
     // possibilities with cut off
-    for ((*possibilityCount) = 0, i = 0; i < SQUARE_NB; i++) {
+    for (*possibilityCount = 0, i = 0; i < SQUARE_NB; i++) {
         // move possible ?
         if (field->board[i] == field->oppPlayer->id &&
             !field->piecePartOfMillCount[i]) {
@@ -1228,7 +1228,7 @@ uint32_t *PerfectAI::getPossibilities(uint32_t threadNo,
 
     // set opponentsMove
     ThreadVars *tv = &threadVars[threadNo];
-    *opponentsMove = (tv->field->curPlayer->id == tv->ownId) ? false : true;
+    *opponentsMove = tv->field->curPlayer->id == tv->ownId ? false : true;
 
     // count completed mills
     for (i = 0; i < SQUARE_NB; i++) {
@@ -1250,14 +1250,15 @@ uint32_t *PerfectAI::getPossibilities(uint32_t threadNo,
         *possibilityCount = 0;
         return 0;
         // look what is to do
-    } else {
-        if (tv->field->pieceMustBeRemovedCount)
-            return tv->getPossPieceRemove(possibilityCount, pPossibilities);
-        else if (tv->field->isPlacingPhase)
-            return tv->getPossPlacingPhase(possibilityCount, pPossibilities);
-        else
-            return tv->getPossNormalMove(possibilityCount, pPossibilities);
     }
+
+    if (tv->field->pieceMustBeRemovedCount)
+        return tv->getPossPieceRemove(possibilityCount, pPossibilities);
+
+    if (tv->field->isPlacingPhase)
+        return tv->getPossPlacingPhase(possibilityCount, pPossibilities);
+
+    return tv->getPossNormalMove(possibilityCount, pPossibilities);
 }
 
 //-----------------------------------------------------------------------------
@@ -1518,7 +1519,7 @@ inline void PerfectAI::ThreadVars::removePiece(uint32_t from, Backup *backup)
     updateWarning(from, SQUARE_NB);
 
     // end of game ?
-    if ((field->oppPlayer->pieceCount < 3) && (!field->isPlacingPhase))
+    if (field->oppPlayer->pieceCount < 3 && !field->isPlacingPhase)
         gameHasFinished = true;
 }
 
@@ -1570,9 +1571,9 @@ void PerfectAI::move(uint32_t threadNo, uint32_t idPossibility,
     }
 
     // when opponent is unable to move than current player has won
-    if ((!tv->field->oppPlayer->possibleMovesCount) &&
-        (!tv->field->isPlacingPhase) && (!tv->field->pieceMustBeRemovedCount) &&
-        (tv->field->oppPlayer->pieceCount > 3))
+    if (!tv->field->oppPlayer->possibleMovesCount &&
+        !tv->field->isPlacingPhase && !tv->field->pieceMustBeRemovedCount &&
+        tv->field->oppPlayer->pieceCount > 3)
         tv->gameHasFinished = true;
 
     // when game has finished - perfect for the current player
@@ -1683,8 +1684,8 @@ bool PerfectAI::shallRetroAnalysisBeUsed(uint32_t layerNum)
 {
     if (layerNum < 100)
         return true;
-    else
-        return false;
+
+    return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -1708,7 +1709,7 @@ uint32_t PerfectAI::getNumberOfKnotsInLayer(uint32_t layerNum)
          layerNum < 100) // moving phase
         || (layerNum < LAYER_COUNT && layer[layerNum].blackPieceCount == 2 &&
             layer[layerNum].whitePieceCount == 2 && layerNum < 100) ||
-        (layerNum == 100))
+        layerNum == 100)
         return 0;
 
     // another way
@@ -1770,7 +1771,7 @@ uint32_t PerfectAI::getLayerNumber(uint32_t threadNo)
     ThreadVars *tv = &threadVars[threadNo];
     uint32_t blackPieceCount = tv->field->oppPlayer->pieceCount;
     uint32_t whitePieceCount = tv->field->curPlayer->pieceCount;
-    uint32_t phaseIndex = (tv->field->isPlacingPhase == true) ?
+    uint32_t phaseIndex = tv->field->isPlacingPhase == true ?
                               LAYER_INDEX_PLACING_PHASE :
                               LAYER_INDEX_MOVING_PHASE;
     return layerIndex[phaseIndex][whitePieceCount][blackPieceCount];
@@ -1800,7 +1801,7 @@ uint32_t PerfectAI::ThreadVars::getLayerAndStateNumber(uint32_t &layerNum,
     uint32_t symField[SQUARE_NB];
     uint32_t blackPieceCount = field->oppPlayer->pieceCount;
     uint32_t whitePieceCount = field->curPlayer->pieceCount;
-    uint32_t phaseIndex = (field->isPlacingPhase == true) ?
+    uint32_t phaseIndex = field->isPlacingPhase == true ?
                               LAYER_INDEX_PLACING_PHASE :
                               LAYER_INDEX_MOVING_PHASE;
     uint32_t wCD = 0, bCD = 0;
@@ -1925,7 +1926,7 @@ bool PerfectAI::setSituation(uint32_t threadNo, uint32_t layerNum,
     tv->shortValue = SKV_VALUE_GAME_DRAWN;
     tv->gameHasFinished = false;
 
-    tv->field->isPlacingPhase = (layerNum >= LAYER_COUNT / 2) ?
+    tv->field->isPlacingPhase = layerNum >= LAYER_COUNT / 2 ?
                                     LAYER_INDEX_PLACING_PHASE :
                                     LAYER_INDEX_MOVING_PHASE;
     tv->field->pieceMustBeRemovedCount = stateNumber %
@@ -1935,7 +1936,7 @@ bool PerfectAI::setSituation(uint32_t threadNo, uint32_t layerNum,
 
     // reconstruct board->board[]
     stateNumberWithInSubLayer =
-        (stateNumber / MAX_NUM_PIECES_REMOVED_MINUS_1) -
+        stateNumber / MAX_NUM_PIECES_REMOVED_MINUS_1 -
         layer[layerNum]
             .subLayer[layer[layerNum].subLayerIndexCD[wCD][bCD]]
             .minIndex;
@@ -2038,19 +2039,17 @@ bool PerfectAI::setSituation(uint32_t threadNo, uint32_t layerNum,
     }
 
     // when opponent is unable to move than current player has won
-    if ((!tv->field->curPlayer->possibleMovesCount) &&
-        (!tv->field->isPlacingPhase) && (!tv->field->pieceMustBeRemovedCount) &&
-        (tv->field->curPlayer->pieceCount > 3)) {
+    if (!tv->field->curPlayer->possibleMovesCount &&
+        !tv->field->isPlacingPhase && !tv->field->pieceMustBeRemovedCount &&
+        tv->field->curPlayer->pieceCount > 3) {
         tv->gameHasFinished = true;
         tv->shortValue = SKV_VALUE_GAME_LOST;
     }
-    if ((tv->field->curPlayer->pieceCount < 3) &&
-        (!tv->field->isPlacingPhase)) {
+    if (tv->field->curPlayer->pieceCount < 3 && !tv->field->isPlacingPhase) {
         tv->gameHasFinished = true;
         tv->shortValue = SKV_VALUE_GAME_LOST;
     }
-    if ((tv->field->oppPlayer->pieceCount < 3) &&
-        (!tv->field->isPlacingPhase)) {
+    if (tv->field->oppPlayer->pieceCount < 3 && !tv->field->isPlacingPhase) {
         tv->gameHasFinished = true;
         tv->shortValue = SKV_VALUE_GAME_WON;
     }
@@ -2189,7 +2188,7 @@ void PerfectAI::setOpponentLevel(uint32_t threadNo, bool isOpponentLevel)
 bool PerfectAI::getOpponentLevel(uint32_t threadNo)
 {
     ThreadVars *tv = &threadVars[threadNo];
-    return (tv->ownId == tv->field->oppPlayer->id);
+    return tv->ownId == tv->field->oppPlayer->id;
 }
 
 //-----------------------------------------------------------------------------
@@ -2218,8 +2217,8 @@ void PerfectAI::getSuccLayers(uint32_t layerNum, uint32_t *amountOfSuccLayers,
 {
     // locals
     uint32_t i;
-    uint32_t shift = (layerNum >= 100) ? 100 : 0;
-    int diff = (layerNum >= 100) ? 1 : -1;
+    uint32_t shift = layerNum >= 100 ? 100 : 0;
+    int diff = layerNum >= 100 ? 1 : -1;
 
     // search layer with one white piece less
     for (*amountOfSuccLayers = 0, i = 0 + shift; i < 100 + shift; i++) {
@@ -2317,7 +2316,9 @@ bool PerfectAI::ThreadVars::fieldIntegrityOK(
 
         // when in placing phase and difference in number of pieces between the
         // two players is not
-    } else if (field->isPlacingPhase) {
+    }
+
+    if (field->isPlacingPhase) {
         // Version 8: added for-loop
         noneFullFilled = true;
 
@@ -2455,7 +2456,7 @@ void PerfectAI::ThreadVars::storePredecessor(uint32_t nMillsCurPlayer,
                     predVars[origAmountOfPred].playerToMoveChanged;
 
                 // add only if not already in list
-                for (i = 0; i < (*amountOfPred); i++)
+                for (i = 0; i < *amountOfPred; i++)
                     if (predVars[i].predLayerNumbers == predLayerNum &&
                         predVars[i].predStateNumbers == predStateNum)
                         break;

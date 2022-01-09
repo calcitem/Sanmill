@@ -390,7 +390,6 @@ private:
     // Testing
     Test *gameTest;
 
-private:
     // 2 AI threads
     Thread *aiThread[COLOR_NB];
 

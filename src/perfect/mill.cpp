@@ -92,7 +92,7 @@ void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
     }
 
     field.curPlayer->id = beginningPlayer;
-    field.oppPlayer->id = (field.curPlayer->id == field.playerTwo) ?
+    field.oppPlayer->id = field.curPlayer->id == field.playerTwo ?
                               field.playerOne :
                               field.playerTwo;
 
@@ -359,7 +359,7 @@ bool Mill::doMove(uint32_t pushFrom, uint32_t pushTo)
         movesDone++;
 
         // is the game finished ?
-        if ((field.oppPlayer->pieceCount < 3) && (!field.isPlacingPhase))
+        if ((field.oppPlayer->pieceCount < 3) && !field.isPlacingPhase)
             winner = field.curPlayer->id;
 
         // update warnings & mills
@@ -381,7 +381,9 @@ bool Mill::doMove(uint32_t pushFrom, uint32_t pushTo)
         return true;
 
         // handle placing phase
-    } else if (field.isPlacingPhase) {
+    }
+
+    if (field.isPlacingPhase) {
         // param ok ?
         if (pushTo >= SQUARE_NB)
             return false;
@@ -421,36 +423,36 @@ bool Mill::doMove(uint32_t pushFrom, uint32_t pushTo)
         return true;
 
         // normal move
-    } else {
-        // is move possible ?
-        if (!isNormalMovePossible(pushFrom, pushTo, field.curPlayer))
-            return false;
-
-        // move piece
-        moveLogFrom[movesDone] = pushFrom;
-        moveLogTo[movesDone] = pushTo;
-        field.board[pushFrom] = field.squareIsFree;
-        field.board[pushTo] = field.curPlayer->id;
-        movesDone++;
-
-        // update warnings & mills
-        updateMillsAndWarnings(pushTo);
-
-        // calculate possibilities
-        generateMoves(field.curPlayer);
-        generateMoves(field.oppPlayer);
-
-        // is opponent unable to move ?
-        if (field.oppPlayer->possibleMovesCount == 0 && !field.isPlacingPhase)
-            winner = field.curPlayer->id;
-
-        // next player
-        if (!field.pieceMustBeRemovedCount)
-            setNextPlayer();
-
-        // everything is ok
-        return true;
     }
+
+    // is move possible ?
+    if (!isNormalMovePossible(pushFrom, pushTo, field.curPlayer))
+        return false;
+
+    // move piece
+    moveLogFrom[movesDone] = pushFrom;
+    moveLogTo[movesDone] = pushTo;
+    field.board[pushFrom] = field.squareIsFree;
+    field.board[pushTo] = field.curPlayer->id;
+    movesDone++;
+
+    // update warnings & mills
+    updateMillsAndWarnings(pushTo);
+
+    // calculate possibilities
+    generateMoves(field.curPlayer);
+    generateMoves(field.oppPlayer);
+
+    // is opponent unable to move ?
+    if (field.oppPlayer->possibleMovesCount == 0 && !field.isPlacingPhase)
+        winner = field.curPlayer->id;
+
+    // next player
+    if (!field.pieceMustBeRemovedCount)
+        setNextPlayer();
+
+    // everything is ok
+    return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -513,7 +515,7 @@ void Mill::printBoard()
 // Sets the initial board as the current one and apply all (minus one) moves
 // from the move history.
 //-----------------------------------------------------------------------------
-void Mill::undoMove(void)
+void Mill::undoMove()
 {
     // locals
     const auto moveLogFrom_bak = new uint32_t[movesDone];

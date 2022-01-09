@@ -10,8 +10,8 @@
 #define MILL_H_INCLUDED
 
 #include "millAI.h"
-#include <cstdlib>
 #include <cstdio>
+#include <cstdlib>
 #include <ctime>
 #include <iostream>
 
@@ -101,12 +101,12 @@ public:
 
     uint32_t getLastMoveFrom()
     {
-        return (movesDone ? moveLogFrom[movesDone - 1] : SQUARE_NB);
+        return movesDone ? moveLogFrom[movesDone - 1] : SQUARE_NB;
     }
 
     uint32_t getLastMoveTo()
     {
-        return (movesDone ? moveLogTo[movesDone - 1] : SQUARE_NB);
+        return movesDone ? moveLogTo[movesDone - 1] : SQUARE_NB;
     }
 
     uint32_t getMovesDone() { return movesDone; }

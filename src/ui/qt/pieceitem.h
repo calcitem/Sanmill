@@ -54,9 +54,9 @@ public:
         blackPiece = 0x4,
     };
 
-    enum Models getModel() noexcept { return model; }
+    Models getModel() noexcept { return model; }
 
-    void setModel(enum Models m) noexcept { this->model = m; }
+    void setModel(Models m) noexcept { this->model = m; }
 
     int getNum() noexcept { return num; }
 
@@ -82,7 +82,7 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
 private:
-    enum Models model;
+    Models model;
 
     // Piece number
     int num {0};

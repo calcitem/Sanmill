@@ -179,7 +179,7 @@ void MiniMax::calculateDatabase(uint32_t maxDepthOfTree, bool onlyPrepLayer)
                 continue;
 
             // calculate
-            abortCalc = (!calcLayer(curCalculatedLayer));
+            abortCalc = !calcLayer(curCalculatedLayer);
 
             // release memory
             unloadAllLayers();

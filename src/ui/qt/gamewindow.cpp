@@ -507,7 +507,7 @@ void MillGameWindow::saveBook(const QString &path)
 
     file.setFileName(path);
 
-    if (!(file.open(QFileDevice::WriteOnly | QFileDevice::Text))) {
+    if (!file.open(QFileDevice::WriteOnly | QFileDevice::Text)) {
         return;
     }
 
@@ -655,7 +655,7 @@ void MillGameWindow::on_actionNew_N_triggered()
     case DRAW:
         whoWin = "Draw";
         break;
-    case NOCOLOR: 
+    case NOCOLOR:
     case NOBODY:
     case COLOR_NB:
         whoWin = "Unknown";
@@ -711,7 +711,7 @@ void MillGameWindow::on_actionOpen_O_triggered()
         return;
     }
 
-    if (!(file.open(QFileDevice::ReadOnly | QFileDevice::Text))) {
+    if (!file.open(QFileDevice::ReadOnly | QFileDevice::Text)) {
         return;
     }
 
@@ -724,7 +724,7 @@ void MillGameWindow::on_actionOpen_O_triggered()
 
     // When reading and displaying the move history, there is no need to refresh
     // the scene
-    if (!(game->command(cmd.toStdString(), false))) {
+    if (!game->command(cmd.toStdString(), false)) {
         QMessageBox msgBox(QMessageBox::Warning, tr("File error"),
                            tr("Not the correct move history file"),
                            QMessageBox::Ok);

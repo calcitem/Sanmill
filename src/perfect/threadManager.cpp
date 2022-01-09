@@ -224,7 +224,7 @@ void ThreadManager::pauseExec()
         }
     }
 
-    execPaused = (!execPaused);
+    execPaused = !execPaused;
 }
 
 //-----------------------------------------------------------------------------
@@ -302,8 +302,8 @@ uint32_t ThreadManager::execInParallel(DWORD threadProc(void *pParam),
     for (thd = 0; thd < threadCount; thd++) {
         hThread[thd] = CreateThread(
             nullptr, dwStackSize, (LPTHREAD_START_ROUTINE)threadProc,
-            (void *)(((char *)pParam) + thd * paramStructSize),
-            CREATE_SUSPENDED, &threadId[thd]);
+            (void *)((char *)pParam + thd * paramStructSize), CREATE_SUSPENDED,
+            &threadId[thd]);
 
         if (hThread[thd] != nullptr) {
             SetThreadPriority(hThread[thd], THREAD_PRIORITY_BELOW_NORMAL);
@@ -337,9 +337,9 @@ uint32_t ThreadManager::execInParallel(DWORD threadProc(void *pParam),
     // everything ok
     if (execCancelled) {
         return TM_RETVAL_EXEC_CANCELLED;
-    } else {
-        return TM_RETVAL_OK;
     }
+
+    return TM_RETVAL_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -417,13 +417,10 @@ uint32_t ThreadManager::execParallelLoop(DWORD threadProc(void *pParam,
             break;
         case TM_SCHED_DYNAMIC:
             return TM_RETVAL_INVALID_PARAM;
-            break;
         case TM_SCHED_GUIDED:
             return TM_RETVAL_INVALID_PARAM;
-            break;
         case TM_SCHED_RUNTIME:
             return TM_RETVAL_INVALID_PARAM;
-            break;
         }
 
         // create suspended thread
@@ -470,9 +467,9 @@ uint32_t ThreadManager::execParallelLoop(DWORD threadProc(void *pParam,
     // everything ok
     if (execCancelled) {
         return TM_RETVAL_EXEC_CANCELLED;
-    } else {
-        return TM_RETVAL_OK;
     }
+
+    return TM_RETVAL_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -506,13 +503,10 @@ DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParam)
         break;
     case TM_SCHED_DYNAMIC:
         return TM_RETVAL_INVALID_PARAM;
-        break;
     case TM_SCHED_GUIDED:
         return TM_RETVAL_INVALID_PARAM;
-        break;
     case TM_SCHED_RUNTIME:
         return TM_RETVAL_INVALID_PARAM;
-        break;
     }
 
     return TM_RETVAL_OK;

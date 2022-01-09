@@ -18,7 +18,7 @@
 Mill *mill = nullptr;
 PerfectAI *ai = nullptr;
 
-int perfect_init(void)
+int perfect_init()
 {
     if (mill != nullptr || ai != nullptr) {
         return 0;
@@ -32,7 +32,7 @@ int perfect_init(void)
     return 0;
 }
 
-int perfect_exit(void)
+int perfect_exit()
 {
     if (mill != nullptr) {
         delete mill;
@@ -47,7 +47,7 @@ int perfect_exit(void)
     return 0;
 }
 
-int perfect_reset(void)
+int perfect_reset()
 {
     if (mill == nullptr || ai == nullptr) {
         perfect_init();

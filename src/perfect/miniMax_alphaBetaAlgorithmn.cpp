@@ -111,7 +111,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     PRINT(1, this,
           endl << "  *** Signing of invalid states for layer "
                << alphaBetaVars.layerNumber << " ("
-               << (getOutputInfo(alphaBetaVars.layerNumber)) << ") which has "
+               << getOutputInfo(alphaBetaVars.layerNumber) << ") which has "
                << layerStats[alphaBetaVars.layerNumber].knotsInLayer
                << " knots ***");
 
@@ -556,11 +556,11 @@ bool MiniMax::alphaBetaTryDatabase(Knot *knot, RunAlphaBetaVars *rabVars,
             !calcDatabase && subLayerInDatabaseAndCompleted) {
             PRINT(2, this,
                   "This state is marked as "
-                      << ((shortKnotValue == SKV_VALUE_GAME_WON) ?
+                      << (shortKnotValue == SKV_VALUE_GAME_WON ?
                               "WON" :
-                              ((shortKnotValue == SKV_VALUE_GAME_LOST) ?
+                              (shortKnotValue == SKV_VALUE_GAME_LOST ?
                                    "LOST" :
-                                   ((shortKnotValue == SKV_VALUE_GAME_DRAWN) ?
+                                   (shortKnotValue == SKV_VALUE_GAME_DRAWN ?
                                         "DRAW" :
                                         "INVALID")))
                       << endl);
@@ -643,18 +643,17 @@ void MiniMax::alphaBetaTryPossibilities(Knot *knot, RunAlphaBetaVars *rabVars,
                                rabVars->freqValuesSubMoves,
                                knot->branches[curPoss].plyInfo);
                 PRINT(0, this,
-                      "\t: "
-                          << ((knot->branches[curPoss].shortValue ==
-                               SKV_VALUE_GAME_WON) ?
-                                  "WON" :
-                                  ((knot->branches[curPoss].shortValue ==
-                                    SKV_VALUE_GAME_LOST) ?
-                                       "LOST" :
-                                       ((knot->branches[curPoss].shortValue ==
-                                         SKV_VALUE_GAME_DRAWN) ?
-                                            "DRAW" :
-                                            "INVALID")))
-                          << endl);
+                      "\t: " << (knot->branches[curPoss].shortValue ==
+                                         SKV_VALUE_GAME_WON ?
+                                     "WON" :
+                                     (knot->branches[curPoss].shortValue ==
+                                              SKV_VALUE_GAME_LOST ?
+                                          "LOST" :
+                                          (knot->branches[curPoss].shortValue ==
+                                                   SKV_VALUE_GAME_DRAWN ?
+                                               "DRAW" :
+                                               "INVALID")))
+                             << endl);
             } else {
                 PRINT(0, this,
                       "\t: " << knot->branches[curPoss].floatValue << endl);
@@ -677,14 +676,16 @@ void MiniMax::alphaBetaTryPossibilities(Knot *knot, RunAlphaBetaVars *rabVars,
             if (knot->branches[curPoss].floatValue >= beta) {
                 knot->possibilityCount = curPoss + 1;
                 break;
-            } else if (knot->branches[curPoss].floatValue > alpha) {
+            }
+            if (knot->branches[curPoss].floatValue > alpha) {
                 alpha = knot->branches[curPoss].floatValue;
             }
         } else {
             if (knot->branches[curPoss].floatValue <= alpha) {
                 knot->possibilityCount = curPoss + 1;
                 break;
-            } else if (knot->branches[curPoss].floatValue < beta) {
+            }
+            if (knot->branches[curPoss].floatValue < beta) {
                 beta = knot->branches[curPoss].floatValue;
             }
         }
@@ -755,10 +756,10 @@ void MiniMax::alphaBetaCalcPlyInfo(Knot *knot)
     } else {
         // calculate value of knot
         shortKnotValue =
-            (knot->isOpponentLevel) ?
+            knot->isOpponentLevel ?
                 skvPerspectiveMatrix[knot->shortValue][PL_TO_MOVE_UNCHANGED] :
                 knot->shortValue;
-        maxPlyInfo = (shortKnotValue == SKV_VALUE_GAME_WON) ?
+        maxPlyInfo = shortKnotValue == SKV_VALUE_GAME_WON ?
                          PLYINFO_VALUE_DRAWN :
                          0;
         maxBranch = 0;
@@ -768,7 +769,7 @@ void MiniMax::alphaBetaCalcPlyInfo(Knot *knot)
             for (i = 0; i < knot->possibilityCount; i++) {
                 // invert knot value if necessary
                 shortKnotValue =
-                    (knot->branches[i].isOpponentLevel) ?
+                    knot->branches[i].isOpponentLevel ?
                         skvPerspectiveMatrix[knot->branches[i].shortValue]
                                             [PL_TO_MOVE_UNCHANGED] :
                         knot->branches[i].shortValue;
@@ -866,7 +867,7 @@ void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars,
                 // conventional mini-max algorithm
             } else {
                 dif = knot->branches[i].floatValue - knot->floatValue;
-                dif = (dif > 0) ? dif : -1.0f * dif;
+                dif = dif > 0 ? dif : -1.0f * dif;
                 if (dif < FPKV_THRESHOLD) {
                     bestBranches[nBestChoices] = i;
                     nBestChoices++;
@@ -876,7 +877,7 @@ void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars,
     }
 
     // set value
-    maxBranch = (nBestChoices ? bestBranches[rand() % nBestChoices] : 0);
+    maxBranch = nBestChoices ? bestBranches[rand() % nBestChoices] : 0;
     knot->bestMoveId = idPossibility[maxBranch];
     knot->bestBranch = maxBranch;
     SAFE_DELETE_ARRAY(bestBranches);

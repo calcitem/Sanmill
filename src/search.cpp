@@ -222,7 +222,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     Depth epsilon;
 
 #ifdef RULE_50
-    if ((pos->rule50_count() > rule.nMoveRule) ||
+    if (pos->rule50_count() > rule.nMoveRule ||
         (rule.endgameNMoveRule < rule.nMoveRule && pos->is_three_endgame() &&
          pos->rule50_count() >= rule.endgameNMoveRule)) {
         alpha = VALUE_DRAW;
@@ -379,7 +379,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
     // Loop through the moves until no moves remain or a beta cutoff occurs
     for (int i = 0; i < moveCount; i++) {
-        ss.push(*(pos));
+        ss.push(*pos);
         const Color before = pos->sideToMove;
         Move move = mp.moves[i].move;
 

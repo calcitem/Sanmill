@@ -80,9 +80,10 @@ bool MiniMax::testLayer(uint32_t layerNumber)
             PRINT(0, this, "Main thread: Execution cancelled by user");
             return false; // ... better would be to return a cancel-specific
                           // value
-        } else {
-            break;
         }
+
+        break;
+
     default:
     case TM_RETVAL_INVALID_PARAM:
     case TM_RETVAL_UNEXPECTED_ERROR:
@@ -157,9 +158,8 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
                       << ": Could not set situation, but value is not "
                          "invalid.");
             goto errorInDatabase;
-        } else {
-            return TM_RETVAL_OK;
         }
+        return TM_RETVAL_OK;
     }
 
     // debug info
@@ -210,7 +210,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
                                          layerInDatabaseAndCompleted);
             m->readPlyInfoFromDatabase(tmpLayerNumber, tmpStateNumber,
                                        subPlyInfos[i]);
-            hasCurPlayerChanged[i] = (m->getOpponentLevel(threadNo) == true);
+            hasCurPlayerChanged[i] = m->getOpponentLevel(threadNo) == true;
 
             // debug info
             if (m->verbosity > 5) {
@@ -260,7 +260,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
             // all possible moves must be lost for the current player or won for
             // the opponent
             for (i = 0; i < possibilityCount; i++) {
-                if (subValueInDatabase[i] != ((hasCurPlayerChanged[i]) ?
+                if (subValueInDatabase[i] != (hasCurPlayerChanged[i] ?
                                                   SKV_VALUE_GAME_WON :
                                                   SKV_VALUE_GAME_LOST) &&
                     subValueInDatabase[i] != SKV_VALUE_INVALID) {
@@ -287,7 +287,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
             // ply info must be max(subPlyInfos[]+1)
             max = 0;
             for (i = 0; i < possibilityCount; i++) {
-                if (subValueInDatabase[i] == ((hasCurPlayerChanged[i]) ?
+                if (subValueInDatabase[i] == (hasCurPlayerChanged[i] ?
                                                   SKV_VALUE_GAME_WON :
                                                   SKV_VALUE_GAME_LOST)) {
                     if (subPlyInfos[i] + 1 > max) {
@@ -330,7 +330,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
                     goto errorInDatabase;
                 }
 #endif
-                if (subValueInDatabase[i] == ((hasCurPlayerChanged[i]) ?
+                if (subValueInDatabase[i] == (hasCurPlayerChanged[i] ?
                                                   SKV_VALUE_GAME_LOST :
                                                   SKV_VALUE_GAME_WON))
                     i = possibilityCount;
@@ -348,7 +348,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
             // ply info must be min(subPlyInfos[]+1)
             min = PLYINFO_VALUE_DRAWN;
             for (i = 0; i < possibilityCount; i++) {
-                if (subValueInDatabase[i] == ((hasCurPlayerChanged[i]) ?
+                if (subValueInDatabase[i] == (hasCurPlayerChanged[i] ?
                                                   SKV_VALUE_GAME_LOST :
                                                   SKV_VALUE_GAME_WON)) {
                     if (subPlyInfos[i] + 1 < min) {
@@ -390,7 +390,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
                     goto errorInDatabase;
                 }
 #endif
-                if (subValueInDatabase[i] != ((hasCurPlayerChanged[i]) ?
+                if (subValueInDatabase[i] != (hasCurPlayerChanged[i] ?
                                                   SKV_VALUE_GAME_WON :
                                                   SKV_VALUE_GAME_LOST) &&
                     subValueInDatabase[i] != SKV_VALUE_GAME_DRAWN &&
@@ -498,7 +498,7 @@ bool MiniMax::testIfSymStatesHaveSameValue(uint32_t layerNumber)
           endl << "testIfSymStatesHaveSameValue - TEST EACH STATE IN "
                   "LAYER: "
                << layerNumber);
-    PRINT(1, this, (getOutputInfo(layerNumber)));
+    PRINT(1, this, getOutputInfo(layerNumber));
     skvfHeader.completed = false;
 
     for (layerInDatabase = false, stateNumber = 0;
@@ -520,10 +520,11 @@ bool MiniMax::testIfSymStatesHaveSameValue(uint32_t layerNumber)
             // when situation cannot be constructed then state must be marked as
             // invalid in database
             if (shortValueInDatabase != SKV_VALUE_INVALID ||
-                nPliesTillCurState != PLYINFO_VALUE_INVALID)
+                nPliesTillCurState != PLYINFO_VALUE_INVALID) {
                 goto errorInDatabase;
-            else
-                continue;
+            }
+
+            continue;
         }
 
         // get numbers of sym states

@@ -10,8 +10,8 @@
 #define STRLIB_H_INCLUDED
 
 #include <cassert>
-#include <cstdlib>
 #include <cstdio>
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <windows.h>

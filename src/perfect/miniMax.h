@@ -686,8 +686,8 @@ private:
         }
     };
 
-    struct InitAlphaBetaVars : public ThreadManager::ThreadVarsArrayItem,
-                               public AlphaBetaDefaultThreadVars
+    struct InitAlphaBetaVars : ThreadManager::ThreadVarsArrayItem,
+                               AlphaBetaDefaultThreadVars
     {
         BufferedFile *bufferedFile;
         bool initAlreadyDone;
@@ -708,8 +708,8 @@ private:
         void reduce() override { reduceDefault(); }
     };
 
-    struct RunAlphaBetaVars : public ThreadManager::ThreadVarsArrayItem,
-                              public AlphaBetaDefaultThreadVars
+    struct RunAlphaBetaVars : ThreadManager::ThreadVarsArrayItem,
+                              AlphaBetaDefaultThreadVars
     {
         // array of size [(fullTreeDepth - tilLevel) * maxNumBranches] for
         // storage of the branches at each search depth
@@ -842,8 +842,8 @@ private:
         }
     };
 
-    struct InitRetroAnalysisVars : public ThreadManager::ThreadVarsArrayItem,
-                                   public RetroAnalysisDefaultThreadVars
+    struct InitRetroAnalysisVars : ThreadManager::ThreadVarsArrayItem,
+                                   RetroAnalysisDefaultThreadVars
     {
         BufferedFile *bufferedFile;
         bool initAlreadyDone;
@@ -865,8 +865,8 @@ private:
         void reduce() override { reduceDefault(); }
     };
 
-    struct AddNumSucceedersVars : public ThreadManager::ThreadVarsArrayItem,
-                                  public RetroAnalysisDefaultThreadVars
+    struct AddNumSucceedersVars : ThreadManager::ThreadVarsArrayItem,
+                                  RetroAnalysisDefaultThreadVars
     {
         RetroAnalysisPredVars predVars[PREDECESSOR_COUNT_MAX];
 

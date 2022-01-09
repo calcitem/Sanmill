@@ -38,7 +38,7 @@ public:
 
     bool operator==(const T &other) const
     {
-        return (p == other.p && memcmp(arr, other.arr, size()));
+        return p == other.p && memcmp(arr, other.arr, size());
     }
 
     T &operator[](int i) { return arr[i]; }
@@ -61,17 +61,17 @@ public:
 
     void pop() { p--; }
 
-    T *top() { return &(arr[p]); }
+    T *top() { return &arr[p]; }
 
     [[nodiscard]] int size() const { return p + 1; }
 
-    [[nodiscard]] size_t length() const { return (sizeof(T) * size()); }
+    [[nodiscard]] size_t length() const { return sizeof(T) * size(); }
 
     T *begin() { return &arr[0]; }
 
     T *end() { return &arr[p + 1]; }
 
-    [[nodiscard]] bool empty() const { return (p < 0); }
+    [[nodiscard]] bool empty() const { return p < 0; }
 
     void clear() { p = -1; }
 

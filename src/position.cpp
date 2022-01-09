@@ -1230,7 +1230,7 @@ int Position::mills_count(Square s)
     const Bitboard *mt = millTableBB[s];
 
     for (auto i = 0; i < LD_NB; ++i) {
-        if (((bc & mt[i]) == mt[i])) {
+        if ((bc & mt[i]) == mt[i]) {
             n++;
         }
     }
@@ -1320,10 +1320,10 @@ bool Position::is_all_surrounded(Color c
 bool Position::is_star_square(Square s)
 {
     if (rule.hasDiagonalLines == true) {
-        return (s == 17 || s == 19 || s == 21 || s == 23);
+        return s == 17 || s == 19 || s == 21 || s == 23;
     }
 
-    return (s == 16 || s == 18 || s == 20 || s == 22);
+    return s == 16 || s == 18 || s == 20 || s == 22;
 }
 
 void Position::print_board()
@@ -1440,10 +1440,10 @@ void Position::mirror(vector<string> &moveHistory, bool cmdChange /*= true*/)
             f = static_cast<int>(llp[i]) / RANK_NB;
             r = static_cast<int>(llp[i]) % RANK_NB;
             r = (RANK_NB - r) % RANK_NB;
-            llp[i] = (static_cast<uint64_t>(f) * RANK_NB + r);
+            llp[i] = static_cast<uint64_t>(f) * RANK_NB + r;
         }
 
-        move = static_cast<Move>(((llp[0] << 8) | llp[1]));
+        move = static_cast<Move>((llp[0] << 8) | llp[1]);
     }
 
     if (currentSquare != 0) {

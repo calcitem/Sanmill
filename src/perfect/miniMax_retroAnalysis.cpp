@@ -180,7 +180,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
         curCalcActionId = MM_ACTION_INIT_RETRO_ANAL;
         PRINT(1, this,
               endl << "  *** Initialization of layer " << layerNumber << " ("
-                   << (getOutputInfo(layerNumber)) << ") which has "
+                   << getOutputInfo(layerNumber) << ") which has "
                    << layerStats[layerNumber].knotsInLayer << " knots ***");
 
         // file names
@@ -207,8 +207,8 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
         // don't add layers twice
         if (retroVars.layerInitialized[layerNumber])
             continue;
-        else
-            retroVars.layerInitialized[layerNumber] = true;
+
+        retroVars.layerInitialized[layerNumber] = true;
 
         // prepare params
         stateProcessedCount = 0;
@@ -560,8 +560,8 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
             // don't add layers twice
             if (succCalculated[succState.layerNumber])
                 continue;
-            else
-                succCalculated[succState.layerNumber] = true;
+
+            succCalculated[succState.layerNumber] = true;
 
             // don't process layers without states
             if (!layerStats[succState.layerNumber].knotsInLayer)
@@ -718,11 +718,11 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, uint32_t index)
             if (countValue == 255) {
                 PRINT(0, m, "ERROR: maximum value for Count[] reached!");
                 return TM_RETVAL_TERMINATE_ALL_THREADS;
-            } else {
-                countValue++;
-                newCountLong = (curCountLong & (~mask)) +
-                               (countValue << nBitsToShift);
             }
+
+            countValue++;
+            newCountLong = (curCountLong & (~mask)) +
+                           (countValue << nBitsToShift);
         } while (InterlockedCompareExchange(pCountValue, newCountLong,
                                             curCountLong) != curCountLong);
     }

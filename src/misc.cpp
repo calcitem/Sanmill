@@ -83,7 +83,7 @@ const string Version;
 /// usual I/O functionality, all without changing a single line of code!
 /// Idea from http://groups.google.com/group/comp.lang.c++/msg/1d941c0f26ea0d81
 
-struct Tie : public streambuf
+struct Tie : streambuf
 {
     // MSVC requires split streambuf for cin and cout
 

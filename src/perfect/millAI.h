@@ -17,7 +17,7 @@
 // using namespace std;
 
 // not (9 * 4) = 36 since the possibilities with 3 pieces are more
-constexpr auto POSIBILE_MOVE_COUNT_MAX = (3 * 18);
+constexpr auto POSIBILE_MOVE_COUNT_MAX = 3 * 18;
 
 #define SAFE_DELETE(p) \
     { \

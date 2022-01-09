@@ -518,7 +518,7 @@ void ThreadPool::set(size_t requested)
         while (!empty()) {
             delete back();
             pop_back();
-        }            
+        }
     }
 
     if (requested > 0) {

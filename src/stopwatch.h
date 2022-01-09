@@ -49,7 +49,7 @@ struct rdtscp_clock
 
 #else
         constexpr unsigned int ui = 0;
-        return time_point(duration((static_cast<std::uint64_t>(ui))));
+        return time_point(duration(static_cast<std::uint64_t>(ui)));
 #endif
     }
 };

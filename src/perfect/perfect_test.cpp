@@ -39,7 +39,7 @@ const bool calculateDatabase = false;
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI_TEST
 int main(void)
 #else
-int perfect_main(void)
+int perfect_main()
 #endif
 {
     // locals

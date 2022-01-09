@@ -51,8 +51,8 @@ enum Group { GROUP_A = 0, GROUP_B = 1, GROUP_C = 2, GROUP_D = 3 };
 
 constexpr auto MAX_ANZ_POSITION_A = 81;
 constexpr auto MAX_ANZ_POSITION_B = 81;
-constexpr auto MAX_ANZ_POSITION_C = (81 * 81);
-constexpr auto MAX_ANZ_POSITION_D = (81 * 81);
+constexpr auto MAX_ANZ_POSITION_C = 81 * 81;
+constexpr auto MAX_ANZ_POSITION_D = 81 * 81;
 
 constexpr auto FREE_SQUARE = 0;
 

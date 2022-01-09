@@ -152,7 +152,7 @@ bool CyclicArray::addBytes(uint32_t nBytes, unsigned char *pData)
 
             // store bock in file
             writeDataToFile(hFile,
-                            ((int64_t)blockSize) * ((int64_t)curWritingBlock),
+                            ((int64_t)blockSize) * (int64_t)curWritingBlock,
                             blockSize, writingBlock);
 
             // set pointer to beginning of writing block
@@ -207,9 +207,9 @@ bool CyclicArray::takeBytes(uint32_t nBytes, unsigned char *pData)
                 curReadingPtr = readingBlock;
 
                 // read whole block from file
-                readDataFromFile(
-                    hFile, ((int64_t)blockSize) * ((int64_t)curReadingBlock),
-                    blockSize, readingBlock);
+                readDataFromFile(hFile,
+                                 (int64_t)blockSize * (int64_t)curReadingBlock,
+                                 blockSize, readingBlock);
             }
         }
     }

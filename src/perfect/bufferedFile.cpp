@@ -256,9 +256,9 @@ bool BufferedFile::readBytes(uint32_t threadNo, int64_t positionInFile,
     // an sequential reading operation?
     if (positionInFile != curReadingPtr[threadNo] ||
         bytesInReadBuf[threadNo] < nBytes) {
-        bytesInReadBuf[threadNo] = ((positionInFile + bufSize <= fileSize) ?
-                                        bufSize :
-                                        (uint32_t)(fileSize - positionInFile));
+        bytesInReadBuf[threadNo] = (positionInFile + bufSize <= fileSize) ?
+                                       bufSize :
+                                       (uint32_t)(fileSize - positionInFile);
         if (bytesInReadBuf[threadNo] < nBytes)
             return false;
         readDataFromFile(

@@ -194,8 +194,8 @@ void MiniMax::ArrayInfoContainer::addArray(uint32_t layerNumber, uint32_t type,
     arrayInfosToBeUpdated.push_back(aic);
 
     // save pointer of info in vector for direct access
-    vectorArrays[layerNumber * ArrayInfo::arrayTypeCount + type] =
-        (--listArrays.end());
+    vectorArrays[layerNumber * ArrayInfo::arrayTypeCount + type] = --listArrays
+                                                                         .end();
 
     // update GUI
     if (c->userPrintFunc != nullptr) {
@@ -217,8 +217,7 @@ void MiniMax::ArrayInfoContainer::removeArray(uint32_t layerNumber,
     EnterCriticalSection(&c->csOsPrint);
 
     if (vectorArrays.size() > layerNumber * ArrayInfo::arrayTypeCount + type) {
-        auto itr =
-            vectorArrays[layerNumber * ArrayInfo::arrayTypeCount + type];
+        auto itr = vectorArrays[layerNumber * ArrayInfo::arrayTypeCount + type];
         if (itr != listArrays.end()) {
             // does sizes fit?
             if (itr->belongsToLayer != layerNumber || itr->type != type ||

@@ -18,26 +18,26 @@
 
 #include "rule.h"
 
-struct Rule rule = {"Nine men's morris",
-                    "Nine men's morris",
-                    9,
-                    3,
-                    3,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    true,
-                    true,
-                    true,
-                    100,
-                    100,
-                    true};
+Rule rule = {"Nine men's morris",
+             "Nine men's morris",
+             9,
+             3,
+             3,
+             false,
+             false,
+             false,
+             false,
+             false,
+             false,
+             false,
+             true,
+             true,
+             true,
+             100,
+             100,
+             true};
 
-const struct Rule RULES[N_RULES] = {
+const Rule RULES[N_RULES] = {
     {"Cheng San Qi", "Cheng San Qi", 9, 3, 3, false, false, false, false, false,
      false, false, true, true, false, 100, 100, true},
     {"Da San Qi", "Da San Qi", 12, 3, 3, true, true, false, true, false, true,

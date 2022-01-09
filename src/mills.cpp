@@ -449,11 +449,11 @@ bool is_star_squares_full(Position *pos)
     bool ret = false;
 
     if (rule.hasDiagonalLines) {
-        ret = (pos->get_board()[SQ_17] && pos->get_board()[SQ_19] &&
-               pos->get_board()[SQ_21] && pos->get_board()[SQ_23]);
+        ret = pos->get_board()[SQ_17] && pos->get_board()[SQ_19] &&
+              pos->get_board()[SQ_21] && pos->get_board()[SQ_23];
     } else {
-        ret = (pos->get_board()[SQ_16] && pos->get_board()[SQ_18] &&
-               pos->get_board()[SQ_20] && pos->get_board()[SQ_22]);
+        ret = pos->get_board()[SQ_16] && pos->get_board()[SQ_18] &&
+              pos->get_board()[SQ_20] && pos->get_board()[SQ_22];
     }
 
     return ret;
