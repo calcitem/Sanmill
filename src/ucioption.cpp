@@ -24,8 +24,6 @@ using std::string;
 
 UCI::OptionsMap Options; // Global object
 
-extern struct Rule rule;
-
 namespace UCI {
 
 /// 'On change' actions, triggered by an option's value change

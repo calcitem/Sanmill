@@ -36,7 +36,6 @@ using std::vector;
 extern vector<string> setup_bench(Position *, istream &);
 
 extern int repetition;
-extern vector<Key> posKeyHistory;
 
 namespace {
 

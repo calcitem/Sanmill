@@ -211,8 +211,6 @@ out:
 
 ///////////////////////////////////////////////////////////////////////////////
 
-extern ThreadPool Threads;
-
 vector<Key> posKeyHistory;
 
 Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,

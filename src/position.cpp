@@ -526,8 +526,6 @@ bool Position::has_game_cycle() const
 
 /// Mill Game
 
-extern int repetition;
-
 bool Position::reset()
 {
     repetition = 0;
