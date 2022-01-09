@@ -63,7 +63,7 @@ void MovePicker::score()
         // no mill, so need |from| to judge
         ourMillsCount = pos.potential_mills_count(to, pos.side_to_move(), from);
 
-#ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
+#ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGE
         // TODO(calcitem): rule.mayRemoveMultiple adapt other rules
         if (type_of(m) != MOVETYPE_REMOVE) {
             // all phrase, check if place sq can close mill
@@ -146,7 +146,7 @@ void MovePicker::score()
             // prefer remove piece that mobility is strong
             cur->value += emptyCount;
         }
-#endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
+#endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGE
     }
 }
 
