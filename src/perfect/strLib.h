@@ -9,10 +9,10 @@
 #ifndef STRLIB_H_INCLUDED
 #define STRLIB_H_INCLUDED
 
-#include <assert.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstdio>
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string>
 #include <windows.h>
 

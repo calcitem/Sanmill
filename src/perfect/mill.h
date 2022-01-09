@@ -10,10 +10,10 @@
 #define MILL_H_INCLUDED
 
 #include "millAI.h"
+#include <cstdlib>
 #include <cstdio>
+#include <ctime>
 #include <iostream>
-#include <stdlib.h>
-#include <time.h>
 
 #include "../types.h"
 

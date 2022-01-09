@@ -12,9 +12,9 @@
 #include "millAI.h"
 #include "miniMax.h"
 #include "types.h"
+#include <cmath>
 #include <cstdio>
 #include <iostream>
-#include <math.h>
 
 // using namespace std;
 

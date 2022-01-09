@@ -16,11 +16,11 @@
 #include "threadManager.h"
 #include <algorithm>
 #include <cstdio>
+#include <ctime>
 #include <intrin.h>
 #include <iostream>
 #include <list>
 #include <sstream>
-#include <time.h>
 #include <vector>
 #include <windows.h>
 
