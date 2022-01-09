@@ -1071,7 +1071,7 @@ void MillGameWindow::on_actionAbout_A_triggered()
     // date_text->setText(__DATE__);
     QString versionText;
 
-    if (strcmp(versionNumber, "Unknown")) {
+    if (strcmp(versionNumber, "Unknown") > 0) {
         versionText = tr("Version: ") + versionNumber +
                       "\nBuild: " + __DATE__ " " __TIME__;
     } else {

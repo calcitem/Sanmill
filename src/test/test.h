@@ -38,7 +38,7 @@ public:
     explicit Test(QWidget *parent = nullptr, QString k = "Key0");
     ~Test() override;
 
-    void setKey(QString k) noexcept { key = k; }
+    void setKey(const QString &k) noexcept { key = k; }
 
     QString getKey() noexcept { return key; }
 
@@ -48,7 +48,7 @@ signals:
     void command(const string &cmd, bool update = true);
 
 public slots:
-    void writeToMemory(const QString &str);
+    void writeToMemory(const QString &record);
     void readFromMemory();
     void startAction();
     void stopAction();
