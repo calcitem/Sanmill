@@ -19,7 +19,7 @@
 // using namespace std;
 
 // values of states/situations
-#define VALUE_GAME_LOST -1000.0f
+#define VALUE_GAME_LOST (-1000.0f)
 #define VALUE_GAME_WON 1000.0f
 
 // since a state must be saved two times,
