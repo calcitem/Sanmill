@@ -162,7 +162,7 @@ struct ThreadPool : public std::vector<Thread *>
     void clear();
     void set(size_t);
 
-    MainThread *main() const { return static_cast<MainThread *>(front()); }
+    MainThread *main() const { return dynamic_cast<MainThread *>(front()); }
 
     std::atomic_bool stop, increaseDepth;
 

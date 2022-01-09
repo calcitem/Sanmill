@@ -1349,7 +1349,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     const auto flags = cout.flags();
     cout << "Score: " << position.score[WHITE] << " : " << position.score[BLACK]
          << " : " << position.score_draw << "\ttotal: " << total << std::endl;
-    cout << fixed << std::setprecision(2) << blackWinRate
+    cout << std::fixed << std::setprecision(2) << blackWinRate
          << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
     cout.flags(flags);
 
