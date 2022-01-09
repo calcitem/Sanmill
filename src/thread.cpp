@@ -35,8 +35,6 @@
 #endif
 
 using std::cout;
-using std::fixed;
-using std::setprecision;
 
 ThreadPool Threads; // Global object
 
@@ -188,11 +186,11 @@ void Thread::setAi(Position *p)
 #endif
 }
 
-void Thread::setAi(Position *p, int tl)
+void Thread::setAi(Position *p, int time)
 {
     setAi(p);
 
-    timeLimit = tl;
+    timeLimit = time;
 }
 
 void Thread::emitCommand()
