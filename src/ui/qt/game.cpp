@@ -585,7 +585,7 @@ void Game::playSound(GameSound soundType, Color c)
     }
 
     if (hasSound) {
-        QSoundEffect *effect = new QSoundEffect;
+        auto *effect = new QSoundEffect;
         effect->setSource(QUrl::fromLocalFile(soundPath));
         effect->setLoopCount(1);
         effect->play();
@@ -1428,7 +1428,7 @@ bool Game::updateScene(Position &p)
                     piece->setZValue(1);
 
                     // Pieces movement animation
-                    QPropertyAnimation *animation = new QPropertyAnimation(
+                    auto *animation = new QPropertyAnimation(
                         piece, "pos");
                     animation->setDuration(durationTime);
                     animation->setStartValue(piece->pos());
@@ -1466,7 +1466,7 @@ bool Game::updateScene(Position &p)
 #ifdef GAME_PLACING_SHOW_REMOVED_PIECES
                 if (position.get_phase() == Phase::moving) {
 #endif
-                    QPropertyAnimation *animation = new QPropertyAnimation(
+                    auto *animation = new QPropertyAnimation(
                         piece, "pos");
                     animation->setDuration(durationTime);
                     animation->setStartValue(piece->pos());

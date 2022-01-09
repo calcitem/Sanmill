@@ -376,7 +376,7 @@ void move_priority_list_shuffle()
                 static_cast<Square>(i);
         }
         if (gameOptions.getShufflingEnabled()) {
-            const uint32_t seed = static_cast<uint32_t>(now());
+            const auto seed = static_cast<uint32_t>(now());
 
             std::shuffle(MoveList<LEGAL>::movePriorityList.begin(),
                          MoveList<LEGAL>::movePriorityList.end(),
