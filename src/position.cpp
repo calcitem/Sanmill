@@ -466,17 +466,14 @@ Key Position::key_after(Move m) const
         if (rule.hasBannedLocations && phase == Phase::placing) {
             k ^= Zobrist::psq[BAN][s];
         }
+    } else {
+        k ^= Zobrist::psq[side_to_move()][s];
 
-        goto out;
+        if (mt == MOVETYPE_MOVE) {
+            k ^= Zobrist::psq[side_to_move()][from_sq(m)];
+        }
     }
 
-    k ^= Zobrist::psq[side_to_move()][s];
-
-    if (mt == MOVETYPE_MOVE) {
-        k ^= Zobrist::psq[side_to_move()][from_sq(m)];
-    }
-
-out:
     k ^= Zobrist::side;
 
     return k;
