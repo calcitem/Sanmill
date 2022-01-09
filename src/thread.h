@@ -57,7 +57,11 @@ public:
                     QObject *parent = nullptr
 #endif
     );
+#ifdef QT_GUI_LIB
+    ~Thread() override;
+#else
     virtual ~Thread();
+#endif
     int search();
     void clear() noexcept;
     void idle_loop();
