@@ -101,7 +101,7 @@ void PieceItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                             QPixmap(":/image/resources/image/black_piece.png"));
 #endif /* QT_MOBILE_APP_UI */
         break;
-    default:
+    case Models::noPiece:
         break;
     }
 

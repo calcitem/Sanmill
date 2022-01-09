@@ -72,7 +72,7 @@ Value TranspositionTable::probe(const Key &key, const Depth &depth,
             return beta;
         }
         break;
-    default:
+    case BOUND_NONE:
         break;
     }
 

@@ -378,17 +378,17 @@ enum LineDirection : int {
     LD_NB = 3
 };
 
-enum File : int { FILE_A = 1, FILE_B, FILE_C, FILE_NB = 3 };
+enum File : int { FILE_A = 1, FILE_B = 2, FILE_C = 3, FILE_NB = 3 };
 
 enum Rank : int {
     RANK_1 = 1,
-    RANK_2,
-    RANK_3,
-    RANK_4,
-    RANK_5,
-    RANK_6,
-    RANK_7,
-    RANK_8,
+    RANK_2 = 2,
+    RANK_3 = 3,
+    RANK_4 = 4,
+    RANK_5 = 5,
+    RANK_6 = 6,
+    RANK_7 = 7,
+    RANK_8 = 8,
     RANK_NB = 8
 };
 

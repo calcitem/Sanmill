@@ -106,7 +106,7 @@ public:
                 // if 'curThreadNo' is overwritten in 'initElement()'
                 item[thd].curThreadNo = thd;
             }
-        };
+        }
 
         ~ThreadVarsArray()
         {
@@ -115,7 +115,7 @@ public:
             }
 
             delete[] item;
-        };
+        }
 
         void *getPointerToArray() { return static_cast<void *>(item); }
 
@@ -126,7 +126,7 @@ public:
             for (uint32_t thd = 0; thd < threadCount; thd++) {
                 item[thd].reduce();
             }
-        };
+        }
     };
 
     // Constructor / destructor

@@ -52,6 +52,7 @@ Value Evaluation::value()
                                  -pos.piece_to_remove_count();
 
     switch (pos.get_phase()) {
+    case Phase::none:
     case Phase::ready:
         break;
 
@@ -72,11 +73,10 @@ Value Evaluation::value()
         case Action::select:
         case Action::place:
             break;
-
         case Action::remove:
             value += VALUE_EACH_PIECE_PLACING_NEEDREMOVE * pieceToRemoveCount;
             break;
-        default:
+        case Action::none:
             break;
         }
 
@@ -95,11 +95,10 @@ Value Evaluation::value()
         case Action::select:
         case Action::place:
             break;
-
         case Action::remove:
             value += VALUE_EACH_PIECE_MOVING_NEEDREMOVE * pieceToRemoveCount;
             break;
-        default:
+        case Action::none:
             break;
         }
 
@@ -126,16 +125,13 @@ Value Evaluation::value()
         }
 
         break;
-
-    default:
-        break;
     }
 
     if (pos.side_to_move() == BLACK) {
         value = -value;
     }
 
-#if EVAL_DRAW_WHEN_NOT_KNOWN_WIN_IF_MAY_FLY
+#ifdef EVAL_DRAW_WHEN_NOT_KNOWN_WIN_IF_MAY_FLY
     if (pos.get_phase() == Phase::moving && rule.mayFly &&
         !rule.hasDiagonalLines) {
         int piece_on_board_count_future_white = pos.piece_on_board_count(WHITE);

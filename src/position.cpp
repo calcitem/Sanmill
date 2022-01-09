@@ -343,9 +343,6 @@ const string Position::fen() const
     case Phase::gameOver:
         ss << "o";
         break;
-    default:
-        ss << "?";
-        break;
     }
 
     ss << " ";
@@ -361,7 +358,7 @@ const string Position::fen() const
     case Action::remove:
         ss << "r";
         break;
-    default:
+    case Action::none:
         ss << "?";
         break;
     }
@@ -430,8 +427,6 @@ void Position::do_move(Move m)
             // Reset rule 50 counter
             st.rule50 = 0;
         }
-        break;
-    default:
         break;
     }
 
@@ -603,9 +598,11 @@ bool Position::start()
     case Phase::ready:
         phase = Phase::placing;
         return true;
-    default:
+    case Phase::none:
         return false;
     }
+
+    return false;
 }
 
 bool Position::put_piece(Square s, bool updateRecord)

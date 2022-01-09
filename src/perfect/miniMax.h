@@ -53,7 +53,7 @@ Negative values stand for loosing situations.
 database: The database contains the arrays with
 the short knot values and the ply infos.
 
-/*** Constants
+*** Constants
 *******************************************************************************/
 
 // minimum float point knot value
@@ -425,7 +425,7 @@ public:
     {
         while (true) {
         }
-    }; // is called once before building the tree
+    } // is called once before building the tree
 
     virtual uint32_t *getPossibilities(uint32_t threadNo,
                                        uint32_t *possibilityCount,
@@ -435,13 +435,13 @@ public:
         while (true) {
         }
         return nullptr;
-    }; // returns a pointer to the possibility-IDs
+    } // returns a pointer to the possibility-IDs
 
     virtual void deletePossibilities(uint32_t threadNo, void *pPossibilities)
     {
         while (true) {
         }
-    };
+    }
 
     virtual void storeMoveValue(uint32_t threadNo, uint32_t idPossibility,
                                 void *pPossibilities, TwoBit value,
@@ -454,57 +454,57 @@ public:
     {
         while (true) {
         }
-    };
+    }
 
     virtual void undo(uint32_t threadNo, uint32_t idPossibility,
                       bool opponentsMove, void *pBackup, void *pPossibilities)
     {
         while (true) {
         }
-    };
+    }
 
-    virtual bool shallRetroAnalysisBeUsed(uint32_t layerNum) { return false; };
+    virtual bool shallRetroAnalysisBeUsed(uint32_t layerNum) { return false; }
 
     virtual uint32_t getNumberOfLayers()
     {
         while (true) {
         }
         return 0;
-    };
+    }
 
     virtual uint32_t getNumberOfKnotsInLayer(uint32_t layerNum)
     {
         while (true) {
         }
         return 0;
-    };
+    }
 
     virtual void getSuccLayers(uint32_t layerNum, uint32_t *amountOfSuccLayers,
                                uint32_t *succeedingLayers)
     {
         while (true) {
         }
-    };
+    }
 
     virtual uint32_t getPartnerLayer(uint32_t layerNum)
     {
         while (true) {
         }
         return 0;
-    };
+    }
 
     virtual string getOutputInfo(uint32_t layerNum)
     {
         while (true) {
         }
         return string("");
-    };
+    }
 
     virtual void setOpponentLevel(uint32_t threadNo, bool isOpponentLevel)
     {
         while (true) {
         }
-    };
+    }
 
     virtual bool setSituation(uint32_t threadNo, uint32_t layerNum,
                               uint32_t stateNumber)
@@ -512,21 +512,21 @@ public:
         while (true) {
         }
         return false;
-    };
+    }
 
     virtual void getSituationValue(uint32_t threadNo, float &floatValue,
                                    TwoBit &shortValue)
     {
         while (true) {
         }
-    }; // value of situation for the initial current player
+    } // value of situation for the initial current player
 
     virtual bool getOpponentLevel(uint32_t threadNo)
     {
         while (true) {
         }
         return false;
-    };
+    }
 
     virtual uint32_t getLayerAndStateNumber(uint32_t threadNo,
                                             uint32_t &layerNum,
@@ -535,14 +535,14 @@ public:
         while (true) {
         }
         return 0;
-    };
+    }
 
     virtual uint32_t getLayerNumber(uint32_t threadNo)
     {
         while (true) {
         }
         return 0;
-    };
+    }
 
     virtual void getSymStateNumWithDoubles(uint32_t threadNo,
                                            uint32_t *nSymStates,
@@ -550,39 +550,39 @@ public:
     {
         while (true) {
         }
-    };
+    }
 
     virtual void getPredecessors(uint32_t threadNo, uint32_t *amountOfPred,
                                  RetroAnalysisPredVars *predVars)
     {
         while (true) {
         }
-    };
+    }
 
     virtual void printBoard(uint32_t threadNo, unsigned char value)
     {
         while (true) {
         }
-    };
+    }
 
     virtual void printMoveInfo(uint32_t threadNo, uint32_t idPossibility,
                                void *pPossibilities)
     {
         while (true) {
         }
-    };
+    }
 
     virtual void prepareDatabaseCalc()
     {
         while (true) {
         }
-    };
+    }
 
     virtual void wrapUpDatabaseCalc(bool calcAborted)
     {
         while (true) {
         }
-    };
+    }
 
 private:
     /*** classes for testing
@@ -673,7 +673,7 @@ private:
                  curStateValue++) {
                 this->statsValueCounter[curStateValue] = 0;
             }
-        };
+        }
 
         void reduceDefault()
         {
@@ -683,7 +683,7 @@ private:
                 alphaBetaVars->statsValueCounter[curStateValue] +=
                     this->statsValueCounter[curStateValue];
             }
-        };
+        }
     };
 
     struct InitAlphaBetaVars : public ThreadManager::ThreadVarsArrayItem,
@@ -701,7 +701,7 @@ private:
         {
             this->bufferedFile = initArray;
             this->initAlreadyDone = initAlreadyDone;
-        };
+        }
 
         void initElement(InitAlphaBetaVars &master) { *this = master; }
 
@@ -725,7 +725,7 @@ private:
             : AlphaBetaDefaultThreadVars(pMiniMax, alphaBetaVars, layerNumber)
         {
             initElement(*this);
-        };
+        }
 
         ~RunAlphaBetaVars()
         {
@@ -748,7 +748,7 @@ private:
             std::memset(freqValuesSubMovesBranchWon, 0,
                         sizeof(uint32_t) *
                             alphaBetaVars->pMiniMax->maxNumBranches);
-        };
+        }
     };
 
     /*** classes for the retro analysis
@@ -829,7 +829,7 @@ private:
                  curStateValue++) {
                 this->statsValueCounter[curStateValue] = 0;
             }
-        };
+        }
 
         void reduceDefault()
         {
@@ -839,7 +839,7 @@ private:
                 retroVars->statsValueCounter[curStateValue] +=
                     this->statsValueCounter[curStateValue];
             }
-        };
+        }
     };
 
     struct InitRetroAnalysisVars : public ThreadManager::ThreadVarsArrayItem,
@@ -858,9 +858,9 @@ private:
         {
             this->bufferedFile = initArray;
             this->initAlreadyDone = initAlreadyDone;
-        };
+        }
 
-        void initElement(InitRetroAnalysisVars &master) { *this = master; };
+        void initElement(InitRetroAnalysisVars &master) { *this = master; }
 
         void reduce() override { reduceDefault(); }
     };
@@ -878,7 +878,7 @@ private:
             : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
         { }
 
-        void initElement(AddNumSucceedersVars &master) { *this = master; };
+        void initElement(AddNumSucceedersVars &master) { *this = master; }
 
         void reduce() override { reduceDefault(); }
     };
@@ -1079,7 +1079,7 @@ private:
                                             const RetroAnalysisQueueState &b)
     {
         return a.stateNumber < b.stateNumber;
-    };
+    }
     static DWORD initRetroAnalysisThreadProc(void *pParam, uint32_t index);
     static DWORD addNumSucceedersThreadProc(void *pParam, uint32_t index);
     static DWORD performRetroAnalysisThreadProc(void *pParam);

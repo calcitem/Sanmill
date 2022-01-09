@@ -310,7 +310,7 @@ Option::Option(const char *v, const char *cur, OnChange f)
 Option::operator double() const
 {
     assert(type == "check" || type == "spin");
-    return (type == "spin" ? stof(currentValue) : currentValue == "true");
+    return (type == "spin" ? stod(currentValue) : currentValue == "true");
 }
 
 Option::operator std::string() const

@@ -572,7 +572,7 @@ void Game::playSound(GameSound soundType, Color c)
     case GameSound::winAndLossesAreObvious:
         filename = "WinsAndLossesAreObvious.wav";
         break;
-    default:
+    case GameSound::none:
         filename = "";
         break;
     }
@@ -1021,7 +1021,7 @@ bool Game::actionPiece(QPointF p)
         }
         break;
 
-    default:
+    case Action::none:
         // If it is game over state, no response will be made
         break;
     }
@@ -1154,7 +1154,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     case Action::remove:
         soundType = GameSound::remove;
         break;
-    default:
+    case Action::none:
         break;
     }
 
@@ -1704,7 +1704,7 @@ void Game::appendGameOverReasonToMoveHistory()
         snprintf(record, Position::RECORD_LEN_MAX, loseReasonResignStr,
                  ~position.winner);
         break;
-    default:
+    case GameOverReason::none:
         debugPrintf("No Game Over Reason");
         break;
     }
@@ -1771,7 +1771,9 @@ void Game::setTips()
         case DRAW:
             resultStr = "Draw! ";
             break;
-        default:
+        case NOCOLOR:
+        case COLOR_NB:
+        case NOBODY:
             break;
         }
 
@@ -1787,6 +1789,9 @@ void Game::setTips()
             }
 #endif
             reasonStr = turnStr + " is blocked.";
+            break;
+        case GameOverReason::loseBoardIsFull:
+            reasonStr = turnStr + " lose because board is full.";
             break;
         case GameOverReason::loseResign:
             reasonStr = turnStr + " resigned.";
@@ -1806,14 +1811,14 @@ void Game::setTips()
         case GameOverReason::drawBoardIsFull:
             reasonStr = "Draw because of board is full.";
             break;
-        default:
+        case GameOverReason::none:
             break;
         }
 
         tips = reasonStr + resultStr + scoreStr;
         break;
 
-    default:
+    case Phase::none:
         break;
     }
 }

@@ -655,7 +655,9 @@ void MillGameWindow::on_actionNew_N_triggered()
     case DRAW:
         whoWin = "Draw";
         break;
-    default:
+    case NOCOLOR: 
+    case NOBODY:
+    case COLOR_NB:
         whoWin = "Unknown";
         break;
     }

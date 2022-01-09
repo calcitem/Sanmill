@@ -294,6 +294,9 @@ void Thread::analyze(Color c)
     cout << std::dec;
 
     switch (p->get_phase()) {
+    case Phase::ready:
+        cout << "Ready phrase" << std::endl;
+        break;
     case Phase::placing:
         cout << "Placing phrase" << std::endl;
         break;
@@ -303,20 +306,19 @@ void Thread::analyze(Color c)
     case Phase::gameOver:
         if (p->get_winner() == DRAW) {
             cout << "Draw" << std::endl;
-            nDraw += 0.5; // TODO(calcitem)
+            nDraw += 0.5f; // TODO(calcitem)
         } else if (p->get_winner() == WHITE) {
             cout << "White wins" << std::endl;
-            nBlackWin += 0.5; // TODO(calcitem)
+            nBlackWin += 0.5f; // TODO(calcitem)
         } else if (p->get_winner() == BLACK) {
             cout << "Black wins" << std::endl;
-            nWhiteWin += 0.5; // TODO(calcitem)
+            nWhiteWin += 0.5f; // TODO(calcitem)
         }
-        goto out;
+        cout << std::endl << std::endl;
+        return;
     case Phase::none:
         cout << "None phase" << std::endl;
         break;
-    default:
-        cout << "Known phase" << std::endl;
     }
 
     if (v == VALUE_UNIQUE) {
@@ -414,7 +416,6 @@ void Thread::analyze(Color c)
 
     cout.flags(flags);
 
-out:
     cout << std::endl << std::endl;
 }
 
@@ -511,12 +512,14 @@ void Thread::loadEndgameFileToHashMap()
 
 void ThreadPool::set(size_t requested)
 {
-    if (size() > 0) {
+    if (!empty()) {
         // destroy any existing thread(s)
         main()->wait_for_search_finished();
 
-        while (size() > 0)
-            delete back(), pop_back();
+        while (!empty()) {
+            delete back();
+            pop_back();
+        }            
     }
 
     if (requested > 0) {
