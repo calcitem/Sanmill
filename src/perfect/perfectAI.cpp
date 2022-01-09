@@ -930,7 +930,7 @@ void PerfectAI::play(fieldStruct *theField, uint32_t *pushFrom,
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // start the miniMax-algorithm
-    Possibility *rootPossibilities = (Possibility *)getBestChoice(
+    auto rootPossibilities = (Possibility *)getBestChoice(
         threadVars[0].fullTreeDepth, &bestChoice, POSIBILE_MOVE_COUNT_MAX);
 
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
@@ -1287,7 +1287,7 @@ void PerfectAI::undo(uint32_t threadNo, uint32_t idPossibility,
 {
     // locals
     ThreadVars *tv = &threadVars[threadNo];
-    Backup *oldState = (Backup *)pBackup;
+    auto oldState = (Backup *)pBackup;
 
     // reset old value
     tv->floatValue = oldState->floatValue;
@@ -1532,7 +1532,7 @@ void PerfectAI::move(uint32_t threadNo, uint32_t idPossibility,
     // locals
     ThreadVars *tv = &threadVars[threadNo];
     Backup *oldState = &tv->oldStates[tv->curSearchDepth];
-    Possibility *tmpPossibility = (Possibility *)pPossibilities;
+    auto tmpPossibility = (Possibility *)pPossibilities;
     Player *tmpPlayer;
     uint32_t i;
 
@@ -1623,7 +1623,7 @@ void PerfectAI::storeMoveValue(uint32_t threadNo, uint32_t idPossibility,
     // locals
     ThreadVars *tv = &threadVars[threadNo];
     uint32_t i;
-    Possibility *tmpPossibility = (Possibility *)pPossibilities;
+    auto tmpPossibility = (Possibility *)pPossibilities;
 
     if (tv->field->pieceMustBeRemovedCount)
         i = idPossibility;
@@ -1654,7 +1654,7 @@ void PerfectAI::printMoveInfo(uint32_t threadNo, uint32_t idPossibility,
 {
     // locals
     ThreadVars *tv = &threadVars[threadNo];
-    Possibility *tmpPossibility = (Possibility *)pPossibilities;
+    auto tmpPossibility = (Possibility *)pPossibilities;
 
     // move
     if (tv->field->pieceMustBeRemovedCount)

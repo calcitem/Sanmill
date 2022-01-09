@@ -215,7 +215,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 DWORD MiniMax::initAlphaBetaThreadProc(void *pParam, uint32_t index)
 {
     // locals
-    InitAlphaBetaVars *iabVars = (InitAlphaBetaVars *)pParam;
+    auto iabVars = (InitAlphaBetaVars *)pParam;
     MiniMax *m = iabVars->pMiniMax;
     float floatValue;         // dummy variable for calls of getSituationValue()
     StateAdress curState;     // current state counter for loops
@@ -367,7 +367,7 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 DWORD MiniMax::runAlphaBetaThreadProc(void *pParam, uint32_t index)
 {
     // locals
-    RunAlphaBetaVars *rabVars = (RunAlphaBetaVars *)pParam;
+    auto rabVars = (RunAlphaBetaVars *)pParam;
     MiniMax *m = rabVars->pMiniMax;
     StateAdress curState;   // current state counter for loops
     Knot root;              //
@@ -834,7 +834,7 @@ void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars,
     // locals
     float dif;
     uint32_t nBestChoices = 0;
-    uint32_t *bestBranches = new uint32_t[maxNumBranches];
+    auto bestBranches = new uint32_t[maxNumBranches];
     std::memset(bestBranches, 0, sizeof(uint32_t) * maxNumBranches);
     uint32_t i;
     uint32_t maxBranch;

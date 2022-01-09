@@ -39,7 +39,7 @@ bool MiniMax::testLayer(uint32_t layerNumber)
     stateProcessedCount = 0;
     curCalculatedLayer = layerNumber;
     curCalcActionId = MM_ACTION_TESTING_LAYER;
-    TestLayersVars *tlVars = new TestLayersVars[threadManager.getThreadCount()];
+    auto tlVars = new TestLayersVars[threadManager.getThreadCount()];
     std::memset(tlVars, 0,
                 sizeof(TestLayersVars) * threadManager.getThreadCount());
 
@@ -107,7 +107,7 @@ bool MiniMax::testLayer(uint32_t layerNumber)
 DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
 {
     // locals
-    TestLayersVars *tlVars = (TestLayersVars *)pParam;
+    auto tlVars = (TestLayersVars *)pParam;
     MiniMax *m = tlVars->pMiniMax;
     uint32_t layerNumber = tlVars->layerNumber;
     uint32_t stateNumber = index;

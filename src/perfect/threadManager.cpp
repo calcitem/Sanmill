@@ -385,7 +385,7 @@ uint32_t ThreadManager::execParallelLoop(DWORD threadProc(void *pParam,
     // initial stack size of each thread. 0 means default size ~1MB
     SIZE_T dwStackSize = 0;
 
-    ForLoop *forLoopParams = new ForLoop[threadCount];
+    auto forLoopParams = new ForLoop[threadCount];
     std::memset(forLoopParams, 0, sizeof(ForLoop) * threadCount);
 
     // globals
@@ -482,7 +482,7 @@ uint32_t ThreadManager::execParallelLoop(DWORD threadProc(void *pParam,
 DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParam)
 {
     // locals
-    ForLoop *forLoopParams = (ForLoop *)lpParam;
+    auto forLoopParams = (ForLoop *)lpParam;
     int i;
 
     switch (forLoopParams->schedType) {

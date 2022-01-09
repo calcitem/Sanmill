@@ -142,7 +142,7 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 QPointF BoardItem::nearestPosition(const QPointF pos)
 {
     // The initial closest point is set to (0,0) point
-    QPointF nearestPos = QPointF(0, 0);
+    auto nearestPos = QPointF(0, 0);
 
     // Look for the nearest spot
     for (auto i : position) {

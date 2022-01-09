@@ -281,7 +281,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 DWORD MiniMax::initRetroAnalysisThreadProc(void *pParam, uint32_t index)
 {
     // locals
-    InitRetroAnalysisVars *iraVars = (InitRetroAnalysisVars *)pParam;
+    auto iraVars = (InitRetroAnalysisVars *)pParam;
     MiniMax *m = iraVars->pMiniMax;
     float floatValue;     // dummy variable for calls of getSituationValue()
     StateAdress curState; // current state counter for loops
@@ -619,7 +619,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
 DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, uint32_t index)
 {
     // locals
-    AddNumSucceedersVars *ansVars = (AddNumSucceedersVars *)pParam;
+    auto ansVars = (AddNumSucceedersVars *)pParam;
     MiniMax *m = ansVars->pMiniMax;
     uint32_t nLayersToCalculate = (uint32_t)ansVars->retroVars
                                       ->layersToCalculate.size();
@@ -811,7 +811,7 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
 {
     // locals
-    retroAnalysisGlobalVars *retroVars = (retroAnalysisGlobalVars *)pParam;
+    auto retroVars = (retroAnalysisGlobalVars *)pParam;
     MiniMax *m = retroVars->pMiniMax;
     uint32_t threadNo = m->threadManager.getThreadNumber();
     RetroAnalysisThreadVars *threadVars = &retroVars->thread[threadNo];

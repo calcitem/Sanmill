@@ -516,17 +516,16 @@ void Mill::printBoard()
 void Mill::undoMove(void)
 {
     // locals
-    uint32_t *moveLogFrom_bak = new uint32_t[movesDone];
+    const auto moveLogFrom_bak = new uint32_t[movesDone];
     std::memset(moveLogFrom_bak, 0, sizeof(uint32_t) * movesDone);
-    uint32_t *moveLogTo_bak = new uint32_t[movesDone];
+    const auto moveLogTo_bak = new uint32_t[movesDone];
     std::memset(moveLogTo_bak, 0, sizeof(uint32_t) * movesDone);
-    uint32_t movesDone_bak = movesDone;
-    uint32_t i;
+    const uint32_t movesDone_bak = movesDone;
 
     // at least one move must be done
     if (movesDone) {
         // make backup of log
-        for (i = 0; i < movesDone; i++) {
+        for (uint32_t i = 0; i < movesDone; i++) {
             moveLogFrom_bak[i] = moveLogFrom[i];
             moveLogTo_bak[i] = moveLogTo[i];
         }
@@ -537,7 +536,7 @@ void Mill::undoMove(void)
         movesDone = 0;
 
         // and play again
-        for (i = 0; i < movesDone_bak - 1; i++) {
+        for (uint32_t i = 0; i < movesDone_bak - 1; i++) {
             doMove(moveLogFrom_bak[i], moveLogTo_bak[i]);
         }
     }
