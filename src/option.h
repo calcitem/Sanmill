@@ -26,26 +26,26 @@ public:
 
     void setSkillLevel(int val) noexcept { skillLevel = val; }
 
-    int getSkillLevel() const noexcept { return skillLevel; }
+    [[nodiscard]] int getSkillLevel() const noexcept { return skillLevel; }
 
     void setMoveTime(int val) noexcept { moveTime = val; }
 
-    int getMoveTime() const noexcept { return moveTime; }
+    [[nodiscard]] int getMoveTime() const noexcept { return moveTime; }
 
     void setAiIsLazy(bool enabled) noexcept { aiIsLazy = enabled; }
 
-    bool getAiIsLazy() const noexcept { return aiIsLazy; }
+    [[nodiscard]] bool getAiIsLazy() const noexcept { return aiIsLazy; }
 
     void setAutoRestart(bool enabled) noexcept { isAutoRestart = enabled; }
 
-    bool getAutoRestart() const noexcept { return isAutoRestart; }
+    [[nodiscard]] bool getAutoRestart() const noexcept { return isAutoRestart; }
 
     void setAutoChangeFirstMove(bool enabled) noexcept
     {
         isAutoChangeFirstMove = enabled;
     }
 
-    bool getAutoChangeFirstMove() const noexcept
+    [[nodiscard]] bool getAutoChangeFirstMove() const noexcept
     {
         return isAutoChangeFirstMove;
     }
@@ -55,7 +55,10 @@ public:
         resignIfMostLose = enabled;
     }
 
-    bool getResignIfMostLose() const noexcept { return resignIfMostLose; }
+    [[nodiscard]] bool getResignIfMostLose() const noexcept
+    {
+        return resignIfMostLose;
+    }
 
     // Specify whether the successors of a given state should be shuffled if a
     // re-evaluation is required so that the AI algorithm is not favoring one
@@ -63,14 +66,20 @@ public:
     // variation between different games against an opponent that tries to do
     // the same sequence of moves. By default, shuffling is enabled.
 
-    bool getShufflingEnabled() const noexcept { return shufflingEnabled; }
+    [[nodiscard]] bool getShufflingEnabled() const noexcept
+    {
+        return shufflingEnabled;
+    }
 
     void setShufflingEnabled(bool enabled) noexcept
     {
         shufflingEnabled = enabled;
     }
 
-    bool getLearnEndgameEnabled() const noexcept { return learnEndgame; }
+    [[nodiscard]] bool getLearnEndgameEnabled() const noexcept
+    {
+        return learnEndgame;
+    }
 
     void setLearnEndgameEnabled(bool enabled) noexcept
     {
@@ -81,7 +90,7 @@ public:
 #endif
     }
 
-    bool isEndgameLearningEnabled() const noexcept
+    [[nodiscard]] bool isEndgameLearningEnabled() const noexcept
     {
 #ifdef ENDGAME_LEARNING_FORCE
         return true;
@@ -95,23 +104,29 @@ public:
         perfectAiEnabled = enabled;
     }
 
-    bool getPerfectAiEnabled() const noexcept { return perfectAiEnabled; }
+    [[nodiscard]] bool getPerfectAiEnabled() const noexcept
+    {
+        return perfectAiEnabled;
+    }
 
     void setIDSEnabled(bool enabled) noexcept { IDSEnabled = enabled; }
 
-    bool getIDSEnabled() const noexcept { return IDSEnabled; }
+    [[nodiscard]] bool getIDSEnabled() const noexcept { return IDSEnabled; }
 
     // DepthExtension
 
     void setDepthExtension(bool enabled) noexcept { depthExtension = enabled; }
 
-    bool getDepthExtension() const noexcept { return depthExtension; }
+    [[nodiscard]] bool getDepthExtension() const noexcept
+    {
+        return depthExtension;
+    }
 
     // OpeningBook
 
     void setOpeningBook(bool enabled) noexcept { openingBook = enabled; }
 
-    bool getOpeningBook() const noexcept { return openingBook; }
+    [[nodiscard]] bool getOpeningBook() const noexcept { return openingBook; }
 
     // Algorithm
 
@@ -122,7 +137,10 @@ public:
         }
     }
 
-    bool getAlphaBetaAlgorithm() const noexcept { return algorithm == 0; }
+    [[nodiscard]] bool getAlphaBetaAlgorithm() const noexcept
+    {
+        return algorithm == 0;
+    }
 
     void setPvsAlgorithm(bool enabled) noexcept
     {
@@ -131,7 +149,10 @@ public:
         }
     }
 
-    bool getPvsAlgorithm() const noexcept { return algorithm == 1; }
+    [[nodiscard]] bool getPvsAlgorithm() const noexcept
+    {
+        return algorithm == 1;
+    }
 
     void setMtdfAlgorithm(bool enabled) noexcept
     {
@@ -140,7 +161,10 @@ public:
         }
     }
 
-    bool getMtdfAlgorithm() const noexcept { return algorithm == 2; }
+    [[nodiscard]] bool getMtdfAlgorithm() const noexcept
+    {
+        return algorithm == 2;
+    }
 
     void setAlgorithm(int val) noexcept
     {
@@ -176,7 +200,7 @@ public:
 #endif
     }
 
-    int getAlgorithm() const noexcept { return algorithm; }
+    [[nodiscard]] int getAlgorithm() const noexcept { return algorithm; }
 
     // DrawOnHumanExperience
 
@@ -185,7 +209,7 @@ public:
         drawOnHumanExperience = enabled;
     }
 
-    bool getDrawOnHumanExperience() const noexcept
+    [[nodiscard]] bool getDrawOnHumanExperience() const noexcept
     {
         return drawOnHumanExperience;
     }
@@ -197,13 +221,19 @@ public:
         considerMobility = enabled;
     }
 
-    bool getConsiderMobility() const noexcept { return considerMobility; }
+    [[nodiscard]] bool getConsiderMobility() const noexcept
+    {
+        return considerMobility;
+    }
 
     // Developer Mode
 
     void setDeveloperMode(bool enabled) noexcept { developerMode = enabled; }
 
-    bool getDeveloperMode() const noexcept { return developerMode; }
+    [[nodiscard]] bool getDeveloperMode() const noexcept
+    {
+        return developerMode;
+    }
 
 private:
     int skillLevel {1};

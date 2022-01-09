@@ -82,7 +82,7 @@ public:
     string next_move();
     Depth get_depth();
 
-    int getTimeLimit() const { return timeLimit; }
+    [[nodiscard]] int getTimeLimit() const { return timeLimit; }
 
     void analyze(Color c);
 

@@ -59,46 +59,46 @@ public:
 
     // FEN string input/output
     Position &set(const std::string &fenStr, Thread *th);
-    const std::string fen() const;
+    [[nodiscard]] const std::string fen() const;
 
     // Position representation
-    Piece piece_on(Square s) const;
-    Color color_on(Square s) const;
-    bool empty(Square s) const;
+    [[nodiscard]] Piece piece_on(Square s) const;
+    [[nodiscard]] Color color_on(Square s) const;
+    [[nodiscard]] bool empty(Square s) const;
     template <PieceType Pt>
-    int count(Color c) const;
+    [[nodiscard]] int count(Color c) const;
 
     // Properties of moves
-    bool legal(Move m) const;
-    Piece moved_piece(Move m) const;
+    [[nodiscard]] bool legal(Move m) const;
+    [[nodiscard]] Piece moved_piece(Move m) const;
 
     // Doing and undoing moves
     void do_move(Move m);
     void undo_move(Sanmill::Stack<Position> &ss);
 
     // Accessing hash keys
-    Key key() const noexcept;
-    Key key_after(Move m) const;
+    [[nodiscard]] Key key() const noexcept;
+    [[nodiscard]] Key key_after(Move m) const;
     void construct_key();
     Key revert_key(Square s);
     Key update_key(Square s);
     Key update_key_misc();
 
     // Other properties of the position
-    Color side_to_move() const;
-    int game_ply() const;
-    Thread *this_thread() const;
-    bool has_game_cycle() const;
+    [[nodiscard]] Color side_to_move() const;
+    [[nodiscard]] int game_ply() const;
+    [[nodiscard]] Thread *this_thread() const;
+    [[nodiscard]] bool has_game_cycle() const;
     bool has_repeated(Sanmill::Stack<Position> &ss) const;
-    unsigned int rule50_count() const;
+    [[nodiscard]] unsigned int rule50_count() const;
 
     /// Mill Game
 
     Piece *get_board() noexcept;
-    Square current_square() const;
-    enum Phase get_phase() const;
-    enum Action get_action() const;
-    const char *get_record() const;
+    [[nodiscard]] Square current_square() const;
+    [[nodiscard]] enum Phase get_phase() const;
+    [[nodiscard]] enum Action get_action() const;
+    [[nodiscard]] const char *get_record() const;
 
     bool reset();
     bool start();
@@ -110,7 +110,7 @@ public:
     void set_side_to_move(Color c);
 
     void change_side_to_move();
-    Color get_winner() const noexcept;
+    [[nodiscard]] Color get_winner() const noexcept;
     void set_gameover(Color w, GameOverReason reason);
 
     void mirror(std::vector<std::string> &moveHistory, bool cmdChange = true);
@@ -130,7 +130,7 @@ public:
     void surrounded_pieces_count(Square s, int &ourPieceCount,
                                  int &theirPieceCount, int &bannedCount,
                                  int &emptyCount);
-    bool is_all_surrounded(Color c
+    [[nodiscard]] bool is_all_surrounded(Color c
 #ifdef MADWEASEL_MUEHLE_RULE
                            ,
                            Square from = SQ_0, Square to = SQ_0
@@ -139,17 +139,17 @@ public:
 
     static void print_board();
 
-    int piece_on_board_count(Color c) const;
-    int piece_in_hand_count(Color c) const;
+    [[nodiscard]] int piece_on_board_count(Color c) const;
+    [[nodiscard]] int piece_in_hand_count(Color c) const;
 
-    int piece_to_remove_count() const;
+    [[nodiscard]] int piece_to_remove_count() const;
 
-    int get_mobility_diff() const;
+    [[nodiscard]] int get_mobility_diff() const;
     void updateMobility(MoveType mt, Square s);
     // template <typename Mt> void updateMobility(Square from, Square to);
     int calculate_mobility_diff();
 
-    bool is_three_endgame() const;
+    [[nodiscard]] bool is_three_endgame() const;
 
     static bool is_star_square(Square s);
 

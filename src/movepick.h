@@ -60,7 +60,7 @@ public:
 
     int moveCount {0};
 
-    int move_count() const noexcept { return moveCount; }
+    [[nodiscard]] int move_count() const noexcept { return moveCount; }
 };
 
 #endif // #ifndef MOVEPICK_H_INCLUDED

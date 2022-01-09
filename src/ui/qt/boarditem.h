@@ -28,9 +28,9 @@ public:
     explicit BoardItem(QGraphicsItem *parent = nullptr);
     ~BoardItem() override;
 
-    QRectF boundingRect() const override;
+    [[nodiscard]] QRectF boundingRect() const override;
 
-    QPainterPath shape() const override;
+    [[nodiscard]] QPainterPath shape() const override;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = nullptr) override;
@@ -41,7 +41,7 @@ public:
     // to judge
     enum { Type = UserType + 1 };
 
-    int type() const noexcept override { return Type; }
+    [[nodiscard]] int type() const noexcept override { return Type; }
 
     // Set with or without diagonal
     void setDiagonal(bool arg = true);

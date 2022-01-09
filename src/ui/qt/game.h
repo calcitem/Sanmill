@@ -116,13 +116,13 @@ public:
     void appendGameOverReasonToMoveHistory();
     void setTips();
 
-    const std::vector<std::string> *move_hostory() const
+    [[nodiscard]] const std::vector<std::string> *move_hostory() const
     {
         return &moveHistory;
     }
 
     time_t get_elapsed_time(int us);
-    time_t start_timeb() const;
+    [[nodiscard]] time_t start_timeb() const;
     void set_start_time(int time);
     void updateTime();
 

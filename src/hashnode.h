@@ -52,7 +52,7 @@ public:
 #endif
     }
 
-    const K &getKey() const { return key; }
+    [[nodiscard]] const K &getKey() const { return key; }
     void setValue(V value_) { value = value_; }
     V &getValue() { return value; }
     void setKey(K key_) { key = key_; }

@@ -63,15 +63,15 @@ public:
 
     T *top() { return &(arr[p]); }
 
-    int size() const { return p + 1; }
+    [[nodiscard]] int size() const { return p + 1; }
 
-    size_t length() const { return (sizeof(T) * size()); }
+    [[nodiscard]] size_t length() const { return (sizeof(T) * size()); }
 
     T *begin() { return &arr[0]; }
 
     T *end() { return &arr[p + 1]; }
 
-    bool empty() const { return (p < 0); }
+    [[nodiscard]] bool empty() const { return (p < 0); }
 
     void clear() { p = -1; }
 
