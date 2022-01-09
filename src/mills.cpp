@@ -385,10 +385,10 @@ void move_priority_list_shuffle()
         return;
     }
 
-    std::array<Square, 4> movePriorityList0;
-    std::array<Square, 8> movePriorityList1;
-    std::array<Square, 4> movePriorityList2;
-    std::array<Square, 8> movePriorityList3;
+    std::array<Square, 4> movePriorityList0 {};
+    std::array<Square, 8> movePriorityList1 {};
+    std::array<Square, 4> movePriorityList2 {};
+    std::array<Square, 8> movePriorityList3 {};
 
     if (!rule.hasDiagonalLines) {
         movePriorityList0 = {SQ_16, SQ_18, SQ_20, SQ_22};
@@ -407,7 +407,7 @@ void move_priority_list_shuffle()
     }
 
     if (gameOptions.getShufflingEnabled()) {
-        const uint32_t seed = static_cast<uint32_t>(now());
+        const auto seed = static_cast<uint32_t>(now());
 
         std::shuffle(movePriorityList0.begin(), movePriorityList0.end(),
                      std::default_random_engine(seed));
