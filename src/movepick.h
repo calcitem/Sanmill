@@ -28,7 +28,7 @@
 class Position;
 struct ExtMove;
 
-void partial_insertion_sort(ExtMove *begin, const ExtMove *end, int limit);
+void partial_insertion_sort(ExtMove *begin, const ExtMove *end, const int &limit);
 
 /// MovePicker class is used to pick one pseudo legal move at a time from the
 /// current position. The most important method is next_move(), which returns a

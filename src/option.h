@@ -24,23 +24,26 @@ class GameOptions
 public:
     GameOptions() { }
 
-    void setSkillLevel(int val) noexcept { skillLevel = val; }
+    void setSkillLevel(const int &val) noexcept { skillLevel = val; }
 
     [[nodiscard]] int getSkillLevel() const noexcept { return skillLevel; }
 
-    void setMoveTime(int val) noexcept { moveTime = val; }
+    void setMoveTime(const int &val) noexcept { moveTime = val; }
 
     [[nodiscard]] int getMoveTime() const noexcept { return moveTime; }
 
-    void setAiIsLazy(bool enabled) noexcept { aiIsLazy = enabled; }
+    void setAiIsLazy(const bool &enabled) noexcept { aiIsLazy = enabled; }
 
     [[nodiscard]] bool getAiIsLazy() const noexcept { return aiIsLazy; }
 
-    void setAutoRestart(bool enabled) noexcept { isAutoRestart = enabled; }
+    void setAutoRestart(const bool &enabled) noexcept
+    {
+        isAutoRestart = enabled;
+    }
 
     [[nodiscard]] bool getAutoRestart() const noexcept { return isAutoRestart; }
 
-    void setAutoChangeFirstMove(bool enabled) noexcept
+    void setAutoChangeFirstMove(const bool &enabled) noexcept
     {
         isAutoChangeFirstMove = enabled;
     }
@@ -50,7 +53,7 @@ public:
         return isAutoChangeFirstMove;
     }
 
-    void setResignIfMostLose(bool enabled) noexcept
+    void setResignIfMostLose(const bool &enabled) noexcept
     {
         resignIfMostLose = enabled;
     }
@@ -71,7 +74,7 @@ public:
         return shufflingEnabled;
     }
 
-    void setShufflingEnabled(bool enabled) noexcept
+    void setShufflingEnabled(const bool &enabled) noexcept
     {
         shufflingEnabled = enabled;
     }
@@ -81,7 +84,7 @@ public:
         return learnEndgame;
     }
 
-    void setLearnEndgameEnabled(bool enabled) noexcept
+    void setLearnEndgameEnabled(const bool &enabled) noexcept
     {
 #ifdef ENDGAME_LEARNING_FORCE
         learnEndgame = true;
@@ -99,7 +102,7 @@ public:
 #endif
     }
 
-    void setPerfectAiEnabled(bool enabled) noexcept
+    void setPerfectAiEnabled(const bool &enabled) noexcept
     {
         perfectAiEnabled = enabled;
     }
@@ -109,13 +112,16 @@ public:
         return perfectAiEnabled;
     }
 
-    void setIDSEnabled(bool enabled) noexcept { IDSEnabled = enabled; }
+    void setIDSEnabled(const bool &enabled) noexcept { IDSEnabled = enabled; }
 
     [[nodiscard]] bool getIDSEnabled() const noexcept { return IDSEnabled; }
 
     // DepthExtension
 
-    void setDepthExtension(bool enabled) noexcept { depthExtension = enabled; }
+    void setDepthExtension(const bool &enabled) noexcept
+    {
+        depthExtension = enabled;
+    }
 
     [[nodiscard]] bool getDepthExtension() const noexcept
     {
@@ -124,13 +130,13 @@ public:
 
     // OpeningBook
 
-    void setOpeningBook(bool enabled) noexcept { openingBook = enabled; }
+    void setOpeningBook(const bool &enabled) noexcept { openingBook = enabled; }
 
     [[nodiscard]] bool getOpeningBook() const noexcept { return openingBook; }
 
     // Algorithm
 
-    void setAlphaBetaAlgorithm(bool enabled) noexcept
+    void setAlphaBetaAlgorithm(const bool &enabled) noexcept
     {
         if (enabled) {
             algorithm = 0;
@@ -142,7 +148,7 @@ public:
         return algorithm == 0;
     }
 
-    void setPvsAlgorithm(bool enabled) noexcept
+    void setPvsAlgorithm(const bool &enabled) noexcept
     {
         if (enabled) {
             algorithm = 1;
@@ -154,7 +160,7 @@ public:
         return algorithm == 1;
     }
 
-    void setMtdfAlgorithm(bool enabled) noexcept
+    void setMtdfAlgorithm(const bool &enabled) noexcept
     {
         if (enabled) {
             algorithm = 2;
@@ -166,7 +172,7 @@ public:
         return algorithm == 2;
     }
 
-    void setAlgorithm(int val) noexcept
+    void setAlgorithm(const int &val) noexcept
     {
         algorithm = val;
 
@@ -204,7 +210,7 @@ public:
 
     // DrawOnHumanExperience
 
-    void setDrawOnHumanExperience(bool enabled) noexcept
+    void setDrawOnHumanExperience(const bool &enabled) noexcept
     {
         drawOnHumanExperience = enabled;
     }
@@ -216,7 +222,7 @@ public:
 
     // ConsiderMobility
 
-    void setConsiderMobility(bool enabled) noexcept
+    void setConsiderMobility(const bool &enabled) noexcept
     {
         considerMobility = enabled;
     }
@@ -228,7 +234,10 @@ public:
 
     // Developer Mode
 
-    void setDeveloperMode(bool enabled) noexcept { developerMode = enabled; }
+    void setDeveloperMode(const bool &enabled) noexcept
+    {
+        developerMode = enabled;
+    }
 
     [[nodiscard]] bool getDeveloperMode() const noexcept
     {

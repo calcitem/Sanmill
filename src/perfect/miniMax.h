@@ -359,14 +359,14 @@ public:
         uint32_t belongsToLayer {0};
         uint32_t updateCounter {0};
 
-        static const uint32_t arrayType_invalid = 0;
-        static const uint32_t arrayType_knotAlreadyCalculated = 1;
-        static const uint32_t arrayType_countArray = 2;
-        static const uint32_t arrayType_plyInfos = 3;
-        static const uint32_t arrayType_layerStats = 4;
-        static const uint32_t arrayTypeCount = 5;
+        static constexpr uint32_t arrayType_invalid = 0;
+        static constexpr uint32_t arrayType_knotAlreadyCalculated = 1;
+        static constexpr uint32_t arrayType_countArray = 2;
+        static constexpr uint32_t arrayType_plyInfos = 3;
+        static constexpr uint32_t arrayType_layerStats = 4;
+        static constexpr uint32_t arrayTypeCount = 5;
 
-        static const uint32_t updateCounterThreshold = 100;
+        static constexpr uint32_t updateCounterThreshold = 100;
     };
 
     struct ArrayInfoChange

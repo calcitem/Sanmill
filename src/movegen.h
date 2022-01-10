@@ -33,7 +33,7 @@ struct ExtMove
 
     operator Move() const noexcept { return move; }
 
-    void operator=(Move m) noexcept { move = m; }
+    void operator=(const Move &m) noexcept { move = m; }
 
     // Inhibit unwanted implicit conversions to Move
     // with an ambiguity that yields to a compile error.
@@ -64,7 +64,7 @@ struct MoveList
 
     [[nodiscard]] size_t size() const { return last - moveList; }
 
-    [[nodiscard]] bool contains(Move move) const
+    [[nodiscard]] bool contains(const Move &move) const
     {
         return std::find(begin(), end(), move) != end();
     }

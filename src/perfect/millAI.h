@@ -62,26 +62,26 @@ public:
     // constants
 
     // trivial
-    static const int squareIsFree = 0;
+    static constexpr int squareIsFree = 0;
 
     // so rowOwner can be calculated easy
-    static const int playerOne = -1;
-    static const int playerTwo = 1;
+    static constexpr int playerOne = -1;
+    static constexpr int playerTwo = 1;
 
     // so rowOwner can be calculated easy
-    static const int playerBlack = -1;
-    static const int playerWhite = 1;
+    static constexpr int playerBlack = -1;
+    static constexpr int playerWhite = 1;
 
     // so the bitwise or-operation can be applied, without interacting with
     // playerOne & Two
-    static const uint32_t noWarning = 0;
-    static const uint32_t playerOneWarning = 2;
-    static const uint32_t playerTwoWarning = 4;
-    static const uint32_t playerBothWarning = 6;
-    static const uint32_t piecePerPlayerCount = 9;
+    static constexpr uint32_t noWarning = 0;
+    static constexpr uint32_t playerOneWarning = 2;
+    static constexpr uint32_t playerTwoWarning = 4;
+    static constexpr uint32_t playerBothWarning = 6;
+    static constexpr uint32_t piecePerPlayerCount = 9;
 
     // only a nonzero value
-    static const int gameDrawn = 3;
+    static constexpr int gameDrawn = 3;
 
     // variables
 

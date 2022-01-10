@@ -14,7 +14,6 @@
 #include "perfect.h"
 #include "perfectAI.h"
 
-#include <cstdio>
 #include <iostream>
 #include <windows.h>
 

@@ -20,18 +20,17 @@
 #include <cassert>
 #include <chrono>
 #include <cstdint>
-#include <ostream>
 #include <string>
 #include <vector>
 
 #include "types.h"
 
-const std::string engine_info(bool to_uci = false);
-const std::string compiler_info();
+std::string engine_info(bool to_uci = false);
+std::string compiler_info();
 void prefetch(void *addr);
-void prefetch_range(void *addr, size_t len);
+void prefetch_range(void *addr, const size_t &len);
 void start_logger(const std::string &fname);
-void *std_aligned_alloc(size_t alignment, size_t size);
+void *std_aligned_alloc(const size_t &alignment, size_t size);
 void std_aligned_free(void *ptr);
 #ifdef ALIGNED_LARGE_PAGES
 // memory aligned by page size, min alignment: 4096 bytes
@@ -69,7 +68,7 @@ private:
 
 enum SyncCout { IO_LOCK, IO_UNLOCK };
 
-std::ostream &operator<<(std::ostream &, SyncCout);
+std::ostream &operator<<(std::ostream &, const SyncCout &);
 
 #define sync_cout std::cout << IO_LOCK
 #define sync_endl std::endl << IO_UNLOCK
@@ -116,7 +115,7 @@ class PRNG
     }
 
 public:
-    explicit PRNG(uint64_t seed)
+    explicit PRNG(const uint64_t &seed)
         : s(seed)
     {
         assert(seed);
@@ -137,7 +136,7 @@ public:
     }
 };
 
-constexpr uint64_t mul_hi64(uint64_t a, uint64_t b)
+constexpr uint64_t mul_hi64(const uint64_t &a, const uint64_t &b)
 {
 #if defined(__GNUC__) && defined(IS_64BIT)
     __extension__ typedef unsigned __int128 uint128;
