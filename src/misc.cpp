@@ -105,7 +105,7 @@ struct Tie : streambuf
 
     streambuf *buf, *logBuf;
 
-    int log(int c, const char *prefix)
+    [[nodiscard]] int log(int c, const char *prefix) const
     {
         static int last = '\n'; // Single log file
 

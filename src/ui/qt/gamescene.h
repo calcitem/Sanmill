@@ -33,11 +33,11 @@ public:
     explicit GameScene(QObject *parent = nullptr);
     ~GameScene() override;
 
-    QPointF polar2pos(File f, Rank r);
+    [[nodiscard]] QPointF polar2pos(File f, Rank r) const;
 
-    bool pos2polar(QPointF pos, File &f, Rank &r);
+    [[nodiscard]] bool pos2polar(QPointF pos, File &f, Rank &r) const;
 
-    void setDiagonal(bool arg = true);
+    void setDiagonal(bool arg = true) const;
 
     // Position of player 1's own board and opponent's board
     const QPointF pos_p1 {LINE_INTERVAL * 4, LINE_INTERVAL * 6};

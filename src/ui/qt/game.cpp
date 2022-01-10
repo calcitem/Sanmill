@@ -457,7 +457,7 @@ void Game::setAiDepthTime(int time1, int time2)
     startAiThreads();
 }
 
-void Game::getAiDepthTime(int &time1, int &time2)
+void Game::getAiDepthTime(int &time1, int &time2) const
 {
     time1 = aiThread[WHITE]->getTimeLimit();
     time2 = aiThread[BLACK]->getTimeLimit();
@@ -482,7 +482,7 @@ void Game::setAnimation(bool arg) noexcept
     settings->setValue("Options/Animation", arg);
 }
 
-void Game::setSound(bool arg) noexcept
+void Game::setSound(bool arg) const noexcept
 {
     hasSound = arg;
     settings->setValue("Options/Sound", arg);
@@ -593,19 +593,19 @@ void Game::playSound(GameSound soundType, Color c)
 #endif /* ! DO_NOT_PLAY_SOUND */
 }
 
-void Game::setSkillLevel(int val)
+void Game::setSkillLevel(int val) const
 {
     gameOptions.setSkillLevel(val);
     settings->setValue("Options/SkillLevel", val);
 }
 
-void Game::setMoveTime(int val)
+void Game::setMoveTime(int val) const
 {
     gameOptions.setMoveTime(val);
     settings->setValue("Options/MoveTime", val);
 }
 
-void Game::setAlphaBetaAlgorithm(bool enabled)
+void Game::setAlphaBetaAlgorithm(bool enabled) const
 {
     if (enabled) {
         gameOptions.setAlgorithm(0);
@@ -614,7 +614,7 @@ void Game::setAlphaBetaAlgorithm(bool enabled)
     }
 }
 
-void Game::setPvsAlgorithm(bool enabled)
+void Game::setPvsAlgorithm(bool enabled) const
 {
     if (enabled) {
         gameOptions.setAlgorithm(1);
@@ -623,7 +623,7 @@ void Game::setPvsAlgorithm(bool enabled)
     }
 }
 
-void Game::setMtdfAlgorithm(bool enabled)
+void Game::setMtdfAlgorithm(bool enabled) const
 {
     if (enabled) {
         gameOptions.setAlgorithm(2);
@@ -632,55 +632,55 @@ void Game::setMtdfAlgorithm(bool enabled)
     }
 }
 
-void Game::setAlgorithm(int val)
+void Game::setAlgorithm(int val) const
 {
     gameOptions.setAlgorithm(val);
     settings->setValue("Options/Algorithm", val);
 }
 
-void Game::setDrawOnHumanExperience(bool enabled)
+void Game::setDrawOnHumanExperience(bool enabled) const
 {
     gameOptions.setDrawOnHumanExperience(enabled);
     settings->setValue("Options/DrawOnHumanExperience", enabled);
 }
 
-void Game::setConsiderMobility(bool enabled)
+void Game::setConsiderMobility(bool enabled) const
 {
     gameOptions.setConsiderMobility(enabled);
     settings->setValue("Options/ConsiderMobility", enabled);
 }
 
-void Game::setAiIsLazy(bool enabled)
+void Game::setAiIsLazy(bool enabled) const
 {
     gameOptions.setAiIsLazy(enabled);
     settings->setValue("Options/AiIsLazy", enabled);
 }
 
-void Game::setResignIfMostLose(bool enabled)
+void Game::setResignIfMostLose(bool enabled) const
 {
     gameOptions.setResignIfMostLose(enabled);
     settings->setValue("Options/ResignIfMostLose", enabled);
 }
 
-void Game::setAutoRestart(bool enabled)
+void Game::setAutoRestart(bool enabled) const
 {
     gameOptions.setAutoRestart(enabled);
     settings->setValue("Options/AutoRestart", enabled);
 }
 
-void Game::setAutoChangeFirstMove(bool enabled)
+void Game::setAutoChangeFirstMove(bool enabled) const
 {
     gameOptions.setAutoChangeFirstMove(enabled);
     settings->setValue("Options/AutoChangeFirstMove", enabled);
 }
 
-void Game::setShuffling(bool enabled)
+void Game::setShuffling(bool enabled) const
 {
     gameOptions.setShufflingEnabled(enabled);
     settings->setValue("Options/Shuffling", enabled);
 }
 
-void Game::setLearnEndgame(bool enabled)
+void Game::setLearnEndgame(bool enabled) const
 {
     gameOptions.setLearnEndgameEnabled(enabled);
     settings->setValue("Options/LearnEndgameEnabled", enabled);
@@ -692,7 +692,7 @@ void Game::setLearnEndgame(bool enabled)
 #endif
 }
 
-void Game::setPerfectAi(bool enabled)
+void Game::setPerfectAi(bool enabled) const
 {
     gameOptions.setPerfectAiEnabled(enabled);
     settings->setValue("Options/PerfectAI", enabled);
@@ -706,27 +706,27 @@ void Game::setPerfectAi(bool enabled)
 #endif
 }
 
-void Game::setIDS(bool enabled)
+void Game::setIDS(bool enabled) const
 {
     gameOptions.setIDSEnabled(enabled);
     settings->setValue("Options/IDS", enabled);
 }
 
 // DepthExtension
-void Game::setDepthExtension(bool enabled)
+void Game::setDepthExtension(bool enabled) const
 {
     gameOptions.setDepthExtension(enabled);
     settings->setValue("Options/DepthExtension", enabled);
 }
 
 // OpeningBook
-void Game::setOpeningBook(bool enabled)
+void Game::setOpeningBook(bool enabled) const
 {
     gameOptions.setOpeningBook(enabled);
     settings->setValue("Options/OpeningBook", enabled);
 }
 
-void Game::setDeveloperMode(bool enabled)
+void Game::setDeveloperMode(bool enabled) const
 {
     gameOptions.setDeveloperMode(enabled);
     settings->setValue("Options/DeveloperMode", enabled);
@@ -908,7 +908,7 @@ void Game::timerEvent(QTimerEvent *event)
 #endif
 }
 
-bool Game::isAIsTurn()
+bool Game::isAIsTurn() const
 {
     return isAiPlayer[sideToMove];
 }
@@ -1563,7 +1563,7 @@ void Game::showNetworkWindow()
 }
 #endif
 
-void Game::showTestWindow()
+void Game::showTestWindow() const
 {
     gameTest->show();
 }
@@ -1821,7 +1821,7 @@ void Game::setTips()
     }
 }
 
-time_t Game::get_elapsed_time(int us)
+time_t Game::get_elapsed_time(int us) const
 {
     return elapsedSeconds[us];
 }

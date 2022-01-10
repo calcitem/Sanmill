@@ -157,13 +157,13 @@ QPointF BoardItem::nearestPosition(const QPointF pos)
     return nearestPos;
 }
 
-QPointF BoardItem::polar2pos(File f, Rank r)
+QPointF BoardItem::polar2pos(File f, Rank r) const
 {
     return position[(static_cast<int>(f) - 1) * RANK_NB + static_cast<int>(r) -
                     1];
 }
 
-bool BoardItem::pos2polar(QPointF pos, File &f, Rank &r)
+bool BoardItem::pos2polar(QPointF pos, File &f, Rank &r) const
 {
     // Look for the nearest spot
     for (int sq = 0; sq < SQUARE_NB; sq++) {

@@ -117,7 +117,7 @@ public:
             delete[] item;
         }
 
-        void *getPointerToArray() { return static_cast<void *>(item); }
+        void *getPointerToArray() const { return static_cast<void *>(item); }
 
         uint32_t getArraySize() { return sizeof(varType); }
 

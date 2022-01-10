@@ -31,7 +31,7 @@ public:
     { }
 
     Evaluation &operator=(const Evaluation &) = delete;
-    Value value();
+    [[nodiscard]] Value value() const;
 
 private:
     Position &pos;
@@ -41,7 +41,7 @@ private:
 // various parts of the evaluation and returns the value of the position from
 // the point of view of the side to move.
 
-Value Evaluation::value()
+Value Evaluation::value() const
 {
     Value value = VALUE_ZERO;
 

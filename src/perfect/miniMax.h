@@ -675,7 +675,7 @@ private:
             }
         }
 
-        void reduceDefault()
+        void reduceDefault() const
         {
             pMiniMax->stateProcessedCount += this->statesProcessed;
             for (uint32_t curStateValue = 0; curStateValue < SKV_VALUE_COUNT;
@@ -831,7 +831,7 @@ private:
             }
         }
 
-        void reduceDefault()
+        void reduceDefault() const
         {
             pMiniMax->stateProcessedCount += this->statesProcessed;
             for (uint32_t curStateValue = 0; curStateValue < SKV_VALUE_COUNT;

@@ -160,7 +160,7 @@ public:
     }
 
     // Function to clean up the hasp map, i.e., remove all entries from it
-    void clear()
+    void clear() const
     {
 #ifdef DISABLE_HASHBUCKET
         memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
@@ -187,7 +187,7 @@ public:
     }
 
     // Function to dump the key map to file
-    void dump(const std::string &filename)
+    void dump(const std::string &filename) const
     {
 #ifdef DISABLE_HASHBUCKET
         std::ofstream file;
@@ -199,7 +199,7 @@ public:
     }
 
     // Function to load the key map from file
-    void load(const std::string &filename)
+    void load(const std::string &filename) const
     {
 #ifdef DISABLE_HASHBUCKET
         std::ifstream file;
@@ -272,7 +272,7 @@ public:
                     static_cast<double>(nAfter) * 100 / hashSize);
     }
 
-    size_t stat()
+    [[nodiscard]] size_t stat() const
     {
         size_t nEntries = 0;
 

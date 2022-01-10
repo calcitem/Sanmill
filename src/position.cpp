@@ -1222,7 +1222,7 @@ int Position::potential_mills_count(Square to, Color c, Square from)
     return n;
 }
 
-int Position::mills_count(Square s)
+int Position::mills_count(Square s) const
 {
     int n = 0;
 
@@ -1253,7 +1253,7 @@ bool Position::is_all_in_mills(Color c)
 
 void Position::surrounded_pieces_count(Square s, int &ourPieceCount,
                                        int &theirPieceCount, int &bannedCount,
-                                       int &emptyCount)
+                                       int &emptyCount) const
 {
     Square moveSquare;
 

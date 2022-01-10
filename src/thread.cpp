@@ -262,7 +262,7 @@ void sq2str(char *str)
 }
 #endif // OPENING_BOOK
 
-void Thread::analyze(Color c)
+void Thread::analyze(Color c) const
 {
     static float nWhiteWin = 0;
     static float nBlackWin = 0;
@@ -418,12 +418,12 @@ void Thread::analyze(Color c)
     cout << std::endl << std::endl;
 }
 
-Depth Thread::get_depth()
+Depth Thread::get_depth() const
 {
     return Mills::get_search_depth(rootPos);
 }
 
-string Thread::next_move()
+string Thread::next_move() const
 {
 #ifdef ENDGAME_LEARNING
     // Check if very weak
@@ -541,7 +541,7 @@ void ThreadPool::set(size_t requested)
 
 /// ThreadPool::clear() sets threadPool data to initial values.
 
-void ThreadPool::clear()
+void ThreadPool::clear() const
 {
     for (Thread *th : *this)
         th->clear();

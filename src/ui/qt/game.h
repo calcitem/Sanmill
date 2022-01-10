@@ -90,22 +90,22 @@ public:
     //  Main window menu bar details
     const map<int, QStringList> getActions();
 
-    int getRuleIndex() noexcept { return ruleIndex; }
+    [[nodiscard]] int getRuleIndex() const noexcept { return ruleIndex; }
 
-    int getTimeLimit() noexcept { return timeLimit; }
+    [[nodiscard]] int getTimeLimit() const noexcept { return timeLimit; }
 
-    int getStepsLimit() noexcept { return stepsLimit; }
+    [[nodiscard]] int getStepsLimit() const noexcept { return stepsLimit; }
 
-    bool isAnimation() noexcept { return hasAnimation; }
+    [[nodiscard]] bool isAnimation() const noexcept { return hasAnimation; }
 
     void setDurationTime(int i) noexcept { durationTime = i; }
 
-    int getDurationTime() { return durationTime; }
+    [[nodiscard]] int getDurationTime() const { return durationTime; }
 
     QStringListModel *getMoveListModel() { return &moveListModel; }
 
     void setAiDepthTime(int time1, int time2);
-    void getAiDepthTime(int &time1, int &time2);
+    void getAiDepthTime(int &time1, int &time2) const;
 
     void humanResign();
 
@@ -121,7 +121,7 @@ public:
         return &moveHistory;
     }
 
-    time_t get_elapsed_time(int us);
+    time_t get_elapsed_time(int us) const;
     [[nodiscard]] time_t start_timeb() const;
     void set_start_time(int time);
     void updateTime();
@@ -201,61 +201,61 @@ public slots:
     void setAnimation(bool arg = true) noexcept;
 
     // Is there a drop sound effect
-    void setSound(bool arg = true) noexcept;
+    void setSound(bool arg = true) const noexcept;
 
     // Play the sound
     static void playSound(GameSound soundType, Color c);
 
     // Skill Level
-    void setSkillLevel(int val);
+    void setSkillLevel(int val) const;
 
     // Move Time
-    void setMoveTime(int val);
+    void setMoveTime(int val) const;
 
     // Algorithm
-    void setAlphaBetaAlgorithm(bool enabled);
-    void setPvsAlgorithm(bool enabled);
-    void setMtdfAlgorithm(bool enabled);
-    void setAlgorithm(int val);
+    void setAlphaBetaAlgorithm(bool enabled) const;
+    void setPvsAlgorithm(bool enabled) const;
+    void setMtdfAlgorithm(bool enabled) const;
+    void setAlgorithm(int val) const;
 
     // Draw on human experience
-    void setDrawOnHumanExperience(bool enabled);
+    void setDrawOnHumanExperience(bool enabled) const;
 
     // Consider mobility of pieces
-    void setConsiderMobility(bool enabled);
+    void setConsiderMobility(bool enabled) const;
 
     // AI is Lazy
-    void setAiIsLazy(bool enabled);
+    void setAiIsLazy(bool enabled) const;
 
     // Do you admit defeat when you lose
-    void setResignIfMostLose(bool enabled);
+    void setResignIfMostLose(bool enabled) const;
 
     // Auto start or not
-    void setAutoRestart(bool enabled = false);
+    void setAutoRestart(bool enabled = false) const;
 
     // Is the start automatically changed to the first before the second
-    void setAutoChangeFirstMove(bool enabled = false);
+    void setAutoChangeFirstMove(bool enabled = false) const;
 
     // Is AI random
-    void setShuffling(bool enabled);
+    void setShuffling(bool enabled) const;
 
     // Does AI record the game library
-    void setLearnEndgame(bool enabled);
+    void setLearnEndgame(bool enabled) const;
 
     // Does Perfect AI (See https://www.mad-weasel.de/morris.html)
-    void setPerfectAi(bool enabled);
+    void setPerfectAi(bool enabled) const;
 
     // Does alpha beta search deepen iteratively
-    void setIDS(bool enabled);
+    void setIDS(bool enabled) const;
 
     //  DepthExtension
-    void setDepthExtension(bool enabled);
+    void setDepthExtension(bool enabled) const;
 
     //  OpeningBook
-    void setOpeningBook(bool enabled);
+    void setOpeningBook(bool enabled) const;
 
     //  DeveloperMode
-    void setDeveloperMode(bool enabled);
+    void setDeveloperMode(bool enabled) const;
 
     // Flip up and down
     void flip();
@@ -269,9 +269,9 @@ public slots:
     // View rotated 90 degree counterclockwise
     void turnLeft();
 
-    bool isAIsTurn();
+    [[nodiscard]] bool isAIsTurn() const;
 
-    void threadsSetAi(Position *p)
+    void threadsSetAi(Position *p) const
     {
         aiThread[WHITE]->setAi(p);
         aiThread[BLACK]->setAi(p);
@@ -292,7 +292,7 @@ public slots:
         aiThread[BLACK]->us = BLACK;
     }
 
-    void startAiThreads()
+    void startAiThreads() const
     {
         if (isAiPlayer[WHITE]) {
             aiThread[WHITE]->start_searching();
@@ -303,7 +303,7 @@ public slots:
         }
     }
 
-    void stopAndWaitAiThreads()
+    void stopAndWaitAiThreads() const
     {
         if (isAiPlayer[WHITE]) {
             aiThread[WHITE]->pause();
@@ -315,32 +315,32 @@ public slots:
         }
     }
 
-    void pauseThreads()
+    void pauseThreads() const
     {
         aiThread[WHITE]->pause();
         aiThread[BLACK]->pause();
     }
 
-    void waitThreads()
+    void waitThreads() const
     {
         aiThread[WHITE]->wait_for_search_finished();
         aiThread[BLACK]->wait_for_search_finished();
     }
 
-    void pauseAndWaitThreads()
+    void pauseAndWaitThreads() const
     {
         pauseThreads();
         waitThreads();
     }
 
-    void resumeAiThreads(Color c)
+    void resumeAiThreads(Color c) const
     {
         if (isAiPlayer[c]) {
             aiThread[c]->start_searching();
         }
     }
 
-    void deleteAiThreads()
+    void deleteAiThreads() const
     {
         delete aiThread[WHITE];
         delete aiThread[BLACK];
@@ -370,11 +370,11 @@ public slots:
 #endif
 
     // Show engine vs. window
-    void showTestWindow();
+    void showTestWindow() const;
 
     void saveScore();
 
-    Test *getTest() { return gameTest; }
+    [[nodiscard]] Test *getTest() const { return gameTest; }
 
 protected:
     // bool eventFilter(QObject * watched, QEvent * event);
@@ -417,11 +417,11 @@ public:
 
     void loadSettings();
 
-    bool fixWindowSizeEnabled() { return fixWindowSize; }
+    [[nodiscard]] bool fixWindowSizeEnabled() const { return fixWindowSize; }
 
     bool soundEnabled() { return hasSound; }
 
-    bool animationEnabled() { return hasAnimation; }
+    [[nodiscard]] bool animationEnabled() const { return hasAnimation; }
 
     // True when the computer takes the lead
     bool isAiPlayer[COLOR_NB];

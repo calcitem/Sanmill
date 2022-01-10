@@ -48,9 +48,9 @@ public:
     template <GenType>
     void score();
 
-    ExtMove *begin() noexcept { return cur; }
+    [[nodiscard]] ExtMove *begin() const noexcept { return cur; }
 
-    ExtMove *end() noexcept { return endMoves; }
+    [[nodiscard]] ExtMove *end() const noexcept { return endMoves; }
 
     Position &pos;
     Move ttMove {MOVE_NONE};

@@ -463,7 +463,7 @@ void MillGameWindow::ctxMenu(const QPoint &pos)
 }
 #endif /* QT_MOBILE_APP_UI */
 
-void MillGameWindow::ruleInfo()
+void MillGameWindow::ruleInfo() const
 {
 #if 0
     const int s = game->getStepsLimit();
@@ -777,7 +777,7 @@ void MillGameWindow::on_actionEdit_E_toggled(bool arg1)
     Q_UNUSED(arg1)
 }
 
-void MillGameWindow::on_actionInvert_I_toggled(bool arg1)
+void MillGameWindow::on_actionInvert_I_toggled(bool arg1) const
 {
     // If white and black are reversed
     if (arg1) {
@@ -796,7 +796,7 @@ void MillGameWindow::on_actionInvert_I_toggled(bool arg1)
     game->setInvert(arg1);
 }
 
-void MillGameWindow::on_actionRowChange()
+void MillGameWindow::on_actionRowChange() const
 {
     QAbstractItemModel *model = ui.listView->model();
     int rows = model->rowCount();
@@ -859,7 +859,7 @@ void MillGameWindow::on_actionRowChange()
     game->phaseChange(currentRow);
 }
 
-void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal)
+void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal) const
 {
     Q_UNUSED(signal)
     int rows = ui.listView->model()->rowCount();
@@ -923,7 +923,7 @@ void MillGameWindow::on_actionAutoRun_A_toggled(bool arg1)
     }
 }
 
-void MillGameWindow::on_actionLocal_L_triggered()
+void MillGameWindow::on_actionLocal_L_triggered() const
 {
     ui.actionLocal_L->setChecked(true);
     ui.actionEngineFight_E->setChecked(false);
@@ -945,7 +945,7 @@ void MillGameWindow::on_actionInternet_I_triggered()
 #endif
 }
 
-void MillGameWindow::on_actionEngineFight_E_triggered()
+void MillGameWindow::on_actionEngineFight_E_triggered() const
 {
     ui.actionLocal_L->setChecked(false);
     ui.actionEngineFight_E->setChecked(true);

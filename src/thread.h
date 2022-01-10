@@ -79,12 +79,12 @@ public:
     void setAi(Position *p);
     void setAi(Position *p, int time);
 
-    string next_move();
-    Depth get_depth();
+    [[nodiscard]] string next_move() const;
+    [[nodiscard]] Depth get_depth() const;
 
     [[nodiscard]] int getTimeLimit() const { return timeLimit; }
 
-    void analyze(Color c);
+    void analyze(Color c) const;
 
 #ifdef TIME_STAT
     TimePoint sortTime {0};
@@ -158,7 +158,7 @@ struct MainThread : Thread
 struct ThreadPool : std::vector<Thread *>
 {
     void start_thinking(Position *, bool = false);
-    void clear();
+    void clear() const;
     void set(size_t);
 
     MainThread *main() const { return dynamic_cast<MainThread *>(front()); }

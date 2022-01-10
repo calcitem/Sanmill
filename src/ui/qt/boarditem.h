@@ -51,11 +51,11 @@ public:
 
     // The circle and position of the model are transformed into the point
     // coordinates
-    QPointF polar2pos(File file, Rank rank);
+    [[nodiscard]] QPointF polar2pos(File file, Rank rank) const;
 
     // The coordinates of the falling point are transformed into circles and
     // positions for the model
-    bool pos2polar(QPointF pos, File &f, Rank &r);
+    [[nodiscard]] bool pos2polar(QPointF pos, File &f, Rank &r) const;
 
 private:
     int size; // board size

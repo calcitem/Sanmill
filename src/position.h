@@ -121,7 +121,7 @@ public:
     void reset_bb();
 
     void create_mill_table();
-    int mills_count(Square s);
+    [[nodiscard]] int mills_count(Square s) const;
 
     // The number of mills that would be closed by the given move.
     int potential_mills_count(Square to, Color c, Square from = SQ_0);
@@ -129,7 +129,7 @@ public:
 
     void surrounded_pieces_count(Square s, int &ourPieceCount,
                                  int &theirPieceCount, int &bannedCount,
-                                 int &emptyCount);
+                                 int &emptyCount) const;
     [[nodiscard]] bool is_all_surrounded(Color c
 #ifdef MADWEASEL_MUEHLE_RULE
                                          ,

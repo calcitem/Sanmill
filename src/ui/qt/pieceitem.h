@@ -54,15 +54,15 @@ public:
         blackPiece = 0x4,
     };
 
-    Models getModel() noexcept { return model; }
+    [[nodiscard]] Models getModel() const noexcept { return model; }
 
     void setModel(Models m) noexcept { this->model = m; }
 
-    int getNum() noexcept { return num; }
+    [[nodiscard]] int getNum() const noexcept { return num; }
 
     void setNum(int n) noexcept { num = n; }
 
-    bool isDeleted() noexcept { return deleted; }
+    [[nodiscard]] bool isDeleted() const noexcept { return deleted; }
 
     void setDeleted(bool del = true)
     {

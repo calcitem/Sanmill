@@ -91,33 +91,42 @@ public:
     void printBoard();
 
     // getter
-    bool inPlacingPhase() { return field.isPlacingPhase; }
+    [[nodiscard]] bool inPlacingPhase() const { return field.isPlacingPhase; }
 
-    uint32_t mustPieceBeRemoved() { return field.pieceMustBeRemovedCount; }
+    [[nodiscard]] uint32_t mustPieceBeRemoved() const
+    {
+        return field.pieceMustBeRemovedCount;
+    }
 
-    int getWinner() { return winner; }
+    [[nodiscard]] int getWinner() const { return winner; }
 
-    int getCurPlayer() { return field.curPlayer->id; }
+    [[nodiscard]] int getCurPlayer() const { return field.curPlayer->id; }
 
-    uint32_t getLastMoveFrom()
+    [[nodiscard]] uint32_t getLastMoveFrom() const
     {
         return movesDone ? moveLogFrom[movesDone - 1] : SQUARE_NB;
     }
 
-    uint32_t getLastMoveTo()
+    [[nodiscard]] uint32_t getLastMoveTo() const
     {
         return movesDone ? moveLogTo[movesDone - 1] : SQUARE_NB;
     }
 
-    uint32_t getMovesDone() { return movesDone; }
+    [[nodiscard]] uint32_t getMovesDone() const { return movesDone; }
 
-    uint32_t getPiecesSetCount() { return field.piecePlacedCount; }
+    [[nodiscard]] uint32_t getPiecesSetCount() const
+    {
+        return field.piecePlacedCount;
+    }
 
-    int getBeginningPlayer() { return beginningPlayer; }
+    [[nodiscard]] int getBeginningPlayer() const { return beginningPlayer; }
 
-    uint32_t getCurPlayerPieceCount() { return field.curPlayer->pieceCount; }
+    [[nodiscard]] uint32_t getCurPlayerPieceCount() const
+    {
+        return field.curPlayer->pieceCount;
+    }
 
-    uint32_t getOpponentPlayerPieceCount()
+    [[nodiscard]] uint32_t getOpponentPlayerPieceCount() const
     {
         return field.oppPlayer->pieceCount;
     }
