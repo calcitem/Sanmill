@@ -33,7 +33,7 @@ Key side;
 } // namespace Zobrist
 
 namespace {
-const string PieceToChar(Piece p)
+string PieceToChar(Piece p)
 {
     if (p == NO_PIECE) {
         return "*";

@@ -36,7 +36,7 @@
 namespace Bitboards {
 
 void init();
-const std::string pretty(Bitboard b);
+std::string pretty(Bitboard b);
 
 } // namespace Bitboards
 
@@ -59,7 +59,7 @@ extern uint8_t PopCnt16[1 << 16];
 
 extern Bitboard SquareBB[SQ_32];
 
-inline Bitboard square_bb(Square s) noexcept
+inline Bitboard square_bb(const Square &s) noexcept
 {
     if (!(SQ_BEGIN <= s && s < SQ_END)) {
         return 0;
@@ -71,47 +71,47 @@ inline Bitboard square_bb(Square s) noexcept
 /// Overloads of bitwise operators between a Bitboard and a Square for testing
 /// whether a given bit is set in a bitboard, and for setting and clearing bits.
 
-inline Bitboard operator&(Bitboard b, Square s) noexcept
+inline Bitboard operator&(Bitboard b, const Square &s) noexcept
 {
     return b & square_bb(s);
 }
 
-inline Bitboard operator|(Bitboard b, Square s) noexcept
+inline Bitboard operator|(const Bitboard &b, const Square &s) noexcept
 {
     return b | square_bb(s);
 }
 
-inline Bitboard operator^(Bitboard b, Square s) noexcept
+inline Bitboard operator^(const Bitboard &b, const Square &s) noexcept
 {
     return b ^ square_bb(s);
 }
 
-inline Bitboard &operator|=(Bitboard &b, Square s) noexcept
+inline Bitboard &operator|=(Bitboard &b, const Square &s) noexcept
 {
     return b |= square_bb(s);
 }
 
-inline Bitboard &operator^=(Bitboard &b, Square s) noexcept
+inline Bitboard &operator^=(Bitboard &b, const Square &s) noexcept
 {
     return b ^= square_bb(s);
 }
 
-inline Bitboard operator&(Square s, Bitboard b) noexcept
+inline Bitboard operator&(const Square &s, Bitboard b) noexcept
 {
     return b & s;
 }
 
-inline Bitboard operator|(Square s, Bitboard b) noexcept
+inline Bitboard operator|(const Square &s, const Bitboard &b) noexcept
 {
     return b | s;
 }
 
-inline Bitboard operator^(Square s, Bitboard b) noexcept
+inline Bitboard operator^(const Square &s, const Bitboard &b) noexcept
 {
     return b ^ s;
 }
 
-inline Bitboard operator|(Square s1, Square s2) noexcept
+inline Bitboard operator|(const Square &s1, const Square &s2) noexcept
 {
     return square_bb(s1) | s2;
 }
@@ -124,29 +124,29 @@ constexpr bool more_than_one(Bitboard b)
 /// rank_bb() and file_bb() return a bitboard representing all the squares on
 /// the given file or rank.
 
-constexpr Bitboard rank_bb(Rank r) noexcept
+constexpr Bitboard rank_bb(const Rank &r) noexcept
 {
     return Rank1BB << (r - 1);
 }
 
-constexpr Bitboard rank_bb(Square s)
+constexpr Bitboard rank_bb(const Square &s)
 {
     return rank_bb(rank_of(s));
 }
 
-constexpr Bitboard file_bb(File f) noexcept
+constexpr Bitboard file_bb(const File &f) noexcept
 {
     return FileABB << (f - 1);
 }
 
-constexpr Bitboard file_bb(Square s)
+constexpr Bitboard file_bb(const Square &s)
 {
     return file_bb(file_of(s));
 }
 
 /// popcount() counts the number of non-zero bits in a bitboard
 
-inline int popcount(Bitboard b) noexcept
+inline int popcount(const Bitboard &b) noexcept
 {
 #ifdef DO_NOT_USE_POPCNT
 

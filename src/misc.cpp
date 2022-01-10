@@ -158,7 +158,7 @@ public:
 /// the program was compiled) or "Sanmill <Version>", depending on whether
 /// Version is empty.
 
-const string engine_info(bool to_uci)
+string engine_info(bool to_uci)
 {
     const string months("Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec");
     string month, day, year;
@@ -180,7 +180,7 @@ const string engine_info(bool to_uci)
 
 /// compiler_info() returns a string trying to describe the compiler we use
 
-const std::string compiler_info()
+std::string compiler_info()
 {
 #define stringify2(x) #x
 #define stringify(x) stringify2(x)
@@ -321,7 +321,7 @@ void dbg_print()
 /// Used to serialize access to std::cout to avoid multiple threads writing at
 /// the same time.
 
-std::ostream &operator<<(std::ostream &os, SyncCout sc)
+std::ostream &operator<<(std::ostream &os, const SyncCout &sc)
 {
     static std::mutex m;
 
@@ -372,7 +372,7 @@ constexpr auto L1_CACHE_BYTES = 1 << L1_CACHE_SHIFT;
 constexpr auto PREFETCH_STRIDE = 4 * L1_CACHE_BYTES;
 #endif
 
-void prefetch_range(void *addr, size_t len)
+void prefetch_range(void *addr, const size_t &len)
 {
     char *cp = nullptr;
     const char *end = static_cast<char *>(addr) + len;
@@ -388,7 +388,7 @@ void prefetch_range(void *addr, size_t len)
 /// Memory allocated with std_aligned_alloc() must be freed with
 /// std_aligned_free().
 
-void *std_aligned_alloc(size_t alignment, size_t size)
+void *std_aligned_alloc(const size_t &alignment, size_t size)
 {
 #if defined(POSIXALIGNEDALLOC)
     void *mem;

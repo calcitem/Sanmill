@@ -171,7 +171,7 @@ public:
 #endif // DISABLE_HASHBUCKET
     }
 
-    void resize(size_t size)
+    void resize(const size_t &size)
     {
         // TODO(calcitem): Resize
         if (size < 0x1000000) {
@@ -214,8 +214,8 @@ public:
 
     void merge(const HashMap &other)
     {
-        size_t ksize = sizeof(K);
-        size_t nsize = sizeof(HashNode<K, V>);
+        const size_t ksize = sizeof(K);
+        const size_t nsize = sizeof(HashNode<K, V>);
 
         size_t nProcessed = 0;
         size_t nMerged = 0;
@@ -227,10 +227,10 @@ public:
         char empty[sizeof(HashNode<K, V>)];
         memset(empty, 0, nsize);
 
-        size_t nBefore = stat();
+        const size_t nBefore = stat();
 
         for (size_t i = 0; i < hashSize; i++) {
-            size_t offset = i * nsize;
+            const size_t offset = i * nsize;
             if (memcmp(static_cast<char *>(other.hashTable) + offset, empty,
                        ksize)) {
                 nProcessed++;
@@ -258,7 +258,7 @@ public:
             }
         }
 
-        size_t nAfter = stat();
+        const size_t nAfter = stat();
 
         debugPrintf("[key merge]\nnProcessed = %lld, nMerged = %lld,\n"
                     "nSkip = %lld (nAllSame = %lld, nOnlyKeySame = %lld, nDiff "
