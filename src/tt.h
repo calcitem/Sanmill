@@ -71,18 +71,17 @@ private:
 class TranspositionTable
 {
 public:
-    static bool search(const Key &key, TTEntry &tte);
+    static bool search(Key key, TTEntry &tte);
 
-    static Value probe(const Key &key, const Depth &depth, const Value &alpha,
-                       const Value &beta, Bound &type
+    static Value probe(Key key, Depth depth, Value alpha, Value beta,
+                       Bound &type
 #ifdef TT_MOVE_ENABLE
                        ,
                        Move &ttMove
 #endif // TT_MOVE_ENABLE
     );
 
-    static int save(const Value &value, const Depth &depth, const Bound &type,
-                    const Key &key
+    static int save(Value value, Depth depth, Bound type, Key key
 #ifdef TT_MOVE_ENABLE
                     ,
                     const Move &ttMove
@@ -93,7 +92,7 @@ public:
 
     static void clear();
 
-    static void prefetch(const Key &key);
+    static void prefetch(Key key);
 
 private:
     friend struct TTEntry;
