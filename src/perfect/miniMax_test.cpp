@@ -108,11 +108,11 @@ bool MiniMax::testLayer(uint32_t layerNumber)
 DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
 {
     // locals
-    auto tlVars = (TestLayersVars *)pParam;
+    const auto tlVars = (TestLayersVars *)pParam;
     MiniMax *m = tlVars->pMiniMax;
-    uint32_t layerNumber = tlVars->layerNumber;
-    uint32_t stateNumber = index;
-    uint32_t threadNo = tlVars->curThreadNo;
+    const uint32_t layerNumber = tlVars->layerNumber;
+    const uint32_t stateNumber = index;
+    const uint32_t threadNo = tlVars->curThreadNo;
     TwoBit *subValueInDatabase = tlVars->subValueInDatabase;
     PlyInfoVarType *subPlyInfos = tlVars->subPlyInfos;
     bool *hasCurPlayerChanged = tlVars->hasCurPlayerChanged;

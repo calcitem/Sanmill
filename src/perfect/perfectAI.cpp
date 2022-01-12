@@ -930,7 +930,7 @@ void PerfectAI::play(fieldStruct *theField, uint32_t *pushFrom,
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // start the miniMax-algorithm
-    auto rootPossibilities = (Possibility *)getBestChoice(
+    const auto rootPossibilities = (Possibility *)getBestChoice(
         threadVars[0].fullTreeDepth, &bestChoice, POSIBILE_MOVE_COUNT_MAX);
 
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
@@ -1268,7 +1268,7 @@ uint32_t *PerfectAI::getPossibilities(uint32_t threadNo,
 void PerfectAI::getSituationValue(uint32_t threadNo, float &floatValue,
                                   TwoBit &shortValue)
 {
-    ThreadVars *tv = &threadVars[threadNo];
+    const ThreadVars *tv = &threadVars[threadNo];
     floatValue = tv->floatValue;
     shortValue = tv->shortValue;
 }
@@ -1288,7 +1288,7 @@ void PerfectAI::undo(uint32_t threadNo, uint32_t idPossibility,
 {
     // locals
     ThreadVars *tv = &threadVars[threadNo];
-    auto oldState = (Backup *)pBackup;
+    const auto oldState = (Backup *)pBackup;
 
     // reset old value
     tv->floatValue = oldState->floatValue;
@@ -1533,7 +1533,7 @@ void PerfectAI::move(uint32_t threadNo, uint32_t idPossibility,
     // locals
     ThreadVars *tv = &threadVars[threadNo];
     Backup *oldState = &tv->oldStates[tv->curSearchDepth];
-    auto tmpPossibility = (Possibility *)pPossibilities;
+    const auto tmpPossibility = (Possibility *)pPossibilities;
     Player *tmpPlayer;
     uint32_t i;
 
@@ -1622,9 +1622,9 @@ void PerfectAI::storeMoveValue(uint32_t threadNo, uint32_t idPossibility,
                                PlyInfoVarType plyInfo)
 {
     // locals
-    ThreadVars *tv = &threadVars[threadNo];
+    const ThreadVars *tv = &threadVars[threadNo];
     uint32_t i;
-    auto tmpPossibility = (Possibility *)pPossibilities;
+    const auto tmpPossibility = (Possibility *)pPossibilities;
 
     if (tv->field->pieceMustBeRemovedCount)
         i = idPossibility;
@@ -1654,8 +1654,8 @@ void PerfectAI::printMoveInfo(uint32_t threadNo, uint32_t idPossibility,
                               void *pPossibilities)
 {
     // locals
-    ThreadVars *tv = &threadVars[threadNo];
-    auto tmpPossibility = (Possibility *)pPossibilities;
+    const ThreadVars *tv = &threadVars[threadNo];
+    const auto tmpPossibility = (Possibility *)pPossibilities;
 
     // move
     if (tv->field->pieceMustBeRemovedCount)
@@ -1768,10 +1768,10 @@ void PerfectAI::applySymOpOnField(unsigned char symOpNumber,
 //-----------------------------------------------------------------------------
 uint32_t PerfectAI::getLayerNumber(uint32_t threadNo)
 {
-    ThreadVars *tv = &threadVars[threadNo];
-    uint32_t blackPieceCount = tv->field->oppPlayer->pieceCount;
-    uint32_t whitePieceCount = tv->field->curPlayer->pieceCount;
-    uint32_t phaseIndex = tv->field->isPlacingPhase == true ?
+    const ThreadVars *tv = &threadVars[threadNo];
+    const uint32_t blackPieceCount = tv->field->oppPlayer->pieceCount;
+    const uint32_t whitePieceCount = tv->field->curPlayer->pieceCount;
+    const uint32_t phaseIndex = tv->field->isPlacingPhase == true ?
                               LAYER_INDEX_PLACING_PHASE :
                               LAYER_INDEX_MOVING_PHASE;
     return layerIndex[phaseIndex][whitePieceCount][blackPieceCount];
@@ -1799,9 +1799,9 @@ uint32_t PerfectAI::ThreadVars::getLayerAndStateNumber(uint32_t &layerNum,
     // locals
     uint32_t myField[SQUARE_NB];
     uint32_t symField[SQUARE_NB];
-    uint32_t blackPieceCount = field->oppPlayer->pieceCount;
-    uint32_t whitePieceCount = field->curPlayer->pieceCount;
-    uint32_t phaseIndex = field->isPlacingPhase == true ?
+    const uint32_t blackPieceCount = field->oppPlayer->pieceCount;
+    const uint32_t whitePieceCount = field->curPlayer->pieceCount;
+    const uint32_t phaseIndex = field->isPlacingPhase == true ?
                               LAYER_INDEX_PLACING_PHASE :
                               LAYER_INDEX_MOVING_PHASE;
     uint32_t wCD = 0, bCD = 0;
@@ -1898,8 +1898,8 @@ bool PerfectAI::setSituation(uint32_t threadNo, uint32_t layerNum,
     uint32_t stateAB, stateCD;
     uint32_t myField[SQUARE_NB];
     uint32_t symField[SQUARE_NB];
-    uint32_t whitePieceCount = layer[layerNum].whitePieceCount;
-    uint32_t blackPieceCount = layer[layerNum].blackPieceCount;
+    const uint32_t whitePieceCount = layer[layerNum].whitePieceCount;
+    const uint32_t blackPieceCount = layer[layerNum].blackPieceCount;
     uint32_t nMillsCurPlayer = 0;
     uint32_t nMillsOpponentPlayer = 0;
     uint32_t wCD = 0, bCD = 0, wAB = 0, bAB = 0;
@@ -2117,7 +2117,7 @@ void PerfectAI::ThreadVars::setWarningAndMill(uint32_t piece,
                                               uint32_t secondNeighbor)
 {
     // locals
-    int rowOwner = field->board[piece];
+    const int rowOwner = field->board[piece];
 
     // mill closed ?
     if (rowOwner != field->squareIsFree &&
@@ -2147,7 +2147,7 @@ string PerfectAI::getOutputInfo(uint32_t layerNum)
 //-----------------------------------------------------------------------------
 void PerfectAI::printBoard(uint32_t threadNo, unsigned char value)
 {
-    ThreadVars *tv = &threadVars[threadNo];
+    const ThreadVars *tv = &threadVars[threadNo];
     char wonStr[] = "WON";
     char lostStr[] = "LOST";
     char drawStr[] = "DRAW";
@@ -2187,7 +2187,7 @@ void PerfectAI::setOpponentLevel(uint32_t threadNo, bool isOpponentLevel)
 //-----------------------------------------------------------------------------
 bool PerfectAI::getOpponentLevel(uint32_t threadNo)
 {
-    ThreadVars *tv = &threadVars[threadNo];
+    const ThreadVars *tv = &threadVars[threadNo];
     return tv->ownId == tv->field->oppPlayer->id;
 }
 
@@ -2217,8 +2217,8 @@ void PerfectAI::getSuccLayers(uint32_t layerNum, uint32_t *amountOfSuccLayers,
 {
     // locals
     uint32_t i;
-    uint32_t shift = layerNum >= 100 ? 100 : 0;
-    int diff = layerNum >= 100 ? 1 : -1;
+    const uint32_t shift = layerNum >= 100 ? 100 : 0;
+    const int diff = layerNum >= 100 ? 1 : -1;
 
     // search layer with one white piece less
     for (*amountOfSuccLayers = 0, i = 0 + shift; i < 100 + shift; i++) {
@@ -2252,7 +2252,7 @@ void PerfectAI::getSymStateNumWithDoubles(uint32_t threadNo,
                                           uint32_t **symStateNumbers)
 {
     // locals
-    ThreadVars *tv = &threadVars[threadNo];
+    const ThreadVars *tv = &threadVars[threadNo];
     int origField[SQUARE_NB];
     uint32_t origPartOfMill[SQUARE_NB];
     uint32_t i, symOp;
@@ -2429,7 +2429,7 @@ void PerfectAI::ThreadVars::storePredecessor(uint32_t nMillsCurPlayer,
     int origField[SQUARE_NB];
     uint32_t i, symOp, symOpApplied;
     uint32_t predLayerNum, predStateNum;
-    uint32_t origAmountOfPred = *amountOfPred;
+    const uint32_t origAmountOfPred = *amountOfPred;
 
     // store only if state is valid
     if (fieldIntegrityOK(nMillsCurPlayer, nMillsOpponentPlayer, false)) {

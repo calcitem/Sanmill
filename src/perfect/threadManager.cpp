@@ -268,7 +268,7 @@ bool ThreadManager::wasExecCancelled()
 uint32_t ThreadManager::getThreadNumber()
 {
     // locals
-    DWORD curThreadId = GetCurrentThreadId();
+    const DWORD curThreadId = GetCurrentThreadId();
     uint32_t thd;
 
     for (thd = 0; thd < threadCount; thd++) {
@@ -377,7 +377,7 @@ uint32_t ThreadManager::execParallelLoop(DWORD threadProc(void *pParam,
     uint32_t thd;
 
     // total number of iterations
-    int nIterations = (finalValue - initValue) / increment + 1;
+    const int nIterations = (finalValue - initValue) / increment + 1;
 
     // number of iterations per chunk
     int chunkSize = 0;
@@ -385,7 +385,7 @@ uint32_t ThreadManager::execParallelLoop(DWORD threadProc(void *pParam,
     // initial stack size of each thread. 0 means default size ~1MB
     SIZE_T dwStackSize = 0;
 
-    auto forLoopParams = new ForLoop[threadCount];
+    const auto forLoopParams = new ForLoop[threadCount];
     std::memset(forLoopParams, 0, sizeof(ForLoop) * threadCount);
 
     // globals
@@ -479,7 +479,7 @@ uint32_t ThreadManager::execParallelLoop(DWORD threadProc(void *pParam,
 DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParam)
 {
     // locals
-    auto forLoopParams = (ForLoop *)lpParam;
+    const auto forLoopParams = (ForLoop *)lpParam;
     int i;
 
     switch (forLoopParams->schedType) {

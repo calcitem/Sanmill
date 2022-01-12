@@ -55,10 +55,10 @@ int Thread::search()
     Sanmill::Stack<Position> ss;
 
     Value value = VALUE_ZERO;
-    Depth d = get_depth();
+    const Depth d = get_depth();
 
     if (gameOptions.getAiIsLazy()) {
-        int np = bestvalue / VALUE_EACH_PIECE;
+        const int np = bestvalue / VALUE_EACH_PIECE;
         if (np > 1) {
             if (d < 4) {
                 originDepth = 1;
@@ -142,7 +142,7 @@ int Thread::search()
         const Depth depthBegin = 2;
         Value lastValue = VALUE_ZERO;
 
-        TimePoint startTime = now();
+        const TimePoint startTime = now();
 
         for (Depth i = depthBegin; i < originDepth; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -341,7 +341,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     // Initialize a MovePicker object for the current position, and prepare
     // to search the moves.
     MovePicker mp(*pos);
-    Move nextMove = mp.next_move();
+    const Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
 
     if (moveCount == 1 && depth == originDepth) {
@@ -381,7 +381,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     for (int i = 0; i < moveCount; i++) {
         ss.push(*pos);
         const Color before = pos->sideToMove;
-        Move move = mp.moves[i].move;
+        const Move move = mp.moves[i].move;
 
         // Make and search the move
         pos->do_move(move);
@@ -516,8 +516,8 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
 
 bool is_timeout(TimePoint startTime)
 {
-    auto limit = gameOptions.getMoveTime() * 1000;
-    TimePoint elapsed = now() - startTime;
+    const auto limit = gameOptions.getMoveTime() * 1000;
+    const TimePoint elapsed = now() - startTime;
 
     if (elapsed > limit) {
 #ifdef _WIN32

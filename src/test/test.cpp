@@ -53,7 +53,7 @@ Test::Test(QWidget *parent, QString k)
 
     keyCombo->setEditable(true);
 
-    QString keyPrefix = "Key";
+    const QString keyPrefix = "Key";
 
     for (char i = '0'; i <= '9'; i++) {
         keyCombo->addItem(keyPrefix + i);
@@ -69,15 +69,15 @@ Test::Test(QWidget *parent, QString k)
 
 #endif // QT_UI_TEST_MODE
 
-    auto keyLabel = new QLabel(tr("&Key:"));
+    const auto keyLabel = new QLabel(tr("&Key:"));
     keyLabel->setBuddy(keyCombo);
 
     startButton->setDefault(true);
     startButton->setEnabled(true);
     stopButton->setEnabled(false);
 
-    auto closeButton = new QPushButton(tr("Close"));
-    auto buttonBox = new QDialogButtonBox;
+    const auto closeButton = new QPushButton(tr("Close"));
+    const auto buttonBox = new QDialogButtonBox;
     buttonBox->addButton(startButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(stopButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(closeButton, QDialogButtonBox::RejectRole);
@@ -89,15 +89,15 @@ Test::Test(QWidget *parent, QString k)
     QGridLayout *mainLayout = nullptr;
     if (QGuiApplication::styleHints()->showIsFullScreen() ||
         QGuiApplication::styleHints()->showIsMaximized()) {
-        auto outerVerticalLayout = new QVBoxLayout(this);
+        const auto outerVerticalLayout = new QVBoxLayout(this);
         outerVerticalLayout->addItem(new QSpacerItem(
             0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
 
-        auto outerHorizontalLayout = new QHBoxLayout;
+        const auto outerHorizontalLayout = new QHBoxLayout;
         outerHorizontalLayout->addItem(new QSpacerItem(
             0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
 
-        auto groupBox = new QGroupBox(
+        const auto groupBox = new QGroupBox(
             QGuiApplication::applicationDisplayName());
         mainLayout = new QGridLayout(groupBox);
         outerHorizontalLayout->addWidget(groupBox);

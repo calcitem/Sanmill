@@ -106,7 +106,7 @@ void Game::loadSettings()
 {
     bool empty = false;
 
-    QFileInfo file(SETTINGS_FILE);
+    const QFileInfo file(SETTINGS_FILE);
     if (!file.exists()) {
         cout << SETTINGS_FILE.toStdString() << " is not exists, create it."
              << std::endl;
@@ -824,9 +824,9 @@ void Game::turnLeft()
 
 void Game::updateTime()
 {
-    int timePoint = -1;
+    constexpr int timePoint = -1;
     time_t *ourSeconds = &elapsedSeconds[sideToMove];
-    time_t theirSeconds = elapsedSeconds[~sideToMove];
+    const time_t theirSeconds = elapsedSeconds[~sideToMove];
 
     currentTime = time(nullptr);
 
@@ -1366,8 +1366,8 @@ bool Game::phaseChange(int row, bool forceUpdate)
 
     // Need to refresh
     currentRow = row;
-    int rows = moveListModel.rowCount();
-    QStringList mlist = moveListModel.stringList();
+    const int rows = moveListModel.rowCount();
+    const QStringList mlist = moveListModel.stringList();
 
     debugPrintf("rows: %d current: %d\n", rows, row);
 
@@ -1577,10 +1577,11 @@ void Game::humanResign()
 
 void Game::saveScore()
 {
-    QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
-    qint64 pid = QCoreApplication::applicationPid();
+    const QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
+    const qint64 pid = QCoreApplication::applicationPid();
 
-    QString path = QDir::currentPath() + "/" + tr("Score-MillGame_") + strDate +
+    const QString path = QDir::currentPath() + "/" + tr("Score-MillGame_") +
+                         strDate +
                    "_" + QString::number(pid) + ".txt";
 
     QFile file;

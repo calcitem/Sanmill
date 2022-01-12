@@ -33,9 +33,9 @@ BoardItem::BoardItem(QGraphicsItem *parent)
         // The first position is the 12 o'clock direction of the inner ring,
         // which is sorted clockwise Then there is the middle ring and the outer
         // ring
-        int p = (f + 1) * LINE_INTERVAL;
+        const int p = (f + 1) * LINE_INTERVAL;
 
-        int pt[][2] = {{0, -p}, {p, -p}, {p, 0},  {p, p},
+        const int pt[][2] = {{0, -p}, {p, -p}, {p, 0},  {p, p},
                        {0, p},  {-p, p}, {-p, 0}, {-p, -p}};
 
         for (int r = 0; r < RANK_NB; r++) {
@@ -94,7 +94,7 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     QPen pen(QBrush(QColor(241, 156, 159)), LINE_WEIGHT, Qt::SolidLine,
              Qt::SquareCap, Qt::BevelJoin);
 #else
-    QPen pen(QBrush(QColor(178, 34, 34)), LINE_WEIGHT, Qt::SolidLine,
+    const QPen pen(QBrush(QColor(178, 34, 34)), LINE_WEIGHT, Qt::SolidLine,
              Qt::SquareCap, Qt::BevelJoin);
 #endif
     painter->setPen(pen);

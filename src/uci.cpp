@@ -159,7 +159,7 @@ begin:
 
 void UCI::loop(int argc, char *argv[])
 {
-    auto pos = new Position;
+    const auto pos = new Position;
     string token, cmd;
 
 #ifdef _MSC_VER

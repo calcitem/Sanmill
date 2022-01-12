@@ -495,7 +495,7 @@ void MiniMax::readKnotValueFromDatabase(uint32_t threadNo,
     getLayerAndStateNumber(threadNo, layerNumber, stateNumber);
 
     // layer in database and completed ?
-    LayerStats *myLss = &layerStats[layerNumber];
+    const LayerStats *myLss = &layerStats[layerNumber];
     layerInDatabaseAndCompleted = myLss->layerIsCompletedAndInFile;
 
     // valid state and layer number ?
@@ -616,7 +616,7 @@ void MiniMax::readPlyInfoFromDatabase(uint32_t layerNumber,
 {
     // locals
     uint32_t curKnot;
-    PlyInfoVarType defValue = PLYINFO_VALUE_UNCALCULATED;
+    const PlyInfoVarType defValue = PLYINFO_VALUE_UNCALCULATED;
     int64_t bytesAllocated;
     PlyInfo *myPis = &plyInfos[layerNumber];
 
@@ -754,10 +754,10 @@ void MiniMax::saveKnotValueInDatabase(uint32_t layerNumber,
     // set value
     long *pShortKnotValue = ((long *)myLss->shortKnotValueByte) +
                             stateNumber / ((sizeof(long) * 8) / 2);
-    long nBitsToShift = 2 * (stateNumber %
+    const long nBitsToShift = 2 * (stateNumber %
                              ((sizeof(long) * 8) / 2)); // little-endian
                                                         // byte-order
-    long mask = 0x00000003 << nBitsToShift;
+    const long mask = 0x00000003 << nBitsToShift;
     long curShortKnotValueLong, newShortKnotValueLong;
 
     do {
@@ -782,7 +782,7 @@ void MiniMax::savePlyInfoInDatabase(uint32_t layerNumber, uint32_t stateNumber,
 {
     // locals
     uint32_t curKnot;
-    PlyInfoVarType defValue = PLYINFO_VALUE_UNCALCULATED;
+    const PlyInfoVarType defValue = PLYINFO_VALUE_UNCALCULATED;
     int64_t bytesAllocated;
     PlyInfo *myPis = &plyInfos[layerNumber];
 

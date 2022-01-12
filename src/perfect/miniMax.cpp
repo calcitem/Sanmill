@@ -62,7 +62,7 @@ MiniMax::MiniMax()
     // PL_TO_MOVE_CHANGED   means that in the predecessor state the player to
     // move has changed to the other player. PL_TO_MOVE_UNCHANGED means that the
     // player to move is still the one who shall move.
-    unsigned char skvPerspectiveMatrixTmp[4][2] = {
+    const unsigned char skvPerspectiveMatrixTmp[4][2] = {
         //  PL_TO_MOVE_UNCHANGED    PL_TO_MOVE_CHANGED
         SKV_VALUE_INVALID,
         SKV_VALUE_INVALID, // SKV_VALUE_INVALID

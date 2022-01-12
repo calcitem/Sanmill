@@ -253,8 +253,8 @@ void Mill::setWarningAndMill(uint32_t piece, uint32_t firstNeighbor,
                              uint32_t secondNeighbor, bool isNewPiece)
 {
     // locals
-    int rowOwner = field.board[piece];
-    uint32_t rowOwnerWarning = (rowOwner == field.playerOne) ?
+    const int rowOwner = field.board[piece];
+    const uint32_t rowOwnerWarning = (rowOwner == field.playerOne) ?
                                    field.playerOneWarning :
                                    field.playerTwoWarning;
 

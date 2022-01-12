@@ -169,7 +169,7 @@ private:
     uint64_t accumulate(std::atomic<uint64_t> Thread::*member) const noexcept
     {
         uint64_t sum = 0;
-        for (Thread *th : *this)
+        for (const Thread *th : *this)
             sum += (th->*member).load(std::memory_order_relaxed);
         return sum;
     }

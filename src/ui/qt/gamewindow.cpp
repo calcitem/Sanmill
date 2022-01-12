@@ -91,7 +91,7 @@ MillGameWindow::MillGameWindow(QWidget *parent)
     connect(&autoRunTimer, SIGNAL(timeout()), this, SLOT(onAutoRunTimeOut()));
 
     // Center primary window
-    QRect deskTopRect = QGuiApplication::primaryScreen()->geometry();
+    const QRect deskTopRect = QGuiApplication::primaryScreen()->geometry();
     const int w = (deskTopRect.width() - width()) / 2;
     const int h = (deskTopRect.height() - height()) / 2;
     this->move(w, h);
@@ -402,7 +402,7 @@ void MillGameWindow::initialize()
     ui.actionSound_S->setChecked(game->soundEnabled());
     ui.actionAnimation_A->setChecked(game->animationEnabled());
 
-    auto alignmentGroup = new QActionGroup(this);
+    const auto alignmentGroup = new QActionGroup(this);
     alignmentGroup->addAction(ui.actionAlphaBetaAlgorithm);
     alignmentGroup->addAction(ui.actionPvsAlgorithm);
     alignmentGroup->addAction(ui.actionMtdfAlgorithm);
@@ -512,7 +512,8 @@ void MillGameWindow::saveBook(const QString &path)
     }
 
     QTextStream textStream(&file);
-    auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
+    const auto *strlist = qobject_cast<QStringListModel *>(
+        ui.listView->model());
 
     for (const QString &cmd : strlist->stringList()) {
         textStream << cmd << "\n";
@@ -523,8 +524,8 @@ void MillGameWindow::saveBook(const QString &path)
 
 void MillGameWindow::on_actionLimited_T_triggered()
 {
-    int gStep = game->getStepsLimit();
-    int gTime = game->getTimeLimit();
+    const int gStep = game->getStepsLimit();
+    const int gTime = game->getTimeLimit();
 
     auto *dialog = new QDialog(this);
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
@@ -586,8 +587,8 @@ void MillGameWindow::on_actionLimited_T_triggered()
     connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
 
     if (dialog->exec() == QDialog::Accepted) {
-        int dStep = comboBox_step->currentData().toInt();
-        int dTime = comboBox_time->currentData().toInt();
+        const int dStep = comboBox_step->currentData().toInt();
+        const int dTime = comboBox_time->currentData().toInt();
         if (gStep != dStep || gTime != dTime) {
             game->setRule(ruleNo, dStep,
                           dTime); // TODO(calcitem): Remove dTime
@@ -629,7 +630,8 @@ void MillGameWindow::actionRules_triggered()
 
 void MillGameWindow::on_actionNew_N_triggered()
 {
-    auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
+    const auto *strlist = qobject_cast<QStringListModel *>(
+        ui.listView->model());
 
     // If you have not finished playing game and have already taken more than a
     // few steps, you will be lost
@@ -640,7 +642,8 @@ void MillGameWindow::on_actionNew_N_triggered()
     game->saveScore();
 
 #ifdef SAVE_GAME_BOOK_WHEN_ACTION_NEW_TRIGGERED
-    QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_"
+    const QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-"
+                                                                      "dd_"
                                                                 "hhmmss");
     QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
     QString whoWin;
@@ -662,7 +665,8 @@ void MillGameWindow::on_actionNew_N_triggered()
         break;
     }
 
-    QString path = QDir::currentPath() + "/" + tr("Book_") + whoWin + "_" +
+    const QString path = QDir::currentPath() + "/" + tr("Book_") + whoWin +
+                         "_" +
                    strDateTime + ".txt";
 
     // After a certain number of steps, save the score when creating a new game
@@ -688,7 +692,7 @@ void MillGameWindow::on_actionNew_N_triggered()
 
 void MillGameWindow::on_actionOpen_O_triggered()
 {
-    QString path = QFileDialog::getOpenFileName(
+    const QString path = QFileDialog::getOpenFileName(
         this, tr("Open the move history file"), QDir::currentPath(),
         "TXT(*.txt)");
 
@@ -748,7 +752,7 @@ void MillGameWindow::on_actionSave_S_triggered()
 
         if (file.open(QFileDevice::WriteOnly | QFileDevice::Text)) {
             QTextStream textStream(&file);
-            auto *strlist = qobject_cast<QStringListModel *>(
+            const auto *strlist = qobject_cast<QStringListModel *>(
                 ui.listView->model());
             for (const QString &cmd : strlist->stringList())
                 textStream << cmd << "\n";
@@ -763,7 +767,7 @@ void MillGameWindow::on_actionSave_S_triggered()
 
 void MillGameWindow::on_actionSaveAs_A_triggered()
 {
-    QString path = QFileDialog::getSaveFileName(
+    const QString path = QFileDialog::getSaveFileName(
         this, tr("Open the move history file"),
         QDir::currentPath() + tr("MoveHistory_") +
             QDateTime::currentDateTime().toString().replace(" ", "_") + ".txt",
@@ -798,8 +802,8 @@ void MillGameWindow::on_actionInvert_I_toggled(bool arg1) const
 
 void MillGameWindow::on_actionRowChange() const
 {
-    QAbstractItemModel *model = ui.listView->model();
-    int rows = model->rowCount();
+    const QAbstractItemModel *model = ui.listView->model();
+    const int rows = model->rowCount();
     int currentRow = ui.listView->currentIndex().row();
 
     QObject *const obsender = sender();
@@ -862,7 +866,7 @@ void MillGameWindow::on_actionRowChange() const
 void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal) const
 {
     Q_UNUSED(signal)
-    int rows = ui.listView->model()->rowCount();
+    const int rows = ui.listView->model()->rowCount();
     int currentRow = ui.listView->currentIndex().row();
 
     if (rows <= 1) {

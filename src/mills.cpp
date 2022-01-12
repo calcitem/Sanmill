@@ -530,7 +530,7 @@ Depth get_search_depth(const Position *pos)
 #ifdef _DEBUG
     constexpr Depth reduce = 0;
 #else
-    Depth reduce = 0;
+    constexpr Depth reduce = 0;
 #endif
 
     const Depth placingDepthTable_12[25] = {

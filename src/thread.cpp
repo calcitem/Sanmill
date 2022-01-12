@@ -150,7 +150,7 @@ void Thread::idle_loop()
                 emitCommand();
             } else {
 #endif
-                int ret = search();
+                const int ret = search();
 
                 if (ret == 3 || ret == 50 || ret == 10) {
                     debugPrintf("Draw\n\n");
@@ -279,8 +279,8 @@ void Thread::analyze(Color c) const
     const bool lose = v <= -VALUE_MATE;
     const int np = v / VALUE_EACH_PIECE;
 
-    string strUs = (c == WHITE ? "White" : "Black");
-    string strThem = (c == WHITE ? "Black" : "White");
+    const string strUs = (c == WHITE ? "White" : "Black");
+    const string strThem = (c == WHITE ? "Black" : "White");
 
     const auto flags = cout.flags();
 

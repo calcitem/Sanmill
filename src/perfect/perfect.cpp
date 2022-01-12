@@ -60,7 +60,7 @@ int perfect_reset()
 
 Square from_perfect_sq(uint32_t sq)
 {
-    Square map[] = {SQ_31, SQ_24, SQ_25, SQ_23, SQ_16, SQ_17, SQ_15,
+    constexpr Square map[] = {SQ_31, SQ_24, SQ_25, SQ_23, SQ_16, SQ_17, SQ_15,
                     SQ_8,  SQ_9,  SQ_30, SQ_22, SQ_14, SQ_10, SQ_18,
                     SQ_26, SQ_13, SQ_12, SQ_11, SQ_21, SQ_20, SQ_19,
                     SQ_29, SQ_28, SQ_27, SQ_0};
@@ -88,7 +88,7 @@ Move from_perfect_move(uint32_t from, uint32_t to)
 
 unsigned to_perfect_sq(Square sq)
 {
-    int map[] = {
+    constexpr int map[] = {
         -1, -1, -1, -1, -1, -1, -1, -1,
         7,  8,  12, 17, 16, 15, 11, 6, /* 8 - 15 */
         4,  5,  13, 20, 19, 18, 10, 3, /* 16 - 23 */
@@ -101,9 +101,9 @@ unsigned to_perfect_sq(Square sq)
 
 void to_perfect_move(Move move, uint32_t &from, uint32_t &to)
 {
-    Square f = from_sq(move);
-    Square t = to_sq(move);
-    MoveType type = type_of(move);
+    const Square f = from_sq(move);
+    const Square t = to_sq(move);
+    const MoveType type = type_of(move);
 
     if (type == MOVETYPE_REMOVE) {
         from = to_perfect_sq(t);

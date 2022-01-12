@@ -80,8 +80,8 @@ MyString &MyString::assign(const char *cStr)
 {
     // locals
     size_t convertedChars = 0;
-    size_t newLen = strlen(cStr);
-    size_t newReserved = (size_t)hiBit((uint32_t)newLen) * 2;
+    const size_t newLen = strlen(cStr);
+    const size_t newReserved = (size_t)hiBit((uint32_t)newLen) * 2;
 
     if (reserved < newReserved)
         this->~MyString();
@@ -109,8 +109,8 @@ MyString &MyString::assign(const WCHAR *cStr)
 {
     // locals
     size_t retval;
-    size_t newLen = wcslen(cStr);
-    size_t newReserved = (size_t)hiBit((uint32_t)newLen) * 2;
+    const size_t newLen = wcslen(cStr);
+    const size_t newReserved = (size_t)hiBit((uint32_t)newLen) * 2;
 
     if (reserved < newReserved)
         this->~MyString();

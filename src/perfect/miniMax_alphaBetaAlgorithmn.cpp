@@ -215,7 +215,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 DWORD MiniMax::initAlphaBetaThreadProc(void *pParam, uint32_t index)
 {
     // locals
-    auto iabVars = (InitAlphaBetaVars *)pParam;
+    const auto iabVars = (InitAlphaBetaVars *)pParam;
     MiniMax *m = iabVars->pMiniMax;
     float floatValue;         // dummy variable for calls of getSituationValue()
     StateAdress curState;     // current state counter for loops
@@ -367,7 +367,7 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 DWORD MiniMax::runAlphaBetaThreadProc(void *pParam, uint32_t index)
 {
     // locals
-    auto rabVars = (RunAlphaBetaVars *)pParam;
+    const auto rabVars = (RunAlphaBetaVars *)pParam;
     MiniMax *m = rabVars->pMiniMax;
     StateAdress curState;   // current state counter for loops
     Knot root;              //

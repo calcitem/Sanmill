@@ -164,7 +164,7 @@ void Position::init()
 {
     PRNG rng(1070372);
 
-    for (PieceType pt : PieceTypes)
+    for (const PieceType pt : PieceTypes)
         for (Square s = SQ_BEGIN; s < SQ_END; ++s)
             Zobrist::psq[pt][s] = rng.rand<Key>() << Zobrist::KEY_MISC_BIT >>
                                   Zobrist::KEY_MISC_BIT;
@@ -492,7 +492,7 @@ bool Position::has_repeated(Sanmill::Stack<Position> &ss) const
         }
     }
 
-    int size = ss.size();
+    const int size = ss.size();
 
     for (int i = size - 1; i >= 0; i--) {
         if (type_of(ss[i].move) == MOVETYPE_REMOVE) {
@@ -511,7 +511,7 @@ bool Position::has_repeated(Sanmill::Stack<Position> &ss) const
 
 bool Position::has_game_cycle() const
 {
-    for (auto i : posKeyHistory) {
+    for (const auto i : posKeyHistory) {
         if (key() == i) {
             repetition++;
             if (repetition == 3) {
@@ -603,7 +603,7 @@ bool Position::start()
 bool Position::put_piece(Square s, bool updateRecord)
 {
     Piece piece = NO_PIECE;
-    Color us = sideToMove;
+    const Color us = sideToMove;
 
     if (phase == Phase::gameOver || action != Action::place ||
         !(SQ_BEGIN <= s && s < SQ_END) || board[s]) {
@@ -1377,15 +1377,16 @@ void Position::updateMobility(MoveType mt, Square s)
         return;
     }
 
-    Bitboard adjacentWhiteBB = byColorBB[WHITE] &
-                               MoveList<LEGAL>::adjacentSquaresBB[s];
-    Bitboard adjacentBlackBB = byColorBB[BLACK] &
-                               MoveList<LEGAL>::adjacentSquaresBB[s];
-    Bitboard adjacentNoColorBB = (~(byColorBB[BLACK] | byColorBB[WHITE])) &
-                                 MoveList<LEGAL>::adjacentSquaresBB[s];
-    int adjacentWhiteBBCount = popcount(adjacentWhiteBB);
-    int adjacentBlackBBCount = popcount(adjacentBlackBB);
-    int adjacentNoColorBBCount = popcount(adjacentNoColorBB);
+    const Bitboard adjacentWhiteBB = byColorBB[WHITE] &
+                                     MoveList<LEGAL>::adjacentSquaresBB[s];
+    const Bitboard adjacentBlackBB = byColorBB[BLACK] &
+                                     MoveList<LEGAL>::adjacentSquaresBB[s];
+    const Bitboard adjacentNoColorBB = (~(byColorBB[BLACK] |
+                                          byColorBB[WHITE])) &
+                                       MoveList<LEGAL>::adjacentSquaresBB[s];
+    const int adjacentWhiteBBCount = popcount(adjacentWhiteBB);
+    const int adjacentBlackBBCount = popcount(adjacentBlackBB);
+    const int adjacentNoColorBBCount = popcount(adjacentNoColorBB);
 
     if (mt == MOVETYPE_PLACE) {
         mobilityDiff -= adjacentWhiteBBCount;

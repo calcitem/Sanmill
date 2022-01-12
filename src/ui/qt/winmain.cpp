@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
                      QString::number(QCoreApplication::applicationPid()) + ")");
 
 #ifndef _DEBUG
-    QRect desktopRect = QGuiApplication::primaryScreen()->geometry();
+    const QRect desktopRect = QGuiApplication::primaryScreen()->geometry();
     w.move((desktopRect.width() - w.width()) / 4,
            (desktopRect.height() - w.height()) / 2);
 #endif

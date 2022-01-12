@@ -281,7 +281,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 DWORD MiniMax::initRetroAnalysisThreadProc(void *pParam, uint32_t index)
 {
     // locals
-    auto iraVars = (InitRetroAnalysisVars *)pParam;
+    const auto iraVars = (InitRetroAnalysisVars *)pParam;
     MiniMax *m = iraVars->pMiniMax;
     float floatValue;     // dummy variable for calls of getSituationValue()
     StateAdress curState; // current state counter for loops
@@ -619,9 +619,9 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
 DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, uint32_t index)
 {
     // locals
-    auto ansVars = (AddNumSucceedersVars *)pParam;
+    const auto ansVars = (AddNumSucceedersVars *)pParam;
     MiniMax *m = ansVars->pMiniMax;
-    uint32_t nLayersToCalculate = (uint32_t)ansVars->retroVars
+    const uint32_t nLayersToCalculate = (uint32_t)ansVars->retroVars
                                       ->layersToCalculate.size();
     uint32_t curLayerId; // current processed layer within
                          // 'layersToCalculate'
@@ -698,12 +698,13 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, uint32_t index)
         long *pCountValue =
             ((long *)ansVars->retroVars->countArrays[curLayerId]) +
             predState.stateNumber / (sizeof(long) / sizeof(CountArrayVarType));
-        long nBitsToShift = sizeof(CountArrayVarType) * 8 *
+        const long nBitsToShift =
+            sizeof(CountArrayVarType) * 8 *
                             (predState.stateNumber %
                              (sizeof(long) /
                               sizeof(CountArrayVarType))); // little-endian
                                                            // byte-order
-        long mask = 0x000000ff << nBitsToShift;
+        const long mask = 0x000000ff << nBitsToShift;
         long curCountLong, newCountLong;
 
         do {
@@ -713,7 +714,7 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, uint32_t index)
 #endif
 
             curCountLong = *pCountValue;
-            long temp = (curCountLong & mask) >> nBitsToShift;
+            const long temp = (curCountLong & mask) >> nBitsToShift;
             countValue = (CountArrayVarType)temp;
             if (countValue == 255) {
                 PRINT(0, m, "ERROR: maximum value for Count[] reached!");
@@ -811,9 +812,9 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
 {
     // locals
-    auto retroVars = (retroAnalysisGlobalVars *)pParam;
+    const auto retroVars = (retroAnalysisGlobalVars *)pParam;
     MiniMax *m = retroVars->pMiniMax;
-    uint32_t threadNo = m->threadManager.getThreadNumber();
+    const uint32_t threadNo = m->threadManager.getThreadNumber();
     RetroAnalysisThreadVars *threadVars = &retroVars->thread[threadNo];
 
     TwoBit predStateValue;
@@ -969,18 +970,18 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
                                 ((long *)retroVars->countArrays[curLayerId]) +
                                 predState.stateNumber /
                                     (sizeof(long) / sizeof(CountArrayVarType));
-                            long nBitsToShift =
+                            const long nBitsToShift =
                                 sizeof(CountArrayVarType) * 8 *
                                 (predState.stateNumber %
                                  (sizeof(long) /
                                   sizeof(CountArrayVarType))); // little-endian
                                                                // byte-order
-                            long mask = 0x000000ff << nBitsToShift;
+                            const long mask = 0x000000ff << nBitsToShift;
                             long curCountLong, newCountLong;
 
                             do {
                                 curCountLong = *pCountValue;
-                                long temp = (curCountLong & mask) >>
+                                const long temp = (curCountLong & mask) >>
                                             nBitsToShift;
                                 countValue = (CountArrayVarType)temp;
 

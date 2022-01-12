@@ -217,7 +217,8 @@ void MiniMax::ArrayInfoContainer::removeArray(uint32_t layerNumber,
     EnterCriticalSection(&c->csOsPrint);
 
     if (vectorArrays.size() > layerNumber * ArrayInfo::arrayTypeCount + type) {
-        auto itr = vectorArrays[layerNumber * ArrayInfo::arrayTypeCount + type];
+        const auto itr =
+            vectorArrays[layerNumber * ArrayInfo::arrayTypeCount + type];
         if (itr != listArrays.end()) {
             // does sizes fit?
             if (itr->belongsToLayer != layerNumber || itr->type != type ||
