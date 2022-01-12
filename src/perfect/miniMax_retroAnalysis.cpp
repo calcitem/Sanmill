@@ -24,7 +24,7 @@ s\*********************************************************************/
 // 'statesToProcess'. This list is like a queue of states, which still has to be
 // processed.
 //-----------------------------------------------------------------------------
-bool MiniMax::calcKnotValuesByRetroAnalysis(vector<uint32_t> &layersToCalc)
+bool MiniMax::calcKnotValuesByRetroAnalysis(const vector<uint32_t> &layersToCalc)
 {
     // locals
     bool abortCalc = false;
@@ -1050,7 +1050,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
 // addStateToProcessQueue()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::addStateToProcessQueue(retroAnalysisGlobalVars &retroVars,
+bool MiniMax::addStateToProcessQueue(const retroAnalysisGlobalVars &retroVars,
                                      RetroAnalysisThreadVars &threadVars,
                                      uint32_t plyNumber, StateAdress *pState)
 {

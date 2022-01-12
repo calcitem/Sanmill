@@ -70,7 +70,7 @@ void loop(int argc, char *argv[]);
 std::string value(Value v);
 std::string square(Square s);
 std::string move(Move m);
-Move to_move(Position *pos, std::string &str);
+Move to_move(Position *pos, const std::string &str);
 
 } // namespace UCI
 

@@ -71,7 +71,7 @@ private:
     void setNextPlayer();
     void generateMoves(Player *player);
     void updateMillsAndWarnings(uint32_t newPiece);
-    bool isNormalMovePossible(uint32_t from, uint32_t to, Player *player);
+    bool isNormalMovePossible(uint32_t from, uint32_t to, const Player *player);
     void setWarningAndMill(uint32_t piece, uint32_t firstNeighbor,
                            uint32_t secondNeighbor, bool isNewPiece);
 
@@ -87,7 +87,7 @@ public:
                       int curPlayer);
     bool doMove(uint32_t pushFrom, uint32_t pushTo);
     void getComputersChoice(uint32_t *pushFrom, uint32_t *pushTo);
-    bool comparePlayers(Player *playerA, Player *playerB);
+    bool comparePlayers(const Player *playerA, const Player *playerB);
     void printBoard();
 
     // getter

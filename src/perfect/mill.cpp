@@ -165,7 +165,7 @@ void Mill::getComputersChoice(uint32_t *pushFrom, uint32_t *pushTo)
 // 'Normal' in this context means, by moving the piece along a connection
 // without jumping.
 //-----------------------------------------------------------------------------
-bool Mill::isNormalMovePossible(uint32_t from, uint32_t to, Player *player)
+bool Mill::isNormalMovePossible(uint32_t from, uint32_t to, const Player *player)
 {
     // locals
     uint32_t movingDirection, i;
@@ -459,7 +459,7 @@ bool Mill::doMove(uint32_t pushFrom, uint32_t pushTo)
 // comparePlayers()
 // Compares the two passed players and returns false if they differ.
 //-----------------------------------------------------------------------------
-bool Mill::comparePlayers(Player *playerA, Player *playerB)
+bool Mill::comparePlayers(const Player *playerA, const Player *playerB)
 {
     // uint32_t i;
     bool ret = true;

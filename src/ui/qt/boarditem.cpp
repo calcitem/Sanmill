@@ -20,7 +20,7 @@
 #include "graphicsconst.h"
 #include "types.h"
 
-BoardItem::BoardItem(QGraphicsItem *parent)
+BoardItem::BoardItem(const QGraphicsItem *parent)
     : size(BOARD_SIZE)
 {
     Q_UNUSED(parent)

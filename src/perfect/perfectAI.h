@@ -270,9 +270,10 @@ protected:
     uint32_t getNumberOfLayers() override;
     uint32_t getNumberOfKnotsInLayer(uint32_t layerNum) override;
     int64_t mOverN_Function(uint32_t m, uint32_t n);
-    void applySymOpOnField(unsigned char symOpNumber, uint32_t *sourceField,
+    void applySymOpOnField(unsigned char symOpNumber,
+                           const uint32_t *sourceField,
                            uint32_t *destField);
-    bool isSymOpInvariantOnGroupCD(uint32_t symOp, int *theField);
+    bool isSymOpInvariantOnGroupCD(uint32_t symOp, const int *theField);
     bool shallRetroAnalysisBeUsed(uint32_t layerNum) override;
     void getSuccLayers(uint32_t layerNum, uint32_t *amountOfSuccLayers,
                        uint32_t *succeedingLayers) override;

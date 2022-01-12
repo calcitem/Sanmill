@@ -1755,7 +1755,8 @@ int64_t PerfectAI::mOverN_Function(uint32_t m, uint32_t n)
 // called very often
 //-----------------------------------------------------------------------------
 void PerfectAI::applySymOpOnField(unsigned char symOpNumber,
-                                  uint32_t *sourceField, uint32_t *destField)
+                                  const uint32_t *sourceField,
+                                  uint32_t *destField)
 {
     for (uint32_t i = 0; i < SQUARE_NB; i++) {
         destField[i] = sourceField[symOpTable[symOpNumber][i]];
@@ -2359,7 +2360,7 @@ bool PerfectAI::ThreadVars::fieldIntegrityOK(
 // isSymOpInvariantOnGroupCD()
 //
 //-----------------------------------------------------------------------------
-bool PerfectAI::isSymOpInvariantOnGroupCD(uint32_t symOp, int *theField)
+bool PerfectAI::isSymOpInvariantOnGroupCD(uint32_t symOp, const int *theField)
 {
     // locals
     uint32_t i;

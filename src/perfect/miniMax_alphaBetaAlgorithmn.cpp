@@ -512,7 +512,7 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars,
 // so sets knot->shortValue, knot->floatValue and knot->plyInfo. CAUTION:
 // knot->isOpponentLevel must be set and valid.
 //-----------------------------------------------------------------------------
-bool MiniMax::alphaBetaTryDatabase(Knot *knot, RunAlphaBetaVars *rabVars,
+bool MiniMax::alphaBetaTryDatabase(Knot *knot, const RunAlphaBetaVars *rabVars,
                                    uint32_t tilLevel, uint32_t &layerNumber,
                                    uint32_t &stateNumber)
 {
@@ -594,7 +594,7 @@ bool MiniMax::alphaBetaTryDatabase(Knot *knot, RunAlphaBetaVars *rabVars,
 //-----------------------------------------------------------------------------
 void MiniMax::alphaBetaTryPossibilities(Knot *knot, RunAlphaBetaVars *rabVars,
                                         uint32_t tilLevel,
-                                        uint32_t *idPossibility,
+                                        const uint32_t *idPossibility,
                                         void *pPossibilities,
                                         uint32_t &maxWonfreqValuesSubMoves,
                                         float &alpha, float &beta)
@@ -827,9 +827,10 @@ void MiniMax::alphaBetaCalcPlyInfo(Knot *knot)
 // alphaBetaChooseBestMove()
 // select randomly one of the best moves, if they are equivalent
 //-----------------------------------------------------------------------------
-void MiniMax::alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars,
+void MiniMax::alphaBetaChooseBestMove(Knot *knot,
+                                      const RunAlphaBetaVars *rabVars,
                                       uint32_t tilLevel,
-                                      uint32_t *idPossibility,
+                                      const uint32_t *idPossibility,
                                       uint32_t maxWonfreqValuesSubMoves)
 {
     // locals

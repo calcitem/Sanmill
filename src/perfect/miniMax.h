@@ -405,7 +405,7 @@ public:
     bool testIfSymStatesHaveSameValue(uint32_t layerNumber);
 
     // Statistics
-    bool calcLayerStatistics(char *statisticsFileName);
+    bool calcLayerStatistics(const char *statisticsFileName);
     uint32_t getThreadCount();
 
     // Main function for getting the best choice
@@ -703,7 +703,7 @@ private:
             this->initAlreadyDone = initAlreadyDone;
         }
 
-        void initElement(InitAlphaBetaVars &master) { *this = master; }
+        void initElement(const InitAlphaBetaVars &master) { *this = master; }
 
         void reduce() override { reduceDefault(); }
     };
@@ -735,7 +735,7 @@ private:
 
         void reduce() override { reduceDefault(); }
 
-        void initElement(RunAlphaBetaVars &master)
+        void initElement(const RunAlphaBetaVars &master)
         {
             *this = master;
             branchArray = new Knot[alphaBetaVars->pMiniMax->maxNumBranches *
@@ -860,7 +860,10 @@ private:
             this->initAlreadyDone = initAlreadyDone;
         }
 
-        void initElement(InitRetroAnalysisVars &master) { *this = master; }
+        void initElement(const InitRetroAnalysisVars &master)
+        {
+            *this = master;
+        }
 
         void reduce() override { reduceDefault(); }
     };
@@ -878,7 +881,7 @@ private:
             : RetroAnalysisDefaultThreadVars(pMiniMax, retroVars, layerNumber)
         { }
 
-        void initElement(AddNumSucceedersVars &master) { *this = master; }
+        void initElement(const AddNumSucceedersVars &master) { *this = master; }
 
         void reduce() override { reduceDefault(); }
     };
@@ -1015,8 +1018,8 @@ private:
     bool calcLayer(uint32_t layerNumber);
     void unloadPlyInfo(uint32_t layerNumber);
     void unloadLayer(uint32_t layerNumber);
-    void saveHeader(SkvFileHeader *dbH, LayerStats *lStats);
-    void saveHeader(PlyInfoFileHeader *piH, PlyInfo *pInfo);
+    void saveHeader(const SkvFileHeader *dbH, const LayerStats *lStats);
+    void saveHeader(const PlyInfoFileHeader *piH, const PlyInfo *pInfo);
     void readKnotValueFromDatabase(uint32_t threadNo, uint32_t &layerNumber,
                                    uint32_t &stateNumber, TwoBit &knotValue,
                                    bool &invalidLayerOrStateNumber,
@@ -1046,18 +1049,20 @@ private:
     bool runAlphaBeta(AlphaBetaGlobalVars &retroVars);
     void letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars,
                         uint32_t tilLevel, float alpha, float beta);
-    bool alphaBetaTryDatabase(Knot *knot, RunAlphaBetaVars *rabVars,
+    bool alphaBetaTryDatabase(Knot *knot, const RunAlphaBetaVars *rabVars,
                               uint32_t tilLevel, uint32_t &layerNumber,
                               uint32_t &stateNumber);
     void alphaBetaTryPossibilities(Knot *knot, RunAlphaBetaVars *rabVars,
-                                   uint32_t tilLevel, uint32_t *idPossibility,
+                                   uint32_t tilLevel,
+                                   const uint32_t *idPossibility,
                                    void *pPossibilities,
                                    uint32_t &maxWonfreqValuesSubMoves,
                                    float &alpha, float &beta);
     void alphaBetaCalcPlyInfo(Knot *knot);
     void alphaBetaCalcKnotValue(Knot *knot);
-    void alphaBetaChooseBestMove(Knot *knot, RunAlphaBetaVars *rabVars,
-                                 uint32_t tilLevel, uint32_t *idPossibility,
+    void alphaBetaChooseBestMove(Knot *knot, const RunAlphaBetaVars *rabVars,
+                                 uint32_t tilLevel,
+                                 const uint32_t *idPossibility,
                                  uint32_t maxWonfreqValuesSubMoves);
     void alphaBetaSaveInDatabase(uint32_t threadNo, uint32_t layerNumber,
                                  uint32_t stateNumber, TwoBit knotValue,
@@ -1066,12 +1071,13 @@ private:
     static DWORD runAlphaBetaThreadProc(void *pParam, uint32_t index);
 
     // Retro Analysis
-    bool calcKnotValuesByRetroAnalysis(vector<uint32_t> &layersToCalculate);
+    bool
+    calcKnotValuesByRetroAnalysis(const vector<uint32_t> &layersToCalculate);
     bool initRetroAnalysis(retroAnalysisGlobalVars &retroVars);
     bool prepareCountArrays(retroAnalysisGlobalVars &retroVars);
     bool calcNumSucceeders(retroAnalysisGlobalVars &retroVars);
     bool performRetroAnalysis(retroAnalysisGlobalVars &retroVars);
-    bool addStateToProcessQueue(retroAnalysisGlobalVars &retroVars,
+    bool addStateToProcessQueue(const retroAnalysisGlobalVars &retroVars,
                                 RetroAnalysisThreadVars &threadVars,
                                 uint32_t plyNumber, StateAdress *pState);
 

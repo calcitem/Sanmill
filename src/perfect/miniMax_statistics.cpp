@@ -68,7 +68,7 @@ void MiniMax::showLayerStats(uint32_t layerNumber)
 // calcLayerStatistics()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::calcLayerStatistics(char *statisticsFileName)
+bool MiniMax::calcLayerStatistics(const char *statisticsFileName)
 {
     // locals
     HANDLE statFile;

@@ -25,7 +25,7 @@
 class BoardItem : public QGraphicsItem
 {
 public:
-    explicit BoardItem(QGraphicsItem *parent = nullptr);
+    explicit BoardItem(const QGraphicsItem *parent = nullptr);
     ~BoardItem() override;
 
     [[nodiscard]] QRectF boundingRect() const override;
