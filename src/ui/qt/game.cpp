@@ -979,7 +979,7 @@ bool Game::actionPiece(QPointF p)
 
     // Judge whether to select, drop or remove the seed
     bool result = false;
-    PieceItem *piece = nullptr;
+    PieceItem *piece;
     QGraphicsItem *item = scene.itemAt(p, QTransform());
 
     switch (position.get_action()) {
@@ -1130,8 +1130,8 @@ bool Game::resign()
 // actionPiece
 bool Game::command(const string &cmd, bool update /* = true */)
 {
-    int total = 0;
-    float blackWinRate = 0.0f, whiteWinRate = 0.0f, drawRate = 0.0f;
+    int total;
+    float blackWinRate, whiteWinRate, drawRate;
 
     Q_UNUSED(hasSound)
 
@@ -1404,12 +1404,11 @@ bool Game::updateScene(Position &p)
     // Animation group
     auto *animationGroup = new QParallelAnimationGroup;
 
-    // The pieces are in place
-    PieceItem *piece = nullptr;
+    // The deleted pieces are in place
     PieceItem *deletedPiece = nullptr;
 
     for (int i = 0; i < nTotalPieces; i++) {
-        piece = pieceList.at(static_cast<size_t>(i));
+        const auto piece = pieceList.at(static_cast<size_t>(i));
 
         piece->setSelected(false);
 

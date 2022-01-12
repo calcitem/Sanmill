@@ -216,7 +216,7 @@ vector<Key> posKeyHistory;
 Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
               Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
-    Value value = VALUE_ZERO;
+    Value value;
     Value bestValue = -VALUE_INFINITE;
 
     Depth epsilon;

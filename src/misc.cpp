@@ -374,10 +374,9 @@ constexpr auto PREFETCH_STRIDE = 4 * L1_CACHE_BYTES;
 
 void prefetch_range(void *addr, size_t len)
 {
-    char *cp = nullptr;
     const char *end = static_cast<char *>(addr) + len;
 
-    for (cp = static_cast<char *>(addr); cp < end; cp += PREFETCH_STRIDE)
+    for (auto cp = static_cast<char *>(addr); cp < end; cp += PREFETCH_STRIDE)
         prefetch(cp);
 }
 

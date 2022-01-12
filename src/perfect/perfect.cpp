@@ -70,7 +70,7 @@ Square from_perfect_sq(uint32_t sq)
 
 Move from_perfect_move(uint32_t from, uint32_t to)
 {
-    Move ret = MOVE_NONE;
+    Move ret;
 
     if (to == 24)
         ret = (Move)-from_perfect_sq(from);
@@ -119,7 +119,6 @@ void to_perfect_move(Move move, uint32_t &from, uint32_t &to)
 
 Move perfect_search()
 {
-    bool ret = false;
     uint32_t from = 24, to = 24;
     // sync_cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << sync_endl;
     // mill->printBoard();
@@ -127,8 +126,7 @@ Move perfect_search()
 
     mill->getComputersChoice(&from, &to);
 
-    ret = mill->doMove(from, to);
-    assert(ret == true);
+    mill->doMove(from, to);
 
     mill->printBoard();
     // sync_cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << sync_endl;
@@ -167,8 +165,7 @@ bool perfect_command(const char *cmd)
     int step = 0;
     File file1 = FILE_A, file2 = FILE_A;
     Rank rank1 = RANK_1, rank2 = RANK_1;
-    int args = 0;
-    Move move = MOVE_NONE;
+    Move move;
 
     if (sscanf(cmd, "r%1u s%3d t%2u", &ruleNo, &step, &t) == 3) {
         if (set_rule(ruleNo - 1) == false) {
@@ -178,7 +175,7 @@ bool perfect_command(const char *cmd)
         return perfect_reset();
     }
 
-    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned *)&file1,
+    int args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned *)&file1,
                   (unsigned *)&rank1, (unsigned *)&file2, (unsigned *)&rank2);
 
     if (args >= 4) {

@@ -86,7 +86,7 @@ Test::Test(QWidget *parent, QString k)
     connect(stopButton, &QAbstractButton::clicked, this, &Test::stopAction);
     connect(closeButton, &QAbstractButton::clicked, this, &QWidget::close);
 
-    QGridLayout *mainLayout = nullptr;
+    QGridLayout *mainLayout;
     if (QGuiApplication::styleHints()->showIsFullScreen() ||
         QGuiApplication::styleHints()->showIsMaximized()) {
         const auto outerVerticalLayout = new QVBoxLayout(this);

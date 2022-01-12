@@ -23,12 +23,11 @@
 template <>
 ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
 {
-    Square from = SQ_0, to = SQ_0;
     ExtMove *cur = moveList;
 
     // move piece that location weak first
     for (auto i = SQUARE_NB - 1; i >= 0; i--) {
-        from = MoveList<LEGAL>::movePriorityList[i];
+        const Square from = MoveList<LEGAL>::movePriorityList[i];
 
         if (!pos.select_piece(from)) {
             continue;
@@ -38,14 +37,14 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
                                rule.flyPieceCount) {
             // piece count < 3 or 4 and allow fly, if is empty point, that's ok,
             // do not need in move list
-            for (to = SQ_BEGIN; to < SQ_END; ++to) {
+            for (Square to = SQ_BEGIN; to < SQ_END; ++to) {
                 if (!pos.get_board()[to]) {
                     *cur++ = make_move(from, to);
                 }
             }
         } else {
             for (auto direction = MD_BEGIN; direction < MD_NB; ++direction) {
-                to = MoveList<LEGAL>::adjacentSquares[from][direction];
+                const Square to = MoveList<LEGAL>::adjacentSquares[from][direction];
                 if (to && !pos.get_board()[to]) {
                     *cur++ = make_move(from, to);
                 }

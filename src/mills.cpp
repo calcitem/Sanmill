@@ -446,7 +446,7 @@ void move_priority_list_shuffle()
 
 bool is_star_squares_full(Position *pos)
 {
-    bool ret = false;
+    bool ret;
 
     if (rule.hasDiagonalLines) {
         ret = pos->get_board()[SQ_17] && pos->get_board()[SQ_19] &&

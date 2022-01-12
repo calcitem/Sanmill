@@ -28,9 +28,7 @@ bool MiniMax::calcKnotValuesByRetroAnalysis(const vector<uint32_t> &layersToCalc
 {
     // locals
     bool abortCalc = false;
-    uint32_t curLayer = 0;    // Counter variable
-    uint32_t curSubLayer = 0; // Counter variable
-    uint32_t plyCounter = 0;  // Counter variable
+    uint32_t curLayer;    // Counter variable
     uint32_t threadNo;
     stringstream ssLayers;
     retroAnalysisGlobalVars retroVars;
@@ -56,7 +54,7 @@ bool MiniMax::calcKnotValuesByRetroAnalysis(const vector<uint32_t> &layersToCalc
         retroVars.totalKnotCount += layerStats[layersToCalc[curLayer]]
                                         .knotsInLayer;
         retroVars.layerInitialized[layersToCalc[curLayer]] = true;
-        for (curSubLayer = 0;
+        for (uint32_t curSubLayer = 0;
              curSubLayer <
              layerStats[layersToCalc[curLayer]].succeedingLayerCount;
              curSubLayer++) {
@@ -117,7 +115,7 @@ bool MiniMax::calcKnotValuesByRetroAnalysis(const vector<uint32_t> &layersToCalc
     // free memory
 freeMem:
     for (threadNo = 0; threadNo < threadManager.getThreadCount(); threadNo++) {
-        for (plyCounter = 0;
+        for (uint32_t plyCounter = 0;
              plyCounter < retroVars.thread[threadNo].statesToProcess.size();
              plyCounter++) {
             SAFE_DELETE(retroVars.thread[threadNo].statesToProcess[plyCounter]);

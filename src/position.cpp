@@ -602,7 +602,6 @@ bool Position::start()
 
 bool Position::put_piece(Square s, bool updateRecord)
 {
-    Piece piece = NO_PIECE;
     const Color us = sideToMove;
 
     if (phase == Phase::gameOver || action != Action::place ||
@@ -615,7 +614,7 @@ bool Position::put_piece(Square s, bool updateRecord)
     }
 
     if (phase == Phase::placing) {
-        piece = static_cast<Piece>((0x01 | make_piece(sideToMove)) +
+        const auto piece = static_cast<Piece>((0x01 | make_piece(sideToMove)) +
                                    rule.pieceCount - pieceInHandCount[us]);
         pieceInHandCount[us]--;
         pieceOnBoardCount[us]++;
@@ -920,7 +919,6 @@ bool Position::command(const char *cmd)
     int step = 0;
     File file1 = FILE_A, file2 = FILE_A;
     Rank rank1 = RANK_1, rank2 = RANK_1;
-    int args = 0;
 
     if (sscanf(cmd, "r%1u s%3d t%2u", &ruleNo, &step, &t) == 3) {
         if (set_rule(ruleNo - 1) == false) {
@@ -930,7 +928,7 @@ bool Position::command(const char *cmd)
         return reset();
     }
 
-    args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned *)&file1,
+    int args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned *)&file1,
                   (unsigned *)&rank1, (unsigned *)&file2, (unsigned *)&rank2);
 
     if (args >= 4) {
@@ -1063,11 +1061,9 @@ void Position::remove_ban_pieces()
 {
     assert(rule.hasBannedLocations);
 
-    Square s = SQ_0;
-
     for (int f = 1; f <= FILE_NB; f++) {
         for (int r = 0; r < RANK_NB; r++) {
-            s = static_cast<Square>(f * RANK_NB + r);
+            const auto s = static_cast<Square>(f * RANK_NB + r);
 
             if (board[s] == BAN_PIECE) {
                 const Piece pc = board[s];
@@ -1456,9 +1452,8 @@ void Position::mirror(vector<string> &moveHistory, bool cmdChange /*= true*/)
 
     if (cmdChange) {
         unsigned r1, s1, r2, s2;
-        int args = 0;
 
-        args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
+        int args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
         if (args >= 4) {
             s1 = (RANK_NB - s1 + 1) % RANK_NB;
             s2 = (RANK_NB - s2 + 1) % RANK_NB;
@@ -1562,9 +1557,8 @@ void Position::turn(vector<string> &moveHistory, bool cmdChange /*= true*/)
 
     if (cmdChange) {
         unsigned r1, s1, r2, s2;
-        int args = 0;
 
-        args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
+        int args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
 
         if (args >= 4) {
             if (r1 == 1)
@@ -1725,9 +1719,9 @@ void Position::rotate(vector<string> &moveHistory, int degrees,
 
     if (cmdChange) {
         unsigned r1, s1, r2, s2;
-        int args = 0;
 
-        args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
+        int args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
+
         if (args >= 4) {
             s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
             s2 = (s2 - 1 + RANK_NB - degrees) % RANK_NB;

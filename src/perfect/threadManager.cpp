@@ -380,7 +380,7 @@ uint32_t ThreadManager::execParallelLoop(DWORD threadProc(void *pParam,
     const int nIterations = (finalValue - initValue) / increment + 1;
 
     // number of iterations per chunk
-    int chunkSize = 0;
+    int chunkSize;
 
     // initial stack size of each thread. 0 means default size ~1MB
     SIZE_T dwStackSize = 0;

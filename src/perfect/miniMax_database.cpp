@@ -99,7 +99,7 @@ void MiniMax::saveBytesToFile(HANDLE hFile, int64_t offset, uint32_t nBytes,
     LARGE_INTEGER liDistanceToMove;
     uint32_t restingBytes = nBytes;
     void *myPointer = pBytes;
-    bool errorPrint = false;
+    bool errorPrint;
 
     liDistanceToMove.QuadPart = offset;
 
@@ -135,7 +135,7 @@ void MiniMax::loadBytesFromFile(HANDLE hFile, int64_t offset, uint32_t nBytes,
     LARGE_INTEGER liDistanceToMove;
     uint32_t restingBytes = nBytes;
     void *myPointer = pBytes;
-    bool errorPrint = false;
+    bool errorPrint;
 
     liDistanceToMove.QuadPart = offset;
 
