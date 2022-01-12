@@ -176,7 +176,7 @@ Game::~Game()
     settings = nullptr;
 }
 
-const map<int, QStringList> Game::getActions()
+map<int, QStringList> Game::getActions()
 {
     // Main window update menu bar
     // The reason why we don't use the mode of signal and slot is that

@@ -88,7 +88,7 @@ public:
     ~Game() override;
 
     //  Main window menu bar details
-    const map<int, QStringList> getActions();
+    map<int, QStringList> getActions();
 
     [[nodiscard]] int getRuleIndex() const noexcept { return ruleIndex; }
 

@@ -33,7 +33,7 @@ Key side;
 } // namespace Zobrist
 
 namespace {
-const string PieceToChar(Piece p)
+string PieceToChar(Piece p)
 {
     if (p == NO_PIECE) {
         return "*";
@@ -304,7 +304,7 @@ Position &Position::set(const string &fenStr, Thread *th)
 /// Position::fen() returns a FEN representation of the position.
 /// This is mainly a debugging function.
 
-const string Position::fen() const
+string Position::fen() const
 {
     std::ostringstream ss;
 

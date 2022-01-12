@@ -59,7 +59,7 @@ public:
 
     // FEN string input/output
     Position &set(const std::string &fenStr, Thread *th);
-    [[nodiscard]] const std::string fen() const;
+    [[nodiscard]] std::string fen() const;
 
     // Position representation
     [[nodiscard]] Piece piece_on(Square s) const;
