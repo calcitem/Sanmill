@@ -644,7 +644,7 @@ void MillGameWindow::on_actionNew_N_triggered()
 #ifdef SAVE_GAME_BOOK_WHEN_ACTION_NEW_TRIGGERED
     const QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-"
                                                                       "dd_"
-                                                                "hhmmss");
+                                                                      "hhmmss");
     QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
     QString whoWin;
 
@@ -666,8 +666,7 @@ void MillGameWindow::on_actionNew_N_triggered()
     }
 
     const QString path = QDir::currentPath() + "/" + tr("Book_") + whoWin +
-                         "_" +
-                   strDateTime + ".txt";
+                         "_" + strDateTime + ".txt";
 
     // After a certain number of steps, save the score when creating a new game
     if (strlist->stringList().size() > 18) {

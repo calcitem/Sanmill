@@ -615,7 +615,8 @@ bool Position::put_piece(Square s, bool updateRecord)
 
     if (phase == Phase::placing) {
         const auto piece = static_cast<Piece>((0x01 | make_piece(sideToMove)) +
-                                   rule.pieceCount - pieceInHandCount[us]);
+                                              rule.pieceCount -
+                                              pieceInHandCount[us]);
         pieceInHandCount[us]--;
         pieceOnBoardCount[us]++;
 
@@ -929,7 +930,8 @@ bool Position::command(const char *cmd)
     }
 
     int args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned *)&file1,
-                  (unsigned *)&rank1, (unsigned *)&file2, (unsigned *)&rank2);
+                      (unsigned *)&rank1, (unsigned *)&file2,
+                      (unsigned *)&rank2);
 
     if (args >= 4) {
         return move_piece(file1, rank1, file2, rank2);

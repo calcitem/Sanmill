@@ -165,7 +165,8 @@ void Mill::getComputersChoice(uint32_t *pushFrom, uint32_t *pushTo)
 // 'Normal' in this context means, by moving the piece along a connection
 // without jumping.
 //-----------------------------------------------------------------------------
-bool Mill::isNormalMovePossible(uint32_t from, uint32_t to, const Player *player)
+bool Mill::isNormalMovePossible(uint32_t from, uint32_t to,
+                                const Player *player)
 {
     // locals
     uint32_t movingDirection, i;
@@ -255,8 +256,8 @@ void Mill::setWarningAndMill(uint32_t piece, uint32_t firstNeighbor,
     // locals
     const int rowOwner = field.board[piece];
     const uint32_t rowOwnerWarning = (rowOwner == field.playerOne) ?
-                                   field.playerOneWarning :
-                                   field.playerTwoWarning;
+                                         field.playerOneWarning :
+                                         field.playerTwoWarning;
 
     // mill closed ?
     if (rowOwner != field.squareIsFree &&

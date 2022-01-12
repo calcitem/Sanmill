@@ -409,8 +409,7 @@ void Thread::analyze(Color c) const
          << static_cast<int>(nWhiteWin) << " : " << static_cast<int>(nDraw)
          << "\ttotal: " << static_cast<int>(total) << std::endl;
     cout << std::fixed << std::setprecision(2) << blackWinRate
-         << "% : " << whiteWinRate
-         << "% : " << drawRate << "%" << std::endl;
+         << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
 #endif // !QT_GUI_LIB
 
     cout.flags(flags);

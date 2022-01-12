@@ -58,7 +58,8 @@ void MovePicker::score()
 
         // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but
         // no mill, so need |from| to judge
-        const int ourMillsCount = pos.potential_mills_count(to, pos.side_to_move(), from);
+        const int ourMillsCount = pos.potential_mills_count(
+            to, pos.side_to_move(), from);
 
 #ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGE
         // TODO(calcitem): rule.mayRemoveMultiple adapt other rules

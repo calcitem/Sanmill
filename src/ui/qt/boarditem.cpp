@@ -36,7 +36,7 @@ BoardItem::BoardItem(const QGraphicsItem *parent)
         const int p = (f + 1) * LINE_INTERVAL;
 
         const int pt[][2] = {{0, -p}, {p, -p}, {p, 0},  {p, p},
-                       {0, p},  {-p, p}, {-p, 0}, {-p, -p}};
+                             {0, p},  {-p, p}, {-p, 0}, {-p, -p}};
 
         for (int r = 0; r < RANK_NB; r++) {
             position[f * RANK_NB + r].rx() = pt[r][0];
@@ -95,7 +95,7 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
              Qt::SquareCap, Qt::BevelJoin);
 #else
     const QPen pen(QBrush(QColor(178, 34, 34)), LINE_WEIGHT, Qt::SolidLine,
-             Qt::SquareCap, Qt::BevelJoin);
+                   Qt::SquareCap, Qt::BevelJoin);
 #endif
     painter->setPen(pen);
 

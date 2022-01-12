@@ -28,7 +28,7 @@ bool MiniMax::calcKnotValuesByRetroAnalysis(const vector<uint32_t> &layersToCalc
 {
     // locals
     bool abortCalc = false;
-    uint32_t curLayer;    // Counter variable
+    uint32_t curLayer; // Counter variable
     uint32_t threadNo;
     stringstream ssLayers;
     retroAnalysisGlobalVars retroVars;
@@ -620,7 +620,7 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, uint32_t index)
     const auto ansVars = (AddNumSucceedersVars *)pParam;
     MiniMax *m = ansVars->pMiniMax;
     const uint32_t nLayersToCalculate = (uint32_t)ansVars->retroVars
-                                      ->layersToCalculate.size();
+                                            ->layersToCalculate.size();
     uint32_t curLayerId; // current processed layer within
                          // 'layersToCalculate'
     uint32_t amountOfPred;
@@ -698,10 +698,9 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, uint32_t index)
             predState.stateNumber / (sizeof(long) / sizeof(CountArrayVarType));
         const long nBitsToShift =
             sizeof(CountArrayVarType) * 8 *
-                            (predState.stateNumber %
-                             (sizeof(long) /
-                              sizeof(CountArrayVarType))); // little-endian
-                                                           // byte-order
+            (predState.stateNumber %
+             (sizeof(long) / sizeof(CountArrayVarType))); // little-endian
+                                                          // byte-order
         const long mask = 0x000000ff << nBitsToShift;
         long curCountLong, newCountLong;
 
@@ -980,7 +979,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
                             do {
                                 curCountLong = *pCountValue;
                                 const long temp = (curCountLong & mask) >>
-                                            nBitsToShift;
+                                                  nBitsToShift;
                                 countValue = (CountArrayVarType)temp;
 
                                 if (countValue > 0) {

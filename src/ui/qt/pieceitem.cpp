@@ -125,7 +125,7 @@ void PieceItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     // If the model is selected, draw four small right angles
     if (isSelected()) {
         const QPen pen(selectLineColor, selectLineWeight, Qt::SolidLine,
-                 Qt::SquareCap, Qt::BevelJoin);
+                       Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
         const int xy = (size - selectLineWeight) / 2;
 
@@ -142,7 +142,7 @@ void PieceItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     // If the model is deleted, cross it
     if (deleted) {
         const QPen pen(removeLineColor, removeLineWeight, Qt::SolidLine,
-                 Qt::SquareCap, Qt::BevelJoin);
+                       Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
 
         painter->drawLine(-size / 3, -size / 3, size / 3, size / 3);

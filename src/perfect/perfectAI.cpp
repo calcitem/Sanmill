@@ -1773,8 +1773,8 @@ uint32_t PerfectAI::getLayerNumber(uint32_t threadNo)
     const uint32_t blackPieceCount = tv->field->oppPlayer->pieceCount;
     const uint32_t whitePieceCount = tv->field->curPlayer->pieceCount;
     const uint32_t phaseIndex = tv->field->isPlacingPhase == true ?
-                              LAYER_INDEX_PLACING_PHASE :
-                              LAYER_INDEX_MOVING_PHASE;
+                                    LAYER_INDEX_PLACING_PHASE :
+                                    LAYER_INDEX_MOVING_PHASE;
     return layerIndex[phaseIndex][whitePieceCount][blackPieceCount];
 }
 
@@ -1803,8 +1803,8 @@ uint32_t PerfectAI::ThreadVars::getLayerAndStateNumber(uint32_t &layerNum,
     const uint32_t blackPieceCount = field->oppPlayer->pieceCount;
     const uint32_t whitePieceCount = field->curPlayer->pieceCount;
     const uint32_t phaseIndex = field->isPlacingPhase == true ?
-                              LAYER_INDEX_PLACING_PHASE :
-                              LAYER_INDEX_MOVING_PHASE;
+                                    LAYER_INDEX_PLACING_PHASE :
+                                    LAYER_INDEX_MOVING_PHASE;
     uint32_t wCD = 0, bCD = 0;
     uint32_t stateAB, stateCD;
     uint32_t i;

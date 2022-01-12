@@ -755,8 +755,8 @@ void MiniMax::saveKnotValueInDatabase(uint32_t layerNumber,
     long *pShortKnotValue = ((long *)myLss->shortKnotValueByte) +
                             stateNumber / ((sizeof(long) * 8) / 2);
     const long nBitsToShift = 2 * (stateNumber %
-                             ((sizeof(long) * 8) / 2)); // little-endian
-                                                        // byte-order
+                                   ((sizeof(long) * 8) / 2)); // little-endian
+                                                              // byte-order
     const long mask = 0x00000003 << nBitsToShift;
     long curShortKnotValueLong, newShortKnotValueLong;
 

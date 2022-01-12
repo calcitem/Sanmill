@@ -44,7 +44,8 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
             }
         } else {
             for (auto direction = MD_BEGIN; direction < MD_NB; ++direction) {
-                const Square to = MoveList<LEGAL>::adjacentSquares[from][direction];
+                const Square to =
+                    MoveList<LEGAL>::adjacentSquares[from][direction];
                 if (to && !pos.get_board()[to]) {
                     *cur++ = make_move(from, to);
                 }

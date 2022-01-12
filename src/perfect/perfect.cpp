@@ -61,9 +61,9 @@ int perfect_reset()
 Square from_perfect_sq(uint32_t sq)
 {
     constexpr Square map[] = {SQ_31, SQ_24, SQ_25, SQ_23, SQ_16, SQ_17, SQ_15,
-                    SQ_8,  SQ_9,  SQ_30, SQ_22, SQ_14, SQ_10, SQ_18,
-                    SQ_26, SQ_13, SQ_12, SQ_11, SQ_21, SQ_20, SQ_19,
-                    SQ_29, SQ_28, SQ_27, SQ_0};
+                              SQ_8,  SQ_9,  SQ_30, SQ_22, SQ_14, SQ_10, SQ_18,
+                              SQ_26, SQ_13, SQ_12, SQ_11, SQ_21, SQ_20, SQ_19,
+                              SQ_29, SQ_28, SQ_27, SQ_0};
 
     return map[sq];
 }
@@ -176,7 +176,8 @@ bool perfect_command(const char *cmd)
     }
 
     int args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned *)&file1,
-                  (unsigned *)&rank1, (unsigned *)&file2, (unsigned *)&rank2);
+                      (unsigned *)&rank1, (unsigned *)&file2,
+                      (unsigned *)&rank2);
 
     if (args >= 4) {
         move = make_move(make_square(file1, rank1), make_square(file2, rank2));

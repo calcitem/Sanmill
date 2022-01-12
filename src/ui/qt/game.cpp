@@ -1580,8 +1580,7 @@ void Game::saveScore()
     const qint64 pid = QCoreApplication::applicationPid();
 
     const QString path = QDir::currentPath() + "/" + tr("Score-MillGame_") +
-                         strDate +
-                   "_" + QString::number(pid) + ".txt";
+                         strDate + "_" + QString::number(pid) + ".txt";
 
     QFile file;
 

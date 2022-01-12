@@ -48,8 +48,8 @@ Value Evaluation::value() const
     int pieceInHandDiffCount;
     int pieceOnBoardDiffCount;
     const int pieceToRemoveCount = pos.side_to_move() == WHITE ?
-                                 pos.piece_to_remove_count() :
-                                 -pos.piece_to_remove_count();
+                                       pos.piece_to_remove_count() :
+                                       -pos.piece_to_remove_count();
 
     switch (pos.get_phase()) {
     case Phase::none:
