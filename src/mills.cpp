@@ -45,7 +45,7 @@ namespace Mills {
 
 void adjacent_squares_init() noexcept
 {
-    const int adjacentSquares[SQUARE_EXT_NB][MD_NB] = {
+    constexpr int adjacentSquares[SQUARE_EXT_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -92,7 +92,7 @@ void adjacent_squares_init() noexcept
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const int adjacentSquares_diagonal[SQUARE_EXT_NB][MD_NB] = {
+    constexpr int adjacentSquares_diagonal[SQUARE_EXT_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -476,7 +476,7 @@ Depth get_search_depth(const Position *pos)
                 return static_cast<Depth>(level);
             }
 
-            const Depth placingDepthTable9[25] = {
+            constexpr Depth placingDepthTable9[25] = {
                 +1, 1, +1, 1,  /* 0 ~ 3 */
                 +3, 3, +3, 15, /* 4 ~ 7 */
                 +5, 3, +5, 0,  /* 8 ~ 11 */
@@ -486,7 +486,7 @@ Depth get_search_depth(const Position *pos)
                 +0             /* 24 */
             };
 
-            const Depth placingDepthTable12[25] = {
+            constexpr Depth placingDepthTable12[25] = {
                 +1,  2,  +2,  4,  /* 0 ~ 3 */
                 +4,  12, +12, 18, /* 4 ~ 7 */
                 +12, 0,  +0,  0,  /* 8 ~ 11 */
@@ -533,7 +533,7 @@ Depth get_search_depth(const Position *pos)
     constexpr Depth reduce = 0;
 #endif
 
-    const Depth placingDepthTable_12[25] = {
+    constexpr Depth placingDepthTable_12[25] = {
         +1,  2,  +2,  4,  /* 0 ~ 3 */
         +4,  12, +12, 18, /* 4 ~ 7 */
         +12, 16, +16, 16, /* 8 ~ 11 */
@@ -543,7 +543,7 @@ Depth get_search_depth(const Position *pos)
         +14               /* 24 */
     };
 
-    const Depth placingDepthTable_12_special[25] = {
+    constexpr Depth placingDepthTable_12_special[25] = {
         +1,  2,  +2,  4,  /* 0 ~ 3 */
         +4,  12, +12, 12, /* 4 ~ 7 */
         +12, 13, +13, 13, /* 8 ~ 11 */
@@ -553,7 +553,7 @@ Depth get_search_depth(const Position *pos)
         +13               /* 24 */
     };
 
-    const Depth placingDepthTable_9[20] = {
+    constexpr Depth placingDepthTable_9[20] = {
         +1,  7,  +7,  10, /* 0 ~ 3 */
         +10, 12, +12, 14, /* 4 ~ 7 */
         +14, 14, +14, 14, /* 8 ~ 11 */
@@ -562,7 +562,7 @@ Depth get_search_depth(const Position *pos)
         +14               /* 19 */
     };
 
-    const Depth movingDepthTable[24] = {
+    constexpr Depth movingDepthTable[24] = {
         1,  1,  1,  1,  /* 0 ~ 3 */
         1,  1,  11, 11, /* 4 ~ 7 */
         11, 11, 11, 11, /* 8 ~ 11 */

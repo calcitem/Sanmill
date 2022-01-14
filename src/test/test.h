@@ -59,7 +59,7 @@ private:
     void detach();
     QString createUuidString();
 
-    static const int SHARED_MEMORY_SIZE = 4096;
+    static constexpr int SHARED_MEMORY_SIZE = 4096;
     QSharedMemory sharedMemory;
     QString uuid;
     int uuidSize;

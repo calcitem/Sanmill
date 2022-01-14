@@ -616,7 +616,7 @@ void MiniMax::readPlyInfoFromDatabase(uint32_t layerNumber,
 {
     // locals
     uint32_t curKnot;
-    const PlyInfoVarType defValue = PLYINFO_VALUE_UNCALCULATED;
+    constexpr PlyInfoVarType defValue = PLYINFO_VALUE_UNCALCULATED;
     int64_t bytesAllocated;
     PlyInfo *myPis = &plyInfos[layerNumber];
 
@@ -782,7 +782,7 @@ void MiniMax::savePlyInfoInDatabase(uint32_t layerNumber, uint32_t stateNumber,
 {
     // locals
     uint32_t curKnot;
-    const PlyInfoVarType defValue = PLYINFO_VALUE_UNCALCULATED;
+    constexpr PlyInfoVarType defValue = PLYINFO_VALUE_UNCALCULATED;
     int64_t bytesAllocated;
     PlyInfo *myPis = &plyInfos[layerNumber];
 

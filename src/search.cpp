@@ -139,7 +139,7 @@ int Thread::search()
     if (gameOptions.getMoveTime() > 0 || gameOptions.getIDSEnabled()) {
         debugPrintf("IDS: ");
 
-        const Depth depthBegin = 2;
+        constexpr Depth depthBegin = 2;
         Value lastValue = VALUE_ZERO;
 
         const TimePoint startTime = now();
