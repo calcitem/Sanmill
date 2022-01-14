@@ -77,7 +77,7 @@ enum SymOp {
     SO_COUNT = 16,
 };
 
-class PerfectAI : public MillAI, public MiniMax
+class PerfectAI final : public MillAI, public MiniMax
 {
 protected:
     // struct

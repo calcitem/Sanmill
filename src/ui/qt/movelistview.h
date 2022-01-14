@@ -32,7 +32,7 @@
  * doesn't look good after adjusting the width of the dock
  */
 
-class MoveListView : public QListView
+class MoveListView final : public QListView
 {
     Q_OBJECT
 

@@ -143,7 +143,7 @@ public:
 
 /// MainThread is a derived class specific for main thread
 
-struct MainThread : Thread
+struct MainThread final : Thread
 {
     using Thread::Thread;
 
