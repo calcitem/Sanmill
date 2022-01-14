@@ -20,9 +20,6 @@
 BufferedFile::BufferedFile(uint32_t nThreads, uint32_t bufSizeInBytes,
                            const char *fileName)
 {
-    // locals
-    uint32_t thd;
-
     // Init blocks
     bufSize = bufSizeInBytes;
     nThreads = nThreads;
@@ -39,7 +36,7 @@ BufferedFile::BufferedFile(uint32_t nThreads, uint32_t bufSizeInBytes,
     bytesInWriteBuf = new uint32_t[nThreads];
     std::memset(bytesInWriteBuf, 0, sizeof(uint32_t) * nThreads);
 
-    for (thd = 0; thd < nThreads; thd++) {
+    for (uint32_t thd = 0; thd < nThreads; thd++) {
         curReadingPtr[thd] = 0;
         curWritingPtr[thd] = 0;
         bytesInReadBuf[thd] = 0;

@@ -57,8 +57,6 @@ void MiniMax::alphaBetaSaveInDatabase(uint32_t threadNo, uint32_t layerNumber,
     // locals
     uint32_t *symStateNumbers = nullptr;
     uint32_t symStateCount;
-    uint32_t sysStateNumber;
-    uint32_t i;
 
     // invert value ?
     if (knotValue > SKV_VALUE_GAME_WON) {
@@ -76,9 +74,9 @@ void MiniMax::alphaBetaSaveInDatabase(uint32_t threadNo, uint32_t layerNumber,
     savePlyInfoInDatabase(layerNumber, stateNumber, plyValue);
 
     // save value for all symmetric states
-    for (i = 0; i < symStateCount; i++) {
+    for (uint32_t i = 0; i < symStateCount; i++) {
         // get state number
-        sysStateNumber = symStateNumbers[i];
+        const uint32_t sysStateNumber = symStateNumbers[i];
 
         // don't save orig state twice
         if (sysStateNumber == stateNumber)
@@ -97,9 +95,6 @@ void MiniMax::alphaBetaSaveInDatabase(uint32_t threadNo, uint32_t layerNumber,
 bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 {
 #ifndef __clang__ // TODO(calcitem)
-
-    // locals
-    BufferedFile *invalidArray;
 
     // true if the initialization info is already available in a file
     bool initAlreadyDone = false;
@@ -125,9 +120,9 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 
     // does initialization file exist ?
     CreateDirectoryA(ssInvArrayDir.str().c_str(), nullptr);
-    invalidArray = new BufferedFile(threadManager.getThreadCount(),
-                                    FILE_BUFFER_SIZE,
-                                    ssInvArrayFilePath.str().c_str());
+    BufferedFile *invalidArray = new BufferedFile(
+        threadManager.getThreadCount(), FILE_BUFFER_SIZE,
+        ssInvArrayFilePath.str().c_str());
 
     if (invalidArray->getFileSize() ==
         (LONGLONG)layerStats[alphaBetaVars.layerNumber].knotsInLayer) {
@@ -601,9 +596,8 @@ void MiniMax::alphaBetaTryPossibilities(Knot *knot, RunAlphaBetaVars *rabVars,
 {
     // locals
     void *pBackup;
-    uint32_t curPoss;
 
-    for (curPoss = 0; curPoss < knot->possibilityCount; curPoss++) {
+    for (uint32_t curPoss = 0; curPoss < knot->possibilityCount; curPoss++) {
         // output
         if (tilLevel == fullTreeDepth && !calcDatabase) {
             printMoveInfo(rabVars->curThreadNo, idPossibility[curPoss],
@@ -839,7 +833,6 @@ void MiniMax::alphaBetaChooseBestMove(Knot *knot,
     auto bestBranches = new uint32_t[maxNumBranches];
     std::memset(bestBranches, 0, sizeof(uint32_t) * maxNumBranches);
     uint32_t i;
-    uint32_t maxBranch;
 
     // select randomly one of the best moves, if they are equivalent
     if (tilLevel == fullTreeDepth && !calcDatabase) {
@@ -878,7 +871,9 @@ void MiniMax::alphaBetaChooseBestMove(Knot *knot,
     }
 
     // set value
-    maxBranch = nBestChoices ? bestBranches[rand() % nBestChoices] : 0;
+    const uint32_t maxBranch = nBestChoices ?
+                                   bestBranches[rand() % nBestChoices] :
+                                   0;
     knot->bestMoveId = idPossibility[maxBranch];
     knot->bestBranch = maxBranch;
     SAFE_DELETE_ARRAY(bestBranches);

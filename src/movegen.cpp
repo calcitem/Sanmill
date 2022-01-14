@@ -77,8 +77,6 @@ ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
 template <>
 ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 {
-    Square s;
-
     const Color us = pos.side_to_move();
     const Color them = ~us;
 
@@ -98,7 +96,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 
     // not is all in mills
     for (auto i = SQUARE_NB - 1; i >= 0; i--) {
-        s = MoveList<LEGAL>::movePriorityList[i];
+        const Square s = MoveList<LEGAL>::movePriorityList[i];
         if (pos.get_board()[s] & make_piece(them)) {
             if (rule.mayRemoveFromMillsAlways ||
                 !pos.potential_mills_count(s, NOBODY)) {

@@ -149,13 +149,11 @@ Move perfect_search()
 
 bool perfect_do_move(Move move)
 {
-    bool ret;
     uint32_t from, to;
 
     to_perfect_move(move, from, to);
 
-    ret = mill->doMove(from, to);
-    return ret;
+    return mill->doMove(from, to);
 }
 
 bool perfect_command(const char *cmd)

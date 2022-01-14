@@ -1041,9 +1041,8 @@ int Position::calculate_mobility_diff()
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
         if (board[s] == NO_PIECE || board[s] == BAN_PIECE) {
-            Square moveSquare;
             for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
-                moveSquare = MoveList<LEGAL>::adjacentSquares[s][d];
+                Square moveSquare = MoveList<LEGAL>::adjacentSquares[s][d];
                 if (moveSquare) {
                     if (board[moveSquare] & W_PIECE) {
                         mobilityWhite++;
@@ -1253,10 +1252,8 @@ void Position::surrounded_pieces_count(Square s, int &ourPieceCount,
                                        int &theirPieceCount, int &bannedCount,
                                        int &emptyCount) const
 {
-    Square moveSquare;
-
     for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
-        moveSquare = MoveList<LEGAL>::adjacentSquares[s][d];
+        const Square moveSquare = MoveList<LEGAL>::adjacentSquares[s][d];
 
         if (!moveSquare) {
             continue;
@@ -1411,12 +1408,11 @@ void Position::updateMobility(MoveType mt, Square s)
 
 void Position::mirror(vector<string> &moveHistory, bool cmdChange /*= true*/)
 {
-    Piece ch;
     int f, r;
 
     for (f = 1; f <= FILE_NB; f++) {
         for (r = 1; r < RANK_NB / 2; r++) {
-            ch = board[f * RANK_NB + r];
+            const Piece ch = board[f * RANK_NB + r];
             board[f * RANK_NB + r] = board[(f + 1) * RANK_NB - r];
             board[(f + 1) * RANK_NB - r] = ch;
         }
@@ -1502,12 +1498,11 @@ void Position::mirror(vector<string> &moveHistory, bool cmdChange /*= true*/)
 
 void Position::turn(vector<string> &moveHistory, bool cmdChange /*= true*/)
 {
-    Piece ch;
     int f, r;
     int i;
 
     for (r = 0; r < RANK_NB; r++) {
-        ch = board[RANK_NB + r];
+        const Piece ch = board[RANK_NB + r];
         board[RANK_NB + r] = board[SQUARE_NB + r];
         board[SQUARE_NB + r] = ch;
     }

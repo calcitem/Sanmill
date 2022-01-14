@@ -115,9 +115,7 @@ void Mill::beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
 //-----------------------------------------------------------------------------
 void Mill::setNextPlayer()
 {
-    Player *tmpPlayer;
-
-    tmpPlayer = field.curPlayer;
+    Player *tmpPlayer = field.curPlayer;
     field.curPlayer = field.oppPlayer;
     field.oppPlayer = tmpPlayer;
 }
@@ -209,8 +207,7 @@ void Mill::generateMoves(Player *player)
 {
     // locals
     uint32_t i;
-    Square from, to;
-    MoveDirection md;
+    Square from;
 
     // zero
     for (i = 0; i < POSIBILE_MOVE_COUNT_MAX; i++) {
@@ -224,7 +221,7 @@ void Mill::generateMoves(Player *player)
     // calculate
     for (player->possibleMovesCount = 0, from = SQ_0; from < SQUARE_NB;
          ++from) {
-        for (to = SQ_0; to < SQUARE_NB; ++to) {
+        for (Square to = SQ_0; to < SQUARE_NB; ++to) {
             if (isNormalMovePossible(from, to, player)) {
                 player->posFrom[player->possibleMovesCount] = from;
                 player->posTo[player->possibleMovesCount] = to;
@@ -235,7 +232,7 @@ void Mill::generateMoves(Player *player)
 
     // isPieceMovable
     for (from = SQ_0; from < SQUARE_NB; ++from) {
-        for (md = MD_BEGIN; md < MD_NB; ++md) {
+        for (MoveDirection md = MD_BEGIN; md < MD_NB; ++md) {
             if (field.board[from] == player->id) {
                 field.isPieceMovable[from][md] = isNormalMovePossible(
                     from, field.connectedSquare[from][md], player);

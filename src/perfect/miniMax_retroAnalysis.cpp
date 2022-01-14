@@ -153,28 +153,21 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 
     // locals
 
-    // current processed layer within 'layersToCalculate'
-    uint32_t curLayerId;
-
-    // layer number of the current process layer
-    uint32_t layerNumber;
-
     // path of the working dir
     stringstream ssInitArrayPath;
 
     // filename corresponding to a cyclic array file which is used for storage
     stringstream ssInitArrayFilePath;
 
-    BufferedFile *initArray;
-
     // true if the initialization info is already available in a file
     bool initAlreadyDone = false;
 
     // process each layer
-    for (curLayerId = 0; curLayerId < retroVars.layersToCalculate.size();
-         curLayerId++) {
+    for (uint32_t curLayerId = 0; // current processed layer within
+                                  // 'layersToCalculate'
+         curLayerId < retroVars.layersToCalculate.size(); curLayerId++) {
         // set current processed layer number
-        layerNumber = retroVars.layersToCalculate[curLayerId];
+        const uint32_t layerNumber = retroVars.layersToCalculate[curLayerId];
         curCalcActionId = MM_ACTION_INIT_RETRO_ANAL;
         PRINT(1, this,
               endl << "  *** Initialization of layer " << layerNumber << " ("
@@ -191,9 +184,9 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 
         // does initialization file exist ?
         CreateDirectoryA(ssInitArrayPath.str().c_str(), nullptr);
-        initArray = new BufferedFile(threadManager.getThreadCount(),
-                                     FILE_BUFFER_SIZE,
-                                     ssInitArrayFilePath.str().c_str());
+        BufferedFile *initArray = new BufferedFile(
+            threadManager.getThreadCount(), FILE_BUFFER_SIZE,
+            ssInitArrayFilePath.str().c_str());
         if (initArray->getFileSize() ==
             (LONGLONG)layerStats[layerNumber].knotsInLayer) {
             PRINT(2, this,
@@ -489,18 +482,16 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
 #ifndef __clang__ // TODO(calcitem)
 
     // locals
-    uint32_t curLayerId;   // current processed layer within
-                           // 'layersToCalculate'
-    uint32_t layerNumber;  // layer number of the current process layer
     StateAdress curState;  // current state counter for loops
     StateAdress succState; // current succeeding state counter for loops
     vector<bool> succCalculated(skvfHeader.LayerCount, false); //
 
     // process each layer
-    for (curLayerId = 0; curLayerId < retroVars.layersToCalculate.size();
-         curLayerId++) {
+    for (uint32_t curLayerId = 0; // current processed layer within
+                                  // 'layersToCalculate'
+         curLayerId < retroVars.layersToCalculate.size(); curLayerId++) {
         // set current processed layer number
-        layerNumber = retroVars.layersToCalculate[curLayerId];
+        uint32_t layerNumber = retroVars.layersToCalculate[curLayerId];
         PRINT(0, this,
               "  *** Calculate number of succeeding states for each state of "
               "layer "
@@ -624,7 +615,6 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, uint32_t index)
     uint32_t curLayerId; // current processed layer within
                          // 'layersToCalculate'
     uint32_t amountOfPred;
-    uint32_t curPred;
     CountArrayVarType countValue;
     StateAdress predState;
     StateAdress curState;
@@ -664,7 +654,7 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, uint32_t index)
     m->getPredecessors(ansVars->curThreadNo, &amountOfPred, ansVars->predVars);
 
     // iteration
-    for (curPred = 0; curPred < amountOfPred; curPred++) {
+    for (uint32_t curPred = 0; curPred < amountOfPred; curPred++) {
         // current predecessor
         predState.layerNumber = ansVars->predVars[curPred].predLayerNumbers;
         predState.stateNumber = ansVars->predVars[curPred].predStateNumbers;
@@ -738,8 +728,6 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
     // locals
     StateAdress curState; // current state counter for loops
     TwoBit curStateValue; // current state value
-    uint32_t curLayerId;  // current processed layer within
-                          // 'layersToCalculate'
 
     PRINT(2, this, "  *** Begin Iteration ***");
     stateProcessedCount = 0;
@@ -776,8 +764,9 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
     // copy drawn and invalid states to ply info
     PRINT(2, this, "    Copy drawn and invalid states to ply info database...");
 
-    for (curLayerId = 0; curLayerId < retroVars.layersToCalculate.size();
-         curLayerId++) {
+    for (uint32_t curLayerId = 0; // current processed layer within
+                                  // 'layersToCalculate'
+         curLayerId < retroVars.layersToCalculate.size(); curLayerId++) {
         for (curState.layerNumber = retroVars.layersToCalculate[curLayerId],
             curState.stateNumber = 0;
              curState.stateNumber <
@@ -819,7 +808,6 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
                            // 'layersToCalculate'
     uint32_t amountOfPred; // total numbers of predecessors and current
                            // considered one
-    uint32_t curPred;
     uint32_t threadCounter;
     int64_t stateProcessedCount;
     int64_t totalNumStatesToProcess;
@@ -909,7 +897,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
                 m->getPredecessors(threadNo, &amountOfPred, predVars);
 
                 // iteration
-                for (curPred = 0; curPred < amountOfPred; curPred++) {
+                for (uint32_t curPred = 0; curPred < amountOfPred; curPred++) {
                     // current predecessor
                     predState.layerNumber = predVars[curPred].predLayerNumbers;
                     predState.stateNumber = predVars[curPred].predStateNumbers;

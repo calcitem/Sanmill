@@ -360,7 +360,7 @@ void MillGameWindow::initialize()
 #endif
     const int screen_iPhone_SE[] = {640, 1136};
     this->resize(QSize(screen_iPhone_SE[0], screen_iPhone_SE[1]));
-#else /* QT_MOBILE_APP_UI */
+#else  /* QT_MOBILE_APP_UI */
 
     // Fix window size
     if (game->fixWindowSizeEnabled()) {
@@ -722,8 +722,7 @@ void MillGameWindow::on_actionOpen_O_triggered()
     ui.actionEngine2_R->setChecked(false);
 
     QTextStream textStream(&file);
-    QString cmd;
-    cmd = textStream.readLine();
+    QString cmd = textStream.readLine();
 
     // When reading and displaying the move history, there is no need to refresh
     // the scene
@@ -1015,10 +1014,8 @@ void MillGameWindow::on_actionEngine_E_triggered()
     spinBox_time2->setValue(time2);
 
     if (dialog->exec() == QDialog::Accepted) {
-        int time1_new, time2_new;
-
-        time1_new = spinBox_time1->value();
-        time2_new = spinBox_time2->value();
+        int time1_new = spinBox_time1->value();
+        int time2_new = spinBox_time2->value();
 
         if (time1 != time1_new || time2 != time2_new) {
             game->setAiDepthTime(time1_new, time2_new);

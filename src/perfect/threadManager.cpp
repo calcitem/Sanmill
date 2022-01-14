@@ -19,7 +19,6 @@
 ThreadManager::ThreadManager()
 {
     // locals
-    uint32_t thd;
     SYSTEM_INFO m_si = {0};
 
     GetSystemInfo(&m_si);
@@ -40,7 +39,7 @@ ThreadManager::ThreadManager()
     InitializeCriticalSection(&csBarrier);
     hEventBarrierPassedByEverybody = CreateEvent(nullptr, true, false, nullptr);
 
-    for (thd = 0; thd < threadCount; thd++) {
+    for (uint32_t thd = 0; thd < threadCount; thd++) {
         hThread[thd] = nullptr;
         threadId[thd] = 0;
         hBarrier[thd] = CreateEvent(nullptr, false, false, nullptr);
@@ -53,10 +52,7 @@ ThreadManager::ThreadManager()
 //-----------------------------------------------------------------------------
 ThreadManager::~ThreadManager()
 {
-    // locals
-    uint32_t thd;
-
-    for (thd = 0; thd < threadCount; thd++) {
+    for (uint32_t thd = 0; thd < threadCount; thd++) {
         CloseHandle(hBarrier[thd]);
     }
 
@@ -269,9 +265,8 @@ uint32_t ThreadManager::getThreadNumber()
 {
     // locals
     const DWORD curThreadId = GetCurrentThreadId();
-    uint32_t thd;
 
-    for (thd = 0; thd < threadCount; thd++) {
+    for (uint32_t thd = 0; thd < threadCount; thd++) {
         if (curThreadId == threadId[thd]) {
             return thd;
         }

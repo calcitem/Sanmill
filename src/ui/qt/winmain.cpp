@@ -32,8 +32,7 @@ QString APP_FILENAME_DEFAULT = "MillGame";
 
 QString getAppFileName()
 {
-    QString filename;
-    filename = QCoreApplication::applicationFilePath().mid(
+    QString filename = QCoreApplication::applicationFilePath().mid(
         QCoreApplication::applicationDirPath().size() + 1);
     filename = filename.mid(0, filename.size() - QString(".exe").size());
 

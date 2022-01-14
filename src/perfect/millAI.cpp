@@ -21,10 +21,9 @@ using namespace std;
 void fieldStruct::printBoard()
 {
     // locals
-    uint32_t sq;
     char c[SQUARE_NB];
 
-    for (sq = 0; sq < SQUARE_NB; sq++)
+    for (uint32_t sq = 0; sq < SQUARE_NB; sq++)
         c[sq] = getCharFromPiece(this->board[sq]);
 
     cout << "current player          : "
@@ -96,8 +95,6 @@ char fieldStruct::getCharFromPiece(int piece)
 //-----------------------------------------------------------------------------
 void fieldStruct::copyBoard(fieldStruct *dest)
 {
-    uint32_t i, j;
-
     this->curPlayer->copyPlayer(dest->curPlayer);
     this->oppPlayer->copyPlayer(dest->oppPlayer);
 
@@ -105,12 +102,12 @@ void fieldStruct::copyBoard(fieldStruct *dest)
     dest->isPlacingPhase = this->isPlacingPhase;
     dest->pieceMustBeRemovedCount = this->pieceMustBeRemovedCount;
 
-    for (i = 0; i < SQUARE_NB; i++) {
+    for (uint32_t i = 0; i < SQUARE_NB; i++) {
         dest->board[i] = this->board[i];
         dest->warnings[i] = this->warnings[i];
         dest->piecePartOfMillCount[i] = this->piecePartOfMillCount[i];
 
-        for (j = 0; j < MD_NB; j++) {
+        for (uint32_t j = 0; j < MD_NB; j++) {
             dest->connectedSquare[i][j] = this->connectedSquare[i][j];
             dest->isPieceMovable[i][j] = this->isPieceMovable[i][j];
             dest->neighbor[i][j / 2][j % 2] = this->neighbor[i][j / 2][j % 2];

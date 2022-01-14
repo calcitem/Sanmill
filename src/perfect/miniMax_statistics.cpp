@@ -71,10 +71,8 @@ void MiniMax::showLayerStats(uint32_t layerNumber)
 bool MiniMax::calcLayerStatistics(const char *statisticsFileName)
 {
     // locals
-    HANDLE statFile;
     DWORD dwBytesWritten;
     StateAdress curState;
-    uint32_t *statsValueCounter;
     TwoBit curStateValue;
     char line[10000];
     string text("");
@@ -84,9 +82,9 @@ bool MiniMax::calcLayerStatistics(const char *statisticsFileName)
         return false;
 
     // Open statistics file
-    statFile = CreateFileA(statisticsFileName, GENERIC_WRITE,
-                           FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr,
-                           OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+    HANDLE statFile = CreateFileA(statisticsFileName, GENERIC_WRITE,
+                                  FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr,
+                                  OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 
     // opened file successfully?
     if (statFile == INVALID_HANDLE_VALUE) {
@@ -109,7 +107,7 @@ bool MiniMax::calcLayerStatistics(const char *statisticsFileName)
     text += "succeedingLayers[0]\t";
     text += "succeedingLayers[1]\n";
 
-    statsValueCounter = new uint32_t[4 * skvfHeader.LayerCount];
+    auto statsValueCounter = new uint32_t[4 * skvfHeader.LayerCount];
     std::memset(statsValueCounter, 0,
                 sizeof(uint32_t) * 4 * skvfHeader.LayerCount);
     curCalcActionId = MM_ACTION_CALC_LAYER_STATS;

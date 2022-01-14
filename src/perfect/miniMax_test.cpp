@@ -20,7 +20,6 @@ bool MiniMax::testLayer(uint32_t layerNumber)
 {
     // Locals
     uint32_t curThreadNo;
-    uint32_t returnValue;
 
     // database open?
     if (hFileShortKnotValues == nullptr || hFilePlyInfo == nullptr) {
@@ -61,7 +60,7 @@ bool MiniMax::testLayer(uint32_t layerNumber)
     }
 
     // process each state in the current layer
-    returnValue = threadManager.execParallelLoop(
+    uint32_t returnValue = threadManager.execParallelLoop(
         testLayerThreadProc, (void *)tlVars, sizeof(TestLayersVars),
         TM_SCHED_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
     switch (returnValue) {
@@ -124,7 +123,6 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
     uint32_t possibilityCount;
     uint32_t i, j;
     uint32_t tmpStateNumber, tmpLayerNumber;
-    uint32_t *idPossibility;
     void *pPossibilities;
     void *pBackup;
     bool isOpponentLevel;
@@ -170,8 +168,8 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
 
     // get number of possibilities
     m->setOpponentLevel(threadNo, false);
-    idPossibility = m->getPossibilities(threadNo, &possibilityCount,
-                                        &isOpponentLevel, &pPossibilities);
+    uint32_t *idPossibility = m->getPossibilities(
+        threadNo, &possibilityCount, &isOpponentLevel, &pPossibilities);
 
     // unable to move
     if (possibilityCount == 0) {
@@ -477,7 +475,6 @@ bool MiniMax::testIfSymStatesHaveSameValue(uint32_t layerNumber)
     uint32_t stateNumber = 0;
     uint32_t *symStateNumbers = nullptr;
     uint32_t nSymStates;
-    uint32_t i;
 
     // database open?
     if (hFileShortKnotValues == nullptr || hFilePlyInfo == nullptr) {
@@ -531,7 +528,7 @@ bool MiniMax::testIfSymStatesHaveSameValue(uint32_t layerNumber)
         getSymStateNumWithDoubles(threadNo, &nSymStates, &symStateNumbers);
 
         // save value for all sym states
-        for (i = 0; i < nSymStates; i++) {
+        for (uint32_t i = 0; i < nSymStates; i++) {
             readKnotValueFromDatabase(layerNumber, symStateNumbers[i],
                                       shortValueOfSymState);
             readPlyInfoFromDatabase(layerNumber, symStateNumbers[i],

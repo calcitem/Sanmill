@@ -272,12 +272,11 @@ void Game::gameReset()
     // 0: the first piece in the first hand; 1: the first piece in the second
     // hand 2: the first second piece; 3: the second piece
     // ......
-    PieceItem::Models md;
 
     for (int i = 0; i < rule.pieceCount; i++) {
         // The first piece
-        md = isInverted ? PieceItem::Models::blackPiece :
-                          PieceItem::Models::whitePiece;
+        PieceItem::Models md = isInverted ? PieceItem::Models::blackPiece :
+                                            PieceItem::Models::whitePiece;
         auto newP = new PieceItem;
         newP->setModel(md);
         newP->setPos(scene.pos_p1);
