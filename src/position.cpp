@@ -929,20 +929,24 @@ bool Position::command(const char *cmd)
         return reset();
     }
 
-    int args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned *)&file1,
-                      (unsigned *)&rank1, (unsigned *)&file2,
-                      (unsigned *)&rank2);
+    int args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)",
+                      reinterpret_cast<unsigned *>(&file1),
+                      reinterpret_cast<unsigned *>(&rank1),
+                      reinterpret_cast<unsigned *>(&file2),
+                      reinterpret_cast<unsigned *>(&rank2));
 
     if (args >= 4) {
         return move_piece(file1, rank1, file2, rank2);
     }
 
-    args = sscanf(cmd, "-(%1u,%1u)", (unsigned *)&file1, (unsigned *)&rank1);
+    args = sscanf(cmd, "-(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
+                  reinterpret_cast<unsigned *>(&rank1));
     if (args >= 2) {
         return remove_piece(file1, rank1);
     }
 
-    args = sscanf(cmd, "(%1u,%1u)", (unsigned *)&file1, (unsigned *)&rank1);
+    args = sscanf(cmd, "(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
+                  reinterpret_cast<unsigned *>(&rank1));
     if (args >= 2) {
         return put_piece(file1, rank1);
     }

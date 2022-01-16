@@ -173,22 +173,26 @@ bool perfect_command(const char *cmd)
         return perfect_reset();
     }
 
-    int args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)", (unsigned *)&file1,
-                      (unsigned *)&rank1, (unsigned *)&file2,
-                      (unsigned *)&rank2);
+    int args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)",
+                      reinterpret_cast<unsigned *>(&file1),
+                      reinterpret_cast<unsigned *>(&rank1),
+                      reinterpret_cast<unsigned *>(&file2),
+                      reinterpret_cast<unsigned *>(&rank2));
 
     if (args >= 4) {
         move = make_move(make_square(file1, rank1), make_square(file2, rank2));
         return perfect_do_move(move);
     }
 
-    args = sscanf(cmd, "-(%1u,%1u)", (unsigned *)&file1, (unsigned *)&rank1);
+    args = sscanf(cmd, "-(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
+                  reinterpret_cast<unsigned *>(&rank1));
     if (args >= 2) {
         move = static_cast<Move>(-make_move(SQ_0, make_square(file1, rank1)));
         return perfect_do_move(move);
     }
 
-    args = sscanf(cmd, "(%1u,%1u)", (unsigned *)&file1, (unsigned *)&rank1);
+    args = sscanf(cmd, "(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
+                  reinterpret_cast<unsigned *>(&rank1));
     if (args >= 2) {
         move = make_move(SQ_0, make_square(file1, rank1));
         return perfect_do_move(move);

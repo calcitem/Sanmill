@@ -683,9 +683,10 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, uint32_t index)
         }
 
         // add this state as possible move
-        long *pCountValue =
-            ((long *)ansVars->retroVars->countArrays[curLayerId]) +
-            predState.stateNumber / (sizeof(long) / sizeof(CountArrayVarType));
+        long *pCountValue = reinterpret_cast<long *>(
+                                ansVars->retroVars->countArrays[curLayerId]) +
+                            predState.stateNumber /
+                                (sizeof(long) / sizeof(CountArrayVarType));
         const long nBitsToShift =
             sizeof(CountArrayVarType) * 8 *
             (predState.stateNumber %
@@ -841,7 +842,8 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
             }
 
             while (threadVars->statesToProcess[curNumPlies]->takeBytes(
-                sizeof(StateAdress), (unsigned char *)&curState)) {
+                sizeof(StateAdress),
+                reinterpret_cast<unsigned char *>(&curState))) {
                 // execution canceled by user?
                 if (m->threadManager.wasExecCancelled()) {
                     PRINT(0, m,
@@ -952,7 +954,8 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
                         } else {
                             // reduce count value by one
                             long *pCountValue =
-                                ((long *)retroVars->countArrays[curLayerId]) +
+                                reinterpret_cast<long *>(
+                                    retroVars->countArrays[curLayerId]) +
                                 predState.stateNumber /
                                     (sizeof(long) / sizeof(CountArrayVarType));
                             const long nBitsToShift =
@@ -1074,7 +1077,7 @@ bool MiniMax::addStateToProcessQueue(const retroAnalysisGlobalVars &retroVars,
 
     // add state
     if (!threadVars.statesToProcess[plyNumber]->addBytes(
-            sizeof(StateAdress), (unsigned char *)pState)) {
+            sizeof(StateAdress), reinterpret_cast<unsigned char *>(pState))) {
         PRINT(0, this,
               "ERROR: Cyclic list to small! stateToProcessCount:"
                   << threadVars.stateToProcessCount);

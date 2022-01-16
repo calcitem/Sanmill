@@ -2260,10 +2260,10 @@ void PerfectAI::getSymStateNumWithDoubles(uint32_t threadNo,
     // add all sym states
     for (uint32_t symOp = 0; symOp < SO_COUNT; symOp++) {
         // apply symmetry operation
-        applySymOpOnField(symOp, (uint32_t *)origField,
-                          (uint32_t *)tv->field->board);
-        applySymOpOnField(symOp, (uint32_t *)origPartOfMill,
-                          (uint32_t *)tv->field->piecePartOfMillCount);
+        applySymOpOnField(symOp, reinterpret_cast<uint32_t *>(origField),
+                          reinterpret_cast<uint32_t *>(tv->field->board));
+        applySymOpOnField(symOp, origPartOfMill,
+                          tv->field->piecePartOfMillCount);
 
         getLayerAndStateNumber(threadNo, layerNum, stateNum);
         symStateNumberArray[*nSymStates] = stateNum;
@@ -2433,8 +2433,9 @@ void PerfectAI::ThreadVars::storePredecessor(
             if (symOp == SO_DO_NOTHING ||
                 parent->isSymOpInvariantOnGroupCD(symOp, origField)) {
                 // apply symmetry operation
-                parent->applySymOpOnField(symOp, (uint32_t *)origField,
-                                          (uint32_t *)field->board);
+                parent->applySymOpOnField(
+                    symOp, reinterpret_cast<uint32_t *>(origField),
+                    reinterpret_cast<uint32_t *>(field->board));
 
                 symOpApplied = getLayerAndStateNumber(predLayerNum,
                                                       predStateNum);
