@@ -451,7 +451,7 @@ inline void MiniMax::measureIops(int64_t &nOps, LARGE_INTEGER &interval,
     // locals
     LARGE_INTEGER curTimeAfter;
 
-    if (!MEASURE_IOPS)
+    if constexpr (!MEASURE_IOPS)
         return;
     nOps++; // ... not thread-safe !!!
 
@@ -594,7 +594,7 @@ void MiniMax::readKnotValueFromDatabase(uint32_t layerNumber,
 
         // measure io-operations per second
         LARGE_INTEGER curTimeBefore;
-        if (MEASURE_IOPS && MEASURE_ONLY_IO) {
+        if constexpr (MEASURE_IOPS && MEASURE_ONLY_IO) {
             QueryPerformanceCounter(&curTimeBefore);
         }
 
@@ -683,7 +683,7 @@ void MiniMax::readPlyInfoFromDatabase(uint32_t layerNumber,
 
         // measure io-operations per second
         LARGE_INTEGER curTimeBefore;
-        if (MEASURE_IOPS && MEASURE_ONLY_IO) {
+        if constexpr (MEASURE_IOPS && MEASURE_ONLY_IO) {
             QueryPerformanceCounter(&curTimeBefore);
         }
 
@@ -751,7 +751,7 @@ void MiniMax::saveKnotValueInDatabase(uint32_t layerNumber,
 
     // measure io-operations per second
     LARGE_INTEGER curTimeBefore;
-    if (MEASURE_IOPS && MEASURE_ONLY_IO) {
+    if constexpr (MEASURE_IOPS && MEASURE_ONLY_IO) {
         QueryPerformanceCounter(&curTimeBefore);
     }
 
@@ -839,7 +839,7 @@ void MiniMax::savePlyInfoInDatabase(uint32_t layerNumber, uint32_t stateNumber,
 
     // measure io-operations per second
     LARGE_INTEGER curTimeBefore;
-    if (MEASURE_IOPS && MEASURE_ONLY_IO) {
+    if constexpr (MEASURE_IOPS && MEASURE_ONLY_IO) {
         QueryPerformanceCounter(&curTimeBefore);
     }
 
