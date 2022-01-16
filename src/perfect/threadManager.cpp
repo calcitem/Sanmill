@@ -297,8 +297,8 @@ uint32_t ThreadManager::execInParallel(DWORD threadProc(void *pParam),
     for (thd = 0; thd < threadCount; thd++) {
         hThread[thd] = CreateThread(
             nullptr, dwStackSize, (LPTHREAD_START_ROUTINE)threadProc,
-            (void *)((char *)pParam + thd * paramStructSize), CREATE_SUSPENDED,
-            &threadId[thd]);
+            (void *)(static_cast<char *>(pParam) + thd * paramStructSize),
+            CREATE_SUSPENDED, &threadId[thd]);
 
         if (hThread[thd] != nullptr) {
             SetThreadPriority(hThread[thd], THREAD_PRIORITY_BELOW_NORMAL);
@@ -389,8 +389,9 @@ uint32_t ThreadManager::execParallelLoop(DWORD threadProc(void *pParam,
     // create threads
     for (thd = 0; thd < threadCount; thd++) {
         forLoopParams[thd].pParam = (pParam != nullptr ?
-                                         (void *)(((char *)pParam) +
-                                                  thd * paramStructSize) :
+                                         static_cast<void *>(
+                                             ((char *)pParam) +
+                                             thd * paramStructSize) :
                                          nullptr);
         forLoopParams[thd].threadManager = this;
         forLoopParams[thd].threadProc = threadProc;
@@ -474,7 +475,7 @@ uint32_t ThreadManager::execParallelLoop(DWORD threadProc(void *pParam,
 DWORD WINAPI ThreadManager::threadForLoop(LPVOID lpParam)
 {
     // locals
-    const auto forLoopParams = (ForLoop *)lpParam;
+    const auto forLoopParams = static_cast<ForLoop *>(lpParam);
     int i;
 
     switch (forLoopParams->schedType) {

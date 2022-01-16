@@ -111,8 +111,8 @@ int perfect_main()
             mill->getComputersChoice(&from, &to);
             cout << "\n\n";
             cout << "\nlast move was from "
-                 << (char)(mill->getLastMoveFrom() + 'a') << " to "
-                 << (char)(mill->getLastMoveTo() + 'a') << "\n\n";
+                 << static_cast<char>(mill->getLastMoveFrom() + 'a') << " to "
+                 << static_cast<char>(mill->getLastMoveTo() + 'a') << "\n\n";
 
 #ifdef SELF_PLAY
             moveCount++;

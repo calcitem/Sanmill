@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------------
 Mill::Mill()
 {
-    srand((unsigned)time(nullptr));
+    srand(static_cast<unsigned>(time(nullptr)));
 
     moveLogFrom = nullptr;
     moveLogTo = nullptr;

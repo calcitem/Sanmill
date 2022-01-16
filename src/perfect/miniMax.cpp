@@ -118,7 +118,7 @@ void *MiniMax::getBestChoice(uint32_t tilLevel, uint32_t *choice,
     Knot root;
     AlphaBetaGlobalVars alphaBetaVars(this, getLayerNumber(0));
     RunAlphaBetaVars tva(this, &alphaBetaVars, alphaBetaVars.layerNumber);
-    srand((uint32_t)time(nullptr));
+    srand(static_cast<uint32_t>(time(nullptr)));
     tva.curThreadNo = 0;
 
     // prepare the situation

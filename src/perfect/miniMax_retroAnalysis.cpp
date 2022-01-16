@@ -188,7 +188,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
             threadManager.getThreadCount(), FILE_BUFFER_SIZE,
             ssInitArrayFilePath.str().c_str());
         if (initArray->getFileSize() ==
-            (LONGLONG)layerStats[layerNumber].knotsInLayer) {
+            static_cast<LONGLONG>(layerStats[layerNumber].knotsInLayer)) {
             PRINT(2, this,
                   "    Loading init states from file: "
                       << ssInitArrayFilePath.str());
@@ -272,7 +272,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 DWORD MiniMax::initRetroAnalysisThreadProc(void *pParam, uint32_t index)
 {
     // locals
-    const auto iraVars = (InitRetroAnalysisVars *)pParam;
+    const auto iraVars = static_cast<InitRetroAnalysisVars *>(pParam);
     MiniMax *m = iraVars->pMiniMax;
     float floatValue;     // dummy variable for calls of getSituationValue()
     StateAdress curState; // current state counter for loops
@@ -559,7 +559,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
             // check all states of pred. layer
             PRINT(2, this,
                   "    - Do the same for the succeeding layer "
-                      << (int)succState.layerNumber);
+                      << static_cast<int>(succState.layerNumber));
 
             // prepare params for multithreading
             stateProcessedCount = 0;
@@ -608,10 +608,10 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
 DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, uint32_t index)
 {
     // locals
-    const auto ansVars = (AddNumSucceedersVars *)pParam;
+    const auto ansVars = static_cast<AddNumSucceedersVars *>(pParam);
     MiniMax *m = ansVars->pMiniMax;
-    const uint32_t nLayersToCalculate = (uint32_t)ansVars->retroVars
-                                            ->layersToCalculate.size();
+    const uint32_t nLayersToCalculate = static_cast<uint32_t>(
+        ansVars->retroVars->layersToCalculate.size());
     uint32_t curLayerId; // current processed layer within
                          // 'layersToCalculate'
     uint32_t amountOfPred;
@@ -702,7 +702,7 @@ DWORD MiniMax::addNumSucceedersThreadProc(void *pParam, uint32_t index)
 
             curCountLong = *pCountValue;
             const long temp = (curCountLong & mask) >> nBitsToShift;
-            countValue = (CountArrayVarType)temp;
+            countValue = static_cast<CountArrayVarType>(temp);
             if (countValue == 255) {
                 PRINT(0, m, "ERROR: maximum value for Count[] reached!");
                 return TM_RETVAL_TERMINATE_ALL_THREADS;
@@ -798,7 +798,7 @@ bool MiniMax::performRetroAnalysis(retroAnalysisGlobalVars &retroVars)
 DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
 {
     // locals
-    const auto retroVars = (retroAnalysisGlobalVars *)pParam;
+    const auto retroVars = static_cast<retroAnalysisGlobalVars *>(pParam);
     MiniMax *m = retroVars->pMiniMax;
     const uint32_t threadNo = m->threadManager.getThreadNumber();
     RetroAnalysisThreadVars *threadVars = &retroVars->thread[threadNo];
@@ -827,7 +827,7 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
             if (threadNo == 0) {
                 PRINT(0, m,
                       "    Current number of plies: "
-                          << (uint32_t)curNumPlies << "/"
+                          << static_cast<uint32_t>(curNumPlies) << "/"
                           << threadVars->statesToProcess.size());
                 for (threadCounter = 0;
                      threadCounter < m->threadManager.getThreadCount();
@@ -968,7 +968,8 @@ DWORD MiniMax::performRetroAnalysisThreadProc(void *pParam)
                                 curCountLong = *pCountValue;
                                 const long temp = (curCountLong & mask) >>
                                                   nBitsToShift;
-                                countValue = (CountArrayVarType)temp;
+                                countValue = static_cast<CountArrayVarType>(
+                                    temp);
 
                                 if (countValue > 0) {
                                     countValue--;
@@ -1063,7 +1064,8 @@ bool MiniMax::addStateToProcessQueue(const retroAnalysisGlobalVars &retroVars,
             << "andThread=" << threadVars.threadNo << ".dat";
         threadVars.statesToProcess[plyNumber] = new CyclicArray(
             BLOCK_SIZE_IN_CYCLIC_ARRAY * sizeof(StateAdress),
-            (uint32_t)(retroVars.totalKnotCount / BLOCK_SIZE_IN_CYCLIC_ARRAY) +
+            static_cast<uint32_t>(retroVars.totalKnotCount /
+                                  BLOCK_SIZE_IN_CYCLIC_ARRAY) +
                 1,
             ssStatesToProcessFilePath.str().c_str());
         PRINT(4, this,

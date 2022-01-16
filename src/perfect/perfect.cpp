@@ -73,9 +73,9 @@ Move from_perfect_move(uint32_t from, uint32_t to)
     Move ret;
 
     if (to == 24)
-        ret = (Move)-from_perfect_sq(from);
+        ret = static_cast<Move>(-from_perfect_sq(from));
     else if (from == 24)
-        ret = (Move)from_perfect_sq(to);
+        ret = static_cast<Move>(from_perfect_sq(to));
     else
         ret = (Move)(make_move(from_perfect_sq(from), from_perfect_sq(to)));
 
@@ -132,8 +132,8 @@ Move perfect_search()
     // sync_cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << sync_endl;
 
     sync_cout << "\nlast move was from "
-              << (char)(mill->getLastMoveFrom() + 'a') << " to "
-              << (char)(mill->getLastMoveTo() + 'a') << sync_endl;
+              << static_cast<char>(mill->getLastMoveFrom() + 'a') << " to "
+              << static_cast<char>(mill->getLastMoveTo() + 'a') << sync_endl;
     // sync_cout << "\nlast move was from " << (char)(from + 'a') << " to " <<
     // (char)(to + 'a') << sync_endl;
 
@@ -184,7 +184,7 @@ bool perfect_command(const char *cmd)
 
     args = sscanf(cmd, "-(%1u,%1u)", (unsigned *)&file1, (unsigned *)&rank1);
     if (args >= 2) {
-        move = (Move)-make_move(SQ_0, make_square(file1, rank1));
+        move = static_cast<Move>(-make_move(SQ_0, make_square(file1, rank1)));
         return perfect_do_move(move);
     }
 

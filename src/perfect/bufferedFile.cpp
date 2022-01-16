@@ -134,7 +134,8 @@ void BufferedFile::writeDataToFile(HANDLE fd, int64_t offset,
         if (WriteFile(fd, pData, sizeInBytes, &dwBytesWritten, nullptr) ==
             TRUE) {
             restingBytes -= dwBytesWritten;
-            pData = (void *)(((unsigned char *)pData) + dwBytesWritten);
+            pData = static_cast<void *>(((unsigned char *)pData) +
+                                        dwBytesWritten);
             if (restingBytes > 0)
                 cout << endl << "Still " << restingBytes << " to write!";
         } else {
@@ -166,7 +167,7 @@ void BufferedFile::readDataFromFile(HANDLE fd, int64_t offset,
     while (restingBytes > 0) {
         if (ReadFile(fd, pData, sizeInBytes, &dwBytesRead, nullptr) == TRUE) {
             restingBytes -= dwBytesRead;
-            pData = (void *)(((unsigned char *)pData) + dwBytesRead);
+            pData = static_cast<void *>(((unsigned char *)pData) + dwBytesRead);
             if (restingBytes > 0)
                 cout << endl << "Still " << restingBytes << " to read!";
         } else {
@@ -255,7 +256,8 @@ bool BufferedFile::readBytes(uint32_t threadNo, int64_t positionInFile,
         bytesInReadBuf[threadNo] < nBytes) {
         bytesInReadBuf[threadNo] = (positionInFile + bufSize <= fileSize) ?
                                        bufSize :
-                                       (uint32_t)(fileSize - positionInFile);
+                                       static_cast<uint32_t>(fileSize -
+                                                             positionInFile);
         if (bytesInReadBuf[threadNo] < nBytes)
             return false;
         readDataFromFile(

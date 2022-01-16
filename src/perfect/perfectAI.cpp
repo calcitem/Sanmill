@@ -346,7 +346,7 @@ PerfectAI::PerfectAI(const char *dir)
         // calculate mOverN
         for (a = 0; a <= SQUARE_NB; a++) {
             for (b = 0; b <= SQUARE_NB; b++) {
-                mOverN[a][b] = (uint32_t)mOverN_Function(a, b);
+                mOverN[a][b] = static_cast<uint32_t>(mOverN_Function(a, b));
             }
         }
 
@@ -927,8 +927,8 @@ void PerfectAI::play(fieldStruct *theField, uint32_t *pushFrom,
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // start the miniMax-algorithm
-    const auto rootPossibilities = (Possibility *)getBestChoice(
-        threadVars[0].fullTreeDepth, &bestChoice, POSIBILE_MOVE_COUNT_MAX);
+    const auto rootPossibilities = static_cast<Possibility *>(getBestChoice(
+        threadVars[0].fullTreeDepth, &bestChoice, POSIBILE_MOVE_COUNT_MAX));
 
     // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
@@ -1167,7 +1167,7 @@ uint32_t *PerfectAI::ThreadVars::getPossNormalMove(uint32_t *possibilityCount,
 
     // pass possibilities
     if (pPossibilities != nullptr)
-        *pPossibilities = (void *)possibility;
+        *pPossibilities = static_cast<void *>(possibility);
 
     return idPossibility;
 }
@@ -1277,7 +1277,7 @@ void PerfectAI::undo(uint32_t threadNo, uint32_t idPossibility,
 {
     // locals
     ThreadVars *tv = &threadVars[threadNo];
-    const auto oldState = (Backup *)pBackup;
+    const auto oldState = static_cast<Backup *>(pBackup);
 
     // reset old value
     tv->floatValue = oldState->floatValue;
@@ -1519,11 +1519,11 @@ void PerfectAI::move(uint32_t threadNo, uint32_t idPossibility,
     // locals
     ThreadVars *tv = &threadVars[threadNo];
     Backup *oldState = &tv->oldStates[tv->curSearchDepth];
-    const auto tmpPossibility = (Possibility *)pPossibilities;
+    const auto tmpPossibility = static_cast<Possibility *>(pPossibilities);
     Player *tmpPlayer;
 
     // calculate place of piece
-    *pBackup = (void *)oldState;
+    *pBackup = static_cast<void *>(oldState);
     oldState->floatValue = tv->floatValue;
     oldState->shortValue = tv->shortValue;
     oldState->gameHasFinished = tv->gameHasFinished;
@@ -1571,13 +1571,15 @@ void PerfectAI::move(uint32_t threadNo, uint32_t idPossibility,
 
     // calculate value
     if (!opponentsMove)
-        tv->floatValue = (float)tv->field->oppPlayer->removedPiecesCount -
+        tv->floatValue = static_cast<float>(
+                             tv->field->oppPlayer->removedPiecesCount) -
                          tv->field->curPlayer->removedPiecesCount +
                          tv->field->pieceMustBeRemovedCount +
                          tv->field->curPlayer->possibleMovesCount * 0.1f -
                          tv->field->oppPlayer->possibleMovesCount * 0.1f;
     else
-        tv->floatValue = (float)tv->field->curPlayer->removedPiecesCount -
+        tv->floatValue = static_cast<float>(
+                             tv->field->curPlayer->removedPiecesCount) -
                          tv->field->oppPlayer->removedPiecesCount -
                          tv->field->pieceMustBeRemovedCount +
                          tv->field->oppPlayer->possibleMovesCount * 0.1f -
@@ -1609,7 +1611,7 @@ void PerfectAI::storeMoveValue(uint32_t threadNo, uint32_t idPossibility,
     // locals
     const ThreadVars *tv = &threadVars[threadNo];
     uint32_t i;
-    const auto tmpPossibility = (Possibility *)pPossibilities;
+    const auto tmpPossibility = static_cast<Possibility *>(pPossibilities);
 
     if (tv->field->pieceMustBeRemovedCount)
         i = idPossibility;
@@ -1640,16 +1642,18 @@ void PerfectAI::printMoveInfo(uint32_t threadNo, uint32_t idPossibility,
 {
     // locals
     const ThreadVars *tv = &threadVars[threadNo];
-    const auto tmpPossibility = (Possibility *)pPossibilities;
+    const auto tmpPossibility = static_cast<Possibility *>(pPossibilities);
 
     // move
     if (tv->field->pieceMustBeRemovedCount)
-        cout << "remove piece from " << (char)(idPossibility + 97);
+        cout << "remove piece from " << static_cast<char>(idPossibility + 97);
     else if (tv->field->isPlacingPhase)
-        cout << "set piece to " << (char)(idPossibility + 97);
+        cout << "set piece to " << static_cast<char>(idPossibility + 97);
     else
-        cout << "move from " << (char)(tmpPossibility->from[idPossibility] + 97)
-             << " to " << (char)(tmpPossibility->to[idPossibility] + 97);
+        cout << "move from "
+             << static_cast<char>(tmpPossibility->from[idPossibility] + 97)
+             << " to "
+             << static_cast<char>(tmpPossibility->to[idPossibility] + 97);
 }
 
 //-----------------------------------------------------------------------------
@@ -2306,12 +2310,15 @@ bool PerfectAI::ThreadVars::fieldIntegrityOK(
         // Version 8: added for-loop
         noneFullFilled = true;
 
-        for (i = 0; noneFullFilled && i <= (int)nMillsOpponentPlayer &&
-                    i <= (int)nMillsCurPlayer;
+        for (i = 0;
+             noneFullFilled && i <= static_cast<int>(nMillsOpponentPlayer) &&
+             i <= static_cast<int>(nMillsCurPlayer);
              i++) {
-            for (j = 0; noneFullFilled && j <= (int)nMillsOpponentPlayer &&
-                        j <= (int)nMillsCurPlayer -
-                                 (int)field->pieceMustBeRemovedCount;
+            for (j = 0;
+                 noneFullFilled &&
+                 j <= static_cast<int>(nMillsOpponentPlayer) &&
+                 j <= static_cast<int>(nMillsCurPlayer) -
+                          static_cast<int>(field->pieceMustBeRemovedCount);
                  j++) {
                 if (field->curPlayer->pieceCount + nMillsOpponentPlayer + 0 -
                         field->pieceMustBeRemovedCount - j ==

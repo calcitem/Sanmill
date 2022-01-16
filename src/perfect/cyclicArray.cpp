@@ -81,7 +81,8 @@ void CyclicArray::writeDataToFile(HANDLE fd, int64_t offset,
         if (WriteFile(fd, pData, sizeInBytes, &dwBytesWritten, nullptr) ==
             TRUE) {
             restingBytes -= dwBytesWritten;
-            pData = (void *)(((unsigned char *)pData) + dwBytesWritten);
+            pData = static_cast<void *>(((unsigned char *)pData) +
+                                        dwBytesWritten);
             if (restingBytes > 0)
                 cout << std::endl << "Still " << restingBytes << " to write!";
         } else {
@@ -109,7 +110,7 @@ void CyclicArray::readDataFromFile(HANDLE fd, int64_t offset,
     while (restingBytes > 0) {
         if (ReadFile(fd, pData, sizeInBytes, &dwBytesRead, nullptr) == TRUE) {
             restingBytes -= dwBytesRead;
-            pData = (void *)(((unsigned char *)pData) + dwBytesRead);
+            pData = static_cast<void *>(((unsigned char *)pData) + dwBytesRead);
             if (restingBytes > 0)
                 cout << std::endl << "Still " << restingBytes << " to read!";
         } else {
@@ -152,7 +153,8 @@ bool CyclicArray::addBytes(uint32_t nBytes, unsigned char *pData)
 
             // store bock in file
             writeDataToFile(hFile,
-                            ((int64_t)blockSize) * (int64_t)curWritingBlock,
+                            static_cast<int64_t>(blockSize) *
+                                static_cast<int64_t>(curWritingBlock),
                             blockSize, writingBlock);
 
             // set pointer to beginning of writing block
@@ -208,7 +210,8 @@ bool CyclicArray::takeBytes(uint32_t nBytes, unsigned char *pData)
 
                 // read whole block from file
                 readDataFromFile(hFile,
-                                 (int64_t)blockSize * (int64_t)curReadingBlock,
+                                 static_cast<int64_t>(blockSize) *
+                                     static_cast<int64_t>(curReadingBlock),
                                  blockSize, readingBlock);
             }
         }

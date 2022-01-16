@@ -107,7 +107,7 @@ bool MiniMax::testLayer(uint32_t layerNumber)
 DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
 {
     // locals
-    const auto tlVars = (TestLayersVars *)pParam;
+    const auto tlVars = static_cast<TestLayersVars *>(pParam);
     MiniMax *m = tlVars->pMiniMax;
     const uint32_t layerNumber = tlVars->layerNumber;
     const uint32_t stateNumber = index;
@@ -214,8 +214,8 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
             if (m->verbosity > 5) {
                 PRINT(5, m,
                       "layer: " << tmpLayerNumber
-                                << " state: " << tmpStateNumber
-                                << " value: " << (int)subValueInDatabase[i]);
+                                << " state: " << tmpStateNumber << " value: "
+                                << static_cast<int>(subValueInDatabase[i]));
                 m->printBoard(threadNo, subValueInDatabase[i]);
             }
 
@@ -537,15 +537,16 @@ bool MiniMax::testIfSymStatesHaveSameValue(uint32_t layerNumber)
             if (shortValueOfSymState != shortValueInDatabase ||
                 nPliesTillCurState != nPliesTillSymState) {
                 PRINT(2, this,
-                      "current tested state " << stateNumber << " has value "
-                                              << (int)shortValueInDatabase);
+                      "current tested state "
+                          << stateNumber << " has value "
+                          << static_cast<int>(shortValueInDatabase));
                 setSituation(threadNo, layerNumber, stateNumber);
                 printBoard(threadNo, shortValueInDatabase);
 
                 PRINT(1, this, "");
                 PRINT(1, this,
                       "sym state " << symStateNumbers[i] << " has value "
-                                   << (int)shortValueOfSymState);
+                                   << static_cast<int>(shortValueOfSymState));
                 setSituation(threadNo, layerNumber, symStateNumbers[i]);
                 printBoard(threadNo, shortValueOfSymState);
 

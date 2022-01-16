@@ -113,7 +113,8 @@ void MiniMax::saveBytesToFile(HANDLE hFile, int64_t offset, uint32_t nBytes,
         if (WriteFile(hFile, myPointer, restingBytes, &dwBytesWritten,
                       nullptr) == TRUE) {
             restingBytes -= dwBytesWritten;
-            myPointer = (void *)(((unsigned char *)myPointer) + dwBytesWritten);
+            myPointer = static_cast<void *>(((unsigned char *)myPointer) +
+                                            dwBytesWritten);
             if (restingBytes > 0)
                 PRINT(2, this, "Still " << restingBytes << " to write!");
         } else {
@@ -149,7 +150,8 @@ void MiniMax::loadBytesFromFile(HANDLE hFile, int64_t offset, uint32_t nBytes,
         if (ReadFile(hFile, pBytes, restingBytes, &dwBytesRead, nullptr) ==
             TRUE) {
             restingBytes -= dwBytesRead;
-            myPointer = (void *)(((unsigned char *)myPointer) + dwBytesRead);
+            myPointer = static_cast<void *>(((unsigned char *)myPointer) +
+                                            dwBytesRead);
             if (restingBytes > 0) {
                 PRINT(2, this, "Still " << restingBytes << " bytes to read!");
             }
@@ -456,12 +458,12 @@ inline void MiniMax::measureIops(int64_t &nOps, LARGE_INTEGER &interval,
         QueryPerformanceCounter(&curTimeAfter);
         interval.QuadPart += curTimeAfter.QuadPart -
                              curTimeBefore.QuadPart; // ... not thread-safe !!!
-        double totalTimeGone = (double)interval.QuadPart /
+        double totalTimeGone = static_cast<double>(interval.QuadPart) /
                                frequency.QuadPart; // ... not thread-safe !!!
         if (totalTimeGone >= 5.0) {
             PRINT(0, this,
                   text << "operations per second for last interval: "
-                       << (int)(nOps / totalTimeGone));
+                       << static_cast<int>(nOps / totalTimeGone));
             interval.QuadPart = 0; // ... not thread-safe !!!
             nOps = 0;              // ... not thread-safe !!!
         }
@@ -469,8 +471,8 @@ inline void MiniMax::measureIops(int64_t &nOps, LARGE_INTEGER &interval,
         // considered
     } else if (nOps >= MEASURE_TIME_FREQUENCY) {
         QueryPerformanceCounter(&curTimeAfter);
-        double totalTimeGone = (double)(curTimeAfter.QuadPart -
-                                        interval.QuadPart) /
+        double totalTimeGone = static_cast<double>(curTimeAfter.QuadPart -
+                                                   interval.QuadPart) /
                                frequency.QuadPart; // ... not thread-safe !!!
         PRINT(0, this,
               text << "operations per second for last interval: "

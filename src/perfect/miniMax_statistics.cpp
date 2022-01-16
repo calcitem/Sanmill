@@ -117,7 +117,8 @@ bool MiniMax::calcLayerStatistics(const char *statisticsFileName)
          curState.layerNumber < skvfHeader.LayerCount; curState.layerNumber++) {
         // status output
         PRINT(0, this,
-              "Calculating statistics of layer: " << (int)curState.layerNumber);
+              "Calculating statistics of layer: "
+                  << static_cast<int>(curState.layerNumber));
 
         // zero counters
         statsValueCounter[4 * curState.layerNumber + SKV_VALUE_GAME_WON] = 0;
@@ -159,8 +160,8 @@ bool MiniMax::calcLayerStatistics(const char *statisticsFileName)
     }
 
     // write to file and close it
-    WriteFile(statFile, text.c_str(), (DWORD)text.length(), &dwBytesWritten,
-              nullptr);
+    WriteFile(statFile, text.c_str(), static_cast<DWORD>(text.length()),
+              &dwBytesWritten, nullptr);
     CloseHandle(statFile);
     SAFE_DELETE_ARRAY(statsValueCounter);
     return true;
@@ -188,7 +189,7 @@ void MiniMax::ArrayInfoContainer::addArray(uint32_t layerNumber, uint32_t type,
     // notify change
     ArrayInfoChange aic;
     aic.arrayInfo = &listArrays.back();
-    aic.itemIndex = (uint32_t)listArrays.size() - 1;
+    aic.itemIndex = static_cast<uint32_t>(listArrays.size()) - 1;
     arrayInfosToBeUpdated.push_back(aic);
 
     // save pointer of info in vector for direct access
@@ -228,7 +229,8 @@ void MiniMax::ArrayInfoContainer::removeArray(uint32_t layerNumber,
             // notify change
             ArrayInfoChange aic;
             aic.arrayInfo = nullptr;
-            aic.itemIndex = (uint32_t)std::distance(listArrays.begin(), itr);
+            aic.itemIndex = static_cast<uint32_t>(
+                std::distance(listArrays.begin(), itr));
             arrayInfosToBeUpdated.push_back(aic);
 
             // delete tem from list

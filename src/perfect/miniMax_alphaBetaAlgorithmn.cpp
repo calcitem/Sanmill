@@ -125,7 +125,8 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
         ssInvArrayFilePath.str().c_str());
 
     if (invalidArray->getFileSize() ==
-        (LONGLONG)layerStats[alphaBetaVars.layerNumber].knotsInLayer) {
+        static_cast<LONGLONG>(
+            layerStats[alphaBetaVars.layerNumber].knotsInLayer)) {
         PRINT(2, this,
               "  Loading invalid states from file: "
                   << ssInvArrayFilePath.str());
@@ -210,7 +211,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 DWORD MiniMax::initAlphaBetaThreadProc(void *pParam, uint32_t index)
 {
     // locals
-    const auto iabVars = (InitAlphaBetaVars *)pParam;
+    const auto iabVars = static_cast<InitAlphaBetaVars *>(pParam);
     MiniMax *m = iabVars->pMiniMax;
     float floatValue;         // dummy variable for calls of getSituationValue()
     StateAdress curState;     // current state counter for loops
@@ -362,7 +363,7 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
 DWORD MiniMax::runAlphaBetaThreadProc(void *pParam, uint32_t index)
 {
     // locals
-    const auto rabVars = (RunAlphaBetaVars *)pParam;
+    const auto rabVars = static_cast<RunAlphaBetaVars *>(pParam);
     MiniMax *m = rabVars->pMiniMax;
     StateAdress curState;   // current state counter for loops
     Knot root;              //
@@ -427,7 +428,7 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars,
     knot->isOpponentLevel = getOpponentLevel(rabVars->curThreadNo);
     knot->plyInfo = PLYINFO_VALUE_UNCALCULATED;
     knot->shortValue = SKV_VALUE_GAME_DRAWN;
-    knot->floatValue = (float)knot->shortValue;
+    knot->floatValue = static_cast<float>(knot->shortValue);
 
     // evaluate situation, mustn't occur while calculating database
     if (tilLevel == 0) {
@@ -437,7 +438,7 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars,
             PRINT(0, this, "ERROR: tilLevel == 0");
             knot->shortValue = SKV_VALUE_INVALID;
             knot->plyInfo = PLYINFO_VALUE_INVALID;
-            knot->floatValue = (float)knot->shortValue;
+            knot->floatValue = static_cast<float>(knot->shortValue);
             falseOrStop();
         } else {
             getSituationValue(rabVars->curThreadNo, knot->floatValue,
@@ -470,7 +471,7 @@ void MiniMax::letTheTreeGrow(Knot *knot, RunAlphaBetaVars *rabVars,
             if (calcDatabase && knot->shortValue == SKV_VALUE_GAME_DRAWN) {
                 knot->shortValue = SKV_VALUE_INVALID;
                 knot->plyInfo = PLYINFO_VALUE_INVALID;
-                knot->floatValue = (float)knot->shortValue;
+                knot->floatValue = static_cast<float>(knot->shortValue);
             }
 
             // movement is possible
@@ -541,7 +542,7 @@ bool MiniMax::alphaBetaTryDatabase(Knot *knot, const RunAlphaBetaVars *rabVars,
             // {
             knot->shortValue = SKV_VALUE_INVALID;
             knot->plyInfo = PLYINFO_VALUE_INVALID;
-            knot->floatValue = (float)knot->shortValue;
+            knot->floatValue = static_cast<float>(knot->shortValue);
             return true;
         }
 
@@ -575,7 +576,7 @@ bool MiniMax::alphaBetaTryDatabase(Knot *knot, const RunAlphaBetaVars *rabVars,
                 knot->shortValue =
                     skvPerspectiveMatrix[shortKnotValue][PL_TO_MOVE_CHANGED];
             }
-            knot->floatValue = (float)knot->shortValue;
+            knot->floatValue = static_cast<float>(knot->shortValue);
             knot->plyInfo = plyInfo;
             return true;
         }
