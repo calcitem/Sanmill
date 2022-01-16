@@ -60,7 +60,7 @@ bool MiniMax::testLayer(uint32_t layerNumber)
     }
 
     // process each state in the current layer
-    uint32_t returnValue = threadManager.execParallelLoop(
+    const uint32_t returnValue = threadManager.execParallelLoop(
         testLayerThreadProc, (void *)tlVars, sizeof(TestLayersVars),
         TM_SCHED_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
     switch (returnValue) {
@@ -168,7 +168,7 @@ DWORD MiniMax::testLayerThreadProc(void *pParam, unsigned index)
 
     // get number of possibilities
     m->setOpponentLevel(threadNo, false);
-    uint32_t *idPossibility = m->getPossibilities(
+    const uint32_t *idPossibility = m->getPossibilities(
         threadNo, &possibilityCount, &isOpponentLevel, &pPossibilities);
 
     // unable to move
@@ -467,7 +467,7 @@ errorInDatabase:
 bool MiniMax::testIfSymStatesHaveSameValue(uint32_t layerNumber)
 {
     // Locals
-    uint32_t threadNo = 0;
+    const uint32_t threadNo = 0;
     TwoBit shortValueInDatabase;
     TwoBit shortValueOfSymState;
     PlyInfoVarType nPliesTillCurState;

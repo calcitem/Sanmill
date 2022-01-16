@@ -1217,7 +1217,7 @@ uint32_t *PerfectAI::getPossibilities(uint32_t threadNo,
     uint32_t nMillsOpponentPlayer = 0;
 
     // set opponentsMove
-    ThreadVars *tv = &threadVars[threadNo];
+    const ThreadVars *tv = &threadVars[threadNo];
     *opponentsMove = tv->field->curPlayer->id == tv->ownId ? false : true;
 
     // count completed mills
@@ -1384,7 +1384,7 @@ PerfectAI::ThreadVars::updatePossibleMoves(uint32_t piece, Player *pieceOwner,
 {
     // look into every direction
     for (uint32_t direction = 0; direction < MD_NB; direction++) {
-        uint32_t neighbor = field->connectedSquare[piece][direction];
+        const uint32_t neighbor = field->connectedSquare[piece][direction];
 
         // neighbor must exist
         if (neighbor < SQUARE_NB) {
@@ -1776,7 +1776,7 @@ uint32_t PerfectAI::getLayerAndStateNumber(uint32_t threadNo,
                                            uint32_t &layerNum,
                                            uint32_t &stateNumber)
 {
-    ThreadVars *tv = &threadVars[threadNo];
+    const ThreadVars *tv = &threadVars[threadNo];
     return tv->getLayerAndStateNumber(layerNum, stateNumber);
 }
 
@@ -1934,8 +1934,8 @@ bool PerfectAI::setSituation(uint32_t threadNo, uint32_t layerNum,
                                          nPositionsCD[wCD][bCD];
 
     // get stateCD
-    uint32_t stateCD = origStateCD[wCD][bCD][stateNumberWithInCD];
-    uint32_t stateAB = origStateAB[wAB][bAB][stateNumberWithInAB];
+    const uint32_t stateCD = origStateCD[wCD][bCD][stateNumberWithInCD];
+    const uint32_t stateAB = origStateAB[wAB][bAB][stateNumberWithInAB];
 
     // set myField from stateCD and stateAB
     myField[squareIdxGroupA[0]] = (stateAB / powerOfThree[7]) % 3;
@@ -2480,7 +2480,7 @@ void PerfectAI::getPredecessors(uint32_t threadNo, uint32_t *amountOfPred,
     ////////////////////////////////////////////////////////////////////////////
 
     // locals
-    ThreadVars *tv = &threadVars[threadNo];
+    const ThreadVars *tv = &threadVars[threadNo];
     bool aPieceCanBeRemovedFromCurPlayer;
     bool millWasClosed;
     uint32_t from, to, dir, i;

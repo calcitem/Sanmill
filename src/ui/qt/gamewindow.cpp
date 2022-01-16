@@ -1014,8 +1014,8 @@ void MillGameWindow::on_actionEngine_E_triggered()
     spinBox_time2->setValue(time2);
 
     if (dialog->exec() == QDialog::Accepted) {
-        int time1_new = spinBox_time1->value();
-        int time2_new = spinBox_time2->value();
+        const int time1_new = spinBox_time1->value();
+        const int time2_new = spinBox_time2->value();
 
         if (time1 != time1_new || time2 != time2_new) {
             game->setAiDepthTime(time1_new, time2_new);

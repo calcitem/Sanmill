@@ -284,7 +284,7 @@ uint32_t ThreadManager::execInParallel(DWORD threadProc(void *pParam),
 {
     // locals
     uint32_t thd;
-    SIZE_T dwStackSize = 0;
+    const SIZE_T dwStackSize = 0;
 
     // params ok?
     if (pParam == nullptr)
@@ -378,7 +378,7 @@ uint32_t ThreadManager::execParallelLoop(DWORD threadProc(void *pParam,
     int chunkSize;
 
     // initial stack size of each thread. 0 means default size ~1MB
-    SIZE_T dwStackSize = 0;
+    const SIZE_T dwStackSize = 0;
 
     const auto forLoopParams = new ForLoop[threadCount];
     std::memset(forLoopParams, 0, sizeof(ForLoop) * threadCount);

@@ -491,7 +491,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
                                   // 'layersToCalculate'
          curLayerId < retroVars.layersToCalculate.size(); curLayerId++) {
         // set current processed layer number
-        uint32_t layerNumber = retroVars.layersToCalculate[curLayerId];
+        const uint32_t layerNumber = retroVars.layersToCalculate[curLayerId];
         PRINT(0, this,
               "  *** Calculate number of succeeding states for each state of "
               "layer "

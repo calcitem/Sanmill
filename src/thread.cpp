@@ -542,7 +542,7 @@ void ThreadPool::set(size_t requested)
 
 void ThreadPool::clear() const
 {
-    for (Thread *th : *this)
+    for (const Thread *th : *this)
         th->clear();
 }
 

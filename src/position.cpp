@@ -1042,7 +1042,7 @@ int Position::calculate_mobility_diff()
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
         if (board[s] == NO_PIECE || board[s] == BAN_PIECE) {
             for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
-                Square moveSquare = MoveList<LEGAL>::adjacentSquares[s][d];
+                const Square moveSquare = MoveList<LEGAL>::adjacentSquares[s][d];
                 if (moveSquare) {
                     if (board[moveSquare] & W_PIECE) {
                         mobilityWhite++;
