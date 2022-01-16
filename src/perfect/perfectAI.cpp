@@ -1212,7 +1212,7 @@ uint32_t *PerfectAI::getPossibilities(uint32_t threadNo,
                                       void **pPossibilities)
 {
     // locals
-    bool aPieceCanBeRemovedFromCurPlayer = 0;
+    bool aPieceCanBeRemovedFromCurPlayer = false;
     uint32_t nMillsCurPlayer = 0;
     uint32_t nMillsOpponentPlayer = 0;
 
@@ -1238,7 +1238,7 @@ uint32_t *PerfectAI::getPossibilities(uint32_t threadNo,
         !tv->fieldIntegrityOK(nMillsCurPlayer, nMillsOpponentPlayer,
                               aPieceCanBeRemovedFromCurPlayer)) {
         *possibilityCount = 0;
-        return 0;
+        return nullptr;
         // look what is to do
     }
 

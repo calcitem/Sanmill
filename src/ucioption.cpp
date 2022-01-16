@@ -240,10 +240,10 @@ void init(OptionsMap &o)
 std::ostream &operator<<(std::ostream &os, const OptionsMap &om)
 {
     for (size_t idx = 0; idx < om.size(); ++idx)
-        for (const auto &it : om)
-            if (it.second.idx == idx) {
-                const Option &o = it.second;
-                os << "\noption name " << it.first << " type " << o.type;
+        for (const auto &[fst, snd] : om)
+            if (snd.idx == idx) {
+                const Option &o = snd;
+                os << "\noption name " << fst << " type " << o.type;
 
                 if (o.type == "string" || o.type == "check" ||
                     o.type == "combo")

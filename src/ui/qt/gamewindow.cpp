@@ -159,7 +159,7 @@ void MillGameWindow::initialize()
     // Add a new menu bar action
     map<int, QStringList> actions = game->getActions();
 
-    for (auto i = actions.begin(); i != actions.end(); i++) {
+    for (auto i = actions.begin(); i != actions.end(); ++i) {
         // The key of map stores int index value, and value stores rule name and
         // rule prompt
         auto *ruleAction = new QAction(i->second.at(0), this);

@@ -104,7 +104,7 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
     for (uint8_t f = 0; f < FILE_NB; f++) {
         // Draw three boxes
-        painter->drawPolygon(position + f * RANK_NB, RANK_NB);
+        painter->drawPolygon(f * RANK_NB + position, RANK_NB);
     }
 
     // Draw 4 vertical and horizontal lines
