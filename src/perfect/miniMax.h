@@ -406,7 +406,7 @@ public:
 
     // Statistics
     bool calcLayerStatistics(const char *statisticsFileName);
-    uint32_t getThreadCount();
+    uint32_t getThreadCount() const;
 
     // Main function for getting the best choice
     void *getBestChoice(uint32_t tilLevel, uint32_t *choice,

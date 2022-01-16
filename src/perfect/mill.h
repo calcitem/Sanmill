@@ -87,9 +87,9 @@ public:
     void beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
                       int curPlayer);
     bool doMove(uint32_t pushFrom, uint32_t pushTo);
-    void getComputersChoice(uint32_t *pushFrom, uint32_t *pushTo);
+    void getComputersChoice(uint32_t *pushFrom, uint32_t *pushTo) const;
     static bool comparePlayers(const Player *playerA, const Player *playerB);
-    void printBoard();
+    void printBoard() const;
 
     // getter
     [[nodiscard]] bool inPlacingPhase() const { return field.isPlacingPhase; }

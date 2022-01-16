@@ -16,7 +16,7 @@
 // showMemoryStatus()
 //
 //-----------------------------------------------------------------------------
-uint32_t MiniMax::getThreadCount()
+uint32_t MiniMax::getThreadCount() const
 {
     return threadManager.getThreadCount();
 }

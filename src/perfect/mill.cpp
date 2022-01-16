@@ -124,7 +124,7 @@ void Mill::setNextPlayer()
 // getComputersChoice()
 // Returns the move the AI of the current player would do.
 //-----------------------------------------------------------------------------
-void Mill::getComputersChoice(uint32_t *pushFrom, uint32_t *pushTo)
+void Mill::getComputersChoice(uint32_t *pushFrom, uint32_t *pushTo) const
 {
     fieldStruct theField;
     *pushFrom = SQUARE_NB;
@@ -503,7 +503,7 @@ bool Mill::comparePlayers(const Player *playerA, const Player *playerB)
 // Calls the printBoard() function of the current board.
 //       Prints the current game state on the screen.
 //-----------------------------------------------------------------------------
-void Mill::printBoard()
+void Mill::printBoard() const
 {
     field.printBoard();
 }
