@@ -139,7 +139,7 @@ bool MiniMax::initAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_LOST] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_DRAWN] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_INVALID] = 0;
-    ThreadManager::ThreadVarsArray<InitAlphaBetaVars> tva(
+    ThreadManager::ThreadVarsArray tva(
         threadManager.getThreadCount(),
         (InitAlphaBetaVars &)InitAlphaBetaVars(this, &alphaBetaVars,
                                                alphaBetaVars.layerNumber,
@@ -303,7 +303,7 @@ bool MiniMax::runAlphaBeta(AlphaBetaGlobalVars &alphaBetaVars)
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_LOST] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_GAME_DRAWN] = 0;
     alphaBetaVars.statsValueCounter[SKV_VALUE_INVALID] = 0;
-    ThreadManager::ThreadVarsArray<RunAlphaBetaVars> tva(
+    ThreadManager::ThreadVarsArray tva(
         threadManager.getThreadCount(),
         (RunAlphaBetaVars &)RunAlphaBetaVars(this, &alphaBetaVars,
                                              alphaBetaVars.layerNumber));

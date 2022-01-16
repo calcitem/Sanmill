@@ -207,7 +207,7 @@ bool MiniMax::initRetroAnalysis(retroAnalysisGlobalVars &retroVars)
         retroVars.statsValueCounter[SKV_VALUE_GAME_LOST] = 0;
         retroVars.statsValueCounter[SKV_VALUE_GAME_DRAWN] = 0;
         retroVars.statsValueCounter[SKV_VALUE_INVALID] = 0;
-        ThreadManager::ThreadVarsArray<InitRetroAnalysisVars> tva(
+        ThreadManager::ThreadVarsArray tva(
             threadManager.getThreadCount(),
             (InitRetroAnalysisVars &)InitRetroAnalysisVars(
                 this, &retroVars, layerNumber, initArray, initAlreadyDone));
@@ -484,7 +484,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
     // locals
     StateAdress curState;  // current state counter for loops
     StateAdress succState; // current succeeding state counter for loops
-    vector<bool> succCalculated(skvfHeader.LayerCount, false); //
+    vector succCalculated(skvfHeader.LayerCount, false); //
 
     // process each layer
     for (uint32_t curLayerId = 0; // current processed layer within
@@ -502,7 +502,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
             // prepare params for multi threading
             succCalculated[layerNumber] = true;
             stateProcessedCount = 0;
-            ThreadManager::ThreadVarsArray<AddNumSucceedersVars> tva(
+            ThreadManager::ThreadVarsArray tva(
                 threadManager.getThreadCount(),
                 (AddNumSucceedersVars &)AddNumSucceedersVars(this, &retroVars,
                                                              layerNumber));
@@ -563,7 +563,7 @@ bool MiniMax::calcNumSucceeders(retroAnalysisGlobalVars &retroVars)
 
             // prepare params for multithreading
             stateProcessedCount = 0;
-            ThreadManager::ThreadVarsArray<AddNumSucceedersVars> tva(
+            ThreadManager::ThreadVarsArray tva(
                 threadManager.getThreadCount(),
                 (AddNumSucceedersVars &)AddNumSucceedersVars(
                     this, &retroVars, succState.layerNumber));

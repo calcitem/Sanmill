@@ -88,7 +88,7 @@ public:
     bool find(const K &key, V &value) const
     {
         // A shared mutex is used to enable multiple concurrent reads
-        std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+        std::shared_lock lock(mutex_);
         HashNode<K, V> *node = head;
 
 #ifdef DISABLE_HASHBUCKET
@@ -100,7 +100,7 @@ public:
             value = node->getValue();
             return true;
         }
-#else // DISABLE_HASHBUCKET
+#else  // DISABLE_HASHBUCKET
         while (node != nullptr) {
             if (node->getKey() == key) {
                 value = node->getValue();
@@ -119,7 +119,7 @@ public:
     void insert(const K &key, const V &value)
     {
         // Exclusive lock to enable single write in the bucket
-        std::unique_lock<std::shared_timed_mutex> lock(mutex_);
+        std::unique_lock lock(mutex_);
 
 #ifdef DISABLE_HASHBUCKET
         if (head == nullptr) {
@@ -128,7 +128,7 @@ public:
         }
 
         head->setValue(value);
-#else // DISABLE_HASHBUCKET
+#else  // DISABLE_HASHBUCKET
         HashNode<K, V> *prev = nullptr;
         HashNode<K, V> *node = head;
 
@@ -153,7 +153,7 @@ public:
     void erase(const K &key)
     {
         // Exclusive lock to enable single write in the bucket
-        std::unique_lock<std::shared_timed_mutex> lock(mutex_);
+        std::unique_lock lock(mutex_);
 
 #ifdef DISABLE_HASHBUCKET
         if (head == nullptr) {
@@ -165,7 +165,7 @@ public:
             delete head;
             head = nullptr;
         }
-#else // DISABLE_HASHBUCKET
+#else  // DISABLE_HASHBUCKET
         HashNode<K, V> *prev = nullptr;
         HashNode<K, V> *node = head;
 
@@ -191,13 +191,13 @@ public:
     void clear()
     {
         // Exclusive lock to enable single write in the bucket
-        std::unique_lock<std::shared_timed_mutex> lock(mutex_);
+        std::unique_lock lock(mutex_);
 
 #ifdef DISABLE_HASHBUCKET
         if (head != nullptr) {
             delete head;
         }
-#else // DISABLE_HASHBUCKET
+#else  // DISABLE_HASHBUCKET
 
         HashNode<K, V> *prev = nullptr;
         HashNode<K, V> *node = head;
