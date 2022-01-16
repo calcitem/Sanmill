@@ -119,7 +119,7 @@ public:
 
         void *getPointerToArray() const { return static_cast<void *>(item); }
 
-        uint32_t getArraySize() { return sizeof(varType); }
+        static uint32_t getArraySize() { return sizeof(varType); }
 
         void reduce()
         {

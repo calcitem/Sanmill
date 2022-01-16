@@ -87,7 +87,7 @@ public:
                       int curPlayer);
     bool doMove(uint32_t pushFrom, uint32_t pushTo);
     void getComputersChoice(uint32_t *pushFrom, uint32_t *pushTo);
-    bool comparePlayers(const Player *playerA, const Player *playerB);
+    static bool comparePlayers(const Player *playerA, const Player *playerB);
     void printBoard();
 
     // getter

@@ -73,7 +73,7 @@ private slots:
 #if 0
     void on_actionExit_X_triggered();
 #endif
-    void on_actionEdit_E_toggled(bool arg1);
+    static void on_actionEdit_E_toggled(bool arg1);
 #if 0
     void on_actionFlip_F_triggered();
     void on_actionMirror_M_triggered();
@@ -87,7 +87,7 @@ private slots:
     void on_actionLimited_T_triggered();
     void on_actionLocal_L_triggered() const;
     void on_actionEngineFight_E_triggered() const;
-    void on_actionInternet_I_triggered();
+    static void on_actionInternet_I_triggered();
     void on_actionEngine_E_triggered();
 #if 0
     void on_actionEngine1_R_toggled(bool arg1);
@@ -99,9 +99,9 @@ private slots:
     void on_actionAnimation_A_toggled(bool arg1);
     void on_actionAutoRestart_A_triggered();
 #endif
-    void on_actionViewHelp_V_triggered();
-    void on_actionWeb_W_triggered();
-    void on_actionAbout_A_triggered();
+    static void on_actionViewHelp_V_triggered();
+    static void on_actionWeb_W_triggered();
+    static void on_actionAbout_A_triggered();
 
 protected:
     void saveBook(const QString &path);

@@ -123,7 +123,7 @@ public:
 
 private:
     // helper functions
-    char getCharFromPiece(int piece);
+    static char getCharFromPiece(int piece);
     void setConnection(uint32_t index, int firstDirection, int secondDirection,
                        int thirdDirection, int fourthDirection);
     void setNeighbor(uint32_t index, uint32_t firstNeighbor0,

@@ -120,7 +120,7 @@ public:
 
     void reset_bb();
 
-    void create_mill_table();
+    static void create_mill_table();
     [[nodiscard]] int mills_count(Square s) const;
 
     // The number of mills that would be closed by the given move.
@@ -153,7 +153,7 @@ public:
 
     static bool is_star_square(Square s);
 
-    bool bitboard_is_ok();
+    static bool bitboard_is_ok();
 
     // Other helpers
     bool select_piece(Square s);

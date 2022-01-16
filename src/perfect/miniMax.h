@@ -1059,7 +1059,7 @@ private:
                                    uint32_t &maxWonfreqValuesSubMoves,
                                    float &alpha, float &beta);
     void alphaBetaCalcPlyInfo(Knot *knot);
-    void alphaBetaCalcKnotValue(Knot *knot);
+    static void alphaBetaCalcKnotValue(Knot *knot);
     void alphaBetaChooseBestMove(Knot *knot, const RunAlphaBetaVars *rabVars,
                                  uint32_t tilLevel,
                                  const uint32_t *idPossibility,

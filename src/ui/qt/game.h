@@ -88,7 +88,7 @@ public:
     ~Game() override;
 
     //  Main window menu bar details
-    map<int, QStringList> getActions();
+    static map<int, QStringList> getActions();
 
     [[nodiscard]] int getRuleIndex() const noexcept { return ruleIndex; }
 
@@ -111,8 +111,8 @@ public:
 
     Position *getPosition() noexcept { return &position; }
 
-    char color_to_char(Color color);
-    std::string char_to_string(char ch);
+    static char color_to_char(Color color);
+    static std::string char_to_string(char ch);
     void appendGameOverReasonToMoveHistory();
     void setTips();
 
@@ -419,7 +419,7 @@ public:
 
     [[nodiscard]] bool fixWindowSizeEnabled() const { return fixWindowSize; }
 
-    bool soundEnabled() { return hasSound; }
+    static bool soundEnabled() { return hasSound; }
 
     [[nodiscard]] bool animationEnabled() const { return hasAnimation; }
 

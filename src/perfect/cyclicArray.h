@@ -50,10 +50,10 @@ private:
     bool readWriteInSameRound {false};
 
     // Functions
-    void writeDataToFile(HANDLE hFile, int64_t offset, uint32_t sizeInBytes,
-                         void *pData);
-    void readDataFromFile(HANDLE hFile, int64_t offset, uint32_t sizeInBytes,
-                          void *pData);
+    static void writeDataToFile(HANDLE hFile, int64_t offset,
+                                uint32_t sizeInBytes, void *pData);
+    static void readDataFromFile(HANDLE hFile, int64_t offset,
+                                 uint32_t sizeInBytes, void *pData);
 
 public:
     // Constructor / destructor

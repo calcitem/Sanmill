@@ -57,7 +57,7 @@ public slots:
 private:
     void attach();
     void detach();
-    QString createUuidString();
+    static QString createUuidString();
 
     static constexpr int SHARED_MEMORY_SIZE = 4096;
     QSharedMemory sharedMemory;
