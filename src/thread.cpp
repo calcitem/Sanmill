@@ -530,7 +530,7 @@ void ThreadPool::set(size_t requested)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // Reallocate the hash with the new thread pool size
-        TT.resize(static_cast<size_t>(Options["Hash"]));
+        TT.resize(Options["Hash"]);
 #endif
 
         // Init thread number dependent search params.

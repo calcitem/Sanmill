@@ -35,7 +35,7 @@ void on_clear_hash(const Option &)
 void on_hash_size(const Option &o)
 {
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    TT.resize(static_cast<size_t>(o));
+    TT.resize(o);
 #endif
 }
 
@@ -46,17 +46,17 @@ void on_logger(const Option &o)
 
 void on_threads(const Option &o)
 {
-    Threads.set(static_cast<size_t>(o));
+    Threads.set(o);
 }
 
 void on_skill_level(const Option &o)
 {
-    gameOptions.setSkillLevel(static_cast<int>(o));
+    gameOptions.setSkillLevel(o);
 }
 
 void on_move_time(const Option &o)
 {
-    gameOptions.setMoveTime(static_cast<int>(o));
+    gameOptions.setMoveTime(o);
 }
 
 void on_aiIsLazy(const Option &o)
@@ -71,7 +71,7 @@ void on_random_move(const Option &o)
 
 void on_algorithm(const Option &o)
 {
-    gameOptions.setAlgorithm(static_cast<int>(o));
+    gameOptions.setAlgorithm(o);
 }
 
 void on_drawOnHumanExperience(const Option &o)

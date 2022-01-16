@@ -61,8 +61,8 @@ bool MiniMax::testLayer(uint32_t layerNumber)
 
     // process each state in the current layer
     const uint32_t returnValue = threadManager.execParallelLoop(
-        testLayerThreadProc, (void *)tlVars, sizeof(TestLayersVars),
-        TM_SCHED_STATIC, 0, layerStats[layerNumber].knotsInLayer - 1, 1);
+        testLayerThreadProc, tlVars, sizeof(TestLayersVars), TM_SCHED_STATIC, 0,
+        layerStats[layerNumber].knotsInLayer - 1, 1);
     switch (returnValue) {
     case TM_RETVAL_OK:
     case TM_RETVAL_EXEC_CANCELLED:

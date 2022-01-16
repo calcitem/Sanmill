@@ -291,11 +291,8 @@ string UCI::value(Value v)
 
 std::string UCI::square(Square s)
 {
-    return std::string {static_cast<char>('('),
-                        static_cast<char>('0' + file_of(s)),
-                        static_cast<char>(','),
-                        static_cast<char>('0' + rank_of(s)),
-                        static_cast<char>(')')};
+    return std::string {'(', static_cast<char>('0' + file_of(s)), ',',
+                        static_cast<char>('0' + rank_of(s)), ')'};
 }
 
 /// UCI::move() converts a Move to a string in algebraic notation ((1,2), etc.).

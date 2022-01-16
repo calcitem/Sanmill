@@ -77,7 +77,7 @@ Move from_perfect_move(uint32_t from, uint32_t to)
     else if (from == 24)
         ret = static_cast<Move>(from_perfect_sq(to));
     else
-        ret = (Move)(make_move(from_perfect_sq(from), from_perfect_sq(to)));
+        ret = make_move(from_perfect_sq(from), from_perfect_sq(to));
 
     if (ret == MOVE_NONE) {
         assert(false);

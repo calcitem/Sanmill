@@ -1028,7 +1028,7 @@ bool Game::actionPiece(QPointF p)
     if (result) {
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI
         if (gameOptions.getPerfectAiEnabled()) {
-            perfect_command((char *)position.record);
+            perfect_command(position.record);
         }
 #endif
 

@@ -1703,7 +1703,7 @@ uint32_t PerfectAI::getNumberOfKnotsInLayer(uint32_t layerNum)
         return 0;
 
     // another way
-    return (uint32_t)nKnots;
+    return nKnots;
 }
 
 //-----------------------------------------------------------------------------
