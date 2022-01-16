@@ -81,7 +81,7 @@ void CyclicArray::writeDataToFile(HANDLE fd, int64_t offset,
         if (WriteFile(fd, pData, sizeInBytes, &dwBytesWritten, nullptr) ==
             TRUE) {
             restingBytes -= dwBytesWritten;
-            pData = static_cast<void *>(((unsigned char *)pData) +
+            pData = static_cast<void *>(static_cast<unsigned char *>(pData) +
                                         dwBytesWritten);
             if (restingBytes > 0)
                 cout << std::endl << "Still " << restingBytes << " to write!";
@@ -110,7 +110,8 @@ void CyclicArray::readDataFromFile(HANDLE fd, int64_t offset,
     while (restingBytes > 0) {
         if (ReadFile(fd, pData, sizeInBytes, &dwBytesRead, nullptr) == TRUE) {
             restingBytes -= dwBytesRead;
-            pData = static_cast<void *>(((unsigned char *)pData) + dwBytesRead);
+            pData = static_cast<void *>(static_cast<unsigned char *>(pData) +
+                                        dwBytesRead);
             if (restingBytes > 0)
                 cout << std::endl << "Still " << restingBytes << " to read!";
         } else {

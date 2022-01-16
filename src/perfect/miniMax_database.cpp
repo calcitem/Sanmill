@@ -113,8 +113,8 @@ void MiniMax::saveBytesToFile(HANDLE hFile, int64_t offset, uint32_t nBytes,
         if (WriteFile(hFile, myPointer, restingBytes, &dwBytesWritten,
                       nullptr) == TRUE) {
             restingBytes -= dwBytesWritten;
-            myPointer = static_cast<void *>(((unsigned char *)myPointer) +
-                                            dwBytesWritten);
+            myPointer = static_cast<void *>(
+                static_cast<unsigned char *>(myPointer) + dwBytesWritten);
             if (restingBytes > 0)
                 PRINT(2, this, "Still " << restingBytes << " to write!");
         } else {
@@ -150,8 +150,8 @@ void MiniMax::loadBytesFromFile(HANDLE hFile, int64_t offset, uint32_t nBytes,
         if (ReadFile(hFile, pBytes, restingBytes, &dwBytesRead, nullptr) ==
             TRUE) {
             restingBytes -= dwBytesRead;
-            myPointer = static_cast<void *>(((unsigned char *)myPointer) +
-                                            dwBytesRead);
+            myPointer = static_cast<void *>(
+                static_cast<unsigned char *>(myPointer) + dwBytesRead);
             if (restingBytes > 0) {
                 PRINT(2, this, "Still " << restingBytes << " bytes to read!");
             }

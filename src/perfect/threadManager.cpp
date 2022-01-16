@@ -390,7 +390,7 @@ uint32_t ThreadManager::execParallelLoop(DWORD threadProc(void *pParam,
     for (thd = 0; thd < threadCount; thd++) {
         forLoopParams[thd].pParam = (pParam != nullptr ?
                                          static_cast<void *>(
-                                             ((char *)pParam) +
+                                             static_cast<char *>(pParam) +
                                              thd * paramStructSize) :
                                          nullptr);
         forLoopParams[thd].threadManager = this;
