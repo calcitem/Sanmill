@@ -86,7 +86,7 @@ protected slots:
                                                       0);
             if (square == bottomRight && newEmptyRow) {
                 setCurrentIndex(square);
-                QAbstractItemView::scrollToBottom();
+                scrollToBottom();
                 newEmptyRow = false;
             }
         }
