@@ -736,7 +736,7 @@ void MiniMax::alphaBetaCalcKnotValue(Knot *knot)
 // alphaBetaCalcPlyInfo()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::alphaBetaCalcPlyInfo(Knot *knot)
+void MiniMax::alphaBetaCalcPlyInfo(Knot *knot) const
 {
     // locals
     uint32_t i;
@@ -826,7 +826,7 @@ void MiniMax::alphaBetaChooseBestMove(Knot *knot,
                                       const RunAlphaBetaVars *rabVars,
                                       uint32_t tilLevel,
                                       const uint32_t *idPossibility,
-                                      uint32_t maxWonfreqValuesSubMoves)
+                                      uint32_t maxWonfreqValuesSubMoves) const
 {
     // locals
     float dif;

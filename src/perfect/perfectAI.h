@@ -232,36 +232,38 @@ protected:
 
         // Functions
         uint32_t *getPossPlacingPhase(uint32_t *possibilityCount,
-                                      void **pPossibilities);
+                                      void **pPossibilities) const;
         uint32_t *getPossNormalMove(uint32_t *possibilityCount,
-                                    void **pPossibilities);
+                                    void **pPossibilities) const;
         uint32_t *getPossPieceRemove(uint32_t *possibilityCount,
-                                     void **pPossibilities);
+                                     void **pPossibilities) const;
 
         // move functions
         inline void updatePossibleMoves(uint32_t piece, Player *pieceOwner,
                                         bool pieceRemoved,
-                                        uint32_t ignorePiece);
-        inline void updateWarning(uint32_t firstPiece, uint32_t secondPiece);
+                                        uint32_t ignorePiece) const;
+        inline void updateWarning(uint32_t firstPiece,
+                                  uint32_t secondPiece) const;
         inline void setWarning(uint32_t pieceOne, uint32_t pieceTwo,
-                               uint32_t pieceThree);
+                               uint32_t pieceThree) const;
         inline void removePiece(uint32_t from, Backup *backup);
-        inline void setPiece(uint32_t to, Backup *backup);
-        inline void normalMove(uint32_t from, uint32_t to, Backup *backup);
+        inline void setPiece(uint32_t to, Backup *backup) const;
+        inline void normalMove(uint32_t from, uint32_t to,
+                               Backup *backup) const;
 
         // database functions
         uint32_t getLayerAndStateNumber(uint32_t &layerNum,
-                                        uint32_t &stateNumber);
+                                        uint32_t &stateNumber) const;
         void setWarningAndMill(uint32_t piece, uint32_t firstNeighbor,
-                               uint32_t secondNeighbor);
+                               uint32_t secondNeighbor) const;
         bool fieldIntegrityOK(uint32_t nMillsCurPlayer,
                               uint32_t nMillsOpponentPlayer,
-                              bool aPieceCanBeRemovedFromCurPlayer);
-        void generateMoves(Player *player);
+                              bool aPieceCanBeRemovedFromCurPlayer) const;
+        void generateMoves(Player *player) const;
         void storePredecessor(uint32_t nMillsCurPlayer,
                               uint32_t nMillsOpponentPlayer,
                               uint32_t *amountOfPred,
-                              RetroAnalysisPredVars *predVars);
+                              RetroAnalysisPredVars *predVars) const;
     };
 
     ThreadVars *threadVars;
@@ -271,8 +273,9 @@ protected:
     uint32_t getNumberOfKnotsInLayer(uint32_t layerNum) override;
     static int64_t mOverN_Function(uint32_t m, uint32_t n);
     void applySymOpOnField(unsigned char symOpNumber,
-                           const uint32_t *sourceField, uint32_t *destField);
-    bool isSymOpInvariantOnGroupCD(uint32_t symOp, const int *theField);
+                           const uint32_t *sourceField,
+                           uint32_t *destField) const;
+    bool isSymOpInvariantOnGroupCD(uint32_t symOp, const int *theField) const;
     bool shallRetroAnalysisBeUsed(uint32_t layerNum) override;
     void getSuccLayers(uint32_t layerNum, uint32_t *amountOfSuccLayers,
                        uint32_t *succeedingLayers) override;
@@ -321,7 +324,8 @@ public:
     bool setDatabasePath(const char *dir);
     void play(fieldStruct *theField, uint32_t *pushFrom,
               uint32_t *pushTo) override;
-    void getLayerAndStateNumber(uint32_t &layerNum, uint32_t &stateNumber);
+    void getLayerAndStateNumber(uint32_t &layerNum,
+                                uint32_t &stateNumber) const;
 
     // Testing functions
     bool testLayers(uint32_t startTestFromLayer, uint32_t endTestAtLayer);

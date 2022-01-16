@@ -168,7 +168,7 @@ void ThreadManager::waitForOtherThreads(uint32_t threadNo)
 // getThreadCount()
 //
 //-----------------------------------------------------------------------------
-uint32_t ThreadManager::getThreadCount()
+uint32_t ThreadManager::getThreadCount() const
 {
     return threadCount;
 }
@@ -252,7 +252,7 @@ void ThreadManager::uncancelExec()
 // wasExecCancelled()
 //
 //-----------------------------------------------------------------------------
-bool ThreadManager::wasExecCancelled()
+bool ThreadManager::wasExecCancelled() const
 {
     return execCancelled;
 }
@@ -261,7 +261,7 @@ bool ThreadManager::wasExecCancelled()
 // getThreadId()
 // Returns a number from 0 to 'threadCount'-1. Returns 0 if the function fails.
 //-----------------------------------------------------------------------------
-uint32_t ThreadManager::getThreadNumber()
+uint32_t ThreadManager::getThreadNumber() const
 {
     // locals
     const DWORD curThreadId = GetCurrentThreadId();

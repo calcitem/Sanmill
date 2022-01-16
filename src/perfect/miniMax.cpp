@@ -92,7 +92,7 @@ MiniMax::~MiniMax()
 // falseOrStop()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::falseOrStop()
+bool MiniMax::falseOrStop() const
 {
     if (stopOnCriticalError)
         WaitForSingleObject(GetCurrentProcess(), INFINITE);

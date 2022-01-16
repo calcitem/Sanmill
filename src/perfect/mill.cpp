@@ -164,7 +164,7 @@ void Mill::getComputersChoice(uint32_t *pushFrom, uint32_t *pushTo)
 // without jumping.
 //-----------------------------------------------------------------------------
 bool Mill::isNormalMovePossible(uint32_t from, uint32_t to,
-                                const Player *player)
+                                const Player *player) const
 {
     // locals
     uint32_t movingDirection, i;

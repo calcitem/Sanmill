@@ -1018,8 +1018,8 @@ private:
     bool calcLayer(uint32_t layerNumber);
     void unloadPlyInfo(uint32_t layerNumber);
     void unloadLayer(uint32_t layerNumber);
-    void saveHeader(const SkvFileHeader *dbH, const LayerStats *lStats);
-    void saveHeader(const PlyInfoFileHeader *piH, const PlyInfo *pInfo);
+    void saveHeader(const SkvFileHeader *dbH, const LayerStats *lStats) const;
+    void saveHeader(const PlyInfoFileHeader *piH, const PlyInfo *pInfo) const;
     void readKnotValueFromDatabase(uint32_t threadNo, uint32_t &layerNumber,
                                    uint32_t &stateNumber, TwoBit &knotValue,
                                    bool &invalidLayerOrStateNumber,
@@ -1058,12 +1058,12 @@ private:
                                    void *pPossibilities,
                                    uint32_t &maxWonfreqValuesSubMoves,
                                    float &alpha, float &beta);
-    void alphaBetaCalcPlyInfo(Knot *knot);
+    void alphaBetaCalcPlyInfo(Knot *knot) const;
     static void alphaBetaCalcKnotValue(Knot *knot);
     void alphaBetaChooseBestMove(Knot *knot, const RunAlphaBetaVars *rabVars,
                                  uint32_t tilLevel,
                                  const uint32_t *idPossibility,
-                                 uint32_t maxWonfreqValuesSubMoves);
+                                 uint32_t maxWonfreqValuesSubMoves) const;
     void alphaBetaSaveInDatabase(uint32_t threadNo, uint32_t layerNumber,
                                  uint32_t stateNumber, TwoBit knotValue,
                                  PlyInfoVarType plyValue, bool invertValue);
@@ -1092,7 +1092,7 @@ private:
 
     // Progress report functions
     void showLayerStats(uint32_t layerNumber);
-    bool falseOrStop();
+    bool falseOrStop() const;
 };
 
 #endif // MINIMAX_H_INCLUDED

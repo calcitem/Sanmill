@@ -134,14 +134,14 @@ public:
     ~ThreadManager();
 
     // Functions
-    uint32_t getThreadNumber();
-    uint32_t getThreadCount();
+    uint32_t getThreadNumber() const;
+    uint32_t getThreadCount() const;
 
     bool setThreadCount(uint32_t newThreadCount);
     void waitForOtherThreads(uint32_t threadNo);
     void pauseExec();  // un-/suspend all threads
     void cancelExec(); // termineAllThreads auf true
-    bool wasExecCancelled();
+    bool wasExecCancelled() const;
 
     // sets execCancelled to false, otherwise execParallelLoop returns
     // immediately

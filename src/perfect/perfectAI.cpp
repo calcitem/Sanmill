@@ -1061,8 +1061,9 @@ PerfectAI::ThreadVars::ThreadVars()
 // getPossPlacingPhase()
 //
 //-----------------------------------------------------------------------------
-uint32_t *PerfectAI::ThreadVars::getPossPlacingPhase(uint32_t *possibilityCount,
-                                                     void **pPossibilities)
+uint32_t *
+PerfectAI::ThreadVars::getPossPlacingPhase(uint32_t *possibilityCount,
+                                           void **pPossibilities) const
 {
     // locals
     uint32_t i;
@@ -1117,7 +1118,7 @@ uint32_t *PerfectAI::ThreadVars::getPossPlacingPhase(uint32_t *possibilityCount,
 //
 //-----------------------------------------------------------------------------
 uint32_t *PerfectAI::ThreadVars::getPossNormalMove(uint32_t *possibilityCount,
-                                                   void **pPossibilities)
+                                                   void **pPossibilities) const
 {
     // locals
     uint32_t from, to, dir;
@@ -1177,7 +1178,7 @@ uint32_t *PerfectAI::ThreadVars::getPossNormalMove(uint32_t *possibilityCount,
 //
 //-----------------------------------------------------------------------------
 uint32_t *PerfectAI::ThreadVars::getPossPieceRemove(uint32_t *possibilityCount,
-                                                    void **pPossibilities)
+                                                    void **pPossibilities) const
 {
     // locals
     uint32_t i;
@@ -1311,7 +1312,7 @@ void PerfectAI::undo(uint32_t threadNo, uint32_t idPossibility,
 //-----------------------------------------------------------------------------
 inline void PerfectAI::ThreadVars::setWarning(uint32_t pieceOne,
                                               uint32_t pieceTwo,
-                                              uint32_t pieceThree)
+                                              uint32_t pieceThree) const
 {
     // if all 3 fields are occupied by current player than he closed a mill
     if (field->board[pieceOne] == field->curPlayer->id &&
@@ -1339,7 +1340,7 @@ inline void PerfectAI::ThreadVars::setWarning(uint32_t pieceOne,
 //
 //-----------------------------------------------------------------------------
 inline void PerfectAI::ThreadVars::updateWarning(uint32_t firstPiece,
-                                                 uint32_t secondPiece)
+                                                 uint32_t secondPiece) const
 {
     // set warnings
     if (firstPiece < SQUARE_NB)
@@ -1376,10 +1377,10 @@ inline void PerfectAI::ThreadVars::updateWarning(uint32_t firstPiece,
 // updatePossibleMoves()
 //
 //-----------------------------------------------------------------------------
-inline void PerfectAI::ThreadVars::updatePossibleMoves(uint32_t piece,
-                                                       Player *pieceOwner,
-                                                       bool pieceRemoved,
-                                                       uint32_t ignorePiece)
+inline void
+PerfectAI::ThreadVars::updatePossibleMoves(uint32_t piece, Player *pieceOwner,
+                                           bool pieceRemoved,
+                                           uint32_t ignorePiece) const
 {
     // look into every direction
     for (uint32_t direction = 0; direction < MD_NB; direction++) {
@@ -1431,7 +1432,7 @@ inline void PerfectAI::ThreadVars::updatePossibleMoves(uint32_t piece,
 // setPiece()
 //
 //-----------------------------------------------------------------------------
-inline void PerfectAI::ThreadVars::setPiece(uint32_t to, Backup *backup)
+inline void PerfectAI::ThreadVars::setPiece(uint32_t to, Backup *backup) const
 {
     // backup
     backup->from = SQUARE_NB;
@@ -1460,7 +1461,7 @@ inline void PerfectAI::ThreadVars::setPiece(uint32_t to, Backup *backup)
 //
 //-----------------------------------------------------------------------------
 inline void PerfectAI::ThreadVars::normalMove(uint32_t from, uint32_t to,
-                                              Backup *backup)
+                                              Backup *backup) const
 {
     // backup
     backup->from = from;
@@ -1745,7 +1746,7 @@ int64_t PerfectAI::mOverN_Function(uint32_t m, uint32_t n)
 //-----------------------------------------------------------------------------
 void PerfectAI::applySymOpOnField(unsigned char symOpNumber,
                                   const uint32_t *sourceField,
-                                  uint32_t *destField)
+                                  uint32_t *destField) const
 {
     for (uint32_t i = 0; i < SQUARE_NB; i++) {
         destField[i] = sourceField[symOpTable[symOpNumber][i]];
@@ -1783,8 +1784,9 @@ uint32_t PerfectAI::getLayerAndStateNumber(uint32_t threadNo,
 // getLayerAndStateNumber()
 // Current player has white pieces, the opponent the black ones.
 //-----------------------------------------------------------------------------
-uint32_t PerfectAI::ThreadVars::getLayerAndStateNumber(uint32_t &layerNum,
-                                                       uint32_t &stateNumber)
+uint32_t
+PerfectAI::ThreadVars::getLayerAndStateNumber(uint32_t &layerNum,
+                                              uint32_t &stateNumber) const
 {
     // locals
     uint32_t myField[SQUARE_NB];
@@ -2062,7 +2064,7 @@ bool PerfectAI::setSituation(uint32_t threadNo, uint32_t layerNum,
 // generateMoves()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::ThreadVars::generateMoves(Player *player)
+void PerfectAI::ThreadVars::generateMoves(Player *player) const
 {
     // locals
     uint32_t i, k, movingDirection;
@@ -2102,7 +2104,7 @@ void PerfectAI::ThreadVars::generateMoves(Player *player)
 //-----------------------------------------------------------------------------
 void PerfectAI::ThreadVars::setWarningAndMill(uint32_t piece,
                                               uint32_t firstNeighbor,
-                                              uint32_t secondNeighbor)
+                                              uint32_t secondNeighbor) const
 {
     // locals
     const int rowOwner = field->board[piece];
@@ -2153,7 +2155,7 @@ void PerfectAI::printBoard(uint32_t threadNo, unsigned char value)
 //
 //-----------------------------------------------------------------------------
 void PerfectAI::getLayerAndStateNumber(
-    uint32_t &layerNum, uint32_t &stateNumber /*, uint32_t& symOp*/)
+    uint32_t &layerNum, uint32_t &stateNumber /*, uint32_t& symOp*/) const
 {
     /*symOp = */ threadVars[0].getLayerAndStateNumber(layerNum, stateNumber);
 }
@@ -2281,7 +2283,7 @@ void PerfectAI::getSymStateNumWithDoubles(uint32_t threadNo,
 //-----------------------------------------------------------------------------
 bool PerfectAI::ThreadVars::fieldIntegrityOK(
     uint32_t nMillsCurPlayer, uint32_t nMillsOpponentPlayer,
-    bool aPieceCanBeRemovedFromCurPlayer)
+    bool aPieceCanBeRemovedFromCurPlayer) const
 {
     // locals
     int i, j;
@@ -2350,7 +2352,8 @@ bool PerfectAI::ThreadVars::fieldIntegrityOK(
 // isSymOpInvariantOnGroupCD()
 //
 //-----------------------------------------------------------------------------
-bool PerfectAI::isSymOpInvariantOnGroupCD(uint32_t symOp, const int *theField)
+bool PerfectAI::isSymOpInvariantOnGroupCD(uint32_t symOp,
+                                          const int *theField) const
 {
     uint32_t i = squareIdxGroupC[0];
     if (theField[i] != theField[symOpTable[symOp][i]])
@@ -2408,10 +2411,9 @@ bool PerfectAI::isSymOpInvariantOnGroupCD(uint32_t symOp, const int *theField)
 // storePredecessor()
 //
 //-----------------------------------------------------------------------------
-void PerfectAI::ThreadVars::storePredecessor(uint32_t nMillsCurPlayer,
-                                             uint32_t nMillsOpponentPlayer,
-                                             uint32_t *amountOfPred,
-                                             RetroAnalysisPredVars *predVars)
+void PerfectAI::ThreadVars::storePredecessor(
+    uint32_t nMillsCurPlayer, uint32_t nMillsOpponentPlayer,
+    uint32_t *amountOfPred, RetroAnalysisPredVars *predVars) const
 {
     // locals
     int origField[SQUARE_NB];

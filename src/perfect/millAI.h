@@ -53,7 +53,7 @@ public:
     // TODO(calcitem): {SQUARE_INVALID}
     Square posTo[POSIBILE_MOVE_COUNT_MAX] {SQUARE_NB};
 
-    void copyPlayer(Player *dest);
+    void copyPlayer(Player *dest) const;
 };
 
 class fieldStruct
@@ -116,8 +116,8 @@ public:
     Player *curPlayer {nullptr}, *oppPlayer {nullptr};
 
     // useful functions
-    void printBoard();
-    void copyBoard(fieldStruct *dest);
+    void printBoard() const;
+    void copyBoard(fieldStruct *dest) const;
     void createBoard();
     void deleteBoard();
 

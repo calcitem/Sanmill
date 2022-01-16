@@ -183,7 +183,8 @@ bool MiniMax::isCurStateInDatabase(uint32_t threadNo)
 // saveHeader()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::saveHeader(const SkvFileHeader *dbH, const LayerStats *lStats)
+void MiniMax::saveHeader(const SkvFileHeader *dbH,
+                         const LayerStats *lStats) const
 {
     DWORD dwBytesWritten;
     SetFilePointer(hFileShortKnotValues, 0, nullptr, FILE_BEGIN);
@@ -197,7 +198,8 @@ void MiniMax::saveHeader(const SkvFileHeader *dbH, const LayerStats *lStats)
 // saveHeader()
 //
 //-----------------------------------------------------------------------------
-void MiniMax::saveHeader(const PlyInfoFileHeader *piH, const PlyInfo *pInfo)
+void MiniMax::saveHeader(const PlyInfoFileHeader *piH,
+                         const PlyInfo *pInfo) const
 {
     DWORD dwBytesWritten;
     SetFilePointer(hFilePlyInfo, 0, nullptr, FILE_BEGIN);

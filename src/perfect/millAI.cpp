@@ -18,7 +18,7 @@ using namespace std;
 // printBoard()
 //
 //-----------------------------------------------------------------------------
-void fieldStruct::printBoard()
+void fieldStruct::printBoard() const
 {
     // locals
     char c[SQUARE_NB];
@@ -93,7 +93,7 @@ char fieldStruct::getCharFromPiece(int piece)
 // copyBoard()
 // Only copies the values without array creation.
 //-----------------------------------------------------------------------------
-void fieldStruct::copyBoard(fieldStruct *dest)
+void fieldStruct::copyBoard(fieldStruct *dest) const
 {
     this->curPlayer->copyPlayer(dest->curPlayer);
     this->oppPlayer->copyPlayer(dest->oppPlayer);
@@ -119,7 +119,7 @@ void fieldStruct::copyBoard(fieldStruct *dest)
 // copyPlayer()
 // Only copies the values without array creation.
 //-----------------------------------------------------------------------------
-void Player::copyPlayer(Player *dest)
+void Player::copyPlayer(Player *dest) const
 {
     uint32_t i;
 

@@ -71,7 +71,8 @@ private:
     void setNextPlayer();
     void generateMoves(Player *player);
     void updateMillsAndWarnings(uint32_t newPiece);
-    bool isNormalMovePossible(uint32_t from, uint32_t to, const Player *player);
+    bool isNormalMovePossible(uint32_t from, uint32_t to,
+                              const Player *player) const;
     void setWarningAndMill(uint32_t piece, uint32_t firstNeighbor,
                            uint32_t secondNeighbor, bool isNewPiece);
 
