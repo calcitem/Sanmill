@@ -100,7 +100,7 @@ public:
             value = node->getValue();
             return true;
         }
-#else  // DISABLE_HASHBUCKET
+#else // DISABLE_HASHBUCKET
         while (node != nullptr) {
             if (node->getKey() == key) {
                 value = node->getValue();
@@ -128,7 +128,7 @@ public:
         }
 
         head->setValue(value);
-#else  // DISABLE_HASHBUCKET
+#else // DISABLE_HASHBUCKET
         HashNode<K, V> *prev = nullptr;
         HashNode<K, V> *node = head;
 
@@ -165,7 +165,7 @@ public:
             delete head;
             head = nullptr;
         }
-#else  // DISABLE_HASHBUCKET
+#else // DISABLE_HASHBUCKET
         HashNode<K, V> *prev = nullptr;
         HashNode<K, V> *node = head;
 
@@ -197,7 +197,7 @@ public:
         if (head != nullptr) {
             delete head;
         }
-#else  // DISABLE_HASHBUCKET
+#else // DISABLE_HASHBUCKET
 
         HashNode<K, V> *prev = nullptr;
         HashNode<K, V> *node = head;

@@ -360,7 +360,7 @@ void MillGameWindow::initialize()
 #endif
     const int screen_iPhone_SE[] = {640, 1136};
     this->resize(QSize(screen_iPhone_SE[0], screen_iPhone_SE[1]));
-#else  /* QT_MOBILE_APP_UI */
+#else /* QT_MOBILE_APP_UI */
 
     // Fix window size
     if (game->fixWindowSizeEnabled()) {

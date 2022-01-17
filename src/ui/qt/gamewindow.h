@@ -17,6 +17,7 @@
 #ifndef GAMEWINDOW_H_INCLUDED
 #define GAMEWINDOW_H_INCLUDED
 
+#include <QFile>
 #include <QTimer>
 #include <QtWidgets/QMainWindow>
 #include <vector>
