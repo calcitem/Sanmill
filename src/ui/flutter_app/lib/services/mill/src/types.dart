@@ -20,8 +20,6 @@ part of '../mill.dart';
 
 int abs(int value) => value > 0 ? value : -value;
 
-enum _MoveType { place, move, remove }
-
 enum PieceColor { none, white, black, ban, nobody, draw }
 
 extension PieceColorExtension on PieceColor {
@@ -54,7 +52,7 @@ extension PieceColorExtension on PieceColor {
         return S.of(context).draw;
       case PieceColor.ban:
       case PieceColor.nobody:
-        throw Exception("Player has no name");
+        throw UnimplementedError("Player has no name");
     }
   }
 
@@ -70,7 +68,7 @@ extension PieceColorExtension on PieceColor {
         return S.of(context).emptyPoint;
       case PieceColor.nobody:
       case PieceColor.draw:
-        throw Exception("No piece name available");
+        throw UnimplementedError("No piece name available");
     }
   }
 
@@ -94,22 +92,23 @@ extension PieceColorExtension on PieceColor {
       case PieceColor.draw:
         return S.of(context).isDraw;
       case PieceColor.nobody:
-        return controller.position.phase.getTip(context);
+        return MillController().position.phase.getTip(context);
       case PieceColor.none:
       case PieceColor.ban:
     }
   }
 
-  GameResult get result {
+  GameResult? get result {
+    final isAi = MillController().gameInstance._isAi[this]!;
     switch (this) {
       case PieceColor.white:
-        if (controller.gameInstance._isAi[this]!) {
+        if (isAi) {
           return GameResult.lose;
         } else {
           return GameResult.win;
         }
       case PieceColor.black:
-        if (controller.gameInstance._isAi[this]!) {
+        if (isAi) {
           return GameResult.lose;
         } else {
           return GameResult.win;
@@ -117,12 +116,14 @@ extension PieceColorExtension on PieceColor {
       case PieceColor.draw:
         return GameResult.draw;
       default:
-        return GameResult.none;
+        return null;
     }
   }
 
   IconData get icon {
-    return controller.position.phase == Phase.gameOver ? _arrow : _chevron;
+    return MillController().position.phase == Phase.gameOver
+        ? _arrow
+        : _chevron;
   }
 
   IconData get _chevron {
@@ -148,13 +149,11 @@ extension PieceColorExtension on PieceColor {
   }
 }
 
-enum Phase { none, ready, placing, moving, gameOver }
+enum Phase { ready, placing, moving, gameOver }
 
 extension PhaseExtension on Phase {
   String get fen {
     switch (this) {
-      case Phase.none:
-        return "n";
       case Phase.ready:
         return "r";
       case Phase.placing:
@@ -172,7 +171,6 @@ extension PhaseExtension on Phase {
         return S.of(context).tipPlace;
       case Phase.moving:
         return S.of(context).tipMove;
-      case Phase.none:
       case Phase.ready:
       case Phase.gameOver:
     }
@@ -184,14 +182,13 @@ extension PhaseExtension on Phase {
         return S.of(context).placingPhase;
       case Phase.moving:
         return S.of(context).movingPhase;
-      case Phase.none:
       case Phase.ready:
       case Phase.gameOver:
     }
   }
 }
 
-enum Act { none, select, place, remove }
+enum Act { select, place, remove }
 
 extension ActExtension on Act {
   String get fen {
@@ -202,14 +199,12 @@ extension ActExtension on Act {
         return "s";
       case Act.remove:
         return "r";
-      case Act.none:
-        return "?";
     }
   }
 }
 
+// TODO: [Leptopoda] throw this stuff to faster detect a geme over
 enum GameOverReason {
-  none,
   loseLessThanThree,
   loseNoWay,
   loseBoardIsFull,
@@ -244,97 +239,23 @@ extension GameOverReasonExtension on GameOverReason {
         return S.of(context).drawReasonBoardIsFull;
       case GameOverReason.drawThreefoldRepetition:
         return S.of(context).drawReasonThreefoldRepetition;
-      case GameOverReason.none:
-        return S.of(context).gameOverUnknownReason;
     }
   }
 }
 
-enum GameResult { pending, win, lose, draw, none }
+enum GameResult { win, lose, draw }
 
 extension GameResultExtension on GameResult {
   String winString(BuildContext context) {
     switch (this) {
       case GameResult.win:
-        return controller.gameInstance.gameMode == GameMode.humanVsAi
+        return MillController().gameInstance.gameMode == GameMode.humanVsAi
             ? S.of(context).youWin
             : S.of(context).gameOver;
       case GameResult.lose:
         return S.of(context).gameOver;
       case GameResult.draw:
         return S.of(context).isDraw;
-      case GameResult.pending:
-      case GameResult.none:
-        throw Exception("No winning string available");
-    }
-  }
-}
-
-enum _HistoryResponse { equal, outOfRange, error }
-
-extension HistoryResponseExtension on _HistoryResponse {
-  String getString(BuildContext context) {
-    switch (this) {
-      case _HistoryResponse.outOfRange:
-      case _HistoryResponse.equal:
-        return S.of(context).atEnd;
-      case _HistoryResponse.error:
-        return S.of(context).movesAndRulesNotMatch;
-    }
-  }
-}
-
-enum SelectionResponse {
-  ok,
-  illegalAction,
-  illegalPhase,
-  canOnlyMoveToAdjacentEmptyPoints,
-  pleaseSelectOurPieceToMove
-}
-
-enum RemoveResponse {
-  ok,
-  illegalAction,
-  illegalPhase,
-  noPieceToRemove,
-  cannotRemoveOurPiece,
-  cannotRemovePieceFromMill
-}
-
-enum HistoryMove { forwardAll, backAll, forward, backN, backOne }
-
-extension HistoryMoveExtension on HistoryMove {
-  int gotoHistoryIndex([int? amount]) {
-    switch (this) {
-      case HistoryMove.forwardAll:
-        return controller.position.recorder.moveCount - 1;
-      case HistoryMove.backAll:
-        return -1;
-      case HistoryMove.forward:
-        return controller.position.recorder.cur + 1;
-      case HistoryMove.backN:
-        assert(amount != null);
-        int _index = controller.position.recorder.cur - amount!;
-        if (_index < -1) {
-          _index = -1;
-        }
-        return _index;
-      case HistoryMove.backOne:
-        return controller.position.recorder.cur - 1;
-    }
-  }
-
-  Future<void> gotoHistoryPlaySound() async {
-    if (!LocalDatabaseService.preferences.keepMuteWhenTakingBack) {
-      switch (this) {
-        case HistoryMove.forwardAll:
-        case HistoryMove.forward:
-          return Audios.playTone(Sound.place);
-        case HistoryMove.backAll:
-        case HistoryMove.backN:
-        case HistoryMove.backOne:
-          return Audios.playTone(Sound.remove);
-      }
     }
   }
 }
@@ -431,32 +352,6 @@ Map<int, int> indexToSquare = squareToIndex.map((k, v) => MapEntry(v, k));
         1 X --- X --- X 1
           a b c d e f g
  */
-Map<int, String> _squareToWmdNotation = {
-  8: "d5",
-  9: "e5",
-  10: "e4",
-  11: "e3",
-  12: "d3",
-  13: "c3",
-  14: "c4",
-  15: "c5",
-  16: "d6",
-  17: "f6",
-  18: "f4",
-  19: "f2",
-  20: "d2",
-  21: "b2",
-  22: "b4",
-  23: "b6",
-  24: "d7",
-  25: "g7",
-  26: "g4",
-  27: "g1",
-  28: "d1",
-  29: "a1",
-  30: "a4",
-  31: "a7"
-};
 
 Map<String, String> wmdNotationToMove = {
   "d5": "(1,1)",

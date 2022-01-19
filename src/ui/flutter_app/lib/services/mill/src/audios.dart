@@ -16,44 +16,43 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'dart:io';
+part of '../mill.dart';
 
-import 'package:flutter/services.dart';
-import 'package:sanmill/generated/assets/assets.gen.dart';
-import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/services/storage/storage.dart';
-import 'package:soundpool/soundpool.dart';
-
+/// Sounds the [Audios] can play through [Audios.playTone].
 enum Sound { draw, fly, go, illegal, lose, mill, place, remove, select, win }
 
+/// Audio Service
+///
+/// Service providing a unified abstraction to call different audio backends on our supported platforms.
 class Audios {
-  const Audios._();
-  //static AudioPlayer? _player;
-  static final Soundpool _soundpool = Soundpool.fromOptions();
-  static bool _initialized = false;
-  static int _alarmSoundStreamId = 0;
-  static late final int _drawSoundId;
-  static late final int _flySoundId;
-  static late final int _goSoundId;
-  static late final int _illegalSoundId;
-  static late final int _loseSoundId;
-  static late final int _millSoundId;
-  static late final int _placeSoundId;
-  static late final int _removeSoundId;
-  static late final int _selectSoundId;
-  static late final int _winSoundId;
-  static bool isTemporaryMute = false;
+  @visibleForTesting
+  static Audios instance = Audios._();
+
+  factory Audios() => instance;
+
+  Audios._();
+
+  final Soundpool _soundpool = Soundpool.fromOptions();
+  int _alarmSoundStreamId = 0;
+  late final int _drawSoundId;
+  late final int _flySoundId;
+  late final int _goSoundId;
+  late final int _illegalSoundId;
+  late final int _loseSoundId;
+  late final int _millSoundId;
+  late final int _placeSoundId;
+  late final int _removeSoundId;
+  late final int _selectSoundId;
+  late final int _winSoundId;
+  bool _isTemporaryMute = false;
 
   static const _tag = "[audio]";
 
-  static Future<void> loadSounds() async {
+  Future<void> loadSounds() async {
+    assert(!MillController().initialized);
+
     if (Platform.isWindows) {
       logger.w("$_tag Audio Player does not support Windows.");
-      return;
-    }
-
-    if (_initialized) {
-      logger.i("$_tag Audio Player is already initialized.");
       return;
     }
 
@@ -96,11 +95,9 @@ class Audios {
     _winSoundId = await _soundpool.load(
       await rootBundle.load(Assets.audios.win),
     );
-
-    _initialized = true;
   }
 
-  static Future<void> _playSound(Sound sound) async {
+  Future<void> _playSound(Sound sound) async {
     assert(!Platform.isWindows);
 
     final int soundId;
@@ -141,7 +138,7 @@ class Audios {
     _alarmSoundStreamId = await _soundpool.play(soundId);
   }
 
-  static Future<void> _stopSound() async {
+  Future<void> _stopSound() async {
     assert(!Platform.isWindows);
 
     if (_alarmSoundStreamId > 0) {
@@ -149,31 +146,33 @@ class Audios {
     }
   }
 
-  static void disposePool() {
+  void disposePool() {
     assert(!Platform.isWindows);
 
     _soundpool.dispose();
   }
 
-  static Future<void> playTone(Sound sound) async {
-    if (!LocalDatabaseService.preferences.toneEnabled ||
-        isTemporaryMute ||
-        LocalDatabaseService.preferences.screenReaderSupport ||
-        !_initialized) {
+  Future<void> playTone(Sound sound) async {
+    assert(MillController().initialized);
+
+    if (!DB().preferences.toneEnabled ||
+        _isTemporaryMute ||
+        DB().preferences.screenReaderSupport) {
       return;
     }
 
     // If the platform is Windows [_initialized] should be false thus this code shouldn't be executed
     assert(!Platform.isWindows);
 
-    try {
-      await _stopSound();
+    await _stopSound();
+    await _playSound(sound);
+  }
 
-      await _playSound(sound);
-    } catch (e) {
-      // Fallback for all errors
-      logger.e(e.toString());
-      rethrow;
-    }
+  void mute() {
+    _isTemporaryMute = true;
+  }
+
+  void unMute() {
+    _isTemporaryMute = false;
   }
 }

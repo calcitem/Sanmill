@@ -22,20 +22,37 @@ class SettingsCard extends StatelessWidget {
   const SettingsCard({
     Key? key,
     required this.children,
+    required this.title,
   }) : super(key: key);
 
+  final Widget title;
   final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListView.separated(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (_, index) => children[index],
-        separatorBuilder: (_, __) => const Divider(),
-        itemCount: children.length,
-      ),
+    final theme = Theme.of(context);
+    final textStyle = theme.textTheme.headline6!.apply(
+      color: AppTheme.settingsHeaderTextColor,
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        DefaultTextStyle(
+          style: textStyle,
+          textAlign: TextAlign.start,
+          child: title,
+        ),
+        Card(
+          child: ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (_, index) => children[index],
+            separatorBuilder: (_, __) => const Divider(),
+            itemCount: children.length,
+          ),
+        ),
+      ],
     );
   }
 }

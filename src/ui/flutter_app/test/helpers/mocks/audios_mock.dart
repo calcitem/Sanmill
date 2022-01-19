@@ -16,21 +16,22 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of '../painters.dart';
+import 'package:mockito/mockito.dart';
+import 'package:sanmill/services/mill/mill.dart';
 
-abstract class PiecesBasePainter extends CustomPainter {
-  final double width;
+class MockedAudios extends Mock implements Audios {
+  @override
+  Future<void> loadSounds() async {}
 
-  final thePaint = Paint();
-  late final double _squareWidth;
-  late final Offset _offset;
+  @override
+  void disposePool() {}
 
-  PiecesBasePainter({required this.width}) {
-    _squareWidth = (width - AppTheme.boardPadding * 2) / 7;
+  @override
+  Future<void> playTone(Sound sound) async {}
 
-    // equivalent to (width + 12 * AppTheme.boardPadding) / 14
-    final offset = AppTheme.boardPadding + _squareWidth / 2;
+  @override
+  void mute() {}
 
-    _offset = Offset(offset, offset);
-  }
+  @override
+  void unMute() {}
 }

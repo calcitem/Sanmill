@@ -26,22 +26,24 @@ class _PieceWidthSlider extends StatelessWidget {
     return Semantics(
       label: S.of(context).pieceWidth,
       child: ValueListenableBuilder(
-        valueListenable: LocalDatabaseService.listenDisplay,
+        valueListenable: DB().listenDisplay,
         builder: (context, Box<Display> displayBox, _) {
           final Display _display = displayBox.get(
-            LocalDatabaseService.colorSettingsKey,
+            DB.colorSettingsKey,
             defaultValue: const Display(),
           )!;
 
+          // divided by [MigrationValues.pieceWidth] to represent the old behavior
           return Slider(
             value: _display.pieceWidth,
-            min: 0.5,
+            min: 0.5 / MigrationValues.pieceWidth,
+            max: 1.0 / MigrationValues.pieceWidth,
             divisions: 50,
-            label: _display.pieceWidth.toStringAsFixed(1),
+            label: (_display.pieceWidth * MigrationValues.pieceWidth)
+                .toStringAsFixed(2),
             onChanged: (value) {
               logger.v("[config] pieceWidth value: $value");
-              LocalDatabaseService.display =
-                  _display.copyWith(pieceWidth: value);
+              DB().display = _display.copyWith(pieceWidth: value);
             },
           );
         },

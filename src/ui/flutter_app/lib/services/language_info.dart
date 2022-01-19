@@ -60,7 +60,6 @@ import 'package:sanmill/generated/intl/l10n_tr.dart';
 import 'package:sanmill/generated/intl/l10n_uz.dart';
 import 'package:sanmill/generated/intl/l10n_vi.dart';
 import 'package:sanmill/generated/intl/l10n_zh.dart';
-import 'package:sanmill/services/logger.dart';
 
 Map<Locale, String> languageCodeToStrings = {
   const Locale("ar"): SAr().languageName,
@@ -110,17 +109,3 @@ Map<Locale, String> languageCodeToStrings = {
   const Locale.fromSubtags(languageCode: "zh", scriptCode: "Hant"):
       SZhHant().languageName,
 };
-
-String? specialCountryAndRegion;
-
-void setSpecialCountryAndRegion(BuildContext context) {
-  final Locale currentLocale = Localizations.localeOf(context);
-
-  switch (currentLocale.languageCode) {
-    case "fa":
-      specialCountryAndRegion = "Iran";
-      break;
-  }
-
-  logger.i("Set Special Country and Region to $specialCountryAndRegion.");
-}

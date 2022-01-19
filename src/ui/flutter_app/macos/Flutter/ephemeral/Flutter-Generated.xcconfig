@@ -1,0 +1,12 @@
+// This is a generated file; do not edit or check into version control.
+FLUTTER_ROOT=/opt/flutter
+FLUTTER_APPLICATION_PATH=/home/nikolas/Projects/Programming/Android/flutter/Sanmill/src/ui/flutter_app
+COCOAPODS_PARALLEL_CODE_SIGN=true
+FLUTTER_BUILD_DIR=build
+FLUTTER_BUILD_NAME=1.1.38
+FLUTTER_BUILD_NUMBER=2196
+EXCLUDED_ARCHS=arm64
+DART_OBFUSCATION=false
+TRACK_WIDGET_CREATION=false
+TREE_SHAKE_ICONS=false
+PACKAGE_CONFIG=.packages

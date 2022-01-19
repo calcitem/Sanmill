@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 /*
   This file is part of Sanmill.
   Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
@@ -19,14 +21,48 @@
 part of '../mill.dart';
 
 // TODO: [Leptopoda] clean up the file
-// TODO: [Leptopoda] change error handling
-class _ImportService {
+@visibleForTesting
+class ImportService {
   static const _tag = "[Importer]";
-  final MillController controller;
 
-  const _ImportService(this.controller);
+  const ImportService._();
 
-  static String? _wmdNotationToMoveString(String wmd) {
+  /// Exports the game to the devices clipboard.
+  static Future<void> exportGame(BuildContext context) async {
+    Navigator.pop(context);
+
+    await Clipboard.setData(
+      ClipboardData(text: MillController().recorder.moveHistoryText),
+    );
+
+    ScaffoldMessenger.of(context)
+        .showSnackBarClear(S.of(context).moveHistoryCopied);
+  }
+
+  /// Tries to import the game saved in the devices clipboard.
+  static Future<void> importGame(BuildContext context) async {
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).clearSnackBars();
+
+    final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
+
+    if (data?.text == null) return;
+
+    await HistoryNavigator.gotoHistory(HistoryMove.backAll);
+    MillController().reset();
+
+    try {
+      import(data!.text!);
+      await HistoryNavigator.stepForwardAll(context, pop: false);
+
+      MillController().tip.showTip(S.of(context).gameImported, snackBar: true);
+    } on ImportFormatException catch (e) {
+      final tip = S.of(context).cannotImport(e.source as String);
+      MillController().tip.showTip(tip, snackBar: true);
+    }
+  }
+
+  static String _wmdNotationToMoveString(String wmd) {
     if (wmd.length == 3 && wmd[0] == "x") {
       if (wmdNotationToMove[wmd.substring(1, 3)] != null) {
         return "-${wmdNotationToMove[wmd.substring(1, 3)]!}";
@@ -43,13 +79,13 @@ class _ImportService {
     } else if ((wmd.length == 8 && wmd[2] == "-" && wmd[5] == "x") ||
         (wmd.length == 5 && wmd[2] == "x")) {
       logger.w("$_tag Not support parsing format oo-ooxo notation.");
-    } else {
-      logger.e("$_tag Parse notation $wmd failed.");
+      throw ImportFormatException(wmd);
     }
+    throw ImportFormatException(wmd);
   }
 
-  static String? _playOkNotationToMoveString(String playOk) {
-    if (playOk.isEmpty) return null;
+  static String _playOkNotationToMoveString(String playOk) {
+    if (playOk.isEmpty) throw ImportFormatException(playOk);
 
     final iDash = playOk.indexOf("-");
     final iX = playOk.indexOf("x");
@@ -60,8 +96,7 @@ class _ImportService {
       if (val >= 1 && val <= 24) {
         return playOkNotationToMove[playOk]!;
       } else {
-        logger.e("$_tag Parse PlayOK notation $playOk failed.");
-        return null;
+        throw ImportFormatException(playOk);
       }
     }
 
@@ -72,8 +107,7 @@ class _ImportService {
       if (val >= 1 && val <= 24) {
         return "-${playOkNotationToMove[sub]!}";
       } else {
-        logger.e("$_tag Parse PlayOK notation $playOk failed.");
-        return null;
+        throw ImportFormatException(playOk);
       }
     }
     if (iDash != -1 && iX == -1) {
@@ -84,8 +118,7 @@ class _ImportService {
       if (val1 >= 1 && val1 <= 24) {
         move = playOkNotationToMove[sub1];
       } else {
-        logger.e("$_tag Parse PlayOK notation $playOk failed.");
-        return null;
+        throw ImportFormatException(playOk);
       }
 
       final sub2 = playOk.substring(iDash + 1);
@@ -93,13 +126,12 @@ class _ImportService {
       if (val2 >= 1 && val2 <= 24) {
         return "$move->${playOkNotationToMove[sub2]!}";
       } else {
-        logger.e("$_tag Parse PlayOK notation $playOk failed.");
-        return null;
+        throw ImportFormatException(playOk);
       }
     }
 
     logger.w("$_tag Not support parsing format oo-ooxo PlayOK notation.");
-    return null;
+    throw ImportFormatException(playOk);
   }
 
   static bool _isDalmaxMoveList(String text) {
@@ -137,14 +169,14 @@ class _ImportService {
     return false;
   }
 
-// TODO [Leptopoda] make param a List<Move> and change the return type
-  String? import(String moveList) {
-    // TODO: [Leptopoda] clean up
-    controller.position.recorder.clear();
+  @visibleForTesting
+  static void import(String moveList) {
+    var _moveList = moveList;
+
     logger.v("Clipboard text: $moveList");
 
     if (_isDalmaxMoveList(moveList)) {
-      return _importDalmax(moveList);
+      _moveList = moveList.substring(moveList.indexOf("1. "));
     }
 
     if (_isPlayOkMoveList(moveList)) {
@@ -152,11 +184,21 @@ class _ImportService {
     }
 
     if (_isGoldTokenMoveList(moveList)) {
-      return _importGoldToken(moveList);
+      int start = moveList.indexOf("1\t");
+
+      if (start == -1) {
+        start = moveList.indexOf("1 ");
+      }
+
+      if (start == -1) {
+        start = 0;
+      }
+
+      _moveList = moveList.substring(start);
     }
 
-    final List<ExtMove> newHistory = [];
-    final List<String> list = moveList
+    final _GameRecorder newHistory = _GameRecorder();
+    final List<String> list = _moveList
         .toLowerCase()
         .replaceAll("\n", " ")
         .replaceAll(",", " ")
@@ -195,65 +237,37 @@ class _ImportService {
         i = "$i.";
       }
 
-      // TODO: [Leptopdoa] deduplicate
+      // TODO: [Leptopoda] deduplicate
       if (i.isNotEmpty && !i.endsWith(".")) {
         if (i.length == 5 && i[2] == "x") {
           // "a1xc3"
-          final String? m1 = _wmdNotationToMoveString(i.substring(0, 2));
-          if (m1 != null) {
-            newHistory.add(ExtMove(m1));
-          } else {
-            logger.e("Cannot import $i");
-            return i;
-          }
-          final String? m2 = _wmdNotationToMoveString(i.substring(2));
-          if (m2 != null) {
-            newHistory.add(ExtMove(m2));
-          } else {
-            logger.e("Cannot import $i");
-            return i;
-          }
+          final String m1 = _wmdNotationToMoveString(i.substring(0, 2));
+          newHistory.add(ExtMove(m1));
+
+          final String m2 = _wmdNotationToMoveString(i.substring(2));
+          newHistory.add(ExtMove(m2));
         } else if (i.length == 8 && i[2] == "-" && i[5] == "x") {
           // "a1-b2xc3"
-          final String? m1 = _wmdNotationToMoveString(i.substring(0, 5));
-          if (m1 != null) {
-            newHistory.add(ExtMove(m1));
-          } else {
-            logger.e("Cannot import $i");
-            return i;
-          }
-          final String? m2 = _wmdNotationToMoveString(i.substring(5));
-          if (m2 != null) {
-            newHistory.add(ExtMove(m2));
-          } else {
-            logger.e("Cannot import $i");
-            return i;
-          }
+          final String m1 = _wmdNotationToMoveString(i.substring(0, 5));
+          newHistory.add(ExtMove(m1));
+
+          final String m2 = _wmdNotationToMoveString(i.substring(5));
+          newHistory.add(ExtMove(m2));
         } else {
           // no x
-          final String? m = _wmdNotationToMoveString(i);
-          if (m != null) {
-            newHistory.add(ExtMove(m));
-          } else {
-            logger.e("Cannot import $i");
-            return i;
-          }
+          final String m = _wmdNotationToMoveString(i);
+          newHistory.add(ExtMove(m));
         }
       }
     }
 
     if (newHistory.isNotEmpty) {
-      // TODO: [Leptopoda] clean up
-      controller.position.recorder.moves = newHistory;
+      MillController().recorder = newHistory;
     }
   }
 
-  String? _importDalmax(String moveList) {
-    return import(moveList.substring(moveList.indexOf("1. ")));
-  }
-
-  String? _importPlayOk(String moveList) {
-    final List<ExtMove> newHistory = [];
+  static void _importPlayOk(String moveList) {
+    final _GameRecorder newHistory = _GameRecorder();
 
     final List<String> list = moveList
         .replaceAll("\n", " ")
@@ -272,51 +286,20 @@ class _ImportService {
           !i.endsWith("]")) {
         final iX = i.indexOf("x");
         if (iX == -1) {
-          final String? m = _playOkNotationToMoveString(i);
-          if (m != null) {
-            newHistory.add(ExtMove(m));
-          } else {
-            logger.e("Cannot import $i");
-            return i;
-          }
+          final String m = _playOkNotationToMoveString(i);
+          newHistory.add(ExtMove(m));
         } else if (iX != -1) {
-          final String? m1 = _playOkNotationToMoveString(i.substring(0, iX));
-          if (m1 != null) {
-            newHistory.add(ExtMove(m1));
-          } else {
-            logger.e("Cannot import $i");
-            return i;
-          }
-          final String? m2 = _playOkNotationToMoveString(i.substring(iX));
-          if (m2 != null) {
-            newHistory.add(ExtMove(m2));
-          } else {
-            logger.e("Cannot import $i");
-            return i;
-          }
+          final String m1 = _playOkNotationToMoveString(i.substring(0, iX));
+          newHistory.add(ExtMove(m1));
+
+          final String m2 = _playOkNotationToMoveString(i.substring(iX));
+          newHistory.add(ExtMove(m2));
         }
       }
     }
 
     if (newHistory.isNotEmpty) {
-      // TODO: [Leptopoda] clean up
-      controller.position.recorder.moves = newHistory;
+      MillController().recorder = newHistory;
     }
-
-    return null;
-  }
-
-  String? _importGoldToken(String moveList) {
-    int start = moveList.indexOf("1\t");
-
-    if (start == -1) {
-      start = moveList.indexOf("1 ");
-    }
-
-    if (start == -1) {
-      start = 0;
-    }
-
-    return import(moveList.substring(start));
   }
 }

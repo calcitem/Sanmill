@@ -23,6 +23,7 @@ import 'package:flutter/material.dart' show Locale, immutable;
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sanmill/services/storage/adapters/adapters.dart';
+import 'package:sanmill/services/storage/storage.dart';
 
 part 'display.g.dart';
 
@@ -36,7 +37,8 @@ part 'display.g.dart';
 class Display {
   const Display({
     this.languageCode,
-    this.standardNotationEnabled = true,
+    @Deprecated("Until other export options are implemented this setting shouldn't be used")
+        this.standardNotationEnabled = true,
     this.isPieceCountInHandShown = true,
     this.isNotationsShown = false,
     this.isHistoryNavigationToolbarShown = false,
@@ -45,8 +47,8 @@ class Display {
     this.pointStyle,
     @Deprecated("Use [pointStyle] instead.") this.oldPointStyle = 0,
     this.pointWidth = 10.0,
-    this.pieceWidth = 0.9,
-    this.fontSize = 16.0,
+    this.pieceWidth = 0.9 / MigrationValues.pieceWidth,
+    this.fontScale = 1.0,
     this.boardTop = 36.0,
     this.animationDuration = 0.0,
   });
@@ -59,6 +61,9 @@ class Display {
   )
   final Locale? languageCode;
 
+  @Deprecated(
+    "Until other export options are implemented this setting shouldn't be used",
+  )
   @HiveField(1)
   final bool standardNotationEnabled;
 
@@ -95,7 +100,7 @@ class Display {
   final double pieceWidth;
 
   @HiveField(10)
-  final double fontSize;
+  final double fontScale;
 
   @HiveField(11)
   final double boardTop;

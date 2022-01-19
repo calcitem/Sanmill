@@ -18,102 +18,50 @@
 
 part of '../mill.dart';
 
-// TODO
-// TODO: [Leptopoda] the public facing methods look a lot like the ones Iterable has.
-//We might wanna make GameRecorder one.
-class _GameRecorder {
-  // TODO: [Leptopoda] use null
-  int cur = -1;
-  String lastPositionWithRemove;
-  List<ExtMove> moves = <ExtMove>[];
-  final MillController controller;
+class _GameRecorder extends PointedList<ExtMove> {
+  _GameRecorder() : super();
 
-  _GameRecorder(
-    this.controller, {
-    this.cur = -1,
-    required this.lastPositionWithRemove,
-  });
-
-// TODO [Leptopoda] make param a List<Move> and change the return type
-  String? import(String moveList) =>
-      _ImportService(controller).import(moveList);
-
-  void clear() {
-    moves.clear();
-    cur = 0;
-  }
-
-  bool get isClean {
-    return cur == moves.length - 1;
-  }
-
-  void prune() {
-    if (isClean) {
-      return;
+  @override
+  String toString() {
+    final buffer = StringBuffer("[ ");
+    for (final move in this) {
+      buffer.write("${move.move}, ");
     }
 
-    moves.removeRange(cur + 1, moves.length);
+    buffer.write("]");
+
+    return buffer.toString();
   }
 
-  // TODO: [Leptopoda] don't pass around the position object as we can access it through [controller.position]
-  void moveIn(ExtMove extMove, Position position) {
-    if (moves.lastF == extMove) {
-      //assert(false);
-      // TODO: WAR
-      return;
-    }
-
-    moves.add(extMove);
-    cur++;
-
-    if (extMove.type == _MoveType.remove) {
-      lastPositionWithRemove = position._fen;
-    }
-  }
-
-  int get moveCount => moves.length;
-
-  ExtMove? get lastMove => moves.lastF;
-
-  ExtMove? get lastEffectiveMove => cur == -1 ? null : moves[cur];
-
-  String? _buildMoveHistoryText({int cols = 2}) {
-    if (moves.isEmpty) {
-      return null;
-    }
-
+  String? get moveHistoryText {
+    if (isEmpty || index == null) return null;
     final StringBuffer moveHistory = StringBuffer();
-
-    String num = "";
     int k = 1;
-    for (var i = 0; i <= cur; i++) {
-      if (LocalDatabaseService.display.standardNotationEnabled) {
-        if (k % cols == 1) {
-          num = "${(k + 1) ~/ 2}.    ";
-          if (k < 9 * cols) {
-            num = " $num ";
-          }
-        }
-        if (i + 1 <= cur && moves[i + 1].type == _MoveType.remove) {
-          moveHistory.write(
-            "$num${moves[i].notation}${moves[i + 1].notation}    ",
-          );
-          i++;
-        } else {
-          moveHistory.write("$num${moves[i].notation}    ");
-        }
-        k++;
-      } else {
-        moveHistory.write("${i < 9 ? " " : ""}${i + 1}. ${moves[i].move}　");
+    int i = 0;
+
+    void buildStandardNotation() {
+      const separator = "    ";
+
+      if (i <= index!) {
+        moveHistory.write(separator);
+        moveHistory.write(this[i++].notation);
       }
 
-      if (LocalDatabaseService.display.standardNotationEnabled) {
-        if ((k + 1) % cols == 0) moveHistory.writeln();
-      } else {
-        if ((i + 1) % cols == 0) moveHistory.writeln();
+      if (i <= index! && this[i].type == _MoveType.remove) {
+        moveHistory.write(this[i++].notation);
       }
     }
 
-    return moveHistory.toString().replaceAll("    \n", "\n");
+    while (i <= index!) {
+      moveHistory.writeNumber(k++);
+      buildStandardNotation();
+      buildStandardNotation();
+
+      if (i < index!) {
+        moveHistory.writeln();
+      }
+    }
+
+    return moveHistory.toString();
   }
 }

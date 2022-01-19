@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/preferences.dart';
+import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -43,10 +44,9 @@ class PrivacyDialog extends StatelessWidget {
   const PrivacyDialog({Key? key}) : super(key: key);
 
   void _setPrivacyPolicyAccepted() {
-    LocalDatabaseService.preferences = LocalDatabaseService.preferences
-        .copyWith(isPrivacyPolicyAccepted: true);
+    DB().preferences = DB().preferences.copyWith(isPrivacyPolicyAccepted: true);
 
-    debugPrint("[config] isPrivacyPolicyAccepted: true");
+    logger.i("[config] isPrivacyPolicyAccepted: true");
   }
 
   @override
@@ -56,7 +56,7 @@ class PrivacyDialog extends StatelessWidget {
       "The current locale must start with 'zh'",
     );
     assert(
-      !LocalDatabaseService.preferences.isPrivacyPolicyAccepted,
+      !DB().preferences.isPrivacyPolicyAccepted,
       "The privacy policy must not be accepted",
     );
 

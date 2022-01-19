@@ -26,10 +26,10 @@ class _BoardBorderWidthSlider extends StatelessWidget {
     return Semantics(
       label: S.of(context).boardBorderLineWidth,
       child: ValueListenableBuilder(
-        valueListenable: LocalDatabaseService.listenDisplay,
+        valueListenable: DB().listenDisplay,
         builder: (context, Box<Display> displayBox, _) {
           final Display _display = displayBox.get(
-            LocalDatabaseService.colorSettingsKey,
+            DB.colorSettingsKey,
             defaultValue: const Display(),
           )!;
 
@@ -40,8 +40,7 @@ class _BoardBorderWidthSlider extends StatelessWidget {
             label: _display.boardBorderLineWidth.toStringAsFixed(1),
             onChanged: (value) {
               logger.v("[config] BoardBorderLineWidth value: $value");
-              LocalDatabaseService.display =
-                  _display.copyWith(boardBorderLineWidth: value);
+              DB().display = _display.copyWith(boardBorderLineWidth: value);
             },
           );
         },

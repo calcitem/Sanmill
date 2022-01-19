@@ -102,7 +102,7 @@ class _CustomDrawerState extends State<CustomDrawer>
       child: FractionallySizedBox(
         widthFactor: _openRatio,
         child: Material(
-          color: LocalDatabaseService.colorSettings.drawerColor,
+          color: DB().colorSettings.drawerColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -141,7 +141,7 @@ class _CustomDrawerState extends State<CustomDrawer>
       textDirection: Directionality.of(context),
       child: ValueListenableBuilder<CustomDrawerValue>(
         valueListenable: _controller,
-        // TODO: [Leptopdoa] why isn't it working with GestureDetector?
+        // TODO: [Leptopoda] why isn't it working with GestureDetector?
         builder: (_, value, child) => InkWell(
           onTap: _controller.hideDrawer,
           focusColor: Colors.transparent,
@@ -193,10 +193,10 @@ class _CustomDrawerState extends State<CustomDrawer>
         position: _overlaySlideAnimation,
         textDirection: Directionality.of(context),
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.75 - 64,
+          width: MediaQuery.of(context).size.width * _openRatio * 0.9,
           height: 46,
           decoration: BoxDecoration(
-            color: LocalDatabaseService.colorSettings.drawerHighlightItemColor,
+            color: DB().colorSettings.drawerHighlightItemColor,
             borderRadius: const BorderRadiusDirectional.horizontal(
               end: Radius.circular(_overlayRadius),
             ),

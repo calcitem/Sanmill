@@ -19,58 +19,41 @@
 part of './game_page.dart';
 
 class _MoveListDialog extends StatelessWidget {
-  const _MoveListDialog({
-    required this.takeBackCallback,
-    required this.exportGame,
-    Key? key,
-  }) : super(key: key);
-
-  final Function(int) takeBackCallback;
-  final Function(BuildContext context) exportGame;
+  const _MoveListDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final moveHistoryText = controller.position.moveHistoryText!;
-    final end = controller.gameInstance.moveHistory.length - 1;
+    final controller = MillController();
+
+    final moveHistoryText = controller.recorder.moveHistoryText!;
+    final end = controller.recorder.length - 1;
     ScaffoldMessenger.of(context).clearSnackBars();
 
-    return AlertDialog(
-      backgroundColor: AppTheme.moveHistoryDialogBackgroundColor,
-      title: Text(
-        S.of(context).moveList,
-        style: AppTheme.moveHistoryTextStyle,
-      ),
-      content: SingleChildScrollView(
-        child: Text(
-          moveHistoryText,
-          style: AppTheme.moveHistoryTextStyle,
-          textDirection: TextDirection.ltr,
+    return GamePageActionSheet(
+      child: AlertDialog(
+        title: Text(S.of(context).moveList),
+        content: SingleChildScrollView(
+          child: Text(
+            moveHistoryText,
+            textDirection: TextDirection.ltr,
+          ),
         ),
-      ),
-      actions: <Widget>[
-        if (end > 0)
-          TextButton(
-            child: Text(
-              S.of(context).rollback,
-              style: AppTheme.moveHistoryTextStyle,
+        actions: <Widget>[
+          if (end > 0)
+            TextButton(
+              child: Text(S.of(context).rollback),
+              onPressed: () async => _rollback(context, end),
             ),
-            onPressed: () async => _rollback(context, end),
+          TextButton(
+            child: Text(S.of(context).copy),
+            onPressed: () => MillController.export(context),
           ),
-        TextButton(
-          child: Text(
-            S.of(context).copy,
-            style: AppTheme.moveHistoryTextStyle,
+          TextButton(
+            child: Text(S.of(context).cancel),
+            onPressed: () => Navigator.pop(context),
           ),
-          onPressed: () => exportGame(context),
-        ),
-        TextButton(
-          child: Text(
-            S.of(context).cancel,
-            style: AppTheme.moveHistoryTextStyle,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -80,6 +63,7 @@ class _MoveListDialog extends StatelessWidget {
       builder: (context) => NumberPicker(end: end),
     );
     assert(selectValue != null);
-    takeBackCallback(selectValue!);
+    // ignore: use_build_context_synchronously
+    await HistoryNavigator.takeBackN(context, selectValue!);
   }
 }

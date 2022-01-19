@@ -18,38 +18,36 @@
 
 part of './game_page.dart';
 
-class _GameResultAlert extends StatelessWidget {
-  _GameResultAlert({
+class GameResultAlert extends StatelessWidget {
+  GameResultAlert({
     required this.winner,
-    required this.onRestart,
     Key? key,
   }) : super(key: key);
 
-  final GameMode gameMode = controller.gameInstance.gameMode;
+  final GameMode gameMode = MillController().gameInstance.gameMode;
   final PieceColor winner;
-  final VoidCallback onRestart;
 
   static const _tag = "[Game Over Alert]";
 
-  GameResult get _gameResult {
-    if (gameMode == GameMode.aiVsAi) return GameResult.none;
+  GameResult? get _gameResult {
+    if (gameMode == GameMode.aiVsAi) return null;
 
     return winner.result;
   }
 
   @override
   Widget build(BuildContext context) {
-    controller.position.result = _gameResult;
+    final position = MillController().position;
+    position.result = _gameResult;
 
-    final String dialogTitle = _gameResult.winString(context);
+    final String dialogTitle = _gameResult!.winString(context);
 
-    final bool isTopLevel =
-        LocalDatabaseService.preferences.skillLevel == 30; // TODO: 30
+    final bool isTopLevel = DB().preferences.skillLevel == 30; // TODO: 30
 
-    final content = StringBuffer(
-      controller.position.gameOverReason
-          .getName(context, controller.position.winner),
-    );
+    final reason = position.gameOverReason?.getName(context, position.winner) ??
+        S.of(context).gameOverUnknownReason;
+
+    final content = StringBuffer(reason);
 
     logger.v("$_tag Game over reason string: $content");
 
@@ -61,7 +59,7 @@ class _GameResultAlert extends StatelessWidget {
       content.writeln();
       content.writeln(
         S.of(context).challengeHarderLevel(
-              LocalDatabaseService.preferences.skillLevel + 1,
+              DB().preferences.skillLevel + 1,
             ),
       );
 
@@ -71,11 +69,10 @@ class _GameResultAlert extends StatelessWidget {
             S.of(context).yes,
           ),
           onPressed: () async {
-            final _pref = LocalDatabaseService.preferences;
-            LocalDatabaseService.preferences =
-                _pref.copyWith(skillLevel: _pref.skillLevel + 1);
+            final _pref = DB().preferences;
+            DB().preferences = _pref.copyWith(skillLevel: _pref.skillLevel + 1);
             logger.v(
-              "[config] skillLevel: ${LocalDatabaseService.preferences.skillLevel}",
+              "[config] skillLevel: ${DB().preferences.skillLevel}",
             );
 
             Navigator.pop(context);
@@ -92,7 +89,7 @@ class _GameResultAlert extends StatelessWidget {
           child: Text(S.of(context).restart),
           onPressed: () {
             Navigator.pop(context);
-            onRestart.call();
+            MillController().reset();
           },
         ),
         TextButton(

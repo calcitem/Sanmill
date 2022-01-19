@@ -26,7 +26,7 @@ class _ResetSettingsAlert extends StatelessWidget {
   Future<void> _restore(BuildContext context) async {
     Navigator.pop(context);
 
-    await LocalDatabaseService.resetStorage();
+    await DB.resetStorage();
   }
 
   @override

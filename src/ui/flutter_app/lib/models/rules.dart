@@ -16,27 +16,30 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'dart:ui';
+
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:sanmill/services/language_info.dart';
 
 part 'rules.g.dart';
 
 /// Rules data model
 ///
-/// holds the data needed for the Rules Settings
+/// Holds the default rules for the mill game.
+/// Currently supported special rules include [IranRules].
+/// To get the rules corresponding to a given local use [Rules.fromLocale].
 @HiveType(typeId: 3)
 @JsonSerializable()
 @CopyWith()
 @immutable
 class Rules {
-  Rules({
-    int? piecesCount,
+  const Rules({
+    this.piecesCount = 9,
     this.flyPieceCount = 3,
     this.piecesAtLeastCount = 3,
-    bool? hasDiagonalLines,
+    this.hasDiagonalLines = false,
     this.hasBannedLocations = false,
     this.mayMoveInPlacingPhase = false,
     this.isDefenderMoveFirst = false,
@@ -49,21 +52,16 @@ class Rules {
     this.nMoveRule = 100,
     this.endgameNMoveRule = 100,
     this.threefoldRepetitionRule = true,
-  }) {
-    this.piecesCount =
-        piecesCount ?? (specialCountryAndRegion == "Iran" ? 12 : 9);
-    this.hasDiagonalLines =
-        hasDiagonalLines ?? specialCountryAndRegion == "Iran";
-  }
+  });
 
   @HiveField(0)
-  late final int piecesCount;
+  final int piecesCount;
   @HiveField(1)
   final int flyPieceCount;
   @HiveField(2)
   final int piecesAtLeastCount;
   @HiveField(3)
-  late final bool hasDiagonalLines;
+  final bool hasDiagonalLines;
   @HiveField(4)
   final bool hasBannedLocations;
   @HiveField(5)
@@ -94,4 +92,25 @@ class Rules {
 
   /// decodes a Json from a [Rules] object
   Map<String, dynamic> toJson() => _$RulesToJson(this);
+
+  /// Creates a Rules object based on the given locale
+  factory Rules.fromLocale(Locale? locale) {
+    switch (locale?.languageCode) {
+      case "fa":
+        return const IranRules();
+      default:
+        return const Rules();
+    }
+  }
+}
+
+/// Iran Rules
+///
+/// Those rules are the standard Mill rules used in Iran.
+class IranRules extends Rules {
+  const IranRules()
+      : super(
+          piecesCount: 12,
+          hasDiagonalLines: true,
+        );
 }

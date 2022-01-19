@@ -22,30 +22,45 @@ import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/theme/colors.dart';
 
 /// The Apps Theme
+///
+/// Before introducing a new [TextStyle] please have a look at the ones we have in the current [TextTheme].
+///
+/// ```
+/// NAME         SIZE  WEIGHT  SPACING
+/// headline1    96.0  light   -1.5
+/// headline2    60.0  light   -0.5
+/// headline3    48.0  regular  0.0
+/// headline4    34.0  regular  0.25
+/// headline5    24.0  regular  0.0
+/// headline6    20.0  medium   0.15
+/// subtitle1    16.0  regular  0.15
+/// subtitle2    14.0  medium   0.1
+/// body1        16.0  regular  0.5   (bodyText1)
+/// body2        14.0  regular  0.25  (bodyText2)
+/// button       14.0  medium   1.25
+/// caption      12.0  regular  0.4
+/// overline     10.0  regular  1.5
+/// ```
 @immutable
 class AppTheme {
   const AppTheme._();
 
-  // TODO: [Leptopoda] when using a base theme the darkMode is somehow broken ¿?
-
-  /// light theme
+  /// Light theme
   static final lightThemeData = ThemeData(
     brightness: Brightness.light,
     primarySwatch: _appPrimaryColor,
     sliderTheme: _sliderThemeData,
-    textTheme: _textTheme,
     dividerColor: _listItemDividerColor,
     cardTheme: _cardTheme,
     dividerTheme: _dividerTheme,
   );
 
-  /// dark theme
+  /// Dark theme
   static final darkThemeData = ThemeData(
     brightness: Brightness.dark,
     primarySwatch: _appPrimaryColor,
     toggleableActiveColor: _appPrimaryColor,
     sliderTheme: _sliderThemeData,
-    textTheme: _textTheme,
     dividerColor: _listItemDividerColor,
     cardTheme: _cardTheme,
     dividerTheme: _dividerTheme,
@@ -88,40 +103,17 @@ class AppTheme {
     color: _cardColor,
   );
 
-  static final _textTheme = TextTheme(
-    bodyText2: TextStyle(
-      fontSize: LocalDatabaseService.display.fontSize,
-    ),
-  );
-
   static FeedbackThemeData feedbackTheme = FeedbackThemeData(
     activeFeedbackModeColor: _appPrimaryColor,
   );
 
-  static TextStyle simpleDialogOptionTextStyle = TextStyle(
-    fontSize: LocalDatabaseService.display.fontSize + 4.0,
-    color: _simpleDialogOptionTextColor,
-  );
-
-  static TextStyle moveHistoryTextStyle = TextStyle(
-    fontSize: LocalDatabaseService.display.fontSize + 2.0,
-    height: 1.5,
-    color: _moveHistoryTextColor,
-  );
-
-  static TextStyle drawerHeaderTextStyle = TextStyle(
-    fontSize: LocalDatabaseService.display.fontSize + 16,
-    fontWeight: FontWeight.w600,
-  );
-
-  static TextStyle dialogTitleTextStyle = TextStyle(
-    fontSize: LocalDatabaseService.display.fontSize + 4,
+  static const TextStyle dialogTitleTextStyle = TextStyle(
     color: _appPrimaryColor,
   );
 
   static final TextStyle notationTextStyle = TextStyle(
     fontSize: 20,
-    color: LocalDatabaseService.colorSettings.boardLineColor,
+    color: DB().colorSettings.boardLineColor,
   );
 
   static const listTileSubtitleStyle = TextStyle(
@@ -133,37 +125,19 @@ class AppTheme {
   );
 
   static final mainToolbarTextStyle = TextStyle(
-    color: LocalDatabaseService.colorSettings.mainToolbarIconColor,
+    color: DB().colorSettings.mainToolbarIconColor,
   );
 
   static const helpTextStyle = TextStyle(
     color: helpTextColor,
   );
 
-  static const licenseTextStyle = TextStyle(
-    fontFamily: "Monospace",
-    fontSize: 12,
-  );
-
   static const double boardMargin = 10.0;
-  static const double boardScreenPaddingH = 10.0;
   static const double boardBorderRadius = 5.0;
-  static const double boardPadding = 5.0;
-
-  static TextStyle settingsHeaderStyle = TextStyle(
-    color: _settingsHeaderTextColor,
-    fontSize: LocalDatabaseService.display.fontSize + 4,
-  );
-
-  static TextStyle settingsTextStyle = TextStyle(
-    fontSize: LocalDatabaseService.display.fontSize,
-  );
-
+  static const double boardPadding = 25.0;
   static const double sizedBoxHeight = 16.0;
 
   /// Game page
-  static const Color _moveHistoryTextColor = Colors.yellow;
-  static const Color _simpleDialogOptionTextColor = Colors.yellow;
   static const Color whitePieceBorderColor = Color(0xFF660000);
   static const Color blackPieceBorderColor = Color(0xFF222222);
   static const Color moveHistoryDialogBackgroundColor = Colors.transparent;
@@ -173,7 +147,7 @@ class AppTheme {
   static const Color _listItemDividerColor = Color(0x336D000D);
   static const Color _switchListTileTitleColor = UIColors.crusoe;
   static const Color _cardColor = UIColors.floralWhite;
-  static const Color _settingsHeaderTextColor = UIColors.crusoe;
+  static const Color settingsHeaderTextColor = UIColors.crusoe;
   static const Color lightBackgroundColor = UIColors.papayaWhip;
   static const Color listTileSubtitleColor = Color(0x99461220);
 
@@ -186,7 +160,7 @@ class AppTheme {
   /// Drawer
   static const Color drawerDividerColor = Color(0x993A5160);
   static const Color drawerBoxerShadowColor = Color(0x993A5160);
-  // TODO: [Leptopdoa] actually store the theme and not the color
+  // TODO: [Leptopoda] actually store the theme and not the color
   static const Color drawerAnimationIconColor = Colors.white;
   static const Color drawerSplashColor = Color(0X1A9E9E9E);
 }

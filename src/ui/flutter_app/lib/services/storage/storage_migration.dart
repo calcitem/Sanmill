@@ -20,6 +20,19 @@
 
 part of 'package:sanmill/services/storage/storage.dart';
 
+/// Database Migration Values
+///
+/// Values that define how much the DB is altered.
+class MigrationValues {
+  const MigrationValues._();
+
+  /// [Display.pieceWidth] migration value.
+  static const pieceWidth = 7;
+
+  /// [Display.fontScale] migration value.
+  static const fontScale = 16;
+}
+
 /// Database Migrator
 ///
 /// This class provides helper methods to migrate database versions.
@@ -59,14 +72,12 @@ class _DatabaseMigrator {
 
     _databaseBox = await Hive.openBox(_databaseBoxName);
 
-    // TODO: [Leptopoda] don't migrate the db on first startup
-
     _currentVersion = _databaseBox.get(_versionKey) as int?;
 
     if (_currentVersion != null) {
       if (await _DatabaseV1.usesV1) {
         _currentVersion = 0;
-      } else if (LocalDatabaseService.preferences.usesHiveDB) {
+      } else if (DB().preferences.usesHiveDB) {
         _currentVersion = 1;
       }
       logger.v("$_tag: current version is $_currentVersion");
@@ -92,20 +103,22 @@ class _DatabaseMigrator {
 
   /// Migration 1 - Sanmill version 1.1.38+2196 - 2021-11-09
   ///
-  /// - **Algorithm to enum:** Migrates [LocalDatabaseService.preferences] to use the new Algorithm enum instead of an int representation.
-  /// - **Drawer background color:** Migrates [LocalDatabaseService.colorSettings] to merge the drawerBackgroundColor and drawerColor.
+  /// - **Algorithm to enum:** Migrates [DB.preferences] to use the new Algorithm enum instead of an int representation.
+  /// - **Drawer background color:** Migrates [DB.colorSettings] to merge the drawerBackgroundColor and drawerColor.
   /// This reflects the deprecation of drawerBackgroundColor.
-  /// - **Painting STyle:**: Migrates [LocalDatabaseService.display] to use Flutters [PaintingStyle] enum instead of an int representation.
+  /// - **Painting Style:** Migrates [DB.display] to use Flutters [PaintingStyle] enum instead of an int representation.
+  /// - **Piece Width:** Migrates [DB.display] to use a more direct piece width representation so no further calculation is needed.
+  /// - **Font Size:** Migrates [DB.display] store a font scale factor instead of the absolute size.
   static Future<void> _migrateFromV1() async {
     assert(_currentVersion! <= 1);
 
-    final _prefs = LocalDatabaseService.preferences;
-    LocalDatabaseService.preferences = _prefs.copyWith(
+    final _prefs = DB().preferences;
+    DB().preferences = _prefs.copyWith(
       algorithm: Algorithms.values[_prefs.oldAlgorithm],
     );
 
-    final _colorSettings = LocalDatabaseService.colorSettings;
-    LocalDatabaseService.colorSettings = _colorSettings.copyWith(
+    final _colorSettings = DB().colorSettings;
+    DB().colorSettings = _colorSettings.copyWith(
       drawerColor: Color.lerp(
         _colorSettings.drawerColor,
         _colorSettings.drawerBackgroundColor,
@@ -113,12 +126,15 @@ class _DatabaseMigrator {
       )?.withAlpha(0xFF),
     );
 
-    final _display = LocalDatabaseService.display;
-    if (_display.oldPointStyle != 0) {
-      LocalDatabaseService.display = _display.copyWith(
-        pointStyle: PaintingStyle.values[_display.oldPointStyle - 1],
-      );
-    }
+    final _display = DB().display;
+
+    DB().display = _display.copyWith(
+      pointStyle: (_display.oldPointStyle != 0)
+          ? PaintingStyle.values[_display.oldPointStyle - 1]
+          : null,
+      pieceWidth: _display.pieceWidth / MigrationValues.pieceWidth,
+      fontScale: _display.fontScale / MigrationValues.fontScale,
+    );
 
     logger.v("$_tag migrated from v1");
   }
@@ -173,10 +189,10 @@ class _DatabaseV1 {
 
     final _json = await _loadFile(_file!);
     if (_json != null) {
-      LocalDatabaseService.colorSettings = ColorSettings.fromJson(_json);
-      LocalDatabaseService.display = Display.fromJson(_json);
-      LocalDatabaseService.preferences = Preferences.fromJson(_json);
-      LocalDatabaseService.rules = Rules.fromJson(_json);
+      DB().colorSettings = ColorSettings.fromJson(_json);
+      DB().display = Display.fromJson(_json);
+      DB().preferences = Preferences.fromJson(_json);
+      DB().rules = Rules.fromJson(_json);
     }
     await _deleteFile(_file);
   }

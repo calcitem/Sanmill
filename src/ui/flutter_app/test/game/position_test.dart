@@ -16,30 +16,30 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/screens/home.dart';
+import 'package:sanmill/services/mill/mill.dart';
+import 'package:sanmill/services/storage/storage.dart';
+
+import '../helpers/mocks/audios_mock.dart';
+import '../helpers/mocks/storage_mock.dart';
+import '../helpers/test_mills.dart';
 
 void main() {
-  Widget makeTestableWidget({required Widget child, required Locale locale}) {
-    return MaterialApp(
-      localizationsDelegates: S.localizationsDelegates,
-      supportedLocales: S.supportedLocales,
-      locale: locale,
-      home: child,
-    );
-  }
+  group("Position", () {
+    test("_movesSinceLastRemove should output the moves since last remove",
+        () async {
+      const testMill = WinLessThanThreeGame();
 
-  testWidgets("Widget", (WidgetTester tester) async {
-    const _screen = Home();
-    await tester.pumpWidget(
-      makeTestableWidget(
-        child: _screen,
-        locale: const Locale("en"),
-      ),
-    );
-    await tester.pump();
-    expect(find.text("Mill"), findsOneWidget);
+      // initialize the test
+      DB.instance = MockedDB();
+      Audios.instance = MockedAudios();
+      final controller = MillController();
+      controller.gameInstance.gameMode = GameMode.humanVsHuman;
+
+      // import a game
+      ImportService.import(testMill.export);
+
+      expect(controller.position.movesSinceLastRemove, testMill.movesSinceRemove);
+    });
   });
 }

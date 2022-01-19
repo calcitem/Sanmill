@@ -18,36 +18,102 @@
 
 part of '../mill.dart';
 
-// TODO: [Leptopoda] add constructor
-final MillController controller = MillController();
-
-// TODO: [Leptopoda] maybe make this a utility class ¿?
+/// Mill Controller
+///
+/// A singleton class that holds all objects and methods needed to play Mill.
+///
+/// Controlls:
+/// * the tip [HeaderTipState]
+/// * the engine [Engine]
+/// * the position [Position]
+/// * the game instance [_Game]
+/// * the recorder [_GameRecorder]
 class MillController {
   static const _tag = "[Controller]";
 
-  late final _Game gameInstance;
-  late final Position position;
-  late final Engine engine;
-  // late _GameRecorder recorder;
+  late _Game gameInstance;
+  late Position position;
+  late Engine engine;
+  late HeaderTipState tip;
+  late _GameRecorder recorder;
 
   bool _initialized = false;
   bool get initialized => _initialized;
 
-  MillController() {
-    gameInstance = _Game(this);
-    position = Position(this);
-    engine = NativeEngine(this);
+  @visibleForTesting
+  static MillController instance = MillController._();
+
+  factory MillController() => instance;
+
+  /// Mill Controller
+  ///
+  /// A singleton class that holds all objects and methods needed to play Mill.
+  ///
+  /// Controlls:
+  /// * the tip [HeaderTipState]
+  /// * the engine [Engine]
+  /// * the position [Position]
+  /// * the game instance [_Game]
+  /// * the recorder [_GameRecorder]
+  ///
+  /// All listed objects should not be crated outside of this scope.
+  MillController._() {
+    _init();
   }
 
+  /// Starts up the controller. It will initialize the audio subsystem and heat the engine.
   Future<void> start() async {
     if (_initialized) return;
 
     await engine.startup();
+    await Audios().loadSounds();
 
     _initialized = true;
     logger.i("$_tag initialized");
   }
 
+  /// Resets the controller.
+  ///
+  /// This method is suitable to use for starting a new game.
+  void reset() {
+    final gameModeBak = gameInstance.gameMode;
+    _init();
+    gameInstance.gameMode = gameModeBak;
+  }
+
+  /// Starts the current game.
+  ///
+  /// This method is suitable to use for starting a new game.
+  void _startGame() {
+    // TODO: [Leptopoda] reimplement this
+    // MillController().tip.showTip(S.of(context).gameStarted, snackBar: true);
+    //
+    // if (controller.gameInstance.isAiToMove) {
+    //   logger.i("$_tag New game, AI to move.");
+    //   engineToGo(isMoveNow: false);
+    // }
+  }
+
+  /// Initializes the controller.
+  void _init() {
+    position = Position();
+    gameInstance = _Game();
+    engine = Engine();
+    recorder = _GameRecorder();
+    tip = HeaderTipState();
+
+    _startGame();
+  }
+
+  /// Starts a game import.
+  static Future<void> import(BuildContext context) async =>
+      ImportService.importGame(context);
+
+  /// Starts a game export.
+  static Future<void> export(BuildContext context) async =>
+      ImportService.exportGame(context);
+
+  /// Disposes the current controller and shuts down the engine.
   void dispose() {
     engine.shutdown();
 

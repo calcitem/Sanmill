@@ -55,8 +55,8 @@ Future<void> showPrivacyDialog(BuildContext context) async {
   final String privacyPolicyURL = Constants.privacyPolicyURL.urlZh;
 
   Future<void> _setPrivacyPolicyAccepted({required bool value}) async {
-    LocalDatabaseService.preferences = LocalDatabaseService.preferences
-        .copyWith(isPrivacyPolicyAccepted: value);
+    DB().preferences =
+        DB().preferences.copyWith(isPrivacyPolicyAccepted: value);
 
     logger.v("[config] isPrivacyPolicyAccepted: $value");
   }

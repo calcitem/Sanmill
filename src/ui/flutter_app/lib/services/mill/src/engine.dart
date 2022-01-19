@@ -16,23 +16,19 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of '../../mill.dart';
+part of '../mill.dart';
 
-// TODO: [Leptopoda] make this a utility class. There shouldn't be multiple engines running
 // TODO: [calcitem] Test AI Vs. AI when the refactoring is complete.
-class NativeEngine extends Engine {
-  final MillController controller;
-
-  NativeEngine(this.controller);
+class Engine {
+  Engine();
 
   static const _platform = MethodChannel("com.calcitem.sanmill/engine");
   bool _isActive = false;
 
   static const _tag = "[engine]";
 
-  @override
   Future<void> startup() async {
-    LocalDatabaseService.listenPreferences.addListener(() => setOptions());
+    DB().listenPreferences.addListener(() => setOptions());
 
     await _platform.invokeMethod("startup");
     await _waitResponse(["uciok"]);
@@ -52,9 +48,8 @@ class NativeEngine extends Engine {
     return _platform.invokeMethod("read");
   }
 
-  @override
   Future<void> shutdown() async {
-    LocalDatabaseService.listenPreferences.removeListener(() => setOptions());
+    DB().listenPreferences.removeListener(() => setOptions());
 
     _isActive = false;
     await _platform.invokeMethod("shutdown");
@@ -69,14 +64,13 @@ class NativeEngine extends Engine {
     }
   }
 
-  @override
-  Future<EngineResponse> search(Position? position) async {
+  Future<ExtMove> search({bool moveNow = false}) async {
     if (await _isThinking()) {
       await _stopSearching();
     }
 
-    if (position != null) {
-      await _send(_getPositionFen(position));
+    if (!moveNow) {
+      await _send(_getPositionFen());
       await _send("go");
       _isActive = true;
     } else {
@@ -85,7 +79,7 @@ class NativeEngine extends Engine {
 
     final response = await _waitResponse(["bestmove", "nobestmove"]);
     if (response == null) {
-      return EngineResponse(EngineResponseType.timeout);
+      throw EngineTimeOut();
     }
 
     logger.v("$_tag response: $response");
@@ -96,14 +90,14 @@ class NativeEngine extends Engine {
       final pos = best.indexOf(" ");
       if (pos > -1) best = best.substring(0, pos);
 
-      return EngineResponse(EngineResponseType.move, value: ExtMove(best));
+      return ExtMove(best);
     }
 
     if (response.startsWith("nobestmove")) {
-      return EngineResponse(EngineResponseType.nobestmove);
+      throw const EngineNoBestMove();
     }
 
-    return EngineResponse(EngineResponseType.timeout);
+    throw EngineTimeOut();
   }
 
   Future<String?> _waitResponse(
@@ -111,7 +105,7 @@ class NativeEngine extends Engine {
     int sleep = 100,
     int times = 0,
   }) async {
-    final _pref = LocalDatabaseService.preferences;
+    final _pref = DB().preferences;
 
     var timeLimit = EnvironmentConfig.devMode ? 100 : 6000;
 
@@ -131,7 +125,7 @@ class NativeEngine extends Engine {
       // TODO: [Leptopoda] seems like is isActive only checked here and only together with the DevMode.
       // we might be able to remove this
       if (EnvironmentConfig.devMode && _isActive) {
-        throw Exception("$_tag waitResponse timeout.");
+        throw TimeoutException("$_tag waitResponse timeout.");
       }
       return null;
     }
@@ -160,12 +154,11 @@ class NativeEngine extends Engine {
     await _send("stop");
   }
 
-  @override
   Future<void> setOptions() async {
     logger.i("$_tag reloaded engine options");
 
-    final _pref = LocalDatabaseService.preferences;
-    final _rules = LocalDatabaseService.rules;
+    final _pref = DB().preferences;
+    final _rules = DB().rules;
 
     await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
     await _sendOptions("Algorithm", _pref.algorithm?.index ?? 2);
@@ -208,17 +201,99 @@ class NativeEngine extends Engine {
     );
   }
 
-  // TODO: [Leptopoda] don't pass around the position object as we can access it through [controller.position]
-  String _getPositionFen(Position position) {
-    final startPosition = position.lastPositionWithRemove;
-    final moves = position._movesSinceLastRemove;
+  String _getPositionFen() {
+    final startPosition = MillController().position._fen;
+    final moves = MillController().position.movesSinceLastRemove;
 
-    final StringBuffer posFenStr = StringBuffer("position fen $startPosition");
+    final posFenStr = StringBuffer("position fen $startPosition");
 
     if (moves != null) {
       posFenStr.write(" moves $moves");
     }
 
     return posFenStr.toString();
+  }
+}
+
+enum GameMode {
+  humanVsAi,
+  humanVsHuman,
+  aiVsAi,
+
+  /// Not Implemented
+  humanVsCloud,
+
+  /// Not Implemented
+  humanVsLAN,
+
+  /// Not Implemented
+  testViaLAN,
+}
+
+extension GameModeExtension on GameMode {
+  IconData get leftHeaderIcon {
+    switch (this) {
+      case GameMode.humanVsAi:
+        if (DB().preferences.aiMovesFirst) {
+          return FluentIcons.bot_24_filled;
+        } else {
+          return FluentIcons.person_24_filled;
+        }
+      case GameMode.humanVsHuman:
+        return FluentIcons.person_24_filled;
+
+      case GameMode.aiVsAi:
+        return FluentIcons.bot_24_filled;
+      case GameMode.humanVsCloud:
+        return FluentIcons.person_24_filled;
+      case GameMode.humanVsLAN:
+        return FluentIcons.person_24_filled;
+      case GameMode.testViaLAN:
+        return FluentIcons.wifi_1_24_filled;
+    }
+  }
+
+  IconData get rightHeaderIcon {
+    switch (this) {
+      case GameMode.humanVsAi:
+        if (DB().preferences.aiMovesFirst) {
+          return FluentIcons.person_24_filled;
+        } else {
+          return FluentIcons.bot_24_filled;
+        }
+      case GameMode.humanVsHuman:
+        return FluentIcons.person_24_filled;
+      case GameMode.aiVsAi:
+        return FluentIcons.bot_24_filled;
+      case GameMode.humanVsCloud:
+        return FluentIcons.cloud_24_filled;
+      case GameMode.humanVsLAN:
+        return FluentIcons.wifi_1_24_filled;
+      case GameMode.testViaLAN:
+        return FluentIcons.wifi_1_24_filled;
+    }
+  }
+
+  Map<PieceColor, bool> get whoIsAI {
+    switch (this) {
+      case GameMode.humanVsAi:
+      case GameMode.testViaLAN:
+        return {
+          PieceColor.white: DB().preferences.aiMovesFirst,
+          PieceColor.black: !DB().preferences.aiMovesFirst,
+        };
+      case GameMode.humanVsHuman:
+      case GameMode.humanVsLAN:
+      case GameMode.humanVsCloud:
+        return {
+          PieceColor.white: false,
+          PieceColor.black: false,
+        };
+      case GameMode.aiVsAi:
+        return {
+          PieceColor.white: true,
+          PieceColor.black: true,
+        };
+    }
   }
 }

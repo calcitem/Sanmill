@@ -27,6 +27,7 @@ void _initUI() {
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
 
+// TODO: [Leptopoda] use layoutbuilder to add adaptiveness
   if (Platform.isAndroid && Constants.isLargeScreen) {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(

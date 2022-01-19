@@ -25,7 +25,6 @@ import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
-import 'package:sanmill/shared/custom_spacer.dart';
 import 'package:sanmill/shared/settings/settings.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
@@ -55,7 +54,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
   void setPointStyle(BuildContext context, Display _display) {
     void _callback(PaintingStyle? pointStyle) {
       Navigator.pop(context);
-      LocalDatabaseService.display = pointStyle == null
+      DB().display = pointStyle == null
           ? _display.copyWithNull(pointStyle: true)
           : _display.copyWith(pointStyle: pointStyle);
 
@@ -100,9 +99,9 @@ class PersonalizationSettingsPage extends StatelessWidget {
     Navigator.pop(context);
 
     if (locale == null) {
-      LocalDatabaseService.display = _display.copyWithNull(languageCode: true);
+      DB().display = _display.copyWithNull(languageCode: true);
     } else {
-      LocalDatabaseService.display = _display.copyWith(languageCode: locale);
+      DB().display = _display.copyWith(languageCode: locale);
     }
 
     logger.v("[config] languageCode = $locale");
@@ -110,102 +109,98 @@ class PersonalizationSettingsPage extends StatelessWidget {
 
   Widget _buildColor(BuildContext context, Box<ColorSettings> colorBox, _) {
     final ColorSettings _colorSettings = colorBox.get(
-      LocalDatabaseService.colorSettingsKey,
+      DB.colorSettingsKey,
       defaultValue: const ColorSettings(),
     )!;
 
     return SettingsCard(
+      title: Text(S.of(context).color),
       children: <Widget>[
         SettingsListTile.color(
           titleString: S.of(context).boardColor,
-          value: LocalDatabaseService.colorSettings.boardBackgroundColor,
-          onChanged: (val) => LocalDatabaseService.colorSettings =
+          value: DB().colorSettings.boardBackgroundColor,
+          onChanged: (val) => DB().colorSettings =
               _colorSettings.copyWith(boardBackgroundColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).backgroundColor,
-          value: LocalDatabaseService.colorSettings.darkBackgroundColor,
-          onChanged: (val) => LocalDatabaseService.colorSettings =
+          value: DB().colorSettings.darkBackgroundColor,
+          onChanged: (val) => DB().colorSettings =
               _colorSettings.copyWith(darkBackgroundColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).lineColor,
-          value: LocalDatabaseService.colorSettings.boardLineColor,
-          onChanged: (val) => LocalDatabaseService.colorSettings =
-              _colorSettings.copyWith(boardLineColor: val),
+          value: DB().colorSettings.boardLineColor,
+          onChanged: (val) =>
+              DB().colorSettings = _colorSettings.copyWith(boardLineColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).whitePieceColor,
-          value: LocalDatabaseService.colorSettings.whitePieceColor,
-          onChanged: (val) => LocalDatabaseService.colorSettings =
+          value: DB().colorSettings.whitePieceColor,
+          onChanged: (val) => DB().colorSettings =
               _colorSettings.copyWith(whitePieceColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).blackPieceColor,
-          value: LocalDatabaseService.colorSettings.blackPieceColor,
-          onChanged: (val) => LocalDatabaseService.colorSettings =
+          value: DB().colorSettings.blackPieceColor,
+          onChanged: (val) => DB().colorSettings =
               _colorSettings.copyWith(blackPieceColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).pieceHighlightColor,
-          value: LocalDatabaseService.colorSettings.pieceHighlightColor,
-          onChanged: (val) => LocalDatabaseService.colorSettings =
+          value: DB().colorSettings.pieceHighlightColor,
+          onChanged: (val) => DB().colorSettings =
               _colorSettings.copyWith(pieceHighlightColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).messageColor,
-          value: LocalDatabaseService.colorSettings.messageColor,
-          onChanged: (val) => LocalDatabaseService.colorSettings =
-              _colorSettings.copyWith(messageColor: val),
+          value: DB().colorSettings.messageColor,
+          onChanged: (val) =>
+              DB().colorSettings = _colorSettings.copyWith(messageColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).drawerColor,
-          value: LocalDatabaseService.colorSettings.drawerColor,
-          onChanged: (val) => LocalDatabaseService.colorSettings =
-              _colorSettings.copyWith(drawerColor: val),
+          value: DB().colorSettings.drawerColor,
+          onChanged: (val) =>
+              DB().colorSettings = _colorSettings.copyWith(drawerColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).drawerTextColor,
-          value: LocalDatabaseService.colorSettings.drawerTextColor,
-          onChanged: (val) => LocalDatabaseService.colorSettings =
+          value: DB().colorSettings.drawerTextColor,
+          onChanged: (val) => DB().colorSettings =
               _colorSettings.copyWith(drawerTextColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).drawerHighlightItemColor,
-          value: LocalDatabaseService.colorSettings.drawerHighlightItemColor,
-          onChanged: (val) =>
-              LocalDatabaseService.colorSettings = _colorSettings.copyWith(
+          value: DB().colorSettings.drawerHighlightItemColor,
+          onChanged: (val) => DB().colorSettings = _colorSettings.copyWith(
             drawerHighlightItemColor: val,
           ),
         ),
         SettingsListTile.color(
           titleString: S.of(context).mainToolbarBackgroundColor,
-          value: LocalDatabaseService.colorSettings.mainToolbarBackgroundColor,
-          onChanged: (val) =>
-              LocalDatabaseService.colorSettings = _colorSettings.copyWith(
+          value: DB().colorSettings.mainToolbarBackgroundColor,
+          onChanged: (val) => DB().colorSettings = _colorSettings.copyWith(
             mainToolbarBackgroundColor: val,
           ),
         ),
         SettingsListTile.color(
           titleString: S.of(context).mainToolbarIconColor,
-          value: LocalDatabaseService.colorSettings.mainToolbarIconColor,
-          onChanged: (val) => LocalDatabaseService.colorSettings =
+          value: DB().colorSettings.mainToolbarIconColor,
+          onChanged: (val) => DB().colorSettings =
               _colorSettings.copyWith(mainToolbarIconColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).navigationToolbarBackgroundColor,
-          value: LocalDatabaseService
-              .colorSettings.navigationToolbarBackgroundColor,
-          onChanged: (val) =>
-              LocalDatabaseService.colorSettings = _colorSettings.copyWith(
+          value: DB().colorSettings.navigationToolbarBackgroundColor,
+          onChanged: (val) => DB().colorSettings = _colorSettings.copyWith(
             navigationToolbarBackgroundColor: val,
           ),
         ),
         SettingsListTile.color(
           titleString: S.of(context).navigationToolbarIconColor,
-          value: LocalDatabaseService.colorSettings.navigationToolbarIconColor,
-          onChanged: (val) =>
-              LocalDatabaseService.colorSettings = _colorSettings.copyWith(
+          value: DB().colorSettings.navigationToolbarIconColor,
+          onChanged: (val) => DB().colorSettings = _colorSettings.copyWith(
             navigationToolbarIconColor: val,
           ),
         ),
@@ -215,14 +210,15 @@ class PersonalizationSettingsPage extends StatelessWidget {
 
   Widget _buildDisplay(BuildContext context, Box<Display> displayBox, _) {
     final Display _display = displayBox.get(
-      LocalDatabaseService.colorSettingsKey,
+      DB.colorSettingsKey,
       defaultValue: const Display(),
     )!;
     return SettingsCard(
+      title: Text(S.of(context).display),
       children: <Widget>[
         SettingsListTile(
           titleString: S.of(context).language,
-          trailingString: LocalDatabaseService.display.languageCode != null
+          trailingString: DB().display.languageCode != null
               ? languageCodeToStrings[_display.languageCode]
               : null,
           onTap: () => showDialog(
@@ -235,19 +231,19 @@ class PersonalizationSettingsPage extends StatelessWidget {
         ),
         SettingsListTile.switchTile(
           value: _display.isPieceCountInHandShown,
-          onChanged: (val) => LocalDatabaseService.display =
-              _display.copyWith(isPieceCountInHandShown: val),
+          onChanged: (val) =>
+              DB().display = _display.copyWith(isPieceCountInHandShown: val),
           titleString: S.of(context).isPieceCountInHandShown,
         ),
         SettingsListTile.switchTile(
           value: _display.isNotationsShown,
-          onChanged: (val) => LocalDatabaseService.display =
-              _display.copyWith(isNotationsShown: val),
+          onChanged: (val) =>
+              DB().display = _display.copyWith(isNotationsShown: val),
           titleString: S.of(context).isNotationsShown,
         ),
         SettingsListTile.switchTile(
           value: _display.isHistoryNavigationToolbarShown,
-          onChanged: (val) => LocalDatabaseService.display =
+          onChanged: (val) => DB().display =
               _display.copyWith(isHistoryNavigationToolbarShown: val),
           titleString: S.of(context).isHistoryNavigationToolbarShown,
         ),
@@ -283,12 +279,6 @@ class PersonalizationSettingsPage extends StatelessWidget {
           titleString: S.of(context).animationDuration,
           onTap: () => setAnimationDuration(context),
         ),
-        SettingsListTile.switchTile(
-          value: LocalDatabaseService.display.standardNotationEnabled,
-          onChanged: (val) => LocalDatabaseService.display =
-              _display.copyWith(standardNotationEnabled: val),
-          titleString: S.of(context).standardNotation,
-        ),
       ],
     );
   }
@@ -301,25 +291,17 @@ class PersonalizationSettingsPage extends StatelessWidget {
         leading: DrawerIcon.of(context)?.icon,
         title: Text(S.of(context).personalization),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(S.of(context).display, style: AppTheme.settingsHeaderStyle),
-            ValueListenableBuilder(
-              valueListenable: LocalDatabaseService.listenDisplay,
-              builder: _buildDisplay,
-            ),
-            const CustomSpacer(),
-            Text(S.of(context).color, style: AppTheme.settingsHeaderStyle),
-            // TODO [Leptopoda]: remove the value listenable as we access the ColorSettings via Them.of(constant)
-            ValueListenableBuilder(
-              valueListenable: LocalDatabaseService.listenColorSettings,
-              builder: _buildColor,
-            ),
-          ],
-        ),
+      body: SettingsList(
+        children: [
+          ValueListenableBuilder(
+            valueListenable: DB().listenDisplay,
+            builder: _buildDisplay,
+          ),
+          ValueListenableBuilder(
+            valueListenable: DB().listenColorSettings,
+            builder: _buildColor,
+          ),
+        ],
       ),
     );
   }

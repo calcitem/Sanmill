@@ -26,10 +26,10 @@ class _BoardTopSlider extends StatelessWidget {
     return Semantics(
       label: S.of(context).boardTop,
       child: ValueListenableBuilder(
-        valueListenable: LocalDatabaseService.listenDisplay,
+        valueListenable: DB().listenDisplay,
         builder: (context, Box<Display> displayBox, _) {
           final Display _display = displayBox.get(
-            LocalDatabaseService.colorSettingsKey,
+            DB.colorSettingsKey,
             defaultValue: const Display(),
           )!;
 
@@ -40,7 +40,7 @@ class _BoardTopSlider extends StatelessWidget {
             label: _display.boardTop.toStringAsFixed(1),
             onChanged: (value) {
               logger.v("[config] AnimationDuration value: $value");
-              LocalDatabaseService.display = _display.copyWith(boardTop: value);
+              DB().display = _display.copyWith(boardTop: value);
             },
           );
         },

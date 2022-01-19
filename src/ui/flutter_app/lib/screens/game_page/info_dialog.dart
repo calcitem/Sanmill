@@ -19,14 +19,10 @@
 part of './game_page.dart';
 
 class _InfoDialog extends StatelessWidget {
-  const _InfoDialog({
-    required this.tip,
-    Key? key,
-  }) : super(key: key);
-
-  final String tip;
+  const _InfoDialog({Key? key}) : super(key: key);
 
   String _infoText(BuildContext context) {
+    final controller = MillController();
     final buffer = StringBuffer();
     final pos = controller.position;
 
@@ -46,18 +42,18 @@ class _InfoDialog extends StatelessWidget {
 
     buffer.write(pos.phase.getName(context));
 
-    if (LocalDatabaseService.preferences.screenReaderSupport) {
+    if (DB().preferences.screenReaderSupport) {
       buffer.writeln(":");
     } else {
       buffer.writeln();
     }
 
-    final String? n1 = controller.position.recorder.lastMove?.notation;
+    final String? n1 = controller.recorder.current?.notation;
     // Last Move information
     if (n1 != null) {
       // $them is only shown with the screen reader. It is convenient for
       // the disabled to recognize whether the opponent has finished the moving.
-      if (LocalDatabaseService.preferences.screenReaderSupport) {
+      if (DB().preferences.screenReaderSupport) {
         buffer.write(S.of(context).lastMove("$them, "));
       } else {
         buffer.write(S.of(context).lastMove(""));
@@ -65,8 +61,7 @@ class _InfoDialog extends StatelessWidget {
 
       if (n1.startsWith("x")) {
         buffer.writeln(
-          controller.position.recorder
-              .moves[controller.position.recorder.moveCount - 2].notation,
+          controller.recorder[controller.recorder.length - 2].notation,
         );
       }
       buffer.writePeriod(n1);
@@ -74,8 +69,10 @@ class _InfoDialog extends StatelessWidget {
 
     buffer.writePeriod(S.of(context).sideToMove(us));
 
+    final String tip = MillController().tip.message ?? S.of(context).welcome;
+
     // the tip
-    if (LocalDatabaseService.preferences.screenReaderSupport &&
+    if (DB().preferences.screenReaderSupport &&
         tip.endsWith(".") &&
         tip.endsWith("!")) {
       buffer.writePeriod(tip);
@@ -120,24 +117,21 @@ class _InfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      backgroundColor: AppTheme.infoDialogBackgroundColor,
-      content: SingleChildScrollView(
-        child: Text(
-          _infoText(context),
-          style: AppTheme.moveHistoryTextStyle,
+    return GamePageActionSheet(
+      child: AlertDialog(
+        content: SingleChildScrollView(
+          child: Text(_infoText(context)),
         ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: Text(
-            S.of(context).ok,
-            key: const Key('infoDialogOkButton'),
-            style: AppTheme.moveHistoryTextStyle,
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              S.of(context).ok,
+              key: const Key('infoDialogOkButton'),
+            ),
+            onPressed: () => Navigator.pop(context),
           ),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -18,98 +18,102 @@
 
 part of './game_page.dart';
 
-/// Board Tap Callback
+/// Game Board
 ///
-/// This function gets called once a valid [square] on the board has been tapped.
-typedef BoardTapCallback = Future<void> Function(int square);
-
-class _Board extends StatelessWidget {
-  final double width;
-  final double height;
-  final BoardTapCallback onBoardTap;
-  final Animation<double> animation;
+/// The board the game is played on. This widget will also handle the input from the user.
+@visibleForTesting
+class Board extends StatefulWidget {
   static const String _tag = "[board]";
 
-  const _Board({
-    required this.width,
-    required this.onBoardTap,
-    required this.animation,
-  }) : height = width;
+  const Board({Key? key}) : super(key: key);
+
+  @override
+  State<Board> createState() => _BoardState();
+}
+
+class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(
+        seconds: DB().display.animationDuration.toInt(),
+      ),
+    );
+
+    // sqrt(1.618) = 1.272
+    _animation = Tween(begin: 1.27, end: 1.0).animate(_animationController);
+  }
 
   @override
   Widget build(BuildContext context) {
-    const padding = AppTheme.boardPadding;
-    final _prefs = LocalDatabaseService.preferences;
+    final tapHandler = TapHandler(
+      animationController: _animationController,
+      context: context,
+    );
 
     final customPaint = AnimatedBuilder(
-      animation: animation,
+      animation: _animation,
       builder: (_, child) {
         return CustomPaint(
-          painter: BoardPainter(width: width),
+          painter: BoardPainter(),
           foregroundPainter: PiecesPainter(
-            width: width,
-            position: controller.position,
-            focusIndex: controller.gameInstance.focusIndex,
-            blurIndex: controller.gameInstance.blurIndex,
-            animationValue: animation.value,
+            animationValue: _animation.value,
           ),
           child: child,
         );
       },
-      child: EnvironmentConfig.devMode || _prefs.screenReaderSupport
-          ? const _BoardNotation()
-          : null,
+      child:
+          DB().preferences.screenReaderSupport ? const _BoardSemantics() : null,
     );
 
-    final boardContainer = Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppTheme.boardBorderRadius),
-        color: LocalDatabaseService.colorSettings.boardBackgroundColor,
-      ),
-      child: customPaint,
+    return LayoutBuilder(
+      builder: (context, constrains) {
+        final dimension = constrains.maxWidth;
+
+        return SizedBox.square(
+          dimension: dimension,
+          child: GestureDetector(
+            child: customPaint,
+            onTapUp: (d) async {
+              // TODO: [Leptopoda] directly work with the offset (sqare) and remove the abstraction like square or index
+              final index =
+                  indexFromPoint(pointFromOffset(d.localPosition, dimension));
+              final int? square = indexToSquare[index];
+
+              if (square == null) {
+                return logger.v(
+                  "${Board._tag} Tap not on a square $index (ignored).",
+                );
+              }
+
+              logger.v("${Board._tag} Tap on <$index>");
+
+              await tapHandler.onBoardTap(square);
+            },
+          ),
+        );
+      },
     );
+  }
 
-    return RepaintBoundary(
-      child: GestureDetector(
-        child: boardContainer,
-        onTapUp: (d) async {
-          final gridWidth = width - padding * 2;
-          final squareWidth = gridWidth / 7;
-          final dx = d.localPosition.dx;
-          final dy = d.localPosition.dy;
-
-          final column = (dx - padding) ~/ squareWidth;
-          if (column < 0 || column > 6) {
-            return logger.v("$_tag Tap on column $column (ignored).");
-          }
-
-          final row = (dy - padding) ~/ squareWidth;
-          if (row < 0 || row > 6) {
-            return logger.v("$_tag Tap on row $row (ignored).");
-          }
-
-          final index = row * 7 + column;
-          final int? square = indexToSquare[index];
-
-          if (square == null) {
-            return logger.v(
-              "$_tag Tap not on a square ($row, $column) (ignored).",
-            );
-          }
-
-          logger.v("$_tag Tap on ($row, $column) <$index>");
-
-          await onBoardTap(square);
-        },
-      ),
-    );
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 }
 
-class _BoardNotation extends StatelessWidget {
-  const _BoardNotation({Key? key}) : super(key: key);
+/// Semantics for the Board
+///
+/// This Widget only contains [Semantics] nodes to help impaired people interact with the [Board].
+class _BoardSemantics extends StatelessWidget {
+  const _BoardSemantics({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -123,18 +127,16 @@ class _BoardNotation extends StatelessWidget {
       children: List.generate(
         7 * 7,
         (index) => Center(
-          child: Text(
-            _squareDesc[index],
-            style: const TextStyle(
-              color:
-                  EnvironmentConfig.devMode ? Colors.red : Colors.transparent,
-            ),
+          child: Semantics(
+            // TODO: [Calcitem] add more descriptive informations
+            label: _squareDesc[index],
           ),
         ),
       ),
     );
   }
 
+  /// Builds a list of Strings representing the label of each semantic node.
   List<String> _buildSquareDescription(BuildContext context) {
     final List<String> coordinates = [];
     final List<String> pieceDesc = [];
@@ -258,12 +260,10 @@ class _BoardNotation extends StatelessWidget {
       1
     ];
 
-    const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
-    const ranks = ['7', '6', '5', '4', '3', '2', '1'];
     final ltr = Directionality.of(context) == TextDirection.ltr;
 
-    for (final file in ltr ? files : files.reversed) {
-      for (final rank in ranks) {
+    for (final file in ltr ? verticalNotations : verticalNotations.reversed) {
+      for (final rank in horizontalNotations) {
         coordinates.add("$file$rank");
       }
     }
@@ -272,7 +272,9 @@ class _BoardNotation extends StatelessWidget {
       if (checkPoints[i] == 0) {
         pieceDesc.add(S.of(context).noPoint);
       } else {
-        pieceDesc.add(controller.position.pieceOnGrid(i).pieceName(context));
+        pieceDesc.add(
+          MillController().position.pieceOnGrid(i).pieceName(context),
+        );
       }
     }
 

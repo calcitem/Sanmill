@@ -24,19 +24,19 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_driver/driver_extension.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/display.dart';
 import 'package:sanmill/screens/home.dart';
-import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/environment_config.dart';
-import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/feedback_localization.dart';
+import 'package:sanmill/shared/scaffold_messenger.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 part 'package:sanmill/services/catcher.dart';
@@ -51,7 +51,7 @@ Future<void> main() async {
     enableFlutterDriverExtension();
   }
 
-  await LocalDatabaseService.initStorage();
+  await DB.initStorage();
 
   _initUI();
 
@@ -67,59 +67,63 @@ Future<void> main() async {
   }
 }
 
-RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
-
 class SanmillApp extends StatelessWidget {
   const SanmillApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final globalScaffoldKey = GlobalKey<ScaffoldState>();
-    Audios.loadSounds();
+    DB(window.platformDispatcher.locale);
 
     return ValueListenableBuilder(
-      valueListenable: LocalDatabaseService.listenDisplay,
-      builder: (BuildContext context, Box<Display> displayBox, child) {
-        final Display _display = displayBox.get(
-          LocalDatabaseService.displayKey,
-          defaultValue: const Display(),
-        )!;
-        return BetterFeedback(
-          localizationsDelegates: const [
-            ...S.localizationsDelegates,
-            CustomFeedbackLocalizationsDelegate.delegate,
-          ],
-          localeOverride: _display.languageCode,
-          theme: AppTheme.feedbackTheme,
-          child: MaterialApp(
-            /// Add navigator key from Catcher.
-            /// It will be used to navigate user to report page or to show dialog.
-            navigatorKey:
-                EnvironmentConfig.catcher ? Catcher.navigatorKey : null,
-            key: globalScaffoldKey,
-            navigatorObservers: [routeObserver],
-            localizationsDelegates: S.localizationsDelegates,
-            supportedLocales: S.supportedLocales,
-            locale: _display.languageCode,
-            theme: AppTheme.lightThemeData,
-            darkTheme: AppTheme.darkThemeData,
-            debugShowCheckedModeBanner: false,
-            home: child,
-          ),
-        );
-      },
-      child: Builder(
-        builder: (context) {
-          setSpecialCountryAndRegion(context);
-          return Scaffold(
-            body: DoubleBackToCloseApp(
-              snackBar: SnackBar(
-                content: Text(S.of(context).tapBackAgainToLeave),
-              ),
-              child: const Home(),
+      valueListenable: DB().listenDisplay,
+      builder: _buildApp,
+    );
+  }
+
+  Widget _buildApp(BuildContext context, Box<Display> box, Widget? _) {
+    final Display _display = box.get(
+      DB.displayKey,
+      defaultValue: const Display(),
+    )!;
+
+    return BetterFeedback(
+      localizationsDelegates: const [
+        ...S.localizationsDelegates,
+        CustomFeedbackLocalizationsDelegate.delegate,
+      ],
+      localeOverride: _display.languageCode,
+      theme: AppTheme.feedbackTheme,
+      child: MaterialApp(
+        /// Add navigator key from Catcher.
+        /// It will be used to navigate user to report page or to show dialog.
+        navigatorKey: EnvironmentConfig.catcher ? Catcher.navigatorKey : null,
+        key: GlobalKey<ScaffoldState>(),
+        localizationsDelegates: S.localizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        locale: _display.languageCode,
+        theme: AppTheme.lightThemeData,
+        darkTheme: AppTheme.darkThemeData,
+        debugShowCheckedModeBanner: EnvironmentConfig.devMode,
+        builder: (context, child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaleFactor: _display.fontScale,
             ),
+            child: child!,
           );
         },
+        home: Builder(
+          builder: _buildHome,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHome(BuildContext context) {
+    return Scaffold(
+      body: DoubleBackToCloseApp(
+        snackBar: CustomSnackBar(S.of(context).tapBackAgainToLeave),
+        child: const Home(),
       ),
     );
   }

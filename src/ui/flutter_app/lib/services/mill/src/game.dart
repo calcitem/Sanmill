@@ -19,33 +19,16 @@
 part of '../mill.dart';
 
 class _Game {
-  final MillController controller;
   static const String _tag = "[game]";
 
-  _Game(this.controller) {
-    focusIndex = blurIndex = null;
-  }
-
-  void start() => controller.position._reset();
-
-  // TODO: [Leptopoda] just reassign controller.game with a new Game instance
-  void newGame() {
-    controller.position.phase = Phase.ready;
-    start();
-    focusIndex = blurIndex = null;
-
-    moveHistory = [];
-    sideToMove = PieceColor.white;
-  }
+  _Game();
 
   PieceColor sideToMove = PieceColor.white;
 
-  bool get isAiToMove {
+  bool get _isAiToMove {
     assert(sideToMove == PieceColor.white || sideToMove == PieceColor.black);
     return _isAi[sideToMove]!;
   }
-
-  List<ExtMove?> moveHistory = [];
 
   int? focusIndex;
   int? blurIndex;
@@ -56,23 +39,8 @@ class _Game {
     PieceColor.black: true,
   };
 
-  final Map<PieceColor, bool> _isSearching = {
-    PieceColor.white: false,
-    PieceColor.black: false
-  };
-
-  // TODO: [Leptopoda] this is very suspicious.
-  //[_isSearching] is private and only used by it's getter. Seems like this is somehow redundant ...
-  bool get aiIsSearching {
-    logger.i(
-      "$_tag White is searching? ${_isSearching[PieceColor.white]}\n"
-      "$_tag Black is searching? ${_isSearching[PieceColor.black]}\n",
-    );
-
-    return _isSearching[PieceColor.white]! || _isSearching[PieceColor.black]!;
-  }
-
-  GameMode _gameMode = GameMode.none;
+  // TODO: [Leptopoda] make gameMode final and set it through the constructor.
+  late GameMode _gameMode;
   GameMode get gameMode => _gameMode;
 
   set gameMode(GameMode type) {
@@ -88,25 +56,22 @@ class _Game {
     );
   }
 
-  void select(int pos) {
+  void _select(int pos) {
     focusIndex = pos;
     blurIndex = null;
   }
 
+  @visibleForTesting
   Future<bool> doMove(ExtMove extMove) async {
-    if (controller.position.phase == Phase.ready) {
-      start();
-    }
+    assert(MillController().position.phase != Phase.ready);
 
     logger.i("$_tag AI do move: $extMove");
 
-    if (!(await controller.position._doMove(extMove.move))) {
+    if (!(await MillController().position.doMove(extMove.move))) {
       return false;
     }
 
-    moveHistory.add(extMove);
-
-    sideToMove = controller.position.sideToMove;
+    sideToMove = MillController().position.sideToMove;
 
     _logStat();
 
@@ -114,23 +79,21 @@ class _Game {
   }
 
   void _logStat() {
-    final int total = controller.position.score[PieceColor.white]! +
-        controller.position.score[PieceColor.black]! +
-        controller.position.score[PieceColor.draw]!;
+    final position = MillController().position;
+    final int total = position.score[PieceColor.white]! +
+        position.score[PieceColor.black]! +
+        position.score[PieceColor.draw]!;
 
     double whiteWinRate = 0;
     double blackWinRate = 0;
     double drawRate = 0;
     if (total != 0) {
-      whiteWinRate = controller.position.score[PieceColor.white]! * 100 / total;
-      blackWinRate = controller.position.score[PieceColor.black]! * 100 / total;
-      drawRate = controller.position.score[PieceColor.draw]! * 100 / total;
+      whiteWinRate = position.score[PieceColor.white]! * 100 / total;
+      blackWinRate = position.score[PieceColor.black]! * 100 / total;
+      drawRate = position.score[PieceColor.draw]! * 100 / total;
     }
 
-    final String scoreInfo =
-        "Score: ${controller.position.score[PieceColor.white]} :"
-        " ${controller.position.score[PieceColor.black]} :"
-        " ${controller.position.score[PieceColor.draw]}\ttotal:"
+    final String scoreInfo = "Score: ${position.scoreString}\ttotal:"
         " $total\n$whiteWinRate% : $blackWinRate% : $drawRate%\n";
 
     logger.i("$_tag $scoreInfo");

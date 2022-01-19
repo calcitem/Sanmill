@@ -28,88 +28,69 @@ class _StateInfo {
 }
 
 class Position {
-  final MillController controller;
+  Position();
 
-  Position(this.controller) {
-    _init();
-  }
+  final List<int> _posKeyHistory = [];
 
-  final List<int> posKeyHistory = [];
+  GameResult? result;
 
-  GameResult result = GameResult.pending;
+  final List<PieceColor> _board = List.filled(sqNumber, PieceColor.none);
+  final List<PieceColor> _grid = List.filled(7 * 7, PieceColor.none);
 
-  List<PieceColor> _board = List.filled(sqNumber, PieceColor.none);
-  List<PieceColor> _grid = List.filled(7 * 7, PieceColor.none);
-
-  // TODO: [Leptopoda] move it into the controller
-  late _GameRecorder recorder;
-
-  Map<PieceColor, int> pieceInHandCount = {
-    PieceColor.white: -1,
-    PieceColor.black: -1
+  final Map<PieceColor, int> pieceInHandCount = {
+    PieceColor.white: DB().rules.piecesCount,
+    PieceColor.black: DB().rules.piecesCount,
   };
-  Map<PieceColor, int> pieceOnBoardCount = {
+  final Map<PieceColor, int> pieceOnBoardCount = {
     PieceColor.white: 0,
-    PieceColor.black: 0
+    PieceColor.black: 0,
   };
-  int pieceToRemoveCount = 0;
+  int _pieceToRemoveCount = 0;
 
-  int gamePly = 0;
+  int _gamePly = 0;
   PieceColor _sideToMove = PieceColor.white;
 
-  _StateInfo st = _StateInfo();
+  final _StateInfo st = _StateInfo();
 
   PieceColor _them = PieceColor.black;
   PieceColor _winner = PieceColor.nobody;
 
-  GameOverReason gameOverReason = GameOverReason.none;
+  GameOverReason? gameOverReason;
 
-  Phase phase = Phase.none;
-  Act action = Act.none;
+  Phase phase = Phase.placing;
+  Act _action = Act.place;
 
-  Map<PieceColor, int> score = {
+  final Map<PieceColor, int> score = {
     PieceColor.white: 0,
     PieceColor.black: 0,
-    PieceColor.draw: 0
+    PieceColor.draw: 0,
   };
+
+  String get scoreString =>
+      "${score[PieceColor.white]} : ${score[PieceColor.black]} : ${score[PieceColor.draw]}";
 
   int _currentSquare = 0;
 
-  ExtMove? record;
+  ExtMove? _record;
 
-  static late List<List<List<int>>> _millTable;
-  static late List<List<int>> _adjacentSquares;
-
-  late ExtMove extMove;
+  static final List<List<List<int>>> _millTable = _Mills.millTableInit;
+  static final List<List<int>> _adjacentSquares = _Mills.adjacentSquaresInit;
 
   PieceColor pieceOnGrid(int index) => _grid[index];
-  PieceColor pieceOn(int sq) => _board[sq];
 
   PieceColor get sideToMove => _sideToMove;
   set sideToMove(PieceColor color) {
     _sideToMove = color;
-    //us = color;
     _them = _sideToMove.opponent;
   }
 
   Future<bool> _movePiece(int from, int to) async {
-    if (selectPiece(from) == SelectionResponse.ok) {
-      return putPiece(to);
+    try {
+      _selectPiece(from);
+      return _putPiece(to);
+    } on MillResponse {
+      return false;
     }
-    return false;
-  }
-
-  void restart() => _init();
-
-  void _init() {
-    phase = Phase.placing;
-
-    _setPosition(); // TODO
-
-    // TODO
-    // TODO: [Leptopoda] make the recorder get the fen itself as it is public so we don't need to pas it around...
-    // seems like this is causing the stack overflow
-    recorder = _GameRecorder(controller, lastPositionWithRemove: _fen);
   }
 
   /// Returns a FEN representation of the position.
@@ -137,24 +118,25 @@ class Position {
     buffer.writeSpace(phase.fen);
 
     // Action
-    buffer.writeSpace(action.fen);
+    buffer.writeSpace(_action.fen);
 
     buffer.writeSpace(pieceOnBoardCount[PieceColor.white]);
     buffer.writeSpace(pieceInHandCount[PieceColor.white]);
     buffer.writeSpace(pieceOnBoardCount[PieceColor.black]);
     buffer.writeSpace(pieceInHandCount[PieceColor.black]);
-    buffer.writeSpace(pieceToRemoveCount);
+    buffer.writeSpace(_pieceToRemoveCount);
 
     final int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
 
-    buffer.write("${st.rule50} ${1 + (gamePly - sideIsBlack) ~/ 2}");
+    buffer.write("${st.rule50} ${1 + (_gamePly - sideIsBlack) ~/ 2}");
 
     logger.v("FEN is $buffer");
 
     return buffer.toString();
   }
 
-  Future<bool> _doMove(String move) async {
+  @visibleForTesting
+  Future<bool> doMove(String move) async {
     if (move.length > "Player".length &&
         move.substring(0, "Player".length - 1) == "Player") {
       if (move["Player".length] == "1") {
@@ -176,16 +158,14 @@ class Position {
       score[PieceColor.draw] = score[PieceColor.draw]! + 1;
 
       // TODO: WAR to judge rule50
-      if (LocalDatabaseService.rules.nMoveRule > 0 &&
-          posKeyHistory.length >= LocalDatabaseService.rules.nMoveRule - 1) {
+      if (DB().rules.nMoveRule > 0 &&
+          _posKeyHistory.length >= DB().rules.nMoveRule - 1) {
         gameOverReason = GameOverReason.drawRule50;
-      } else if (LocalDatabaseService.rules.endgameNMoveRule <
-              LocalDatabaseService.rules.nMoveRule &&
+      } else if (DB().rules.endgameNMoveRule < DB().rules.nMoveRule &&
           _isThreeEndgame &&
-          posKeyHistory.length >=
-              LocalDatabaseService.rules.endgameNMoveRule - 1) {
+          _posKeyHistory.length >= DB().rules.endgameNMoveRule - 1) {
         gameOverReason = GameOverReason.drawEndgameRule50;
-      } else if (LocalDatabaseService.rules.threefoldRepetitionRule) {
+      } else if (DB().rules.threefoldRepetitionRule) {
         gameOverReason = GameOverReason.drawThreefoldRepetition; // TODO: Sure?
       } else {
         gameOverReason = GameOverReason.drawBoardIsFull; // TODO: Sure?
@@ -200,12 +180,15 @@ class Position {
 
     final ExtMove m = ExtMove(move);
 
+    // TODO: [Leptopoda] the below fuctions should all throw exceptions so the ret and coditional stuff can be removed
     switch (m.type) {
       case _MoveType.remove:
-        ret = await removePiece(m.to) == RemoveResponse.ok;
-        if (ret) {
-          // Reset rule 50 counter
+        try {
+          await _removePiece(m.to);
+          ret = true;
           st.rule50 = 0;
+        } on MillResponse {
+          return false;
         }
         break;
       case _MoveType.move:
@@ -215,7 +198,7 @@ class Position {
         }
         break;
       case _MoveType.place:
-        ret = await putPiece(m.to);
+        ret = await _putPiece(m.to);
         if (ret) {
           // Reset rule 50 counter
           st.rule50 = 0;
@@ -228,35 +211,27 @@ class Position {
 
     // Increment ply counters. In particular, rule50 will be reset to zero later on
     // in case of a capture.
-    ++gamePly;
+    ++_gamePly;
     ++st.pliesFromNull;
 
-    if (record != null && record!.move.length > "-(1,2)".length) {
-      if (st.key != posKeyHistory.lastF) {
-        posKeyHistory.add(st.key);
-        if (LocalDatabaseService.rules.threefoldRepetitionRule &&
-            hasGameCycle) {
-          setGameOver(
-            PieceColor.draw,
-            GameOverReason.drawThreefoldRepetition,
-          );
+    if (_record != null && _record!.move.length > "-(1,2)".length) {
+      if (st.key != _posKeyHistory.lastF) {
+        _posKeyHistory.add(st.key);
+        if (DB().rules.threefoldRepetitionRule && _hasGameCycle) {
+          _setGameOver(PieceColor.draw, GameOverReason.drawThreefoldRepetition);
         }
       }
     } else {
-      posKeyHistory.clear();
+      _posKeyHistory.clear();
     }
-
-    extMove = m;
-
-    recorder.moveIn(m, this); // TODO: Is Right?
 
     return true;
   }
 
   /// hasGameCycle() tests if the position has a move which draws by repetition.
-  bool get hasGameCycle {
+  bool get _hasGameCycle {
     int repetition = 0; // Note: Engine is global val
-    for (final i in posKeyHistory) {
+    for (final i in _posKeyHistory) {
       if (st.key == i) {
         repetition++;
         if (repetition == 3) {
@@ -271,67 +246,16 @@ class Position {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-  /// Mill Game
-
-  void _reset() {
-    gamePly = 0;
-    st.rule50 = 0;
-
-    phase = Phase.ready;
-    sideToMove = PieceColor.white;
-    action = Act.place;
-
-    _winner = PieceColor.nobody;
-    gameOverReason = GameOverReason.none;
-
-    _clearBoard();
-
-    st.key = 0;
-
-    pieceOnBoardCount[PieceColor.white] =
-        pieceOnBoardCount[PieceColor.black] = 0;
-    pieceInHandCount[PieceColor.white] = pieceInHandCount[PieceColor.black] =
-        LocalDatabaseService.rules.piecesCount;
-    pieceToRemoveCount = 0;
-
-    // TODO:
-    // MoveList<LEGAL>::create();
-    // create_mill_table();
-
-    _currentSquare = 0;
-
-    record = null;
-  }
-
-  void _start() {
-    gameOverReason = GameOverReason.none;
-
-    switch (phase) {
-      case Phase.gameOver:
-        _reset();
-        continue ready;
-      ready:
-      case Phase.ready:
-        phase = Phase.placing;
-        break;
-      case Phase.placing:
-      case Phase.moving:
-      case Phase.none:
-    }
-  }
-
-  Future<bool> putPiece(int s) async {
+  Future<bool> _putPiece(int s) async {
     var piece = PieceColor.none;
     final us = _sideToMove;
 
     if (phase == Phase.gameOver ||
-        action != Act.place ||
+        _action != Act.place ||
         !(sqBegin <= s && s < sqEnd) ||
         _board[s] != PieceColor.none) {
       return false;
     }
-
-    if (phase == Phase.ready) _start();
 
     switch (phase) {
       case Phase.placing:
@@ -347,7 +271,7 @@ class Position {
         _grid[squareToIndex[s]!] = piece;
         _board[s] = piece;
 
-        record = ExtMove("(${fileOf(s)},${rankOf(s)})");
+        _record = ExtMove("(${fileOf(s)},${rankOf(s)})");
 
         _updateKey(s);
 
@@ -363,32 +287,30 @@ class Position {
 
           if (pieceInHandCount[PieceColor.white] == 0 &&
               pieceInHandCount[PieceColor.black] == 0) {
-            if (_gameOver) return true;
+            if (_checkIfGameIsOver()) return true;
 
             phase = Phase.moving;
-            action = Act.select;
+            _action = Act.select;
 
-            if (LocalDatabaseService.rules.hasBannedLocations) {
+            if (DB().rules.hasBannedLocations) {
               _removeBanStones();
             }
 
-            if (!LocalDatabaseService.rules.isDefenderMoveFirst) {
+            if (!DB().rules.isDefenderMoveFirst) {
               _changeSideToMove();
             }
 
-            if (_gameOver) return true;
+            if (_checkIfGameIsOver()) return true;
           } else {
             _changeSideToMove();
           }
-          controller.gameInstance.focusIndex = squareToIndex[s];
-          await Audios.playTone(Sound.place);
+          MillController().gameInstance.focusIndex = squareToIndex[s];
+          await Audios().playTone(Sound.place);
         } else {
-          pieceToRemoveCount =
-              LocalDatabaseService.rules.mayRemoveMultiple ? n : 1;
+          _pieceToRemoveCount = DB().rules.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
 
-          if (LocalDatabaseService
-                  .rules.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
+          if (DB().rules.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
               pieceInHandCount[_them] != null) {
             pieceInHandCount[_them] =
                 pieceInHandCount[_them]! - 1; // Or pieceToRemoveCount?
@@ -399,32 +321,31 @@ class Position {
 
             if (pieceInHandCount[PieceColor.white] == 0 &&
                 pieceInHandCount[PieceColor.black] == 0) {
-              if (_gameOver) return true;
+              if (_checkIfGameIsOver()) return true;
 
               phase = Phase.moving;
-              action = Act.select;
+              _action = Act.select;
 
-              if (LocalDatabaseService.rules.isDefenderMoveFirst) {
+              if (DB().rules.isDefenderMoveFirst) {
                 _changeSideToMove();
               }
 
-              if (_gameOver) return true;
+              if (_checkIfGameIsOver()) return true;
             }
           } else {
-            action = Act.remove;
+            _action = Act.remove;
           }
 
-          controller.gameInstance.focusIndex = squareToIndex[s];
-          await Audios.playTone(Sound.mill);
+          MillController().gameInstance.focusIndex = squareToIndex[s];
+          await Audios().playTone(Sound.mill);
         }
         break;
       case Phase.moving:
-        if (_gameOver) return true;
+        if (_checkIfGameIsOver()) return true;
 
         // if illegal
-        if (pieceOnBoardCount[sideToMove]! >
-                LocalDatabaseService.rules.flyPieceCount ||
-            !LocalDatabaseService.rules.mayFly) {
+        if (pieceOnBoardCount[sideToMove]! > DB().rules.flyPieceCount ||
+            !DB().rules.mayFly) {
           int md;
 
           for (md = 0; md < moveDirectionNumber; md++) {
@@ -440,7 +361,7 @@ class Position {
           }
         }
 
-        record = ExtMove(
+        _record = ExtMove(
           "(${fileOf(_currentSquare)},${rankOf(_currentSquare)})->(${fileOf(s)},${rankOf(s)})",
         );
 
@@ -458,20 +379,19 @@ class Position {
 
         // midgame
         if (n == 0) {
-          action = Act.select;
+          _action = Act.select;
           _changeSideToMove();
 
-          if (_gameOver) return true;
-          controller.gameInstance.focusIndex = squareToIndex[s];
+          if (_checkIfGameIsOver()) return true;
+          MillController().gameInstance.focusIndex = squareToIndex[s];
 
-          await Audios.playTone(Sound.place);
+          await Audios().playTone(Sound.place);
         } else {
-          pieceToRemoveCount =
-              LocalDatabaseService.rules.mayRemoveMultiple ? n : 1;
+          _pieceToRemoveCount = DB().rules.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
-          action = Act.remove;
-          controller.gameInstance.focusIndex = squareToIndex[s];
-          await Audios.playTone(Sound.mill);
+          _action = Act.remove;
+          MillController().gameInstance.focusIndex = squareToIndex[s];
+          await Audios().playTone(Sound.mill);
         }
 
         break;
@@ -481,32 +401,35 @@ class Position {
     return true;
   }
 
-  Future<RemoveResponse> removePiece(int s) async {
+  Future<void> _removePiece(int s) async {
     if (phase == Phase.ready || phase == Phase.gameOver) {
-      return RemoveResponse.illegalPhase;
+      throw const IllegalPhase();
     }
 
-    if (action != Act.remove) return RemoveResponse.illegalAction;
+    if (_action != Act.remove) {
+      throw const IllegalAction();
+    }
 
-    if (pieceToRemoveCount <= 0) return RemoveResponse.noPieceToRemove;
+    if (_pieceToRemoveCount <= 0) {
+      throw const NoPieceToRemove();
+    }
 
     // if piece is not their
     if (!(sideToMove.opponent == _board[s])) {
-      return RemoveResponse.cannotRemoveOurPiece;
+      throw const CanNotRemoveSelf();
     }
 
-    if (!LocalDatabaseService.rules.mayRemoveFromMillsAlways &&
+    if (!DB().rules.mayRemoveFromMillsAlways &&
         _potentialMillsCount(s, PieceColor.nobody) > 0 &&
         !_isAllInMills(sideToMove.opponent)) {
-      return RemoveResponse.cannotRemovePieceFromMill;
+      throw const CanNotRemoveMill();
     }
 
     _revertKey(s);
 
-    await Audios.playTone(Sound.remove);
+    await Audios().playTone(Sound.remove);
 
-    if (LocalDatabaseService.rules.hasBannedLocations &&
-        phase == Phase.placing) {
+    if (DB().rules.hasBannedLocations && phase == Phase.placing) {
       // Remove and put ban
       _board[s] = _grid[squareToIndex[s]!] = PieceColor.ban;
       _updateKey(s);
@@ -515,7 +438,7 @@ class Position {
       _board[s] = _grid[squareToIndex[s]!] = PieceColor.none;
     }
 
-    record = ExtMove("-(${fileOf(s)},${rankOf(s)})");
+    _record = ExtMove("-(${fileOf(s)},${rankOf(s)})");
     st.rule50 = 0; // TODO: Need to move out?
 
     if (pieceOnBoardCount[_them] != null) {
@@ -523,84 +446,82 @@ class Position {
     }
 
     if (pieceOnBoardCount[_them]! + pieceInHandCount[_them]! <
-        LocalDatabaseService.rules.piecesAtLeastCount) {
-      setGameOver(sideToMove, GameOverReason.loseLessThanThree);
-      return RemoveResponse.ok;
+        DB().rules.piecesAtLeastCount) {
+      _setGameOver(sideToMove, GameOverReason.loseLessThanThree);
+      return;
     }
 
     _currentSquare = 0;
 
-    pieceToRemoveCount--;
+    _pieceToRemoveCount--;
     _updateKeyMisc();
 
-    if (pieceToRemoveCount != 0) {
-      return RemoveResponse.ok;
+    if (_pieceToRemoveCount != 0) {
+      return;
     }
 
     if (phase == Phase.placing) {
       if (pieceInHandCount[PieceColor.white] == 0 &&
           pieceInHandCount[PieceColor.black] == 0) {
         phase = Phase.moving;
-        action = Act.select;
+        _action = Act.select;
 
-        if (LocalDatabaseService.rules.hasBannedLocations) {
+        if (DB().rules.hasBannedLocations) {
           _removeBanStones();
         }
 
-        if (LocalDatabaseService.rules.isDefenderMoveFirst) {
-          _gameOver;
-          return RemoveResponse.ok;
+        if (DB().rules.isDefenderMoveFirst) {
+          _checkIfGameIsOver();
+          return;
         }
       } else {
-        action = Act.place;
+        _action = Act.place;
       }
     } else {
-      action = Act.select;
+      _action = Act.select;
     }
 
     _changeSideToMove();
-    _gameOver;
+    _checkIfGameIsOver();
 
-    return RemoveResponse.ok;
+    return;
   }
 
-  SelectionResponse selectPiece(int sq) {
-    if (phase != Phase.moving) return SelectionResponse.illegalPhase;
+  void _selectPiece(int sq) {
+    if (phase != Phase.moving) {
+      throw const IllegalPhase();
+    }
 
-    if (action != Act.select && action != Act.place) {
-      return SelectionResponse.illegalAction;
+    if (_action != Act.select && _action != Act.place) {
+      throw const IllegalAction();
     }
 
     if (_board[sq] == PieceColor.none) {
-      return SelectionResponse.canOnlyMoveToAdjacentEmptyPoints;
+      throw const CanOnlyMoveToAdjacentEmptyPoints();
     }
 
     if (!(_board[sq] == sideToMove)) {
-      return SelectionResponse.pleaseSelectOurPieceToMove;
+      throw const SelectOurPieceToMove();
     }
 
     _currentSquare = sq;
-    action = Act.place;
-    controller.gameInstance.blurIndex = squareToIndex[sq];
-
-    return SelectionResponse.ok;
+    _action = Act.place;
+    MillController().gameInstance.blurIndex = squareToIndex[sq];
   }
 
   bool _resign(PieceColor loser) {
-    if (phase == Phase.ready ||
-        phase == Phase.gameOver ||
-        phase == Phase.none) {
+    if (phase == Phase.ready || phase == Phase.gameOver) {
       return false;
     }
 
-    setGameOver(loser.opponent, GameOverReason.loseResign);
+    _setGameOver(loser.opponent, GameOverReason.loseResign);
 
     return true;
   }
 
   PieceColor get winner => _winner;
 
-  void setGameOver(PieceColor w, GameOverReason reason) {
+  void _setGameOver(PieceColor w, GameOverReason reason) {
     phase = Phase.gameOver;
     gameOverReason = reason;
     _winner = w;
@@ -624,46 +545,39 @@ class Position {
         pieceOnBoardCount[PieceColor.black] == 3;
   }
 
-  // TODO: [Leptopoda] this method seems to be more than  a getter
-  // we should probably return it to not be a getter and rename it to avoid confusion
-  // The original name was: checkIfGameIsOver()
-  bool get _gameOver {
+  bool _checkIfGameIsOver() {
     if (phase == Phase.ready || phase == Phase.gameOver) {
       return true;
     }
 
-    if (LocalDatabaseService.rules.nMoveRule > 0 &&
-        posKeyHistory.length >= LocalDatabaseService.rules.nMoveRule) {
-      setGameOver(PieceColor.draw, GameOverReason.drawRule50);
+    if (DB().rules.nMoveRule > 0 &&
+        _posKeyHistory.length >= DB().rules.nMoveRule) {
+      _setGameOver(PieceColor.draw, GameOverReason.drawRule50);
       return true;
     }
 
-    if (LocalDatabaseService.rules.endgameNMoveRule <
-            LocalDatabaseService.rules.nMoveRule &&
+    if (DB().rules.endgameNMoveRule < DB().rules.nMoveRule &&
         _isThreeEndgame &&
-        posKeyHistory.length >= LocalDatabaseService.rules.endgameNMoveRule) {
-      setGameOver(PieceColor.draw, GameOverReason.drawEndgameRule50);
+        _posKeyHistory.length >= DB().rules.endgameNMoveRule) {
+      _setGameOver(PieceColor.draw, GameOverReason.drawEndgameRule50);
       return true;
     }
 
     if (pieceOnBoardCount[PieceColor.white]! +
             pieceOnBoardCount[PieceColor.black]! >=
         rankNumber * fileNumber) {
-      if (LocalDatabaseService.rules.isWhiteLoseButNotDrawWhenBoardFull) {
-        setGameOver(PieceColor.black, GameOverReason.loseBoardIsFull);
+      if (DB().rules.isWhiteLoseButNotDrawWhenBoardFull) {
+        _setGameOver(PieceColor.black, GameOverReason.loseBoardIsFull);
       } else {
-        setGameOver(PieceColor.draw, GameOverReason.drawBoardIsFull);
+        _setGameOver(PieceColor.draw, GameOverReason.drawBoardIsFull);
       }
 
       return true;
     }
 
-    if (phase == Phase.moving && action == Act.select && _isAllSurrounded) {
-      if (LocalDatabaseService.rules.isLoseButNotChangeSideWhenNoWay) {
-        setGameOver(
-          sideToMove.opponent,
-          GameOverReason.loseNoWay,
-        );
+    if (phase == Phase.moving && _action == Act.select && _isAllSurrounded) {
+      if (DB().rules.isLoseButNotChangeSideWhenNoWay) {
+        _setGameOver(sideToMove.opponent, GameOverReason.loseNoWay);
         return true;
       } else {
         _changeSideToMove(); // TODO: Need?
@@ -675,7 +589,7 @@ class Position {
   }
 
   void _removeBanStones() {
-    assert(LocalDatabaseService.rules.hasBannedLocations);
+    assert(DB().rules.hasBannedLocations);
 
     int s = 0;
 
@@ -699,7 +613,7 @@ class Position {
 
   /// Updates square if it hasn't been updated yet.
   int _updateKey(int s) {
-    final PieceColor pieceType = _colorOn(s);
+    final PieceColor pieceType = _board[s];
 
     return st.key ^= _Zobrist.psq[pieceType.index][s];
   }
@@ -713,14 +627,10 @@ class Position {
   void _updateKeyMisc() {
     st.key = st.key << _Zobrist.keyMiscBit >> _Zobrist.keyMiscBit;
 
-    st.key |= pieceToRemoveCount << (32 - _Zobrist.keyMiscBit);
+    st.key |= _pieceToRemoveCount << (32 - _Zobrist.keyMiscBit);
   }
 
   ///////////////////////////////////////////////////////////////////////////////
-
-  PieceColor _colorOn(int sq) {
-    return _board[sq];
-  }
 
   int _potentialMillsCount(int to, PieceColor c, {int from = 0}) {
     int n = 0;
@@ -730,7 +640,7 @@ class Position {
     assert(0 <= from && from < sqNumber);
 
     if (_c == PieceColor.nobody) {
-      _c = _colorOn(to);
+      _c = _board[to];
     }
 
     if (from != 0 && from >= sqBegin && from < sqEnd) {
@@ -757,7 +667,7 @@ class Position {
     final List<int?> idx = [0, 0, 0];
     int min = 0;
     int? temp = 0;
-    final PieceColor m = _colorOn(s);
+    final PieceColor m = _board[s];
 
     for (int i = 0; i < idx.length; i++) {
       idx[0] = s;
@@ -815,14 +725,13 @@ class Position {
     }
 
     // Can fly
-    if (pieceOnBoardCount[sideToMove]! <=
-            LocalDatabaseService.rules.flyPieceCount &&
-        LocalDatabaseService.rules.mayFly) {
+    if (pieceOnBoardCount[sideToMove]! <= DB().rules.flyPieceCount &&
+        DB().rules.mayFly) {
       return false;
     }
 
     for (int s = sqBegin; s < sqEnd; s++) {
-      if (!(sideToMove == _colorOn(s))) {
+      if (sideToMove != _board[s]) {
         continue;
       }
 
@@ -837,139 +746,26 @@ class Position {
     return true;
   }
 
-  ///////////////////////////////////////////////////////////////////////////////
+// TODO: [Leptopoda] verify this is correct
+  @visibleForTesting
+  String? get movesSinceLastRemove {
+    final recorder = MillController().recorder;
+    if (recorder.isEmpty) return null;
 
-  int get _nPiecesInHand {
-    pieceInHandCount[PieceColor.white] =
-        LocalDatabaseService.rules.piecesCount -
-            pieceOnBoardCount[PieceColor.white]!;
-    pieceInHandCount[PieceColor.black] =
-        LocalDatabaseService.rules.piecesCount -
-            pieceOnBoardCount[PieceColor.black]!;
+    final iterator = recorder.bidirectionalIterator;
+    iterator.moveToLast();
 
-    return pieceOnBoardCount[PieceColor.white]! +
-        pieceOnBoardCount[PieceColor.black]!;
-  }
-
-  void _clearBoard() {
-    _grid = List.filled(_grid.length, PieceColor.none);
-    _board = List.filled(_board.length, PieceColor.none);
-  }
-
-  void _setPosition() {
-    result = GameResult.pending;
-
-    gamePly = 0;
-    st.rule50 = 0;
-    st.pliesFromNull = 0;
-
-    gameOverReason = GameOverReason.none;
-    phase = Phase.placing;
-    sideToMove = PieceColor.white;
-    action = Act.place;
-    _currentSquare = 0;
-
-    record = null;
-
-    _clearBoard();
-
-    if (_pieceOnBoardCount == null) {
-      return;
-    }
-
-    _nPiecesInHand;
-    pieceToRemoveCount = 0;
-
-    _winner = PieceColor.nobody;
-    _adjacentSquares = _Mills.adjacentSquaresInit;
-    _millTable = _Mills.millTableInit;
-    _currentSquare = 0;
-
-    return;
-  }
-
-  int? get _pieceOnBoardCount {
-    pieceOnBoardCount[PieceColor.white] =
-        pieceOnBoardCount[PieceColor.black] = 0;
-
-    for (int f = 1; f < fileExNumber; f++) {
-      for (int r = 0; r < rankNumber; r++) {
-        final int s = f * rankNumber + r;
-
-        if (_board[s] == PieceColor.white || _board[s] == PieceColor.black) {
-          pieceOnBoardCount[_board[s]] = pieceOnBoardCount[_board[s]]! + 1;
-        }
-      }
-    }
-
-    if (pieceOnBoardCount[PieceColor.white]! >
-            LocalDatabaseService.rules.piecesCount ||
-        pieceOnBoardCount[PieceColor.black]! >
-            LocalDatabaseService.rules.piecesCount) {
-      return null;
-    }
-
-    return pieceOnBoardCount[PieceColor.white]! +
-        pieceOnBoardCount[PieceColor.black]!;
-  }
-
-///////////////////////////////////////////////////////////////////////////////
-  Future<_HistoryResponse?> gotoHistory(HistoryMove move, [int? index]) async {
-    final int moveIndex = move.gotoHistoryIndex(index);
-
-    if (recorder.cur == moveIndex) {
-      logger.i("[goto] cur is equal to moveIndex.");
-      return _HistoryResponse.equal;
-    }
-
-    if (moveIndex < -1 || recorder.moveCount <= moveIndex) {
-      logger.i("[goto] moveIndex is out of range.");
-      return _HistoryResponse.outOfRange;
-    }
-
-    Audios.isTemporaryMute = true;
-
-    // Backup context
-    final gameModeBackup = controller.gameInstance.gameMode;
-    controller.gameInstance.gameMode = GameMode.humanVsHuman;
-    final historyBack = recorder.moves;
-    controller.gameInstance.newGame();
-
-    _HistoryResponse? error;
-
-    // TODO: [Leptopoda] throw errors instead of returning bools
-    for (int i = 0; i <= moveIndex; i++) {
-      if (!(await controller.gameInstance.doMove(historyBack[i]))) {
-        error = _HistoryResponse.error;
-        break;
-      }
-    }
-
-    // Restore context
-    controller.gameInstance.gameMode = gameModeBackup;
-    recorder.moves = historyBack;
-    recorder.cur = moveIndex;
-
-    Audios.isTemporaryMute = false;
-    await move.gotoHistoryPlaySound();
-    return error;
-  }
-
-  String? get _movesSinceLastRemove {
-    int i = 0;
     final buffer = StringBuffer();
-    int posAfterLastRemove = 0;
 
-    for (i = recorder.moveCount - 1; i >= 0; i--) {
-      if (recorder.moves[i].move[0] == "-") break;
+    while (!iterator.current!.move.startsWith("-")) {
+      if (!iterator.movePrevious()) break;
     }
 
-    if (i >= 0) {
-      posAfterLastRemove = i + 1;
-    }
+    // move forward two to skip the remove
+    if (iterator.index != 0) iterator.moveNext();
 
-    for (int i = posAfterLastRemove; i < recorder.moveCount; i++) {
-      buffer.write(" ${recorder.moves[i].move}");
+    while (iterator.moveNext()) {
+      buffer.writeSpace(iterator.current!.move);
     }
 
     final String moves = buffer.toString();
@@ -978,10 +774,4 @@ class Position {
 
     return moves.isNotEmpty ? moves.substring(1) : null;
   }
-
-  String? get moveHistoryText => recorder._buildMoveHistoryText();
-
-  ExtMove? get lastMove => recorder.lastMove;
-
-  String? get lastPositionWithRemove => recorder.lastPositionWithRemove;
 }
