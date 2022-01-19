@@ -38,7 +38,7 @@ class NumberPicker extends StatelessWidget {
 
     final List<Widget> _items = List.generate(
       end,
-      (index) => Text(S.of(context).move_number(start + index)),
+      (index) => Text(S.of(context).moveNumber(start + index)),
     );
 
     return AlertDialog(

@@ -60,7 +60,7 @@ public:
 
 #else // Default case: use STL classes
 
-typedef std::thread NativeThread;
+using NativeThread = std::thread;
 
 #endif
 

@@ -35,8 +35,6 @@
 #endif
 
 using std::cout;
-using std::fixed;
-using std::setprecision;
 
 ThreadPool Threads; // Global object
 
@@ -85,14 +83,14 @@ void Thread::clear() noexcept
 
 void Thread::start_searching()
 {
-    std::lock_guard<std::mutex> lk(mutex);
+    std::lock_guard lk(mutex);
     searching = true;
     cv.notify_one(); // Wake up the thread in idle_loop()
 }
 
 void Thread::pause()
 {
-    std::lock_guard<std::mutex> lk(mutex);
+    std::lock_guard lk(mutex);
     searching = false;
     cv.notify_one(); // Wake up the thread in idle_loop()
 }
@@ -102,7 +100,7 @@ void Thread::pause()
 
 void Thread::wait_for_search_finished()
 {
-    std::unique_lock<std::mutex> lk(mutex);
+    std::unique_lock lk(mutex);
     cv.wait(lk, [&] { return !searching; });
 }
 
@@ -112,7 +110,7 @@ void Thread::wait_for_search_finished()
 void Thread::idle_loop()
 {
     while (true) {
-        std::unique_lock<std::mutex> lk(mutex);
+        std::unique_lock lk(mutex);
         // CID 338451: Data race condition(MISSING_LOCK)
         // missing_lock : Accessing this->searching without holding lock
         // Thread.mutex. Elsewhere, Thread.searching is accessed with
@@ -152,7 +150,7 @@ void Thread::idle_loop()
                 emitCommand();
             } else {
 #endif
-                int ret = search();
+                const int ret = search();
 
                 if (ret == 3 || ret == 50 || ret == 10) {
                     debugPrintf("Draw\n\n");
@@ -177,7 +175,7 @@ void Thread::idle_loop()
 
 void Thread::setAi(Position *p)
 {
-    std::lock_guard<std::mutex> lk(mutex);
+    std::lock_guard lk(mutex);
 
     this->rootPos = p;
 
@@ -188,11 +186,11 @@ void Thread::setAi(Position *p)
 #endif
 }
 
-void Thread::setAi(Position *p, int tl)
+void Thread::setAi(Position *p, int time)
 {
     setAi(p);
 
-    timeLimit = tl;
+    timeLimit = time;
 }
 
 void Thread::emitCommand()
@@ -264,7 +262,7 @@ void sq2str(char *str)
 }
 #endif // OPENING_BOOK
 
-void Thread::analyze(Color c)
+void Thread::analyze(Color c) const
 {
     static float nWhiteWin = 0;
     static float nBlackWin = 0;
@@ -274,15 +272,15 @@ void Thread::analyze(Color c)
     float blackWinRate, whiteWinRate, drawRate;
 #endif // !QT_GUI_LIB
 
-    const int d = (int)originDepth;
-    const int v = (int)bestvalue;
-    const int lv = (int)lastvalue;
+    const int d = originDepth;
+    const int v = bestvalue;
+    const int lv = lastvalue;
     const bool win = v >= VALUE_MATE;
     const bool lose = v <= -VALUE_MATE;
     const int np = v / VALUE_EACH_PIECE;
 
-    string strUs = (c == WHITE ? "White" : "Black");
-    string strThem = (c == WHITE ? "Black" : "White");
+    const string strUs = (c == WHITE ? "White" : "Black");
+    const string strThem = (c == WHITE ? "Black" : "White");
 
     const auto flags = cout.flags();
 
@@ -294,6 +292,9 @@ void Thread::analyze(Color c)
     cout << std::dec;
 
     switch (p->get_phase()) {
+    case Phase::ready:
+        cout << "Ready phrase" << std::endl;
+        break;
     case Phase::placing:
         cout << "Placing phrase" << std::endl;
         break;
@@ -303,21 +304,19 @@ void Thread::analyze(Color c)
     case Phase::gameOver:
         if (p->get_winner() == DRAW) {
             cout << "Draw" << std::endl;
-            nDraw += 0.5; // TODO(calcitem)
+            nDraw += 0.5f; // TODO(calcitem)
         } else if (p->get_winner() == WHITE) {
             cout << "White wins" << std::endl;
-            nBlackWin += 0.5; // TODO(calcitem)
+            nBlackWin += 0.5f; // TODO(calcitem)
         } else if (p->get_winner() == BLACK) {
             cout << "Black wins" << std::endl;
-            nWhiteWin += 0.5; // TODO(calcitem)
+            nWhiteWin += 0.5f; // TODO(calcitem)
         }
-        goto out;
-        break;
+        cout << std::endl << std::endl;
+        return;
     case Phase::none:
         cout << "None phase" << std::endl;
         break;
-    default:
-        cout << "Known phase" << std::endl;
     }
 
     if (v == VALUE_UNIQUE) {
@@ -401,29 +400,29 @@ void Thread::analyze(Color c)
         whiteWinRate = 0;
         drawRate = 0;
     } else {
-        blackWinRate = (float)nBlackWin * 100 / total;
-        whiteWinRate = (float)nWhiteWin * 100 / total;
-        drawRate = (float)nDraw * 100 / total;
+        blackWinRate = nBlackWin * 100 / total;
+        whiteWinRate = nWhiteWin * 100 / total;
+        drawRate = nDraw * 100 / total;
     }
 
-    cout << "Score: " << (int)nBlackWin << " : " << (int)nWhiteWin << " : "
-         << (int)nDraw << "\ttotal: " << (int)total << std::endl;
-    cout << fixed << setprecision(2) << blackWinRate << "% : " << whiteWinRate
-         << "% : " << drawRate << "%" << std::endl;
+    cout << "Score: " << static_cast<int>(nBlackWin) << " : "
+         << static_cast<int>(nWhiteWin) << " : " << static_cast<int>(nDraw)
+         << "\ttotal: " << static_cast<int>(total) << std::endl;
+    cout << std::fixed << std::setprecision(2) << blackWinRate
+         << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
 #endif // !QT_GUI_LIB
 
     cout.flags(flags);
 
-out:
     cout << std::endl << std::endl;
 }
 
-Depth Thread::get_depth()
+Depth Thread::get_depth() const
 {
     return Mills::get_search_depth(rootPos);
 }
 
-string Thread::next_move()
+string Thread::next_move() const
 {
 #ifdef ENDGAME_LEARNING
     // Check if very weak
@@ -460,6 +459,7 @@ string Thread::next_move()
                     ttHitCount * 100 / hashProbeCount);
     }
 #endif // TRANSPOSITION_TABLE_DEBUG
+
 #endif // TRANSPOSITION_TABLE_ENABLE
 
     return UCI::move(bestMove);
@@ -510,14 +510,18 @@ void Thread::loadEndgameFileToHashMap()
 
 void ThreadPool::set(size_t requested)
 {
-    if (size() > 0) { // destroy any existing thread(s)
+    if (!empty()) {
+        // destroy any existing thread(s)
         main()->wait_for_search_finished();
 
-        while (size() > 0)
-            delete back(), pop_back();
+        while (!empty()) {
+            delete back();
+            pop_back();
+        }
     }
 
-    if (requested > 0) { // create new thread(s)
+    if (requested > 0) {
+        // create new thread(s)
         push_back(new MainThread(0));
 
         while (size() < requested)
@@ -526,7 +530,7 @@ void ThreadPool::set(size_t requested)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // Reallocate the hash with the new thread pool size
-        TT.resize(size_t(Options["Hash"]));
+        TT.resize(Options["Hash"]);
 #endif
 
         // Init thread number dependent search params.
@@ -536,9 +540,9 @@ void ThreadPool::set(size_t requested)
 
 /// ThreadPool::clear() sets threadPool data to initial values.
 
-void ThreadPool::clear()
+void ThreadPool::clear() const
 {
-    for (Thread *th : *this)
+    for (const Thread *th : *this)
         th->clear();
 }
 
@@ -561,7 +565,7 @@ void ThreadPool::start_thinking(Position *pos, bool ponderMode)
         // Thread.mutex. Elsewhere, Thread.rootPos is accessed with Thread.mutex
         // held 1 out of 2 times (1 of these accesses strongly imply that it is
         // necessary).
-        std::lock_guard<std::mutex> lk(th->mutex);
+        std::lock_guard lk(th->mutex);
         th->rootPos = pos;
     }
 

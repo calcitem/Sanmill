@@ -76,17 +76,17 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     mouseEvent->accept();
 }
 
-QPointF GameScene::polar2pos(File f, Rank r)
+QPointF GameScene::polar2pos(File f, Rank r) const
 {
     return board->polar2pos(f, r);
 }
 
-bool GameScene::pos2polar(QPointF pos, File &f, Rank &r)
+bool GameScene::pos2polar(QPointF pos, File &f, Rank &r) const
 {
     return board->pos2polar(pos, f, r);
 }
 
-void GameScene::setDiagonal(bool arg)
+void GameScene::setDiagonal(bool arg) const
 {
     if (board) {
         board->setDiagonal(arg);

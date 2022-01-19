@@ -1,0 +1,5 @@
+v1.0.5
+
+* Indiquez les pièces blanches comme joueur 1 et noires comme joueur 2
+* Remplacez le texte 'Hint' par 'Info'
+* Correction d'une faute de frappe

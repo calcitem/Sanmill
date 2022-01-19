@@ -101,7 +101,7 @@ void PieceItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                             QPixmap(":/image/resources/image/black_piece.png"));
 #endif /* QT_MOBILE_APP_UI */
         break;
-    default:
+    case Models::noPiece:
         break;
     }
 
@@ -124,8 +124,8 @@ void PieceItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
     // If the model is selected, draw four small right angles
     if (isSelected()) {
-        QPen pen(selectLineColor, selectLineWeight, Qt::SolidLine,
-                 Qt::SquareCap, Qt::BevelJoin);
+        const QPen pen(selectLineColor, selectLineWeight, Qt::SolidLine,
+                       Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
         const int xy = (size - selectLineWeight) / 2;
 
@@ -141,8 +141,8 @@ void PieceItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
     // If the model is deleted, cross it
     if (deleted) {
-        QPen pen(removeLineColor, removeLineWeight, Qt::SolidLine,
-                 Qt::SquareCap, Qt::BevelJoin);
+        const QPen pen(removeLineColor, removeLineWeight, Qt::SolidLine,
+                       Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
 
         painter->drawLine(-size / 3, -size / 3, size / 3, size / 3);

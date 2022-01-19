@@ -21,56 +21,56 @@ private:
     // Variables
 
     // Handle of the file
-    HANDLE hFile;
+    HANDLE hFile {nullptr};
 
     // number of threads
-    unsigned int threadCount;
+    uint32_t threadCount {0};
 
     // Array of size [threadCount*blockSize] containing the data of the block,
     // where reading is taking place
-    unsigned char *readBuffer;
+    unsigned char *readBuf {nullptr};
 
-    // '' - access by [threadNo*bufferSize+position]
-    unsigned char *writeBuffer;
+    // '' - access by [threadNo*bufSize+position]
+    unsigned char *writeBuf {nullptr};
 
     // Array of size [threadCount] with pointers to the byte which is currently
     // read
-    int64_t *curReadingPointer;
+    int64_t *curReadingPtr {nullptr};
     // ''
-    int64_t *curWritingPointer;
+    int64_t *curWritingPtr {nullptr};
 
-    unsigned int *bytesInReadBuffer;
+    uint32_t *bytesInReadBuf {nullptr};
 
-    unsigned int *bytesInWriteBuffer;
+    uint32_t *bytesInWriteBuf {nullptr};
 
-    // size in bytes of a buffer
-    unsigned int bufferSize;
+    // size in bytes of a buf
+    uint32_t bufSize {0};
 
     // size in bytes
-    int64_t fileSize;
+    int64_t fileSize {0};
 
     CRITICAL_SECTION csIO;
 
     // Functions
-    void writeDataToFile(HANDLE hFile, int64_t offset, unsigned int sizeInBytes,
+    void writeDataToFile(HANDLE hFile, int64_t offset, uint32_t sizeInBytes,
                          void *pData);
-    void readDataFromFile(HANDLE hFile, int64_t offset,
-                          unsigned int sizeInBytes, void *pData);
+    void readDataFromFile(HANDLE hFile, int64_t offset, uint32_t sizeInBytes,
+                          void *pData);
 
 public:
     // Constructor / destructor
-    BufferedFile(unsigned int threadCount, unsigned int bufferSizeInBytes,
+    BufferedFile(uint32_t threadCount, uint32_t bufSizeInBytes,
                  const char *fileName);
     ~BufferedFile();
 
     // Functions
     bool flushBuffers();
-    bool writeBytes(unsigned int nBytes, unsigned char *pData);
-    bool readBytes(unsigned int nBytes, unsigned char *pData);
-    bool writeBytes(unsigned int threadNo, int64_t positionInFile,
-                    unsigned int nBytes, unsigned char *pData);
-    bool readBytes(unsigned int threadNo, int64_t positionInFile,
-                   unsigned int nBytes, unsigned char *pData);
+    bool writeBytes(uint32_t nBytes, unsigned char *pData);
+    bool readBytes(uint32_t nBytes, unsigned char *pData);
+    bool writeBytes(uint32_t threadNo, int64_t positionInFile, uint32_t nBytes,
+                    unsigned char *pData);
+    bool readBytes(uint32_t threadNo, int64_t positionInFile, uint32_t nBytes,
+                   unsigned char *pData);
     int64_t getFileSize();
 };
 

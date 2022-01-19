@@ -17,13 +17,13 @@ extern Mill *mill;
 extern PerfectAI *ai;
 
 // Perfect AI
-int perfect_init(void);
-int perfect_exit(void);
-int perfect_reset(void);
-Square from_perfect_sq(unsigned int sq);
-Move from_perfect_move(unsigned int from, unsigned int to);
+int perfect_init();
+int perfect_exit();
+int perfect_reset();
+Square from_perfect_sq(uint32_t sq);
+Move from_perfect_move(uint32_t from, uint32_t to);
 unsigned to_perfect_sq(Square sq);
-void to_perfect_move(Move move, unsigned int &from, unsigned int &to);
+void to_perfect_move(Move move, uint32_t &from, uint32_t &to);
 Move perfect_search();
 bool perfect_do_move(Move move);
 bool perfect_command(const char *cmd);

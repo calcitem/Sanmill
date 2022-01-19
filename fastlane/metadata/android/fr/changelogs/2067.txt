@@ -1,0 +1,5 @@
+v1.1.18
+
+* Lorsque le niveau de compétence est de 1, l'IA se déplace de manière plus aléatoire pour réduire la difficulté.
+* Le réglage de la barre d'outils de navigation fixe disparaît sur certains appareils.
+* Correction de la couleur du texte de l'élément de surbrillance du tiroir.

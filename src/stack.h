@@ -38,20 +38,20 @@ public:
 
     bool operator==(const T &other) const
     {
-        return (p == other.p && memcmp(arr, other.arr, size()));
+        return p == other.p && memcmp(arr, other.arr, size());
     }
 
     T &operator[](int i) { return arr[i]; }
 
     const T &operator[](int i) const { return arr[i]; }
 
-    inline void push(const T &obj)
+    void push(const T &obj)
     {
         p++;
         memcpy(arr + p, &obj, sizeof(T));
     }
 
-    inline void push_back(const T &obj)
+    void push_back(const T &obj)
     {
         p++;
         arr[p] = obj;
@@ -59,23 +59,23 @@ public:
         assert(p < capacity);
     }
 
-    inline void pop() { p--; }
+    void pop() { p--; }
 
-    inline T *top() { return &(arr[p]); }
+    T *top() { return &arr[p]; }
 
-    inline int size() const { return p + 1; }
+    [[nodiscard]] int size() const { return p + 1; }
 
-    inline size_t length() const { return (sizeof(T) * size()); }
+    [[nodiscard]] size_t length() const { return sizeof(T) * size(); }
 
-    inline T *begin() { return &arr[0]; }
+    T *begin() { return &arr[0]; }
 
-    inline T *end() { return &arr[p + 1]; }
+    T *end() { return &arr[p + 1]; }
 
-    inline bool empty() const { return (p < 0); }
+    [[nodiscard]] bool empty() const { return p < 0; }
 
-    inline void clear() { p = -1; }
+    void clear() { p = -1; }
 
-    inline void erase(int index)
+    void erase(int index)
     {
         for (int i = index; i < capacity - 1; i++) {
             arr[i] = arr[i + 1];

@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - 'src/ui/flutter_app/**'
   pull_request:
+    types: [review_requested, ready_for_review]
     paths-ignore:
       - 'src/ui/flutter_app/**'
 

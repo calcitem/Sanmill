@@ -36,12 +36,12 @@ struct CaseInsensitiveLess
 };
 
 /// Our options container is actually a std::map
-typedef std::map<std::string, Option, CaseInsensitiveLess> OptionsMap;
+using OptionsMap = std::map<std::string, Option, CaseInsensitiveLess>;
 
 /// Option class implements an option as defined by UCI protocol
 class Option
 {
-    typedef void (*OnChange)(const Option &);
+    using OnChange = void (*)(const Option &);
 
 public:
     explicit Option(OnChange = nullptr);
@@ -70,7 +70,7 @@ void loop(int argc, char *argv[]);
 std::string value(Value v);
 std::string square(Square s);
 std::string move(Move m);
-Move to_move(Position *pos, std::string &str);
+Move to_move(Position *pos, const std::string &str);
 
 } // namespace UCI
 

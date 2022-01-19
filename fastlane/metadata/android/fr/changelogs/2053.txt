@@ -1,0 +1,5 @@
+v1.1.16
+
+* Afficher la barre d'état pour les appareils à grand écran.
+* Ne pas afficher les paramètres de la barre d'outils de navigation si le rapport hauteur/largeur de la fenêtre est inférieur à 1,7.
+* Améliorer la traduction persane.

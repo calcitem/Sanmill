@@ -32,8 +32,7 @@ QString APP_FILENAME_DEFAULT = "MillGame";
 
 QString getAppFileName()
 {
-    QString filename;
-    filename = QCoreApplication::applicationFilePath().mid(
+    QString filename = QCoreApplication::applicationFilePath().mid(
         QCoreApplication::applicationDirPath().size() + 1);
     filename = filename.mid(0, filename.size() - QString(".exe").size());
 
@@ -59,7 +58,7 @@ int main(int argc, char *argv[])
                      QString::number(QCoreApplication::applicationPid()) + ")");
 
 #ifndef _DEBUG
-    QRect desktopRect = QGuiApplication::primaryScreen()->geometry();
+    const QRect desktopRect = QGuiApplication::primaryScreen()->geometry();
     w.move((desktopRect.width() - w.width()) / 4,
            (desktopRect.height() - w.height()) / 2);
 #endif

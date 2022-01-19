@@ -30,10 +30,10 @@
 // the calls at compile time), try to load them at runtime. To do this we need
 // first to define the corresponding function pointers.
 extern "C" {
-typedef bool (*fun1_t)(LOGICAL_PROCESSOR_RELATIONSHIP,
-                       PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, PDWORD);
-typedef bool (*fun2_t)(USHORT, PGROUP_AFFINITY);
-typedef bool (*fun3_t)(HANDLE, CONST GROUP_AFFINITY *, PGROUP_AFFINITY);
+using fun1_t = bool (*)(LOGICAL_PROCESSOR_RELATIONSHIP,
+                        PSYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX, PDWORD);
+using fun2_t = bool (*)(USHORT, PGROUP_AFFINITY);
+using fun3_t = bool (*)(HANDLE, CONST GROUP_AFFINITY *, PGROUP_AFFINITY);
 }
 #endif
 
@@ -75,7 +75,7 @@ namespace {
 
 /// Version number. If Version is left empty, then compile date in the format
 /// DD-MM-YY and show in engine_info.
-const string Version = "";
+const string Version;
 
 /// Our fancy logging facility. The trick here is to replace cin.rdbuf() and
 /// cout.rdbuf() with two Tie objects that tie cin and cout to a file stream. We
@@ -83,7 +83,7 @@ const string Version = "";
 /// usual I/O functionality, all without changing a single line of code!
 /// Idea from http://groups.google.com/group/comp.lang.c++/msg/1d941c0f26ea0d81
 
-struct Tie : public streambuf
+struct Tie final : streambuf
 {
     // MSVC requires split streambuf for cin and cout
 
@@ -94,7 +94,10 @@ struct Tie : public streambuf
 
     int sync() override { return logBuf->pubsync(), buf->pubsync(); }
 
-    int overflow(int c) override { return log(buf->sputc((char)c), "<< "); }
+    int overflow(int c) override
+    {
+        return log(buf->sputc(static_cast<char>(c)), "<< ");
+    }
 
     int underflow() override { return buf->sgetc(); }
 
@@ -102,14 +105,14 @@ struct Tie : public streambuf
 
     streambuf *buf, *logBuf;
 
-    int log(int c, const char *prefix)
+    [[nodiscard]] int log(int c, const char *prefix) const
     {
         static int last = '\n'; // Single log file
 
         if (last == '\n')
             logBuf->sputn(prefix, 3);
 
-        return last = logBuf->sputc((char)c);
+        return last = logBuf->sputc(static_cast<char>(c));
     }
 };
 
@@ -155,7 +158,7 @@ public:
 /// the program was compiled) or "Sanmill <Version>", depending on whether
 /// Version is empty.
 
-const string engine_info(bool to_uci)
+string engine_info(bool to_uci)
 {
     const string months("Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec");
     string month, day, year;
@@ -177,7 +180,7 @@ const string engine_info(bool to_uci)
 
 /// compiler_info() returns a string trying to describe the compiler we use
 
-const std::string compiler_info()
+std::string compiler_info()
 {
 #define stringify2(x) #x
 #define stringify(x) stringify2(x)
@@ -311,8 +314,8 @@ void dbg_print()
              << 100 * hits[1] / hits[0] << endl;
 
     if (means[0])
-        cerr << "Total " << means[0] << " Mean " << (double)means[1] / means[0]
-             << endl;
+        cerr << "Total " << means[0] << " Mean "
+             << static_cast<double>(means[1]) / means[0] << endl;
 }
 
 /// Used to serialize access to std::cout to avoid multiple threads writing at
@@ -355,7 +358,7 @@ void prefetch(void *addr)
 #endif
 
 #if defined(__INTEL_COMPILER) || defined(_MSC_VER)
-    _mm_prefetch((char *)addr, _MM_HINT_T0);
+    _mm_prefetch(static_cast<char *>(addr), _MM_HINT_T0);
 #else
     __builtin_prefetch(addr);
 #endif
@@ -371,10 +374,9 @@ constexpr auto PREFETCH_STRIDE = 4 * L1_CACHE_BYTES;
 
 void prefetch_range(void *addr, size_t len)
 {
-    char *cp = nullptr;
-    const char *end = (char *)addr + len;
+    const char *end = static_cast<char *>(addr) + len;
 
-    for (cp = (char *)addr; cp < end; cp += PREFETCH_STRIDE)
+    for (auto cp = static_cast<char *>(addr); cp < end; cp += PREFETCH_STRIDE)
         prefetch(cp);
 }
 

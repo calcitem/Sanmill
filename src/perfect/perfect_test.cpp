@@ -26,24 +26,28 @@ using std::iostream;
 extern Mill *mill;
 extern PerfectAI *ai;
 
-const unsigned int startTestFromLayer = 0;
+constexpr uint32_t startTestFromLayer = 0;
 
-const unsigned int endTestAtLayer = LAYER_COUNT - 1;
+constexpr uint32_t endTestAtLayer = LAYER_COUNT - 1;
 
-const bool calculateDatabase = false;
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI_CALCULATE_DATABASE
+const bool calculateDatabase = true;
+#else
+constexpr bool calculateDatabase = false;
+#endif
 
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI_TEST
 int main(void)
 #else
-int perfect_main(void)
+int perfect_main()
 #endif
 {
     // locals
     bool playerOneHuman = false;
     bool playerTwoHuman = false;
     char ch[100];
-    unsigned int from;
-    unsigned int to;
+    uint32_t from;
+    uint32_t to;
 
     mill = new Mill();
     ai = new PerfectAI(PERFECT_AI_DATABASE_DIR);
@@ -107,8 +111,8 @@ int perfect_main(void)
             mill->getComputersChoice(&from, &to);
             cout << "\n\n";
             cout << "\nlast move was from "
-                 << (char)(mill->getLastMoveFrom() + 'a') << " to "
-                 << (char)(mill->getLastMoveTo() + 'a') << "\n\n";
+                 << static_cast<char>(mill->getLastMoveFrom() + 'a') << " to "
+                 << static_cast<char>(mill->getLastMoveTo() + 'a') << "\n\n";
 
 #ifdef SELF_PLAY
             moveCount++;

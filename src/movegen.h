@@ -58,13 +58,13 @@ struct MoveList
         : last(generate<T>(pos, moveList))
     { }
 
-    const ExtMove *begin() const { return moveList; }
+    [[nodiscard]] const ExtMove *begin() const { return moveList; }
 
-    const ExtMove *end() const { return last; }
+    [[nodiscard]] const ExtMove *end() const { return last; }
 
-    size_t size() const { return last - moveList; }
+    [[nodiscard]] size_t size() const { return last - moveList; }
 
-    bool contains(Move move) const
+    [[nodiscard]] bool contains(Move move) const
     {
         return std::find(begin(), end(), move) != end();
     }

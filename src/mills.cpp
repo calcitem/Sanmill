@@ -45,7 +45,7 @@ namespace Mills {
 
 void adjacent_squares_init() noexcept
 {
-    const int adjacentSquares[SQUARE_EXT_NB][MD_NB] = {
+    constexpr int adjacentSquares[SQUARE_EXT_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -92,7 +92,7 @@ void adjacent_squares_init() noexcept
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const int adjacentSquares_diagonal[SQUARE_EXT_NB][MD_NB] = {
+    constexpr int adjacentSquares_diagonal[SQUARE_EXT_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -370,11 +370,13 @@ void mill_table_init()
 void move_priority_list_shuffle()
 {
     if (gameOptions.getSkillLevel() == 1) {
-        for (auto i = 8; i < 32; i++) { // TODO(calcitem): SQ_BEGIN & SQ_END
-            MoveList<LEGAL>::movePriorityList[i - int(SQ_BEGIN)] = (Square)i;
+        // TODO(calcitem): 8 is SQ_BEGIN & 32 is SQ_END
+        for (auto i = 8; i < 32; i++) {
+            MoveList<LEGAL>::movePriorityList[i - static_cast<int>(SQ_BEGIN)] =
+                static_cast<Square>(i);
         }
         if (gameOptions.getShufflingEnabled()) {
-            const uint32_t seed = static_cast<uint32_t>(now());
+            const auto seed = static_cast<uint32_t>(now());
 
             std::shuffle(MoveList<LEGAL>::movePriorityList.begin(),
                          MoveList<LEGAL>::movePriorityList.end(),
@@ -383,10 +385,10 @@ void move_priority_list_shuffle()
         return;
     }
 
-    std::array<Square, 4> movePriorityList0;
-    std::array<Square, 8> movePriorityList1;
-    std::array<Square, 4> movePriorityList2;
-    std::array<Square, 8> movePriorityList3;
+    std::array<Square, 4> movePriorityList0 {};
+    std::array<Square, 8> movePriorityList1 {};
+    std::array<Square, 4> movePriorityList2 {};
+    std::array<Square, 8> movePriorityList3 {};
 
     if (!rule.hasDiagonalLines) {
         movePriorityList0 = {SQ_16, SQ_18, SQ_20, SQ_22};
@@ -405,7 +407,7 @@ void move_priority_list_shuffle()
     }
 
     if (gameOptions.getShufflingEnabled()) {
-        const uint32_t seed = static_cast<uint32_t>(now());
+        const auto seed = static_cast<uint32_t>(now());
 
         std::shuffle(movePriorityList0.begin(), movePriorityList0.end(),
                      std::default_random_engine(seed));
@@ -444,14 +446,14 @@ void move_priority_list_shuffle()
 
 bool is_star_squares_full(Position *pos)
 {
-    bool ret = false;
+    bool ret;
 
     if (rule.hasDiagonalLines) {
-        ret = (pos->get_board()[SQ_17] && pos->get_board()[SQ_19] &&
-               pos->get_board()[SQ_21] && pos->get_board()[SQ_23]);
+        ret = pos->get_board()[SQ_17] && pos->get_board()[SQ_19] &&
+              pos->get_board()[SQ_21] && pos->get_board()[SQ_23];
     } else {
-        ret = (pos->get_board()[SQ_16] && pos->get_board()[SQ_18] &&
-               pos->get_board()[SQ_20] && pos->get_board()[SQ_22]);
+        ret = pos->get_board()[SQ_16] && pos->get_board()[SQ_18] &&
+              pos->get_board()[SQ_20] && pos->get_board()[SQ_22];
     }
 
     return ret;
@@ -471,10 +473,10 @@ Depth get_search_depth(const Position *pos)
     if (!gameOptions.getDeveloperMode()) {
         if (pos->phase == Phase::placing) {
             if (!gameOptions.getDrawOnHumanExperience()) {
-                return (Depth)level;
+                return static_cast<Depth>(level);
             }
 
-            const Depth placingDepthTable9[25] = {
+            constexpr Depth placingDepthTable9[25] = {
                 +1, 1, +1, 1,  /* 0 ~ 3 */
                 +3, 3, +3, 15, /* 4 ~ 7 */
                 +5, 3, +5, 0,  /* 8 ~ 11 */
@@ -484,7 +486,7 @@ Depth get_search_depth(const Position *pos)
                 +0             /* 24 */
             };
 
-            const Depth placingDepthTable12[25] = {
+            constexpr Depth placingDepthTable12[25] = {
                 +1,  2,  +2,  4,  /* 0 ~ 3 */
                 +4,  12, +12, 18, /* 4 ~ 7 */
                 +12, 0,  +0,  0,  /* 8 ~ 11 */
@@ -513,26 +515,25 @@ Depth get_search_depth(const Position *pos)
 #endif
 
             if (d == 0) {
-                return (Depth)level;
-            } else {
-                if (level > d) {
-                    return d;
-                } else {
-                    return (Depth)level;
-                }
+                return static_cast<Depth>(level);
             }
-        } else if (pos->phase == Phase::moving) {
-            return (Depth)level;
+            if (level > d) {
+                return d;
+            }
+            return static_cast<Depth>(level);
+        }
+        if (pos->phase == Phase::moving) {
+            return static_cast<Depth>(level);
         }
     }
 
 #ifdef _DEBUG
     constexpr Depth reduce = 0;
 #else
-    Depth reduce = 0;
+    constexpr Depth reduce = 0;
 #endif
 
-    const Depth placingDepthTable_12[25] = {
+    constexpr Depth placingDepthTable_12[25] = {
         +1,  2,  +2,  4,  /* 0 ~ 3 */
         +4,  12, +12, 18, /* 4 ~ 7 */
         +12, 16, +16, 16, /* 8 ~ 11 */
@@ -542,7 +543,7 @@ Depth get_search_depth(const Position *pos)
         +14               /* 24 */
     };
 
-    const Depth placingDepthTable_12_special[25] = {
+    constexpr Depth placingDepthTable_12_special[25] = {
         +1,  2,  +2,  4,  /* 0 ~ 3 */
         +4,  12, +12, 12, /* 4 ~ 7 */
         +12, 13, +13, 13, /* 8 ~ 11 */
@@ -552,7 +553,7 @@ Depth get_search_depth(const Position *pos)
         +13               /* 24 */
     };
 
-    const Depth placingDepthTable_9[20] = {
+    constexpr Depth placingDepthTable_9[20] = {
         +1,  7,  +7,  10, /* 0 ~ 3 */
         +10, 12, +12, 14, /* 4 ~ 7 */
         +14, 14, +14, 14, /* 8 ~ 11 */
@@ -561,7 +562,7 @@ Depth get_search_depth(const Position *pos)
         +14               /* 19 */
     };
 
-    const Depth movingDepthTable[24] = {
+    constexpr Depth movingDepthTable[24] = {
         1,  1,  1,  1,  /* 0 ~ 3 */
         1,  1,  11, 11, /* 4 ~ 7 */
         11, 11, 11, 11, /* 8 ~ 11 */

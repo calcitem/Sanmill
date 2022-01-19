@@ -21,8 +21,8 @@
 
 #include "types.h"
 
-#define SET_BIT(x, bit) (x |= (1 << bit))
-#define CLEAR_BIT(x, bit) (x &= ~(1 << bit))
+#define SET_BIT(x, bit) ((x) |= (1 << (bit)))
+#define CLEAR_BIT(x, bit) ((x) &= ~(1 << (bit)))
 
 #define S2(a, b) (square_bb(SQ_##a) | square_bb(SQ_##b))
 #define S3(a, b, c) (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c))
@@ -36,11 +36,11 @@
 namespace Bitboards {
 
 void init();
-const std::string pretty(Bitboard b);
+std::string pretty(Bitboard b);
 
 } // namespace Bitboards
 
-constexpr Bitboard AllSquares = ~Bitboard(0);
+constexpr Bitboard AllSquares = ~static_cast<Bitboard>(0);
 
 constexpr Bitboard FileABB = 0x0000FF00;
 constexpr Bitboard FileBBB = FileABB << (8 * 1);
@@ -159,7 +159,7 @@ inline int popcount(Bitboard b) noexcept
 
 #elif defined(_MSC_VER) || defined(__INTEL_COMPILER)
 
-    return (int)_mm_popcnt_u32(b);
+    return _mm_popcnt_u32(b);
 
 #else // Assumed gcc or compatible compiler
 

@@ -1,0 +1,4 @@
+v1.1.2
+
+* Ajouter la traduction automatique en roumain.
+* Améliorer la stabilité de l'import/export.

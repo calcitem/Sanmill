@@ -38,16 +38,12 @@ MiniMax::MiniMax()
     InitializeCriticalSection(&csDatabase);
     InitializeCriticalSection(&csOsPrint);
 
-    // Thousands separator
-    locale locale("German_Switzerland");
-    cout.imbue(locale);
-
-    // for io operations per second measurement
+    // for I/O operations per second measurement
     QueryPerformanceFrequency(&frequency);
-    nReadSkvOperations = 0;
-    nWriteSkvOperations = 0;
-    nReadPlyOperations = 0;
-    nWritePlyOperations = 0;
+    nReadSkvOps = 0;
+    nWriteSkvOps = 0;
+    nReadPlyOps = 0;
+    nWritePlyOps = 0;
 
     if (MEASURE_ONLY_IO) {
         readSkvInterval.QuadPart = 0;
@@ -66,7 +62,7 @@ MiniMax::MiniMax()
     // PL_TO_MOVE_CHANGED   means that in the predecessor state the player to
     // move has changed to the other player. PL_TO_MOVE_UNCHANGED means that the
     // player to move is still the one who shall move.
-    unsigned char skvPerspectiveMatrixTmp[4][2] = {
+    const unsigned char skvPerspectiveMatrixTmp[4][2] = {
         //  PL_TO_MOVE_UNCHANGED    PL_TO_MOVE_CHANGED
         SKV_VALUE_INVALID,
         SKV_VALUE_INVALID, // SKV_VALUE_INVALID
@@ -96,7 +92,7 @@ MiniMax::~MiniMax()
 // falseOrStop()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::falseOrStop()
+bool MiniMax::falseOrStop() const
 {
     if (stopOnCriticalError)
         WaitForSingleObject(GetCurrentProcess(), INFINITE);
@@ -109,8 +105,8 @@ bool MiniMax::falseOrStop()
 // Returns the best choice if the database has been opened and
 // calculates the best choice for that if database is not open.
 //-----------------------------------------------------------------------------
-void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice,
-                             unsigned int branchCountMax)
+void *MiniMax::getBestChoice(uint32_t tilLevel, uint32_t *choice,
+                             uint32_t branchCountMax)
 {
     // set global vars
     fullTreeDepth = tilLevel;
@@ -122,7 +118,7 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice,
     Knot root;
     AlphaBetaGlobalVars alphaBetaVars(this, getLayerNumber(0));
     RunAlphaBetaVars tva(this, &alphaBetaVars, alphaBetaVars.layerNumber);
-    srand((unsigned int)time(nullptr));
+    srand(static_cast<uint32_t>(time(nullptr)));
     tva.curThreadNo = 0;
 
     // prepare the situation
@@ -142,7 +138,7 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice,
 // calculateDatabase()
 // Calculates the database, which must be already open.
 //-----------------------------------------------------------------------------
-void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
+void MiniMax::calculateDatabase(uint32_t maxDepthOfTree, bool onlyPrepLayer)
 {
     // locals
     bool abortCalc = false;
@@ -183,7 +179,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
                 continue;
 
             // calculate
-            abortCalc = (!calcLayer(curCalculatedLayer));
+            abortCalc = !calcLayer(curCalculatedLayer);
 
             // release memory
             unloadAllLayers();
@@ -206,7 +202,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
 
         if (!abortCalc) {
             // calculate layer statistics
-            calcLayerStatistics((char *)"statistics.txt");
+            calcLayerStatistics("statistics.txt");
 
             // save header
             skvfHeader.completed = true;
@@ -233,10 +229,10 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
 // calcLayer()
 //
 //-----------------------------------------------------------------------------
-bool MiniMax::calcLayer(unsigned int layerNumber)
+bool MiniMax::calcLayer(uint32_t layerNumber)
 {
     // locals
-    vector<unsigned int> layersToCalc;
+    vector<uint32_t> layersToCalc;
 
     // moves can be done reverse, leading to too depth searching trees
     if (shallRetroAnalysisBeUsed(layerNumber)) {
@@ -287,35 +283,6 @@ bool MiniMax::calcLayer(unsigned int layerNumber)
     LeaveCriticalSection(&csOsPrint);
 
     return true;
-}
-
-//-----------------------------------------------------------------------------
-// pauseDatabaseCalc()
-//
-//-----------------------------------------------------------------------------
-void MiniMax::pauseDatabaseCalc()
-{
-    threadManager.pauseExec();
-}
-
-//-----------------------------------------------------------------------------
-// cancelDatabaseCalc()
-//
-//-----------------------------------------------------------------------------
-void MiniMax::cancelDatabaseCalc()
-{
-    // when returning from execParallelLoop() all function shall quit
-    // immediately up to calculateDatabase()
-    threadManager.cancelExec();
-}
-
-//-----------------------------------------------------------------------------
-// wasDatabaseCalcCancelled()
-//
-//-----------------------------------------------------------------------------
-bool MiniMax::wasDatabaseCalcCancelled()
-{
-    return threadManager.wasExecCancelled();
 }
 
 #endif // MADWEASEL_MUEHLE_PERFECT_AI

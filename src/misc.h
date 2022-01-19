@@ -26,8 +26,8 @@
 
 #include "types.h"
 
-const std::string engine_info(bool to_uci = false);
-const std::string compiler_info();
+std::string engine_info(bool to_uci = false);
+std::string compiler_info();
 void prefetch(void *addr);
 void prefetch_range(void *addr, size_t len);
 void start_logger(const std::string &fname);
@@ -46,7 +46,7 @@ void dbg_hit_on(bool c, bool b) noexcept;
 void dbg_mean_of(int v) noexcept;
 void dbg_print();
 
-typedef std::chrono::milliseconds::rep TimePoint; // A value in milliseconds
+using TimePoint = std::chrono::milliseconds::rep; // A value in milliseconds
 
 static_assert(sizeof(TimePoint) == sizeof(int64_t), "TimePoint should be 64 "
                                                     "bits");
@@ -61,7 +61,7 @@ inline TimePoint now()
 template <class Entry, int Size>
 struct HashTable
 {
-    Entry *operator[](Key key) { return &table[(uint32_t)key & (Size - 1)]; }
+    Entry *operator[](Key key) { return &table[key & (Size - 1)]; }
 
 private:
     std::vector<Entry> table = std::vector<Entry>(Size); // Allocate on the heap
@@ -109,7 +109,9 @@ class PRNG
 
     uint64_t rand64()
     {
-        s ^= s >> 12, s ^= s << 25, s ^= s >> 27;
+        s ^= s >> 12;
+        s ^= s << 25;
+        s ^= s >> 27;
         return s * 2685821657736338717LL;
     }
 
@@ -141,11 +143,11 @@ constexpr uint64_t mul_hi64(uint64_t a, uint64_t b)
     __extension__ typedef unsigned __int128 uint128;
     return ((uint128)a * (uint128)b) >> 64;
 #else
-    const uint64_t aL = (uint32_t)a, aH = a >> 32;
-    const uint64_t bL = (uint32_t)b, bH = b >> 32;
+    const uint64_t aL = static_cast<uint32_t>(a), aH = a >> 32;
+    const uint64_t bL = static_cast<uint32_t>(b), bH = b >> 32;
     const uint64_t c1 = (aL * bL) >> 32;
     const uint64_t c2 = aH * bL + c1;
-    const uint64_t c3 = aL * bH + (uint32_t)c2;
+    const uint64_t c3 = aL * bH + static_cast<uint32_t>(c2);
     return aH * bH + (c2 >> 32) + (c3 >> 32);
 #endif
 }

@@ -1,0 +1,3 @@
+v1.1.17
+
+* Permet de configurer la couleur de la barre d'outils.

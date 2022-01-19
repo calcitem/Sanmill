@@ -106,7 +106,7 @@ void Game::loadSettings()
 {
     bool empty = false;
 
-    QFileInfo file(SETTINGS_FILE);
+    const QFileInfo file(SETTINGS_FILE);
     if (!file.exists()) {
         cout << SETTINGS_FILE.toStdString() << " is not exists, create it."
              << std::endl;
@@ -176,7 +176,7 @@ Game::~Game()
     settings = nullptr;
 }
 
-const map<int, QStringList> Game::getActions()
+map<int, QStringList> Game::getActions()
 {
     // Main window update menu bar
     // The reason why we don't use the mode of signal and slot is that
@@ -272,13 +272,12 @@ void Game::gameReset()
     // 0: the first piece in the first hand; 1: the first piece in the second
     // hand 2: the first second piece; 3: the second piece
     // ......
-    PieceItem::Models md;
 
     for (int i = 0; i < rule.pieceCount; i++) {
         // The first piece
-        md = isInverted ? PieceItem::Models::blackPiece :
-                          PieceItem::Models::whitePiece;
-        PieceItem *newP = new PieceItem;
+        PieceItem::Models md = isInverted ? PieceItem::Models::blackPiece :
+                                            PieceItem::Models::whitePiece;
+        auto newP = new PieceItem;
         newP->setModel(md);
         newP->setPos(scene.pos_p1);
         newP->setNum(i + 1);
@@ -457,7 +456,7 @@ void Game::setAiDepthTime(int time1, int time2)
     startAiThreads();
 }
 
-void Game::getAiDepthTime(int &time1, int &time2)
+void Game::getAiDepthTime(int &time1, int &time2) const
 {
     time1 = aiThread[WHITE]->getTimeLimit();
     time2 = aiThread[BLACK]->getTimeLimit();
@@ -482,7 +481,7 @@ void Game::setAnimation(bool arg) noexcept
     settings->setValue("Options/Animation", arg);
 }
 
-void Game::setSound(bool arg) noexcept
+void Game::setSound(bool arg) const noexcept
 {
     hasSound = arg;
     settings->setValue("Options/Sound", arg);
@@ -572,7 +571,7 @@ void Game::playSound(GameSound soundType, Color c)
     case GameSound::winAndLossesAreObvious:
         filename = "WinsAndLossesAreObvious.wav";
         break;
-    default:
+    case GameSound::none:
         filename = "";
         break;
     }
@@ -585,7 +584,7 @@ void Game::playSound(GameSound soundType, Color c)
     }
 
     if (hasSound) {
-        QSoundEffect *effect = new QSoundEffect;
+        auto *effect = new QSoundEffect;
         effect->setSource(QUrl::fromLocalFile(soundPath));
         effect->setLoopCount(1);
         effect->play();
@@ -593,19 +592,19 @@ void Game::playSound(GameSound soundType, Color c)
 #endif /* ! DO_NOT_PLAY_SOUND */
 }
 
-void Game::setSkillLevel(int val)
+void Game::setSkillLevel(int val) const
 {
     gameOptions.setSkillLevel(val);
     settings->setValue("Options/SkillLevel", val);
 }
 
-void Game::setMoveTime(int val)
+void Game::setMoveTime(int val) const
 {
     gameOptions.setMoveTime(val);
     settings->setValue("Options/MoveTime", val);
 }
 
-void Game::setAlphaBetaAlgorithm(bool enabled)
+void Game::setAlphaBetaAlgorithm(bool enabled) const
 {
     if (enabled) {
         gameOptions.setAlgorithm(0);
@@ -614,7 +613,7 @@ void Game::setAlphaBetaAlgorithm(bool enabled)
     }
 }
 
-void Game::setPvsAlgorithm(bool enabled)
+void Game::setPvsAlgorithm(bool enabled) const
 {
     if (enabled) {
         gameOptions.setAlgorithm(1);
@@ -623,7 +622,7 @@ void Game::setPvsAlgorithm(bool enabled)
     }
 }
 
-void Game::setMtdfAlgorithm(bool enabled)
+void Game::setMtdfAlgorithm(bool enabled) const
 {
     if (enabled) {
         gameOptions.setAlgorithm(2);
@@ -632,55 +631,55 @@ void Game::setMtdfAlgorithm(bool enabled)
     }
 }
 
-void Game::setAlgorithm(int val)
+void Game::setAlgorithm(int val) const
 {
     gameOptions.setAlgorithm(val);
     settings->setValue("Options/Algorithm", val);
 }
 
-void Game::setDrawOnHumanExperience(bool enabled)
+void Game::setDrawOnHumanExperience(bool enabled) const
 {
     gameOptions.setDrawOnHumanExperience(enabled);
     settings->setValue("Options/DrawOnHumanExperience", enabled);
 }
 
-void Game::setConsiderMobility(bool enabled)
+void Game::setConsiderMobility(bool enabled) const
 {
     gameOptions.setConsiderMobility(enabled);
     settings->setValue("Options/ConsiderMobility", enabled);
 }
 
-void Game::setAiIsLazy(bool enabled)
+void Game::setAiIsLazy(bool enabled) const
 {
     gameOptions.setAiIsLazy(enabled);
     settings->setValue("Options/AiIsLazy", enabled);
 }
 
-void Game::setResignIfMostLose(bool enabled)
+void Game::setResignIfMostLose(bool enabled) const
 {
     gameOptions.setResignIfMostLose(enabled);
     settings->setValue("Options/ResignIfMostLose", enabled);
 }
 
-void Game::setAutoRestart(bool enabled)
+void Game::setAutoRestart(bool enabled) const
 {
     gameOptions.setAutoRestart(enabled);
     settings->setValue("Options/AutoRestart", enabled);
 }
 
-void Game::setAutoChangeFirstMove(bool enabled)
+void Game::setAutoChangeFirstMove(bool enabled) const
 {
     gameOptions.setAutoChangeFirstMove(enabled);
     settings->setValue("Options/AutoChangeFirstMove", enabled);
 }
 
-void Game::setShuffling(bool enabled)
+void Game::setShuffling(bool enabled) const
 {
     gameOptions.setShufflingEnabled(enabled);
     settings->setValue("Options/Shuffling", enabled);
 }
 
-void Game::setLearnEndgame(bool enabled)
+void Game::setLearnEndgame(bool enabled) const
 {
     gameOptions.setLearnEndgameEnabled(enabled);
     settings->setValue("Options/LearnEndgameEnabled", enabled);
@@ -692,7 +691,7 @@ void Game::setLearnEndgame(bool enabled)
 #endif
 }
 
-void Game::setPerfectAi(bool enabled)
+void Game::setPerfectAi(bool enabled) const
 {
     gameOptions.setPerfectAiEnabled(enabled);
     settings->setValue("Options/PerfectAI", enabled);
@@ -706,27 +705,27 @@ void Game::setPerfectAi(bool enabled)
 #endif
 }
 
-void Game::setIDS(bool enabled)
+void Game::setIDS(bool enabled) const
 {
     gameOptions.setIDSEnabled(enabled);
     settings->setValue("Options/IDS", enabled);
 }
 
 // DepthExtension
-void Game::setDepthExtension(bool enabled)
+void Game::setDepthExtension(bool enabled) const
 {
     gameOptions.setDepthExtension(enabled);
     settings->setValue("Options/DepthExtension", enabled);
 }
 
 // OpeningBook
-void Game::setOpeningBook(bool enabled)
+void Game::setOpeningBook(bool enabled) const
 {
     gameOptions.setOpeningBook(enabled);
     settings->setValue("Options/OpeningBook", enabled);
 }
 
-void Game::setDeveloperMode(bool enabled)
+void Game::setDeveloperMode(bool enabled) const
 {
     gameOptions.setDeveloperMode(enabled);
     settings->setValue("Options/DeveloperMode", enabled);
@@ -741,7 +740,7 @@ void Game::flip()
 
     // Update move history
     int row = 0;
-    for (const auto &str : *(move_hostory())) {
+    for (const auto &str : *move_hostory()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
@@ -764,7 +763,7 @@ void Game::mirror()
     // Update move history
     int row = 0;
 
-    for (const auto &str : *(move_hostory())) {
+    for (const auto &str : *move_hostory()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
@@ -789,7 +788,7 @@ void Game::turnRight()
     // Update move history
     int row = 0;
 
-    for (const auto &str : *(move_hostory())) {
+    for (const auto &str : *move_hostory()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
@@ -811,7 +810,7 @@ void Game::turnLeft()
 
     // Update move history
     int row = 0;
-    for (const auto &str : *(move_hostory())) {
+    for (const auto &str : *move_hostory()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
@@ -824,11 +823,11 @@ void Game::turnLeft()
 
 void Game::updateTime()
 {
-    int timePoint = -1;
+    constexpr int timePoint = -1;
     time_t *ourSeconds = &elapsedSeconds[sideToMove];
-    time_t theirSeconds = elapsedSeconds[~sideToMove];
+    const time_t theirSeconds = elapsedSeconds[~sideToMove];
 
-    currentTime = time(NULL);
+    currentTime = time(nullptr);
 
     if (timePoint >= *ourSeconds) {
         *ourSeconds = timePoint;
@@ -908,7 +907,7 @@ void Game::timerEvent(QTimerEvent *event)
 #endif
 }
 
-bool Game::isAIsTurn()
+bool Game::isAIsTurn() const
 {
     return isAiPlayer[sideToMove];
 }
@@ -979,7 +978,7 @@ bool Game::actionPiece(QPointF p)
 
     // Judge whether to select, drop or remove the seed
     bool result = false;
-    PieceItem *piece = nullptr;
+    PieceItem *piece;
     QGraphicsItem *item = scene.itemAt(p, QTransform());
 
     switch (position.get_action()) {
@@ -1021,7 +1020,7 @@ bool Game::actionPiece(QPointF p)
         }
         break;
 
-    default:
+    case Action::none:
         // If it is game over state, no response will be made
         break;
     }
@@ -1029,7 +1028,7 @@ bool Game::actionPiece(QPointF p)
     if (result) {
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI
         if (gameOptions.getPerfectAiEnabled()) {
-            perfect_command((char *)position.record);
+            perfect_command(position.record);
         }
 #endif
 
@@ -1051,7 +1050,7 @@ bool Game::actionPiece(QPointF p)
         int k = 0;
 
         // Output command line
-        for (const auto &i : *(move_hostory())) {
+        for (const auto &i : *move_hostory()) {
             // Skip added because the standard list container has no subscripts
             if (k++ <= currentRow)
                 continue;
@@ -1063,7 +1062,7 @@ bool Game::actionPiece(QPointF p)
 #ifndef DO_NOT_PLAY_WIN_SOUND
         const Color winner = position.get_winner();
         if (winner != NOBODY &&
-            (moveListModel.data(moveListModel.index(currentRow - 1)))
+            moveListModel.data(moveListModel.index(currentRow - 1))
                 .toString()
                 .contains("Time over."))
             playSound(GameSound::win, winner);
@@ -1073,7 +1072,8 @@ bool Game::actionPiece(QPointF p)
         // If it's not decided yet
         if (position.get_winner() == NOBODY) {
             resumeAiThreads(position.sideToMove);
-        } else { // If it's decided
+        } else {
+            // If it's decided
             if (gameOptions.getAutoRestart()) {
                 saveScore();
 
@@ -1110,7 +1110,7 @@ bool Game::resign()
     int k = 0;
 
     // Output command line
-    for (const auto &i : *(move_hostory())) {
+    for (const auto &i : *move_hostory()) {
         // Skip added because the standard list container has no index
         if (k++ <= currentRow)
             continue;
@@ -1129,8 +1129,8 @@ bool Game::resign()
 // actionPiece
 bool Game::command(const string &cmd, bool update /* = true */)
 {
-    int total = 0;
-    float blackWinRate = 0.0f, whiteWinRate = 0.0f, drawRate = 0.0f;
+    int total;
+    float blackWinRate, whiteWinRate, drawRate;
 
     Q_UNUSED(hasSound)
 
@@ -1143,7 +1143,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
         return false;
 #endif // QT_GUI_LIB
 
-    GameSound soundType = GameSound::none;
+    auto soundType = GameSound::none;
 
     switch (position.get_action()) {
     case Action::select:
@@ -1153,7 +1153,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     case Action::remove:
         soundType = GameSound::remove;
         break;
-    default:
+    case Action::none:
         break;
     }
 
@@ -1164,6 +1164,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 #ifdef MADWEASEL_MUEHLE_RULE
     if (position.get_phase() != Phase::gameOver) {
 #endif // MADWEASEL_MUEHLE_RULE
+
         debugPrintf("Computer: %s\n\n", cmd.c_str());
 
         moveHistory.emplace_back(cmd);
@@ -1203,12 +1204,13 @@ bool Game::command(const string &cmd, bool update /* = true */)
         moveListModel.insertRow(0);
         moveListModel.setData(moveListModel.index(0), position.get_record());
         currentRow = 0;
-    } else { // For the current position
+    } else {
+        // For the current position
         currentRow = moveListModel.rowCount() - 1;
         // Skip the added rows. The iterator does not support the + operator and
         // can only skip one by one++
-        auto i = (move_hostory()->begin());
-        for (int r = 0; i != (move_hostory())->end(); i++) {
+        auto i = move_hostory()->begin();
+        for (int r = 0; i != move_hostory()->end(); ++i) {
             if (r++ > currentRow)
                 break;
         }
@@ -1224,7 +1226,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 #ifndef DO_NOT_PLAY_WIN_SOUND
     const Color winner = position.get_winner();
     if (winner != NOBODY &&
-        (moveListModel.data(moveListModel.index(currentRow - 1)))
+        moveListModel.data(moveListModel.index(currentRow - 1))
             .toString()
             .contains("Time over.")) {
         playSound(GameSound::win, winner);
@@ -1235,7 +1237,8 @@ bool Game::command(const string &cmd, bool update /* = true */)
     // If it's not decided yet
     if (position.get_winner() == NOBODY) {
         resumeAiThreads(position.sideToMove);
-    } else { // If it's decided
+    } else {
+        // If it's decided
         pauseThreads();
 
         gameEndTime = now();
@@ -1251,6 +1254,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
                     (aiThread[WHITE]->sortTime + aiThread[BLACK]->sortTime));
         aiThread[WHITE]->sortTime = aiThread[BLACK]->sortTime = 0;
 #endif // TIME_STAT
+
 #ifdef CYCLE_STAT
         debugPrintf("Sort Cycle: %ld + %ld = %ld\n", aiThread[WHITE]->sortCycle,
                     aiThread[BLACK]->sortCycle,
@@ -1336,15 +1340,15 @@ bool Game::command(const string &cmd, bool update /* = true */)
         whiteWinRate = 0;
         drawRate = 0;
     } else {
-        blackWinRate = (float)position.score[WHITE] * 100 / total;
-        whiteWinRate = (float)position.score[BLACK] * 100 / total;
-        drawRate = (float)position.score_draw * 100 / total;
+        blackWinRate = static_cast<float>(position.score[WHITE]) * 100 / total;
+        whiteWinRate = static_cast<float>(position.score[BLACK]) * 100 / total;
+        drawRate = static_cast<float>(position.score_draw) * 100 / total;
     }
 
     const auto flags = cout.flags();
     cout << "Score: " << position.score[WHITE] << " : " << position.score[BLACK]
          << " : " << position.score_draw << "\ttotal: " << total << std::endl;
-    cout << fixed << std::setprecision(2) << blackWinRate
+    cout << std::fixed << std::setprecision(2) << blackWinRate
          << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
     cout.flags(flags);
 
@@ -1361,8 +1365,8 @@ bool Game::phaseChange(int row, bool forceUpdate)
 
     // Need to refresh
     currentRow = row;
-    int rows = moveListModel.rowCount();
-    QStringList mlist = moveListModel.stringList();
+    const int rows = moveListModel.rowCount();
+    const QStringList mlist = moveListModel.stringList();
 
     debugPrintf("rows: %d current: %d\n", rows, row);
 
@@ -1399,12 +1403,11 @@ bool Game::updateScene(Position &p)
     // Animation group
     auto *animationGroup = new QParallelAnimationGroup;
 
-    // The pieces are in place
-    PieceItem *piece = nullptr;
+    // The deleted pieces are in place
     PieceItem *deletedPiece = nullptr;
 
     for (int i = 0; i < nTotalPieces; i++) {
-        piece = pieceList.at(static_cast<size_t>(i));
+        const auto piece = pieceList.at(static_cast<size_t>(i));
 
         piece->setSelected(false);
 
@@ -1416,14 +1419,14 @@ bool Game::updateScene(Position &p)
         // Traverse the board, find and place the pieces on the board
         for (j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == key) {
-                pos = scene.polar2pos(File(j / RANK_NB), Rank(j % RANK_NB + 1));
+                pos = scene.polar2pos(static_cast<File>(j / RANK_NB),
+                                      static_cast<Rank>(j % RANK_NB + 1));
                 if (piece->pos() != pos) {
                     // Let the moving pieces be at the top level
                     piece->setZValue(1);
 
                     // Pieces movement animation
-                    QPropertyAnimation *animation = new QPropertyAnimation(
-                        piece, "pos");
+                    auto *animation = new QPropertyAnimation(piece, "pos");
                     animation->setDuration(durationTime);
                     animation->setStartValue(piece->pos());
                     animation->setEndValue(pos);
@@ -1438,7 +1441,7 @@ bool Game::updateScene(Position &p)
         }
 
         // If not, place the pieces outside the board
-        if (j == (RANK_NB) * (FILE_NB + 1)) {
+        if (j == RANK_NB * (FILE_NB + 1)) {
             // Judge whether it is a removing seed or an unplaced one
             if (key & W_PIECE) {
                 pos = (key - 0x11 <
@@ -1460,8 +1463,7 @@ bool Game::updateScene(Position &p)
 #ifdef GAME_PLACING_SHOW_REMOVED_PIECES
                 if (position.get_phase() == Phase::moving) {
 #endif
-                    QPropertyAnimation *animation = new QPropertyAnimation(
-                        piece, "pos");
+                    auto *animation = new QPropertyAnimation(piece, "pos");
                     animation->setDuration(durationTime);
                     animation->setStartValue(piece->pos());
                     animation->setEndValue(pos);
@@ -1480,8 +1482,8 @@ bool Game::updateScene(Position &p)
     if (rule.hasBannedLocations && p.get_phase() == Phase::placing) {
         for (int sq = SQ_BEGIN; sq < SQ_END; sq++) {
             if (board[sq] == BAN_PIECE) {
-                pos = scene.polar2pos(File(sq / RANK_NB),
-                                      Rank(sq % RANK_NB + 1));
+                pos = scene.polar2pos(static_cast<File>(sq / RANK_NB),
+                                      static_cast<Rank>(sq % RANK_NB + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
                     pieceList.at(static_cast<size_t>(nTotalPieces++))
                         ->setPos(pos);
@@ -1509,8 +1511,8 @@ bool Game::updateScene(Position &p)
     int ipos = p.current_square();
     if (ipos) {
         key = board[p.current_square()];
-        ipos = (key & W_PIECE) ? (key - W_PIECE_1) * 2 :
-                                 (key - B_PIECE_1) * 2 + 1;
+        ipos = key & W_PIECE ? (key - W_PIECE_1) * 2 :
+                               (key - B_PIECE_1) * 2 + 1;
         if (ipos >= 0 && ipos < nTotalPieces) {
             currentPiece = pieceList.at(static_cast<size_t>(ipos));
             currentPiece->setSelected(true);
@@ -1559,7 +1561,7 @@ void Game::showNetworkWindow()
 }
 #endif
 
-void Game::showTestWindow()
+void Game::showTestWindow() const
 {
     gameTest->show();
 }
@@ -1573,11 +1575,11 @@ void Game::humanResign()
 
 void Game::saveScore()
 {
-    QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
-    qint64 pid = QCoreApplication::applicationPid();
+    const QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
+    const qint64 pid = QCoreApplication::applicationPid();
 
-    QString path = QDir::currentPath() + "/" + tr("Score-MillGame_") + strDate +
-                   "_" + QString::number(pid) + ".txt";
+    const QString path = QDir::currentPath() + "/" + tr("Score-MillGame_") +
+                         strDate + "_" + QString::number(pid) + ".txt";
 
     QFile file;
 
@@ -1587,7 +1589,7 @@ void Game::saveScore()
         file.close();
     }
 
-    if (!(file.open(QFileDevice::WriteOnly | QFileDevice::Text))) {
+    if (!file.open(QFileDevice::WriteOnly | QFileDevice::Text)) {
         return;
     }
 
@@ -1653,9 +1655,9 @@ inline std::string Game::char_to_string(char ch)
 {
     if (ch == '1') {
         return "White";
-    } else {
-        return "Black";
     }
+
+    return "Black";
 }
 
 void Game::appendGameOverReasonToMoveHistory()
@@ -1698,7 +1700,7 @@ void Game::appendGameOverReasonToMoveHistory()
         snprintf(record, Position::RECORD_LEN_MAX, loseReasonResignStr,
                  ~position.winner);
         break;
-    default:
+    case GameOverReason::none:
         debugPrintf("No Game Over Reason");
         break;
     }
@@ -1765,7 +1767,9 @@ void Game::setTips()
         case DRAW:
             resultStr = "Draw! ";
             break;
-        default:
+        case NOCOLOR:
+        case COLOR_NB:
+        case NOBODY:
             break;
         }
 
@@ -1781,6 +1785,9 @@ void Game::setTips()
             }
 #endif
             reasonStr = turnStr + " is blocked.";
+            break;
+        case GameOverReason::loseBoardIsFull:
+            reasonStr = turnStr + " lose because board is full.";
             break;
         case GameOverReason::loseResign:
             reasonStr = turnStr + " resigned.";
@@ -1800,19 +1807,19 @@ void Game::setTips()
         case GameOverReason::drawBoardIsFull:
             reasonStr = "Draw because of board is full.";
             break;
-        default:
+        case GameOverReason::none:
             break;
         }
 
         tips = reasonStr + resultStr + scoreStr;
         break;
 
-    default:
+    case Phase::none:
         break;
     }
 }
 
-time_t Game::get_elapsed_time(int us)
+time_t Game::get_elapsed_time(int us) const
 {
     return elapsedSeconds[us];
 }

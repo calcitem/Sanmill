@@ -18,14 +18,13 @@ using namespace std;
 // printBoard()
 //
 //-----------------------------------------------------------------------------
-void fieldStruct::printBoard()
+void fieldStruct::printBoard() const
 {
     // locals
-    unsigned int index;
     char c[SQUARE_NB];
 
-    for (index = 0; index < SQUARE_NB; index++)
-        c[index] = getCharFromPiece(this->board[index]);
+    for (uint32_t sq = 0; sq < SQUARE_NB; sq++)
+        c[sq] = getCharFromPiece(this->board[sq]);
 
     cout << "current player          : "
          << getCharFromPiece(this->curPlayer->id) << " has "
@@ -74,17 +73,17 @@ void fieldStruct::printBoard()
 char fieldStruct::getCharFromPiece(int piece)
 {
     switch (piece) {
-    case fieldStruct::playerOne:
+    case playerOne:
         return 'o';
-    case fieldStruct::playerTwo:
+    case playerTwo:
         return 'x';
-    case fieldStruct::playerOneWarning:
+    case playerOneWarning:
         return '1';
-    case fieldStruct::playerTwoWarning:
+    case playerTwoWarning:
         return '2';
-    case fieldStruct::playerBothWarning:
+    case playerBothWarning:
         return '3';
-    case fieldStruct::squareIsFree:
+    case squareIsFree:
         return ' ';
     }
     return 'f';
@@ -94,10 +93,8 @@ char fieldStruct::getCharFromPiece(int piece)
 // copyBoard()
 // Only copies the values without array creation.
 //-----------------------------------------------------------------------------
-void fieldStruct::copyBoard(fieldStruct *dest)
+void fieldStruct::copyBoard(fieldStruct *dest) const
 {
-    unsigned int i, j;
-
     this->curPlayer->copyPlayer(dest->curPlayer);
     this->oppPlayer->copyPlayer(dest->oppPlayer);
 
@@ -105,12 +102,12 @@ void fieldStruct::copyBoard(fieldStruct *dest)
     dest->isPlacingPhase = this->isPlacingPhase;
     dest->pieceMustBeRemovedCount = this->pieceMustBeRemovedCount;
 
-    for (i = 0; i < SQUARE_NB; i++) {
+    for (uint32_t i = 0; i < SQUARE_NB; i++) {
         dest->board[i] = this->board[i];
         dest->warnings[i] = this->warnings[i];
         dest->piecePartOfMillCount[i] = this->piecePartOfMillCount[i];
 
-        for (j = 0; j < MD_NB; j++) {
+        for (uint32_t j = 0; j < MD_NB; j++) {
             dest->connectedSquare[i][j] = this->connectedSquare[i][j];
             dest->isPieceMovable[i][j] = this->isPieceMovable[i][j];
             dest->neighbor[i][j / 2][j % 2] = this->neighbor[i][j / 2][j % 2];
@@ -122,9 +119,9 @@ void fieldStruct::copyBoard(fieldStruct *dest)
 // copyPlayer()
 // Only copies the values without array creation.
 //-----------------------------------------------------------------------------
-void Player::copyPlayer(Player *dest)
+void Player::copyPlayer(Player *dest) const
 {
-    unsigned int i;
+    uint32_t i;
 
     dest->removedPiecesCount = this->removedPiecesCount;
     dest->pieceCount = this->pieceCount;
@@ -147,7 +144,7 @@ void Player::copyPlayer(Player *dest)
 void fieldStruct::createBoard()
 {
     // locals
-    unsigned int i;
+    uint32_t i;
 
     curPlayer = new Player;
     oppPlayer = new Player;
@@ -156,9 +153,9 @@ void fieldStruct::createBoard()
     piecePlacedCount = 0;
     pieceMustBeRemovedCount = 0;
     isPlacingPhase = true;
-    curPlayer->warning = (curPlayer->id == playerOne) ? playerOneWarning :
-                                                        playerTwoWarning;
-    oppPlayer->id = (curPlayer->id == playerOne) ? playerTwo : playerOne;
+    curPlayer->warning = curPlayer->id == playerOne ? playerOneWarning :
+                                                      playerTwoWarning;
+    oppPlayer->id = curPlayer->id == playerOne ? playerTwo : playerOne;
     oppPlayer->warning = (curPlayer->id == playerOne) ? playerTwoWarning :
                                                         playerOneWarning;
     curPlayer->pieceCount = 0;
@@ -252,7 +249,7 @@ void fieldStruct::deleteBoard()
 // setConnection()
 //
 //-----------------------------------------------------------------------------
-inline void fieldStruct::setConnection(unsigned int index, int firstDirection,
+inline void fieldStruct::setConnection(uint32_t index, int firstDirection,
                                        int secondDirection, int thirdDirection,
                                        int fourthDirection)
 {
@@ -266,11 +263,10 @@ inline void fieldStruct::setConnection(unsigned int index, int firstDirection,
 // setNeighbor()
 //
 //-----------------------------------------------------------------------------
-inline void fieldStruct::setNeighbor(unsigned int index,
-                                     unsigned int firstNeighbor0,
-                                     unsigned int secondNeighbor0,
-                                     unsigned int firstNeighbor1,
-                                     unsigned int secondNeighbor1)
+inline void fieldStruct::setNeighbor(uint32_t index, uint32_t firstNeighbor0,
+                                     uint32_t secondNeighbor0,
+                                     uint32_t firstNeighbor1,
+                                     uint32_t secondNeighbor1)
 {
     neighbor[index][0][0] = firstNeighbor0;
     neighbor[index][0][1] = secondNeighbor0;

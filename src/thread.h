@@ -57,9 +57,13 @@ public:
                     QObject *parent = nullptr
 #endif
     );
+#ifdef QT_GUI_LIB
+    ~Thread() override;
+#else
     virtual ~Thread();
+#endif
     int search();
-    void clear() noexcept;
+    static void clear() noexcept;
     void idle_loop();
     void start_searching();
     void wait_for_search_finished();
@@ -75,12 +79,12 @@ public:
     void setAi(Position *p);
     void setAi(Position *p, int time);
 
-    string next_move();
-    Depth get_depth();
+    [[nodiscard]] string next_move() const;
+    [[nodiscard]] Depth get_depth() const;
 
-    int getTimeLimit() const { return timeLimit; }
+    [[nodiscard]] int getTimeLimit() const { return timeLimit; }
 
-    void analyze(Color c);
+    void analyze(Color c) const;
 
 #ifdef TIME_STAT
     TimePoint sortTime {0};
@@ -111,7 +115,6 @@ public:
 #endif // TRANSPOSITION_TABLE_DEBUG
 #endif // TRANSPOSITION_TABLE_ENABLE
 
-public:
     Depth originDepth {0};
 
     Move bestMove {MOVE_NONE};
@@ -140,7 +143,7 @@ public:
 
 /// MainThread is a derived class specific for main thread
 
-struct MainThread : public Thread
+struct MainThread final : Thread
 {
     using Thread::Thread;
 
@@ -152,13 +155,13 @@ struct MainThread : public Thread
 /// parking and, most importantly, launching a thread. All the access to threads
 /// is done through this class.
 
-struct ThreadPool : public std::vector<Thread *>
+struct ThreadPool : std::vector<Thread *>
 {
     void start_thinking(Position *, bool = false);
-    void clear();
+    void clear() const;
     void set(size_t);
 
-    MainThread *main() const { return static_cast<MainThread *>(front()); }
+    MainThread *main() const { return dynamic_cast<MainThread *>(front()); }
 
     std::atomic_bool stop, increaseDepth;
 
@@ -166,7 +169,7 @@ private:
     uint64_t accumulate(std::atomic<uint64_t> Thread::*member) const noexcept
     {
         uint64_t sum = 0;
-        for (Thread *th : *this)
+        for (const Thread *th : *this)
             sum += (th->*member).load(std::memory_order_relaxed);
         return sum;
     }

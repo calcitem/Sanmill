@@ -20,7 +20,7 @@
 #include "graphicsconst.h"
 #include "types.h"
 
-BoardItem::BoardItem(QGraphicsItem *parent)
+BoardItem::BoardItem(const QGraphicsItem *parent)
     : size(BOARD_SIZE)
 {
     Q_UNUSED(parent)
@@ -33,10 +33,10 @@ BoardItem::BoardItem(QGraphicsItem *parent)
         // The first position is the 12 o'clock direction of the inner ring,
         // which is sorted clockwise Then there is the middle ring and the outer
         // ring
-        int p = (f + 1) * LINE_INTERVAL;
+        const int p = (f + 1) * LINE_INTERVAL;
 
-        int pt[][2] = {{0, -p}, {p, -p}, {p, 0},  {p, p},
-                       {0, p},  {-p, p}, {-p, 0}, {-p, -p}};
+        const int pt[][2] = {{0, -p}, {p, -p}, {p, 0},  {p, p},
+                             {0, p},  {-p, p}, {-p, 0}, {-p, -p}};
 
         for (int r = 0; r < RANK_NB; r++) {
             position[f * RANK_NB + r].rx() = pt[r][0];
@@ -94,8 +94,8 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     QPen pen(QBrush(QColor(241, 156, 159)), LINE_WEIGHT, Qt::SolidLine,
              Qt::SquareCap, Qt::BevelJoin);
 #else
-    QPen pen(QBrush(QColor(178, 34, 34)), LINE_WEIGHT, Qt::SolidLine,
-             Qt::SquareCap, Qt::BevelJoin);
+    const QPen pen(QBrush(QColor(178, 34, 34)), LINE_WEIGHT, Qt::SolidLine,
+                   Qt::SquareCap, Qt::BevelJoin);
 #endif
     painter->setPen(pen);
 
@@ -104,7 +104,7 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
     for (uint8_t f = 0; f < FILE_NB; f++) {
         // Draw three boxes
-        painter->drawPolygon(position + f * RANK_NB, RANK_NB);
+        painter->drawPolygon(f * RANK_NB + position, RANK_NB);
     }
 
     // Draw 4 vertical and horizontal lines
@@ -139,10 +139,10 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 #endif // PLAYER_DRAW_SEAT_NUMBER
 }
 
-QPointF BoardItem::nearestPosition(QPointF const pos)
+QPointF BoardItem::nearestPosition(const QPointF pos)
 {
     // The initial closest point is set to (0,0) point
-    QPointF nearestPos = QPointF(0, 0);
+    auto nearestPos = QPointF(0, 0);
 
     // Look for the nearest spot
     for (auto i : position) {
@@ -157,19 +157,20 @@ QPointF BoardItem::nearestPosition(QPointF const pos)
     return nearestPos;
 }
 
-QPointF BoardItem::polar2pos(File f, Rank r)
+QPointF BoardItem::polar2pos(File f, Rank r) const
 {
-    return position[((int)f - 1) * RANK_NB + (int)r - 1];
+    return position[(static_cast<int>(f) - 1) * RANK_NB + static_cast<int>(r) -
+                    1];
 }
 
-bool BoardItem::pos2polar(QPointF pos, File &f, Rank &r)
+bool BoardItem::pos2polar(QPointF pos, File &f, Rank &r) const
 {
     // Look for the nearest spot
     for (int sq = 0; sq < SQUARE_NB; sq++) {
         // If the pos point is near the placing point
         if (QLineF(pos, position[sq]).length() < PIECE_SIZE / 6) {
-            f = File(sq / RANK_NB + 1);
-            r = Rank(sq % RANK_NB + 1);
+            f = static_cast<File>(sq / RANK_NB + 1);
+            r = static_cast<Rank>(sq % RANK_NB + 1);
             return true;
         }
     }

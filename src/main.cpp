@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     UCI::init(Options);
     Bitboards::init();
     Position::init();
-    Threads.set(size_t(Options["Threads"]));
+    Threads.set(static_cast<size_t>(Options["Threads"]));
     Search::clear(); // After threads are up
 
 #ifndef UNIT_TEST_MODE

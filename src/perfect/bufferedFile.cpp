@@ -1,5 +1,5 @@
 /*********************************************************************
-    bufferedFile.cpp
+    bufedFile.cpp
     Copyright (c) Thomas Weber. All rights reserved.
     Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
     Licensed under the GPLv3 License.
@@ -13,31 +13,34 @@
 #include "bufferedFile.h"
 
 //-----------------------------------------------------------------------------
-// bufferedFile()
-// Creates a cyclic array. The passed file is used as temporary data buffer for
+// BufferedFile()
+// Creates a cyclic array. The passed file is used as temporary data buf for
 // the cyclic array.
 //-----------------------------------------------------------------------------
-BufferedFile::BufferedFile(unsigned int nThreads,
-                           unsigned int bufferSizeInBytes, const char *fileName)
+BufferedFile::BufferedFile(uint32_t nThreads, uint32_t bufSizeInBytes,
+                           const char *fileName)
 {
-    // locals
-    unsigned int curThread;
-
     // Init blocks
-    bufferSize = bufferSizeInBytes;
+    bufSize = bufSizeInBytes;
     nThreads = nThreads;
-    readBuffer = new unsigned char[nThreads * bufferSize];
-    writeBuffer = new unsigned char[nThreads * bufferSize];
-    curWritingPointer = new int64_t[nThreads];
-    curReadingPointer = new int64_t[nThreads];
-    bytesInReadBuffer = new unsigned int[nThreads];
-    bytesInWriteBuffer = new unsigned int[nThreads];
+    readBuf = new unsigned char[nThreads * bufSize];
+    std::memset(readBuf, 0, nThreads * bufSize);
+    writeBuf = new unsigned char[nThreads * bufSize];
+    std::memset(writeBuf, 0, nThreads * bufSize);
+    curWritingPtr = new int64_t[nThreads];
+    std::memset(curWritingPtr, 0, sizeof(int64_t) * nThreads);
+    curReadingPtr = new int64_t[nThreads];
+    std::memset(curReadingPtr, 0, sizeof(int64_t) * nThreads);
+    bytesInReadBuf = new uint32_t[nThreads];
+    std::memset(bytesInReadBuf, 0, sizeof(uint32_t) * nThreads);
+    bytesInWriteBuf = new uint32_t[nThreads];
+    std::memset(bytesInWriteBuf, 0, sizeof(uint32_t) * nThreads);
 
-    for (curThread = 0; curThread < nThreads; curThread++) {
-        curReadingPointer[curThread] = 0;
-        curWritingPointer[curThread] = 0;
-        bytesInReadBuffer[curThread] = 0;
-        bytesInWriteBuffer[curThread] = 0;
+    for (uint32_t thd = 0; thd < nThreads; thd++) {
+        curReadingPtr[thd] = 0;
+        curWritingPtr[thd] = 0;
+        bytesInReadBuf[thd] = 0;
+        bytesInWriteBuf[thd] = 0;
     }
 
     InitializeCriticalSection(&csIO);
@@ -64,17 +67,17 @@ BufferedFile::BufferedFile(unsigned int nThreads,
 //-----------------------------------------------------------------------------
 BufferedFile::~BufferedFile()
 {
-    // flush buffers
+    // flush bufs
     flushBuffers();
     DeleteCriticalSection(&csIO);
 
     // delete arrays
-    delete[] readBuffer;
-    delete[] writeBuffer;
-    delete[] curReadingPointer;
-    delete[] curWritingPointer;
-    delete[] bytesInReadBuffer;
-    delete[] bytesInWriteBuffer;
+    delete[] readBuf;
+    delete[] writeBuf;
+    delete[] curReadingPtr;
+    delete[] curWritingPtr;
+    delete[] bytesInReadBuf;
+    delete[] bytesInWriteBuf;
 
     // close file
     if (hFile != nullptr)
@@ -100,11 +103,10 @@ int64_t BufferedFile::getFileSize()
 //-----------------------------------------------------------------------------
 bool BufferedFile::flushBuffers()
 {
-    for (unsigned int th = 0; th < threadCount; th++) {
-        writeDataToFile(hFile, curWritingPointer[th] - bytesInWriteBuffer[th],
-                        bytesInWriteBuffer[th],
-                        &writeBuffer[th * bufferSize + 0]);
-        bytesInWriteBuffer[th] = 0;
+    for (uint32_t thd = 0; thd < threadCount; thd++) {
+        writeDataToFile(hFile, curWritingPtr[thd] - bytesInWriteBuf[thd],
+                        bytesInWriteBuf[thd], &writeBuf[thd * bufSize + 0]);
+        bytesInWriteBuf[thd] = 0;
     }
 
     return true;
@@ -115,11 +117,11 @@ bool BufferedFile::flushBuffers()
 // Writes 'sizeInBytes'-bytes to the position 'offset' to the file.
 //-----------------------------------------------------------------------------
 void BufferedFile::writeDataToFile(HANDLE fd, int64_t offset,
-                                   unsigned int sizeInBytes, void *pData)
+                                   uint32_t sizeInBytes, void *pData)
 {
     DWORD dwBytesWritten;
     LARGE_INTEGER liDistanceToMove;
-    unsigned int restingBytes = sizeInBytes;
+    uint32_t restingBytes = sizeInBytes;
 
     liDistanceToMove.QuadPart = offset;
 
@@ -132,7 +134,8 @@ void BufferedFile::writeDataToFile(HANDLE fd, int64_t offset,
         if (WriteFile(fd, pData, sizeInBytes, &dwBytesWritten, nullptr) ==
             TRUE) {
             restingBytes -= dwBytesWritten;
-            pData = (void *)(((unsigned char *)pData) + dwBytesWritten);
+            pData = static_cast<void *>(static_cast<unsigned char *>(pData) +
+                                        dwBytesWritten);
             if (restingBytes > 0)
                 cout << endl << "Still " << restingBytes << " to write!";
         } else {
@@ -148,11 +151,11 @@ void BufferedFile::writeDataToFile(HANDLE fd, int64_t offset,
 // Reads 'sizeInBytes'-bytes from the position 'offset' of the file.
 //-----------------------------------------------------------------------------
 void BufferedFile::readDataFromFile(HANDLE fd, int64_t offset,
-                                    unsigned int sizeInBytes, void *pData)
+                                    uint32_t sizeInBytes, void *pData)
 {
     DWORD dwBytesRead;
     LARGE_INTEGER liDistanceToMove;
-    unsigned int restingBytes = sizeInBytes;
+    uint32_t restingBytes = sizeInBytes;
 
     liDistanceToMove.QuadPart = offset;
 
@@ -164,7 +167,8 @@ void BufferedFile::readDataFromFile(HANDLE fd, int64_t offset,
     while (restingBytes > 0) {
         if (ReadFile(fd, pData, sizeInBytes, &dwBytesRead, nullptr) == TRUE) {
             restingBytes -= dwBytesRead;
-            pData = (void *)(((unsigned char *)pData) + dwBytesRead);
+            pData = static_cast<void *>(static_cast<unsigned char *>(pData) +
+                                        dwBytesRead);
             if (restingBytes > 0)
                 cout << endl << "Still " << restingBytes << " to read!";
         } else {
@@ -179,43 +183,46 @@ void BufferedFile::readDataFromFile(HANDLE fd, int64_t offset,
 // writeBytes()
 //
 //-----------------------------------------------------------------------------
-bool BufferedFile::writeBytes(unsigned int nBytes, unsigned char *pData)
+bool BufferedFile::writeBytes(uint32_t nBytes, unsigned char *pData)
 {
-    return writeBytes(0, curWritingPointer[0], nBytes, pData);
+    return writeBytes(0, curWritingPtr[0], nBytes, pData);
 }
 
 //-----------------------------------------------------------------------------
 // writeBytes()
 //
 //-----------------------------------------------------------------------------
-bool BufferedFile::writeBytes(unsigned int threadNo, int64_t positionInFile,
-                              unsigned int nBytes, unsigned char *pData)
+bool BufferedFile::writeBytes(uint32_t threadNo, int64_t positionInFile,
+                              uint32_t nBytes, unsigned char *pData)
 {
+#if 0
+    // TODO(calcitem): Use ThreadManager.threadCount instead of threadCount
     // params ok?
     if (threadNo >= threadCount)
         return false;
+#endif
 
     if (pData == nullptr)
         return false;
 
     // locals
 
-    // if buffer full or not sequential write operation write buffer to file
-    if (bytesInWriteBuffer[threadNo] &&
-        (positionInFile != curWritingPointer[threadNo] ||
-         bytesInWriteBuffer[threadNo] + nBytes >= bufferSize)) {
-        writeDataToFile(
-            hFile, curWritingPointer[threadNo] - bytesInWriteBuffer[threadNo],
-            bytesInWriteBuffer[threadNo],
-            &writeBuffer[threadNo * bufferSize + 0]);
-        bytesInWriteBuffer[threadNo] = 0;
+    // if buf full or not sequential write operation write buf to file
+    if (bytesInWriteBuf[threadNo] &&
+        (positionInFile != curWritingPtr[threadNo] ||
+         bytesInWriteBuf[threadNo] + nBytes >= bufSize)) {
+        writeDataToFile(hFile,
+                        curWritingPtr[threadNo] - bytesInWriteBuf[threadNo],
+                        bytesInWriteBuf[threadNo],
+                        &writeBuf[threadNo * bufSize + 0]);
+        bytesInWriteBuf[threadNo] = 0;
     }
 
-    // copy data into buffer
-    memcpy(&writeBuffer[threadNo * bufferSize + bytesInWriteBuffer[threadNo]],
-           pData, nBytes);
-    bytesInWriteBuffer[threadNo] += nBytes;
-    curWritingPointer[threadNo] = positionInFile + nBytes;
+    // copy data into buf
+    memcpy(&writeBuf[threadNo * bufSize + bytesInWriteBuf[threadNo]], pData,
+           nBytes);
+    bytesInWriteBuf[threadNo] += nBytes;
+    curWritingPtr[threadNo] = positionInFile + nBytes;
 
     // everything ok
     return true;
@@ -225,17 +232,17 @@ bool BufferedFile::writeBytes(unsigned int threadNo, int64_t positionInFile,
 // takeBytes()
 //
 //-----------------------------------------------------------------------------
-bool BufferedFile::readBytes(unsigned int nBytes, unsigned char *pData)
+bool BufferedFile::readBytes(uint32_t nBytes, unsigned char *pData)
 {
-    return readBytes(0, curReadingPointer[0], nBytes, pData);
+    return readBytes(0, curReadingPtr[0], nBytes, pData);
 }
 
 //-----------------------------------------------------------------------------
 // takeBytes()
 //
 //-----------------------------------------------------------------------------
-bool BufferedFile::readBytes(unsigned int threadNo, int64_t positionInFile,
-                             unsigned int nBytes, unsigned char *pData)
+bool BufferedFile::readBytes(uint32_t threadNo, int64_t positionInFile,
+                             uint32_t nBytes, unsigned char *pData)
 {
     // params ok?
     if (threadNo >= threadCount)
@@ -244,28 +251,26 @@ bool BufferedFile::readBytes(unsigned int threadNo, int64_t positionInFile,
     if (pData == nullptr)
         return false;
 
-    // read from file into buffer if not enough data in buffer or if it is not
+    // read from file into buf if not enough data in buf or if it is not
     // an sequential reading operation?
-    if (positionInFile != curReadingPointer[threadNo] ||
-        bytesInReadBuffer[threadNo] < nBytes) {
-        bytesInReadBuffer[threadNo] = ((positionInFile + bufferSize <=
-                                        fileSize) ?
-                                           bufferSize :
-                                           (unsigned int)(fileSize -
-                                                          positionInFile));
-        if (bytesInReadBuffer[threadNo] < nBytes)
+    if (positionInFile != curReadingPtr[threadNo] ||
+        bytesInReadBuf[threadNo] < nBytes) {
+        bytesInReadBuf[threadNo] = (positionInFile + bufSize <= fileSize) ?
+                                       bufSize :
+                                       static_cast<uint32_t>(fileSize -
+                                                             positionInFile);
+        if (bytesInReadBuf[threadNo] < nBytes)
             return false;
-        readDataFromFile(hFile, positionInFile, bytesInReadBuffer[threadNo],
-                         &readBuffer[threadNo * bufferSize + bufferSize -
-                                     bytesInReadBuffer[threadNo]]);
+        readDataFromFile(
+            hFile, positionInFile, bytesInReadBuf[threadNo],
+            &readBuf[threadNo * bufSize + bufSize - bytesInReadBuf[threadNo]]);
     }
 
     memcpy(pData,
-           &readBuffer[threadNo * bufferSize + bufferSize -
-                       bytesInReadBuffer[threadNo]],
+           &readBuf[threadNo * bufSize + bufSize - bytesInReadBuf[threadNo]],
            nBytes);
-    bytesInReadBuffer[threadNo] -= nBytes;
-    curReadingPointer[threadNo] = positionInFile + nBytes;
+    bytesInReadBuf[threadNo] -= nBytes;
+    curReadingPtr[threadNo] = positionInFile + nBytes;
 
     // everything ok
     return true;

@@ -41,31 +41,34 @@ private:
     // structures
     struct ForLoop
     {
-        unsigned int schedType;
-        int increment;
-        int initValue;
-        int finalValue;
-        void *pParam;
+        uint32_t schedType {0};
+        int increment {0};
+        int initValue {0};
+        int finalValue {0};
+        void *pParam {nullptr};
         DWORD(*threadProc)
-        (void *pParam, unsigned int index); // pointer to the user function
-                                            // to be executed by the threads
-        ThreadManager *threadManager;
+        (void *pParam, uint32_t index); // pointer to the user function
+                                        // to be executed by the threads
+        ThreadManager *threadManager {nullptr};
     };
 
     // Variables
-    unsigned int threadCount; // number of threads
-    HANDLE *hThread; // array of size 'threadCount' containing the thread
-                     // handles
-    DWORD *threadId; // array of size 'threadCount' containing the thread ids
-    bool termineAllThreads;
-    bool execPaused;    // switch for the
-    bool execCancelled; // true when cancelExec() was called
+    uint32_t threadCount {0};  // number of threads
+    HANDLE *hThread {nullptr}; // array of size 'threadCount' containing the
+                               // thread
+                               // handles
+    DWORD *threadId {nullptr}; // array of size 'threadCount' containing the
+                               // thread ids
+    bool termineAllThreads {false};
+    bool execPaused {false};    // switch for the
+    bool execCancelled {false}; // true when cancelExec() was called
 
     // barrier stuff
-    HANDLE hEventBarrierPassedByEverybody;
-    HANDLE *hBarrier; // array of size 'threadCount' containing the event
-                      // handles for the barrier
-    unsigned int threadPassedBarrierCount;
+    HANDLE hEventBarrierPassedByEverybody {nullptr};
+    HANDLE *hBarrier {nullptr}; // array of size 'threadCount' containing the
+                                // event
+                                // handles for the barrier
+    uint32_t threadPassedBarrierCount {0};
     CRITICAL_SECTION csBarrier;
 
     // functions
@@ -75,7 +78,7 @@ public:
     class ThreadVarsArrayItem
     {
     public:
-        unsigned int curThreadNo;
+        uint32_t curThreadNo {0};
 
         virtual void initElement() { }
 
@@ -88,41 +91,42 @@ public:
     class ThreadVarsArray
     {
     public:
-        unsigned int threadCount;
-        varType *item;
+        uint32_t threadCount {0};
+        varType *item {nullptr};
 
-        ThreadVarsArray(unsigned int threadCnt, varType &master)
+        ThreadVarsArray(uint32_t threadCnt, varType &master)
         {
             this->threadCount = threadCnt;
             this->item = new varType[threadCnt];
+            // std::memset(this->item, 0, sizeof(varType) * threadCnt);
 
-            for (unsigned int th = 0; th < threadCnt; th++) {
-                item[th].curThreadNo = th;
-                item[th].initElement(master);
+            for (uint32_t thd = 0; thd < threadCnt; thd++) {
+                item[thd].curThreadNo = thd;
+                item[thd].initElement(master);
                 // if 'curThreadNo' is overwritten in 'initElement()'
-                item[th].curThreadNo = th;
+                item[thd].curThreadNo = thd;
             }
-        };
+        }
 
         ~ThreadVarsArray()
         {
-            for (unsigned int th = 0; th < threadCount; th++) {
-                item[th].destroyElement();
+            for (uint32_t thd = 0; thd < threadCount; thd++) {
+                item[thd].destroyElement();
             }
 
             delete[] item;
-        };
+        }
 
-        void *getPointerToArray() { return (void *)item; }
+        void *getPointerToArray() const { return static_cast<void *>(item); }
 
-        unsigned int getArraySize() { return sizeof(varType); }
+        static uint32_t getArraySize() { return sizeof(varType); }
 
         void reduce()
         {
-            for (unsigned int th = 0; th < threadCount; th++) {
-                item[th].reduce();
+            for (uint32_t thd = 0; thd < threadCount; thd++) {
+                item[thd].reduce();
             }
-        };
+        }
     };
 
     // Constructor / destructor
@@ -130,34 +134,33 @@ public:
     ~ThreadManager();
 
     // Functions
-    unsigned int getThreadNumber();
-    unsigned int getThreadCount();
+    uint32_t getThreadNumber() const;
+    uint32_t getThreadCount() const;
 
-    bool setThreadCount(unsigned int newThreadCount);
-    void waitForOtherThreads(unsigned int threadNo);
+    bool setThreadCount(uint32_t newThreadCount);
+    void waitForOtherThreads(uint32_t threadNo);
     void pauseExec();  // un-/suspend all threads
     void cancelExec(); // termineAllThreads auf true
-    bool wasExecCancelled();
+    bool wasExecCancelled() const;
 
     // sets execCancelled to false, otherwise execParallelLoop returns
     // immediately
     void uncancelExec();
 
-// a user function which is called every x-milliseconds during
-// exec between two iterations
+    // a user function which is called every x-milliseconds during
+    // exec between two iterations
 #if 0
     void setCallBackFunction(void userFunction(void *pUser), void *pUser,
                              DWORD milliseconds);
 #endif
 
     // execute
-    unsigned int execInParallel(DWORD threadProc(void *pParam), void *pParam,
-                                unsigned int paramStructSize);
-    unsigned int execParallelLoop(DWORD threadProc(void *pParam,
-                                                   unsigned int index),
-                                  void *pParam, unsigned int paramStructSize,
-                                  unsigned int schedType, int initValue,
-                                  int finalValue, int increment);
+    uint32_t execInParallel(DWORD threadProc(void *pParam), void *pParam,
+                            uint32_t paramStructSize);
+    uint32_t execParallelLoop(DWORD threadProc(void *pParam, uint32_t index),
+                              void *pParam, uint32_t paramStructSize,
+                              uint32_t schedType, int initValue, int finalValue,
+                              int increment);
 };
 
 #endif // THREADMANAGER_H_INCLUDED

@@ -91,7 +91,7 @@ MillGameWindow::MillGameWindow(QWidget *parent)
     connect(&autoRunTimer, SIGNAL(timeout()), this, SLOT(onAutoRunTimeOut()));
 
     // Center primary window
-    QRect deskTopRect = QGuiApplication::primaryScreen()->geometry();
+    const QRect deskTopRect = QGuiApplication::primaryScreen()->geometry();
     const int w = (deskTopRect.width() - width()) / 2;
     const int h = (deskTopRect.height() - height()) / 2;
     this->move(w, h);
@@ -159,7 +159,7 @@ void MillGameWindow::initialize()
     // Add a new menu bar action
     map<int, QStringList> actions = game->getActions();
 
-    for (auto i = actions.begin(); i != actions.end(); i++) {
+    for (auto i = actions.begin(); i != actions.end(); ++i) {
         // The key of map stores int index value, and value stores rule name and
         // rule prompt
         auto *ruleAction = new QAction(i->second.at(0), this);
@@ -402,7 +402,7 @@ void MillGameWindow::initialize()
     ui.actionSound_S->setChecked(game->soundEnabled());
     ui.actionAnimation_A->setChecked(game->animationEnabled());
 
-    auto alignmentGroup = new QActionGroup(this);
+    const auto alignmentGroup = new QActionGroup(this);
     alignmentGroup->addAction(ui.actionAlphaBetaAlgorithm);
     alignmentGroup->addAction(ui.actionPvsAlgorithm);
     alignmentGroup->addAction(ui.actionMtdfAlgorithm);
@@ -463,7 +463,7 @@ void MillGameWindow::ctxMenu(const QPoint &pos)
 }
 #endif /* QT_MOBILE_APP_UI */
 
-void MillGameWindow::ruleInfo()
+void MillGameWindow::ruleInfo() const
 {
 #if 0
     const int s = game->getStepsLimit();
@@ -493,7 +493,6 @@ void MillGameWindow::ruleInfo()
 #else
     ui.labelRule->setText("Move list");
 #endif
-    return;
 }
 
 void MillGameWindow::saveBook(const QString &path)
@@ -508,12 +507,13 @@ void MillGameWindow::saveBook(const QString &path)
 
     file.setFileName(path);
 
-    if (!(file.open(QFileDevice::WriteOnly | QFileDevice::Text))) {
+    if (!file.open(QFileDevice::WriteOnly | QFileDevice::Text)) {
         return;
     }
 
     QTextStream textStream(&file);
-    auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
+    const auto *strlist = qobject_cast<QStringListModel *>(
+        ui.listView->model());
 
     for (const QString &cmd : strlist->stringList()) {
         textStream << cmd << "\n";
@@ -524,8 +524,8 @@ void MillGameWindow::saveBook(const QString &path)
 
 void MillGameWindow::on_actionLimited_T_triggered()
 {
-    int gStep = game->getStepsLimit();
-    int gTime = game->getTimeLimit();
+    const int gStep = game->getStepsLimit();
+    const int gTime = game->getTimeLimit();
 
     auto *dialog = new QDialog(this);
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
@@ -587,10 +587,10 @@ void MillGameWindow::on_actionLimited_T_triggered()
     connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
 
     if (dialog->exec() == QDialog::Accepted) {
-        int dStep = comboBox_step->currentData().toInt();
-        int dTime = comboBox_time->currentData().toInt();
+        const int dStep = comboBox_step->currentData().toInt();
+        const int dTime = comboBox_time->currentData().toInt();
         if (gStep != dStep || gTime != dTime) {
-            game->setRule(ruleNo, static_cast<int>(dStep),
+            game->setRule(ruleNo, dStep,
                           dTime); // TODO(calcitem): Remove dTime
             game->setMoveTime(dTime);
         }
@@ -630,7 +630,8 @@ void MillGameWindow::actionRules_triggered()
 
 void MillGameWindow::on_actionNew_N_triggered()
 {
-    auto *strlist = qobject_cast<QStringListModel *>(ui.listView->model());
+    const auto *strlist = qobject_cast<QStringListModel *>(
+        ui.listView->model());
 
     // If you have not finished playing game and have already taken more than a
     // few steps, you will be lost
@@ -641,8 +642,9 @@ void MillGameWindow::on_actionNew_N_triggered()
     game->saveScore();
 
 #ifdef SAVE_GAME_BOOK_WHEN_ACTION_NEW_TRIGGERED
-    QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_"
-                                                                "hhmmss");
+    const QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-"
+                                                                      "dd_"
+                                                                      "hhmmss");
     QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
     QString whoWin;
 
@@ -656,13 +658,15 @@ void MillGameWindow::on_actionNew_N_triggered()
     case DRAW:
         whoWin = "Draw";
         break;
-    default:
+    case NOCOLOR:
+    case NOBODY:
+    case COLOR_NB:
         whoWin = "Unknown";
         break;
     }
 
-    QString path = QDir::currentPath() + "/" + tr("Book_") + whoWin + "_" +
-                   strDateTime + ".txt";
+    const QString path = QDir::currentPath() + "/" + tr("Book_") + whoWin +
+                         "_" + strDateTime + ".txt";
 
     // After a certain number of steps, save the score when creating a new game
     if (strlist->stringList().size() > 18) {
@@ -687,7 +691,7 @@ void MillGameWindow::on_actionNew_N_triggered()
 
 void MillGameWindow::on_actionOpen_O_triggered()
 {
-    QString path = QFileDialog::getOpenFileName(
+    const QString path = QFileDialog::getOpenFileName(
         this, tr("Open the move history file"), QDir::currentPath(),
         "TXT(*.txt)");
 
@@ -710,7 +714,7 @@ void MillGameWindow::on_actionOpen_O_triggered()
         return;
     }
 
-    if (!(file.open(QFileDevice::ReadOnly | QFileDevice::Text))) {
+    if (!file.open(QFileDevice::ReadOnly | QFileDevice::Text)) {
         return;
     }
 
@@ -718,12 +722,11 @@ void MillGameWindow::on_actionOpen_O_triggered()
     ui.actionEngine2_R->setChecked(false);
 
     QTextStream textStream(&file);
-    QString cmd;
-    cmd = textStream.readLine();
+    QString cmd = textStream.readLine();
 
     // When reading and displaying the move history, there is no need to refresh
     // the scene
-    if (!(game->command(cmd.toStdString(), false))) {
+    if (!game->command(cmd.toStdString(), false)) {
         QMessageBox msgBox(QMessageBox::Warning, tr("File error"),
                            tr("Not the correct move history file"),
                            QMessageBox::Ok);
@@ -747,7 +750,7 @@ void MillGameWindow::on_actionSave_S_triggered()
 
         if (file.open(QFileDevice::WriteOnly | QFileDevice::Text)) {
             QTextStream textStream(&file);
-            auto *strlist = qobject_cast<QStringListModel *>(
+            const auto *strlist = qobject_cast<QStringListModel *>(
                 ui.listView->model());
             for (const QString &cmd : strlist->stringList())
                 textStream << cmd << "\n";
@@ -762,7 +765,7 @@ void MillGameWindow::on_actionSave_S_triggered()
 
 void MillGameWindow::on_actionSaveAs_A_triggered()
 {
-    QString path = QFileDialog::getSaveFileName(
+    const QString path = QFileDialog::getSaveFileName(
         this, tr("Open the move history file"),
         QDir::currentPath() + tr("MoveHistory_") +
             QDateTime::currentDateTime().toString().replace(" ", "_") + ".txt",
@@ -776,7 +779,7 @@ void MillGameWindow::on_actionEdit_E_toggled(bool arg1)
     Q_UNUSED(arg1)
 }
 
-void MillGameWindow::on_actionInvert_I_toggled(bool arg1)
+void MillGameWindow::on_actionInvert_I_toggled(bool arg1) const
 {
     // If white and black are reversed
     if (arg1) {
@@ -795,10 +798,10 @@ void MillGameWindow::on_actionInvert_I_toggled(bool arg1)
     game->setInvert(arg1);
 }
 
-void MillGameWindow::on_actionRowChange()
+void MillGameWindow::on_actionRowChange() const
 {
-    QAbstractItemModel *model = ui.listView->model();
-    int rows = model->rowCount();
+    const QAbstractItemModel *model = ui.listView->model();
+    const int rows = model->rowCount();
     int currentRow = ui.listView->currentIndex().row();
 
     QObject *const obsender = sender();
@@ -858,10 +861,10 @@ void MillGameWindow::on_actionRowChange()
     game->phaseChange(currentRow);
 }
 
-void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal)
+void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal) const
 {
     Q_UNUSED(signal)
-    int rows = ui.listView->model()->rowCount();
+    const int rows = ui.listView->model()->rowCount();
     int currentRow = ui.listView->currentIndex().row();
 
     if (rows <= 1) {
@@ -922,7 +925,7 @@ void MillGameWindow::on_actionAutoRun_A_toggled(bool arg1)
     }
 }
 
-void MillGameWindow::on_actionLocal_L_triggered()
+void MillGameWindow::on_actionLocal_L_triggered() const
 {
     ui.actionLocal_L->setChecked(true);
     ui.actionEngineFight_E->setChecked(false);
@@ -944,7 +947,7 @@ void MillGameWindow::on_actionInternet_I_triggered()
 #endif
 }
 
-void MillGameWindow::on_actionEngineFight_E_triggered()
+void MillGameWindow::on_actionEngineFight_E_triggered() const
 {
     ui.actionLocal_L->setChecked(false);
     ui.actionEngineFight_E->setChecked(true);
@@ -1011,10 +1014,8 @@ void MillGameWindow::on_actionEngine_E_triggered()
     spinBox_time2->setValue(time2);
 
     if (dialog->exec() == QDialog::Accepted) {
-        int time1_new, time2_new;
-
-        time1_new = spinBox_time1->value();
-        time2_new = spinBox_time2->value();
+        const int time1_new = spinBox_time1->value();
+        const int time2_new = spinBox_time2->value();
 
         if (time1 != time1_new || time2 != time2_new) {
             game->setAiDepthTime(time1_new, time2_new);
@@ -1070,7 +1071,7 @@ void MillGameWindow::on_actionAbout_A_triggered()
     // date_text->setText(__DATE__);
     QString versionText;
 
-    if (strcmp(versionNumber, "Unknown")) {
+    if (strcmp(versionNumber, "Unknown") > 0) {
         versionText = tr("Version: ") + versionNumber +
                       "\nBuild: " + __DATE__ " " __TIME__;
     } else {

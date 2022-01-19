@@ -64,7 +64,8 @@ public:
         hashTable = (HashNode<K, V> *)aligned_large_pages_alloc(
             sizeof(HashNode<K, V>) * hashSize);
 #else // ALIGNED_LARGE_PAGES
-      // Create the key table as an array of key nodes
+
+        // Create the key table as an array of key nodes
         hashTable = new HashNode<K, V>[hashSize];
 #endif // ALIGNED_LARGE_PAGES
 
@@ -80,9 +81,11 @@ public:
 #ifdef ALIGNED_LARGE_PAGES
         aligned_large_pages_free(hashTable);
 #else // ALIGNED_LARGE_PAGES
+
         delete[] hashTable;
 #endif // ALIGNED_LARGE_PAGES
     }
+
     // Copy and Move of the HashMap are not supported at this moment
     HashMap(const HashMap &) = delete;
     HashMap(HashMap &&) = delete;
@@ -95,7 +98,7 @@ public:
     // false.
     bool find(const K &key, V &value) const
     {
-        K hashValue = hashFn(key) & (hashSize - 1);
+        K hashValue = static_cast<hashFn>(key) & (hashSize - 1);
 #ifdef DISABLE_HASHBUCKET
         // A shared mutex is used to enable multiple concurrent reads
 #ifndef HASHMAP_NOLOCK
@@ -115,10 +118,10 @@ public:
 
     void prefetchValue(const K &key)
     {
-        K hashValue = hashFn(key) & (hashSize - 1);
+        K hashValue = static_cast<hashFn>(key) & (hashSize - 1);
         V *addr = &(hashTable[hashValue].getValue());
 
-        prefetch((void *)addr);
+        prefetch(static_cast<void *>(addr));
     }
 
     // Function to insert into the key map.
@@ -126,16 +129,18 @@ public:
     // bucket with the <key, value> pair.
     K insert(const K &key, const V &value)
     {
-        K hashValue = hashFn(key) & (hashSize - 1);
+        K hashValue = static_cast<hashFn>(key) & (hashSize - 1);
 #ifdef DISABLE_HASHBUCKET
 #ifndef HASHMAP_NOLOCK
         std::unique_lock<std::shared_timed_mutex> lock(mutex_);
 #endif /* HASHMAP_NOLOCK */
+
         hashTable[hashValue].setKey(key);
         hashTable[hashValue].setValue(value);
 #else // DISABLE_HASHBUCKET
         hashTable[hashValue].insert(key, value);
 #endif // DISABLE_HASHBUCKET
+
         return hashValue;
     }
 
@@ -155,7 +160,7 @@ public:
     }
 
     // Function to clean up the hasp map, i.e., remove all entries from it
-    void clear()
+    void clear() const
     {
 #ifdef DISABLE_HASHBUCKET
         memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
@@ -177,29 +182,30 @@ public:
 #ifdef TRANSPOSITION_TABLE_64BIT_KEY
         hashSize = size;
 #else // TRANSPOSITION_TABLE_64BIT_KEY
-        hashSize = (uint32_t)size;
+        hashSize = static_cast<uint32_t>(size);
 #endif // TRANSPOSITION_TABLE_64BIT_KEY
-        return;
     }
 
     // Function to dump the key map to file
-    void dump(const std::string &filename)
+    void dump(const std::string &filename) const
     {
 #ifdef DISABLE_HASHBUCKET
         std::ofstream file;
         file.open(filename, std::ios::out);
-        file.write((char *)(hashTable), sizeof(HashNode<K, V>) * hashSize);
+        file.write(static_cast<char *>(hashTable),
+                   sizeof(HashNode<K, V>) * hashSize);
         file.close();
 #endif // DISABLE_HASHBUCKET
     }
 
     // Function to load the key map from file
-    void load(const std::string &filename)
+    void load(const std::string &filename) const
     {
 #ifdef DISABLE_HASHBUCKET
         std::ifstream file;
         file.open(filename, std::ios::in);
-        file.read((char *)(hashTable), sizeof(HashNode<K, V>) * hashSize);
+        file.read(static_cast<char *>(hashTable),
+                  sizeof(HashNode<K, V>) * hashSize);
         file.close();
 
         stat();
@@ -208,8 +214,8 @@ public:
 
     void merge(const HashMap &other)
     {
-        size_t ksize = sizeof(K);
-        size_t nsize = sizeof(HashNode<K, V>);
+        const size_t ksize = sizeof(K);
+        const size_t nsize = sizeof(HashNode<K, V>);
 
         size_t nProcessed = 0;
         size_t nMerged = 0;
@@ -221,23 +227,29 @@ public:
         char empty[sizeof(HashNode<K, V>)];
         memset(empty, 0, nsize);
 
-        size_t nBefore = stat();
+        const size_t nBefore = stat();
 
         for (size_t i = 0; i < hashSize; i++) {
-            size_t offset = i * nsize;
-            if (memcmp((char *)other.hashTable + offset, empty, ksize)) {
+            const size_t offset = i * nsize;
+            if (memcmp(static_cast<char *>(other.hashTable) + offset, empty,
+                       ksize)) {
                 nProcessed++;
-                if (!memcmp((char *)hashTable + offset, empty, ksize)) {
-                    memcpy((char *)hashTable + offset,
-                           (char *)other.hashTable + offset, nsize);
+                if (!memcmp(static_cast<char *>(hashTable) + offset, empty,
+                            ksize)) {
+                    memcpy(static_cast<char *>(hashTable) + offset,
+                           static_cast<char *>(other.hashTable) + offset,
+                           nsize);
                     nMerged++;
                 } else {
                     nSkip++;
-                    if (!memcmp((char *)other.hashTable + offset,
-                                (char *)hashTable + offset, nsize)) {
+                    if (!memcmp(static_cast<char *>(other.hashTable) + offset,
+                                static_cast<char *>(hashTable) + offset,
+                                nsize)) {
                         nAllSame++;
-                    } else if (!memcmp((char *)other.hashTable + offset,
-                                       (char *)hashTable + offset, ksize)) {
+                    } else if (!memcmp(static_cast<char *>(other.hashTable) +
+                                           offset,
+                                       static_cast<char *>(hashTable) + offset,
+                                       ksize)) {
                         nOnlyKeySame++;
                     } else {
                         nDiff++;
@@ -246,7 +258,7 @@ public:
             }
         }
 
-        size_t nAfter = stat();
+        const size_t nAfter = stat();
 
         debugPrintf("[key merge]\nnProcessed = %lld, nMerged = %lld,\n"
                     "nSkip = %lld (nAllSame = %lld, nOnlyKeySame = %lld, nDiff "
@@ -255,20 +267,22 @@ public:
                     "hashSize = %d, nBefore = %lld (%f%%), nAfter = %lld "
                     "(%f%%)\n",
                     nProcessed, nMerged, nSkip, nAllSame, nOnlyKeySame, nDiff,
-                    hashSize, nBefore, (double)nBefore * 100 / hashSize, nAfter,
-                    (double)nAfter * 100 / hashSize);
+                    hashSize, nBefore,
+                    static_cast<double>(nBefore) * 100 / hashSize, nAfter,
+                    static_cast<double>(nAfter) * 100 / hashSize);
     }
 
-    size_t stat()
+    [[nodiscard]] size_t stat() const
     {
         size_t nEntries = 0;
 
-        size_t size = sizeof(HashNode<K, V>);
+        const size_t size = sizeof(HashNode<K, V>);
         char empty[sizeof(HashNode<K, V>)];
         memset(empty, 0, size);
 
         for (size_t i = 0; i < hashSize; i++) {
-            if (memcmp((char *)hashTable + i * size, empty, size)) {
+            if (memcmp(static_cast<char *>(hashTable) + i * size, empty,
+                       size)) {
                 nEntries++;
             }
         }
@@ -285,15 +299,18 @@ private:
 #else // DISABLE_HASHBUCKET
     HashBucket<K, V> *hashTable;
 #endif // DISABLE_HASHBUCKET
+
 #ifdef HASH_KEY_DISABLE
 #else // HASH_KEY_DISABLE
     F hashFn;
 #endif // HASH_KEY_DISABLE
+
     hashFn hashSize;
 #ifdef DISABLE_HASHBUCKET
 #ifndef HASHMAP_NOLOCK
     mutable std::shared_timed_mutex mutex_;
 #endif /* HASHMAP_NOLOCK */
+
 #endif
 };
 } // namespace CTSL

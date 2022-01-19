@@ -17,7 +17,7 @@
 // using namespace std;
 
 // not (9 * 4) = 36 since the possibilities with 3 pieces are more
-constexpr auto POSIBILE_MOVE_COUNT_MAX = (3 * 18);
+constexpr auto POSIBILE_MOVE_COUNT_MAX = 3 * 18;
 
 #define SAFE_DELETE(p) \
     { \
@@ -31,27 +31,29 @@ class Player
 {
 public:
     // static
-    int id;
+    int id {0};
 
     // static
-    unsigned int warning;
+    uint32_t warning {0};
 
     // number of pieces of this player on the board
-    unsigned int pieceCount;
+    uint32_t pieceCount {0};
 
     // number of pieces, which where stolen by the opponent
-    unsigned int removedPiecesCount;
+    uint32_t removedPiecesCount {0};
 
     // amount of possible moves
-    unsigned int possibleMovesCount;
+    uint32_t possibleMovesCount {0};
 
     // source board position of a possible move
-    Square posFrom[POSIBILE_MOVE_COUNT_MAX];
+    // TODO(calcitem): {SQUARE_INVALID}
+    Square posFrom[POSIBILE_MOVE_COUNT_MAX] {SQUARE_NB};
 
     // target board position of a possible move
-    Square posTo[POSIBILE_MOVE_COUNT_MAX];
+    // TODO(calcitem): {SQUARE_INVALID}
+    Square posTo[POSIBILE_MOVE_COUNT_MAX] {SQUARE_NB};
 
-    void copyPlayer(Player *dest);
+    void copyPlayer(Player *dest) const;
 };
 
 class fieldStruct
@@ -60,74 +62,73 @@ public:
     // constants
 
     // trivial
-    static const int squareIsFree = 0;
+    static constexpr int squareIsFree = 0;
 
     // so rowOwner can be calculated easy
-    static const int playerOne = -1;
-    static const int playerTwo = 1;
+    static constexpr int playerOne = -1;
+    static constexpr int playerTwo = 1;
 
     // so rowOwner can be calculated easy
-    static const int playerBlack = -1;
-    static const int playerWhite = 1;
+    static constexpr int playerBlack = -1;
+    static constexpr int playerWhite = 1;
 
     // so the bitwise or-operation can be applied, without interacting with
     // playerOne & Two
-    static const unsigned int noWarning = 0;
-    static const unsigned int playerOneWarning = 2;
-    static const unsigned int playerTwoWarning = 4;
-    static const unsigned int playerBothWarning = 6;
-    static const unsigned int piecePerPlayerCount = 9;
+    static constexpr uint32_t noWarning = 0;
+    static constexpr uint32_t playerOneWarning = 2;
+    static constexpr uint32_t playerTwoWarning = 4;
+    static constexpr uint32_t playerBothWarning = 6;
+    static constexpr uint32_t piecePerPlayerCount = 9;
 
     // only a nonzero value
-    static const int gameDrawn = 3;
+    static constexpr int gameDrawn = 3;
 
     // variables
 
     // one of the values above for each board position
-    int board[SQUARE_NB];
+    int board[SQUARE_NB] {0};
 
     // array containing the warnings for each board position
-    unsigned int warnings[SQUARE_NB];
+    uint32_t warnings[SQUARE_NB] {0};
 
     // true if piece can be moved in this direction
-    bool isPieceMovable[SQUARE_NB][MD_NB];
+    bool isPieceMovable[SQUARE_NB][MD_NB] {{false}};
 
     // the number of mills, of which this piece is part of
-    unsigned int piecePartOfMillCount[SQUARE_NB];
+    uint32_t piecePartOfMillCount[SQUARE_NB] {0};
 
     // static array containing the index of the neighbor or "size"
-    unsigned int connectedSquare[SQUARE_NB][4];
+    uint32_t connectedSquare[SQUARE_NB][4] {{0}};
 
     // static array containing the two neighbors of each squares
-    unsigned int neighbor[SQUARE_NB][2][2];
+    uint32_t neighbor[SQUARE_NB][2][2] {{{0}}};
 
     // number of pieces placed in the placing phase
-    unsigned int piecePlacedCount;
+    uint32_t piecePlacedCount {0};
 
     // true if piecePlacedCount < 18
-    bool isPlacingPhase;
+    bool isPlacingPhase {false};
 
     // number of pieces which must be removed by the current player
-    unsigned int pieceMustBeRemovedCount;
+    uint32_t pieceMustBeRemovedCount {0};
 
     // pointers to the current and opponent player
-    Player *curPlayer, *oppPlayer;
+    Player *curPlayer {nullptr}, *oppPlayer {nullptr};
 
     // useful functions
-    void printBoard();
-    void copyBoard(fieldStruct *dest);
+    void printBoard() const;
+    void copyBoard(fieldStruct *dest) const;
     void createBoard();
     void deleteBoard();
 
 private:
     // helper functions
-    char getCharFromPiece(int piece);
-    void setConnection(unsigned int index, int firstDirection,
-                       int secondDirection, int thirdDirection,
-                       int fourthDirection);
-    void setNeighbor(unsigned int index, unsigned int firstNeighbor0,
-                     unsigned int secondNeighbor0, unsigned int firstNeighbor1,
-                     unsigned int secondNeighbor1);
+    static char getCharFromPiece(int piece);
+    void setConnection(uint32_t index, int firstDirection, int secondDirection,
+                       int thirdDirection, int fourthDirection);
+    void setNeighbor(uint32_t index, uint32_t firstNeighbor0,
+                     uint32_t secondNeighbor0, uint32_t firstNeighbor1,
+                     uint32_t secondNeighbor1);
 };
 
 #ifdef __clang__ // TODO(calcitem)
@@ -146,8 +147,8 @@ public:
     ~MillAI() { dummyField.deleteBoard(); }
 
     // Functions
-    virtual void play(fieldStruct *theField, unsigned int *pushFrom,
-                      unsigned int *pushTo) = 0;
+    virtual void play(fieldStruct *theField, uint32_t *pushFrom,
+                      uint32_t *pushTo) = 0;
 };
 
 #endif // MUEHLE_AI_H_INCLUDED

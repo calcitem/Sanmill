@@ -146,7 +146,7 @@ class _Game extends StatelessWidget {
     final moveButton = ToolbarItem.icon(
       onPressed: () => _showMoveOptions(context),
       icon: const Icon(FluentIcons.calendar_agenda_24_regular),
-      label: Text(S.of(context).move_number(0)),
+      label: Text(S.of(context).move),
     );
 
     final infoButton = ToolbarItem.icon(

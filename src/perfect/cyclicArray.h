@@ -23,50 +23,47 @@ private:
     HANDLE hFile; // Handle of the file
     // Array of size [blockSize] containing the data of the block, where reading
     // is taking place
-    unsigned char *readingBlock;
+    unsigned char *readingBlock {nullptr};
 
     // ''
-    unsigned char *writingBlock;
+    unsigned char *writingBlock {nullptr};
 
     // pointer to the byte which is currently read
-    unsigned char *curReadingPointer;
+    unsigned char *curReadingPtr {nullptr};
 
     // ''
-    unsigned char *curWritingPointer;
+    unsigned char *curWritingPtr {nullptr};
 
     // size in bytes of a block
-    unsigned int blockSize;
+    uint32_t blockSize {0};
 
     // index of the block, where reading is taking place
-    unsigned int curReadingBlock;
+    uint32_t curReadingBlock {0};
 
     // index of the block, where writing is taking place
-    unsigned int curWritingBlock;
+    uint32_t curWritingBlock {0};
 
     // amount of blocks
-    unsigned int blockCount;
+    uint32_t blockCount {0};
 
     // true if curReadingBlock > curWritingBlock, false otherwise
-    bool readWriteInSameRound;
+    bool readWriteInSameRound {false};
 
     // Functions
-    void writeDataToFile(HANDLE hFile, int64_t offset, unsigned int sizeInBytes,
-                         void *pData);
-    void readDataFromFile(HANDLE hFile, int64_t offset,
-                          unsigned int sizeInBytes, void *pData);
+    static void writeDataToFile(HANDLE hFile, int64_t offset,
+                                uint32_t sizeInBytes, void *pData);
+    static void readDataFromFile(HANDLE hFile, int64_t offset,
+                                 uint32_t sizeInBytes, void *pData);
 
 public:
     // Constructor / destructor
-    CyclicArray(unsigned int blockSizeInBytes, unsigned int nBlocks,
+    CyclicArray(uint32_t blockSizeInBytes, uint32_t nBlocks,
                 const char *fileName);
     ~CyclicArray();
 
     // Functions
-    bool addBytes(unsigned int nBytes, unsigned char *pData);
-    bool takeBytes(unsigned int nBytes, unsigned char *pData);
-    bool loadFile(const char *fileName, LONGLONG &nBytesLoaded);
-    bool saveFile(const char *fileName);
-    bool bytesAvailable();
+    bool addBytes(uint32_t nBytes, unsigned char *pData);
+    bool takeBytes(uint32_t nBytes, unsigned char *pData);
 };
 
 #endif // CYLCIC_ARRAY_H_INCLUDED

@@ -17,6 +17,7 @@
 #ifndef GAMEWINDOW_H_INCLUDED
 #define GAMEWINDOW_H_INCLUDED
 
+#include <QFile>
 #include <QTimer>
 #include <QtWidgets/QMainWindow>
 #include <vector>
@@ -59,9 +60,9 @@ private slots:
 
     void actionRules_triggered();
 
-    void ruleInfo();
+    void ruleInfo() const;
 
-    void onAutoRunTimeOut(QPrivateSignal signal);
+    void onAutoRunTimeOut(QPrivateSignal signal) const;
 
     // The slot function for each action
     // Remove functions have been connected in UI manager or main window
@@ -73,21 +74,21 @@ private slots:
 #if 0
     void on_actionExit_X_triggered();
 #endif
-    void on_actionEdit_E_toggled(bool arg1);
+    static void on_actionEdit_E_toggled(bool arg1);
 #if 0
     void on_actionFlip_F_triggered();
     void on_actionMirror_M_triggered();
     void on_actionTurnRight_R_triggered();
     void on_actionTurnLeft_L_triggered();
 #endif
-    void on_actionInvert_I_toggled(bool arg1);
-    void on_actionRowChange();
+    void on_actionInvert_I_toggled(bool arg1) const;
+    void on_actionRowChange() const;
     void on_actionAutoRun_A_toggled(bool arg1);
     // void on_actionResign_G_triggered();
     void on_actionLimited_T_triggered();
-    void on_actionLocal_L_triggered();
-    void on_actionEngineFight_E_triggered();
-    void on_actionInternet_I_triggered();
+    void on_actionLocal_L_triggered() const;
+    void on_actionEngineFight_E_triggered() const;
+    static void on_actionInternet_I_triggered();
     void on_actionEngine_E_triggered();
 #if 0
     void on_actionEngine1_R_toggled(bool arg1);
@@ -99,9 +100,9 @@ private slots:
     void on_actionAnimation_A_toggled(bool arg1);
     void on_actionAutoRestart_A_triggered();
 #endif
-    void on_actionViewHelp_V_triggered();
-    void on_actionWeb_W_triggered();
-    void on_actionAbout_A_triggered();
+    static void on_actionViewHelp_V_triggered();
+    static void on_actionWeb_W_triggered();
+    static void on_actionAbout_A_triggered();
 
 protected:
     void saveBook(const QString &path);

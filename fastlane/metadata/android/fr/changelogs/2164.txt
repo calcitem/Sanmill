@@ -1,0 +1,3 @@
+v1.1.32
+
+Permet aux utilisateurs de choisir l'algorithme d'IA.

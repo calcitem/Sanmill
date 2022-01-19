@@ -1,1256 +1,1154 @@
 {
-    "@@locale": "lt",
-    "appName": "Malūnas",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Sveiki atvykę",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "Taip",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Ne",
-    "@no": {
-        "description": "No"
-    },
-    "game": "Žaidimas",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Žmogus prieš dirbtinį intelektą",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Žmogus prieš žmogų",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "AI prieš AI",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Žmogus prieš debesį",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Žmogus prieš LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Bandymas per LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Perkelti",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " Perkelia",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Judesių sąrašas",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Judesių sąrašas",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Nėra įrašo",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "GERAI",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "Patvirtinti",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "Atšaukti",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Autorinės teisės © 2021 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Pasirinktas netinkamas elementas.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Padėkite savo dalis.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Čia negalima įdėti.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Jūs įdėjote.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Pašalinkite figūrėlę.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Jūs negalite jos pašalinti.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Jūs pašalinote.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Perkelkite figūrėlę.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Jūs negalite čia padėti figūrėlės.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Jūs negalite perkelti savo figūrėlės čia.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Malūnas! Paimkite priešininko figūrėlę.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Toliau imkite priešininko figūrą.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Pasirinkite vieną iš priešininko figūrų.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Negalite paimti figūros iš malūno.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "Figūra gali judėti 1 tašku.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Negalite judinti priešininko figūrų.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "Vienoje linijoje yra trys figūros.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Pasirinkite figūrėlę, kurią norite perkelti.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "Jums liko trys figūrėlės.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Galite judėti į bet kurį norimą tašką.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " Perkelti.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "Laimi 1 žaidėjas!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "Laimi 2 žaidėjas!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Laimėjo",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "Pralaimėta",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "Nutrauktas",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Galvoju...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "Naujas žaidimas",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Importuoti žaidimą",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Eksportuoti žaidimą",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Žaidimas importuojamas iš iškarpinės.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Negalima importuoti",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Judesiai ir taisyklės nesutampa.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Pradėti įrašyti",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Įrašymas...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Sustabdyti įrašymą",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Rodyti įrašymą",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "Nėra įrašymo.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Palaukite.",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Iš naujo paleisti dabartinį žaidimą?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Iš naujo paleisti",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "Žaidimas pradėtas, padėkite",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Analizuojant ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "Klaida",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "Laimėjimo rodiklis",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "Rezultatas",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "1 žaidėjas",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "2 žaidėjas",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " figūrų skaičius yra mažesnis nei trys.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " atsistatydino.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " tai nėra tinkamas būdas.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "Lenta yra pilna, ir nėra būdo eiti.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Laikas baigėsi",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "Judėjimo fazėje per paskutinį tam tikrą ėjimų skaičių nebuvo pašalinta nė viena figūra.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "Tai yra lygiosios, nes lenta yra pilna.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "Tai yra lygiosios, nes kartojasi triskart.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "Žaidimas baigtas! Nežinoma priežastis.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "Žaidimas baigtas",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "Jūs laimėjote! Sveikiname!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "Iššūkis sunkesniam lygiui? Naujas lygis bus lygis ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "Jūs pralaimėjote!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "Analizuokite",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "Iš naujo paleisti dabartinį žaidimą?",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "Apie",
-    "@about": {
-        "description": "About"
-    },
-    "version": "Versija",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "Ačiū",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Nustatymai",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Parinktys",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "Nustatymai",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Sudėtingumo lygis",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "AI mąstymo laikas",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Sudėtingumas",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Garso efektai",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "Garsų atkūrimas žaidime",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Išlaikykite garsą išjungtą, kai grįžtate atgal",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Tonas",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Pirmas ėjimas",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Žmogus",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "AI",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "Pakaitinis",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "Automatinis žaidimo paleidimas iš naujo, kai žaidimas baigiamas",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Automatinis pirmojo ėjimo keitimas",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "AI atsistatydina, jei dauguma pralaimi",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Atsitiktinis ėjimas",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Sužinoti žaidimo pabaigą",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Atidarymo knyga",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "Įvairūs",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "Taisyklės",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Kiekvieno žaidėjo turimų figūrų skaičius",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Kiek figūrų turi kiekvienas žaidėjas?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Skrendančios figūrėlės numeris",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "Jei įjungtas skraidančios figūrėlės režimas, kai žaidėjo figūrėlių skaičius sumažėja iki tam tikro skaičiaus, jo figūrėlės gali laisvai judėti į bet kurį laisvą tašką, o ne apsiriboti gretimais taškais, kaip likusioje žaidimo dalyje.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Mažiausiai figūrų",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Įstrižainės linijos",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Pridėkite prie lentos keturias įstrižas linijas.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Pažymėkite ir atidėkite figūrų pašalinimą",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "Dėliojimo etape pašalintų figūrų taškai nebegalės būti dedami.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Antrasis žaidėjas juda pirmas",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Žaidėjas, kuris padėjimo fazėje juda antras, judėjimo fazėje juda pirmas.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Daugkartinis perkėlimas",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Jei žaidėjas vienu metu uždaro daugiau nei vieną malūnėlį, jis pašalina tiek malūnėlių, kiek jų uždarė.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Naikinti malūnus",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "Pagal numatytuosius nustatymus, prieš pašalindami figūrą iš suformuoto malūno, žaidėjai pirmiausia turi pašalinti visas kitas figūras. Įjunkite šią parinktį, kad šis apribojimas būtų išjungtas.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Antrasis žaidėjas pralaimi, kai lenta yra pilna",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Kai dėjimo etapo pabaigoje lenta būna pilna, šalis, kuri deda pirma, pralaimi žaidimą. Priešingu atveju žaidimas laikomas lygiosiomis.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Pralaimi, kai nėra teisėtų ėjimų",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Žaidėjas pralaimi, jei jo priešininkas juos užblokuoja taip, kad jų negalima judinti. Pakeiskite pusę, kad galėtumėte judėti, jei ši parinktis išjungta.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Skrenda",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Jei žaidėjui liko tik trys arba keturios (konfigūruojamos) figūrėlės, jis gali perkelti figūrėlę į bet kurį laisvą tašką.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "N ėjimų taisyklė",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "Žaidimas sužaidžiamas lygiosiomis, jei per tam tikrą skaičių ėjimų kiekvienas žaidėjas nepašalino nė vienos figūros.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Atbulinis ėjimas",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "Pasirinkite",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "Kopijuoti",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Ėjimų istorija nukopijuojama į iškarpinę",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Pagalba",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Atsiliepimai",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "Išeiti iš",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Taisyklių nustatymai",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "Spalva",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Lentos spalva",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Figūrėlės spalva",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Fono spalva",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Lentos linijos spalva",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Žaidėjo 1 figūrėlės spalva",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Žaidėjo 2 figūrėlės spalva",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Pranešimo spalva",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "AI yra tingus",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Rodyti turimų figūrų skaičių",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Rodyti užrašus ant lentos",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Rodyti istorijos naršymo įrankių juostą",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "Rodyti",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Lentos ribų plotis",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Lentos vidinės linijos plotis",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Gabalo plotis",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "Šrifto dydis",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "WMD užrašas",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Atkurti",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Atkurti numatytuosius nustatymus",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "Programėlė išeis.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "Turite iš karto uždaryti ir vėl atidaryti programą, kad ji pradėtų veikti.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Pasirinkite",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "Informacija",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "Patarimas",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "žaidėjas",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "1 žaidėjas",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "2 žaidėjas",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Kaip žaisti",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Bakstelėkite bet kurį galimą tašką, kad padėtumėte figūrėlę.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Bakstelėkite figūrėlę, kad ją perkeltumėte.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Bakstelėkite tašką, prijungtą prie figūrėlės, kad ją perkeltumėte.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Bakstelėkite vieną priešininko figūrėlę, kad pašalintumėte.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Prieš pašalindami figūrėlę pirmiausia turite sukurti malūną.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Turite žaisti su savo figūrėlėmis.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "Statistika",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Iš viso žaidimų",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "Rezultatai",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Negalima pašalinti iš malūno.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "palikta",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Privatumo politika",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Atidžiai perskaitykite ir įsitikinkite, kad visiškai suprantate ir sutinkate su šia ",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Jei nesutinkate su šia politika, nesinaudokite šia programėle. Naudojimasis programėle reiškia, kad sutinkate su šiomis sąlygomis.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " ir . ",
-    "accept": "Priimti",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "Atšaukti",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "Panaikinimo parinktis",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Galima atšaukti perkėlimą.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Grįžti atgal",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Grįžimas atgal",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Laukimas",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Žingsnis į priekį",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Atsiimti viską atgal",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Žingsnis į priekį visi",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Judėti dabar",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Atlikta.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Krekingo malūnas",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "Jei žaidėjas turi tik malūnuose esančias figūrėles, malūnuose esančios figūrėlės nebus užrakintos, kad būtų pašalintos.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Animacijos trukmė",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Nėra",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Tema",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Žaidimo tikslas - palikti priešininką su mažiau nei trimis figūromis arba neturėti jokių teisėtų ėjimų.\n\nŽaidimas automatiškai sužaidžiamas lygiosiomis, jei pozicija pasitaiko trečią kartą arba per paskutinius 100 (konfigūruojamų) ėjimų nėra pašalinama.\n\nŽaidimas vyksta trimis etapais:\n\n1. Figūrų statymas į laisvus taškus\n2. Figūrėlių perkėlimas į gretimus taškus\n3. (neprivalomas etapas) Figūrėlių perkėlimas į bet kurį laisvą tašką, kai žaidėjas turi mažiau nei tris figūrėles\n\nDėliojimas\n\nŽaidimas pradedamas tuščia lenta, kurią sudaro tinklelis su dvidešimt keturiais taškais. Žaidėjai paeiliui deda savo figūrėles į laisvus taškus, kol kiekvienas žaidėjas padeda visas figūrėles ant lentos. Jei žaidėjas gali pastatyti tris savo figūrėles tiesiai, jis turi \"malūnėlį\" ir gali pašalinti nuo lentos vieną priešininko figūrėlę.\n\nPagal kai kurias taisykles žaidėjai, prieš pašalindami figūrėlę iš suformuoto malūno, pirmiausia turi pašalinti visas kitas figūrėles.\n\nKai kuriose taisyklėse negalima vėl dėti figūrų į pašalintų figūrų taškus dėjimo etape.\n\nPanaudoję visas figūrėles, žaidėjai juda paeiliui.\n\nJudėjimas\n\nNorėdamas judėti, žaidėjas perkelia vieną savo figūrėlę išilgai lentos linijos į laisvą gretimą tašką. Jei jam nepavyksta to padaryti, jis pralaimėjo žaidimą. Kaip ir padėjimo etape, žaidėjas, kuris ant lentos linijos pastato tris savo figūrėles, turi malūną ir gali pašalinti vieną iš priešininko figūrėlių. Bet kuris žaidėjas, sumažinęs savo figūrų skaičių iki dviejų, neturi galimybės suformuoti naujų malūnų, todėl pralaimi žaidimą. Žaidėjas taip pat gali pralaimėti, kai turi daugiau nei tris figūrėles, jei priešininkas blokuoja jų judėjimą.\n\nSkraidantys\n\nKai kuriuose taisyklių variantuose, kai žaidėjui lieka tik trys figūrėlės, jo figūrėlės gali skristi, šokinėti ar šokinėti į bet kuriuos laisvus taškus, ne tik į gretimus.",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "Informacija apie versiją",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "Licencija",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Šaltinio kodas",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Trečiųjų šalių pranešimai",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "Programėlės versija",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "Bendra",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "Išplėstinė",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "talpinimas",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Perkėlimas",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Pašalinimas",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "Žaidimo pabaigos sąlyga",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "AI žaidimo stilius",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Pasyvus",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "Laiko limitas",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Personalizavimas",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "Kūrėjams",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Kūrėjo režimas",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Remkitės žmogaus patirtimi",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Atsižvelkite į dalių mobilumą",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Gabalėlių skaičius",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "laikant rankoje",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "ant lentos",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "lentos poslinkis nuo viršaus",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Tai nėra dirbtinio intelekto ėjimas.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "AI nemąsto.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Automatinis pakartotinis ėjimų atkūrimas",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "Esate ėjimų sąrašo pabaigoje.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Dar kartą bakstelėkite atgal, kad išeitumėte.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Aplinkos kintamieji",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Daugiau",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Tai eksperimentinė funkcija.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Eksperimentai",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Atvirojo kodo licencijos",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Kalba",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "Numatytoji kalba",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Figūrėlės gali judėti dėjimo etape",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Nėra atskirų dėliojimo ir judėjimo fazių, t. y. kiekvieno ėjimo metu žaidėjai gali nuspręsti, ar jie nori dėti figūrą ant lentos, ar perkelti vieną iš savo figūrų (jei tik turi likusių figūrų, kurias galima dėti).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Meniu spalva",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Meniu teksto spalva",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Meniu fono spalva",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Meniu paryškinti elemento spalvą",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Pagrindinės įrankių juostos fono spalva",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "pagrindinės įrankių juostos piktogramos spalva",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Naršymo įrankių juostos fono spalva",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Naršymo įrankių juostos piktogramos spalva",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Automatiškai slėpti įrankių juostą",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Įrankių juostos vieta ekrane",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Į viršų",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Apačia",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Centras",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Vienoda spalva",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Paveikslėlis",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Pasirinkite savo paveikslėlį",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Šviesa",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "Tamsu",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Temos",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Dabartinė tema",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Išsaugoti temą",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "Šriftai",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Rodyti analizės grafiką",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Analizė",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "Išsaugoti žaidimą",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Užkrauti žaidimą",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "Sąrankos padėtis",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Rodyti teisėtus judesius",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Rodyti paskutinį žingsnį",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Rodyti rodykles",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "Pjesės",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Rodyti analizę",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Siūlai",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "Įsitraukite",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Padėkite tobulinti vertimą",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "Pamoka",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Klasikinis malūnas",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Mišrus malūnas",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Ceilono malūnas",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Malūnas gali būti sulaužytas ir pakartotinai perdarytas",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Jei žaidėjas sulaužo malūną ir nedelsdamas sukuria naują malūną, toks žaidėjas gali perkelti tokį kūrinį atgal į pradinę sankryžą kitame savo žingsnyje, jei jis padarys naują malūną.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Žaidimas yra lygus, jei žaidėjas turi tris figūras ir po dešimties judesių nė vienas žaidėjas nepašalina varžovo figūrų",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kai žaidėjas nesiekia trijų dalių ir nė vienas žaidėjas negali pašalinti priešininko figūros per dešimt ėjimų, žaidimas yra lygus.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "Uždaryti",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Baltas gabalas",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "Juodas gabalas",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Draudimo taškas",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "Tuščias taškas",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Nėra prasmės",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Įdėjimo fazė",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Judėjimo fazė",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Skraidymo fazė",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Šonas judėti",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Paskutinis ėjimas",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Pasirinkta",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Pagrindinis meniu",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Prieinamumas",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Ekrano skaitytuvo palaikymas",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "Tai Lygiosios",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "Lygiosios",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Kūrinio paryškinimo spalva",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "Algoritmas",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "Pašalinkite neįdėtą gabalą",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Jei žaidėjas suformuoja malūną dėjimo stadijoje, ji pašalina priešininko nepadėtą figūrą ir toliau daro ėjimą.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "„Endgame N-Move“ taisyklė",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Jei kuris nors žaidėjas turi tik tris figūras ir nė vienas žaidėjas nepaima gabalo per tam tikrus judesius, žaidimas ištraukiamas.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Bet kuris žaidėjas turi tik tris gabalus ir nė vienas žaidėjas nepašalina gabalo per tam tikrus judesius.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Trijų kartų pasikartojimo taisyklė",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Žaidimas ištraukiamas, jei pozicija įvyksta trečią kartą.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Malūnas! Tęskite žingsnį.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Taškinis stilius",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Taško plotis",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Tvirtas",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Tuščiaviduriai",
-    "@hollow": {
-        "description": "Hollow"
-    },
-    "languageName": "Lietuvis",
-    "@languageName": {
-        "description": "The name of the current language"
+  "appName": "Malūnas",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Sveiki atvykę",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Taip",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Ne",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Žaidimas",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Žmogus prieš dirbtinį intelektą",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Žmogus prieš žmogų",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI prieš AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Žmogus prieš debesį",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Žmogus prieš LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Bandymas per LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Perkelti",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Judesių sąrašas",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Judesių sąrašas",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Nėra įrašo",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "GERAI",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Patvirtinti",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Atšaukti",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Pasirinktas netinkamas elementas.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Padėkite savo dalis.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Čia negalima įdėti.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Jūs įdėjote.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Pašalinkite figūrėlę.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Jūs negalite jos pašalinti.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Jūs pašalinote.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Perkelkite figūrėlę.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Jūs negalite čia padėti figūrėlės.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Jūs negalite perkelti savo figūrėlės čia.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Malūnas! Paimkite priešininko figūrėlę.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Toliau imkite priešininko figūrą.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Pasirinkite vieną iš priešininko figūrų.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Negalite paimti figūros iš malūno.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Figūra gali judėti 1 tašku.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Negalite judinti priešininko figūrų.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Pasirinkite figūrėlę, kurią norite perkelti.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Jums liko trys figūrėlės.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Galite judėti į bet kurį norimą tašką.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player}, kad judėtumėte.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Laimi 1 žaidėjas!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Laimi 2 žaidėjas!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Laimėjo",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Pralaimėta",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Galvoju…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Naujas žaidimas",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Importuoti žaidimą",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Eksportuoti žaidimą",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Žaidimas importuojamas iš iškarpinės.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Negalima importuoti {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Judesiai ir taisyklės nesutampa.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Palaukite.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Iš naujo paleisti dabartinį žaidimą?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Iš naujo paleisti",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Žaidimas pradėtas, padėkite.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Analizuojant…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Klaida: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Laimėjimo rodiklis",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Rezultatas:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "1 žaidėjas",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "2 žaidėjas",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} vienetų skaičius yra mažesnis nei trys.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} atsistatydino.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} nebėra kelio.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Lenta pilna, o {player} nebėra kelio.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Laikas baigėsi, {player} prarastas.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "Judėjimo fazėje per paskutinį tam tikrą ėjimų skaičių nebuvo pašalinta nė viena figūra.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Tai yra lygiosios, nes lenta yra pilna.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Tai yra lygiosios, nes kartojasi triskart.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Žaidimas baigtas! Nežinoma priežastis.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Žaidimas baigtas",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Jūs laimėjote! Sveikiname!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Iššūkis sunkesnis lygis? Naujas lygis bus {level} lygis!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Jūs pralaimėjote!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Analizuokite",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Apie",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Versija: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Ačiū",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Nustatymai",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Parinktys",
+  "@options": {
+    "description": "Options"
+  },
+  "preferences": "Nustatymai",
+  "@preferences": {
+    "description": "Preferences"
+  },
+  "skillLevel": "Sudėtingumo lygis",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI mąstymo laikas",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Sudėtingumas",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Garso efektai",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Garsų atkūrimas žaidime",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Išlaikykite garsą išjungtą, kai grįžtate atgal",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Tonas",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Pirmas ėjimas",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Žmogus",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Pakaitinis",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Automatinis žaidimo paleidimas iš naujo, kai žaidimas baigiamas",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Automatinis pirmojo ėjimo keitimas",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Atsitiktinis ėjimas",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Įvairūs",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Taisyklės",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Kiekvieno žaidėjo turimų figūrų skaičius",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Kiek figūrų turi kiekvienas žaidėjas?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Skrendančios figūrėlės numeris",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Jei įjungtas skraidančios figūrėlės režimas, kai žaidėjo figūrėlių skaičius sumažėja iki tam tikro skaičiaus, jo figūrėlės gali laisvai judėti į bet kurį laisvą tašką, o ne apsiriboti gretimais taškais, kaip likusioje žaidimo dalyje.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Mažiausiai figūrų",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Įstrižainės linijos",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Pridėkite prie lentos keturias įstrižas linijas.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Pažymėkite ir atidėkite figūrų pašalinimą",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "Dėliojimo etape pašalintų figūrų taškai nebegalės būti dedami.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Antrasis žaidėjas juda pirmas",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Žaidėjas, kuris padėjimo fazėje juda antras, judėjimo fazėje juda pirmas.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Daugkartinis perkėlimas",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Jei žaidėjas vienu metu uždaro daugiau nei vieną malūnėlį, jis pašalina tiek malūnėlių, kiek jų uždarė.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Naikinti malūnus",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Pagal numatytuosius nustatymus, prieš pašalindami figūrą iš suformuoto malūno, žaidėjai pirmiausia turi pašalinti visas kitas figūras. Įjunkite šią parinktį, kad šis apribojimas būtų išjungtas.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Antrasis žaidėjas pralaimi, kai lenta yra pilna",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Kai dėjimo etapo pabaigoje lenta būna pilna, šalis, kuri deda pirma, pralaimi žaidimą. Priešingu atveju žaidimas laikomas lygiosiomis.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Pralaimi, kai nėra teisėtų ėjimų",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Žaidėjas pralaimi, jei jo priešininkas juos užblokuoja taip, kad jų negalima judinti. Pakeiskite pusę, kad galėtumėte judėti, jei ši parinktis išjungta.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Skrenda",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Jei žaidėjui liko tik trys arba keturios (konfigūruojamos) figūrėlės, jis gali perkelti figūrėlę į bet kurį laisvą tašką.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N ėjimų taisyklė",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Žaidimas sužaidžiamas lygiosiomis, jei per tam tikrą skaičių ėjimų kiekvienas žaidėjas nepašalino nė vienos figūros.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Atbulinis ėjimas",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Pasirinkite",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Kopijuoti",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Ėjimų istorija nukopijuojama į iškarpinę.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Pagalba",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Atsiliepimai",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Išeiti iš",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Taisyklių nustatymai",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Spalva",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Lentos spalva",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Figūrėlės spalva",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Fono spalva",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Lentos linijos spalva",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Žaidėjo 1 figūrėlės spalva",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Žaidėjo 2 figūrėlės spalva",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Pranešimo spalva",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Rodyti turimų figūrų skaičių",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Rodyti užrašus ant lentos",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Rodyti istorijos naršymo įrankių juostą",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Rodyti",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Lentos ribų plotis",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Lentos vidinės linijos plotis",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Gabalo plotis",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Šrifto dydis",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD užrašas",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Atkurti",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Atkurti numatytuosius nustatymus",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Pasirinkite {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Informacija",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Patarimas",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "žaidėjas",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "1 žaidėjas",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "2 žaidėjas",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Kaip žaisti",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Bakstelėkite bet kurį galimą tašką, kad padėtumėte figūrėlę.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Bakstelėkite figūrėlę, kad ją perkeltumėte.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Bakstelėkite tašką, prijungtą prie figūrėlės, kad ją perkeltumėte.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Bakstelėkite vieną priešininko figūrėlę, kad pašalintumėte.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Prieš pašalindami figūrėlę pirmiausia turite sukurti malūną.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Turite žaisti su savo figūrėlėmis.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistika",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Iš viso žaidimų",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Rezultatai",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "palikta",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Privatumo politika",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Atidžiai perskaitykite ir įsitikinkite, kad visiškai suprantate ir sutinkate su šia ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Jei nesutinkate su šia politika, nesinaudokite šia programėle. Naudojimasis programėle reiškia, kad sutinkate su šiomis sąlygomis.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " ir . ",
+  "@and": {},
+  "accept": "Priimti",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Grįžti atgal",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Grįžimas atgal…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Laukimas…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Žingsnis į priekį",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Atsiimti viską atgal",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Žingsnis į priekį visi",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Judėti dabar",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Atlikta.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Krekingo malūnas",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Jei žaidėjas turi tik malūnuose esančias figūrėles, malūnuose esančios figūrėlės nebus užrakintos, kad būtų pašalintos.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Animacijos trukmė",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Nėra",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Tema",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Žaidimo tikslas - palikti priešininką su mažiau nei trimis figūromis arba neturėti jokių teisėtų ėjimų.\n\nŽaidimas automatiškai sužaidžiamas lygiosiomis, jei pozicija pasitaiko trečią kartą arba per paskutinius 100 (konfigūruojamų) ėjimų nėra pašalinama.\n\nŽaidimas vyksta trimis etapais:\n\n1. Figūrų statymas į laisvus taškus\n2. Figūrėlių perkėlimas į gretimus taškus\n3. (neprivalomas etapas) Figūrėlių perkėlimas į bet kurį laisvą tašką, kai žaidėjas turi mažiau nei tris figūrėles\n\nDėliojimas\n\nŽaidimas pradedamas tuščia lenta, kurią sudaro tinklelis su dvidešimt keturiais taškais. Žaidėjai paeiliui deda savo figūrėles į laisvus taškus, kol kiekvienas žaidėjas padeda visas figūrėles ant lentos. Jei žaidėjas gali pastatyti tris savo figūrėles tiesiai, jis turi \"malūnėlį\" ir gali pašalinti nuo lentos vieną priešininko figūrėlę.\n\nPagal kai kurias taisykles žaidėjai, prieš pašalindami figūrėlę iš suformuoto malūno, pirmiausia turi pašalinti visas kitas figūrėles.\n\nKai kuriose taisyklėse negalima vėl dėti figūrų į pašalintų figūrų taškus dėjimo etape.\n\nPanaudoję visas figūrėles, žaidėjai juda paeiliui.\n\nJudėjimas\n\nNorėdamas judėti, žaidėjas perkelia vieną savo figūrėlę išilgai lentos linijos į laisvą gretimą tašką. Jei jam nepavyksta to padaryti, jis pralaimėjo žaidimą. Kaip ir padėjimo etape, žaidėjas, kuris ant lentos linijos pastato tris savo figūrėles, turi malūną ir gali pašalinti vieną iš priešininko figūrėlių. Bet kuris žaidėjas, sumažinęs savo figūrų skaičių iki dviejų, neturi galimybės suformuoti naujų malūnų, todėl pralaimi žaidimą. Žaidėjas taip pat gali pralaimėti, kai turi daugiau nei tris figūrėles, jei priešininkas blokuoja jų judėjimą.\n\nSkraidantys\n\nKai kuriuose taisyklių variantuose, kai žaidėjui lieka tik trys figūrėlės, jo figūrėlės gali skristi, šokinėti ar šokinėti į bet kuriuos laisvus taškus, ne tik į gretimus.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Informacija apie versiją",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Licencija",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Šaltinio kodas",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Programėlės versija",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Bendra",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Išplėstinė",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "talpinimas",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Perkėlimas",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Pašalinimas",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Žaidimo pabaigos sąlyga",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI žaidimo stilius",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Pasyvus",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Laiko limitas",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "personalization": "Personalizavimas",
+  "@personalization": {
+    "description": "Personalization"
+  },
+  "drawOnHumanExperience": "Remkitės žmogaus patirtimi",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Atsižvelkite į dalių mobilumą",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Gabalėlių skaičius:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} rankoje: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} laive: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "lentos poslinkis nuo viršaus",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Tai nėra dirbtinio intelekto ėjimas.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI nemąsto.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Esate ėjimų sąrašo pabaigoje.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Dar kartą bakstelėkite atgal, kad išeitumėte.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "Daugiau",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Tai eksperimentinė funkcija.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Eksperimentai",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Atvirojo kodo licencijos",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Kalba",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Numatytoji kalba",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Figūrėlės gali judėti dėjimo etape",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Nėra atskirų dėliojimo ir judėjimo fazių, t. y. kiekvieno ėjimo metu žaidėjai gali nuspręsti, ar jie nori dėti figūrą ant lentos, ar perkelti vieną iš savo figūrų (jei tik turi likusių figūrų, kurias galima dėti).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Meniu spalva",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Meniu teksto spalva",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Meniu paryškinti elemento spalvą",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Pagrindinės įrankių juostos fono spalva",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "pagrindinės įrankių juostos piktogramos spalva",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Naršymo įrankių juostos fono spalva",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Naršymo įrankių juostos piktogramos spalva",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Automatiškai slėpti įrankių juostą",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Įrankių juostos vieta ekrane",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Į viršų",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Apačia",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Centras",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Vienoda spalva",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Paveikslėlis",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Pasirinkite savo paveikslėlį",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Šviesa",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Tamsu",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Temos",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Dabartinė tema",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Išsaugoti temą",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Rodyti analizės grafiką",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Analizė",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Išsaugoti žaidimą",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Užkrauti žaidimą",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Sąrankos padėtis",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Rodyti teisėtus judesius",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Rodyti paskutinį žingsnį",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Rodyti rodykles",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Pjesės",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Rodyti analizę",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Siūlai",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Įsitraukite",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Padėkite tobulinti vertimą",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Pamoka",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Klasikinis malūnas",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Mišrus malūnas",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Ceilono malūnas",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Malūnas gali būti sulaužytas ir pakartotinai perdarytas",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Jei žaidėjas sulaužo malūną ir nedelsdamas sukuria naują malūną, toks žaidėjas gali perkelti tokį kūrinį atgal į pradinę sankryžą kitame savo žingsnyje, jei jis padarys naują malūną.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Žaidimas yra lygus, jei žaidėjas turi tris figūras ir po dešimties judesių nė vienas žaidėjas nepašalina varžovo figūrų",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kai žaidėjas nesiekia trijų dalių ir nė vienas žaidėjas negali pašalinti priešininko figūros per dešimt ėjimų, žaidimas yra lygus.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Uždaryti",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Baltas gabalas",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Juodas gabalas",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Draudimo taškas",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Tuščias taškas",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Nėra prasmės",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Įdėjimo fazė",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Judėjimo fazė",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Skraidymo fazė",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Perkeliama pusė: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Paskutinis žingsnis: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Pasirinkta",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Prieinamumas",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Ekrano skaitytuvo palaikymas",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Tai Lygiosios!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Lygiosios",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Kūrinio paryškinimo spalva",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algoritmas",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "Pašalinkite neįdėtą gabalą",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Jei žaidėjas suformuoja malūną dėjimo stadijoje, ji pašalina priešininko nepadėtą figūrą ir toliau daro ėjimą.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "„Endgame N-Move“ taisyklė",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Jei kuris nors žaidėjas turi tik tris figūras ir nė vienas žaidėjas nepaima gabalo per tam tikrus judesius, žaidimas ištraukiamas.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Bet kuris žaidėjas turi tik tris gabalus ir nė vienas žaidėjas nepašalina gabalo per tam tikrus judesius.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Trijų kartų pasikartojimo taisyklė",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Žaidimas ištraukiamas, jei pozicija įvyksta trečią kartą.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Malūnas! Tęskite žingsnį.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Taškinis stilius",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Taško plotis",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Tvirtas",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Tuščiaviduriai",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Lietuvis",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Perkelti}other{{count} Juda}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  }
 }

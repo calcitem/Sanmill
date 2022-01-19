@@ -23,12 +23,11 @@
 template <>
 ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
 {
-    Square from = SQ_0, to = SQ_0;
     ExtMove *cur = moveList;
 
     // move piece that location weak first
     for (auto i = SQUARE_NB - 1; i >= 0; i--) {
-        from = MoveList<LEGAL>::movePriorityList[i];
+        const Square from = MoveList<LEGAL>::movePriorityList[i];
 
         if (!pos.select_piece(from)) {
             continue;
@@ -38,15 +37,15 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
                                rule.flyPieceCount) {
             // piece count < 3 or 4 and allow fly, if is empty point, that's ok,
             // do not need in move list
-            for (to = SQ_BEGIN; to < SQ_END; ++to) {
+            for (Square to = SQ_BEGIN; to < SQ_END; ++to) {
                 if (!pos.get_board()[to]) {
                     *cur++ = make_move(from, to);
                 }
             }
         } else {
             for (auto direction = MD_BEGIN; direction < MD_NB; ++direction) {
-                to = static_cast<Square>(
-                    MoveList<LEGAL>::adjacentSquares[from][direction]);
+                const Square to =
+                    MoveList<LEGAL>::adjacentSquares[from][direction];
                 if (to && !pos.get_board()[to]) {
                     *cur++ = make_move(from, to);
                 }
@@ -66,7 +65,7 @@ ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
 
     for (auto s : MoveList<LEGAL>::movePriorityList) {
         if (!pos.get_board()[s]) {
-            *cur++ = (Move)s;
+            *cur++ = static_cast<Move>(s);
         }
     }
 
@@ -78,8 +77,6 @@ ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
 template <>
 ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 {
-    Square s;
-
     const Color us = pos.side_to_move();
     const Color them = ~us;
 
@@ -88,9 +85,9 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     if (pos.is_all_in_mills(them)) {
 #ifndef MADWEASEL_MUEHLE_RULE
         for (auto i = SQUARE_NB - 1; i >= 0; i--) {
-            s = MoveList<LEGAL>::movePriorityList[i];
+            Square s = MoveList<LEGAL>::movePriorityList[i];
             if (pos.get_board()[s] & make_piece(them)) {
-                *cur++ = (Move)-s;
+                *cur++ = static_cast<Move>(-s);
             }
         }
 #endif
@@ -99,11 +96,11 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 
     // not is all in mills
     for (auto i = SQUARE_NB - 1; i >= 0; i--) {
-        s = MoveList<LEGAL>::movePriorityList[i];
+        const Square s = MoveList<LEGAL>::movePriorityList[i];
         if (pos.get_board()[s] & make_piece(them)) {
             if (rule.mayRemoveFromMillsAlways ||
                 !pos.potential_mills_count(s, NOBODY)) {
-                *cur++ = (Move)-s;
+                *cur++ = static_cast<Move>(-s);
             }
         }
     }
@@ -135,7 +132,7 @@ ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
     case Action::remove:
         return generate<REMOVE>(pos, moveList);
 
-    default:
+    case Action::none:
 #ifdef FLUTTER_UI
         LOGD("generate(): action = %hu\n", pos.get_action());
 #endif

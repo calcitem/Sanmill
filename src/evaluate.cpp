@@ -25,11 +25,13 @@ class Evaluation
 {
 public:
     Evaluation() = delete;
+
     explicit Evaluation(Position &p) noexcept
         : pos(p)
     { }
+
     Evaluation &operator=(const Evaluation &) = delete;
-    Value value();
+    [[nodiscard]] Value value() const;
 
 private:
     Position &pos;
@@ -39,17 +41,18 @@ private:
 // various parts of the evaluation and returns the value of the position from
 // the point of view of the side to move.
 
-Value Evaluation::value()
+Value Evaluation::value() const
 {
     Value value = VALUE_ZERO;
 
     int pieceInHandDiffCount;
     int pieceOnBoardDiffCount;
-    int pieceToRemoveCount = (pos.side_to_move() == WHITE) ?
-                                 pos.piece_to_remove_count() :
-                                 -pos.piece_to_remove_count();
+    const int pieceToRemoveCount = pos.side_to_move() == WHITE ?
+                                       pos.piece_to_remove_count() :
+                                       -pos.piece_to_remove_count();
 
     switch (pos.get_phase()) {
+    case Phase::none:
     case Phase::ready:
         break;
 
@@ -70,11 +73,10 @@ Value Evaluation::value()
         case Action::select:
         case Action::place:
             break;
-
         case Action::remove:
             value += VALUE_EACH_PIECE_PLACING_NEEDREMOVE * pieceToRemoveCount;
             break;
-        default:
+        case Action::none:
             break;
         }
 
@@ -85,19 +87,18 @@ Value Evaluation::value()
             value += pos.get_mobility_diff();
         }
 
-        value = (pos.piece_on_board_count(WHITE) -
-                 pos.piece_on_board_count(BLACK)) *
-                VALUE_EACH_PIECE_ONBOARD;
+        value += (pos.piece_on_board_count(WHITE) -
+                  pos.piece_on_board_count(BLACK)) *
+                 VALUE_EACH_PIECE_ONBOARD;
 
         switch (pos.get_action()) {
         case Action::select:
         case Action::place:
             break;
-
         case Action::remove:
             value += VALUE_EACH_PIECE_MOVING_NEEDREMOVE * pieceToRemoveCount;
             break;
-        default:
+        case Action::none:
             break;
         }
 
@@ -124,16 +125,13 @@ Value Evaluation::value()
         }
 
         break;
-
-    default:
-        break;
     }
 
     if (pos.side_to_move() == BLACK) {
         value = -value;
     }
 
-#if EVAL_DRAW_WHEN_NOT_KNOWN_WIN_IF_MAY_FLY
+#ifdef EVAL_DRAW_WHEN_NOT_KNOWN_WIN_IF_MAY_FLY
     if (pos.get_phase() == Phase::moving && rule.mayFly &&
         !rule.hasDiagonalLines) {
         int piece_on_board_count_future_white = pos.piece_on_board_count(WHITE);

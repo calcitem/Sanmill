@@ -25,12 +25,12 @@
 class BoardItem : public QGraphicsItem
 {
 public:
-    explicit BoardItem(QGraphicsItem *parent = nullptr);
+    explicit BoardItem(const QGraphicsItem *parent = nullptr);
     ~BoardItem() override;
 
-    QRectF boundingRect() const override;
+    [[nodiscard]] QRectF boundingRect() const override;
 
-    QPainterPath shape() const override;
+    [[nodiscard]] QPainterPath shape() const override;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = nullptr) override;
@@ -41,7 +41,7 @@ public:
     // to judge
     enum { Type = UserType + 1 };
 
-    int type() const noexcept override { return Type; }
+    [[nodiscard]] int type() const noexcept override { return Type; }
 
     // Set with or without diagonal
     void setDiagonal(bool arg = true);
@@ -51,11 +51,11 @@ public:
 
     // The circle and position of the model are transformed into the point
     // coordinates
-    QPointF polar2pos(File file, Rank rank);
+    [[nodiscard]] QPointF polar2pos(File file, Rank rank) const;
 
     // The coordinates of the falling point are transformed into circles and
     // positions for the model
-    bool pos2polar(QPointF pos, File &f, Rank &r);
+    [[nodiscard]] bool pos2polar(QPointF pos, File &f, Rank &r) const;
 
 private:
     int size; // board size

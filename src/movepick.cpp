@@ -43,27 +43,25 @@ template <GenType Type>
 void MovePicker::score()
 {
     cur = moves;
-    Square from = SQ_0, to = SQ_0;
-    Move m = MOVE_NONE;
 
-    int ourMillsCount = 0;
-    int theirMillsCount = 0;
+    int theirMillsCount;
     int ourPieceCount = 0;
     int theirPiecesCount = 0;
     int bannedCount = 0;
     int emptyCount = 0;
 
     while (cur++->move != MOVE_NONE) {
-        m = cur->move;
+        Move m = cur->move;
 
-        to = to_sq(m);
-        from = from_sq(m);
+        const Square to = to_sq(m);
+        const Square from = from_sq(m);
 
         // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but
         // no mill, so need |from| to judge
-        ourMillsCount = pos.potential_mills_count(to, pos.side_to_move(), from);
+        const int ourMillsCount = pos.potential_mills_count(
+            to, pos.side_to_move(), from);
 
-#ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
+#ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGE
         // TODO(calcitem): rule.mayRemoveMultiple adapt other rules
         if (type_of(m) != MOVETYPE_REMOVE) {
             // all phrase, check if place sq can close mill
@@ -103,11 +101,12 @@ void MovePicker::score()
             // important as close mill (TODO)
             if (rule.hasDiagonalLines &&
                 pos.count<ON_BOARD>(BLACK) < 2 && // patch: only when black 2nd
-                                                  // move
+                // move
                 Position::is_star_square(static_cast<Square>(m))) {
                 cur->value += RATING_STAR_SQUARE;
             }
-        } else { // Remove
+        } else {
+            // Remove
             ourPieceCount = theirPiecesCount = bannedCount = emptyCount = 0;
 
             pos.surrounded_pieces_count(to, ourPieceCount, theirPiecesCount,
@@ -145,7 +144,7 @@ void MovePicker::score()
             // prefer remove piece that mobility is strong
             cur->value += emptyCount;
         }
-#endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGES
+#endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGE
     }
 }
 
@@ -156,7 +155,7 @@ void MovePicker::score()
 Move MovePicker::next_move()
 {
     endMoves = generate<LEGAL>(pos, moves);
-    moveCount = int(endMoves - moves);
+    moveCount = static_cast<int>(endMoves - moves);
 
     score<LEGAL>();
     partial_insertion_sort(moves, endMoves, INT_MIN);

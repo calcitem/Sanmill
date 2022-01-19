@@ -36,7 +36,6 @@ using std::vector;
 extern vector<string> setup_bench(Position *, istream &);
 
 extern int repetition;
-extern vector<Key> posKeyHistory;
 
 namespace {
 
@@ -160,7 +159,7 @@ begin:
 
 void UCI::loop(int argc, char *argv[])
 {
-    Position *pos = new Position;
+    const auto pos = new Position;
     string token, cmd;
 
 #ifdef _MSC_VER
@@ -292,8 +291,8 @@ string UCI::value(Value v)
 
 std::string UCI::square(Square s)
 {
-    return std::string {char('('), char('0' + file_of(s)), char(','),
-                        char('0' + rank_of(s)), char(')')};
+    return std::string {'(', static_cast<char>('0' + file_of(s)), ',',
+                        static_cast<char>('0' + rank_of(s)), ')'};
 }
 
 /// UCI::move() converts a Move to a string in algebraic notation ((1,2), etc.).
@@ -311,12 +310,12 @@ string UCI::move(Move m)
         return "0000";
 
     if (m < 0) {
-        move = "-" + UCI::square(to);
+        move = "-" + square(to);
     } else if (m & 0x7f00) {
         const Square from = from_sq(m);
-        move = UCI::square(from) + "->" + UCI::square(to);
+        move = square(from) + "->" + square(to);
     } else {
-        move = UCI::square(to);
+        move = square(to);
     }
 
     return move;
@@ -325,10 +324,10 @@ string UCI::move(Move m)
 /// UCI::to_move() converts a string representing a move in coordinate notation
 /// to the corresponding legal Move, if any.
 
-Move UCI::to_move(Position *pos, string &str)
+Move UCI::to_move(Position *pos, const string &str)
 {
     for (const auto &m : MoveList<LEGAL>(*pos))
-        if (str == UCI::move(m))
+        if (str == move(m))
             return m;
 
     return MOVE_NONE;

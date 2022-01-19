@@ -34,6 +34,7 @@ public:
         : next(nullptr)
 #endif
         = default;
+
     HashNode(K key_, V value_)
         :
 #ifndef DISABLE_HASHBUCKET
@@ -43,6 +44,7 @@ public:
         key(key_)
         , value(value_)
     { }
+
     ~HashNode()
     {
 #ifndef DISABLE_HASHBUCKET
@@ -50,7 +52,7 @@ public:
 #endif
     }
 
-    const K &getKey() const { return key; }
+    [[nodiscard]] const K &getKey() const { return key; }
     void setValue(V value_) { value = value_; }
     V &getValue() { return value; }
     void setKey(K key_) { key = key_; }
@@ -86,7 +88,7 @@ public:
     bool find(const K &key, V &value) const
     {
         // A shared mutex is used to enable multiple concurrent reads
-        std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+        std::shared_lock lock(mutex_);
         HashNode<K, V> *node = head;
 
 #ifdef DISABLE_HASHBUCKET
@@ -117,7 +119,7 @@ public:
     void insert(const K &key, const V &value)
     {
         // Exclusive lock to enable single write in the bucket
-        std::unique_lock<std::shared_timed_mutex> lock(mutex_);
+        std::unique_lock lock(mutex_);
 
 #ifdef DISABLE_HASHBUCKET
         if (head == nullptr) {
@@ -151,10 +153,11 @@ public:
     void erase(const K &key)
     {
         // Exclusive lock to enable single write in the bucket
-        std::unique_lock<std::shared_timed_mutex> lock(mutex_);
+        std::unique_lock lock(mutex_);
 
 #ifdef DISABLE_HASHBUCKET
-        if (head == nullptr) { // Key not found, nothing to be done
+        if (head == nullptr) {
+            // Key not found, nothing to be done
             return;
         }
 
@@ -188,7 +191,7 @@ public:
     void clear()
     {
         // Exclusive lock to enable single write in the bucket
-        std::unique_lock<std::shared_timed_mutex> lock(mutex_);
+        std::unique_lock lock(mutex_);
 
 #ifdef DISABLE_HASHBUCKET
         if (head != nullptr) {

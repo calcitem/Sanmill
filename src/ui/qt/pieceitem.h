@@ -33,9 +33,9 @@ public:
 
     ~PieceItem() override;
 
-    QRectF boundingRect() const override;
+    [[nodiscard]] QRectF boundingRect() const override;
 
-    QPainterPath shape() const override;
+    [[nodiscard]] QPainterPath shape() const override;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = nullptr) override;
@@ -46,7 +46,7 @@ public:
     // of data, setData(0, "pieceitem"), and then use data(0) to judge
     enum { Type = UserType + 2 };
 
-    int type() const noexcept override { return Type; }
+    [[nodiscard]] int type() const noexcept override { return Type; }
 
     enum class Models {
         noPiece = 0x1,
@@ -54,15 +54,15 @@ public:
         blackPiece = 0x4,
     };
 
-    enum Models getModel() noexcept { return model; }
+    [[nodiscard]] Models getModel() const noexcept { return model; }
 
-    void setModel(enum Models m) noexcept { this->model = m; }
+    void setModel(Models m) noexcept { this->model = m; }
 
-    int getNum() noexcept { return num; }
+    [[nodiscard]] int getNum() const noexcept { return num; }
 
     void setNum(int n) noexcept { num = n; }
 
-    bool isDeleted() noexcept { return deleted; }
+    [[nodiscard]] bool isDeleted() const noexcept { return deleted; }
 
     void setDeleted(bool del = true)
     {
@@ -82,7 +82,7 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
 private:
-    enum Models model;
+    Models model;
 
     // Piece number
     int num {0};
