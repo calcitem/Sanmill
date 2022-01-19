@@ -38,7 +38,7 @@ class _MoveOptionsModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GamePageDialog(
-      semanticLabel: S.of(context).move_number(0),
+      semanticLabel: S.of(context).moveNumber(0),
       children: <Widget>[
         if (!DB().display.isHistoryNavigationToolbarShown) ...[
           SimpleDialogOption(
