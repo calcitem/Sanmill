@@ -1263,9 +1263,7 @@ void Position::surrounded_pieces_count(Square s, int &ourPieceCount,
             continue;
         }
 
-        const auto pieceType = board[moveSquare];
-
-        switch (pieceType) {
+        switch (const auto pieceType = board[moveSquare]) {
         case NO_PIECE:
             emptyCount++;
             break;
@@ -1503,7 +1501,6 @@ void Position::mirror(vector<string> &moveHistory, bool cmdChange /*= true*/)
 void Position::turn(vector<string> &moveHistory, bool cmdChange /*= true*/)
 {
     int f, r;
-    int i;
 
     for (r = 0; r < RANK_NB; r++) {
         const Piece ch = board[RANK_NB + r];
@@ -1529,7 +1526,7 @@ void Position::turn(vector<string> &moveHistory, bool cmdChange /*= true*/)
         llp[0] = static_cast<uint64_t>(from_sq(move));
         llp[1] = to_sq(move);
 
-        for (i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             f = static_cast<int>(llp[i]) / RANK_NB;
             r = static_cast<int>(llp[i]) % RANK_NB;
 
