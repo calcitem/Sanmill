@@ -16,15 +16,15 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of 'package:sanmill/screens/personalization_settings/personalization_settings_page.dart';
+part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 
-class _PointWidthSlider extends StatelessWidget {
-  const _PointWidthSlider({Key? key}) : super(key: key);
+class _AnimationDurationSlider extends StatelessWidget {
+  const _AnimationDurationSlider({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: S.of(context).pointWidth,
+      label: S.of(context).animationDuration,
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplay,
         builder: (context, Box<Display> displayBox, _) {
@@ -34,13 +34,13 @@ class _PointWidthSlider extends StatelessWidget {
           )!;
 
           return Slider(
-            value: _display.pointWidth,
-            max: 30.0,
-            divisions: 30,
-            label: _display.pointWidth.toStringAsFixed(1),
+            value: _display.animationDuration,
+            max: 5.0,
+            divisions: 50,
+            label: _display.animationDuration.toStringAsFixed(1),
             onChanged: (value) {
-              logger.v("[config] pointWidth value: $value");
-              DB().display = _display.copyWith(pointWidth: value);
+              logger.v("[config] AnimationDuration value: $value");
+              DB().display = _display.copyWith(animationDuration: value);
             },
           );
         },

@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "વૈયક્તિકરણ",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "વૈયક્તિકરણ",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "માનવ અનુભવ દોરો",
   "@drawOnHumanExperience": {

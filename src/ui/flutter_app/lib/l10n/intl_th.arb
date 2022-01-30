@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "การปรับเปลี่ยนในแบบของคุณ",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "การปรับเปลี่ยนในแบบของคุณ",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "วาดบนประสบการณ์ของมนุษย์",
   "@drawOnHumanExperience": {

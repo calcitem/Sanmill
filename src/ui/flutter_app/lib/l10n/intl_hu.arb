@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "Személyre szabás",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "Személyre szabás",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "Használja a személyes tapasztalatokat",
   "@drawOnHumanExperience": {

@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "Personalizavimas",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "Personalizavimas",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "Remkitės žmogaus patirtimi",
   "@drawOnHumanExperience": {

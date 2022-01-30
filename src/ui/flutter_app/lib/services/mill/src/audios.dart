@@ -23,7 +23,7 @@ enum Sound { draw, fly, go, illegal, lose, mill, place, remove, select, win }
 
 /// Audio Service
 ///
-/// Service providing a unified abstraction to call different audio backends on our supported platforms.
+/// Service providing a unified abstraction to call different audio backend on our supported platforms.
 class Audios {
   @visibleForTesting
   static Audios instance = Audios._();

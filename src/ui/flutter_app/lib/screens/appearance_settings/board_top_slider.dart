@@ -16,15 +16,15 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of 'package:sanmill/screens/personalization_settings/personalization_settings_page.dart';
+part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 
-class _BoardBorderWidthSlider extends StatelessWidget {
-  const _BoardBorderWidthSlider({Key? key}) : super(key: key);
+class _BoardTopSlider extends StatelessWidget {
+  const _BoardTopSlider({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: S.of(context).boardBorderLineWidth,
+      label: S.of(context).boardTop,
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplay,
         builder: (context, Box<Display> displayBox, _) {
@@ -34,13 +34,13 @@ class _BoardBorderWidthSlider extends StatelessWidget {
           )!;
 
           return Slider(
-            value: _display.boardBorderLineWidth,
-            max: 20.0,
-            divisions: 200,
-            label: _display.boardBorderLineWidth.toStringAsFixed(1),
+            value: _display.boardTop,
+            max: 288.0,
+            divisions: 288,
+            label: _display.boardTop.toStringAsFixed(1),
             onChanged: (value) {
-              logger.v("[config] BoardBorderLineWidth value: $value");
-              DB().display = _display.copyWith(boardBorderLineWidth: value);
+              logger.v("[config] AnimationDuration value: $value");
+              DB().display = _display.copyWith(boardTop: value);
             },
           );
         },

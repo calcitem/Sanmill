@@ -30,7 +30,7 @@ import 'package:sanmill/screens/about_page.dart';
 import 'package:sanmill/screens/game_page/game_page.dart';
 import 'package:sanmill/screens/game_settings/game_settings_page.dart';
 import 'package:sanmill/screens/help_screen.dart';
-import 'package:sanmill/screens/personalization_settings/personalization_settings_page.dart';
+import 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 import 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
@@ -46,7 +46,7 @@ enum _DrawerIndex {
   aiVsAi,
   preferences,
   ruleSettings,
-  personalization,
+  appearance,
   feedback,
   help,
   about,
@@ -74,8 +74,8 @@ extension _DrawerScreen on _DrawerIndex {
         return const GameSettingsPage();
       case _DrawerIndex.ruleSettings:
         return const RuleSettingsPage();
-      case _DrawerIndex.personalization:
-        return const PersonalizationSettingsPage();
+      case _DrawerIndex.appearance:
+        return const AppearanceSettingsPage();
       case _DrawerIndex.feedback:
         throw ErrorDescription(
           "Feedback screen is not a widget and should be called separately",
@@ -172,8 +172,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         onChanged: _changeIndex,
       ),
       CustomDrawerItem<_DrawerIndex>(
-        value: _DrawerIndex.personalization,
-        title: S.of(context).personalization,
+        value: _DrawerIndex.appearance,
+        title: S.of(context).appearance,
         icon: const Icon(FluentIcons.design_ideas_24_regular),
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
