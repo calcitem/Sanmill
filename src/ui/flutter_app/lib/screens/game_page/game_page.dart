@@ -112,7 +112,7 @@ class _Game extends StatelessWidget {
         builder: (_) => const _GameOptionsModal(),
       );
 
-  void _showSettings(BuildContext context) => Navigator.push(
+  void _showGeneralSettings(BuildContext context) => Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => const GeneralSettingsPage()),
       );
@@ -124,7 +124,7 @@ class _Game extends StatelessWidget {
         builder: (_) => const _MoveOptionsModal(),
       );
 
-  void _showInfo(BuildContext context) => showDialog(
+  void _showInfoDialog(BuildContext context) => showDialog(
         context: context,
         barrierDismissible: true,
         builder: (_) => const _InfoDialog(),
@@ -138,7 +138,7 @@ class _Game extends StatelessWidget {
     );
 
     final optionsButton = ToolbarItem.icon(
-      onPressed: () => _showSettings(context),
+      onPressed: () => _showGeneralSettings(context),
       icon: const Icon(FluentIcons.settings_24_regular),
       label: Text(S.of(context).options),
     );
@@ -150,7 +150,7 @@ class _Game extends StatelessWidget {
     );
 
     final infoButton = ToolbarItem.icon(
-      onPressed: () => _showInfo(context),
+      onPressed: () => _showInfoDialog(context),
       icon: const Icon(FluentIcons.book_information_24_regular),
       label: Text(S.of(context).info),
     );
