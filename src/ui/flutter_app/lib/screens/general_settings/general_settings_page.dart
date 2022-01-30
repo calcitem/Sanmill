@@ -33,8 +33,8 @@ part 'package:sanmill/screens/general_settings/move_time_slider.dart';
 part 'package:sanmill/screens/general_settings/reset_settings_alert.dart';
 part 'package:sanmill/screens/general_settings/skill_level_slider.dart';
 
-class GameSettingsPage extends StatelessWidget {
-  const GameSettingsPage({Key? key}) : super(key: key);
+class GeneralSettingsPage extends StatelessWidget {
+  const GeneralSettingsPage({Key? key}) : super(key: key);
   static const String _tag = "[general_settings_page]";
 
   // Restore

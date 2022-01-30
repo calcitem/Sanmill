@@ -136,6 +136,7 @@
         "winbase",
         "winres",
         "winver",
+        "writeln",
         "XCRASH",
         "xmmintrin",
         "zobrist"

@@ -82,7 +82,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
           child: GestureDetector(
             child: customPaint,
             onTapUp: (d) async {
-              // TODO: [Leptopoda] directly work with the offset (square) and remove the abstraction like square or index
+              // TODO: [Leptopoda] Directly work with the offset (square) and remove the abstraction like square or index
               final index =
                   indexFromPoint(pointFromOffset(d.localPosition, dimension));
               final int? square = indexToSquare[index];

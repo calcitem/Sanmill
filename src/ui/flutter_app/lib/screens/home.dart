@@ -71,7 +71,7 @@ extension _DrawerScreen on _DrawerIndex {
           key: Key("Ai-Ai"),
         );
       case _DrawerIndex.generalSettings:
-        return const GameSettingsPage();
+        return const GeneralSettingsPage();
       case _DrawerIndex.ruleSettings:
         return const RuleSettingsPage();
       case _DrawerIndex.appearance:
