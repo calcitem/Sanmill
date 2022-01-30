@@ -102,7 +102,7 @@ class GamePage extends StatelessWidget {
   }
 }
 
-// TODO: [Leptopoda] change layout (landscape mode, padding on small devices)
+// TODO: [Leptopoda] Change layout (landscape mode, padding on small devices)
 class _Game extends StatelessWidget {
   const _Game({Key? key}) : super(key: key);
 
@@ -114,10 +114,10 @@ class _Game extends StatelessWidget {
 
   void _showSettings(BuildContext context) => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => const GameSettingsPage()),
+        MaterialPageRoute(builder: (_) => const GeneralSettingsPage()),
       );
 
-  // TODO: [Leptopoda] move options into a theme
+  // TODO: [Leptopoda] Move options into a theme
   void _showMoveModalBottomSheet(BuildContext context) => showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,

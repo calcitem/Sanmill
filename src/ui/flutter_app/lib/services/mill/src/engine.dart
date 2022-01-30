@@ -163,7 +163,9 @@ class Engine {
     await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
     await _sendOptions("Algorithm", _generalSettings.algorithm?.index ?? 2);
     await _sendOptions(
-        "DrawOnHumanExperience", _generalSettings.drawOnHumanExperience);
+      "DrawOnHumanExperience",
+      _generalSettings.drawOnHumanExperience,
+    );
     await _sendOptions("ConsiderMobility", _generalSettings.considerMobility);
     await _sendOptions("SkillLevel", _generalSettings.skillLevel);
     await _sendOptions("MoveTime", _generalSettings.moveTime);
