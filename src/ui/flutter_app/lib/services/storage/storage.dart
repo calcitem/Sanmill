@@ -36,7 +36,7 @@ part 'package:sanmill/services/storage/storage_migration.dart';
 
 /// Helpers to handle local data storage.
 ///
-/// The DB act's as a singe sorce of truth and therefore will be consintent across calls.
+/// The DB act's as a singe source of truth and therefore will be consistent across calls.
 class DB {
   @visibleForTesting
   static DB? instance;
@@ -88,7 +88,7 @@ class DB {
   /// Key at wich the [_rulesBox] will be saved
   static const String _rulesBoxName = "rules";
 
-  /// Initializess the local storage
+  /// Initializes the local storage
   static Future<void> initStorage() async {
     if (!kIsWeb) await Hive.initFlutter("Sanmill");
     await _initColorSettings();
@@ -179,7 +179,7 @@ class DB {
   /// Gets the given [Rules] from the settings Box
   ///
   /// If no Rules have been saved yet it will Initializes
-  /// the box with the rules coresponding to it's [locale].
+  /// the box with the rules corresponding to it's [locale].
   /// This means that the first call will save the rules object for the lifespan of the db.
   /// Later changes to the locale won't result in changes.
   Rules get rules => _rules ??= Rules.fromLocale(locale);

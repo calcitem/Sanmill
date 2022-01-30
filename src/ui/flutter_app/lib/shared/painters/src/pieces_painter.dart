@@ -28,7 +28,7 @@ class _PiecePaintParam {
 
   /// The position the pice is placed at.
   ///
-  /// This reopresents the final position on the canvas.
+  /// This represents the final position on the canvas.
   /// To extract this information from the board index use [pointFromIndex].
   final Offset pos;
   final bool animated;
@@ -69,7 +69,7 @@ class _PiecePaintParam {
   }
 
   // TODO: [Leptopoda] consider putting this into the PieceColorExtension
-  /// Gets the color for the blured position
+  /// Gets the color for the blurred position
   Color get blurPositionColor => pieceColor.withOpacity(0.1);
 }
 

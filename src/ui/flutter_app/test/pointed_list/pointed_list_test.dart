@@ -135,7 +135,7 @@ void main() {
     });
   });
   test(
-      "PointedList.forEachVisible should iterate over every entry up to (incliding) the pointer",
+      "PointedList.forEachVisible should iterate over every entry up to (including) the pointer",
       () {
     const index = 3;
 

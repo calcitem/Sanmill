@@ -27,7 +27,7 @@ class GamePageToolBar extends StatelessWidget {
   static const _margin = EdgeInsets.symmetric(vertical: 0.5);
 
   /// Gets the calculated height this widget adds to it's children.
-  /// To get the abolute height add the surrounding [ButtonThemeData.height].
+  /// To get the absolute height add the surrounding [ButtonThemeData.height].
   static double get height {
     return (_padding.vertical + _margin.vertical) * 2;
   }

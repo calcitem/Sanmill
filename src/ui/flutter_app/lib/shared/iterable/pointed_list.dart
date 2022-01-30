@@ -30,7 +30,7 @@ class PointedList<E> extends DelegatingList<E> {
   /// Creates an empty [PointedList].
   PointedList() : this._(<E>[]);
 
-  /// Creates a [PointedList] populatzed with the given [elements].
+  /// Creates a [PointedList] popularized with the given [elements].
   ///
   /// The [globalIterator] will be set to the last element by default.
   PointedList.from(List<E> elements) : this._(elements);
@@ -71,7 +71,7 @@ class PointedList<E> extends DelegatingList<E> {
   /// This is equivalent to [globalIterator.index].
   int? get index => globalIterator.index;
 
-  /// Iterates over every visible eleemnt.
+  /// Iterates over every visible element.
   ///
   /// This is equivalent to a loop from `0` to `index`.
   void forEachVisible(void Function(E p1) f) {

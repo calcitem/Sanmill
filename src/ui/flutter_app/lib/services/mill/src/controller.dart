@@ -22,7 +22,7 @@ part of '../mill.dart';
 ///
 /// A singleton class that holds all objects and methods needed to play Mill.
 ///
-/// Controlls:
+/// Controls:
 /// * the tip [HeaderTipState]
 /// * the engine [Engine]
 /// * the position [Position]
@@ -49,7 +49,7 @@ class MillController {
   ///
   /// A singleton class that holds all objects and methods needed to play Mill.
   ///
-  /// Controlls:
+  /// Controls:
   /// * the tip [HeaderTipState]
   /// * the engine [Engine]
   /// * the position [Position]

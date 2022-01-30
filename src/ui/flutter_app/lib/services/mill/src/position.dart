@@ -180,7 +180,7 @@ class Position {
 
     final ExtMove m = ExtMove(move);
 
-    // TODO: [Leptopoda] the below fuctions should all throw exceptions so the ret and coditional stuff can be removed
+    // TODO: [Leptopoda] the below functions should all throw exceptions so the ret and conditional stuff can be removed
     switch (m.type) {
       case _MoveType.remove:
         try {

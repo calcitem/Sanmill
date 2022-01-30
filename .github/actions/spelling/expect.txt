@@ -20,6 +20,7 @@ autobuild
 autofocus
 AVX
 backend
+backends
 bak
 Barlabel
 bestmove
@@ -116,6 +117,7 @@ FONTCHANGE
 FPKV
 freopen
 fsanitize
+fst
 fstream
 ftp
 fullmove
@@ -137,8 +139,9 @@ GNUC
 google
 googletest
 graphicsconst
-gtest
 GRAPHICSVIEW
+gtest
+gtk
 GWLP
 halfmove
 HASHBUCKET
@@ -212,6 +215,7 @@ LPTHREAD
 LPVOID
 LPWSTR
 LRESULT
+LTRB
 LTWH
 LUID
 luid
@@ -238,6 +242,7 @@ minv
 Mixin
 mlist
 mman
+mockito
 Monospace
 movegen
 movepick
@@ -264,6 +269,7 @@ NOACTIVATE
 nobestmove
 NOCOLOR
 nodestime
+nodiscard
 noexcept
 NOLOCK
 NOMINMAX
@@ -343,10 +349,10 @@ sanmill
 SBg
 SBn
 sbumpc
+scm
 screenshot
 scrollable
 SCs
-scm
 SDa
 SDe
 Sebastiano
@@ -375,6 +381,7 @@ SMk
 SMs
 snackbar
 SNb
+snd
 SNl
 snprintf
 soundpool
@@ -459,8 +466,8 @@ utf
 utils
 uuid
 Validator
-vcvarsall
 vcs
+vcvarsall
 VERSIONINFO
 vigna
 VNNI
