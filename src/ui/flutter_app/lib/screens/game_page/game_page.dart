@@ -209,6 +209,7 @@ class _Game extends StatelessWidget {
     return Column(
       children: <Widget>[
         const Board(),
+        const SizedBox(height: AppTheme.boardMargin),
         if (DB().display.isHistoryNavigationToolbarShown)
           GamePageToolBar(
             backgroundColor:
