@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Предпочитания",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Предпочитания",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Ниво на трудност",
   "@skillLevel": {

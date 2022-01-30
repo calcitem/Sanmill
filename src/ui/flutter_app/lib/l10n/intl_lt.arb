@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Nustatymai",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Nustatymai",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Sudėtingumo lygis",
   "@skillLevel": {

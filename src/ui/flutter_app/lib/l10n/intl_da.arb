@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Præferencer",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Præferencer",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Sværhedsgrad",
   "@skillLevel": {

@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Asetukset",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Asetukset",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Vaikeustaso",
   "@skillLevel": {

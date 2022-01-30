@@ -21,7 +21,7 @@ import 'dart:ui';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/models/preferences.dart';
+import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/screens/general_settings/general_settings_page.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/mill/mill.dart';

@@ -28,7 +28,7 @@ class Engine {
   static const _tag = "[engine]";
 
   Future<void> startup() async {
-    DB().listenPreferences.addListener(() => setOptions());
+    DB().listenGeneralSettings.addListener(() => setOptions());
 
     await _platform.invokeMethod("startup");
     await _waitResponse(["uciok"]);
@@ -49,7 +49,7 @@ class Engine {
   }
 
   Future<void> shutdown() async {
-    DB().listenPreferences.removeListener(() => setOptions());
+    DB().listenGeneralSettings.removeListener(() => setOptions());
 
     _isActive = false;
     await _platform.invokeMethod("shutdown");
@@ -105,13 +105,13 @@ class Engine {
     int sleep = 100,
     int times = 0,
   }) async {
-    final _pref = DB().preferences;
+    final _settings = DB().generalSettings;
 
     var timeLimit = EnvironmentConfig.devMode ? 100 : 6000;
 
-    if (_pref.moveTime > 0) {
+    if (_settings.moveTime > 0) {
       // TODO: Accurate timeLimit
-      timeLimit = _pref.moveTime * 10 * 64 + 10;
+      timeLimit = _settings.moveTime * 10 * 64 + 10;
     }
 
     if (times > timeLimit) {
@@ -157,17 +157,18 @@ class Engine {
   Future<void> setOptions() async {
     logger.i("$_tag reloaded engine options");
 
-    final _pref = DB().preferences;
+    final _generalSettings = DB().generalSettings;
     final _rules = DB().rules;
 
     await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
-    await _sendOptions("Algorithm", _pref.algorithm?.index ?? 2);
-    await _sendOptions("DrawOnHumanExperience", _pref.drawOnHumanExperience);
-    await _sendOptions("ConsiderMobility", _pref.considerMobility);
-    await _sendOptions("SkillLevel", _pref.skillLevel);
-    await _sendOptions("MoveTime", _pref.moveTime);
-    await _sendOptions("AiIsLazy", _pref.aiIsLazy);
-    await _sendOptions("Shuffling", _pref.shufflingEnabled);
+    await _sendOptions("Algorithm", _generalSettings.algorithm?.index ?? 2);
+    await _sendOptions(
+        "DrawOnHumanExperience", _generalSettings.drawOnHumanExperience);
+    await _sendOptions("ConsiderMobility", _generalSettings.considerMobility);
+    await _sendOptions("SkillLevel", _generalSettings.skillLevel);
+    await _sendOptions("MoveTime", _generalSettings.moveTime);
+    await _sendOptions("AiIsLazy", _generalSettings.aiIsLazy);
+    await _sendOptions("Shuffling", _generalSettings.shufflingEnabled);
     await _sendOptions("PiecesCount", _rules.piecesCount);
     await _sendOptions("FlyPieceCount", _rules.flyPieceCount);
     await _sendOptions("PiecesAtLeastCount", _rules.piecesAtLeastCount);
@@ -234,7 +235,7 @@ extension GameModeExtension on GameMode {
   IconData get leftHeaderIcon {
     switch (this) {
       case GameMode.humanVsAi:
-        if (DB().preferences.aiMovesFirst) {
+        if (DB().generalSettings.aiMovesFirst) {
           return FluentIcons.bot_24_filled;
         } else {
           return FluentIcons.person_24_filled;
@@ -256,7 +257,7 @@ extension GameModeExtension on GameMode {
   IconData get rightHeaderIcon {
     switch (this) {
       case GameMode.humanVsAi:
-        if (DB().preferences.aiMovesFirst) {
+        if (DB().generalSettings.aiMovesFirst) {
           return FluentIcons.person_24_filled;
         } else {
           return FluentIcons.bot_24_filled;
@@ -279,8 +280,8 @@ extension GameModeExtension on GameMode {
       case GameMode.humanVsAi:
       case GameMode.testViaLAN:
         return {
-          PieceColor.white: DB().preferences.aiMovesFirst,
-          PieceColor.black: !DB().preferences.aiMovesFirst,
+          PieceColor.white: DB().generalSettings.aiMovesFirst,
+          PieceColor.black: !DB().generalSettings.aiMovesFirst,
         };
       case GameMode.humanVsHuman:
       case GameMode.humanVsLAN:

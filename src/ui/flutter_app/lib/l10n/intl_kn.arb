@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "ಆದ್ಯತೆಗಳು",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "ಆದ್ಯತೆಗಳು",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "ತೊಂದರೆ ಮಟ್ಟ",
   "@skillLevel": {

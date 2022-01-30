@@ -26,7 +26,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/models/color.dart';
 import 'package:sanmill/models/display.dart';
-import 'package:sanmill/models/preferences.dart';
+import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/models/rules.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/adapters/adapters.dart';
@@ -70,14 +70,14 @@ class DB {
   /// Key at wich the [_displayBox] will be saved
   static const String _displayBoxName = "display";
 
-  /// [Preferences] box reference
-  static late final Box<Preferences> _preferencesBox;
+  /// [GeneralSettings] box reference
+  static late final Box<GeneralSettings> _generalSettingsBox;
 
-  /// Key at wich the [Preferences] will be saved in the [_preferencesBox]
-  static const String preferencesKey = "settings";
+  /// Key at wich the [GeneralSettings] will be saved in the [_generalSettingsBox]
+  static const String generalSettingsKey = "settings";
 
-  /// Key at wich the [_preferencesBox] will be saved
-  static const String _preferencesBoxName = "preferences";
+  /// Key at wich the [_generalSettingsBox] will be saved
+  static const String _generalSettingsBoxName = "generalSettings";
 
   /// [Rules] box reference
   static late final Box<Rules> _rulesBox;
@@ -93,7 +93,7 @@ class DB {
     if (!kIsWeb) await Hive.initFlutter("Sanmill");
     await _initColorSettings();
     await _initDisplay();
-    await _initPreferences();
+    await _initGeneralSettings();
     await _initRules();
     await _DatabaseMigrator.migrate();
   }
@@ -102,7 +102,7 @@ class DB {
   static Future<void> resetStorage() async {
     await _colorSettingsBox.delete(colorSettingsKey);
     await _displayBox.delete(displayKey);
-    await _preferencesBox.delete(preferencesKey);
+    await _generalSettingsBox.delete(generalSettingsKey);
     await _rulesBox.delete(rulesKey);
   }
 
@@ -144,24 +144,25 @@ class DB {
   /// Gets the given [Display] from the settings Box
   Display get display => _displayBox.get(displayKey) ?? const Display();
 
-  /// Initializes the [Preferences] reference
-  static Future<void> _initPreferences() async {
-    Hive.registerAdapter<Preferences>(PreferencesAdapter());
+  /// Initializes the [GeneralSettings] reference
+  static Future<void> _initGeneralSettings() async {
+    Hive.registerAdapter<GeneralSettings>(GeneralSettingsAdapter());
     Hive.registerAdapter<Algorithms>(AlgorithmsAdapter());
-    _preferencesBox = await Hive.openBox<Preferences>(_preferencesBoxName);
+    _generalSettingsBox =
+        await Hive.openBox<GeneralSettings>(_generalSettingsBoxName);
   }
 
   /// Listens to changes inside the settings Box
-  ValueListenable<Box<Preferences>> get listenPreferences =>
-      _preferencesBox.listenable(keys: [preferencesKey]);
+  ValueListenable<Box<GeneralSettings>> get listenGeneralSettings =>
+      _generalSettingsBox.listenable(keys: [generalSettingsKey]);
 
   /// Saves the given [settings] to the settings Box
-  set preferences(Preferences settings) =>
-      _preferencesBox.put(preferencesKey, settings);
+  set generalSettings(GeneralSettings settings) =>
+      _generalSettingsBox.put(generalSettingsKey, settings);
 
-  /// Gets the given [Preferences] from the settings Box
-  Preferences get preferences =>
-      _preferencesBox.get(preferencesKey) ?? const Preferences();
+  /// Gets the given [GeneralSettings] from the settings Box
+  GeneralSettings get generalSettings =>
+      _generalSettingsBox.get(generalSettingsKey) ?? const GeneralSettings();
 
   /// Initializes the [Rules] reference
   static Future<void> _initRules() async {

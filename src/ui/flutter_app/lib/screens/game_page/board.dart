@@ -68,8 +68,9 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
           child: child,
         );
       },
-      child:
-          DB().preferences.screenReaderSupport ? const _BoardSemantics() : null,
+      child: DB().generalSettings.screenReaderSupport
+          ? const _BoardSemantics()
+          : null,
     );
 
     return LayoutBuilder(

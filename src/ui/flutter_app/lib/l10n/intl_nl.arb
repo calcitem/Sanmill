@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Voorkeuren",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Voorkeuren",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Moeilijkheidsgraad",
   "@skillLevel": {

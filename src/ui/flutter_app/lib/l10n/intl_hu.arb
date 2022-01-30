@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Preferenciák",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Preferenciák",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Nehézségi szint",
   "@skillLevel": {

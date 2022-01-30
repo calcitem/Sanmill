@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "게임 설정",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "게임 설정",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "난이도",
   "@skillLevel": {

@@ -22,7 +22,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/models/preferences.dart';
+import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
@@ -55,8 +55,8 @@ Future<void> showPrivacyDialog(BuildContext context) async {
   final String privacyPolicyURL = Constants.privacyPolicyURL.urlZh;
 
   Future<void> _setPrivacyPolicyAccepted({required bool value}) async {
-    DB().preferences =
-        DB().preferences.copyWith(isPrivacyPolicyAccepted: value);
+    DB().generalSettings =
+        DB().generalSettings.copyWith(isPrivacyPolicyAccepted: value);
 
     logger.v("[config] isPrivacyPolicyAccepted: $value");
   }

@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Preferencat",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Preferencat",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Niveli i vështirësisë",
   "@skillLevel": {

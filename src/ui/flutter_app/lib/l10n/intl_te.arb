@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "ప్రాధాన్యతలు",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "ప్రాధాన్యతలు",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "కఠినత స్థాయి",
   "@skillLevel": {

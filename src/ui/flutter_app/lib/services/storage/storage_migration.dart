@@ -77,7 +77,7 @@ class _DatabaseMigrator {
     if (_currentVersion != null) {
       if (await _DatabaseV1.usesV1) {
         _currentVersion = 0;
-      } else if (DB().preferences.usesHiveDB) {
+      } else if (DB().generalSettings.usesHiveDB) {
         _currentVersion = 1;
       }
       logger.v("$_tag: current version is $_currentVersion");
@@ -103,7 +103,7 @@ class _DatabaseMigrator {
 
   /// Migration 1 - Sanmill version 1.1.38+2196 - 2021-11-09
   ///
-  /// - **Algorithm to enum:** Migrates [DB.preferences] to use the new Algorithm enum instead of an int representation.
+  /// - **Algorithm to enum:** Migrates [DB.generalSettings] to use the new Algorithm enum instead of an int representation.
   /// - **Drawer background color:** Migrates [DB.colorSettings] to merge the drawerBackgroundColor and drawerColor.
   /// This reflects the deprecation of drawerBackgroundColor.
   /// - **Painting Style:** Migrates [DB.display] to use Flutters [PaintingStyle] enum instead of an int representation.
@@ -112,9 +112,9 @@ class _DatabaseMigrator {
   static Future<void> _migrateFromV1() async {
     assert(_currentVersion! <= 1);
 
-    final _prefs = DB().preferences;
-    DB().preferences = _prefs.copyWith(
-      algorithm: Algorithms.values[_prefs.oldAlgorithm],
+    final _settings = DB().generalSettings;
+    DB().generalSettings = _settings.copyWith(
+      algorithm: Algorithms.values[_settings.oldAlgorithm],
     );
 
     final _colorSettings = DB().colorSettings;
@@ -165,7 +165,7 @@ class _DatabaseV1 {
     return file != null;
   }
 
-  /// loads the preferences from the old data store
+  /// loads the generalSettings from the old data store
   static Future<Map<String, dynamic>?> _loadFile(File _file) async {
     assert(await usesV1);
     logger.v("$_tag Loading $_file ...");
@@ -191,7 +191,7 @@ class _DatabaseV1 {
     if (_json != null) {
       DB().colorSettings = ColorSettings.fromJson(_json);
       DB().display = Display.fromJson(_json);
-      DB().preferences = Preferences.fromJson(_json);
+      DB().generalSettings = GeneralSettings.fromJson(_json);
       DB().rules = Rules.fromJson(_json);
     }
     await _deleteFile(_file);

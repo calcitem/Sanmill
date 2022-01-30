@@ -19,14 +19,14 @@
 import 'package:mockito/mockito.dart';
 import 'package:sanmill/models/color.dart';
 import 'package:sanmill/models/display.dart';
-import 'package:sanmill/models/preferences.dart';
+import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/models/rules.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
 class MockedDB extends Mock implements DB {
   ColorSettings _colorSettings = const ColorSettings();
   Display _display = const Display();
-  Preferences _preferences = const Preferences();
+  GeneralSettings _generalSettings = const GeneralSettings();
   Rules _rules = const Rules();
 
   /// gets the given [ColorSettings] from the settings Box
@@ -45,13 +45,13 @@ class MockedDB extends Mock implements DB {
   @override
   set display(Display display) => _display = display;
 
-  /// gets the given [Preferences] from the settings Box
+  /// gets the given [GeneralSettings] from the settings Box
   @override
-  Preferences get preferences => _preferences;
+  GeneralSettings get generalSettings => _generalSettings;
 
   /// saves the given [settings] to the settings Box
   @override
-  set preferences(Preferences settings) => _preferences = settings;
+  set generalSettings(GeneralSettings settings) => _generalSettings = settings;
 
   /// gets the given [Rules] from the settings Box
   @override

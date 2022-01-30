@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "تنظیمات بازی",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "تنظیمات بازی",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "سطح دشواری",
   "@skillLevel": {

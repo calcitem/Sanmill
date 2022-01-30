@@ -74,7 +74,7 @@ class _MoveOptionsModal extends StatelessWidget {
           child: Text(S.of(context).moveNow),
         ),
         const CustomSpacer(),
-        if (DB().preferences.screenReaderSupport)
+        if (DB().generalSettings.screenReaderSupport)
           SimpleDialogOption(
             child: Text(S.of(context).close),
             onPressed: () => Navigator.pop(context),

@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "การตั้งค่า",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "การตั้งค่า",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "ระดับความยาก",
   "@skillLevel": {
