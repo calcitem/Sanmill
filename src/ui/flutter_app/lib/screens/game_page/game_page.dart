@@ -36,12 +36,12 @@ import 'package:sanmill/shared/string_buffer_helper.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 part './board.dart';
+part './game_options_modal.dart';
+part './header.dart';
 part './info_dialog.dart';
 part './move_list_dialog.dart';
-part './result_alert.dart';
-part './game_options_modal.dart';
 part './move_options_modal.dart';
-part './header.dart';
+part './result_alert.dart';
 part 'game_page_action_sheet.dart';
 
 class GamePage extends StatelessWidget {
@@ -106,7 +106,7 @@ class GamePage extends StatelessWidget {
 class _Game extends StatelessWidget {
   const _Game({Key? key}) : super(key: key);
 
-  void _showGameOptions(BuildContext context) => showModalBottomSheet(
+  void _showGameModalBottomSheet(BuildContext context) => showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
         builder: (_) => const _GameOptionsModal(),
@@ -118,7 +118,7 @@ class _Game extends StatelessWidget {
       );
 
   // TODO: [Leptopoda] move options into a theme
-  void _showMoveOptions(BuildContext context) => showModalBottomSheet(
+  void _showMoveModalBottomSheet(BuildContext context) => showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
         builder: (_) => const _MoveOptionsModal(),
@@ -132,7 +132,7 @@ class _Game extends StatelessWidget {
 
   List<Widget> toolbarItems(BuildContext context) {
     final gameButton = ToolbarItem.icon(
-      onPressed: () => _showGameOptions(context),
+      onPressed: () => _showGameModalBottomSheet(context),
       icon: const Icon(FluentIcons.table_simple_24_regular),
       label: Text(S.of(context).game),
     );
@@ -144,7 +144,7 @@ class _Game extends StatelessWidget {
     );
 
     final moveButton = ToolbarItem.icon(
-      onPressed: () => _showMoveOptions(context),
+      onPressed: () => _showMoveModalBottomSheet(context),
       icon: const Icon(FluentIcons.calendar_agenda_24_regular),
       label: Text(S.of(context).move),
     );
