@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "游戏设置",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "游戏设置",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "难度等级",
   "@skillLevel": {

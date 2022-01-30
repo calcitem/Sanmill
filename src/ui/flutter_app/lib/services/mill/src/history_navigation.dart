@@ -193,7 +193,7 @@ extension HistoryMoveExtension on HistoryMove {
   }
 
   Future<void> gotoHistoryPlaySound() async {
-    if (!DB().preferences.keepMuteWhenTakingBack) {
+    if (!DB().generalSettings.keepMuteWhenTakingBack) {
       switch (this) {
         case HistoryMove.forwardAll:
         case HistoryMove.forward:

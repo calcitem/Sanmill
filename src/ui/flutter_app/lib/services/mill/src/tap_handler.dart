@@ -212,7 +212,7 @@ class TapHandler {
     }
 
     while ((position.winner == PieceColor.nobody ||
-            DB().preferences.isAutoRestart) &&
+            DB().generalSettings.isAutoRestart) &&
         controller.gameInstance._isAiToMove) {
       if (gameMode == GameMode.aiVsAi) {
         showTip(position.scoreString);
@@ -221,7 +221,7 @@ class TapHandler {
 
         final String? n = controller.recorder.lastF?.notation;
 
-        if (DB().preferences.screenReaderSupport &&
+        if (DB().generalSettings.screenReaderSupport &&
             position._action != Act.remove &&
             n != null) {
           ScaffoldMessenger.of(context)
@@ -237,7 +237,7 @@ class TapHandler {
         animationController.reset();
         animationController.animateTo(1.0);
 
-        if (DB().preferences.screenReaderSupport) {
+        if (DB().generalSettings.screenReaderSupport) {
           ScaffoldMessenger.of(context).showSnackBar(
             CustomSnackBar("${S.of(context).ai}: ${extMove.notation}"),
           );
@@ -261,7 +261,7 @@ class TapHandler {
       showTip(message);
     }
 
-    if (!DB().preferences.isAutoRestart && winner != PieceColor.nobody) {
+    if (!DB().generalSettings.isAutoRestart && winner != PieceColor.nobody) {
       showDialog(
         context: context,
         builder: (_) => GameResultAlert(winner: winner),

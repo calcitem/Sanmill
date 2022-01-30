@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Keutamaan",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Keutamaan",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Tahap kesukaran",
   "@skillLevel": {

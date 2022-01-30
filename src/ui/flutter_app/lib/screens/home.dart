@@ -27,10 +27,10 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/about_page.dart';
+import 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 import 'package:sanmill/screens/game_page/game_page.dart';
 import 'package:sanmill/screens/general_settings/general_settings_page.dart';
 import 'package:sanmill/screens/help_screen.dart';
-import 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 import 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
@@ -44,7 +44,7 @@ enum _DrawerIndex {
   humanVsAi,
   humanVsHuman,
   aiVsAi,
-  preferences,
+  generalSettings,
   ruleSettings,
   appearance,
   feedback,
@@ -70,7 +70,7 @@ extension _DrawerScreen on _DrawerIndex {
           GameMode.aiVsAi,
           key: Key("Ai-Ai"),
         );
-      case _DrawerIndex.preferences:
+      case _DrawerIndex.generalSettings:
         return const GameSettingsPage();
       case _DrawerIndex.ruleSettings:
         return const RuleSettingsPage();
@@ -158,8 +158,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         onChanged: _changeIndex,
       ),
       CustomDrawerItem<_DrawerIndex>(
-        value: _DrawerIndex.preferences,
-        title: S.of(context).preferences,
+        value: _DrawerIndex.generalSettings,
+        title: S.of(context).generalSettings,
         icon: const Icon(FluentIcons.options_24_regular),
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
@@ -213,7 +213,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   void _showPrivacyDialog() {
-    if (!DB().preferences.isPrivacyPolicyAccepted &&
+    if (!DB().generalSettings.isPrivacyPolicyAccepted &&
         Localizations.localeOf(context).languageCode.startsWith("zh")) {
       showDialog(
         context: context,

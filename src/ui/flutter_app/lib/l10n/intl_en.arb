@@ -372,9 +372,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Preferences",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "General Settings",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Difficulty level",
   "@skillLevel": {

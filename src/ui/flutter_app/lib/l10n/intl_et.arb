@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Eelistused",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Eelistused",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Raskuse tase",
   "@skillLevel": {

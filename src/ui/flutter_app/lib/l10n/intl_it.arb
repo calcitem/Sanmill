@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Preferenze",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Preferenze",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Livello di difficoltà",
   "@skillLevel": {

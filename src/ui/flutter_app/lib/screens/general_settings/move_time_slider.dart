@@ -26,20 +26,21 @@ class _MoveTimeSlider extends StatelessWidget {
     return Semantics(
       label: S.of(context).moveTime,
       child: ValueListenableBuilder(
-        valueListenable: DB().listenPreferences,
-        builder: (context, Box<Preferences> prefBox, _) {
-          final Preferences _preferences = prefBox.get(
-            DB.preferencesKey,
-            defaultValue: const Preferences(),
+        valueListenable: DB().listenGeneralSettings,
+        builder: (context, Box<GeneralSettings> box, _) {
+          final GeneralSettings _generalSettings = box.get(
+            DB.generalSettingsKey,
+            defaultValue: const GeneralSettings(),
           )!;
 
           return Slider(
-            value: DB().preferences.moveTime.toDouble(),
+            value: DB().generalSettings.moveTime.toDouble(),
             max: 60,
             divisions: 60,
-            label: DB().preferences.moveTime.toString(),
+            label: DB().generalSettings.moveTime.toString(),
             onChanged: (value) {
-              DB().preferences = _preferences.copyWith(moveTime: value.toInt());
+              DB().generalSettings =
+                  _generalSettings.copyWith(moveTime: value.toInt());
 
               logger.v("Move time Slider value: $value");
             },

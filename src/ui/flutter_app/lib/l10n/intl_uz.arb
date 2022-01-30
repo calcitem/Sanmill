@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Afzalliklar",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Afzalliklar",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Qiyinchilik darajasi",
   "@skillLevel": {

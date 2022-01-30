@@ -42,7 +42,7 @@ class _InfoDialog extends StatelessWidget {
 
     buffer.write(pos.phase.getName(context));
 
-    if (DB().preferences.screenReaderSupport) {
+    if (DB().generalSettings.screenReaderSupport) {
       buffer.writeln(":");
     } else {
       buffer.writeln();
@@ -53,7 +53,7 @@ class _InfoDialog extends StatelessWidget {
     if (n1 != null) {
       // $them is only shown with the screen reader. It is convenient for
       // the disabled to recognize whether the opponent has finished the moving.
-      if (DB().preferences.screenReaderSupport) {
+      if (DB().generalSettings.screenReaderSupport) {
         buffer.write(S.of(context).lastMove("$them, "));
       } else {
         buffer.write(S.of(context).lastMove(""));
@@ -72,7 +72,7 @@ class _InfoDialog extends StatelessWidget {
     final String tip = MillController().tip.message ?? S.of(context).welcome;
 
     // the tip
-    if (DB().preferences.screenReaderSupport &&
+    if (DB().generalSettings.screenReaderSupport &&
         tip.endsWith(".") &&
         tip.endsWith("!")) {
       buffer.writePeriod(tip);

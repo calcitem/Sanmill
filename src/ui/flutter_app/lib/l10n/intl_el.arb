@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Προτιμήσεις",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Προτιμήσεις",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Επίπεδο δυσκολίας",
   "@skillLevel": {

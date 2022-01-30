@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Preferensi",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Preferensi",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Tingkat kesulitan",
   "@skillLevel": {

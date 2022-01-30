@@ -22,7 +22,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sanmill/services/storage/adapters/adapters.dart';
 
-part 'preferences.g.dart';
+part 'general_settings.g.dart';
 
 @HiveType(typeId: 5)
 enum Algorithms {
@@ -47,15 +47,15 @@ extension AlgorithmNames on Algorithms {
   }
 }
 
-/// Preference data model
+/// GeneralSettings data model
 ///
-/// holds the data needed for the normal Settings
+/// holds the data needed for the General Settings
 @HiveType(typeId: 2)
 @JsonSerializable()
 @CopyWith()
 @immutable
-class Preferences {
-  const Preferences({
+class GeneralSettings {
+  const GeneralSettings({
     this.isPrivacyPolicyAccepted = false,
     @Deprecated("as this is not a user facing preference we migrated it into another box")
         this.usesHiveDB = false,
@@ -139,10 +139,10 @@ class Preferences {
   @Deprecated("use [EnvironmentConfig.devMode] instead")
   final bool experimentsEnabled;
 
-  /// encodes a Json style map into a [Preferences] object
-  factory Preferences.fromJson(Map<String, dynamic> json) =>
-      _$PreferencesFromJson(json);
+  /// encodes a Json style map into a [GeneralSettings] object
+  factory GeneralSettings.fromJson(Map<String, dynamic> json) =>
+      _$GeneralSettingsFromJson(json);
 
-  /// decodes a Json from a [Preferences] object
-  Map<String, dynamic> toJson() => _$PreferencesToJson(this);
+  /// decodes a Json from a [GeneralSettings] object
+  Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);
 }

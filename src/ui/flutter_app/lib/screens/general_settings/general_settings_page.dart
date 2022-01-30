@@ -21,7 +21,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/models/preferences.dart';
+import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
@@ -53,23 +53,23 @@ class GameSettingsPage extends StatelessWidget {
         builder: (_) => const _MoveTimeSlider(),
       );
 
-  void _setWhoMovesFirst(Preferences _preferences, bool value) {
-    DB().preferences = _preferences.copyWith(aiMovesFirst: value);
+  void _setWhoMovesFirst(GeneralSettings _generalSettings, bool value) {
+    DB().generalSettings = _generalSettings.copyWith(aiMovesFirst: value);
 
     logger.v("$_tag aiMovesFirst: $value");
   }
 
-  void _setAiIsLazy(Preferences _preferences, bool value) {
-    DB().preferences = _preferences.copyWith(aiIsLazy: value);
+  void _setAiIsLazy(GeneralSettings _generalSettings, bool value) {
+    DB().generalSettings = _generalSettings.copyWith(aiIsLazy: value);
 
     logger.v("$_tag aiIsLazy: $value");
   }
 
-  void _setAlgorithm(BuildContext context, Preferences _preferences) {
+  void _setAlgorithm(BuildContext context, GeneralSettings _generalSettings) {
     void _callback(Algorithms? algorithm) {
       Navigator.pop(context);
 
-      DB().preferences = _preferences.copyWith(algorithm: algorithm);
+      DB().generalSettings = _generalSettings.copyWith(algorithm: algorithm);
 
       logger.v("$_tag algorithm = $algorithm");
     }
@@ -77,58 +77,68 @@ class GameSettingsPage extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       builder: (_) => _AlgorithmModal(
-        algorithm: _preferences.algorithm!,
+        algorithm: _generalSettings.algorithm!,
         onChanged: _callback,
       ),
     );
   }
 
-  void _setDrawOnHumanExperience(Preferences _preferences, bool value) {
-    DB().preferences = _preferences.copyWith(drawOnHumanExperience: value);
+  void _setDrawOnHumanExperience(GeneralSettings _generalSettings, bool value) {
+    DB().generalSettings =
+        _generalSettings.copyWith(drawOnHumanExperience: value);
 
     logger.v("$_tag drawOnHumanExperience: $value");
   }
 
-  void _setConsiderMobility(Preferences _preferences, bool value) {
-    DB().preferences = _preferences.copyWith(considerMobility: value);
+  void _setConsiderMobility(GeneralSettings _generalSettings, bool value) {
+    DB().generalSettings = _generalSettings.copyWith(considerMobility: value);
 
     logger.v("$_tag considerMobility: $value");
   }
 
-  void _setIsAutoRestart(Preferences _preferences, bool value) {
-    DB().preferences = _preferences.copyWith(isAutoRestart: value);
+  void _setIsAutoRestart(GeneralSettings _generalSettings, bool value) {
+    DB().generalSettings = _generalSettings.copyWith(isAutoRestart: value);
 
     logger.v("$_tag isAutoRestart: $value");
   }
 
-  void _setShufflingEnabled(Preferences _preferences, bool value) {
-    DB().preferences = _preferences.copyWith(shufflingEnabled: value);
+  void _setShufflingEnabled(GeneralSettings _generalSettings, bool value) {
+    DB().generalSettings = _generalSettings.copyWith(shufflingEnabled: value);
 
     logger.v("$_tag shufflingEnabled: $value");
   }
 
-  void _setTone(Preferences _preferences, bool value) {
-    DB().preferences = _preferences.copyWith(toneEnabled: value);
+  void _setTone(GeneralSettings _generalSettings, bool value) {
+    DB().generalSettings = _generalSettings.copyWith(toneEnabled: value);
 
     logger.v("$_tag toneEnabled: $value");
   }
 
-  void _setKeepMuteWhenTakingBack(Preferences _preferences, bool value) {
-    DB().preferences = _preferences.copyWith(keepMuteWhenTakingBack: value);
+  void _setKeepMuteWhenTakingBack(
+    GeneralSettings _generalSettings,
+    bool value,
+  ) {
+    DB().generalSettings =
+        _generalSettings.copyWith(keepMuteWhenTakingBack: value);
 
     logger.v("$_tag keepMuteWhenTakingBack: $value");
   }
 
-  void _setScreenReaderSupport(Preferences _preferences, bool value) {
-    DB().preferences = _preferences.copyWith(screenReaderSupport: value);
+  void _setScreenReaderSupport(GeneralSettings _generalSettings, bool value) {
+    DB().generalSettings =
+        _generalSettings.copyWith(screenReaderSupport: value);
 
     logger.v("$_tag screenReaderSupport: $value");
   }
 
-  SettingsList _buildPrefs(BuildContext context, Box<Preferences> prefBox, _) {
-    final Preferences _preferences = prefBox.get(
-      DB.preferencesKey,
-      defaultValue: const Preferences(),
+  SettingsList _buildGeneralSettingsList(
+    BuildContext context,
+    Box<GeneralSettings> box,
+    _,
+  ) {
+    final GeneralSettings _generalSettings = box.get(
+      DB.generalSettingsKey,
+      defaultValue: const GeneralSettings(),
     )!;
 
     return SettingsList(
@@ -137,9 +147,9 @@ class GameSettingsPage extends StatelessWidget {
           title: Text(S.of(context).whoMovesFirst),
           children: <Widget>[
             SettingsListTile.switchTile(
-              value: !_preferences.aiMovesFirst,
-              onChanged: (val) => _setWhoMovesFirst(_preferences, !val),
-              titleString: _preferences.aiMovesFirst
+              value: !_generalSettings.aiMovesFirst,
+              onChanged: (val) => _setWhoMovesFirst(_generalSettings, !val),
+              titleString: _generalSettings.aiMovesFirst
                   ? S.of(context).ai
                   : S.of(context).human,
             ),
@@ -150,7 +160,7 @@ class GameSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile(
               titleString: S.of(context).skillLevel,
-              //trailingString: "L" + DB().preferences.skillLevel.toString(),
+              //trailingString: "L" + DB().generalSettings.skillLevel.toString(),
               onTap: () => _setSkillLevel(context),
             ),
             SettingsListTile(
@@ -164,27 +174,28 @@ class GameSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile(
               titleString: S.of(context).algorithm,
-              trailingString: _preferences.algorithm!.name,
-              onTap: () => _setAlgorithm(context, _preferences),
+              trailingString: _generalSettings.algorithm!.name,
+              onTap: () => _setAlgorithm(context, _generalSettings),
             ),
             SettingsListTile.switchTile(
-              value: _preferences.drawOnHumanExperience,
-              onChanged: (val) => _setDrawOnHumanExperience(_preferences, val),
+              value: _generalSettings.drawOnHumanExperience,
+              onChanged: (val) =>
+                  _setDrawOnHumanExperience(_generalSettings, val),
               titleString: S.of(context).drawOnHumanExperience,
             ),
             SettingsListTile.switchTile(
-              value: _preferences.considerMobility,
-              onChanged: (val) => _setConsiderMobility(_preferences, val),
+              value: _generalSettings.considerMobility,
+              onChanged: (val) => _setConsiderMobility(_generalSettings, val),
               titleString: S.of(context).considerMobility,
             ),
             SettingsListTile.switchTile(
-              value: _preferences.aiIsLazy,
-              onChanged: (val) => _setAiIsLazy(_preferences, val),
+              value: _generalSettings.aiIsLazy,
+              onChanged: (val) => _setAiIsLazy(_generalSettings, val),
               titleString: S.of(context).passive,
             ),
             SettingsListTile.switchTile(
-              value: _preferences.shufflingEnabled,
-              onChanged: (val) => _setShufflingEnabled(_preferences, val),
+              value: _generalSettings.shufflingEnabled,
+              onChanged: (val) => _setShufflingEnabled(_generalSettings, val),
               titleString: S.of(context).shufflingEnabled,
             ),
           ],
@@ -193,13 +204,14 @@ class GameSettingsPage extends StatelessWidget {
           title: Text(S.of(context).playSounds),
           children: <Widget>[
             SettingsListTile.switchTile(
-              value: _preferences.toneEnabled,
-              onChanged: (val) => _setTone(_preferences, val),
+              value: _generalSettings.toneEnabled,
+              onChanged: (val) => _setTone(_generalSettings, val),
               titleString: S.of(context).playSoundsInTheGame,
             ),
             SettingsListTile.switchTile(
-              value: _preferences.keepMuteWhenTakingBack,
-              onChanged: (val) => _setKeepMuteWhenTakingBack(_preferences, val),
+              value: _generalSettings.keepMuteWhenTakingBack,
+              onChanged: (val) =>
+                  _setKeepMuteWhenTakingBack(_generalSettings, val),
               titleString: S.of(context).keepMuteWhenTakingBack,
             ),
           ],
@@ -208,8 +220,9 @@ class GameSettingsPage extends StatelessWidget {
           title: Text(S.of(context).accessibility),
           children: <Widget>[
             SettingsListTile.switchTile(
-              value: _preferences.screenReaderSupport,
-              onChanged: (val) => _setScreenReaderSupport(_preferences, val),
+              value: _generalSettings.screenReaderSupport,
+              onChanged: (val) =>
+                  _setScreenReaderSupport(_generalSettings, val),
               titleString: S.of(context).screenReaderSupport,
             ),
           ],
@@ -218,8 +231,8 @@ class GameSettingsPage extends StatelessWidget {
           title: Text(S.of(context).misc),
           children: <Widget>[
             SettingsListTile.switchTile(
-              value: _preferences.isAutoRestart,
-              onChanged: (val) => _setIsAutoRestart(_preferences, val),
+              value: _generalSettings.isAutoRestart,
+              onChanged: (val) => _setIsAutoRestart(_generalSettings, val),
               titleString: S.of(context).isAutoRestart,
             ),
           ],
@@ -243,11 +256,11 @@ class GameSettingsPage extends StatelessWidget {
       backgroundColor: AppTheme.lightBackgroundColor,
       appBar: AppBar(
         leading: DrawerIcon.of(context)?.icon,
-        title: Text(S.of(context).preferences),
+        title: Text(S.of(context).generalSettings),
       ),
       body: ValueListenableBuilder(
-        valueListenable: DB().listenPreferences,
-        builder: _buildPrefs,
+        valueListenable: DB().listenGeneralSettings,
+        builder: _buildGeneralSettingsList,
       ),
     );
   }

@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Tùy chọn",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Tùy chọn",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Cài đặt trò chơi",
   "@skillLevel": {

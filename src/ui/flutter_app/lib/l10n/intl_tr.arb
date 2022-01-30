@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "Tercihler",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "Tercihler",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "Zorluk seviyesi",
   "@skillLevel": {

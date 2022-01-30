@@ -22,7 +22,7 @@ library adapters;
 import 'package:flutter/material.dart' show Locale, Color, PaintingStyle;
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
-import 'package:sanmill/models/preferences.dart';
+import 'package:sanmill/models/general_settings.dart';
 
 part 'src/algorithm.dart';
 part 'src/color.dart';

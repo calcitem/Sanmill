@@ -311,9 +311,9 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "पसंद",
-  "@preferences": {
-    "description": "Preferences"
+  "generalSettings": "पसंद",
+  "@generalSettings": {
+    "description": "General Settings"
   },
   "skillLevel": "कठिनाई स्तर",
   "@skillLevel": {
