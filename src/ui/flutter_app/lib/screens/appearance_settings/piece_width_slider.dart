@@ -16,15 +16,15 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of 'package:sanmill/screens/personalization_settings/personalization_settings_page.dart';
+part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 
-class _BoardTopSlider extends StatelessWidget {
-  const _BoardTopSlider({Key? key}) : super(key: key);
+class _PieceWidthSlider extends StatelessWidget {
+  const _PieceWidthSlider({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: S.of(context).boardTop,
+      label: S.of(context).pieceWidth,
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplay,
         builder: (context, Box<Display> displayBox, _) {
@@ -33,14 +33,17 @@ class _BoardTopSlider extends StatelessWidget {
             defaultValue: const Display(),
           )!;
 
+          // divided by [MigrationValues.pieceWidth] to represent the old behavior
           return Slider(
-            value: _display.boardTop,
-            max: 288.0,
-            divisions: 288,
-            label: _display.boardTop.toStringAsFixed(1),
+            value: _display.pieceWidth,
+            min: 0.5 / MigrationValues.pieceWidth,
+            max: 1.0 / MigrationValues.pieceWidth,
+            divisions: 50,
+            label: (_display.pieceWidth * MigrationValues.pieceWidth)
+                .toStringAsFixed(2),
             onChanged: (value) {
-              logger.v("[config] AnimationDuration value: $value");
-              DB().display = _display.copyWith(boardTop: value);
+              logger.v("[config] pieceWidth value: $value");
+              DB().display = _display.copyWith(pieceWidth: value);
             },
           );
         },

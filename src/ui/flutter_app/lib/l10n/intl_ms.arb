@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "Pemperibadian",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "Pemperibadian",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "Ikuti pengalaman manusia",
   "@drawOnHumanExperience": {

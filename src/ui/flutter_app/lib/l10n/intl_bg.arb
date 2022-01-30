@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "Персонализация",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "Персонализация",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "Използвайте човешкия опит",
   "@drawOnHumanExperience": {

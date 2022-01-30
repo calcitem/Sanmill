@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "تنظیمات ظاهر",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "تنظیمات ظاهر",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "استفاده از تجربه انسان",
   "@drawOnHumanExperience": {

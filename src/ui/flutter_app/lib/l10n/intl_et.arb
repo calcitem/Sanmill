@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "Isikupärastamine",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "Isikupärastamine",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "Toetudes inimkogemusele",
   "@drawOnHumanExperience": {

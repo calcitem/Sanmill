@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "Personalizimi",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "Personalizimi",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "Vizatoni në përvojën njerëzore",
   "@drawOnHumanExperience": {

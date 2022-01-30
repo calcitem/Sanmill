@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "Personalizácia",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "Personalizácia",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "Čerpanie z ľudskej skúsenosti",
   "@drawOnHumanExperience": {

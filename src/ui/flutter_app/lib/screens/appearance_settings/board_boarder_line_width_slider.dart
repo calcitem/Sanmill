@@ -16,15 +16,15 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of 'package:sanmill/screens/personalization_settings/personalization_settings_page.dart';
+part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 
-class _PieceWidthSlider extends StatelessWidget {
-  const _PieceWidthSlider({Key? key}) : super(key: key);
+class _BoardBorderWidthSlider extends StatelessWidget {
+  const _BoardBorderWidthSlider({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: S.of(context).pieceWidth,
+      label: S.of(context).boardBorderLineWidth,
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplay,
         builder: (context, Box<Display> displayBox, _) {
@@ -33,17 +33,14 @@ class _PieceWidthSlider extends StatelessWidget {
             defaultValue: const Display(),
           )!;
 
-          // divided by [MigrationValues.pieceWidth] to represent the old behavior
           return Slider(
-            value: _display.pieceWidth,
-            min: 0.5 / MigrationValues.pieceWidth,
-            max: 1.0 / MigrationValues.pieceWidth,
-            divisions: 50,
-            label: (_display.pieceWidth * MigrationValues.pieceWidth)
-                .toStringAsFixed(2),
+            value: _display.boardBorderLineWidth,
+            max: 20.0,
+            divisions: 200,
+            label: _display.boardBorderLineWidth.toStringAsFixed(1),
             onChanged: (value) {
-              logger.v("[config] pieceWidth value: $value");
-              DB().display = _display.copyWith(pieceWidth: value);
+              logger.v("[config] BoardBorderLineWidth value: $value");
+              DB().display = _display.copyWith(boardBorderLineWidth: value);
             },
           );
         },

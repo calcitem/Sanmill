@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "모양 설정",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "모양 설정",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "인간의 경험을 바탕으로",
   "@drawOnHumanExperience": {

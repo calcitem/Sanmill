@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "Εξατομίκευση",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "Εξατομίκευση",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "Αξιοποίηση της ανθρώπινης εμπειρίας",
   "@drawOnHumanExperience": {

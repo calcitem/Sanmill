@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "إضفاء الطابع الشخصي",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "إضفاء الطابع الشخصي",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "ارسم من التجربة الإنسانية",
   "@drawOnHumanExperience": {

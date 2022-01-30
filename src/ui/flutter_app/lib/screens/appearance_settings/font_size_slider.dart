@@ -16,15 +16,15 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of 'package:sanmill/screens/personalization_settings/personalization_settings_page.dart';
+part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 
-class _BoardInnerWidthSlider extends StatelessWidget {
-  const _BoardInnerWidthSlider({Key? key}) : super(key: key);
+class _FontSizeSlider extends StatelessWidget {
+  const _FontSizeSlider({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: S.of(context).boardInnerLineWidth,
+      label: S.of(context).fontSize,
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplay,
         builder: (context, Box<Display> displayBox, _) {
@@ -34,13 +34,14 @@ class _BoardInnerWidthSlider extends StatelessWidget {
           )!;
 
           return Slider(
-            value: _display.boardInnerLineWidth,
-            max: 20,
-            divisions: 200,
-            label: _display.boardInnerLineWidth.toStringAsFixed(1),
+            value: _display.fontScale,
+            min: 1,
+            max: 2,
+            divisions: 16,
+            label: _display.fontScale.toStringAsFixed(2),
             onChanged: (value) {
-              logger.v("[config] BoardInnerLineWidth value: $value");
-              DB().display = _display.copyWith(boardInnerLineWidth: value);
+              logger.v("[config] fontSize value: $value");
+              DB().display = _display.copyWith(fontScale: value);
             },
           );
         },

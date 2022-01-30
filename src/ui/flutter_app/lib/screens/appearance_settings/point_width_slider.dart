@@ -16,15 +16,15 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of 'package:sanmill/screens/personalization_settings/personalization_settings_page.dart';
+part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 
-class _FontSizeSlider extends StatelessWidget {
-  const _FontSizeSlider({Key? key}) : super(key: key);
+class _PointWidthSlider extends StatelessWidget {
+  const _PointWidthSlider({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: S.of(context).fontSize,
+      label: S.of(context).pointWidth,
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplay,
         builder: (context, Box<Display> displayBox, _) {
@@ -34,14 +34,13 @@ class _FontSizeSlider extends StatelessWidget {
           )!;
 
           return Slider(
-            value: _display.fontScale,
-            min: 1,
-            max: 2,
-            divisions: 16,
-            label: _display.fontScale.toStringAsFixed(2),
+            value: _display.pointWidth,
+            max: 30.0,
+            divisions: 30,
+            label: _display.pointWidth.toStringAsFixed(1),
             onChanged: (value) {
-              logger.v("[config] fontSize value: $value");
-              DB().display = _display.copyWith(fontScale: value);
+              logger.v("[config] pointWidth value: $value");
+              DB().display = _display.copyWith(pointWidth: value);
             },
           );
         },

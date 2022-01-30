@@ -16,43 +16,39 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of 'package:sanmill/screens/personalization_settings/personalization_settings_page.dart';
+part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 
-class _LanguagePicker extends StatelessWidget {
-  const _LanguagePicker({
+class _PointStyleModal extends StatelessWidget {
+  const _PointStyleModal({
     Key? key,
-    required this.currentLocale,
+    required this.pointStyle,
     required this.onChanged,
   }) : super(key: key);
 
-  final Locale? currentLocale;
-  final Function(Locale?) onChanged;
+  final PaintingStyle? pointStyle;
+  final Function(PaintingStyle?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
-    final languageColumn = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        RadioListTile<Locale?>(
-          title: Text(S.of(context).defaultLanguage),
-          groupValue: currentLocale,
-          value: null,
-          onChanged: onChanged,
-        ),
-        const Divider(),
-        for (var i in languageCodeToStrings.keys)
-          RadioListTile<Locale>(
-            title: Text(languageCodeToStrings[i]!),
-            groupValue: currentLocale,
-            value: i,
+    return Semantics(
+      label: S.of(context).pointStyle,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          RadioListTile<PaintingStyle?>(
+            title: Text(S.of(context).none),
+            groupValue: pointStyle,
+            value: null,
             onChanged: onChanged,
           ),
-      ],
-    );
-
-    return AlertDialog(
-      scrollable: true,
-      content: languageColumn,
+          RadioListTile(
+            title: Text(S.of(context).solid),
+            groupValue: pointStyle,
+            value: PaintingStyle.fill,
+            onChanged: onChanged,
+          ),
+        ],
+      ),
     );
   }
 }

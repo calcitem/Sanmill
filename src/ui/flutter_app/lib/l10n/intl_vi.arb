@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "Cài đặt hiển thị",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "Cài đặt hiển thị",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "Rút kinh nghiệm của con người",
   "@drawOnHumanExperience": {

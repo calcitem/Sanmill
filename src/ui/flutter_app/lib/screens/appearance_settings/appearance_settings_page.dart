@@ -28,18 +28,18 @@ import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/settings/settings.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
-part 'package:sanmill/screens/personalization_settings/animation_duration_slider.dart';
-part 'package:sanmill/screens/personalization_settings/board_boarder_line_width_slider.dart';
-part 'package:sanmill/screens/personalization_settings/board_inner_line_width_slider.dart';
-part 'package:sanmill/screens/personalization_settings/board_top_slider.dart';
-part 'package:sanmill/screens/personalization_settings/font_size_slider.dart';
-part 'package:sanmill/screens/personalization_settings/language_picker.dart';
-part 'package:sanmill/screens/personalization_settings/piece_width_slider.dart';
-part 'package:sanmill/screens/personalization_settings/point_style_modal.dart';
-part 'package:sanmill/screens/personalization_settings/point_width_slider.dart';
+part 'package:sanmill/screens/appearance_settings/animation_duration_slider.dart';
+part 'package:sanmill/screens/appearance_settings/board_boarder_line_width_slider.dart';
+part 'package:sanmill/screens/appearance_settings/board_inner_line_width_slider.dart';
+part 'package:sanmill/screens/appearance_settings/board_top_slider.dart';
+part 'package:sanmill/screens/appearance_settings/font_size_slider.dart';
+part 'package:sanmill/screens/appearance_settings/language_picker.dart';
+part 'package:sanmill/screens/appearance_settings/piece_width_slider.dart';
+part 'package:sanmill/screens/appearance_settings/point_style_modal.dart';
+part 'package:sanmill/screens/appearance_settings/point_width_slider.dart';
 
-class PersonalizationSettingsPage extends StatelessWidget {
-  const PersonalizationSettingsPage({Key? key}) : super(key: key);
+class AppearanceSettingsPage extends StatelessWidget {
+  const AppearanceSettingsPage({Key? key}) : super(key: key);
 
   void setBoardBorderLineWidth(BuildContext context) => showModalBottomSheet(
         context: context,
@@ -289,7 +289,7 @@ class PersonalizationSettingsPage extends StatelessWidget {
       backgroundColor: AppTheme.lightBackgroundColor,
       appBar: AppBar(
         leading: DrawerIcon.of(context)?.icon,
-        title: Text(S.of(context).personalization),
+        title: Text(S.of(context).appearance),
       ),
       body: SettingsList(
         children: [

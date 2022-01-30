@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "Personalisierige",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "Personalisierige",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "Uf Mönschlechi Erfahrige zrüggrife",
   "@drawOnHumanExperience": {

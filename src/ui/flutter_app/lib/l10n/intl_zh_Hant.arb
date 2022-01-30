@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "外觀設定",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "外觀設定",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "借鑒人類經驗",
   "@drawOnHumanExperience": {

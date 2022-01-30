@@ -777,9 +777,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "外观设置",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "外观设置",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "借鉴人类经验",
   "@drawOnHumanExperience": {

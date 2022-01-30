@@ -844,9 +844,9 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "personalization": "Personalization",
-  "@personalization": {
-    "description": "Personalization"
+  "appearance": "Appearance",
+  "@appearance": {
+    "description": "Appearance"
   },
   "drawOnHumanExperience": "Draw on the human experience",
   "@drawOnHumanExperience": {
