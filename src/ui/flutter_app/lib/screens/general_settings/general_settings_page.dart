@@ -28,14 +28,14 @@ import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/settings/settings.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
-part 'package:sanmill/screens/game_settings/algorithm_modal.dart';
-part 'package:sanmill/screens/game_settings/move_time_slider.dart';
-part 'package:sanmill/screens/game_settings/reset_settings_alert.dart';
-part 'package:sanmill/screens/game_settings/skill_level_slider.dart';
+part 'package:sanmill/screens/general_settings/algorithm_modal.dart';
+part 'package:sanmill/screens/general_settings/move_time_slider.dart';
+part 'package:sanmill/screens/general_settings/reset_settings_alert.dart';
+part 'package:sanmill/screens/general_settings/skill_level_slider.dart';
 
 class GameSettingsPage extends StatelessWidget {
   const GameSettingsPage({Key? key}) : super(key: key);
-  static const String _tag = "[game_settings_page]";
+  static const String _tag = "[general_settings_page]";
 
   // Restore
   void _restoreFactoryDefaultSettings(BuildContext context) => showDialog(

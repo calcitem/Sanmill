@@ -16,7 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of 'package:sanmill/screens/game_settings/game_settings_page.dart';
+part of 'package:sanmill/screens/general_settings/general_settings_page.dart';
 
 class _AlgorithmModal extends StatelessWidget {
   const _AlgorithmModal({
