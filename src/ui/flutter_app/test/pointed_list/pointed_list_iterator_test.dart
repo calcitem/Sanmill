@@ -74,7 +74,7 @@ void main() {
       expect(iterator.current, list.last);
     });
 
-    test("moveToFisrt should move to the first index", () {
+    test("moveToFirst should move to the first index", () {
       // initialize
       final list = [1, 2, 3, 4];
       final iterator = PointedListIterator(list);

@@ -30,13 +30,13 @@ class IllegalPhase implements MillResponse {
 }
 
 /// Custom response we throw when selecting a piece.
-abstract class SeclectResponse implements MillResponse {}
+abstract class SelectResponse implements MillResponse {}
 
-class CanOnlyMoveToAdjacentEmptyPoints implements SeclectResponse {
+class CanOnlyMoveToAdjacentEmptyPoints implements SelectResponse {
   const CanOnlyMoveToAdjacentEmptyPoints();
 }
 
-class SelectOurPieceToMove implements SeclectResponse {
+class SelectOurPieceToMove implements SelectResponse {
   const SelectOurPieceToMove();
 }
 
@@ -55,7 +55,7 @@ class CanNotRemoveMill implements RemoveResponse {
   const CanNotRemoveMill();
 }
 
-/// Custom respnonse to throw related to the engine.
+/// Custom response to throw related to the engine.
 abstract class EngineResponse {}
 
 class EngineNoBestMove implements EngineResponse {
@@ -67,7 +67,7 @@ class EngineTimeOut extends TimeoutException with EngineResponse {
       : super(message, duration);
 }
 
-/// Custom response to throw when naivigating the game history.
+/// Custom response to throw when navigating the game history.
 abstract class _HistoryResponse {
   static const tag = "[_HistoryResponse]";
 }
