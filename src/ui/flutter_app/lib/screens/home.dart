@@ -28,7 +28,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/about_page.dart';
 import 'package:sanmill/screens/game_page/game_page.dart';
-import 'package:sanmill/screens/game_settings/game_settings_page.dart';
+import 'package:sanmill/screens/general_settings/general_settings_page.dart';
 import 'package:sanmill/screens/help_screen.dart';
 import 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 import 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
