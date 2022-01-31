@@ -15,17 +15,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'package:mockito/mockito.dart';
-import 'package:sanmill/models/color.dart';
-import 'package:sanmill/models/display.dart';
+import 'package:sanmill/models/color_settings.dart';
+import 'package:sanmill/models/display_settings.dart';
 import 'package:sanmill/models/general_settings.dart';
-import 'package:sanmill/models/rules.dart';
+import 'package:sanmill/models/rule_settings.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
 class MockedDB extends Mock implements DB {
   ColorSettings _colorSettings = const ColorSettings();
-  Display _display = const Display();
+  DisplaySettings _display = const DisplaySettings();
   GeneralSettings _generalSettings = const GeneralSettings();
-  Rules _rules = const Rules();
+  RuleSettings _rules = const RuleSettings();
 
   /// gets the given [ColorSettings] from the settings Box
   @override
@@ -35,13 +35,13 @@ class MockedDB extends Mock implements DB {
   @override
   set colorSettings(ColorSettings colors) => _colorSettings = colors;
 
-  /// gets the given [Display] from the settings Box
+  /// gets the given [DisplaySettings] from the settings Box
   @override
-  Display get display => _display;
+  DisplaySettings get display => _display;
 
   /// saves the given [display] to the settings Box
   @override
-  set display(Display display) => _display = display;
+  set display(DisplaySettings display) => _display = display;
 
   /// gets the given [GeneralSettings] from the settings Box
   @override
@@ -51,11 +51,11 @@ class MockedDB extends Mock implements DB {
   @override
   set generalSettings(GeneralSettings settings) => _generalSettings = settings;
 
-  /// gets the given [Rules] from the settings Box
+  /// gets the given [RuleSettings] from the settings Box
   @override
-  Rules get rules => _rules;
+  RuleSettings get rules => _rules;
 
   /// saves the given [rules] to the settings Box
   @override
-  set rules(Rules rules) => _rules = rules;
+  set rules(RuleSettings rules) => _rules = rules;
 }

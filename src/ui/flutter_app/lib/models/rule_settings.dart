@@ -21,7 +21,7 @@ import 'package:flutter/foundation.dart' show immutable;
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'rules.g.dart';
+part 'rule_settings.g.dart';
 
 /// Rules data model
 ///
@@ -32,8 +32,8 @@ part 'rules.g.dart';
 @JsonSerializable()
 @CopyWith()
 @immutable
-class Rules {
-  const Rules({
+class RuleSettings {
+  const RuleSettings({
     this.piecesCount = 9,
     this.flyPieceCount = 3,
     this.piecesAtLeastCount = 3,
@@ -85,19 +85,20 @@ class Rules {
   @HiveField(15)
   final bool threefoldRepetitionRule;
 
-  /// encodes a Json style map into a [Rules] object
-  factory Rules.fromJson(Map<String, dynamic> json) => _$RulesFromJson(json);
+  /// encodes a Json style map into a [RuleSettings] object
+  factory RuleSettings.fromJson(Map<String, dynamic> json) =>
+      _$RuleSettingsFromJson(json);
 
-  /// decodes a Json from a [Rules] object
-  Map<String, dynamic> toJson() => _$RulesToJson(this);
+  /// decodes a Json from a [RuleSettings] object
+  Map<String, dynamic> toJson() => _$RuleSettingsToJson(this);
 
   /// Creates a Rules object based on the given locale
-  factory Rules.fromLocale(Locale? locale) {
+  factory RuleSettings.fromLocale(Locale? locale) {
     switch (locale?.languageCode) {
       case "fa":
         return const IranRules();
       default:
-        return const Rules();
+        return const RuleSettings();
     }
   }
 }
@@ -105,7 +106,7 @@ class Rules {
 /// Iran Rules
 ///
 /// Those rules are the standard Mill rules used in Iran.
-class IranRules extends Rules {
+class IranRules extends RuleSettings {
   const IranRules()
       : super(
           piecesCount: 12,

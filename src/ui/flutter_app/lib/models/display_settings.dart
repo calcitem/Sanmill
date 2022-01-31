@@ -23,7 +23,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:sanmill/services/storage/adapters/adapters.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
-part 'display.g.dart';
+part 'display_settings.g.dart';
 
 /// Display data model
 ///
@@ -32,8 +32,8 @@ part 'display.g.dart';
 @JsonSerializable()
 @CopyWith(generateCopyWithNull: true)
 @immutable
-class Display {
-  const Display({
+class DisplaySettings {
+  const DisplaySettings({
     this.languageCode,
     @Deprecated("Until other export options are implemented this setting shouldn't be used")
         this.standardNotationEnabled = true,
@@ -106,10 +106,10 @@ class Display {
   @HiveField(12)
   final double animationDuration;
 
-  /// encodes a Json style map into a [Display] object
-  factory Display.fromJson(Map<String, dynamic> json) =>
-      _$DisplayFromJson(json);
+  /// encodes a Json style map into a [DisplaySettings] object
+  factory DisplaySettings.fromJson(Map<String, dynamic> json) =>
+      _$DisplaySettingsFromJson(json);
 
-  /// decodes a Json from a [Display] object
-  Map<String, dynamic> toJson() => _$DisplayToJson(this);
+  /// decodes a Json from a [DisplaySettings] object
+  Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
 }
