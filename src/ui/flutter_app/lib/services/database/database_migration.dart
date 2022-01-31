@@ -31,13 +31,13 @@ class MigrationValues {
   static const fontScale = 16;
 }
 
-/// Database Migrator
+/// Database Migration
 ///
 /// This class provides helper methods to migrate database versions.
-class _DatabaseMigrator {
-  const _DatabaseMigrator._();
+class _DatabaseMigration {
+  const _DatabaseMigration._();
 
-  static const _tag = "[Database Migrator]";
+  static const _tag = "[Database Migration]";
 
   /// The newest DB version.
   static const _newVersion = 2;
@@ -137,7 +137,7 @@ class _DatabaseMigrator {
   }
 }
 
-/// Database KV Migrator
+/// Database KV Migration
 ///
 /// This class provides helper methods to migrate from the old KV database to the new hiveDB.
 class _DatabaseV1 {
