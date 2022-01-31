@@ -22,7 +22,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
 import 'package:sanmill/models/general_settings.dart';
 
-part 'src/algorithm.dart';
-part 'src/color.dart';
-part 'src/locale.dart';
-part 'src/painting_style.dart';
+part 'src/algorithm_adapter.dart';
+part 'src/color_adapter.dart';
+part 'src/locale_adapter.dart';
+part 'src/painting_style_adapter.dart';
