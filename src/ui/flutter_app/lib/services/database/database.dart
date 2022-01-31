@@ -96,7 +96,7 @@ class Database {
     await _initDisplaySettings();
     await _initColorSettings();
 
-    await _DatabaseMigrator.migrate();
+    await _DatabaseMigration.migrate();
   }
 
   /// Resets the database
