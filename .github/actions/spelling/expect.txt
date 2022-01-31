@@ -1,5 +1,5 @@
-ALIGNAS
 abcdefg
+ALIGNAS
 alignof
 alloc
 amd
@@ -7,6 +7,7 @@ andnetwork
 APARTMENTTHREADED
 APIENTRY
 appbundle
+Appium
 appium
 APSTUDIO
 ARGB
@@ -25,6 +26,7 @@ bak
 Barlabel
 bestmove
 bestvalue
+bitboard
 Bitboard
 bitboard
 bitset
@@ -42,6 +44,7 @@ chrono
 cin
 climits
 Cls
+CMake
 cmake
 Cnt
 Codacy
@@ -160,6 +163,7 @@ html
 htmlcsscolor
 http
 HUGEPAGE
+hwnd
 HWND
 hwnd
 idx
@@ -207,6 +211,7 @@ LOGF
 LOGI
 LOGW
 lowerbound
+lparam
 LPARAM
 lparam
 lpfn
@@ -217,6 +222,7 @@ LPWSTR
 LRESULT
 LTRB
 LTWH
+luid
 LUID
 luid
 MADV
@@ -248,9 +254,12 @@ movegen
 movepick
 MOVETYPE
 msix
+MSVC
 msvc
+mtdf
 Mtdf
 MTDF
+muehle
 MUEHLE
 mul
 mutex
