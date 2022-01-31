@@ -25,10 +25,10 @@ class MigrationValues {
   const MigrationValues._();
 
   /// [DisplaySettings.pieceWidth] migration value.
-  static const pieceWidth = 7;
+  static const pieceWidth = 7.0;
 
   /// [DisplaySettings.fontScale] migration value.
-  static const fontScale = 16;
+  static const fontScale = 16.0;
 }
 
 /// Database Migration
@@ -96,7 +96,7 @@ class _DatabaseMigration {
     assert(_currentVersion! <= 0);
 
     await _DatabaseV1.migrateDB();
-    logger.i("$_tag Migrated from KV");
+    logger.i("$_tag Migrated from KV to DB");
   }
 
   /// Migration 1 - Sanmill version 1.x.x
@@ -155,7 +155,7 @@ class _DatabaseV1 {
     }
   }
 
-  /// Checks whether the current db is still the old kv store by checking the availability of the json file
+  /// Checks whether the current DB is still the old KV store by checking the availability of the json file
   static Future<bool> get usesV1 async {
     final file = await _getFile();
     logger.i("$_tag still uses v1: ${file != null}");
@@ -178,9 +178,9 @@ class _DatabaseV1 {
   }
 
   /// Migrates the deprecated Settings to the new [LocalDatabaseService]
-  /// it won't do anything if the
+  /// TODO: it won't do anything if the
   static Future<void> migrateDB() async {
-    logger.i("$_tag migrate from KV");
+    logger.i("$_tag migrate from KV to DB");
     final _file = await _getFile();
     assert(_file != null);
 
@@ -194,10 +194,10 @@ class _DatabaseV1 {
     await _deleteFile(_file);
   }
 
-  /// deletes the old settings file
+  /// Deletes the old settings file
   static Future<void> _deleteFile(File _file) async {
     assert(await usesV1);
-    logger.v("$_tag Deleting Settings...");
+    logger.v("$_tag Deleting old settings file...");
 
     await _file.delete();
     logger.i("$_tag $_file Deleted");
