@@ -24,5 +24,5 @@ import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 part 'src/board_painter.dart';
-part 'src/pieces_painter.dart';
 part 'src/common.dart';
+part 'src/piece_painter.dart';

@@ -76,11 +76,11 @@ class _PiecePaintParam {
 /// Painter to draw each piece in [MillController.position] on the Board.
 /// The board is drawn by [BoardPainter].
 /// It asserts the Canvas to be a square.
-class PiecesPainter extends CustomPainter {
+class PiecePainter extends CustomPainter {
   /// The value representing the piece animation when placing.
   final double animationValue;
 
-  PiecesPainter({
+  PiecePainter({
     required this.animationValue,
   });
 
@@ -188,6 +188,6 @@ class PiecesPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(PiecesPainter oldDelegate) =>
+  bool shouldRepaint(PiecePainter oldDelegate) =>
       animationValue != oldDelegate.animationValue;
 }
