@@ -311,7 +311,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "Общи условия",
+  "generalSettings": "Общи настройки",
   "@generalSettings": {
     "description": "General Settings"
   },

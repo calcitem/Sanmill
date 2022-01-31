@@ -187,7 +187,7 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Kann nicht importieren {invalidMove}",
+  "cannotImport": "Kann {invalidMove} nicht importieren",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -247,11 +247,11 @@
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Das Board ist voll und {player} hat keine Möglichkeit.",
+  "loseReasonBoardIsFull": "Das Board ist voll und {player} hat keine Möglichkeit sich zu bewegen.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Die Zeit ist vorbei, {player} verloren.",
+  "loseReasonTimeOver": "Die Zeit ist vorbei, {player} hat verloren.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Schwierigeres Level herausfordern? Das neue Level wird Level {level} sein!",
+  "challengeHarderLevel": "Willst du ein schwierigeres Level wählen? Das neue Level wird Level {level} sein!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Zugverlauf in die Zwischenablage kopiert.",
+  "moveHistoryCopied": "Zugverlauf wurde in die Zwischenablage kopiert.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -797,7 +797,7 @@
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "{player} an Bord: {count}",
+  "onBoard": "{player} auf dem Bord: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -1053,7 +1053,7 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Seite zum Verschieben: {player}",
+  "sideToMove": "Seite zum Bewegen: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
