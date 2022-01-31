@@ -19,7 +19,7 @@ import 'package:sanmill/models/color_settings.dart';
 import 'package:sanmill/models/display_settings.dart';
 import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/models/rule_settings.dart';
-import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/services/database/database.dart';
 
 class MockedDB extends Mock implements DB {
   GeneralSettings _generalSettings = const GeneralSettings();

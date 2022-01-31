@@ -12,6 +12,7 @@
     "libsanmill",
     "LPARAM",
     "LRESULT",
+    "nonfunction",
     "readyok",
     "uciok",
     "XCRASH"

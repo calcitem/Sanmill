@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-part of 'package:sanmill/services/storage/storage.dart';
+part of 'package:sanmill/services/database/database.dart';
 
 /// Database Migration Values
 ///
@@ -91,7 +91,7 @@ class _DatabaseMigrator {
 
   /// Migration 0 - KV to Hive
   ///
-  /// - Calls the [_DatabaseV1.migrateDB] to migrate from KV storage.
+  /// - Calls the [_DatabaseV1.migrateDB] to migrate from KV database.
   static Future<void> _migrateToHive() async {
     assert(_currentVersion! <= 0);
 
@@ -139,7 +139,7 @@ class _DatabaseMigrator {
 
 /// Database KV Migrator
 ///
-/// This class provides helper methods to migrate from the old KV storage to the new hiveDB.
+/// This class provides helper methods to migrate from the old KV database to the new hiveDB.
 class _DatabaseV1 {
   const _DatabaseV1._();
 

@@ -26,68 +26,70 @@ import 'package:sanmill/models/color_settings.dart';
 import 'package:sanmill/models/display_settings.dart';
 import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/models/rule_settings.dart';
+import 'package:sanmill/services/database/adapters/adapters.dart';
 import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/services/storage/adapters/adapters.dart';
 import 'package:sanmill/shared/constants.dart';
 
-part 'package:sanmill/services/storage/storage_migration.dart';
+part 'package:sanmill/services/database/database_migration.dart';
 
-/// Helpers to handle local data storage.
+typedef DB = Database;
+
+/// Helpers to handle local data database.
 ///
 /// The DB act's as a singe source of truth and therefore will be consistent across calls.
-class DB {
+class Database {
   @visibleForTesting
-  static DB? instance;
+  static Database? instance;
 
   /// Gets the current DB instance.
   ///
   /// If it hasn't been set yet a new one will be created. The given [locale] is only used to set the initial rules.
-  factory DB([Locale? locale]) => instance ??= DB._(locale);
+  factory Database([Locale? locale]) => instance ??= Database._(locale);
 
   /// Locale to set the initial [RuleSettings].
   final Locale? locale;
 
   /// Internal constructor used to create the instance.
-  DB._([this.locale]);
+  Database._([this.locale]);
 
   /// [GeneralSettings] Box reference
   static late final Box<GeneralSettings> _generalSettingsBox;
 
-  /// Key at wich the [GeneralSettings] will be saved in the [_generalSettingsBox]
+  /// Key at which the [GeneralSettings] will be saved in the [_generalSettingsBox]
   static const String generalSettingsKey = "settings";
 
-  /// Key at wich the [_generalSettingsBox] will be saved
+  /// Key at which the [_generalSettingsBox] will be saved
   static const String _generalSettingsBoxName = "generalSettings";
 
   /// [RuleSettings] Box reference
   static late final Box<RuleSettings> _ruleSettingsBox;
 
-  /// Key at wich the [RuleSettings] will be saved in the [_ruleSettingsBox]
+  /// Key at which the [RuleSettings] will be saved in the [_ruleSettingsBox]
   static const String ruleSettingsKey = "settings";
 
-  /// Key at wich the [_ruleSettingsBox] will be saved
+  /// Key at which the [_ruleSettingsBox] will be saved
   static const String _ruleSettingsBoxName = "ruleSettings";
 
   /// [DisplaySettings] Box reference
   static late final Box<DisplaySettings> _displaySettingsBox;
 
-  /// Key at wich the [DisplaySettings] will be saved in the [_displaySettingsBox]
+  /// Key at which the [DisplaySettings] will be saved in the [_displaySettingsBox]
   static const String displaySettingsKey = "settings";
 
-  /// Key at wich the [_displaySettingsBox] will be saved
+  /// Key at which the [_displaySettingsBox] will be saved
   static const String _displaySettingsBoxName = "displaySettings";
 
   /// [ColorSettings] Box reference
   static late final Box<ColorSettings> _colorSettingsBox;
 
-  /// Key at wich the [ColorSettings] will be saved in the [_colorSettingsBox]
+  /// Key at which the [ColorSettings] will be saved in the [_colorSettingsBox]
   static const String colorSettingsKey = "settings";
 
-  /// Key at wich the [_colorSettingsBox] will be saved
+  /// Key at which the [_colorSettingsBox] will be saved
   static const String _colorSettingsBoxName = "colorSettings";
 
-  /// Initializes the local storage
-  static Future<void> initStorage() async {
+  /// Initializes the local database
+  static Future<void> initDatabase() async {
     if (!kIsWeb) await Hive.initFlutter("Sanmill");
     await _initGeneralSettings();
     await _initRuleSettings();
@@ -97,8 +99,8 @@ class DB {
     await _DatabaseMigrator.migrate();
   }
 
-  /// Resets the storage
-  static Future<void> resetStorage() async {
+  /// Resets the database
+  static Future<void> resetDatabase() async {
     await _generalSettingsBox.delete(generalSettingsKey);
     await _ruleSettingsBox.delete(ruleSettingsKey);
     await _colorSettingsBox.delete(colorSettingsKey);

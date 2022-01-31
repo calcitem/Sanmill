@@ -21,8 +21,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/general_settings.dart';
+import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 

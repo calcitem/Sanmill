@@ -19,7 +19,7 @@ library custom_drawer;
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:sanmill/services/storage/storage.dart';
+import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 

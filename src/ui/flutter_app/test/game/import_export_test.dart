@@ -16,11 +16,11 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/models/display_settings.dart';
+import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/mill/mill.dart';
-import 'package:sanmill/services/storage/storage.dart';
 
 import '../helpers/mocks/audios_mock.dart';
-import '../helpers/mocks/storage_mock.dart';
+import '../helpers/mocks/database_mock.dart';
 import '../helpers/test_mills.dart';
 
 void main() {
