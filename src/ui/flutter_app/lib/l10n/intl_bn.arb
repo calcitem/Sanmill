@@ -311,10 +311,6 @@
   "@options": {
     "description": "Options"
   },
-  "preferences": "পছন্দসমূহ",
-  "@preferences": {
-    "description": "Preferences"
-  },
   "skillLevel": "কাঠিন্যের মাত্রা",
   "@skillLevel": {
     "description": "Difficulty level"
@@ -776,10 +772,6 @@
   "timeout": "সময় শেষ",
   "@timeout": {
     "description": "Timeout"
-  },
-  "personalization": "ব্যক্তিগতকরণ",
-  "@personalization": {
-    "description": "Personalization"
   },
   "drawOnHumanExperience": "মানুষের অভিজ্ঞতা আঁকুন",
   "@drawOnHumanExperience": {
