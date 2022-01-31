@@ -23,14 +23,14 @@ import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 
 import '../helpers/locale_helper.dart';
-import '../helpers/mocks/database_mock.dart';
+import '../helpers/mocks/mock_database.dart';
 
 void main() {
   group("GameHeader", () {
     testWidgets("GameHeader updates tip", (WidgetTester tester) async {
       const testString = "Test";
 
-      DB.instance = MockedDB();
+      DB.instance = MockDB();
       final controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
       const _screen = HeaderTip();
@@ -47,7 +47,7 @@ void main() {
     });
 
     testWidgets("GameHeader position", (WidgetTester tester) async {
-      DB.instance = MockedDB();
+      DB.instance = MockDB();
       final controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 

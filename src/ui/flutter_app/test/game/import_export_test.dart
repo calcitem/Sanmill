@@ -19,8 +19,8 @@ import 'package:sanmill/models/display_settings.dart';
 import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/mill/mill.dart';
 
-import '../helpers/mocks/audios_mock.dart';
-import '../helpers/mocks/database_mock.dart';
+import '../helpers/mocks/mock_audios.dart';
+import '../helpers/mocks/mock_database.dart';
 import '../helpers/test_mills.dart';
 
 void main() {
@@ -31,8 +31,8 @@ void main() {
       const testMill = WinLessThanThreeGame();
 
       // initialize the test
-      DB.instance = MockedDB();
-      Audios.instance = MockedAudios();
+      DB.instance = MockDB();
+      Audios.instance = MockAudios();
       final controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
@@ -46,8 +46,8 @@ void main() {
       const testMill = WinLessThanThreeGame();
 
       // initialize the test
-      DB.instance = MockedDB();
-      Audios.instance = MockedAudios();
+      DB.instance = MockDB();
+      Audios.instance = MockAudios();
       final controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
@@ -63,12 +63,12 @@ void main() {
         const testMill = WinLessThanThreeGame();
 
         // initialize the test
-        final mockedDB = MockedDB();
+        final mockDB = MockDB();
         // ignore: deprecated_member_use_from_same_package
-        mockedDB.displaySettings =
+        mockDB.displaySettings =
             const DisplaySettings(standardNotationEnabled: false);
-        DB.instance = mockedDB;
-        Audios.instance = MockedAudios();
+        DB.instance = mockDB;
+        Audios.instance = MockAudios();
         final controller = MillController();
         controller.gameInstance.gameMode = GameMode.humanVsHuman;
 

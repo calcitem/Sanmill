@@ -18,8 +18,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/mill/mill.dart';
 
-import '../helpers/mocks/audios_mock.dart';
-import '../helpers/mocks/database_mock.dart';
+import '../helpers/mocks/mock_audios.dart';
+import '../helpers/mocks/mock_database.dart';
 import '../helpers/test_mills.dart';
 
 void main() {
@@ -28,7 +28,7 @@ void main() {
       const gameMode = GameMode.humanVsAi;
 
       // initialize the test
-      DB.instance = MockedDB();
+      DB.instance = MockDB();
       final controller = MillController();
 
       controller.gameInstance.gameMode = gameMode;
@@ -41,8 +41,8 @@ void main() {
 
     test("Import should clear the focus", () async {
       // initialize the test
-      DB.instance = MockedDB();
-      Audios.instance = MockedAudios();
+      DB.instance = MockDB();
+      Audios.instance = MockAudios();
       final controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
