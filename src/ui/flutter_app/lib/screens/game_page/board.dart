@@ -60,7 +60,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
       builder: (_, child) {
         return CustomPaint(
           painter: BoardPainter(),
-          foregroundPainter: PiecesPainter(
+          foregroundPainter: PiecePainter(
             animationValue: _animation.value,
           ),
           child: child,
