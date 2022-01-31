@@ -89,7 +89,7 @@ class Database {
   static const String _colorSettingsBoxName = "colorSettings";
 
   /// Initializes the local database
-  static Future<void> initDatabase() async {
+  static Future<void> init() async {
     if (!kIsWeb) await Hive.initFlutter("Sanmill");
     await _initGeneralSettings();
     await _initRuleSettings();
@@ -100,7 +100,7 @@ class Database {
   }
 
   /// Resets the database
-  static Future<void> resetDatabase() async {
+  static Future<void> reset() async {
     await _generalSettingsBox.delete(generalSettingsKey);
     await _ruleSettingsBox.delete(ruleSettingsKey);
     await _colorSettingsBox.delete(colorSettingsKey);
