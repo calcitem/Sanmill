@@ -26,9 +26,9 @@ import 'package:flutter/services.dart';
 import 'package:sanmill/generated/assets/assets.gen.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/game_page/game_page.dart';
+import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/iterable/array_helper.dart';
 import 'package:sanmill/shared/iterable/pointed_list.dart';
 import 'package:sanmill/shared/scaffold_messenger.dart';
@@ -45,10 +45,10 @@ part 'src/import_export_service.dart';
 part 'src/mills.dart';
 part 'src/position.dart';
 part 'src/recorder.dart';
+part 'src/responses.dart';
 part 'src/tap_handler.dart';
 part 'src/tip_state.dart';
 part 'src/types.dart';
 part 'src/zobrist.dart';
-part 'src/responses.dart';
 
 // TODO: [Leptopoda] separate the ui from the logic

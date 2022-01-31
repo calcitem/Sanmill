@@ -29,9 +29,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/display_settings.dart';
 import 'package:sanmill/screens/home.dart';
+import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/feedback_localization.dart';
 import 'package:sanmill/shared/scaffold_messenger.dart';
@@ -49,7 +49,7 @@ Future<void> main() async {
     enableFlutterDriverExtension();
   }
 
-  await DB.initStorage();
+  await DB.initDatabase();
 
   _initUI();
 

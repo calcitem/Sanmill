@@ -18,12 +18,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/generated/intl/l10n_en.dart';
 import 'package:sanmill/screens/game_page/game_page.dart';
+import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/mill/mill.dart';
-import 'package:sanmill/services/storage/storage.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 
 import '../helpers/locale_helper.dart';
-import '../helpers/mocks/storage_mock.dart';
+import '../helpers/mocks/database_mock.dart';
 
 void main() {
   group("GameHeader", () {
