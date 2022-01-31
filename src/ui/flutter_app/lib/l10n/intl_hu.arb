@@ -311,7 +311,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "Preferenciák",
+  "generalSettings": "Általános beállítások",
   "@generalSettings": {
     "description": "General Settings"
   },
@@ -777,7 +777,7 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "appearance": "Személyre szabás",
+  "appearance": "Megjelenés",
   "@appearance": {
     "description": "Appearance"
   },

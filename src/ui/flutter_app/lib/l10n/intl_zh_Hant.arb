@@ -311,7 +311,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "遊戲設定",
+  "generalSettings": "常規設定",
   "@generalSettings": {
     "description": "General Settings"
   },

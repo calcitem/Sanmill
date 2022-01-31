@@ -311,7 +311,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "पसंद",
+  "generalSettings": "सामान्य सेटिंग्स",
   "@generalSettings": {
     "description": "General Settings"
   },
@@ -777,7 +777,7 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "appearance": "वैयक्तिकरण",
+  "appearance": "दिखावट",
   "@appearance": {
     "description": "Appearance"
   },

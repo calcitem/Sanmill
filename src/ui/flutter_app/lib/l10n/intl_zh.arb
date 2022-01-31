@@ -311,7 +311,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "游戏设置",
+  "generalSettings": "常规设置",
   "@generalSettings": {
     "description": "General Settings"
   },

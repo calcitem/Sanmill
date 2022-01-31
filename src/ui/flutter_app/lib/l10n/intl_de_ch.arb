@@ -311,7 +311,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "Ihstellige",
+  "generalSettings": "Allgemeine Einstellungen",
   "@generalSettings": {
     "description": "General Settings"
   },
@@ -777,7 +777,7 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "appearance": "Personalisierige",
+  "appearance": "Das Auftreten",
   "@appearance": {
     "description": "Appearance"
   },

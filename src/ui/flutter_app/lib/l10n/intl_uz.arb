@@ -311,7 +311,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "Afzalliklar",
+  "generalSettings": "Umumiy sozlamalar",
   "@generalSettings": {
     "description": "General Settings"
   },
@@ -777,7 +777,7 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "appearance": "Shaxsiylashtirish",
+  "appearance": "Tashqi ko'rinish",
   "@appearance": {
     "description": "Appearance"
   },

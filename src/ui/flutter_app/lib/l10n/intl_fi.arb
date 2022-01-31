@@ -311,7 +311,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "Asetukset",
+  "generalSettings": "Yleiset asetukset",
   "@generalSettings": {
     "description": "General Settings"
   },
@@ -777,7 +777,7 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "appearance": "Personointi",
+  "appearance": "Ulkonäkö",
   "@appearance": {
     "description": "Appearance"
   },
