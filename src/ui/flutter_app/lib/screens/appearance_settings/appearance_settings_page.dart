@@ -49,12 +49,12 @@ class AppearanceSettingsPage extends StatelessWidget {
         builder: (_) => const _BoardInnerWidthSlider(),
       );
 
-  void setPointStyle(BuildContext context, DisplaySettings _display) {
+  void setPointStyle(BuildContext context, DisplaySettings _displaySettings) {
     void _callback(PaintingStyle? pointStyle) {
       Navigator.pop(context);
-      DB().display = pointStyle == null
-          ? _display.copyWithNull(pointStyle: true)
-          : _display.copyWith(pointStyle: pointStyle);
+      DB().displaySettings = pointStyle == null
+          ? _displaySettings.copyWithNull(pointStyle: true)
+          : _displaySettings.copyWith(pointStyle: pointStyle);
 
       logger.v("[config] pointStyle: $pointStyle");
     }
@@ -62,7 +62,7 @@ class AppearanceSettingsPage extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       builder: (_) => _PointStyleModal(
-        pointStyle: _display.pointStyle,
+        pointStyle: _displaySettings.pointStyle,
         onChanged: _callback,
       ),
     );
@@ -95,22 +95,22 @@ class AppearanceSettingsPage extends StatelessWidget {
 
   void langCallback(
     BuildContext context,
-    DisplaySettings _display, [
+    DisplaySettings _displaySettings, [
     Locale? locale,
   ]) {
     Navigator.pop(context);
 
     if (locale == null) {
-      DB().display = _display.copyWithNull(languageCode: true);
+      DB().displaySettings = _displaySettings.copyWithNull(languageCode: true);
     } else {
-      DB().display = _display.copyWith(languageCode: locale);
+      DB().displaySettings = _displaySettings.copyWith(languageCode: locale);
     }
 
     logger.v("[config] languageCode = $locale");
   }
 
-  Widget _buildColor(BuildContext context, Box<ColorSettings> colorBox, _) {
-    final ColorSettings _colorSettings = colorBox.get(
+  Widget _buildColorSettings(BuildContext context, Box<ColorSettings> box, _) {
+    final ColorSettings _colorSettings = box.get(
       DB.colorSettingsKey,
       defaultValue: const ColorSettings(),
     )!;
@@ -210,12 +210,12 @@ class AppearanceSettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDisplay(
+  Widget _buildDisplaySettings(
     BuildContext context,
-    Box<DisplaySettings> displayBox,
+    Box<DisplaySettings> box,
     _,
   ) {
-    final DisplaySettings _display = displayBox.get(
+    final DisplaySettings _displaySettings = box.get(
       DB.colorSettingsKey,
       defaultValue: const DisplaySettings(),
     )!;
@@ -224,33 +224,34 @@ class AppearanceSettingsPage extends StatelessWidget {
       children: <Widget>[
         SettingsListTile(
           titleString: S.of(context).language,
-          trailingString: DB().display.languageCode != null
-              ? languageCodeToStrings[_display.languageCode]
+          trailingString: DB().displaySettings.languageCode != null
+              ? languageCodeToStrings[_displaySettings.languageCode]
               : null,
           onTap: () => showDialog(
             context: context,
             builder: (_) => _LanguagePicker(
-              currentLocale: _display.languageCode,
-              onChanged: (locale) => langCallback(context, _display, locale),
+              currentLocale: _displaySettings.languageCode,
+              onChanged: (locale) =>
+                  langCallback(context, _displaySettings, locale),
             ),
           ),
         ),
         SettingsListTile.switchTile(
-          value: _display.isPieceCountInHandShown,
-          onChanged: (val) =>
-              DB().display = _display.copyWith(isPieceCountInHandShown: val),
+          value: _displaySettings.isPieceCountInHandShown,
+          onChanged: (val) => DB().displaySettings =
+              _displaySettings.copyWith(isPieceCountInHandShown: val),
           titleString: S.of(context).isPieceCountInHandShown,
         ),
         SettingsListTile.switchTile(
-          value: _display.isNotationsShown,
-          onChanged: (val) =>
-              DB().display = _display.copyWith(isNotationsShown: val),
+          value: _displaySettings.isNotationsShown,
+          onChanged: (val) => DB().displaySettings =
+              _displaySettings.copyWith(isNotationsShown: val),
           titleString: S.of(context).isNotationsShown,
         ),
         SettingsListTile.switchTile(
-          value: _display.isHistoryNavigationToolbarShown,
-          onChanged: (val) => DB().display =
-              _display.copyWith(isHistoryNavigationToolbarShown: val),
+          value: _displaySettings.isHistoryNavigationToolbarShown,
+          onChanged: (val) => DB().displaySettings =
+              _displaySettings.copyWith(isHistoryNavigationToolbarShown: val),
           titleString: S.of(context).isHistoryNavigationToolbarShown,
         ),
         SettingsListTile(
@@ -263,7 +264,7 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile(
           titleString: S.of(context).pointStyle,
-          onTap: () => setPointStyle(context, _display),
+          onTap: () => setPointStyle(context, _displaySettings),
         ),
         SettingsListTile(
           titleString: S.of(context).pointWidth,
@@ -300,12 +301,12 @@ class AppearanceSettingsPage extends StatelessWidget {
       body: SettingsList(
         children: [
           ValueListenableBuilder(
-            valueListenable: DB().listenDisplay,
-            builder: _buildDisplay,
+            valueListenable: DB().listenDisplaySettings,
+            builder: _buildDisplaySettings,
           ),
           ValueListenableBuilder(
             valueListenable: DB().listenColorSettings,
-            builder: _buildColor,
+            builder: _buildColorSettings,
           ),
         ],
       ),

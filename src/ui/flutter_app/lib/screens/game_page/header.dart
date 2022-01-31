@@ -22,7 +22,7 @@ class GameHeader extends StatefulWidget implements PreferredSizeWidget {
 
   @override
   final Size preferredSize = Size.fromHeight(
-    kToolbarHeight + DB().display.boardTop,
+    kToolbarHeight + DB().displaySettings.boardTop,
   );
 
   @override

@@ -24,22 +24,23 @@ class _FontSizeSlider extends StatelessWidget {
     return Semantics(
       label: S.of(context).fontSize,
       child: ValueListenableBuilder(
-        valueListenable: DB().listenDisplay,
-        builder: (context, Box<DisplaySettings> displayBox, _) {
-          final DisplaySettings _display = displayBox.get(
+        valueListenable: DB().listenDisplaySettings,
+        builder: (context, Box<DisplaySettings> box, _) {
+          final DisplaySettings _displaySettings = box.get(
             DB.colorSettingsKey,
             defaultValue: const DisplaySettings(),
           )!;
 
           return Slider(
-            value: _display.fontScale,
+            value: _displaySettings.fontScale,
             min: 1,
             max: 2,
             divisions: 16,
-            label: _display.fontScale.toStringAsFixed(2),
+            label: _displaySettings.fontScale.toStringAsFixed(2),
             onChanged: (value) {
               logger.v("[config] fontSize value: $value");
-              DB().display = _display.copyWith(fontScale: value);
+              DB().displaySettings =
+                  _displaySettings.copyWith(fontScale: value);
             },
           );
         },

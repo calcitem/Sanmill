@@ -39,13 +39,13 @@ class TapHandler {
             showTip(S.of(context).tipMill, snackBar: true);
           } else {
             if (gameMode == GameMode.humanVsAi) {
-              if (DB().rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
+              if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                 showTip(S.of(context).continueToMakeMove);
               } else {
                 showTip(S.of(context).tipPlaced);
               }
             } else {
-              if (DB().rules.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
+              if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                 // TODO: HumanVsHuman - Change tip
                 showTip(S.of(context).tipPlaced);
               } else {
@@ -86,10 +86,10 @@ class TapHandler {
           final pieceOnBoardCount =
               position.pieceOnBoardCount[controller.gameInstance.sideToMove];
           if (position.phase == Phase.moving &&
-              DB().rules.mayFly &&
-              (pieceOnBoardCount == DB().rules.flyPieceCount ||
+              DB().ruleSettings.mayFly &&
+              (pieceOnBoardCount == DB().ruleSettings.flyPieceCount ||
                   pieceOnBoardCount == 3)) {
-            // TODO: [Calcitem, Leptopoda] why is the [DB().rules.flyPieceCount] not respected?
+            // TODO: [Calcitem, Leptopoda] Why is the [DB().ruleSettings.flyPieceCount] not respected?
             logger.v("$_tag May fly.");
             showTip(S.of(context).tipCanMoveToAnyPoint, snackBar: true);
           } else {
@@ -165,7 +165,8 @@ class TapHandler {
         if (position._posKeyHistory.isEmpty ||
             position._posKeyHistory.last != position.st.key) {
           position._posKeyHistory.add(position.st.key);
-          if (DB().rules.threefoldRepetitionRule && position._hasGameCycle) {
+          if (DB().ruleSettings.threefoldRepetitionRule &&
+              position._hasGameCycle) {
             position._setGameOver(
               PieceColor.draw,
               GameOverReason.drawThreefoldRepetition,

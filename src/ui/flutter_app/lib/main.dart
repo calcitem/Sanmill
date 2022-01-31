@@ -73,14 +73,14 @@ class SanmillApp extends StatelessWidget {
     DB(window.platformDispatcher.locale);
 
     return ValueListenableBuilder(
-      valueListenable: DB().listenDisplay,
+      valueListenable: DB().listenDisplaySettings,
       builder: _buildApp,
     );
   }
 
   Widget _buildApp(BuildContext context, Box<DisplaySettings> box, Widget? _) {
-    final DisplaySettings _display = box.get(
-      DB.displayKey,
+    final DisplaySettings _displaySettings = box.get(
+      DB.displaySettingsKey,
       defaultValue: const DisplaySettings(),
     )!;
 
@@ -89,7 +89,7 @@ class SanmillApp extends StatelessWidget {
         ...S.localizationsDelegates,
         CustomFeedbackLocalizationsDelegate.delegate,
       ],
-      localeOverride: _display.languageCode,
+      localeOverride: _displaySettings.languageCode,
       theme: AppTheme.feedbackTheme,
       child: MaterialApp(
         /// Add navigator key from Catcher.
@@ -98,14 +98,14 @@ class SanmillApp extends StatelessWidget {
         key: GlobalKey<ScaffoldState>(),
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
-        locale: _display.languageCode,
+        locale: _displaySettings.languageCode,
         theme: AppTheme.lightThemeData,
         darkTheme: AppTheme.darkThemeData,
         debugShowCheckedModeBanner: EnvironmentConfig.devMode,
         builder: (context, child) {
           return MediaQuery(
             data: MediaQuery.of(context).copyWith(
-              textScaleFactor: _display.fontScale,
+              textScaleFactor: _displaySettings.fontScale,
             ),
             child: child!,
           );

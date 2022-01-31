@@ -24,21 +24,21 @@ class _BoardTopSlider extends StatelessWidget {
     return Semantics(
       label: S.of(context).boardTop,
       child: ValueListenableBuilder(
-        valueListenable: DB().listenDisplay,
-        builder: (context, Box<DisplaySettings> displayBox, _) {
-          final DisplaySettings _display = displayBox.get(
+        valueListenable: DB().listenDisplaySettings,
+        builder: (context, Box<DisplaySettings> box, _) {
+          final DisplaySettings _displaySettings = box.get(
             DB.colorSettingsKey,
             defaultValue: const DisplaySettings(),
           )!;
 
           return Slider(
-            value: _display.boardTop,
+            value: _displaySettings.boardTop,
             max: 288.0,
             divisions: 288,
-            label: _display.boardTop.toStringAsFixed(1),
+            label: _displaySettings.boardTop.toStringAsFixed(1),
             onChanged: (value) {
               logger.v("[config] AnimationDuration value: $value");
-              DB().display = _display.copyWith(boardTop: value);
+              DB().displaySettings = _displaySettings.copyWith(boardTop: value);
             },
           );
         },

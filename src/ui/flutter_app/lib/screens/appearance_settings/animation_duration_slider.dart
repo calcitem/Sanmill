@@ -24,21 +24,22 @@ class _AnimationDurationSlider extends StatelessWidget {
     return Semantics(
       label: S.of(context).animationDuration,
       child: ValueListenableBuilder(
-        valueListenable: DB().listenDisplay,
-        builder: (context, Box<DisplaySettings> displayBox, _) {
-          final DisplaySettings _display = displayBox.get(
+        valueListenable: DB().listenDisplaySettings,
+        builder: (context, Box<DisplaySettings> box, _) {
+          final DisplaySettings _displaySettings = box.get(
             DB.colorSettingsKey,
             defaultValue: const DisplaySettings(),
           )!;
 
           return Slider(
-            value: _display.animationDuration,
+            value: _displaySettings.animationDuration,
             max: 5.0,
             divisions: 50,
-            label: _display.animationDuration.toStringAsFixed(1),
+            label: _displaySettings.animationDuration.toStringAsFixed(1),
             onChanged: (value) {
               logger.v("[config] AnimationDuration value: $value");
-              DB().display = _display.copyWith(animationDuration: value);
+              DB().displaySettings =
+                  _displaySettings.copyWith(animationDuration: value);
             },
           );
         },

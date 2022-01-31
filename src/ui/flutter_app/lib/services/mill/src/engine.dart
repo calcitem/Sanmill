@@ -156,7 +156,7 @@ class Engine {
     logger.i("$_tag reloaded engine options");
 
     final _generalSettings = DB().generalSettings;
-    final _rules = DB().rules;
+    final _ruleSettings = DB().ruleSettings;
 
     await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
     await _sendOptions("Algorithm", _generalSettings.algorithm?.index ?? 2);
@@ -169,36 +169,42 @@ class Engine {
     await _sendOptions("MoveTime", _generalSettings.moveTime);
     await _sendOptions("AiIsLazy", _generalSettings.aiIsLazy);
     await _sendOptions("Shuffling", _generalSettings.shufflingEnabled);
-    await _sendOptions("PiecesCount", _rules.piecesCount);
-    await _sendOptions("FlyPieceCount", _rules.flyPieceCount);
-    await _sendOptions("PiecesAtLeastCount", _rules.piecesAtLeastCount);
-    await _sendOptions("HasDiagonalLines", _rules.hasDiagonalLines);
-    await _sendOptions("HasBannedLocations", _rules.hasBannedLocations);
-    await _sendOptions("MayMoveInPlacingPhase", _rules.mayMoveInPlacingPhase);
-    await _sendOptions("IsDefenderMoveFirst", _rules.isDefenderMoveFirst);
-    await _sendOptions("MayRemoveMultiple", _rules.mayRemoveMultiple);
+    await _sendOptions("PiecesCount", _ruleSettings.piecesCount);
+    await _sendOptions("FlyPieceCount", _ruleSettings.flyPieceCount);
+    await _sendOptions("PiecesAtLeastCount", _ruleSettings.piecesAtLeastCount);
+    await _sendOptions("HasDiagonalLines", _ruleSettings.hasDiagonalLines);
+    await _sendOptions("HasBannedLocations", _ruleSettings.hasBannedLocations);
+    await _sendOptions(
+      "MayMoveInPlacingPhase",
+      _ruleSettings.mayMoveInPlacingPhase,
+    );
+    await _sendOptions(
+      "IsDefenderMoveFirst",
+      _ruleSettings.isDefenderMoveFirst,
+    );
+    await _sendOptions("MayRemoveMultiple", _ruleSettings.mayRemoveMultiple);
     await _sendOptions(
       "MayRemoveFromMillsAlways",
-      _rules.mayRemoveFromMillsAlways,
+      _ruleSettings.mayRemoveFromMillsAlways,
     );
     await _sendOptions(
       "MayOnlyRemoveUnplacedPieceInPlacingPhase",
-      _rules.mayOnlyRemoveUnplacedPieceInPlacingPhase,
+      _ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase,
     );
     await _sendOptions(
       "IsWhiteLoseButNotDrawWhenBoardFull",
-      _rules.isWhiteLoseButNotDrawWhenBoardFull,
+      _ruleSettings.isWhiteLoseButNotDrawWhenBoardFull,
     );
     await _sendOptions(
       "IsLoseButNotChangeSideWhenNoWay",
-      _rules.isLoseButNotChangeSideWhenNoWay,
+      _ruleSettings.isLoseButNotChangeSideWhenNoWay,
     );
-    await _sendOptions("MayFly", _rules.mayFly);
-    await _sendOptions("NMoveRule", _rules.nMoveRule);
-    await _sendOptions("EndgameNMoveRule", _rules.endgameNMoveRule);
+    await _sendOptions("MayFly", _ruleSettings.mayFly);
+    await _sendOptions("NMoveRule", _ruleSettings.nMoveRule);
+    await _sendOptions("EndgameNMoveRule", _ruleSettings.endgameNMoveRule);
     await _sendOptions(
       "ThreefoldRepetitionRule",
-      _rules.threefoldRepetitionRule,
+      _ruleSettings.threefoldRepetitionRule,
     );
   }
 

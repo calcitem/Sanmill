@@ -35,11 +35,14 @@ class RuleSettingsPage extends StatelessWidget {
   const RuleSettingsPage({Key? key}) : super(key: key);
 
   // General
-  void _setNTotalPiecesEachSide(BuildContext context, RuleSettings _rules) {
+  void _setNTotalPiecesEachSide(
+    BuildContext context,
+    RuleSettings _ruleSettings,
+  ) {
     void _callback(int? piecesCount) {
       Navigator.pop(context);
 
-      DB().rules = _rules.copyWith(piecesCount: piecesCount);
+      DB().ruleSettings = _ruleSettings.copyWith(piecesCount: piecesCount);
 
       logger.v("[config] piecesCount = $piecesCount");
     }
@@ -47,17 +50,17 @@ class RuleSettingsPage extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       builder: (_) => _PieceCountModal(
-        piecesCount: _rules.piecesCount,
+        piecesCount: _ruleSettings.piecesCount,
         onChanged: _callback,
       ),
     );
   }
 
-  void _setNMoveRule(BuildContext context, RuleSettings _rules) {
+  void _setNMoveRule(BuildContext context, RuleSettings _ruleSettings) {
     void _callback(int? nMoveRule) {
       Navigator.pop(context);
 
-      DB().rules = _rules.copyWith(nMoveRule: nMoveRule);
+      DB().ruleSettings = _ruleSettings.copyWith(nMoveRule: nMoveRule);
 
       logger.v("[config] nMoveRule = $nMoveRule");
     }
@@ -65,17 +68,18 @@ class RuleSettingsPage extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       builder: (_) => _NMoveRuleModal(
-        nMoveRule: _rules.nMoveRule,
+        nMoveRule: _ruleSettings.nMoveRule,
         onChanged: _callback,
       ),
     );
   }
 
-  void _setEndgameNMoveRule(BuildContext context, RuleSettings _rules) {
+  void _setEndgameNMoveRule(BuildContext context, RuleSettings _ruleSettings) {
     void _callback(int? endgameNMoveRule) {
       Navigator.pop(context);
 
-      DB().rules = _rules.copyWith(endgameNMoveRule: endgameNMoveRule);
+      DB().ruleSettings =
+          _ruleSettings.copyWith(endgameNMoveRule: endgameNMoveRule);
 
       logger.v("[config] endgameNMoveRule = $endgameNMoveRule");
     }
@@ -83,17 +87,17 @@ class RuleSettingsPage extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       builder: (_) => _EndGameNMoveRuleModal(
-        endgameNMoveRule: _rules.endgameNMoveRule,
+        endgameNMoveRule: _ruleSettings.endgameNMoveRule,
         onChanged: _callback,
       ),
     );
   }
 
-  void _setFlyPieceCount(BuildContext context, RuleSettings _rules) {
+  void _setFlyPieceCount(BuildContext context, RuleSettings _ruleSettings) {
     void _callback(int? flyPieceCount) {
       Navigator.pop(context);
 
-      DB().rules = _rules.copyWith(flyPieceCount: flyPieceCount);
+      DB().ruleSettings = _ruleSettings.copyWith(flyPieceCount: flyPieceCount);
 
       logger.v("[config] flyPieceCount = $flyPieceCount");
     }
@@ -101,49 +105,53 @@ class RuleSettingsPage extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       builder: (_) => _FlyPieceCountModal(
-        flyPieceCount: _rules.flyPieceCount,
+        flyPieceCount: _ruleSettings.flyPieceCount,
         onChanged: _callback,
       ),
     );
   }
 
-  void _setHasDiagonalLines(RuleSettings _rules, bool value) {
-    DB().rules = _rules.copyWith(hasDiagonalLines: value);
+  void _setHasDiagonalLines(RuleSettings _ruleSettings, bool value) {
+    DB().ruleSettings = _ruleSettings.copyWith(hasDiagonalLines: value);
 
     logger.v("[config] hasDiagonalLines: $value");
   }
 
-  void _setAllowFlyingAllowed(RuleSettings _rules, bool value) {
-    DB().rules = _rules.copyWith(mayFly: value);
+  void _setAllowFlyingAllowed(RuleSettings _ruleSettings, bool value) {
+    DB().ruleSettings = _ruleSettings.copyWith(mayFly: value);
 
     logger.v("[config] mayFly: $value");
   }
 
-  void _setThreefoldRepetitionRule(RuleSettings _rules, bool value) {
-    DB().rules = _rules.copyWith(threefoldRepetitionRule: value);
+  void _setThreefoldRepetitionRule(RuleSettings _ruleSettings, bool value) {
+    DB().ruleSettings = _ruleSettings.copyWith(threefoldRepetitionRule: value);
 
     logger.v("[config] threefoldRepetitionRule: $value");
   }
 
   // Placing
-  void _setHasBannedLocations(RuleSettings _rules, bool value) {
-    DB().rules = _rules.copyWith(hasBannedLocations: value);
+  void _setHasBannedLocations(RuleSettings _ruleSettings, bool value) {
+    DB().ruleSettings = _ruleSettings.copyWith(hasBannedLocations: value);
 
     logger.v("[config] hasBannedLocations: $value");
   }
 
-  void _setIsWhiteLoseButNotDrawWhenBoardFull(RuleSettings _rules, bool value) {
-    DB().rules = _rules.copyWith(isWhiteLoseButNotDrawWhenBoardFull: value);
+  void _setIsWhiteLoseButNotDrawWhenBoardFull(
+    RuleSettings _ruleSettings,
+    bool value,
+  ) {
+    DB().ruleSettings =
+        _ruleSettings.copyWith(isWhiteLoseButNotDrawWhenBoardFull: value);
 
     logger.v("[config] isWhiteLoseButNotDrawWhenBoardFull: $value");
   }
 
   void _setMayOnlyRemoveUnplacedPieceInPlacingPhase(
-    RuleSettings _rules,
+    RuleSettings _ruleSettings,
     bool value,
   ) {
-    DB().rules =
-        _rules.copyWith(mayOnlyRemoveUnplacedPieceInPlacingPhase: value);
+    DB().ruleSettings =
+        _ruleSettings.copyWith(mayOnlyRemoveUnplacedPieceInPlacingPhase: value);
 
     logger.v("[config] mayOnlyRemoveUnplacedPieceInPlacingPhase: $value");
   }
@@ -151,10 +159,10 @@ class RuleSettingsPage extends StatelessWidget {
   // Moving
   void _setMayMoveInPlacingPhase(
     BuildContext context,
-    RuleSettings _rules,
+    RuleSettings _ruleSettings,
     bool value,
   ) {
-    DB().rules = _rules.copyWith(mayMoveInPlacingPhase: value);
+    DB().ruleSettings = _ruleSettings.copyWith(mayMoveInPlacingPhase: value);
 
     logger.v("[config] mayMoveInPlacingPhase: $value");
 
@@ -164,39 +172,43 @@ class RuleSettingsPage extends StatelessWidget {
     }
   }
 
-  void _setIsDefenderMoveFirst(RuleSettings _rules, bool value) {
-    DB().rules = _rules.copyWith(isDefenderMoveFirst: value);
+  void _setIsDefenderMoveFirst(RuleSettings _ruleSettings, bool value) {
+    DB().ruleSettings = _ruleSettings.copyWith(isDefenderMoveFirst: value);
 
     logger.v("[config] isDefenderMoveFirst: $value");
   }
 
-  void _setIsLoseButNotChangeSideWhenNoWay(RuleSettings _rules, bool value) {
-    DB().rules = _rules.copyWith(isLoseButNotChangeSideWhenNoWay: value);
+  void _setIsLoseButNotChangeSideWhenNoWay(
+    RuleSettings _ruleSettings,
+    bool value,
+  ) {
+    DB().ruleSettings =
+        _ruleSettings.copyWith(isLoseButNotChangeSideWhenNoWay: value);
 
     logger.v("[config] isLoseButNotChangeSideWhenNoWay: $value");
   }
 
   // Removing
-  void _setAllowRemovePieceInMill(RuleSettings _rules, bool value) {
-    DB().rules = _rules.copyWith(mayRemoveFromMillsAlways: value);
+  void _setAllowRemovePieceInMill(RuleSettings _ruleSettings, bool value) {
+    DB().ruleSettings = _ruleSettings.copyWith(mayRemoveFromMillsAlways: value);
 
     logger.v("[config] mayRemoveFromMillsAlways: $value");
   }
 
   void _setAllowRemoveMultiPiecesWhenCloseMultiMill(
-    RuleSettings _rules,
+    RuleSettings _ruleSettings,
     bool value,
   ) {
-    DB().rules = _rules.copyWith(mayRemoveMultiple: value);
+    DB().ruleSettings = _ruleSettings.copyWith(mayRemoveMultiple: value);
 
     logger.v("[config] mayRemoveMultiple: $value");
   }
 
-  Widget _buildRules(BuildContext context, Box<RuleSettings> rulesBox, _) {
-    final locale = DB().display.languageCode;
+  Widget _buildRuleSettings(BuildContext context, Box<RuleSettings> box, _) {
+    final locale = DB().displaySettings.languageCode;
 
-    final RuleSettings _rules = rulesBox.get(
-      DB.rulesKey,
+    final RuleSettings _ruleSettings = box.get(
+      DB.ruleSettingsKey,
       defaultValue: RuleSettings.fromLocale(locale),
     )!;
     return SettingsList(
@@ -207,30 +219,31 @@ class RuleSettingsPage extends StatelessWidget {
             SettingsListTile(
               titleString: S.of(context).piecesCount,
               subtitleString: S.of(context).piecesCount_Detail,
-              trailingString: _rules.piecesCount.toString(),
-              onTap: () => _setNTotalPiecesEachSide(context, _rules),
+              trailingString: _ruleSettings.piecesCount.toString(),
+              onTap: () => _setNTotalPiecesEachSide(context, _ruleSettings),
             ),
             SettingsListTile.switchTile(
-              value: _rules.hasDiagonalLines,
-              onChanged: (val) => _setHasDiagonalLines(_rules, val),
+              value: _ruleSettings.hasDiagonalLines,
+              onChanged: (val) => _setHasDiagonalLines(_ruleSettings, val),
               titleString: S.of(context).hasDiagonalLines,
               subtitleString: S.of(context).hasDiagonalLines_Detail,
             ),
             SettingsListTile(
               titleString: S.of(context).nMoveRule,
               subtitleString: S.of(context).nMoveRule_Detail,
-              trailingString: _rules.nMoveRule.toString(),
-              onTap: () => _setNMoveRule(context, _rules),
+              trailingString: _ruleSettings.nMoveRule.toString(),
+              onTap: () => _setNMoveRule(context, _ruleSettings),
             ),
             SettingsListTile(
               titleString: S.of(context).endgameNMoveRule,
               subtitleString: S.of(context).endgameNMoveRule_Detail,
-              trailingString: _rules.endgameNMoveRule.toString(),
-              onTap: () => _setEndgameNMoveRule(context, _rules),
+              trailingString: _ruleSettings.endgameNMoveRule.toString(),
+              onTap: () => _setEndgameNMoveRule(context, _ruleSettings),
             ),
             SettingsListTile.switchTile(
-              value: _rules.threefoldRepetitionRule,
-              onChanged: (val) => _setThreefoldRepetitionRule(_rules, val),
+              value: _ruleSettings.threefoldRepetitionRule,
+              onChanged: (val) =>
+                  _setThreefoldRepetitionRule(_ruleSettings, val),
               titleString: S.of(context).threefoldRepetitionRule,
               subtitleString: S.of(context).threefoldRepetitionRule_Detail,
             ),
@@ -240,23 +253,25 @@ class RuleSettingsPage extends StatelessWidget {
           title: Text(S.of(context).placing),
           children: <Widget>[
             SettingsListTile.switchTile(
-              value: _rules.hasBannedLocations,
-              onChanged: (val) => _setHasBannedLocations(_rules, val),
+              value: _ruleSettings.hasBannedLocations,
+              onChanged: (val) => _setHasBannedLocations(_ruleSettings, val),
               titleString: S.of(context).hasBannedLocations,
               subtitleString: S.of(context).hasBannedLocations_Detail,
             ),
             SettingsListTile.switchTile(
-              value: _rules.isWhiteLoseButNotDrawWhenBoardFull,
+              value: _ruleSettings.isWhiteLoseButNotDrawWhenBoardFull,
               onChanged: (val) =>
-                  _setIsWhiteLoseButNotDrawWhenBoardFull(_rules, val),
+                  _setIsWhiteLoseButNotDrawWhenBoardFull(_ruleSettings, val),
               titleString: S.of(context).isWhiteLoseButNotDrawWhenBoardFull,
               subtitleString:
                   S.of(context).isWhiteLoseButNotDrawWhenBoardFull_Detail,
             ),
             SettingsListTile.switchTile(
-              value: _rules.mayOnlyRemoveUnplacedPieceInPlacingPhase,
-              onChanged: (val) =>
-                  _setMayOnlyRemoveUnplacedPieceInPlacingPhase(_rules, val),
+              value: _ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase,
+              onChanged: (val) => _setMayOnlyRemoveUnplacedPieceInPlacingPhase(
+                _ruleSettings,
+                val,
+              ),
               titleString: S.of(context).removeUnplacedPiece,
               subtitleString: S.of(context).removeUnplacedPiece_Detail,
             ),
@@ -267,22 +282,22 @@ class RuleSettingsPage extends StatelessWidget {
           children: <Widget>[
             if (EnvironmentConfig.devMode)
               SettingsListTile.switchTile(
-                value: _rules.mayMoveInPlacingPhase,
+                value: _ruleSettings.mayMoveInPlacingPhase,
                 onChanged: (val) =>
-                    _setMayMoveInPlacingPhase(context, _rules, val),
+                    _setMayMoveInPlacingPhase(context, _ruleSettings, val),
                 titleString: S.of(context).mayMoveInPlacingPhase,
                 subtitleString: S.of(context).mayMoveInPlacingPhase_Detail,
               ),
             SettingsListTile.switchTile(
-              value: _rules.isDefenderMoveFirst,
-              onChanged: (val) => _setIsDefenderMoveFirst(_rules, val),
+              value: _ruleSettings.isDefenderMoveFirst,
+              onChanged: (val) => _setIsDefenderMoveFirst(_ruleSettings, val),
               titleString: S.of(context).isDefenderMoveFirst,
               subtitleString: S.of(context).isDefenderMoveFirst_Detail,
             ),
             SettingsListTile.switchTile(
-              value: _rules.isLoseButNotChangeSideWhenNoWay,
+              value: _ruleSettings.isLoseButNotChangeSideWhenNoWay,
               onChanged: (val) =>
-                  _setIsLoseButNotChangeSideWhenNoWay(_rules, val),
+                  _setIsLoseButNotChangeSideWhenNoWay(_ruleSettings, val),
               titleString: S.of(context).isLoseButNotChangeSideWhenNoWay,
               subtitleString:
                   S.of(context).isLoseButNotChangeSideWhenNoWay_Detail,
@@ -293,16 +308,16 @@ class RuleSettingsPage extends StatelessWidget {
           title: Text(S.of(context).mayFly),
           children: <Widget>[
             SettingsListTile.switchTile(
-              value: _rules.mayFly,
-              onChanged: (val) => _setAllowFlyingAllowed(_rules, val),
+              value: _ruleSettings.mayFly,
+              onChanged: (val) => _setAllowFlyingAllowed(_ruleSettings, val),
               titleString: S.of(context).mayFly,
               subtitleString: S.of(context).mayFly_Detail,
             ),
             SettingsListTile(
               titleString: S.of(context).flyPieceCount,
               subtitleString: S.of(context).flyPieceCount_Detail,
-              trailingString: _rules.flyPieceCount.toString(),
-              onTap: () => _setFlyPieceCount(context, _rules),
+              trailingString: _ruleSettings.flyPieceCount.toString(),
+              onTap: () => _setFlyPieceCount(context, _ruleSettings),
             ),
           ],
         ),
@@ -310,15 +325,18 @@ class RuleSettingsPage extends StatelessWidget {
           title: Text(S.of(context).removing),
           children: <Widget>[
             SettingsListTile.switchTile(
-              value: _rules.mayRemoveFromMillsAlways,
-              onChanged: (val) => _setAllowRemovePieceInMill(_rules, val),
+              value: _ruleSettings.mayRemoveFromMillsAlways,
+              onChanged: (val) =>
+                  _setAllowRemovePieceInMill(_ruleSettings, val),
               titleString: S.of(context).mayRemoveFromMillsAlways,
               subtitleString: S.of(context).mayRemoveFromMillsAlways_Detail,
             ),
             SettingsListTile.switchTile(
-              value: _rules.mayRemoveMultiple,
-              onChanged: (val) =>
-                  _setAllowRemoveMultiPiecesWhenCloseMultiMill(_rules, val),
+              value: _ruleSettings.mayRemoveMultiple,
+              onChanged: (val) => _setAllowRemoveMultiPiecesWhenCloseMultiMill(
+                _ruleSettings,
+                val,
+              ),
               titleString: S.of(context).mayRemoveMultiple,
               subtitleString: S.of(context).mayRemoveMultiple_Detail,
             ),
@@ -337,8 +355,8 @@ class RuleSettingsPage extends StatelessWidget {
         title: Text(S.of(context).ruleSettings),
       ),
       body: ValueListenableBuilder(
-        valueListenable: DB().listenRules,
-        builder: _buildRules,
+        valueListenable: DB().listenRuleSettings,
+        builder: _buildRuleSettings,
       ),
     );
   }

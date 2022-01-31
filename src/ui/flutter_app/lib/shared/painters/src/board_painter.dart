@@ -28,26 +28,26 @@ class BoardPainter extends CustomPainter {
     assert(size.width == size.height);
 
     final position = MillController().position;
-    final colors = DB().colorSettings;
+    final colorSettings = DB().colorSettings;
     final paint = Paint();
 
-    paint.strokeWidth = DB().display.boardBorderLineWidth;
+    paint.strokeWidth = DB().displaySettings.boardBorderLineWidth;
     paint.color = Color.lerp(
-      colors.boardBackgroundColor,
-      colors.boardLineColor,
-      colors.boardLineColor.opacity,
+      colorSettings.boardBackgroundColor,
+      colorSettings.boardLineColor,
+      colorSettings.boardLineColor.opacity,
     )!
         .withOpacity(1);
     paint.style = PaintingStyle.stroke;
 
     _drawBackground(canvas, size);
 
-    if (DB().display.isPieceCountInHandShown &&
+    if (DB().displaySettings.isPieceCountInHandShown &&
         position.phase == Phase.placing) {
       _drawPieceCount(position, canvas, size);
     }
 
-    if (DB().display.isNotationsShown || EnvironmentConfig.devMode) {
+    if (DB().displaySettings.isNotationsShown || EnvironmentConfig.devMode) {
       _drawNotations(canvas, size);
     }
 
@@ -57,7 +57,7 @@ class BoardPainter extends CustomPainter {
     _drawLines(offset, canvas, paint);
 
     // Point
-    if (DB().display.pointStyle != null) {
+    if (DB().displaySettings.pointStyle != null) {
       _drawPoints(offset, canvas, paint);
     }
   }
@@ -81,7 +81,7 @@ class BoardPainter extends CustomPainter {
     // File C
     canvas.drawRect(Rect.fromPoints(offset[0], offset[23]), paint);
 
-    paint.strokeWidth = DB().display.boardInnerLineWidth;
+    paint.strokeWidth = DB().displaySettings.boardInnerLineWidth;
 
     final path = Path();
     // File B
@@ -98,7 +98,7 @@ class BoardPainter extends CustomPainter {
     path.addLine(offset[9], offset[11]);
     path.addLine(offset[12], offset[14]);
 
-    if (DB().rules.hasDiagonalLines) {
+    if (DB().ruleSettings.hasDiagonalLines) {
       // offsetY offsetX diagonal line
       path.addLine(offset[0], offset[6]);
 
@@ -117,8 +117,8 @@ class BoardPainter extends CustomPainter {
 
   /// Draws the points representing each field.
   static void _drawPoints(List<Offset> points, Canvas canvas, Paint paint) {
-    paint.style = DB().display.pointStyle!;
-    final double pointRadius = DB().display.pointWidth;
+    paint.style = DB().displaySettings.pointStyle!;
+    final double pointRadius = DB().displaySettings.pointWidth;
 
     for (final point in points) {
       canvas.drawCircle(point, pointRadius, paint);
@@ -130,7 +130,7 @@ class BoardPainter extends CustomPainter {
     final int pieceInHandCount;
     if (position.pieceOnBoardCount[PieceColor.white] == 0 &&
         position.pieceOnBoardCount[PieceColor.black] == 0) {
-      pieceInHandCount = DB().rules.piecesCount;
+      pieceInHandCount = DB().ruleSettings.piecesCount;
     } else {
       pieceInHandCount = position.pieceInHandCount[PieceColor.black]!;
     }

@@ -22,40 +22,43 @@ import 'package:sanmill/models/rule_settings.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
 class MockedDB extends Mock implements DB {
-  ColorSettings _colorSettings = const ColorSettings();
-  DisplaySettings _display = const DisplaySettings();
   GeneralSettings _generalSettings = const GeneralSettings();
-  RuleSettings _rules = const RuleSettings();
+  RuleSettings _ruleSettings = const RuleSettings();
+  DisplaySettings _displaySettings = const DisplaySettings();
+  ColorSettings _colorSettings = const ColorSettings();
 
-  /// gets the given [ColorSettings] from the settings Box
-  @override
-  ColorSettings get colorSettings => _colorSettings;
-
-  /// saves the given [colors] to the settings Box
-  @override
-  set colorSettings(ColorSettings colors) => _colorSettings = colors;
-
-  /// gets the given [DisplaySettings] from the settings Box
-  @override
-  DisplaySettings get display => _display;
-
-  /// saves the given [display] to the settings Box
-  @override
-  set display(DisplaySettings display) => _display = display;
-
-  /// gets the given [GeneralSettings] from the settings Box
+  /// Gets the given [generalSettings] from the settings Box
   @override
   GeneralSettings get generalSettings => _generalSettings;
 
-  /// saves the given [settings] to the settings Box
+  /// Saves the given [generalSettings] to the settings Box
   @override
-  set generalSettings(GeneralSettings settings) => _generalSettings = settings;
+  set generalSettings(GeneralSettings generalSettings) =>
+      _generalSettings = generalSettings;
 
-  /// gets the given [RuleSettings] from the settings Box
+  /// Gets the given [ruleSettings] from the settings Box
   @override
-  RuleSettings get rules => _rules;
+  RuleSettings get ruleSettings => _ruleSettings;
 
-  /// saves the given [rules] to the settings Box
+  /// Saves the given [ruleSettings] to the settings Box
   @override
-  set rules(RuleSettings rules) => _rules = rules;
+  set ruleSettings(RuleSettings ruleSettings) => _ruleSettings = ruleSettings;
+
+  /// Gets the given [displaySettings] from the settings Box
+  @override
+  DisplaySettings get displaySettings => _displaySettings;
+
+  /// Saves the given [displaySettings] to the settings Box
+  @override
+  set displaySettings(DisplaySettings displaySettings) =>
+      _displaySettings = displaySettings;
+
+  /// Gets the given [colorSettings] from the settings Box
+  @override
+  ColorSettings get colorSettings => _colorSettings;
+
+  /// Saves the given [colorSettings] to the settings Box
+  @override
+  set colorSettings(ColorSettings colorSettings) =>
+      _colorSettings = colorSettings;
 }
