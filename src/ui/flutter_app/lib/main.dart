@@ -49,7 +49,7 @@ Future<void> main() async {
     enableFlutterDriverExtension();
   }
 
-  await DB.initDatabase();
+  await DB.init();
 
   _initUI();
 
