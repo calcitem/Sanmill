@@ -1142,5 +1142,13 @@
         "example": "3"
       }
     }
+  },
+  "appearance": "চেহারা",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "generalSettings": "সাধারণ সেটিংস",
+  "@generalSettings": {
+    "description": "General Settings"
   }
 }

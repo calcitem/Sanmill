@@ -311,7 +311,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "ప్రాధాన్యతలు",
+  "generalSettings": "సాధారణ అమర్పులు",
   "@generalSettings": {
     "description": "General Settings"
   },
@@ -777,7 +777,7 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "appearance": "వ్యక్తిగతీకరణ",
+  "appearance": "స్వరూపం",
   "@appearance": {
     "description": "Appearance"
   },

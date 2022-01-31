@@ -311,7 +311,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "Tercihler",
+  "generalSettings": "Genel Ayarlar",
   "@generalSettings": {
     "description": "General Settings"
   },
@@ -777,7 +777,7 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "appearance": "Kişiselleştirme",
+  "appearance": "Görünüm",
   "@appearance": {
     "description": "Appearance"
   },

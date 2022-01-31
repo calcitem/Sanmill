@@ -311,7 +311,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "تنظیمات بازی",
+  "generalSettings": "تنظیمات عمومی",
   "@generalSettings": {
     "description": "General Settings"
   },
@@ -777,7 +777,7 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "appearance": "تنظیمات ظاهر",
+  "appearance": "ظاهر",
   "@appearance": {
     "description": "Appearance"
   },

@@ -311,7 +311,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "પસંદગીઓ",
+  "generalSettings": "સામાન્ય સુયોજનો",
   "@generalSettings": {
     "description": "General Settings"
   },
@@ -777,7 +777,7 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "appearance": "વૈયક્તિકરણ",
+  "appearance": "દેખાવ",
   "@appearance": {
     "description": "Appearance"
   },
