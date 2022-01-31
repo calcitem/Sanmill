@@ -25,10 +25,10 @@ class _BoardTopSlider extends StatelessWidget {
       label: S.of(context).boardTop,
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplay,
-        builder: (context, Box<Display> displayBox, _) {
-          final Display _display = displayBox.get(
+        builder: (context, Box<DisplaySettings> displayBox, _) {
+          final DisplaySettings _display = displayBox.get(
             DB.colorSettingsKey,
-            defaultValue: const Display(),
+            defaultValue: const DisplaySettings(),
           )!;
 
           return Slider(

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/models/display.dart';
+import 'package:sanmill/models/display_settings.dart';
 import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/services/storage/storage.dart';
 
@@ -65,7 +65,8 @@ void main() {
         // initialize the test
         final mockedDB = MockedDB();
         // ignore: deprecated_member_use_from_same_package
-        mockedDB.display = const Display(standardNotationEnabled: false);
+        mockedDB.display =
+            const DisplaySettings(standardNotationEnabled: false);
         DB.instance = mockedDB;
         Audios.instance = MockedAudios();
         final controller = MillController();

@@ -22,7 +22,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:sanmill/services/storage/adapters/adapters.dart';
 import 'package:sanmill/shared/theme/colors.dart';
 
-part 'color.g.dart';
+part 'color_settings.g.dart';
 
 /// Color data model
 ///

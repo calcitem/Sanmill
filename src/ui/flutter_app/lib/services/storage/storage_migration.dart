@@ -24,10 +24,10 @@ part of 'package:sanmill/services/storage/storage.dart';
 class MigrationValues {
   const MigrationValues._();
 
-  /// [Display.pieceWidth] migration value.
+  /// [DisplaySettings.pieceWidth] migration value.
   static const pieceWidth = 7;
 
-  /// [Display.fontScale] migration value.
+  /// [DisplaySettings.fontScale] migration value.
   static const fontScale = 16;
 }
 
@@ -188,9 +188,9 @@ class _DatabaseV1 {
     final _json = await _loadFile(_file!);
     if (_json != null) {
       DB().colorSettings = ColorSettings.fromJson(_json);
-      DB().display = Display.fromJson(_json);
+      DB().display = DisplaySettings.fromJson(_json);
       DB().generalSettings = GeneralSettings.fromJson(_json);
-      DB().rules = Rules.fromJson(_json);
+      DB().rules = RuleSettings.fromJson(_json);
     }
     await _deleteFile(_file);
   }

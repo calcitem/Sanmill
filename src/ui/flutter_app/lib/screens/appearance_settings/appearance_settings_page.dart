@@ -17,8 +17,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/models/color.dart';
-import 'package:sanmill/models/display.dart';
+import 'package:sanmill/models/color_settings.dart';
+import 'package:sanmill/models/display_settings.dart';
 import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
@@ -49,7 +49,7 @@ class AppearanceSettingsPage extends StatelessWidget {
         builder: (_) => const _BoardInnerWidthSlider(),
       );
 
-  void setPointStyle(BuildContext context, Display _display) {
+  void setPointStyle(BuildContext context, DisplaySettings _display) {
     void _callback(PaintingStyle? pointStyle) {
       Navigator.pop(context);
       DB().display = pointStyle == null
@@ -93,7 +93,11 @@ class AppearanceSettingsPage extends StatelessWidget {
         builder: (_) => const _AnimationDurationSlider(),
       );
 
-  void langCallback(BuildContext context, Display _display, [Locale? locale]) {
+  void langCallback(
+    BuildContext context,
+    DisplaySettings _display, [
+    Locale? locale,
+  ]) {
     Navigator.pop(context);
 
     if (locale == null) {
@@ -206,10 +210,14 @@ class AppearanceSettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDisplay(BuildContext context, Box<Display> displayBox, _) {
-    final Display _display = displayBox.get(
+  Widget _buildDisplay(
+    BuildContext context,
+    Box<DisplaySettings> displayBox,
+    _,
+  ) {
+    final DisplaySettings _display = displayBox.get(
       DB.colorSettingsKey,
-      defaultValue: const Display(),
+      defaultValue: const DisplaySettings(),
     )!;
     return SettingsCard(
       title: Text(S.of(context).display),

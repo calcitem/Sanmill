@@ -22,10 +22,10 @@ import 'package:flutter/foundation.dart'
 import 'package:flutter/material.dart' show Color, Locale, PaintingStyle;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/models/color.dart';
-import 'package:sanmill/models/display.dart';
+import 'package:sanmill/models/color_settings.dart';
+import 'package:sanmill/models/display_settings.dart';
 import 'package:sanmill/models/general_settings.dart';
-import 'package:sanmill/models/rules.dart';
+import 'package:sanmill/models/rule_settings.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/adapters/adapters.dart';
 import 'package:sanmill/shared/constants.dart';
@@ -44,7 +44,7 @@ class DB {
   /// If it hasn't been set yet a new one will be created. The given [locale] is only used to set the initial rules.
   factory DB([Locale? locale]) => instance ??= DB._(locale);
 
-  /// Locale to set the initial [Rules].
+  /// Locale to set the initial [RuleSettings].
   final Locale? locale;
 
   /// Internal constructor used to create the instance.
@@ -59,10 +59,10 @@ class DB {
   /// Key at wich the [_colorSettingsBox] will be saved
   static const String _colorSettingsBoxName = "colors";
 
-  /// [Display] box reference
-  static late final Box<Display> _displayBox;
+  /// [DisplaySettings] box reference
+  static late final Box<DisplaySettings> _displayBox;
 
-  /// Key at wich the [Display] will be saved in the [_displayBox]
+  /// Key at wich the [DisplaySettings] will be saved in the [_displayBox]
   static const String displayKey = "settings";
 
   /// Key at wich the [_displayBox] will be saved
@@ -77,10 +77,10 @@ class DB {
   /// Key at wich the [_generalSettingsBox] will be saved
   static const String _generalSettingsBoxName = "generalSettings";
 
-  /// [Rules] box reference
-  static late final Box<Rules> _rulesBox;
+  /// [RuleSettings] box reference
+  static late final Box<RuleSettings> _rulesBox;
 
-  /// Key at wich the [Rules] will be saved in the [_rulesBox]
+  /// Key at wich the [RuleSettings] will be saved in the [_rulesBox]
   static const String rulesKey = "settings";
 
   /// Key at wich the [_rulesBox] will be saved
@@ -124,23 +124,24 @@ class DB {
   ColorSettings get colorSettings =>
       _colorSettingsBox.get(colorSettingsKey) ?? const ColorSettings();
 
-  /// Initializes the [Display] reference
+  /// Initializes the [DisplaySettings] reference
   static Future<void> _initDisplay() async {
     Hive.registerAdapter<Locale?>(LocaleAdapter());
     Hive.registerAdapter<PaintingStyle?>(PaintingStyleAdapter());
-    Hive.registerAdapter<Display>(DisplayAdapter());
-    _displayBox = await Hive.openBox<Display>(_displayBoxName);
+    Hive.registerAdapter<DisplaySettings>(DisplaySettingsAdapter());
+    _displayBox = await Hive.openBox<DisplaySettings>(_displayBoxName);
   }
 
   /// Listens to changes inside the settings Box
-  ValueListenable<Box<Display>> get listenDisplay =>
+  ValueListenable<Box<DisplaySettings>> get listenDisplay =>
       _displayBox.listenable(keys: [displayKey]);
 
   /// Saves the given [display] to the settings Box
-  set display(Display display) => _displayBox.put(displayKey, display);
+  set display(DisplaySettings display) => _displayBox.put(displayKey, display);
 
-  /// Gets the given [Display] from the settings Box
-  Display get display => _displayBox.get(displayKey) ?? const Display();
+  /// Gets the given [DisplaySettings] from the settings Box
+  DisplaySettings get display =>
+      _displayBox.get(displayKey) ?? const DisplaySettings();
 
   /// Initializes the [GeneralSettings] reference
   static Future<void> _initGeneralSettings() async {
@@ -162,34 +163,34 @@ class DB {
   GeneralSettings get generalSettings =>
       _generalSettingsBox.get(generalSettingsKey) ?? const GeneralSettings();
 
-  /// Initializes the [Rules] reference
+  /// Initializes the [RuleSettings] reference
   static Future<void> _initRules() async {
-    Hive.registerAdapter<Rules>(RulesAdapter());
-    _rulesBox = await Hive.openBox<Rules>(_rulesBoxName);
+    Hive.registerAdapter<RuleSettings>(RuleSettingsAdapter());
+    _rulesBox = await Hive.openBox<RuleSettings>(_rulesBoxName);
   }
 
   /// Listens to changes inside the settings Box
-  ValueListenable<Box<Rules>> get listenRules =>
+  ValueListenable<Box<RuleSettings>> get listenRules =>
       _rulesBox.listenable(keys: [rulesKey]);
 
   /// Saves the given [rules] to the settings Box
-  set rules(Rules rules) => _rules = rules;
+  set rules(RuleSettings rules) => _rules = rules;
 
-  /// Gets the given [Rules] from the settings Box
+  /// Gets the given [RuleSettings] from the settings Box
   ///
   /// If no Rules have been saved yet it will Initializes
   /// the box with the rules corresponding to it's [locale].
   /// This means that the first call will save the rules object for the lifespan of the db.
   /// Later changes to the locale won't result in changes.
-  Rules get rules => _rules ??= Rules.fromLocale(locale);
+  RuleSettings get rules => _rules ??= RuleSettings.fromLocale(locale);
 
   /// Saves the given [rules] to the settings Box
-  set _rules(Rules? rules) {
+  set _rules(RuleSettings? rules) {
     if (rules != null) {
       _rulesBox.put(rulesKey, rules);
     }
   }
 
-  /// Gets the given [Rules] from the settings Box
-  Rules? get _rules => _rulesBox.get(rulesKey);
+  /// Gets the given [RuleSettings] from the settings Box
+  RuleSettings? get _rules => _rulesBox.get(rulesKey);
 }

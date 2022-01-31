@@ -17,7 +17,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/models/rules.dart';
+import 'package:sanmill/models/rule_settings.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/storage/storage.dart';
@@ -35,7 +35,7 @@ class RuleSettingsPage extends StatelessWidget {
   const RuleSettingsPage({Key? key}) : super(key: key);
 
   // General
-  void _setNTotalPiecesEachSide(BuildContext context, Rules _rules) {
+  void _setNTotalPiecesEachSide(BuildContext context, RuleSettings _rules) {
     void _callback(int? piecesCount) {
       Navigator.pop(context);
 
@@ -53,7 +53,7 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
-  void _setNMoveRule(BuildContext context, Rules _rules) {
+  void _setNMoveRule(BuildContext context, RuleSettings _rules) {
     void _callback(int? nMoveRule) {
       Navigator.pop(context);
 
@@ -71,7 +71,7 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
-  void _setEndgameNMoveRule(BuildContext context, Rules _rules) {
+  void _setEndgameNMoveRule(BuildContext context, RuleSettings _rules) {
     void _callback(int? endgameNMoveRule) {
       Navigator.pop(context);
 
@@ -89,7 +89,7 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
-  void _setFlyPieceCount(BuildContext context, Rules _rules) {
+  void _setFlyPieceCount(BuildContext context, RuleSettings _rules) {
     void _callback(int? flyPieceCount) {
       Navigator.pop(context);
 
@@ -107,38 +107,41 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
-  void _setHasDiagonalLines(Rules _rules, bool value) {
+  void _setHasDiagonalLines(RuleSettings _rules, bool value) {
     DB().rules = _rules.copyWith(hasDiagonalLines: value);
 
     logger.v("[config] hasDiagonalLines: $value");
   }
 
-  void _setAllowFlyingAllowed(Rules _rules, bool value) {
+  void _setAllowFlyingAllowed(RuleSettings _rules, bool value) {
     DB().rules = _rules.copyWith(mayFly: value);
 
     logger.v("[config] mayFly: $value");
   }
 
-  void _setThreefoldRepetitionRule(Rules _rules, bool value) {
+  void _setThreefoldRepetitionRule(RuleSettings _rules, bool value) {
     DB().rules = _rules.copyWith(threefoldRepetitionRule: value);
 
     logger.v("[config] threefoldRepetitionRule: $value");
   }
 
   // Placing
-  void _setHasBannedLocations(Rules _rules, bool value) {
+  void _setHasBannedLocations(RuleSettings _rules, bool value) {
     DB().rules = _rules.copyWith(hasBannedLocations: value);
 
     logger.v("[config] hasBannedLocations: $value");
   }
 
-  void _setIsWhiteLoseButNotDrawWhenBoardFull(Rules _rules, bool value) {
+  void _setIsWhiteLoseButNotDrawWhenBoardFull(RuleSettings _rules, bool value) {
     DB().rules = _rules.copyWith(isWhiteLoseButNotDrawWhenBoardFull: value);
 
     logger.v("[config] isWhiteLoseButNotDrawWhenBoardFull: $value");
   }
 
-  void _setMayOnlyRemoveUnplacedPieceInPlacingPhase(Rules _rules, bool value) {
+  void _setMayOnlyRemoveUnplacedPieceInPlacingPhase(
+    RuleSettings _rules,
+    bool value,
+  ) {
     DB().rules =
         _rules.copyWith(mayOnlyRemoveUnplacedPieceInPlacingPhase: value);
 
@@ -148,7 +151,7 @@ class RuleSettingsPage extends StatelessWidget {
   // Moving
   void _setMayMoveInPlacingPhase(
     BuildContext context,
-    Rules _rules,
+    RuleSettings _rules,
     bool value,
   ) {
     DB().rules = _rules.copyWith(mayMoveInPlacingPhase: value);
@@ -161,37 +164,40 @@ class RuleSettingsPage extends StatelessWidget {
     }
   }
 
-  void _setIsDefenderMoveFirst(Rules _rules, bool value) {
+  void _setIsDefenderMoveFirst(RuleSettings _rules, bool value) {
     DB().rules = _rules.copyWith(isDefenderMoveFirst: value);
 
     logger.v("[config] isDefenderMoveFirst: $value");
   }
 
-  void _setIsLoseButNotChangeSideWhenNoWay(Rules _rules, bool value) {
+  void _setIsLoseButNotChangeSideWhenNoWay(RuleSettings _rules, bool value) {
     DB().rules = _rules.copyWith(isLoseButNotChangeSideWhenNoWay: value);
 
     logger.v("[config] isLoseButNotChangeSideWhenNoWay: $value");
   }
 
   // Removing
-  void _setAllowRemovePieceInMill(Rules _rules, bool value) {
+  void _setAllowRemovePieceInMill(RuleSettings _rules, bool value) {
     DB().rules = _rules.copyWith(mayRemoveFromMillsAlways: value);
 
     logger.v("[config] mayRemoveFromMillsAlways: $value");
   }
 
-  void _setAllowRemoveMultiPiecesWhenCloseMultiMill(Rules _rules, bool value) {
+  void _setAllowRemoveMultiPiecesWhenCloseMultiMill(
+    RuleSettings _rules,
+    bool value,
+  ) {
     DB().rules = _rules.copyWith(mayRemoveMultiple: value);
 
     logger.v("[config] mayRemoveMultiple: $value");
   }
 
-  Widget _buildRules(BuildContext context, Box<Rules> rulesBox, _) {
+  Widget _buildRules(BuildContext context, Box<RuleSettings> rulesBox, _) {
     final locale = DB().display.languageCode;
 
-    final Rules _rules = rulesBox.get(
+    final RuleSettings _rules = rulesBox.get(
       DB.rulesKey,
-      defaultValue: Rules.fromLocale(locale),
+      defaultValue: RuleSettings.fromLocale(locale),
     )!;
     return SettingsList(
       children: [

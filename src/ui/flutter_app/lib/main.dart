@@ -27,7 +27,7 @@ import 'package:flutter_driver/driver_extension.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/models/display.dart';
+import 'package:sanmill/models/display_settings.dart';
 import 'package:sanmill/screens/home.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
@@ -78,10 +78,10 @@ class SanmillApp extends StatelessWidget {
     );
   }
 
-  Widget _buildApp(BuildContext context, Box<Display> box, Widget? _) {
-    final Display _display = box.get(
+  Widget _buildApp(BuildContext context, Box<DisplaySettings> box, Widget? _) {
+    final DisplaySettings _display = box.get(
       DB.displayKey,
-      defaultValue: const Display(),
+      defaultValue: const DisplaySettings(),
     )!;
 
     return BetterFeedback(

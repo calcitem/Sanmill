@@ -25,10 +25,10 @@ class _PieceWidthSlider extends StatelessWidget {
       label: S.of(context).pieceWidth,
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplay,
-        builder: (context, Box<Display> displayBox, _) {
-          final Display _display = displayBox.get(
+        builder: (context, Box<DisplaySettings> displayBox, _) {
+          final DisplaySettings _display = displayBox.get(
             DB.colorSettingsKey,
-            defaultValue: const Display(),
+            defaultValue: const DisplaySettings(),
           )!;
 
           // divided by [MigrationValues.pieceWidth] to represent the old behavior
