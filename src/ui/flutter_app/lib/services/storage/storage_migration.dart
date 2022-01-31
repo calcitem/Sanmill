@@ -37,7 +37,7 @@ class MigrationValues {
 class _DatabaseMigrator {
   const _DatabaseMigrator._();
 
-  static const _tag = "[Database Migration]";
+  static const _tag = "[Database Migrator]";
 
   /// The newest DB version.
   static const _newVersion = 2;
@@ -52,13 +52,13 @@ class _DatabaseMigrator {
     _migrateFromV1,
   ];
 
-  /// Database box reference
+  /// Database Box reference
   static late Box _databaseBox;
 
-  /// key at which the [_databaseBox] will be saved
+  /// Key at which the [_databaseBox] will be saved
   static const String _databaseBoxName = "database";
 
-  /// key at which the database info will be saved in the [_databaseBox]
+  /// Key at which the database info will be saved in the [_databaseBox]
   static const String _versionKey = "version";
 
   /// Migrates the database version to the [_newVersion].
@@ -78,7 +78,7 @@ class _DatabaseMigrator {
       } else if (DB().generalSettings.usesHiveDB) {
         _currentVersion = 1;
       }
-      logger.v("$_tag: current version is $_currentVersion");
+      logger.v("$_tag: Current version is $_currentVersion");
 
       for (int i = _currentVersion!; i < _newVersion; i++) {
         await _migrations[i].call();
@@ -96,23 +96,32 @@ class _DatabaseMigrator {
     assert(_currentVersion! <= 0);
 
     await _DatabaseV1.migrateDB();
-    logger.i("$_tag migrated from KV");
+    logger.i("$_tag Migrated from KV");
   }
 
-  /// Migration 1 - Sanmill version 1.1.38+2196 - 2021-11-09
+  /// Migration 1 - Sanmill version 1.x.x
   ///
   /// - **Algorithm to enum:** Migrates [DB.generalSettings] to use the new Algorithm enum instead of an int representation.
   /// - **Drawer background color:** Migrates [DB.colorSettings] to merge the drawerBackgroundColor and drawerColor.
   /// This reflects the deprecation of drawerBackgroundColor.
-  /// - **Painting Style:** Migrates [DB.display] to use Flutters [PaintingStyle] enum instead of an int representation.
-  /// - **Piece Width:** Migrates [DB.display] to use a more direct piece width representation so no further calculation is needed.
-  /// - **Font Size:** Migrates [DB.display] store a font scale factor instead of the absolute size.
+  /// - **Painting Style:** Migrates [DB.displaySettings] to use Flutters [PaintingStyle] enum instead of an int representation.
+  /// - **Piece Width:** Migrates [DB.displaySettings] to use a more direct piece width representation so no further calculation is needed.
+  /// - **Font Size:** Migrates [DB.displaySettings] store a font scale factor instead of the absolute size.
   static Future<void> _migrateFromV1() async {
     assert(_currentVersion! <= 1);
 
-    final _settings = DB().generalSettings;
-    DB().generalSettings = _settings.copyWith(
-      algorithm: Algorithms.values[_settings.oldAlgorithm],
+    final _generalSettings = DB().generalSettings;
+    DB().generalSettings = _generalSettings.copyWith(
+      algorithm: Algorithms.values[_generalSettings.oldAlgorithm],
+    );
+
+    final _displaySettings = DB().displaySettings;
+    DB().displaySettings = _displaySettings.copyWith(
+      pointStyle: (_displaySettings.oldPointStyle != 0)
+          ? PaintingStyle.values[_displaySettings.oldPointStyle - 1]
+          : null,
+      pieceWidth: _displaySettings.pieceWidth / MigrationValues.pieceWidth,
+      fontScale: _displaySettings.fontScale / MigrationValues.fontScale,
     );
 
     final _colorSettings = DB().colorSettings;
@@ -124,17 +133,7 @@ class _DatabaseMigrator {
       )?.withAlpha(0xFF),
     );
 
-    final _display = DB().display;
-
-    DB().display = _display.copyWith(
-      pointStyle: (_display.oldPointStyle != 0)
-          ? PaintingStyle.values[_display.oldPointStyle - 1]
-          : null,
-      pieceWidth: _display.pieceWidth / MigrationValues.pieceWidth,
-      fontScale: _display.fontScale / MigrationValues.fontScale,
-    );
-
-    logger.v("$_tag migrated from v1");
+    logger.v("$_tag Migrated from v1");
   }
 }
 
@@ -156,14 +155,14 @@ class _DatabaseV1 {
     }
   }
 
-  /// checks whether the current db is still the old kv store by checking the availability of the json file
+  /// Checks whether the current db is still the old kv store by checking the availability of the json file
   static Future<bool> get usesV1 async {
     final file = await _getFile();
     logger.i("$_tag still uses v1: ${file != null}");
     return file != null;
   }
 
-  /// loads the generalSettings from the old data store
+  /// Loads the generalSettings from the old data store
   static Future<Map<String, dynamic>?> _loadFile(File _file) async {
     assert(await usesV1);
     logger.v("$_tag Loading $_file ...");
@@ -178,7 +177,7 @@ class _DatabaseV1 {
     }
   }
 
-  /// migrates the deprecated Settings to the new [LocalDatabaseService]
+  /// Migrates the deprecated Settings to the new [LocalDatabaseService]
   /// it won't do anything if the
   static Future<void> migrateDB() async {
     logger.i("$_tag migrate from KV");
@@ -187,10 +186,10 @@ class _DatabaseV1 {
 
     final _json = await _loadFile(_file!);
     if (_json != null) {
-      DB().colorSettings = ColorSettings.fromJson(_json);
-      DB().display = DisplaySettings.fromJson(_json);
       DB().generalSettings = GeneralSettings.fromJson(_json);
-      DB().rules = RuleSettings.fromJson(_json);
+      DB().ruleSettings = RuleSettings.fromJson(_json);
+      DB().displaySettings = DisplaySettings.fromJson(_json);
+      DB().colorSettings = ColorSettings.fromJson(_json);
     }
     await _deleteFile(_file);
   }
@@ -198,9 +197,9 @@ class _DatabaseV1 {
   /// deletes the old settings file
   static Future<void> _deleteFile(File _file) async {
     assert(await usesV1);
-    logger.v("$_tag deleting Settings...");
+    logger.v("$_tag Deleting Settings...");
 
     await _file.delete();
-    logger.i("$_tag $_file deleted");
+    logger.i("$_tag $_file Deleted");
   }
 }

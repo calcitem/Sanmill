@@ -36,8 +36,8 @@ class Position {
   final List<PieceColor> _grid = List.filled(7 * 7, PieceColor.none);
 
   final Map<PieceColor, int> pieceInHandCount = {
-    PieceColor.white: DB().rules.piecesCount,
-    PieceColor.black: DB().rules.piecesCount,
+    PieceColor.white: DB().ruleSettings.piecesCount,
+    PieceColor.black: DB().ruleSettings.piecesCount,
   };
   final Map<PieceColor, int> pieceOnBoardCount = {
     PieceColor.white: 0,
@@ -156,14 +156,15 @@ class Position {
       score[PieceColor.draw] = score[PieceColor.draw]! + 1;
 
       // TODO: WAR to judge rule50
-      if (DB().rules.nMoveRule > 0 &&
-          _posKeyHistory.length >= DB().rules.nMoveRule - 1) {
+      if (DB().ruleSettings.nMoveRule > 0 &&
+          _posKeyHistory.length >= DB().ruleSettings.nMoveRule - 1) {
         gameOverReason = GameOverReason.drawRule50;
-      } else if (DB().rules.endgameNMoveRule < DB().rules.nMoveRule &&
+      } else if (DB().ruleSettings.endgameNMoveRule <
+              DB().ruleSettings.nMoveRule &&
           _isThreeEndgame &&
-          _posKeyHistory.length >= DB().rules.endgameNMoveRule - 1) {
+          _posKeyHistory.length >= DB().ruleSettings.endgameNMoveRule - 1) {
         gameOverReason = GameOverReason.drawEndgameRule50;
-      } else if (DB().rules.threefoldRepetitionRule) {
+      } else if (DB().ruleSettings.threefoldRepetitionRule) {
         gameOverReason = GameOverReason.drawThreefoldRepetition; // TODO: Sure?
       } else {
         gameOverReason = GameOverReason.drawBoardIsFull; // TODO: Sure?
@@ -215,7 +216,7 @@ class Position {
     if (_record != null && _record!.move.length > "-(1,2)".length) {
       if (st.key != _posKeyHistory.lastF) {
         _posKeyHistory.add(st.key);
-        if (DB().rules.threefoldRepetitionRule && _hasGameCycle) {
+        if (DB().ruleSettings.threefoldRepetitionRule && _hasGameCycle) {
           _setGameOver(PieceColor.draw, GameOverReason.drawThreefoldRepetition);
         }
       }
@@ -290,11 +291,11 @@ class Position {
             phase = Phase.moving;
             _action = Act.select;
 
-            if (DB().rules.hasBannedLocations) {
+            if (DB().ruleSettings.hasBannedLocations) {
               _removeBanStones();
             }
 
-            if (!DB().rules.isDefenderMoveFirst) {
+            if (!DB().ruleSettings.isDefenderMoveFirst) {
               _changeSideToMove();
             }
 
@@ -305,10 +306,10 @@ class Position {
           MillController().gameInstance.focusIndex = squareToIndex[s];
           await Audios().playTone(Sound.place);
         } else {
-          _pieceToRemoveCount = DB().rules.mayRemoveMultiple ? n : 1;
+          _pieceToRemoveCount = DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
 
-          if (DB().rules.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
+          if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
               pieceInHandCount[_them] != null) {
             pieceInHandCount[_them] =
                 pieceInHandCount[_them]! - 1; // Or pieceToRemoveCount?
@@ -324,7 +325,7 @@ class Position {
               phase = Phase.moving;
               _action = Act.select;
 
-              if (DB().rules.isDefenderMoveFirst) {
+              if (DB().ruleSettings.isDefenderMoveFirst) {
                 _changeSideToMove();
               }
 
@@ -342,8 +343,8 @@ class Position {
         if (_checkIfGameIsOver()) return true;
 
         // if illegal
-        if (pieceOnBoardCount[sideToMove]! > DB().rules.flyPieceCount ||
-            !DB().rules.mayFly) {
+        if (pieceOnBoardCount[sideToMove]! > DB().ruleSettings.flyPieceCount ||
+            !DB().ruleSettings.mayFly) {
           int md;
 
           for (md = 0; md < moveDirectionNumber; md++) {
@@ -385,7 +386,7 @@ class Position {
 
           await Audios().playTone(Sound.place);
         } else {
-          _pieceToRemoveCount = DB().rules.mayRemoveMultiple ? n : 1;
+          _pieceToRemoveCount = DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
           _action = Act.remove;
           MillController().gameInstance.focusIndex = squareToIndex[s];
@@ -417,7 +418,7 @@ class Position {
       throw const CanNotRemoveSelf();
     }
 
-    if (!DB().rules.mayRemoveFromMillsAlways &&
+    if (!DB().ruleSettings.mayRemoveFromMillsAlways &&
         _potentialMillsCount(s, PieceColor.nobody) > 0 &&
         !_isAllInMills(sideToMove.opponent)) {
       throw const CanNotRemoveMill();
@@ -427,7 +428,7 @@ class Position {
 
     await Audios().playTone(Sound.remove);
 
-    if (DB().rules.hasBannedLocations && phase == Phase.placing) {
+    if (DB().ruleSettings.hasBannedLocations && phase == Phase.placing) {
       // Remove and put ban
       _board[s] = _grid[squareToIndex[s]!] = PieceColor.ban;
       _updateKey(s);
@@ -444,7 +445,7 @@ class Position {
     }
 
     if (pieceOnBoardCount[_them]! + pieceInHandCount[_them]! <
-        DB().rules.piecesAtLeastCount) {
+        DB().ruleSettings.piecesAtLeastCount) {
       _setGameOver(sideToMove, GameOverReason.loseLessThanThree);
       return;
     }
@@ -464,11 +465,11 @@ class Position {
         phase = Phase.moving;
         _action = Act.select;
 
-        if (DB().rules.hasBannedLocations) {
+        if (DB().ruleSettings.hasBannedLocations) {
           _removeBanStones();
         }
 
-        if (DB().rules.isDefenderMoveFirst) {
+        if (DB().ruleSettings.isDefenderMoveFirst) {
           _checkIfGameIsOver();
           return;
         }
@@ -548,15 +549,15 @@ class Position {
       return true;
     }
 
-    if (DB().rules.nMoveRule > 0 &&
-        _posKeyHistory.length >= DB().rules.nMoveRule) {
+    if (DB().ruleSettings.nMoveRule > 0 &&
+        _posKeyHistory.length >= DB().ruleSettings.nMoveRule) {
       _setGameOver(PieceColor.draw, GameOverReason.drawRule50);
       return true;
     }
 
-    if (DB().rules.endgameNMoveRule < DB().rules.nMoveRule &&
+    if (DB().ruleSettings.endgameNMoveRule < DB().ruleSettings.nMoveRule &&
         _isThreeEndgame &&
-        _posKeyHistory.length >= DB().rules.endgameNMoveRule) {
+        _posKeyHistory.length >= DB().ruleSettings.endgameNMoveRule) {
       _setGameOver(PieceColor.draw, GameOverReason.drawEndgameRule50);
       return true;
     }
@@ -564,7 +565,7 @@ class Position {
     if (pieceOnBoardCount[PieceColor.white]! +
             pieceOnBoardCount[PieceColor.black]! >=
         rankNumber * fileNumber) {
-      if (DB().rules.isWhiteLoseButNotDrawWhenBoardFull) {
+      if (DB().ruleSettings.isWhiteLoseButNotDrawWhenBoardFull) {
         _setGameOver(PieceColor.black, GameOverReason.loseBoardIsFull);
       } else {
         _setGameOver(PieceColor.draw, GameOverReason.drawBoardIsFull);
@@ -574,7 +575,7 @@ class Position {
     }
 
     if (phase == Phase.moving && _action == Act.select && _isAllSurrounded) {
-      if (DB().rules.isLoseButNotChangeSideWhenNoWay) {
+      if (DB().ruleSettings.isLoseButNotChangeSideWhenNoWay) {
         _setGameOver(sideToMove.opponent, GameOverReason.loseNoWay);
         return true;
       } else {
@@ -587,7 +588,7 @@ class Position {
   }
 
   void _removeBanStones() {
-    assert(DB().rules.hasBannedLocations);
+    assert(DB().ruleSettings.hasBannedLocations);
 
     int s = 0;
 
@@ -723,8 +724,8 @@ class Position {
     }
 
     // Can fly
-    if (pieceOnBoardCount[sideToMove]! <= DB().rules.flyPieceCount &&
-        DB().rules.mayFly) {
+    if (pieceOnBoardCount[sideToMove]! <= DB().ruleSettings.flyPieceCount &&
+        DB().ruleSettings.mayFly) {
       return false;
     }
 

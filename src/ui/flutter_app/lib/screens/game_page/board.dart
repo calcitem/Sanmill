@@ -40,7 +40,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(
-        seconds: DB().display.animationDuration.toInt(),
+        seconds: DB().displaySettings.animationDuration.toInt(),
       ),
     );
 

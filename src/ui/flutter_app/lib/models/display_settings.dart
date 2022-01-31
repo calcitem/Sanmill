@@ -25,7 +25,7 @@ import 'package:sanmill/services/storage/storage.dart';
 
 part 'display_settings.g.dart';
 
-/// Display data model
+/// Display Settings data model
 ///
 /// holds the data needed for the Display Settings
 @HiveType(typeId: 1)

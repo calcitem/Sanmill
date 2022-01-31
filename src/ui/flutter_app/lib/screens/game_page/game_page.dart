@@ -72,7 +72,7 @@ class GamePage extends StatelessWidget {
               builder: (context, constraints) {
                 var toolbarHeight =
                     GamePageToolBar.height + ButtonTheme.of(context).height;
-                if (DB().display.isHistoryNavigationToolbarShown) {
+                if (DB().displaySettings.isHistoryNavigationToolbarShown) {
                   toolbarHeight *= 2;
                 }
 
@@ -208,7 +208,7 @@ class _Game extends StatelessWidget {
       children: <Widget>[
         const Board(),
         const SizedBox(height: AppTheme.boardMargin),
-        if (DB().display.isHistoryNavigationToolbarShown)
+        if (DB().displaySettings.isHistoryNavigationToolbarShown)
           GamePageToolBar(
             backgroundColor:
                 DB().colorSettings.navigationToolbarBackgroundColor,

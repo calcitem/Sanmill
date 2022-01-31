@@ -26,21 +26,22 @@ class _PointWidthSlider extends StatelessWidget {
     return Semantics(
       label: S.of(context).pointWidth,
       child: ValueListenableBuilder(
-        valueListenable: DB().listenDisplay,
-        builder: (context, Box<DisplaySettings> displayBox, _) {
-          final DisplaySettings _display = displayBox.get(
+        valueListenable: DB().listenDisplaySettings,
+        builder: (context, Box<DisplaySettings> box, _) {
+          final DisplaySettings _displaySettings = box.get(
             DB.colorSettingsKey,
             defaultValue: const DisplaySettings(),
           )!;
 
           return Slider(
-            value: _display.pointWidth,
+            value: _displaySettings.pointWidth,
             max: 30.0,
             divisions: 30,
-            label: _display.pointWidth.toStringAsFixed(1),
+            label: _displaySettings.pointWidth.toStringAsFixed(1),
             onChanged: (value) {
               logger.v("[config] pointWidth value: $value");
-              DB().display = _display.copyWith(pointWidth: value);
+              DB().displaySettings =
+                  _displaySettings.copyWith(pointWidth: value);
             },
           );
         },

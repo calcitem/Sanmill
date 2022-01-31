@@ -50,25 +50,7 @@ class DB {
   /// Internal constructor used to create the instance.
   DB._([this.locale]);
 
-  /// [ColorSettings] box reference
-  static late final Box<ColorSettings> _colorSettingsBox;
-
-  /// Key at wich the [ColorSettings] will be saved in the [_colorSettingsBox]
-  static const String colorSettingsKey = "settings";
-
-  /// Key at wich the [_colorSettingsBox] will be saved
-  static const String _colorSettingsBoxName = "colors";
-
-  /// [DisplaySettings] box reference
-  static late final Box<DisplaySettings> _displayBox;
-
-  /// Key at wich the [DisplaySettings] will be saved in the [_displayBox]
-  static const String displayKey = "settings";
-
-  /// Key at wich the [_displayBox] will be saved
-  static const String _displayBoxName = "display";
-
-  /// [GeneralSettings] box reference
+  /// [GeneralSettings] Box reference
   static late final Box<GeneralSettings> _generalSettingsBox;
 
   /// Key at wich the [GeneralSettings] will be saved in the [_generalSettingsBox]
@@ -77,32 +59,132 @@ class DB {
   /// Key at wich the [_generalSettingsBox] will be saved
   static const String _generalSettingsBoxName = "generalSettings";
 
-  /// [RuleSettings] box reference
-  static late final Box<RuleSettings> _rulesBox;
+  /// [RuleSettings] Box reference
+  static late final Box<RuleSettings> _ruleSettingsBox;
 
-  /// Key at wich the [RuleSettings] will be saved in the [_rulesBox]
-  static const String rulesKey = "settings";
+  /// Key at wich the [RuleSettings] will be saved in the [_ruleSettingsBox]
+  static const String ruleSettingsKey = "settings";
 
-  /// Key at wich the [_rulesBox] will be saved
-  static const String _rulesBoxName = "rules";
+  /// Key at wich the [_ruleSettingsBox] will be saved
+  static const String _ruleSettingsBoxName = "ruleSettings";
+
+  /// [DisplaySettings] Box reference
+  static late final Box<DisplaySettings> _displaySettingsBox;
+
+  /// Key at wich the [DisplaySettings] will be saved in the [_displaySettingsBox]
+  static const String displaySettingsKey = "settings";
+
+  /// Key at wich the [_displaySettingsBox] will be saved
+  static const String _displaySettingsBoxName = "displaySettings";
+
+  /// [ColorSettings] Box reference
+  static late final Box<ColorSettings> _colorSettingsBox;
+
+  /// Key at wich the [ColorSettings] will be saved in the [_colorSettingsBox]
+  static const String colorSettingsKey = "settings";
+
+  /// Key at wich the [_colorSettingsBox] will be saved
+  static const String _colorSettingsBoxName = "colorSettings";
 
   /// Initializes the local storage
   static Future<void> initStorage() async {
     if (!kIsWeb) await Hive.initFlutter("Sanmill");
-    await _initColorSettings();
-    await _initDisplay();
     await _initGeneralSettings();
-    await _initRules();
+    await _initRuleSettings();
+    await _initDisplaySettings();
+    await _initColorSettings();
+
     await _DatabaseMigrator.migrate();
   }
 
-  /// resets the storage
+  /// Resets the storage
   static Future<void> resetStorage() async {
-    await _colorSettingsBox.delete(colorSettingsKey);
-    await _displayBox.delete(displayKey);
     await _generalSettingsBox.delete(generalSettingsKey);
-    await _rulesBox.delete(rulesKey);
+    await _ruleSettingsBox.delete(ruleSettingsKey);
+    await _colorSettingsBox.delete(colorSettingsKey);
+    await _displaySettingsBox.delete(displaySettingsKey);
   }
+
+  /// GeneralSettings
+
+  /// Initializes the [GeneralSettings] reference
+  static Future<void> _initGeneralSettings() async {
+    Hive.registerAdapter<Algorithms>(AlgorithmsAdapter());
+    Hive.registerAdapter<GeneralSettings>(GeneralSettingsAdapter());
+    _generalSettingsBox =
+        await Hive.openBox<GeneralSettings>(_generalSettingsBoxName);
+  }
+
+  /// Listens to changes inside the settings Box
+  ValueListenable<Box<GeneralSettings>> get listenGeneralSettings =>
+      _generalSettingsBox.listenable(keys: [generalSettingsKey]);
+
+  /// Saves the given [generalSettings] to the settings Box
+  set generalSettings(GeneralSettings generalSettings) =>
+      _generalSettingsBox.put(generalSettingsKey, generalSettings);
+
+  /// Gets the given [GeneralSettings] from the settings Box
+  GeneralSettings get generalSettings =>
+      _generalSettingsBox.get(generalSettingsKey) ?? const GeneralSettings();
+
+  /// RuleSettings
+
+  /// Initializes the [RuleSettings] reference
+  static Future<void> _initRuleSettings() async {
+    Hive.registerAdapter<RuleSettings>(RuleSettingsAdapter());
+    _ruleSettingsBox = await Hive.openBox<RuleSettings>(_ruleSettingsBoxName);
+  }
+
+  /// Listens to changes inside the settings Box
+  ValueListenable<Box<RuleSettings>> get listenRuleSettings =>
+      _ruleSettingsBox.listenable(keys: [ruleSettingsKey]);
+
+  /// Saves the given [ruleSettings] to the settings Box
+  set _ruleSettings(RuleSettings? ruleSettings) {
+    if (ruleSettings != null) {
+      _ruleSettingsBox.put(ruleSettingsKey, ruleSettings);
+    }
+  }
+
+  /// Gets the given [RuleSettings] from the settings Box
+  RuleSettings? get _ruleSettings => _ruleSettingsBox.get(ruleSettingsKey);
+
+  /// Saves the given [ruleSettings] to the settings Box
+  set ruleSettings(RuleSettings ruleSettings) => _ruleSettings = ruleSettings;
+
+  /// Gets the given [RuleSettings] from the settings Box
+  ///
+  /// If no Rule Settings have been saved yet it will Initializes
+  /// the box with the rule settings corresponding to it's [locale].
+  /// This means that the first call will save the ruleSettings object for the lifespan of the DB.
+  /// Later changes to the locale won't result in changes.
+  RuleSettings get ruleSettings =>
+      _ruleSettings ??= RuleSettings.fromLocale(locale);
+
+  /// DisplaySettings
+
+  /// Initializes the [DisplaySettings] reference
+  static Future<void> _initDisplaySettings() async {
+    Hive.registerAdapter<Locale?>(LocaleAdapter());
+    Hive.registerAdapter<PaintingStyle?>(PaintingStyleAdapter());
+    Hive.registerAdapter<DisplaySettings>(DisplaySettingsAdapter());
+    _displaySettingsBox =
+        await Hive.openBox<DisplaySettings>(_displaySettingsBoxName);
+  }
+
+  /// Listens to changes inside the settings Box
+  ValueListenable<Box<DisplaySettings>> get listenDisplaySettings =>
+      _displaySettingsBox.listenable(keys: [displaySettingsKey]);
+
+  /// Saves the given [displaySettings] to the settings Box
+  set displaySettings(DisplaySettings displaySettings) =>
+      _displaySettingsBox.put(displaySettingsKey, displaySettings);
+
+  /// Gets the given [DisplaySettings] from the settings Box
+  DisplaySettings get displaySettings =>
+      _displaySettingsBox.get(displaySettingsKey) ?? const DisplaySettings();
+
+  /// ColorSettings
 
   /// Initializes the [ColorSettings] reference
   static Future<void> _initColorSettings() async {
@@ -116,81 +198,11 @@ class DB {
   ValueListenable<Box<ColorSettings>> get listenColorSettings =>
       _colorSettingsBox.listenable(keys: [colorSettingsKey]);
 
-  /// Saves the given [colors] to the settings Box
-  set colorSettings(ColorSettings colors) =>
-      _colorSettingsBox.put(colorSettingsKey, colors);
+  /// Saves the given [colorSettings] to the settings Box
+  set colorSettings(ColorSettings colorSettings) =>
+      _colorSettingsBox.put(colorSettingsKey, colorSettings);
 
   /// Gets the given [ColorSettings] from the settings Box
   ColorSettings get colorSettings =>
       _colorSettingsBox.get(colorSettingsKey) ?? const ColorSettings();
-
-  /// Initializes the [DisplaySettings] reference
-  static Future<void> _initDisplay() async {
-    Hive.registerAdapter<Locale?>(LocaleAdapter());
-    Hive.registerAdapter<PaintingStyle?>(PaintingStyleAdapter());
-    Hive.registerAdapter<DisplaySettings>(DisplaySettingsAdapter());
-    _displayBox = await Hive.openBox<DisplaySettings>(_displayBoxName);
-  }
-
-  /// Listens to changes inside the settings Box
-  ValueListenable<Box<DisplaySettings>> get listenDisplay =>
-      _displayBox.listenable(keys: [displayKey]);
-
-  /// Saves the given [display] to the settings Box
-  set display(DisplaySettings display) => _displayBox.put(displayKey, display);
-
-  /// Gets the given [DisplaySettings] from the settings Box
-  DisplaySettings get display =>
-      _displayBox.get(displayKey) ?? const DisplaySettings();
-
-  /// Initializes the [GeneralSettings] reference
-  static Future<void> _initGeneralSettings() async {
-    Hive.registerAdapter<GeneralSettings>(GeneralSettingsAdapter());
-    Hive.registerAdapter<Algorithms>(AlgorithmsAdapter());
-    _generalSettingsBox =
-        await Hive.openBox<GeneralSettings>(_generalSettingsBoxName);
-  }
-
-  /// Listens to changes inside the settings Box
-  ValueListenable<Box<GeneralSettings>> get listenGeneralSettings =>
-      _generalSettingsBox.listenable(keys: [generalSettingsKey]);
-
-  /// Saves the given [settings] to the settings Box
-  set generalSettings(GeneralSettings settings) =>
-      _generalSettingsBox.put(generalSettingsKey, settings);
-
-  /// Gets the given [GeneralSettings] from the settings Box
-  GeneralSettings get generalSettings =>
-      _generalSettingsBox.get(generalSettingsKey) ?? const GeneralSettings();
-
-  /// Initializes the [RuleSettings] reference
-  static Future<void> _initRules() async {
-    Hive.registerAdapter<RuleSettings>(RuleSettingsAdapter());
-    _rulesBox = await Hive.openBox<RuleSettings>(_rulesBoxName);
-  }
-
-  /// Listens to changes inside the settings Box
-  ValueListenable<Box<RuleSettings>> get listenRules =>
-      _rulesBox.listenable(keys: [rulesKey]);
-
-  /// Saves the given [rules] to the settings Box
-  set rules(RuleSettings rules) => _rules = rules;
-
-  /// Gets the given [RuleSettings] from the settings Box
-  ///
-  /// If no Rules have been saved yet it will Initializes
-  /// the box with the rules corresponding to it's [locale].
-  /// This means that the first call will save the rules object for the lifespan of the db.
-  /// Later changes to the locale won't result in changes.
-  RuleSettings get rules => _rules ??= RuleSettings.fromLocale(locale);
-
-  /// Saves the given [rules] to the settings Box
-  set _rules(RuleSettings? rules) {
-    if (rules != null) {
-      _rulesBox.put(rulesKey, rules);
-    }
-  }
-
-  /// Gets the given [RuleSettings] from the settings Box
-  RuleSettings? get _rules => _rulesBox.get(rulesKey);
 }

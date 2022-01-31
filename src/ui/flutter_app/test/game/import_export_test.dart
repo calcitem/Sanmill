@@ -65,7 +65,7 @@ void main() {
         // initialize the test
         final mockedDB = MockedDB();
         // ignore: deprecated_member_use_from_same_package
-        mockedDB.display =
+        mockedDB.displaySettings =
             const DisplaySettings(standardNotationEnabled: false);
         DB.instance = mockedDB;
         Audios.instance = MockedAudios();
@@ -77,7 +77,7 @@ void main() {
 
         expect(controller.recorder.moveHistoryText, testMill.exportNotStandard);
       },
-      skip: "deprecated test. See [Display.standardNotationEnabled].",
+      skip: "deprecated test. See [DisplaySettings.standardNotationEnabled].",
     );
   });
 }

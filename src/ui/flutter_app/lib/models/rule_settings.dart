@@ -23,11 +23,11 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'rule_settings.g.dart';
 
-/// Rules data model
+/// Rule Settings data model
 ///
-/// Holds the default rules for the mill game.
-/// Currently supported special rules include [IranRules].
-/// To get the rules corresponding to a given local use [Rules.fromLocale].
+/// Holds the default rule settings for the Mill game.
+/// Currently supported special rule settings include [TwelveMensMorrisRuleSettings].
+/// To get the rule settings corresponding to a given local use [RuleSettings.fromLocale].
 @HiveType(typeId: 3)
 @JsonSerializable()
 @CopyWith()
@@ -85,7 +85,7 @@ class RuleSettings {
   @HiveField(15)
   final bool threefoldRepetitionRule;
 
-  /// encodes a Json style map into a [RuleSettings] object
+  /// Encodes a Json style map into a [RuleSettings] object
   factory RuleSettings.fromJson(Map<String, dynamic> json) =>
       _$RuleSettingsFromJson(json);
 
@@ -96,18 +96,18 @@ class RuleSettings {
   factory RuleSettings.fromLocale(Locale? locale) {
     switch (locale?.languageCode) {
       case "fa":
-        return const IranRules();
+        return const TwelveMensMorrisRuleSettings();
       default:
         return const RuleSettings();
     }
   }
 }
 
-/// Iran Rules
+/// Twelve Men's Morris Rules
 ///
-/// Those rules are the standard Mill rules used in Iran.
-class IranRules extends RuleSettings {
-  const IranRules()
+/// Those rules are the standard Twelve Men's Morris rules.
+class TwelveMensMorrisRuleSettings extends RuleSettings {
+  const TwelveMensMorrisRuleSettings()
       : super(
           piecesCount: 12,
           hasDiagonalLines: true,
