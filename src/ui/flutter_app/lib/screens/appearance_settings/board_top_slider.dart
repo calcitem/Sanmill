@@ -27,7 +27,7 @@ class _BoardTopSlider extends StatelessWidget {
         valueListenable: DB().listenDisplaySettings,
         builder: (context, Box<DisplaySettings> box, _) {
           final DisplaySettings _displaySettings = box.get(
-            DB.colorSettingsKey,
+            DB.displaySettingsKey,
             defaultValue: const DisplaySettings(),
           )!;
 
@@ -37,7 +37,7 @@ class _BoardTopSlider extends StatelessWidget {
             divisions: 288,
             label: _displaySettings.boardTop.toStringAsFixed(1),
             onChanged: (value) {
-              logger.v("[config] AnimationDuration value: $value");
+              logger.v("[config] boardTop value: $value");
               DB().displaySettings = _displaySettings.copyWith(boardTop: value);
             },
           );
