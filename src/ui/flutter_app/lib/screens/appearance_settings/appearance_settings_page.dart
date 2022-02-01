@@ -216,7 +216,7 @@ class AppearanceSettingsPage extends StatelessWidget {
     _,
   ) {
     final DisplaySettings _displaySettings = box.get(
-      DB.colorSettingsKey,
+      DB.displaySettingsKey,
       defaultValue: const DisplaySettings(),
     )!;
     return SettingsCard(

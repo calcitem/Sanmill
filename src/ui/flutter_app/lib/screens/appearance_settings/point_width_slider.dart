@@ -29,7 +29,7 @@ class _PointWidthSlider extends StatelessWidget {
         valueListenable: DB().listenDisplaySettings,
         builder: (context, Box<DisplaySettings> box, _) {
           final DisplaySettings _displaySettings = box.get(
-            DB.colorSettingsKey,
+            DB.displaySettingsKey,
             defaultValue: const DisplaySettings(),
           )!;
 
