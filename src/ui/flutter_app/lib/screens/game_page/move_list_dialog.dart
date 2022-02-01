@@ -26,31 +26,53 @@ class _MoveListDialog extends StatelessWidget {
     final moveHistoryText = controller.recorder.moveHistoryText!;
     final end = controller.recorder.length - 1;
 
+    final titleTextStyle = Theme.of(context)
+        .textTheme
+        .headline6!
+        .copyWith(color: AppTheme.gamePageActionSheetTextColor);
+    final buttonTextStyle = titleTextStyle;
+
     if (DB().generalSettings.screenReaderSupport) {
       ScaffoldMessenger.of(context).clearSnackBars();
     }
 
     return GamePageActionSheet(
       child: AlertDialog(
-        title: Text(S.of(context).moveList),
+        title: Text(
+          S.of(context).moveList,
+          style: titleTextStyle,
+        ),
         content: SingleChildScrollView(
           child: Text(
             moveHistoryText,
             textDirection: TextDirection.ltr,
+            style: Theme.of(context).textTheme.headline6!.copyWith(
+                  color: AppTheme.gamePageActionSheetTextColor,
+                  fontWeight: FontWeight.normal,
+                ),
           ),
         ),
         actions: <Widget>[
           if (end > 0)
             TextButton(
-              child: Text(S.of(context).rollback),
+              child: Text(
+                S.of(context).rollback,
+                style: buttonTextStyle,
+              ),
               onPressed: () async => _rollback(context, end),
             ),
           TextButton(
-            child: Text(S.of(context).copy),
+            child: Text(
+              S.of(context).copy,
+              style: buttonTextStyle,
+            ),
             onPressed: () => MillController.export(context),
           ),
           TextButton(
-            child: Text(S.of(context).cancel),
+            child: Text(
+              S.of(context).cancel,
+              style: buttonTextStyle,
+            ),
             onPressed: () => Navigator.pop(context),
           ),
         ],
