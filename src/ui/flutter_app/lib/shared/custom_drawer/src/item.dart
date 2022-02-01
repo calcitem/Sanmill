@@ -54,10 +54,10 @@ class CustomDrawerItem<T> extends StatelessWidget {
         const Padding(padding: EdgeInsets.all(4.0)),
         Text(
           title,
-          style: TextStyle(
-            fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-            color: _color,
-          ),
+          style: Theme.of(context).textTheme.headline6!.copyWith(
+                fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
+                color: _color,
+              ),
         ),
       ],
     );
