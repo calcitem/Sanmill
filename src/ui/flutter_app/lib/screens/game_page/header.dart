@@ -106,7 +106,7 @@ class _GameHeaderState extends State<GameHeader> {
         Center(
           child: BlockSemantics(
             child: Padding(
-              padding: const EdgeInsets.only(top: 12.0),
+              padding: const EdgeInsets.only(top: 20.0),
               child: Column(
                 children: <Widget>[
                   iconRow,
