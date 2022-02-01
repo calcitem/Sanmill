@@ -39,7 +39,7 @@ class _PiecePaintParam {
     required this.diameter,
   });
 
-  // TODO: [Leptopoda] consider putting this into the PieceColorExtension
+  // TODO: [Leptopoda] Consider putting this into the PieceColorExtension
   /// Gets the border color of the current piece type.
   Color get borderColor {
     switch (piece) {
@@ -52,7 +52,7 @@ class _PiecePaintParam {
     }
   }
 
-  // TODO: [Leptopoda] consider putting this into the PieceColorExtension
+  // TODO: [Leptopoda] Consider putting this into the PieceColorExtension
   /// Gets the color of the current piece
   Color get pieceColor {
     final colorSettings = DB().colorSettings;
@@ -66,7 +66,7 @@ class _PiecePaintParam {
     }
   }
 
-  // TODO: [Leptopoda] consider putting this into the PieceColorExtension
+  // TODO: [Leptopoda] Consider putting this into the PieceColorExtension
   /// Gets the color for the blurred position
   Color get blurPositionColor => pieceColor.withOpacity(0.1);
 }
@@ -162,7 +162,7 @@ class PiecePainter extends CustomPainter {
       );
     }
 
-    // draw focus and blur position
+    // Draw focus and blur position
     if (focusIndex != null) {
       paint.color = DB().colorSettings.pieceHighlightColor;
       paint.style = PaintingStyle.stroke;

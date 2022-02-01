@@ -26,17 +26,17 @@ import '../helpers/test_mills.dart';
 void main() {
   group("Import Export Service", () {
     test(
-        "import standard notation should populate the recorder with the imported moves",
+        "Import standard notation should populate the recorder with the imported moves",
         () async {
       const testMill = WinLessThanThreeGame();
 
-      // initialize the test
+      // Initialize the test
       DB.instance = MockDB();
       Audios.instance = MockAudios();
       final controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
-      // import a game
+      // Import a game
       ImportService.import(testMill.export);
 
       expect(MillController().recorder.toString(), testMill.recorder);
@@ -45,13 +45,13 @@ void main() {
     test("export standard notation", () async {
       const testMill = WinLessThanThreeGame();
 
-      // initialize the test
+      // Initialize the test
       DB.instance = MockDB();
       Audios.instance = MockAudios();
       final controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
-      // import a game
+      // Import a game
       ImportService.import(testMill.export);
 
       expect(controller.recorder.moveHistoryText, testMill.export);
@@ -62,7 +62,7 @@ void main() {
       () async {
         const testMill = WinLessThanThreeGame();
 
-        // initialize the test
+        // Initialize the test
         final mockDB = MockDB();
         // ignore: deprecated_member_use_from_same_package
         mockDB.displaySettings =
@@ -72,12 +72,12 @@ void main() {
         final controller = MillController();
         controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
-        // import a game
+        // Import a game
         ImportService.import(testMill.export);
 
         expect(controller.recorder.moveHistoryText, testMill.exportNotStandard);
       },
-      skip: "deprecated test. See [DisplaySettings.standardNotationEnabled].",
+      skip: "Deprecated test. See [DisplaySettings.standardNotationEnabled].",
     );
   });
 }

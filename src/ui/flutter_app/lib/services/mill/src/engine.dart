@@ -120,7 +120,7 @@ class Engine {
       // Because if the user sets the search depth to be very deep, but his phone performance is low, it may timeout.
       // But we have to test timeout in devMode to identify anomalies under shallow search.
       // What method is user-friendly is to be discussed.
-      // TODO: [Leptopoda] seems like is isActive only checked here and only together with the DevMode.
+      // TODO: [Leptopoda] Seems like is isActive only checked here and only together with the DevMode.
       // we might be able to remove this
       if (EnvironmentConfig.devMode && _isActive) {
         throw TimeoutException("$_tag waitResponse timeout.");

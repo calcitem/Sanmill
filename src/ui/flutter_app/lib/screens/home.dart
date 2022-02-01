@@ -88,7 +88,7 @@ extension _DrawerScreen on _DrawerIndex {
 
 /// Home View
 ///
-/// this widget implements the home view of our app.
+/// This widget implements the home view of our app.
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -102,7 +102,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   Widget _screenView = _DrawerIndex.humanVsAi.screen;
   _DrawerIndex _drawerIndex = _DrawerIndex.humanVsAi;
 
-  /// callback from drawer for replace screen
+  /// Callback from drawer for replace screen
   /// as user need with passing DrawerIndex (Enum index)
   void _changeIndex(_DrawerIndex index) {
     _controller.hideDrawer();
@@ -221,7 +221,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     }
   }
 
-  /// drafts an email and sends it to the developer
+  /// Drafts an email and sends it to the developer
   static Future<void> _launchFeedback(UserFeedback feedback) async {
     final screenshotFilePath = await _saveFeedbackImage(feedback.screenshot);
     final packageInfo = await PackageInfo.fromPlatform();

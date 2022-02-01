@@ -16,7 +16,7 @@
 
 part of 'package:sanmill/main.dart';
 
-/// initializes the given [SystemChrome] ui
+/// Initializes the given [SystemChrome] ui
 void _initUI() {
   logger.v(window.physicalSize.toString());
   logger.v(Constants.windowAspectRatio.toString());
@@ -25,7 +25,7 @@ void _initUI() {
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
 
-// TODO: [Leptopoda] use layoutBuilder to add adaptiveness
+// TODO: [Leptopoda] Use layoutBuilder to add adaptiveness
   if (Platform.isAndroid && Constants.isLargeScreen) {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(

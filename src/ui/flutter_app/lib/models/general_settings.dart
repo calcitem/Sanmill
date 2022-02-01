@@ -47,7 +47,7 @@ extension AlgorithmNames on Algorithms {
 
 /// GeneralSettings data model
 ///
-/// holds the data needed for the General Settings
+/// Holds the data needed for the General Settings
 @HiveType(typeId: 2)
 @JsonSerializable()
 @CopyWith()
@@ -55,7 +55,7 @@ extension AlgorithmNames on Algorithms {
 class GeneralSettings {
   const GeneralSettings({
     this.isPrivacyPolicyAccepted = false,
-    @Deprecated("as this is not a user facing preference we migrated it into another box")
+    @Deprecated("As this is not a user facing preference we migrated it into another box")
         this.usesHiveDB = false,
     this.toneEnabled = true,
     this.keepMuteWhenTakingBack = true,
@@ -75,16 +75,16 @@ class GeneralSettings {
         this.oldAlgorithm = 0,
     this.drawOnHumanExperience = true,
     this.considerMobility = true,
-    @Deprecated("we won't export the developer settings anymore. People should use the EnvironmentConfig.devMode")
+    @Deprecated("We won't export the developer settings anymore. People should use the EnvironmentConfig.devMode")
         this.developerMode = false,
-    @Deprecated("use [EnvironmentConfig.devMode] instead")
+    @Deprecated("Use [EnvironmentConfig.devMode] instead")
         this.experimentsEnabled = false,
   });
 
   @HiveField(0)
   final bool isPrivacyPolicyAccepted;
   @Deprecated(
-    "as this is not a user facing preference we migrated it into another box",
+    "As this is not a user facing preference we migrated it into another box",
   )
   @HiveField(1)
   final bool usesHiveDB;
@@ -130,17 +130,17 @@ class GeneralSettings {
   final bool considerMobility;
   @HiveField(18)
   @Deprecated(
-    "we won't export the developer settings anymore. People should use the EnvironmentConfig.devMode",
+    "We won't export the developer settings anymore. People should use the EnvironmentConfig.devMode",
   )
   final bool developerMode;
   @HiveField(19)
-  @Deprecated("use [EnvironmentConfig.devMode] instead")
+  @Deprecated("Use [EnvironmentConfig.devMode] instead")
   final bool experimentsEnabled;
 
-  /// encodes a Json style map into a [GeneralSettings] object
+  /// Encodes a Json style map into a [GeneralSettings] object
   factory GeneralSettings.fromJson(Map<String, dynamic> json) =>
       _$GeneralSettingsFromJson(json);
 
-  /// decodes a Json from a [GeneralSettings] object
+  /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);
 }

@@ -20,7 +20,7 @@ import 'package:sanmill/shared/iterable/pointed_list.dart';
 void main() {
   group("PointedList", () {
     test("should construct an empty list by default", () {
-      // initialize
+      // Initialize
       final list = PointedList<int>();
 
       expect(list.toList(), []);
@@ -29,7 +29,7 @@ void main() {
     test(
         "PointedList.from should have all elements of the sublist and the global iterator should be at the end of it",
         () {
-      // initialize
+      // Initialize
       final subList = List.generate(10, (index) => index);
       final list = PointedList.from(subList);
 
@@ -44,14 +44,14 @@ void main() {
         () {
       const index = 2;
 
-      // initialize
+      // Initialize
       final subList = List.generate(10, (index) => index);
       final list = PointedList.from(subList);
 
-      // move forward two
+      // Move forward to
       list.globalIterator.moveTo(index);
 
-      // prune list
+      // Prune list
       list.prune();
 
       final result = List.generate(index + 1, (index) => index);
@@ -61,39 +61,39 @@ void main() {
     test(
         "prune should not alter the list if the current pointer position is at the end",
         () {
-      // initialize
+      // Initialize
       final subList = List.generate(10, (index) => index);
       final list = PointedList.from(subList);
 
-      // prune list
+      // Prune list
       list.prune();
 
       expect(list.toList(), subList);
     });
 
     test("prune should not alter the list if the list is empty", () {
-      // initialize
+      // Initialize
       final list = PointedList<int>();
 
-      // prune list
+      // Prune list
       list.prune();
 
       expect(list.toList(), []);
     });
 
     test(
-        "prune should reset the current pointer position to the new last index.",
+        "Prune should reset the current pointer position to the new last index.",
         () {
       const index = 2;
 
-      // initialize
+      // Initialize
       final subList = List.generate(10, (index) => index);
       final list = PointedList.from(subList);
 
-      // move forward two
+      // Move forward to
       list.globalIterator.moveTo(index);
 
-      // prune list
+      // Prune list
       list.prune();
 
       expect(list.globalIterator.index, index);
@@ -104,14 +104,14 @@ void main() {
       const index = 2;
       const value = 3;
 
-      // initialize
+      // Initialize
       final subList = List.generate(10, (index) => index);
       final list = PointedList.from(subList);
 
-      // move to index
+      // Move to index
       list.globalIterator.moveTo(index - 1);
 
-      // add list
+      // Add list
       list.add(value);
 
       final result = List.generate(index, (index) => index);
@@ -120,13 +120,13 @@ void main() {
     });
 
     test("add should iterate the global iterator", () {
-      // initialize
+      // Initialize
       final subList = List.generate(10, (index) => index);
       final list = PointedList.from(subList);
 
       final oldIndex = list.index!;
 
-      // add list
+      // Add list
       list.add(5);
 
       expect(list.index, oldIndex + 1);
@@ -137,16 +137,16 @@ void main() {
       () {
     const index = 3;
 
-    // initialize
+    // Initialize
     final subList = List.generate(10, (index) => index);
     final list = PointedList.from(subList);
 
     final result = <int>[];
 
-    // move to index
+    // Move to index
     list.globalIterator.moveTo(index);
 
-    // iterate
+    // Iterate
     list.forEachVisible((value) => result.add(value));
 
     final resultExpect = List.generate(index + 1, (index) => index);

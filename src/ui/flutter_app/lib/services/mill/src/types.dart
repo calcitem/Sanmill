@@ -201,7 +201,7 @@ extension ActExtension on Act {
   }
 }
 
-// TODO: [Leptopoda] throw this stuff to faster detect a game over
+// TODO: [Leptopoda] Throw this stuff to faster detect a game over
 enum GameOverReason {
   loseLessThanThree,
   loseNoWay,

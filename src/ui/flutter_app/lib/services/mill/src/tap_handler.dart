@@ -189,7 +189,7 @@ class TapHandler {
     controller.gameInstance.sideToMove = position.sideToMove;
   }
 
-  // TODO: [Leptopoda] the reference of this method has been removed in a few instances.
+  // TODO: [Leptopoda] The reference of this method has been removed in a few instances.
   // We'll need to find a better way for this.
   Future<void> engineToGo({required bool isMoveNow}) async {
     const _tag = "[engineToGo]";

@@ -127,7 +127,7 @@ class _BoardSemantics extends StatelessWidget {
         7 * 7,
         (index) => Center(
           child: Semantics(
-            // TODO: [Calcitem] add more descriptive informations
+            // TODO: [Calcitem] Add more descriptive informations
             label: _squareDesc[index],
           ),
         ),

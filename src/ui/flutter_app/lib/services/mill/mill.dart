@@ -51,4 +51,4 @@ part 'src/tip_state.dart';
 part 'src/types.dart';
 part 'src/zobrist.dart';
 
-// TODO: [Leptopoda] separate the ui from the logic
+// TODO: [Leptopoda] Separate the ui from the logic

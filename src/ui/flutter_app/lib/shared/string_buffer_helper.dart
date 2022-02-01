@@ -41,7 +41,7 @@ extension CustomStringBuffer on StringBuffer {
   }
 
   /// Writes the given number to the buffer.
-  /// it will add an extra space in front of single digit numbers but wont fix three digit cases.
+  /// It will add an extra space in front of single digit numbers but wont fix three digit cases.
   void writeNumber(int num) {
     if (num < 10) {
       write(" $num.");

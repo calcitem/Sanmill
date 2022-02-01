@@ -31,10 +31,10 @@ class EnvironmentConfig {
   static const monkeyTest = bool.fromEnvironment("monkey_test") || test;
 
   /// Gets whether we want catcher to be enabled
-  /// defaults to true
+  /// Defaults to true
   static const catcher = bool.fromEnvironment("catcher", defaultValue: true);
 
-  /// gets weather we want catcher to be enabled
-  /// defaults to true
+  /// Gets weather we want catcher to be enabled
+  /// Defaults to true
   static const logLevel = int.fromEnvironment("log_level", defaultValue: 4);
 }

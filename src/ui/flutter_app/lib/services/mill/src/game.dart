@@ -31,13 +31,13 @@ class _Game {
   int? focusIndex;
   int? blurIndex;
 
-  // TODO: [Leptopoda] give a game two players (new class) to hold a player. A player can have a color, be ai ...
+  // TODO: [Leptopoda] Give a game two players (new class) to hold a player. A player can have a color, be AI ...
   Map<PieceColor, bool> _isAi = {
     PieceColor.white: false,
     PieceColor.black: true,
   };
 
-  // TODO: [Leptopoda] make gameMode final and set it through the constructor.
+  // TODO: [Leptopoda] Make gameMode final and set it through the constructor.
   late GameMode _gameMode;
   GameMode get gameMode => _gameMode;
 

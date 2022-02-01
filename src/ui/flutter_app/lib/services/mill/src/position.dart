@@ -179,7 +179,7 @@ class Position {
 
     final ExtMove m = ExtMove(move);
 
-    // TODO: [Leptopoda] the below functions should all throw exceptions so the ret and conditional stuff can be removed
+    // TODO: [Leptopoda] The below functions should all throw exceptions so the ret and conditional stuff can be removed
     switch (m.type) {
       case _MoveType.remove:
         try {
@@ -342,7 +342,7 @@ class Position {
       case Phase.moving:
         if (_checkIfGameIsOver()) return true;
 
-        // if illegal
+        // If illegal
         if (pieceOnBoardCount[sideToMove]! > DB().ruleSettings.flyPieceCount ||
             !DB().ruleSettings.mayFly) {
           int md;
@@ -351,7 +351,7 @@ class Position {
             if (s == _adjacentSquares[_currentSquare][md]) break;
           }
 
-          // not in moveTable
+          // Not in moveTable
           if (md == moveDirectionNumber) {
             logger.i(
               "[position] putPiece: [$s] is not in [$_currentSquare]'s move table.",
@@ -413,7 +413,7 @@ class Position {
       throw const NoPieceToRemove();
     }
 
-    // if piece is not their
+    // If piece is not their
     if (!(sideToMove.opponent == _board[s])) {
       throw const CanNotRemoveSelf();
     }
@@ -673,14 +673,14 @@ class Position {
       idx[1] = _millTable[s][i][0];
       idx[2] = _millTable[s][i][1];
 
-      // no mill
+      // No mill
       if (!(m == _board[idx[1]!] && m == _board[idx[2]!])) {
         continue;
       }
 
-      // close mill
+      // Close mill
 
-      // sort
+      // Sort
       for (int j = 0; j < 2; j++) {
         min = j;
 
@@ -745,7 +745,7 @@ class Position {
     return true;
   }
 
-// TODO: [Leptopoda] verify this is correct
+// TODO: [Leptopoda] Verify this is correct
   @visibleForTesting
   String? get movesSinceLastRemove {
     final recorder = MillController().recorder;
@@ -760,7 +760,7 @@ class Position {
       if (!iterator.movePrevious()) break;
     }
 
-    // move forward two to skip the remove
+    // Move forward two to skip the remove
     if (iterator.index != 0) iterator.moveNext();
 
     while (iterator.moveNext()) {

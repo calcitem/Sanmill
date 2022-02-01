@@ -32,7 +32,7 @@ Offset pointFromIndex(int index, Size size) {
   return offsetFromPoint(Offset(column, row), size);
 }
 
-/// calculates the index of the given point
+/// Calculates the index of the given point
 int indexFromPoint(Offset point) {
   return (point.dy * 7 + point.dx).toInt();
 }

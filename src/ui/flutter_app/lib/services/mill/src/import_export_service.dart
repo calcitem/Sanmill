@@ -18,7 +18,7 @@
 
 part of '../mill.dart';
 
-// TODO: [Leptopoda] clean up the file
+// TODO: [Leptopoda] Clean up the file
 @visibleForTesting
 class ImportService {
   static const _tag = "[Importer]";
@@ -235,7 +235,7 @@ class ImportService {
         i = "$i.";
       }
 
-      // TODO: [Leptopoda] deduplicate
+      // TODO: [Leptopoda] Deduplicate
       if (i.isNotEmpty && !i.endsWith(".")) {
         if (i.length == 5 && i[2] == "x") {
           // "a1xc3"

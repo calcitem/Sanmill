@@ -19,7 +19,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sanmill/services/logger.dart';
 
-// TODO: [Leptopoda] this implementation is shitty and I don't like it. Just a reminder that I wanted to rewrite it.
+// TODO: [Leptopoda] This implementation is shitty and I don't like it. Just a reminder that I wanted to rewrite it.
 
 /// This is a localization delegate, which includes all of the localizations
 /// already present in this library.

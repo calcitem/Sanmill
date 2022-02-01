@@ -27,7 +27,7 @@ part 'display_settings.g.dart';
 
 /// Display Settings data model
 ///
-/// holds the data needed for the Display Settings
+/// Holds the data needed for the Display Settings
 @HiveType(typeId: 1)
 @JsonSerializable()
 @CopyWith(generateCopyWithNull: true)
@@ -51,7 +51,7 @@ class DisplaySettings {
     this.animationDuration = 0.0,
   });
 
-  /// the uses locale
+  /// The uses locale
   @HiveField(0)
   @JsonKey(
     fromJson: LocaleAdapter.localeFromJson,
@@ -106,10 +106,10 @@ class DisplaySettings {
   @HiveField(12)
   final double animationDuration;
 
-  /// encodes a Json style map into a [DisplaySettings] object
+  /// Encodes a Json style map into a [DisplaySettings] object
   factory DisplaySettings.fromJson(Map<String, dynamic> json) =>
       _$DisplaySettingsFromJson(json);
 
-  /// decodes a Json from a [DisplaySettings] object
+  /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
 }

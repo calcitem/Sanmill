@@ -24,16 +24,16 @@ import '../helpers/test_mills.dart';
 
 void main() {
   group("MillController", () {
-    test("new game should have the same GameMode", () async {
+    test("New game should have the same GameMode", () async {
       const gameMode = GameMode.humanVsAi;
 
-      // initialize the test
+      // Initialize the test
       DB.instance = MockDB();
       final controller = MillController();
 
       controller.gameInstance.gameMode = gameMode;
 
-      // reset the game
+      // Reset the game
       controller.reset();
 
       expect(controller.gameInstance.gameMode, gameMode);
@@ -46,7 +46,7 @@ void main() {
       final controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
-      // import a game
+      // Import a game
       ImportService.import(const WinLessThanThreeGame().export);
 
       expect(MillController().gameInstance.focusIndex, isNull);

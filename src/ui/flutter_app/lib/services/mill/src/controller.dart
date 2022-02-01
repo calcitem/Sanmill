@@ -21,11 +21,11 @@ part of '../mill.dart';
 /// A singleton class that holds all objects and methods needed to play Mill.
 ///
 /// Controls:
-/// * the tip [HeaderTipState]
-/// * the engine [Engine]
-/// * the position [Position]
-/// * the game instance [_Game]
-/// * the recorder [_GameRecorder]
+/// * The tip [HeaderTipState]
+/// * The engine [Engine]
+/// * The position [Position]
+/// * The game instance [_Game]
+/// * The recorder [_GameRecorder]
 class MillController {
   static const _tag = "[Controller]";
 
@@ -48,11 +48,11 @@ class MillController {
   /// A singleton class that holds all objects and methods needed to play Mill.
   ///
   /// Controls:
-  /// * the tip [HeaderTipState]
-  /// * the engine [Engine]
-  /// * the position [Position]
-  /// * the game instance [_Game]
-  /// * the recorder [_GameRecorder]
+  /// * The tip [HeaderTipState]
+  /// * The engine [Engine]
+  /// * The position [Position]
+  /// * The game instance [_Game]
+  /// * The recorder [_GameRecorder]
   ///
   /// All listed objects should not be crated outside of this scope.
   MillController._() {
@@ -83,7 +83,7 @@ class MillController {
   ///
   /// This method is suitable to use for starting a new game.
   void _startGame() {
-    // TODO: [Leptopoda] reimplement this
+    // TODO: [Leptopoda] Reimplement this
     // MillController().tip.showTip(S.of(context).gameStarted, snackBar: true);
     //
     // if (controller.gameInstance.isAiToMove) {
@@ -116,6 +116,6 @@ class MillController {
     engine.shutdown();
 
     _initialized = false;
-    logger.i("$_tag disposed");
+    logger.i("$_tag Disposed");
   }
 }

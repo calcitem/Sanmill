@@ -18,7 +18,7 @@ import 'package:flutter/material.dart';
 
 /// Color Palate
 ///
-/// gathered from  https://www.htmlcsscolor.com
+/// Gathered from  https://www.htmlcsscolor.com
 class UIColors {
   const UIColors._();
 

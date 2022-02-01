@@ -76,7 +76,7 @@ class GamePage extends StatelessWidget {
                   toolbarHeight *= 2;
                 }
 
-                // constraints of the game board but applied to the entire child
+                // Constraints of the game board but applied to the entire child
                 final maxWidth = constraints.maxWidth;
                 final maxHeight = constraints.maxHeight - toolbarHeight;
                 final BoxConstraints constraint = BoxConstraints(

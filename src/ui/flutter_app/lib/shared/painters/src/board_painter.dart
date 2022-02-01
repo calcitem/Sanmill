@@ -102,13 +102,13 @@ class BoardPainter extends CustomPainter {
       // offsetY offsetX diagonal line
       path.addLine(offset[0], offset[6]);
 
-      // lower right diagonal line
+      // Lower right diagonal line
       path.addLine(offset[17], offset[23]);
 
       // offsetY right diagonal line
       path.addLine(offset[21], offset[15]);
 
-      // lower offsetX diagonal line
+      // Lower offsetX diagonal line
       path.addLine(offset[8], offset[2]);
     }
 

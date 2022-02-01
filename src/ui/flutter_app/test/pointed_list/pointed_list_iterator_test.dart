@@ -20,17 +20,17 @@ import 'package:sanmill/shared/iterable/pointed_list.dart';
 void main() {
   group("PointedListIterator", () {
     test(
-        "current should be populated with the first element when parent isNotEmpty",
+        "Current should be populated with the first element when parent isNotEmpty",
         () {
-      // initialize
+      // Initialize
       final list = [1, 2, 3, 4, 5];
       final iterator = PointedListIterator(list);
 
       expect(iterator.current, list.first);
     });
 
-    test("current should be null when parent isEmpty", () {
-      // initialize
+    test("Current should be null when parent isEmpty", () {
+      // Initialize
       final list = [];
       final iterator = PointedListIterator(list);
 
@@ -40,7 +40,7 @@ void main() {
 
   group("PointedListIterator.move", () {
     test("moveTo should return when the parent isEmpty", () {
-      // initialize
+      // Initialize
       final list = [];
       final iterator = PointedListIterator(list);
       final snapShot = PointedListIterator(list);
@@ -53,7 +53,7 @@ void main() {
     test("moveTo should move to the given index", () {
       const index = 2;
 
-      // initialize
+      // Initialize
       final list = [1, 2, 3, 4, 5, 6];
       final iterator = PointedListIterator(list);
 
@@ -63,7 +63,7 @@ void main() {
     });
 
     test("moveToLast should move to the last index", () {
-      // initialize
+      // Initialize
       final list = [1, 2, 3, 4];
       final iterator = PointedListIterator(list);
 
@@ -73,7 +73,7 @@ void main() {
     });
 
     test("moveToFirst should move to the first index", () {
-      // initialize
+      // Initialize
       final list = [1, 2, 3, 4];
       final iterator = PointedListIterator(list);
       iterator.moveToLast();
@@ -84,7 +84,7 @@ void main() {
     });
 
     test("moveNext should move to the next index", () {
-      // initialize
+      // Initialize
       final list = [1, 2, 3, 4];
       final iterator = PointedListIterator(list);
 
@@ -96,7 +96,7 @@ void main() {
     test(
         "moveNext should not move to the next index and return false when current is the last element",
         () {
-      // initialize
+      // Initialize
       final list = [1, 2, 3, 4];
       final iterator = PointedListIterator(list);
       iterator.moveToLast();
@@ -107,7 +107,7 @@ void main() {
     });
 
     test("moveNext should not move to the next when the parent is empty", () {
-      // initialize
+      // Initialize
       final list = [];
       final iterator = PointedListIterator(list);
 
@@ -115,7 +115,7 @@ void main() {
     });
 
     test("movePrevious should move to the previous index", () {
-      // initialize
+      // Initialize
       final list = [1, 2, 3, 4];
       final iterator = PointedListIterator(list);
       iterator.moveToLast();
@@ -128,7 +128,7 @@ void main() {
     test(
         "movePrevious should not move to the previous index and return false when current is the first element",
         () {
-      // initialize
+      // Initialize
       final list = [1, 2, 3, 4];
       final iterator = PointedListIterator(list);
       iterator.moveToFirst();
@@ -141,7 +141,7 @@ void main() {
     test(
         "movePrevious should not move to the previous when the parent is empty",
         () {
-      // initialize
+      // Initialize
       final list = [];
       final iterator = PointedListIterator(list);
 

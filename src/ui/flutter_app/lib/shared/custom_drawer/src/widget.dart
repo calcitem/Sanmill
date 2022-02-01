@@ -32,16 +32,16 @@ class CustomDrawer extends StatefulWidget {
   /// Child widget. (Usually a widget that represents the main screen)
   final Widget child;
 
-  /// controller that controls the widget state. By default a new controller will be generated.
+  /// Controller that controls the widget state. By default a new controller will be generated.
   final CustomDrawerController? controller;
 
-  /// disables the gestures.
+  /// Disables the gestures.
   final bool disabledGestures;
 
-  /// items the drawer holds
+  /// Items the drawer holds
   final List<CustomDrawerItem> items;
 
-  /// header widget of the drawer
+  /// Header widget of the drawer
   final Widget header;
 
   @override
@@ -124,7 +124,7 @@ class _CustomDrawerState extends State<CustomDrawer>
       ),
     );
 
-    /// menu and arrow icon animation overlay
+    /// Menu and arrow icon animation overlay
     final _drawerOverlay = IconButton(
       icon: AnimatedIcon(
         icon: AnimatedIcons.arrow_menu,
@@ -140,7 +140,7 @@ class _CustomDrawerState extends State<CustomDrawer>
       textDirection: Directionality.of(context),
       child: ValueListenableBuilder<CustomDrawerValue>(
         valueListenable: _controller,
-        // TODO: [Leptopoda] why isn't it working with GestureDetector?
+        // TODO: [Leptopoda] Why isn't it working with GestureDetector?
         builder: (_, value, child) => InkWell(
           onTap: _controller.hideDrawer,
           focusColor: Colors.transparent,

@@ -28,13 +28,13 @@ void main() {
         () async {
       const testMill = WinLessThanThreeGame();
 
-      // initialize the test
+      // Initialize the test
       DB.instance = MockDB();
       Audios.instance = MockAudios();
       final controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
-      // import a game
+      // Import a game
       ImportService.import(testMill.export);
 
       expect(

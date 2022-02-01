@@ -26,7 +26,7 @@ part 'color_settings.g.dart';
 
 /// Color data model
 ///
-/// holds the data needed for the Color Settings
+/// Holds the data needed for the Color Settings
 @HiveType(typeId: 0)
 @JsonSerializable()
 @CopyWith()
@@ -107,7 +107,7 @@ class ColorSettings {
   @HiveField(7)
   final Color drawerColor;
 
-  @Deprecated("use [drawerColor] instead.")
+  @Deprecated("Use [drawerColor] instead.")
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
@@ -157,10 +157,10 @@ class ColorSettings {
   @HiveField(14)
   final Color navigationToolbarIconColor;
 
-  /// encodes a Json style map Color a [ColorSettings] object
+  /// Encodes a Json style map Color a [ColorSettings] object
   factory ColorSettings.fromJson(Map<String, dynamic> json) =>
       _$ColorSettingsFromJson(json);
 
-  /// decodes a Json from a [ColorSettings] object
+  /// Decodes a Json from a [ColorSettings] object
   Map<String, dynamic> toJson() => _$ColorSettingsToJson(this);
 }

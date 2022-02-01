@@ -16,7 +16,7 @@
 
 part of 'package:sanmill/main.dart';
 
-/// initializes the given [catcher]
+/// Initializes the given [catcher]
 Future<void> _initCatcher(Catcher catcher) async {
   late final String externalDirStr;
   try {

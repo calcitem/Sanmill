@@ -129,7 +129,7 @@ class HistoryNavigator {
 
   /// Moves through the History by replaying all relevant moves.
   ///
-  /// throws an [_HistoryResponse] when the moves and rules don't match
+  /// Throws an [_HistoryResponse] when the moves and rules don't match
   /// or when the end of the list moves has been reached.
   @visibleForTesting
   static Future<void> gotoHistory(HistoryMove move, [int? index]) async {
@@ -158,7 +158,7 @@ enum HistoryMove { forwardAll, backAll, forward, backN, backOne }
 extension HistoryMoveExtension on HistoryMove {
   /// Moves the [_GameRecorder] to the specified position.
   ///
-  /// Throws [_HistoryResponse] when trying to access a value outside of the bounds.
+  /// Throws [_HistoryResponse] When trying to access a value outside of the bounds.
   void gotoHistory([int? amount]) {
     final current = MillController().recorder.index;
     final iterator = MillController().recorder.globalIterator;
@@ -168,8 +168,8 @@ extension HistoryMoveExtension on HistoryMove {
         iterator.moveToLast();
         break;
       case HistoryMove.backAll:
-        // TODO: [Leptopoda] because of the way the PointedListIterator is implemented we can only move back until the first piece.
-        // we'll have to evaluate if this is enough as we actually don't need more. Like If you want to move back even further just start a new game.
+        // TODO: [Leptopoda] Because of the way the PointedListIterator is implemented we can only move back until the first piece.
+        // We'll have to evaluate if this is enough as we actually don't need more. Like If you want to move back even further just start a new game.
         iterator.moveToFirst();
         break;
       case HistoryMove.forward:
