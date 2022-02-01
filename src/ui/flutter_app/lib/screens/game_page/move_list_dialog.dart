@@ -25,7 +25,10 @@ class _MoveListDialog extends StatelessWidget {
 
     final moveHistoryText = controller.recorder.moveHistoryText!;
     final end = controller.recorder.length - 1;
-    ScaffoldMessenger.of(context).clearSnackBars();
+
+    if (DB().generalSettings.screenReaderSupport) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+    }
 
     return GamePageActionSheet(
       child: AlertDialog(
