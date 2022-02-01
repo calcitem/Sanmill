@@ -21,7 +21,7 @@ class GamePageActionSheet extends StatelessWidget {
   const GamePageActionSheet({
     Key? key,
     required this.child,
-    this.textColor = Colors.yellow,
+    this.textColor = AppTheme.gamePageActionSheetTextColor,
   }) : super(key: key);
 
   final Color textColor;
@@ -80,7 +80,10 @@ class GamePageDialog extends StatelessWidget {
 
     final contentWidget = Builder(
       builder: (context) => DefaultTextStyle(
-        style: DefaultTextStyle.of(context).style,
+        style: Theme.of(context)
+            .textTheme
+            .headline6!
+            .copyWith(color: AppTheme.gamePageActionSheetTextColor),
         textAlign: TextAlign.center,
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 16.0) *
