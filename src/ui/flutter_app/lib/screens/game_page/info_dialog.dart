@@ -118,13 +118,22 @@ class _InfoDialog extends StatelessWidget {
     return GamePageActionSheet(
       child: AlertDialog(
         content: SingleChildScrollView(
-          child: Text(_infoText(context)),
+          child: Text(
+            _infoText(context),
+            style: Theme.of(context).textTheme.headline6!.copyWith(
+                  color: AppTheme.gamePageActionSheetTextColor,
+                  fontWeight: FontWeight.normal,
+                ),
+          ),
         ),
         actions: <Widget>[
           TextButton(
             child: Text(
               S.of(context).ok,
               key: const Key('infoDialogOkButton'),
+              style: Theme.of(context).textTheme.headline6!.copyWith(
+                    color: AppTheme.gamePageActionSheetTextColor,
+                  ),
             ),
             onPressed: () => Navigator.pop(context),
           ),
