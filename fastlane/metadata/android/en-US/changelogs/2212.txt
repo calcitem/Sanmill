@@ -1,0 +1,3 @@
+v1.1.40
+
+Upgrade to Flutter 2.10.0.
