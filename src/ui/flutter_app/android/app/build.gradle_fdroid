@@ -81,5 +81,5 @@ flutter {
 }
 
 dependencies {
-	implementation 'com.iqiyi.xcrash:xcrash-android-lib:3.0.0'
+	implementation 'com.iqiyi.xcrash:xcrash-android-lib:3.1.0'
 }

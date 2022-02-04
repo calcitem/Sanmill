@@ -126,7 +126,7 @@ public class MainActivity extends FlutterActivity {
             Log.d(TAG_XCRASH, "xCrash SDK init: start");
 
             XCrash.init(this, new XCrash.InitParameters()
-                    .setAppVersion("3.0.0") // TODO
+                    .setAppVersion("3.1.0") // TODO
                     .setJavaRethrow(true)
                     .setJavaLogCountMax(10)
                     .setJavaDumpAllThreadsWhiteList(new String[]{"^main$", "^Binder:.*", ".*Finalizer.*"})
