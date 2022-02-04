@@ -53,7 +53,7 @@ class AppearanceSettingsPage extends StatelessWidget {
     void _callback(PaintingStyle? pointStyle) {
       Navigator.pop(context);
       DB().displaySettings = pointStyle == null
-          ? _displaySettings.copyWithNull(pointStyle: true)
+          ? _displaySettings.copyWith()
           : _displaySettings.copyWith(pointStyle: pointStyle);
 
       logger.v("[config] pointStyle: $pointStyle");
@@ -101,7 +101,7 @@ class AppearanceSettingsPage extends StatelessWidget {
     Navigator.pop(context);
 
     if (locale == null) {
-      DB().displaySettings = _displaySettings.copyWithNull(languageCode: true);
+      DB().displaySettings = _displaySettings.copyWith();
     } else {
       DB().displaySettings = _displaySettings.copyWith(languageCode: locale);
     }

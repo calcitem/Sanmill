@@ -43,50 +43,43 @@ public class MainActivity extends FlutterActivity {
 
     private final String TAG_XCRASH = "xCrash";
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    // You do not need to override onCreate() in order to invoke
+    // GeneratedPluginRegistrant. Flutter now does that on your behalf.
 
-        super.onCreate(savedInstanceState);
-
-        MillEngine engine = new MillEngine();
-
-        FlutterEngine fe = getFlutterEngine();
-        if (fe == null) return;
-
-        MethodChannel methodChannel =
-                new MethodChannel(fe.getDartExecutor(), ENGINE_CHANNEL);
-
-        methodChannel.setMethodCallHandler((call, result) -> {
-                    switch (call.method) {
-                        case "startup":
-                            result.success(engine.startup());
-                            break;
-                        case "send":
-                            result.success(engine.send(call.arguments.toString()));
-                            break;
-                        case "read":
-                            result.success(engine.read());
-                            break;
-                        case "shutdown":
-                            result.success(engine.shutdown());
-                            break;
-                        case "isReady":
-                            result.success(engine.isReady());
-                            break;
-                        case "isThinking":
-                            result.success(engine.isThinking());
-                            break;
-                        default:
-                            result.notImplemented();
-                            break;
-                    }
-                }
-        );
-    }
+    // ...retain whatever custom code you had from before (if any).
 
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine);
+        new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), ENGINE_CHANNEL)
+                .setMethodCallHandler(
+                    (call, result) -> {
+                        MillEngine engine = new MillEngine();
+                        switch (call.method) {
+                            case "startup":
+                                result.success(engine.startup());
+                                break;
+                            case "send":
+                                result.success(engine.send(call.arguments.toString()));
+                                break;
+                            case "read":
+                                result.success(engine.read());
+                                break;
+                            case "shutdown":
+                                result.success(engine.shutdown());
+                                break;
+                            case "isReady":
+                                result.success(engine.isReady());
+                                break;
+                            case "isThinking":
+                                result.success(engine.isThinking());
+                                break;
+                            default:
+                                result.notImplemented();
+                                break;
+                        }
+                }
+        );
     }
 
     @Override
@@ -129,7 +122,7 @@ public class MainActivity extends FlutterActivity {
             Log.d(TAG_XCRASH, "xCrash SDK init: start");
 
             XCrash.init(this, new XCrash.InitParameters()
-                    .setAppVersion("3.0.0") // TODO
+                    .setAppVersion("3.1.0") // TODO
                     .setJavaRethrow(true)
                     .setJavaLogCountMax(10)
                     .setJavaDumpAllThreadsWhiteList(new String[]{"^main$", "^Binder:.*", ".*Finalizer.*"})

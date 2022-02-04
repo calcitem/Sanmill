@@ -30,7 +30,7 @@ part 'display_settings.g.dart';
 /// Holds the data needed for the Display Settings
 @HiveType(typeId: 1)
 @JsonSerializable()
-@CopyWith(generateCopyWithNull: true)
+@CopyWith(copyWithNull: true)
 @immutable
 class DisplaySettings {
   const DisplaySettings({
