@@ -17,6 +17,7 @@
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/Calcitem/Sanmill?branch=master&svg=true)](https://ci.appveyor.com/project/Calcitem/Sanmill/branch/master)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/dd51135302af45a989a382d3a3d9eadc)](https://www.codacy.com/gh/calcitem/Sanmill/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=calcitem/Sanmill&amp;utm_campaign=Badge_Grade)
 [![Translation status](https://hosted.weblate.org/widgets/sanmill/-/svg-badge.svg)](https://hosted.weblate.org/engage/sanmill/)
+[![Readme-Chinese](https://img.shields.io/badge/README-简体中文-red.svg)](README-zh_CN.md)
 
 [Sanmill](https://github.com/calcitem/Sanmill) is a free, powerful UCI-like N men's morris program with CUI, Flutter GUI and Qt GUI.
 
@@ -76,7 +77,7 @@ We use compile-time environment configs to enable specific parts of the code:
 
 * `test` to prepare the app for Monkey and Appium testing. (References to external sites are going to be disabled.)
 * `dev_mode` to show the developer mode without needing to enable it first.
-* `catcher` to control the use of catcher. (This is on by default and needs to be disabled when required.)
+* `catcher` to control the use of Catcher. (This is on by default and needs to be disabled when required.)
 
 All environment configs can be combined and take a value of bool like:
 
