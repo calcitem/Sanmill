@@ -1,15 +1,15 @@
-## 概述
-
-<a href="https://github.com/calcitem/Sanmill/actions/workflows/flutter.yml?query=branch%3Amaster+is%3Asuccess+event%3Apush" target="_blank">
-<img src="src/ui/flutter_app/assets/badges/get-it-on-github.png" alt="Get it on GitHub" height="80"/></a>
+## 概览
 
 <a href="https://f-droid.org/packages/com.calcitem.sanmill/" target="_blank">
 <img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
 
+<a href="https://gitee.com/calcitem/Sanmill" target="_blank">
+<img src="src/ui/flutter_app/assets/badges/get-it-on-gitee.png" alt="Get it on GitHub" height="80"/></a>
+
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/Calcitem/Sanmill?branch=master&svg=true)](https://ci.appveyor.com/project/Calcitem/Sanmill/branch/master)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/dd51135302af45a989a382d3a3d9eadc)](https://www.codacy.com/gh/calcitem/Sanmill/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=calcitem/Sanmill&amp;utm_campaign=Badge_Grade)
 
-[Sanmill](https://github.com/calcitem/Sanmill) 是一个直棋程序，具有命令行、移动端 Flutter 和 PC 端 Qt 三个界面。
+[Sanmill](https://gitee.com/calcitem/Sanmill) 是一个直棋程序，具有命令行、移动端 Flutter 和 PC 端 Qt 三个界面。
 
 直棋为棋规简单、老少皆宜的双人游戏，通常棋盘为同心的数个正方形，并用直线或斜线将不同的正方形相连结。直棋普遍以消灭对方吃子能力，或困毙对方为胜。规则可用 “**先摆后移，成三吃子，余三飞子，无路者负。**” 简述之。
 
@@ -60,7 +60,7 @@
 
 * 执后手比先手容易得多，因为后手方可以在摆棋阶段战略性地放置最后一枚棋子，进入走棋阶段后更容易控制局面。
 
-* 不要试图成为首先成三的一方。通常在摆棋阶段成三的一方很容易被封锁。 
+* 不要试图成为首先成三的一方。通常在摆棋阶段成三的一方很容易被封锁。
 
 * 多子未必就占优，三对四的局面说不定对于三枚子的一方是必胜局。哪怕开局先让对方吃一子，也未必会影响局势。此所谓“**愚者求子，智者求势**”。
 
@@ -157,11 +157,11 @@ flutter run --dart-define catcher=false dev_mode=true
 
 如果您想帮助改进代码，有几个有价值的资源：
 
-* [在这个 wiki 中](https://github.com/calcitem/Sanmill/wiki)，有在 Sanmill 中使用的很多相关技术的背景信息的说明。
+* [在这个 wiki 中](https://gitee.com/calcitem/Sanmill/wikis/Home)，有在 Sanmill 中使用的很多相关技术的背景信息的说明。
 
 * 最新的源代码总是可以在 [GitHub](https://github.com/calcitem/Sanmill) 上找到。
 
-* 关于 Sanmill 的讨论在 [Discussions](https://github.com/calcitem/Sanmill/discussions) 中进行。
+* 关于 Sanmill 的讨论在 [Issues](https://gitee.com/calcitem/Sanmill/issues) 中进行。
 
 ## 使用条款
 
