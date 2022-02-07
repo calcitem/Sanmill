@@ -1,7 +1,7 @@
 ## 概览
 
 <a href="https://f-droid.org/packages/com.calcitem.sanmill/" target="_blank">
-<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
+<img src="src/ui/flutter_app/assets/badges/get-it-on-fdroid.png" alt="Get it on F-Droid" height="80"/></a>
 
 <a href="https://gitee.com/calcitem/Sanmill" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/get-it-on-gitee.png" alt="Get it on GitHub" height="80"/></a>
