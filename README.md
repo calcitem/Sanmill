@@ -1,6 +1,6 @@
 ## Overview
 
-[![YouTube](fastlane/metadata/android/en-US/images/featureGraphic.png)](https://www.youtube.com/channel/UCbGKXwhh1DkuINyZw05kyHw/featured)
+[![Graphic](fastlane/metadata/android/en-US/images/featureGraphic.png)](https://www.youtube.com/channel/UCbGKXwhh1DkuINyZw05kyHw/featured)
 
 <a href="https://github.com/calcitem/Sanmill/actions/workflows/flutter.yml?query=branch%3Amaster+is%3Asuccess+event%3Apush" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/get-it-on-github.png" alt="Get it on GitHub" height="80"/></a>
