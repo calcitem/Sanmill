@@ -779,7 +779,7 @@
   },
   "appearance": "Apparence",
   "@appearance": {
-    "description": "Appearance"
+    "description": "Apparence"
   },
   "drawOnHumanExperience": "S'inspirer de l'expérience humaine",
   "@drawOnHumanExperience": {
