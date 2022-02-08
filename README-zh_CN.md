@@ -7,7 +7,7 @@
 <img src="src/ui/flutter_app/assets/badges/get-it-on-fdroid.png" alt="Get it on F-Droid" height="80"/></a>
 
 <a href="https://gitee.com/calcitem/Sanmill" target="_blank">
-<img src="src/ui/flutter_app/assets/badges/get-it-on-gitee.png" alt="Get it on GitHub" height="80"/></a>
+<img src="src/ui/flutter_app/assets/badges/get-it-on-gitee.png" alt="Get it on Gitee" height="80"/></a>
 
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/Calcitem/Sanmill?branch=master&svg=true)](https://ci.appveyor.com/project/Calcitem/Sanmill/branch/master)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/dd51135302af45a989a382d3a3d9eadc)](https://www.codacy.com/gh/calcitem/Sanmill/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=calcitem/Sanmill&amp;utm_campaign=Badge_Grade)
