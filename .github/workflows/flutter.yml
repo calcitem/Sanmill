@@ -27,7 +27,7 @@ jobs:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '2.10.0'
+          flutter-version: '2.10.1'
 
       - name: Export environment valiables
         run: export
