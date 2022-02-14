@@ -3,7 +3,7 @@
   "@appName": {
     "description": "The app name"
   },
-  "welcome": "Bem-vindo ao",
+  "welcome": "Bem-vindo",
   "@welcome": {
     "description": "Welcome"
   },
@@ -19,11 +19,11 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Humanos vs. IA",
+  "humanVsAi": "Humano vs. IA",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "Humanos vs. Humanos",
+  "humanVsHuman": "Humano vs. Humano",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
@@ -43,7 +43,7 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "Mudança",
+  "move": "Movimentos",
   "@move": {
     "description": "Move"
   },
@@ -59,11 +59,11 @@
   "@noGameRecord": {
     "description": "No record"
   },
-  "ok": "Aceitar",
+  "ok": "OK",
   "@ok": {
     "description": "OK"
   },
-  "confirm": "Confirme",
+  "confirm": "Confirmar",
   "@confirm": {
     "description": "Confirm"
   },
@@ -175,11 +175,11 @@
   "@newGame": {
     "description": "New game"
   },
-  "importGame": "Jogo de importação",
+  "importGame": "Importar jogo",
   "@importGame": {
     "description": "Import game"
   },
-  "exportGame": "Jogo de exportação",
+  "exportGame": "Exportar jogo",
   "@exportGame": {
     "description": "Export game"
   },
