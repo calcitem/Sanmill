@@ -1,0 +1,5 @@
+v1.0.20
+
+* Apoio Ten/Eleven Men's Morris.
+* Você pode definir quantas peças podem voar.
+* Adicionar barra de ferramentas de navegação do histórico.

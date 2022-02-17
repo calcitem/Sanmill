@@ -1,0 +1,1 @@
+Um jogo de moinho que suporta muitas variantes de regras, escrito em Flutter

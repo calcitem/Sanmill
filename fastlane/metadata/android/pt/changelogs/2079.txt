@@ -1,0 +1,3 @@
+v1.1.22
+
+Quando humanos contra a IA, os dois lados fizeram muitos movimentos, mas não pegaram as peças do oponente por muitos movimentos consecutivos, e a IA ficará congelada. Este problema foi resolvido.

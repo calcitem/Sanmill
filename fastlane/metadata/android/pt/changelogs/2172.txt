@@ -1,0 +1,3 @@
+v1.1.34
+
+Evite que o branco seja muito agressivo na fase de abertura, o que pode rapidamente perder o jogo.

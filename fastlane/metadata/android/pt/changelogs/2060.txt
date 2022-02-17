@@ -1,0 +1,3 @@
+v1.1.17
+
+* Permite configurar a cor da barra de ferramentas.

@@ -1,0 +1,3 @@
+v1.1.14
+
+* Defina a regra padrão para Twelve Men's Morris quando o país for o Irã.
