@@ -1,0 +1,3 @@
+v1.1.33
+
+Suporte Flutter 2.5.

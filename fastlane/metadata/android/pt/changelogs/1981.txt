@@ -1,0 +1,3 @@
+v1.1.7
+
+* Adicione traduções automáticas hindi/italiano/polonês/turco.

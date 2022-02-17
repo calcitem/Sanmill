@@ -1,0 +1,5 @@
+v1.1.18
+
+* Quando o nível de habilidade é 1, a IA se move mais aleatoriamente para reduzir a dificuldade.
+* Corrigir a configuração da barra de ferramentas de navegação desaparece em alguns dispositivos.
+* Corrija a cor do texto do item de destaque da gaveta.

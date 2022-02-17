@@ -1,0 +1,3 @@
+v1.0.22
+
+* Corrija o ataque lateral branco tão cedo pelos lados no 3º movimento.

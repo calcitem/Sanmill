@@ -1,0 +1,3 @@
+v1.0.11
+
+* Suporte Avance e Recupere tudo e Avance tudo.

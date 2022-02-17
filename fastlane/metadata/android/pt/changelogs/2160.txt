@@ -1,0 +1,4 @@
+v1.1.31
+
+* Nine Men's Morris: A correção da IA provavelmente impedirá o branco de fazer um moinho na fase de abertura, tornando a IA vulnerável a perder o jogo.
+* Morris Doze Homens: Aumente o poder da IA.

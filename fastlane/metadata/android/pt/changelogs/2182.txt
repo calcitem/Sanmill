@@ -1,0 +1,4 @@
+v1.1.36
+
+* Corrija o problema de exibição da direção do ícone no layout da direita para a esquerda.
+* Tradução árabe melhorada.

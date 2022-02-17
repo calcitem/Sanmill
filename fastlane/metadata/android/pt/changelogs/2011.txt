@@ -1,0 +1,6 @@
+v1.1.10
+
+* Corrigir problemas de setas de opções em idiomas RTL.
+* Melhorar a tradução (WIP) de farsi (idioma persa).
+* Melhore as traduções em inglês.
+* Adicione traduções automáticas búlgaro/bengali/dinamarquês/grego/estoniano/finlandês/gujarati/croata/indonésio/lituano/letão/macedônio/malaio/holandês/eslovaco/esloveno/albanês/sérvio/sueco/télugo/tailandês.
