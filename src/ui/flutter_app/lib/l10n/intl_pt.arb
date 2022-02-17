@@ -79,11 +79,11 @@
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "Não pode ser colocado aqui.",
+  "tipBanPlace": "Não se pode colocar aqui.",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Colocado.",
+  "tipPlaced": "Você colocou.",
   "@tipPlaced": {
     "description": "Placed."
   },
@@ -95,11 +95,11 @@
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Removido.",
+  "tipRemoved": "Você removeu.",
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipMove": "Mover uma peça.",
+  "tipMove": "Mova uma peça.",
   "@tipMove": {
     "description": "Move a piece."
   },
@@ -111,11 +111,11 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Moedor! Pegue a peça de seu oponente.",
+  "tipMill": "Moinho! Pegue a peça de seu oponente.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
-  "tipContinueMill": "Continue a levar a peça de seu oponente.",
+  "tipContinueMill": "Continue pegando a peça de seu oponente.",
   "@tipContinueMill": {
     "description": "Continue to take your opponent's piece."
   },
@@ -139,23 +139,23 @@
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "Você ainda tem 3 peças.",
+  "tipHaveThreePiecesLeft": "Você tem três peças restantes.",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "Você pode ir para qualquer ponto que preferir.",
+  "tipCanMoveToAnyPoint": "Você pode ir para qualquer ponto que quiser.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "{player} para mover.",
+  "tipToMove": "Vez do {player} de se mover.",
   "@tipToMove": {
     "description": " to move."
   },
-  "whiteWin": "O jogador 1 ganha!",
+  "whiteWin": "O jogador 1 ganhou!",
   "@whiteWin": {
     "description": "Player 1 wins!"
   },
-  "blackWin": "O jogador 2 ganha!",
+  "blackWin": "O jogador 2 ganhou!",
   "@blackWin": {
     "description": "Player 2 wins!"
   },
@@ -183,7 +183,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Jogo importado da prancheta.",
+  "gameImported": "Jogo importado da área de transferência.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
@@ -203,7 +203,7 @@
   "@restartGame": {
     "description": "Restart current game?"
   },
-  "restart": "Reinicie",
+  "restart": "Reiniciar",
   "@restart": {
     "description": "Restart"
   },
