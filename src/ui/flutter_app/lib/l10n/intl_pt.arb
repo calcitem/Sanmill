@@ -207,7 +207,7 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "O jogo começou, favor colocar.",
+  "gameStarted": "Jogo iniciado, por favor coloque.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
@@ -235,7 +235,7 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "A contagem de peças {player} é inferior a três.",
+  "loseReasonlessThanThree": "O número de peças do {player} é inferior a três.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
@@ -319,7 +319,7 @@
   "@skillLevel": {
     "description": "Difficulty level"
   },
-  "moveTime": "Tempo de raciocínio AI",
+  "moveTime": "Tempo de raciocínio da IA",
   "@moveTime": {
     "description": "AI thinking time"
   },
@@ -351,7 +351,7 @@
   "@human": {
     "description": "Human"
   },
-  "ai": "AI",
+  "ai": "IA",
   "@ai": {
     "description": "AI"
   },
@@ -427,7 +427,7 @@
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
-  "mayRemoveMultiple_Detail": "Se um jogador fechar mais de um moinho de cada vez, ela poderá remover o número de moinhos que fechou.",
+  "mayRemoveMultiple_Detail": "Se um jogador fechar mais de um moinho de uma vez, ele removerá o número de moinhos que fechou.",
   "@mayRemoveMultiple_Detail": {
     "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
@@ -1113,7 +1113,7 @@
   "@threefoldRepetitionRule": {
     "description": "Threefold repetition rule"
   },
-  "threefoldRepetitionRule_Detail": "O jogo termina empatado se ocorrer uma posição pela terceira vez.",
+  "threefoldRepetitionRule_Detail": "O jogo empata se ocorrer uma posição pela terceira vez.",
   "@threefoldRepetitionRule_Detail": {
     "description": "The game is drawn if a position occurs for the third time."
   },
@@ -1121,7 +1121,7 @@
   "@continueToMakeMove": {
     "description": "Mill! Continue to make a move."
   },
-  "pointStyle": "Estilo de ponto",
+  "pointStyle": "Estilo do ponto",
   "@pointStyle": {
     "description": "Point style"
   },
