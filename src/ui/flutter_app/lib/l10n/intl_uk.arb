@@ -67,7 +67,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{Move}=1{{count} Move}other{{count} Moves}}",
+  "moveNumber": "{count,plural, =0{Переїхати}=1{{count} Переїхати}other{{count} Рухає}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
