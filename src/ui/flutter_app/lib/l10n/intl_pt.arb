@@ -4,7 +4,7 @@
     "@appName": {
         "description": "The app name"
     },
-    "welcome": "Bem-vindo ao",
+    "welcome": "Bem-vindo",
     "@welcome": {
         "description": "Welcome"
     },
@@ -20,11 +20,11 @@
     "@game": {
         "description": "Game"
     },
-    "humanVsAi": "Humanos vs. IA",
+    "humanVsAi": "Humano vs. IA",
     "@humanVsAi": {
         "description": "Human Vs AI"
     },
-    "humanVsHuman": "Humanos vs. Humanos",
+    "humanVsHuman": "Humano vs. Humano",
     "@humanVsHuman": {
         "description": "Human Vs Human"
     },
@@ -44,7 +44,7 @@
     "@testViaLAN": {
         "description": "Test Via LAN"
     },
-    "move": "Mudança",
+    "move": "Movimentos",
     "@move": {
         "description": "Move"
     },
@@ -64,11 +64,11 @@
     "@noGameRecord": {
         "description": "No record"
     },
-    "ok": "Aceitar",
+    "ok": "OK",
     "@ok": {
         "description": "OK"
     },
-    "confirm": "Confirme",
+    "confirm": "Confirmar",
     "@confirm": {
         "description": "Confirm"
     },
@@ -88,11 +88,11 @@
     "@tipPlace": {
         "description": "Place your pieces."
     },
-    "tipBanPlace": "Não pode ser colocado aqui.",
+    "tipBanPlace": "Não se pode colocar aqui.",
     "@tipBanPlace": {
         "description": "Cannot place it here."
     },
-    "tipPlaced": "Colocado.",
+    "tipPlaced": "Você colocou.",
     "@tipPlaced": {
         "description": "Placed."
     },
@@ -104,11 +104,11 @@
     "@tipBanRemove": {
         "description": "Cannot remove."
     },
-    "tipRemoved": "Removido.",
+    "tipRemoved": "Você removeu.",
     "@tipRemoved": {
         "description": "Removed."
     },
-    "tipMove": "Mover uma peça.",
+    "tipMove": "Mova uma peça.",
     "@tipMove": {
         "description": "Move a piece."
     },
@@ -120,11 +120,11 @@
     "@tipCannotMove": {
         "description": "You can't move your piece here."
     },
-    "tipMill": "Moedor! Pegue a peça de seu oponente.",
+    "tipMill": "Moinho! Pegue a peça de seu oponente.",
     "@tipMill": {
         "description": "Mill! Take your opponent's piece."
     },
-    "tipContinueMill": "Continue a levar a peça de seu oponente.",
+    "tipContinueMill": "Continue pegando a peça de seu oponente.",
     "@tipContinueMill": {
         "description": "Continue to take your opponent's piece."
     },
@@ -152,11 +152,11 @@
     "@tipSelectPieceToMove": {
         "description": "Select your piece to move."
     },
-    "tipHaveThreePiecesLeft": "Você ainda tem 3 peças.",
+    "tipHaveThreePiecesLeft": "Você tem três peças restantes.",
     "@tipHaveThreePiecesLeft": {
         "description": "You have 3 pieces left."
     },
-    "tipCanMoveToAnyPoint": "Você pode ir para qualquer ponto que preferir",
+    "tipCanMoveToAnyPoint": "Você pode ir para qualquer ponto que quiser",
     "@tipCanMoveToAnyPoint": {
         "description": "You can move to any point you like."
     },
@@ -164,11 +164,11 @@
     "@tipToMove": {
         "description": " to move."
     },
-    "whiteWin": "O jogador 1 ganha!",
+    "whiteWin": "O jogador 1 ganhou!",
     "@whiteWin": {
         "description": "Player 1 wins!"
     },
-    "blackWin": "O jogador 2 ganha!",
+    "blackWin": "O jogador 2 ganhou!",
     "@blackWin": {
         "description": "Player 2 wins!"
     },
@@ -184,7 +184,7 @@
     "@aborted": {
         "description": "Aborted"
     },
-    "thinking": "Pensando...",
+    "thinking": "Pensando…",
     "@thinking": {
         "description": "Thinking..."
     },
@@ -192,15 +192,15 @@
     "@newGame": {
         "description": "New game"
     },
-    "importGame": "Jogo de importação",
+    "importGame": "Importar jogo",
     "@importGame": {
         "description": "Import game"
     },
-    "exportGame": "Jogo de exportação",
+    "exportGame": "Exportar jogo",
     "@exportGame": {
         "description": "Export game"
     },
-    "gameImported": "Jogo importado da prancheta.",
+    "gameImported": "Jogo importado da área de transferência.",
     "@gameImported": {
         "description": "Game imported from the clipboard."
     },
@@ -240,15 +240,15 @@
     "@restartGame": {
         "description": "Restart current game?"
     },
-    "restart": "Reinicie",
+    "restart": "Reiniciar",
     "@restart": {
         "description": "Restart"
     },
-    "gameStarted": "O jogo começou, favor colocar",
+    "gameStarted": "Jogo iniciado, por favor coloque.",
     "@gameStarted": {
         "description": "Game started, please place"
     },
-    "analyzing": "Analisando...",
+    "analyzing": "Analisando…",
     "@analyzing": {
         "description": "Analyzing ..."
     },
@@ -360,7 +360,7 @@
     "@skillLevel": {
         "description": "Difficulty level"
     },
-    "moveTime": "Tempo de raciocínio AI",
+    "moveTime": "Tempo de raciocínio da IA",
     "@moveTime": {
         "description": "AI thinking time"
     },
@@ -392,7 +392,7 @@
     "@human": {
         "description": "Human"
     },
-    "ai": "AI",
+    "ai": "IA",
     "@ai": {
         "description": "AI"
     },
@@ -480,7 +480,7 @@
     "@mayRemoveMultiple": {
         "description": "Multi-remove"
     },
-    "mayRemoveMultiple_Detail": "Se um jogador fechar mais de um moinho de cada vez, ela poderá remover o número de moinhos que fechou.",
+    "mayRemoveMultiple_Detail": "Se um jogador fechar mais de um moinho de uma vez, ele removerá o número de moinhos que fechou.",
     "@mayRemoveMultiple_Detail": {
         "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
     },
@@ -492,7 +492,7 @@
     "@mayRemoveFromMillsAlways_Detail": {
         "description": "mayRemoveFromMillsAlways_Detail"
     },
-    "isWhiteLoseButNotDrawWhenBoardFull": "O segundo jogador perde quando o tabuleiro está cheio.",
+    "isWhiteLoseButNotDrawWhenBoardFull": "O segundo jogador perde quando o tabuleiro está cheio",
     "@isWhiteLoseButNotDrawWhenBoardFull": {
         "description": "The second player loses when the board is full"
     },
@@ -1225,7 +1225,7 @@
     "@threefoldRepetitionRule": {
         "description": "Threefold repetition rule"
     },
-    "threefoldRepetitionRule_Detail": "O jogo termina empatado se ocorrer uma posição pela terceira vez.",
+    "threefoldRepetitionRule_Detail": "O jogo empata se ocorrer uma posição pela terceira vez.",
     "@threefoldRepetitionRule_Detail": {
         "description": "The game is drawn if a position occurs for the third time."
     },
@@ -1233,7 +1233,7 @@
     "@continueToMakeMove": {
         "description": "Mill! Continue to make a move."
     },
-    "pointStyle": "Estilo de ponto",
+    "pointStyle": "Estilo do ponto",
     "@pointStyle": {
         "description": "Point style"
     },
