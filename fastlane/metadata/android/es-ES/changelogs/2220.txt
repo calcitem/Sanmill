@@ -1,0 +1,4 @@
+v1.1.42
+
+* Agregar traducción al ucraniano.
+* Mejorar la traducción al portugués (Brasil).
