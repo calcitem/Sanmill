@@ -55,6 +55,7 @@ import 'package:sanmill/generated/intl/l10n_sv.dart';
 import 'package:sanmill/generated/intl/l10n_te.dart';
 import 'package:sanmill/generated/intl/l10n_th.dart';
 import 'package:sanmill/generated/intl/l10n_tr.dart';
+import 'package:sanmill/generated/intl/l10n_uk.dart';
 import 'package:sanmill/generated/intl/l10n_uz.dart';
 import 'package:sanmill/generated/intl/l10n_vi.dart';
 import 'package:sanmill/generated/intl/l10n_zh.dart';
@@ -101,6 +102,7 @@ Map<Locale, String> languageCodeToStrings = {
   const Locale("te"): STe().languageName,
   const Locale("th"): STh().languageName,
   const Locale("tr"): STr().languageName,
+  const Locale("uk"): SUk().languageName,
   const Locale("uz"): SUz().languageName,
   const Locale("vi"): SVi().languageName,
   const Locale("zh"): SZh().languageName,

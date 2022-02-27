@@ -71,6 +71,7 @@ class CustomFeedbackLocalizationsDelegate
     const Locale("te"): const TeFeedbackLocalizations(), // Telugu
     const Locale("th"): const ThFeedbackLocalizations(), // Thai
     const Locale("tr"): const TrFeedbackLocalizations(), // Turkish
+    const Locale("uk"): const UkFeedbackLocalizations(), // Ukrainian
     const Locale("zh"): const ZhFeedbackLocalizations(), // Chinese
   };
 
@@ -879,6 +880,29 @@ class TrFeedbackLocalizations extends FeedbackLocalizations {
       const TrFeedbackLocalizations(),
     );
   }
+}
+
+class UkFeedbackLocalizations extends FeedbackLocalizations {
+  const UkFeedbackLocalizations();
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const UkFeedbackLocalizations(),
+    );
+  }
+
+  @override
+  String get submitButtonText => 'Надіслати';
+
+  @override
+  String get feedbackDescriptionText =>
+      'Будь ласка, залишайте свої цінні коментарі та пропозиції за адресою:';
+
+  @override
+  String get draw => 'Малювати';
+
+  @override
+  String get navigate => 'Навігація';
 }
 
 class ZhFeedbackLocalizations extends FeedbackLocalizations {
