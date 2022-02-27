@@ -693,14 +693,14 @@ class RuFeedbackLocalizations extends FeedbackLocalizations {
   }
 
   @override
-  String get submitButtonText => 'Послать';
+  String get submitButtonText => 'Отправить';
 
   @override
   String get feedbackDescriptionText =>
-      'Пожалуйста, оставляйте свои ценные комментарии и предложения по адресу:';
+      'Опишите проблему';
 
   @override
-  String get draw => 'Рисовать';
+  String get draw => 'Рисование';
 
   @override
   String get navigate => 'Навигация';
@@ -892,14 +892,14 @@ class UkFeedbackLocalizations extends FeedbackLocalizations {
   }
 
   @override
-  String get submitButtonText => 'Надіслати';
+  String get submitButtonText => 'Відправити';
 
   @override
   String get feedbackDescriptionText =>
-      'Будь ласка, залишайте свої цінні коментарі та пропозиції за адресою:';
+      'Опишіть проблему';
 
   @override
-  String get draw => 'Малювати';
+  String get draw => 'Малювання';
 
   @override
   String get navigate => 'Навігація';
