@@ -67,6 +67,7 @@ Map<String, Strings> languageCodeToStrings = {
   "te": TeluguStrings(),
   "th": ThaiStrings(),
   "tr": TurkishStrings(),
+  "uk": UkrainianStrings(),
   "uz": UzbekStrings(),
   "vi": VietnameseStrings(),
   "zh": ChineseStrings(),
@@ -450,6 +451,15 @@ class TurkishStrings extends Strings {
 
   @override
   String get tapBackAgainToLeave => 'Tocca di nuovo per uscire.';
+}
+
+/// uk
+class UkrainianStrings extends Strings {
+  @override
+  String get languageName => 'українська';
+
+  @override
+  String get tapBackAgainToLeave => 'Торкніться назад, щоб вийти.';
 }
 
 /// uz
