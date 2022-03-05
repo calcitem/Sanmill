@@ -247,7 +247,7 @@
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "A placa está cheia e {player} não tem como ir.",
+  "loseReasonBoardIsFull": "O tabuleiro está cheio e {player} não tem como ir.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
@@ -259,7 +259,7 @@
   "@drawReasonRule50": {
     "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
-  "drawReasonBoardIsFull": "É um sorteio porque o quadro está cheio.",
+  "drawReasonBoardIsFull": "O jogo empatou porque o tabuleiro está cheio.",
   "@drawReasonBoardIsFull": {
     "description": "It is a Draw because the board is full"
   },
@@ -403,7 +403,7 @@
   "@hasDiagonalLines": {
     "description": "Diagonal lines"
   },
-  "hasDiagonalLines_Detail": "Acrescentar quatro linhas diagonais ao quadro.",
+  "hasDiagonalLines_Detail": "Acrescentar quatro linhas diagonais ao tabuleiro.",
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "O histórico da mudança é copiado para a prancheta.",
+  "moveHistoryCopied": "Histórico de movimentos copiado para a área de transferência.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -507,7 +507,7 @@
   "@color": {
     "description": "Color"
   },
-  "boardColor": "Cor da placa",
+  "boardColor": "Cor do tabuleiro",
   "@boardColor": {
     "description": "Board color"
   },
@@ -519,7 +519,7 @@
   "@backgroundColor": {
     "description": "Background color"
   },
-  "lineColor": "Cor da linha do quadro",
+  "lineColor": "Cor da linha do tabuleiro",
   "@lineColor": {
     "description": "Board line color"
   },
@@ -539,7 +539,7 @@
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
   },
-  "isNotationsShown": "Mostrar anotações no quadro",
+  "isNotationsShown": "Mostrar anotações no tabuleiro",
   "@isNotationsShown": {
     "description": "Show notations on board"
   },
@@ -551,11 +551,11 @@
   "@display": {
     "description": "Display"
   },
-  "boardBorderLineWidth": "Largura da borda da placa",
+  "boardBorderLineWidth": "Largura da borda do tabuleiro",
   "@boardBorderLineWidth": {
     "description": "Board borderline width"
   },
-  "boardInnerLineWidth": "Largura da linha interna da placa",
+  "boardInnerLineWidth": "Largura da linha interna do tabuleiro",
   "@boardInnerLineWidth": {
     "description": "Board inner line width"
   },
@@ -717,7 +717,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "O objetivo do jogo é deixar o adversário com menos de três peças ou sem movimentos legais.\n\nO jogo é automaticamente sorteado se o jogo for reposicionado pela terceira vez, ou se nenhum retiro tiver sido feito nas últimas 100 jogadas (configurável).\n\nO jogo é jogado em três fases:\n\n1. colocação de peças em pontos vazios 2.\n2. Peças em movimento para pontos adjacentes\n3. (fase opcional) Movimento das peças para qualquer ponto livre quando o jogador fica com três peças.\n\nColocação\n\nO jogo começa com um tabuleiro vazio, que consiste em uma grade com vinte e quatro pontos. Os jogadores se revezam para colocar suas peças nos pontos livres até que cada jogador tenha colocado todas as peças no tabuleiro. Se um jogador consegue colocar três de suas peças em linha reta, ele tem um \"moinho\" e pode remover uma das peças de seu oponente do tabuleiro.\n\nEm algumas variações, acontece que os jogadores devem primeiro remover quaisquer outras peças antes de remover uma peça de um moinho formado.\n\nEm algumas variantes, há uma regra de que todos os pontos das peças removidas não podem ser devolvidos ao quadro na fase de colocação.\n\nUma vez que todas as peças tenham sido utilizadas, os jogadores se revezam para se mover.\n\nMovimento\n\nPara se mover, um jogador move uma de suas peças ao longo de uma linha no tabuleiro para um ponto adjacente livre. Se ele não pode fazer isso, perdeu o jogo. Como na fase de preparação, um jogador que alinha três de suas peças em uma linha no tabuleiro tem um moinho e pode remover uma das peças de seu oponente. Qualquer jogador que subtrai duas peças não tem opção de formar novos moinhos e perde o jogo. Um jogador também pode perder com mais de três peças se seu oponente as bloquear de se mover.\n\nVôo\n\nEm uma variante comum, uma vez que um jogador tenha apenas três peças, suas peças podem \"voar\", \"pular\" ou \"saltar\" para qualquer ponto livre, não apenas adjacentes.\n",
+  "helpContent": "O objetivo do jogo é deixar o adversário com menos de três peças ou sem movimentos legais.\n\nO jogo empata automaticamente se o jogo for reposicionado pela terceira vez, ou se nenhum retiro tiver sido feito nas últimas 100 jogadas (configurável).\n\nO jogo é jogado em três fases:\n\n1. colocação de peças em pontos vazios 2.\n2. Peças em movimento para pontos adjacentes\n3. (fase opcional) Movimento das peças para qualquer ponto livre quando o jogador fica com três peças.\n\nColocação\n\nO jogo começa com um tabuleiro vazio, que consiste em uma grade com vinte e quatro pontos. Os jogadores se revezam para colocar suas peças nos pontos livres até que cada jogador tenha colocado todas as peças no tabuleiro. Se um jogador consegue colocar três de suas peças em linha reta, ele tem um \"moinho\" e pode remover uma das peças de seu oponente do tabuleiro.\n\nEm algumas variações, acontece que os jogadores devem primeiro remover quaisquer outras peças antes de remover uma peça de um moinho formado.\n\nEm algumas variantes, há uma regra de que todos os pontos das peças removidas não podem ser devolvidos ao quadro na fase de colocação.\n\nUma vez que todas as peças tenham sido utilizadas, os jogadores se revezam para se mover.\n\nMovimento\n\nPara se mover, um jogador move uma de suas peças ao longo de uma linha no tabuleiro para um ponto adjacente livre. Se ele não pode fazer isso, perdeu o jogo. Como na fase de preparação, um jogador que alinha três de suas peças em uma linha no tabuleiro tem um moinho e pode remover uma das peças de seu oponente. Qualquer jogador que subtrai duas peças não tem opção de formar novos moinhos e perde o jogo. Um jogador também pode perder com mais de três peças se seu oponente as bloquear de se mover.\n\nVôo\n\nEm uma variante comum, uma vez que um jogador tenha apenas três peças, suas peças podem \"voar\", \"pular\" ou \"saltar\" para qualquer ponto livre, não apenas adjacentes.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -765,7 +765,7 @@
   "@gameOverCondition": {
     "description": "Game over condition"
   },
-  "aisPlayStyle": "Estilo AI Play Style",
+  "aisPlayStyle": "Estilo de jogo da IA",
   "@aisPlayStyle": {
     "description": "AI's playstyle"
   },
@@ -797,11 +797,11 @@
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "{player} a bordo: {count}",
+  "onBoard": "{player} no tabuleiro: {count}",
   "@onBoard": {
     "description": "on board"
   },
-  "boardTop": "Deslocamento do quadro do topo",
+  "boardTop": "Deslocamento do tabuleiro do topo",
   "@boardTop": {
     "description": "Board offset from the top"
   },
