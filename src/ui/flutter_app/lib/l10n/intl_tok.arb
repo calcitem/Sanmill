@@ -279,12 +279,138 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "gameOver": "musi awen",
+  "gameOver": "musi pini",
   "@gameOver": {
     "description": "Game Over"
   },
   "tipCannotRemovePieceFromMill": "kan moku ala e kiwen musi lon tu wan.",
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
+  },
+  "gameOverUnknownReason": "musi pini! tan li sona ala.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "thanks": "pona",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "sitelen monsi",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "o awen",
+  "@options": {
+    "description": "Options"
+  },
+  "skillLevel": "ike mute",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "tempo sona pi ijo sona",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "ike",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "kalama",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "musi e kalama musi",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "whoMovesFirst": "tawa nanpa wan",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "jan",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "ijo sona",
+  "@ai": {
+    "description": "AI"
+  },
+  "help": "lipu sona",
+  "@help": {
+    "description": "Help"
+  },
+  "ruleSettings": "lawa ante",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "kule",
+  "@color": {
+    "description": "Color"
+  },
+  "pieceColor": "kule pi kiwen",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "kule pi sitelen monsi",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "kule pi linja",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "blackPieceColor": "kule kiwen pi nanpa tu",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "player": "jan",
+  "@player": {
+    "description": "player"
+  },
+  "player2": "jan nanpa tu",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "musi kepeken pi nasin seme",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "version": "nanpa:{versionNumber}",
+  "@version": {
+    "description": "Version",
+    "placeholders": {
+      "versionNumber": {
+        "description": "The current version",
+        "example": "1.1.38"
+      }
+    }
+  },
+  "flyPieceCount_Detail": "tawa kon li ken,kiwen pi jan weka kama nanpa nasa la,kiwen pi ona ken tawa ma ali pi lon ala,sama ala ma ante pi musi ni, pake ma poka.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "player1": "jan nanpa wan",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "mayFly": "tawa kon",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "exit": "o tawa",
+  "@exit": {
+    "description": "Exit"
+  },
+  "boardColor": "kule pi musi lipu",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "whitePieceColor": "kule kiwen pi jan nanpa wan",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "messageColor": "kule pi toki lawa",
+  "@messageColor": {
+    "description": "Message color"
   }
 }
