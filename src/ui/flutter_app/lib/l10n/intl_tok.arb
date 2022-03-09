@@ -1,1 +1,38 @@
-{}
+{
+  "welcome": "kama pona",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "kin",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "ala",
+  "@no": {
+    "description": "No"
+  },
+  "game": "musi",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "jan li utala e ijo lawa",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "jan li utala e jan",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "humanVsLAN": "utala lon linja",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "aiVsAi": "ijo lawa li utala e ijo lawa",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "jan li utala e lawa sewi",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  }
+}
