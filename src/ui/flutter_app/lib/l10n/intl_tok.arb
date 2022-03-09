@@ -161,11 +161,11 @@
   "@lost": {
     "description": "Lost"
   },
-  "exportGame": "musi awen",
+  "exportGame": "tawa musi",
   "@exportGame": {
     "description": "Export game"
   },
-  "importGame": "open e awen",
+  "importGame": "insa e musi",
   "@importGame": {
     "description": "Import game"
   },
@@ -274,5 +274,17 @@
         "example": "Player 1"
       }
     }
+  },
+  "youWin": "sina utala pona a.li pona tawa sina!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "gameOver": "musi awen",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "tipCannotRemovePieceFromMill": "kan moku ala e kiwen musi lon tu wan.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
   }
 }
