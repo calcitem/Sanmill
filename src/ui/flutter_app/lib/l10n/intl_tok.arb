@@ -39,7 +39,7 @@
   "@appName": {
     "description": "The app name"
   },
-  "tipPlaced": "tenpo pini la tawa",
+  "tipPlaced": "tenpo pini la pali",
   "@tipPlaced": {
     "description": "Placed."
   },
@@ -138,5 +138,141 @@
   "tipCanMoveToAnyPoint": "sina ken tawa e kiwen musi sina tawa domo ali.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} o pali",
+  "@tipToMove": {
+    "description": "The tip that the given player is to move.",
+    "placeholders": {
+      "player": {
+        "description": "The player whose turn it is.",
+        "example": "Player 1"
+      }
+    }
+  },
+  "blackWin": "jan musi tu li utala pona",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "utala pona",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "utala ike",
+  "@lost": {
+    "description": "Lost"
+  },
+  "exportGame": "musi awen",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "importGame": "open e awen",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "gameImported": "open musi tan lipu sitelen",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "open ala {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import",
+    "placeholders": {
+      "invalidMove": {
+        "description": "Invalid move",
+        "example": "x1-y2"
+      }
+    }
+  },
+  "pleaseWait": "o awen",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restart": "sin",
+  "@restart": {
+    "description": "Restart"
+  },
+  "newGame": "musi sin",
+  "@newGame": {
+    "description": "New game"
+  },
+  "whiteWin": "jan musi wan li utala pona!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "tipCannotPlace": "ni li tawa ala",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "gameStarted": "musi li open,pali e kiwen",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "error": "sona ala:{message}",
+  "@error": {
+    "description": "Error",
+    "placeholders": {
+      "message": {
+        "description": "The Error message",
+        "example": "Unknown error"
+      }
+    }
+  },
+  "white": "jan nanpa wan",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "jan nanpa tu",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonResign": "{player} kepeken utala ike.",
+  "@loseReasonResign": {
+    "description": "Indicate that the player resigned.",
+    "placeholders": {
+      "player": {
+        "description": "The player who resigned",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonBoardIsFull": "lipu li kon ala,{player} ken ala pali e kiwen.",
+  "@loseReasonBoardIsFull": {
+    "description": "Indicate that the player has no way to go because the board is full.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonlessThanThree": "{player} nanpa kiwen lili tu wan.",
+  "@loseReasonlessThanThree": {
+    "description": "Indicate that the player lost because they had less than three pieces left.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonNoWay": "{player} ken ala pali e kiwen.",
+  "@loseReasonNoWay": {
+    "description": "Indicate that the player has no way to go.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonTimeOver": "tenpo li pini,{player} li utala ike.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
   }
 }
