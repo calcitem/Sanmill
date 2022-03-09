@@ -55,8 +55,88 @@
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipBanPlace": "ni li tawa ala",
+  "tipBanPlace": "ni li ken lon ala",
   "@tipBanPlace": {
     "description": "Cannot place it here."
+  },
+  "showMoveList": "lipu tawa",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "sitelen ala",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "confirm": "o kin",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "moveList": "lipu nanpa pi tawa",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "tipSelectWrong": "o pana e ijo ike",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "ok": "pona",
+  "@ok": {
+    "description": "OK"
+  },
+  "move": "tawa",
+  "@move": {
+    "description": "Move"
+  },
+  "cancel": "o ala",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipPlace": "o anpa li awen e kiwen musi.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipCannotMove": "o sina ken tawa ala kiwen musi sina lon ni.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "kiwen musi tu wan lon linja wan o moku kiwen musi.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipCanMoveOnePoint": "o ken tawa domo poki.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "ken tawa ala kiwen musi pi jan sinpin.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "o lukin li kama jo e kiwen musi sina.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "sina jo kiwen musi tu wan taso.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "thinking": "pilin…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "tipMove": "o tawa e kiwen musi.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipSelectOpponentsPiece": "o pana kiwen musi pi jan sinpin.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipContinueMill": "moku e kiwen musi,o awen ala.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipCanMoveToAnyPoint": "sina ken tawa e kiwen musi sina tawa domo ali.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
   }
 }
