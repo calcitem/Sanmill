@@ -43,19 +43,19 @@
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "weka e tawa",
+  "tipRemove": "o weka e ijo",
   "@tipRemove": {
     "description": "Remove a piece."
   },
-  "tipBanRemove": "ni li weka ala",
+  "tipBanRemove": "ni li ken ala weka",
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "tenpo pini la weka",
+  "tipRemoved": "sina weka",
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipBanPlace": "ni li ken lon ala",
+  "tipBanPlace": "ni li ken ala lon ni",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
@@ -75,7 +75,7 @@
   "@moveList": {
     "description": "Move list"
   },
-  "tipSelectWrong": "o pana e ijo ike",
+  "tipSelectWrong": "o anu e ijo ike",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
@@ -149,7 +149,7 @@
       }
     }
   },
-  "blackWin": "jan musi tu li utala pona",
+  "blackWin": "jan musi pi nanpa tu li utala pona",
   "@blackWin": {
     "description": "Player 2 wins!"
   },
@@ -412,5 +412,9 @@
   "messageColor": "kule pi toki lawa",
   "@messageColor": {
     "description": "Message color"
+  },
+  "restartGame": "open sin e musi ni?",
+  "@restartGame": {
+    "description": "Restart current game?"
   }
 }
