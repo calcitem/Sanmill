@@ -34,5 +34,29 @@
   "humanVsCloud": "jan li utala e lawa sewi",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
+  },
+  "appName": "Milu",
+  "@appName": {
+    "description": "The app name"
+  },
+  "tipPlaced": "tenpo pini la tawa",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "weka e tawa",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "ni li weka ala",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "tenpo pini la weka",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipBanPlace": "ni li tawa ala",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
   }
 }
