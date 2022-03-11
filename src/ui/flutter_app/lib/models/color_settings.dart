@@ -41,7 +41,7 @@ class ColorSettings {
     this.pieceHighlightColor = Colors.red,
     this.messageColor = Colors.white,
     this.drawerColor = Colors.white,
-    @Deprecated("use [drawerColor] instead.")
+    @Deprecated("Use [drawerColor] instead.")
         this.drawerBackgroundColor = const Color(0x80EDF0F2),
     this.drawerTextColor = UIColors.nearlyBlack,
     this.drawerHighlightItemColor = const Color(0x3309f911),

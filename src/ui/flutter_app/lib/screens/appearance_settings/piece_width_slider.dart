@@ -31,7 +31,7 @@ class _PieceWidthSlider extends StatelessWidget {
             defaultValue: const DisplaySettings(),
           )!;
 
-          // divided by [MigrationValues.pieceWidth] To represent the old behavior
+          // Divided by [MigrationValues.pieceWidth] To represent the old behavior
           return Slider(
             value: _displaySettings.pieceWidth,
             min: 0.5 / MigrationValues.pieceWidth,
