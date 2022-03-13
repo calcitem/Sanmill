@@ -9,7 +9,7 @@ intl_name = 'intl_en'
 arb_file_path = cmd_path + '/' + 'lib/l10n/' + intl_name + '.arb'
 csv_file_path = cmd_path + '/' + 'lib/l10n/' + intl_name + '.csv'
 
-# Read arb
+# Read .arb
 with open(arb_file_path, 'r', encoding='utf8') as f:
     intl_dict = json.load(f)
 for key in list(intl_dict):
