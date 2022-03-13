@@ -1,0 +1,420 @@
+{
+  "welcome": "kama pona",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "kin",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "ala",
+  "@no": {
+    "description": "No"
+  },
+  "game": "musi",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "jan li utala e ijo lawa",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "jan li utala e jan",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "humanVsLAN": "utala lon linja",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "aiVsAi": "ijo lawa li utala e ijo lawa",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "jan li utala e lawa sewi",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "appName": "Milu",
+  "@appName": {
+    "description": "The app name"
+  },
+  "tipPlaced": "tenpo pini la pali",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "o weka e ijo",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "ni li ken ala weka",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "sina weka",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipBanPlace": "ni li ken ala lon ni",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "showMoveList": "lipu tawa",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "sitelen ala",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "confirm": "o kin",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "moveList": "lipu nanpa pi tawa",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "tipSelectWrong": "o anu e ijo ike",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "ok": "pona",
+  "@ok": {
+    "description": "OK"
+  },
+  "move": "tawa",
+  "@move": {
+    "description": "Move"
+  },
+  "cancel": "o ala",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipPlace": "o anpa li awen e kiwen musi.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipCannotMove": "o sina ken tawa ala kiwen musi sina lon ni.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "kiwen musi tu wan lon linja wan o moku kiwen musi.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipCanMoveOnePoint": "o ken tawa domo poki.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "ken tawa ala kiwen musi pi jan sinpin.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "o lukin li kama jo e kiwen musi sina.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "sina jo kiwen musi tu wan taso.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "thinking": "pilin…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "tipMove": "o tawa e kiwen musi.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipSelectOpponentsPiece": "o pana kiwen musi pi jan sinpin.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipContinueMill": "moku e kiwen musi,o awen ala.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipCanMoveToAnyPoint": "sina ken tawa e kiwen musi sina tawa domo ali.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} o pali",
+  "@tipToMove": {
+    "description": "The tip that the given player is to move.",
+    "placeholders": {
+      "player": {
+        "description": "The player whose turn it is.",
+        "example": "Player 1"
+      }
+    }
+  },
+  "blackWin": "jan musi pi nanpa tu li utala pona",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "utala pona",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "utala ike",
+  "@lost": {
+    "description": "Lost"
+  },
+  "exportGame": "tawa musi",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "importGame": "insa e musi",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "gameImported": "open musi tan lipu sitelen",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "open ala {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import",
+    "placeholders": {
+      "invalidMove": {
+        "description": "Invalid move",
+        "example": "x1-y2"
+      }
+    }
+  },
+  "pleaseWait": "o awen",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restart": "sin",
+  "@restart": {
+    "description": "Restart"
+  },
+  "newGame": "musi sin",
+  "@newGame": {
+    "description": "New game"
+  },
+  "whiteWin": "jan musi wan li utala pona!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "tipCannotPlace": "ni li tawa ala",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "gameStarted": "musi li open,pali e kiwen",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "error": "sona ala:{message}",
+  "@error": {
+    "description": "Error",
+    "placeholders": {
+      "message": {
+        "description": "The Error message",
+        "example": "Unknown error"
+      }
+    }
+  },
+  "white": "jan nanpa wan",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "jan nanpa tu",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonResign": "{player} kepeken utala ike.",
+  "@loseReasonResign": {
+    "description": "Indicate that the player resigned.",
+    "placeholders": {
+      "player": {
+        "description": "The player who resigned",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonBoardIsFull": "lipu li kon ala,{player} ken ala pali e kiwen.",
+  "@loseReasonBoardIsFull": {
+    "description": "Indicate that the player has no way to go because the board is full.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonlessThanThree": "{player} nanpa kiwen lili tu wan.",
+  "@loseReasonlessThanThree": {
+    "description": "Indicate that the player lost because they had less than three pieces left.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonNoWay": "{player} ken ala pali e kiwen.",
+  "@loseReasonNoWay": {
+    "description": "Indicate that the player has no way to go.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonTimeOver": "tenpo li pini,{player} li utala ike.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "youWin": "sina utala pona a.li pona tawa sina!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "gameOver": "musi pini",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "tipCannotRemovePieceFromMill": "kan moku ala e kiwen musi lon tu wan.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "gameOverUnknownReason": "musi pini! tan li sona ala.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "thanks": "pona",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "sitelen monsi",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "o awen",
+  "@options": {
+    "description": "Options"
+  },
+  "skillLevel": "ike mute",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "tempo sona pi ijo sona",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "ike",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "kalama",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "musi e kalama musi",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "whoMovesFirst": "tawa nanpa wan",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "jan",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "ijo sona",
+  "@ai": {
+    "description": "AI"
+  },
+  "help": "lipu sona",
+  "@help": {
+    "description": "Help"
+  },
+  "ruleSettings": "lawa ante",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "kule",
+  "@color": {
+    "description": "Color"
+  },
+  "pieceColor": "kule pi kiwen",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "kule pi sitelen monsi",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "kule pi linja",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "blackPieceColor": "kule kiwen pi nanpa tu",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "player": "jan",
+  "@player": {
+    "description": "player"
+  },
+  "player2": "jan nanpa tu",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "musi kepeken pi nasin seme",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "version": "nanpa:{versionNumber}",
+  "@version": {
+    "description": "Version",
+    "placeholders": {
+      "versionNumber": {
+        "description": "The current version",
+        "example": "1.1.38"
+      }
+    }
+  },
+  "flyPieceCount_Detail": "tawa kon li ken,kiwen pi jan weka kama nanpa nasa la,kiwen pi ona ken tawa ma ali pi lon ala,sama ala ma ante pi musi ni, pake ma poka.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "player1": "jan nanpa wan",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "mayFly": "tawa kon",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "exit": "o tawa",
+  "@exit": {
+    "description": "Exit"
+  },
+  "boardColor": "kule pi musi lipu",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "whitePieceColor": "kule kiwen pi jan nanpa wan",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "messageColor": "kule pi toki lawa",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "restartGame": "open sin e musi ni?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  }
+}
