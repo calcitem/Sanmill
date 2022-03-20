@@ -1,0 +1,4 @@
+v1.1.43
+
+* Improve Korean translation.
+* Upgrade Flutter to 2.10.3.
