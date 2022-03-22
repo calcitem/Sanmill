@@ -55,9 +55,8 @@ class ToolbarItemTheme extends InheritedTheme {
   }
 
   @override
-  Widget wrap(BuildContext context, Widget child) {
-    return ToolbarItemTheme(data: data, child: child);
-  }
+  Widget wrap(BuildContext context, Widget child) =>
+      ToolbarItemTheme(data: data, child: child);
 
   @override
   bool updateShouldNotify(ToolbarItemTheme oldWidget) => data != oldWidget.data;

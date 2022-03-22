@@ -20,33 +20,15 @@ import 'package:sanmill/services/database/database.dart';
 ///
 /// Extends the StringBuffer Object with some convenience methods used through the app.
 extension CustomStringBuffer on StringBuffer {
-  void writeComma([Object? obj = ""]) {
-    if (DB().generalSettings.screenReaderSupport) {
-      writeln("$obj,");
-    } else {
-      writeln(obj);
-    }
-  }
+  void writeComma([Object? obj = ""]) =>
+      writeln(DB().generalSettings.screenReaderSupport ? "$obj," : obj);
 
-  void writePeriod([Object? obj = ""]) {
-    if (DB().generalSettings.screenReaderSupport) {
-      writeln("$obj.");
-    } else {
-      writeln(obj);
-    }
-  }
+  void writePeriod([Object? obj = ""]) =>
+      writeln(DB().generalSettings.screenReaderSupport ? "$obj." : obj);
 
-  void writeSpace([Object? obj = ""]) {
-    write("$obj ");
-  }
+  void writeSpace([Object? obj = ""]) => write("$obj ");
 
   /// Writes the given number to the buffer.
   /// It will add an extra space in front of single digit numbers but wont fix three digit cases.
-  void writeNumber(int num) {
-    if (num < 10) {
-      write(" $num.");
-    } else {
-      write("$num.");
-    }
-  }
+  void writeNumber(int num) => write(num < 10 ? " $num." : "$num.");
 }

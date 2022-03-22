@@ -46,14 +46,12 @@ Offset pointFromOffset(Offset offset, double dimension) {
 }
 
 /// Calculates the offset for the given position
-Offset offsetFromPoint(Offset point, Size size) {
-  return (point * (size.width - boardMargin * 2) / 6) +
-      const Offset(boardMargin, boardMargin);
-}
+Offset offsetFromPoint(Offset point, Size size) =>
+    (point * (size.width - boardMargin * 2) / 6) +
+    const Offset(boardMargin, boardMargin);
 
-double offsetFromInt(int point, Size size) {
-  return (point * (size.width - boardMargin * 2) / 6) + boardMargin;
-}
+double offsetFromInt(int point, Size size) =>
+    (point * (size.width - boardMargin * 2) / 6) + boardMargin;
 
 /// List of points on the board.
 const points = [

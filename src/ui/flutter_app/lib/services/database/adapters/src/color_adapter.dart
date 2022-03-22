@@ -31,9 +31,7 @@ class ColorAdapter extends TypeAdapter<Color> {
   }
 
   @override
-  void write(BinaryWriter writer, Color obj) {
-    writer.writeInt(obj.value);
-  }
+  void write(BinaryWriter writer, Color obj) => writer.writeInt(obj.value);
 
   static int colorToJson(Color color) => color.value;
   static Color colorFromJson(int value) => Color(value);

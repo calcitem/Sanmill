@@ -51,11 +51,11 @@ class _InfoDialog extends StatelessWidget {
     if (n1 != null) {
       // $them is only shown with the screen reader. It is convenient for
       // the disabled to recognize whether the opponent has finished the moving.
-      if (DB().generalSettings.screenReaderSupport) {
-        buffer.write(S.of(context).lastMove("$them, "));
-      } else {
-        buffer.write(S.of(context).lastMove(""));
-      }
+      buffer.write(
+        S.of(context).lastMove(
+              DB().generalSettings.screenReaderSupport ? "$them, " : "",
+            ),
+      );
 
       if (n1.startsWith("x")) {
         buffer.writeln(

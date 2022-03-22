@@ -21,11 +21,7 @@ Future<void> _initCatcher(Catcher catcher) async {
   late final String externalDirStr;
   try {
     final Directory? externalDir = await getExternalStorageDirectory();
-    if (externalDir != null) {
-      externalDirStr = externalDir.path;
-    } else {
-      externalDirStr = ".";
-    }
+    externalDirStr = externalDir != null ? externalDir.path : ".";
   } catch (e) {
     logger.e(e.toString());
     externalDirStr = ".";

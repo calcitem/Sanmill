@@ -28,14 +28,10 @@ class CustomDrawerValue {
   final bool visible;
 
   /// Creates a value with hidden state
-  factory CustomDrawerValue.hidden() {
-    return const CustomDrawerValue();
-  }
+  factory CustomDrawerValue.hidden() => const CustomDrawerValue();
 
   /// Creates a value with visible state
-  factory CustomDrawerValue.visible() {
-    return const CustomDrawerValue(
-      visible: true,
-    );
-  }
+  factory CustomDrawerValue.visible() => const CustomDrawerValue(
+        visible: true,
+      );
 }
