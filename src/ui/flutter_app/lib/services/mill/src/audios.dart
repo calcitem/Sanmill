@@ -159,8 +159,8 @@ class Audios {
       return;
     }
 
-    // If the platform is Windows [_initialized] should be false thus this code shouldn't be executed
-    assert(!Platform.isWindows);
+    // TODO: If the platform is Windows [_initialized], this code shouldn't be executed
+    if (Platform.isWindows) return;
 
     await _stopSound();
     await _playSound(sound);
