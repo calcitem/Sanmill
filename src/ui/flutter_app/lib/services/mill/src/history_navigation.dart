@@ -31,11 +31,11 @@ class HistoryNavigator {
 
   static Future<void> _gotoHistory(
     BuildContext context,
-    HistoryMove move, {
+    HistoryNavMode navMode, {
     bool pop = true,
     int? number,
   }) async {
-    assert(move != HistoryMove.backN || number != null);
+    assert(navMode != HistoryNavMode.backN || number != null);
 
     if (pop) Navigator.pop(context);
     final controller = MillController();
@@ -53,7 +53,7 @@ class HistoryNavigator {
     try {
       Audios().mute();
 
-      await gotoHistory(move, number);
+      await gotoHistory(navMode, number);
 
       final lastEffectiveMove = controller.recorder.current;
       if (lastEffectiveMove != null) {
@@ -62,7 +62,7 @@ class HistoryNavigator {
       }
 
       Audios().unMute();
-      await move.gotoHistoryPlaySound();
+      await navMode.gotoHistoryPlaySound();
     } on _HistoryRange {
       ScaffoldMessenger.of(context).showSnackBarClear(S.of(context).atEnd);
       logger.i(_HistoryRange);
@@ -81,7 +81,7 @@ class HistoryNavigator {
   static Future<void> takeBack(BuildContext context, {bool pop = true}) async =>
       _gotoHistory(
         context,
-        HistoryMove.backOne,
+        HistoryNavMode.backOne,
         pop: pop,
       );
 
@@ -91,7 +91,7 @@ class HistoryNavigator {
   }) async =>
       _gotoHistory(
         context,
-        HistoryMove.forward,
+        HistoryNavMode.forward,
         pop: pop,
       );
 
@@ -101,7 +101,7 @@ class HistoryNavigator {
   }) async =>
       _gotoHistory(
         context,
-        HistoryMove.backAll,
+        HistoryNavMode.backAll,
         pop: pop,
       );
 
@@ -111,7 +111,7 @@ class HistoryNavigator {
   }) async =>
       _gotoHistory(
         context,
-        HistoryMove.forwardAll,
+        HistoryNavMode.forwardAll,
         pop: pop,
       );
 
@@ -122,7 +122,7 @@ class HistoryNavigator {
   }) async =>
       _gotoHistory(
         context,
-        HistoryMove.backN,
+        HistoryNavMode.backN,
         number: n,
         pop: pop,
       );
@@ -132,8 +132,8 @@ class HistoryNavigator {
   /// Throws an [_HistoryResponse] when the moves and rules don't match
   /// or when the end of the list moves has been reached.
   @visibleForTesting
-  static Future<void> gotoHistory(HistoryMove move, [int? index]) async {
-    move.gotoHistory(index);
+  static Future<void> gotoHistory(HistoryNavMode navMode, [int? index]) async {
+    navMode.gotoHistory(index);
 
     // Backup context
     final gameModeBackup = MillController().gameInstance.gameMode;
@@ -153,9 +153,9 @@ class HistoryNavigator {
   }
 }
 
-enum HistoryMove { forwardAll, backAll, forward, backN, backOne }
+enum HistoryNavMode { forwardAll, backAll, forward, backN, backOne }
 
-extension HistoryMoveExtension on HistoryMove {
+extension HistoryNavModeExtension on HistoryNavMode {
   /// Moves the [_GameRecorder] to the specified position.
   ///
   /// Throws [_HistoryResponse] When trying to access a value outside of the bounds.
@@ -164,26 +164,26 @@ extension HistoryMoveExtension on HistoryMove {
     final iterator = MillController().recorder.globalIterator;
 
     switch (this) {
-      case HistoryMove.forwardAll:
+      case HistoryNavMode.forwardAll:
         iterator.moveToLast();
         break;
-      case HistoryMove.backAll:
+      case HistoryNavMode.backAll:
         // TODO: [Leptopoda] Because of the way the PointedListIterator is implemented we can only move back until the first piece.
         // We'll have to evaluate if this is enough as we actually don't need more. Like If you want to move back even further just start a new game.
         iterator.moveToFirst();
         break;
-      case HistoryMove.forward:
+      case HistoryNavMode.forward:
         if (!iterator.moveNext()) {
           throw const _HistoryRange();
         }
         break;
-      case HistoryMove.backN:
+      case HistoryNavMode.backN:
         assert(amount != null && current != null);
         final _index = current! - amount!;
         assert(_index >= 0);
         iterator.moveTo(_index);
         break;
-      case HistoryMove.backOne:
+      case HistoryNavMode.backOne:
         if (!iterator.movePrevious()) {
           throw const _HistoryRange();
         }
@@ -193,12 +193,12 @@ extension HistoryMoveExtension on HistoryMove {
   Future<void> gotoHistoryPlaySound() async {
     if (!DB().generalSettings.keepMuteWhenTakingBack) {
       switch (this) {
-        case HistoryMove.forwardAll:
-        case HistoryMove.forward:
+        case HistoryNavMode.forwardAll:
+        case HistoryNavMode.forward:
           return Audios().playTone(Sound.place);
-        case HistoryMove.backAll:
-        case HistoryMove.backN:
-        case HistoryMove.backOne:
+        case HistoryNavMode.backAll:
+        case HistoryNavMode.backN:
+        case HistoryNavMode.backOne:
           return Audios().playTone(Sound.remove);
       }
     }
