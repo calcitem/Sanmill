@@ -224,8 +224,6 @@ class Position {
       _posKeyHistory.clear();
     }
 
-    MillController().recorder.add(m); // TODO(calcitem): Is Right?
-
     return true;
   }
 
