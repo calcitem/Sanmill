@@ -100,11 +100,7 @@ class AppearanceSettingsPage extends StatelessWidget {
   ]) {
     Navigator.of(context, rootNavigator: true).pop();
 
-    if (locale == null) {
-      DB().displaySettings = _displaySettings.copyWith();
-    } else {
-      DB().displaySettings = _displaySettings.copyWith(languageCode: locale);
-    }
+    DB().displaySettings = _displaySettings.copyWith(languageCode: locale);
 
     logger.v("[config] languageCode = $locale");
   }
