@@ -98,7 +98,7 @@ class AppearanceSettingsPage extends StatelessWidget {
     DisplaySettings _displaySettings, [
     Locale? locale,
   ]) {
-    Navigator.pop(context);
+    Navigator.of(context, rootNavigator: true).pop();
 
     if (locale == null) {
       DB().displaySettings = _displaySettings.copyWith();
