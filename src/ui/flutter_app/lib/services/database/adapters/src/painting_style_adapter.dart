@@ -41,7 +41,7 @@ class PaintingStyleAdapter extends TypeAdapter<PaintingStyle?> {
 
   static String? paintingStyleToJson(PaintingStyle? style) =>
       style?.index.toString();
-  static PaintingStyle? paintingStyleFromJson(String? value) {
+  static PaintingStyle? paintingStyleFromJson(int? value) {
     if (value != null) {
       return PaintingStyle.values[value as int];
     }

@@ -44,7 +44,7 @@ class _DatabaseMigration {
 
   /// The current DB version.
   /// It will get initialized by [migrate] with the saved value.
-  static late final int? _currentVersion;
+  static late int? _currentVersion;
 
   /// The list of migrations
   static const _migrations = [
