@@ -84,7 +84,7 @@ class _HistoryRange implements _HistoryResponse {
 
   @override
   String toString() {
-    return "${_HistoryResponse.tag} Cur is equal to moveIndex.";
+    return "${_HistoryResponse.tag} Current is equal to moveIndex.";
   }
 }
 

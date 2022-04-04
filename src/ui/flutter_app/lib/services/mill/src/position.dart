@@ -135,8 +135,10 @@ class Position {
 
   @visibleForTesting
   Future<bool> doMove(String move) async {
+    // TODO: Resign is not implemented
     if (move.length > "Player".length &&
         move.substring(0, "Player".length - 1) == "Player") {
+      // TODO: What?
       if (move["Player".length] == "1") {
         return _resign(PieceColor.white);
       } else {
@@ -144,7 +146,7 @@ class Position {
       }
     }
 
-    // TODO
+    // TODO: Right?
     if (move == "Threefold Repetition. Draw!") {
       return true;
     }

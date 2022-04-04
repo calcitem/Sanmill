@@ -38,6 +38,7 @@ class HistoryNavigator {
     assert(navMode != HistoryNavMode.takeBackN || number != null);
 
     if (pop) Navigator.pop(context);
+
     final controller = MillController();
 
     MillController().tip.showTip(S.of(context).waiting);
@@ -57,8 +58,10 @@ class HistoryNavigator {
 
       final lastEffectiveMove = controller.recorder.current;
       if (lastEffectiveMove != null) {
-        final text = S.of(context).lastMove(lastEffectiveMove.notation);
-        MillController().tip.showTip(text, snackBar: true);
+        MillController().tip.showTip(
+              S.of(context).lastMove(lastEffectiveMove.notation),
+              snackBar: true,
+            );
       }
 
       Audios().unMute();
@@ -197,16 +200,20 @@ extension HistoryNavModeExtension on HistoryNavMode {
   }
 
   Future<void> gotoHistoryPlaySound() async {
-    if (!DB().generalSettings.keepMuteWhenTakingBack) {
-      switch (this) {
-        case HistoryNavMode.stepForwardAll:
-        case HistoryNavMode.stepForward:
-          return Audios().playTone(Sound.place);
-        case HistoryNavMode.takeBackAll:
-        case HistoryNavMode.takeBackN:
-        case HistoryNavMode.takeBack:
-          return Audios().playTone(Sound.remove);
-      }
+    if (DB().generalSettings.keepMuteWhenTakingBack) {
+      return;
+    }
+
+    switch (this) {
+      case HistoryNavMode.stepForwardAll:
+      case HistoryNavMode.stepForward:
+        // TODO: Uses this sound temporarily
+        return Audios().playTone(Sound.place);
+      case HistoryNavMode.takeBackAll:
+      case HistoryNavMode.takeBackN:
+      case HistoryNavMode.takeBack:
+        // TODO: Uses this sound temporarily
+        return Audios().playTone(Sound.remove);
     }
   }
 }
