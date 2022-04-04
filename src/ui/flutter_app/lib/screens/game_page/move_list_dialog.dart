@@ -33,7 +33,7 @@ class _MoveListDialog extends StatelessWidget {
     final buttonTextStyle = titleTextStyle;
 
     if (DB().generalSettings.screenReaderSupport) {
-      ScaffoldMessenger.of(context).clearSnackBars();
+      rootScaffoldMessengerKey.currentState!.clearSnackBars();
     }
 
     return GamePageActionSheet(
