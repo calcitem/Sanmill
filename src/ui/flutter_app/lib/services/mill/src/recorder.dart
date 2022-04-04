@@ -55,7 +55,7 @@ class _GameRecorder extends PointedList<ExtMove> {
       buildStandardNotation();
       buildStandardNotation();
 
-      if (i < index!) {
+      if (i <= index!) {
         moveHistory.writeln();
       }
     }
