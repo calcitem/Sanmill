@@ -183,8 +183,9 @@ extension PhaseExtension on Phase {
       case Phase.moving:
         return S.of(context).movingPhase;
       case Phase.ready:
-      case Phase.gameOver:
         return null;
+      case Phase.gameOver:
+        return S.of(context).gameOver;
     }
   }
 }
