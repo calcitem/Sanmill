@@ -93,6 +93,7 @@ extension PieceColorExtension on PieceColor {
         return MillController().position.phase.getTip(context);
       case PieceColor.none:
       case PieceColor.ban:
+        return null;
     }
   }
 
@@ -171,6 +172,7 @@ extension PhaseExtension on Phase {
         return S.of(context).tipMove;
       case Phase.ready:
       case Phase.gameOver:
+        return null;
     }
   }
 
@@ -182,6 +184,7 @@ extension PhaseExtension on Phase {
         return S.of(context).movingPhase;
       case Phase.ready:
       case Phase.gameOver:
+        return null;
     }
   }
 }

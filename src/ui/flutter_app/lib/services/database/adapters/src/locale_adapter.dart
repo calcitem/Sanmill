@@ -42,5 +42,6 @@ class LocaleAdapter extends TypeAdapter<Locale?> {
     if (value != null && value != "Default") {
       return Locale(value);
     }
+    return null;
   }
 }

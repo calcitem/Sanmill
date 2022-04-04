@@ -30,6 +30,7 @@ class PaintingStyleAdapter extends TypeAdapter<PaintingStyle?> {
 
     if (_value == null || _value == 0) return null;
     if (_value == 1) return PaintingStyle.fill;
+    return null;
   }
 
   @override
@@ -45,5 +46,6 @@ class PaintingStyleAdapter extends TypeAdapter<PaintingStyle?> {
     if (value != null) {
       return PaintingStyle.values[value as int];
     }
+    return null;
   }
 }

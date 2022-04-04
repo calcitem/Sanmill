@@ -27,5 +27,6 @@ class AlgorithmAdapter {
     if (value != null) {
       return Algorithms.values[value];
     }
+    return null;
   }
 }
