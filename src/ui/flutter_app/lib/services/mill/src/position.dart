@@ -749,7 +749,7 @@ class Position {
     return true;
   }
 
-// TODO: [Leptopoda] Verify this is correct
+  // TODO: [Calcitem] Verify this is correct
   @visibleForTesting
   String? get movesSinceLastRemove {
     final recorder = MillController().recorder;
@@ -765,9 +765,6 @@ class Position {
       if (!iterator.movePrevious()) break;
     }
 
-    // Move forward two to skip the remove
-    if (iterator.index != 0) iterator.moveNext();
-
     while (iterator.moveNext()) {
       buffer.writeSpace(iterator.current!.move);
     }
@@ -776,6 +773,6 @@ class Position {
 
     assert(!moves.contains('-('));
 
-    return moves.isNotEmpty ? moves.substring(1) : null;
+    return moves.isNotEmpty ? moves : null;
   }
 }
