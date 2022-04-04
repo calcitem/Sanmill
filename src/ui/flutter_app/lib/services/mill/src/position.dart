@@ -758,7 +758,8 @@ class Position {
 
     final buffer = StringBuffer();
 
-    while (!iterator.current!.move.startsWith("-")) {
+    while (
+        iterator.current != null && !iterator.current!.move.startsWith("-")) {
       if (!iterator.movePrevious()) break;
     }
 

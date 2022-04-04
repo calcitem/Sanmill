@@ -177,9 +177,7 @@ extension HistoryNavModeExtension on HistoryNavMode {
         iterator.moveToLast();
         break;
       case HistoryNavMode.takeBackAll:
-        // TODO: [Leptopoda] Because of the way the PointedListIterator is implemented we can only move back until the first piece.
-        // We'll have to evaluate if this is enough as we actually don't need more. Like If you want to move back even further just start a new game.
-        iterator.moveToFirst();
+        iterator.moveToHead();
         break;
       case HistoryNavMode.stepForward:
         if (!iterator.moveNext()) {
@@ -188,9 +186,13 @@ extension HistoryNavModeExtension on HistoryNavMode {
         break;
       case HistoryNavMode.takeBackN:
         assert(amount != null && current != null);
-        final _index = current! - amount!;
-        assert(_index >= 0);
-        iterator.moveTo(_index);
+        if (iterator.index == 0) {
+          iterator.moveToHead();
+        } else {
+          final _index = current! - amount!;
+          assert(_index >= 0);
+          iterator.moveTo(_index);
+        }
         break;
       case HistoryNavMode.takeBack:
         if (!iterator.movePrevious()) {
