@@ -35,7 +35,7 @@ class HistoryNavigator {
     bool pop = true,
     int? number,
   }) async {
-    assert(navMode != HistoryNavMode.backN || number != null);
+    assert(navMode != HistoryNavMode.takeBackN || number != null);
 
     if (pop) Navigator.pop(context);
     final controller = MillController();
@@ -81,7 +81,7 @@ class HistoryNavigator {
   static Future<void> takeBack(BuildContext context, {bool pop = true}) async =>
       _gotoHistory(
         context,
-        HistoryNavMode.backOne,
+        HistoryNavMode.takeBack,
         pop: pop,
       );
 
@@ -91,7 +91,7 @@ class HistoryNavigator {
   }) async =>
       _gotoHistory(
         context,
-        HistoryNavMode.forward,
+        HistoryNavMode.stepForward,
         pop: pop,
       );
 
@@ -101,7 +101,7 @@ class HistoryNavigator {
   }) async =>
       _gotoHistory(
         context,
-        HistoryNavMode.backAll,
+        HistoryNavMode.takeBackAll,
         pop: pop,
       );
 
@@ -111,7 +111,7 @@ class HistoryNavigator {
   }) async =>
       _gotoHistory(
         context,
-        HistoryNavMode.forwardAll,
+        HistoryNavMode.stepForwardAll,
         pop: pop,
       );
 
@@ -122,7 +122,7 @@ class HistoryNavigator {
   }) async =>
       _gotoHistory(
         context,
-        HistoryNavMode.backN,
+        HistoryNavMode.takeBackN,
         number: n,
         pop: pop,
       );
@@ -153,7 +153,13 @@ class HistoryNavigator {
   }
 }
 
-enum HistoryNavMode { forwardAll, backAll, forward, backN, backOne }
+enum HistoryNavMode {
+  takeBack,
+  stepForward,
+  takeBackAll,
+  stepForwardAll,
+  takeBackN,
+}
 
 extension HistoryNavModeExtension on HistoryNavMode {
   /// Moves the [_GameRecorder] to the specified position.
@@ -164,26 +170,26 @@ extension HistoryNavModeExtension on HistoryNavMode {
     final iterator = MillController().recorder.globalIterator;
 
     switch (this) {
-      case HistoryNavMode.forwardAll:
+      case HistoryNavMode.stepForwardAll:
         iterator.moveToLast();
         break;
-      case HistoryNavMode.backAll:
+      case HistoryNavMode.takeBackAll:
         // TODO: [Leptopoda] Because of the way the PointedListIterator is implemented we can only move back until the first piece.
         // We'll have to evaluate if this is enough as we actually don't need more. Like If you want to move back even further just start a new game.
         iterator.moveToFirst();
         break;
-      case HistoryNavMode.forward:
+      case HistoryNavMode.stepForward:
         if (!iterator.moveNext()) {
           throw const _HistoryRange();
         }
         break;
-      case HistoryNavMode.backN:
+      case HistoryNavMode.takeBackN:
         assert(amount != null && current != null);
         final _index = current! - amount!;
         assert(_index >= 0);
         iterator.moveTo(_index);
         break;
-      case HistoryNavMode.backOne:
+      case HistoryNavMode.takeBack:
         if (!iterator.movePrevious()) {
           throw const _HistoryRange();
         }
@@ -193,12 +199,12 @@ extension HistoryNavModeExtension on HistoryNavMode {
   Future<void> gotoHistoryPlaySound() async {
     if (!DB().generalSettings.keepMuteWhenTakingBack) {
       switch (this) {
-        case HistoryNavMode.forwardAll:
-        case HistoryNavMode.forward:
+        case HistoryNavMode.stepForwardAll:
+        case HistoryNavMode.stepForward:
           return Audios().playTone(Sound.place);
-        case HistoryNavMode.backAll:
-        case HistoryNavMode.backN:
-        case HistoryNavMode.backOne:
+        case HistoryNavMode.takeBackAll:
+        case HistoryNavMode.takeBackN:
+        case HistoryNavMode.takeBack:
           return Audios().playTone(Sound.remove);
       }
     }
