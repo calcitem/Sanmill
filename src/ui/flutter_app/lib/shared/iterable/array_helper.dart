@@ -26,5 +26,6 @@ extension ListExtension<E> on List<E> {
     if (isNotEmpty) {
       return this[length - 1];
     }
+    return null;
   }
 }

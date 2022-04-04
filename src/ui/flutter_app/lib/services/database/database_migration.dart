@@ -153,6 +153,7 @@ class _DatabaseV1 {
     if (await file.exists()) {
       return file;
     }
+    return null;
   }
 
   /// Checks whether the current DB is still the old KV store by checking the availability of the json file
@@ -175,6 +176,7 @@ class _DatabaseV1 {
     } catch (e) {
       logger.e("$_tag error loading file $e");
     }
+    return null;
   }
 
   /// Migrates the deprecated Settings to the new [LocalDatabaseService]

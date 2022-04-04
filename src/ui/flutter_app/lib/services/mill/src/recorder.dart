@@ -22,8 +22,8 @@ class _GameRecorder extends PointedList<ExtMove> {
   @override
   String toString() {
     final buffer = StringBuffer("[ ");
-    for (final move in this) {
-      buffer.write("${move.move}, ");
+    for (final extMove in this) {
+      buffer.write("${extMove.move}, ");
     }
 
     buffer.write("]");

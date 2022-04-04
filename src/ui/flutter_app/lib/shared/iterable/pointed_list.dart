@@ -167,6 +167,7 @@ class PointedListIterator<E> extends BidirectionalIterator<E?> {
     if (_index != null) {
       return _parent[_index!];
     }
+    return null;
   }
 
   @override

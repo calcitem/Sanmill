@@ -30,6 +30,7 @@ class PaintingStyleAdapter extends TypeAdapter<PaintingStyle?> {
 
     if (_value == null || _value == 0) return null;
     if (_value == 1) return PaintingStyle.fill;
+    return null;
   }
 
   @override
@@ -43,7 +44,8 @@ class PaintingStyleAdapter extends TypeAdapter<PaintingStyle?> {
       style?.index.toString();
   static PaintingStyle? paintingStyleFromJson(int? value) {
     if (value != null) {
-      return PaintingStyle.values[value as int];
+      return PaintingStyle.values[value];
     }
+    return null;
   }
 }

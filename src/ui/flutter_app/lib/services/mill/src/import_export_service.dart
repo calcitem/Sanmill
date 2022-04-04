@@ -46,7 +46,7 @@ class ImportService {
 
     if (data?.text == null) return;
 
-    await HistoryNavigator.gotoHistory(HistoryNavMode.backAll);
+    await HistoryNavigator.gotoHistory(HistoryNavMode.takeBackAll);
     MillController().reset();
 
     try {
