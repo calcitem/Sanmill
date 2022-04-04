@@ -16,8 +16,12 @@
 
 import 'package:flutter/material.dart';
 
+final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
 extension ScaffoldMessengerExtension on ScaffoldMessengerState {
   void showSnackBarClear(String message) {
+    // TODO: Need change to rootScaffoldMessengerKey.currentState!.clearSnackBars(); ?
     clearSnackBars();
 
     showSnackBar(CustomSnackBar(message));
