@@ -428,8 +428,6 @@ class Position {
 
     _revertKey(s);
 
-    await Audios().playTone(Sound.remove);
-
     if (DB().ruleSettings.hasBannedLocations && phase == Phase.placing) {
       // Remove and put ban
       _board[s] = _grid[squareToIndex[s]!] = PieceColor.ban;
@@ -449,6 +447,7 @@ class Position {
     if (pieceOnBoardCount[_them]! + pieceInHandCount[_them]! <
         DB().ruleSettings.piecesAtLeastCount) {
       _setGameOver(sideToMove, GameOverReason.loseLessThanThree);
+      await Audios().playTone(Sound.remove);
       return;
     }
 
@@ -458,6 +457,7 @@ class Position {
     _updateKeyMisc();
 
     if (_pieceToRemoveCount != 0) {
+      await Audios().playTone(Sound.remove);
       return;
     }
 
@@ -473,6 +473,7 @@ class Position {
 
         if (DB().ruleSettings.isDefenderMoveFirst) {
           _checkIfGameIsOver();
+          await Audios().playTone(Sound.remove);
           return;
         }
       } else {
@@ -485,6 +486,7 @@ class Position {
     _changeSideToMove();
     _checkIfGameIsOver();
 
+    await Audios().playTone(Sound.remove);
     return;
   }
 
