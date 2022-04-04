@@ -44,12 +44,16 @@ class PointedList<E> extends DelegatingList<E> {
 
   /// Prunes the list from any element currently out of focus.
   ///
-  /// This is equvalent to `removeRange(globalIterator.index + 1, this.length)`.
+  /// This is equivalent to `removeRange(globalIterator.index + 1, this.length)`.
   void prune() {
     if (_l.isEmpty) return;
     if (!globalIterator.hasNext) return;
 
-    _l.removeRange(globalIterator.index! + 1, _l.length);
+    if (globalIterator.index == null) {
+      _l.removeRange(0, _l.length);
+    } else {
+      _l.removeRange(globalIterator.index! + 1, _l.length);
+    }
   }
 
   @override
@@ -121,8 +125,8 @@ class PointedListIterator<E> extends BidirectionalIterator<E?> {
   bool movePrevious() {
     if (!hasPrevious) {
       return false;
-    } else if (_index == null) {
-      _index = 0;
+    } else if (_index == 0) {
+      _index = null;
     } else {
       _index = _index! - 1;
     }
@@ -146,6 +150,11 @@ class PointedListIterator<E> extends BidirectionalIterator<E?> {
   /// This is equivalent to `moveTo(0)`.
   void moveToFirst() => moveTo(0);
 
+  /// Move to the head.
+  ///
+  /// Head is a list node that contains no actual data.
+  void moveToHead() => _index = null;
+
   /// The currently selected index.
   int? get index => _index;
 
@@ -160,7 +169,7 @@ class PointedListIterator<E> extends BidirectionalIterator<E?> {
   /// Whether the list has another element previous to the iterator.
   ///
   /// This has the benefit of not altering the iterator while still being able to check it.
-  bool get hasPrevious => _parent.isNotEmpty && _index != 0;
+  bool get hasPrevious => _parent.isNotEmpty && _index != null;
 
   @override
   E? get current {
