@@ -235,6 +235,7 @@ class TapHandler {
         final extMove = await controller.engine.search(moveNow: isMoveNow);
 
         await controller.gameInstance.doMove(extMove);
+        controller.recorder.add(position._record!);
         animationController.reset();
         animationController.animateTo(1.0);
 
