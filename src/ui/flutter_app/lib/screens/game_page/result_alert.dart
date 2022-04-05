@@ -89,6 +89,9 @@ class GameResultAlert extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
             MillController().reset();
+            MillController()
+                .tip
+                .showTip(S.of(context).gameStarted, snackBar: true);
           },
         ),
         TextButton(
