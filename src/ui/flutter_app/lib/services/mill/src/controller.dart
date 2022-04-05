@@ -83,11 +83,7 @@ class MillController {
   ///
   /// This method is suitable to use for starting a new game.
   void _startGame() {
-    // TODO: [Leptopoda] Reimplement this
-    // if (controller.gameInstance.isAiToMove) {
-    //   logger.i("$_tag New game, AI to move.");
-    //   engineToGo(isMoveNow: false);
-    // }
+    // TODO: [Leptopoda] Reimplement this and clean onBoardTap()
   }
 
   /// Initializes the controller.
