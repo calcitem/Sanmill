@@ -18,7 +18,7 @@ class TapHandler {
   });
 
   Future<void> onBoardTap(int sq) async {
-    if (gameMode == GameMode.aiVsAi || gameMode == GameMode.testViaLAN) {
+    if (gameMode == GameMode.testViaLAN) {
       return logger.v("$_tag Engine type is no human, ignore tapping.");
     }
 
@@ -279,7 +279,9 @@ class TapHandler {
       showTip(message);
     }
 
-    if (!DB().generalSettings.isAutoRestart && winner != PieceColor.nobody) {
+    if (!DB().generalSettings.isAutoRestart &&
+        winner != PieceColor.nobody &&
+        gameMode != GameMode.aiVsAi) {
       showDialog(
         context: context,
         builder: (_) => GameResultAlert(winner: winner),
