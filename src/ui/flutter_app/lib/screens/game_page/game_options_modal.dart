@@ -30,6 +30,9 @@ class _GameOptionsModal extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
             MillController().reset();
+            MillController()
+                .tip
+                .showTip(S.of(context).gameStarted, snackBar: true);
           },
           child: Text(S.of(context).newGame),
         ),
