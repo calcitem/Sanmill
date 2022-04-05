@@ -25,7 +25,8 @@ class TapHandler {
     final position = controller.position;
 
     // WAR: Fix first tap response slow when piece count changed
-    if (position.phase == Phase.placing &&
+    if (gameMode != GameMode.humanVsHuman &&
+        position.phase == Phase.placing &&
         position.pieceOnBoardCount[PieceColor.white] == 0 &&
         position.pieceOnBoardCount[PieceColor.black] == 0) {
       //controller.reset();
@@ -57,7 +58,7 @@ class TapHandler {
               } else {
                 showTip(S.of(context).tipPlaced);
               }
-            } else {
+            } else if (gameMode == GameMode.humanVsHuman) {
               if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                 // TODO: HumanVsHuman - Change tip
                 showTip(S.of(context).tipPlaced);
@@ -138,7 +139,7 @@ class TapHandler {
           } else {
             if (gameMode == GameMode.humanVsAi) {
               showTip(S.of(context).tipRemoved);
-            } else {
+            } else if (gameMode == GameMode.humanVsHuman) {
               final them = controller.gameInstance.sideToMove.opponent
                   .playerName(context);
               showTip(S.of(context).tipToMove(them));
@@ -193,7 +194,9 @@ class TapHandler {
       controller.recorder.add(position._record!);
 
       if (position.winner == PieceColor.nobody) {
-        engineToGo(isMoveNow: false);
+        if (gameMode == GameMode.humanVsAi) {
+          engineToGo(isMoveNow: false);
+        }
       } else {
         _showResult();
       }
