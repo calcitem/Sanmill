@@ -22,11 +22,24 @@ class TapHandler {
       return logger.v("$_tag Engine type is no human, ignore tapping.");
     }
 
+    final position = controller.position;
+
+    // WAR: Fix first tap response slow when piece count changed
+    if (position.phase == Phase.placing &&
+        position.pieceOnBoardCount[PieceColor.white] == 0 &&
+        position.pieceOnBoardCount[PieceColor.black] == 0) {
+      //controller.reset();
+
+      if (controller.gameInstance._isAiToMove) {
+        logger.i("$_tag AI is not thinking. AI is to move.");
+        engineToGo(isMoveNow: false);
+        return;
+      }
+    }
+
     if (controller.gameInstance._isAiToMove) {
       return logger.i("$_tag AI's turn, skip tapping.");
     }
-
-    final position = controller.position;
 
     // Human to go
     bool ret = false;
