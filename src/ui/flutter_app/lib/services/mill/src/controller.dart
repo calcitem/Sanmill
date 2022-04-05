@@ -32,7 +32,7 @@ class MillController {
   late _Game gameInstance;
   late Position position;
   late Engine engine;
-  late HeaderTipState tip;
+  final HeaderTipState tip = HeaderTipState();
   late _GameRecorder recorder;
 
   bool _initialized = false;
@@ -98,7 +98,6 @@ class MillController {
     gameInstance = _Game();
     engine = Engine();
     recorder = _GameRecorder();
-    tip = HeaderTipState();
 
     _startGame();
   }
