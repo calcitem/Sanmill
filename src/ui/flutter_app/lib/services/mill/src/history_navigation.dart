@@ -41,7 +41,7 @@ class HistoryNavigator {
 
     final controller = MillController();
 
-    MillController().tip.showTip(S.of(context).waiting);
+    MillController().tip.showTip(S.of(context).atEnd);
 
     if (_isGoingToHistory) {
       return logger.i(
