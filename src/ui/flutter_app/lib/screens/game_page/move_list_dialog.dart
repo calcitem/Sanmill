@@ -85,8 +85,10 @@ class _MoveListDialog extends StatelessWidget {
       context: context,
       builder: (context) => NumberPicker(end: end),
     );
-    assert(selectValue != null);
+
+    if (selectValue == null) return;
+
     // ignore: use_build_context_synchronously
-    await HistoryNavigator.takeBackN(context, selectValue!);
+    await HistoryNavigator.takeBackN(context, selectValue);
   }
 }
