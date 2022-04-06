@@ -61,8 +61,8 @@ class GamePage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
+                //child: CircularProgressIndicator.adaptive(),
+                );
           }
 
           return Padding(
