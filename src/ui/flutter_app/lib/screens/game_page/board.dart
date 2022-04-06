@@ -37,6 +37,8 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
+    MillController().engine.startup();
+
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(
@@ -103,6 +105,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
+    MillController().engine.shutdown();
     _animationController.dispose();
     super.dispose();
   }
