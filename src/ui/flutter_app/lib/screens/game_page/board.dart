@@ -77,6 +77,8 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
           : null,
     );
 
+    _animationController.forward();
+
     return LayoutBuilder(
       builder: (context, constrains) {
         final dimension = constrains.maxWidth;
