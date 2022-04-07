@@ -14,11 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-part of './game_page.dart';
+part of 'game_page.dart';
 
 /// Game Board
 ///
-/// The board the game is played on. This widget will also handle the input from the user.
+/// The board the game is played on.
+/// This widget will also handle the input from the user.
 @visibleForTesting
 class Board extends StatefulWidget {
   static const String _tag = "[board]";
@@ -37,7 +38,10 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
+    // TODO: [calcitem] It is better to omit.
     MillController().engine.startup();
+
+    // TODO: Check _initAnimation() on branch master.
 
     _animationController = AnimationController(
       vsync: this,
