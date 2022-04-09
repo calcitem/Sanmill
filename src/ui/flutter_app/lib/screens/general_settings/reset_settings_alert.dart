@@ -25,6 +25,8 @@ class _ResetSettingsAlert extends StatelessWidget {
     Navigator.pop(context);
 
     await DB.reset();
+
+    MillController().reset();
   }
 
   @override
