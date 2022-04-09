@@ -67,6 +67,9 @@ class Position {
   String get scoreString =>
       "${score[PieceColor.white]} : ${score[PieceColor.black]} : ${score[PieceColor.draw]}";
 
+  static void resetScore() => score[PieceColor.white] =
+      score[PieceColor.black] = score[PieceColor.draw] = 0;
+
   int _currentSquare = 0;
 
   ExtMove? _record;

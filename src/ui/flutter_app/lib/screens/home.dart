@@ -54,19 +54,19 @@ extension _DrawerScreen on _DrawerIndex {
   Widget get screen {
     switch (this) {
       case _DrawerIndex.humanVsAi:
-        return const GamePage(
+        return GamePage(
           GameMode.humanVsAi,
-          key: Key("Human-Ai"),
+          key: const Key("Human-Ai"),
         );
       case _DrawerIndex.humanVsHuman:
-        return const GamePage(
+        return GamePage(
           GameMode.humanVsHuman,
-          key: Key("Human-Human"),
+          key: const Key("Human-Human"),
         );
       case _DrawerIndex.aiVsAi:
-        return const GamePage(
+        return GamePage(
           GameMode.aiVsAi,
-          key: Key("Ai-Ai"),
+          key: const Key("Ai-Ai"),
         );
       case _DrawerIndex.generalSettings:
         return const GeneralSettingsPage();

@@ -45,7 +45,9 @@ part 'game_page_action_sheet.dart';
 class GamePage extends StatelessWidget {
   final GameMode gameMode;
 
-  const GamePage(this.gameMode, {Key? key}) : super(key: key);
+  GamePage(this.gameMode, {Key? key}) : super(key: key) {
+    Position.resetScore();
+  }
 
   @override
   Widget build(BuildContext context) {

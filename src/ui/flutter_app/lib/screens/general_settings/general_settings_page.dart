@@ -22,6 +22,7 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/logger.dart';
+import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/settings/settings.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
@@ -53,6 +54,8 @@ class GeneralSettingsPage extends StatelessWidget {
 
   void _setWhoMovesFirst(GeneralSettings _generalSettings, bool value) {
     DB().generalSettings = _generalSettings.copyWith(aiMovesFirst: value);
+
+    Position.resetScore();
 
     logger.v("$_tag aiMovesFirst: $value");
   }
