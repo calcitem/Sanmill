@@ -78,17 +78,17 @@ class _Game {
 
   void _logStat() {
     final position = MillController().position;
-    final int total = position.score[PieceColor.white]! +
-        position.score[PieceColor.black]! +
-        position.score[PieceColor.draw]!;
+    final int total = Position.score[PieceColor.white]! +
+        Position.score[PieceColor.black]! +
+        Position.score[PieceColor.draw]!;
 
     double whiteWinRate = 0;
     double blackWinRate = 0;
     double drawRate = 0;
     if (total != 0) {
-      whiteWinRate = position.score[PieceColor.white]! * 100 / total;
-      blackWinRate = position.score[PieceColor.black]! * 100 / total;
-      drawRate = position.score[PieceColor.draw]! * 100 / total;
+      whiteWinRate = Position.score[PieceColor.white]! * 100 / total;
+      blackWinRate = Position.score[PieceColor.black]! * 100 / total;
+      drawRate = Position.score[PieceColor.draw]! * 100 / total;
     }
 
     final String scoreInfo = "Score: ${position.scoreString}\ttotal:"

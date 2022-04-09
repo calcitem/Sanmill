@@ -58,7 +58,7 @@ class Position {
   Phase phase = Phase.placing;
   Act _action = Act.place;
 
-  final Map<PieceColor, int> score = {
+  static Map<PieceColor, int> score = {
     PieceColor.white: 0,
     PieceColor.black: 0,
     PieceColor.draw: 0,
