@@ -179,6 +179,13 @@ class PointedListIterator<E> extends BidirectionalIterator<E?> {
     return null;
   }
 
+  E? get prev {
+    if (_index != null && index != 0 && _parent[_index! - 1] != null) {
+      return _parent[_index! - 1];
+    }
+    return null;
+  }
+
   @override
   bool operator ==(Object other) =>
       other is PointedListIterator &&
