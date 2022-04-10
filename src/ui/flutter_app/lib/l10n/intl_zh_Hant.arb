@@ -183,7 +183,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "棋譜已從剪貼簿導入。",
+  "gameImported": "棋譜已從剪貼簿導入",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
