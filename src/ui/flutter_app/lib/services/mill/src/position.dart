@@ -769,6 +769,10 @@ class Position {
     }
 
     while (iterator.moveNext()) {
+      if (iterator.prev != null) {
+        assert(iterator.current!.move != iterator.prev!.move);
+      }
+
       buffer.writeSpace(iterator.current!.move);
     }
 
