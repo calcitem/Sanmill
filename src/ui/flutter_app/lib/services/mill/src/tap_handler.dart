@@ -250,8 +250,9 @@ class TapHandler {
         logger.v("$_tag Searching..., isMoveNow: $isMoveNow");
         final extMove = await controller.engine.search(moveNow: isMoveNow);
 
-        await controller.gameInstance.doMove(extMove);
-        controller.recorder.add(position._record!);
+        if (await controller.gameInstance.doMove(extMove)) {
+          controller.recorder.add(extMove);
+        }
         animationController.reset();
         animationController.animateTo(1.0);
 
