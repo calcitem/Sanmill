@@ -16,7 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of './game_page.dart';
+part of 'game_page.dart';
 
 class _GameOptionsModal extends StatelessWidget {
   const _GameOptionsModal({Key? key}) : super(key: key);
@@ -27,12 +27,32 @@ class _GameOptionsModal extends StatelessWidget {
       semanticLabel: S.of(context).game,
       children: <Widget>[
         SimpleDialogOption(
-          onPressed: () {
+          onPressed: () async {
             Navigator.pop(context);
             MillController().reset();
             MillController()
                 .tip
                 .showTip(S.of(context).gameStarted, snackBar: true);
+
+            // TODO: Why not suitable for GameMode.aiVsAi?
+            if (MillController().gameInstance.gameMode == GameMode.humanVsAi &&
+                DB().generalSettings.aiMovesFirst) {
+              //MillController().tip.showTip(S.of(context).thinking);
+              final extMove = await MillController().engine.search();
+
+              if (await MillController().gameInstance.doMove(extMove)) {
+                MillController().recorder.add(extMove);
+
+                // TODO: Unhandled Exception: Looking up a deactivated widget's ancestor is unsafe.
+                //MillController().tip.showTip(S.of(context).tipPlace);
+
+                //if (DB().generalSettings.screenReaderSupport) {
+                //  ScaffoldMessenger.of(context).showSnackBar(
+                //    CustomSnackBar("${S.of(context).ai}: ${extMove.notation}"),
+                //  );
+                // }
+              }
+            }
           },
           child: Text(S.of(context).newGame),
         ),
