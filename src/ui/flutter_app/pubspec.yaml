@@ -36,7 +36,7 @@ dependencies:
   package_info_plus: ^1.4.1
   path_provider: ^2.0.9
   soundpool: ^2.3.0
-  url_launcher: ^6.0.20
+  url_launcher: ^6.1.0
   uuid: ^3.0.6
   #pref: ^2.3.0
   #screen_recorder: ^0.0.2
