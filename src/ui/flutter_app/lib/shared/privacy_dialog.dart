@@ -16,7 +16,6 @@
 
 import 'dart:io';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
@@ -24,19 +23,7 @@ import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/shared/constants.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-class _LinkTextSpan extends TextSpan {
-  _LinkTextSpan({TextStyle? style, required URL url, required String text})
-      : super(
-          style: style,
-          text: text,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              launch(url.urlZh, forceSafariVC: false);
-            },
-        );
-}
+import 'package:sanmill/shared/link_text_span.dart';
 
 class PrivacyDialog extends StatelessWidget {
   const PrivacyDialog({Key? key}) : super(key: key);
@@ -73,19 +60,19 @@ class PrivacyDialog extends StatelessWidget {
               style: aboutTextStyle,
               text: S.of(context).privacyPolicy_Detail_1,
             ),
-            _LinkTextSpan(
+            LinkTextSpan(
               style: linkStyle,
               text: S.of(context).eula,
-              url: Constants.eulaURL,
+              url: Constants.eulaURL.urlZh,
             ),
             TextSpan(
               style: aboutTextStyle,
               text: S.of(context).and,
             ),
-            _LinkTextSpan(
+            LinkTextSpan(
               style: linkStyle,
               text: S.of(context).privacyPolicy,
-              url: Constants.privacyPolicyURL,
+              url: Constants.privacyPolicyURL.urlZh,
             ),
             TextSpan(
               style: aboutTextStyle,

@@ -137,11 +137,14 @@ class AboutPage extends StatelessWidget {
 
   Future<void> _launchURL(BuildContext context, URL url) async {
     if (!EnvironmentConfig.test) {
-      if (Localizations.localeOf(context).languageCode.startsWith("zh_")) {
-        await launch(url.url);
-      } else {
-        await launch(url.urlZh);
-      }
+      final s = Localizations.localeOf(context).languageCode.startsWith("zh_")
+          ? url.url.substring("https://".length)
+          : url.urlZh.substring("https://".length);
+      final authority = s.substring(0, s.indexOf('/'));
+      final unencodedPath = s.substring(s.indexOf('/'));
+      final uri = Uri.https(authority, unencodedPath);
+
+      await launchUrl(uri);
     }
   }
 }

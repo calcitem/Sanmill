@@ -16,30 +16,14 @@
 
 import 'dart:io';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/shared/constants.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-class _LinkTextSpan extends TextSpan {
-  _LinkTextSpan({TextStyle? style, required String url, String? text})
-      : super(
-          style: style,
-          text: text ?? url,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              if (!EnvironmentConfig.test) {
-                launch(url, forceSafariVC: false);
-              }
-            },
-        );
-}
+import 'package:sanmill/shared/link_text_span.dart';
 
 Future<void> showPrivacyDialog(BuildContext context) async {
   assert(Localizations.localeOf(context).languageCode.startsWith("zh_"));
@@ -71,7 +55,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
               style: aboutTextStyle,
               text: S.of(context).privacyPolicy_Detail_1,
             ),
-            _LinkTextSpan(
+            LinkTextSpan(
               style: linkStyle,
               text: S.of(context).eula,
               url: eulaURL,
@@ -80,7 +64,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
               style: aboutTextStyle,
               text: S.of(context).and,
             ),
-            _LinkTextSpan(
+            LinkTextSpan(
               style: linkStyle,
               text: S.of(context).privacyPolicy,
               url: privacyPolicyURL,
