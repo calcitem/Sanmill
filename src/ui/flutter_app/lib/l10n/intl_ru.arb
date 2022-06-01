@@ -43,15 +43,15 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "Перемещение",
+  "move": "Ходы",
   "@move": {
     "description": "Move"
   },
-  "showMoveList": "Список перемещений",
+  "showMoveList": "Список ходов",
   "@showMoveList": {
     "description": "Move list"
   },
-  "moveList": "Список перемещений",
+  "moveList": "Список ходов",
   "@moveList": {
     "description": "Move list"
   },
@@ -59,7 +59,7 @@
   "@noGameRecord": {
     "description": "No record"
   },
-  "ok": "OK",
+  "ok": "ОК",
   "@ok": {
     "description": "OK"
   },
@@ -67,7 +67,7 @@
   "@confirm": {
     "description": "Confirm"
   },
-  "cancel": "Отменить",
+  "cancel": "Отмена",
   "@cancel": {
     "description": "Cancel"
   },
@@ -75,7 +75,7 @@
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Разместите свои части.",
+  "tipPlace": "Ваш ход.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
@@ -111,7 +111,7 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Мельница! Возьмите фигуру противника.",
+  "tipMill": "Мельница! Захватите фигуру противника.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
@@ -147,11 +147,11 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "{player} двигаться.",
+  "tipToMove": "Ход {player}.",
   "@tipToMove": {
     "description": " to move."
   },
-  "whiteWin": "Игрок 1 побеждает!",
+  "whiteWin": "Игрок 1 победил!",
   "@whiteWin": {
     "description": "Player 1 wins!"
   },
@@ -167,7 +167,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Размышления…",
+  "thinking": "Мозгает…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -175,19 +175,19 @@
   "@newGame": {
     "description": "New game"
   },
-  "importGame": "Импорт игры",
+  "importGame": "Открыть игру",
   "@importGame": {
     "description": "Import game"
   },
-  "exportGame": "Экспорт игры",
+  "exportGame": "Сохранить игру",
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Игра импортирована из буфера обмена.",
+  "gameImported": "Открыта игра из буфера обмена.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Невозможно импортировать {invalidMove}",
+  "cannotImport": "Не удалось открыть {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -247,11 +247,11 @@
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Плата заполнена, и {player} некуда идти.",
+  "loseReasonBoardIsFull": "Доска заполнена, {player} не может никуда сходить.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Время прошло, {player} потеряно.",
+  "loseReasonTimeOver": "Время вышло, {player} проиграл.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -267,7 +267,7 @@
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
-  "gameOverUnknownReason": "Игра окончена! Неизвестная причина.",
+  "gameOverUnknownReason": "Игра окончена! Причина неизвестна.",
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
@@ -279,7 +279,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Бросить вызов более сложному уровню? Новый уровень будет уровнем {level}!",
+  "challengeHarderLevel": "Готовы к трудностям? Следующий уровень {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -291,7 +291,7 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "about": "О сайте",
+  "about": "О программе",
   "@about": {
     "description": "About"
   },
@@ -319,7 +319,7 @@
   "@skillLevel": {
     "description": "Difficulty level"
   },
-  "moveTime": "Время обдумывания ИИ",
+  "moveTime": "Время размышления ИИ",
   "@moveTime": {
     "description": "AI thinking time"
   },
@@ -331,11 +331,11 @@
   "@playSounds": {
     "description": "Sound effects"
   },
-  "playSoundsInTheGame": "Воспроизведение звуков в игре",
+  "playSoundsInTheGame": "Звуки в игре",
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
-  "keepMuteWhenTakingBack": "Отключайте звук при возвращении назад",
+  "keepMuteWhenTakingBack": "Тихий откат хода",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"
   },
@@ -359,7 +359,7 @@
   "@alternate": {
     "description": "Alternate"
   },
-  "isAutoRestart": "Автоперезапуск игры при завершении игры",
+  "isAutoRestart": "Начинать новую игру автоматически",
   "@isAutoRestart": {
     "description": "Auto-restart game when game over"
   },
@@ -371,7 +371,7 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "misc": "Разное",
+  "misc": "Прочее",
   "@misc": {
     "description": "Miscellaneous"
   },
@@ -403,7 +403,7 @@
   "@hasDiagonalLines": {
     "description": "Diagonal lines"
   },
-  "hasDiagonalLines_Detail": "Добавьте на доску четыре диагональные линии.",
+  "hasDiagonalLines_Detail": "Добавить на доску четыре диагональные линии.",
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
@@ -483,7 +483,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "История ходов копируется в буфер обмена.",
+  "moveHistoryCopied": "История ходов скопирована в буфер обмена.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -495,7 +495,7 @@
   "@feedback": {
     "description": "Feedback"
   },
-  "exit": "Выйти",
+  "exit": "Выход",
   "@exit": {
     "description": "Exit"
   },
@@ -511,7 +511,7 @@
   "@boardColor": {
     "description": "Board color"
   },
-  "pieceColor": "Цвет фигуры",
+  "pieceColor": "Цвет фигур",
   "@pieceColor": {
     "description": "Piece color"
   },
@@ -519,19 +519,19 @@
   "@backgroundColor": {
     "description": "Background color"
   },
-  "lineColor": "Цвет линии доски",
+  "lineColor": "Цвет линий на доске",
   "@lineColor": {
     "description": "Board line color"
   },
-  "whitePieceColor": "Цвет фигуры игрока 1",
+  "whitePieceColor": "Цвет фигур игрока 1",
   "@whitePieceColor": {
     "description": "Player 1 piece color"
   },
-  "blackPieceColor": "Цвет фигуры игрока 2",
+  "blackPieceColor": "Цвет фигур игрока 2",
   "@blackPieceColor": {
     "description": "Player 2 piece color"
   },
-  "messageColor": "Цвет сообщения",
+  "messageColor": "Цвет сообщений",
   "@messageColor": {
     "description": "Message color"
   },
@@ -551,11 +551,11 @@
   "@display": {
     "description": "Display"
   },
-  "boardBorderLineWidth": "Ширина границы доски",
+  "boardBorderLineWidth": "Ширина границ доски",
   "@boardBorderLineWidth": {
     "description": "Board borderline width"
   },
-  "boardInnerLineWidth": "Ширина внутренней линии доски",
+  "boardInnerLineWidth": "Ширина внутренних линий доски",
   "@boardInnerLineWidth": {
     "description": "Board inner line width"
   },
@@ -607,7 +607,7 @@
   "@howToPlay": {
     "description": "How to play"
   },
-  "toPlacePiece": "Нажмите на любую доступную точку, чтобы поместить фигуру.",
+  "toPlacePiece": "Нажмите на любую доступную точку, чтобы разместить фигуру.",
   "@toPlacePiece": {
     "description": "Tap on any available point to place the piece."
   },
@@ -619,7 +619,7 @@
   "@toMovePiece": {
     "description": "Tap on point connected to piece to move it."
   },
-  "toRemovePiece": "Нажмите на одну фигуру противника, чтобы удалить ее.",
+  "toRemovePiece": "Нажмите на фигуру противника, чтобы удалить ее.",
   "@toRemovePiece": {
     "description": "Tap on the opponent's one piece to remove."
   },
@@ -665,11 +665,11 @@
   "@accept": {
     "description": "Accept"
   },
-  "takeBack": "Возврат назад",
+  "takeBack": "Откатить ход",
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Принять назад…",
+  "takingBack": "Откат хода…",
   "@takingBack": {
     "description": "Taking back..."
   },
@@ -677,15 +677,15 @@
   "@waiting": {
     "description": "Waiting..."
   },
-  "stepForward": "Шаг вперед",
+  "stepForward": "Возвратить ход",
   "@stepForward": {
     "description": "Step forward"
   },
-  "takeBackAll": "Вернуть все назад",
+  "takeBackAll": "Откатиться к началу",
   "@takeBackAll": {
     "description": "Take back all"
   },
-  "stepForwardAll": "Шаг вперед все",
+  "stepForwardAll": "Возвратить все откаченные",
   "@stepForwardAll": {
     "description": "Step forward all"
   },
@@ -705,7 +705,7 @@
   "@crackMill_Detail": {
     "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
   },
-  "animationDuration": "Продолжительность анимации",
+  "animationDuration": "Длительность анимации",
   "@animationDuration": {
     "description": "Animation duration"
   },
@@ -765,7 +765,7 @@
   "@gameOverCondition": {
     "description": "Game over condition"
   },
-  "aisPlayStyle": "Игровой стиль искусственного интеллекта",
+  "aisPlayStyle": "Игровой стиль ИИ",
   "@aisPlayStyle": {
     "description": "AI's playstyle"
   },
@@ -781,11 +781,11 @@
   "@appearance": {
     "description": "Appearance"
   },
-  "drawOnHumanExperience": "Опирайтесь на человеческий опыт",
+  "drawOnHumanExperience": "Опираться на человеческий опыт",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"
   },
-  "considerMobility": "Учитывайте мобильность частей",
+  "considerMobility": "Учитывать мобильность фигур",
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
@@ -793,15 +793,15 @@
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "{player} в наличии: {count}",
+  "inHand": "{player} в руке: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "{player} на борту: {count}",
+  "onBoard": "{player} на доске: {count}",
   "@onBoard": {
     "description": "on board"
   },
-  "boardTop": "Смещение доски от вершины",
+  "boardTop": "Смещение доски сверху",
   "@boardTop": {
     "description": "Board offset from the top"
   },
@@ -861,15 +861,15 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerHighlightItemColor": "Цвет выделения пункта меню",
+  "drawerHighlightItemColor": "Цвет выделенного пункта меню",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
   },
-  "mainToolbarBackgroundColor": "Цвет фона основной панели инструментов",
+  "mainToolbarBackgroundColor": "Цвет фона панели инструментов",
   "@mainToolbarBackgroundColor": {
     "description": "Main toolbar background color"
   },
-  "mainToolbarIconColor": "цвет значка основной панели инструментов",
+  "mainToolbarIconColor": "Цвет значка панели инструментов",
   "@mainToolbarIconColor": {
     "description": "main toolbar icon color"
   },
@@ -889,15 +889,15 @@
   "@toolbarLocationOnScreen": {
     "description": "Toolbar location on screen"
   },
-  "top": "Вершина",
+  "top": "Сверху",
   "@top": {
     "description": "Top"
   },
-  "bottom": "Нижний",
+  "bottom": "Снизу",
   "@bottom": {
     "description": "Bottom"
   },
-  "center": "Центр",
+  "center": "По центру",
   "@center": {
     "description": "Center"
   },
@@ -913,11 +913,11 @@
   "@chooseYourPicture": {
     "description": "Choose your picture"
   },
-  "light": "Свет",
+  "light": "Светлая",
   "@light": {
     "description": "Light"
   },
-  "dark": "Темный",
+  "dark": "Тёмная",
   "@dark": {
     "description": "Dark"
   },
@@ -953,7 +953,7 @@
   "@setupPosition": {
     "description": "Setup position"
   },
-  "showLegalMoves": "Показать легальные ходы",
+  "showLegalMoves": "Показать возможные ходы",
   "@showLegalMoves": {
     "description": "Show legal moves"
   },
@@ -965,7 +965,7 @@
   "@showArrows": {
     "description": "Show arrows"
   },
-  "pieces": "Шт",
+  "pieces": "Фигуры",
   "@pieces": {
     "description": "Pieces"
   },
@@ -1017,15 +1017,15 @@
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
     "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
   },
-  "close": "Закрывать",
+  "close": "Закрыть",
   "@close": {
     "description": "Close"
   },
-  "whitePiece": "Белый кусок",
+  "whitePiece": "Белая фигура",
   "@whitePiece": {
     "description": "White piece"
   },
-  "blackPiece": "Черный кусок",
+  "blackPiece": "Черная фигура",
   "@blackPiece": {
     "description": "Black piece"
   },
@@ -1053,7 +1053,7 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Сторона, которую нужно переместить: {player}",
+  "sideToMove": "Ходит {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
@@ -1069,7 +1069,7 @@
   "@accessibility": {
     "description": "Accessibility"
   },
-  "screenReaderSupport": "Поддержка программы чтения с экрана",
+  "screenReaderSupport": "Поддержка программ чтения с экрана",
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
@@ -1141,7 +1141,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{Переехать}=1{{count} Переехать}other{{count} Движется}}",
+  "moveNumber": "{count,plural, =0{Ходов}=1{{count} Ход}other{{count} Хода}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
