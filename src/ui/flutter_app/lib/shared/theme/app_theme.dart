@@ -135,6 +135,10 @@ class AppTheme {
   static const double boardPadding = 25.0;
   static const double sizedBoxHeight = 16.0;
 
+  static const double drawerItemHeight = 46.0;
+  static const double drawerItemPadding = 8.0;
+  static const double drawerItemPaddingSmallScreen = 3.0;
+
   /// Game page
   static const Color whitePieceBorderColor = Color(0xFF660000);
   static const Color blackPieceBorderColor = Color(0xFF222222);

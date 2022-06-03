@@ -185,6 +185,10 @@ class CustomDrawerState extends State<CustomDrawer>
   Widget _buildItem(BuildContext context, int index) {
     final item = widget.items[index];
 
+    final itemPadding = window.physicalSize.height >= 1080
+        ? AppTheme.drawerItemPadding
+        : AppTheme.drawerItemPaddingSmallScreen;
+
     final Widget child;
 
     if (item.selected) {
@@ -193,7 +197,7 @@ class CustomDrawerState extends State<CustomDrawer>
         textDirection: Directionality.of(context),
         child: Container(
           width: MediaQuery.of(context).size.width * _openRatio * 0.9,
-          height: 46,
+          height: AppTheme.drawerItemHeight,
           decoration: BoxDecoration(
             color: DB().colorSettings.drawerHighlightItemColor,
             borderRadius: const BorderRadiusDirectional.horizontal(
@@ -213,7 +217,7 @@ class CustomDrawerState extends State<CustomDrawer>
       child = item;
     }
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.symmetric(vertical: itemPadding),
       child: child,
     );
   }
