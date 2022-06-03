@@ -463,11 +463,13 @@ uflow
 uint
 uintptr
 undef
+unencoded
 unimi
 Uninitialize
 unistd
 unregister
 upperbound
+uri
 url
 USERDATA
 ushort
