@@ -33,7 +33,7 @@ class _BoardTopSlider extends StatelessWidget {
 
           return Slider(
             value: displaySettings.boardTop,
-            max: 288.0,
+            max: 288.0, // TODO: Overflow, convert to v2 config
             divisions: 288,
             label: displaySettings.boardTop.toStringAsFixed(1),
             onChanged: (value) {

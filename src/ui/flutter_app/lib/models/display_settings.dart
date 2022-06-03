@@ -14,10 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import 'dart:ui';
-
 import 'package:copy_with_extension/copy_with_extension.dart';
-import 'package:flutter/material.dart' show Locale, immutable;
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sanmill/services/database/adapters/adapters.dart';
@@ -47,7 +45,7 @@ class DisplaySettings {
     this.pointWidth = 10.0,
     this.pieceWidth = 0.9 / MigrationValues.pieceWidth,
     this.fontScale = 1.0,
-    this.boardTop = 36.0,
+    this.boardTop = kToolbarHeight,
     this.animationDuration = 0.0,
   });
 

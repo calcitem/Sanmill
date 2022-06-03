@@ -22,7 +22,7 @@ class GameHeader extends StatefulWidget implements PreferredSizeWidget {
 
   @override
   final Size preferredSize = Size.fromHeight(
-    kToolbarHeight + DB().displaySettings.boardTop,
+    kToolbarHeight + DB().displaySettings.boardTop + AppTheme.boardMargin,
   );
 
   @override
@@ -90,7 +90,7 @@ class _GameHeaderState extends State<GameHeader> {
     final divider = Container(
       height: 4,
       width: 180,
-      margin: const EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
       decoration: BoxDecoration(
         color: DB().colorSettings.boardBackgroundColor,
         borderRadius: BorderRadius.circular(2),
@@ -106,7 +106,7 @@ class _GameHeaderState extends State<GameHeader> {
         Center(
           child: BlockSemantics(
             child: Padding(
-              padding: const EdgeInsets.only(top: 20.0),
+              padding: EdgeInsets.only(top: DB().displaySettings.boardTop),
               child: Column(
                 children: <Widget>[
                   iconRow,
