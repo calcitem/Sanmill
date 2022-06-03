@@ -197,7 +197,8 @@ class CustomDrawerState extends State<CustomDrawer>
         textDirection: Directionality.of(context),
         child: Container(
           width: MediaQuery.of(context).size.width * _openRatio * 0.9,
-          height: AppTheme.drawerItemHeight,
+          height: AppTheme.drawerItemHeight +
+              (DB().displaySettings.fontScale - 1) * 12,
           decoration: BoxDecoration(
             color: DB().colorSettings.drawerHighlightItemColor,
             borderRadius: const BorderRadiusDirectional.horizontal(
