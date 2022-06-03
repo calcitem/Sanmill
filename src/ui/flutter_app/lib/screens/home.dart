@@ -127,7 +127,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   void didChangeDependencies() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) => _showPrivacyDialog());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showPrivacyDialog());
     super.didChangeDependencies();
   }
 
