@@ -79,7 +79,7 @@ class SanmillApp extends StatelessWidget {
   }
 
   Widget _buildApp(BuildContext context, Box<DisplaySettings> box, Widget? _) {
-    final DisplaySettings _displaySettings = box.get(
+    final DisplaySettings displaySettings = box.get(
       DB.displaySettingsKey,
       defaultValue: const DisplaySettings(),
     )!;
@@ -89,7 +89,7 @@ class SanmillApp extends StatelessWidget {
         ...S.localizationsDelegates,
         CustomFeedbackLocalizationsDelegate.delegate,
       ],
-      localeOverride: _displaySettings.languageCode,
+      localeOverride: displaySettings.languageCode,
       theme: AppTheme.feedbackTheme,
       child: MaterialApp(
         /// Add navigator key from Catcher.
@@ -99,14 +99,14 @@ class SanmillApp extends StatelessWidget {
         scaffoldMessengerKey: rootScaffoldMessengerKey,
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
-        locale: _displaySettings.languageCode,
+        locale: displaySettings.languageCode,
         theme: AppTheme.lightThemeData,
         darkTheme: AppTheme.darkThemeData,
         debugShowCheckedModeBanner: EnvironmentConfig.devMode,
         builder: (context, child) {
           return MediaQuery(
             data: MediaQuery.of(context).copyWith(
-              textScaleFactor: _displaySettings.fontScale,
+              textScaleFactor: displaySettings.fontScale,
             ),
             child: child!,
           );

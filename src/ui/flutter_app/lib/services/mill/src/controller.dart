@@ -24,16 +24,16 @@ part of '../mill.dart';
 /// * The tip [HeaderTipState]
 /// * The engine [Engine]
 /// * The position [Position]
-/// * The game instance [_Game]
-/// * The recorder [_GameRecorder]
+/// * The game instance [Game]
+/// * The recorder [GameRecorder]
 class MillController {
   static const _tag = "[Controller]";
 
-  late _Game gameInstance;
+  late Game gameInstance;
   late Position position;
   late Engine engine;
   final HeaderTipState tip = HeaderTipState();
-  late _GameRecorder recorder;
+  late GameRecorder recorder;
 
   bool _initialized = false;
   bool get initialized => _initialized;
@@ -51,8 +51,8 @@ class MillController {
   /// * The tip [HeaderTipState]
   /// * The engine [Engine]
   /// * The position [Position]
-  /// * The game instance [_Game]
-  /// * The recorder [_GameRecorder]
+  /// * The game instance [Game]
+  /// * The recorder [GameRecorder]
   ///
   /// All listed objects should not be crated outside of this scope.
   MillController._() {
@@ -89,9 +89,9 @@ class MillController {
   /// Initializes the controller.
   void _init() {
     position = Position();
-    gameInstance = _Game();
+    gameInstance = Game();
     engine = Engine();
-    recorder = _GameRecorder();
+    recorder = GameRecorder();
 
     _startGame();
   }

@@ -16,16 +16,16 @@
 
 part of '../mill.dart';
 
-enum _MoveType { place, move, remove }
+enum MoveType { place, move, remove }
 
-extension _MoveTypeExtension on _MoveType {
-  static _MoveType parse(String move) {
+extension _MoveTypeExtension on MoveType {
+  static MoveType parse(String move) {
     if (move.startsWith("-") && move.length == "-(1,2)".length) {
-      return _MoveType.remove;
+      return MoveType.remove;
     } else if (move.length == "(1,2)->(3,4)".length) {
-      return _MoveType.move;
+      return MoveType.move;
     } else if (move.length == "(1,2)".length) {
-      return _MoveType.place;
+      return MoveType.place;
     } else if (move == "draw") {
       throw UnimplementedError("[TODO] Computer request draw");
     } else {
@@ -38,7 +38,7 @@ class ExtMove {
   static const _tag = "[Move]";
 
   // Square
-  int get from => type == _MoveType.move
+  int get from => type == MoveType.move
       ? makeSquare(int.parse(move[1]), int.parse(move[3]))
       : -1;
   late final int to;
@@ -76,38 +76,38 @@ class ExtMove {
   // "notation" is Standard Notation
   String get notation {
     switch (type) {
-      case _MoveType.remove:
+      case MoveType.remove:
         return "x${_squareToWmdNotation[to]}";
-      case _MoveType.move:
+      case MoveType.move:
         return "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}";
-      case _MoveType.place:
+      case MoveType.place:
         return _squareToWmdNotation[to]!;
     }
   }
 
-  late final _MoveType type;
+  late final MoveType type;
 
   ExtMove(this.move) {
     _checkLegal();
 
     type = _MoveTypeExtension.parse(move);
 
-    final int _toFile;
-    final int _toRank;
+    final int toFile;
+    final int toRank;
     switch (type) {
-      case _MoveType.remove:
-        _toFile = int.parse(move[2]);
-        _toRank = int.parse(move[4]);
+      case MoveType.remove:
+        toFile = int.parse(move[2]);
+        toRank = int.parse(move[4]);
         break;
-      case _MoveType.move:
-        _toFile = int.parse(move[8]);
-        _toRank = int.parse(move[10]);
+      case MoveType.move:
+        toFile = int.parse(move[8]);
+        toRank = int.parse(move[10]);
         break;
-      case _MoveType.place:
-        _toFile = int.parse(move[1]);
-        _toRank = int.parse(move[3]);
+      case MoveType.place:
+        toFile = int.parse(move[1]);
+        toRank = int.parse(move[3]);
     }
-    to = makeSquare(_toFile, _toRank);
+    to = makeSquare(toFile, toRank);
 
     assert(from != to);
   }

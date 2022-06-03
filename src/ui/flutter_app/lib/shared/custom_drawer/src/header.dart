@@ -26,7 +26,7 @@ class CustomDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Color> _animatedTextsColors = [
+    final List<Color> animatedTextsColors = [
       DB().colorSettings.drawerTextColor,
       Colors.black,
       Colors.blue,
@@ -44,7 +44,7 @@ class CustomDrawerHeader extends StatelessWidget {
           textStyle: Theme.of(context).textTheme.headline4!.copyWith(
                 fontWeight: FontWeight.w600,
               ),
-          colors: _animatedTextsColors,
+          colors: animatedTextsColors,
           speed: const Duration(seconds: 3),
         ),
       ],
@@ -53,7 +53,7 @@ class CustomDrawerHeader extends StatelessWidget {
       stopPauseOnTap: true,
     );
 
-    final _padding = EdgeInsets.only(
+    final padding = EdgeInsets.only(
       bottom: 16.0,
       top: 16.0 + (Constants.isLargeScreen ? 30.0 : 8.0),
       left: 20.0,
@@ -61,7 +61,7 @@ class CustomDrawerHeader extends StatelessWidget {
     );
 
     return Padding(
-      padding: _padding,
+      padding: padding,
       child: ExcludeSemantics(child: animation),
     );
   }

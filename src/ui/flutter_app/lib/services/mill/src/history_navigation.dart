@@ -165,7 +165,7 @@ enum HistoryNavMode {
 }
 
 extension HistoryNavModeExtension on HistoryNavMode {
-  /// Moves the [_GameRecorder] to the specified position.
+  /// Moves the [GameRecorder] to the specified position.
   ///
   /// Throws [_HistoryResponse] When trying to access a value outside of the bounds.
   void gotoHistory([int? amount]) {
@@ -189,9 +189,9 @@ extension HistoryNavModeExtension on HistoryNavMode {
         if (iterator.index == 0) {
           iterator.moveToHead();
         } else {
-          final _index = current! - amount!;
-          assert(_index >= 0);
-          iterator.moveTo(_index);
+          final index = current! - amount!;
+          assert(index >= 0);
+          iterator.moveTo(index);
         }
         break;
       case HistoryNavMode.takeBack:

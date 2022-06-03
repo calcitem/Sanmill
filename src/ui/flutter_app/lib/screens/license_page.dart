@@ -20,16 +20,18 @@ import 'package:sanmill/generated/assets/assets.gen.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 
 class LicenseAgreementPage extends StatelessWidget {
+  const LicenseAgreementPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
       future: rootBundle.loadString(Assets.licenses.gpl30),
       builder: (context, data) {
-        late final String _data;
+        late final String str;
         if (!data.hasData) {
-          _data = "Nothing to show";
+          str = "Nothing to show";
         } else {
-          _data = data.data!;
+          str = data.data!;
         }
 
         return Scaffold(
@@ -39,7 +41,7 @@ class LicenseAgreementPage extends StatelessWidget {
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Text(
-              _data,
+              str,
               style: Theme.of(context).textTheme.caption!.copyWith(
                     fontFamily: "Monospace",
                   ),

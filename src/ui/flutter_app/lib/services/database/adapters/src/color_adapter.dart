@@ -26,8 +26,8 @@ class ColorAdapter extends TypeAdapter<Color> {
 
   @override
   Color read(BinaryReader reader) {
-    final _value = reader.readInt();
-    return Color(_value);
+    final value = reader.readInt();
+    return Color(value);
   }
 
   @override

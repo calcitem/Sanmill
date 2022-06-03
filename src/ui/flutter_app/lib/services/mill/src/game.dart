@@ -16,10 +16,10 @@
 
 part of '../mill.dart';
 
-class _Game {
+class Game {
   static const String _tag = "[game]";
 
-  _Game();
+  Game();
 
   PieceColor sideToMove = PieceColor.white;
 

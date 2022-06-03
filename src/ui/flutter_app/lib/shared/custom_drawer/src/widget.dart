@@ -45,10 +45,10 @@ class CustomDrawer extends StatefulWidget {
   final Widget header;
 
   @override
-  _CustomDrawerState createState() => _CustomDrawerState();
+  CustomDrawerState createState() => CustomDrawerState();
 }
 
-class _CustomDrawerState extends State<CustomDrawer>
+class CustomDrawerState extends State<CustomDrawer>
     with SingleTickerProviderStateMixin {
   late final CustomDrawerController _controller;
   late final AnimationController _animationController;
@@ -95,7 +95,7 @@ class _CustomDrawerState extends State<CustomDrawer>
 
   @override
   Widget build(BuildContext context) {
-    final _drawer = Align(
+    final drawer = Align(
       alignment: AlignmentDirectional.centerStart,
       child: FractionallySizedBox(
         widthFactor: _openRatio,
@@ -125,7 +125,7 @@ class _CustomDrawerState extends State<CustomDrawer>
     );
 
     /// Menu and arrow icon animation overlay
-    final _drawerOverlay = IconButton(
+    final drawerOverlay = IconButton(
       icon: AnimatedIcon(
         icon: AnimatedIcons.arrow_menu,
         progress: ReverseAnimation(_animationController),
@@ -135,7 +135,7 @@ class _CustomDrawerState extends State<CustomDrawer>
       onPressed: () => _controller.toggleDrawer(),
     );
 
-    final _mainView = SlideTransition(
+    final mainView = SlideTransition(
       position: _childSlideAnimation,
       textDirection: Directionality.of(context),
       child: ValueListenableBuilder<CustomDrawerValue>(
@@ -172,10 +172,10 @@ class _CustomDrawerState extends State<CustomDrawer>
           widget.disabledGestures ? null : _handleDragCancel,
       child: Stack(
         children: <Widget>[
-          _drawer,
+          drawer,
           DrawerIcon(
-            icon: _drawerOverlay,
-            child: _mainView,
+            icon: drawerOverlay,
+            child: mainView,
           ),
         ],
       ),

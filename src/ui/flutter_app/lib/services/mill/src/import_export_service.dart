@@ -169,12 +169,12 @@ class ImportService {
 
   @visibleForTesting
   static void import(String moveList) {
-    var _moveList = moveList;
+    var ml = moveList;
 
     logger.v("Clipboard text: $moveList");
 
     if (_isDalmaxMoveList(moveList)) {
-      _moveList = moveList.substring(moveList.indexOf("1. "));
+      ml = moveList.substring(moveList.indexOf("1. "));
     }
 
     if (_isPlayOkMoveList(moveList)) {
@@ -192,11 +192,11 @@ class ImportService {
         start = 0;
       }
 
-      _moveList = moveList.substring(start);
+      ml = moveList.substring(start);
     }
 
-    final _GameRecorder newHistory = _GameRecorder();
-    final List<String> list = _moveList
+    final GameRecorder newHistory = GameRecorder();
+    final List<String> list = ml
         .toLowerCase()
         .replaceAll("\n", " ")
         .replaceAll(",", " ")
@@ -265,7 +265,7 @@ class ImportService {
   }
 
   static void _importPlayOk(String moveList) {
-    final _GameRecorder newHistory = _GameRecorder();
+    final GameRecorder newHistory = GameRecorder();
 
     final List<String> list = moveList
         .replaceAll("\n", " ")

@@ -135,10 +135,10 @@ class HeaderTip extends StatefulWidget {
   const HeaderTip({Key? key}) : super(key: key);
 
   @override
-  _HeaderStateTip createState() => _HeaderStateTip();
+  HeaderStateTip createState() => HeaderStateTip();
 }
 
-class _HeaderStateTip extends State<HeaderTip> {
+class HeaderStateTip extends State<HeaderTip> {
   String? message;
 
   void showTip() {

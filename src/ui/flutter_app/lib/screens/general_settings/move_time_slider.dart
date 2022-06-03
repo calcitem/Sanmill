@@ -26,7 +26,7 @@ class _MoveTimeSlider extends StatelessWidget {
       child: ValueListenableBuilder(
         valueListenable: DB().listenGeneralSettings,
         builder: (context, Box<GeneralSettings> box, _) {
-          final GeneralSettings _generalSettings = box.get(
+          final GeneralSettings generalSettings = box.get(
             DB.generalSettingsKey,
             defaultValue: const GeneralSettings(),
           )!;
@@ -38,7 +38,7 @@ class _MoveTimeSlider extends StatelessWidget {
             label: DB().generalSettings.moveTime.toString(),
             onChanged: (value) {
               DB().generalSettings =
-                  _generalSettings.copyWith(moveTime: value.toInt());
+                  generalSettings.copyWith(moveTime: value.toInt());
 
               logger.v("Move time Slider value: $value");
             },

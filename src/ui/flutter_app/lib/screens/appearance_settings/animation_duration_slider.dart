@@ -26,20 +26,20 @@ class _AnimationDurationSlider extends StatelessWidget {
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplaySettings,
         builder: (context, Box<DisplaySettings> box, _) {
-          final DisplaySettings _displaySettings = box.get(
+          final DisplaySettings displaySettings = box.get(
             DB.displaySettingsKey,
             defaultValue: const DisplaySettings(),
           )!;
 
           return Slider(
-            value: _displaySettings.animationDuration,
+            value: displaySettings.animationDuration,
             max: 5.0,
             divisions: 50,
-            label: _displaySettings.animationDuration.toStringAsFixed(1),
+            label: displaySettings.animationDuration.toStringAsFixed(1),
             onChanged: (value) {
               logger.v("[config] AnimationDuration value: $value");
               DB().displaySettings =
-                  _displaySettings.copyWith(animationDuration: value);
+                  displaySettings.copyWith(animationDuration: value);
             },
           );
         },

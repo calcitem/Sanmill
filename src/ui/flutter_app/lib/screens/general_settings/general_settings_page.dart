@@ -52,25 +52,25 @@ class GeneralSettingsPage extends StatelessWidget {
         builder: (_) => const _MoveTimeSlider(),
       );
 
-  void _setWhoMovesFirst(GeneralSettings _generalSettings, bool value) {
-    DB().generalSettings = _generalSettings.copyWith(aiMovesFirst: value);
+  void _setWhoMovesFirst(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(aiMovesFirst: value);
 
     Position.resetScore();
 
     logger.v("$_tag aiMovesFirst: $value");
   }
 
-  void _setAiIsLazy(GeneralSettings _generalSettings, bool value) {
-    DB().generalSettings = _generalSettings.copyWith(aiIsLazy: value);
+  void _setAiIsLazy(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(aiIsLazy: value);
 
     logger.v("$_tag aiIsLazy: $value");
   }
 
-  void _setAlgorithm(BuildContext context, GeneralSettings _generalSettings) {
+  void _setAlgorithm(BuildContext context, GeneralSettings generalSettings) {
     void _callback(Algorithms? algorithm) {
       Navigator.pop(context);
 
-      DB().generalSettings = _generalSettings.copyWith(algorithm: algorithm);
+      DB().generalSettings = generalSettings.copyWith(algorithm: algorithm);
 
       logger.v("$_tag algorithm = $algorithm");
     }
@@ -78,56 +78,56 @@ class GeneralSettingsPage extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       builder: (_) => _AlgorithmModal(
-        algorithm: _generalSettings.algorithm!,
+        algorithm: generalSettings.algorithm!,
         onChanged: _callback,
       ),
     );
   }
 
-  void _setDrawOnHumanExperience(GeneralSettings _generalSettings, bool value) {
+  void _setDrawOnHumanExperience(GeneralSettings generalSettings, bool value) {
     DB().generalSettings =
-        _generalSettings.copyWith(drawOnHumanExperience: value);
+        generalSettings.copyWith(drawOnHumanExperience: value);
 
     logger.v("$_tag drawOnHumanExperience: $value");
   }
 
-  void _setConsiderMobility(GeneralSettings _generalSettings, bool value) {
-    DB().generalSettings = _generalSettings.copyWith(considerMobility: value);
+  void _setConsiderMobility(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(considerMobility: value);
 
     logger.v("$_tag considerMobility: $value");
   }
 
-  void _setIsAutoRestart(GeneralSettings _generalSettings, bool value) {
-    DB().generalSettings = _generalSettings.copyWith(isAutoRestart: value);
+  void _setIsAutoRestart(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(isAutoRestart: value);
 
     logger.v("$_tag isAutoRestart: $value");
   }
 
-  void _setShufflingEnabled(GeneralSettings _generalSettings, bool value) {
-    DB().generalSettings = _generalSettings.copyWith(shufflingEnabled: value);
+  void _setShufflingEnabled(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(shufflingEnabled: value);
 
     logger.v("$_tag shufflingEnabled: $value");
   }
 
-  void _setTone(GeneralSettings _generalSettings, bool value) {
-    DB().generalSettings = _generalSettings.copyWith(toneEnabled: value);
+  void _setTone(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(toneEnabled: value);
 
     logger.v("$_tag toneEnabled: $value");
   }
 
   void _setKeepMuteWhenTakingBack(
-    GeneralSettings _generalSettings,
+    GeneralSettings generalSettings,
     bool value,
   ) {
     DB().generalSettings =
-        _generalSettings.copyWith(keepMuteWhenTakingBack: value);
+        generalSettings.copyWith(keepMuteWhenTakingBack: value);
 
     logger.v("$_tag keepMuteWhenTakingBack: $value");
   }
 
-  void _setScreenReaderSupport(GeneralSettings _generalSettings, bool value) {
+  void _setScreenReaderSupport(GeneralSettings generalSettings, bool value) {
     DB().generalSettings =
-        _generalSettings.copyWith(screenReaderSupport: value);
+        generalSettings.copyWith(screenReaderSupport: value);
 
     logger.v("$_tag screenReaderSupport: $value");
   }
@@ -137,7 +137,7 @@ class GeneralSettingsPage extends StatelessWidget {
     Box<GeneralSettings> box,
     _,
   ) {
-    final GeneralSettings _generalSettings = box.get(
+    final GeneralSettings generalSettings = box.get(
       DB.generalSettingsKey,
       defaultValue: const GeneralSettings(),
     )!;
@@ -148,9 +148,9 @@ class GeneralSettingsPage extends StatelessWidget {
           title: Text(S.of(context).whoMovesFirst),
           children: <Widget>[
             SettingsListTile.switchTile(
-              value: !_generalSettings.aiMovesFirst,
-              onChanged: (val) => _setWhoMovesFirst(_generalSettings, !val),
-              titleString: _generalSettings.aiMovesFirst
+              value: !generalSettings.aiMovesFirst,
+              onChanged: (val) => _setWhoMovesFirst(generalSettings, !val),
+              titleString: generalSettings.aiMovesFirst
                   ? S.of(context).ai
                   : S.of(context).human,
             ),
@@ -175,28 +175,28 @@ class GeneralSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile(
               titleString: S.of(context).algorithm,
-              trailingString: _generalSettings.algorithm!.name,
-              onTap: () => _setAlgorithm(context, _generalSettings),
+              trailingString: generalSettings.algorithm!.name,
+              onTap: () => _setAlgorithm(context, generalSettings),
             ),
             SettingsListTile.switchTile(
-              value: _generalSettings.drawOnHumanExperience,
+              value: generalSettings.drawOnHumanExperience,
               onChanged: (val) =>
-                  _setDrawOnHumanExperience(_generalSettings, val),
+                  _setDrawOnHumanExperience(generalSettings, val),
               titleString: S.of(context).drawOnHumanExperience,
             ),
             SettingsListTile.switchTile(
-              value: _generalSettings.considerMobility,
-              onChanged: (val) => _setConsiderMobility(_generalSettings, val),
+              value: generalSettings.considerMobility,
+              onChanged: (val) => _setConsiderMobility(generalSettings, val),
               titleString: S.of(context).considerMobility,
             ),
             SettingsListTile.switchTile(
-              value: _generalSettings.aiIsLazy,
-              onChanged: (val) => _setAiIsLazy(_generalSettings, val),
+              value: generalSettings.aiIsLazy,
+              onChanged: (val) => _setAiIsLazy(generalSettings, val),
               titleString: S.of(context).passive,
             ),
             SettingsListTile.switchTile(
-              value: _generalSettings.shufflingEnabled,
-              onChanged: (val) => _setShufflingEnabled(_generalSettings, val),
+              value: generalSettings.shufflingEnabled,
+              onChanged: (val) => _setShufflingEnabled(generalSettings, val),
               titleString: S.of(context).shufflingEnabled,
             ),
           ],
@@ -205,14 +205,14 @@ class GeneralSettingsPage extends StatelessWidget {
           title: Text(S.of(context).playSounds),
           children: <Widget>[
             SettingsListTile.switchTile(
-              value: _generalSettings.toneEnabled,
-              onChanged: (val) => _setTone(_generalSettings, val),
+              value: generalSettings.toneEnabled,
+              onChanged: (val) => _setTone(generalSettings, val),
               titleString: S.of(context).playSoundsInTheGame,
             ),
             SettingsListTile.switchTile(
-              value: _generalSettings.keepMuteWhenTakingBack,
+              value: generalSettings.keepMuteWhenTakingBack,
               onChanged: (val) =>
-                  _setKeepMuteWhenTakingBack(_generalSettings, val),
+                  _setKeepMuteWhenTakingBack(generalSettings, val),
               titleString: S.of(context).keepMuteWhenTakingBack,
             ),
           ],
@@ -221,9 +221,9 @@ class GeneralSettingsPage extends StatelessWidget {
           title: Text(S.of(context).accessibility),
           children: <Widget>[
             SettingsListTile.switchTile(
-              value: _generalSettings.screenReaderSupport,
+              value: generalSettings.screenReaderSupport,
               onChanged: (val) =>
-                  _setScreenReaderSupport(_generalSettings, val),
+                  _setScreenReaderSupport(generalSettings, val),
               titleString: S.of(context).screenReaderSupport,
             ),
           ],
@@ -232,8 +232,8 @@ class GeneralSettingsPage extends StatelessWidget {
           title: Text(S.of(context).misc),
           children: <Widget>[
             SettingsListTile.switchTile(
-              value: _generalSettings.isAutoRestart,
-              onChanged: (val) => _setIsAutoRestart(_generalSettings, val),
+              value: generalSettings.isAutoRestart,
+              onChanged: (val) => _setIsAutoRestart(generalSettings, val),
               titleString: S.of(context).isAutoRestart,
             ),
           ],

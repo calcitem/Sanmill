@@ -54,9 +54,9 @@ class Engine {
   }
 
   FutureOr<bool> _isThinking() async {
-    final _isThinking = await _platform.invokeMethod<bool>("isThinking");
-    if (_isThinking is bool) {
-      return _isThinking;
+    final isThinking = await _platform.invokeMethod<bool>("isThinking");
+    if (isThinking is bool) {
+      return isThinking;
     } else {
       throw "Invalid platform response. Expected a value of type bool";
     }
@@ -103,13 +103,13 @@ class Engine {
     int sleep = 100,
     int times = 0,
   }) async {
-    final _settings = DB().generalSettings;
+    final settings = DB().generalSettings;
 
     var timeLimit = EnvironmentConfig.devMode ? 100 : 6000;
 
-    if (_settings.moveTime > 0) {
+    if (settings.moveTime > 0) {
       // TODO: Accurate timeLimit
-      timeLimit = _settings.moveTime * 10 * 64 + 10;
+      timeLimit = settings.moveTime * 10 * 64 + 10;
     }
 
     if (times > timeLimit) {
@@ -155,56 +155,56 @@ class Engine {
   Future<void> setOptions() async {
     logger.i("$_tag reloaded engine options");
 
-    final _generalSettings = DB().generalSettings;
-    final _ruleSettings = DB().ruleSettings;
+    final generalSettings = DB().generalSettings;
+    final ruleSettings = DB().ruleSettings;
 
     await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
-    await _sendOptions("Algorithm", _generalSettings.algorithm?.index ?? 2);
+    await _sendOptions("Algorithm", generalSettings.algorithm?.index ?? 2);
     await _sendOptions(
       "DrawOnHumanExperience",
-      _generalSettings.drawOnHumanExperience,
+      generalSettings.drawOnHumanExperience,
     );
-    await _sendOptions("ConsiderMobility", _generalSettings.considerMobility);
-    await _sendOptions("SkillLevel", _generalSettings.skillLevel);
-    await _sendOptions("MoveTime", _generalSettings.moveTime);
-    await _sendOptions("AiIsLazy", _generalSettings.aiIsLazy);
-    await _sendOptions("Shuffling", _generalSettings.shufflingEnabled);
-    await _sendOptions("PiecesCount", _ruleSettings.piecesCount);
-    await _sendOptions("FlyPieceCount", _ruleSettings.flyPieceCount);
-    await _sendOptions("PiecesAtLeastCount", _ruleSettings.piecesAtLeastCount);
-    await _sendOptions("HasDiagonalLines", _ruleSettings.hasDiagonalLines);
-    await _sendOptions("HasBannedLocations", _ruleSettings.hasBannedLocations);
+    await _sendOptions("ConsiderMobility", generalSettings.considerMobility);
+    await _sendOptions("SkillLevel", generalSettings.skillLevel);
+    await _sendOptions("MoveTime", generalSettings.moveTime);
+    await _sendOptions("AiIsLazy", generalSettings.aiIsLazy);
+    await _sendOptions("Shuffling", generalSettings.shufflingEnabled);
+    await _sendOptions("PiecesCount", ruleSettings.piecesCount);
+    await _sendOptions("FlyPieceCount", ruleSettings.flyPieceCount);
+    await _sendOptions("PiecesAtLeastCount", ruleSettings.piecesAtLeastCount);
+    await _sendOptions("HasDiagonalLines", ruleSettings.hasDiagonalLines);
+    await _sendOptions("HasBannedLocations", ruleSettings.hasBannedLocations);
     await _sendOptions(
       "MayMoveInPlacingPhase",
-      _ruleSettings.mayMoveInPlacingPhase,
+      ruleSettings.mayMoveInPlacingPhase,
     );
     await _sendOptions(
       "IsDefenderMoveFirst",
-      _ruleSettings.isDefenderMoveFirst,
+      ruleSettings.isDefenderMoveFirst,
     );
-    await _sendOptions("MayRemoveMultiple", _ruleSettings.mayRemoveMultiple);
+    await _sendOptions("MayRemoveMultiple", ruleSettings.mayRemoveMultiple);
     await _sendOptions(
       "MayRemoveFromMillsAlways",
-      _ruleSettings.mayRemoveFromMillsAlways,
+      ruleSettings.mayRemoveFromMillsAlways,
     );
     await _sendOptions(
       "MayOnlyRemoveUnplacedPieceInPlacingPhase",
-      _ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase,
+      ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase,
     );
     await _sendOptions(
       "IsWhiteLoseButNotDrawWhenBoardFull",
-      _ruleSettings.isWhiteLoseButNotDrawWhenBoardFull,
+      ruleSettings.isWhiteLoseButNotDrawWhenBoardFull,
     );
     await _sendOptions(
       "IsLoseButNotChangeSideWhenNoWay",
-      _ruleSettings.isLoseButNotChangeSideWhenNoWay,
+      ruleSettings.isLoseButNotChangeSideWhenNoWay,
     );
-    await _sendOptions("MayFly", _ruleSettings.mayFly);
-    await _sendOptions("NMoveRule", _ruleSettings.nMoveRule);
-    await _sendOptions("EndgameNMoveRule", _ruleSettings.endgameNMoveRule);
+    await _sendOptions("MayFly", ruleSettings.mayFly);
+    await _sendOptions("NMoveRule", ruleSettings.nMoveRule);
+    await _sendOptions("EndgameNMoveRule", ruleSettings.endgameNMoveRule);
     await _sendOptions(
       "ThreefoldRepetitionRule",
-      _ruleSettings.threefoldRepetitionRule,
+      ruleSettings.threefoldRepetitionRule,
     );
   }
 

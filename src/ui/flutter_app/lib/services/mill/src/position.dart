@@ -16,7 +16,7 @@
 
 part of '../mill.dart';
 
-class _StateInfo {
+class StateInfo {
   // Copied when making a move
   int rule50 = 0;
   int pliesFromNull = 0;
@@ -48,7 +48,7 @@ class Position {
   int _gamePly = 0;
   PieceColor _sideToMove = PieceColor.white;
 
-  final _StateInfo st = _StateInfo();
+  final StateInfo st = StateInfo();
 
   PieceColor _them = PieceColor.black;
   PieceColor _winner = PieceColor.nobody;
@@ -186,7 +186,7 @@ class Position {
 
     // TODO: [Leptopoda] The below functions should all throw exceptions so the ret and conditional stuff can be removed
     switch (m.type) {
-      case _MoveType.remove:
+      case MoveType.remove:
         try {
           await _removePiece(m.to);
           ret = true;
@@ -195,13 +195,13 @@ class Position {
           return false;
         }
         break;
-      case _MoveType.move:
+      case MoveType.move:
         ret = await _movePiece(m.from, m.to);
         if (ret) {
           ++st.rule50;
         }
         break;
-      case _MoveType.place:
+      case MoveType.place:
         ret = await _putPiece(m.to);
         if (ret) {
           // Reset rule 50 counter
@@ -641,12 +641,11 @@ class Position {
   int _potentialMillsCount(int to, PieceColor c, {int from = 0}) {
     int n = 0;
     PieceColor locbak = PieceColor.none;
-    PieceColor _c = c;
 
     assert(0 <= from && from < sqNumber);
 
-    if (_c == PieceColor.nobody) {
-      _c = _board[to];
+    if (c == PieceColor.nobody) {
+      c = _board[to];
     }
 
     if (from != 0 && from >= sqBegin && from < sqEnd) {
@@ -655,8 +654,8 @@ class Position {
     }
 
     for (int ld = 0; ld < lineDirectionNumber; ld++) {
-      if (_c == _board[_millTable[to][ld][0]] &&
-          _c == _board[_millTable[to][ld][1]]) {
+      if (c == _board[_millTable[to][ld][0]] &&
+          c == _board[_millTable[to][ld][1]]) {
         n++;
       }
     }

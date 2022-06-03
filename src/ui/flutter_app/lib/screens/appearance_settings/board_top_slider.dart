@@ -26,19 +26,19 @@ class _BoardTopSlider extends StatelessWidget {
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplaySettings,
         builder: (context, Box<DisplaySettings> box, _) {
-          final DisplaySettings _displaySettings = box.get(
+          final DisplaySettings displaySettings = box.get(
             DB.displaySettingsKey,
             defaultValue: const DisplaySettings(),
           )!;
 
           return Slider(
-            value: _displaySettings.boardTop,
+            value: displaySettings.boardTop,
             max: 288.0,
             divisions: 288,
-            label: _displaySettings.boardTop.toStringAsFixed(1),
+            label: displaySettings.boardTop.toStringAsFixed(1),
             onChanged: (value) {
               logger.v("[config] boardTop value: $value");
-              DB().displaySettings = _displaySettings.copyWith(boardTop: value);
+              DB().displaySettings = displaySettings.copyWith(boardTop: value);
             },
           );
         },

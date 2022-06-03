@@ -110,25 +110,25 @@ class _DatabaseMigration {
   static Future<void> _migrateFromV1() async {
     assert(_currentVersion! <= 1);
 
-    final _generalSettings = DB().generalSettings;
-    DB().generalSettings = _generalSettings.copyWith(
-      algorithm: Algorithms.values[_generalSettings.oldAlgorithm],
+    final generalSettings = DB().generalSettings;
+    DB().generalSettings = generalSettings.copyWith(
+      algorithm: Algorithms.values[generalSettings.oldAlgorithm],
     );
 
-    final _displaySettings = DB().displaySettings;
-    DB().displaySettings = _displaySettings.copyWith(
-      pointStyle: (_displaySettings.oldPointStyle != 0)
-          ? PaintingStyle.values[_displaySettings.oldPointStyle - 1]
+    final displaySettings = DB().displaySettings;
+    DB().displaySettings = displaySettings.copyWith(
+      pointStyle: (displaySettings.oldPointStyle != 0)
+          ? PaintingStyle.values[displaySettings.oldPointStyle - 1]
           : null,
-      pieceWidth: _displaySettings.pieceWidth / MigrationValues.pieceWidth,
-      fontScale: _displaySettings.fontScale / MigrationValues.fontScale,
+      pieceWidth: displaySettings.pieceWidth / MigrationValues.pieceWidth,
+      fontScale: displaySettings.fontScale / MigrationValues.fontScale,
     );
 
-    final _colorSettings = DB().colorSettings;
-    DB().colorSettings = _colorSettings.copyWith(
+    final colorSettings = DB().colorSettings;
+    DB().colorSettings = colorSettings.copyWith(
       drawerColor: Color.lerp(
-        _colorSettings.drawerColor,
-        _colorSettings.drawerBackgroundColor,
+        colorSettings.drawerColor,
+        colorSettings.drawerBackgroundColor,
         0.5,
       )?.withAlpha(0xFF),
     );
@@ -164,15 +164,15 @@ class _DatabaseV1 {
   }
 
   /// Loads the generalSettings from the old data store
-  static Future<Map<String, dynamic>?> _loadFile(File _file) async {
+  static Future<Map<String, dynamic>?> _loadFile(File file) async {
     assert(await usesV1);
-    logger.v("$_tag Loading $_file ...");
+    logger.v("$_tag Loading $file ...");
 
     try {
-      final contents = await _file.readAsString();
-      final _values = jsonDecode(contents) as Map<String, dynamic>?;
-      logger.v(_values.toString());
-      return _values;
+      final contents = await file.readAsString();
+      final values = jsonDecode(contents) as Map<String, dynamic>?;
+      logger.v(values.toString());
+      return values;
     } catch (e) {
       logger.e("$_tag error loading file $e");
     }
@@ -183,25 +183,25 @@ class _DatabaseV1 {
   /// TODO: it won't do anything if the
   static Future<void> migrateDB() async {
     logger.i("$_tag migrate from KV to DB");
-    final _file = await _getFile();
-    assert(_file != null);
+    final file = await _getFile();
+    assert(file != null);
 
-    final _json = await _loadFile(_file!);
-    if (_json != null) {
-      DB().generalSettings = GeneralSettings.fromJson(_json);
-      DB().ruleSettings = RuleSettings.fromJson(_json);
-      DB().displaySettings = DisplaySettings.fromJson(_json);
-      DB().colorSettings = ColorSettings.fromJson(_json);
+    final json = await _loadFile(file!);
+    if (json != null) {
+      DB().generalSettings = GeneralSettings.fromJson(json);
+      DB().ruleSettings = RuleSettings.fromJson(json);
+      DB().displaySettings = DisplaySettings.fromJson(json);
+      DB().colorSettings = ColorSettings.fromJson(json);
     }
-    await _deleteFile(_file);
+    await _deleteFile(file);
   }
 
   /// Deletes the old settings file
-  static Future<void> _deleteFile(File _file) async {
+  static Future<void> _deleteFile(File file) async {
     assert(await usesV1);
     logger.v("$_tag Deleting old settings file...");
 
-    await _file.delete();
-    logger.i("$_tag $_file Deleted");
+    await file.delete();
+    logger.i("$_tag $file Deleted");
   }
 }

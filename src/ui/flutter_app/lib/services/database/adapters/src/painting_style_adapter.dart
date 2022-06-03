@@ -26,10 +26,10 @@ class PaintingStyleAdapter extends TypeAdapter<PaintingStyle?> {
 
   @override
   PaintingStyle? read(BinaryReader reader) {
-    final _value = reader.read() as int?;
+    final value = reader.read() as int?;
 
-    if (_value == null || _value == 0) return null;
-    if (_value == 1) return PaintingStyle.fill;
+    if (value == null || value == 0) return null;
+    if (value == 1) return PaintingStyle.fill;
     return null;
   }
 

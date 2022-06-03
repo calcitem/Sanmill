@@ -94,8 +94,8 @@ class PiecePainter extends CustomPainter {
     final shadowPath = Path();
     final piecesToDraw = <_PiecePaintParam>[];
 
-    final _pieceWidth = size.width * DB().displaySettings.pieceWidth;
-    final _animatedPieceWidth = _pieceWidth * animationValue;
+    final pieceWidth = size.width * DB().displaySettings.pieceWidth;
+    final animatedPieceWidth = pieceWidth * animationValue;
 
     // Draw pieces on board
     for (var row = 0; row < 7; row++) {
@@ -116,14 +116,14 @@ class PiecePainter extends CustomPainter {
             piece: piece,
             pos: pos,
             animated: animated,
-            diameter: _pieceWidth,
+            diameter: pieceWidth,
           ),
         );
 
         shadowPath.addOval(
           Rect.fromCircle(
             center: pos,
-            radius: (animated ? _animatedPieceWidth : _pieceWidth) / 2,
+            radius: (animated ? animatedPieceWidth : pieceWidth) / 2,
           ),
         );
       }
@@ -140,10 +140,10 @@ class PiecePainter extends CustomPainter {
       );
       blurPositionColor = piece.blurPositionColor;
 
-      final pieceRadius = _pieceWidth / 2;
+      final pieceRadius = pieceWidth / 2;
       final pieceInnerRadius = pieceRadius * 0.99;
 
-      final animatedPieceRadius = _animatedPieceWidth / 2;
+      final animatedPieceRadius = animatedPieceWidth / 2;
       final animatedPieceInnerRadius = animatedPieceRadius * 0.99;
 
       // Draw Border of Piece
@@ -170,7 +170,7 @@ class PiecePainter extends CustomPainter {
 
       canvas.drawCircle(
         pointFromIndex(focusIndex, size),
-        _animatedPieceWidth / 2,
+        animatedPieceWidth / 2,
         paint,
       );
     }
@@ -181,7 +181,7 @@ class PiecePainter extends CustomPainter {
 
       canvas.drawCircle(
         pointFromIndex(blurIndex, size),
-        _animatedPieceWidth / 2 * 0.8,
+        animatedPieceWidth / 2 * 0.8,
         paint,
       );
     }

@@ -26,8 +26,8 @@ class LocaleAdapter extends TypeAdapter<Locale?> {
 
   @override
   Locale read(BinaryReader reader) {
-    final _value = reader.readString();
-    return Locale(_value);
+    final value = reader.readString();
+    return Locale(value);
   }
 
   @override

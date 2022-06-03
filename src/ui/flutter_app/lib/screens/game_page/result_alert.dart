@@ -67,9 +67,9 @@ class GameResultAlert extends StatelessWidget {
             S.of(context).yes,
           ),
           onPressed: () async {
-            final _settings = DB().generalSettings;
+            final settings = DB().generalSettings;
             DB().generalSettings =
-                _settings.copyWith(skillLevel: _settings.skillLevel + 1);
+                settings.copyWith(skillLevel: settings.skillLevel + 1);
             logger.v(
               "[config] skillLevel: ${DB().generalSettings.skillLevel}",
             );

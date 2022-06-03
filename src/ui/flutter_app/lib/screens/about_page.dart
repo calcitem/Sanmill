@@ -48,30 +48,30 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _children = [
+    final List<Widget> children = [
       FutureBuilder<PackageInfo>(
         future: PackageInfo.fromPlatform(),
         builder: (_, data) {
-          final String _version;
+          final String version;
           if (!data.hasData) {
             return Container();
           } else {
             final PackageInfo packageInfo = data.data!;
             if (Platform.isWindows) {
-              _version = packageInfo.version; // TODO
+              version = packageInfo.version; // TODO
 
             } else {
-              _version = "${packageInfo.version} (${packageInfo.buildNumber})";
+              version = "${packageInfo.version} (${packageInfo.buildNumber})";
             }
           }
           return SettingsListTile(
             titleString: S.of(context).versionInfo,
-            subtitleString: "${Constants.projectName} $_version $mode",
+            subtitleString: "${Constants.projectName} $version $mode",
             onTap: () => showDialog(
               context: context,
               barrierDismissible: true,
               builder: (_) => _VersionDialog(
-                version: _version,
+                version: version,
               ),
             ),
           );
@@ -91,7 +91,7 @@ class AboutPage extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LicenseAgreementPage(),
+              builder: (context) => const LicenseAgreementPage(),
             ),
           );
         },
@@ -128,9 +128,9 @@ class AboutPage extends StatelessWidget {
         title: Text(S.of(context).about),
       ),
       body: ListView.separated(
-        itemBuilder: (_, index) => _children[index],
+        itemBuilder: (_, index) => children[index],
         separatorBuilder: (_, __) => const Divider(),
-        itemCount: _children.length,
+        itemCount: children.length,
       ),
     );
   }

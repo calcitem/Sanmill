@@ -26,20 +26,20 @@ class _SkillLevelSlider extends StatelessWidget {
       child: ValueListenableBuilder(
         valueListenable: DB().listenGeneralSettings,
         builder: (context, Box<GeneralSettings> box, _) {
-          final GeneralSettings _generalSettings = box.get(
+          final GeneralSettings generalSettings = box.get(
             DB.generalSettingsKey,
             defaultValue: const GeneralSettings(),
           )!;
 
           return Slider(
-            value: _generalSettings.skillLevel.toDouble(),
+            value: generalSettings.skillLevel.toDouble(),
             min: 1,
             max: 30,
             divisions: 29,
-            label: _generalSettings.skillLevel.toString(),
+            label: generalSettings.skillLevel.toString(),
             onChanged: (value) {
               DB().generalSettings =
-                  _generalSettings.copyWith(skillLevel: value.toInt());
+                  generalSettings.copyWith(skillLevel: value.toInt());
               logger.v("Skill level Slider value: $value");
             },
           );

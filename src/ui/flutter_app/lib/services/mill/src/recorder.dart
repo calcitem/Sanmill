@@ -16,8 +16,8 @@
 
 part of '../mill.dart';
 
-class _GameRecorder extends PointedList<ExtMove> {
-  _GameRecorder() : super();
+class GameRecorder extends PointedList<ExtMove> {
+  GameRecorder() : super();
 
   @override
   String toString() {
@@ -45,7 +45,7 @@ class _GameRecorder extends PointedList<ExtMove> {
         moveHistory.write(this[i++].notation);
       }
 
-      if (i <= index! && this[i].type == _MoveType.remove) {
+      if (i <= index! && this[i].type == MoveType.remove) {
         moveHistory.write(this[i++].notation);
       }
     }

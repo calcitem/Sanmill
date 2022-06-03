@@ -93,10 +93,10 @@ class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
-  _HomeState createState() => _HomeState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeState extends State<Home> with TickerProviderStateMixin {
+class HomeState extends State<Home> with TickerProviderStateMixin {
   final _controller = CustomDrawerController();
 
   Widget _screenView = _DrawerIndex.humanVsAi.screen;
@@ -225,12 +225,12 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   static Future<void> _launchFeedback(UserFeedback feedback) async {
     final screenshotFilePath = await _saveFeedbackImage(feedback.screenshot);
     final packageInfo = await PackageInfo.fromPlatform();
-    final _version = "${packageInfo.version} (${packageInfo.buildNumber})";
+    final version = "${packageInfo.version} (${packageInfo.buildNumber})";
 
     final Email email = Email(
       body: feedback.text,
       subject: Constants.feedbackSubjectPrefix +
-          _version +
+          version +
           Constants.feedbackSubjectSuffix,
       recipients: Constants.recipients,
       attachmentPaths: [screenshotFilePath],

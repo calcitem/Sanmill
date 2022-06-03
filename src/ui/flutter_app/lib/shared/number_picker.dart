@@ -31,10 +31,10 @@ class NumberPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _size = Theme.of(context).textTheme.bodyText1!.fontSize!;
-    int _selectValue = start;
+    final size = Theme.of(context).textTheme.bodyText1!.fontSize!;
+    int selectValue = start;
 
-    final List<Widget> _items = List.generate(
+    final List<Widget> items = List.generate(
       end,
       (index) => Text(S.of(context).moveNumber(start + index)),
     );
@@ -47,9 +47,9 @@ class NumberPicker extends StatelessWidget {
       content: ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 150),
         child: CupertinoPicker(
-          itemExtent: _size + 12,
-          children: _items,
-          onSelectedItemChanged: (numb) => _selectValue = numb + 1,
+          itemExtent: size + 12,
+          children: items,
+          onSelectedItemChanged: (numb) => selectValue = numb + 1,
         ),
       ),
       actions: [
@@ -63,7 +63,7 @@ class NumberPicker extends StatelessWidget {
           child: Text(
             S.of(context).confirm,
           ),
-          onPressed: () => Navigator.pop(context, _selectValue),
+          onPressed: () => Navigator.pop(context, selectValue),
         ),
       ],
     );

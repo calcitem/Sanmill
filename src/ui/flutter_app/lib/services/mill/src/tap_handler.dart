@@ -208,21 +208,21 @@ class TapHandler {
   // TODO: [Leptopoda] The reference of this method has been removed in a few instances.
   // We'll need to find a better way for this.
   Future<void> engineToGo({required bool isMoveNow}) async {
-    const _tag = "[engineToGo]";
+    const tag = "[engineToGo]";
 
     final position = controller.position;
 
     // TODO
-    logger.v("$_tag engine type is $gameMode");
+    logger.v("$tag engine type is $gameMode");
 
     if (isMoveNow) {
       if (!controller.gameInstance._isAiToMove) {
-        logger.i("$_tag Human to Move. Cannot get search result now.");
+        logger.i("$tag Human to Move. Cannot get search result now.");
         return ScaffoldMessenger.of(context)
             .showSnackBarClear(S.of(context).notAIsTurn);
       }
       if (controller.recorder.isNotEmpty) {
-        logger.i("$_tag History is not clean. Cannot get search result now.");
+        logger.i("$tag History is not clean. Cannot get search result now.");
         return ScaffoldMessenger.of(context)
             .showSnackBarClear(S.of(context).aiIsNotThinking);
       }
@@ -247,7 +247,7 @@ class TapHandler {
       }
 
       try {
-        logger.v("$_tag Searching..., isMoveNow: $isMoveNow");
+        logger.v("$tag Searching..., isMoveNow: $isMoveNow");
         final extMove = await controller.engine.search(moveNow: isMoveNow);
 
         if (await controller.gameInstance.doMove(extMove)) {
@@ -262,10 +262,10 @@ class TapHandler {
           );
         }
       } on EngineTimeOut {
-        logger.i("$_tag Engine response type: timeout");
+        logger.i("$tag Engine response type: timeout");
         showTip(S.of(context).timeout, snackBar: true);
       } on EngineNoBestMove {
-        logger.i("$_tag Engine response type: nobestmove");
+        logger.i("$tag Engine response type: nobestmove");
         showTip(S.of(context).error("No best move"));
       }
 

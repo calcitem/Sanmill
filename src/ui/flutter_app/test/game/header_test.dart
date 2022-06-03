@@ -33,9 +33,9 @@ void main() {
       DB.instance = MockDB();
       final controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
-      const _screen = HeaderTip();
+      const screen = HeaderTip();
 
-      await tester.pumpWidget(makeTestableWidget(_screen));
+      await tester.pumpWidget(makeTestableWidget(screen));
 
       expect(find.text(SEn().welcome), findsOneWidget);
 
@@ -53,7 +53,7 @@ void main() {
 
       const iconKey = Key("DrawerIcon");
 
-      final _screen = DrawerIcon(
+      final screen = DrawerIcon(
         icon: IconButton(
           icon: const Icon(
             Icons.menu,
@@ -66,7 +66,7 @@ void main() {
         ),
       );
 
-      await tester.pumpWidget(makeTestableWidget(_screen));
+      await tester.pumpWidget(makeTestableWidget(screen));
 
       final icon = tester.getCenter(find.byKey(iconKey));
       final header = tester.getCenter(find.byKey(const Key("HeaderIconRow")));

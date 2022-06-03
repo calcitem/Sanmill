@@ -125,7 +125,7 @@ class _BoardSemantics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _squareDesc = _buildSquareDescription(context);
+    final squareDesc = _buildSquareDescription(context);
 
     return GridView(
       scrollDirection: Axis.horizontal,
@@ -137,7 +137,7 @@ class _BoardSemantics extends StatelessWidget {
         (index) => Center(
           child: Semantics(
             // TODO: [Calcitem] Add more descriptive information
-            label: _squareDesc[index],
+            label: squareDesc[index],
           ),
         ),
       ),

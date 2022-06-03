@@ -37,16 +37,16 @@ class CustomDrawerItem<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: drawerHighlightTextColor
-    final _color = selected
+    final color = selected
         ? DB().colorSettings.drawerTextColor
         : DB().colorSettings.drawerTextColor;
 
     final listItemIcon = Icon(
       icon.icon,
-      color: _color,
+      color: color,
     );
 
-    final _drawerItem = Row(
+    final drawerItem = Row(
       children: <Widget>[
         const SizedBox(height: 46.0, width: 6.0),
         const Padding(padding: EdgeInsets.all(4.0)),
@@ -56,7 +56,7 @@ class CustomDrawerItem<T> extends StatelessWidget {
           title,
           style: Theme.of(context).textTheme.headline6!.copyWith(
                 fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
-                color: _color,
+                color: color,
               ),
         ),
       ],
@@ -66,7 +66,7 @@ class CustomDrawerItem<T> extends StatelessWidget {
       splashColor: AppTheme.drawerSplashColor,
       highlightColor: Colors.transparent,
       onTap: () => onChanged(value),
-      child: _drawerItem,
+      child: drawerItem,
     );
   }
 }

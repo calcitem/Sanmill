@@ -26,20 +26,20 @@ class _BoardInnerWidthSlider extends StatelessWidget {
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplaySettings,
         builder: (context, Box<DisplaySettings> box, _) {
-          final DisplaySettings _displaySettings = box.get(
+          final DisplaySettings displaySettings = box.get(
             DB.displaySettingsKey,
             defaultValue: const DisplaySettings(),
           )!;
 
           return Slider(
-            value: _displaySettings.boardInnerLineWidth,
+            value: displaySettings.boardInnerLineWidth,
             max: 20,
             divisions: 200,
-            label: _displaySettings.boardInnerLineWidth.toStringAsFixed(1),
+            label: displaySettings.boardInnerLineWidth.toStringAsFixed(1),
             onChanged: (value) {
               logger.v("[config] BoardInnerLineWidth value: $value");
               DB().displaySettings =
-                  _displaySettings.copyWith(boardInnerLineWidth: value);
+                  displaySettings.copyWith(boardInnerLineWidth: value);
             },
           );
         },
