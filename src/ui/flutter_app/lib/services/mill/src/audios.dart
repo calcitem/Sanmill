@@ -30,7 +30,7 @@ class Audios {
 
   Audios._();
 
-  final Soundpool _soundpool = Soundpool.fromOptions();
+  late final Soundpool _soundpool;
   int _alarmSoundStreamId = 0;
   late final int _drawSoundId;
   late final int _flySoundId;
@@ -53,6 +53,8 @@ class Audios {
       logger.w("$_tag Audio Player does not support Windows.");
       return;
     }
+
+    _soundpool = Soundpool.fromOptions();
 
     _drawSoundId = await _soundpool.load(
       await rootBundle.load(Assets.audios.draw),
