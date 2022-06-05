@@ -19,6 +19,7 @@ import 'dart:typed_data';
 
 import 'package:feedback/feedback.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -110,7 +111,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
     if (index == _DrawerIndex.feedback) {
       if (!EnvironmentConfig.test) {
-        if (Platform.isWindows) {
+        if (kIsWeb) {
+          return logger.w("flutter_email_sender does not support Web.");
+        } else if (Platform.isWindows) {
           return logger.w("flutter_email_sender does not support Windows.");
         } else {
           return BetterFeedback.of(context).show(_launchFeedback);
@@ -176,7 +179,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
       ),
-      if (Platform.isAndroid || Platform.isIOS)
+      if (kIsWeb || Platform.isAndroid || Platform.isIOS)
         CustomDrawerItem<_DrawerIndex>(
           value: _DrawerIndex.feedback,
           title: S.of(context).feedback,

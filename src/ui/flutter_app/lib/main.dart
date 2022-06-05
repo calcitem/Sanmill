@@ -20,6 +20,7 @@ import 'dart:ui';
 import 'package:catcher/catcher.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:feedback/feedback.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: depend_on_referenced_packages
@@ -53,7 +54,7 @@ Future<void> main() async {
 
   _initUI();
 
-  if (EnvironmentConfig.catcher && !Platform.isWindows) {
+  if (EnvironmentConfig.catcher && !kIsWeb && Platform.isAndroid) {
     final catcher = Catcher(
       rootWidget: const SanmillApp(),
       ensureInitialized: true,

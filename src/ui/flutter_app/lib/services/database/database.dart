@@ -90,7 +90,8 @@ class Database {
 
   /// Initializes the local database
   static Future<void> init() async {
-    if (!kIsWeb) await Hive.initFlutter("Sanmill");
+    await Hive.initFlutter("Sanmill");
+
     await _initGeneralSettings();
     await _initRuleSettings();
     await _initDisplaySettings();

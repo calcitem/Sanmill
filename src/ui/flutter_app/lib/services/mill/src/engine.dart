@@ -28,25 +28,35 @@ class Engine {
   Future<void> startup() async {
     DB().listenGeneralSettings.addListener(() => setOptions());
 
+    if (kIsWeb) return;
+
     await _platform.invokeMethod("startup");
     await _waitResponse(["uciok"]);
   }
 
   Future<void> _send(String command) async {
+    if (kIsWeb) return;
+
     logger.v("$_tag send: $command");
     await _platform.invokeMethod("send", command);
   }
 
   Future<void> _sendOptions(String name, dynamic option) async {
+    if (kIsWeb) return;
+
     final String command = "setoption name $name value $option";
     await _send(command);
   }
 
   Future<String?> _read() async {
+    if (kIsWeb) return "";
+
     return _platform.invokeMethod("read");
   }
 
   Future<void> shutdown() async {
+    if (kIsWeb) return;
+
     DB().listenGeneralSettings.removeListener(() => setOptions());
 
     _isActive = false;
@@ -54,7 +64,10 @@ class Engine {
   }
 
   FutureOr<bool> _isThinking() async {
+    if (kIsWeb) return false;
+
     final isThinking = await _platform.invokeMethod<bool>("isThinking");
+
     if (isThinking is bool) {
       return isThinking;
     } else {
@@ -76,6 +89,7 @@ class Engine {
     }
 
     final response = await _waitResponse(["bestmove", "nobestmove"]);
+
     if (response == null) {
       throw EngineTimeOut();
     }

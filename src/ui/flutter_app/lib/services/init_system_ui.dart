@@ -26,7 +26,7 @@ void _initUI() {
   );
 
 // TODO: [Leptopoda] Use layoutBuilder to add adaptiveness
-  if (Platform.isAndroid && Constants.isLargeScreen) {
+  if (!kIsWeb && Platform.isAndroid && Constants.isLargeScreen) {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,

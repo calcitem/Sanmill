@@ -16,6 +16,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
@@ -84,7 +85,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
             Navigator.pop(context);
           },
         ),
-        if (Platform.isAndroid)
+        if (!kIsWeb && Platform.isAndroid)
           TextButton(
             child: Text(S.of(context).exit),
             onPressed: () {

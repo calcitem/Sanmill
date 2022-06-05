@@ -66,6 +66,8 @@ class _DatabaseMigration {
   /// When [_currentVersion] is smaller than [_newVersion] all migrations between will be run.
   /// Migrations are called once and only once thus they should complete fast and everything should be awaited.
   static Future<void> migrate() async {
+    if (kIsWeb) return;
+
     assert(_migrations.length == _newVersion);
 
     _databaseBox = await Hive.openBox(_databaseBoxName);

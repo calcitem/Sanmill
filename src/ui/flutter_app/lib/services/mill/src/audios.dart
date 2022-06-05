@@ -49,6 +49,11 @@ class Audios {
   Future<void> loadSounds() async {
     assert(!MillController().initialized);
 
+    if (kIsWeb) {
+      logger.w("$_tag Audio Player does not support Web.");
+      return;
+    }
+
     if (Platform.isWindows) {
       logger.w("$_tag Audio Player does not support Windows.");
       return;
@@ -153,6 +158,9 @@ class Audios {
   }
 
   Future<void> playTone(Sound sound) async {
+    // TODO: If the platform is Windows [_initialized], this code shouldn't be executed
+    if (kIsWeb || Platform.isWindows) return;
+
     assert(MillController().initialized);
 
     if (!DB().generalSettings.toneEnabled ||
@@ -160,9 +168,6 @@ class Audios {
         DB().generalSettings.screenReaderSupport) {
       return;
     }
-
-    // TODO: If the platform is Windows [_initialized], this code shouldn't be executed
-    if (Platform.isWindows) return;
 
     await _stopSound();
     await _playSound(sound);

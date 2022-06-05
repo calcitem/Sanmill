@@ -57,7 +57,7 @@ class AboutPage extends StatelessWidget {
             return Container();
           } else {
             final PackageInfo packageInfo = data.data!;
-            if (Platform.isWindows) {
+            if (kIsWeb || Platform.isWindows) {
               version = packageInfo.version; // TODO
 
             } else {
