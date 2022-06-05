@@ -54,8 +54,9 @@ class Audios {
       return;
     }
 
-    if (Platform.isWindows) {
-      logger.w("$_tag Audio Player does not support Windows.");
+    if (Platform.isWindows || Platform.isLinux) {
+      logger.w(
+          "$_tag Audio Player does not need to load sounds on Windows & Linux.");
       return;
     }
 
@@ -103,7 +104,11 @@ class Audios {
   }
 
   Future<void> _playSound(Sound sound) async {
-    assert(!Platform.isWindows);
+    if (Platform.isWindows || Platform.isLinux) {
+      // TODO: Do not play alert sound.
+      await FlutterPlatformAlert.playAlertSound();
+      return;
+    }
 
     final int soundId;
 
@@ -144,7 +149,9 @@ class Audios {
   }
 
   Future<void> _stopSound() async {
-    assert(!Platform.isWindows);
+    if (kIsWeb || Platform.isWindows || Platform.isLinux) {
+      return;
+    }
 
     if (_alarmSoundStreamId > 0) {
       await _soundpool.stop(_alarmSoundStreamId);
@@ -152,14 +159,15 @@ class Audios {
   }
 
   void disposePool() {
-    assert(!Platform.isWindows);
+    if (kIsWeb || Platform.isWindows || Platform.isLinux) {
+      return;
+    }
 
     _soundpool.dispose();
   }
 
   Future<void> playTone(Sound sound) async {
-    // TODO: If the platform is Windows [_initialized], this code shouldn't be executed
-    if (kIsWeb || Platform.isWindows) return;
+    if (kIsWeb) return;
 
     assert(MillController().initialized);
 
