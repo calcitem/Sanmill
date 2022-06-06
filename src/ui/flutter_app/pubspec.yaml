@@ -23,7 +23,7 @@ dependencies:
   flutter_email_sender: ^5.1.0
   flutter_localizations:
     sdk: flutter
-  flutter_platform_alert: ^0.2.6
+  flutter_platform_alert: ^0.2.7
 
   # local database
   hive: ^2.2.1
