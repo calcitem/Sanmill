@@ -1,9 +1,9 @@
 {
-  "appName": "Młyn",
+  "appName": "Młynek",
   "@appName": {
     "description": "The app name"
   },
-  "welcome": "Witamy",
+  "welcome": "Witaj",
   "@welcome": {
     "description": "Welcome"
   },
@@ -31,7 +31,7 @@
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Ludzie kontra chmury",
+  "humanVsCloud": "Człowiek kontra chmura",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
