@@ -9,7 +9,9 @@ environment:
 
 dependencies:
   animated_text_kit: ^4.1.1
-  catcher: ^0.6.9
+  catcher:
+    git:
+      url: https://github.com/ThexXTURBOXx/catcher.git
   collection: ^1.16.0
   copy_with_extension: ^4.0.2
   cupertino_icons: ^1.0.4
