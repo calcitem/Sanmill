@@ -54,12 +54,6 @@ class Audios {
       return;
     }
 
-    if (Platform.isWindows || Platform.isLinux) {
-      logger.w(
-          "$_tag Audio Player does not need to load sounds on Windows & Linux.");
-      return;
-    }
-
     _soundpool = Soundpool.fromOptions();
 
     _drawSoundId = await _soundpool.load(
@@ -104,12 +98,6 @@ class Audios {
   }
 
   Future<void> _playSound(Sound sound) async {
-    if (Platform.isWindows || Platform.isLinux) {
-      // TODO: Do not play alert sound.
-      await FlutterPlatformAlert.playAlertSound();
-      return;
-    }
-
     final int soundId;
 
     switch (sound) {
@@ -149,7 +137,7 @@ class Audios {
   }
 
   Future<void> _stopSound() async {
-    if (kIsWeb || Platform.isWindows || Platform.isLinux) {
+    if (kIsWeb) {
       return;
     }
 
@@ -159,7 +147,7 @@ class Audios {
   }
 
   void disposePool() {
-    if (kIsWeb || Platform.isWindows || Platform.isLinux) {
+    if (kIsWeb) {
       return;
     }
 

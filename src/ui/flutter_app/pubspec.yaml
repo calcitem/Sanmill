@@ -39,6 +39,11 @@ dependencies:
   package_info_plus: ^1.4.2
   path_provider: ^2.0.10
   soundpool: ^2.3.0
+  soundpool_windux:
+    git:
+      url: https://github.com/ukasz123/soundpool.git
+      ref: windows_linux_support
+      path: soundpool_windux
   url_launcher: ^6.1.2
   uuid: ^3.0.6
   #pref: ^2.3.0
