@@ -28,28 +28,28 @@ class Engine {
   Future<void> startup() async {
     DB().listenGeneralSettings.addListener(() => setOptions());
 
-    if (kIsWeb) return;
+    if (kIsWeb || Platform.isLinux) return;
 
     await _platform.invokeMethod("startup");
     await _waitResponse(["uciok"]);
   }
 
   Future<void> _send(String command) async {
-    if (kIsWeb) return;
+    if (kIsWeb || Platform.isLinux) return;
 
     logger.v("$_tag send: $command");
     await _platform.invokeMethod("send", command);
   }
 
   Future<void> _sendOptions(String name, dynamic option) async {
-    if (kIsWeb) return;
+    if (kIsWeb || Platform.isLinux) return;
 
     final String command = "setoption name $name value $option";
     await _send(command);
   }
 
   Future<String?> _read() async {
-    if (kIsWeb) return "";
+    if (kIsWeb || Platform.isLinux) return "";
 
     return _platform.invokeMethod("read");
   }
@@ -60,11 +60,14 @@ class Engine {
     DB().listenGeneralSettings.removeListener(() => setOptions());
 
     _isActive = false;
+
+    if (Platform.isLinux) return;
+
     await _platform.invokeMethod("shutdown");
   }
 
   FutureOr<bool> _isThinking() async {
-    if (kIsWeb) return false;
+    if (kIsWeb || Platform.isLinux) return false;
 
     final isThinking = await _platform.invokeMethod<bool>("isThinking");
 
