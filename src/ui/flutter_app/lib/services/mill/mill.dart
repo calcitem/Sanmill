@@ -24,7 +24,6 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:sanmill/generated/assets/assets.gen.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/game_page/game_page.dart';
