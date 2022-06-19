@@ -29,6 +29,19 @@ class HistoryNavigator {
 
   static bool _isGoingToHistory = false;
 
+  static final ruleNotMatchEvent = Event();
+  static final historyRangeEvent = Event();
+
+  static _subscribe(BuildContext context) {
+    ruleNotMatchEvent.subscribe((args) {
+      onHistoryRule(context);
+    });
+
+    historyRangeEvent.subscribe((args) {
+      onHistoryRange(context);
+    });
+  }
+
   static Future<void> _gotoHistory(
     BuildContext context,
     HistoryNavMode navMode, {
@@ -38,6 +51,8 @@ class HistoryNavigator {
     assert(navMode != HistoryNavMode.takeBackN || number != null);
 
     if (pop) Navigator.pop(context);
+
+    _subscribe(context);
 
     final controller = MillController();
 
@@ -51,35 +66,35 @@ class HistoryNavigator {
 
     _isGoingToHistory = true;
 
-    try {
-      Audios().mute();
+    Audios().mute();
 
-      await gotoHistory(navMode, number);
+    await gotoHistory(navMode, number);
 
-      final lastEffectiveMove = controller.recorder.current;
-      if (lastEffectiveMove != null) {
-        MillController().tip.showTip(
-              S.of(context).lastMove(lastEffectiveMove.notation),
-              snackBar: true,
-            );
-      }
-
-      Audios().unMute();
-      await navMode.gotoHistoryPlaySound();
-    } on _HistoryRange {
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).atEnd);
-      logger.i(_HistoryRange);
-    } on _HistoryRule {
-      MillController().reset(); // TODO: Need?
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).movesAndRulesNotMatch);
-      logger.i(_HistoryRule);
-    } finally {
-      Audios().unMute();
+    final lastEffectiveMove = controller.recorder.current;
+    if (lastEffectiveMove != null) {
+      MillController().tip.showTip(
+            S.of(context).lastMove(lastEffectiveMove.notation),
+            snackBar: true,
+          );
     }
 
+    Audios().unMute();
+    await navMode.gotoHistoryPlaySound();
+
     _isGoingToHistory = false;
+  }
+
+  static onHistoryRule(BuildContext context) {
+    MillController().reset(); // TODO: Need?
+    rootScaffoldMessengerKey.currentState!
+        .showSnackBarClear(S.of(context).movesAndRulesNotMatch);
+    logger.i(_HistoryRule);
+  }
+
+  static onHistoryRange(BuildContext context) {
+    rootScaffoldMessengerKey.currentState!
+        .showSnackBarClear(S.of(context).atEnd);
+    logger.i(_HistoryRange);
   }
 
   static Future<void> takeBack(BuildContext context, {bool pop = true}) async =>
@@ -147,7 +162,12 @@ class HistoryNavigator {
 
     recorderBackup.forEachVisible((move) async {
       if (!(await MillController().gameInstance.doMove(move))) {
-        throw const _HistoryRule();
+        ruleNotMatchEvent.broadcast();
+        // Restore context
+        MillController().gameInstance.gameMode = gameModeBackup;
+        MillController().recorder = recorderBackup;
+        // TODO: Why cannot use break?
+        return;
       }
     });
 
@@ -182,7 +202,7 @@ extension HistoryNavModeExtension on HistoryNavMode {
         break;
       case HistoryNavMode.stepForward:
         if (!iterator.moveNext()) {
-          throw const _HistoryRange();
+          HistoryNavigator.historyRangeEvent.broadcast();
         }
         break;
       case HistoryNavMode.takeBackN:
@@ -197,7 +217,7 @@ extension HistoryNavModeExtension on HistoryNavMode {
         break;
       case HistoryNavMode.takeBack:
         if (!iterator.movePrevious()) {
-          throw const _HistoryRange();
+          HistoryNavigator.historyRangeEvent.broadcast();
         }
     }
   }
