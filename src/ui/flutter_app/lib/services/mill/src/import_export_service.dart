@@ -49,13 +49,15 @@ class ImportService {
     await HistoryNavigator.gotoHistory(HistoryNavMode.takeBackAll);
     MillController().reset();
 
-    try {
-      import(data!.text!);
-      await HistoryNavigator.stepForwardAll(context, pop: false);
+    import(data!.text!);
 
+    if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
+        const HistoryOK()) {
       MillController().tip.showTip(S.of(context).gameImported, snackBar: true);
-    } on ImportFormatException catch (e) {
-      final tip = S.of(context).cannotImport(e.source as String);
+    } else {
+      // TODO: Show importFailedStr
+      //final tip = S.of(context).cannotImport(e.source as String);
+      final tip = S.of(context).cannotImport("");
       MillController().tip.showTip(tip, snackBar: true);
     }
   }

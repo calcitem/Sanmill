@@ -70,25 +70,34 @@ class EngineTimeOut extends TimeoutException with EngineResponse {
 }
 
 /// Custom response to throw when navigating the game history.
-abstract class _HistoryResponse {
+abstract class HistoryResponse {
   static const tag = "[_HistoryResponse]";
 }
 
-class _HistoryRule implements _HistoryResponse {
-  const _HistoryRule();
+class HistoryOK implements HistoryResponse {
+  const HistoryOK();
 
   @override
   String toString() {
-    return "${_HistoryResponse.tag} Moves and rules do not match.";
+    return "${HistoryResponse.tag} History is OK.";
   }
 }
 
-class _HistoryRange implements _HistoryResponse {
-  const _HistoryRange();
+class HistoryRule implements HistoryResponse {
+  const HistoryRule();
 
   @override
   String toString() {
-    return "${_HistoryResponse.tag} Current is equal to moveIndex.";
+    return "${HistoryResponse.tag} Moves and rules do not match.";
+  }
+}
+
+class HistoryRange implements HistoryResponse {
+  const HistoryRange();
+
+  @override
+  String toString() {
+    return "${HistoryResponse.tag} Current is equal to moveIndex.";
   }
 }
 

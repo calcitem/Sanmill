@@ -29,20 +29,7 @@ class HistoryNavigator {
 
   static bool _isGoingToHistory = false;
 
-  static final ruleNotMatchEvent = Event();
-  static final historyRangeEvent = Event();
-
-  static _subscribe(BuildContext context) {
-    ruleNotMatchEvent.subscribe((args) {
-      onHistoryRule(context);
-    });
-
-    historyRangeEvent.subscribe((args) {
-      onHistoryRange(context);
-    });
-  }
-
-  static Future<void> _gotoHistory(
+  static Future<HistoryResponse?> _gotoHistory(
     BuildContext context,
     HistoryNavMode navMode, {
     bool pop = true,
@@ -52,23 +39,40 @@ class HistoryNavigator {
 
     if (pop) Navigator.pop(context);
 
-    _subscribe(context);
-
     final controller = MillController();
 
     MillController().tip.showTip(S.of(context).atEnd);
 
     if (_isGoingToHistory) {
-      return logger.i(
+      logger.i(
         "$_tag Is going to history, ignore Take Back button press.",
       );
+
+      return const HistoryOK();
     }
 
     _isGoingToHistory = true;
 
     Audios().mute();
 
-    await gotoHistory(navMode, number);
+    var errMove = await gotoHistory(navMode, number);
+
+    switch (errMove) {
+      case HistoryOK():
+        break;
+      case HistoryRange():
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).atEnd);
+        logger.i(HistoryRange);
+        break;
+      case HistoryRule():
+      default:
+        MillController().reset(); // TODO: Need?
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).movesAndRulesNotMatch);
+        logger.i(HistoryRule);
+        break;
+    }
 
     final lastEffectiveMove = controller.recorder.current;
     if (lastEffectiveMove != null) {
@@ -82,77 +86,77 @@ class HistoryNavigator {
     await navMode.gotoHistoryPlaySound();
 
     _isGoingToHistory = false;
+
+    return const HistoryOK();
   }
 
-  static onHistoryRule(BuildContext context) {
-    MillController().reset(); // TODO: Need?
-    rootScaffoldMessengerKey.currentState!
-        .showSnackBarClear(S.of(context).movesAndRulesNotMatch);
-    logger.i(_HistoryRule);
+  static Future<HistoryResponse?> takeBack(BuildContext context,
+      {bool pop = true}) async {
+    return _gotoHistory(
+      context,
+      HistoryNavMode.takeBack,
+      pop: pop,
+    );
   }
 
-  static onHistoryRange(BuildContext context) {
-    rootScaffoldMessengerKey.currentState!
-        .showSnackBarClear(S.of(context).atEnd);
-    logger.i(_HistoryRange);
+  static Future<HistoryResponse?> stepForward(
+    BuildContext context, {
+    bool pop = true,
+  }) async {
+    return _gotoHistory(
+      context,
+      HistoryNavMode.stepForward,
+      pop: pop,
+    );
   }
 
-  static Future<void> takeBack(BuildContext context, {bool pop = true}) async =>
-      _gotoHistory(
-        context,
-        HistoryNavMode.takeBack,
-        pop: pop,
-      );
-
-  static Future<void> stepForward(
+  static Future<HistoryResponse?> takeBackAll(
     BuildContext context, {
     bool pop = true,
-  }) async =>
-      _gotoHistory(
-        context,
-        HistoryNavMode.stepForward,
-        pop: pop,
-      );
+  }) async {
+    return _gotoHistory(
+      context,
+      HistoryNavMode.takeBackAll,
+      pop: pop,
+    );
+  }
 
-  static Future<void> takeBackAll(
+  static Future<HistoryResponse?> stepForwardAll(
     BuildContext context, {
     bool pop = true,
-  }) async =>
-      _gotoHistory(
-        context,
-        HistoryNavMode.takeBackAll,
-        pop: pop,
-      );
+  }) async {
+    return _gotoHistory(
+      context,
+      HistoryNavMode.stepForwardAll,
+      pop: pop,
+    );
+  }
 
-  static Future<void> stepForwardAll(
-    BuildContext context, {
-    bool pop = true,
-  }) async =>
-      _gotoHistory(
-        context,
-        HistoryNavMode.stepForwardAll,
-        pop: pop,
-      );
-
-  static Future<void> takeBackN(
+  static Future<HistoryResponse?> takeBackN(
     BuildContext context,
     int n, {
     bool pop = true,
-  }) async =>
-      _gotoHistory(
-        context,
-        HistoryNavMode.takeBackN,
-        number: n,
-        pop: pop,
-      );
+  }) async {
+    return _gotoHistory(
+      context,
+      HistoryNavMode.takeBackN,
+      number: n,
+      pop: pop,
+    );
+  }
 
   /// Moves through the History by replaying all relevant moves.
   ///
-  /// Throws an [_HistoryResponse] when the moves and rules don't match
+  /// Return an [HistoryResponse] when the moves and rules don't match
   /// or when the end of the list moves has been reached.
   @visibleForTesting
-  static Future<void> gotoHistory(HistoryNavMode navMode, [int? index]) async {
-    navMode.gotoHistory(index);
+  static Future<HistoryResponse> gotoHistory(HistoryNavMode navMode,
+      [int? index]) async {
+    bool ret = true;
+
+    var resp = navMode.gotoHistory(index);
+
+    if (resp != const HistoryOK()) return resp;
 
     // Backup context
     final gameModeBackup = MillController().gameInstance.gameMode;
@@ -162,18 +166,15 @@ class HistoryNavigator {
 
     recorderBackup.forEachVisible((move) async {
       if (!(await MillController().gameInstance.doMove(move))) {
-        ruleNotMatchEvent.broadcast();
-        // Restore context
-        MillController().gameInstance.gameMode = gameModeBackup;
-        MillController().recorder = recorderBackup;
-        // TODO: Why cannot use break?
-        return;
+        ret = false;
       }
     });
 
     // Restore context
     MillController().gameInstance.gameMode = gameModeBackup;
     MillController().recorder = recorderBackup;
+
+    return ret ? const HistoryOK() : const HistoryRule();
   }
 }
 
@@ -188,8 +189,8 @@ enum HistoryNavMode {
 extension HistoryNavModeExtension on HistoryNavMode {
   /// Moves the [GameRecorder] to the specified position.
   ///
-  /// Throws [_HistoryResponse] When trying to access a value outside of the bounds.
-  void gotoHistory([int? amount]) {
+  /// Throws [HistoryResponse] When trying to access a value outside of the bounds.
+  HistoryResponse gotoHistory([int? amount]) {
     final current = MillController().recorder.index;
     final iterator = MillController().recorder.globalIterator;
 
@@ -202,7 +203,7 @@ extension HistoryNavModeExtension on HistoryNavMode {
         break;
       case HistoryNavMode.stepForward:
         if (!iterator.moveNext()) {
-          HistoryNavigator.historyRangeEvent.broadcast();
+          return const HistoryRange();
         }
         break;
       case HistoryNavMode.takeBackN:
@@ -217,9 +218,11 @@ extension HistoryNavModeExtension on HistoryNavMode {
         break;
       case HistoryNavMode.takeBack:
         if (!iterator.movePrevious()) {
-          HistoryNavigator.historyRangeEvent.broadcast();
+          return const HistoryRange();
         }
     }
+
+    return const HistoryOK();
   }
 
   Future<void> gotoHistoryPlaySound() async {
