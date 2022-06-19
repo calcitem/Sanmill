@@ -59,6 +59,13 @@ class HistoryNavigator {
 
     switch (errMove) {
       case HistoryOK():
+        final lastEffectiveMove = controller.recorder.current;
+        if (lastEffectiveMove != null) {
+          MillController().tip.showTip(
+                S.of(context).lastMove(lastEffectiveMove.notation),
+                snackBar: true,
+              );
+        }
         break;
       case HistoryRange():
         rootScaffoldMessengerKey.currentState!
@@ -72,14 +79,6 @@ class HistoryNavigator {
             .showSnackBarClear(S.of(context).movesAndRulesNotMatch);
         logger.i(HistoryRule);
         break;
-    }
-
-    final lastEffectiveMove = controller.recorder.current;
-    if (lastEffectiveMove != null) {
-      MillController().tip.showTip(
-            S.of(context).lastMove(lastEffectiveMove.notation),
-            snackBar: true,
-          );
     }
 
     Audios().unMute();
