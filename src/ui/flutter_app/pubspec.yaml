@@ -17,6 +17,7 @@ dependencies:
   cupertino_icons: ^1.0.4
   device_info_plus_platform_interface: ^2.3.0
   double_back_to_close_app: ^2.1.0
+  event: ^2.1.2
   feedback: ^2.5.0
   fluentui_system_icons: ^1.1.170
   flutter:
