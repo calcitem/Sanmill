@@ -19,6 +19,10 @@ part of '../mill.dart';
 /// Custom response we can catch without affecting other thrown exceptions.
 abstract class MillResponse {}
 
+class MillResponseOK implements MillResponse {
+  const MillResponseOK();
+}
+
 class IllegalAction implements MillResponse {
   const IllegalAction();
 }

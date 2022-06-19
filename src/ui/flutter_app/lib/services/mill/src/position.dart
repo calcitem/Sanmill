@@ -405,28 +405,28 @@ class Position {
     return true;
   }
 
-  Future<void> _removePiece(int s) async {
+  Future<MillResponse> _removePiece(int s) async {
     if (phase == Phase.ready || phase == Phase.gameOver) {
-      throw const IllegalPhase();
+      return const IllegalPhase();
     }
 
     if (_action != Act.remove) {
-      throw const IllegalAction();
+      return const IllegalAction();
     }
 
     if (_pieceToRemoveCount <= 0) {
-      throw const NoPieceToRemove();
+      return const NoPieceToRemove();
     }
 
     // If piece is not their
     if (!(sideToMove.opponent == _board[s])) {
-      throw const CanNotRemoveSelf();
+      return const CanNotRemoveSelf();
     }
 
     if (!DB().ruleSettings.mayRemoveFromMillsAlways &&
         _potentialMillsCount(s, PieceColor.nobody) > 0 &&
         !_isAllInMills(sideToMove.opponent)) {
-      throw const CanNotRemoveMill();
+      return const CanNotRemoveMill();
     }
 
     _revertKey(s);
@@ -451,7 +451,7 @@ class Position {
         DB().ruleSettings.piecesAtLeastCount) {
       _setGameOver(sideToMove, GameOverReason.loseLessThanThree);
       await Audios().playTone(Sound.remove);
-      return;
+      return const MillResponseOK();
     }
 
     _currentSquare = 0;
@@ -461,7 +461,7 @@ class Position {
 
     if (_pieceToRemoveCount != 0) {
       await Audios().playTone(Sound.remove);
-      return;
+      return const MillResponseOK();
     }
 
     if (phase == Phase.placing) {
@@ -477,7 +477,7 @@ class Position {
         if (DB().ruleSettings.isDefenderMoveFirst) {
           _checkIfGameIsOver();
           await Audios().playTone(Sound.remove);
-          return;
+          return const MillResponseOK();
         }
       } else {
         _action = Act.place;
@@ -490,29 +490,31 @@ class Position {
     _checkIfGameIsOver();
 
     await Audios().playTone(Sound.remove);
-    return;
+    return const MillResponseOK();
   }
 
-  void _selectPiece(int sq) {
+  MillResponse _selectPiece(int sq) {
     if (phase != Phase.moving) {
-      throw const IllegalPhase();
+      return const IllegalPhase();
     }
 
     if (_action != Act.select && _action != Act.place) {
-      throw const IllegalAction();
+      return const IllegalAction();
     }
 
     if (_board[sq] == PieceColor.none) {
-      throw const CanOnlyMoveToAdjacentEmptyPoints();
+      return const CanOnlyMoveToAdjacentEmptyPoints();
     }
 
     if (!(_board[sq] == sideToMove)) {
-      throw const SelectOurPieceToMove();
+      return const SelectOurPieceToMove();
     }
 
     _currentSquare = sq;
     _action = Act.place;
     MillController().gameInstance.blurIndex = squareToIndex[sq];
+
+    return const MillResponseOK();
   }
 
   bool _resign(PieceColor loser) {

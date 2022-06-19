@@ -89,77 +89,88 @@ class TapHandler {
           break;
         }
 
-        try {
-          position._selectPiece(sq);
+        var selectRet = position._selectPiece(sq);
 
-          await Audios().playTone(Sound.select);
-          controller.gameInstance._select(squareToIndex[sq]!);
-          ret = true;
-          logger.v("$_tag selectPiece: [$sq]");
+        switch (selectRet) {
+          case MillResponseOK():
+            await Audios().playTone(Sound.select);
+            controller.gameInstance._select(squareToIndex[sq]!);
+            ret = true;
+            logger.v("$_tag selectPiece: [$sq]");
 
-          final pieceOnBoardCount =
-              position.pieceOnBoardCount[controller.gameInstance.sideToMove];
-          if (position.phase == Phase.moving &&
-              DB().ruleSettings.mayFly &&
-              (pieceOnBoardCount == DB().ruleSettings.flyPieceCount ||
-                  pieceOnBoardCount == 3)) {
-            // TODO: [Calcitem, Leptopoda] Why is the [DB().ruleSettings.flyPieceCount] not respected?
-            logger.v("$_tag May fly.");
-            showTip(S.of(context).tipCanMoveToAnyPoint, snackBar: true);
-          } else {
-            showTip(S.of(context).tipPlace, snackBar: true);
-          }
-        } on IllegalPhase {
-          if (position.phase != Phase.gameOver) {
-            showTip(S.of(context).tipCannotMove, snackBar: true);
-          }
-        } on CanOnlyMoveToAdjacentEmptyPoints {
-          showTip(S.of(context).tipCanMoveOnePoint, snackBar: true);
-        } on SelectOurPieceToMove {
-          showTip(S.of(context).tipSelectPieceToMove, snackBar: true);
-        } on IllegalAction {
-          showTip(S.of(context).tipSelectWrong, snackBar: true);
-        } finally {
-          await Audios().playTone(Sound.illegal);
-          logger.v("$_tag selectPiece: skip [$sq]");
+            final pieceOnBoardCount =
+                position.pieceOnBoardCount[controller.gameInstance.sideToMove];
+            if (position.phase == Phase.moving &&
+                DB().ruleSettings.mayFly &&
+                (pieceOnBoardCount == DB().ruleSettings.flyPieceCount ||
+                    pieceOnBoardCount == 3)) {
+              // TODO: [Calcitem, Leptopoda] Why is the [DB().ruleSettings.flyPieceCount] not respected?
+              logger.v("$_tag May fly.");
+              showTip(S.of(context).tipCanMoveToAnyPoint, snackBar: true);
+            } else {
+              showTip(S.of(context).tipPlace, snackBar: true);
+            }
+            break;
+          case IllegalPhase():
+            if (position.phase != Phase.gameOver) {
+              showTip(S.of(context).tipCannotMove, snackBar: true);
+            }
+            break;
+          case CanOnlyMoveToAdjacentEmptyPoints():
+            showTip(S.of(context).tipCanMoveOnePoint, snackBar: true);
+            break;
+          case SelectOurPieceToMove():
+            showTip(S.of(context).tipSelectPieceToMove, snackBar: true);
+            break;
+          case IllegalAction():
+            showTip(S.of(context).tipSelectWrong, snackBar: true);
+            break;
+          default:
+            await Audios().playTone(Sound.illegal);
+            logger.v("$_tag selectPiece: skip [$sq]");
+            break;
         }
+
         break;
 
       case Act.remove:
-        try {
-          await position._removePiece(sq);
+        var removeRet = await position._removePiece(sq);
 
-          animationController.reset();
-          animationController.animateTo(1.0);
+        animationController.reset();
+        animationController.animateTo(1.0);
 
-          ret = true;
-          logger.v("$_tag removePiece: [$sq]");
-          if (position._pieceToRemoveCount >= 1) {
-            showTip(S.of(context).tipContinueMill, snackBar: true);
-          } else {
-            if (gameMode == GameMode.humanVsAi) {
-              showTip(S.of(context).tipRemoved);
-            } else if (gameMode == GameMode.humanVsHuman) {
-              final them = controller.gameInstance.sideToMove.opponent
-                  .playerName(context);
-              showTip(S.of(context).tipToMove(them));
+        switch (removeRet) {
+          case MillResponseOK():
+            ret = true;
+            logger.v("$_tag removePiece: [$sq]");
+            if (position._pieceToRemoveCount >= 1) {
+              showTip(S.of(context).tipContinueMill, snackBar: true);
+            } else {
+              if (gameMode == GameMode.humanVsAi) {
+                showTip(S.of(context).tipRemoved);
+              } else if (gameMode == GameMode.humanVsHuman) {
+                final them = controller.gameInstance.sideToMove.opponent
+                    .playerName(context);
+                showTip(S.of(context).tipToMove(them));
+              }
             }
-          }
-        } on CanNotRemoveSelf {
-          logger.i("$_tag removePiece: Cannot Remove our pieces, skip [$sq]");
-          showTip(S.of(context).tipSelectOpponentsPiece, snackBar: true);
-        } on CanNotRemoveMill {
-          logger.i(
-            "$_tag removePiece: Cannot remove piece from Mill, skip [$sq]",
-          );
-          showTip(S.of(context).tipCannotRemovePieceFromMill, snackBar: true);
-        } on MillResponse {
-          logger.v("$_tag removePiece: skip [$sq]");
-          if (position.phase != Phase.gameOver) {
-            showTip(S.of(context).tipBanRemove, snackBar: true);
-          }
-        } finally {
-          await Audios().playTone(Sound.illegal);
+            break;
+          case CanNotRemoveSelf():
+            logger.i("$_tag removePiece: Cannot Remove our pieces, skip [$sq]");
+            showTip(S.of(context).tipSelectOpponentsPiece, snackBar: true);
+            break;
+          case CanNotRemoveMill():
+            logger.i(
+              "$_tag removePiece: Cannot remove piece from Mill, skip [$sq]",
+            );
+            showTip(S.of(context).tipCannotRemovePieceFromMill, snackBar: true);
+            break;
+          default:
+            logger.v("$_tag removePiece: skip [$sq]");
+            if (position.phase != Phase.gameOver) {
+              showTip(S.of(context).tipBanRemove, snackBar: true);
+            }
+            break;
         }
     }
 
@@ -200,6 +211,8 @@ class TapHandler {
       } else {
         _showResult();
       }
+    } else {
+      await Audios().playTone(Sound.illegal);
     }
 
     controller.gameInstance.sideToMove = position.sideToMove;
