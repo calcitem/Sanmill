@@ -39,6 +39,19 @@ class _PiecePaintParam {
     required this.diameter,
   });
 
+  Color _getAverageColor(Color a, Color b) {
+    return Color.fromARGB(
+      (a.alpha + b.alpha) ~/ 2,
+      (a.alpha + b.red) ~/ 2,
+      (a.alpha + b.green) ~/ 2,
+      (a.alpha + b.blue) ~/ 2,
+    );
+  }
+
+  Color _getTranslucentColor(Color c) {
+    return c.withOpacity(0.382);
+  }
+
   // TODO: [Leptopoda] Consider putting this into the PieceColorExtension
   /// Gets the border color of the current piece type.
   Color get borderColor {
@@ -47,6 +60,9 @@ class _PiecePaintParam {
         return AppTheme.whitePieceBorderColor;
       case PieceColor.black:
         return AppTheme.blackPieceBorderColor;
+      case PieceColor.ban:
+        return _getTranslucentColor(_getAverageColor(
+            AppTheme.whitePieceBorderColor, AppTheme.blackPieceBorderColor));
       default:
         throw Error();
     }
@@ -61,6 +77,9 @@ class _PiecePaintParam {
         return colorSettings.whitePieceColor;
       case PieceColor.black:
         return colorSettings.blackPieceColor;
+      case PieceColor.ban:
+        return _getTranslucentColor(_getAverageColor(
+            colorSettings.whitePieceColor, colorSettings.blackPieceColor));
       default:
         throw Error();
     }
@@ -136,7 +155,9 @@ class PiecePainter extends CustomPainter {
     late Color blurPositionColor;
     for (final piece in piecesToDraw) {
       assert(
-        piece.piece == PieceColor.black || piece.piece == PieceColor.white,
+        piece.piece == PieceColor.black ||
+            piece.piece == PieceColor.white ||
+            piece.piece == PieceColor.ban,
       );
       blurPositionColor = piece.blurPositionColor;
 
