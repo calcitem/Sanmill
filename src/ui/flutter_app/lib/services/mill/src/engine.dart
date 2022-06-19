@@ -26,7 +26,10 @@ class Engine {
   static const _tag = "[engine]";
 
   Future<void> startup() async {
+    // TODO: This may call setOptions() many times.
     DB().listenGeneralSettings.addListener(() => setOptions());
+
+    await setOptions();
 
     if (kIsWeb || Platform.isLinux) return;
 
