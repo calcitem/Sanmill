@@ -218,12 +218,12 @@ class TapHandler {
     if (isMoveNow) {
       if (!controller.gameInstance._isAiToMove) {
         logger.i("$tag Human to Move. Cannot get search result now.");
-        return ScaffoldMessenger.of(context)
+        return rootScaffoldMessengerKey.currentState!
             .showSnackBarClear(S.of(context).notAIsTurn);
       }
       if (controller.recorder.isNotEmpty) {
         logger.i("$tag History is not clean. Cannot get search result now.");
-        return ScaffoldMessenger.of(context)
+        return rootScaffoldMessengerKey.currentState!
             .showSnackBarClear(S.of(context).aiIsNotThinking);
       }
     }
@@ -241,7 +241,7 @@ class TapHandler {
         if (DB().generalSettings.screenReaderSupport &&
             position._action != Act.remove &&
             n != null) {
-          ScaffoldMessenger.of(context)
+          rootScaffoldMessengerKey.currentState!
               .showSnackBar(CustomSnackBar("${S.of(context).human}: $n"));
         }
       }
@@ -257,7 +257,7 @@ class TapHandler {
         animationController.animateTo(1.0);
 
         if (DB().generalSettings.screenReaderSupport) {
-          ScaffoldMessenger.of(context).showSnackBar(
+          rootScaffoldMessengerKey.currentState!.showSnackBar(
             CustomSnackBar("${S.of(context).ai}: ${extMove.notation}"),
           );
         }

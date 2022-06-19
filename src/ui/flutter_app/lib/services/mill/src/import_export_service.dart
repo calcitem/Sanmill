@@ -33,14 +33,14 @@ class ImportService {
       ClipboardData(text: MillController().recorder.moveHistoryText),
     );
 
-    ScaffoldMessenger.of(context)
+    rootScaffoldMessengerKey.currentState!
         .showSnackBarClear(S.of(context).moveHistoryCopied);
   }
 
   /// Tries to import the game saved in the devices clipboard.
   static Future<void> importGame(BuildContext context) async {
     Navigator.pop(context);
-    ScaffoldMessenger.of(context).clearSnackBars();
+    rootScaffoldMessengerKey.currentState!.clearSnackBars();
 
     final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
 

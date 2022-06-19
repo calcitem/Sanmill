@@ -168,7 +168,7 @@ class RuleSettingsPage extends StatelessWidget {
     logger.v("[config] mayMoveInPlacingPhase: $value");
 
     if (value) {
-      ScaffoldMessenger.of(context)
+      rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).experimental);
     }
   }
@@ -327,8 +327,7 @@ class RuleSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile.switchTile(
               value: ruleSettings.mayRemoveFromMillsAlways,
-              onChanged: (val) =>
-                  _setAllowRemovePieceInMill(ruleSettings, val),
+              onChanged: (val) => _setAllowRemovePieceInMill(ruleSettings, val),
               titleString: S.of(context).mayRemoveFromMillsAlways,
               subtitleString: S.of(context).mayRemoveFromMillsAlways_Detail,
             ),

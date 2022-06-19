@@ -145,7 +145,8 @@ class HeaderStateTip extends State<HeaderTip> {
     final tipState = MillController().tip;
 
     if (tipState.showSnackBar && tipState.message != null) {
-      ScaffoldMessenger.of(context).showSnackBarClear(tipState.message!);
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(tipState.message!);
     }
     setState(() => message = tipState.message);
   }

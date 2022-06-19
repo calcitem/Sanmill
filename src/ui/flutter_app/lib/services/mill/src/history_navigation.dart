@@ -67,11 +67,12 @@ class HistoryNavigator {
       Audios().unMute();
       await navMode.gotoHistoryPlaySound();
     } on _HistoryRange {
-      ScaffoldMessenger.of(context).showSnackBarClear(S.of(context).atEnd);
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).atEnd);
       logger.i(_HistoryRange);
     } on _HistoryRule {
       MillController().reset(); // TODO: Need?
-      ScaffoldMessenger.of(context)
+      rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).movesAndRulesNotMatch);
       logger.i(_HistoryRule);
     } finally {
