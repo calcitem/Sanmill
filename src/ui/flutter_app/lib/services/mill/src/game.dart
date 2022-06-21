@@ -28,6 +28,8 @@ class Game {
     return _isAi[sideToMove]!;
   }
 
+  bool get _isHumanToMove => !_isAiToMove;
+
   int? focusIndex;
   int? blurIndex;
 

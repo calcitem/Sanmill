@@ -12,10 +12,15 @@ class TapHandler {
   final gameMode = MillController().gameInstance.gameMode;
   final showTip = MillController().tip.showTip;
 
+  final position = MillController().position;
+
   TapHandler({
     required this.animationController,
     required this.context,
   });
+
+  bool get _isGameRunning => position.winner == PieceColor.nobody;
+  bool get _isAiToMove => controller.gameInstance._isAiToMove;
 
   Future<void> onBoardTap(int sq) async {
     if (gameMode == GameMode.testViaLAN) {
@@ -31,14 +36,14 @@ class TapHandler {
         position.pieceOnBoardCount[PieceColor.black] == 0) {
       //controller.reset();
 
-      if (controller.gameInstance._isAiToMove) {
+      if (_isAiToMove) {
         logger.i("$_tag AI is not thinking. AI is to move.");
         engineToGo(isMoveNow: false);
         return;
       }
     }
 
-    if (controller.gameInstance._isAiToMove) {
+    if (_isAiToMove) {
       return logger.i("$_tag AI's turn, skip tapping.");
     }
 
@@ -204,7 +209,7 @@ class TapHandler {
 
       controller.recorder.add(position._record!);
 
-      if (position.winner == PieceColor.nobody) {
+      if (_isGameRunning) {
         if (gameMode == GameMode.humanVsAi) {
           engineToGo(isMoveNow: false);
         }
@@ -218,18 +223,35 @@ class TapHandler {
     controller.gameInstance.sideToMove = position.sideToMove;
   }
 
+  showSnakeBarAiNotation(ExtMove extMove) {
+    if (DB().generalSettings.screenReaderSupport) {
+      rootScaffoldMessengerKey.currentState!.showSnackBar(
+        CustomSnackBar("${S.of(context).ai}: ${extMove.notation}"),
+      );
+    }
+  }
+
+  showSnakeBarHumanNotation() {
+    final String? n = controller.recorder.lastF?.notation;
+
+    if (DB().generalSettings.screenReaderSupport &&
+        position._action != Act.remove &&
+        n != null) {
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBar(CustomSnackBar("${S.of(context).human}: $n"));
+    }
+  }
+
   // TODO: [Leptopoda] The reference of this method has been removed in a few instances.
   // We'll need to find a better way for this.
   Future<void> engineToGo({required bool isMoveNow}) async {
     const tag = "[engineToGo]";
 
-    final position = controller.position;
-
     // TODO
     logger.v("$tag engine type is $gameMode");
 
     if (isMoveNow) {
-      if (!controller.gameInstance._isAiToMove) {
+      if (controller.gameInstance._isHumanToMove) {
         logger.i("$tag Human to Move. Cannot get search result now.");
         return rootScaffoldMessengerKey.currentState!
             .showSnackBarClear(S.of(context).notAIsTurn);
@@ -241,22 +263,15 @@ class TapHandler {
       }
     }
 
-    while ((position.winner == PieceColor.nobody ||
-            DB().generalSettings.isAutoRestart) &&
-        controller.gameInstance._isAiToMove) {
+    while (
+        _isAiToMove && (_isGameRunning || DB().generalSettings.isAutoRestart)) {
       if (gameMode == GameMode.aiVsAi) {
         showTip(position.scoreString);
       } else {
         showTip(S.of(context).thinking);
 
-        final String? n = controller.recorder.lastF?.notation;
-
-        if (DB().generalSettings.screenReaderSupport &&
-            position._action != Act.remove &&
-            n != null) {
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBar(CustomSnackBar("${S.of(context).human}: $n"));
-        }
+        // TODO: Show snake bar immediately when tapping
+        showSnakeBarHumanNotation();
       }
 
       try {
@@ -266,14 +281,13 @@ class TapHandler {
         if (await controller.gameInstance.doMove(extMove)) {
           controller.recorder.add(extMove);
         }
+
         animationController.reset();
         animationController.animateTo(1.0);
 
-        if (DB().generalSettings.screenReaderSupport) {
-          rootScaffoldMessengerKey.currentState!.showSnackBar(
-            CustomSnackBar("${S.of(context).ai}: ${extMove.notation}"),
-          );
-        }
+        showSnakeBarAiNotation(extMove);
+
+        // TODO: Do not throw exception
       } on EngineTimeOut {
         logger.i("$tag Engine response type: timeout");
         showTip(S.of(context).timeout, snackBar: true);
