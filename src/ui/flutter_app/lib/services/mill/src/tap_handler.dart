@@ -22,18 +22,15 @@ class TapHandler {
   bool get _isGameRunning => position.winner == PieceColor.nobody;
   bool get _isAiToMove => controller.gameInstance._isAiToMove;
 
-  Future<void> onBoardTap(int sq) async {
-    if (gameMode == GameMode.testViaLAN) {
-      return logger.v("$_tag Engine type is no human, ignore tapping.");
-    }
+  bool get _isBoardEmpty =>
+      position.pieceOnBoardCount[PieceColor.white] == 0 &&
+      position.pieceOnBoardCount[PieceColor.black] == 0;
 
-    final position = controller.position;
-
+  makeAiFirstMoveIfNecessary() {
     // WAR: Fix first tap response slow when piece count changed
     if (gameMode != GameMode.humanVsHuman &&
         position.phase == Phase.placing &&
-        position.pieceOnBoardCount[PieceColor.white] == 0 &&
-        position.pieceOnBoardCount[PieceColor.black] == 0) {
+        _isBoardEmpty) {
       //controller.reset();
 
       if (_isAiToMove) {
@@ -42,6 +39,14 @@ class TapHandler {
         return;
       }
     }
+  }
+
+  Future<void> onBoardTap(int sq) async {
+    if (gameMode == GameMode.testViaLAN) {
+      return logger.v("$_tag Engine type is no human, ignore tapping.");
+    }
+
+    makeAiFirstMoveIfNecessary();
 
     if (_isAiToMove) {
       return logger.i("$_tag AI's turn, skip tapping.");
