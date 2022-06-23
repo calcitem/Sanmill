@@ -30,18 +30,18 @@ class Audios {
 
   Audios._();
 
-  late final Soundpool _soundpool;
+  late Soundpool _soundpool;
   int _alarmSoundStreamId = 0;
-  late final int _drawSoundId;
-  late final int _flySoundId;
-  late final int _goSoundId;
-  late final int _illegalSoundId;
-  late final int _loseSoundId;
-  late final int _millSoundId;
-  late final int _placeSoundId;
-  late final int _removeSoundId;
-  late final int _selectSoundId;
-  late final int _winSoundId;
+  late int _drawSoundId;
+  late int _flySoundId;
+  late int _goSoundId;
+  late int _illegalSoundId;
+  late int _loseSoundId;
+  late int _millSoundId;
+  late int _placeSoundId;
+  late int _removeSoundId;
+  late int _selectSoundId;
+  late int _winSoundId;
   bool _isTemporaryMute = false;
 
   static const _tag = "[audio]";
