@@ -23,6 +23,9 @@ class Engine {
   static const _platform = MethodChannel("com.calcitem.sanmill/engine");
   bool _isActive = false;
 
+  bool get _isPlatformChannelAvailable =>
+      !kIsWeb && (Platform.isAndroid || Platform.isWindows);
+
   static const _tag = "[engine]";
 
   Future<void> startup() async {
@@ -31,28 +34,28 @@ class Engine {
 
     await setOptions();
 
-    if (kIsWeb || Platform.isLinux) return;
+    if (!_isPlatformChannelAvailable) return;
 
     await _platform.invokeMethod("startup");
     await _waitResponse(["uciok"]);
   }
 
   Future<void> _send(String command) async {
-    if (kIsWeb || Platform.isLinux) return;
+    if (!_isPlatformChannelAvailable) return;
 
     logger.v("$_tag send: $command");
     await _platform.invokeMethod("send", command);
   }
 
   Future<void> _sendOptions(String name, dynamic option) async {
-    if (kIsWeb || Platform.isLinux) return;
+    if (!_isPlatformChannelAvailable) return;
 
     final String command = "setoption name $name value $option";
     await _send(command);
   }
 
   Future<String?> _read() async {
-    if (kIsWeb || Platform.isLinux) return "";
+    if (!_isPlatformChannelAvailable) return "";
 
     return _platform.invokeMethod("read");
   }
@@ -64,13 +67,13 @@ class Engine {
 
     _isActive = false;
 
-    if (Platform.isLinux) return;
+    if (!_isPlatformChannelAvailable) return;
 
     await _platform.invokeMethod("shutdown");
   }
 
   FutureOr<bool> _isThinking() async {
-    if (kIsWeb || Platform.isLinux) return false;
+    if (!_isPlatformChannelAvailable) return false;
 
     final isThinking = await _platform.invokeMethod<bool>("isThinking");
 
