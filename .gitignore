@@ -436,3 +436,4 @@ cov-int
 # Flutter
 *generated*
 flutter_export_environment.sh
+.autogit
