@@ -16,8 +16,7 @@ dependencies:
   collection: ^1.16.0
   copy_with_extension: ^4.0.3
   cupertino_icons: ^1.0.5
-  # Fixed
-  device_info_plus_platform_interface: ^2.1.1
+  device_info_plus_platform_interface: ^3.0.0
   double_back_to_close_app: ^2.1.0
   feedback: ^2.5.0
   fluentui_system_icons: ^1.1.178
