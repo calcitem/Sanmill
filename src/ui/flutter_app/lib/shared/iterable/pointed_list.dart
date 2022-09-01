@@ -97,9 +97,7 @@ class PointedList<E> extends DelegatingList<E> {
 }
 
 /// Pointed List Iterator.
-///
-/// A [BidirectionalIterator] to be used with but not limited to a [PointedList].
-class PointedListIterator<E> extends BidirectionalIterator<E?> {
+class PointedListIterator<E> {
   final List<E> _parent;
   int? _index;
 
@@ -109,7 +107,6 @@ class PointedListIterator<E> extends BidirectionalIterator<E?> {
     }
   }
 
-  @override
   bool moveNext() {
     if (!hasNext) {
       return false;
@@ -121,7 +118,6 @@ class PointedListIterator<E> extends BidirectionalIterator<E?> {
     return true;
   }
 
-  @override
   bool movePrevious() {
     if (!hasPrevious) {
       return false;
@@ -171,7 +167,6 @@ class PointedListIterator<E> extends BidirectionalIterator<E?> {
   /// This has the benefit of not altering the iterator while still being able to check it.
   bool get hasPrevious => _parent.isNotEmpty && _index != null;
 
-  @override
   E? get current {
     if (_index != null) {
       return _parent[_index!];

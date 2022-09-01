@@ -67,7 +67,7 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   void _setAlgorithm(BuildContext context, GeneralSettings generalSettings) {
-    void _callback(Algorithms? algorithm) {
+    void callback(Algorithms? algorithm) {
       Navigator.pop(context);
 
       DB().generalSettings = generalSettings.copyWith(algorithm: algorithm);
@@ -79,7 +79,7 @@ class GeneralSettingsPage extends StatelessWidget {
       context: context,
       builder: (_) => _AlgorithmModal(
         algorithm: generalSettings.algorithm!,
-        onChanged: _callback,
+        onChanged: callback,
       ),
     );
   }
@@ -126,8 +126,7 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   void _setScreenReaderSupport(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings =
-        generalSettings.copyWith(screenReaderSupport: value);
+    DB().generalSettings = generalSettings.copyWith(screenReaderSupport: value);
 
     logger.v("$_tag screenReaderSupport: $value");
   }
@@ -222,8 +221,7 @@ class GeneralSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile.switchTile(
               value: generalSettings.screenReaderSupport,
-              onChanged: (val) =>
-                  _setScreenReaderSupport(generalSettings, val),
+              onChanged: (val) => _setScreenReaderSupport(generalSettings, val),
               titleString: S.of(context).screenReaderSupport,
             ),
           ],

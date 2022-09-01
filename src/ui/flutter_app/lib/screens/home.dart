@@ -15,7 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:feedback/feedback.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';

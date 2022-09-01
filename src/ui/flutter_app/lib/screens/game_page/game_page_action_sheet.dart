@@ -41,7 +41,7 @@ class GamePageActionSheet extends StatelessWidget {
 
     final buttonStyle = TextButtonThemeData(
       style: TextButton.styleFrom(
-        primary: textColor,
+        foregroundColor: textColor,
       ),
     );
 

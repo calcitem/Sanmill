@@ -40,7 +40,7 @@ class RuleSettingsPage extends StatelessWidget {
     BuildContext context,
     RuleSettings ruleSettings,
   ) {
-    void _callback(int? piecesCount) {
+    void callback(int? piecesCount) {
       Navigator.pop(context);
 
       DB().ruleSettings = ruleSettings.copyWith(piecesCount: piecesCount);
@@ -52,13 +52,13 @@ class RuleSettingsPage extends StatelessWidget {
       context: context,
       builder: (_) => _PieceCountModal(
         piecesCount: ruleSettings.piecesCount,
-        onChanged: _callback,
+        onChanged: callback,
       ),
     );
   }
 
   void _setNMoveRule(BuildContext context, RuleSettings ruleSettings) {
-    void _callback(int? nMoveRule) {
+    void callback(int? nMoveRule) {
       Navigator.pop(context);
 
       DB().ruleSettings = ruleSettings.copyWith(nMoveRule: nMoveRule);
@@ -70,13 +70,13 @@ class RuleSettingsPage extends StatelessWidget {
       context: context,
       builder: (_) => _NMoveRuleModal(
         nMoveRule: ruleSettings.nMoveRule,
-        onChanged: _callback,
+        onChanged: callback,
       ),
     );
   }
 
   void _setEndgameNMoveRule(BuildContext context, RuleSettings ruleSettings) {
-    void _callback(int? endgameNMoveRule) {
+    void callback(int? endgameNMoveRule) {
       Navigator.pop(context);
 
       DB().ruleSettings =
@@ -89,13 +89,13 @@ class RuleSettingsPage extends StatelessWidget {
       context: context,
       builder: (_) => _EndGameNMoveRuleModal(
         endgameNMoveRule: ruleSettings.endgameNMoveRule,
-        onChanged: _callback,
+        onChanged: callback,
       ),
     );
   }
 
   void _setFlyPieceCount(BuildContext context, RuleSettings ruleSettings) {
-    void _callback(int? flyPieceCount) {
+    void callback(int? flyPieceCount) {
       Navigator.pop(context);
 
       DB().ruleSettings = ruleSettings.copyWith(flyPieceCount: flyPieceCount);
@@ -107,7 +107,7 @@ class RuleSettingsPage extends StatelessWidget {
       context: context,
       builder: (_) => _FlyPieceCountModal(
         flyPieceCount: ruleSettings.flyPieceCount,
-        onChanged: _callback,
+        onChanged: callback,
       ),
     );
   }

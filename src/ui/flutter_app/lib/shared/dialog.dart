@@ -37,7 +37,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
   final String eulaURL = Constants.eulaURL.urlZh;
   final String privacyPolicyURL = Constants.privacyPolicyURL.urlZh;
 
-  Future<void> _setPrivacyPolicyAccepted({required bool value}) async {
+  Future<void> setPrivacyPolicyAccepted({required bool value}) async {
     DB().generalSettings =
         DB().generalSettings.copyWith(isPrivacyPolicyAccepted: value);
 
@@ -81,7 +81,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
         TextButton(
           child: Text(S.of(context).accept),
           onPressed: () {
-            _setPrivacyPolicyAccepted(value: true);
+            setPrivacyPolicyAccepted(value: true);
             Navigator.pop(context);
           },
         ),
@@ -89,7 +89,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
           TextButton(
             child: Text(S.of(context).exit),
             onPressed: () {
-              _setPrivacyPolicyAccepted(value: false);
+              setPrivacyPolicyAccepted(value: false);
               SystemChannels.platform.invokeMethod("SystemNavigator.pop");
             },
           ),

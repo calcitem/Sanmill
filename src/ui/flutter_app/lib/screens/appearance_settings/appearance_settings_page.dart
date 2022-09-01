@@ -50,7 +50,7 @@ class AppearanceSettingsPage extends StatelessWidget {
       );
 
   void setPointStyle(BuildContext context, DisplaySettings displaySettings) {
-    void _callback(PaintingStyle? pointStyle) {
+    void callback(PaintingStyle? pointStyle) {
       Navigator.pop(context);
       DB().displaySettings = pointStyle == null
           ? displaySettings.copyWith()
@@ -63,7 +63,7 @@ class AppearanceSettingsPage extends StatelessWidget {
       context: context,
       builder: (_) => _PointStyleModal(
         pointStyle: displaySettings.pointStyle,
-        onChanged: _callback,
+        onChanged: callback,
       ),
     );
   }
@@ -135,14 +135,14 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsListTile.color(
           titleString: S.of(context).whitePieceColor,
           value: DB().colorSettings.whitePieceColor,
-          onChanged: (val) => DB().colorSettings =
-              colorSettings.copyWith(whitePieceColor: val),
+          onChanged: (val) =>
+              DB().colorSettings = colorSettings.copyWith(whitePieceColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).blackPieceColor,
           value: DB().colorSettings.blackPieceColor,
-          onChanged: (val) => DB().colorSettings =
-              colorSettings.copyWith(blackPieceColor: val),
+          onChanged: (val) =>
+              DB().colorSettings = colorSettings.copyWith(blackPieceColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).pieceHighlightColor,
@@ -165,8 +165,8 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsListTile.color(
           titleString: S.of(context).drawerTextColor,
           value: DB().colorSettings.drawerTextColor,
-          onChanged: (val) => DB().colorSettings =
-              colorSettings.copyWith(drawerTextColor: val),
+          onChanged: (val) =>
+              DB().colorSettings = colorSettings.copyWith(drawerTextColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).drawerHighlightItemColor,
