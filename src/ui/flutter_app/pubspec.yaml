@@ -16,7 +16,7 @@ dependencies:
   collection: ^1.16.0
   copy_with_extension: ^4.0.3
   cupertino_icons: ^1.0.5
-  device_info_plus_platform_interface: ^2.2.1
+  device_info_plus_platform_interface: ^3.0.0
   double_back_to_close_app: ^2.1.0
   feedback: ^2.5.0
   fluentui_system_icons: ^1.1.178
@@ -41,11 +41,11 @@ dependencies:
   package_info_plus: ^1.4.2
   path_provider: ^2.0.11
   soundpool: ^2.3.0
-  soundpool_windux:
-    git:
-      url: https://github.com/ukasz123/soundpool.git
-      ref: windows_linux_support
-      path: soundpool_windux
+  #soundpool_windux:
+  #  git:
+  #    url: https://github.com/ukasz123/soundpool.git
+  #    ref: windows_linux_support
+  #    path: soundpool_windux
   url_launcher: ^6.1.5
   uuid: ^3.0.6
   #pref: ^2.3.0
