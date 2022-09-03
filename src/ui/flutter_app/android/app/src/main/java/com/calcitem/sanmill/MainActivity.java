@@ -1,20 +1,18 @@
-/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.calcitem.sanmill;
 
@@ -43,8 +41,6 @@ public class MainActivity extends FlutterActivity {
 
     private static final String ENGINE_CHANNEL = "com.calcitem.sanmill/engine";
 
-    private MillEngine engine;
-
     private final String TAG_XCRASH = "xCrash";
 
     // You do not need to override onCreate() in order to invoke
@@ -58,7 +54,7 @@ public class MainActivity extends FlutterActivity {
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), ENGINE_CHANNEL)
                 .setMethodCallHandler(
                     (call, result) -> {
-                        engine = new MillEngine();
+                        MillEngine engine = new MillEngine();
                         switch (call.method) {
                             case "startup":
                                 result.success(engine.startup());
@@ -152,7 +148,7 @@ public class MainActivity extends FlutterActivity {
 
             Log.d(TAG_XCRASH, "xCrash SDK init: end");
         } else {
-            Log.d(TAG_XCRASH, "Skip xCrash SDK init because API minSdkVersion < 19.");
+            Log.d(TAG_XCRASH, "Skip xCrash SDK init because API minSdkVersion >= 19.");
         }
 
         // Send all pending crash log files.
