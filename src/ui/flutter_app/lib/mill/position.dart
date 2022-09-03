@@ -24,7 +24,6 @@ import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
 
 import 'mills.dart';
-import 'types.dart';
 import 'zobrist.dart';
 
 List<int> posKeyHistory = [];

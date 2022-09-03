@@ -106,7 +106,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
         }
       });
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) => getInitState());
+    WidgetsBinding.instance.addPostFrameCallback((_) => getInitState());
     super.initState();
   }
 

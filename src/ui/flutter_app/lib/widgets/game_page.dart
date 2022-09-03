@@ -42,7 +42,6 @@ import 'package:stack_trace/stack_trace.dart';
 
 import 'board.dart';
 import 'dialog.dart';
-import 'game_settings_page.dart';
 import 'picker.dart';
 import 'snack_bar.dart';
 

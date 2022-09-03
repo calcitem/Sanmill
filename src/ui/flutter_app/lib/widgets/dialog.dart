@@ -105,12 +105,17 @@ void showCountdownDialog(
 class _LinkTextSpan extends TextSpan {
   _LinkTextSpan({TextStyle? style, required String url, String? text})
       : super(
-            style: style,
-            text: text ?? url,
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                launch(url, forceSafariVC: false);
-              });
+          style: style,
+          text: text ?? url,
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              final s = url.substring("https://".length);
+              final authority = s.substring(0, s.indexOf('/'));
+              final unencodedPath = s.substring(s.indexOf('/'));
+              final uri = Uri.https(authority, unencodedPath);
+              launchUrl(uri);
+            },
+        );
 }
 
 showPrivacyDialog(
@@ -133,8 +138,8 @@ showPrivacyDialog(
 
   final ThemeData themeData = Theme.of(context);
   final TextStyle? aboutTextStyle = themeData.textTheme.bodyText1;
-  final TextStyle linkStyle =
-      themeData.textTheme.bodyText1!.copyWith(color: themeData.accentColor);
+  final TextStyle linkStyle = themeData.textTheme.bodyText1!
+      .copyWith(color: themeData.colorScheme.secondary);
 
   showDialog(
     context: context,

@@ -131,4 +131,8 @@ class AppTheme {
   static const double sizedBoxHeight = 16.0;
 
   static double copyrightFontSize = 12;
+
+  static TextStyle dialogTitleTextStyle = TextStyle(
+    color: AppTheme.appPrimaryColor,
+  );
 }

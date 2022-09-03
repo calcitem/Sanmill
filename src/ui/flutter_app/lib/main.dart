@@ -34,8 +34,6 @@ import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/navigation_home_screen.dart';
 
-import 'services/audios.dart';
-
 Future<void> main() async {
   var catcher = Catcher(
       rootWidget: BetterFeedback(
@@ -111,7 +109,7 @@ Future<void> main() async {
   }
 
   if (isSmallScreen()) {
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 }
 
