@@ -61,7 +61,7 @@ class _PersonalizationSettingsPageState
       S.of(context).pieceHighlightColor: Config.pieceHighlightColor,
       S.of(context).messageColor: Config.messageColor,
       S.of(context).drawerColor: Config.drawerColor,
-      S.of(context).drawerBackgroundColor: Config.drawerBackgroundColor,
+      S.of(context).drawerColor: Config.drawerColor, // TODO: Remove it
       S.of(context).drawerTextColor: Config.drawerTextColor,
       S.of(context).drawerHighlightItemColor: Config.drawerHighlightItemColor,
       S.of(context).mainToolbarBackgroundColor:
@@ -75,7 +75,7 @@ class _PersonalizationSettingsPageState
 
     AlertDialog alert = AlertDialog(
       title: Text(
-        S.of(context).pick + " " + colorString,
+        S.of(context).pick(colorString), // TODO: or widget.title?
         style: TextStyle(
           fontSize: Config.fontSize + 4,
         ),
@@ -116,7 +116,8 @@ class _PersonalizationSettingsPageState
               Config.messageColor = pickerColor.value;
             } else if (colorString == S.of(context).drawerColor) {
               Config.drawerColor = pickerColor.value;
-            } else if (colorString == S.of(context).drawerBackgroundColor) {
+              // Remove it
+            } else if (colorString == S.of(context).drawerColor) {
               Config.drawerBackgroundColor = pickerColor.value;
             } else if (colorString == S.of(context).drawerTextColor) {
               Config.drawerTextColor = pickerColor.value;
@@ -458,7 +459,7 @@ class _PersonalizationSettingsPageState
       backgroundColor: AppTheme.lightBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(S.of(context).personalization),
+        title: Text(S.of(context).appearance),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -639,11 +640,12 @@ class _PersonalizationSettingsPageState
             onTap: () => showColorDialog(S.of(context).drawerColor),
           ),
           ListItemDivider(),
+          // TODO: Remove it
           SettingsListTile(
             context: context,
-            titleString: S.of(context).drawerBackgroundColor,
+            titleString: S.of(context).drawerColor,
             trailingColor: Config.drawerBackgroundColor,
-            onTap: () => showColorDialog(S.of(context).drawerBackgroundColor),
+            onTap: () => showColorDialog(S.of(context).drawerColor),
           ),
           ListItemDivider(),
           SettingsListTile(

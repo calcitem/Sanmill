@@ -274,7 +274,7 @@ class _GamePageState extends State<GamePage>
                   var side = Game.instance.sideToMove == PieceColor.white
                       ? S.of(context).black
                       : S.of(context).white;
-                  showTip(side + S.of(context).tipToMove);
+                  showTip(S.of(context).tipToMove(side));
                 }
               }
             }
@@ -411,7 +411,7 @@ class _GamePageState extends State<GamePage>
                         ? S.of(context).black
                         : S.of(context).white;
                     if (mounted) {
-                      showTip(them + S.of(context).tipToMove);
+                      showTip(S.of(context).tipToMove(them));
                     }
                   }
                 }
@@ -669,11 +669,10 @@ class _GamePageState extends State<GamePage>
     var importFailedStr = await Game.instance.position.recorder.import(text);
 
     if (importFailedStr != "") {
-      showTip(S.of(context).cannotImport + " " + importFailedStr);
+      showTip(S.of(context).cannotImport(importFailedStr));
       if (Config.screenReaderSupport) {
         ScaffoldMessenger.of(context).clearSnackBars();
-        showSnackBar(
-            context, S.of(context).cannotImport + " " + importFailedStr);
+        showSnackBar(context, S.of(context).cannotImport(importFailedStr));
       }
       return;
     }
@@ -1052,7 +1051,7 @@ class _GamePageState extends State<GamePage>
 
       var lastEffectiveMove = pos.recorder.lastEffectiveMove;
       if (lastEffectiveMove != null && lastEffectiveMove.notation != null) {
-        text = S.of(context).lastMove + ": " + lastEffectiveMove.notation;
+        text = S.of(context).lastMove(lastEffectiveMove.notation);
       } else {
         text = S.of(context).atEnd;
       }
@@ -1122,7 +1121,8 @@ class _GamePageState extends State<GamePage>
                         1,
                         end,
                         1,
-                        S.of(context).moves,
+                        S.of(context).moveNumber(
+                            0), // TODO: Text(S.of(context).moveNumber(start + index)),
                       );
 
                       if (selectValue != 0) {
@@ -1203,14 +1203,15 @@ class _GamePageState extends State<GamePage>
 
     Map<GameOverReason, String> reasonMap = {
       GameOverReason.loseReasonlessThanThree:
-          loserStr + S.of(context).loseReasonlessThanThree,
+          loserStr + S.of(context).loseReasonlessThanThree(loserStr),
       GameOverReason.loseReasonResign:
-          loserStr + S.of(context).loseReasonResign,
-      GameOverReason.loseReasonNoWay: loserStr + S.of(context).loseReasonNoWay,
+          loserStr + S.of(context).loseReasonResign(loserStr),
+      GameOverReason.loseReasonNoWay:
+          loserStr + S.of(context).loseReasonNoWay(loserStr),
       GameOverReason.loseReasonBoardIsFull:
-          loserStr + S.of(context).loseReasonBoardIsFull,
+          loserStr + S.of(context).loseReasonBoardIsFull(loserStr),
       GameOverReason.loseReasonTimeOver:
-          loserStr + S.of(context).loseReasonTimeOver,
+          loserStr + S.of(context).loseReasonTimeOver(loserStr),
       GameOverReason.drawReasonRule50: S.of(context).drawReasonRule50,
       GameOverReason.drawReasonEndgameRule50:
           S.of(context).drawReasonEndgameRule50,
@@ -1303,8 +1304,7 @@ class _GamePageState extends State<GamePage>
 
       if (!isTopLevel) {
         contentStr += "\n\n" +
-            S.of(context).challengeHarderLevel +
-            (Config.skillLevel + 1).toString() +
+            S.of(context).challengeHarderLevel((Config.skillLevel + 1)) +
             "!";
       }
 
@@ -1558,18 +1558,16 @@ class _GamePageState extends State<GamePage>
     }
 
     String pieceCountInHand = pos.phase == Phase.placing
-        ? S.of(context).player1 +
-            " " +
-            S.of(context).inHand +
-            ": " +
-            pos.pieceInHandCount[PieceColor.white].toString() +
+        ? S.of(context).inHand(
+                  S.of(context).player1,
+                  pos.pieceInHandCount[PieceColor.white]!,
+                ) +
             comma +
             "\n" +
-            S.of(context).player2 +
-            " " +
-            S.of(context).inHand +
-            ": " +
-            pos.pieceInHandCount[PieceColor.black].toString() +
+            S.of(context).inHand(
+                  S.of(context).player2,
+                  pos.pieceInHandCount[PieceColor.black]!,
+                ) +
             comma +
             "\n"
         : "";
@@ -1599,15 +1597,13 @@ class _GamePageState extends State<GamePage>
         lastMove = n1;
       }
       if (Config.screenReaderSupport) {
-        lastMove = S.of(context).lastMove +
-            ": " +
-            them +
+        lastMove = S.of(context).lastMove(": " + them) +
             ", " +
             lastMove +
             period +
             "\n";
       } else {
-        lastMove = S.of(context).lastMove + ": " + lastMove + period + "\n";
+        lastMove = S.of(context).lastMove(": " + lastMove) + period + "\n";
       }
     }
 
@@ -1623,9 +1619,7 @@ class _GamePageState extends State<GamePage>
         period +
         "\n" +
         lastMove +
-        S.of(context).sideToMove +
-        ": " +
-        us +
+        S.of(context).sideToMove(us) +
         period +
         tip +
         addedPeriod +
@@ -1633,18 +1627,16 @@ class _GamePageState extends State<GamePage>
         S.of(context).pieceCount +
         ":\n" +
         pieceCountInHand +
-        S.of(context).player1 +
-        " " +
-        S.of(context).onBoard +
-        ": " +
-        pos.pieceOnBoardCount[PieceColor.white].toString() +
+        S.of(context).onBoard(
+              S.of(context).player1,
+              pos.pieceOnBoardCount[PieceColor.white]!,
+            ) +
         comma +
         "\n" +
-        S.of(context).player2 +
-        " " +
-        S.of(context).onBoard +
-        ": " +
-        pos.pieceOnBoardCount[PieceColor.black].toString() +
+        S.of(context).onBoard(
+              S.of(context).player2,
+              pos.pieceOnBoardCount[PieceColor.black]!,
+            ) +
         period +
         "\n\n" +
         S.of(context).score +

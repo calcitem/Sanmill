@@ -1,727 +1,727 @@
 {
-  "appName": "Dzirnavas",
+  "appName": "Mølle",
   "@appName": {
     "description": "The app name"
   },
-  "welcome": "Laipni lūdzam",
+  "welcome": "Velkommen",
   "@welcome": {
     "description": "Welcome"
   },
-  "yes": "Jā",
+  "yes": "Ja",
   "@yes": {
     "description": "Yes"
   },
-  "no": "Nē",
+  "no": "Nei",
   "@no": {
     "description": "No"
   },
-  "game": "Spēle",
+  "game": "Spill",
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Cilvēks pret mākslīgo intelektu",
+  "humanVsAi": "Human vs. AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "Cilvēks pret cilvēku",
+  "humanVsHuman": "Human vs. Menneskelig",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "Mākslīgais intelekts pret mākslīgo intelektu",
+  "aiVsAi": "AI mot AI",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Cilvēks pret mākoni",
+  "humanVsCloud": "Human vs. Sky",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": "Cilvēks pret LAN",
+  "humanVsLAN": "Human vs. LAN",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
-  "testViaLAN": "Tests, izmantojot LAN",
+  "testViaLAN": "Test via LAN",
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "Pārvietot",
+  "move": "Bevege seg",
   "@move": {
     "description": "Move"
   },
-  "showMoveList": "Pārvietojumu saraksts",
+  "showMoveList": "Flytt liste",
   "@showMoveList": {
     "description": "Move list"
   },
-  "moveList": "Pārvietojumu saraksts",
+  "moveList": "Flytt liste",
   "@moveList": {
     "description": "Move list"
   },
-  "noGameRecord": "Nav ieraksta",
+  "noGameRecord": "Ingen rekord",
   "@noGameRecord": {
     "description": "No record"
   },
-  "ok": "LABI",
+  "ok": "OK",
   "@ok": {
     "description": "OK"
   },
-  "confirm": "Apstiprināt",
+  "confirm": "Bekrefte",
   "@confirm": {
     "description": "Confirm"
   },
-  "cancel": "Atcelt",
+  "cancel": "Avbryt",
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Izvēlieties nepareizu gabalu.",
+  "tipSelectWrong": "Velg feil brikke.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Ievietojiet savus gabalus.",
+  "tipPlace": "Plasser brikkene dine.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "Šeit to nevar ievietot.",
+  "tipBanPlace": "Du kan ikke plassere den her.",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Jūs ievietojāt.",
+  "tipPlaced": "Du plasserte.",
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "Noņemiet kādu gabaliņu.",
+  "tipRemove": "Fjern et stykke.",
   "@tipRemove": {
     "description": "Remove a piece."
   },
-  "tipBanRemove": "Jūs to nevarat noņemt.",
+  "tipBanRemove": "Du kan ikke fjerne den.",
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Jūs noņēmāt.",
+  "tipRemoved": "Du fjernet.",
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipMove": "Pārvietot figūru.",
+  "tipMove": "Flytt et stykke.",
   "@tipMove": {
     "description": "Move a piece."
   },
-  "tipCannotPlace": "Jūs nevarat šeit novietot savu figūru.",
+  "tipCannotPlace": "Du kan ikke plassere brikken din her.",
   "@tipCannotPlace": {
     "description": "You can't place your piece here."
   },
-  "tipCannotMove": "Jūs nevarat pārvietot savu figūru šeit.",
+  "tipCannotMove": "Du kan ikke flytte brikken din hit.",
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Dzirnavas! Paņem pretinieka figūru.",
+  "tipMill": "Mølle! Ta motstanderens brikke.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
-  "tipContinueMill": "Turpiniet ņemt pretinieka figūru.",
+  "tipContinueMill": "Fortsett å ta motstanderens brikke.",
   "@tipContinueMill": {
     "description": "Continue to take your opponent's piece."
   },
-  "tipSelectOpponentsPiece": "Izvēlieties vienu no pretinieka figūrām.",
+  "tipSelectOpponentsPiece": "Velg en av motstanderens brikker.",
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
-  "tipCannotRemovePieceFromMill": "Jūs nevarat izņemt figūru no dzirnavām.",
+  "tipCannotRemovePieceFromMill": "Du kan ikke fjerne et stykke fra en mølle.",
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
   },
-  "tipCanMoveOnePoint": "Figūra var pārvietoties par 1 punktu.",
+  "tipCanMoveOnePoint": "Et stykke kan flytte 1 poeng.",
   "@tipCanMoveOnePoint": {
     "description": "A piece can move 1 point."
   },
-  "tipCannotMoveOpponentsPieces": "Jūs nevarat pārvietot pretinieka figūru.",
+  "tipCannotMoveOpponentsPieces": "Du kan ikke flytte motstanderens brikker.",
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipSelectPieceToMove": "Izvēlieties savu figūru, ko pārvietot.",
+  "tipSelectPieceToMove": "Velg brikken du vil flytte.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "Jums ir palikušas trīs figūras.",
+  "tipHaveThreePiecesLeft": "Du har tre stykker igjen.",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "Jūs varat pārvietoties uz jebkuru punktu.",
+  "tipCanMoveToAnyPoint": "Du kan flytte til et hvilket som helst punkt du vil.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "{player}, lai pārvietotos.",
+  "tipToMove": "{player} for å flytte.",
   "@tipToMove": {
     "description": " to move."
   },
-  "whiteWin": "Uzvar 1. spēlētājs!",
+  "whiteWin": "Spiller 1 vinner!",
   "@whiteWin": {
     "description": "Player 1 wins!"
   },
-  "blackWin": "2. spēlētājs uzvar!",
+  "blackWin": "Spiller 2 vinner!",
   "@blackWin": {
     "description": "Player 2 wins!"
   },
-  "won": "Uzvarēja",
+  "won": "Vant",
   "@won": {
     "description": "Won"
   },
-  "lost": "Zaudēts",
+  "lost": "Tapt",
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Domājot…",
+  "thinking": "Tenker…",
   "@thinking": {
     "description": "Thinking..."
   },
-  "newGame": "Jauna spēle",
+  "newGame": "Nytt spill",
   "@newGame": {
     "description": "New game"
   },
-  "importGame": "Importēt spēli",
+  "importGame": "Importer spill",
   "@importGame": {
     "description": "Import game"
   },
-  "exportGame": "Eksportēt spēli",
+  "exportGame": "Eksporter spill",
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "No starpliktuves importēta spēle.",
+  "gameImported": "Spill importert fra utklippstavlen.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Nevar importēt {invalidMove}",
+  "cannotImport": "Kan ikke importere {invalidMove}",
   "@cannotImport": {
     "description": "Cannot import"
   },
-  "movesAndRulesNotMatch": "Kustības un noteikumi nesakrīt.",
+  "movesAndRulesNotMatch": "Bevegelser og regler stemmer ikke overens.",
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "pleaseWait": "Lūdzu, uzgaidiet.",
+  "pleaseWait": "Vennligst vent.",
   "@pleaseWait": {
     "description": "Please wait..."
   },
-  "restartGame": "Restartēt pašreizējo spēli?",
+  "restartGame": "Start det nåværende spillet på nytt?",
   "@restartGame": {
     "description": "Restart current game?"
   },
-  "restart": "Restartēt",
+  "restart": "Omstart",
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Spēle ir uzsākta, lūdzu, ievietojiet.",
+  "gameStarted": "Spillet startet, vær så snill å plassere det.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Analizē…",
+  "analyzing": "Analyserer…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Kļūda: {message}",
+  "error": "Feil: {message}",
   "@error": {
     "description": "Error"
   },
-  "winRate": "Uzvaras koeficients",
+  "winRate": "Vinnsats",
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Rezultāts:",
+  "score": "Resultat:",
   "@score": {
     "description": "Score"
   },
-  "white": "Spēlētājs 1",
+  "white": "Spiller 1",
   "@white": {
     "description": "Player 1"
   },
-  "black": "Spēlētājs 2",
+  "black": "Spiller 2",
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "{player} gabalu skaits ir mazāks par trim.",
+  "loseReasonlessThanThree": "{player} antall stykker er mindre enn tre.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} atkāpšanās.",
+  "loseReasonResign": "{player} si opp.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "{player} vairs nav kā iet.",
+  "loseReasonNoWay": "{player} har ingen vei å gå.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Dēlis ir pilns, un {player} vairs nav kur iet.",
+  "loseReasonBoardIsFull": "Brettet er fullt, og {player} har ingen vei å gå.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Laiks ir beidzies, {player} zaudēts.",
+  "loseReasonTimeOver": "Tiden er over, {player} tapt.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
-  "drawReasonRule50": "Pārvietošanas fāzē pēdējā noteiktajā gājienu skaitā nav izņemta neviena figūra.",
+  "drawReasonRule50": "I den bevegelige fasen er ingen brikker fjernet i det siste spesifikke antallet trekk.",
   "@drawReasonRule50": {
     "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
-  "drawReasonBoardIsFull": "Tas ir neizšķirts, jo tāfele ir pilna.",
+  "drawReasonBoardIsFull": "Det er uavgjort fordi brettet er fullt.",
   "@drawReasonBoardIsFull": {
     "description": "It is a Draw because the board is full"
   },
-  "drawReasonThreefoldRepetition": "Tas ir neizšķirts trīskāršas atkārtošanās dēļ.",
+  "drawReasonThreefoldRepetition": "Det er uavgjort på grunn av tredelt repetisjon.",
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
-  "gameOverUnknownReason": "Spēle ir beigusies! Nav zināms iemesls.",
+  "gameOverUnknownReason": "Spillet er over! Ukjent årsak.",
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
-  "gameOver": "Spēles beigas",
+  "gameOver": "Spillet er over",
   "@gameOver": {
     "description": "Game Over"
   },
-  "youWin": "Jūs uzvarējāt! Apsveicam!",
+  "youWin": "Du vinner! Gratulerer!",
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Izaicinājums grūtāks līmenis? Jaunais līmenis būs {level}!",
+  "challengeHarderLevel": "Utfordre hardere nivå? Det nye nivået vil være nivå {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
-  "youLose": "Jūs zaudējat!",
+  "youLose": "Du tapte!",
   "@youLose": {
     "description": "You Lose!"
   },
-  "analyze": "Analizēt",
+  "analyze": "Analysere",
   "@analyze": {
     "description": "Analyze"
   },
-  "about": "Par",
+  "about": "Om",
   "@about": {
     "description": "About"
   },
-  "version": "Versija: {versionNumber}",
+  "version": "Versjon: {versionNumber}",
   "@version": {
     "description": "Version"
   },
-  "thanks": "Paldies",
+  "thanks": "Takk",
   "@thanks": {
     "description": "Thanks"
   },
-  "settings": "Iestatījumi",
+  "settings": "Innstillinger",
   "@settings": {
     "description": "Settings"
   },
-  "options": "Iespējas",
+  "options": "Alternativer",
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "Vispārīgie iestatījumi",
+  "generalSettings": "Generelle innstillinger",
   "@generalSettings": {
     "description": "General Settings"
   },
-  "skillLevel": "Grūtības līmenis",
+  "skillLevel": "Vanskelighetsnivå",
   "@skillLevel": {
     "description": "Difficulty level"
   },
-  "moveTime": "Mākslīgā intelekta domāšanas laiks",
+  "moveTime": "AI tenktid",
   "@moveTime": {
     "description": "AI thinking time"
   },
-  "difficulty": "Grūtības",
+  "difficulty": "Vanskelighet",
   "@difficulty": {
     "description": "Difficulty"
   },
-  "playSounds": "Skaņas efekti",
+  "playSounds": "Lydeffekter",
   "@playSounds": {
     "description": "Sound effects"
   },
-  "playSoundsInTheGame": "Spēlē atskaņot skaņas",
+  "playSoundsInTheGame": "Spill lyder i spillet",
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
-  "keepMuteWhenTakingBack": "Atgriešanās laikā saglabāt izslēgtu skaņu",
+  "keepMuteWhenTakingBack": "Hold dempet når du tar tilbake",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"
   },
-  "tone": "Toni",
+  "tone": "Tone",
   "@tone": {
     "description": "Tone"
   },
-  "whoMovesFirst": "Pirmais gājiens",
+  "whoMovesFirst": "Første trekk",
   "@whoMovesFirst": {
     "description": "First move"
   },
-  "human": "Cilvēks",
+  "human": "Menneskelig",
   "@human": {
     "description": "Human"
   },
-  "ai": "MĀKSLĪGAIS INTELEKTS",
+  "ai": "AI",
   "@ai": {
     "description": "AI"
   },
-  "alternate": "Alternatīva",
+  "alternate": "Alternere",
   "@alternate": {
     "description": "Alternate"
   },
-  "isAutoRestart": "Automātiska spēles atsākšana, kad spēle ir beigusies",
+  "isAutoRestart": "Start spillet på nytt automatisk når spillet er over",
   "@isAutoRestart": {
     "description": "Auto-restart game when game over"
   },
-  "isAutoChangeFirstMove": "Automātiski mainīt pirmo gājienu",
+  "isAutoChangeFirstMove": "Automatisk endring av første trekk",
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "shufflingEnabled": "Nejaušs gājiens",
+  "shufflingEnabled": "Beveg deg tilfeldig",
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "misc": "Dažādi",
+  "misc": "Diverse",
   "@misc": {
     "description": "Miscellaneous"
   },
-  "rules": "Noteikumi",
+  "rules": "Regler",
   "@rules": {
     "description": "Rules"
   },
-  "piecesCount": "Katra spēlētāja figūru skaits",
+  "piecesCount": "Antall brikker hver spiller har",
   "@piecesCount": {
     "description": "The number of pieces each player has"
   },
-  "piecesCount_Detail": "Cik figūru ir katram spēlētājam?",
+  "piecesCount_Detail": "Hvor mange brikker har hver spiller?",
   "@piecesCount_Detail": {
     "description": "How many pieces does each player have?"
   },
-  "flyPieceCount": "Lidojošās figūras numurs",
+  "flyPieceCount": "Antallet på flygende brikke",
   "@flyPieceCount": {
     "description": "The number of the flying piece"
   },
-  "flyPieceCount_Detail": "Ja ir ieslēgta funkcija \"Lidojošā figūra\", kad spēlētāja figūru skaits ir samazināts līdz noteiktam skaitlim, viņa figūras var brīvi pārvietoties uz jebkuru neaizņemtu punktu, nevis tikai uz blakus esošiem punktiem, kā tas ir pārējā spēles laikā.",
+  "flyPieceCount_Detail": "Hvis Flying er aktivert, når en spiller reduseres til et bestemt antall brikker, er brikkene hennes fritt til å bevege seg til et ledig punkt i stedet for å være begrenset til tilstøtende poeng som i resten av spillet.",
   "@flyPieceCount_Detail": {
     "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
-  "piecesAtLeastCount": "Vismazākais figūru skaits",
+  "piecesAtLeastCount": "Stykker minst",
   "@piecesAtLeastCount": {
     "description": "Pieces At Least"
   },
-  "hasDiagonalLines": "Diagonālās līnijas",
+  "hasDiagonalLines": "Diagonale linjer",
   "@hasDiagonalLines": {
     "description": "Diagonal lines"
   },
-  "hasDiagonalLines_Detail": "Pievienojiet laukumam četras diagonālās līnijas.",
+  "hasDiagonalLines_Detail": "Legg til fire diagonale linjer på tavlen.",
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Atzīmē un aizkavē figūru izņemšanu",
+  "hasBannedLocations": "Merk og forsink å fjerne brikker",
   "@hasBannedLocations": {
     "description": "Mark and delay removing pieces"
   },
-  "hasBannedLocations_Detail": "Izvietošanas fāzē noņemto figūru punktus vairs nevarēs izvietot.",
+  "hasBannedLocations_Detail": "I plasseringsfasen vil ikke punktene til fjernede brikker lenger kunne plasseres.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
   },
-  "isDefenderMoveFirst": "Otrais spēlētājs pārvietojas pirmais",
+  "isDefenderMoveFirst": "Den andre spilleren beveger seg først",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"
   },
-  "isDefenderMoveFirst_Detail": "Spēlētājs, kurš izvietošanas fāzē pārvietojas otrais, pārvietošanas fāzē pārvietojas pirmais.",
+  "isDefenderMoveFirst_Detail": "Spilleren som beveger seg andre i plasseringsfasen, beveger seg først i den bevegelige fasen.",
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
   },
-  "mayRemoveMultiple": "Vairākkārtēja pārvietošana",
+  "mayRemoveMultiple": "Fjern flere",
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
-  "mayRemoveMultiple_Detail": "Ja spēlētājs noslēdz vairāk nekā vienu dzirnaviņu vienlaicīgi, viņš noņems tik dzirnaviņu, cik viņš noslēdzis.",
+  "mayRemoveMultiple_Detail": "Hvis en spiller stenger mer enn en mølle samtidig, vil hun fjerne antall møller hun stengte.",
   "@mayRemoveMultiple_Detail": {
     "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
-  "mayRemoveFromMillsAlways": "Iznīcināt dzirnavas",
+  "mayRemoveFromMillsAlways": "Ødelegge møller",
   "@mayRemoveFromMillsAlways": {
     "description": "Destroy mills"
   },
-  "mayRemoveFromMillsAlways_Detail": "Pēc noklusējuma spēlētājiem vispirms ir jānoņem visas citas figūras, pirms noņemt figūru no izveidotajām dzirnavām. Ieslēdziet šo opciju, lai atspējotu šo ierobežojumu.",
+  "mayRemoveFromMillsAlways_Detail": "Som standard må spillerne fjerne alle andre brikker før de fjerner en brikke fra en dannet mølle. Aktiver dette alternativet for å deaktivere begrensningen.",
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Otrais spēlētājs zaudē, kad tāfele ir pilna",
+  "isWhiteLoseButNotDrawWhenBoardFull": "Den andre spilleren taper når brettet er fullt",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Ja izvietošanas fāzes beigās dēlis ir pilns, zaudē tā puse, kas pirmā izvieto figūru. Pretējā gadījumā spēle ir neizšķirta.",
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Når brettet er fullt på slutten av plasseringsfasen, mister siden som plasseres først spillet. Ellers er spillet uavgjort.",
   "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
     "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
   },
-  "isLoseButNotChangeSideWhenNoWay": "Zaudēt, ja nav likumīgu gājienu",
+  "isLoseButNotChangeSideWhenNoWay": "Taper når ingen lovlige trekk",
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose when no legal moves"
   },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "Spēlētājs zaudē, ja pretinieks bloķē tā, ka to nevar pārvietot. Ja šī opcija ir atspējota, mainiet pusi, lai pārvietotos.",
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Spilleren taper hvis motstanderen blokkerer dem slik at de ikke kan flyttes. Bytt side for å flytte hvis dette alternativet er deaktivert.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
     "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
   },
-  "mayFly": "Skrējiens",
+  "mayFly": "Flyr",
   "@mayFly": {
     "description": "Flying"
   },
-  "mayFly_Detail": "Ja spēlētājam ir palikušas tikai trīs vai četras (konfigurējamas) figūras, viņš var pārvietot figūru uz jebkuru brīvu punktu.",
+  "mayFly_Detail": "Hvis en spiller bare har tre eller fire (konfigurerbare) brikker igjen, kan hun flytte brikken til et hvilket som helst ledig punkt.",
   "@mayFly_Detail": {
     "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
-  "nMoveRule": "N gājienu noteikums",
+  "nMoveRule": "N-trekkregel",
   "@nMoveRule": {
     "description": "N-move rule"
   },
-  "nMoveRule_Detail": "Spēle tiek izlozēta, ja katrs spēlētājs noteiktā gājienu skaitā nav izdarījis nevienu gājienu.",
+  "nMoveRule_Detail": "Spillet trekkes hvis det ikke har blitt fjernet i et bestemt antall trekk.",
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
-  "rollback": "Atgriešanās",
+  "rollback": "Tilbakeslag",
   "@rollback": {
     "description": "Rollback"
   },
-  "pleaseSelect": "Lūdzu, izvēlieties",
+  "pleaseSelect": "Vennligst velg",
   "@pleaseSelect": {
     "description": "Please select"
   },
-  "copy": "Kopēt",
+  "copy": "Kopiere",
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Pārvietojumu vēsture tiek kopēta uz starpliktuvi.",
+  "moveHistoryCopied": "Flytt historikken som er kopiert til utklippstavlen.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
-  "help": "Palīdzība",
+  "help": "Hjelp",
   "@help": {
     "description": "Help"
   },
-  "feedback": "Atsauksmes",
+  "feedback": "Tilbakemelding",
   "@feedback": {
     "description": "Feedback"
   },
-  "exit": "Iziet no",
+  "exit": "Utgang",
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Noteikumu iestatījumi",
+  "ruleSettings": "Regelinnstillinger",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
-  "color": "Krāsa",
+  "color": "Farge",
   "@color": {
     "description": "Color"
   },
-  "boardColor": "Dēļa krāsa",
+  "boardColor": "Brettfarge",
   "@boardColor": {
     "description": "Board color"
   },
-  "pieceColor": "Gabala krāsa",
+  "pieceColor": "Brikkefarge",
   "@pieceColor": {
     "description": "Piece color"
   },
-  "backgroundColor": "Fona krāsa",
+  "backgroundColor": "Bakgrunnsfarge",
   "@backgroundColor": {
     "description": "Background color"
   },
-  "lineColor": "Borta līnijas krāsa",
+  "lineColor": "Board line farge",
   "@lineColor": {
     "description": "Board line color"
   },
-  "whitePieceColor": "Spēlētāja 1 figūras krāsa",
+  "whitePieceColor": "Spiller 1 stk farge",
   "@whitePieceColor": {
     "description": "Player 1 piece color"
   },
-  "blackPieceColor": "Spēlētāja 2 figūras krāsa",
+  "blackPieceColor": "Spiller 2-delt farge",
   "@blackPieceColor": {
     "description": "Player 2 piece color"
   },
-  "messageColor": "Ziņojuma krāsa",
+  "messageColor": "Melding farge",
   "@messageColor": {
     "description": "Message color"
   },
-  "isPieceCountInHandShown": "Rādīt rokā esošo figūru skaitu",
+  "isPieceCountInHandShown": "Vis antall stykker i hånden",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
   },
-  "isNotationsShown": "Rādīt uzrakstus uz tāfeles",
+  "isNotationsShown": "Vis notasjoner om bord",
   "@isNotationsShown": {
     "description": "Show notations on board"
   },
-  "isHistoryNavigationToolbarShown": "Rādīt vēstures navigācijas rīkjoslu",
+  "isHistoryNavigationToolbarShown": "Vis historikknavigasjonsverktøylinjen",
   "@isHistoryNavigationToolbarShown": {
     "description": "Show history navigation toolbar"
   },
-  "display": "Rādīt",
+  "display": "Vise",
   "@display": {
     "description": "Display"
   },
-  "boardBorderLineWidth": "Borta robežas platums",
+  "boardBorderLineWidth": "Board borderline bredde",
   "@boardBorderLineWidth": {
     "description": "Board borderline width"
   },
-  "boardInnerLineWidth": "Borta iekšējās līnijas platums",
+  "boardInnerLineWidth": "Board indre linjebredde",
   "@boardInnerLineWidth": {
     "description": "Board inner line width"
   },
-  "pieceWidth": "Gabala platums",
+  "pieceWidth": "Stykke bredde",
   "@pieceWidth": {
     "description": "Piece width"
   },
-  "fontSize": "Fonta lielums",
+  "fontSize": "Skriftstørrelse",
   "@fontSize": {
     "description": "Font size"
   },
-  "standardNotation": "WMD pieraksts",
+  "standardNotation": "WMD-notasjon",
   "@standardNotation": {
     "description": "Standard notation"
   },
-  "restore": "Atjaunot",
+  "restore": "Restaurere",
   "@restore": {
     "description": "Restore"
   },
-  "restoreDefaultSettings": "Atjaunot noklusējuma iestatījumus",
+  "restoreDefaultSettings": "Gjenopprett standardinnstillinger",
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Izvēlieties {element}",
+  "pick": "Velg {element}",
   "@pick": {
     "description": "Pick "
   },
-  "info": "Informācija",
+  "info": "Info",
   "@info": {
     "description": "Info"
   },
-  "hint": "Padoms",
+  "hint": "Vink",
   "@hint": {
     "description": "Hint"
   },
-  "player": "spēlētājs",
+  "player": "spiller",
   "@player": {
     "description": "player"
   },
-  "player1": "Spēlētājs 1",
+  "player1": "Spiller 1",
   "@player1": {
     "description": "Player 1"
   },
-  "player2": "Spēlētājs 2",
+  "player2": "Spiller 2",
   "@player2": {
     "description": "Player 2"
   },
-  "howToPlay": "Kā spēlēt",
+  "howToPlay": "Hvordan spille",
   "@howToPlay": {
     "description": "How to play"
   },
-  "toPlacePiece": "Pieskarieties jebkuram pieejamajam punktam, lai novietotu figūru.",
+  "toPlacePiece": "Trykk på et hvilket som helst tilgjengelig punkt for å plassere stykket.",
   "@toPlacePiece": {
     "description": "Tap on any available point to place the piece."
   },
-  "toSelectPiece": "Pieskarieties figūrai, lai to pārvietotu.",
+  "toSelectPiece": "Trykk på et stykke for å flytte det.",
   "@toSelectPiece": {
     "description": "Tap on a piece to move it."
   },
-  "toMovePiece": "Pieskarieties punktam, kas savienots ar figūru, lai to pārvietotu.",
+  "toMovePiece": "Trykk på et punkt som er koblet til et stykke for å flytte det.",
   "@toMovePiece": {
     "description": "Tap on point connected to piece to move it."
   },
-  "toRemovePiece": "Pieskarieties pretinieka vienai figūrai, lai to noņemtu.",
+  "toRemovePiece": "Trykk på motstanderens brikke for å fjerne.",
   "@toRemovePiece": {
     "description": "Tap on the opponent's one piece to remove."
   },
-  "needToCreateMillFirst": "Pirms figūras noņemšanas vispirms ir jāizveido dzirnavas.",
+  "needToCreateMillFirst": "Du må først lage en mølle før du kan fjerne et stykke.",
   "@needToCreateMillFirst": {
     "description": "You need to create a mill first before you can remove a piece."
   },
-  "needToPlayWithOwnPieces": "Jums ir jāspēlē ar figūrām.",
+  "needToPlayWithOwnPieces": "Du må leke med brikkene dine.",
   "@needToPlayWithOwnPieces": {
     "description": "You need to play with your pieces."
   },
-  "statistics": "Statistika",
+  "statistics": "Statistikk",
   "@statistics": {
     "description": "Statistics"
   },
-  "totalGames": "Kopējais spēļu skaits",
+  "totalGames": "Totalt antall spill",
   "@totalGames": {
     "description": "Total games"
   },
-  "results": "Rezultāti",
+  "results": "Resultater",
   "@results": {
     "description": "Results"
   },
-  "left": "pa kreisi",
+  "left": "venstre",
   "@left": {
     "description": "left"
   },
-  "privacyPolicy": "Privātuma politika",
+  "privacyPolicy": "Personvernregler",
   "@privacyPolicy": {
     "description": "Privacy Policy"
   },
-  "privacyPolicy_Detail_1": "Lūdzu, uzmanīgi izlasiet un pārliecinieties, ka pilnībā to saprotat un piekrītat. ",
+  "privacyPolicy_Detail_1": "Vennligst les nøye og sørg for at du forstår og er enig i dette ",
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
-  "privacyPolicy_Detail_2": ". Ja nepiekrītat šai politikai, lūdzu, nelietojiet šo lietotni. Lietojot lietotni, jūs piekrītat šiem noteikumiem.",
+  "privacyPolicy_Detail_2": ". Hvis du ikke godtar disse retningslinjene, ikke bruk denne appen. Å bruke appen innebærer at du godtar disse vilkårene.",
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
-  "and": " un ",
+  "and": " og ",
   "@and": {},
-  "accept": "Piekrītu",
+  "accept": "Aksepterer",
   "@accept": {
     "description": "Accept"
   },
-  "takeBack": "Atgriezt",
+  "takeBack": "Ta tilbake",
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Atgriešanās…",
+  "takingBack": "Tar tilbake…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "Gaidīšana…",
+  "waiting": "Venter…",
   "@waiting": {
     "description": "Waiting..."
   },
-  "stepForward": "Solis uz priekšu",
+  "stepForward": "Skritt fremover",
   "@stepForward": {
     "description": "Step forward"
   },
-  "takeBackAll": "Atgriezt visu",
+  "takeBackAll": "Ta tilbake alt",
   "@takeBackAll": {
     "description": "Take back all"
   },
-  "stepForwardAll": "Solis uz priekšu visi",
+  "stepForwardAll": "Gå fremover alle",
   "@stepForwardAll": {
     "description": "Step forward all"
   },
-  "moveNow": "Pārvietot tagad",
+  "moveNow": "Flytt deg nå",
   "@moveNow": {
     "description": "Move now"
   },
-  "done": "Paveikts.",
+  "done": "Ferdig.",
   "@done": {
     "description": "Done."
   },
-  "crackMill": "Plaisu dzirnavas",
+  "crackMill": "Sprekkvern",
   "@crackMill": {
     "description": "Crack-mill"
   },
-  "crackMill_Detail": "Ja spēlētājam ir tikai gabali dzirnavās, dzirnavās esošie gabali netiks bloķēti, lai tos noņemtu.",
+  "crackMill_Detail": "Hvis en spiller bare har brikker i møller, vil ikke brikkene i møllene låses for å fjerne.",
   "@crackMill_Detail": {
     "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
   },
-  "animationDuration": "Animācijas ilgums",
+  "animationDuration": "Animasjonens varighet",
   "@animationDuration": {
     "description": "Animation duration"
   },
-  "none": "Nav",
+  "none": "Ingen",
   "@none": {
     "description": "None"
   },
-  "theme": "Tēma",
+  "theme": "Tema",
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Spēles mērķis ir atstāt pretinieku ar mazāk nekā trim figūrām vai bez likumīgiem gājieniem.\n\nSpēle automātiski tiek izlozēta, ja kāda pozīcija rodas trešo reizi vai ja pēdējo 100 (konfigurējamu) gājienu laikā nav izdarīts neviens gājiens.\n\nSpēle norisinās trīs posmos:\n\n1. Figūru novietošana uz brīvajiem punktiem\n2. Figūru pārvietošana uz blakus punktiem\n3. (fakultatīvs posms) figūru pārvietošana uz jebkuru brīvo punktu, kad spēlētājs ir samazinājies līdz trim figūrām.\n\nNovietošana\n\nSpēle sākas ar tukšu galdu, kas sastāv no režģa ar divdesmit četriem punktiem. Spēlētāji pēc kārtas izvieto savas figūras uz brīvajiem punktiem, līdz katrs spēlētājs ir izvietojis visas figūras uz galda. Ja spēlētājs var novietot trīs savas figūras taisni, viņam ir \"dzirnaviņas\", un viņš var noņemt vienu pretinieka figūru no dēļa.\n\nDažos noteikumos ir noteikts, ka spēlētājiem vispirms ir jānoņem visas citas figūras, pirms noņemt figūru no izveidotās dzirnaviņas.\n\nDažos noteikumos izvietošanas fāzē figūriņas vairs nevar novietot līdz noņemtās figūriņas punktiem.\n\nKad visas figūriņas ir izmantotas, spēlētāji pēc kārtas sāk kustību.\n\nPārvietošanās\n\nLai pārvietotos, spēlētājs pārvieto vienu no savām figūrām pa dēļa līniju uz brīvo blakus esošo punktu. Ja viņš to nevar izdarīt, viņš ir zaudējis spēli. Tāpat kā izvietošanas fāzē, spēlētājam, kurš izlīdzina trīs savas figūras uz dēļa līnijas, ir dzirnaviņas un viņš var noņemt vienu no pretinieka figūrām. Jebkuram spēlētājam, kurš samazinās līdz divām figūrām, nav iespējas veidot jaunas dzirnaviņas, un tādējādi viņš zaudē spēli. Spēlētājs var zaudēt arī tad, ja ir vairāk nekā trīs figūras, ja pretinieks bloķē to kustību.\n\nLidojošās\n\nDažos noteikumu variantos, kad spēlētājam ir palikušas tikai trīs figūras, viņa figūras var lidot, lēkt vai lēkt uz jebkuriem brīviem punktiem, ne tikai uz blakus esošajiem.",
+  "helpContent": "Spillet tar sikte på å gi motstanderen færre enn tre brikker eller ingen lovlige grep.\n\nSpillet trekker automatisk hvis en posisjon oppstår for tredje gang eller ikke fjerner de siste 100 (konfigurerbare) trekkene.\n\nSpillet fortsetter i tre faser:\n\n1. Plasser brikker på ledige punkter\n2. Flytte brikker til tilstøtende punkter\n3. (valgfri fase) Flytter brikker til et ledig punkt når du reduserer spilleren til tre brikker\n\nPlassering\n\nSpillet begynner med et tomt brett, som består av et rutenett med tjuefire poeng. Spillere bytter på å plassere brikkene sine på ledige poeng til hver spiller har plassert alle brikkene på brettet. Hvis en spiller kan sette tre av brikkene sine rett, har han en \"mølle\" og kan fjerne en av motstanderens brikker fra brettet.\n\nI noen regler må spillerne fjerne andre stykker først før de fjerner et stykke fra en dannet mølle.\n\nDu kan ikke plassere brikkene til punktene til fjernede brikker igjen i plasseringsfasen i noen regler.\n\nNår alle brikkene er brukt, bytter spillerne på å bevege seg.\n\nFlytter\n\nFor å flytte, flytter en spiller en av brikkene sine langs en brettelinje til et ledig tilstøtende punkt. Hvis han ikke kan gjøre det, har han tapt spillet. En spiller som justerer tre av brikkene sine på en brettlinje, har en mølle og kan fjerne en av motstanderens brikker som i plasseringsfasen. Enhver spiller reduserer til to stykker, har ingen mulighet til å danne nye møller og taper dermed spillet. En spiller kan også tape når mer enn tre brikker hvis motstanderen blokkerer dem fra å bevege seg.\n\nFlyr\n\nI noen varianter av reglene, når en spiller bare har tre brikker igjen, kan brikkene hans fly, hoppe eller hoppe til ledige punkter, ikke bare tilstøtende.",
   "@helpContent": {
     "description": "Help Content"
   },
-  "versionInfo": "Informācija par versiju",
+  "versionInfo": "Versjonsinfo",
   "@versionInfo": {
     "description": "Version info"
   },
@@ -729,179 +729,179 @@
   "@eula": {
     "description": "EULA"
   },
-  "license": "Licence",
+  "license": "Tillatelse",
   "@license": {
     "description": "License"
   },
-  "sourceCode": "Avota kods",
+  "sourceCode": "Kildekode",
   "@sourceCode": {
     "description": "Source code"
   },
-  "appVersion": "Lietotnes versija",
+  "appVersion": "Appversjon",
   "@appVersion": {
     "description": "App Version"
   },
-  "general": "Vispārīgi",
+  "general": "Generell",
   "@general": {
     "description": "General"
   },
-  "advanced": "Uzlabots",
+  "advanced": "Avansert",
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "Ievietošana",
+  "placing": "Plassering",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Pārvietošana",
+  "moving": "Flytter",
   "@moving": {
     "description": "Moving"
   },
-  "removing": "Noņemšana",
+  "removing": "Fjerner",
   "@removing": {
     "description": "Removing"
   },
-  "gameOverCondition": "Spēles beigu stāvoklis",
+  "gameOverCondition": "Game over tilstand",
   "@gameOverCondition": {
     "description": "Game over condition"
   },
-  "aisPlayStyle": "Mākslīgā intelekta spēles stils",
+  "aisPlayStyle": "AIs spillestil",
   "@aisPlayStyle": {
     "description": "AI's playstyle"
   },
-  "passive": "Pasīvais",
+  "passive": "Passiv",
   "@passive": {
     "description": "Passive"
   },
-  "timeout": "Laika pārtraukums",
+  "timeout": "Pause",
   "@timeout": {
     "description": "Timeout"
   },
-  "appearance": "Izskats",
+  "appearance": "Utseende",
   "@appearance": {
     "description": "Appearance"
   },
-  "drawOnHumanExperience": "Izmanto cilvēka pieredzi",
+  "drawOnHumanExperience": "Tegn på den menneskelige opplevelsen",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"
   },
-  "considerMobility": "Ņemiet vērā elementu mobilitāti",
+  "considerMobility": "Vurder mobilitet av stykker",
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Gabalu skaits:",
+  "pieceCount": "Antall stykker:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "{player} rokā: {count}",
+  "inHand": "{player} i hånden: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "{player} uz borta: {count}",
+  "onBoard": "{player} om bord: {count}",
   "@onBoard": {
     "description": "on board"
   },
-  "boardTop": "Dēlis nobīdīts no augšas",
+  "boardTop": "Styret forskjøvet fra toppen",
   "@boardTop": {
     "description": "Board offset from the top"
   },
-  "notAIsTurn": "Mākslīgais intelekts nav uz rindas.",
+  "notAIsTurn": "Det er ikke AIs tur.",
   "@notAIsTurn": {
     "description": "It is not the AI's turn."
   },
-  "aiIsNotThinking": "Mākslīgais intelekts nedomā.",
+  "aiIsNotThinking": "AI tenker ikke.",
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "atEnd": "Jūs esat gājienu saraksta beigās.",
+  "atEnd": "Du er på slutten av trekklisten.",
   "@atEnd": {
     "description": "At the end of the move list."
   },
-  "tapBackAgainToLeave": "Pieskarieties atpakaļ, lai izietu.",
+  "tapBackAgainToLeave": "Trykk tilbake for å dra.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
   },
-  "more": "Vairāk",
+  "more": "Mer",
   "@more": {
     "description": "More"
   },
-  "experimental": "Šī ir eksperimentāla funkcija.",
+  "experimental": "Det er en eksperimentell funksjon.",
   "@experimental": {
     "description": "This is an experimental feature."
   },
-  "experiments": "Eksperimenti",
+  "experiments": "Eksperimenter",
   "@experiments": {
     "description": "Experiments"
   },
-  "ossLicenses": "Atvērtā pirmkoda licences",
+  "ossLicenses": "Åpen kildekode lisenser",
   "@ossLicenses": {
     "description": "Open source licenses"
   },
-  "language": "Valoda",
+  "language": "Språk",
   "@language": {
     "description": "Languages"
   },
-  "defaultLanguage": "Noklusējuma valoda",
+  "defaultLanguage": "Standard språk",
   "@defaultLanguage": {
     "description": "Default language"
   },
-  "mayMoveInPlacingPhase": "Figūriņas var pārvietoties izvietošanas fāzē",
+  "mayMoveInPlacingPhase": "Brikkene kan bevege seg i plasseringsfasen",
   "@mayMoveInPlacingPhase": {
     "description": "The pieces can move in the placing phase"
   },
-  "mayMoveInPlacingPhase_Detail": "Nav atšķirīgu novietošanas un pārvietošanas fāžu, t. i., spēlētāji katrā gājienā var izlemt, vai viņi vēlas novietot figūru uz galda vai pārvietot kādu no savām figūrām (ja vien viņiem ir atlikušas figūras, ko novietot).",
+  "mayMoveInPlacingPhase_Detail": "Det er ingen distinkte plasserings- og flyttingsfaser, dvs. spillerne kan bestemme ved hvert trekk om de vil plassere et stykke på brettet eller flytte et av brikkene sine (så lenge de har gjenværende brikker å plassere).",
   "@mayMoveInPlacingPhase_Detail": {
     "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
   },
-  "drawerColor": "Izvēlnes krāsa",
+  "drawerColor": "Menyfarge",
   "@drawerColor": {
     "description": "Menu color"
   },
-  "drawerTextColor": "Izvēlnes teksta krāsa",
+  "drawerTextColor": "Menyens tekstfarge",
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerHighlightItemColor": "Izvēlnes izcelšanas vienuma krāsa",
+  "drawerHighlightItemColor": "Menyhøydepunktfarge",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
   },
-  "mainToolbarBackgroundColor": "Galvenās rīkjoslas fona krāsa",
+  "mainToolbarBackgroundColor": "Hovedverktøylinjens bakgrunnsfarge",
   "@mainToolbarBackgroundColor": {
     "description": "Main toolbar background color"
   },
-  "mainToolbarIconColor": "galvenās rīkjoslas ikonas krāsa",
+  "mainToolbarIconColor": "hovedverktøylinjens ikonfarge",
   "@mainToolbarIconColor": {
     "description": "main toolbar icon color"
   },
-  "navigationToolbarBackgroundColor": "Navigācijas rīkjoslas fona krāsa",
+  "navigationToolbarBackgroundColor": "Navigasjonsverktøylinjens bakgrunnsfarge",
   "@navigationToolbarBackgroundColor": {
     "description": "Navigation toolbar background color"
   },
-  "navigationToolbarIconColor": "Navigācijas rīkjoslas ikonas krāsa",
+  "navigationToolbarIconColor": "Navigasjonsverktøylinjens ikonfarge",
   "@navigationToolbarIconColor": {
     "description": "Navigation toolbar icon color"
   },
-  "autoHideToolbar": "Automātiski paslēpt rīkjoslu",
+  "autoHideToolbar": "Skjul verktøylinjen automatisk",
   "@autoHideToolbar": {
     "description": "Automatically hide the toolbar"
   },
-  "toolbarLocationOnScreen": "Rīkjoslas atrašanās vieta ekrānā",
+  "toolbarLocationOnScreen": "Verktøylinjeplassering på skjermen",
   "@toolbarLocationOnScreen": {
     "description": "Toolbar location on screen"
   },
-  "top": "Tops",
+  "top": "Topp",
   "@top": {
     "description": "Top"
   },
-  "bottom": "Apakšā",
+  "bottom": "Bunn",
   "@bottom": {
     "description": "Bottom"
   },
-  "center": "Centrs",
+  "center": "Senter",
   "@center": {
     "description": "Center"
   },
-  "solidColor": "Vienkrāsaina",
+  "solidColor": "Ensfarget",
   "@solidColor": {
     "description": "Solid color"
   },
@@ -909,239 +909,239 @@
   "@picture": {
     "description": "Picture"
   },
-  "chooseYourPicture": "Izvēlieties savu attēlu",
+  "chooseYourPicture": "Velg bildet ditt",
   "@chooseYourPicture": {
     "description": "Choose your picture"
   },
-  "light": "Gaisma",
+  "light": "Lys",
   "@light": {
     "description": "Light"
   },
-  "dark": "Tumšs",
+  "dark": "Mørk",
   "@dark": {
     "description": "Dark"
   },
-  "themes": "Tēmas",
+  "themes": "Temaer",
   "@themes": {
     "description": "Themes"
   },
-  "currentTheme": "Pašreizējā tēma",
+  "currentTheme": "Aktuelt tema",
   "@currentTheme": {
     "description": "Current theme"
   },
-  "saveTheme": "Saglabāt motīvu",
+  "saveTheme": "Lagre tema",
   "@saveTheme": {
     "description": "Save theme"
   },
-  "showAnalysisGraph": "Rādīt analīzes grafiku",
+  "showAnalysisGraph": "Vis analysegraf",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
   },
-  "analysis": "Analīze",
+  "analysis": "Analyse",
   "@analysis": {
     "description": "Analysis"
   },
-  "saveGame": "Saglabā spēli",
+  "saveGame": "Lagre spillet",
   "@saveGame": {
     "description": "Save game"
   },
-  "loadGame": "Ielādēt spēli",
+  "loadGame": "Last Spill",
   "@loadGame": {
     "description": "Load game"
   },
-  "setupPosition": "Iestatīšanas pozīcija",
+  "setupPosition": "Oppsettposisjon",
   "@setupPosition": {
     "description": "Setup position"
   },
-  "showLegalMoves": "Rādīt likumīgus gājienus",
+  "showLegalMoves": "Vis juridiske grep",
   "@showLegalMoves": {
     "description": "Show legal moves"
   },
-  "showLastMove": "Rādīt pēdējo kustību",
+  "showLastMove": "Vis siste trekk",
   "@showLastMove": {
     "description": "Show last move"
   },
-  "showArrows": "Rādīt bultiņas",
+  "showArrows": "Vis piler",
   "@showArrows": {
     "description": "Show arrows"
   },
-  "pieces": "Gabali",
+  "pieces": "Stykker",
   "@pieces": {
     "description": "Pieces"
   },
-  "showAnalysis": "Rādīt analīzi",
+  "showAnalysis": "Vis analyse",
   "@showAnalysis": {
     "description": "Show analysis"
   },
-  "threads": "Vītnes",
+  "threads": "Tråder",
   "@threads": {
     "description": "Threads"
   },
-  "getInvolved": "Iesaistīties",
+  "getInvolved": "Bli involvert",
   "@getInvolved": {
     "description": "Get Involved"
   },
-  "helpImproveTranslate": "Palīdziet uzlabot tulkošanu",
+  "helpImproveTranslate": "Hjelp med å forbedre oversettelsen",
   "@helpImproveTranslate": {
     "description": "Help improve translate"
   },
-  "tutorial": "Apmācība",
+  "tutorial": "Opplæringen",
   "@tutorial": {
     "description": "Tutorial"
   },
-  "classicMill": "Klasiskās dzirnavas",
+  "classicMill": "Klassisk mølle",
   "@classicMill": {
     "description": "Classic Mill"
   },
-  "mixedMill": "Jauktās dzirnavas",
+  "mixedMill": "Blandet Mill",
   "@mixedMill": {
     "description": "Mixed Mill"
   },
-  "ceylonMill": "Ceilonas dzirnavas",
+  "ceylonMill": "Ceylon Mill",
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
-  "mayBreakAndRemakeMillRepeatedly": "Dzirnavas var būt salauztas un atkārtoti pārtaisītas",
+  "mayBreakAndRemakeMillRepeatedly": "Kvernen kan bli ødelagt og omgjort gjentatte ganger",
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
-  "mayBreakAndRemakeMillRepeatedly_Detail": "Ja spēlētājs pārtrauc dzirnavas, lai nekavējoties izveidotu jaunu dzirnavu, šāds spēlētājs var nākamajā gabalā pārvietot šo gabalu atpakaļ uz sākotnējo krustojumu, ja tas izveido jaunu dzirnavu.",
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Hvis en spiller bryter en mølle for å opprette en ny mølle med en gang, kan en slik spiller flytte en slik brikke tilbake til det opprinnelige krysset i sitt neste trekk hvis den lager en ny mølle.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spēle tiek izlozēta, ja spēlētājam ir trīs figūras un pēc desmit kustībām neviens spēlētājs nenoņem pretinieka figūras",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spillet trekkes hvis en spiller har tre brikker, og etter ti trekk fjerner ingen av spillerne motstanderens brikker",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Kad spēlētājs ir nonācis līdz trim figūrām un neviens spēlētājs nevar noņemt pretinieka gabalu desmit gājienu laikā, spēle ir neizšķirta.",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Når en spiller er nede i tre brikker, og ingen av spillerne kan fjerne en motstanders brikke innen ti trekk, er spillet uavgjort.",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
     "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
   },
-  "close": "Aizvērt",
+  "close": "Lukk",
   "@close": {
     "description": "Close"
   },
-  "whitePiece": "Balts gabals",
+  "whitePiece": "Hvitt stykke",
   "@whitePiece": {
     "description": "White piece"
   },
-  "blackPiece": "Melns gabals",
+  "blackPiece": "Svart stykke",
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "Aizlieguma punkts",
+  "banPoint": "Forbudspunkt",
   "@banPoint": {
     "description": "Ban point"
   },
-  "emptyPoint": "Tukšs punkts",
+  "emptyPoint": "Tomt poeng",
   "@emptyPoint": {
     "description": "Empty point"
   },
-  "noPoint": "Nav jēgas",
+  "noPoint": "Ikke noe poeng",
   "@noPoint": {
     "description": "No point"
   },
-  "placingPhase": "Ievietošanas fāze",
+  "placingPhase": "Plasseringsfase",
   "@placingPhase": {
     "placingPhase": "Placing phase"
   },
-  "movingPhase": "Pārvietošanās fāze",
+  "movingPhase": "Flyttende fase",
   "@movingPhase": {
     "description": "Moving phase"
   },
-  "flyingPhase": "Lidošanas fāze",
+  "flyingPhase": "Flygende fase",
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Pārvietojama puse: {player}",
+  "sideToMove": "Side å flytte: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Pēdējais gājiens: {move}",
+  "lastMove": "Siste trekk: {move}",
   "@lastMove": {
     "description": "Last move"
   },
-  "selected": "Atlasīts",
+  "selected": "Valgt",
   "@selected": {
     "description": "Selected"
   },
-  "accessibility": "Pieejamība",
+  "accessibility": "tilgjengelighet",
   "@accessibility": {
     "description": "Accessibility"
   },
-  "screenReaderSupport": "Ekrāna lasītāja atbalsts",
+  "screenReaderSupport": "Støtte for skjermleser",
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "Tas ir neizšķirts!",
+  "isDraw": "Det er uavgjort!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
-  "draw": "Zīmēt",
+  "draw": "Tegne",
   "@draw": {
     "description": "Draw"
   },
-  "pieceHighlightColor": "Gabalu izceltā krāsa",
+  "pieceHighlightColor": "Farge på høydepunktet",
   "@pieceHighlightColor": {
     "description": "Piece highlight color"
   },
-  "algorithm": "Algoritms",
+  "algorithm": "Algoritme",
   "@algorithm": {
     "description": "Algorithm"
   },
-  "removeUnplacedPiece": "Noņemiet neizvietoto gabalu",
+  "removeUnplacedPiece": "Fjern det uplasserte stykket",
   "@removeUnplacedPiece": {
     "description": "Remove unplaced piece"
   },
-  "removeUnplacedPiece_Detail": "Ja spēlētājs ievieto dzirnavas ievietošanas fāzē, viņa noņem pretinieka nenovietoto gabalu un turpina gājienu.",
+  "removeUnplacedPiece_Detail": "Hvis en spiller danner møllen i plasseringsfasen, vil hun fjerne motstanderens uplasserte brikke og fortsette å gjøre et trekk.",
   "@removeUnplacedPiece_Detail": {
     "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
   },
-  "endgameNMoveRule": "Beigu spēles N-Move noteikums",
+  "endgameNMoveRule": "Sluttspill N-Move-regel",
   "@endgameNMoveRule": {
     "description": "Endgame N-Move rule"
   },
-  "endgameNMoveRule_Detail": "Ja kādam no spēlētājiem ir tikai trīs gabali un neviens no spēlētājiem neizņem gabalu konkrētu kustību ietvaros, spēle tiek izlozēta.",
+  "endgameNMoveRule_Detail": "Hvis en av spillerne bare har tre brikker og ingen av spillerne fjerner en brikke innenfor et bestemt trekk, trekkes spillet.",
   "@endgameNMoveRule_Detail": {
     "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
   },
-  "drawReasonEndgameRule50": "Katram spēlētājam ir tikai trīs gabali, un neviens no spēlētājiem neizņem gabalu noteiktos gājienos.",
+  "drawReasonEndgameRule50": "Hver spiller har bare tre brikker, og ingen av spillerne fjerner en brikke innenfor et bestemt trekk.",
   "@drawReasonEndgameRule50": {
     "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
   },
-  "threefoldRepetitionRule": "Trīskāršs atkārtošanas noteikums",
+  "threefoldRepetitionRule": "Tredobbelt gjentagelsesregel",
   "@threefoldRepetitionRule": {
     "description": "Threefold repetition rule"
   },
-  "threefoldRepetitionRule_Detail": "Spēle tiek izlozēta, ja pozīcija rodas trešo reizi.",
+  "threefoldRepetitionRule_Detail": "Spillet trekkes hvis en posisjon oppstår for tredje gang.",
   "@threefoldRepetitionRule_Detail": {
     "description": "The game is drawn if a position occurs for the third time."
   },
-  "continueToMakeMove": "Dzirnavas! Turpiniet veikt kustību.",
+  "continueToMakeMove": "Mølle! Fortsett å gjøre et trekk.",
   "@continueToMakeMove": {
     "description": "Mill! Continue to make a move."
   },
-  "pointStyle": "Punkta stils",
+  "pointStyle": "Poengstil",
   "@pointStyle": {
     "description": "Point style"
   },
-  "pointWidth": "Punkta platums",
+  "pointWidth": "Punktbredde",
   "@pointWidth": {
     "description": "Point width"
   },
-  "solid": "Ciets",
+  "solid": "Fast",
   "@solid": {
     "description": "Solid"
   },
-  "hollow": "Dobis",
+  "hollow": "Hul",
   "@hollow": {
     "description": "Hollow"
   },
-  "languageName": "Latvietis",
+  "languageName": "Norsk",
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{Pārvietot}=1{{count} Pārvietot}other{{count} Kustības}}",
+  "moveNumber": "{count,plural, =0{trekk}=1{{count} trekk}other{{count} trekk}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {

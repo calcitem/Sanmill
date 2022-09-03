@@ -19,7 +19,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:sanmill/common/constants.dart';
-import 'package:sanmill/generated/l10n.dart';
 
 class EnvironmentVariablesPage extends StatefulWidget {
   @override
@@ -44,7 +43,8 @@ class _EnvironmentVariablesPageState extends State<EnvironmentVariablesPage> {
 
     return Scaffold(
       appBar: AppBar(
-          title: Text(S.of(context).environmentVariables), centerTitle: true),
+          title: Text("Environment Variables" /* TODO: environmentVariables */),
+          centerTitle: true),
       body: ListView(
         children: <Widget>[
           Container(

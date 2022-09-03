@@ -52,10 +52,11 @@ flutter_gen:
   output: lib/generated/assets/
 
 flutter:
-  generate: false
+  generate: true
   uses-material-design: true
 
   assets:
+    - assets/files/environment_variables.txt
     - assets/files/git-branch.txt
     - assets/files/git-revision.txt
     - assets/licenses/GPL-3.0.txt

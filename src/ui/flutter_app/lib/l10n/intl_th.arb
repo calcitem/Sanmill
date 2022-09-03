@@ -1,1252 +1,1154 @@
 {
-    "@@locale": "th",
-    "appName": "โรงสี",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "ยินดีต้อนรับ",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "ใช่",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "ไม่",
-    "@no": {
-        "description": "No"
-    },
-    "game": "เกม",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "มนุษย์กับ AI",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "มนุษย์กับ มนุษย์",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "AI เทียบกับ AI",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "มนุษย์กับ เมฆ",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "มนุษย์กับ LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "ทดสอบผ่าน LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "ย้าย",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": "  ย้าย",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "ย้ายรายการ",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "ย้ายรายการ",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "ไม่มีบันทึก",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "ตกลง",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "ยืนยัน",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "ยกเลิก",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "ลิขสิทธิ์ © 2021-2022 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "เลือกชิ้นผิด",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "วางชิ้นส่วนของคุณ",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "คุณไม่สามารถวางไว้ที่นี่",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "คุณวางไว้",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "ถอดชิ้นส่วน",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "คุณไม่สามารถลบออกได้",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "คุณลบออก",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "ย้ายชิ้น",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "คุณไม่สามารถวางชิ้นส่วนของคุณที่นี่",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "คุณไม่สามารถย้ายชิ้นส่วนของคุณที่นี่",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "มิลล์! ใช้ชิ้นส่วนของฝ่ายตรงข้าม",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "ดำเนินการต่อเพื่อนำชิ้นส่วนของฝ่ายตรงข้าม",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "เลือกชิ้นส่วนของคู่ต่อสู้ของคุณ",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "คุณไม่สามารถเอาชิ้นส่วนออกจากโรงสีได้",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "ชิ้นหนึ่งสามารถเคลื่อนที่ได้ 1 จุด",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "คุณไม่สามารถขยับชิ้นส่วนของคู่ต่อสู้ได้",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "มีสามชิ้นในบรรทัด",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "เลือกชิ้นส่วนของคุณเพื่อย้าย",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "คุณเหลือสามชิ้น",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "คุณสามารถย้ายไปยังจุดใดก็ได้ที่คุณต้องการ",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": "  ย้าย.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "ผู้เล่น 1 ชนะ!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "ผู้เล่น 2 ชนะ!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "วอน",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "สูญหาย",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "ยกเลิกแล้ว",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "กำลังคิด...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "เกมส์ใหม่",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "นำเข้าเกม",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "ส่งออกเกม",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "เกมนำเข้าจากคลิปบอร์ด",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "นำเข้าไม่ได้",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "การเคลื่อนไหวและกฎไม่ตรงกัน",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "เริ่มบันทึก",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "การบันทึก...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "หยุดบันทึก",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "แสดงการบันทึก",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "ไม่มีการบันทึก",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "โปรดรอ.",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "เริ่มเกมปัจจุบันใหม่หรือไม่",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "เริ่มต้นใหม่",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "เกมเริ่มแล้ว โปรดวาง",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "กำลังวิเคราะห์ ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "ผิดพลาด",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "อัตราการชนะ",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "คะแนน",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "ผู้เล่น 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "ผู้เล่น2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": "  จำนวนชิ้นน้อยกว่าสาม",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": "  ลาออก",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": "  ไม่มีทางไป",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "กระดานเต็มและไม่มีทางไป",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "หมดเวลา",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "ในระยะเคลื่อนที่ ไม่มีชิ้นส่วนใดถูกลบออกในจำนวนการเคลื่อนไหวเฉพาะครั้งล่าสุด",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "เสมอกันเพราะกระดานเต็ม",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "มันเป็นการเสมอกันเพราะการทำซ้ำสามเท่า",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "จบเกม! ไม่ทราบสาเหตุ",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "จบเกม",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "คุณชนะ! ขอแสดงความยินดี!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "ท้าทายระดับที่ยากขึ้น? ระดับใหม่จะเป็นระดับ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "คุณแพ้!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "วิเคราะห์",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "ชื่อผู้เล่น",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "เกี่ยวกับ",
-    "@about": {
-        "description": "About"
-    },
-    "version": "เวอร์ชั่น",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "ขอบคุณ",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "การตั้งค่า",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "ตัวเลือก",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "การตั้งค่า",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "ระดับความยาก",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "AI เวลาคิด",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "ความยาก",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "เสียงประกอบ",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "เล่นเสียงในเกม",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "ปิดเสียงเมื่อทำการย้อนกลับ",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "โทน",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "ก้าวแรก",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "มนุษย์",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "AI",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "ทางเลือก",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "รีสตาร์ทเกมอัตโนมัติเมื่อจบเกม",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "เปลี่ยนอัตโนมัติก่อนย้าย",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "AI ลาออกหากแพ้มากที่สุด",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "สุ่มย้าย",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "เรียนรู้ Endgame",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "เปิดหนังสือ",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "เบ็ดเตล็ด",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "กฎ",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "จำนวนชิ้นที่ผู้เล่นแต่ละคนมี",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "ผู้เล่นแต่ละคนมีกี่ชิ้น?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "จำนวนชิ้นบิน",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "หากเปิดใช้งานการบิน เมื่อผู้เล่นถูกลดจำนวนเป็นจำนวนชิ้นที่กำหนด ชิ้นส่วนของเธอสามารถย้ายไปยังจุดที่ว่างได้ แทนที่จะถูกจำกัดให้อยู่ที่จุดที่อยู่ติดกันเหมือนกับในส่วนที่เหลือของเกม",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "ชิ้นอย่างน้อย",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "เส้นทแยงมุม",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "เพิ่มเส้นทแยงมุมสี่เส้นเข้ากับกระดาน",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "ทำเครื่องหมายและชะลอการถอดชิ้นส่วน",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "ในขั้นตอนการวางจะไม่สามารถวางจุดของชิ้นส่วนที่ถูกถอดออกได้อีกต่อไป",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "ผู้เล่นคนที่สองย้ายก่อน",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "ผู้เล่นที่ขยับตัวที่สองในระยะการวางจะเคลื่อนที่ก่อนในระยะที่เคลื่อนที่",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "มัลติลบ",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "หากผู้เล่นปิดโรงสีมากกว่าหนึ่งครั้ง เธอจะลบจำนวนโรงสีที่เธอปิด",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "ทำลายโรงสี",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "โดยค่าเริ่มต้น ผู้เล่นจะต้องถอดชิ้นส่วนอื่น ๆ ออกก่อนที่จะนำชิ้นส่วนออกจากโรงสีที่ขึ้นรูป เปิดใช้งานตัวเลือกนี้เพื่อปิดใช้งานข้อจำกัด",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "ผู้เล่นคนที่สองแพ้เมื่อกระดานเต็ม",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "เมื่อกระดานเต็มเมื่อสิ้นสุดระยะการวาง ฝ่ายที่วางก่อนจะเป็นฝ่ายแพ้ในเกม มิฉะนั้นเกมจะเสมอกัน",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "แพ้เมื่อไม่มีการเคลื่อนไหวทางกฎหมาย",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "ผู้เล่นจะแพ้หากคู่ต่อสู้บล็อกพวกเขาเพื่อไม่ให้เคลื่อนที่ เปลี่ยนด้านเพื่อย้ายหากตัวเลือกนี้ถูกปิดใช้งาน",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "บิน",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "หากผู้เล่นเหลือเพียงสามหรือสี่ชิ้น (กำหนดได้) เธอสามารถย้ายชิ้นส่วนนั้นไปยังจุดว่างใดก็ได้",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "กฎ N-move",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "เกมจะถูกสุ่มขึ้นมาหากไม่มีการลบในจำนวนการเคลื่อนไหวที่ระบุ",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "ย้อนกลับ",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "โปรดเลือก",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "สำเนา",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "คัดลอกประวัติการย้ายไปยังคลิปบอร์ดแล้ว",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "ช่วยด้วย",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "คำติชม",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "ทางออก",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "การตั้งค่ากฎ",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "สี",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "สีกระดาน Board",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "ชิ้นสี",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "สีพื้นหลัง",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "สีเส้นกระดาน",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "เครื่องเล่น 1 ชิ้น สี",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "เครื่องเล่น 2 ชิ้น สี",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "สีข้อความ",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "AI ขี้เกียจ",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "แสดงจำนวนชิ้นในมือ",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "แสดงสัญลักษณ์บนกระดาน",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "แสดงแถบเครื่องมือนำทางประวัติ",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "แสดง",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "ความกว้างของเส้นขอบกระดาน Board",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "ความกว้างของเส้นด้านในของบอร์ด",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "ความกว้างของชิ้น",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "ขนาดตัวอักษร",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "สัญกรณ์ WMD",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "คืนค่า",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "เรียกคืนการตั้งค่าเริ่มต้น",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "แอปจะออกจาก",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "คุณต้องปิดทันทีและเปิดแอปอีกครั้งจึงจะมีผล",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "เลือก",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "ข้อมูล",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "คำใบ้",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "ผู้เล่น",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "ผู้เล่น 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "ผู้เล่น2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "วิธีการเล่น",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "แตะที่จุดใดก็ได้เพื่อวางชิ้นส่วน",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "แตะที่ชิ้นส่วนเพื่อย้าย",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "แตะที่จุดที่เชื่อมต่อกับชิ้นส่วนเพื่อย้าย",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "แตะที่ชิ้นหนึ่งของฝ่ายตรงข้ามเพื่อลบ",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "คุณต้องสร้างโรงสีก่อนจึงจะสามารถถอดชิ้นส่วนได้",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "คุณต้องเล่นกับชิ้นส่วนของคุณ",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "สถิติ",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "เกมทั้งหมด",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "ผล",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "คุณไม่สามารถเอามันออกจากโรงสี",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "ซ้าย",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "นโยบายความเป็นส่วนตัว",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "โปรดอ่านอย่างถี่ถ้วนและให้แน่ใจว่าคุณเข้าใจและเห็นด้วยกับสิ่งนี้อย่างถ่องแท้",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". หากคุณไม่เห็นด้วยกับนโยบายนี้ โปรดอย่าใช้แอปนี้ การใช้แอพหมายความว่าคุณยอมรับข้อกำหนดเหล่านี้",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " และ",
-    "accept": "ยอมรับ",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "เลิกทำ",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "เลิกทำตัวเลือก",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "เป็นไปได้ที่จะเลิกทำการย้าย",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "เอาคืนไป",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "รับคืน",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "ที่รอ",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "ก้าวไปข้างหน้า",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "เอาคืนทั้งหมด",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "ก้าวไปข้างหน้าทั้งหมด",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "ย้ายเดี๋ยวนี้",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "เสร็จแล้ว",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "แคร็ก-มิลล์",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "หากผู้เล่นมีเพียงชิ้นในโรงสี ชิ้นส่วนในโรงสีจะไม่ล็อคเพื่อเอาออก",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "ระยะเวลาของภาพเคลื่อนไหว",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "ไม่มี",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "ธีม",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "เกมนี้มีจุดมุ่งหมายเพื่อให้ฝ่ายตรงข้ามมีการเคลื่อนไหวน้อยกว่าสามชิ้นหรือไม่มีการเคลื่อนไหวทางกฎหมาย\n\nเกมจะดึงออกมาโดยอัตโนมัติหากตำแหน่งเกิดขึ้นเป็นครั้งที่สามหรือไม่มีการเอาออกในการเคลื่อนไหว 100 ครั้งล่าสุด (กำหนดได้)\n\nเกมดำเนินไปในสามขั้นตอน:\n\n1. วางชิ้นบนจุดที่ว่าง\n2. ย้ายชิ้นส่วนไปยังจุดที่อยู่ติดกัน\n3. (เฟสเสริม) ย้ายชิ้นส่วนไปยังจุดที่ว่างเมื่อลดผู้เล่นลงเหลือสามชิ้น three\n\nการวาง\n\nเกมเริ่มต้นด้วยกระดานเปล่าซึ่งประกอบด้วยตารางที่มีคะแนนยี่สิบสี่ ผู้เล่นผลัดกันวางชิ้นส่วนของตนบนจุดที่ว่างจนกว่าผู้เล่นแต่ละคนจะวางชิ้นส่วนทั้งหมดไว้บนกระดาน หากผู้เล่นสามารถวางหมากของเขาได้สามชิ้น เขาจะมี \"โรงโม่\" และอาจนำชิ้นส่วนของฝ่ายตรงข้ามหนึ่งชิ้นออกจากกระดานได้\n\nในบางกฎ ผู้เล่นต้องถอดชิ้นส่วนอื่นออกก่อนที่จะนำชิ้นส่วนออกจากโรงสีที่ขึ้นรูป\n\nคุณไม่สามารถวางชิ้นส่วนไปยังจุดของชิ้นส่วนที่ถูกถอดออกอีกครั้งในขั้นตอนการวางกฎเกณฑ์บางประการ\n\nเมื่อใช้ชิ้นส่วนทั้งหมด ผู้เล่นผลัดกันเคลื่อนที่\n\nขนย้าย\n\nในการย้ายผู้เล่นจะย้ายชิ้นส่วนของเขาไปตามเส้นกระดานไปยังจุดที่ว่างอยู่ติดกัน ถ้าเขาทำไม่ได้ เขาแพ้เกม ผู้เล่นที่จัดตำแหน่งสามชิ้นของเขาบนเส้นกระดานมีโรงสีและอาจถอดชิ้นส่วนของฝ่ายตรงข้ามหนึ่งชิ้นในขณะที่วาง ผู้เล่นคนใดลดเหลือสองชิ้น ไม่มีตัวเลือกในการสร้างโรงสีใหม่ และทำให้แพ้ในเกม ผู้เล่นยังสามารถสูญเสียเมื่อมากกว่าสามชิ้นถ้าคู่ต่อสู้ของเขาบล็อกไม่ให้เคลื่อนที่\n\nบิน\n\nในบางรูปแบบของกฎ เมื่อผู้เล่นเหลือเพียงสามชิ้น ชิ้นส่วนของเขาสามารถบิน กระโดด หรือกระโดดไปยังจุดที่ว่างได้ ไม่เพียงแต่ชิ้นที่อยู่ติดกัน",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "ข้อมูลเวอร์ชัน",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "ใบอนุญาต",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "รหัสแหล่งที่มา",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "ประกาศบุคคลที่สาม",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "เวอร์ชันแอป App",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "ทั่วไป",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "ขั้นสูง",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "การวาง",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "ขนย้าย",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "การถอด",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "เงื่อนไขเกมโอเวอร์",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "สไตล์การเล่นของ AI",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Passive",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "หมดเวลา",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "การปรับเปลี่ยนในแบบของคุณ",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "สำหรับนักพัฒนา",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "โหมดนักพัฒนา",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "วาดบนประสบการณ์ของมนุษย์",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "พิจารณาความคล่องตัวของชิ้น",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "จำนวนชิ้น",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "ในมือ",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "บนกระดาน",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "คณะกรรมการชดเชยจากด้านบน",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "มันไม่ใช่ตาของ AI",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "AI ไม่ได้คิด",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "เล่นซ้ำอัตโนมัติ",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "คุณอยู่ที่ส่วนท้ายของรายการย้าย",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "แตะกลับอีกครั้งเพื่อออก",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "ตัวแปรสภาพแวดล้อม",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "มากกว่า",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "เป็นคุณลักษณะทดลอง",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "การทดลอง",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "ใบอนุญาตโอเพ่นซอร์ส",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "ภาษา",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "ภาษาเริ่มต้น",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "ชิ้นส่วนสามารถเคลื่อนที่ได้ในระยะการวาง",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "ไม่มีขั้นตอนการวางและการย้ายที่ชัดเจน กล่าวคือ ผู้เล่นสามารถตัดสินใจได้ทุกการเคลื่อนไหวว่าต้องการวางชิ้นส่วนบนกระดานหรือย้ายชิ้นส่วนของตนชิ้นใดชิ้นหนึ่ง (ตราบใดที่ยังมีชิ้นส่วนที่เหลือให้วาง)",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "สีเมนู",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "สีข้อความเมนู",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "สีพื้นหลังของเมนู",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "สีของรายการไฮไลท์เมนู",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "สีพื้นหลังของแถบเครื่องมือหลัก",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "สีไอคอนแถบเครื่องมือหลัก",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "สีพื้นหลังของแถบเครื่องมือนำทาง",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "สีไอคอนแถบเครื่องมือนำทาง",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "ซ่อนแถบเครื่องมือโดยอัตโนมัติ",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "ตำแหน่งแถบเครื่องมือบนหน้าจอ",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "ท็อป",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "ด้านล่าง",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "ศูนย์",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "สีทึบ",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "ภาพ",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "เลือกรูปภาพของคุณ",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "เบา",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "มืด",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "ธีม",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "ธีมปัจจุบัน",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "บันทึกธีม",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "แบบอักษร",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "แสดงกราฟการวิเคราะห์",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "บทวิเคราะห์",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "บันทึกเกม",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "โหลดเกมส์",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "ตำแหน่งการติดตั้ง",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "แสดงการเคลื่อนไหวทางกฎหมาย",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "แสดงการเคลื่อนไหวล่าสุด",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "แสดงลูกศร",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "ชิ้น",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "แสดงบทวิเคราะห์",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "กระทู้",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "มีส่วนเกี่ยวข้อง",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "ช่วยปรับปรุงการแปล",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "กวดวิชา",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "โรงสีคลาสสิค",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "โรงสีผสม",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "ซีลอนมิลล์",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "โรงสีอาจหักแล้วทำใหม่ซ้ำๆ",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "หากผู้เล่นทำลายโรงโม่เพื่อสร้างโรงสีใหม่ทันที ผู้เล่นดังกล่าวสามารถย้ายชิ้นส่วนดังกล่าวกลับไปที่ทางแยกเดิมในการย้ายครั้งต่อไปหากสร้างโรงสีใหม่",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "เกมจะถูกสุ่มขึ้นถ้าผู้เล่นมีสามชิ้นและหลังจากผ่านไปสิบกระบวนแล้วผู้เล่นจะไม่ถอดชิ้นส่วนของฝ่ายตรงข้าม",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "เมื่อผู้เล่นลดลงเหลือสามชิ้น และผู้เล่นไม่สามารถถอดชิ้นส่วนของฝ่ายตรงข้ามได้ภายในสิบกระบวนท่า เกมจะเสมอกัน",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "ปิด I",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "ชิ้นสีขาว",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "ชิ้นสีดำ",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "จุดบ้าน",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "จุดที่ว่างเปล่า",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "ไม่มีสาระ",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "วางเฟส",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "ย้ายเฟส",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "เฟสบิน",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "ด้านที่จะย้าย",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "ย้ายครั้งสุดท้าย",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "เลือกแล้ว",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "เมนูหลัก",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "การเข้าถึง",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "รองรับโปรแกรมอ่านหน้าจอ",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "มันคือการจับสลาก",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "วาด",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "ชิ้นไฮไลท์สี",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "อัลกอริทึม",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "ถอดชิ้นส่วนที่ไม่ได้วาง",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "หากผู้เล่นสร้างโรงสีในขั้นตอนการวาง เธอจะถอดชิ้นส่วนที่ไม่ได้วางของคู่ต่อสู้ออกและทำการเคลื่อนไหวต่อไป",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "กฎ Endgame N-Move",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "ถ้าผู้เล่นคนใดคนหนึ่งมีเพียงสามชิ้นและไม่มีผู้เล่นถอดชิ้นส่วนภายในการเคลื่อนไหวเฉพาะ เกมจะถูกสุ่มจับ",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "ผู้เล่นคนใดคนหนึ่งมีเพียงสามชิ้นและไม่มีใครถอดชิ้นส่วนภายในการเคลื่อนไหวเฉพาะ",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "กฎการทำซ้ำสามเท่า",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "เกมจะถูกจับสลากหากตำแหน่งเกิดขึ้นเป็นครั้งที่สาม",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "มิลล์! ดำเนินการต่อไป",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "รูปแบบจุด",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "ความกว้างของจุด",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "แข็ง",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "กลวง",
-    "@hollow": {
-        "description": "Hollow"
+  "appName": "โรงสี",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "ยินดีต้อนรับ",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "ใช่",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "ไม่",
+  "@no": {
+    "description": "No"
+  },
+  "game": "เกม",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "มนุษย์กับ AI",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "มนุษย์กับ มนุษย์",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI เทียบกับ AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "มนุษย์กับ เมฆ",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "มนุษย์กับ LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "ทดสอบผ่าน LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "ย้าย",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "ย้ายรายการ",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "ย้ายรายการ",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "ไม่มีบันทึก",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "ตกลง",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "ยืนยัน",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "ยกเลิก",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "เลือกชิ้นผิด",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "วางชิ้นส่วนของคุณ",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "คุณไม่สามารถวางไว้ที่นี่",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "คุณวางไว้",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "ถอดชิ้นส่วน",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "คุณไม่สามารถลบออกได้",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "คุณลบออก",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "ย้ายชิ้น",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "คุณไม่สามารถวางชิ้นส่วนของคุณที่นี่",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "คุณไม่สามารถย้ายชิ้นส่วนของคุณที่นี่",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "มิลล์! ใช้ชิ้นส่วนของฝ่ายตรงข้าม",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "ดำเนินการต่อเพื่อนำชิ้นส่วนของฝ่ายตรงข้าม",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "เลือกชิ้นส่วนของคู่ต่อสู้ของคุณ",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "คุณไม่สามารถเอาชิ้นส่วนออกจากโรงสีได้",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "ชิ้นหนึ่งสามารถเคลื่อนที่ได้ 1 จุด",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "คุณไม่สามารถขยับชิ้นส่วนของคู่ต่อสู้ได้",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "เลือกชิ้นส่วนของคุณเพื่อย้าย",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "คุณเหลือสามชิ้น",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "คุณสามารถย้ายไปยังจุดใดก็ได้ที่คุณต้องการ",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} เพื่อย้าย",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "ผู้เล่น 1 ชนะ!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "ผู้เล่น 2 ชนะ!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "วอน",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "สูญหาย",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "กำลังคิด…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "เกมส์ใหม่",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "นำเข้าเกม",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "ส่งออกเกม",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "เกมนำเข้าจากคลิปบอร์ด",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "ไม่สามารถนำเข้า {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "การเคลื่อนไหวและกฎไม่ตรงกัน",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "โปรดรอ.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "เริ่มเกมปัจจุบันใหม่หรือไม่?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "เริ่มต้นใหม่",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "เกมเริ่มแล้ว โปรดวาง.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "กำลังวิเคราะห์…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "ผิดพลาด: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "อัตราการชนะ",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "คะแนน:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "ผู้เล่น 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "ผู้เล่น2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} จำนวนชิ้นน้อยกว่าสาม",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player}ลาออก",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} ไม่มีทางไป",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "กระดานเต็มและ {player} ไม่มีทางไป",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "เวลาหมดลง {player} หายไป",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "ในระยะเคลื่อนที่ ไม่มีชิ้นส่วนใดถูกลบออกในจำนวนการเคลื่อนไหวเฉพาะครั้งล่าสุด",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "เสมอกันเพราะกระดานเต็ม",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "มันเป็นการเสมอกันเพราะการทำซ้ำสามเท่า",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "จบเกม! ไม่ทราบสาเหตุ",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "จบเกม",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "คุณชนะ! ขอแสดงความยินดี!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "ท้าทายระดับที่ยากขึ้น? ระดับใหม่จะเป็นระดับ {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "คุณแพ้!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "วิเคราะห์",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "เกี่ยวกับ",
+  "@about": {
+    "description": "About"
+  },
+  "version": "รุ่น: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "ขอบคุณ",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "การตั้งค่า",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "ตัวเลือก",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "การตั้งค่าทั่วไป",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "ระดับความยาก",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI เวลาคิด",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "ความยาก",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "เสียงประกอบ",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "เล่นเสียงในเกม",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "ปิดเสียงเมื่อทำการย้อนกลับ",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "โทน",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "ก้าวแรก",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "มนุษย์",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "ทางเลือก",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "รีสตาร์ทเกมอัตโนมัติเมื่อจบเกม",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "เปลี่ยนอัตโนมัติก่อนย้าย",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "สุ่มย้าย",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "เบ็ดเตล็ด",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "กฎ",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "จำนวนชิ้นที่ผู้เล่นแต่ละคนมี",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "ผู้เล่นแต่ละคนมีกี่ชิ้น?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "จำนวนชิ้นบิน",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "หากเปิดใช้งานการบิน เมื่อผู้เล่นถูกลดจำนวนเป็นจำนวนชิ้นที่กำหนด ชิ้นส่วนของเธอสามารถย้ายไปยังจุดที่ว่างได้ แทนที่จะถูกจำกัดให้อยู่ที่จุดที่อยู่ติดกันเหมือนกับในส่วนที่เหลือของเกม",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "ชิ้นอย่างน้อย",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "เส้นทแยงมุม",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "เพิ่มเส้นทแยงมุมสี่เส้นเข้ากับกระดาน",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "ทำเครื่องหมายและชะลอการถอดชิ้นส่วน",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "ในขั้นตอนการวางจะไม่สามารถวางจุดของชิ้นส่วนที่ถูกถอดออกได้อีกต่อไป",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "ผู้เล่นคนที่สองย้ายก่อน",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "ผู้เล่นที่ขยับตัวที่สองในระยะการวางจะเคลื่อนที่ก่อนในระยะที่เคลื่อนที่",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "มัลติลบ",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "หากผู้เล่นปิดโรงสีมากกว่าหนึ่งครั้ง เธอจะลบจำนวนโรงสีที่เธอปิด",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "ทำลายโรงสี",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "โดยค่าเริ่มต้น ผู้เล่นจะต้องถอดชิ้นส่วนอื่น ๆ ออกก่อนที่จะนำชิ้นส่วนออกจากโรงสีที่ขึ้นรูป เปิดใช้งานตัวเลือกนี้เพื่อปิดใช้งานข้อจำกัด",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "ผู้เล่นคนที่สองแพ้เมื่อกระดานเต็ม",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "เมื่อกระดานเต็มเมื่อสิ้นสุดระยะการวาง ฝ่ายที่วางก่อนจะเป็นฝ่ายแพ้ในเกม มิฉะนั้นเกมจะเสมอกัน",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "แพ้เมื่อไม่มีการเคลื่อนไหวทางกฎหมาย",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "ผู้เล่นจะแพ้หากคู่ต่อสู้บล็อกพวกเขาเพื่อไม่ให้เคลื่อนที่ เปลี่ยนด้านเพื่อย้ายหากตัวเลือกนี้ถูกปิดใช้งาน",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "บิน",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "หากผู้เล่นเหลือเพียงสามหรือสี่ชิ้น (กำหนดได้) เธอสามารถย้ายชิ้นส่วนนั้นไปยังจุดว่างใดก็ได้",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "กฎ N-move",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "เกมจะถูกสุ่มขึ้นมาหากไม่มีการลบในจำนวนการเคลื่อนไหวที่ระบุ",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "ย้อนกลับ",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "โปรดเลือก",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "สำเนา",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "คัดลอกประวัติการย้ายไปยังคลิปบอร์ดแล้ว.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "ช่วยด้วย",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "คำติชม",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "ทางออก",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "การตั้งค่ากฎ",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "สี",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "สีกระดาน Board",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "ชิ้นสี",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "สีพื้นหลัง",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "สีเส้นกระดาน",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "เครื่องเล่น 1 ชิ้น สี",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "เครื่องเล่น 2 ชิ้น สี",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "สีข้อความ",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "แสดงจำนวนชิ้นในมือ",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "แสดงสัญลักษณ์บนกระดาน",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "แสดงแถบเครื่องมือนำทางประวัติ",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "แสดง",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "ความกว้างของเส้นขอบกระดาน Board",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "ความกว้างของเส้นด้านในของบอร์ด",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "ความกว้างของชิ้น",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "ขนาดตัวอักษร",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "สัญกรณ์ WMD",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "คืนค่า",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "เรียกคืนการตั้งค่าเริ่มต้น",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "เลือก {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "ข้อมูล",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "คำใบ้",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "ผู้เล่น",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "ผู้เล่น 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "ผู้เล่น2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "วิธีการเล่น",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "แตะที่จุดใดก็ได้เพื่อวางชิ้นส่วน",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "แตะที่ชิ้นส่วนเพื่อย้าย",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "แตะที่จุดที่เชื่อมต่อกับชิ้นส่วนเพื่อย้าย",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "แตะที่ชิ้นหนึ่งของฝ่ายตรงข้ามเพื่อลบ",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "คุณต้องสร้างโรงสีก่อนจึงจะสามารถถอดชิ้นส่วนได้",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "คุณต้องเล่นกับชิ้นส่วนของคุณ",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "สถิติ",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "เกมทั้งหมด",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "ผล",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "ซ้าย",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "นโยบายความเป็นส่วนตัว",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "โปรดอ่านอย่างถี่ถ้วนและให้แน่ใจว่าคุณเข้าใจและเห็นด้วยกับสิ่งนี้อย่างถ่องแท้ ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". หากคุณไม่เห็นด้วยกับนโยบายนี้ โปรดอย่าใช้แอปนี้ การใช้แอพหมายความว่าคุณยอมรับข้อกำหนดเหล่านี้",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " และ ",
+  "@and": {},
+  "accept": "ยอมรับ",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "เอาคืนไป",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "รับคืน…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "ที่รอ…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "ก้าวไปข้างหน้า",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "เอาคืนทั้งหมด",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "ก้าวไปข้างหน้าทั้งหมด",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "ย้ายเดี๋ยวนี้",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "เสร็จแล้ว",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "แคร็ก-มิลล์",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "หากผู้เล่นมีเพียงชิ้นในโรงสี ชิ้นส่วนในโรงสีจะไม่ล็อคเพื่อเอาออก",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "ระยะเวลาของภาพเคลื่อนไหว",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "ไม่มี",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "ธีม",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "เกมนี้มีจุดมุ่งหมายเพื่อให้ฝ่ายตรงข้ามมีการเคลื่อนไหวน้อยกว่าสามชิ้นหรือไม่มีการเคลื่อนไหวทางกฎหมาย\n\nเกมจะดึงออกมาโดยอัตโนมัติหากตำแหน่งเกิดขึ้นเป็นครั้งที่สามหรือไม่มีการเอาออกในการเคลื่อนไหว 100 ครั้งล่าสุด (กำหนดได้)\n\nเกมดำเนินไปในสามขั้นตอน:\n\n1. วางชิ้นบนจุดที่ว่าง\n2. ย้ายชิ้นส่วนไปยังจุดที่อยู่ติดกัน\n3. (เฟสเสริม) ย้ายชิ้นส่วนไปยังจุดที่ว่างเมื่อลดผู้เล่นลงเหลือสามชิ้น three\n\nการวาง\n\nเกมเริ่มต้นด้วยกระดานเปล่าซึ่งประกอบด้วยตารางที่มีคะแนนยี่สิบสี่ ผู้เล่นผลัดกันวางชิ้นส่วนของตนบนจุดที่ว่างจนกว่าผู้เล่นแต่ละคนจะวางชิ้นส่วนทั้งหมดไว้บนกระดาน หากผู้เล่นสามารถวางหมากของเขาได้สามชิ้น เขาจะมี \"โรงโม่\" และอาจนำชิ้นส่วนของฝ่ายตรงข้ามหนึ่งชิ้นออกจากกระดานได้\n\nในบางกฎ ผู้เล่นต้องถอดชิ้นส่วนอื่นออกก่อนที่จะนำชิ้นส่วนออกจากโรงสีที่ขึ้นรูป\n\nคุณไม่สามารถวางชิ้นส่วนไปยังจุดของชิ้นส่วนที่ถูกถอดออกอีกครั้งในขั้นตอนการวางกฎเกณฑ์บางประการ\n\nเมื่อใช้ชิ้นส่วนทั้งหมด ผู้เล่นผลัดกันเคลื่อนที่\n\nขนย้าย\n\nในการย้ายผู้เล่นจะย้ายชิ้นส่วนของเขาไปตามเส้นกระดานไปยังจุดที่ว่างอยู่ติดกัน ถ้าเขาทำไม่ได้ เขาแพ้เกม ผู้เล่นที่จัดตำแหน่งสามชิ้นของเขาบนเส้นกระดานมีโรงสีและอาจถอดชิ้นส่วนของฝ่ายตรงข้ามหนึ่งชิ้นในขณะที่วาง ผู้เล่นคนใดลดเหลือสองชิ้น ไม่มีตัวเลือกในการสร้างโรงสีใหม่ และทำให้แพ้ในเกม ผู้เล่นยังสามารถสูญเสียเมื่อมากกว่าสามชิ้นถ้าคู่ต่อสู้ของเขาบล็อกไม่ให้เคลื่อนที่\n\nบิน\n\nในบางรูปแบบของกฎ เมื่อผู้เล่นเหลือเพียงสามชิ้น ชิ้นส่วนของเขาสามารถบิน กระโดด หรือกระโดดไปยังจุดที่ว่างได้ ไม่เพียงแต่ชิ้นที่อยู่ติดกัน\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "ข้อมูลเวอร์ชัน",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "ใบอนุญาต",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "รหัสแหล่งที่มา",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "เวอร์ชันแอป App",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "ทั่วไป",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "ขั้นสูง",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "การวาง",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "ขนย้าย",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "การถอด",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "เงื่อนไขเกมโอเวอร์",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "สไตล์การเล่นของ AI",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "เฉื่อย",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "หมดเวลา",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "รูปร่าง",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "วาดบนประสบการณ์ของมนุษย์",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "พิจารณาความคล่องตัวของชิ้น",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "จำนวนชิ้น:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} ในมือ: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} บนเรือ: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "คณะกรรมการชดเชยจากด้านบน",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "มันไม่ใช่ตาของ AI",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI ไม่ได้คิด",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "คุณอยู่ที่ส่วนท้ายของรายการย้าย",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "แตะกลับอีกครั้งเพื่อออก",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "มากกว่า",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "เป็นคุณลักษณะทดลอง",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "การทดลอง",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "ใบอนุญาตโอเพ่นซอร์ส",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "ภาษา",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "ภาษาเริ่มต้น",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "ชิ้นส่วนสามารถเคลื่อนที่ได้ในระยะการวาง",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "ไม่มีขั้นตอนการวางและการย้ายที่ชัดเจน กล่าวคือ ผู้เล่นสามารถตัดสินใจได้ทุกการเคลื่อนไหวว่าต้องการวางชิ้นส่วนบนกระดานหรือย้ายชิ้นส่วนของตนชิ้นใดชิ้นหนึ่ง (ตราบใดที่ยังมีชิ้นส่วนที่เหลือให้วาง)",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "สีเมนู",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "สีข้อความเมนู",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "สีของรายการไฮไลท์เมนู",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "สีพื้นหลังของแถบเครื่องมือหลัก",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "สีไอคอนแถบเครื่องมือหลัก",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "สีพื้นหลังของแถบเครื่องมือนำทาง",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "สีไอคอนแถบเครื่องมือนำทาง",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "ซ่อนแถบเครื่องมือโดยอัตโนมัติ",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "ตำแหน่งแถบเครื่องมือบนหน้าจอ",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "ท็อป",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "ด้านล่าง",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "ศูนย์",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "สีทึบ",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "ภาพ",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "เลือกรูปภาพของคุณ",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "เบา",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "มืด",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "ธีม",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "ธีมปัจจุบัน",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "บันทึกธีม",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "แสดงกราฟการวิเคราะห์",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "บทวิเคราะห์",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "บันทึกเกม",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "โหลดเกมส์",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "ตำแหน่งการติดตั้ง",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "แสดงการเคลื่อนไหวทางกฎหมาย",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "แสดงการเคลื่อนไหวล่าสุด",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "แสดงลูกศร",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "ชิ้น",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "แสดงบทวิเคราะห์",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "กระทู้",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "มีส่วนเกี่ยวข้อง",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "ช่วยปรับปรุงการแปล",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "กวดวิชา",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "โรงสีคลาสสิค",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "โรงสีผสม",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "ซีลอนมิลล์",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "โรงสีอาจหักแล้วทำใหม่ซ้ำๆ",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "หากผู้เล่นทำลายโรงโม่เพื่อสร้างโรงสีใหม่ทันที ผู้เล่นดังกล่าวสามารถย้ายชิ้นส่วนดังกล่าวกลับไปที่ทางแยกเดิมในการย้ายครั้งต่อไปหากสร้างโรงสีใหม่",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "เกมจะถูกสุ่มขึ้นถ้าผู้เล่นมีสามชิ้นและหลังจากผ่านไปสิบกระบวนแล้วผู้เล่นจะไม่ถอดชิ้นส่วนของฝ่ายตรงข้าม",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "เมื่อผู้เล่นลดลงเหลือสามชิ้น และผู้เล่นไม่สามารถถอดชิ้นส่วนของฝ่ายตรงข้ามได้ภายในสิบกระบวนท่า เกมจะเสมอกัน",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "ปิด I",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "ชิ้นสีขาว",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "ชิ้นสีดำ",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "จุดบ้าน",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "จุดที่ว่างเปล่า",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "ไม่มีสาระ",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "วางเฟส",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "ย้ายเฟส",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "เฟสบิน",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "ด้านที่จะย้าย: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "ย้ายล่าสุด: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "เลือกแล้ว",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "การเข้าถึง",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "รองรับโปรแกรมอ่านหน้าจอ",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "มันคือการจับสลาก!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "วาด",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "ชิ้นไฮไลท์สี",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "อัลกอริทึม",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "ถอดชิ้นส่วนที่ไม่ได้วาง",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "หากผู้เล่นสร้างโรงสีในขั้นตอนการวาง เธอจะถอดชิ้นส่วนที่ไม่ได้วางของคู่ต่อสู้ออกและทำการเคลื่อนไหวต่อไป",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "กฎ Endgame N-Move",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "ถ้าผู้เล่นคนใดคนหนึ่งมีเพียงสามชิ้นและไม่มีผู้เล่นถอดชิ้นส่วนภายในการเคลื่อนไหวเฉพาะ เกมจะถูกสุ่มจับ",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "ผู้เล่นคนใดคนหนึ่งมีเพียงสามชิ้นและไม่มีใครถอดชิ้นส่วนภายในการเคลื่อนไหวเฉพาะ",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "กฎการทำซ้ำสามเท่า",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "เกมจะถูกจับสลากหากตำแหน่งเกิดขึ้นเป็นครั้งที่สาม",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "มิลล์! ดำเนินการต่อไป",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "รูปแบบจุด",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "ความกว้างของจุด",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "แข็ง",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "กลวง",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "ไทย",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Move}other{{count} ย้าย}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  }
 }

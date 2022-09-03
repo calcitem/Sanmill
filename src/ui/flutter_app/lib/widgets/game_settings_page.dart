@@ -119,8 +119,9 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       } else {
         _restore();
         ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(S.of(context).exitAppManually)));
+        // TODO: Remove it.
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(S.of(context).close)));
       }
     }
 
@@ -128,8 +129,9 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
 
     var prompt = "";
 
+    // TODO: Remove it
     if (Platform.isAndroid) {
-      prompt = S.of(context).exitApp;
+      prompt = S.of(context).exit;
     }
 
     showDialog(
@@ -178,7 +180,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       backgroundColor: AppTheme.lightBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(S.of(context).preferences),
+        title: Text(S.of(context).generalSettings),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -319,7 +321,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
       ),
       SizedBox(height: AppTheme.sizedBoxHeight),
       Developer.developerModeEnabled
-          ? Text(S.of(context).forDevelopers,
+          ? Text("For Developers", // TODO: forDevelopers
               style: AppTheme.settingsHeaderStyle)
           : SizedBox(height: 1),
       Developer.developerModeEnabled
@@ -330,7 +332,7 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                   context: context,
                   value: Config.developerMode,
                   onChanged: setDeveloperMode,
-                  titleString: S.of(context).developerMode,
+                  titleString: "Developer Mode", // TODO: developerMode
                 ),
                 ListItemDivider(),
                 SettingsSwitchListTile(
@@ -349,7 +351,8 @@ class _GameSettingsPageState extends State<GameSettingsPage> {
                 ListItemDivider(),
                 SettingsListTile(
                   context: context,
-                  titleString: S.of(context).environmentVariables,
+                  titleString:
+                      "Environment Variables", // TODO: environmentVariables
                   onTap: () {
                     Navigator.push(
                       context,

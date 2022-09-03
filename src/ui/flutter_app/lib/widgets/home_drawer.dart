@@ -94,7 +94,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
       ),
       DrawerListItem(
         index: DrawerIndex.preferences,
-        title: S.of(context).preferences,
+        title: S.of(context).generalSettings,
         icon: Icon(FluentIcons.options_24_regular),
       ),
       DrawerListItem(
@@ -104,7 +104,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
       ),
       DrawerListItem(
         index: DrawerIndex.personalization,
-        title: S.of(context).personalization,
+        title: S.of(context).appearance,
         icon: Icon(FluentIcons.design_ideas_24_regular),
       ),
       DrawerListItem(

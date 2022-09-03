@@ -1,1252 +1,1154 @@
 {
-    "@@locale": "kn",
-    "appName": "ಮಿಲ್",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "ಸ್ವಾಗತ",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "ಹೌದು",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "ಇಲ್ಲ",
-    "@no": {
-        "description": "No"
-    },
-    "game": "ಆಟ",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "ಯಂತ್ರವನ್ನು ಸವಾಲು ಮಾಡಿ",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "ಇಬ್ಬರು ಆಟಗಾರರ ಯುದ್ಧ",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "ಯಂತ್ರದಿಂದ ಯಂತ್ರ",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "ಹ್ಯೂಮನ್ Vs. ಮೇಘ",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "ಹ್ಯೂಮನ್ Vs. ಲ್ಯಾನ್",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "LAN ಮೂಲಕ ಪರೀಕ್ಷಿಸಿ",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "ಸರಿಸಿ",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " ಚಲಿಸುತ್ತದೆ",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "ಪಟ್ಟಿಯನ್ನು ಸರಿಸಿ",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "ಪಟ್ಟಿಯನ್ನು ಸರಿಸಿ",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "ಯಾವುದೇ ದಾಖಲೆ ಇಲ್ಲ",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "ಸರಿ",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "ದೃಢೀಕರಿಸಿ",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "ರದ್ದುಮಾಡಿ",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "ಕೃತಿಸ್ವಾಮ್ಯ © 2021-2022 ಕ್ಯಾಲ್ಸಿಟೆಮ್ ಸ್ಟುಡಿಯೋ",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "ತಪ್ಪು ತುಂಡು ಆಯ್ಕೆಮಾಡಿ.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "ನಿಮ್ಮ ತುಣುಕುಗಳನ್ನು ಇರಿಸಿ.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "ನೀವು ಅದನ್ನು ಇಲ್ಲಿ ಇರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "ನೀವು ಇರಿಸಿದ್ದೀರಿ.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "ತುಂಡು ತೆಗೆದುಹಾಕಿ.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "ನೀವು ಅದನ್ನು ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "ನೀವು ತೆಗೆದುಹಾಕಿದ್ದೀರಿ.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "ತುಂಡು ಸರಿಸಿ.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "ನಿಮ್ಮ ತುಂಡನ್ನು ಇಲ್ಲಿ ಇರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "ನಿಮ್ಮ ತುಂಡನ್ನು ಇಲ್ಲಿಗೆ ಸರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "ಮಿಲ್! ನಿಮ್ಮ ಎದುರಾಳಿಯ ತುಂಡನ್ನು ತೆಗೆದುಕೊಳ್ಳಿ.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "ನಿಮ್ಮ ಎದುರಾಳಿಯ ತುಣುಕನ್ನು ತೆಗೆದುಕೊಳ್ಳುವುದನ್ನು ಮುಂದುವರಿಸಿ.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "ನಿಮ್ಮ ಎದುರಾಳಿಯ ತುಣುಕುಗಳಲ್ಲಿ ಒಂದನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "ನೀವು ಗಿರಣಿಯಿಂದ ತುಂಡನ್ನು ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "ಒಂದು ತುಂಡು 1 ಬಿಂದುವನ್ನು ಚಲಿಸಬಹುದು.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "ನಿಮ್ಮ ಎದುರಾಳಿಯ ತುಣುಕುಗಳನ್ನು ನೀವು ಸರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "ಒಂದು ಸಾಲಿನಲ್ಲಿ ಮೂರು ತುಣುಕುಗಳಿವೆ.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "ಸರಿಸಲು ನಿಮ್ಮ ತುಣುಕು ಆಯ್ಕೆಮಾಡಿ.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "ನಿಮ್ಮ ಬಳಿ ಮೂರು ತುಂಡುಗಳು ಉಳಿದಿವೆ.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "ನೀವು ಇಷ್ಟಪಡುವ ಯಾವುದೇ ಹಂತಕ್ಕೆ ನೀವು ಚಲಿಸಬಹುದು.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " ಸರಿಸಲು.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "ಆಟಗಾರ 1 ಗೆಲುವುಗಳು!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "ಆಟಗಾರ 2 ಗೆಲುವುಗಳು!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "ಗೆದ್ದಿದೆ",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "ಕಳೆದುಹೋಯಿತು",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "ಸ್ಥಗಿತಗೊಳಿಸಲಾಗಿದೆ",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "ಆಲೋಚನೆ...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "ಹೊಸ ಆಟ",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "ಆಟವನ್ನು ಆಮದು ಮಾಡಿ",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "ರಫ್ತು ಆಟ",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಿಂದ ಆಟವನ್ನು ಆಮದು ಮಾಡಲಾಗಿದೆ.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "ಆಮದು ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "ಚಲನೆಗಳು ಮತ್ತು ನಿಯಮಗಳು ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "ರೆಕಾರ್ಡಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "ರೆಕಾರ್ಡಿಂಗ್ ...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "ರೆಕಾರ್ಡಿಂಗ್ ನಿಲ್ಲಿಸಿ",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "ರೆಕಾರ್ಡಿಂಗ್ ತೋರಿಸಿ",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "ರೆಕಾರ್ಡಿಂಗ್ ಇಲ್ಲ.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "ದಯಮಾಡಿ ನಿರೀಕ್ಷಿಸಿ.",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "ಪ್ರಸ್ತುತ ಆಟವನ್ನು ಮರುಪ್ರಾರಂಭಿಸುವುದೇ?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "ಪುನರಾರಂಭದ",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "ಆಟ ಪ್ರಾರಂಭವಾಯಿತು, ದಯವಿಟ್ಟು ಇರಿಸಿ",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "ದೋಷ",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "ಗೆಲುವಿನ ದರ",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "ಸ್ಕೋರ್",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "ಆಟಗಾರ 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "ಆಟಗಾರ 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " ತುಂಡು ಎಣಿಕೆ ಮೂರು ಕ್ಕಿಂತ ಕಡಿಮೆ.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " ರಾಜೀನಾಮೆ.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " ಹೋಗಲು ಯಾವುದೇ ಮಾರ್ಗವಿಲ್ಲ.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "ಬೋರ್ಡ್ ತುಂಬಿದೆ, ಮತ್ತು ಹೋಗಲು ದಾರಿ ಇಲ್ಲ.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "ಸಮಯ ಮುಗಿದಿದೆ",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "ಚಲಿಸುವ ಹಂತದಲ್ಲಿ, ಕೊನೆಯ ನಿರ್ದಿಷ್ಟ ಸಂಖ್ಯೆಯ ಚಲನೆಗಳಲ್ಲಿ ಯಾವುದೇ ತುಣುಕನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿಲ್ಲ.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "ಬೋರ್ಡ್ ತುಂಬಿರುವುದರಿಂದ ಇದು ಡ್ರಾ ಆಗಿದೆ.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "ಮೂರು ಪಟ್ಟು ಪುನರಾವರ್ತನೆಯಿಂದಾಗಿ ಇದು ಡ್ರಾ ಆಗಿದೆ.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "ಗೇಮ್ ಓವರ್! ಅಜ್ಞಾತ ಕಾರಣ.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "ಗೇಮ್ ಓವರ್",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "ನೀವು ಗೆಲ್ಲುತ್ತೀರಿ! ಅಭಿನಂದನೆಗಳು!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "ಕಠಿಣ ಮಟ್ಟವನ್ನು ಸವಾಲು ಮಾಡುವುದೇ? ಹೊಸ ಮಟ್ಟವು ಮಟ್ಟವಾಗಿರುತ್ತದೆ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "ನೀವು ಕಳೆದುಕೊಳ್ಳುತ್ತೀರಿ!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "ವಿಶ್ಲೇಷಿಸಿ",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "ಆಟಗಾರನ ಹೆಸರು",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "ಬಗ್ಗೆ",
-    "@about": {
-        "description": "About"
-    },
-    "version": "ಆವೃತ್ತಿ",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "ಧನ್ಯವಾದಗಳು",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "ಸಂಯೋಜನೆಗಳು",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "ಆಯ್ಕೆಗಳು",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "ಆದ್ಯತೆಗಳು",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "ತೊಂದರೆ ಮಟ್ಟ",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "AI ಆಲೋಚನಾ ಸಮಯ",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "ತೊಂದರೆ",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "ಧ್ವನಿ ಪರಿಣಾಮಗಳು",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "ಆಟದಲ್ಲಿ ಶಬ್ದಗಳನ್ನು ಪ್ಲೇ ಮಾಡಿ",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "ಹಿಂತಿರುಗುವಾಗ ಮ್ಯೂಟ್ ಮಾಡಿ",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "ಸ್ವರ",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "ಮೊದಲ ನಡೆ",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "ಮಾನವ",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "ಎಐ",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "ಪರ್ಯಾಯ",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "ಆಟ ಮುಗಿದ ನಂತರ ಆಟವನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "ಸ್ವಯಂ ಬದಲಾವಣೆ ಮೊದಲ ಚಲನೆ",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "ಹೆಚ್ಚು ಕಳೆದುಕೊಂಡರೆ AI ರಾಜೀನಾಮೆ ನೀಡಿ",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "ಯಾದೃಚ್ ly ಿಕವಾಗಿ ಸರಿಸಿ",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "ಎಂಡ್‌ಗೇಮ್ ಕಲಿಯಿರಿ",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "ಆರಂಭಿಕ ಪುಸ್ತಕ",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "ವಿವಿಧ",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "ನಿಯಮಗಳು",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "ಪ್ರತಿ ಆಟಗಾರನು ಹೊಂದಿರುವ ತುಣುಕುಗಳ ಸಂಖ್ಯೆ",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "ಪ್ರತಿ ಆಟಗಾರನಿಗೆ ಎಷ್ಟು ತುಣುಕುಗಳಿವೆ?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "ಹಾರುವ ತುಂಡುಗಳ ಸಂಖ್ಯೆ",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "ಫ್ಲೈಯಿಂಗ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದ್ದರೆ, ಆಟಗಾರನನ್ನು ನಿರ್ದಿಷ್ಟ ತುಂಡು ಎಣಿಕೆಗೆ ಇಳಿಸಿದಾಗ, ಆಕೆಯ ತುಣುಕುಗಳು ಆಟದ ಉಳಿದ ಭಾಗಗಳಂತೆ ಪಕ್ಕದ ಬಿಂದುಗಳಿಗೆ ಸೀಮಿತವಾಗುವ ಬದಲು ಯಾವುದೇ ಖಾಲಿ ಇಲ್ಲದ ಸ್ಥಳಕ್ಕೆ ಹೋಗಲು ಮುಕ್ತವಾಗಿರುತ್ತದೆ.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "ಕನಿಷ್ಠ ತುಣುಕುಗಳು",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "ಕರ್ಣೀಯ ರೇಖೆಗಳು",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "ಬೋರ್ಡ್‌ಗೆ ನಾಲ್ಕು ಕರ್ಣೀಯ ರೇಖೆಗಳನ್ನು ಸೇರಿಸಿ.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "ತುಣುಕುಗಳನ್ನು ತೆಗೆದುಹಾಕುವುದನ್ನು ಗುರುತಿಸಿ ಮತ್ತು ವಿಳಂಬಗೊಳಿಸಿ",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "ಇರಿಸುವ ಹಂತದಲ್ಲಿ, ತೆಗೆದ ತುಣುಕುಗಳ ಬಿಂದುಗಳನ್ನು ಇನ್ನು ಮುಂದೆ ಇರಿಸಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "ಎರಡನೇ ಆಟಗಾರನು ಮೊದಲು ಚಲಿಸುತ್ತಾನೆ",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "ಇರಿಸುವ ಹಂತದಲ್ಲಿ ಎರಡನೇ ಸ್ಥಾನಕ್ಕೆ ಚಲಿಸುವ ಆಟಗಾರನು ಚಲಿಸುವ ಹಂತದಲ್ಲಿ ಮೊದಲು ಚಲಿಸುತ್ತಾನೆ.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "ಬಹು-ತೆಗೆದುಹಾಕಿ",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "ಒಬ್ಬ ಆಟಗಾರನು ಒಂದಕ್ಕಿಂತ ಹೆಚ್ಚು ಗಿರಣಿಗಳನ್ನು ಏಕಕಾಲದಲ್ಲಿ ಮುಚ್ಚಿದರೆ, ಅವಳು ಮುಚ್ಚಿದ ಗಿರಣಿಗಳ ಸಂಖ್ಯೆಯನ್ನು ಅವಳು ತೆಗೆದುಹಾಕುತ್ತಾಳೆ.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "ಗಿರಣಿಗಳನ್ನು ನಾಶಮಾಡಿ",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "ಪೂರ್ವನಿಯೋಜಿತವಾಗಿ, ರೂಪುಗೊಂಡ ಗಿರಣಿಯಿಂದ ತುಂಡನ್ನು ತೆಗೆದುಹಾಕುವ ಮೊದಲು ಆಟಗಾರರು ಮೊದಲು ಬೇರೆ ಯಾವುದೇ ತುಣುಕುಗಳನ್ನು ತೆಗೆದುಹಾಕಬೇಕು. ಮಿತಿಯನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲು ಈ ಆಯ್ಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "ಬೋರ್ಡ್ ತುಂಬಿದಾಗ ಎರಡನೇ ಆಟಗಾರನು ಕಳೆದುಕೊಳ್ಳುತ್ತಾನೆ.",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "ಇರಿಸುವ ಹಂತದ ಕೊನೆಯಲ್ಲಿ ಬೋರ್ಡ್ ತುಂಬಿದಾಗ, ಮೊದಲು ಇಡುವ ಭಾಗವು ಆಟವನ್ನು ಕಳೆದುಕೊಳ್ಳುತ್ತದೆ. ಇಲ್ಲದಿದ್ದರೆ, ಆಟವು ಡ್ರಾ ಆಗಿದೆ.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "ಯಾವುದೇ ಕಾನೂನು ಕ್ರಮಗಳಿಲ್ಲದಿದ್ದಾಗ ಕಳೆದುಕೊಳ್ಳಿ",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "ಅವರ ಎದುರಾಳಿಯು ಅವರನ್ನು ಸರಿಸಲಾಗದಂತೆ ನಿರ್ಬಂಧಿಸಿದರೆ ಆಟಗಾರನು ಕಳೆದುಕೊಳ್ಳುತ್ತಾನೆ. ಈ ಆಯ್ಕೆಯನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿದ್ದರೆ ಸರಿಸಲು ಸೈಡ್ ಬದಲಾಯಿಸಿ.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "ಹಾರುವ",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "ಆಟಗಾರನಿಗೆ ಕೇವಲ ಮೂರು ಅಥವಾ ನಾಲ್ಕು (ಕಾನ್ಫಿಗರ್ ಮಾಡಬಹುದಾದ) ತುಣುಕುಗಳು ಮಾತ್ರ ಉಳಿದಿದ್ದರೆ, ಅವಳು ಆ ತುಂಡನ್ನು ಯಾವುದೇ ಉಚಿತ ಬಿಂದುವಿಗೆ ಸರಿಸಬಹುದು.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "ಎನ್-ಮೂವ್ ನಿಯಮ",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "ನಿರ್ದಿಷ್ಟ ಸಂಖ್ಯೆಯ ಚಲನೆಗಳಲ್ಲಿ ಯಾವುದೇ ತೆಗೆದುಹಾಕುವಿಕೆ ಇಲ್ಲದಿದ್ದರೆ ಆಟವನ್ನು ಎಳೆಯಲಾಗುತ್ತದೆ.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "ರೋಲ್ಬ್ಯಾಕ್",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "ದಯವಿಟ್ಟು ಆಯ್ಕೆ ಮಾಡು",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "ನಕಲಿಸಿ",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಿದ ಇತಿಹಾಸವನ್ನು ಸರಿಸಿ",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "ಸಹಾಯ",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "ಪ್ರತಿಕ್ರಿಯೆ",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "ನಿರ್ಗಮಿಸಿ",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "ನಿಯಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "ಬಣ್ಣ",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "ಬೋರ್ಡ್ ಬಣ್ಣ",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "ತುಂಡು ಬಣ್ಣ",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "ಹಿನ್ನೆಲೆ ಬಣ್ಣ",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "ಬೋರ್ಡ್ ಲೈನ್ ಬಣ್ಣ",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "ಪ್ಲೇಯರ್ 1 ತುಂಡು ಬಣ್ಣ",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "ಪ್ಲೇಯರ್ 2 ತುಂಡು ಬಣ್ಣ",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "ಸಂದೇಶದ ಬಣ್ಣ",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "ಎಐ ಲೇಜಿ",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "ಕೈಯಲ್ಲಿರುವ ತುಂಡುಗಳ ಸಂಖ್ಯೆಯನ್ನು ತೋರಿಸಿ",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "ಸಂಕೇತಗಳನ್ನು ಮಂಡಳಿಯಲ್ಲಿ ತೋರಿಸಿ",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "ಇತಿಹಾಸ ನ್ಯಾವಿಗೇಷನ್ ಟೂಲ್‌ಬಾರ್ ತೋರಿಸಿ",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "ಪ್ರದರ್ಶನ",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "ಬೋರ್ಡ್ ಗಡಿರೇಖೆಯ ಅಗಲ",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "ಬೋರ್ಡ್ ಆಂತರಿಕ ರೇಖೆಯ ಅಗಲ",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "ತುಂಡು ಅಗಲ",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "ಅಕ್ಷರ ಗಾತ್ರ",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "WMD ಸಂಕೇತ",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "ಮರುಸ್ಥಾಪಿಸಿ",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "ಡೀಫಾಲ್ಟ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಮರುಸ್ಥಾಪಿಸಿ",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "ಅಪ್ಲಿಕೇಶನ್ ನಿರ್ಗಮಿಸುತ್ತದೆ.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "ಕಾರ್ಯಗತಗೊಳ್ಳಲು ನೀವು ತಕ್ಷಣ ಮುಚ್ಚಬೇಕು ಮತ್ತು ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಮತ್ತೆ ತೆರೆಯಬೇಕು.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "ಆಯ್ಕೆ",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "ಮಾಹಿತಿ",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "ಸುಳಿವು",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "ಆಟಗಾರ",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "ಆಟಗಾರ 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "ಆಟಗಾರ 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "ಹೇಗೆ ಆಡುವುದು",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "ತುಂಡು ಇರಿಸಲು ಲಭ್ಯವಿರುವ ಯಾವುದೇ ಬಿಂದುವನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "ತುಂಡು ಸರಿಸಲು ಅದನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "ತುಂಡನ್ನು ಸರಿಸಲು ಅದನ್ನು ಸಂಪರ್ಕಿಸಿರುವ ಬಿಂದುವನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "ತೆಗೆದುಹಾಕಲು ಎದುರಾಳಿಯ ಒಂದು ತುಂಡು ಟ್ಯಾಪ್ ಮಾಡಿ.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "ನೀವು ತುಂಡನ್ನು ತೆಗೆದುಹಾಕುವ ಮೊದಲು ನೀವು ಮೊದಲು ಗಿರಣಿಯನ್ನು ರಚಿಸಬೇಕಾಗಿದೆ.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "ನಿಮ್ಮ ತುಣುಕುಗಳೊಂದಿಗೆ ನೀವು ಆಡಬೇಕಾಗಿದೆ.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "ಅಂಕಿಅಂಶಗಳು",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "ಒಟ್ಟು ಆಟಗಳು",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "ಫಲಿತಾಂಶಗಳು",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "ನೀವು ಅದನ್ನು ಗಿರಣಿಯಿಂದ ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "ಎಡ",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "ಗೌಪ್ಯತಾ ನೀತಿ",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "ದಯವಿಟ್ಟು ಎಚ್ಚರಿಕೆಯಿಂದ ಓದಿ ಮತ್ತು ನೀವು ಇದನ್ನು ಸಂಪೂರ್ಣವಾಗಿ ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದೀರಿ ಮತ್ತು ಒಪ್ಪುತ್ತೀರಿ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". ಈ ನೀತಿಯನ್ನು ನೀವು ಒಪ್ಪದಿದ್ದರೆ, ದಯವಿಟ್ಟು ಈ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಬಳಸಬೇಡಿ. ಅಪ್ಲಿಕೇಶನ್ ಬಳಸುವುದರಿಂದ ನೀವು ಈ ನಿಯಮಗಳನ್ನು ಒಪ್ಪುತ್ತೀರಿ ಎಂದು ಸೂಚಿಸುತ್ತದೆ.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " ಮತ್ತು",
-    "accept": "ಒಪ್ಪಿಕೊಳ್ಳಿ",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "ರದ್ದುಗೊಳಿಸಿ",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "ಆಯ್ಕೆಯನ್ನು ರದ್ದುಗೊಳಿಸಿ",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "ನಡೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲು ಸಾಧ್ಯವಿದೆ.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "ಹಿಂಪಡೆ ಹಿಂದಕ್ಕೆ ಪಡೆ",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "ಹಿಂದಕ್ಕೆ ತೆಗೆದುಕೊಳ್ಳುವುದು ...",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "ಕಾಯಲಾಗುತ್ತಿದೆ ...",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "ಮುಂದೆ ಹೆಜ್ಜೆ ಹಾಕಿ",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "ಎಲ್ಲವನ್ನೂ ಹಿಂದಕ್ಕೆ ತೆಗೆದುಕೊಳ್ಳಿ",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "ಎಲ್ಲವನ್ನು ಮುಂದಕ್ಕೆ ಇರಿಸಿ",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "ಈಗ ಸರಿಸಿ",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "ಮುಗಿದಿದೆ.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "ಕ್ರ್ಯಾಕ್-ಗಿರಣಿ",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "ಆಟಗಾರನು ಗಿರಣಿಗಳಲ್ಲಿ ಮಾತ್ರ ತುಣುಕುಗಳನ್ನು ಹೊಂದಿದ್ದರೆ, ಗಿರಣಿಗಳಲ್ಲಿನ ತುಣುಕುಗಳನ್ನು ತೆಗೆದುಹಾಕಲು ಲಾಕ್ ಆಗುವುದಿಲ್ಲ.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "ಅನಿಮೇಷನ್ ಅವಧಿ",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "ಯಾವುದೂ",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "ಥೀಮ್",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "ಆಟದ ಎದುರಾಳಿಯನ್ನು ಮೂರು ತುಣುಕುಗಳಿಗಿಂತ ಕಡಿಮೆ ಅಥವಾ ಯಾವುದೇ ಕಾನೂನು ಕ್ರಮಗಳಿಲ್ಲದೆ ಬಿಡುವ ಗುರಿ ಹೊಂದಿದೆ.\n\nಸ್ಥಾನವು ಮೂರನೇ ಬಾರಿಗೆ ಸಂಭವಿಸಿದಲ್ಲಿ ಅಥವಾ ಕೊನೆಯ 100 (ಕಾನ್ಫಿಗರ್ ಮಾಡಬಹುದಾದ) ಚಲನೆಗಳಲ್ಲಿ ಯಾವುದೇ ತೆಗೆದುಹಾಕದಿದ್ದಲ್ಲಿ ಆಟವು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸೆಳೆಯುತ್ತದೆ.\n\nಆಟವು ಮೂರು ಹಂತಗಳಲ್ಲಿ ಮುಂದುವರಿಯುತ್ತದೆ:\n\n1. ಖಾಲಿ ಇರುವ ಸ್ಥಳಗಳಲ್ಲಿ ತುಂಡುಗಳನ್ನು ಇಡುವುದು\n2. ತುಂಡುಗಳನ್ನು ಪಕ್ಕದ ಬಿಂದುಗಳಿಗೆ ಸರಿಸುವುದು\n3. (ಐಚ್ al ಿಕ ಹಂತ) ಆಟಗಾರನನ್ನು ಮೂರು ತುಂಡುಗಳಾಗಿ ಕಡಿಮೆ ಮಾಡುವಾಗ ಯಾವುದೇ ಖಾಲಿ ಬಿಂದುವಿಗೆ ತುಂಡುಗಳನ್ನು ಚಲಿಸುವುದು\n\nಇಡುವುದು\n\nಆಟವು ಖಾಲಿ ಬೋರ್ಡ್‌ನೊಂದಿಗೆ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ, ಇದು ಇಪ್ಪತ್ನಾಲ್ಕು ಅಂಕಗಳನ್ನು ಹೊಂದಿರುವ ಗ್ರಿಡ್ ಅನ್ನು ಹೊಂದಿರುತ್ತದೆ. ಪ್ರತಿ ಆಟಗಾರನು ಎಲ್ಲಾ ತುಣುಕುಗಳನ್ನು ಬೋರ್ಡ್‌ನಲ್ಲಿ ಇರಿಸುವವರೆಗೆ ಆಟಗಾರರು ತಮ್ಮ ತುಣುಕುಗಳನ್ನು ಖಾಲಿ ಬಿಂದುಗಳಲ್ಲಿ ಇರಿಸುವ ತಿರುವುಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಾರೆ. ಒಬ್ಬ ಆಟಗಾರನು ತನ್ನ ಮೂರು ತುಣುಕುಗಳನ್ನು ನೇರವಾಗಿ ಹಾಕಲು ಸಾಧ್ಯವಾದರೆ, ಅವನಿಗೆ \"ಗಿರಣಿ\" ಇದೆ ಮತ್ತು ಅವನ ಎದುರಾಳಿಯ ಒಂದು ತುಂಡನ್ನು ಮಂಡಳಿಯಿಂದ ತೆಗೆದುಹಾಕಬಹುದು.\n\nಕೆಲವು ನಿಯಮಗಳಲ್ಲಿ, ರೂಪುಗೊಂಡ ಗಿರಣಿಯಿಂದ ತುಂಡನ್ನು ತೆಗೆದುಹಾಕುವ ಮೊದಲು ಆಟಗಾರರು ಮೊದಲು ಬೇರೆ ಯಾವುದೇ ತುಣುಕುಗಳನ್ನು ತೆಗೆದುಹಾಕಬೇಕು.\n\nತೆಗೆದ ತುಣುಕುಗಳ ಬಿಂದುಗಳಿಗೆ ನೀವು ಮತ್ತೆ ಕೆಲವು ನಿಯಮಗಳಲ್ಲಿ ಇರಿಸುವ ಹಂತದಲ್ಲಿ ಇರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.\n\nಎಲ್ಲಾ ತುಣುಕುಗಳನ್ನು ಒಮ್ಮೆ ಬಳಸಿದ ನಂತರ, ಆಟಗಾರರು ಚಲಿಸುವ ತಿರುವುಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಾರೆ.\n\nಚಲಿಸುತ್ತಿದೆ\n\nಸರಿಸಲು, ಆಟಗಾರನು ತನ್ನ ಒಂದು ತುಣುಕನ್ನು ಬೋರ್ಡ್ ರೇಖೆಯ ಉದ್ದಕ್ಕೂ ಖಾಲಿ ಪಕ್ಕದ ಬಿಂದುವಿಗೆ ಚಲಿಸುತ್ತಾನೆ. ಅವರು ಹಾಗೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗದಿದ್ದರೆ, ಅವರು ಆಟವನ್ನು ಕಳೆದುಕೊಂಡಿದ್ದಾರೆ. ಬೋರ್ಡ್ ಸಾಲಿನಲ್ಲಿ ತನ್ನ ಮೂರು ತುಣುಕುಗಳನ್ನು ಜೋಡಿಸುವ ಆಟಗಾರನು ಗಿರಣಿಯನ್ನು ಹೊಂದಿರುತ್ತಾನೆ ಮತ್ತು ಇರಿಸುವ ಹಂತದಂತೆಯೇ ತನ್ನ ಎದುರಾಳಿಯ ತುಣುಕುಗಳಲ್ಲಿ ಒಂದನ್ನು ತೆಗೆದುಹಾಕಬಹುದು. ಯಾವುದೇ ಆಟಗಾರನು ಎರಡು ತುಂಡುಗಳಾಗಿ ಕಡಿಮೆಯಾಗುತ್ತಾನೆ, ಹೊಸ ಗಿರಣಿಗಳನ್ನು ರೂಪಿಸಲು ಯಾವುದೇ ಆಯ್ಕೆಯಿಲ್ಲ, ಮತ್ತು ಆದ್ದರಿಂದ ಆಟವನ್ನು ಕಳೆದುಕೊಳ್ಳುತ್ತಾನೆ. ತನ್ನ ಎದುರಾಳಿಯು ಚಲಿಸದಂತೆ ನಿರ್ಬಂಧಿಸಿದರೆ ಆಟಗಾರನು ಮೂರು ತುಣುಕುಗಳಿಗಿಂತ ಹೆಚ್ಚು ಕಳೆದುಕೊಂಡಾಗ ಕಳೆದುಕೊಳ್ಳಬಹುದು.\n\nಹಾರುವ\n\nನಿಯಮಗಳ ಕೆಲವು ರೂಪಾಂತರಗಳಲ್ಲಿ, ಆಟಗಾರನು ಕೇವಲ ಮೂರು ತುಣುಕುಗಳನ್ನು ಮಾತ್ರ ಉಳಿದಿದ್ದರೆ, ಅವನ ತುಣುಕುಗಳು ಪಕ್ಕದವುಗಳನ್ನು ಮಾತ್ರವಲ್ಲದೆ ಯಾವುದೇ ಖಾಲಿ ಬಿಂದುಗಳಿಗೆ ಹಾರಬಲ್ಲವು, ಹಾಪ್ ಮಾಡಬಹುದು ಅಥವಾ ಹೋಗಬಹುದು.",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "ಆವೃತ್ತಿ ಮಾಹಿತಿ",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "ಪರವಾನಗಿ",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "ಮೂಲ ಕೋಡ್",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "ಮೂರನೇ ವ್ಯಕ್ತಿಯ ಸೂಚನೆಗಳು",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "ಅಪ್ಲಿಕೇಶನ್ ಆವೃತ್ತಿ",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "ಜನರಲ್",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "ಸುಧಾರಿತ",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "ಇಡುವುದು",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "ಚಲಿಸುತ್ತಿದೆ",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "ತೆಗೆದುಹಾಕಲಾಗುತ್ತಿದೆ",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "ಸ್ಥಿತಿಯ ಮೇಲೆ ಆಟ",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "AI ನ ಪ್ಲೇಸ್ಟೈಲ್",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "ನಿಷ್ಕ್ರಿಯ",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "ಸಮಯ ಮೀರಿದೆ",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "ವೈಯಕ್ತೀಕರಣ",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "ಡೆವಲಪರ್‌ಗಳಿಗಾಗಿ",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "ಡೆವಲಪರ್ ಮೋಡ್",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "ಮಾನವ ಅನುಭವವನ್ನು ಸೆಳೆಯಿರಿ",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "ತುಣುಕುಗಳ ಚಲನಶೀಲತೆಯನ್ನು ಪರಿಗಣಿಸಿ",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "ಪೀಸ್ ಎಣಿಕೆ",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "ಕೈಯಲ್ಲಿ",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "ಮಂಡಳಿಯಲ್ಲಿ",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "ಮೇಲಿನಿಂದ ಬೋರ್ಡ್ ಆಫ್‌ಸೆಟ್",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "ಇದು ಎಐನ ಸರದಿ ಅಲ್ಲ.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "ಎಐ ಯೋಚಿಸುತ್ತಿಲ್ಲ.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "ಸ್ವಯಂ ಮರು-ಪ್ಲೇ ಚಲನೆಗಳು",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "ನೀವು ಚಲಿಸುವ ಪಟ್ಟಿಯ ಕೊನೆಯಲ್ಲಿದ್ದೀರಿ.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "ಬಿಡಲು ಮತ್ತೆ ಟ್ಯಾಪ್ ಮಾಡಿ.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "ಪರಿಸರ ಅಸ್ಥಿರ",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "ಇನ್ನಷ್ಟು",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "ಇದು ಪ್ರಾಯೋಗಿಕ ಲಕ್ಷಣವಾಗಿದೆ.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "ಪ್ರಯೋಗಗಳು",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "ಮುಕ್ತ ಮೂಲ ಪರವಾನಗಿಗಳು",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "ಭಾಷೆ",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "ಡೀಫಾಲ್ಟ್ ಭಾಷೆ",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "ತುಣುಕುಗಳು ಇರಿಸುವ ಹಂತದಲ್ಲಿ ಚಲಿಸಬಹುದು",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "ಯಾವುದೇ ವಿಶಿಷ್ಟವಾದ ಇರಿಸುವ ಮತ್ತು ಚಲಿಸುವ ಹಂತಗಳಿಲ್ಲ, ಅಂದರೆ, ಆಟಗಾರರು ಪ್ರತಿ ಚಲನೆಯಲ್ಲೂ ಒಂದು ತುಂಡನ್ನು ಬೋರ್ಡ್‌ನಲ್ಲಿ ಇಡಬೇಕೆ ಅಥವಾ ಅವರ ಒಂದು ತುಣುಕನ್ನು ಚಲಿಸಬೇಕೆ ಎಂದು ನಿರ್ಧರಿಸಬಹುದು (ಅವರು ಉಳಿದಿರುವ ತುಣುಕುಗಳನ್ನು ಇಡುವವರೆಗೆ).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "ಮೆನು ಬಣ್ಣ",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "ಮೆನು ಪಠ್ಯ ಬಣ್ಣ",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "ಮೆನು ಹಿನ್ನೆಲೆ ಬಣ್ಣ",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "ಮೆನು ಐಟಂ ಬಣ್ಣವನ್ನು ಹೈಲೈಟ್ ಮಾಡುತ್ತದೆ",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "ಮುಖ್ಯ ಟೂಲ್‌ಬಾರ್ ಹಿನ್ನೆಲೆ ಬಣ್ಣ",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "ಮುಖ್ಯ ಟೂಲ್‌ಬಾರ್ ಐಕಾನ್ ಬಣ್ಣ",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "ನ್ಯಾವಿಗೇಷನ್ ಟೂಲ್‌ಬಾರ್ ಹಿನ್ನೆಲೆ ಬಣ್ಣ",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "ನ್ಯಾವಿಗೇಷನ್ ಟೂಲ್‌ಬಾರ್ ಐಕಾನ್ ಬಣ್ಣ",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "ಟೂಲ್‌ಬಾರ್ ಅನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರೆಮಾಡಿ",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "ಪರದೆಯ ಮೇಲೆ ಟೂಲ್‌ಬಾರ್ ಸ್ಥಳ",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "ಟಾಪ್",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "ಕೆಳಗೆ",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "ಕೇಂದ್ರ",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "ಗಾಢ ಬಣ್ಣ",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "ಚಿತ್ರ",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "ನಿಮ್ಮ ಚಿತ್ರವನ್ನು ಆರಿಸಿ",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "ಬೆಳಕು",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "ಡಾರ್ಕ್",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "ಥೀಮ್ಗಳು",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "ಪ್ರಸ್ತುತ ಥೀಮ್",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "ಥೀಮ್ ಉಳಿಸಿ",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "ಫಾಂಟ್‌ಗಳು",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "ವಿಶ್ಲೇಷಣೆ ಗ್ರಾಫ್ ತೋರಿಸಿ",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "ವಿಶ್ಲೇಷಣೆ",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "ಆಟ ಉಳಿಸು",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "ಆಟವನ್ನು ಲೋಡ್ ಮಾಡಿ",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "ಸೆಟಪ್ ಸ್ಥಾನ",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "ಕಾನೂನು ಕ್ರಮಗಳನ್ನು ತೋರಿಸಿ",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "ಕೊನೆಯ ನಡೆಯನ್ನು ತೋರಿಸಿ",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "ಬಾಣಗಳನ್ನು ತೋರಿಸಿ",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "ತುಣುಕುಗಳು",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "ವಿಶ್ಲೇಷಣೆಯನ್ನು ತೋರಿಸಿ",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "ಎಳೆಗಳು",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "ತೊಡಗಿಸಿಕೊಳ್ಳಿ",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "ಅನುವಾದವನ್ನು ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "ಟ್ಯುಟೋರಿಯಲ್",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "ಕ್ಲಾಸಿಕ್ ಮಿಲ್",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "ಮಿಶ್ರ ಮಿಲ್",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "ಸಿಲೋನ್ ಮಿಲ್",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "ಗಿರಣಿಯನ್ನು ಮುರಿದು ಪದೇ ಪದೇ ರಿಮೇಕ್ ಮಾಡಬಹುದು",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "ಹೊಸ ಗಿರಣಿಯನ್ನು ರಚಿಸಲು ಆಟಗಾರನು ಗಿರಣಿಯನ್ನು ಮುರಿದರೆ, ಅಂತಹ ಆಟಗಾರನು ಹೊಸ ಗಿರಣಿಯನ್ನು ಮಾಡಿದರೆ ಅಂತಹ ತುಣುಕನ್ನು ತನ್ನ ಮುಂದಿನ ನಡೆಯಲ್ಲಿ ಮೂಲ ಜಂಕ್ಷನ್‌ಗೆ ಹಿಂತಿರುಗಿಸಬಹುದು.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "ಆಟಗಾರನು ಮೂರು ತುಣುಕುಗಳನ್ನು ಹೊಂದಿದ್ದರೆ ಮತ್ತು ಹತ್ತು ಚಲನೆಗಳ ನಂತರ ಯಾವುದೇ ಆಟಗಾರನು ಎದುರಾಳಿಯ ತುಣುಕುಗಳನ್ನು ತೆಗೆದುಹಾಕದಿದ್ದರೆ ಆಟವನ್ನು ಎಳೆಯಲಾಗುತ್ತದೆ",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "ಒಬ್ಬ ಆಟಗಾರನು ಮೂರು ತುಣುಕುಗಳಿಗೆ ಇಳಿದಾಗ, ಮತ್ತು ಯಾವುದೇ ಆಟಗಾರನು ಹತ್ತು ಚಲನೆಗಳ ಒಳಗೆ ಎದುರಾಳಿಯ ತುಂಡನ್ನು ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ, ಆಟವು ಡ್ರಾ ಆಗಿದೆ.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "ಮುಚ್ಚಿ",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "ಬಿಳಿ ತುಂಡು",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "ಕಪ್ಪು ತುಂಡು",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "ಬ್ಯಾನ್ ಪಾಯಿಂಟ್",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "ಖಾಲಿ ಬಿಂದು",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "ಯಾವುದೇ ಅರ್ಥವಿಲ್ಲ",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "ಇರಿಸುವ ಹಂತ",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "ಚಲಿಸುವ ಹಂತ",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "ಹಾರುವ ಹಂತ",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "ಬದಿಗೆ ಸರಿಸಲು",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "ಕೊನೆಯ ನಡೆ",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "ಮುಖ್ಯ ಪಟ್ಟಿ",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "ಪ್ರವೇಶಿಸುವಿಕೆ",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "ಸ್ಕ್ರೀನ್ ರೀಡರ್ ಬೆಂಬಲ",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "ಇದು ಡ್ರಾ ಆಗಿದೆ",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "ಡ್ರಾ",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "ಪೀಸ್ ಹೈಲೈಟ್ ಬಣ್ಣ",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "ಅಲ್ಗಾರಿದಮ್",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "ಸ್ಥಳವಿಲ್ಲದ ತುಂಡನ್ನು ತೆಗೆಯಿರಿ",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "ಇರಿಸುವ ಹಂತದಲ್ಲಿ ಆಟಗಾರ್ತಿಯು ಗಿರಣಿಯನ್ನು ರೂಪಿಸಿದರೆ, ಆಕೆ ಎದುರಾಳಿಯ ಸ್ಥಾನವಿಲ್ಲದ ತುಂಡನ್ನು ತೆಗೆದು ಚಲನೆಯನ್ನು ಮುಂದುವರಿಸುತ್ತಾಳೆ.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "ಎಂಡ್‌ಗೇಮ್ ಎನ್-ಮೂವ್ ನಿಯಮ",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "ಯಾವುದೇ ಆಟಗಾರನು ಕೇವಲ ಮೂರು ತುಣುಕುಗಳನ್ನು ಹೊಂದಿದ್ದರೆ ಮತ್ತು ಯಾವುದೇ ಆಟಗಾರನು ನಿರ್ದಿಷ್ಟ ಚಲನೆಗಳಲ್ಲಿ ಒಂದು ತುಂಡನ್ನು ತೆಗೆಯದಿದ್ದರೆ, ಆಟವನ್ನು ಡ್ರಾ ಮಾಡಲಾಗುತ್ತದೆ.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "ಒಬ್ಬ ಆಟಗಾರನು ಕೇವಲ ಮೂರು ತುಣುಕುಗಳನ್ನು ಹೊಂದಿರುತ್ತಾನೆ ಮತ್ತು ಯಾವುದೇ ಆಟಗಾರನು ನಿರ್ದಿಷ್ಟ ಚಲನೆಗಳಲ್ಲಿ ಒಂದು ತುಂಡನ್ನು ತೆಗೆಯುವುದಿಲ್ಲ.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "ಮೂರು ಪಟ್ಟು ಪುನರಾವರ್ತಿಸುವ ನಿಯಮ",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "ಒಂದು ಸ್ಥಾನವು ಮೂರನೇ ಬಾರಿಗೆ ಸಂಭವಿಸಿದಲ್ಲಿ ಆಟವನ್ನು ಡ್ರಾ ಮಾಡಲಾಗುತ್ತದೆ.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "ಗಿರಣಿ! ಒಂದು ಚಲನೆಯನ್ನು ಮುಂದುವರಿಸಿ.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "ಪಾಯಿಂಟ್ ಶೈಲಿ",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "ಪಾಯಿಂಟ್ ಅಗಲ",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "ಘನ",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "ಟೊಳ್ಳು",
-    "@hollow": {
-        "description": "Hollow"
+  "appName": "ಮಿಲ್",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "ಸ್ವಾಗತ",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "ಹೌದು",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "ಇಲ್ಲ",
+  "@no": {
+    "description": "No"
+  },
+  "game": "ಆಟ",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "ಯಂತ್ರವನ್ನು ಸವಾಲು ಮಾಡಿ",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "ಇಬ್ಬರು ಆಟಗಾರರ ಯುದ್ಧ",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "ಯಂತ್ರದಿಂದ ಯಂತ್ರ",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "ಹ್ಯೂಮನ್ Vs. ಮೇಘ",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "ಹ್ಯೂಮನ್ Vs. ಲ್ಯಾನ್",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "LAN ಮೂಲಕ ಪರೀಕ್ಷಿಸಿ",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "ಸರಿಸಿ",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "ಪಟ್ಟಿಯನ್ನು ಸರಿಸಿ",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "ಪಟ್ಟಿಯನ್ನು ಸರಿಸಿ",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "ಯಾವುದೇ ದಾಖಲೆ ಇಲ್ಲ",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "ಸರಿ",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "ದೃಢೀಕರಿಸಿ",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "ರದ್ದುಮಾಡಿ",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "ತಪ್ಪು ತುಂಡು ಆಯ್ಕೆಮಾಡಿ.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "ನಿಮ್ಮ ತುಣುಕುಗಳನ್ನು ಇರಿಸಿ.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "ನೀವು ಅದನ್ನು ಇಲ್ಲಿ ಇರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "ನೀವು ಇರಿಸಿದ್ದೀರಿ.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "ತುಂಡು ತೆಗೆದುಹಾಕಿ.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "ನೀವು ಅದನ್ನು ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "ನೀವು ತೆಗೆದುಹಾಕಿದ್ದೀರಿ.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "ತುಂಡು ಸರಿಸಿ.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "ನಿಮ್ಮ ತುಂಡನ್ನು ಇಲ್ಲಿ ಇರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "ನಿಮ್ಮ ತುಂಡನ್ನು ಇಲ್ಲಿಗೆ ಸರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "ಮಿಲ್! ನಿಮ್ಮ ಎದುರಾಳಿಯ ತುಂಡನ್ನು ತೆಗೆದುಕೊಳ್ಳಿ.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "ನಿಮ್ಮ ಎದುರಾಳಿಯ ತುಣುಕನ್ನು ತೆಗೆದುಕೊಳ್ಳುವುದನ್ನು ಮುಂದುವರಿಸಿ.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "ನಿಮ್ಮ ಎದುರಾಳಿಯ ತುಣುಕುಗಳಲ್ಲಿ ಒಂದನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "ನೀವು ಗಿರಣಿಯಿಂದ ತುಂಡನ್ನು ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "ಒಂದು ತುಂಡು 1 ಬಿಂದುವನ್ನು ಚಲಿಸಬಹುದು.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "ನಿಮ್ಮ ಎದುರಾಳಿಯ ತುಣುಕುಗಳನ್ನು ನೀವು ಸರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "ಸರಿಸಲು ನಿಮ್ಮ ತುಣುಕು ಆಯ್ಕೆಮಾಡಿ.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "ನಿಮ್ಮ ಬಳಿ ಮೂರು ತುಂಡುಗಳು ಉಳಿದಿವೆ.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "ನೀವು ಇಷ್ಟಪಡುವ ಯಾವುದೇ ಹಂತಕ್ಕೆ ನೀವು ಚಲಿಸಬಹುದು.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "ಸರಿಸಲು {player}.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "ಆಟಗಾರ 1 ಗೆಲುವುಗಳು!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "ಆಟಗಾರ 2 ಗೆಲುವುಗಳು!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "ಗೆದ್ದಿದೆ",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "ಕಳೆದುಹೋಯಿತು",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "ಆಲೋಚನೆ…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "ಹೊಸ ಆಟ",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "ಆಟವನ್ನು ಆಮದು ಮಾಡಿ",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "ರಫ್ತು ಆಟ",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ನಿಂದ ಆಟವನ್ನು ಆಮದು ಮಾಡಲಾಗಿದೆ.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "ಆಮದು ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "ಚಲನೆಗಳು ಮತ್ತು ನಿಯಮಗಳು ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "ದಯಮಾಡಿ ನಿರೀಕ್ಷಿಸಿ.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "ಪ್ರಸ್ತುತ ಆಟವನ್ನು ಮರುಪ್ರಾರಂಭಿಸುವುದೇ?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "ಪುನರಾರಂಭದ",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "ಆಟ ಪ್ರಾರಂಭವಾಯಿತು, ದಯವಿಟ್ಟು ಇರಿಸಿ.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "ದೋಷ: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "ಗೆಲುವಿನ ದರ",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "ಸ್ಕೋರ್:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "ಆಟಗಾರ 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "ಆಟಗಾರ 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} ತುಂಡು ಎಣಿಕೆ ಮೂರಕ್ಕಿಂತ ಕಡಿಮೆ.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} ರಾಜೀನಾಮೆ.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} ಹೋಗಲು ಯಾವುದೇ ಮಾರ್ಗವಿಲ್ಲ.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "ಬೋರ್ಡ್ ತುಂಬಿದೆ ಮತ್ತು {player} ಹೋಗಲು ಯಾವುದೇ ಮಾರ್ಗವಿಲ್ಲ.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "ಸಮಯ ಮುಗಿದಿದೆ, {player} ಕಳೆದುಹೋಗಿದೆ.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "ಚಲಿಸುವ ಹಂತದಲ್ಲಿ, ಕೊನೆಯ ನಿರ್ದಿಷ್ಟ ಸಂಖ್ಯೆಯ ಚಲನೆಗಳಲ್ಲಿ ಯಾವುದೇ ತುಣುಕನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿಲ್ಲ.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "ಬೋರ್ಡ್ ತುಂಬಿರುವುದರಿಂದ ಇದು ಡ್ರಾ ಆಗಿದೆ.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "ಮೂರು ಪಟ್ಟು ಪುನರಾವರ್ತನೆಯಿಂದಾಗಿ ಇದು ಡ್ರಾ ಆಗಿದೆ.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "ಗೇಮ್ ಓವರ್! ಅಜ್ಞಾತ ಕಾರಣ.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "ಗೇಮ್ ಓವರ್",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "ನೀವು ಗೆಲ್ಲುತ್ತೀರಿ! ಅಭಿನಂದನೆಗಳು!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "ಕಠಿಣ ಮಟ್ಟದ ಸವಾಲು? ಹೊಸ ಹಂತವು {level} ಮಟ್ಟವಾಗಿರುತ್ತದೆ!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "ನೀವು ಕಳೆದುಕೊಳ್ಳುತ್ತೀರಿ!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "ವಿಶ್ಲೇಷಿಸಿ",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "ಬಗ್ಗೆ",
+  "@about": {
+    "description": "About"
+  },
+  "version": "ಆವೃತ್ತಿ: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "ಧನ್ಯವಾದಗಳು",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "ಸಂಯೋಜನೆಗಳು",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "ಆಯ್ಕೆಗಳು",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "ಸಾಮಾನ್ಯ ಸೆಟ್ಟಿಂಗ್ಗಳು",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "ತೊಂದರೆ ಮಟ್ಟ",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI ಆಲೋಚನಾ ಸಮಯ",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "ತೊಂದರೆ",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "ಧ್ವನಿ ಪರಿಣಾಮಗಳು",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "ಆಟದಲ್ಲಿ ಶಬ್ದಗಳನ್ನು ಪ್ಲೇ ಮಾಡಿ",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "ಹಿಂತಿರುಗುವಾಗ ಮ್ಯೂಟ್ ಮಾಡಿ",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "ಸ್ವರ",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "ಮೊದಲ ನಡೆ",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "ಮಾನವ",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "ಎಐ",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "ಪರ್ಯಾಯ",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "ಆಟ ಮುಗಿದ ನಂತರ ಆಟವನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "ಸ್ವಯಂ ಬದಲಾವಣೆ ಮೊದಲ ಚಲನೆ",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "ಯಾದೃಚ್ ly ಿಕವಾಗಿ ಸರಿಸಿ",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "ವಿವಿಧ",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "ನಿಯಮಗಳು",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "ಪ್ರತಿ ಆಟಗಾರನು ಹೊಂದಿರುವ ತುಣುಕುಗಳ ಸಂಖ್ಯೆ",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "ಪ್ರತಿ ಆಟಗಾರನಿಗೆ ಎಷ್ಟು ತುಣುಕುಗಳಿವೆ?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "ಹಾರುವ ತುಂಡುಗಳ ಸಂಖ್ಯೆ",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "ಫ್ಲೈಯಿಂಗ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದ್ದರೆ, ಆಟಗಾರನನ್ನು ನಿರ್ದಿಷ್ಟ ತುಂಡು ಎಣಿಕೆಗೆ ಇಳಿಸಿದಾಗ, ಆಕೆಯ ತುಣುಕುಗಳು ಆಟದ ಉಳಿದ ಭಾಗಗಳಂತೆ ಪಕ್ಕದ ಬಿಂದುಗಳಿಗೆ ಸೀಮಿತವಾಗುವ ಬದಲು ಯಾವುದೇ ಖಾಲಿ ಇಲ್ಲದ ಸ್ಥಳಕ್ಕೆ ಹೋಗಲು ಮುಕ್ತವಾಗಿರುತ್ತದೆ.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "ಕನಿಷ್ಠ ತುಣುಕುಗಳು",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "ಕರ್ಣೀಯ ರೇಖೆಗಳು",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "ಬೋರ್ಡ್‌ಗೆ ನಾಲ್ಕು ಕರ್ಣೀಯ ರೇಖೆಗಳನ್ನು ಸೇರಿಸಿ.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "ತುಣುಕುಗಳನ್ನು ತೆಗೆದುಹಾಕುವುದನ್ನು ಗುರುತಿಸಿ ಮತ್ತು ವಿಳಂಬಗೊಳಿಸಿ",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "ಇರಿಸುವ ಹಂತದಲ್ಲಿ, ತೆಗೆದ ತುಣುಕುಗಳ ಬಿಂದುಗಳನ್ನು ಇನ್ನು ಮುಂದೆ ಇರಿಸಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "ಎರಡನೇ ಆಟಗಾರನು ಮೊದಲು ಚಲಿಸುತ್ತಾನೆ",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "ಇರಿಸುವ ಹಂತದಲ್ಲಿ ಎರಡನೇ ಸ್ಥಾನಕ್ಕೆ ಚಲಿಸುವ ಆಟಗಾರನು ಚಲಿಸುವ ಹಂತದಲ್ಲಿ ಮೊದಲು ಚಲಿಸುತ್ತಾನೆ.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "ಬಹು-ತೆಗೆದುಹಾಕಿ",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "ಒಬ್ಬ ಆಟಗಾರನು ಒಂದಕ್ಕಿಂತ ಹೆಚ್ಚು ಗಿರಣಿಗಳನ್ನು ಏಕಕಾಲದಲ್ಲಿ ಮುಚ್ಚಿದರೆ, ಅವಳು ಮುಚ್ಚಿದ ಗಿರಣಿಗಳ ಸಂಖ್ಯೆಯನ್ನು ಅವಳು ತೆಗೆದುಹಾಕುತ್ತಾಳೆ.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "ಗಿರಣಿಗಳನ್ನು ನಾಶಮಾಡಿ",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "ಪೂರ್ವನಿಯೋಜಿತವಾಗಿ, ರೂಪುಗೊಂಡ ಗಿರಣಿಯಿಂದ ತುಂಡನ್ನು ತೆಗೆದುಹಾಕುವ ಮೊದಲು ಆಟಗಾರರು ಮೊದಲು ಬೇರೆ ಯಾವುದೇ ತುಣುಕುಗಳನ್ನು ತೆಗೆದುಹಾಕಬೇಕು. ಮಿತಿಯನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲು ಈ ಆಯ್ಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "ಬೋರ್ಡ್ ತುಂಬಿದಾಗ ಎರಡನೇ ಆಟಗಾರನು ಕಳೆದುಕೊಳ್ಳುತ್ತಾನೆ",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "ಇರಿಸುವ ಹಂತದ ಕೊನೆಯಲ್ಲಿ ಬೋರ್ಡ್ ತುಂಬಿದಾಗ, ಮೊದಲು ಇಡುವ ಭಾಗವು ಆಟವನ್ನು ಕಳೆದುಕೊಳ್ಳುತ್ತದೆ. ಇಲ್ಲದಿದ್ದರೆ, ಆಟವು ಡ್ರಾ ಆಗಿದೆ.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "ಯಾವುದೇ ಕಾನೂನು ಕ್ರಮಗಳಿಲ್ಲದಿದ್ದಾಗ ಕಳೆದುಕೊಳ್ಳಿ",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "ಅವರ ಎದುರಾಳಿಯು ಅವರನ್ನು ಸರಿಸಲಾಗದಂತೆ ನಿರ್ಬಂಧಿಸಿದರೆ ಆಟಗಾರನು ಕಳೆದುಕೊಳ್ಳುತ್ತಾನೆ. ಈ ಆಯ್ಕೆಯನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿದ್ದರೆ ಸರಿಸಲು ಸೈಡ್ ಬದಲಾಯಿಸಿ.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "ಹಾರುವ",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "ಆಟಗಾರನಿಗೆ ಕೇವಲ ಮೂರು ಅಥವಾ ನಾಲ್ಕು (ಕಾನ್ಫಿಗರ್ ಮಾಡಬಹುದಾದ) ತುಣುಕುಗಳು ಮಾತ್ರ ಉಳಿದಿದ್ದರೆ, ಅವಳು ಆ ತುಂಡನ್ನು ಯಾವುದೇ ಉಚಿತ ಬಿಂದುವಿಗೆ ಸರಿಸಬಹುದು.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "ಎನ್-ಮೂವ್ ನಿಯಮ",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "ನಿರ್ದಿಷ್ಟ ಸಂಖ್ಯೆಯ ಚಲನೆಗಳಲ್ಲಿ ಯಾವುದೇ ತೆಗೆದುಹಾಕುವಿಕೆ ಇಲ್ಲದಿದ್ದರೆ ಆಟವನ್ನು ಎಳೆಯಲಾಗುತ್ತದೆ.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "ರೋಲ್ಬ್ಯಾಕ್",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "ದಯವಿಟ್ಟು ಆಯ್ಕೆ ಮಾಡು",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "ನಕಲಿಸಿ",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಿದ ಇತಿಹಾಸವನ್ನು ಸರಿಸಿ.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "ಸಹಾಯ",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "ಪ್ರತಿಕ್ರಿಯೆ",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "ನಿರ್ಗಮಿಸಿ",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "ನಿಯಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "ಬಣ್ಣ",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "ಬೋರ್ಡ್ ಬಣ್ಣ",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "ತುಂಡು ಬಣ್ಣ",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "ಹಿನ್ನೆಲೆ ಬಣ್ಣ",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "ಬೋರ್ಡ್ ಲೈನ್ ಬಣ್ಣ",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "ಪ್ಲೇಯರ್ 1 ತುಂಡು ಬಣ್ಣ",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "ಪ್ಲೇಯರ್ 2 ತುಂಡು ಬಣ್ಣ",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "ಸಂದೇಶದ ಬಣ್ಣ",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "ಕೈಯಲ್ಲಿರುವ ತುಂಡುಗಳ ಸಂಖ್ಯೆಯನ್ನು ತೋರಿಸಿ",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "ಸಂಕೇತಗಳನ್ನು ಮಂಡಳಿಯಲ್ಲಿ ತೋರಿಸಿ",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "ಇತಿಹಾಸ ನ್ಯಾವಿಗೇಷನ್ ಟೂಲ್‌ಬಾರ್ ತೋರಿಸಿ",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "ಪ್ರದರ್ಶನ",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "ಬೋರ್ಡ್ ಗಡಿರೇಖೆಯ ಅಗಲ",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "ಬೋರ್ಡ್ ಆಂತರಿಕ ರೇಖೆಯ ಅಗಲ",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "ತುಂಡು ಅಗಲ",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "ಅಕ್ಷರ ಗಾತ್ರ",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD ಸಂಕೇತ",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "ಮರುಸ್ಥಾಪಿಸಿ",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "ಡೀಫಾಲ್ಟ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಮರುಸ್ಥಾಪಿಸಿ",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "{element} ಅನ್ನು ಆರಿಸಿ",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "ಮಾಹಿತಿ",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "ಸುಳಿವು",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "ಆಟಗಾರ",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "ಆಟಗಾರ 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "ಆಟಗಾರ 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "ಹೇಗೆ ಆಡುವುದು",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "ತುಂಡು ಇರಿಸಲು ಲಭ್ಯವಿರುವ ಯಾವುದೇ ಬಿಂದುವನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "ತುಂಡು ಸರಿಸಲು ಅದನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "ತುಂಡನ್ನು ಸರಿಸಲು ಅದನ್ನು ಸಂಪರ್ಕಿಸಿರುವ ಬಿಂದುವನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "ತೆಗೆದುಹಾಕಲು ಎದುರಾಳಿಯ ಒಂದು ತುಂಡು ಟ್ಯಾಪ್ ಮಾಡಿ.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "ನೀವು ತುಂಡನ್ನು ತೆಗೆದುಹಾಕುವ ಮೊದಲು ನೀವು ಮೊದಲು ಗಿರಣಿಯನ್ನು ರಚಿಸಬೇಕಾಗಿದೆ.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "ನಿಮ್ಮ ತುಣುಕುಗಳೊಂದಿಗೆ ನೀವು ಆಡಬೇಕಾಗಿದೆ.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "ಅಂಕಿಅಂಶಗಳು",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "ಒಟ್ಟು ಆಟಗಳು",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "ಫಲಿತಾಂಶಗಳು",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "ಎಡ",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "ಗೌಪ್ಯತಾ ನೀತಿ",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "ದಯವಿಟ್ಟು ಎಚ್ಚರಿಕೆಯಿಂದ ಓದಿ ಮತ್ತು ನೀವು ಇದನ್ನು ಸಂಪೂರ್ಣವಾಗಿ ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದೀರಿ ಮತ್ತು ಒಪ್ಪುತ್ತೀರಿ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". ಈ ನೀತಿಯನ್ನು ನೀವು ಒಪ್ಪದಿದ್ದರೆ, ದಯವಿಟ್ಟು ಈ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಬಳಸಬೇಡಿ. ಅಪ್ಲಿಕೇಶನ್ ಬಳಸುವುದರಿಂದ ನೀವು ಈ ನಿಯಮಗಳನ್ನು ಒಪ್ಪುತ್ತೀರಿ ಎಂದು ಸೂಚಿಸುತ್ತದೆ.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " ಮತ್ತು ",
+  "@and": {},
+  "accept": "ಒಪ್ಪಿಕೊಳ್ಳಿ",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "ಹಿಂಪಡೆ ಹಿಂದಕ್ಕೆ ಪಡೆ",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "ಹಿಂದಕ್ಕೆ ತೆಗೆದುಕೊಳ್ಳುವುದು…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "ಕಾಯಲಾಗುತ್ತಿದೆ…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "ಮುಂದೆ ಹೆಜ್ಜೆ ಹಾಕಿ",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "ಎಲ್ಲವನ್ನೂ ಹಿಂದಕ್ಕೆ ತೆಗೆದುಕೊಳ್ಳಿ",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "ಎಲ್ಲವನ್ನು ಮುಂದಕ್ಕೆ ಇರಿಸಿ",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "ಈಗ ಸರಿಸಿ",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "ಮುಗಿದಿದೆ.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "ಕ್ರ್ಯಾಕ್-ಗಿರಣಿ",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "ಆಟಗಾರನು ಗಿರಣಿಗಳಲ್ಲಿ ಮಾತ್ರ ತುಣುಕುಗಳನ್ನು ಹೊಂದಿದ್ದರೆ, ಗಿರಣಿಗಳಲ್ಲಿನ ತುಣುಕುಗಳನ್ನು ತೆಗೆದುಹಾಕಲು ಲಾಕ್ ಆಗುವುದಿಲ್ಲ.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "ಅನಿಮೇಷನ್ ಅವಧಿ",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "ಯಾವುದೂ",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "ಥೀಮ್",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "ಆಟದ ಎದುರಾಳಿಯನ್ನು ಮೂರು ತುಣುಕುಗಳಿಗಿಂತ ಕಡಿಮೆ ಅಥವಾ ಯಾವುದೇ ಕಾನೂನು ಕ್ರಮಗಳಿಲ್ಲದೆ ಬಿಡುವ ಗುರಿ ಹೊಂದಿದೆ.\n\nಸ್ಥಾನವು ಮೂರನೇ ಬಾರಿಗೆ ಸಂಭವಿಸಿದಲ್ಲಿ ಅಥವಾ ಕೊನೆಯ 100 (ಕಾನ್ಫಿಗರ್ ಮಾಡಬಹುದಾದ) ಚಲನೆಗಳಲ್ಲಿ ಯಾವುದೇ ತೆಗೆದುಹಾಕದಿದ್ದಲ್ಲಿ ಆಟವು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸೆಳೆಯುತ್ತದೆ.\n\nಆಟವು ಮೂರು ಹಂತಗಳಲ್ಲಿ ಮುಂದುವರಿಯುತ್ತದೆ:\n\n1. ಖಾಲಿ ಇರುವ ಸ್ಥಳಗಳಲ್ಲಿ ತುಂಡುಗಳನ್ನು ಇಡುವುದು\n2. ತುಂಡುಗಳನ್ನು ಪಕ್ಕದ ಬಿಂದುಗಳಿಗೆ ಸರಿಸುವುದು\n3. (ಐಚ್ al ಿಕ ಹಂತ) ಆಟಗಾರನನ್ನು ಮೂರು ತುಂಡುಗಳಾಗಿ ಕಡಿಮೆ ಮಾಡುವಾಗ ಯಾವುದೇ ಖಾಲಿ ಬಿಂದುವಿಗೆ ತುಂಡುಗಳನ್ನು ಚಲಿಸುವುದು\n\nಇಡುವುದು\n\nಆಟವು ಖಾಲಿ ಬೋರ್ಡ್‌ನೊಂದಿಗೆ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ, ಇದು ಇಪ್ಪತ್ನಾಲ್ಕು ಅಂಕಗಳನ್ನು ಹೊಂದಿರುವ ಗ್ರಿಡ್ ಅನ್ನು ಹೊಂದಿರುತ್ತದೆ. ಪ್ರತಿ ಆಟಗಾರನು ಎಲ್ಲಾ ತುಣುಕುಗಳನ್ನು ಬೋರ್ಡ್‌ನಲ್ಲಿ ಇರಿಸುವವರೆಗೆ ಆಟಗಾರರು ತಮ್ಮ ತುಣುಕುಗಳನ್ನು ಖಾಲಿ ಬಿಂದುಗಳಲ್ಲಿ ಇರಿಸುವ ತಿರುವುಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಾರೆ. ಒಬ್ಬ ಆಟಗಾರನು ತನ್ನ ಮೂರು ತುಣುಕುಗಳನ್ನು ನೇರವಾಗಿ ಹಾಕಲು ಸಾಧ್ಯವಾದರೆ, ಅವನಿಗೆ \"ಗಿರಣಿ\" ಇದೆ ಮತ್ತು ಅವನ ಎದುರಾಳಿಯ ಒಂದು ತುಂಡನ್ನು ಮಂಡಳಿಯಿಂದ ತೆಗೆದುಹಾಕಬಹುದು.\n\nಕೆಲವು ನಿಯಮಗಳಲ್ಲಿ, ರೂಪುಗೊಂಡ ಗಿರಣಿಯಿಂದ ತುಂಡನ್ನು ತೆಗೆದುಹಾಕುವ ಮೊದಲು ಆಟಗಾರರು ಮೊದಲು ಬೇರೆ ಯಾವುದೇ ತುಣುಕುಗಳನ್ನು ತೆಗೆದುಹಾಕಬೇಕು.\n\nತೆಗೆದ ತುಣುಕುಗಳ ಬಿಂದುಗಳಿಗೆ ನೀವು ಮತ್ತೆ ಕೆಲವು ನಿಯಮಗಳಲ್ಲಿ ಇರಿಸುವ ಹಂತದಲ್ಲಿ ಇರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.\n\nಎಲ್ಲಾ ತುಣುಕುಗಳನ್ನು ಒಮ್ಮೆ ಬಳಸಿದ ನಂತರ, ಆಟಗಾರರು ಚಲಿಸುವ ತಿರುವುಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಾರೆ.\n\nಚಲಿಸುತ್ತಿದೆ\n\nಸರಿಸಲು, ಆಟಗಾರನು ತನ್ನ ಒಂದು ತುಣುಕನ್ನು ಬೋರ್ಡ್ ರೇಖೆಯ ಉದ್ದಕ್ಕೂ ಖಾಲಿ ಪಕ್ಕದ ಬಿಂದುವಿಗೆ ಚಲಿಸುತ್ತಾನೆ. ಅವರು ಹಾಗೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗದಿದ್ದರೆ, ಅವರು ಆಟವನ್ನು ಕಳೆದುಕೊಂಡಿದ್ದಾರೆ. ಬೋರ್ಡ್ ಸಾಲಿನಲ್ಲಿ ತನ್ನ ಮೂರು ತುಣುಕುಗಳನ್ನು ಜೋಡಿಸುವ ಆಟಗಾರನು ಗಿರಣಿಯನ್ನು ಹೊಂದಿರುತ್ತಾನೆ ಮತ್ತು ಇರಿಸುವ ಹಂತದಂತೆಯೇ ತನ್ನ ಎದುರಾಳಿಯ ತುಣುಕುಗಳಲ್ಲಿ ಒಂದನ್ನು ತೆಗೆದುಹಾಕಬಹುದು. ಯಾವುದೇ ಆಟಗಾರನು ಎರಡು ತುಂಡುಗಳಾಗಿ ಕಡಿಮೆಯಾಗುತ್ತಾನೆ, ಹೊಸ ಗಿರಣಿಗಳನ್ನು ರೂಪಿಸಲು ಯಾವುದೇ ಆಯ್ಕೆಯಿಲ್ಲ, ಮತ್ತು ಆದ್ದರಿಂದ ಆಟವನ್ನು ಕಳೆದುಕೊಳ್ಳುತ್ತಾನೆ. ತನ್ನ ಎದುರಾಳಿಯು ಚಲಿಸದಂತೆ ನಿರ್ಬಂಧಿಸಿದರೆ ಆಟಗಾರನು ಮೂರು ತುಣುಕುಗಳಿಗಿಂತ ಹೆಚ್ಚು ಕಳೆದುಕೊಂಡಾಗ ಕಳೆದುಕೊಳ್ಳಬಹುದು.\n\nಹಾರುವ\n\nನಿಯಮಗಳ ಕೆಲವು ರೂಪಾಂತರಗಳಲ್ಲಿ, ಆಟಗಾರನು ಕೇವಲ ಮೂರು ತುಣುಕುಗಳನ್ನು ಮಾತ್ರ ಉಳಿದಿದ್ದರೆ, ಅವನ ತುಣುಕುಗಳು ಪಕ್ಕದವುಗಳನ್ನು ಮಾತ್ರವಲ್ಲದೆ ಯಾವುದೇ ಖಾಲಿ ಬಿಂದುಗಳಿಗೆ ಹಾರಬಲ್ಲವು, ಹಾಪ್ ಮಾಡಬಹುದು ಅಥವಾ ಹೋಗಬಹುದು.",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "ಆವೃತ್ತಿ ಮಾಹಿತಿ",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "ಪರವಾನಗಿ",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "ಮೂಲ ಕೋಡ್",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "ಅಪ್ಲಿಕೇಶನ್ ಆವೃತ್ತಿ",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "ಜನರಲ್",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "ಸುಧಾರಿತ",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "ಇಡುವುದು",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "ಚಲಿಸುತ್ತಿದೆ",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "ತೆಗೆದುಹಾಕಲಾಗುತ್ತಿದೆ",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "ಸ್ಥಿತಿಯ ಮೇಲೆ ಆಟ",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI ನ ಪ್ಲೇಸ್ಟೈಲ್",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "ನಿಷ್ಕ್ರಿಯ",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "ಸಮಯ ಮೀರಿದೆ",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "ಗೋಚರತೆ",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "ಮಾನವ ಅನುಭವವನ್ನು ಸೆಳೆಯಿರಿ",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "ತುಣುಕುಗಳ ಚಲನಶೀಲತೆಯನ್ನು ಪರಿಗಣಿಸಿ",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "ಪೀಸ್ ಎಣಿಕೆ:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} ಕೈಯಲ್ಲಿ: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} ಬೋರ್ಡ್‌ನಲ್ಲಿ: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "ಮೇಲಿನಿಂದ ಬೋರ್ಡ್ ಆಫ್‌ಸೆಟ್",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "ಇದು ಎಐನ ಸರದಿ ಅಲ್ಲ.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "ಎಐ ಯೋಚಿಸುತ್ತಿಲ್ಲ.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "ನೀವು ಚಲಿಸುವ ಪಟ್ಟಿಯ ಕೊನೆಯಲ್ಲಿದ್ದೀರಿ.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "ಬಿಡಲು ಮತ್ತೆ ಟ್ಯಾಪ್ ಮಾಡಿ.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "ಇನ್ನಷ್ಟು",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "ಇದು ಪ್ರಾಯೋಗಿಕ ಲಕ್ಷಣವಾಗಿದೆ.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "ಪ್ರಯೋಗಗಳು",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "ಮುಕ್ತ ಮೂಲ ಪರವಾನಗಿಗಳು",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "ಭಾಷೆ",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "ಡೀಫಾಲ್ಟ್ ಭಾಷೆ",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "ತುಣುಕುಗಳು ಇರಿಸುವ ಹಂತದಲ್ಲಿ ಚಲಿಸಬಹುದು",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "ಯಾವುದೇ ವಿಶಿಷ್ಟವಾದ ಇರಿಸುವ ಮತ್ತು ಚಲಿಸುವ ಹಂತಗಳಿಲ್ಲ, ಅಂದರೆ, ಆಟಗಾರರು ಪ್ರತಿ ಚಲನೆಯಲ್ಲೂ ಒಂದು ತುಂಡನ್ನು ಬೋರ್ಡ್‌ನಲ್ಲಿ ಇಡಬೇಕೆ ಅಥವಾ ಅವರ ಒಂದು ತುಣುಕನ್ನು ಚಲಿಸಬೇಕೆ ಎಂದು ನಿರ್ಧರಿಸಬಹುದು (ಅವರು ಉಳಿದಿರುವ ತುಣುಕುಗಳನ್ನು ಇಡುವವರೆಗೆ).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "ಮೆನು ಬಣ್ಣ",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "ಮೆನು ಪಠ್ಯ ಬಣ್ಣ",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "ಮೆನು ಐಟಂ ಬಣ್ಣವನ್ನು ಹೈಲೈಟ್ ಮಾಡುತ್ತದೆ",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "ಮುಖ್ಯ ಟೂಲ್‌ಬಾರ್ ಹಿನ್ನೆಲೆ ಬಣ್ಣ",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "ಮುಖ್ಯ ಟೂಲ್‌ಬಾರ್ ಐಕಾನ್ ಬಣ್ಣ",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "ನ್ಯಾವಿಗೇಷನ್ ಟೂಲ್‌ಬಾರ್ ಹಿನ್ನೆಲೆ ಬಣ್ಣ",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "ನ್ಯಾವಿಗೇಷನ್ ಟೂಲ್‌ಬಾರ್ ಐಕಾನ್ ಬಣ್ಣ",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "ಟೂಲ್‌ಬಾರ್ ಅನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರೆಮಾಡಿ",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "ಪರದೆಯ ಮೇಲೆ ಟೂಲ್‌ಬಾರ್ ಸ್ಥಳ",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "ಟಾಪ್",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "ಕೆಳಗೆ",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "ಕೇಂದ್ರ",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "ಗಾಢ ಬಣ್ಣ",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "ಚಿತ್ರ",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "ನಿಮ್ಮ ಚಿತ್ರವನ್ನು ಆರಿಸಿ",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "ಬೆಳಕು",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "ಡಾರ್ಕ್",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "ಥೀಮ್ಗಳು",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "ಪ್ರಸ್ತುತ ಥೀಮ್",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "ಥೀಮ್ ಉಳಿಸಿ",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "ವಿಶ್ಲೇಷಣೆ ಗ್ರಾಫ್ ತೋರಿಸಿ",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "ವಿಶ್ಲೇಷಣೆ",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "ಆಟ ಉಳಿಸು",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "ಆಟವನ್ನು ಲೋಡ್ ಮಾಡಿ",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "ಸೆಟಪ್ ಸ್ಥಾನ",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "ಕಾನೂನು ಕ್ರಮಗಳನ್ನು ತೋರಿಸಿ",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "ಕೊನೆಯ ನಡೆಯನ್ನು ತೋರಿಸಿ",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "ಬಾಣಗಳನ್ನು ತೋರಿಸಿ",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "ತುಣುಕುಗಳು",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "ವಿಶ್ಲೇಷಣೆಯನ್ನು ತೋರಿಸಿ",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "ಎಳೆಗಳು",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "ತೊಡಗಿಸಿಕೊಳ್ಳಿ",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "ಅನುವಾದವನ್ನು ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "ಟ್ಯುಟೋರಿಯಲ್",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "ಕ್ಲಾಸಿಕ್ ಮಿಲ್",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "ಮಿಶ್ರ ಮಿಲ್",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "ಸಿಲೋನ್ ಮಿಲ್",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "ಮಿಲ್ ಅನ್ನು ಮುರಿಯಬಹುದು ಮತ್ತು ಪದೇ ಪದೇ ಮರುಮಾಡಬಹುದು",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "ಹೊಸ ಗಿರಣಿಯನ್ನು ರಚಿಸಲು ಆಟಗಾರನು ಗಿರಣಿಯನ್ನು ಮುರಿದರೆ, ಅಂತಹ ಆಟಗಾರನು ಹೊಸ ಗಿರಣಿಯನ್ನು ಮಾಡಿದರೆ ಅಂತಹ ತುಣುಕನ್ನು ತನ್ನ ಮುಂದಿನ ನಡೆಯಲ್ಲಿ ಮೂಲ ಜಂಕ್ಷನ್‌ಗೆ ಹಿಂತಿರುಗಿಸಬಹುದು.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "ಆಟಗಾರನು ಮೂರು ತುಣುಕುಗಳನ್ನು ಹೊಂದಿದ್ದರೆ ಮತ್ತು ಹತ್ತು ಚಲನೆಗಳ ನಂತರ ಯಾವುದೇ ಆಟಗಾರನು ಎದುರಾಳಿಯ ತುಣುಕುಗಳನ್ನು ತೆಗೆದುಹಾಕದಿದ್ದರೆ ಆಟವನ್ನು ಎಳೆಯಲಾಗುತ್ತದೆ",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "ಒಬ್ಬ ಆಟಗಾರನು ಮೂರು ತುಣುಕುಗಳಿಗೆ ಇಳಿದಾಗ, ಮತ್ತು ಯಾವುದೇ ಆಟಗಾರನು ಹತ್ತು ಚಲನೆಗಳ ಒಳಗೆ ಎದುರಾಳಿಯ ತುಂಡನ್ನು ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಿಲ್ಲ, ಆಟವು ಡ್ರಾ ಆಗಿದೆ.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "ಮುಚ್ಚಿ",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "ಬಿಳಿ ತುಂಡು",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "ಕಪ್ಪು ತುಂಡು",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "ಬ್ಯಾನ್ ಪಾಯಿಂಟ್",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "ಖಾಲಿ ಬಿಂದು",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "ಯಾವುದೇ ಅರ್ಥವಿಲ್ಲ",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "ಇರಿಸುವ ಹಂತ",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "ಚಲಿಸುವ ಹಂತ",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "ಹಾರುವ ಹಂತ",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "ಸರಿಸಲು ಬದಿ: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "ಕೊನೆಯ ಚಲನೆ: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "ಪ್ರವೇಶಿಸುವಿಕೆ",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "ಸ್ಕ್ರೀನ್ ರೀಡರ್ ಬೆಂಬಲ",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "ಇದು ಡ್ರಾ ಆಗಿದೆ!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "ಡ್ರಾ",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "ಪೀಸ್ ಹೈಲೈಟ್ ಬಣ್ಣ",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "ಅಲ್ಗಾರಿದಮ್",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "ಸ್ಥಳವಿಲ್ಲದ ತುಂಡನ್ನು ತೆಗೆಯಿರಿ",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "ಇರಿಸುವ ಹಂತದಲ್ಲಿ ಆಟಗಾರ್ತಿಯು ಗಿರಣಿಯನ್ನು ರೂಪಿಸಿದರೆ, ಆಕೆ ಎದುರಾಳಿಯ ಸ್ಥಾನವಿಲ್ಲದ ತುಂಡನ್ನು ತೆಗೆದು ಚಲನೆಯನ್ನು ಮುಂದುವರಿಸುತ್ತಾಳೆ.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "ಎಂಡ್‌ಗೇಮ್ ಎನ್-ಮೂವ್ ನಿಯಮ",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "ಯಾವುದೇ ಆಟಗಾರನು ಕೇವಲ ಮೂರು ತುಣುಕುಗಳನ್ನು ಹೊಂದಿದ್ದರೆ ಮತ್ತು ಯಾವುದೇ ಆಟಗಾರನು ನಿರ್ದಿಷ್ಟ ಚಲನೆಗಳಲ್ಲಿ ಒಂದು ತುಂಡನ್ನು ತೆಗೆಯದಿದ್ದರೆ, ಆಟವನ್ನು ಡ್ರಾ ಮಾಡಲಾಗುತ್ತದೆ.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "ಒಬ್ಬ ಆಟಗಾರನು ಕೇವಲ ಮೂರು ತುಣುಕುಗಳನ್ನು ಹೊಂದಿರುತ್ತಾನೆ ಮತ್ತು ಯಾವುದೇ ಆಟಗಾರನು ನಿರ್ದಿಷ್ಟ ಚಲನೆಗಳಲ್ಲಿ ಒಂದು ತುಂಡನ್ನು ತೆಗೆಯುವುದಿಲ್ಲ.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "ಮೂರು ಪಟ್ಟು ಪುನರಾವರ್ತಿಸುವ ನಿಯಮ",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "ಒಂದು ಸ್ಥಾನವು ಮೂರನೇ ಬಾರಿಗೆ ಸಂಭವಿಸಿದಲ್ಲಿ ಆಟವನ್ನು ಡ್ರಾ ಮಾಡಲಾಗುತ್ತದೆ.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "ಗಿರಣಿ! ಒಂದು ಚಲನೆಯನ್ನು ಮುಂದುವರಿಸಿ.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "ಪಾಯಿಂಟ್ ಶೈಲಿ",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "ಪಾಯಿಂಟ್ ಅಗಲ",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "ಘನ",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "ಟೊಳ್ಳು",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "ಕನ್ನಡ",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{ಮೂವ್}=1{{count} ಸರಿಸಿ}other{{count} ಚಲನೆಗಳು}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  }
 }

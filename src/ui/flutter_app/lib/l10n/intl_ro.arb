@@ -1,1252 +1,1154 @@
 {
-    "@@locale": "ro",
-    "appName": "Moară",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Bun venit",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "da",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Nu",
-    "@no": {
-        "description": "No"
-    },
-    "game": "Joc",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Uman Vs. AI",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Uman Vs. Uman",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "AI Vs. AI",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Uman Vs. Cloud",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Uman Vs. LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Testați prin LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Mutare",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " Mutări",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Vezi lista de mutări",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Lista de mutări",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Fără înregistrări",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "OK",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "Confirmare",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "Anulare",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Drepturi de autor © 2021-2022 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Selectați piesa greșită.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Așează-ți piesele.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Nu o poți plasa aici.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Plasat.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Îndepărtează o piesă.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Nu poate fi îndepărtată.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Îndepărtată.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Mută o piesă.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Nu-ți poți așeza piesa aici.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Nu-ți poți muta piesa aici.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Moară! Îndepărtează una din piesele adversarului.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Continuă să îndepărtezi piesa adversarului.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Selectează una dintre piesele adversarului.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Nu poți îndepărta piesă dintr-o moară.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "O piesă poate fi mișcată doar pe punctul imediat învecinat.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Piesele adversarului nu pot fi mișcate.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "Sunt 3 piese în linie.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Selectează piesa de mutat.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "Mai ai 3 piese.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Poți sări pe orice punct liber.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " a muta.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "Jucătorul 1 câștigă!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "Jucătorul 2 câștigă!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Câștigă",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "Pierde",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "Abandonat",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Cugetare...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "Joc nou",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Importare joc",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Exportare jocul",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Joc importat din clipboard.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Nu se poate importa",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Mișcările și regulile nu se potrivesc.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Pornire înregistrare",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Înregistrare...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Oprește înregistrarea",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Afișează înregistrarea",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "Fără înregistrare.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Te rog asteaptă...",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Repornești jocul curent?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Repornire",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "Jocul a început, te rog așează piesă",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Analizare...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "Eroare",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "Rata de câștig",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "Scor",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "Jucătorul 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "Jucătorul 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " numărul pieselor este mai mic de trei.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": "renunțare.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " nu este o cale liberă.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "Tabla s-a umplut, nu are câmp liber.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Timpul a expirat",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "În timpul ultimelor N mișcări nicio piesă nu a fost înlăturată.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "Este remiză, tabla fiind plină.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "Este remiză, mutare repetată de trei ori.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "Joc încheiat! Motiv necunoscut.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "Joc încheiat",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "Ai castigat! Felicitări!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "Provocare la un nivel mai greu?\nNoul nivel va fi Level: ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "Ai pierdut!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "Analiză",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "Numele jucatorului",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "Despre aplicație",
-    "@about": {
-        "description": "About"
-    },
-    "version": "Versiune",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "Mulțumiri",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Setări",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Opțiuni",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "Preferințe",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Nivel de dificultate",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "Timpul de gândire al lui AI",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Dificultate",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Efecte sonore",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "Redare sunete în joc",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Menține mută revizionarea",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Ton",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Prima mișcare",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Uman",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "AI",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "Alternare",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "Reporniți automat jocul la finalizarea jocului actual",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Schimbă automat primul jucător la sfârșitul jocului",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "AI își recunoaște handicapul evident",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Miscare aleatorie",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Învățați butucul",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Carte de deschidere",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "Diverse",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "Reguli",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Număr de piese pe jucător",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Câte piese are fiecare jucător?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Numărul pieselor (flying) cu drum liber",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "La Flying activat, și când jucătorul are un număr redus prestabilit de piese, acestea sunt libere să se deplaseze în orice punct neocupat.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Număr minim de piese",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Liniile diagonale",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Adăugați patru linii diagonale pe tablă - unind colțurile celor trei patrulatere concentrice.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Marchează ca interzis pentru replasare",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "În faza de plasare, punctele eliminate nu mai pot plasa piese.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Al doilea jucător mută primul",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Jucătorul care este al doilea în plasare, devine primul în faza de mutare.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Morișcă (moară dublă)",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Dacă un jucător cu aceeași piesă închide mai mult de o moară simultan, poate elimina de la adversar atâtea piese, câte mori a realizat.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Distruge mori",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "În mod implicit, jucătorii trebuie să elimine orice alte piese înainte de a scoate o piesă dintr-o moară formată. Activați această obțiune.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Al doilea jucător pierde când tabla este plină",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Dacă la sfârșitul fazei de plasare, se umple tabla, jucătorul care a plasat primul pierde jocul (neavând posibilitate de mișcare), altfel ar fi remiză.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Pierde atunci când nu se mișcă legal",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Jucătorul va pierde dacă adversarul său îi blochează în așa fel încât să nu poată muta (neavând câmp liber). Schimbă, dacă obțiunea este dezactivată.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Sărituri",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Dacă un jucător mai are doar trei sau patru piese (configurabile), poate sări cu acestea în orice punct liber.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "Regula N-move",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "Jocul este extras dacă nu a existat nicio eliminare într-un anumit număr de mișcări de către fiecare jucător.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Revenire",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "Te rog selecteaza",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "Copie",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Istoricul mutărilor copiat în clipboard",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Ajutor",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Feedback",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "Ieșire",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Setări reguli",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "Culoare",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Culoarea plăcii",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Culoarea piesei",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Culoare de fundal",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Culoarea liniilor tablei de joc",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Culoare piesă Jucător 1",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Culoare piesă Jucător 2",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Culoarea mesajului",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "AI arată milă",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Afișați numărul de piese din mână (neplasate)",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Afișați notațiile pe bord",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Afișați istoricul navigației pe  bara de instrumente",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "Afişaj",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Lățimea marginii tablei de joc",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Lățimea liniilor interioare",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Lățimea piesei",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "Mărimea literei",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "Notare WMD",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Revenire",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Restabilește setările implicite",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "Aplicația va ieși.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "După închidere imediată, redeschideți aplicația.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Alege",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "Info",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "Aluzie",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "jucător",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "Jucătorul 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "Jucătorul 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Mersul jocului",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Atinge orice punct disponibil pentru a plasa o piesă.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Atinge piesa pe care vrei s-o muți.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Atinge punctul pe care vrei să plasezi piesa",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Atinge o piesă a adversarului pentru a o elimina.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Numai după o moară creată poți îndepărta o piesă.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Doar cu pieseletale poți juca.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "Statistici",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Total jocuri",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "Rezultate",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Nu se poate scoate din moară.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "stânga",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Politica de Confidențialitate",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Citiți cu atenție și asigurați-vă că înțelegeți și sunteți de acord cu acest lucru ",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Dacă nu sunteți de acord cu această politică, vă rugăm să nu utilizați această aplicație. Utilizarea aplicației implică acceptarea acestor termeni.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " și ",
-    "accept": "Acceptare",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "Anulare",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "Anularea obțiunii",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Este posibil să anulezi o mutare",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Ia înapoi",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Luând înapoi ...",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Aşteptare...",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Pasul înainte",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Ia înapoi toate",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Fă un pas înaintea tuturor",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Mută acum",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Terminat.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Moară deschisă",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "Dacă un jucător are doar piese în mori, acestea nu sunt exceptate de le eliminare.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Durata animației",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Nici unul",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Temă",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Jocul își propune să lase adversarul cu mai puțin de trei piese sau fără posibilitatea de mutări legale.\n\nJocul este automat suspendat dacă o mutare se repetă de trei ori, sau dacă pe parcursul a 100 de mutări consecutive nu se îndepărtează nici o piesă, adică nu se realizează moară.\n\nJocul se desfășoară în trei faze:\n\n1. Așezarea pieselor pe punctele libere\n2. Mutarea pieselor în punctele adiacente\n3. (fază opțională) Mutarea pieselor în orice punct liber când jucătorul a fost redus la trei piese\n\nPlasarea\n\nJocul începe cu o tablă goală, care constă dintr-o grilă cu douăzeci și patru de puncte. Jucătorii își așează pe rând piesele pe punctele libere până când fiecare jucător a plasat toate piesele pe tablă. Dacă un jucător poate plasa trei dintre piesele sale în linie dreaptă, el are o „moară” și poate scoate una din piesele adversarului său de pe tablă.\n\nÎn unele variante de reguli, jucătorii trebuie să elimine mai întâi orice alte piese înainte de a scoate o piesă dintr-o moară formată.\n\nÎn unele variante de reguli, toate punctele pieselor îndepărtate pot să nu fie plasate din nou în fraza de plasare.\n\nOdată ce toate piesele au fost folosite, jucătorii se deplasează pe rând.\n\nIn miscare\n\nPentru a muta, un jucător mută una dintre piesele sale de-a lungul unei linii de bord până la un punct adiacent vacant. Dacă nu poate face acest lucru, a pierdut jocul. Ca și în faza de plasare, un jucător care își aliniază trei dintre piesele sale pe o linie de bord are o moară și poate elimina una dintre piesele adversarului său. Orice jucător se reduce la două piese și nu are opțiunea de a forma noi mori, pierzând astfel jocul. Un jucător poate pierde și cu mai mult de trei piese dacă adversarul său le blochează astfel încât să nu poată fi mutate.\n\nZbor\n\nÎn unele variante ale regulilor, odată ce unui jucător i-au rămas doar trei piese, piesele sale pot „zbura”, „sări” sau „sări” în orice punct vacant, nu numai în cele adiacente.\n\n",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "Informații despre versiune",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "Licență",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Sursă cod",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Notificări ale terților",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "Versiunea aplicației",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "General",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "Avansat",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "Plasare",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Mutare",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Eliminare",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "Condiția de sfârșit a jocului",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "Stilul de joc al AI",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Pasiv",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "Pauză",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Personalizare",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "Pentru dezvoltatori",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Modul dezvoltator",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Apelare la experiența umană",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Ia în calcul mobilitatea pieselor",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Numărul de piese",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "în mână",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "pe tablă",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "Tablă compensată de sus",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Nu este rândul lui AI.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "AI nu gândește.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Redarea automată a mișcărilor",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "La sfârșitul listei de mutări.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Atingeți din nou pentru a putea muta.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Variabile de mediu",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Mai mult",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Aceasta este o caracteristică experimentală.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Experimente",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Licențe open source",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Limba",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "Limba implicita",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Piesele se pot deplasa în faza de plasare",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Nu există faze distincte de plasare și de mutare, adică jucătorii pot decide la fiecare mutare dacă doresc să plaseze o piesă pe tablă sau să mute una dintre piesele lor (atâta timp cât mai au piese de plasat).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Barva textu nabídky",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Culoarea textului meniului",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Menu background color",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Culoarea elementului de evidențiere a meniului",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Culoarea de fundal a barei de instrumente principale",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "culoarea pictogramei barei de instrumente principale",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Culoarea fundalului barei de instrumente de navigare",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Culoarea pictogramei barei de instrumente de navigare",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Ascundeți automat bara de instrumente",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Locația barei de instrumente pe ecran",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Top",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Fund",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Centru",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Culoare solida",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Imagine",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Alege poza ta",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Ușoară",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "Întuneric",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Teme",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Tema actuală",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Salvați tema",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "Fonturi",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Afișați graficul de analiză",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Analiză",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "Salveaza jocul",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Incarca jocul",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "Poziția de configurare",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Afișați mișcări legale",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Afișează ultima mișcare",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Arată săgețile",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "Piese",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Afișați analiza",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Fire",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "A se implica",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Ajutați la îmbunătățirea traducerii",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "Tutorial",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Moara clasică",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Moară mixtă",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Moara din Ceylon",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Moara poate fi spartă și refăcută în mod repetat",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Dacă un jucător sparge o moară pentru a crea imediat o moară nouă, un astfel de jucător poate muta o astfel de piesă înapoi la joncțiunea originală în următoarea sa mutare, dacă face o moară nouă.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Jocul este extras dacă un jucător are trei piese și după zece mutări niciunul dintre jucători nu elimină piesele adversarului",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Când un jucător are până la trei piese și niciunul dintre jucători nu poate elimina piesa adversarului în decurs de zece mutări, jocul este egal.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "Închide",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Piesa alba",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "Piesa neagră",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Punct de interzicere",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "Punct gol",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Nici un punct",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Faza de plasare",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Faza în mișcare",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Faza de zbor",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Partea de mișcare",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Ultima mișcare",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Selectat",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Meniu principal",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Accesibilitate",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Suport pentru cititor de ecran",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "Este o remiză!",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "A desena",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Culoarea de evidențiere a piesei",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "Algoritm",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "Îndepărtați piesa neplasată",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Dacă un jucător formează moara în faza de plasare, va elimina piesa neplasată a adversarului și va continua să facă o mișcare.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "Regula N-Move Endgame",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Dacă oricare dintre jucători are doar trei piese și niciunul dintre jucători nu elimină o piesă în cadrul anumitor mișcări, jocul este extras.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Oricare dintre jucători are doar trei piese și niciunul dintre jucători nu elimină o piesă într-o anumită mișcare.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Regula de repetare triplă",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Jocul este extras dacă apare o poziție pentru a treia oară.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Moară! Continuați să faceți o mișcare.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Stil punct",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Lățimea punctului",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Solid",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Gol",
-    "@hollow": {
-        "description": "Hollow"
+  "appName": "Moară",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Bun venit",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "da",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Nu",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Joc",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Uman Vs. AI",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Uman Vs. Uman",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI Vs. AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Uman Vs. Cloud",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Uman Vs. LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Testați prin LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Mutare",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Vezi lista de mutări",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Lista de mutări",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Fără înregistrări",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Confirmare",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Anulare",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Selectați piesa greșită.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Așează-ți piesele.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Nu o poți plasa aici.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Plasat.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Îndepărtează o piesă.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Nu poate fi îndepărtată.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Îndepărtată.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Mută o piesă.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Nu-ți poți așeza piesa aici.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Nu-ți poți muta piesa aici.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Moară! Îndepărtează una din piesele adversarului.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Continuă să îndepărtezi piesa adversarului.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Selectează una dintre piesele adversarului.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Nu poți îndepărta piesă dintr-o moară.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "O piesă poate fi mișcată doar pe punctul imediat învecinat.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Piesele adversarului nu pot fi mișcate.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Selectează piesa de mutat.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Mai ai 3 piese.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Poți sări pe orice punct liber.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} pentru a muta.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Jucătorul 1 câștigă!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Jucătorul 2 câștigă!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Câștigă",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Pierde",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Cugetare…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Joc nou",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Importare joc",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Exportare jocul",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Joc importat din clipboard.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Nu se poate importa {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Mișcările și regulile nu se potrivesc.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Te rog asteaptă...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Repornești jocul curent?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Repornire",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Jocul a început, te rog așează piesă.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Analizare…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Eroare: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Rata de câștig",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Scor:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Jucătorul 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Jucătorul 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} numărul de piese este mai mic de trei.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} a demisionat.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} nu are cum să meargă.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Placa este plină și {player} nu are nicio cale de rezolvat.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Timpul a trecut, {player} pierdut.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "În timpul ultimelor N mișcări nicio piesă nu a fost înlăturată.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Este remiză, tabla fiind plină.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Este remiză, mutare repetată de trei ori.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Joc încheiat! Motiv necunoscut.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Joc încheiat",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Ai castigat! Felicitări!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Provocare la nivel mai greu? Noul nivel va fi nivelul {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Ai pierdut!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Analiză",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Despre aplicație",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Versiune: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Mulțumiri",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Setări",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Opțiuni",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Setări generale",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Nivel de dificultate",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Timpul de gândire al lui AI",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Dificultate",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Efecte sonore",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Redare sunete în joc",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Menține mută revizionarea",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Ton",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Prima mișcare",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Uman",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Alternare",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Reporniți automat jocul la finalizarea jocului actual",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Schimbă automat primul jucător la sfârșitul jocului",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Miscare aleatorie",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Diverse",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Reguli",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Număr de piese pe jucător",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Câte piese are fiecare jucător?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Numărul pieselor (flying) cu drum liber",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "La Flying activat, și când jucătorul are un număr redus prestabilit de piese, acestea sunt libere să se deplaseze în orice punct neocupat.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Număr minim de piese",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Liniile diagonale",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Adăugați patru linii diagonale pe tablă - unind colțurile celor trei patrulatere concentrice.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Marchează ca interzis pentru replasare",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "În faza de plasare, punctele eliminate nu mai pot plasa piese.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Al doilea jucător mută primul",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Jucătorul care este al doilea în plasare, devine primul în faza de mutare.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Morișcă (moară dublă)",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Dacă un jucător cu aceeași piesă închide mai mult de o moară simultan, poate elimina de la adversar atâtea piese, câte mori a realizat.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Distruge mori",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "În mod implicit, jucătorii trebuie să elimine orice alte piese înainte de a scoate o piesă dintr-o moară formată. Activați această obțiune.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Al doilea jucător pierde când tabla este plină",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Dacă la sfârșitul fazei de plasare, se umple tabla, jucătorul care a plasat primul pierde jocul (neavând posibilitate de mișcare), altfel ar fi remiză.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Pierde atunci când nu se mișcă legal",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Jucătorul va pierde dacă adversarul său îi blochează în așa fel încât să nu poată muta (neavând câmp liber). Schimbă, dacă obțiunea este dezactivată.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Sărituri",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Dacă un jucător mai are doar trei sau patru piese (configurabile), poate sări cu acestea în orice punct liber.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "Regula N-move",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Jocul este extras dacă nu a existat nicio eliminare într-un anumit număr de mișcări de către fiecare jucător.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Revenire",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Te rog selecteaza",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Copie",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Istoricul mutărilor copiat în clipboard.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Ajutor",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Feedback",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Ieșire",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Setări reguli",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Culoare",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Culoarea plăcii",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Culoarea piesei",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Culoare de fundal",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Culoarea liniilor tablei de joc",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Culoare piesă Jucător 1",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Culoare piesă Jucător 2",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Culoarea mesajului",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Afișați numărul de piese din mână (neplasate)",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Afișați notațiile pe bord",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Afișați istoricul navigației pe bara de instrumente",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Afişaj",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Lățimea marginii tablei de joc",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Lățimea liniilor interioare",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Lățimea piesei",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Mărimea literei",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "Notare WMD",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Revenire",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Restabilește setările implicite",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Alege {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Info",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Aluzie",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "jucător",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Jucătorul 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Jucătorul 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Mersul jocului",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Atinge orice punct disponibil pentru a plasa o piesă.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Atinge piesa pe care vrei s-o muți.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Atinge punctul pe care vrei să plasezi piesa.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Atinge o piesă a adversarului pentru a o elimina.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Numai după o moară creată poți îndepărta o piesă.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Doar cu pieseletale poți juca.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistici",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Total jocuri",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Rezultate",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "stânga",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Politica de Confidențialitate",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Citiți cu atenție și asigurați-vă că înțelegeți și sunteți de acord cu acest lucru ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Dacă nu sunteți de acord cu această politică, vă rugăm să nu utilizați această aplicație. Utilizarea aplicației implică acceptarea acestor termeni.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " și ",
+  "@and": {},
+  "accept": "Acceptare",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Ia înapoi",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Luând înapoi…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Aşteptare…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Pasul înainte",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Ia înapoi toate",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Fă un pas înaintea tuturor",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Mută acum",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Terminat.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Moară deschisă",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Dacă un jucător are doar piese în mori, acestea nu sunt exceptate de le eliminare.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Durata animației",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Nici unul",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Temă",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Jocul își propune să lase adversarul cu mai puțin de trei piese sau fără posibilitatea de mutări legale.\n\nJocul este automat suspendat dacă o mutare se repetă de trei ori, sau dacă pe parcursul a 100 de mutări consecutive nu se îndepărtează nici o piesă, adică nu se realizează moară.\n\nJocul se desfășoară în trei faze:\n\n1. Așezarea pieselor pe punctele libere\n2. Mutarea pieselor în punctele adiacente\n3. (fază opțională) Mutarea pieselor în orice punct liber când jucătorul a fost redus la trei piese\n\nPlasarea\n\nJocul începe cu o tablă goală, care constă dintr-o grilă cu douăzeci și patru de puncte. Jucătorii își așează pe rând piesele pe punctele libere până când fiecare jucător a plasat toate piesele pe tablă. Dacă un jucător poate plasa trei dintre piesele sale în linie dreaptă, el are o „moară” și poate scoate una din piesele adversarului său de pe tablă.\n\nÎn unele variante de reguli, jucătorii trebuie să elimine mai întâi orice alte piese înainte de a scoate o piesă dintr-o moară formată.\n\nÎn unele variante de reguli, toate punctele pieselor îndepărtate pot să nu fie plasate din nou în fraza de plasare.\n\nOdată ce toate piesele au fost folosite, jucătorii se deplasează pe rând.\n\nIn miscare\n\nPentru a muta, un jucător mută una dintre piesele sale de-a lungul unei linii de bord până la un punct adiacent vacant. Dacă nu poate face acest lucru, a pierdut jocul. Ca și în faza de plasare, un jucător care își aliniază trei dintre piesele sale pe o linie de bord are o moară și poate elimina una dintre piesele adversarului său. Orice jucător se reduce la două piese și nu are opțiunea de a forma noi mori, pierzând astfel jocul. Un jucător poate pierde și cu mai mult de trei piese dacă adversarul său le blochează astfel încât să nu poată fi mutate.\n\nZbor\n\nÎn unele variante ale regulilor, odată ce unui jucător i-au rămas doar trei piese, piesele sale pot „zbura”, „sări” sau „sări” în orice punct vacant, nu numai în cele adiacente.\n\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Informații despre versiune",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Licență",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Sursă cod",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Versiunea aplicației",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "General",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Avansat",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Plasare",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Mutare",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Eliminare",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Condiția de sfârșit a jocului",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Stilul de joc al AI",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Pasiv",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Pauză",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Aspect",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "Apelare la experiența umană",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Ia în calcul mobilitatea pieselor",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Numărul de piese:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} în mână: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} la bord: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Tablă compensată de sus",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Nu este rândul lui AI.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI nu gândește.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "La sfârșitul listei de mutări.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Atingeți din nou pentru a putea muta.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "Mai mult",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Aceasta este o caracteristică experimentală.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Experimente",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Licențe open source",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Limba",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Limba implicita",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Piesele se pot deplasa în faza de plasare",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Nu există faze distincte de plasare și de mutare, adică jucătorii pot decide la fiecare mutare dacă doresc să plaseze o piesă pe tablă sau să mute una dintre piesele lor (atâta timp cât mai au piese de plasat).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Barva textu nabídky",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Culoarea textului meniului",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Culoarea elementului de evidențiere a meniului",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Culoarea de fundal a barei de instrumente principale",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "culoarea pictogramei barei de instrumente principale",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Culoarea fundalului barei de instrumente de navigare",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Culoarea pictogramei barei de instrumente de navigare",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Ascundeți automat bara de instrumente",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Locația barei de instrumente pe ecran",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Top",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Fund",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Centru",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Culoare solida",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Imagine",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Alege poza ta",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Ușoară",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Întuneric",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Teme",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Tema actuală",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Salvați tema",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Afișați graficul de analiză",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Analiză",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Salveaza jocul",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Incarca jocul",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Poziția de configurare",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Afișați mișcări legale",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Afișează ultima mișcare",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Arată săgețile",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Piese",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Afișați analiza",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Fire",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "A se implica",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Ajutați la îmbunătățirea traducerii",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Tutorial",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Moara clasică",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Moară mixtă",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Moara din Ceylon",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Moara poate fi spartă și refăcută în mod repetat",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Dacă un jucător sparge o moară pentru a crea imediat o moară nouă, un astfel de jucător poate muta o astfel de piesă înapoi la joncțiunea originală în următoarea sa mutare, dacă face o moară nouă.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Jocul este extras dacă un jucător are trei piese și după zece mutări niciunul dintre jucători nu elimină piesele adversarului",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Când un jucător are până la trei piese și niciunul dintre jucători nu poate elimina piesa adversarului în decurs de zece mutări, jocul este egal.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Închide",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Piesa alba",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Piesa neagră",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Punct de interzicere",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Punct gol",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Nici un punct",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Faza de plasare",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Faza în mișcare",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Faza de zbor",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Partea de mișcare: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Ultima mișcare: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Selectat",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Accesibilitate",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Suport pentru cititor de ecran",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Este o remiză!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "A desena",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Culoarea de evidențiere a piesei",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algoritm",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "Îndepărtați piesa neplasată",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Dacă un jucător formează moara în faza de plasare, va elimina piesa neplasată a adversarului și va continua să facă o mișcare.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "Regula N-Move Endgame",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Dacă oricare dintre jucători are doar trei piese și niciunul dintre jucători nu elimină o piesă în cadrul anumitor mișcări, jocul este extras.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Oricare dintre jucători are doar trei piese și niciunul dintre jucători nu elimină o piesă într-o anumită mișcare.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Regula de repetare triplă",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Jocul este extras dacă apare o poziție pentru a treia oară.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Moară! Continuați să faceți o mișcare.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Stil punct",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Lățimea punctului",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Solid",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Gol",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Română",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Mișcare}=1{{count} Mișcare}other{{count} Mișcări}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  }
 }
