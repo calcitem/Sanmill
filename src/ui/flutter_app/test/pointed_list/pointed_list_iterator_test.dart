@@ -133,9 +133,9 @@ void main() {
       final iterator = PointedListIterator(list);
       iterator.moveToFirst();
 
-      expect(iterator.movePrevious(), false);
+      expect(iterator.movePrevious(), true);
 
-      expect(iterator.current, list.first);
+      expect(iterator.current, isNull);
     });
 
     test(
