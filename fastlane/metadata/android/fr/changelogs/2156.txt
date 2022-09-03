@@ -1,0 +1,6 @@
+v1.1.30
+
+* Evitez que l'IA soit trop agressive en phase d'ouverture, ce qui peut facilement conduire à des pertes.
+* Augmentez la valeur maximale du niveau de compétence de 20 à 30.
+* Activez par défaut « Considérer la mobilité des pièces ».
+* Ajoutez le paramètre « Couleur de surbrillance de la pièce » et définissez le rouge par défaut.

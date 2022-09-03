@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Sanmill" />
+		<Option pch_mode="2" />
+		<Option compiler="clang" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Sanmill" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="clang" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-std=c++17" />
+					<Add option="-Wcast-qual -fno-exceptions -pedantic -Wshadow" />
+					<Add directory="include" />
+					<Add directory="src" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Sanmill" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="clang" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++17" />
+					<Add option="-Wcast-qual -fno-exceptions -pedantic -Wshadow" />
+					<Add directory="include" />
+					<Add directory="src" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Weverything" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="include/config.h" />
+		<Unit filename="include/version.h" />
+		<Unit filename="src/bitboard.cpp" />
+		<Unit filename="src/bitboard.h" />
+		<Unit filename="src/debug.h" />
+		<Unit filename="src/endgame.cpp" />
+		<Unit filename="src/endgame.h" />
+		<Unit filename="src/evaluate.cpp" />
+		<Unit filename="src/evaluate.h" />
+		<Unit filename="src/hashmap.h" />
+		<Unit filename="src/hashnode.h" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/mills.cpp" />
+		<Unit filename="src/mills.h" />
+		<Unit filename="src/misc.cpp" />
+		<Unit filename="src/misc.h" />
+		<Unit filename="src/movegen.cpp" />
+		<Unit filename="src/movegen.h" />
+		<Unit filename="src/movepick.cpp" />
+		<Unit filename="src/movepick.h" />
+		<Unit filename="src/option.cpp" />
+		<Unit filename="src/option.h" />
+		<Unit filename="src/position.cpp" />
+		<Unit filename="src/position.h" />
+		<Unit filename="src/rule.cpp" />
+		<Unit filename="src/rule.h" />
+		<Unit filename="src/search.cpp" />
+		<Unit filename="src/search.h" />
+		<Unit filename="src/stack.h" />
+		<Unit filename="src/stopwatch.h" />
+		<Unit filename="src/thread.cpp" />
+		<Unit filename="src/thread.h" />
+		<Unit filename="src/thread_win32_osx.h" />
+		<Unit filename="src/tt.cpp" />
+		<Unit filename="src/tt.h" />
+		<Unit filename="src/types.h" />
+		<Unit filename="src/uci.cpp" />
+		<Unit filename="src/uci.h" />
+		<Unit filename="src/ucioption.cpp" />
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>

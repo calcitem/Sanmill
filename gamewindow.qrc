@@ -57,7 +57,7 @@
     </qresource>
     <qresource prefix="/sound">
         <file>resources/sound/Select.wav</file>
-        <file>resources/sound/drog.wav</file>
+        <file>resources/sound/drag.wav</file>
         <file>resources/sound/forbidden.wav</file>
         <file>resources/sound/loss.wav</file>
         <file>resources/sound/move.wav</file>

@@ -1,0 +1,3 @@
+v1.1.34
+
+Evitez que les blancs soient trop agressifs en phase d'ouverture, ce qui peut vite faire perdre la partie.

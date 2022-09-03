@@ -1,0 +1,4 @@
+v1.0.17
+
+* Suporte a configuração do tamanho da fonte (Entre em vigor após reiniciar o aplicativo).
+* Mantenha mudo ao pegar de volta (configurável).

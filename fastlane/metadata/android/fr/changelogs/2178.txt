@@ -1,0 +1,3 @@
+v1.1.35
+
+Optimisez la capacité de l'IA à contrôler la situation en phase d'ouverture.

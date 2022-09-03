@@ -1,0 +1,3 @@
+v1.1.14
+
+* Définissez la règle par défaut sur Twelve Men's Morris lorsque le pays est l'Iran.

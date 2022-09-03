@@ -1,45 +1,33 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <cstring>
 #include <random>
 
 #include "bitboard.h"
-#include "movegen.h"
+#include "mills.h"
 #include "misc.h"
+#include "movegen.h"
 #include "option.h"
 #include "position.h"
 
-const char *loseReasonNoWayStr = "Player%d no way to go. Player%d win!";
-const char *loseReasonTimeOverStr = "Time over. Player%d win!";
-const char *drawReasonThreefoldRepetitionStr = "Threefold Repetition. Draw!";
-const char *drawReasonRule50Str = "N-move rule. Draw!";
-const char *drawReasonEndgameRule50Str = "Endgame N-move rule. Draw!";
-const char *loseReasonBoardIsFullStr = "Full. Player2 win!";
-const char *drawReasonBoardIsFullStr = "Full. In draw!";
-const char *loseReasonlessThanThreeStr = "Player%d win!";
-const char *loseReasonResignStr = "Player%d give up!";
+namespace Mills {
 
-namespace Mills
-{
-
-// Morris boards have concentric square rings joined by edges and an empty middle.
-// Morris games are typically played on the vertices not the cells.
+// Morris boards have concentric square rings joined by edges and an empty
+// middle. Morris games are typically played on the vertices not the cells.
 
 /*
     31 ----- 24 ----- 25
@@ -57,7 +45,7 @@ namespace Mills
 
 void adjacent_squares_init() noexcept
 {
-    const int adjacentSquares[SQUARE_NB][MD_NB] = {
+    constexpr int adjacentSquares[SQUARE_EXT_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -104,7 +92,7 @@ void adjacent_squares_init() noexcept
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const int adjacentSquares_diagonal[SQUARE_NB][MD_NB] = {
+    constexpr int adjacentSquares_diagonal[SQUARE_EXT_NB][MD_NB] = {
         /*  0 */ {0, 0, 0, 0},
         /*  1 */ {0, 0, 0, 0},
         /*  2 */ {0, 0, 0, 0},
@@ -151,7 +139,7 @@ void adjacent_squares_init() noexcept
         /* 39 */ {0, 0, 0, 0},
     };
 
-    const Bitboard adjacentSquaresBB[SQUARE_NB] = {
+    const Bitboard adjacentSquaresBB[SQUARE_EXT_NB] = {
         /*  0 */ 0,
         /*  1 */ 0,
         /*  2 */ 0,
@@ -198,7 +186,7 @@ void adjacent_squares_init() noexcept
         /* 39 */ 0,
     };
 
-    const Bitboard adjacentSquaresBB_diagonal[SQUARE_NB] = {
+    const Bitboard adjacentSquaresBB_diagonal[SQUARE_EXT_NB] = {
         /*  0 */ 0,
         /*  1 */ 0,
         /*  2 */ 0,
@@ -246,33 +234,37 @@ void adjacent_squares_init() noexcept
     };
 
     if (rule.hasDiagonalLines) {
-        memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares_diagonal, sizeof(MoveList<LEGAL>::adjacentSquares));
-        memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB_diagonal, sizeof(MoveList<LEGAL>::adjacentSquaresBB));
+        memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares_diagonal,
+               sizeof(MoveList<LEGAL>::adjacentSquares));
+        memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB_diagonal,
+               sizeof(MoveList<LEGAL>::adjacentSquaresBB));
     } else {
-        memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares, sizeof(MoveList<LEGAL>::adjacentSquares));
-        memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB, sizeof(MoveList<LEGAL>::adjacentSquaresBB));
+        memcpy(MoveList<LEGAL>::adjacentSquares, adjacentSquares,
+               sizeof(MoveList<LEGAL>::adjacentSquares));
+        memcpy(MoveList<LEGAL>::adjacentSquaresBB, adjacentSquaresBB,
+               sizeof(MoveList<LEGAL>::adjacentSquaresBB));
     }
 
 #ifdef DEBUG_MODE
     int sum = 0;
-    for (int i = 0; i < SQUARE_NB; i++) {
-        loggerDebug("/* %d */ {", i);
+    for (int i = 0; i < SQUARE_EXT_NB; i++) {
+        debugPrintf("/* %d */ {", i);
         for (int j = 0; j < MD_NB; j++) {
             if (j == MD_NB - 1)
-                loggerDebug("%d", adjacentSquares[i][j]);
+                debugPrintf("%d", adjacentSquares[i][j]);
             else
-                loggerDebug("%d, ", adjacentSquares[i][j]);
+                debugPrintf("%d, ", adjacentSquares[i][j]);
             sum += adjacentSquares[i][j];
         }
-        loggerDebug("},\n");
+        debugPrintf("},\n");
     }
-    loggerDebug("sum = %d\n", sum);
+    debugPrintf("sum = %d\n", sum);
 #endif
 }
 
 void mill_table_init()
 {
-    const Bitboard millTableBB[SQUARE_NB][LD_NB] = {
+    const Bitboard millTableBB[SQUARE_EXT_NB][LD_NB] = {
         /* 0 */ {0, 0, 0},
         /* 1 */ {0, 0, 0},
         /* 2 */ {0, 0, 0},
@@ -319,7 +311,7 @@ void mill_table_init()
         /* 39 */ {0, 0, 0},
     };
 
-    const Bitboard millTableBB_diagonal[SQUARE_NB][LD_NB] = {
+    const Bitboard millTableBB_diagonal[SQUARE_EXT_NB][LD_NB] = {
         /* 0 */ {0, 0, 0},
         /* 1 */ {0, 0, 0},
         /* 2 */ {0, 0, 0},
@@ -329,14 +321,14 @@ void mill_table_init()
         /* 6 */ {0, 0, 0},
         /* 7 */ {0, 0, 0},
 
-        /* 8 */  {S2(16, 24), S2(9, 15), ~0U},
-        /* 9 */  {S2(17, 25), S2(15, 8),  S2(10, 11)},
+        /* 8 */ {S2(16, 24), S2(9, 15), ~0U},
+        /* 9 */ {S2(17, 25), S2(15, 8), S2(10, 11)},
         /* 10 */ {S2(18, 26), S2(11, 9), ~0U},
         /* 11 */ {S2(19, 27), S2(9, 10), S2(12, 13)},
         /* 12 */ {S2(20, 28), S2(13, 11), ~0U},
         /* 13 */ {S2(21, 29), S2(11, 12), S2(14, 15)},
         /* 14 */ {S2(22, 30), S2(15, 13), ~0U},
-        /* 15 */ {S2(23, 31), S2(13, 14),  S2(8, 9)},
+        /* 15 */ {S2(23, 31), S2(13, 14), S2(8, 9)},
 
         /* 16 */ {S2(8, 24), S2(17, 23), ~0U},
         /* 17 */ {S2(9, 25), S2(23, 16), S2(18, 19)},
@@ -367,51 +359,64 @@ void mill_table_init()
     };
 
     if (rule.hasDiagonalLines) {
-        memcpy(Position::millTableBB, millTableBB_diagonal, sizeof(Position::millTableBB));
+        memcpy(Position::millTableBB, millTableBB_diagonal,
+               sizeof(Position::millTableBB));
     } else {
-        memcpy(Position::millTableBB, millTableBB, sizeof(Position::millTableBB));
+        memcpy(Position::millTableBB, millTableBB,
+               sizeof(Position::millTableBB));
     }
 }
 
 void move_priority_list_shuffle()
 {
     if (gameOptions.getSkillLevel() == 1) {
-        for (auto i = 8; i < 32; i++) {     // TODO: SQ_BEGIN & SQ_END
-            MoveList<LEGAL>::movePriorityList[i - int(SQ_BEGIN)] = (Square)i;
+        // TODO(calcitem): 8 is SQ_BEGIN & 32 is SQ_END
+        for (auto i = 8; i < 32; i++) {
+            MoveList<LEGAL>::movePriorityList[i - static_cast<int>(SQ_BEGIN)] =
+                static_cast<Square>(i);
         }
         if (gameOptions.getShufflingEnabled()) {
-            const uint32_t seed = static_cast<uint32_t>(now());
+            const auto seed = static_cast<uint32_t>(now());
 
-            std::shuffle(MoveList<LEGAL>::movePriorityList.begin(), MoveList<LEGAL>::movePriorityList.end(),
+            std::shuffle(MoveList<LEGAL>::movePriorityList.begin(),
+                         MoveList<LEGAL>::movePriorityList.end(),
                          std::default_random_engine(seed));
         }
         return;
     }
 
-    std::array<Square, 4> movePriorityList0;
-    std::array<Square, 8> movePriorityList1;
-    std::array<Square, 4> movePriorityList2;
-    std::array<Square, 8> movePriorityList3;
+    std::array<Square, 4> movePriorityList0 {};
+    std::array<Square, 8> movePriorityList1 {};
+    std::array<Square, 4> movePriorityList2 {};
+    std::array<Square, 8> movePriorityList3 {};
 
     if (!rule.hasDiagonalLines) {
-        movePriorityList0 = { SQ_16, SQ_18, SQ_20, SQ_22 };
-        movePriorityList1 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
-        movePriorityList2 = { SQ_17, SQ_19, SQ_21, SQ_23 };
-        movePriorityList3 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
+        movePriorityList0 = {SQ_16, SQ_18, SQ_20, SQ_22};
+        movePriorityList1 = {SQ_24, SQ_26, SQ_28, SQ_30,
+                             SQ_8,  SQ_10, SQ_12, SQ_14};
+        movePriorityList2 = {SQ_17, SQ_19, SQ_21, SQ_23};
+        movePriorityList3 = {SQ_25, SQ_27, SQ_29, SQ_31,
+                             SQ_9,  SQ_11, SQ_13, SQ_15};
     } else if (rule.hasDiagonalLines) {
-        movePriorityList0 = { SQ_17, SQ_19, SQ_21, SQ_23 };
-        movePriorityList1 = { SQ_25, SQ_27, SQ_29, SQ_31, SQ_9, SQ_11, SQ_13, SQ_15 };
-        movePriorityList2 = { SQ_16, SQ_18, SQ_20, SQ_22 };
-        movePriorityList3 = { SQ_24, SQ_26, SQ_28, SQ_30, SQ_8, SQ_10, SQ_12, SQ_14 };
+        movePriorityList0 = {SQ_17, SQ_19, SQ_21, SQ_23};
+        movePriorityList1 = {SQ_25, SQ_27, SQ_29, SQ_31,
+                             SQ_9,  SQ_11, SQ_13, SQ_15};
+        movePriorityList2 = {SQ_16, SQ_18, SQ_20, SQ_22};
+        movePriorityList3 = {SQ_24, SQ_26, SQ_28, SQ_30,
+                             SQ_8,  SQ_10, SQ_12, SQ_14};
     }
 
     if (gameOptions.getShufflingEnabled()) {
-        const uint32_t seed = static_cast<uint32_t>(now());
+        const auto seed = static_cast<uint32_t>(now());
 
-        std::shuffle(movePriorityList0.begin(), movePriorityList0.end(), std::default_random_engine(seed));
-        std::shuffle(movePriorityList1.begin(), movePriorityList1.end(), std::default_random_engine(seed));
-        std::shuffle(movePriorityList2.begin(), movePriorityList2.end(), std::default_random_engine(seed));
-        std::shuffle(movePriorityList3.begin(), movePriorityList3.end(), std::default_random_engine(seed));
+        std::shuffle(movePriorityList0.begin(), movePriorityList0.end(),
+                     std::default_random_engine(seed));
+        std::shuffle(movePriorityList1.begin(), movePriorityList1.end(),
+                     std::default_random_engine(seed));
+        std::shuffle(movePriorityList2.begin(), movePriorityList2.end(),
+                     std::default_random_engine(seed));
+        std::shuffle(movePriorityList3.begin(), movePriorityList3.end(),
+                     std::default_random_engine(seed));
     }
 
     for (size_t i = 0; i < 4; i++) {
@@ -432,25 +437,23 @@ void move_priority_list_shuffle()
 #if 0
     if (!rule.hasDiagonalLines && gameOptions.getShufflingEnabled()) {
         const uint32_t seed = static_cast<uint32_t>(now());
-        std::shuffle(MoveList<LEGAL>::movePriorityList.begin(), MoveList<LEGAL>::movePriorityList.end(), std::default_random_engine(seed));
+        std::shuffle(MoveList<LEGAL>::movePriorityList.begin(),
+                     MoveList<LEGAL>::movePriorityList.end(),
+                     std::default_random_engine(seed));
     }
 #endif
 }
 
 bool is_star_squares_full(Position *pos)
 {
-    bool ret = false;
+    bool ret;
 
     if (rule.hasDiagonalLines) {
-        ret = (pos->get_board()[SQ_17] &&
-               pos->get_board()[SQ_19] &&
-               pos->get_board()[SQ_21] &&
-               pos->get_board()[SQ_23]);
+        ret = pos->get_board()[SQ_17] && pos->get_board()[SQ_19] &&
+              pos->get_board()[SQ_21] && pos->get_board()[SQ_23];
     } else {
-        ret = (pos->get_board()[SQ_16] &&
-               pos->get_board()[SQ_18] &&
-               pos->get_board()[SQ_20] &&
-               pos->get_board()[SQ_22]);
+        ret = pos->get_board()[SQ_16] && pos->get_board()[SQ_18] &&
+              pos->get_board()[SQ_20] && pos->get_board()[SQ_22];
     }
 
     return ret;
@@ -469,32 +472,32 @@ Depth get_search_depth(const Position *pos)
 
     if (!gameOptions.getDeveloperMode()) {
         if (pos->phase == Phase::placing) {
-
             if (!gameOptions.getDrawOnHumanExperience()) {
-                return (Depth)level;
+                return static_cast<Depth>(level);
             }
 
-            const Depth placingDepthTable9[25] = {
-                 +1,  1,  +1,  1,    /* 0 ~ 3 */
-                 +3,  3,  +3, 15,    /* 4 ~ 7 */
-                 +5,  3,  +5,  0,    /* 8 ~ 11 */
-                 +0,  0,  +0,  0,    /* 12 ~ 15 */
-                 +0,  0,  +0,  0,    /* 16 ~ 19 */
-                 +0,  0,  +0,  0,    /* 20 ~ 23 */
-                 +0                  /* 24 */
+            constexpr Depth placingDepthTable9[25] = {
+                +1, 1, +1, 1,  /* 0 ~ 3 */
+                +3, 3, +3, 15, /* 4 ~ 7 */
+                +5, 3, +5, 0,  /* 8 ~ 11 */
+                +0, 0, +0, 0,  /* 12 ~ 15 */
+                +0, 0, +0, 0,  /* 16 ~ 19 */
+                +0, 0, +0, 0,  /* 20 ~ 23 */
+                +0             /* 24 */
             };
 
-            const Depth placingDepthTable12[25] = {
-                 +1,  2,  +2,  4,    /* 0 ~ 3 */
-                 +4, 12, +12, 18,    /* 4 ~ 7 */
-                +12,  0,  +0,  0,    /* 8 ~ 11 */
-                 +0,  0,  +0,  0,    /* 12 ~ 15 */
-                 +0,  0,  +0,  0,    /* 16 ~ 19 */
-                 +0,  0,  +0,  0,    /* 20 ~ 23 */
-                 +0                  /* 24 */
+            constexpr Depth placingDepthTable12[25] = {
+                +1,  2,  +2,  4,  /* 0 ~ 3 */
+                +4,  12, +12, 18, /* 4 ~ 7 */
+                +12, 0,  +0,  0,  /* 8 ~ 11 */
+                +0,  0,  +0,  0,  /* 12 ~ 15 */
+                +0,  0,  +0,  0,  /* 16 ~ 19 */
+                +0,  0,  +0,  0,  /* 20 ~ 23 */
+                +0                /* 24 */
             };
 
-            const int index = rule.piecesCount * 2 - pos->count<IN_HAND>(WHITE) - pos->count<IN_HAND>(BLACK);
+            const int index = rule.pieceCount * 2 - pos->count<IN_HAND>(WHITE) -
+                              pos->count<IN_HAND>(BLACK);
 
             if (rule.hasDiagonalLines) {
                 d = placingDepthTable12[index];
@@ -512,88 +515,87 @@ Depth get_search_depth(const Position *pos)
 #endif
 
             if (d == 0) {
-                return (Depth)level;
-            } else {
-                if (level > d) {
-                    return d;
-                } else {
-                    return (Depth)level;
-                }
+                return static_cast<Depth>(level);
             }
-        } else if (pos->phase == Phase::moving) {
-            return (Depth)level;
+            if (level > d) {
+                return d;
+            }
+            return static_cast<Depth>(level);
+        }
+        if (pos->phase == Phase::moving) {
+            return static_cast<Depth>(level);
         }
     }
-
 
 #ifdef _DEBUG
     constexpr Depth reduce = 0;
 #else
-    Depth reduce = 0;
+    constexpr Depth reduce = 0;
 #endif
 
-    const Depth placingDepthTable_12[25] = {
-         +1,  2,  +2,  4,     /* 0 ~ 3 */
-         +4, 12, +12, 18,     /* 4 ~ 7 */
-        +12, 16, +16, 16,     /* 8 ~ 11 */
-        +16, 16, +16, 17,     /* 12 ~ 15 */
-        +17, 16, +16, 15,     /* 16 ~ 19 */
-        +15, 14, +14, 14,     /* 20 ~ 23 */
-        +14                   /* 24 */
+    constexpr Depth placingDepthTable_12[25] = {
+        +1,  2,  +2,  4,  /* 0 ~ 3 */
+        +4,  12, +12, 18, /* 4 ~ 7 */
+        +12, 16, +16, 16, /* 8 ~ 11 */
+        +16, 16, +16, 17, /* 12 ~ 15 */
+        +17, 16, +16, 15, /* 16 ~ 19 */
+        +15, 14, +14, 14, /* 20 ~ 23 */
+        +14               /* 24 */
     };
 
-    const Depth placingDepthTable_12_special[25] = {
-         +1,  2,  +2,  4,     /* 0 ~ 3 */
-         +4, 12, +12, 12,     /* 4 ~ 7 */
-        +12, 13, +13, 13,     /* 8 ~ 11 */
-        +13, 13, +13, 13,     /* 12 ~ 15 */
-        +13, 13, +13, 13,     /* 16 ~ 19 */
-        +13, 13, +13, 13,     /* 20 ~ 23 */
-        +13                   /* 24 */
+    constexpr Depth placingDepthTable_12_special[25] = {
+        +1,  2,  +2,  4,  /* 0 ~ 3 */
+        +4,  12, +12, 12, /* 4 ~ 7 */
+        +12, 13, +13, 13, /* 8 ~ 11 */
+        +13, 13, +13, 13, /* 12 ~ 15 */
+        +13, 13, +13, 13, /* 16 ~ 19 */
+        +13, 13, +13, 13, /* 20 ~ 23 */
+        +13               /* 24 */
     };
 
-    const Depth placingDepthTable_9[20] = {
-         +1, 7,  +7,  10,     /* 0 ~ 3 */
-        +10, 12, +12, 14,     /* 4 ~ 7 */
-        +14, 14, +14, 14,     /* 8 ~ 11 */
-        +14, 14, +14, 14,     /* 12 ~ 15 */
-        +14, 14, +14,         /* 16 ~ 18 */
-        +14                   /* 19 */
+    constexpr Depth placingDepthTable_9[20] = {
+        +1,  7,  +7,  10, /* 0 ~ 3 */
+        +10, 12, +12, 14, /* 4 ~ 7 */
+        +14, 14, +14, 14, /* 8 ~ 11 */
+        +14, 14, +14, 14, /* 12 ~ 15 */
+        +14, 14, +14,     /* 16 ~ 18 */
+        +14               /* 19 */
     };
 
-    const Depth movingDepthTable[24] = {
-         1,  1,  1,  1,     /* 0 ~ 3 */
-         1,  1, 11, 11,     /* 4 ~ 7 */
-        11, 11, 11, 11,     /* 8 ~ 11 */
-        11, 11, 11, 11,     /* 12 ~ 15 */
-        11, 11, 12, 12,     /* 16 ~ 19 */
-        12, 12, 13, 14,     /* 20 ~ 23 */
+    constexpr Depth movingDepthTable[24] = {
+        1,  1,  1,  1,  /* 0 ~ 3 */
+        1,  1,  11, 11, /* 4 ~ 7 */
+        11, 11, 11, 11, /* 8 ~ 11 */
+        11, 11, 11, 11, /* 12 ~ 15 */
+        11, 11, 12, 12, /* 16 ~ 19 */
+        12, 12, 13, 14, /* 20 ~ 23 */
     };
 
 #ifdef ENDGAME_LEARNING
     const Depth movingDiffDepthTable[13] = {
-        0, 0, 0,                /* 0 ~ 2 */
-        0, 0, 0, 0, 0,          /* 3 ~ 7 */
-        0, 0, 0, 0, 0           /* 8 ~ 12 */
+        0, 0, 0,       /* 0 ~ 2 */
+        0, 0, 0, 0, 0, /* 3 ~ 7 */
+        0, 0, 0, 0, 0  /* 8 ~ 12 */
     };
 #else
     const Depth movingDiffDepthTable[13] = {
-        0, 0, 0,                /* 0 ~ 2 */
-        11, 11, 10, 9, 8,       /* 3 ~ 7 */
-        7, 6, 5, 4, 3           /* 8 ~ 12 */
+        0,  0,  0,        /* 0 ~ 2 */
+        11, 11, 10, 9, 8, /* 3 ~ 7 */
+        7,  6,  5,  4, 3  /* 8 ~ 12 */
     };
 #endif /* ENDGAME_LEARNING */
 
     constexpr Depth flyingDepth = 9;
 
     if (pos->phase == Phase::placing) {
-        const int index = rule.piecesCount * 2 - pos->count<IN_HAND>(WHITE) - pos->count<IN_HAND>(BLACK);
+        const int index = rule.pieceCount * 2 - pos->count<IN_HAND>(WHITE) -
+                          pos->count<IN_HAND>(BLACK);
 
-        if (rule.piecesCount == 9) {
+        if (rule.pieceCount == 9) {
             assert(0 <= index && index <= 19);
             d = placingDepthTable_9[index];
         } else {
-            assert(0 <= index && index <= rule.piecesCount * 2);
+            assert(0 <= index && index <= rule.pieceCount * 2);
             if (!rule.hasBannedLocations && !rule.hasDiagonalLines) {
                 d = placingDepthTable_12_special[index];
             } else {
@@ -617,13 +619,11 @@ Depth get_search_depth(const Position *pos)
 
         // Can fly
         if (rule.mayFly) {
-            if (pb <= rule.flyPieceCount ||
-                pw <= rule.flyPieceCount) {
+            if (pb <= rule.flyPieceCount || pw <= rule.flyPieceCount) {
                 d = flyingDepth;
             }
 
-            if (pb <= rule.flyPieceCount &&
-                pw <= rule.flyPieceCount) {
+            if (pb <= rule.flyPieceCount && pw <= rule.flyPieceCount) {
                 d = flyingDepth / 2;
             }
         }
@@ -650,7 +650,7 @@ Depth get_search_depth(const Position *pos)
     }
 
     // Do not too weak
-    if (depthLimit == 30 && d <= 4) {   // TODO
+    if (depthLimit == 30 && d <= 4) {   // TODO(calcitem)
         d = 4;
     }
 #endif
@@ -675,4 +675,4 @@ Depth get_search_depth(const Position *pos)
     return d;
 }
 
-}
+} // namespace Mills

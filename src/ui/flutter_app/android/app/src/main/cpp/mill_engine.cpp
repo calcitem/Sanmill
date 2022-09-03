@@ -1,30 +1,28 @@
-/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-#include <jni.h>
-#include <sys/types.h>
-#include <pthread.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <string.h>
+#include "../../../../../command/command_channel.h"
 #include "../../../../../command/engine_main.h"
 #include "../../../../../command/engine_state.h"
-#include "../../../../../command/command_channel.h"
+#include <jni.h>
+#include <pthread.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 extern "C" {
 
@@ -42,14 +40,14 @@ void *engineThread(void *)
     return NULL;
 }
 
-JNIEXPORT jint JNICALL
-Java_com_calcitem_sanmill_MillEngine_send(JNIEnv *env, jobject, jstring command);
+JNIEXPORT jint JNICALL Java_com_calcitem_sanmill_MillEngine_send(
+    JNIEnv *env, jobject, jstring command);
 
-JNIEXPORT jint JNICALL
-Java_com_calcitem_sanmill_MillEngine_shutdown(JNIEnv *, jobject);
+JNIEXPORT jint JNICALL Java_com_calcitem_sanmill_MillEngine_shutdown(JNIEnv *,
+                                                                     jobject);
 
-JNIEXPORT jint JNICALL
-Java_com_calcitem_sanmill_MillEngine_startup(JNIEnv *env, jobject obj)
+JNIEXPORT jint JNICALL Java_com_calcitem_sanmill_MillEngine_startup(JNIEnv *env,
+                                                                    jobject obj)
 {
     if (thread_id) {
         Java_com_calcitem_sanmill_MillEngine_shutdown(env, obj);
@@ -62,7 +60,8 @@ Java_com_calcitem_sanmill_MillEngine_startup(JNIEnv *env, jobject obj)
 
     pthread_create(&thread_id, NULL, engineThread, NULL);
 
-    Java_com_calcitem_sanmill_MillEngine_send(env, obj, env->NewStringUTF("uci"));
+    Java_com_calcitem_sanmill_MillEngine_send(env, obj,
+                                              env->NewStringUTF("uci"));
 
     return 0;
 }
@@ -78,30 +77,29 @@ Java_com_calcitem_sanmill_MillEngine_send(JNIEnv *env, jobject, jstring command)
     CommandChannel *channel = CommandChannel::getInstance();
 
     bool success = channel->pushCommand(pCommand);
-    if (success) printf(">>> %s\n", pCommand);
+    if (success)
+        printf(">>> %s\n", pCommand);
 
     env->ReleaseStringUTFChars(command, pCommand);
 
     return success ? 0 : -1;
 }
 
-JNIEXPORT jstring JNICALL
-Java_com_calcitem_sanmill_MillEngine_read(JNIEnv *env, jobject)
+JNIEXPORT jstring JNICALL Java_com_calcitem_sanmill_MillEngine_read(JNIEnv *env,
+                                                                    jobject)
 {
     char line[4096] = {0};
 
     CommandChannel *channel = CommandChannel::getInstance();
     bool got_response = channel->popupResponse(line);
 
-    if (!got_response) return NULL;
+    if (!got_response)
+        return NULL;
 
     printf("<<< %s\n", line);
 
-    if (strstr(line, "readyok") ||
-        strstr(line, "uciok") ||
-        strstr(line, "bestmove") ||
-        strstr(line, "nobestmove")) {
-
+    if (strstr(line, "readyok") || strstr(line, "uciok") ||
+        strstr(line, "bestmove") || strstr(line, "nobestmove")) {
         state = EngineState::STATE_READY;
     }
 
@@ -111,7 +109,8 @@ Java_com_calcitem_sanmill_MillEngine_read(JNIEnv *env, jobject)
 JNIEXPORT jint JNICALL
 Java_com_calcitem_sanmill_MillEngine_shutdown(JNIEnv *env, jobject obj)
 {
-    Java_com_calcitem_sanmill_MillEngine_send(env, obj, env->NewStringUTF("quit"));
+    Java_com_calcitem_sanmill_MillEngine_send(env, obj,
+                                              env->NewStringUTF("quit"));
 
     pthread_join(thread_id, NULL);
 
@@ -131,5 +130,4 @@ Java_com_calcitem_sanmill_MillEngine_isThinking(JNIEnv *, jobject)
 {
     return static_cast<jboolean>(state == EngineState::STATE_THINKING);
 }
-
 }

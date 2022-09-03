@@ -1,67 +1,80 @@
 /*********************************************************************\
     Mill.h
     Copyright (c) Thomas Weber. All rights reserved.
-    Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
+    Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
     Licensed under the GPLv3 License.
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef MILL_H
-#define MILL_H
+#ifndef MILL_H_INCLUDED
+#define MILL_H_INCLUDED
 
-#include <iostream>
-#include <cstdio>
-#include <time.h>
-#include <stdlib.h>
 #include "millAI.h"
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
 
 #include "../types.h"
 
-using namespace std;
+using std::cout;
+using std::iostream;
 
-#define MAX_NUM_MOVES 10000
+constexpr auto MOVE_COUNT_MAX = 10000;
 
-#define SAFE_DELETE(p)     \
-	{                      \
-		if (p)             \
-		{                  \
-			delete (p);    \
-			(p) = nullptr; \
-		}                  \
-	}
+#define SAFE_DELETE(p) \
+    { \
+        if (p) { \
+            delete (p); \
+            (p) = nullptr; \
+        } \
+    }
 
 #define SAFE_DELETE_ARRAY(p) \
-	{                        \
-		if (p)               \
-		{                    \
-			delete[](p);     \
-			(p) = nullptr;   \
-		}                    \
-	}
-
+    { \
+        if (p) { \
+            delete[](p); \
+            (p) = nullptr; \
+        } \
+    }
 
 class Mill
 {
 private:
     // Variables
-    unsigned int *moveLogFrom, *moveLogTo, movesDone; // array containing the history of moves done
-    MillAI *playerOneAI;							  // class-pointer to the AI of player one
-    MillAI *playerTwoAI;							  // class-pointer to the AI of player two
-    fieldStruct field;								  // current board
-    fieldStruct initialField;						  // undo of the last move is done by setting the initial board und performing all moves saved in history
-    int winner;										  // playerId of the player who has won the game. zero if game is still running.
-    int beginningPlayer;							  // playerId of the player who makes the first move
+
+    // array containing the history of moves done
+    uint32_t *moveLogFrom {nullptr}, *moveLogTo {nullptr}, movesDone {0};
+
+    // class-pointer to the AI of player one
+    MillAI *playerOneAI {nullptr};
+
+    // class-pointer to the AI of player two
+    MillAI *playerTwoAI {nullptr};
+
+    // current board
+    fieldStruct field;
+
+    // undo of the last move is done by setting the initial board and performing
+    // all moves saved in history
+    fieldStruct initField;
+
+    // playerId of the player who has won the game. zero if game is still
+    // running.
+    int winner {0};
+
+    // playerId of the player who makes the first move
+    int beginningPlayer {0};
 
     // Functions
     void exit();
     void setNextPlayer();
-    void calcPossibleMoves(Player *player);
-    void updateMillsAndWarnings(unsigned int newStone);
-    bool isNormalMovePossible(unsigned int from, unsigned int to, Player *player);
-    void setWarningAndMill(unsigned int stone, 
-                           unsigned int firstNeighbour, 
-                           unsigned int secondNeighbour, 
-                           bool isNewStone);
+    void generateMoves(Player *player);
+    void updateMillsAndWarnings(uint32_t newPiece);
+    bool isNormalMovePossible(uint32_t from, uint32_t to,
+                              const Player *player) const;
+    void setWarningAndMill(uint32_t piece, uint32_t firstNeighbor,
+                           uint32_t secondNeighbor, bool isNewPiece);
 
 public:
     // Constructor / destructor
@@ -71,82 +84,53 @@ public:
     // Functions
     void undoMove();
     void resetGame();
-    void beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer);
-    void setAI(int player, MillAI *AI);
-    bool doMove(unsigned int pushFrom, unsigned int pushTo);
-    void getComputersChoice(unsigned int *pushFrom, unsigned int *pushTo);
-    bool setCurrentGameState(fieldStruct *curState);
-    bool compareWithField(fieldStruct *compareField);
-    bool comparePlayers(Player *playerA, Player *playerB);
-    void printBoard();
-    bool startSettingPhase(MillAI *firstPlayerAI, MillAI *secondPlayerAI, int currentPlayer, bool settingPhase);
-    bool putPiece(unsigned int pos, int player);
-    bool settingPhaseHasFinished();
-    void getChoiceOfSpecialAI(MillAI *AI, unsigned int *pushFrom, unsigned int *pushTo);
-    void setUpCalcPossibleMoves(Player *player);
-    void setUpSetWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour);
-    void calcNumberOfRestingStones(int &numWhiteStonesResting, int &numBlackStonesResting);
+    void beginNewGame(MillAI *firstPlayerAI, MillAI *secondPlayerAI,
+                      int curPlayer);
+    bool doMove(uint32_t pushFrom, uint32_t pushTo);
+    void getComputersChoice(uint32_t *pushFrom, uint32_t *pushTo) const;
+    static bool comparePlayers(const Player *playerA, const Player *playerB);
+    void printBoard() const;
 
     // getter
-    void getLog(unsigned int &numMovesDone, unsigned int *from, unsigned int *to);
-    bool getField(int *pField);
-    bool isCurrentPlayerHuman();
-    bool isOpponentPlayerHuman();
+    [[nodiscard]] bool inPlacingPhase() const { return field.isPlacingPhase; }
 
-    bool inSettingPhase()
+    [[nodiscard]] uint32_t mustPieceBeRemoved() const
     {
-        return field.settingPhase;
+        return field.pieceMustBeRemovedCount;
     }
 
-    unsigned int mustStoneBeRemoved()
+    [[nodiscard]] int getWinner() const { return winner; }
+
+    [[nodiscard]] int getCurPlayer() const { return field.curPlayer->id; }
+
+    [[nodiscard]] uint32_t getLastMoveFrom() const
     {
-        return field.stoneMustBeRemoved;
+        return movesDone ? moveLogFrom[movesDone - 1] : SQUARE_NB;
     }
 
-    int getWinner()
+    [[nodiscard]] uint32_t getLastMoveTo() const
     {
-        return winner;
+        return movesDone ? moveLogTo[movesDone - 1] : SQUARE_NB;
     }
 
-    int getCurrentPlayer()
+    [[nodiscard]] uint32_t getMovesDone() const { return movesDone; }
+
+    [[nodiscard]] uint32_t getPiecesSetCount() const
     {
-        return field.curPlayer->id;
+        return field.piecePlacedCount;
     }
 
-    unsigned int getLastMoveFrom()
+    [[nodiscard]] int getBeginningPlayer() const { return beginningPlayer; }
+
+    [[nodiscard]] uint32_t getCurPlayerPieceCount() const
     {
-        return (movesDone ? moveLogFrom[movesDone - 1] : field.size);
+        return field.curPlayer->pieceCount;
     }
 
-    unsigned int getLastMoveTo()
+    [[nodiscard]] uint32_t getOpponentPlayerPieceCount() const
     {
-        return (movesDone ? moveLogTo[movesDone - 1] : field.size);
-    }
-
-    unsigned int getMovesDone()
-    {
-        return movesDone;
-    }
-
-    unsigned int getNumStonesSet()
-    {
-        return field.stonesSet;
-    }
-
-    int getBeginningPlayer()
-    {
-        return beginningPlayer;
-    }
-
-    unsigned int getNumStonOfCurPlayer()
-    {
-        return field.curPlayer->numStones;
-    }
-
-    unsigned int getNumStonOfOppPlayer()
-    {
-        return field.oppPlayer->numStones;
+        return field.oppPlayer->pieceCount;
     }
 };
 
-#endif
+#endif // MILL_H_INCLUDED

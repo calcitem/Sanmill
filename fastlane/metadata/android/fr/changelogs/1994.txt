@@ -1,0 +1,5 @@
+v1.1.8
+
+* Correction du problème de l'interface utilisateur du menu avec la droite à gauche.
+* Améliorer les traductions en anglais.
+* Afficher le nom de la langue au lieu du code de langue à la fin de l'élément de menu.

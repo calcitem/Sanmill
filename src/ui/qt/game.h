@@ -1,68 +1,69 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http:// www.gnu.org/licenses/>.
-*/
-
-/* 
+/*
  * This class deals with the scene object QGraphicsScene
  * It is the only control module in MVC model of this program
- * It doesn't do any operation on the controls in the main window, only signals the main window
- * You could have overloaded QGraphicsScene to implement it and saved the trouble of writing event filters
- * But it doesn't look good to use one scene class to do so many control module operations
+ * It doesn't do any operation on the controls in the main window, only signals
+ * the main window You could have overloaded QGraphicsScene to implement it and
+ * saved the trouble of writing event filters But it doesn't look good to use
+ * one scene class to do so many control module operations
  */
 
-#ifndef GAMECONTROLLER_H
-#define GAMECONTROLLER_H
+#ifndef GAME_H_INCLUDED
+#define GAME_H_INCLUDED
 
 #include <map>
 #include <vector>
 
-#include <QTime>
-#include <QPointF>
-#include <QTextStream>
-#include <QStringListModel>
 #include <QModelIndex>
-#include <QSettings> 
+#include <QPointF>
+#include <QSettings>
+#include <QStringListModel>
+#include <QTextStream>
+#include <QTime>
 
-#include "position.h"
-#include "gamescene.h"
-#include "pieceitem.h"
-#include "thread.h"
-#include "server.h"
 #include "client.h"
-#include "stopwatch.h"
+#include "gamescene.h"
 #include "mills.h"
+#include "pieceitem.h"
+#include "position.h"
+#include "server.h"
+#include "stopwatch.h"
 #include "test.h"
+#include "thread.h"
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::fixed;
+using std::map;
 
-enum class GameSound
-{
+enum class GameSound {
     none,
     blockMill,
     remove,
     select,
     draw,
-    drog,
+    drag,
     banned,
     gameStart,
     resign,
     loss,
     mill,
-    millRepeatly,
+    millRepeatedly,
     move,
     newGame,
     nextMill,
@@ -83,93 +84,61 @@ class Game : public QObject
     Q_OBJECT
 
 public:
-    explicit Game(
-        GameScene &scene,
-        QObject *parent = nullptr
-    );
+    explicit Game(GameScene &scene, QObject *parent = nullptr);
     ~Game() override;
 
     //  Main window menu bar details
-    const map<int, QStringList> getActions();
+    static map<int, QStringList> getActions();
 
-    int getRuleIndex() noexcept
-    {
-        return ruleIndex;
-    }
+    [[nodiscard]] int getRuleIndex() const noexcept { return ruleIndex; }
 
-    int getTimeLimit() noexcept
-    {
-        return timeLimit;
-    }
+    [[nodiscard]] int getTimeLimit() const noexcept { return timeLimit; }
 
-    int getStepsLimit() noexcept
-    {
-        return stepsLimit;
-    }
+    [[nodiscard]] int getStepsLimit() const noexcept { return stepsLimit; }
 
-    bool isAnimation() noexcept
-    {
-        return hasAnimation;
-    }
+    [[nodiscard]] bool isAnimation() const noexcept { return hasAnimation; }
 
-    void setDurationTime(int i) noexcept
-    {
-        durationTime = i;
-    }
+    void setDurationTime(int i) noexcept { durationTime = i; }
 
-    int getDurationTime()
-    {
-        return durationTime;
-    }
+    [[nodiscard]] int getDurationTime() const { return durationTime; }
 
-    QStringListModel *getManualListModel()
-    {
-        return &manualListModel;
-    }
+    QStringListModel *getMoveListModel() { return &moveListModel; }
 
     void setAiDepthTime(int time1, int time2);
-    void getAiDepthTime(int &time1, int &time2);
+    void getAiDepthTime(int &time1, int &time2) const;
 
     void humanResign();
 
-    Position *getPosition() noexcept
-    {
-        return &position;
-    }
+    Position *getPosition() noexcept { return &position; }
 
-    char color_to_char(Color color);
-    std::string char_to_string(char ch);
+    static char color_to_char(Color color);
+    static std::string char_to_string(char ch);
     void appendGameOverReasonToMoveHistory();
     void setTips();
 
-    inline const std::vector<std::string> *move_hostory() const
+    [[nodiscard]] const std::vector<std::string> *move_hostory() const
     {
         return &moveHistory;
     }
 
-    time_t get_elapsed_time(int us);
-    time_t start_timeb() const;
-    void set_start_time(int stimeb);
+    time_t get_elapsed_time(int us) const;
+    [[nodiscard]] time_t start_timeb() const;
+    void set_start_time(int time);
     void updateTime();
 
 #ifdef NET_FIGHT_SUPPORT
     Server *server;
     Client *client;
 
-    Server *getServer()
-    {
-        return server;
-    }
+    Server *getServer() { return server; }
 
-    Client *getClient()
-    {
-        return client;
-    }
+    Client *getClient() { return client; }
 #endif
 
 signals:
 
     // Signal of total disk number change
+
     void nGamesPlayedChanged(const QString &score);
 
     // Player 1 (first hand) signal to change the number of winning sets
@@ -202,7 +171,10 @@ signals:
 public slots:
 
     // Set rules
-    void setRule(int ruleNo, int stepLimited = std::numeric_limits<uint16_t>::max(), int timeLimited = 0);
+
+    void setRule(int ruleNo,
+                 int stepLimited = std::numeric_limits<uint16_t>::max(),
+                 int timeLimited = 0);
 
     // The game begins
     void gameStart();
@@ -210,79 +182,80 @@ public slots:
     // Game reset
     void gameReset();
 
-    // Set edit chess state
+    // Set edit state
     void setEditing(bool arg = true) noexcept;
 
     // Set white and black inversion state
     void setInvert(bool arg = true);
 
-    // If Id is 1, let the computer take the lead; if Id is 2, let the computer take the second place
+    // If Id is 1, let the computer take the lead; if Id is 2, let the computer
+    // take the second place
     void setEngine(Color color, bool enabled = true);
     void setEngineWhite(bool enabled);
     void setEngineBlack(bool enabled);
-    
-    // Fix Window Size 
+
+    // Fix Window Size
     void setFixWindowSize(bool arg) noexcept;
 
     // Is there a falling animation
     void setAnimation(bool arg = true) noexcept;
 
     // Is there a drop sound effect
-    void setSound(bool arg = true) noexcept;
+    void setSound(bool arg = true) const noexcept;
 
     // Play the sound
     static void playSound(GameSound soundType, Color c);
 
     // Skill Level
-    void setSkillLevel(int val);
+    void setSkillLevel(int val) const;
 
     // Move Time
-    void setMoveTime(int val);
+    void setMoveTime(int val) const;
 
     // Algorithm
-    void setAlphaBetaAlgorithm(bool enabled);
-    void setPvsAlgorithm(bool enabled);
-    void setMtdfAlgorithm(bool enabled);
-    void setAlgorithm(int val);
+    void setAlphaBetaAlgorithm(bool enabled) const;
+    void setPvsAlgorithm(bool enabled) const;
+    void setMtdfAlgorithm(bool enabled) const;
+    void setAlgorithm(int val) const;
 
     // Draw on human experience
-    void setDrawOnHumanExperience(bool enabled);
+    void setDrawOnHumanExperience(bool enabled) const;
 
     // Consider mobility of pieces
-    void setConsiderMobility(bool enabled);
+    void setConsiderMobility(bool enabled) const;
 
     // AI is Lazy
-    void setAiIsLazy(bool enabled);
+    void setAiIsLazy(bool enabled) const;
 
     // Do you admit defeat when you lose
-    void setResignIfMostLose(bool enabled);
+    void setResignIfMostLose(bool enabled) const;
 
     // Auto start or not
-    void setAutoRestart(bool enabled = false);
+    void setAutoRestart(bool enabled = false) const;
 
     // Is the start automatically changed to the first before the second
-    void setAutoChangeFirstMove(bool enabled = false);
+    void setAutoChangeFirstMove(bool enabled = false) const;
 
     // Is AI random
-    void setShuffling(bool enabled);
+    void setShuffling(bool enabled) const;
 
     // Does AI record the game library
-    void setLearnEndgame(bool enabled);
+    void setLearnEndgame(bool enabled) const;
 
     // Does Perfect AI (See https://www.mad-weasel.de/morris.html)
-    void setPerfectAi(bool enabled);
+    void setPerfectAi(bool enabled) const;
 
     // Does alpha beta search deepen iteratively
-    void setIDS(bool enabled);
+    void setIDS(bool enabled) const;
 
     //  DepthExtension
-    void setDepthExtension(bool enabled);
+    void setDepthExtension(bool enabled) const;
 
     //  OpeningBook
-    void setOpeningBook(bool enabled);
+    void setOpeningBook(bool enabled) const;
 
     //  DeveloperMode
-    void setDeveloperMode(bool enabled);
+    void setDeveloperMode(bool enabled) const;
 
     // Flip up and down
     void flip();
@@ -290,15 +263,15 @@ public slots:
     // Left and right mirror images
     void mirror();
 
-    // The view must be rotated 90 ° clockwise
+    // The view must be rotated 90 degree clockwise
     void turnRight();
 
     // View rotated 90 degree counterclockwise
     void turnLeft();
 
-    bool isAIsTurn();
+    [[nodiscard]] bool isAIsTurn() const;
 
-    void threadsSetAi(Position *p)
+    void threadsSetAi(Position *p) const
     {
         aiThread[WHITE]->setAi(p);
         aiThread[BLACK]->setAi(p);
@@ -319,7 +292,7 @@ public slots:
         aiThread[BLACK]->us = BLACK;
     }
 
-    void startAiThreads()
+    void startAiThreads() const
     {
         if (isAiPlayer[WHITE]) {
             aiThread[WHITE]->start_searching();
@@ -330,7 +303,7 @@ public slots:
         }
     }
 
-    void stopAndWaitAiThreads()
+    void stopAndWaitAiThreads() const
     {
         if (isAiPlayer[WHITE]) {
             aiThread[WHITE]->pause();
@@ -342,52 +315,54 @@ public slots:
         }
     }
 
-    void pauseThreads()
+    void pauseThreads() const
     {
         aiThread[WHITE]->pause();
         aiThread[BLACK]->pause();
     }
 
-    void waitThreads()
+    void waitThreads() const
     {
         aiThread[WHITE]->wait_for_search_finished();
         aiThread[BLACK]->wait_for_search_finished();
     }
 
-    void pauseAndWaitThreads()
+    void pauseAndWaitThreads() const
     {
         pauseThreads();
         waitThreads();
     }
 
-    void resumeAiThreads(Color c)
+    void resumeAiThreads(Color c) const
     {
         if (isAiPlayer[c]) {
             aiThread[c]->start_searching();
         }
     }
 
-    void deleteAiThreads()
+    void deleteAiThreads() const
     {
         delete aiThread[WHITE];
         delete aiThread[BLACK];
     }
 
-    // According to the signal and state of qgraphics scene, select, drop or delete the sub objects
+    // According to the signal and state of qgraphics scene, select, drop or
+    // delete the sub objects
     bool actionPiece(QPointF p);
 
     // Admit defeat
     bool resign();
 
-    // Command line execution of chess score
+    // Command line execution of score
     bool command(const string &cmd, bool update = true);
 
     // Historical situation and situation change
     bool phaseChange(int row, bool forceUpdate = false);
 
-    // Update the chess game display. Only after each step can the situation be refreshed
-    bool updateScence();
-    bool updateScence(Position &p);
+    // Update the game display. Only after each step can the situation be
+    // refreshed
+    bool updateScene();
+    bool updateScene(Position &p);
 
 #ifdef NET_FIGHT_SUPPORT
     // The network configuration window is displayed
@@ -395,14 +370,11 @@ public slots:
 #endif
 
     // Show engine vs. window
-    void showTestWindow();
+    void showTestWindow() const;
 
     void saveScore();
 
-    Test *getTest()
-    {
-        return gameTest;
-    }
+    [[nodiscard]] Test *getTest() const { return gameTest; }
 
 protected:
     // bool eventFilter(QObject * watched, QEvent * event);
@@ -411,36 +383,33 @@ protected:
     void timerEvent(QTimerEvent *event) override;
 
 private:
-
-    // Data model of chess object
+    // Data model of object
     Position position;
     Color sideToMove;
 
     // Testing
     Test *gameTest;
 
-private:
-
     // 2 AI threads
     Thread *aiThread[COLOR_NB];
 
-    // The scene class of chess game
+    // The scene class of game
     GameScene &scene;
 
     // All the pieces
     vector<PieceItem *> pieceList;
 
-    // Current chess pieces
-    PieceItem *currentPiece;
+    // Current pieces
+    PieceItem *currentPiece {nullptr};
 
-    // Current browsing chess score line
-    int currentRow;
+    // Current browsing score line
+    int currentRow {-1};
 
-    // Is it in "Edit chess game" state
-    bool isEditing;
+    // Is it in "Edit game" state
+    bool isEditing {false};
 
     // Reverse white and black
-    bool isInverted;
+    bool isInverted {false};
 
 public:
     const QString SETTINGS_FILE = "settings.ini";
@@ -448,48 +417,35 @@ public:
 
     void loadSettings();
 
-    bool fixWindowSizeEnabled()
-    {
-        return fixWindowSize;
-    }
+    [[nodiscard]] bool fixWindowSizeEnabled() const { return fixWindowSize; }
 
-    bool soundEnabled()
-    {
-        return hasSound;
-    }
+    static bool soundEnabled() { return hasSound; }
 
-    bool animationEnabled()
-    {
-        return hasAnimation;
-    }
+    [[nodiscard]] bool animationEnabled() const { return hasAnimation; }
 
     // True when the computer takes the lead
     bool isAiPlayer[COLOR_NB];
 
-    string getTips()
-    {
-        return tips;
-    }
+    string getTips() { return tips; }
 
 private:
-
     // Fix Windows Size
     bool fixWindowSize;
 
     // Is there a falling animation
-    bool hasAnimation;
+    bool hasAnimation {true};
 
     // Animation duration
-    int durationTime;
+    int durationTime {500};
 
     // Game start time
-    TimePoint gameStartTime;
+    TimePoint gameStartTime {0};
 
     // Game end time
-    TimePoint gameEndTime;
+    TimePoint gameEndTime {0};
 
     // Game duration
-    TimePoint gameDurationTime;
+    TimePoint gameDurationTime {0};
 
     // Game start cycle
     stopwatch::rdtscp_clock::time_point gameStartCycle;
@@ -498,7 +454,7 @@ private:
     stopwatch::rdtscp_clock::time_point gameEndCycle;
 
     // Game duration
-    stopwatch::rdtscp_clock::duration gameDurationCycle;
+    stopwatch::rdtscp_clock::duration gameDurationCycle {0};
 
     // Time dependent
     time_t startTime;
@@ -512,22 +468,22 @@ private:
     bool resignIfMostLose_ {false};
 
     // Do you want to exchange first before second
-    bool isAutoChangeFirstMove { false };
+    bool isAutoChangeFirstMove {false};
 
     // Is ai the first
-    bool isAiFirstMove { false };
+    bool isAiFirstMove {false};
 
     // Timer ID
-    int timeID;
+    int timeID {0};
 
     // Rule number
-    int ruleIndex;
+    int ruleIndex {-1};
 
     // Rule time limit (seconds)
     int timeLimit;
 
     // Rule step limit
-    int stepsLimit;
+    int stepsLimit {100};
 
     // Player's remaining time (seconds)
     time_t remainingTime[COLOR_NB];
@@ -535,13 +491,13 @@ private:
     // String used to display the status bar of the main window
     QString message;
 
-    // String list model of chess score
-    QStringListModel manualListModel;
+    // String list model of score
+    QStringListModel moveListModel;
 
     // Hint
     string tips;
 
-    std::vector <std::string> moveHistory;
+    std::vector<std::string> moveHistory;
 };
 
 inline time_t Game::start_timeb() const
@@ -549,9 +505,9 @@ inline time_t Game::start_timeb() const
     return startTime;
 }
 
-inline void Game::set_start_time(int stimeb)
+inline void Game::set_start_time(int time)
 {
-    startTime = stimeb;
+    startTime = time;
 }
 
-#endif // GAMECONTROLLER_H
+#endif // GAME_H_INCLUDED

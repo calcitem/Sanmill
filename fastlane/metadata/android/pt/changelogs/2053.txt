@@ -1,0 +1,5 @@
+v1.1.16
+
+* Mostrar barra de status para dispositivo de tela grande.
+* Não mostre a configuração da barra de ferramentas de navegação se a proporção da janela for menor que 1,7.
+* Melhore a tradução persa.

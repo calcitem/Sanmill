@@ -1,23 +1,25 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
+#ifndef CLIENT_H_INCLUDED
+#define CLIENT_H_INCLUDED
 
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+#include "config.h"
 
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifdef NET_FIGHT_SUPPORT
 
 #include <QDataStream>
 #include <QDialog>
@@ -52,15 +54,9 @@ private slots:
     void enableGetActionButton();
     void sessionOpened();
 
-    void setPort(uint16_t p) noexcept
-    {
-        this->port = p;
-    }
+    void setPort(uint16_t p) noexcept { this->port = p; }
 
-    uint16_t getPort() noexcept
-    {
-        return port;
-    }
+    uint16_t getPort() noexcept { return port; }
 
 private:
     QComboBox *hostCombo = nullptr;
@@ -72,10 +68,12 @@ private:
     QDataStream in;
     QString currentAction;
 
+    // TODO(calcitem): 'QNetworkSession': was declared deprecated
     QNetworkSession *networkSession = nullptr;
 
     uint16_t port {};
 };
 
-#endif // CLIENT_H
+#endif // NET_FIGHT_SUPPORT
 
+#endif // CLIENT_H_INCLUDED

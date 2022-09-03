@@ -1,28 +1,27 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+#include <QPainter>
 
 #include "boarditem.h"
 #include "graphicsconst.h"
-#include <QPainter>
 #include "types.h"
 
-BoardItem::BoardItem(QGraphicsItem *parent) :
-    size(BOARD_SIZE)
+BoardItem::BoardItem(const QGraphicsItem *parent)
+    : size(BOARD_SIZE)
 {
     Q_UNUSED(parent)
 
@@ -30,34 +29,19 @@ BoardItem::BoardItem(QGraphicsItem *parent) :
     setPos(0, 0);
 
     // Initialize 24 points
-    for (int r = 0; r < FILE_NB; r++) {
-        // The first position is the 12 o'clock direction of the inner ring, which is sorted clockwise
-        // Then there is the middle ring and the outer ring
-        int a = (r + 1) * LINE_INTERVAL;
+    for (int f = 0; f < FILE_NB; f++) {
+        // The first position is the 12 o'clock direction of the inner ring,
+        // which is sorted clockwise Then there is the middle ring and the outer
+        // ring
+        const int p = (f + 1) * LINE_INTERVAL;
 
-        position[r * RANK_NB + 0].rx() = 0;
-        position[r * RANK_NB + 0].ry() = -a;
+        const int pt[][2] = {{0, -p}, {p, -p}, {p, 0},  {p, p},
+                             {0, p},  {-p, p}, {-p, 0}, {-p, -p}};
 
-        position[r * RANK_NB + 1].rx() = a;
-        position[r * RANK_NB + 1].ry() = -a;
-
-        position[r * RANK_NB + 2].rx() = a;
-        position[r * RANK_NB + 2].ry() = 0;
-
-        position[r * RANK_NB + 3].rx() = a;
-        position[r * RANK_NB + 3].ry() = a;
-
-        position[r * RANK_NB + 4].rx() = 0;
-        position[r * RANK_NB + 4].ry() = a;
-
-        position[r * RANK_NB + 5].rx() = -a;
-        position[r * RANK_NB + 5].ry() = a;
-
-        position[r * RANK_NB + 6].rx() = -a;
-        position[r * RANK_NB + 6].ry() = 0;
-
-        position[r * RANK_NB + 7].rx() = -a;
-        position[r * RANK_NB + 7].ry() = -a;
+        for (int r = 0; r < RANK_NB; r++) {
+            position[f * RANK_NB + r].rx() = pt[r][0];
+            position[f * RANK_NB + r].ry() = pt[r][1];
+        }
     }
 }
 
@@ -82,8 +66,7 @@ void BoardItem::setDiagonal(bool arg)
     update(boundingRect());
 }
 
-void BoardItem::paint(QPainter *painter,
-                      const QStyleOptionGraphicsItem *option,
+void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                       QWidget *widget)
 {
     Q_UNUSED(option)
@@ -107,36 +90,40 @@ void BoardItem::paint(QPainter *painter,
 #endif /* QT_MOBILE_APP_UI */
 
     // Solid line brush
-#ifdef  QT_MOBILE_APP_UI
-    QPen pen(QBrush(QColor(241, 156, 159)), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+#ifdef QT_MOBILE_APP_UI
+    QPen pen(QBrush(QColor(241, 156, 159)), LINE_WEIGHT, Qt::SolidLine,
+             Qt::SquareCap, Qt::BevelJoin);
 #else
-    QPen pen(QBrush(QColor(178, 34, 34)), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+    const QPen pen(QBrush(QColor(178, 34, 34)), LINE_WEIGHT, Qt::SolidLine,
+                   Qt::SquareCap, Qt::BevelJoin);
 #endif
     painter->setPen(pen);
 
     // No brush
     painter->setBrush(Qt::NoBrush);
 
-    for (uint8_t i = 0; i < FILE_NB; i++) {
+    for (uint8_t f = 0; f < FILE_NB; f++) {
         // Draw three boxes
-        painter->drawPolygon(position + i * RANK_NB, RANK_NB);
+        painter->drawPolygon(f * RANK_NB + position, RANK_NB);
     }
 
     // Draw 4 vertical and horizontal lines
-    for (int i = 0; i  < RANK_NB; i += 2) {
-        painter->drawLine(position[i], position[(FILE_NB - 1) * RANK_NB + i]);
+    for (int r = 0; r < RANK_NB; r += 2) {
+        painter->drawLine(position[r], position[(FILE_NB - 1) * RANK_NB + r]);
     }
 
     if (hasDiagonalLine) {
         // Draw 4 diagonal lines
-        for (int i = 1; i  < RANK_NB; i += 2) {
-            painter->drawLine(position[i], position[(FILE_NB - 1) * RANK_NB + i]);
+        for (int r = 1; r < RANK_NB; r += 2) {
+            painter->drawLine(position[r],
+                              position[(FILE_NB - 1) * RANK_NB + r]);
         }
     }
 
 #ifdef PLAYER_DRAW_SEAT_NUMBER
     // Draw the seat number
-    QPen fontPen(QBrush(Qt::white), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+    QPen fontPen(QBrush(Qt::white), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap,
+                 Qt::BevelJoin);
     painter->setPen(fontPen);
     QFont font;
     font.setPointSize(4);
@@ -152,14 +139,15 @@ void BoardItem::paint(QPainter *painter,
 #endif // PLAYER_DRAW_SEAT_NUMBER
 }
 
-QPointF BoardItem::nearestPosition(QPointF const pos)
+QPointF BoardItem::nearestPosition(const QPointF pos)
 {
     // The initial closest point is set to (0,0) point
-    QPointF nearestPos = QPointF(0, 0);
+    auto nearestPos = QPointF(0, 0);
 
     // Look for the nearest spot
     for (auto i : position) {
-        // If the distance between the mouse point and the falling point is within the radius of the chess piece
+        // If the distance between the mouse point and the falling point is
+        // within the radius of the piece
         if (QLineF(pos, i).length() < PIECE_SIZE / 2) {
             nearestPos = i;
             break;
@@ -169,19 +157,20 @@ QPointF BoardItem::nearestPosition(QPointF const pos)
     return nearestPos;
 }
 
-QPointF BoardItem::polar2pos(File file, Rank rank)
+QPointF BoardItem::polar2pos(File f, Rank r) const
 {
-    return position[((int)file - 1) * RANK_NB + (int)rank - 1];
+    return position[(static_cast<int>(f) - 1) * RANK_NB + static_cast<int>(r) -
+                    1];
 }
 
-bool BoardItem::pos2polar(QPointF pos, File &file, Rank &rank)
+bool BoardItem::pos2polar(QPointF pos, File &f, Rank &r) const
 {
     // Look for the nearest spot
-    for (int i = 0; i < EFFECTIVE_SQUARE_NB; i++) {
+    for (int sq = 0; sq < SQUARE_NB; sq++) {
         // If the pos point is near the placing point
-        if (QLineF(pos, position[i]).length() < PIECE_SIZE / 6) {
-            file = File(i / RANK_NB + 1);
-            rank = Rank(i % RANK_NB + 1);
+        if (QLineF(pos, position[sq]).length() < PIECE_SIZE / 6) {
+            f = static_cast<File>(sq / RANK_NB + 1);
+            r = static_cast<Rank>(sq % RANK_NB + 1);
             return true;
         }
     }

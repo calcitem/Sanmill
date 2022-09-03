@@ -1,0 +1,3 @@
+v1.1.28
+
+O algoritmo de IA foi aprimorado para aumentar as habilidades da IA para 180% do original.

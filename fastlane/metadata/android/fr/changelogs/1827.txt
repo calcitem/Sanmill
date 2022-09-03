@@ -1,0 +1,4 @@
+v1.0.10
+
+* Accélérez la réflexion sur les deux premiers mouvements.
+* N'afficher la notation à bord que sur deux côtés.

@@ -1,35 +1,29 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-#include <QBuffer>
-#include <QUuid>
-#include <QDataStream>
-#include <QString>
 #include <QThread>
 #include <QtWidgets>
-#include <QtCore>
 #include <random>
 
+#include <QtCore>
+
+#include "config.h"
 #include "misc.h"
 #include "option.h"
 #include "test.h"
-
-#include "config.h"
 
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI
 #include "perfect/perfect.h"
@@ -59,22 +53,11 @@ Test::Test(QWidget *parent, QString k)
 
     keyCombo->setEditable(true);
 
-    keyCombo->addItem(QString("Key0"));
-    keyCombo->addItem(QString("Key1"));
-    keyCombo->addItem(QString("Key2"));
-    keyCombo->addItem(QString("Key3"));
-    keyCombo->addItem(QString("Key4"));
-    keyCombo->addItem(QString("Key5"));
-    keyCombo->addItem(QString("Key6"));
-    keyCombo->addItem(QString("Key7"));
-    keyCombo->addItem(QString("Key8"));
-    keyCombo->addItem(QString("Key9"));
-    keyCombo->addItem(QString("KeyA"));
-    keyCombo->addItem(QString("KeyB"));
-    keyCombo->addItem(QString("KeyC"));
-    keyCombo->addItem(QString("KeyD"));
-    keyCombo->addItem(QString("KeyE"));
-    keyCombo->addItem(QString("KeyF"));
+    const QString keyPrefix = "Key";
+
+    for (char i = '0'; i <= '9'; i++) {
+        keyCombo->addItem(keyPrefix + i);
+    }
 
 #ifdef QT_UI_TEST_MODE
 #ifdef QT_GUI_LIB
@@ -83,17 +66,18 @@ Test::Test(QWidget *parent, QString k)
         keyCombo->addItem(QString(appFileName));
     }
 #endif // QT_GUI_LIB
+
 #endif // QT_UI_TEST_MODE
 
-    auto keyLabel = new QLabel(tr("&Key:"));
+    const auto keyLabel = new QLabel(tr("&Key:"));
     keyLabel->setBuddy(keyCombo);
 
     startButton->setDefault(true);
     startButton->setEnabled(true);
     stopButton->setEnabled(false);
 
-    auto closeButton = new QPushButton(tr("Close"));
-    auto buttonBox = new QDialogButtonBox;
+    const auto closeButton = new QPushButton(tr("Close"));
+    const auto buttonBox = new QDialogButtonBox;
     buttonBox->addButton(startButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(stopButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(closeButton, QDialogButtonBox::RejectRole);
@@ -102,18 +86,27 @@ Test::Test(QWidget *parent, QString k)
     connect(stopButton, &QAbstractButton::clicked, this, &Test::stopAction);
     connect(closeButton, &QAbstractButton::clicked, this, &QWidget::close);
 
-    QGridLayout *mainLayout = nullptr;
-    if (QGuiApplication::styleHints()->showIsFullScreen() || QGuiApplication::styleHints()->showIsMaximized()) {
-        auto outerVerticalLayout = new QVBoxLayout(this);
-        outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
-        auto outerHorizontalLayout = new QHBoxLayout;
-        outerHorizontalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
-        auto groupBox = new QGroupBox(QGuiApplication::applicationDisplayName());
+    QGridLayout *mainLayout;
+    if (QGuiApplication::styleHints()->showIsFullScreen() ||
+        QGuiApplication::styleHints()->showIsMaximized()) {
+        const auto outerVerticalLayout = new QVBoxLayout(this);
+        outerVerticalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
+
+        const auto outerHorizontalLayout = new QHBoxLayout;
+        outerHorizontalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
+
+        const auto groupBox = new QGroupBox(
+            QGuiApplication::applicationDisplayName());
         mainLayout = new QGridLayout(groupBox);
         outerHorizontalLayout->addWidget(groupBox);
-        outerHorizontalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
+
+        outerHorizontalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
         outerVerticalLayout->addLayout(outerHorizontalLayout);
-        outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
+        outerVerticalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
     } else {
         mainLayout = new QGridLayout(this);
     }
@@ -143,16 +136,16 @@ void Test::attach()
     sharedMemory.setKey(key);
 
     if (sharedMemory.attach()) {
-        loggerDebug("Attached shared memory segment.\n");
+        debugPrintf("Attached shared memory segment.\n");
     } else {
         if (sharedMemory.create(SHARED_MEMORY_SIZE)) {
-            loggerDebug("Created shared memory segment.\n");
+            debugPrintf("Created shared memory segment.\n");
         } else {
-            loggerDebug("Unable to create shared memory segment.\n");
+            debugPrintf("Unable to create shared memory segment.\n");
         }
     }
 
-    to = (char *)sharedMemory.data();
+    to = static_cast<char *>(sharedMemory.data());
 
     uuid = createUuidString();
     uuidSize = uuid.size();
@@ -164,7 +157,7 @@ void Test::detach()
 {
     if (sharedMemory.isAttached()) {
         if (sharedMemory.detach()) {
-            loggerDebug("Detached shared memory segment.\n");            
+            debugPrintf("Detached shared memory segment.\n");
         }
     }
 }
@@ -179,8 +172,12 @@ void Test::writeToMemory(const QString &record)
         return;
     }
 
-    char from[BUFSIZ] = { 0 };
+    char from[BUFSIZ] = {0};
+#ifdef _MSC_VER
+    strncpy_s(from, BUFSIZ, record.toStdString().c_str(), BUFSIZ);
+#else
     strncpy(from, record.toStdString().c_str(), BUFSIZ);
+#endif // _MSC_VER
 
     while (true) {
         sharedMemory.lock();

@@ -14,12 +14,13 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ master ]
+    branches: [master, dev]
+    paths-ignore:
+      - 'src/ui/flutter_app/**'
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ master ]
-  schedule:
-    - cron: '43 14 * * 2'
+    types: [review_requested, ready_for_review]
+    paths-ignore:
+      - 'src/ui/flutter_app/**'
 
 jobs:
   analyze:
@@ -48,17 +49,17 @@ jobs:
         # Prefix the list here with "+" to use these queries and those in the config file.
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
+    # Auto build attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
-    #- name: Autobuild
+    #- name: Auto build
     #  uses: github/codeql-action/autobuild@v1
 
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 https://git.io/JvXDl
+    # Command-line programs to run using the OS shell.
+    # https://git.io/JvXDl
 
-    # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
-    #    and modify them (or add more) to build your code if your project
-    #    uses a compiled language
+    # If the Auto build fails above, remove it and uncomment the following three lines
+    # and modify them (or add more) to build your code if your project
+    # uses a compiled language
 
     - run: |
        sed -i '/QT_UI/d' include/config.h

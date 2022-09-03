@@ -1,0 +1,5 @@
+v1.0.5
+
+* Indicação das peças brancas como jogador 1 e pretas como jogador 2
+* Alteração do texto 'Dica' para 'Informações'
+* Erros de digitação corrigidos

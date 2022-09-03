@@ -1,0 +1,20 @@
+{
+  "[dart]": {
+    "editor.formatOnSave": true
+  },
+  "cSpell.words": [
+    "HWND",
+    "jboolean",
+    "jint",
+    "JNICALL",
+    "JNIEXPORT",
+    "jobject",
+    "libsanmill",
+    "LPARAM",
+    "LRESULT",
+    "nonfunction",
+    "readyok",
+    "uciok",
+    "XCRASH"
+  ]
+}

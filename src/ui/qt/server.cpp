@@ -1,24 +1,26 @@
-/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
+#include "config.h"
 
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+#ifdef NET_FIGHT_SUPPORT
 
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-#include <QtWidgets>
-#include <QtNetwork>
 #include <QtCore>
+#include <QtNetwork>
+#include <QtWidgets>
 
 #include "server.h"
 
@@ -33,14 +35,19 @@ Server::Server(QWidget *parent, uint16_t port)
 
     QNetworkConfigurationManager manager;
 
-    if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired) {
+    if (manager.capabilities() &
+        QNetworkConfigurationManager::NetworkSessionRequired) {
         // Get saved network configuration
         QSettings settings(QSettings::UserScope, QLatin1String("QtProject"));
         settings.beginGroup(QLatin1String("QtNetwork"));
-        const QString id = settings.value(QLatin1String("DefaultNetworkConfiguration")).toString();
+        const QString id = settings
+                               .value(QLatin1String("DefaultNetworkConfiguratio"
+                                                    "n"))
+                               .toString();
         settings.endGroup();
 
-        // If the saved network configuration is not currently discovered use the system default
+        // If the saved network configuration is not currently discovered use
+        // the system default
         QNetworkConfiguration config = manager.configurationFromIdentifier(id);
         if ((config.state() & QNetworkConfiguration::Discovered) !=
             QNetworkConfiguration::Discovered) {
@@ -48,7 +55,8 @@ Server::Server(QWidget *parent, uint16_t port)
         }
 
         networkSession = new QNetworkSession(config, this);
-        connect(networkSession, &QNetworkSession::opened, this, &Server::sessionOpened);
+        connect(networkSession, &QNetworkSession::opened, this,
+                &Server::sessionOpened);
 
         statusLabel->setText(tr("Opening network session."));
         networkSession->open();
@@ -67,17 +75,23 @@ Server::Server(QWidget *parent, uint16_t port)
     buttonLayout->addStretch(1);
 
     QVBoxLayout *mainLayout = nullptr;
-    if (QGuiApplication::styleHints()->showIsFullScreen() || QGuiApplication::styleHints()->showIsMaximized()) {
+    if (QGuiApplication::styleHints()->showIsFullScreen() ||
+        QGuiApplication::styleHints()->showIsMaximized()) {
         auto outerVerticalLayout = new QVBoxLayout(this);
-        outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
+        outerVerticalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
         auto outerHorizontalLayout = new QHBoxLayout;
-        outerHorizontalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
-        auto groupBox = new QGroupBox(QGuiApplication::applicationDisplayName());
+        outerHorizontalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
+        auto groupBox = new QGroupBox(
+            QGuiApplication::applicationDisplayName());
         mainLayout = new QVBoxLayout(groupBox);
         outerHorizontalLayout->addWidget(groupBox);
-        outerHorizontalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
+        outerHorizontalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Ignored));
         outerVerticalLayout->addLayout(outerHorizontalLayout);
-        outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
+        outerVerticalLayout->addItem(new QSpacerItem(
+            0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
     } else {
         mainLayout = new QVBoxLayout(this);
     }
@@ -103,7 +117,9 @@ void Server::sessionOpened()
         QString id;
 
         if (config.type() == QNetworkConfiguration::UserChoice)
-            id = networkSession->sessionProperty(QLatin1String("UserChoiceConfiguration")).toString();
+            id = networkSession
+                     ->sessionProperty(QLatin1String("UserChoiceConfiguration"))
+                     .toString();
         else
             id = config.identifier();
 
@@ -121,19 +137,21 @@ void Server::sessionOpened()
 #ifndef QT_UI_TEST_MODE
             QMessageBox::critical(this, tr("Server"),
                                   tr("Unable to start the server: %1.")
-                                  .arg(tcpServer->errorString()));
+                                      .arg(tcpServer->errorString()));
 #endif // !QT_UI_TEST_MODE
+
             close();
             return;
         }
 
-#ifdef MESSAGEBOX_ENABLE
-        QMessageBox::information(this, tr("Server"), tr("server Started %1.").arg(port));
+#ifdef MESSAGE_BOX_ENABLE
+        QMessageBox::information(this, tr("Server"),
+                                 tr("server Started %1.").arg(port));
 #endif
-    }
-    else {
-#ifdef MESSAGEBOX_ENABLE
-        QMessageBox::information(this, tr("Server"), tr("server Started %1.").arg(port));
+    } else {
+#ifdef MESSAGE_BOX_ENABLE
+        QMessageBox::information(this, tr("Server"),
+                                 tr("server Started %1.").arg(port));
 #endif
     }
 
@@ -142,8 +160,7 @@ void Server::sessionOpened()
 
     // use the first non-localhost IPv4 address
     for (const auto &ip : ipAddressesList) {
-        if (ip != QHostAddress::LocalHost &&
-            ip.toIPv4Address()) {
+        if (ip != QHostAddress::LocalHost && ip.toIPv4Address()) {
             ipAddress = ip.toString();
             break;
         }
@@ -154,12 +171,13 @@ void Server::sessionOpened()
         ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
 
     statusLabel->setText(tr("The server is running on\n\nIP: %1\nport: %2")
-                         .arg(ipAddress).arg(tcpServer->serverPort()));
+                             .arg(ipAddress)
+                             .arg(tcpServer->serverPort()));
 }
 
 void Server::setAction(const QString &a)
 {
-    // TODO: WAR
+    // TODO(calcitem): WAR
     if (actions.size() > 256) {
         while (!actions.empty()) {
             actions.pop();
@@ -178,13 +196,13 @@ void Server::sendAction()
     if (!actions.empty()) {
         action = actions.front();
     }
-    
+
     out << action;
 
     QTcpSocket *clientConnection = tcpServer->nextPendingConnection();
 
-    connect(clientConnection, &QAbstractSocket::disconnected,
-            clientConnection, &QObject::deleteLater);
+    connect(clientConnection, &QAbstractSocket::disconnected, clientConnection,
+            &QObject::deleteLater);
 
     clientConnection->write(block);
     clientConnection->disconnectFromHost();
@@ -193,3 +211,5 @@ void Server::sendAction()
         actions.pop();
     }
 }
+
+#endif // NET_FIGHT_SUPPORT

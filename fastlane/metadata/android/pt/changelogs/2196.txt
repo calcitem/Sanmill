@@ -1,0 +1,8 @@
+v1.1.38
+
+* Suporte a remoção de peças não colocadas - Se um jogador forma o moinho na fase de colocação, ele pode remover a peça não colocada do oponente e continuar a fazer um movimento.
+* Suporte a regra N-Move do Endgame.
+* Altere a condição de julgamento da regra N-movimento de > para =.
+* Suporte a configuração de repetição tripla.
+* Permite configurar o estilo do ponto e a largura do ponto.
+* Suporte a lista de movimentação GoldToken de importação.

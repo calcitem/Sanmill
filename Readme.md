@@ -1,6 +1,6 @@
 ## Overview
 
-[![YouTube](fastlane/metadata/android/en-US/images/featureGraphic.png)](https://www.youtube.com/channel/UCbGKXwhh1DkuINyZw05kyHw/featured)
+[![Graphic](fastlane/metadata/android/en-US/images/featureGraphic.png)](https://www.youtube.com/channel/UCbGKXwhh1DkuINyZw05kyHw/featured)
 
 <a href="https://github.com/calcitem/Sanmill/actions/workflows/flutter.yml?query=branch%3Amaster+is%3Asuccess+event%3Apush" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/get-it-on-github.png" alt="Get it on GitHub" height="80"/></a>
@@ -15,7 +15,10 @@
 <img src="src/ui/flutter_app/assets/badges/get-it-on-cafebazaar.png" alt="Get it on CafeBazaar" height="54"/></a>
 
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/Calcitem/Sanmill?branch=master&svg=true)](https://ci.appveyor.com/project/Calcitem/Sanmill/branch/master)
+[![snapcraft](https://snapcraft.io/sanmill/badge.svg)](https://snapcraft.io/sanmill)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/dd51135302af45a989a382d3a3d9eadc)](https://www.codacy.com/gh/calcitem/Sanmill/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=calcitem/Sanmill&amp;utm_campaign=Badge_Grade)
+[![Translation status](https://hosted.weblate.org/widgets/sanmill/-/svg-badge.svg)](https://hosted.weblate.org/engage/sanmill/)
+[![Readme-Chinese](https://img.shields.io/badge/README-简体中文-red.svg)](README-zh_CN.md)
 
 [Sanmill](https://github.com/calcitem/Sanmill) is a free, powerful UCI-like N men's morris program with CUI, Flutter GUI and Qt GUI.
 
@@ -43,7 +46,7 @@ This distribution of Sanmill consists of the following files:
 
 Sanmill CUI has support for 32 or 64-bit CPUs, certain hardware instructions, big-endian machines such as Power PC, and other platforms.
 
-On Unix-like systems, it should be easy to compile Sanmill directly from the source code with the included Makefile in the folder `src`. In general it is recommended to run `make help` to see a list of make targets with corresponding descriptions.
+It should be easy to compile Sanmill directly from the source code on Unix-like systems with the included Makefile in the folder `src`. Generally, it is recommended to run `make help` to see a list of make targets with corresponding descriptions.
 
 ```shell
 cd src
@@ -51,7 +54,7 @@ make help
 make build ARCH=x86-64-modern
 ```
 
-When reporting an issue or a bug, please tell us which version and compiler you used to create your executable. These information can be found by typing the following commands in a console:
+When reporting an issue or a bug, please tell us which version and compiler you used to create your executable. This information can be found by typing the following commands in a console:
 
 ```shell
 ./sanmill compiler
@@ -79,7 +82,7 @@ Sanmill's improvement over the last couple of years has been a great community e
 
 If you want to help improve the code, there are several valuable resources:
 
-* [In this wiki,](https://github.com/calcitem/Sanmill/wiki) many techniques used in Sanmill are explained with a lot of background information.
+* [In this wiki](https://github.com/calcitem/Sanmill/wiki), many techniques used in Sanmill are explained with a lot of background information.
 
 * The latest source can always be found on [GitHub](https://github.com/calcitem/Sanmill).
 
@@ -87,7 +90,7 @@ If you want to help improve the code, there are several valuable resources:
 
 ## Terms of use
 
-Sanmill is free, and distributed under the **GNU General Public License version 3**
+Sanmill is free and distributed under the **GNU General Public License version 3**
 (GPL v3). Essentially, this means you are free to do almost exactly
 what you want with the program, including distributing it among your
 friends, making it available for download from your website, selling
@@ -95,7 +98,7 @@ it (either by itself or as part of some bigger software package), or
 using it as the starting point for a software project of your own.
 
 The only real limitation is that whenever you distribute Sanmill in
-some way, you must always include the full source code, or a pointer
+some way, you must always include the full source code or a pointer
 to where the source code can be found. If you make any changes to the
 source code, these changes must also be made available under the GPL.
 

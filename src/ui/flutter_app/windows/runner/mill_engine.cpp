@@ -1,37 +1,35 @@
-/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <process.h>
 #include <stdio.h>
 #include <string.h>
-#include <windows.h>
 #include <string>
+#include <windows.h>
 
 #include "mill_engine.h"
 
+#include "../../../../../command/command_channel.h"
 #include "../../../../../command/engine_main.h"
 #include "../../../../../command/engine_state.h"
-#include "../../../../../command/command_channel.h"
 
-#define pthread_t					HANDLE
-#define pthread_cancel(x)			TerminateThread((x), 0)
-#define pthread_exit(x)				_endthread
-#define pthread_join(x, nullptr)	WaitForSingleObject((x), INFINITE)
+#define pthread_t HANDLE
+#define pthread_cancel(x) TerminateThread((x), 0)
+#define pthread_exit(x) _endthread
+#define pthread_join(x, nullptr) WaitForSingleObject((x), INFINITE)
 
 extern "C" {
 
@@ -70,12 +68,13 @@ int MillEngine::startup()
 int MillEngine::send(const char *command)
 {
     if (command[0] == 'g' && command[1] == 'o')
-		state = EngineState::STATE_THINKING;
+        state = EngineState::STATE_THINKING;
 
     CommandChannel *channel = CommandChannel::getInstance();
 
     bool success = channel->pushCommand(command);
-    if (success) printf(">>> %s\n", command);
+    if (success)
+        printf(">>> %s\n", command);
 
     return success ? 0 : -1;
 }
@@ -88,19 +87,16 @@ std::string MillEngine::read()
     bool got_response = channel->popupResponse(line);
 
     if (!got_response)
-		return "";
+        return "";
 
     printf("<<< %s\n", line);
 
-    if (strstr(line, "readyok") ||
-        strstr(line, "uciok") ||
-        strstr(line, "bestmove") ||
-        strstr(line, "nobestmove")) {
-
+    if (strstr(line, "readyok") || strstr(line, "uciok") ||
+        strstr(line, "bestmove") || strstr(line, "nobestmove")) {
         state = EngineState::STATE_READY;
     }
 
-    return line;	// TODO
+    return line; // TODO
 }
 
 int MillEngine::shutdown()
@@ -123,5 +119,4 @@ bool MillEngine::isThinking()
 {
     return state == EngineState::STATE_THINKING;
 }
-
 }

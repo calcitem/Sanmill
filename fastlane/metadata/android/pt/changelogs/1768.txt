@@ -1,0 +1,3 @@
+v1.0.3
+
+* Botões de reiniciar/cancelar são mostrados em vez de botões sim/não na caixa de diálogo quando o jogador vence o nível de dificuldade superior.

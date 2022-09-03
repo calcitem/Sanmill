@@ -13,6 +13,4 @@ Funktionen:
 * Einstellbare Spielstärke
 * Sehr konfigurierbar
 * Farbthemen
-* Vollständiger Quellcode verfügbar
-* Deutsche Übersetzung
 * Barrierefreiheit

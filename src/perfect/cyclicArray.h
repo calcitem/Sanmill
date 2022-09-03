@@ -1,50 +1,69 @@
 /*********************************************************************\
     CyclicArray.h
     Copyright (c) Thomas Weber. All rights reserved.
-    Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
+    Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
     Licensed under the GPLv3 License.
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef CYLCIC_ARRAY_H
-#define CYLCIC_ARRAY_H
+#ifndef CYLCIC_ARRAY_H_INCLUDED
+#define CYLCIC_ARRAY_H_INCLUDED
 
-#include <windows.h>
 #include <iostream>
 #include <string>
+#include <windows.h>
 
-using namespace std;
+using std::cout;
+using std::string;
 
 class CyclicArray
 {
 private:
     // Variables
-    HANDLE hFile;					  // Handle of the file
-    unsigned char *readingBlock;	  // Array of size [blockSize] containing the data of the block, where reading is taking place
-    unsigned char *writingBlock;	  //			''
-    unsigned char *curReadingPointer; // pointer to the byte which is currently read
-    unsigned char *curWritingPointer; //			''
-    unsigned int blockSize;			  // size in bytes of a block
-    unsigned int curReadingBlock;	  // index of the block, where reading is taking place
-    unsigned int curWritingBlock;	  // index of the block, where writing is taking place
-    unsigned int numBlocks;			  // amount of blocks
-    bool readWriteInSameRound;		  // true if curReadingBlock > curWritingBlock, false otherwise
+    HANDLE hFile; // Handle of the file
+    // Array of size [blockSize] containing the data of the block, where reading
+    // is taking place
+    unsigned char *readingBlock {nullptr};
+
+    // ''
+    unsigned char *writingBlock {nullptr};
+
+    // pointer to the byte which is currently read
+    unsigned char *curReadingPtr {nullptr};
+
+    // ''
+    unsigned char *curWritingPtr {nullptr};
+
+    // size in bytes of a block
+    uint32_t blockSize {0};
+
+    // index of the block, where reading is taking place
+    uint32_t curReadingBlock {0};
+
+    // index of the block, where writing is taking place
+    uint32_t curWritingBlock {0};
+
+    // amount of blocks
+    uint32_t blockCount {0};
+
+    // true if curReadingBlock > curWritingBlock, false otherwise
+    bool readWriteInSameRound {false};
 
     // Functions
-    void writeDataToFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData);
-    void readDataFromFile(HANDLE hFile, long long offset, unsigned int sizeInBytes, void *pData);
+    static void writeDataToFile(HANDLE hFile, int64_t offset,
+                                uint32_t sizeInBytes, void *pData);
+    static void readDataFromFile(HANDLE hFile, int64_t offset,
+                                 uint32_t sizeInBytes, void *pData);
 
 public:
     // Constructor / destructor
-    CyclicArray(unsigned int blockSizeInBytes, unsigned int numberOfBlocks, const char *fileName);
+    CyclicArray(uint32_t blockSizeInBytes, uint32_t nBlocks,
+                const char *fileName);
     ~CyclicArray();
 
     // Functions
-    bool addBytes(unsigned int numBytes, unsigned char *pData);
-    bool takeBytes(unsigned int numBytes, unsigned char *pData);
-    bool loadFile(const char *fileName, LONGLONG &numBytesLoaded);
-    bool saveFile(const char *fileName);
-    bool bytesAvailable();
+    bool addBytes(uint32_t nBytes, unsigned char *pData);
+    bool takeBytes(uint32_t nBytes, unsigned char *pData);
 };
 
-#endif
+#endif // CYLCIC_ARRAY_H_INCLUDED

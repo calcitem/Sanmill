@@ -1,44 +1,41 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "pieceitem.h"
 #include "graphicsconst.h"
-#include <QPainter>
 #include <QGraphicsSceneMouseEvent>
+#include <QPainter>
 #include <QStyleOption>
 
-PieceItem::PieceItem(QGraphicsItem *parent) :
-    QGraphicsItem(parent),
-    num(0)
+PieceItem::PieceItem(QGraphicsItem *parent)
+    : QGraphicsItem(parent)
 {
     Q_UNUSED(parent)
-        setFlags(ItemIsSelectable
-                 // | ItemIsMovable
-        );
+    setFlags(ItemIsSelectable
+             // | ItemIsMovable
+    );
 
     setCacheMode(DeviceCoordinateCache);
 
     setCursor(Qt::OpenHandCursor);
 
-    //setAcceptedMouseButtons(Qt::LeftButton);
+    // setAcceptedMouseButtons(Qt::LeftButton);
 
-    setAcceptedMouseButtons(nullptr);
-    //setAcceptHoverEvents(true);
+    setAcceptedMouseButtons(Qt::MouseButtons());
+    // setAcceptHoverEvents(true);
 
     model = Models::noPiece;
 
@@ -72,12 +69,11 @@ QPainterPath PieceItem::shape() const
     return path;
 }
 
-void PieceItem::paint(QPainter *painter,
-                      const QStyleOptionGraphicsItem *option,
+void PieceItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                       QWidget *widget)
 {
     Q_UNUSED(option)
-        Q_UNUSED(widget)
+    Q_UNUSED(widget)
 
     // Empty models don't draw pieces
 
@@ -90,7 +86,7 @@ void PieceItem::paint(QPainter *painter,
         painter->drawEllipse(-size / 2, -size / 2, size, size);
 #else
         painter->drawPixmap(-size / 2, -size / 2, size, size,
-            QPixmap(":/image/resources/image/white_piece.png"));
+                            QPixmap(":/image/resources/image/white_piece.png"));
 #endif /* QT_MOBILE_APP_UI */
         break;
 
@@ -102,10 +98,10 @@ void PieceItem::paint(QPainter *painter,
         painter->drawEllipse(-size / 2, -size / 2, size, size);
 #else
         painter->drawPixmap(-size / 2, -size / 2, size, size,
-            QPixmap(":/image/resources/image/black_piece.png"));
+                            QPixmap(":/image/resources/image/black_piece.png"));
 #endif /* QT_MOBILE_APP_UI */
         break;
-    default:
+    case Models::noPiece:
         break;
     }
 
@@ -123,13 +119,13 @@ void PieceItem::paint(QPainter *painter,
         painter->setFont(font);
 
         painter->drawText(boundingRect().adjusted(0, 0, 0, -size / 12),
-                            Qt::AlignCenter, QString::number(num));
-
+                          Qt::AlignCenter, QString::number(num));
     }
 
     // If the model is selected, draw four small right angles
     if (isSelected()) {
-        QPen pen(selectLineColor, selectLineWeight, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+        const QPen pen(selectLineColor, selectLineWeight, Qt::SolidLine,
+                       Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
         const int xy = (size - selectLineWeight) / 2;
 
@@ -145,7 +141,8 @@ void PieceItem::paint(QPainter *painter,
 
     // If the model is deleted, cross it
     if (deleted) {
-        QPen pen(removeLineColor, removeLineWeight, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin);
+        const QPen pen(removeLineColor, removeLineWeight, Qt::SolidLine,
+                       Qt::SquareCap, Qt::BevelJoin);
         painter->setPen(pen);
 
         painter->drawLine(-size / 3, -size / 3, size / 3, size / 3);

@@ -1,0 +1,3 @@
+v1.0.24
+
+* Prise en charge tenant compte de la mobilité des pièces.

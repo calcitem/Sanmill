@@ -1,0 +1,84 @@
+name: CUI
+
+on:
+  push:
+    branches: [master, dev]
+    paths:
+      - 'src/*.cpp'
+  pull_request:
+    types: [review_requested, ready_for_review]
+    paths:
+      - 'src/*.cpp'
+
+jobs:
+  cygwin-gcc:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Cygwin
+        uses: egor-tensin/setup-cygwin@v3
+        with:
+          platform: x64
+          packages: make gcc-g++
+
+      # Build
+      - name: Build with cygwin-g++
+        run: cd src; make -j build ARCH=x86-64
+
+      # Archive
+      - name: Archive
+        uses: actions/upload-artifact@v2
+        with:
+          name: sanmill_cygwin-g++.exe
+          path: src/sanmill.exe
+
+  linux-gcc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Export environment valuables
+        run: export
+
+      - name: Print g++ version
+        run: g++ -v
+
+      - name: Create version
+        run: git fetch --tags; git tag; git log -n1; bash -x ./version.sh
+
+      # Build
+      - name: Build with linux-g++
+        run: cd src; make -j build ARCH=x86-64
+
+      # Archive
+      - name: Archive
+        uses: actions/upload-artifact@v2
+        with:
+          name: sanmill_linux-g++
+          path: src/sanmill
+
+  darwin-gcc:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Export environment valuables
+        run: export
+
+      - name: Print g++ version
+        run: g++ -v
+
+      # Build
+      - name: Build with darwin-g++
+        run: cd src; make -j build ARCH=x86-64
+
+      # Archive
+      - name: Archive
+        uses: actions/upload-artifact@v2
+        with:
+          name: sanmill_darwin-g++
+          path: src/sanmill

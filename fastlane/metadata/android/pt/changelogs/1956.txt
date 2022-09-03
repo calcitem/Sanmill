@@ -1,0 +1,4 @@
+v1.1.2
+
+* Adicione a tradução automática do idioma romeno.
+* Melhorar a estabilidade de importação/exportação.
