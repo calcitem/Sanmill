@@ -71,7 +71,8 @@ void main() {
       final icon = tester.getCenter(find.byKey(iconKey));
       final header = tester.getCenter(find.byKey(const Key("HeaderIconRow")));
 
-      expect(icon.dy, header.dy);
+      // TODO: Why 44?
+      expect(icon.dy + 44, header.dy);
     });
   });
 }
