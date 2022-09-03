@@ -37,9 +37,9 @@ void main() {
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       // Import a game
-      ImportService.import(testMill.export);
+      ImportService.import(testMill.moveList);
 
-      expect(MillController().recorder.toString(), testMill.recorder);
+      expect(MillController().recorder.toString(), testMill.recorderToString);
     });
 
     test("export standard notation", () async {
@@ -52,9 +52,9 @@ void main() {
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       // Import a game
-      ImportService.import(testMill.export);
+      ImportService.import(testMill.moveList);
 
-      expect(controller.recorder.moveHistoryText, testMill.export);
+      expect(controller.recorder.moveHistoryText, testMill.moveList);
     });
 
     test(
@@ -73,9 +73,10 @@ void main() {
         controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
         // Import a game
-        ImportService.import(testMill.export);
+        ImportService.import(testMill.moveList);
 
-        expect(controller.recorder.moveHistoryText, testMill.exportNotStandard);
+        expect(
+            controller.recorder.moveHistoryText, testMill.nonstandardMoveList);
       },
       skip: "Deprecated test. See [DisplaySettings.standardNotationEnabled].",
     );

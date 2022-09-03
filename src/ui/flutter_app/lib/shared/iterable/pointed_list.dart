@@ -110,22 +110,28 @@ class PointedListIterator<E> {
   bool moveNext() {
     if (!hasNext) {
       return false;
-    } else if (_index == null) {
+    }
+
+    if (_index == null) {
       _index = 0;
     } else {
       _index = _index! + 1;
     }
+
     return true;
   }
 
   bool movePrevious() {
     if (!hasPrevious) {
       return false;
-    } else if (_index == 0) {
+    }
+
+    if (_index == 0) {
       _index = null;
     } else {
       _index = _index! - 1;
     }
+
     return true;
   }
 
@@ -168,17 +174,19 @@ class PointedListIterator<E> {
   bool get hasPrevious => _parent.isNotEmpty && _index != null;
 
   E? get current {
-    if (_index != null) {
-      return _parent[_index!];
+    if (_index == null) {
+      return null;
     }
-    return null;
+
+    return _parent[_index!];
   }
 
   E? get prev {
-    if (_index != null && index != 0 && _parent[_index! - 1] != null) {
-      return _parent[_index! - 1];
+    if (_index == null || index == 0 || _parent[_index! - 1] == null) {
+      return null;
     }
-    return null;
+
+    return _parent[_index! - 1];
   }
 
   @override

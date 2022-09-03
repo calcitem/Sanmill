@@ -43,11 +43,11 @@ void main() {
       // Initialize
       final list = [];
       final iterator = PointedListIterator(list);
-      final snapShot = PointedListIterator(list);
+      final snapshot = PointedListIterator(list);
 
       iterator.moveTo(2);
 
-      expect(iterator, snapShot);
+      expect(iterator, snapshot);
     });
 
     test("moveTo should move to the given index", () {

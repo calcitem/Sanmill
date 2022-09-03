@@ -35,7 +35,7 @@ void main() {
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       // Import a game
-      ImportService.import(testMill.export);
+      ImportService.import(testMill.moveList);
 
       expect(
         controller.position.movesSinceLastRemove,

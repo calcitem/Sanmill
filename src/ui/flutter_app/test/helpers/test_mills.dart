@@ -17,20 +17,20 @@
 abstract class TestGame {
   const TestGame();
 
-  String get export;
+  String get moveList;
 
   String? get movesSinceRemove;
 
-  String get recorder;
+  String get recorderToString;
 
-  String get exportNotStandard;
+  String get nonstandardMoveList;
 }
 
 class WinLessThanThreeGame extends TestGame {
   const WinLessThanThreeGame();
 
   @override
-  String get export => ' 1.    g1    b4\n'
+  String get moveList => ' 1.    g1    b4\n'
       ' 2.    f2    f4\n'
       ' 3.    d1    d6\n'
       ' 4.    a1xf4    f4\n'
@@ -60,11 +60,11 @@ class WinLessThanThreeGame extends TestGame {
   String? get movesSinceRemove => null;
 
   @override
-  String get recorder =>
+  String get recorderToString =>
       '[ (3,4), (2,7), (2,4), (2,3), (3,5), (2,1), (3,6), -(2,3), (2,3), (3,3), (2,5), (3,2), -(2,3), (2,3), (1,6), (1,8), (2,8), (3,8), (1,5), (1,4), (1,6)->(1,7), (2,5)->(2,6), (3,5)->(2,5), (1,4)->(1,3), (2,5)->(3,5), -(2,6), (1,8)->(1,1), (2,4)->(2,5), -(2,1), (2,7)->(3,7), (1,7)->(2,7), (2,3)->(2,4), (3,2)->(3,1), (1,3)->(2,3), (1,5)->(1,4), (1,1)->(2,1), (1,4)->(1,3), (2,1)->(2,2), -(2,7), (2,5)->(2,6), (2,4)->(2,5), (3,1)->(3,2), -(2,3), (3,8)->(3,1), (3,3)->(2,3), (3,7)->(2,7), (2,3)->(3,3), -(2,2), (2,5)->(1,1), (3,5)->(2,5), (2,7)->(2,1), -(2,5), (3,3)->(2,3), (1,1)->(3,3), (2,6)->(2,5), (3,3)->(1,1), -(2,5), (3,4)->(3,3), -(2,1), ]';
 
   @override
-  String get exportNotStandard => ' 1. (3,4)  2. (2,7)\n'
+  String get nonstandardMoveList => ' 1. (3,4)  2. (2,7)\n'
       ' 3. (2,4)  4. (2,3)\n'
       ' 5. (3,5)  6. (2,1)\n'
       ' 7. (3,6)  8. -(2,3)\n'
