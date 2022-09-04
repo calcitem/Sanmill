@@ -18,7 +18,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
-import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/generated/intl/l10n_ar.dart';
 import 'package:sanmill/generated/intl/l10n_bg.dart';
@@ -64,6 +63,7 @@ import 'package:sanmill/generated/intl/l10n_uk.dart';
 import 'package:sanmill/generated/intl/l10n_uz.dart';
 import 'package:sanmill/generated/intl/l10n_vi.dart';
 import 'package:sanmill/generated/intl/l10n_zh.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/list_item_divider.dart';
 

@@ -73,4 +73,56 @@ class Constants {
   static const screenThreshold = 800;
   static bool get isSmallScreen => _windowHeight <= screenThreshold;
   static bool get isLargeScreen => !isSmallScreen;
+
+  // TODO: Remove
+  static String environmentVariablesFilename =
+      "assets/files/environment_variables.txt";
+  static String gplLicenseFilename = "assets/licenses/GPL-3.0.txt";
+
+  static String defaultLanguageCodeName = "Default";
+
+  static String githubURL = "https://github.com";
+  static String giteeURL = "https://gitee.com";
+
+  static String githubRepoURL = "$githubURL/$fullRepoName";
+  static String giteeRepoURL = "$giteeURL/$fullRepoName";
+
+  static String githubRepoWiKiURL = "$githubURL/$fullRepoName/wiki";
+  static String giteeRepoWiKiURL = "$giteeURL/$fullRepoName/wikis";
+
+  static String githubIssuesURL = "$githubRepoURL/issues";
+  static String giteeIssuesURL = "$giteeRepoURL/issues";
+
+  static String githubEulaURL = "$githubRepoWiKiURL/EULA";
+  static String giteeEulaURL = "$giteeRepoWiKiURL/EULA_zh";
+
+  static String githubSourceCodeURL = "$githubRepoURL";
+  static String giteeSourceCodeURL = "$giteeRepoURL";
+
+  static String githubThirdPartyNoticesURL =
+      "$githubRepoWiKiURL/third-party_notices";
+  static String giteeThirdPartyNoticesURL =
+      "$giteeRepoWiKiURL/wikis/third-party_notices";
+
+  static String githubPrivacyPolicyURL = "$githubRepoWiKiURL/privacy_policy";
+  static String giteePrivacyPolicyURL = "$giteeRepoWiKiURL/privacy_policy_zh";
+
+  static String githubHelpImproveTranslateURL =
+      "$githubRepoWiKiURL/Translation-and-Localization";
+  static String giteeHelpImproveTranslateURL =
+      "$giteeRepoWiKiURL/Translation-and-Localization";
+
+  static String githubThanksURL = "$githubRepoWiKiURL/thanks";
+  static String giteeThanksURL = "$giteeRepoWiKiURL/thanks";
+
+  static final windowWidth = window.physicalSize.width;
+  static final windowHeight = window.physicalSize.height;
+}
+
+bool isSmallScreen() {
+  return Constants.windowHeight <= 800;
+}
+
+bool isLargeScreen() {
+  return !isSmallScreen();
 }

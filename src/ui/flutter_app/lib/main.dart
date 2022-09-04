@@ -27,16 +27,20 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_driver/driver_extension.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/logger.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/feedback_localization.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/navigation_home_screen.dart';
+
+part 'package:sanmill/services/catcher.dart';
+part 'package:sanmill/services/init_system_ui.dart';
 
 Future<void> main() async {
   logger.i('Environment [catcher]: ${EnvironmentConfig.catcher}');

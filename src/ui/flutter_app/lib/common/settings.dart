@@ -20,7 +20,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/common/constants.dart';
+import 'package:sanmill/shared/constants.dart';
 
 class Settings {
   static final settingsFileName = Constants.settingsFilename;

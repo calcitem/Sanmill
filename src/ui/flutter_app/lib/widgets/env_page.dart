@@ -18,7 +18,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:sanmill/common/constants.dart';
+import 'package:sanmill/shared/constants.dart';
 
 class EnvironmentVariablesPage extends StatefulWidget {
   @override

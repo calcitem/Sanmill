@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
-import 'package:sanmill/common/constants.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/style/colors.dart';
 
 class AppTheme {

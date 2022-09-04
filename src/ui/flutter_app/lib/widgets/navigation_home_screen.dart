@@ -25,10 +25,10 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/common/config.dart';
-import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/services/environment_config.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/widgets/about_page.dart';
@@ -135,7 +135,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
               subject: Constants.feedbackSubjectPrefix +
                   "$_version" +
                   Constants.feedbackSubjectSuffix,
-              recipients: [Constants.recipients],
+              recipients: Constants.recipients,
               attachmentPaths: [screenshotFilePath],
               isHTML: false,
             );

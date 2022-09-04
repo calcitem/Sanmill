@@ -23,8 +23,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
-import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 int _counter = 0;
