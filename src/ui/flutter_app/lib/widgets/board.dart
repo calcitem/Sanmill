@@ -19,7 +19,6 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/painting/board_painter.dart';
@@ -249,7 +248,8 @@ class Board extends StatelessWidget {
       1
     ];
 
-    bool ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
+    bool ltr = Directionality.of(context) == TextDirection.ltr;
+    ;
 
     if (ltr) {
       for (var file in ['a', 'b', 'c', 'd', 'e', 'f', 'g']) {

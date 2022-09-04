@@ -25,10 +25,10 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/shared/feedback_localization.dart';
 import 'package:sanmill/style/app_theme.dart';
@@ -148,7 +148,13 @@ class _SanmillAppState extends State<SanmillApp> {
       navigatorKey: Catcher.navigatorKey,
       key: globalScaffoldKey,
       navigatorObservers: [routeObserver],
-      localizationsDelegates: S.localizationsDelegates,
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       supportedLocales: supportedLocales,
       theme: AppTheme.lightThemeData,
       darkTheme: AppTheme.darkThemeData,
@@ -157,7 +163,7 @@ class _SanmillAppState extends State<SanmillApp> {
         body: DoubleBackToCloseApp(
           child: NavigationHomeScreen(),
           snackBar: SnackBar(
-            content: Text(Resources.of().strings.tapBackAgainToLeave),
+            content: Text(S.of(context).tapBackAgainToLeave),
           ),
         ),
       ),

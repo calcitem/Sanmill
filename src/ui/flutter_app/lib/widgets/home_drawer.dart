@@ -24,7 +24,6 @@ import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/game_settings_page.dart';
 
@@ -272,7 +271,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
   }
 
   Widget buildInkwell(DrawerListItem listItem) {
-    bool ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
+    bool ltr = Directionality.of(context) == TextDirection.ltr;
     double radius = 28.0;
     var animatedBuilder = AnimatedBuilder(
       animation: widget.iconAnimationController!,

@@ -16,8 +16,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import 'package:sanmill/l10n/resources.dart';
-
 class Rule {
   String name = "Default Rule";
   String description = "";

@@ -18,7 +18,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
-import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/home_drawer.dart';
 
@@ -118,7 +117,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
 
   @override
   Widget build(BuildContext context) {
-    bool ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
+    bool ltr = Directionality.of(context) == TextDirection.ltr;
 
     // this just menu and arrow icon animation
     var inkWell = InkWell(

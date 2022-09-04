@@ -17,7 +17,6 @@
 */
 
 import 'package:sanmill/common/constants.dart';
-import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/rule.dart';
 import 'package:sanmill/style/app_theme.dart';
 

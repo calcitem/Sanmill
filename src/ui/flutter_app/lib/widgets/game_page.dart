@@ -28,7 +28,6 @@ import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/engine/native_engine.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/position.dart';
@@ -1842,7 +1841,7 @@ class _GamePageState extends State<GamePage>
 
   @override
   Widget build(BuildContext context) {
-    ltr = getBidirectionality(context) == Bidirectionality.leftToRight;
+    ltr = Directionality.of(context) == TextDirection.ltr;
 
     if (_tip == '') {
       _tip = S.of(context).welcome;
