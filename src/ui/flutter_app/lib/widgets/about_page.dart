@@ -133,6 +133,7 @@ class AboutPage extends StatelessWidget {
       backgroundColor: AppTheme.aboutPageBackgroundColor,
       appBar: AppBar(
         //leading: DrawerIcon.of(context)?.icon,
+        centerTitle: true,
         title: Text(S.of(context).about),
       ),
       body: ListView.separated(
