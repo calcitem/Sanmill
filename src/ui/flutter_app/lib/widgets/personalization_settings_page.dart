@@ -474,7 +474,7 @@ class _PersonalizationSettingsPageState
     langCallback(var langCode) async {
       print("[config] languageCode = $langCode");
 
-      Navigator.of(context).pop();
+      Navigator.of(context, rootNavigator: true).pop();
 
       setState(() {
         Config.languageCode = langCode ?? Constants.defaultLanguageCodeName;

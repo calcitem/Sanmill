@@ -25,20 +25,24 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/services/audios.dart';
+import 'package:sanmill/shared/feedback_localization.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/navigation_home_screen.dart';
 
 Future<void> main() async {
   var catcher = Catcher(
       rootWidget: BetterFeedback(
+        localizationsDelegates: const [
+          ...S.localizationsDelegates,
+          CustomFeedbackLocalizationsDelegate.delegate,
+        ],
         child: SanmillApp(),
-        //localeOverride: Locale(Resources.of().languageCode),
+        localeOverride: Locale(Resources.of().languageCode),
       ),
       ensureInitialized: true);
 
@@ -144,13 +148,7 @@ class _SanmillAppState extends State<SanmillApp> {
       navigatorKey: Catcher.navigatorKey,
       key: globalScaffoldKey,
       navigatorObservers: [routeObserver],
-      localizationsDelegates: [
-        // ... app-specific localization delegate[s] here
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
+      localizationsDelegates: S.localizationsDelegates,
       supportedLocales: supportedLocales,
       theme: AppTheme.lightThemeData,
       darkTheme: AppTheme.darkThemeData,
