@@ -18,7 +18,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/types.dart';

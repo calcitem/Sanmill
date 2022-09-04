@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/style/colors.dart';
 

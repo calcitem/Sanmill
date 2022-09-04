@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/common/constants.dart';
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/settings_card.dart';
@@ -84,7 +84,6 @@ class _PersonalizationSettingsPageState
         child: ColorPicker(
           pickerColor: Color(colorStrToVal[colorString]!),
           onColorChanged: changeColor,
-          showLabel: true,
         ),
       ),
       actions: <Widget>[
@@ -479,7 +478,7 @@ class _PersonalizationSettingsPageState
 
       setState(() {
         Config.languageCode = langCode ?? Constants.defaultLanguageCodeName;
-        S.load(Locale(Resources.of().languageCode));
+        S.delegate.load(Locale(Resources.of().languageCode));
       });
 
       print("[config] Config.languageCode: ${Config.languageCode}");

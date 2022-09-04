@@ -27,7 +27,7 @@ import 'package:sanmill/common/config.dart';
 import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/engine/native_engine.dart';
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/l10n/resources.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/mill/game.dart';
@@ -37,12 +37,12 @@ import 'package:sanmill/mill/types.dart';
 import 'package:sanmill/services/audios.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/game_settings_page.dart';
+import 'package:sanmill/widgets/picker.dart';
 //import 'package:screen_recorder/screen_recorder.dart';
 import 'package:stack_trace/stack_trace.dart';
 
 import 'board.dart';
 import 'dialog.dart';
-import 'picker.dart';
 import 'snack_bar.dart';
 
 double boardWidth = 0.0;
@@ -1897,7 +1897,7 @@ class _GamePageState extends State<GamePage>
     print('$tag Game Page didPush route: $route');
     await widget.engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
-      S.load(Locale(Config.languageCode));
+      S.delegate.load(Locale(Config.languageCode));
       setState(() {});
     }
   }
@@ -1908,7 +1908,7 @@ class _GamePageState extends State<GamePage>
     print('$tag Game Page didPopNext route: $route');
     await widget.engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
-      S.load(Locale(Config.languageCode));
+      S.delegate.load(Locale(Config.languageCode));
     }
   }
 
@@ -1918,7 +1918,7 @@ class _GamePageState extends State<GamePage>
     print('$tag Game Page didPushNext route: $route');
     await widget.engine.setOptions(context);
     if (Config.languageCode != Constants.defaultLanguageCodeName) {
-      S.load(Locale(Config.languageCode));
+      S.delegate.load(Locale(Config.languageCode));
     }
   }
 

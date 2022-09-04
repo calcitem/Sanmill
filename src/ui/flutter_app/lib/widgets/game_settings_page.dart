@@ -22,7 +22,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/common/settings.dart';
-import 'package:sanmill/generated/l10n.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/settings_card.dart';
 import 'package:sanmill/widgets/settings_list_tile.dart';
