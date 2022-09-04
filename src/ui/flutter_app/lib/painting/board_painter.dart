@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/mill/game.dart';
 import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/game_page.dart';
 
@@ -94,7 +95,7 @@ class BoardPainter extends PiecesBasePainter {
               top + squareWidth * 3 - textPainter.height / 2));
     }
 
-    if (Config.isNotationsShown) {
+    if (Config.isNotationsShown || EnvironmentConfig.devMode) {
       String verticalNotations = "abcdefg";
       String horizontalNotations = "7654321";
       String notationV = "";

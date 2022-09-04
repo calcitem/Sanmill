@@ -23,28 +23,44 @@ import 'dart:ui';
 import 'package:catcher/catcher.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:feedback/feedback.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_driver/driver_extension.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/services/audios.dart';
+import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/language_info.dart';
+import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/shared/feedback_localization.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/navigation_home_screen.dart';
 
 Future<void> main() async {
-  var catcher = Catcher(
-      rootWidget: BetterFeedback(
-        localizationsDelegates: const [
-          ...S.localizationsDelegates,
-          CustomFeedbackLocalizationsDelegate.delegate,
-        ],
-        child: SanmillApp(),
-        localeOverride: Locale(Resources.of().languageCode),
-      ),
-      ensureInitialized: true);
+  logger.i('Environment [catcher]: ${EnvironmentConfig.catcher}');
+  logger.i('Environment [dev_mode]: ${EnvironmentConfig.devMode}');
+  logger.i('Environment [test]: ${EnvironmentConfig.test}');
+
+  if (EnvironmentConfig.test) {
+    enableFlutterDriverExtension();
+  }
+
+  var app = BetterFeedback(
+    localizationsDelegates: const [
+      ...S.localizationsDelegates,
+      CustomFeedbackLocalizationsDelegate.delegate,
+    ],
+    child: SanmillApp(),
+    localeOverride: Locale(Resources.of().languageCode),
+  );
+
+  if (EnvironmentConfig.catcher && !kIsWeb && Platform.isAndroid) {
+    var catcher = Catcher(rootWidget: app, ensureInitialized: true);
+  } else {
+    runApp(app);
+  }
 
   String externalDirStr;
   try {
@@ -145,7 +161,7 @@ class _SanmillAppState extends State<SanmillApp> {
     return MaterialApp(
       /// Add navigator key from Catcher.
       /// It will be used to navigate user to report page or to show dialog.
-      navigatorKey: Catcher.navigatorKey,
+      navigatorKey: EnvironmentConfig.catcher ? Catcher.navigatorKey : null,
       key: globalScaffoldKey,
       navigatorObservers: [routeObserver],
       localizationsDelegates: S.localizationsDelegates,
@@ -153,7 +169,7 @@ class _SanmillAppState extends State<SanmillApp> {
       //locale: Locale(Config.languageCode),
       theme: AppTheme.lightThemeData,
       darkTheme: AppTheme.darkThemeData,
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: EnvironmentConfig.devMode,
       home: Scaffold(
         body: DoubleBackToCloseApp(
           child: NavigationHomeScreen(),

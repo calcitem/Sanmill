@@ -138,6 +138,21 @@ sudo apt-get install qt5-default qtmultimedia5-dev qtcreator
 
 运行`./flutter-init.sh`，复制`src/ui/flutter_app/android/key.properties.example`到`src/ui/flutter_app/android/key.properties`，修改，然后使用 IntelliJ IDEA 或 Visual Studio Code 打开 `src/ui/flutter_app` 来构建 Flutter App。
 
+我们使用编译期环境配置来启用代码的特定部分：
+
+* `test` 为 Monkey 和 Appium 测试准备的应用程序。 （对外部站点的点击将被禁用。）
+* `dev_mode` 在 app 上显示开发者模式，无需先启用它。
+* `catcher` 控制 Catcher 的使用。 （这是默认开启的，需要时可以禁用。）
+
+所有环境配置都可以组合起来，并采用布尔值，例如：
+
+```shell
+flutter run --dart-define catcher=false dev_mode=true
+```
+
+为了便于使用，可以使用一些 IntelliJ IDEA 或 Visual Studio Code 的启动配置。只需
+在“运行和调试”或“运行/调试配置”选项卡中选择所需要一个。
+
 ## 了解代码库并参与项目
 
 在社区的加持下，Sanmill 在过去几年中得到了迅速地改进。有下述几种方法可以帮助项目发展。

@@ -6,7 +6,7 @@
 <img src="src/ui/flutter_app/assets/badges/get-it-on-github.png" alt="Get it on GitHub" height="80"/></a>
 
 <a href="https://f-droid.org/packages/com.calcitem.sanmill/" target="_blank">
-<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
+<img src="src/ui/flutter_app/assets/badges/get-it-on-fdroid.png" alt="Get it on F-Droid" height="80"/></a>
 
 <a href="https://play.google.com/store/apps/details?id=com.calcitem.sanmill" target="_blank">
 <img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="80"/></a>
@@ -72,7 +72,22 @@ Use Qt Creator to open `millgame.pro` , or use Visual Studio to open `millgame.s
 
 ### Flutter App
 
-Run `./flutter-init.sh` , copy `src/ui/flutter_app/android/key.properties.example` to `src/ui/flutter_app/android/key.properties`, modify it, and then use Android Studio or  Visual Studio Code to open `src/ui/flutter_app` to build Flutter App.
+Run `./flutter-init.sh` , copy `src/ui/flutter_app/android/key.properties.example` to `src/ui/flutter_app/android/key.properties`, modify it, and then use IntelliJ IDEA or Visual Studio Code to open `src/ui/flutter_app` to build Flutter App.
+
+We use compile-time environment configs to enable specific parts of the code:
+
+* `test` to prepare the app for Monkey and Appium testing. (References to external sites are going to be disabled.)
+* `dev_mode` to show the developer mode without needing to enable it first.
+* `catcher` to control the use of Catcher. (This is on by default and needs to be disabled when required.)
+
+All environment configs can be combined and take a value of bool like:
+
+```shell
+flutter run --dart-define catcher=false dev_mode=true
+```
+
+For ease of use, some launch configs for IntelliJ IDEA or Visual Studio Code are available. Just select the
+needed one in the `Run and Debug` or `Run/Debug Configurations` tab.
 
 ## Understanding the code base and participating in the project
 

@@ -28,6 +28,7 @@ import 'package:sanmill/common/config.dart';
 import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/engine/engine.dart';
 import 'package:sanmill/mill/game.dart';
+import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/style/colors.dart';
 import 'package:sanmill/widgets/about_page.dart';
@@ -113,10 +114,12 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       setState(() {
         screenView = PersonalizationSettingsPage();
       });
-    } else if (drawerIndex == DrawerIndex.feedback && !Config.developerMode) {
+    } else if (drawerIndex == DrawerIndex.feedback &&
+        !Config.developerMode &&
+        !EnvironmentConfig.test) {
       setState(() {
         if (Platform.isWindows) {
-          print("flutter_email_sender does not support Windows.");
+          print("`flutter_email_sender does not support Windows.");
           //_launchFeedback();
         } else {
           BetterFeedback.of(context).show((feedback) async {

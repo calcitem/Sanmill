@@ -23,6 +23,7 @@ import 'package:flutter/services.dart';
 import 'package:sanmill/common/config.dart';
 import 'package:sanmill/mill/position.dart';
 import 'package:sanmill/mill/types.dart';
+import 'package:sanmill/services/environment_config.dart';
 
 import 'engine.dart';
 
@@ -93,7 +94,8 @@ class NativeEngine extends Engine {
 
   Future<String> waitResponse(List<String> prefixes,
       {sleep = 100, times = 0}) async {
-    var timeLimit = Config.developerMode ? 100 : 6000;
+    var timeLimit =
+        EnvironmentConfig.devMode || Config.developerMode ? 100 : 6000;
 
     if (Config.moveTime > 0) {
       // TODO: Accurate timeLimit
@@ -102,7 +104,7 @@ class NativeEngine extends Engine {
 
     if (times > timeLimit) {
       print("[engine] Timeout. sleep = $sleep, times = $times");
-      if (Config.developerMode && isActive) {
+      if ((Config.developerMode || EnvironmentConfig.devMode) && isActive) {
         throw ("Exception: waitResponse timeout.");
       }
       return '';
