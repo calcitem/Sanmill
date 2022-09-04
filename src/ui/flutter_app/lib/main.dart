@@ -25,11 +25,11 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/services/audios.dart';
+import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/shared/feedback_localization.dart';
 import 'package:sanmill/style/app_theme.dart';
 import 'package:sanmill/widgets/navigation_home_screen.dart';
@@ -148,14 +148,9 @@ class _SanmillAppState extends State<SanmillApp> {
       navigatorKey: Catcher.navigatorKey,
       key: globalScaffoldKey,
       navigatorObservers: [routeObserver],
-      localizationsDelegates: [
-        // ... app-specific localization delegate[s] here
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: supportedLocales,
+      localizationsDelegates: S.localizationsDelegates,
+      supportedLocales: S.supportedLocales,
+      //locale: Locale(Config.languageCode),
       theme: AppTheme.lightThemeData,
       darkTheme: AppTheme.darkThemeData,
       debugShowCheckedModeBanner: false,

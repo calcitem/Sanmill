@@ -16,6 +16,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import 'package:sanmill/services/language_info.dart';
+
 class Rule {
   String name = "Default Rule";
   String description = "";

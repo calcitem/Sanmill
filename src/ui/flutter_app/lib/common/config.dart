@@ -18,6 +18,7 @@
 
 import 'package:sanmill/common/constants.dart';
 import 'package:sanmill/mill/rule.dart';
+import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/style/app_theme.dart';
 
 import 'settings.dart';

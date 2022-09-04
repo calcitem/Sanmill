@@ -14,7 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:sanmill/common/config.dart';
+import 'package:sanmill/common/constants.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/generated/intl/l10n_ar.dart';
 import 'package:sanmill/generated/intl/l10n_bg.dart';
 import 'package:sanmill/generated/intl/l10n_bn.dart';
@@ -59,6 +64,8 @@ import 'package:sanmill/generated/intl/l10n_uk.dart';
 import 'package:sanmill/generated/intl/l10n_uz.dart';
 import 'package:sanmill/generated/intl/l10n_vi.dart';
 import 'package:sanmill/generated/intl/l10n_zh.dart';
+import 'package:sanmill/style/app_theme.dart';
+import 'package:sanmill/widgets/list_item_divider.dart';
 
 Map<Locale, String> languageCodeToStrings = {
   const Locale("ar"): SAr().languageName,
@@ -109,3 +116,77 @@ Map<Locale, String> languageCodeToStrings = {
   const Locale.fromSubtags(languageCode: "zh", scriptCode: "Hant"):
       SZhHant().languageName,
 };
+
+// TODO: Remove below
+
+class Resources {
+  Resources();
+
+  String get languageCode {
+    if (Config.languageCode == Constants.defaultLanguageCodeName) {
+      return Platform.localeName.substring(0, 2);
+    }
+
+    return Config.languageCode;
+  }
+
+  static Resources of() {
+    return Resources();
+  }
+}
+
+setLanguage(BuildContext context, var callback) async {
+  var languageColumn = Column(
+    mainAxisSize: MainAxisSize.min,
+    children: <Widget>[
+      RadioListTile(
+        activeColor: AppTheme.switchListTileActiveColor,
+        title: Text(S.of(context).defaultLanguage),
+        groupValue: Config.languageCode,
+        value: Constants.defaultLanguageCodeName,
+        onChanged: callback,
+      ),
+      ListItemDivider(),
+      for (var i in languageCodeToStrings.keys)
+        RadioListTile(
+          activeColor: AppTheme.switchListTileActiveColor,
+          title: Text(languageCodeToStrings[i]!),
+          groupValue: Config.languageCode,
+          value: i,
+          onChanged: callback,
+        ),
+    ],
+  );
+
+  showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        scrollable: true,
+        content: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return languageColumn;
+          },
+        ),
+      );
+    },
+  );
+}
+
+// TODO: Remove it (See: 4ac0f192dd9c316ab93dbba4915ef504c01b93c6)
+String specialCountryAndRegion = "";
+
+setSpecialCountryAndRegion(BuildContext context) {
+  Locale currentLocale = Localizations.localeOf(context);
+
+  switch (currentLocale.countryCode) {
+    case "IR":
+      specialCountryAndRegion = "Iran";
+      break;
+    default:
+      specialCountryAndRegion = "";
+      break;
+  }
+
+  print("Set Special Country and Region to $specialCountryAndRegion.");
+}
