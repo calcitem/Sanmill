@@ -1603,7 +1603,7 @@ class _GamePageState extends State<GamePage>
             period +
             "\n";
       } else {
-        lastMove = S.of(context).lastMove(": " + lastMove) + period + "\n";
+        lastMove = S.of(context).lastMove(lastMove) + period + "\n";
       }
     }
 
@@ -1640,7 +1640,7 @@ class _GamePageState extends State<GamePage>
         period +
         "\n\n" +
         S.of(context).score +
-        ":\n" +
+        "\n" +
         S.of(context).player1 +
         ": " +
         pos.score[PieceColor.white].toString() +
