@@ -759,22 +759,17 @@ class Position {
     final recorder = MillController().recorder;
     if (recorder.isEmpty) return null;
 
-    final iterator = recorder.bidirectionalIterator;
-    iterator.moveToLast();
+    final it = recorder.bidirectionalIterator;
+    it.moveToLast();
 
     final buffer = StringBuffer();
 
-    while (
-        iterator.current != null && !iterator.current!.move.startsWith("-")) {
-      if (!iterator.movePrevious()) break;
+    while (it.current != null && !it.current!.move.startsWith("-")) {
+      if (!it.movePrevious()) break;
     }
 
-    while (iterator.moveNext()) {
-      if (iterator.prev != null) {
-        assert(iterator.current!.move != iterator.prev!.move);
-      }
-
-      buffer.writeSpace(iterator.current!.move);
+    while (it.moveNext()) {
+      buffer.writeSpace(it.current!.move);
     }
 
     final String moves = buffer.toString();
