@@ -34,24 +34,25 @@ class GameRecorder extends PointedList<ExtMove> {
   String? get moveHistoryText {
     if (isEmpty || index == null) return null;
     final StringBuffer moveHistory = StringBuffer();
-    int k = 1;
+    int num = 1;
     int i = 0;
 
     void buildStandardNotation() {
-      const separator = "    ";
+      const separator = "    "; // TODO: Align
 
       if (i <= index!) {
         moveHistory.write(separator);
         moveHistory.write(this[i++].notation);
       }
 
+      // If next notation is removal, append it directly and don't write number.
       if (i <= index! && this[i].type == MoveType.remove) {
         moveHistory.write(this[i++].notation);
       }
     }
 
     while (i <= index!) {
-      moveHistory.writeNumber(k++);
+      moveHistory.writeNumber(num++);
       buildStandardNotation();
       buildStandardNotation();
 

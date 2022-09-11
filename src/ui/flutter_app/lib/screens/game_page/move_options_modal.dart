@@ -60,6 +60,7 @@ class _MoveOptionsModal extends StatelessWidget {
           ),
           const CustomSpacer(),
         ],
+        // TODO: moveHistoryText is not lightweight.
         if (MillController().recorder.moveHistoryText != null) ...[
           SimpleDialogOption(
             onPressed: () => _showMoveList(context),

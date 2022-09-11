@@ -74,6 +74,7 @@ class ExtMove {
   final String move;
 
   // "notation" is Standard Notation
+  // Sample: xa1, a1-b2, a1
   String get notation {
     switch (type) {
       case MoveType.remove:
