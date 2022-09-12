@@ -37,7 +37,7 @@ class ImportService {
         .showSnackBarClear(S.of(context).moveHistoryCopied);
   }
 
-  /// Tries to import the game saved in the devices clipboard.
+  /// Tries to import the game saved in the device's clipboard.
   static Future<void> importGame(BuildContext context) async {
     Navigator.pop(context);
     rootScaffoldMessengerKey.currentState!.clearSnackBars();
@@ -46,10 +46,10 @@ class ImportService {
 
     if (data?.text == null) return;
 
-    await HistoryNavigator.gotoHistory(HistoryNavMode.takeBackAll);
-    MillController().reset();
+    await HistoryNavigator.doEachMove(HistoryNavMode.takeBackAll);
+    //MillController().reset(); // Reset in doEachMove(), so needn't.
 
-    import(data!.text!);
+    import(data!.text!); // MillController().recorder = newHistory;
 
     if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
         const HistoryOK()) {

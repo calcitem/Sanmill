@@ -98,11 +98,11 @@ class PointedList<E> extends DelegatingList<E> {
 
 /// Pointed List Iterator.
 class PointedListIterator<E> {
-  final List<E> _parent;
+  final List<E> _base;
   int? _index;
 
-  PointedListIterator(this._parent) {
-    if (_parent.isNotEmpty) {
+  PointedListIterator(this._base) {
+    if (_base.isNotEmpty) {
       _index = 0;
     }
   }
@@ -139,7 +139,7 @@ class PointedListIterator<E> {
 
   /// Move to the given element.
   void moveTo(int index) {
-    if (_parent.isNotEmpty) {
+    if (_base.isNotEmpty) {
       _index = index;
     }
   }
@@ -163,40 +163,40 @@ class PointedListIterator<E> {
   int? get index => _index;
 
   /// The last valid index.
-  int get lastIndex => _parent.length - 1;
+  int get lastIndex => _base.length - 1;
 
   /// Whether the list has another element next to the iterator.
   ///
   /// This has the benefit of not altering the iterator while still being able to check it.
-  bool get hasNext => _parent.isNotEmpty && _index != lastIndex;
+  bool get hasNext => _base.isNotEmpty && _index != lastIndex;
 
   /// Whether the list has another element previous to the iterator.
   ///
   /// This has the benefit of not altering the iterator while still being able to check it.
-  bool get hasPrevious => _parent.isNotEmpty && _index != null;
+  bool get hasPrevious => _base.isNotEmpty && _index != null;
 
   E? get current {
     if (_index == null) {
       return null;
     }
 
-    return _parent[_index!];
+    return _base[_index!];
   }
 
   E? get prev {
-    if (_index == null || index == 0 || _parent[_index! - 1] == null) {
+    if (_index == null || index == 0 || _base[_index! - 1] == null) {
       return null;
     }
 
-    return _parent[_index! - 1];
+    return _base[_index! - 1];
   }
 
   @override
   bool operator ==(Object other) =>
       other is PointedListIterator &&
-      _parent == other._parent &&
+      _base == other._base &&
       _index == other._index;
 
   @override
-  int get hashCode => Object.hash(_parent, _index);
+  int get hashCode => Object.hash(_base, _index);
 }

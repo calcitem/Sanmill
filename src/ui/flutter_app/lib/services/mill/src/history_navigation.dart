@@ -20,7 +20,7 @@ part of '../mill.dart';
 
 /// HistoryNavigator
 ///
-/// Helper class to use [Position.gotoHistory] in different scenarios.
+/// Helper class to use [HistoryNavigator.doEachMove] in different scenarios.
 /// This class will also try to handle any errors and visualize the results.
 class HistoryNavigator {
   const HistoryNavigator._();
@@ -41,7 +41,9 @@ class HistoryNavigator {
 
     final controller = MillController();
 
-    MillController().tip.showTip(S.of(context).atEnd);
+    MillController().tip.showTip(S
+        .of(context)
+        .atEnd); // TODO: Move to the end of this function. Or change to S.of(context).waiting?
 
     if (_isGoingToHistory) {
       logger.i(
@@ -55,9 +57,9 @@ class HistoryNavigator {
 
     Audios().mute();
 
-    var errMove = await gotoHistory(navMode, number);
+    var resp = await doEachMove(navMode, number); // doMove() to index
 
-    switch (errMove) {
+    switch (resp) {
       case HistoryOK():
         final lastEffectiveMove = controller.recorder.current;
         if (lastEffectiveMove != null) {
@@ -149,11 +151,11 @@ class HistoryNavigator {
   /// Return an [HistoryResponse] when the moves and rules don't match
   /// or when the end of the list moves has been reached.
   @visibleForTesting
-  static Future<HistoryResponse> gotoHistory(HistoryNavMode navMode,
-      [int? index]) async {
+  static Future<HistoryResponse> doEachMove(HistoryNavMode navMode,
+      [int? number]) async {
     bool ret = true;
 
-    var resp = navMode.gotoHistory(index);
+    var resp = navMode.gotoHistory(number); // Only change index
 
     if (resp != const HistoryOK()) return resp;
 
@@ -161,11 +163,13 @@ class HistoryNavigator {
     final gameModeBackup = MillController().gameInstance.gameMode;
     MillController().gameInstance.gameMode = GameMode.humanVsHuman;
     final recorderBackup = MillController().recorder;
+
     MillController().reset();
 
-    recorderBackup.forEachVisible((move) async {
-      if (!(await MillController().gameInstance.doMove(move))) {
+    recorderBackup.forEachVisible((extMove) async {
+      if (!(await MillController().gameInstance.doMove(extMove))) {
         ret = false;
+        // TODO: break?
       }
     });
 
@@ -189,34 +193,34 @@ extension HistoryNavModeExtension on HistoryNavMode {
   /// Moves the [GameRecorder] to the specified position.
   ///
   /// Throws [HistoryResponse] When trying to access a value outside of the bounds.
-  HistoryResponse gotoHistory([int? amount]) {
-    final current = MillController().recorder.index;
-    final iterator = MillController().recorder.globalIterator;
+  HistoryResponse gotoHistory([int? number]) {
+    final cur = MillController().recorder.index;
+    final it = MillController().recorder.globalIterator;
 
     switch (this) {
       case HistoryNavMode.stepForwardAll:
-        iterator.moveToLast();
+        it.moveToLast();
         break;
       case HistoryNavMode.takeBackAll:
-        iterator.moveToHead();
+        it.moveToHead();
         break;
       case HistoryNavMode.stepForward:
-        if (!iterator.moveNext()) {
+        if (!it.moveNext()) {
           return const HistoryRange();
         }
         break;
       case HistoryNavMode.takeBackN:
-        assert(amount != null && current != null);
-        if (iterator.index == 0) {
-          iterator.moveToHead();
+        assert(number != null && cur != null);
+        if (it.index == 0) {
+          it.moveToHead();
         } else {
-          final index = current! - amount!;
+          final index = cur! - number!;
           assert(index >= 0);
-          iterator.moveTo(index);
+          it.moveTo(index);
         }
         break;
       case HistoryNavMode.takeBack:
-        if (!iterator.movePrevious()) {
+        if (!it.movePrevious()) {
           return const HistoryRange();
         }
     }
