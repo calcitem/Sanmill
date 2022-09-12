@@ -118,7 +118,7 @@ class PointedListIterator<E> {
       _index = _index! + 1;
     }
 
-    assert(current != prev);
+    //assert(current != prev);
 
     return true;
   }
