@@ -16,7 +16,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of './game_page.dart';
+part of 'game_page.dart';
 
 class _GameOptionsModal extends StatelessWidget {
   const _GameOptionsModal({Key? key}) : super(key: key);

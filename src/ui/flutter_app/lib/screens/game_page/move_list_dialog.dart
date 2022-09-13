@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-part of './game_page.dart';
+part of 'game_page.dart';
 
 class _MoveListDialog extends StatelessWidget {
   const _MoveListDialog({Key? key}) : super(key: key);
