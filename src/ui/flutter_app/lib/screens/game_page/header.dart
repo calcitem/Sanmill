@@ -125,13 +125,12 @@ class HeaderStateTip extends State<HeaderTip> {
   String? message;
 
   void showTip() {
-    final tipState = MillController().tip;
+    final tip = MillController().tip;
 
-    if (tipState.showSnackBar && tipState.message != null) {
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(tipState.message!);
+    if (tip.showSnackBar && tip.message != null) {
+      rootScaffoldMessengerKey.currentState!.showSnackBarClear(tip.message!);
     }
-    setState(() => message = tipState.message);
+    setState(() => message = tip.message);
   }
 
   @override
