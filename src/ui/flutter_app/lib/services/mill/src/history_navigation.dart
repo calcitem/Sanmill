@@ -45,6 +45,8 @@ class HistoryNavigator {
         .of(context)
         .atEnd); // TODO: Move to the end of this function. Or change to S.of(context).waiting?
 
+    MillController().headIcons.showIcons(); // TODO: See above.
+
     if (_isGoingToHistory) {
       logger.i(
         "$_tag Is going to history, ignore Take Back button press.",
@@ -67,6 +69,7 @@ class HistoryNavigator {
                 S.of(context).lastMove(lastEffectiveMove.notation),
                 snackBar: true,
               );
+          MillController().headIcons.showIcons();
         }
         break;
       case HistoryRange():

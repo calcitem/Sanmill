@@ -33,6 +33,7 @@ class _GameOptionsModal extends StatelessWidget {
             MillController()
                 .tip
                 .showTip(S.of(context).gameStarted, snackBar: true);
+            MillController().headIcons.showIcons();
           },
           child: Text(S.of(context).newGame),
         ),

@@ -54,11 +54,13 @@ class ImportService {
     if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
         const HistoryOK()) {
       MillController().tip.showTip(S.of(context).gameImported, snackBar: true);
+      MillController().headIcons.showIcons();
     } else {
       // TODO: Show importFailedStr
       //final tip = S.of(context).cannotImport(e.source as String);
       final tip = S.of(context).cannotImport("");
       MillController().tip.showTip(tip, snackBar: true);
+      MillController().headIcons.showIcons();
     }
   }
 

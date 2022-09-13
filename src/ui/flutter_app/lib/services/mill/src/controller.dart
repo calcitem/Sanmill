@@ -33,6 +33,7 @@ class MillController {
   late Position position;
   late Engine engine;
   final HeaderTipState tip = HeaderTipState();
+  final HeaderIconsState headIcons = HeaderIconsState();
   late GameRecorder recorder;
 
   bool _initialized = false;

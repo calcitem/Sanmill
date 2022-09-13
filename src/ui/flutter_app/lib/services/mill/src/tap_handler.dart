@@ -234,6 +234,8 @@ class TapHandler {
     }
 
     controller.gameInstance.sideToMove = MillController().position.sideToMove;
+
+    MillController().headIcons.showIcons();
   }
 
   showSnakeBarAiNotation(ExtMove extMove) {
@@ -318,6 +320,7 @@ class TapHandler {
     final message = winner.getWinString(context);
     if (message != null) {
       showTip(message);
+      MillController().headIcons.showIcons();
     }
 
     if (!DB().generalSettings.isAutoRestart &&

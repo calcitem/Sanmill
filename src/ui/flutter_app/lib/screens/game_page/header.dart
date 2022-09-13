@@ -70,23 +70,6 @@ class _GameHeaderState extends State<GameHeader> {
 
   @override
   Widget build(BuildContext context) {
-    final gameInstance = MillController().gameInstance;
-
-    final iconRow = IconTheme(
-      data: IconThemeData(
-        color: DB().colorSettings.messageColor,
-      ),
-      child: Row(
-        key: const Key("HeaderIconRow"),
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Icon(gameInstance.gameMode.leftHeaderIcon),
-          Icon(gameInstance.sideToMove.icon),
-          Icon(gameInstance.gameMode.rightHeaderIcon),
-        ],
-      ),
-    );
-
     final divider = Container(
       height: 4,
       width: 180,
@@ -109,7 +92,7 @@ class _GameHeaderState extends State<GameHeader> {
               padding: EdgeInsets.only(top: DB().displaySettings.boardTop),
               child: Column(
                 children: <Widget>[
-                  iconRow,
+                  const HeaderIcons(),
                   divider,
                   const HeaderTip(),
                 ],
@@ -169,6 +152,50 @@ class HeaderStateTip extends State<HeaderTip> {
   @override
   void dispose() {
     MillController().tip.removeListener(showTip);
+    super.dispose();
+  }
+}
+
+@visibleForTesting
+class HeaderIcons extends StatefulWidget {
+  const HeaderIcons({Key? key}) : super(key: key);
+
+  @override
+  HeaderStateIcons createState() => HeaderStateIcons();
+}
+
+class HeaderStateIcons extends State<HeaderIcons> {
+  void showIcons() {
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    MillController().headIcons.addListener(showIcons);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return IconTheme(
+      data: IconThemeData(
+        color: DB().colorSettings.messageColor,
+      ),
+      child: Row(
+        key: const Key("HeaderIconRow"),
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(MillController().gameInstance.gameMode.leftHeaderIcon),
+          Icon(MillController().gameInstance.sideToMove.icon),
+          Icon(MillController().gameInstance.gameMode.rightHeaderIcon),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    MillController().headIcons.removeListener(showIcons);
     super.dispose();
   }
 }
