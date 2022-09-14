@@ -311,7 +311,12 @@ class TapHandler {
         showTip(S.of(context).error("No best move"));
       }
 
-      _showResult();
+      if (DB().generalSettings.isAutoRestart == true &&
+          MillController().position.winner != PieceColor.nobody) {
+        MillController().reset();
+      } else {
+        _showResult();
+      }
     }
   }
 
