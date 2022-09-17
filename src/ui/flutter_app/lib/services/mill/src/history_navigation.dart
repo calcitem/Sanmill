@@ -178,7 +178,11 @@ class HistoryNavigator {
 
     // Restore context
     MillController().gameInstance.gameMode = gameModeBackup;
+    //var lastPositionWithRemoveBak =
+    //    MillController().recorder.lastPositionWithRemove;
     MillController().recorder = recorderBackup;
+    //MillController().recorder.lastPositionWithRemove =
+    //    lastPositionWithRemoveBak; // TODO: Need?
 
     return ret ? const HistoryOK() : const HistoryRule();
   }

@@ -67,8 +67,14 @@ class Game {
 
     logger.i("$_tag AI do move: $extMove");
 
+    final fen = MillController().position._fen;
+
     if (!(await MillController().position.doMove(extMove.move))) {
       return false;
+    }
+
+    if (extMove.type == MoveType.remove) {
+      MillController().recorder.lastPositionWithRemove = fen;
     }
 
     sideToMove = MillController().position.sideToMove;

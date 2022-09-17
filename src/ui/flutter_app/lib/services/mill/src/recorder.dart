@@ -22,15 +22,6 @@ class GameRecorder extends PointedList<ExtMove> {
   GameRecorder({this.lastPositionWithRemove});
 
   @override
-  void add(ExtMove value) {
-    super.add(value);
-
-    if (value.type == MoveType.remove) {
-      lastPositionWithRemove = MillController().position._fen;
-    }
-  }
-
-  @override
   String toString() {
     final buffer = StringBuffer("[ ");
     for (final extMove in this) {
