@@ -46,10 +46,9 @@ class ImportService {
 
     if (data?.text == null) return;
 
-    await HistoryNavigator.doEachMove(HistoryNavMode.takeBackAll);
-    //MillController().reset(); // Reset in doEachMove(), so needn't.
+    import(data!.text!); // MillController().newRecorder = newHistory;
 
-    import(data!.text!); // MillController().recorder = newHistory;
+    await HistoryNavigator.takeBackAll(context, pop: false);
 
     if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
         const HistoryOK()) {
@@ -199,7 +198,8 @@ class ImportService {
       ml = moveList.substring(start);
     }
 
-    final GameRecorder newHistory = GameRecorder();
+    final GameRecorder newHistory =
+        GameRecorder(lastPositionWithRemove: MillController().position._fen);
     final List<String> list = ml
         .toLowerCase()
         .replaceAll("\n", " ")
@@ -264,12 +264,13 @@ class ImportService {
     }
 
     if (newHistory.isNotEmpty) {
-      MillController().recorder = newHistory;
+      MillController().newRecorder = newHistory;
     }
   }
 
   static void _importPlayOk(String moveList) {
-    final GameRecorder newHistory = GameRecorder();
+    final GameRecorder newHistory =
+        GameRecorder(lastPositionWithRemove: MillController().position._fen);
 
     final List<String> list = moveList
         .replaceAll("\n", " ")
@@ -301,7 +302,7 @@ class ImportService {
     }
 
     if (newHistory.isNotEmpty) {
-      MillController().recorder = newHistory;
+      MillController().newRecorder = newHistory;
     }
   }
 }

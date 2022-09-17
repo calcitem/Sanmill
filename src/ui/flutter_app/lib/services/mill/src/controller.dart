@@ -35,6 +35,7 @@ class MillController {
   final HeaderTipState tip = HeaderTipState();
   final HeaderIconsState headIcons = HeaderIconsState();
   late GameRecorder recorder;
+  late GameRecorder? newRecorder;
 
   bool _initialized = false;
   bool get initialized => _initialized;
@@ -92,7 +93,7 @@ class MillController {
     position = Position();
     gameInstance = Game();
     engine = Engine();
-    recorder = GameRecorder();
+    recorder = GameRecorder(lastPositionWithRemove: position._fen);
 
     _startGame();
   }

@@ -165,12 +165,15 @@ class HistoryNavigator {
     // Backup context
     final gameModeBackup = MillController().gameInstance.gameMode;
     MillController().gameInstance.gameMode = GameMode.humanVsHuman;
-    final recorderBackup = MillController().recorder;
+
+    if (MillController().newRecorder == null) {
+      MillController().newRecorder = MillController().recorder;
+    }
 
     MillController().reset();
 
-    recorderBackup.forEachVisible((extMove) async {
-      if (!(await MillController().gameInstance.doMove(extMove))) {
+    MillController().newRecorder!.forEachVisible((extMove) async {
+      if (!(MillController().gameInstance.doMove(extMove))) {
         ret = false;
         // TODO: break?
       }
@@ -178,7 +181,11 @@ class HistoryNavigator {
 
     // Restore context
     MillController().gameInstance.gameMode = gameModeBackup;
-    MillController().recorder = recorderBackup;
+    final lastPositionWithRemove =
+        MillController().recorder.lastPositionWithRemove;
+    MillController().recorder = MillController().newRecorder!;
+    MillController().recorder.lastPositionWithRemove = lastPositionWithRemove;
+    MillController().newRecorder = null;
 
     return ret ? const HistoryOK() : const HistoryRule();
   }

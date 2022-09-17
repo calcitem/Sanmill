@@ -85,7 +85,7 @@ class Position {
     _them = _sideToMove.opponent;
   }
 
-  Future<bool> _movePiece(int from, int to) async {
+  bool _movePiece(int from, int to) {
     try {
       _selectPiece(from);
       return _putPiece(to);
@@ -137,7 +137,7 @@ class Position {
   }
 
   @visibleForTesting
-  Future<bool> doMove(String move) async {
+  bool doMove(String move) {
     // TODO: Resign is not implemented
     if (move.length > "Player".length &&
         move.substring(0, "Player".length - 1) == "Player") {
@@ -188,21 +188,25 @@ class Position {
     switch (m.type) {
       case MoveType.remove:
         try {
-          await _removePiece(m.to);
+          _removePiece(m.to);
           ret = true;
           st.rule50 = 0;
         } on MillResponse {
           return false;
         }
+
+        MillController().recorder.lastPositionWithRemove =
+            MillController().position._fen;
+
         break;
       case MoveType.move:
-        ret = await _movePiece(m.from, m.to);
+        ret = _movePiece(m.from, m.to);
         if (ret) {
           ++st.rule50;
         }
         break;
       case MoveType.place:
-        ret = await _putPiece(m.to);
+        ret = _putPiece(m.to);
         if (ret) {
           // Reset rule 50 counter
           st.rule50 = 0;
@@ -250,7 +254,7 @@ class Position {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-  Future<bool> _putPiece(int s) async {
+  bool _putPiece(int s) {
     var piece = PieceColor.none;
     final us = _sideToMove;
 
@@ -309,7 +313,7 @@ class Position {
             _changeSideToMove();
           }
           MillController().gameInstance.focusIndex = squareToIndex[s];
-          await Audios().playTone(Sound.place);
+          Audios().playTone(Sound.place);
         } else {
           _pieceToRemoveCount = DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
@@ -341,7 +345,7 @@ class Position {
           }
 
           MillController().gameInstance.focusIndex = squareToIndex[s];
-          await Audios().playTone(Sound.mill);
+          Audios().playTone(Sound.mill);
         }
         break;
       case Phase.moving:
@@ -389,13 +393,13 @@ class Position {
           if (_checkIfGameIsOver()) return true;
           MillController().gameInstance.focusIndex = squareToIndex[s];
 
-          await Audios().playTone(Sound.place);
+          Audios().playTone(Sound.place);
         } else {
           _pieceToRemoveCount = DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
           _action = Act.remove;
           MillController().gameInstance.focusIndex = squareToIndex[s];
-          await Audios().playTone(Sound.mill);
+          Audios().playTone(Sound.mill);
         }
 
         break;

@@ -62,14 +62,16 @@ class Game {
   }
 
   @visibleForTesting
-  Future<bool> doMove(ExtMove extMove) async {
+  bool doMove(ExtMove extMove) {
     assert(MillController().position.phase != Phase.ready);
 
     logger.i("$_tag AI do move: $extMove");
 
-    if (!(await MillController().position.doMove(extMove.move))) {
+    if (!MillController().position.doMove(extMove.move)) {
       return false;
     }
+
+    MillController().recorder.add(extMove);
 
     sideToMove = MillController().position.sideToMove;
 

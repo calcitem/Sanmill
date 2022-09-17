@@ -57,7 +57,7 @@ class TapHandler {
     bool ret = false;
     switch (MillController().position._action) {
       case Act.place:
-        if (await MillController().position._putPiece(sq)) {
+        if (MillController().position._putPiece(sq)) {
           animationController.reset();
           animationController.animateTo(1.0);
           if (MillController().position._action == Act.remove) {
@@ -220,6 +220,10 @@ class TapHandler {
 
       if (MillController().position._record != null) {
         controller.recorder.add(MillController().position._record!);
+        if (MillController().position._record!.type == MoveType.remove) {
+          controller.recorder.lastPositionWithRemove =
+              MillController().position._fen;
+        }
       }
 
       if (_isGameRunning) {
@@ -293,9 +297,7 @@ class TapHandler {
         logger.v("$tag Searching..., isMoveNow: $isMoveNow");
         final extMove = await controller.engine.search(moveNow: isMoveNow);
 
-        if (await controller.gameInstance.doMove(extMove)) {
-          controller.recorder.add(extMove);
-        }
+        controller.gameInstance.doMove(extMove);
 
         animationController.reset();
         animationController.animateTo(1.0);
