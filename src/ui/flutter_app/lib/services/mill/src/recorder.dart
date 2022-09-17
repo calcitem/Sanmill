@@ -17,7 +17,18 @@
 part of '../mill.dart';
 
 class GameRecorder extends PointedList<ExtMove> {
-  GameRecorder() : super();
+  String? lastPositionWithRemove = "";
+
+  GameRecorder({this.lastPositionWithRemove});
+
+  @override
+  void add(ExtMove value) {
+    super.add(value);
+
+    if (value.type == MoveType.remove) {
+      lastPositionWithRemove = MillController().position._fen;
+    }
+  }
 
   @override
   String toString() {

@@ -92,7 +92,7 @@ class MillController {
     position = Position();
     gameInstance = Game();
     engine = Engine();
-    recorder = GameRecorder();
+    recorder = GameRecorder(lastPositionWithRemove: position._fen);
 
     _startGame();
   }
