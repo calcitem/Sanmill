@@ -103,10 +103,9 @@ class MillController {
 
   // TODO: [Leptopoda] The reference of this method has been removed in a few instances.
   // We'll need to find a better way for this.
-  Future<void> engineToGo(BuildContext context,
+  Future<EngineResponse> engineToGo(BuildContext context,
       {required bool isMoveNow}) async {
     const tag = "[engineToGo]";
-    BuildContext ctx = context;
 
     final controller = MillController();
     final gameMode = MillController().gameInstance.gameMode;
@@ -153,35 +152,16 @@ class MillController {
         MillController().tip.showTip(S.of(context).error("No best move"));
       }
 
-      if (DB().generalSettings.isAutoRestart == true &&
-          MillController().position.winner != PieceColor.nobody) {
-        MillController().reset();
-      } else {
-        // TODO: Do not use BuildContexts across async gaps.
-        _showResult(ctx);
+      if (MillController().position.winner != PieceColor.nobody) {
+        if (DB().generalSettings.isAutoRestart == true) {
+          MillController().reset();
+        } else {
+          return const EngineResponseOK();
+        }
       }
     }
-  }
 
-  // TODO: Duplicate
-  void _showResult(BuildContext context) {
-    final gameMode = MillController().gameInstance.gameMode;
-    final winner = position.winner;
-    final message = winner.getWinString(context);
-
-    if (message != null) {
-      MillController().tip.showTip(message);
-      MillController().headIcons.showIcons();
-    }
-
-    if (!DB().generalSettings.isAutoRestart &&
-        winner != PieceColor.nobody &&
-        gameMode != GameMode.aiVsAi) {
-      showDialog(
-        context: context,
-        builder: (_) => GameResultAlert(winner: winner),
-      );
-    }
+    return const EngineResponseOK();
   }
 
   showSnakeBarHumanNotation(BuildContext context) {

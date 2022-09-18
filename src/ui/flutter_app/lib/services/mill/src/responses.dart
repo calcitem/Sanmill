@@ -60,6 +60,10 @@ class CanNotRemoveMill implements RemoveResponse {
 /// Custom response to throw related to the engine.
 abstract class EngineResponse {}
 
+class EngineResponseOK implements EngineResponse {
+  const EngineResponseOK();
+}
+
 class EngineNoBestMove implements EngineResponse {
   const EngineNoBestMove();
 }

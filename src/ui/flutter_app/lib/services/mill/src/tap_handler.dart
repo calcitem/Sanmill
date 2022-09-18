@@ -25,7 +25,7 @@ class TapHandler {
       MillController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
       MillController().position.pieceOnBoardCount[PieceColor.black] == 0;
 
-  makeAiFirstMoveIfNecessary() {
+  makeAiFirstMoveIfNecessary() async {
     // WAR: Fix first tap response slow when piece count changed
     if (gameMode != GameMode.humanVsHuman &&
         MillController().position.phase == Phase.placing &&
@@ -34,7 +34,12 @@ class TapHandler {
 
       if (_isAiToMove) {
         logger.i("$_tag AI is not thinking. AI is to move.");
-        MillController().engineToGo(context, isMoveNow: false);
+
+        if (await MillController().engineToGo(context, isMoveNow: false) ==
+            const EngineResponseOK()) {
+          _showResult();
+        }
+
         return;
       }
     }
@@ -226,7 +231,10 @@ class TapHandler {
 
       if (_isGameRunning) {
         if (gameMode == GameMode.humanVsAi) {
-          MillController().engineToGo(context, isMoveNow: false);
+          if (await MillController().engineToGo(context, isMoveNow: false) ==
+              const EngineResponseOK()) {
+            _showResult();
+          }
         }
       } else {
         _showResult();
