@@ -100,7 +100,7 @@ class Engine {
     final response = await _waitResponse(["bestmove", "nobestmove"]);
 
     if (response == null) {
-      throw EngineTimeOut();
+      throw const EngineTimeOut();
     }
 
     logger.v("$_tag response: $response");
@@ -118,7 +118,7 @@ class Engine {
       throw const EngineNoBestMove();
     }
 
-    throw EngineTimeOut();
+    throw const EngineTimeOut();
   }
 
   Future<String?> _waitResponse(

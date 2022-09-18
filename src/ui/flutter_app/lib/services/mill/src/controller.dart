@@ -107,6 +107,10 @@ class MillController {
       {required bool isMoveNow}) async {
     const tag = "[engineToGo]";
 
+    final aiStr = S.of(context).ai;
+    final thinkingStr = S.of(context).thinking;
+    final humanStr = S.of(context).human;
+
     final controller = MillController();
     final gameMode = MillController().gameInstance.gameMode;
     bool isGameRunning = position.winner == PieceColor.nobody;
@@ -119,15 +123,13 @@ class MillController {
       if (gameMode == GameMode.aiVsAi) {
         MillController().tip.showTip(MillController().position.scoreString);
       } else {
-        MillController().tip.showTip(S.of(context).thinking);
+        MillController().tip.showTip(thinkingStr);
 
         // TODO: Show snake bar immediately when tapping
-        showSnakeBarHumanNotation(context);
+        showSnakeBarHumanNotation(humanStr);
       }
 
       try {
-        final aiStr = S.of(context).ai;
-
         logger.v("$tag Searching..., isMoveNow: $isMoveNow");
         final extMove = await controller.engine.search(moveNow: isMoveNow);
 
@@ -146,10 +148,10 @@ class MillController {
         // TODO: Do not throw exception
       } on EngineTimeOut {
         logger.i("$tag Engine response type: timeout");
-        MillController().tip.showTip(S.of(context).timeout, snackBar: true);
+        return const EngineTimeOut();
       } on EngineNoBestMove {
         logger.i("$tag Engine response type: nobestmove");
-        MillController().tip.showTip(S.of(context).error("No best move"));
+        return const EngineNoBestMove();
       }
 
       if (MillController().position.winner != PieceColor.nobody) {
@@ -164,14 +166,14 @@ class MillController {
     return const EngineResponseOK();
   }
 
-  showSnakeBarHumanNotation(BuildContext context) {
+  showSnakeBarHumanNotation(String humanStr) {
     final String? n = recorder.lastF?.notation;
 
     if (DB().generalSettings.screenReaderSupport &&
         MillController().position._action != Act.remove &&
         n != null) {
       rootScaffoldMessengerKey.currentState!
-          .showSnackBar(CustomSnackBar("${S.of(context).human}: $n"));
+          .showSnackBar(CustomSnackBar("$humanStr: $n"));
     }
   }
 

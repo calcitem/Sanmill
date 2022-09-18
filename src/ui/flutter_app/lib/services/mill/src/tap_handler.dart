@@ -35,11 +35,17 @@ class TapHandler {
       if (_isAiToMove) {
         logger.i("$_tag AI is not thinking. AI is to move.");
 
-        if (await MillController().engineToGo(context, isMoveNow: false) ==
-            const EngineResponseOK()) {
-          _showResult();
+        switch (await MillController().engineToGo(context, isMoveNow: false)) {
+          case EngineResponseOK():
+            _showResult();
+            break;
+          case EngineTimeOut():
+            MillController().tip.showTip(S.of(context).timeout, snackBar: true);
+            break;
+          case EngineNoBestMove():
+            MillController().tip.showTip(S.of(context).error("No best move"));
+            break;
         }
-
         return;
       }
     }
@@ -231,9 +237,20 @@ class TapHandler {
 
       if (_isGameRunning) {
         if (gameMode == GameMode.humanVsAi) {
-          if (await MillController().engineToGo(context, isMoveNow: false) ==
-              const EngineResponseOK()) {
-            _showResult();
+          // TODO: Duplicate
+          switch (
+              await MillController().engineToGo(context, isMoveNow: false)) {
+            case EngineResponseOK():
+              _showResult();
+              break;
+            case EngineTimeOut():
+              MillController()
+                  .tip
+                  .showTip(S.of(context).timeout, snackBar: true);
+              break;
+            case EngineNoBestMove():
+              MillController().tip.showTip(S.of(context).error("No best move"));
+              break;
           }
         }
       } else {

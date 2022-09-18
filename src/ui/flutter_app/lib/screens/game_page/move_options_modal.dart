@@ -28,6 +28,26 @@ class _MoveOptionsModal extends StatelessWidget {
     );
   }
 
+  void _showResult(BuildContext context) {
+    final gameMode = MillController().gameInstance.gameMode;
+    final winner = MillController().position.winner;
+    final message = winner.getWinString(context);
+
+    if (message != null) {
+      MillController().tip.showTip(message);
+      MillController().headIcons.showIcons();
+    }
+
+    if (!DB().generalSettings.isAutoRestart &&
+        winner != PieceColor.nobody &&
+        gameMode != GameMode.aiVsAi) {
+      showDialog(
+        context: context,
+        builder: (_) => GameResultAlert(winner: winner),
+      );
+    }
+  }
+
   Future<void> _moveNow(BuildContext context) async {
     const tag = "[engineToGo]";
 
@@ -42,7 +62,18 @@ class _MoveOptionsModal extends StatelessWidget {
       return rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).aiIsNotThinking);
     } else {
-      MillController().engineToGo(context, isMoveNow: true);
+      // TODO: Duplicate
+      switch (await MillController().engineToGo(context, isMoveNow: true)) {
+        case EngineResponseOK():
+          _showResult(context);
+          break;
+        case EngineTimeOut():
+          MillController().tip.showTip(S.of(context).timeout, snackBar: true);
+          break;
+        case EngineNoBestMove():
+          MillController().tip.showTip(S.of(context).error("No best move"));
+          break;
+      }
     }
   }
 

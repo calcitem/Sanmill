@@ -68,9 +68,8 @@ class EngineNoBestMove implements EngineResponse {
   const EngineNoBestMove();
 }
 
-class EngineTimeOut extends TimeoutException with EngineResponse {
-  EngineTimeOut([String? message, Duration? duration])
-      : super(message, duration);
+class EngineTimeOut implements EngineResponse {
+  const EngineTimeOut();
 }
 
 /// Custom response to throw when navigating the game history.
