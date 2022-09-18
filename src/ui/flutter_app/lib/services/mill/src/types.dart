@@ -98,7 +98,9 @@ extension PieceColorExtension on PieceColor {
   }
 
   GameResult? get result {
-    final isAi = MillController().gameInstance._isAi[this]!;
+    final isAi = MillController()
+        .gameInstance
+        ._isAi[this]!; // TODO: Sometimes is null, when AI Vs. AI
     switch (this) {
       case PieceColor.white:
         if (isAi) {
