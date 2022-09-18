@@ -30,7 +30,7 @@ class Engine {
 
   Future<void> startup() async {
     // TODO: This may call setOptions() many times.
-    DB().listenGeneralSettings.addListener(() => setOptions());
+    //DB().listenGeneralSettings.addListener(() => setOptions());
 
     await setOptions();
 
