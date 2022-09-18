@@ -35,7 +35,7 @@ class MillController {
   final HeaderTipState tip = HeaderTipState();
   final HeaderIconsState headIcons = HeaderIconsState();
   late GameRecorder recorder;
-  late GameRecorder? newRecorder;
+  GameRecorder? newRecorder;
 
   late AnimationController animationController;
   late Animation<double> animation;
@@ -106,6 +106,7 @@ class MillController {
   Future<void> engineToGo(BuildContext context,
       {required bool isMoveNow}) async {
     const tag = "[engineToGo]";
+    BuildContext ctx = context;
 
     final controller = MillController();
     final gameMode = MillController().gameInstance.gameMode;
@@ -126,6 +127,8 @@ class MillController {
       }
 
       try {
+        final aiStr = S.of(context).ai;
+
         logger.v("$tag Searching..., isMoveNow: $isMoveNow");
         final extMove = await controller.engine.search(moveNow: isMoveNow);
 
@@ -135,7 +138,11 @@ class MillController {
         MillController().animationController.animateTo(1.0);
 
         // TODO: Do not use BuildContexts across async gaps.
-        showSnakeBarAiNotation(context, extMove);
+        if (DB().generalSettings.screenReaderSupport) {
+          rootScaffoldMessengerKey.currentState!.showSnackBar(
+            CustomSnackBar("$aiStr: ${extMove.notation}"),
+          );
+        }
 
         // TODO: Do not throw exception
       } on EngineTimeOut {
@@ -151,7 +158,7 @@ class MillController {
         MillController().reset();
       } else {
         // TODO: Do not use BuildContexts across async gaps.
-        _showResult(context);
+        _showResult(ctx);
       }
     }
   }
@@ -185,14 +192,6 @@ class MillController {
         n != null) {
       rootScaffoldMessengerKey.currentState!
           .showSnackBar(CustomSnackBar("${S.of(context).human}: $n"));
-    }
-  }
-
-  showSnakeBarAiNotation(BuildContext context, ExtMove extMove) {
-    if (DB().generalSettings.screenReaderSupport) {
-      rootScaffoldMessengerKey.currentState!.showSnackBar(
-        CustomSnackBar("${S.of(context).ai}: ${extMove.notation}"),
-      );
     }
   }
 
