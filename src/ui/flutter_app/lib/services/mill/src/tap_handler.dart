@@ -5,7 +5,6 @@ part of '../mill.dart';
 class TapHandler {
   static const _tag = "[Tap Handler]";
 
-  final AnimationController animationController;
   final BuildContext context;
 
   final controller = MillController();
@@ -15,7 +14,6 @@ class TapHandler {
   //final position = MillController().position;
 
   TapHandler({
-    required this.animationController,
     required this.context,
   });
 
@@ -36,7 +34,7 @@ class TapHandler {
 
       if (_isAiToMove) {
         logger.i("$_tag AI is not thinking. AI is to move.");
-        engineToGo(isMoveNow: false);
+        MillController().engineToGo(context, isMoveNow: false);
         return;
       }
     }
@@ -58,8 +56,8 @@ class TapHandler {
     switch (MillController().position._action) {
       case Act.place:
         if (MillController().position._putPiece(sq)) {
-          animationController.reset();
-          animationController.animateTo(1.0);
+          MillController().animationController.reset();
+          MillController().animationController.animateTo(1.0);
           if (MillController().position._action == Act.remove) {
             showTip(S.of(context).tipMill, snackBar: true);
           } else {
@@ -148,8 +146,8 @@ class TapHandler {
       case Act.remove:
         var removeRet = await MillController().position._removePiece(sq);
 
-        animationController.reset();
-        animationController.animateTo(1.0);
+        MillController().animationController.reset();
+        MillController().animationController.animateTo(1.0);
 
         switch (removeRet) {
           case MillResponseOK():
@@ -228,7 +226,7 @@ class TapHandler {
 
       if (_isGameRunning) {
         if (gameMode == GameMode.humanVsAi) {
-          engineToGo(isMoveNow: false);
+          MillController().engineToGo(context, isMoveNow: false);
         }
       } else {
         _showResult();
@@ -242,91 +240,13 @@ class TapHandler {
     MillController().headIcons.showIcons();
   }
 
-  showSnakeBarAiNotation(ExtMove extMove) {
-    if (DB().generalSettings.screenReaderSupport) {
-      rootScaffoldMessengerKey.currentState!.showSnackBar(
-        CustomSnackBar("${S.of(context).ai}: ${extMove.notation}"),
-      );
-    }
-  }
-
-  showSnakeBarHumanNotation() {
-    final String? n = controller.recorder.lastF?.notation;
-
-    if (DB().generalSettings.screenReaderSupport &&
-        MillController().position._action != Act.remove &&
-        n != null) {
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBar(CustomSnackBar("${S.of(context).human}: $n"));
-    }
-  }
-
-  // TODO: [Leptopoda] The reference of this method has been removed in a few instances.
-  // We'll need to find a better way for this.
-  Future<void> engineToGo({required bool isMoveNow}) async {
-    const tag = "[engineToGo]";
-
-    // TODO
-    logger.v("$tag engine type is $gameMode");
-
-    if (isMoveNow) {
-      if (controller.gameInstance._isHumanToMove) {
-        logger.i("$tag Human to Move. Cannot get search result now.");
-        return rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).notAIsTurn);
-      }
-      if (controller.recorder.isNotEmpty) {
-        logger.i("$tag History is not clean. Cannot get search result now.");
-        return rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).aiIsNotThinking);
-      }
-    }
-
-    while (
-        _isAiToMove && (_isGameRunning || DB().generalSettings.isAutoRestart)) {
-      if (gameMode == GameMode.aiVsAi) {
-        showTip(MillController().position.scoreString);
-      } else {
-        showTip(S.of(context).thinking);
-
-        // TODO: Show snake bar immediately when tapping
-        showSnakeBarHumanNotation();
-      }
-
-      try {
-        logger.v("$tag Searching..., isMoveNow: $isMoveNow");
-        final extMove = await controller.engine.search(moveNow: isMoveNow);
-
-        controller.gameInstance.doMove(extMove);
-
-        animationController.reset();
-        animationController.animateTo(1.0);
-
-        showSnakeBarAiNotation(extMove);
-
-        // TODO: Do not throw exception
-      } on EngineTimeOut {
-        logger.i("$tag Engine response type: timeout");
-        showTip(S.of(context).timeout, snackBar: true);
-      } on EngineNoBestMove {
-        logger.i("$tag Engine response type: nobestmove");
-        showTip(S.of(context).error("No best move"));
-      }
-
-      if (DB().generalSettings.isAutoRestart == true &&
-          MillController().position.winner != PieceColor.nobody) {
-        MillController().reset();
-      } else {
-        _showResult();
-      }
-    }
-  }
-
   void _showResult() {
-    final winner = controller.position.winner;
+    final gameMode = MillController().gameInstance.gameMode;
+    final winner = MillController().position.winner;
     final message = winner.getWinString(context);
+
     if (message != null) {
-      showTip(message);
+      MillController().tip.showTip(message);
       MillController().headIcons.showIcons();
     }
 

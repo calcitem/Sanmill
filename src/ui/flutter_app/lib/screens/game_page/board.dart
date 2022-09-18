@@ -31,9 +31,6 @@ class Board extends StatefulWidget {
 }
 
 class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _animation;
-
   @override
   void initState() {
     super.initState();
@@ -43,7 +40,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
     // TODO: Check _initAnimation() on branch master.
 
-    _animationController = AnimationController(
+    MillController().animationController = AnimationController(
       vsync: this,
       duration: Duration(
         seconds: DB().displaySettings.animationDuration.toInt(),
@@ -51,23 +48,23 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     );
 
     // sqrt(1.618) = 1.272
-    _animation = Tween(begin: 1.27, end: 1.0).animate(_animationController);
+    MillController().animation = Tween(begin: 1.27, end: 1.0)
+        .animate(MillController().animationController);
   }
 
   @override
   Widget build(BuildContext context) {
     final tapHandler = TapHandler(
-      animationController: _animationController,
       context: context,
     );
 
     final customPaint = AnimatedBuilder(
-      animation: _animation,
+      animation: MillController().animation,
       builder: (_, child) {
         return CustomPaint(
           painter: BoardPainter(),
           foregroundPainter: PiecePainter(
-            animationValue: _animation.value,
+            animationValue: MillController().animation.value,
           ),
           child: child,
         );
@@ -77,7 +74,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
           : null,
     );
 
-    _animationController.forward();
+    MillController().animationController.forward();
 
     return LayoutBuilder(
       builder: (context, constrains) {
@@ -112,7 +109,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     MillController().engine.shutdown();
-    _animationController.dispose();
+    MillController().animationController.dispose();
     super.dispose();
   }
 }

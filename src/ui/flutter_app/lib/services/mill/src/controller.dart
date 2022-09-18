@@ -37,6 +37,9 @@ class MillController {
   late GameRecorder recorder;
   late GameRecorder? newRecorder;
 
+  late AnimationController animationController;
+  late Animation<double> animation;
+
   bool _initialized = false;
   bool get initialized => _initialized;
 
@@ -96,6 +99,101 @@ class MillController {
     recorder = GameRecorder(lastPositionWithRemove: position._fen);
 
     _startGame();
+  }
+
+  // TODO: [Leptopoda] The reference of this method has been removed in a few instances.
+  // We'll need to find a better way for this.
+  Future<void> engineToGo(BuildContext context,
+      {required bool isMoveNow}) async {
+    const tag = "[engineToGo]";
+
+    final controller = MillController();
+    final gameMode = MillController().gameInstance.gameMode;
+    bool isGameRunning = position.winner == PieceColor.nobody;
+
+    // TODO
+    logger.v("$tag engine type is $gameMode");
+
+    while (gameInstance._isAiToMove &&
+        (isGameRunning || DB().generalSettings.isAutoRestart)) {
+      if (gameMode == GameMode.aiVsAi) {
+        MillController().tip.showTip(MillController().position.scoreString);
+      } else {
+        MillController().tip.showTip(S.of(context).thinking);
+
+        // TODO: Show snake bar immediately when tapping
+        showSnakeBarHumanNotation(context);
+      }
+
+      try {
+        logger.v("$tag Searching..., isMoveNow: $isMoveNow");
+        final extMove = await controller.engine.search(moveNow: isMoveNow);
+
+        controller.gameInstance.doMove(extMove);
+
+        MillController().animationController.reset();
+        MillController().animationController.animateTo(1.0);
+
+        // TODO: Do not use BuildContexts across async gaps.
+        showSnakeBarAiNotation(context, extMove);
+
+        // TODO: Do not throw exception
+      } on EngineTimeOut {
+        logger.i("$tag Engine response type: timeout");
+        MillController().tip.showTip(S.of(context).timeout, snackBar: true);
+      } on EngineNoBestMove {
+        logger.i("$tag Engine response type: nobestmove");
+        MillController().tip.showTip(S.of(context).error("No best move"));
+      }
+
+      if (DB().generalSettings.isAutoRestart == true &&
+          MillController().position.winner != PieceColor.nobody) {
+        MillController().reset();
+      } else {
+        // TODO: Do not use BuildContexts across async gaps.
+        _showResult(context);
+      }
+    }
+  }
+
+  // TODO: Duplicate
+  void _showResult(BuildContext context) {
+    final gameMode = MillController().gameInstance.gameMode;
+    final winner = position.winner;
+    final message = winner.getWinString(context);
+
+    if (message != null) {
+      MillController().tip.showTip(message);
+      MillController().headIcons.showIcons();
+    }
+
+    if (!DB().generalSettings.isAutoRestart &&
+        winner != PieceColor.nobody &&
+        gameMode != GameMode.aiVsAi) {
+      showDialog(
+        context: context,
+        builder: (_) => GameResultAlert(winner: winner),
+      );
+    }
+  }
+
+  showSnakeBarHumanNotation(BuildContext context) {
+    final String? n = recorder.lastF?.notation;
+
+    if (DB().generalSettings.screenReaderSupport &&
+        MillController().position._action != Act.remove &&
+        n != null) {
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBar(CustomSnackBar("${S.of(context).human}: $n"));
+    }
+  }
+
+  showSnakeBarAiNotation(BuildContext context, ExtMove extMove) {
+    if (DB().generalSettings.screenReaderSupport) {
+      rootScaffoldMessengerKey.currentState!.showSnackBar(
+        CustomSnackBar("${S.of(context).ai}: ${extMove.notation}"),
+      );
+    }
   }
 
   /// Starts a game import.

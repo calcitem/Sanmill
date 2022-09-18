@@ -29,8 +29,21 @@ class _MoveOptionsModal extends StatelessWidget {
   }
 
   Future<void> _moveNow(BuildContext context) async {
+    const tag = "[engineToGo]";
+
     Navigator.pop(context);
-    // await extracted.engineToGo(isMoveNow: true);
+
+    if (MillController().gameInstance.isHumanToMove) {
+      logger.i("$tag Human to Move. Cannot get search result now.");
+      return rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).notAIsTurn);
+    } else if (!MillController().recorder.isClean) {
+      logger.i("$tag History is not clean. Cannot get search result now.");
+      return rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).aiIsNotThinking);
+    } else {
+      MillController().engineToGo(context, isMoveNow: true);
+    }
   }
 
   @override
