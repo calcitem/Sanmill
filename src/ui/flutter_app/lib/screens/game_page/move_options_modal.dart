@@ -28,6 +28,35 @@ class _MoveOptionsModal extends StatelessWidget {
     );
   }
 
+  Future<void> _moveNow(BuildContext context) async {
+    const tag = "[engineToGo]";
+
+    Navigator.pop(context);
+
+    if (MillController().gameInstance.isHumanToMove) {
+      logger.i("$tag Human to Move. Cannot get search result now.");
+      return rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).notAIsTurn);
+    } else if (!MillController().recorder.isClean) {
+      logger.i("$tag History is not clean. Cannot get search result now.");
+      return rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).aiIsNotThinking);
+    } else {
+      switch (await MillController().engineToGo(context, isMoveNow: true)) {
+        case EngineResponseOK():
+          _showResult(context);
+          break;
+        case EngineTimeOut():
+          MillController().tip.showTip(S.of(context).timeout, snackBar: true);
+          break;
+        case EngineNoBestMove():
+          MillController().tip.showTip(S.of(context).error("No best move"));
+          break;
+      }
+    }
+  }
+
+  // TODO: Duplicate
   void _showResult(BuildContext context) {
     final gameMode = MillController().gameInstance.gameMode;
     final winner = MillController().position.winner;
@@ -45,35 +74,6 @@ class _MoveOptionsModal extends StatelessWidget {
         context: context,
         builder: (_) => GameResultAlert(winner: winner),
       );
-    }
-  }
-
-  Future<void> _moveNow(BuildContext context) async {
-    const tag = "[engineToGo]";
-
-    Navigator.pop(context);
-
-    if (MillController().gameInstance.isHumanToMove) {
-      logger.i("$tag Human to Move. Cannot get search result now.");
-      return rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).notAIsTurn);
-    } else if (!MillController().recorder.isClean) {
-      logger.i("$tag History is not clean. Cannot get search result now.");
-      return rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).aiIsNotThinking);
-    } else {
-      // TODO: Duplicate
-      switch (await MillController().engineToGo(context, isMoveNow: true)) {
-        case EngineResponseOK():
-          _showResult(context);
-          break;
-        case EngineTimeOut():
-          MillController().tip.showTip(S.of(context).timeout, snackBar: true);
-          break;
-        case EngineNoBestMove():
-          MillController().tip.showTip(S.of(context).error("No best move"));
-          break;
-      }
     }
   }
 

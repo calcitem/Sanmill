@@ -98,12 +98,48 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
               logger.v("${Board._tag} Tap on <$index>");
 
-              await tapHandler.onBoardTap(square);
+              switch (await tapHandler.onBoardTap(square)) {
+                case EngineResponseOK():
+                  _showResult();
+                  break;
+                case EngineTimeOut():
+                  MillController()
+                      .tip
+                      .showTip(S.of(context).timeout, snackBar: true);
+                  break;
+                case EngineNoBestMove():
+                  MillController()
+                      .tip
+                      .showTip(S.of(context).error("No best move"));
+                  break;
+              }
             },
           ),
         );
       },
     );
+  }
+
+  void _showResult() {
+    if (!mounted) return;
+
+    final gameMode = MillController().gameInstance.gameMode;
+    final winner = MillController().position.winner;
+    final message = winner.getWinString(context);
+
+    if (message != null) {
+      MillController().tip.showTip(message);
+      MillController().headIcons.showIcons();
+    }
+
+    if (!DB().generalSettings.isAutoRestart &&
+        winner != PieceColor.nobody &&
+        gameMode != GameMode.aiVsAi) {
+      showDialog(
+        context: context,
+        builder: (_) => GameResultAlert(winner: winner),
+      );
+    }
   }
 
   @override

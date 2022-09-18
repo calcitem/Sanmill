@@ -25,7 +25,12 @@ class TapHandler {
       MillController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
       MillController().position.pieceOnBoardCount[PieceColor.black] == 0;
 
-  makeAiFirstMoveIfNecessary() async {
+  Future<EngineResponse> onBoardTap(int sq) async {
+    if (gameMode == GameMode.testViaLAN) {
+      logger.v("$_tag Engine type is no human, ignore tapping.");
+      return const EngineResponseOK();
+    }
+
     // WAR: Fix first tap response slow when piece count changed
     if (gameMode != GameMode.humanVsHuman &&
         MillController().position.phase == Phase.placing &&
@@ -35,31 +40,13 @@ class TapHandler {
       if (_isAiToMove) {
         logger.i("$_tag AI is not thinking. AI is to move.");
 
-        switch (await MillController().engineToGo(context, isMoveNow: false)) {
-          case EngineResponseOK():
-            _showResult();
-            break;
-          case EngineTimeOut():
-            MillController().tip.showTip(S.of(context).timeout, snackBar: true);
-            break;
-          case EngineNoBestMove():
-            MillController().tip.showTip(S.of(context).error("No best move"));
-            break;
-        }
-        return;
+        return await MillController().engineToGo(context, isMoveNow: false);
       }
     }
-  }
-
-  Future<void> onBoardTap(int sq) async {
-    if (gameMode == GameMode.testViaLAN) {
-      return logger.v("$_tag Engine type is no human, ignore tapping.");
-    }
-
-    makeAiFirstMoveIfNecessary();
 
     if (_isAiToMove) {
-      return logger.i("$_tag AI's turn, skip tapping.");
+      logger.i("$_tag AI's turn, skip tapping.");
+      return const EngineResponseOK();
     }
 
     // Human to go
@@ -237,24 +224,10 @@ class TapHandler {
 
       if (_isGameRunning) {
         if (gameMode == GameMode.humanVsAi) {
-          // TODO: Duplicate
-          switch (
-              await MillController().engineToGo(context, isMoveNow: false)) {
-            case EngineResponseOK():
-              _showResult();
-              break;
-            case EngineTimeOut():
-              MillController()
-                  .tip
-                  .showTip(S.of(context).timeout, snackBar: true);
-              break;
-            case EngineNoBestMove():
-              MillController().tip.showTip(S.of(context).error("No best move"));
-              break;
-          }
+          return MillController().engineToGo(context, isMoveNow: false);
         }
       } else {
-        _showResult();
+        return const EngineResponseOK();
       }
     } else {
       await Audios().playTone(Sound.illegal);
@@ -263,25 +236,7 @@ class TapHandler {
     controller.gameInstance.sideToMove = MillController().position.sideToMove;
 
     MillController().headIcons.showIcons();
-  }
 
-  void _showResult() {
-    final gameMode = MillController().gameInstance.gameMode;
-    final winner = MillController().position.winner;
-    final message = winner.getWinString(context);
-
-    if (message != null) {
-      MillController().tip.showTip(message);
-      MillController().headIcons.showIcons();
-    }
-
-    if (!DB().generalSettings.isAutoRestart &&
-        winner != PieceColor.nobody &&
-        gameMode != GameMode.aiVsAi) {
-      showDialog(
-        context: context,
-        builder: (_) => GameResultAlert(winner: winner),
-      );
-    }
+    return const EngineResponseOK();
   }
 }
