@@ -129,6 +129,8 @@ class MillController {
         showSnakeBarHumanNotation(humanStr);
       }
 
+      MillController().headIcons.showIcons();
+
       try {
         logger.v("$tag Searching..., isMoveNow: $isMoveNow");
         final extMove = await controller.engine.search(moveNow: isMoveNow);
