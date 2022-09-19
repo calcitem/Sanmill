@@ -64,6 +64,14 @@ class EngineResponseOK implements EngineResponse {
   const EngineResponseOK();
 }
 
+class EngineResponseHumanOK implements EngineResponse {
+  const EngineResponseHumanOK();
+}
+
+class EngineResponseSkip implements EngineResponse {
+  const EngineResponseSkip();
+}
+
 class EngineNoBestMove implements EngineResponse {
   const EngineNoBestMove();
 }

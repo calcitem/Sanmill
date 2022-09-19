@@ -107,6 +107,8 @@ class MillController {
       {required bool isMoveNow}) async {
     const tag = "[engineToGo]";
 
+    bool searched = false;
+
     final aiStr = S.of(context).ai;
     final thinkingStr = S.of(context).thinking;
     final humanStr = S.of(context).human;
@@ -137,6 +139,8 @@ class MillController {
 
         controller.gameInstance.doMove(extMove);
 
+        searched = true;
+
         MillController().animationController.reset();
         MillController().animationController.animateTo(1.0);
 
@@ -165,7 +169,7 @@ class MillController {
       }
     }
 
-    return const EngineResponseOK();
+    return searched ? const EngineResponseOK() : const EngineResponseHumanOK();
   }
 
   showSnakeBarHumanNotation(String humanStr) {

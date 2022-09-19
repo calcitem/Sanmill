@@ -28,7 +28,7 @@ class TapHandler {
   Future<EngineResponse> onBoardTap(int sq) async {
     if (gameMode == GameMode.testViaLAN) {
       logger.v("$_tag Engine type is no human, ignore tapping.");
-      return const EngineResponseOK();
+      return const EngineResponseSkip();
     }
 
     // WAR: Fix first tap response slow when piece count changed
@@ -46,7 +46,7 @@ class TapHandler {
 
     if (_isAiToMove) {
       logger.i("$_tag AI's turn, skip tapping.");
-      return const EngineResponseOK();
+      return const EngineResponseSkip();
     }
 
     // Human to go
@@ -227,7 +227,7 @@ class TapHandler {
           return MillController().engineToGo(context, isMoveNow: false);
         }
       } else {
-        return const EngineResponseOK();
+        return const EngineResponseHumanOK();
       }
     } else {
       await Audios().playTone(Sound.illegal);
@@ -237,6 +237,6 @@ class TapHandler {
 
     MillController().headIcons.showIcons();
 
-    return const EngineResponseOK();
+    return const EngineResponseHumanOK();
   }
 }

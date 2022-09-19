@@ -44,7 +44,10 @@ class _MoveOptionsModal extends StatelessWidget {
     } else {
       switch (await MillController().engineToGo(context, isMoveNow: true)) {
         case EngineResponseOK():
-          _showResult(context);
+          _showResult(context, force: true);
+          break;
+        case EngineResponseHumanOK():
+          _showResult(context, force: false);
           break;
         case EngineTimeOut():
           MillController().tip.showTip(S.of(context).timeout, snackBar: true);
@@ -57,15 +60,16 @@ class _MoveOptionsModal extends StatelessWidget {
   }
 
   // TODO: Duplicate
-  void _showResult(BuildContext context) {
+  void _showResult(BuildContext context, {required bool force}) {
     final gameMode = MillController().gameInstance.gameMode;
     final winner = MillController().position.winner;
     final message = winner.getWinString(context);
 
-    if (message != null) {
+    if (message != null && (force == true || winner != PieceColor.nobody)) {
       MillController().tip.showTip(message);
-      MillController().headIcons.showIcons();
     }
+
+    MillController().headIcons.showIcons();
 
     if (!DB().generalSettings.isAutoRestart &&
         winner != PieceColor.nobody &&

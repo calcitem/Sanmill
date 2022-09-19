@@ -100,7 +100,10 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
               switch (await tapHandler.onBoardTap(square)) {
                 case EngineResponseOK():
-                  _showResult();
+                  _showResult(force: true);
+                  break;
+                case EngineResponseHumanOK():
+                  _showResult(force: false);
                   break;
                 case EngineTimeOut():
                   MillController()
@@ -112,6 +115,8 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
                       .tip
                       .showTip(S.of(context).error("No best move"));
                   break;
+                default:
+                  break;
               }
             },
           ),
@@ -120,17 +125,18 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     );
   }
 
-  void _showResult() {
+  void _showResult({required bool force}) {
     if (!mounted) return;
 
     final gameMode = MillController().gameInstance.gameMode;
     final winner = MillController().position.winner;
     final message = winner.getWinString(context);
 
-    if (message != null) {
+    if (message != null && (force == true || winner != PieceColor.nobody)) {
       MillController().tip.showTip(message);
-      MillController().headIcons.showIcons();
     }
+
+    MillController().headIcons.showIcons();
 
     if (!DB().generalSettings.isAutoRestart &&
         winner != PieceColor.nobody &&
