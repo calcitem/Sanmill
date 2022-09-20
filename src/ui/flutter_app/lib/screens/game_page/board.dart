@@ -98,6 +98,9 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
               logger.v("${Board._tag} Tap on <$index>");
 
+              final strTimeout = S.of(context).timeout;
+              final strNoBestMoveErr = S.of(context).error("No best move");
+
               switch (await tapHandler.onBoardTap(square)) {
                 case EngineResponseOK():
                   _showResult(force: true);
@@ -106,14 +109,10 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
                   _showResult(force: false);
                   break;
                 case EngineTimeOut():
-                  MillController()
-                      .tip
-                      .showTip(S.of(context).timeout, snackBar: true);
+                  MillController().tip.showTip(strTimeout, snackBar: true);
                   break;
                 case EngineNoBestMove():
-                  MillController()
-                      .tip
-                      .showTip(S.of(context).error("No best move"));
+                  MillController().tip.showTip(strNoBestMoveErr);
                   break;
                 default:
                   break;

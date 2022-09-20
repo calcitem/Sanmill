@@ -42,7 +42,11 @@ class _MoveOptionsModal extends StatelessWidget {
       return rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).aiIsNotThinking);
     } else {
+      final strTimeout = S.of(context).timeout;
+      final strNoBestMoveErr = S.of(context).error("No best move");
+
       switch (await MillController().engineToGo(context, isMoveNow: true)) {
+        // TODO: Looking up a deactivated widget's ancestor is unsafe.
         case EngineResponseOK():
           _showResult(context, force: true);
           break;
@@ -50,10 +54,10 @@ class _MoveOptionsModal extends StatelessWidget {
           _showResult(context, force: false);
           break;
         case EngineTimeOut():
-          MillController().tip.showTip(S.of(context).timeout, snackBar: true);
+          MillController().tip.showTip(strTimeout, snackBar: true);
           break;
         case EngineNoBestMove():
-          MillController().tip.showTip(S.of(context).error("No best move"));
+          MillController().tip.showTip(strNoBestMoveErr);
           break;
       }
     }
