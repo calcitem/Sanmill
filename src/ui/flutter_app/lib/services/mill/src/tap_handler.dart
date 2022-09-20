@@ -83,7 +83,11 @@ class TapHandler {
           break;
         } else {
           logger.v("$_tag putPiece: skip [$sq]");
-          showTip(S.of(context).tipBanPlace);
+          if (!(MillController().position.phase == Phase.moving &&
+              MillController().position._board[sq] ==
+                  MillController().position.sideToMove)) {
+            showTip(S.of(context).tipBanPlace);
+          }
         }
 
         // If cannot move, retry select, do not break
