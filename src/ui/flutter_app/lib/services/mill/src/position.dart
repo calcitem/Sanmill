@@ -210,6 +210,10 @@ class Position {
           // Reset rule 50 counter
           st.rule50 = 0;
         }
+        break;
+      case null:
+        assert(false);
+        break;
     }
 
     if (!ret) {

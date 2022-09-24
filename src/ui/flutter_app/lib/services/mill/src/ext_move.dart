@@ -19,7 +19,7 @@ part of '../mill.dart';
 enum MoveType { place, move, remove }
 
 extension _MoveTypeExtension on MoveType {
-  static MoveType parse(String move) {
+  static MoveType? parse(String move) {
     if (move.startsWith("-") && move.length == "-(1,2)".length) {
       return MoveType.remove;
     } else if (move.length == "(1,2)->(3,4)".length) {
@@ -27,7 +27,8 @@ extension _MoveTypeExtension on MoveType {
     } else if (move.length == "(1,2)".length) {
       return MoveType.place;
     } else if (move == "draw") {
-      throw UnimplementedError("[TODO] Computer request draw");
+      logger.i("[TODO] Computer request draw");
+      return null;
     } else {
       throw const FormatException();
     }
@@ -83,18 +84,27 @@ class ExtMove {
         return "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}";
       case MoveType.place:
         return _squareToWmdNotation[to]!;
+      case null:
+        assert(false);
+        return "";
     }
   }
 
-  late final MoveType type;
+  late final MoveType? type;
 
   ExtMove(this.move) {
     _checkLegal();
 
     type = _MoveTypeExtension.parse(move);
 
+    if (type == null) {
+      /* Draw, do nothing. */
+      return;
+    }
+
     final int toFile;
     final int toRank;
+
     switch (type) {
       case MoveType.remove:
         toFile = int.parse(move[2]);
@@ -107,6 +117,11 @@ class ExtMove {
       case MoveType.place:
         toFile = int.parse(move[1]);
         toRank = int.parse(move[3]);
+        break;
+      default:
+        toFile = 0;
+        toRank = 0;
+        break;
     }
     to = makeSquare(toFile, toRank);
 
@@ -115,7 +130,7 @@ class ExtMove {
 
   void _checkLegal() {
     if (move == "draw") {
-      // TODO
+      return;
     }
 
     if (move.length > "(3,1)->(2,1)".length) {
