@@ -67,7 +67,7 @@ class Game {
 
     logger.i("$_tag AI do move: $extMove");
 
-    if (!MillController().position.doMove(extMove.move)) {
+    if (MillController().position.doMove(extMove.move) == false) {
       return false;
     }
 

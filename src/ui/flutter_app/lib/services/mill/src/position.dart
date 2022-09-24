@@ -187,11 +187,10 @@ class Position {
     // TODO: [Leptopoda] The below functions should all throw exceptions so the ret and conditional stuff can be removed
     switch (m.type) {
       case MoveType.remove:
-        try {
-          _removePiece(m.to);
+        if (_removePiece(m.to) == const MillResponseOK()) {
           ret = true;
           st.rule50 = 0;
-        } on MillResponse {
+        } else {
           return false;
         }
 
@@ -409,7 +408,7 @@ class Position {
     return true;
   }
 
-  Future<MillResponse> _removePiece(int s) async {
+  MillResponse _removePiece(int s) {
     if (phase == Phase.ready || phase == Phase.gameOver) {
       return const IllegalPhase();
     }
@@ -454,7 +453,7 @@ class Position {
     if (pieceOnBoardCount[_them]! + pieceInHandCount[_them]! <
         DB().ruleSettings.piecesAtLeastCount) {
       _setGameOver(sideToMove, GameOverReason.loseLessThanThree);
-      await Audios().playTone(Sound.remove);
+      Audios().playTone(Sound.remove);
       return const MillResponseOK();
     }
 
@@ -464,7 +463,7 @@ class Position {
     _updateKeyMisc();
 
     if (_pieceToRemoveCount != 0) {
-      await Audios().playTone(Sound.remove);
+      Audios().playTone(Sound.remove);
       return const MillResponseOK();
     }
 
@@ -480,7 +479,7 @@ class Position {
 
         if (DB().ruleSettings.isDefenderMoveFirst) {
           _checkIfGameIsOver();
-          await Audios().playTone(Sound.remove);
+          Audios().playTone(Sound.remove);
           return const MillResponseOK();
         }
       } else {
@@ -493,7 +492,7 @@ class Position {
     _changeSideToMove();
     _checkIfGameIsOver();
 
-    await Audios().playTone(Sound.remove);
+    Audios().playTone(Sound.remove);
     return const MillResponseOK();
   }
 

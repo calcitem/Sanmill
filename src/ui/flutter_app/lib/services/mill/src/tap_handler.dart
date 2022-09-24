@@ -146,7 +146,7 @@ class TapHandler {
         break;
 
       case Act.remove:
-        var removeRet = await MillController().position._removePiece(sq);
+        var removeRet = MillController().position._removePiece(sq);
 
         MillController().animationController.reset();
         MillController().animationController.animateTo(1.0);

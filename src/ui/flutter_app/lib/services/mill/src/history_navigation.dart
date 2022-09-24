@@ -79,7 +79,6 @@ class HistoryNavigator {
         break;
       case HistoryRule():
       default:
-        MillController().reset(); // TODO: Need?
         rootScaffoldMessengerKey.currentState!
             .showSnackBarClear(S.of(context).movesAndRulesNotMatch);
         logger.i(HistoryRule);
@@ -173,9 +172,11 @@ class HistoryNavigator {
     MillController().reset();
 
     MillController().newRecorder!.forEachVisible((extMove) async {
-      if (!(MillController().gameInstance.doMove(extMove))) {
-        ret = false;
-        // TODO: break?
+      if (MillController().gameInstance.doMove(extMove) == false) {
+        if (MillController().newRecorder != null) {
+          MillController().newRecorder!.prune();
+          ret = false;
+        }
       }
     });
 
