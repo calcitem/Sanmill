@@ -48,8 +48,8 @@ class _PiecePaintParam {
     );
   }
 
-  Color _getTranslucentColor(Color c) {
-    return c.withOpacity(0.382);
+  Color _getTranslucentColor(Color c, double opacity) {
+    return c.withOpacity(opacity);
   }
 
   // TODO: [Leptopoda] Consider putting this into the PieceColorExtension
@@ -61,8 +61,10 @@ class _PiecePaintParam {
       case PieceColor.black:
         return AppTheme.blackPieceBorderColor;
       case PieceColor.ban:
-        return _getTranslucentColor(_getAverageColor(
-            AppTheme.whitePieceBorderColor, AppTheme.blackPieceBorderColor));
+        return _getTranslucentColor(
+            _getAverageColor(
+                AppTheme.whitePieceBorderColor, AppTheme.blackPieceBorderColor),
+            0); // Fully transparent
       default:
         throw Error();
     }
@@ -78,8 +80,10 @@ class _PiecePaintParam {
       case PieceColor.black:
         return colorSettings.blackPieceColor;
       case PieceColor.ban:
-        return _getTranslucentColor(_getAverageColor(
-            colorSettings.whitePieceColor, colorSettings.blackPieceColor));
+        return _getTranslucentColor(
+            _getAverageColor(
+                colorSettings.whitePieceColor, colorSettings.blackPieceColor),
+            0); // Fully transparent
       default:
         throw Error();
     }
