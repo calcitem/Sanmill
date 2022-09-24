@@ -498,8 +498,6 @@ class Position {
   }
 
   MillResponse _selectPiece(int sq) {
-    _record = null;
-
     if (phase != Phase.moving) {
       return const IllegalPhase();
     }

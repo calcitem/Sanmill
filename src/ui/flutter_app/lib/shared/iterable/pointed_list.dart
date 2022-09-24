@@ -63,6 +63,12 @@ class PointedList<E> extends DelegatingList<E> {
     globalIterator.moveNext();
   }
 
+  void addAndDeduplicate(E value) {
+    if (current != value) {
+      add(value);
+    }
+  }
+
   /// Gets the element currently in focus.
   ///
   /// This is equivalent to [globalIterator.current].

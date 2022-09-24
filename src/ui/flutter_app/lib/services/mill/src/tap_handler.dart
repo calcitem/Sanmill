@@ -215,7 +215,8 @@ class TapHandler {
       }
 
       if (MillController().position._record != null) {
-        controller.recorder.add(MillController().position._record!);
+        controller.recorder
+            .addAndDeduplicate(MillController().position._record!);
         if (MillController().position._record!.type == MoveType.remove) {
           controller.recorder.lastPositionWithRemove =
               MillController().position._fen;
