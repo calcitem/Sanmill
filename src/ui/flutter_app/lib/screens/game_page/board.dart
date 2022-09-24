@@ -35,6 +35,11 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
+    if (visitedRuleSettingsPage == true) {
+      MillController().reset();
+      visitedRuleSettingsPage = false;
+    }
+
     // TODO: [calcitem] It is better to omit.
     MillController().engine.startup();
 

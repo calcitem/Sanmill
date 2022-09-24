@@ -32,6 +32,8 @@ part 'package:sanmill/screens/rule_settings/fly_piece_count_modal.dart';
 part 'package:sanmill/screens/rule_settings/n_move_rule_modal.dart';
 part 'package:sanmill/screens/rule_settings/piece_count_modal.dart';
 
+bool visitedRuleSettingsPage = false;
+
 class RuleSettingsPage extends StatelessWidget {
   const RuleSettingsPage({Key? key}) : super(key: key);
 
@@ -348,8 +350,8 @@ class RuleSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //MillController().engine.shutdown();
-    MillController().reset();
+    visitedRuleSettingsPage = true;
+    MillController().engine.shutdown();
 
     return Scaffold(
       backgroundColor: AppTheme.lightBackgroundColor,

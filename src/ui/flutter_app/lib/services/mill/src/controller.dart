@@ -68,7 +68,6 @@ class MillController {
   Future<void> start() async {
     if (_initialized) return;
 
-    await engine.startup();
     await Audios().loadSounds();
 
     _initialized = true;

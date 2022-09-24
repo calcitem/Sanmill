@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/screens/general_settings/general_settings_page.dart';
+import 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/mill/mill.dart';
