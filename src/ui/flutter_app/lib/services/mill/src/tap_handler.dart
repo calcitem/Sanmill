@@ -199,13 +199,9 @@ class TapHandler {
 
       if (MillController().position._record != null &&
           MillController().position._record!.move.length > "-(1,2)".length) {
-        if (MillController().position._posKeyHistory.isEmpty ||
-            MillController().position._posKeyHistory.last !=
-                MillController().position.st.key) {
-          MillController()
-              .position
-              ._posKeyHistory
-              .add(MillController().position.st.key);
+        if (posKeyHistory.isEmpty ||
+            posKeyHistory.last != MillController().position.st.key) {
+          posKeyHistory.add(MillController().position.st.key);
           if (DB().ruleSettings.threefoldRepetitionRule &&
               MillController().position._hasGameCycle) {
             MillController().position._setGameOver(
@@ -215,7 +211,7 @@ class TapHandler {
           }
         }
       } else {
-        MillController().position._posKeyHistory.clear();
+        posKeyHistory.clear();
       }
 
       if (MillController().position._record != null) {

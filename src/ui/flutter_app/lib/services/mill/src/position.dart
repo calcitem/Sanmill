@@ -16,6 +16,8 @@
 
 part of '../mill.dart';
 
+List<int> posKeyHistory = [];
+
 class StateInfo {
   // Copied when making a move
   int rule50 = 0;
@@ -27,8 +29,6 @@ class StateInfo {
 
 class Position {
   Position();
-
-  final List<int> _posKeyHistory = [];
 
   GameResult? result;
 
@@ -162,12 +162,12 @@ class Position {
 
       // TODO: WAR to judge rule50
       if (DB().ruleSettings.nMoveRule > 0 &&
-          _posKeyHistory.length >= DB().ruleSettings.nMoveRule - 1) {
+          posKeyHistory.length >= DB().ruleSettings.nMoveRule - 1) {
         gameOverReason = GameOverReason.drawRule50;
       } else if (DB().ruleSettings.endgameNMoveRule <
               DB().ruleSettings.nMoveRule &&
           _isThreeEndgame &&
-          _posKeyHistory.length >= DB().ruleSettings.endgameNMoveRule - 1) {
+          posKeyHistory.length >= DB().ruleSettings.endgameNMoveRule - 1) {
         gameOverReason = GameOverReason.drawEndgameRule50;
       } else if (DB().ruleSettings.threefoldRepetitionRule) {
         gameOverReason = GameOverReason.drawThreefoldRepetition; // TODO: Sure?
@@ -223,14 +223,14 @@ class Position {
     ++st.pliesFromNull;
 
     if (_record != null && _record!.move.length > "-(1,2)".length) {
-      if (st.key != _posKeyHistory.lastF) {
-        _posKeyHistory.add(st.key);
+      if (st.key != posKeyHistory.lastF) {
+        posKeyHistory.add(st.key);
         if (DB().ruleSettings.threefoldRepetitionRule && _hasGameCycle) {
           _setGameOver(PieceColor.draw, GameOverReason.drawThreefoldRepetition);
         }
       }
     } else {
-      _posKeyHistory.clear();
+      posKeyHistory.clear();
     }
 
     return true;
@@ -239,7 +239,7 @@ class Position {
   /// hasGameCycle() tests if the position has a move which draws by repetition.
   bool get _hasGameCycle {
     int repetition = 0; // Note: Engine is global val
-    for (final i in _posKeyHistory) {
+    for (final i in posKeyHistory) {
       if (st.key == i) {
         repetition++;
         if (repetition == 3) {
@@ -565,14 +565,14 @@ class Position {
     }
 
     if (DB().ruleSettings.nMoveRule > 0 &&
-        _posKeyHistory.length >= DB().ruleSettings.nMoveRule) {
+        posKeyHistory.length >= DB().ruleSettings.nMoveRule) {
       _setGameOver(PieceColor.draw, GameOverReason.drawRule50);
       return true;
     }
 
     if (DB().ruleSettings.endgameNMoveRule < DB().ruleSettings.nMoveRule &&
         _isThreeEndgame &&
-        _posKeyHistory.length >= DB().ruleSettings.endgameNMoveRule) {
+        posKeyHistory.length >= DB().ruleSettings.endgameNMoveRule) {
       _setGameOver(PieceColor.draw, GameOverReason.drawEndgameRule50);
       return true;
     }
