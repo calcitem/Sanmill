@@ -122,6 +122,8 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
                 default:
                   break;
               }
+
+              MillController().disposed = false;
             },
           ),
         );
@@ -154,6 +156,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
+    MillController().disposed = true;
     MillController().engine.shutdown();
     MillController().animationController.dispose();
     super.dispose();

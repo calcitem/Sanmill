@@ -29,6 +29,8 @@ part of '../mill.dart';
 class MillController {
   static const _tag = "[Controller]";
 
+  bool disposed = false;
+
   late Game gameInstance;
   late Position position;
   late Engine engine;
@@ -140,8 +142,10 @@ class MillController {
 
         searched = true;
 
-        MillController().animationController.reset();
-        MillController().animationController.animateTo(1.0);
+        if (MillController().disposed == false) {
+          MillController().animationController.reset();
+          MillController().animationController.animateTo(1.0);
+        }
 
         // TODO: Do not use BuildContexts across async gaps.
         if (DB().generalSettings.screenReaderSupport) {
