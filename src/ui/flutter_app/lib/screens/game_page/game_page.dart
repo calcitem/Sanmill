@@ -123,7 +123,7 @@ class _Game extends StatelessWidget {
   void _showMoveModalBottomSheet(BuildContext context) => showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
-        builder: (_) => const _MoveOptionsModal(),
+        builder: (_) => _MoveOptionsModal(mainContext: context),
       );
 
   void _showInfoDialog(BuildContext context) => showDialog(

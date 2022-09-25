@@ -17,7 +17,10 @@
 part of 'game_page.dart';
 
 class _MoveOptionsModal extends StatelessWidget {
-  const _MoveOptionsModal({Key? key}) : super(key: key);
+  final BuildContext mainContext;
+
+  const _MoveOptionsModal({Key? key, required this.mainContext})
+      : super(key: key);
 
   void _showMoveList(BuildContext context) {
     Navigator.pop(context);
@@ -48,10 +51,10 @@ class _MoveOptionsModal extends StatelessWidget {
       switch (await MillController().engineToGo(context, isMoveNow: true)) {
         // TODO: Looking up a deactivated widget's ancestor is unsafe.
         case EngineResponseOK():
-          _showResult(context, force: true);
+          _showResult(mainContext, force: true);
           break;
         case EngineResponseHumanOK():
-          _showResult(context, force: false);
+          _showResult(mainContext, force: false);
           break;
         case EngineTimeOut():
           MillController().tip.showTip(strTimeout, snackBar: true);
