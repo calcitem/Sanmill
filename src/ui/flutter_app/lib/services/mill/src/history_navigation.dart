@@ -37,6 +37,9 @@ class HistoryNavigator {
   }) async {
     assert(navMode != HistoryNavMode.takeBackN || number != null);
 
+    MillController().isActive = false;
+    MillController().engine.stopSearching();
+
     if (pop) Navigator.pop(context);
 
     final controller = MillController();
