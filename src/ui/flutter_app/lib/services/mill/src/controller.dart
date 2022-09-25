@@ -115,6 +115,7 @@ class MillController {
     const tag = "[engineToGo]";
 
     bool searched = false;
+    bool loopIsFirst = true;
 
     final aiStr = S.of(context).ai;
     final thinkingStr = S.of(context).thinking;
@@ -163,12 +164,15 @@ class MillController {
 
       try {
         logger.v("$tag Searching..., isMoveNow: $isMoveNow");
-        final extMove = await controller.engine.search(moveNow: isMoveNow);
+
+        final extMove = await controller.engine
+            .search(moveNow: loopIsFirst ? isMoveNow : false);
 
         if (MillController().isActive == false) break;
 
         controller.gameInstance.doMove(extMove);
 
+        loopIsFirst = false;
         searched = true;
 
         if (MillController().disposed == false) {
