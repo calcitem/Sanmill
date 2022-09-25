@@ -33,8 +33,8 @@ part 'display_settings.g.dart';
 class DisplaySettings {
   const DisplaySettings({
     this.languageCode,
-    @Deprecated("Until other export options are implemented this setting shouldn't be used")
-        this.standardNotationEnabled = true,
+    // TODO: @Deprecated("Until other export options are implemented this setting shouldn't be used")
+    this.standardNotationEnabled = true,
     this.isPieceCountInHandShown = true,
     this.isNotationsShown = false,
     this.isHistoryNavigationToolbarShown = false,
