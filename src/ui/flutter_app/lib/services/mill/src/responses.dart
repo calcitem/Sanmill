@@ -80,6 +80,10 @@ class EngineTimeOut implements EngineResponse {
   const EngineTimeOut();
 }
 
+class EngineDummy implements EngineResponse {
+  const EngineDummy();
+}
+
 /// Custom response to throw when navigating the game history.
 abstract class HistoryResponse {
   static const tag = "[_HistoryResponse]";

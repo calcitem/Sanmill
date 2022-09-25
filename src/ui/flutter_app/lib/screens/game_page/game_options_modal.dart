@@ -19,23 +19,54 @@
 part of 'game_page.dart';
 
 class _GameOptionsModal extends StatelessWidget {
+  static const _tag = "[GameOptionsModal]";
+
   const _GameOptionsModal({Key? key}) : super(key: key);
+
+  onStartNewGameButtonPressed(BuildContext context) async {}
 
   @override
   Widget build(BuildContext context) {
+    late Timer timer;
+
     return GamePageDialog(
       semanticLabel: S.of(context).game,
       children: <Widget>[
         SimpleDialogOption(
           onPressed: () {
+            // TODO: When the AI is thinking,
+            //  restarting the game may cause two or three pieces to appear on the board,
+            //  sometimes it will keep displaying Thinking...
+
             Navigator.pop(context);
-            MillController().isActive = false;
+
             MillController().engine.stopSearching();
-            MillController().reset();
-            MillController()
-                .tip
-                .showTip(S.of(context).gameStarted, snackBar: true);
-            MillController().headIcons.showIcons();
+            MillController().isActive == false;
+
+            timer =
+                Timer.periodic(const Duration(microseconds: 100), (Timer t) {
+              if (MillController().isEngineGoing == false) {
+                MillController().reset();
+
+                MillController()
+                    .tip
+                    .showTip(S.of(context).gameStarted, snackBar: true);
+                MillController().headIcons.showIcons();
+
+                if (MillController().gameInstance.isAiToMove) {
+                  logger.i("$_tag New game, AI to move.");
+
+                  MillController().engineToGo(context, isMoveNow: false);
+
+                  MillController()
+                      .tip
+                      .showTip(S.of(context).tipPlace, snackBar: true);
+                }
+
+                MillController().headIcons.showIcons();
+                timer.cancel();
+              }
+            });
           },
           child: Text(S.of(context).newGame),
         ),

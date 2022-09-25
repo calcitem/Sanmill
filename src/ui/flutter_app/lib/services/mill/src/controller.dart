@@ -32,6 +32,7 @@ class MillController {
   bool disposed = false;
   bool isReady = false;
   bool isActive = false;
+  bool isEngineGoing = false;
 
   late Game gameInstance;
   late Position position;
@@ -123,12 +124,30 @@ class MillController {
     final gameMode = MillController().gameInstance.gameMode;
     bool isGameRunning = position.winner == PieceColor.nobody;
 
+    if (isMoveNow == true) {
+      if (MillController().gameInstance.isHumanToMove) {
+        return const EngineResponseSkip();
+      }
+
+      if (!MillController().recorder.isClean) {
+        return const EngineResponseSkip();
+      }
+    }
+
+    if (MillController().isEngineGoing == true) {
+      // TODO: No triggering scene found
+      logger.v("$tag engineToGo() is still running, skip.");
+      return const EngineResponseSkip();
+    } else {
+      MillController().isEngineGoing == true;
+    }
+
     MillController().isActive = true;
 
     // TODO
     logger.v("$tag engine type is $gameMode");
 
-    while ((gameInstance._isAiToMove &&
+    while ((gameInstance.isAiToMove &&
             (isGameRunning || DB().generalSettings.isAutoRestart)) &&
         MillController().isActive) {
       if (gameMode == GameMode.aiVsAi) {
@@ -167,9 +186,11 @@ class MillController {
         // TODO: Do not throw exception
       } on EngineTimeOut {
         logger.i("$tag Engine response type: timeout");
+        MillController().isEngineGoing = false;
         return const EngineTimeOut();
       } on EngineNoBestMove {
         logger.i("$tag Engine response type: nobestmove");
+        MillController().isEngineGoing = false;
         return const EngineNoBestMove();
       }
 
@@ -177,11 +198,13 @@ class MillController {
         if (DB().generalSettings.isAutoRestart == true) {
           MillController().reset();
         } else {
+          MillController().isEngineGoing = false;
           return const EngineResponseOK();
         }
       }
     }
 
+    MillController().isEngineGoing = false;
     return searched ? const EngineResponseOK() : const EngineResponseHumanOK();
   }
 

@@ -19,7 +19,7 @@ class TapHandler {
 
   bool get _isGameRunning =>
       MillController().position.winner == PieceColor.nobody;
-  bool get _isAiToMove => controller.gameInstance._isAiToMove;
+  bool get isAiToMove => controller.gameInstance.isAiToMove;
 
   bool get _isBoardEmpty =>
       MillController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
@@ -42,14 +42,14 @@ class TapHandler {
         _isBoardEmpty) {
       //controller.reset();
 
-      if (_isAiToMove) {
+      if (isAiToMove) {
         logger.i("$_tag AI is not thinking. AI is to move.");
 
         return await MillController().engineToGo(context, isMoveNow: false);
       }
     }
 
-    if (_isAiToMove) {
+    if (isAiToMove) {
       logger.i("$_tag AI's turn, skip tapping.");
       return const EngineResponseSkip();
     }

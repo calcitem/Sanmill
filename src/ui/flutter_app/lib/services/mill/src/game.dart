@@ -23,12 +23,12 @@ class Game {
 
   PieceColor sideToMove = PieceColor.white;
 
-  bool get _isAiToMove {
+  bool get isAiToMove {
     assert(sideToMove == PieceColor.white || sideToMove == PieceColor.black);
     return _isAi[sideToMove]!;
   }
 
-  bool get isHumanToMove => !_isAiToMove;
+  bool get isHumanToMove => !isAiToMove;
 
   int? focusIndex;
   int? blurIndex;
