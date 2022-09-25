@@ -31,6 +31,9 @@ class Board extends StatefulWidget {
 }
 
 class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
+  static const String _tag = "[board]";
+  late Timer timer;
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +45,10 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
     // TODO: [calcitem] It is better to omit.
     MillController().engine.startup();
+
+    timer = Timer.periodic(const Duration(microseconds: 100), (Timer t) {
+      _setReadyState();
+    });
 
     // TODO: Check _initAnimation() on branch master.
 
@@ -55,6 +62,16 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     // sqrt(1.618) = 1.272
     MillController().animation = Tween(begin: 1.27, end: 1.0)
         .animate(MillController().animationController);
+  }
+
+  _setReadyState() async {
+    logger.i("$_tag Check if need to set Ready state...");
+    if (!MillController().isReady && mounted) {
+      logger.i("$_tag Set Ready State...");
+      setState(() {});
+      MillController().isReady = true;
+      timer.cancel();
+    }
   }
 
   @override

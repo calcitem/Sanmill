@@ -26,6 +26,11 @@ class TapHandler {
       MillController().position.pieceOnBoardCount[PieceColor.black] == 0;
 
   Future<EngineResponse> onBoardTap(int sq) async {
+    if (!MillController().isReady) {
+      logger.i("$_tag Not ready, ignore tapping.");
+      return const EngineResponseSkip();
+    }
+
     if (gameMode == GameMode.testViaLAN) {
       logger.v("$_tag Engine type is no human, ignore tapping.");
       return const EngineResponseSkip();

@@ -30,6 +30,7 @@ class MillController {
   static const _tag = "[Controller]";
 
   bool disposed = false;
+  bool isReady = false;
 
   late Game gameInstance;
   late Position position;
