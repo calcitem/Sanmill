@@ -11,10 +11,3 @@ targets:
         enabled: true
         generate_for:
           - "**/models/**.dart"
-      freezed|freezed:
-        # don't generate for files
-        # - that end with ".f.dart" or ".g.dart"
-        # - are already generated files
-        generate_for:
-          - "**/**.f.dart"
-          - "**/**.g.dart"
