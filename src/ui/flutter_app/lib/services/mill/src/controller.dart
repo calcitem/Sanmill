@@ -194,12 +194,4 @@ class MillController {
   /// Starts a game export.
   static Future<void> export(BuildContext context) async =>
       ImportService.exportGame(context);
-
-  /// Disposes the current controller and shuts down the engine.
-  void dispose() {
-    engine.shutdown();
-
-    _initialized = false;
-    logger.i("$_tag Disposed");
-  }
 }
