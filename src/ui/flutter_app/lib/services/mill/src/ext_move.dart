@@ -129,7 +129,8 @@ class ExtMove {
   }
 
   void _checkLegal() {
-    if (move == "draw") {
+    // TODO: Which one?
+    if (move == "draw" || move == "(none)" || move == "none") {
       return;
     }
 
