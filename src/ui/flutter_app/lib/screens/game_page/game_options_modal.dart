@@ -29,6 +29,8 @@ class _GameOptionsModal extends StatelessWidget {
         SimpleDialogOption(
           onPressed: () {
             Navigator.pop(context);
+            MillController().isActive = false;
+            MillController().engine.stopSearching();
             MillController().reset();
             MillController()
                 .tip
