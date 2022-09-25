@@ -78,7 +78,7 @@ class Engine {
     return _platform.invokeMethod("isReady");
   }
 
-  FutureOr<bool> _isThinking() async {
+  FutureOr<bool> isThinking() async {
     if (!_isPlatformChannelAvailable) return false;
 
     final isThinking = await _platform.invokeMethod<bool>("isThinking");
@@ -91,8 +91,8 @@ class Engine {
   }
 
   Future<ExtMove> search({bool moveNow = false}) async {
-    if (await _isThinking()) {
-      await _stopSearching();
+    if (await isThinking()) {
+      await stopSearching();
     }
 
     if (!moveNow) {
@@ -175,7 +175,7 @@ class Engine {
     );
   }
 
-  Future<void> _stopSearching() async {
+  Future<void> stopSearching() async {
     _isActive = false;
     logger.w("$_tag Stop current thinking...");
     await _send("stop");

@@ -31,6 +31,7 @@ class MillController {
 
   bool disposed = false;
   bool isReady = false;
+  bool isActive = false;
 
   late Game gameInstance;
   late Position position;
@@ -82,7 +83,10 @@ class MillController {
   /// This method is suitable to use for starting a new game.
   void reset() {
     final gameModeBak = gameInstance.gameMode;
+
+    MillController().engine.stopSearching();
     _init();
+
     gameInstance.gameMode = gameModeBak;
   }
 
@@ -119,11 +123,14 @@ class MillController {
     final gameMode = MillController().gameInstance.gameMode;
     bool isGameRunning = position.winner == PieceColor.nobody;
 
+    MillController().isActive = true;
+
     // TODO
     logger.v("$tag engine type is $gameMode");
 
-    while (gameInstance._isAiToMove &&
-        (isGameRunning || DB().generalSettings.isAutoRestart)) {
+    while ((gameInstance._isAiToMove &&
+            (isGameRunning || DB().generalSettings.isAutoRestart)) &&
+        MillController().isActive) {
       if (gameMode == GameMode.aiVsAi) {
         MillController().tip.showTip(MillController().position.scoreString);
       } else {
