@@ -72,6 +72,12 @@ class Engine {
     await _platform.invokeMethod("shutdown");
   }
 
+  Future<String?> _isReady() async {
+    if (!_isPlatformChannelAvailable) return "";
+
+    return _platform.invokeMethod("isReady");
+  }
+
   FutureOr<bool> _isThinking() async {
     if (!_isPlatformChannelAvailable) return false;
 
