@@ -21,7 +21,6 @@ import 'package:sanmill/models/rule_settings.dart';
 import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/scaffold_messenger.dart';
 import 'package:sanmill/shared/settings/settings.dart';
@@ -351,7 +350,7 @@ class RuleSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     visitedRuleSettingsPage = true;
-    MillController().engine.shutdown();
+    //MillController().engine.shutdown();
 
     return Scaffold(
       backgroundColor: AppTheme.lightBackgroundColor,
