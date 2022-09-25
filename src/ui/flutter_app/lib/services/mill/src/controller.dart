@@ -146,6 +146,8 @@ class MillController {
         logger.v("$tag Searching..., isMoveNow: $isMoveNow");
         final extMove = await controller.engine.search(moveNow: isMoveNow);
 
+        if (MillController().isActive == false) break;
+
         controller.gameInstance.doMove(extMove);
 
         searched = true;
