@@ -63,7 +63,7 @@ class Engine {
   Future<void> shutdown() async {
     if (kIsWeb) return;
 
-    DB().listenGeneralSettings.removeListener(() => setOptions());
+    //DB().listenGeneralSettings.removeListener(() => setOptions());
 
     _isActive = false;
 
