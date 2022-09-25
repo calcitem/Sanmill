@@ -85,7 +85,7 @@ class ExtMove {
       case MoveType.place:
         return _squareToWmdNotation[to]!;
       case null:
-        assert(false);
+        // For example: draw
         return "";
     }
   }

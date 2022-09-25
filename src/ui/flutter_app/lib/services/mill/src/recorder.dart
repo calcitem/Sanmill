@@ -54,6 +54,7 @@ class GameRecorder extends PointedList<ExtMove> {
     }
 
     while (i <= index!) {
+      // TODO: When AI draw, print number but not move
       moveHistory.writeNumber(num++);
       buildStandardNotation();
       buildStandardNotation();
