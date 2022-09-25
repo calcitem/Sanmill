@@ -47,9 +47,9 @@ class _MoveListDialog extends StatelessWidget {
             moveHistoryText,
             textDirection: TextDirection.ltr,
             style: Theme.of(context).textTheme.headline6!.copyWith(
-                  color: AppTheme.gamePageActionSheetTextColor,
-                  fontWeight: FontWeight.normal,
-                ),
+                color: AppTheme.gamePageActionSheetTextColor,
+                fontWeight: FontWeight.normal,
+                fontFeatures: [const FontFeature.tabularFigures()]),
           ),
         ),
         actions: <Widget>[
