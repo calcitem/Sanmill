@@ -32,7 +32,6 @@ class Board extends StatefulWidget {
 
 class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
   static const String _tag = "[board]";
-  late Timer timer;
 
   @override
   void initState() {
@@ -43,10 +42,12 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
       visitedRuleSettingsPage = false;
     }
 
+    MillController().isReady == false;
+
     // TODO: [calcitem] It is better to omit.
     MillController().engine.startup();
 
-    timer = Timer.periodic(const Duration(microseconds: 100), (Timer t) {
+    Future.delayed(const Duration(microseconds: 100), () {
       _setReadyState();
     });
 
@@ -66,11 +67,10 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
   _setReadyState() async {
     logger.i("$_tag Check if need to set Ready state...");
-    if (!MillController().isReady && mounted) {
+    // TODO: v1 has "&& mounted && Config.settingsLoaded"
+    if (MillController().isReady == false) {
       logger.i("$_tag Set Ready State...");
-      setState(() {});
       MillController().isReady = true;
-      timer.cancel();
     }
   }
 
