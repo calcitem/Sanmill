@@ -57,11 +57,10 @@ class AboutPage extends StatelessWidget {
             return Container();
           } else {
             final PackageInfo packageInfo = data.data!;
-            if (kIsWeb || Platform.isWindows) {
-              version = packageInfo.version; // TODO
-
-            } else {
+            if (Platform.isIOS || Platform.isAndroid) {
               version = "${packageInfo.version} (${packageInfo.buildNumber})";
+            } else {
+              version = packageInfo.version;
             }
           }
           return SettingsListTile(
