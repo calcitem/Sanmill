@@ -110,7 +110,7 @@ class _Game extends StatelessWidget {
 
   void _showGameModalBottomSheet(BuildContext context) => showModalBottomSheet(
         context: context,
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppTheme.modalBottomSheetBackgroundColor,
         builder: (_) => const _GameOptionsModal(),
       );
 
@@ -119,10 +119,9 @@ class _Game extends StatelessWidget {
         MaterialPageRoute(builder: (_) => const GeneralSettingsPage()),
       );
 
-  // TODO: [Leptopoda] Move options into a theme
   void _showMoveModalBottomSheet(BuildContext context) => showModalBottomSheet(
         context: context,
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppTheme.modalBottomSheetBackgroundColor,
         builder: (_) => _MoveOptionsModal(mainContext: context),
       );
 

@@ -144,6 +144,7 @@ class AppTheme {
   static const Color blackPieceBorderColor = Color(0xFF222222);
   static const Color moveHistoryDialogBackgroundColor = Colors.transparent;
   static const Color infoDialogBackgroundColor = Colors.transparent;
+  static const Color modalBottomSheetBackgroundColor = Colors.transparent;
   static const Color gamePageActionSheetTextColor = Colors.yellow;
 
   /// Settings page
