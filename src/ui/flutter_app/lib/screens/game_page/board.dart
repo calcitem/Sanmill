@@ -106,18 +106,16 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
           child: GestureDetector(
             child: customPaint,
             onTapUp: (d) async {
-              // TODO: [Leptopoda] Directly work with the offset (square) and remove the abstraction like square or index
-              final index =
-                  indexFromPoint(pointFromOffset(d.localPosition, dimension));
-              final int? square = indexToSquare[index];
+              final int? square =
+                  squareFromPoint(pointFromOffset(d.localPosition, dimension));
 
               if (square == null) {
                 return logger.v(
-                  "${Board._tag} Tap not on a square $index (ignored).",
+                  "${Board._tag} Tap not on a square $square (ignored).",
                 );
               }
 
-              logger.v("${Board._tag} Tap on <$index>");
+              logger.v("${Board._tag} Tap on square <$square>");
 
               final strTimeout = S.of(context).timeout;
               final strNoBestMoveErr = S.of(context).error("No best move");

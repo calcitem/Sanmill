@@ -37,6 +37,11 @@ int indexFromPoint(Offset point) {
   return (point.dy * 7 + point.dx).toInt();
 }
 
+/// Calculates the square of the given point
+int? squareFromPoint(Offset point) {
+  return indexToSquare[indexFromPoint(point)];
+}
+
 /// Calculates the pressed point
 Offset pointFromOffset(Offset offset, double dimension) {
   final point = (offset - const Offset(boardMargin, boardMargin)) /
