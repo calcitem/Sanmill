@@ -46,20 +46,23 @@ class ImportService {
 
     if (data?.text == null) return;
 
-    import(data!.text!); // MillController().newRecorder = newHistory;
+    try {
+      import(data!.text!); // MillController().newRecorder = newHistory;
+    } catch (exception) {
+      final tip = S.of(context).cannotImport(data!.text!);
+      MillController().tip.showTip(tip, snackBar: true);
+      return;
+    }
 
     await HistoryNavigator.takeBackAll(context, pop: false);
 
     if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
         const HistoryOK()) {
       MillController().tip.showTip(S.of(context).gameImported, snackBar: true);
-      MillController().headIcons.showIcons();
     } else {
-      // TODO: Show importFailedStr
-      //final tip = S.of(context).cannotImport(e.source as String);
-      final tip = S.of(context).cannotImport("");
+      final tip = S.of(context).cannotImport(HistoryNavigator.importFailedStr);
       MillController().tip.showTip(tip, snackBar: true);
-      MillController().headIcons.showIcons();
+      HistoryNavigator.importFailedStr = "";
     }
   }
 

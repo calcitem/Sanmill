@@ -27,6 +27,8 @@ class HistoryNavigator {
 
   static const _tag = "[HistoryNavigator]";
 
+  static String importFailedStr = "";
+
   static bool _isGoingToHistory = false;
 
   static Future<HistoryResponse?> _gotoHistory(
@@ -75,7 +77,7 @@ class HistoryNavigator {
           MillController().headIcons.showIcons();
         }
         break;
-      case HistoryRange():
+      case HistoryRange(): // TODO: Impossible resp
         rootScaffoldMessengerKey.currentState!
             .showSnackBarClear(S.of(context).atEnd);
         logger.i(HistoryRange);
@@ -93,7 +95,7 @@ class HistoryNavigator {
 
     _isGoingToHistory = false;
 
-    return const HistoryOK();
+    return resp;
   }
 
   static Future<HistoryResponse?> takeBack(BuildContext context,
@@ -178,6 +180,7 @@ class HistoryNavigator {
       if (MillController().gameInstance.doMove(extMove) == false) {
         if (MillController().newRecorder != null) {
           MillController().newRecorder!.prune();
+          importFailedStr = extMove.notation;
           ret = false;
         }
       }
