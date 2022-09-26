@@ -26,6 +26,7 @@ import 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/mill/mill.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/custom_spacer.dart';
 import 'package:sanmill/shared/game_toolbar/game_toolbar.dart';

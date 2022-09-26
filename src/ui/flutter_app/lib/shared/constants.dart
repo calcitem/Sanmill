@@ -73,4 +73,6 @@ class Constants {
   static const screenThreshold = 800;
   static bool get isSmallScreen => _windowHeight <= screenThreshold;
   static bool get isLargeScreen => !isSmallScreen;
+
+  static const int topSkillLevel = 30;
 }

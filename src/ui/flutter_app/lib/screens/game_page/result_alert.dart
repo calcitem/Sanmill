@@ -40,7 +40,8 @@ class GameResultAlert extends StatelessWidget {
 
     final String dialogTitle = _gameResult!.winString(context);
 
-    final bool isTopLevel = DB().generalSettings.skillLevel == 30; // TODO: 30
+    final bool isTopLevel =
+        DB().generalSettings.skillLevel == Constants.topSkillLevel;
 
     final reason = position.gameOverReason?.getName(context, position.winner) ??
         S.of(context).gameOverUnknownReason;

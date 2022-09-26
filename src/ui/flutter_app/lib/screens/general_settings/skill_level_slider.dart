@@ -34,8 +34,8 @@ class _SkillLevelSlider extends StatelessWidget {
           return Slider(
             value: generalSettings.skillLevel.toDouble(),
             min: 1,
-            max: 30,
-            divisions: 29,
+            max: Constants.topSkillLevel.toDouble(),
+            divisions: Constants.topSkillLevel - 1,
             label: generalSettings.skillLevel.toString(),
             onChanged: (value) {
               DB().generalSettings =
