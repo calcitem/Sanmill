@@ -119,9 +119,8 @@ class TapHandler {
                 .pieceOnBoardCount[controller.gameInstance.sideToMove];
             if (MillController().position.phase == Phase.moving &&
                 DB().ruleSettings.mayFly &&
-                (pieceOnBoardCount == DB().ruleSettings.flyPieceCount ||
-                    pieceOnBoardCount == 3)) {
-              // TODO: [Calcitem, Leptopoda] Why is the [DB().ruleSettings.flyPieceCount] not respected?
+                (pieceOnBoardCount! <= DB().ruleSettings.flyPieceCount &&
+                    pieceOnBoardCount >= 3)) {
               logger.v("$_tag May fly.");
               showTip(S.of(context).tipCanMoveToAnyPoint, snackBar: true);
             } else {
