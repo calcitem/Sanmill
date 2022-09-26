@@ -38,60 +38,6 @@ class _PiecePaintParam {
     required this.animated,
     required this.diameter,
   });
-
-  Color _getAverageColor(Color a, Color b) {
-    return Color.fromARGB(
-      (a.alpha + b.alpha) ~/ 2,
-      (a.alpha + b.red) ~/ 2,
-      (a.alpha + b.green) ~/ 2,
-      (a.alpha + b.blue) ~/ 2,
-    );
-  }
-
-  Color _getTranslucentColor(Color c, double opacity) {
-    return c.withOpacity(opacity);
-  }
-
-  // TODO: [Leptopoda] Consider putting this into the PieceColorExtension
-  /// Gets the border color of the current piece type.
-  Color get borderColor {
-    switch (piece) {
-      case PieceColor.white:
-        return AppTheme.whitePieceBorderColor;
-      case PieceColor.black:
-        return AppTheme.blackPieceBorderColor;
-      case PieceColor.ban:
-        return _getTranslucentColor(
-            _getAverageColor(
-                AppTheme.whitePieceBorderColor, AppTheme.blackPieceBorderColor),
-            0); // Fully transparent
-      default:
-        throw Error();
-    }
-  }
-
-  // TODO: [Leptopoda] Consider putting this into the PieceColorExtension
-  /// Gets the color of the current piece
-  Color get pieceColor {
-    final colorSettings = DB().colorSettings;
-    switch (piece) {
-      case PieceColor.white:
-        return colorSettings.whitePieceColor;
-      case PieceColor.black:
-        return colorSettings.blackPieceColor;
-      case PieceColor.ban:
-        return _getTranslucentColor(
-            _getAverageColor(
-                colorSettings.whitePieceColor, colorSettings.blackPieceColor),
-            0); // Fully transparent
-      default:
-        throw Error();
-    }
-  }
-
-  // TODO: [Leptopoda] Consider putting this into the PieceColorExtension
-  /// Gets the color for the blurred position
-  Color get blurPositionColor => pieceColor.withOpacity(0.1);
 }
 
 /// Custom Piece Painter
@@ -163,7 +109,7 @@ class PiecePainter extends CustomPainter {
             piece.piece == PieceColor.white ||
             piece.piece == PieceColor.ban,
       );
-      blurPositionColor = piece.blurPositionColor;
+      blurPositionColor = piece.piece.blurPositionColor;
 
       final pieceRadius = pieceWidth / 2;
       final pieceInnerRadius = pieceRadius * 0.99;
@@ -172,14 +118,14 @@ class PiecePainter extends CustomPainter {
       final animatedPieceInnerRadius = animatedPieceRadius * 0.99;
 
       // Draw Border of Piece
-      paint.color = piece.borderColor;
+      paint.color = piece.piece.borderColor;
       canvas.drawCircle(
         piece.pos,
         piece.animated ? animatedPieceRadius : pieceRadius,
         paint,
       );
       // Draw the piece
-      paint.color = piece.pieceColor;
+      paint.color = piece.piece.pieceColor;
       canvas.drawCircle(
         piece.pos,
         piece.animated ? animatedPieceInnerRadius : pieceInnerRadius,

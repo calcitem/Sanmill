@@ -20,6 +20,19 @@ int abs(int value) => value > 0 ? value : -value;
 
 enum PieceColor { none, white, black, ban, nobody, draw }
 
+Color getAverageColor(Color a, Color b) {
+  return Color.fromARGB(
+    (a.alpha + b.alpha) ~/ 2,
+    (a.alpha + b.red) ~/ 2,
+    (a.alpha + b.green) ~/ 2,
+    (a.alpha + b.blue) ~/ 2,
+  );
+}
+
+Color getTranslucentColor(Color c, double opacity) {
+  return c.withOpacity(opacity);
+}
+
 extension PieceColorExtension on PieceColor {
   String get string {
     switch (this) {
@@ -153,6 +166,41 @@ extension PieceColorExtension on PieceColor {
         return FluentIcons.handshake_24_regular;
     }
   }
+
+  Color get pieceColor {
+    final colorSettings = DB().colorSettings;
+    switch (this) {
+      case PieceColor.white:
+        return colorSettings.whitePieceColor;
+      case PieceColor.black:
+        return colorSettings.blackPieceColor;
+      case PieceColor.ban:
+        return getTranslucentColor(
+            getAverageColor(
+                colorSettings.whitePieceColor, colorSettings.blackPieceColor),
+            0); // Fully transparent
+      default:
+        throw Error();
+    }
+  }
+
+  Color get borderColor {
+    switch (this) {
+      case PieceColor.white:
+        return AppTheme.whitePieceBorderColor;
+      case PieceColor.black:
+        return AppTheme.blackPieceBorderColor;
+      case PieceColor.ban:
+        return getTranslucentColor(
+            getAverageColor(
+                AppTheme.whitePieceBorderColor, AppTheme.blackPieceBorderColor),
+            0); // Fully transparent
+      default:
+        throw Error();
+    }
+  }
+
+  Color get blurPositionColor => pieceColor.withOpacity(0.1);
 }
 
 enum Phase { ready, placing, moving, gameOver }
