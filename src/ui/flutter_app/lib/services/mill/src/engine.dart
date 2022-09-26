@@ -20,7 +20,6 @@ class Engine {
   Engine();
 
   static const _platform = MethodChannel("com.calcitem.sanmill/engine");
-  bool _isActive = false;
 
   bool get _isPlatformChannelAvailable =>
       !kIsWeb && (Platform.isAndroid || Platform.isWindows);
@@ -58,11 +57,6 @@ class Engine {
 
   Future<void> shutdown() async {
     if (kIsWeb) return;
-
-    //DB().listenGeneralSettings.removeListener(() => setOptions());
-
-    _isActive = false;
-
     if (!_isPlatformChannelAvailable) return;
 
     await _platform.invokeMethod("shutdown");
@@ -96,7 +90,6 @@ class Engine {
     if (!moveNow) {
       await _send(_getPositionFen());
       await _send("go");
-      _isActive = true;
     } else {
       logger.v("$_tag Move now");
     }
@@ -147,9 +140,7 @@ class Engine {
       // Because if the user sets the search depth to be very deep, but his phone performance is low, it may timeout.
       // But we have to test timeout in devMode to identify anomalies under shallow search.
       // What method is user-friendly is to be discussed.
-      // TODO: [Leptopoda] Seems like is isActive only checked here and only together with the DevMode.
-      // we might be able to remove this
-      if (EnvironmentConfig.devMode && _isActive) {
+      if (EnvironmentConfig.devMode) {
         throw TimeoutException("$_tag waitResponse timeout.");
       }
       return null;
@@ -174,7 +165,6 @@ class Engine {
   }
 
   Future<void> stopSearching() async {
-    _isActive = false;
     logger.w("$_tag Stop current thinking...");
     await _send("stop");
   }
