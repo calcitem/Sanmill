@@ -16,7 +16,7 @@
 
 part of '../painters.dart';
 
-/// Pice Information
+/// Piece Information
 ///
 /// Holds parameters needed to paint each piece.
 @immutable
@@ -24,7 +24,7 @@ class _PiecePaintParam {
   /// The color of the piece.
   final PieceColor piece;
 
-  /// The position the pice is placed at.
+  /// The position the piece is placed at.
   ///
   /// This represents the final position on the canvas.
   /// To extract this information from the board index use [pointFromIndex].
