@@ -760,7 +760,6 @@ class Position {
     return true;
   }
 
-  // TODO: [Calcitem] Verify this is correct
   @visibleForTesting
   String? get movesSinceLastRemove {
     final recorder = MillController().recorder;
