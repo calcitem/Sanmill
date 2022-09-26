@@ -93,6 +93,11 @@ class PointedList<E> extends DelegatingList<E> {
   /// Check if there is still part that can be pruned.
   bool get isClean => globalIterator.index == _l.length - 1;
 
+  /// Whether the list has another element previous to the iterator.
+  ///
+  /// This has the benefit of not altering the iterator while still being able to check it.
+  bool get hasPrevious => globalIterator.hasPrevious;
+
   /// Returns a new BidirectionalIterator that allows iterating the elements of this Iterable.
   ///
   /// Each time bidirectionalIterator is read, it returns a new iterator, which can be used to iterate through all the elements again. The iterators of the same iterable can be stepped through independently, but should return the same elements in the same order, as long as the underlying collection isn't changed.
