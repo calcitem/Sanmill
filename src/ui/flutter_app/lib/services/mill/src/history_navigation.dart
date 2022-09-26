@@ -247,15 +247,14 @@ extension HistoryNavModeExtension on HistoryNavMode {
       return;
     }
 
+    // Multiplexing sound resources to save space.
     switch (this) {
       case HistoryNavMode.stepForwardAll:
       case HistoryNavMode.stepForward:
-        // TODO: Uses this sound temporarily
         return Audios().playTone(Sound.place);
       case HistoryNavMode.takeBackAll:
       case HistoryNavMode.takeBackN:
       case HistoryNavMode.takeBack:
-        // TODO: Uses this sound temporarily
         return Audios().playTone(Sound.remove);
     }
   }
