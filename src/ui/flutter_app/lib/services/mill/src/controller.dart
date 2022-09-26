@@ -156,7 +156,6 @@ class MillController {
       } else {
         MillController().tip.showTip(thinkingStr);
 
-        // TODO: Show snake bar immediately when tapping
         showSnakeBarHumanNotation(humanStr);
       }
 
@@ -186,8 +185,6 @@ class MillController {
             CustomSnackBar("$aiStr: ${extMove.notation}"),
           );
         }
-
-        // TODO: Do not throw exception
       } on EngineTimeOut {
         logger.i("$tag Engine response type: timeout");
         MillController().isEngineGoing = false;

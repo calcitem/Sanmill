@@ -16,7 +16,6 @@
 
 part of '../mill.dart';
 
-// TODO: [calcitem] Test AI Vs. AI when the refactoring is complete.
 class Engine {
   Engine();
 
@@ -29,9 +28,6 @@ class Engine {
   static const _tag = "[engine]";
 
   Future<void> startup() async {
-    // TODO: This may call setOptions() many times.
-    //DB().listenGeneralSettings.addListener(() => setOptions());
-
     await setOptions();
 
     if (!_isPlatformChannelAvailable) return;

@@ -44,7 +44,6 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
     MillController().isReady == false;
 
-    // TODO: [calcitem] It is better to omit.
     MillController().engine.startup();
 
     Future.delayed(const Duration(microseconds: 100), () {
