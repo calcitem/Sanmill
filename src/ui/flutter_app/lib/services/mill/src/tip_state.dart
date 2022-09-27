@@ -19,10 +19,10 @@ part of '../mill.dart';
 class HeaderTipState with ChangeNotifier {
   HeaderTipState();
 
-  String? _message;
+  late String _message;
   bool showSnackBar = false;
 
-  String? get message => _message;
+  String get message => _message;
 
   void showTip(String tip, {bool snackBar = false}) {
     logger.v("[tip] $tip");

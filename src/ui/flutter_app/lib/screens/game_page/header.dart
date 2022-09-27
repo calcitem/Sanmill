@@ -122,30 +122,35 @@ class HeaderTip extends StatefulWidget {
 }
 
 class HeaderStateTip extends State<HeaderTip> {
-  String? message;
+  final ValueNotifier<String> _messageNotifier = ValueNotifier("");
 
   void showTip() {
     final tip = MillController().tip;
 
-    if (tip.showSnackBar && tip.message != null) {
-      rootScaffoldMessengerKey.currentState!.showSnackBarClear(tip.message!);
+    if (tip.showSnackBar) {
+      rootScaffoldMessengerKey.currentState!.showSnackBarClear(tip.message);
     }
-    setState(() => message = tip.message);
+
+    _messageNotifier.value = tip.message;
   }
 
   @override
   void initState() {
-    MillController().tip.addListener(showTip);
     super.initState();
+    MillController().tip.addListener(showTip);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      message ?? S.of(context).welcome,
-      maxLines: 1,
-      style: TextStyle(color: DB().colorSettings.messageColor),
-    );
+    return ValueListenableBuilder(
+        valueListenable: _messageNotifier,
+        builder: (BuildContext context, String value, Widget? child) {
+          return Text(
+            value == "" ? S.of(context).welcome : value,
+            maxLines: 1,
+            style: TextStyle(color: DB().colorSettings.messageColor),
+          );
+        });
   }
 
   @override
@@ -164,31 +169,39 @@ class HeaderIcons extends StatefulWidget {
 }
 
 class HeaderStateIcons extends State<HeaderIcons> {
+  final ValueNotifier<IconData> _iconDataNotifier =
+      ValueNotifier(MillController().gameInstance.sideToMove.icon);
+
   void showIcons() {
-    setState(() {});
+    _iconDataNotifier.value = MillController().gameInstance.sideToMove.icon;
   }
 
   @override
   void initState() {
-    MillController().headIcons.addListener(showIcons);
     super.initState();
+    MillController().headIcons.addListener(showIcons);
   }
 
   @override
   Widget build(BuildContext context) {
-    return IconTheme(
-      data: IconThemeData(
-        color: DB().colorSettings.messageColor,
-      ),
-      child: Row(
-        key: const Key("HeaderIconRow"),
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Icon(MillController().gameInstance.gameMode.leftHeaderIcon),
-          Icon(MillController().gameInstance.sideToMove.icon),
-          Icon(MillController().gameInstance.gameMode.rightHeaderIcon),
-        ],
-      ),
+    return ValueListenableBuilder(
+      valueListenable: _iconDataNotifier,
+      builder: (BuildContext context, IconData value, Widget? child) {
+        return IconTheme(
+          data: IconThemeData(
+            color: DB().colorSettings.messageColor,
+          ),
+          child: Row(
+            key: const Key("HeaderIconRow"),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(MillController().gameInstance.gameMode.leftHeaderIcon),
+              Icon(value),
+              Icon(MillController().gameInstance.gameMode.rightHeaderIcon),
+            ],
+          ),
+        );
+      },
     );
   }
 
