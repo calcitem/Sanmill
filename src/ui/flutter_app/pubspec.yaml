@@ -19,6 +19,7 @@ dependencies:
   device_info_plus_platform_interface: ^3.0.0
   double_back_to_close_app: ^2.1.0
   feedback: ^2.5.0
+  filesystem_picker: ^3.0.0
   fluentui_system_icons: ^1.1.178
   flutter:
     sdk: flutter
