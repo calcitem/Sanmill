@@ -33,22 +33,22 @@ part 'color_settings.g.dart';
 @immutable
 class ColorSettings {
   const ColorSettings({
-    this.boardLineColor = const Color(0x996D000D),
-    this.darkBackgroundColor = UIColors.crusoe,
+    this.boardLineColor = UIColors.rosewood50,
+    this.darkBackgroundColor = UIColors.spruce,
     this.boardBackgroundColor = UIColors.burlyWood,
-    this.whitePieceColor = UIColors.white,
-    this.blackPieceColor = const Color(0xFF000000),
+    this.whitePieceColor = Colors.white,
+    this.blackPieceColor = Colors.black,
     this.pieceHighlightColor = Colors.red,
     this.messageColor = Colors.white,
-    this.drawerColor = Colors.white,
+    this.drawerColor = UIColors.seashell50,
     @Deprecated("Use [drawerColor] instead.")
-        this.drawerBackgroundColor = const Color(0x80EDF0F2),
-    this.drawerTextColor = UIColors.nearlyBlack,
-    this.drawerHighlightItemColor = const Color(0x3309f911),
+        this.drawerBackgroundColor = UIColors.seashell50,
+    this.drawerTextColor = UIColors.mediumJungleGreen,
+    this.drawerHighlightItemColor = UIColors.highlighterGreen20,
     this.mainToolbarBackgroundColor = UIColors.burlyWood,
-    this.mainToolbarIconColor = const Color(0x99461220),
+    this.mainToolbarIconColor = UIColors.cocoaBean60,
     this.navigationToolbarBackgroundColor = UIColors.burlyWood,
-    this.navigationToolbarIconColor = const Color(0x99461220),
+    this.navigationToolbarIconColor = UIColors.cocoaBean60,
   });
 
   @JsonKey(

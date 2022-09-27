@@ -140,20 +140,20 @@ class AppTheme {
   static const double drawerItemPaddingSmallScreen = 3.0;
 
   /// Game page
-  static const Color whitePieceBorderColor = Color(0xFF660000);
-  static const Color blackPieceBorderColor = Color(0xFF222222);
+  static const Color whitePieceBorderColor = UIColors.rosewood;
+  static const Color blackPieceBorderColor = UIColors.darkJungleGreen;
   static const Color moveHistoryDialogBackgroundColor = Colors.transparent;
   static const Color infoDialogBackgroundColor = Colors.transparent;
   static const Color modalBottomSheetBackgroundColor = Colors.transparent;
   static const Color gamePageActionSheetTextColor = Colors.yellow;
 
   /// Settings page
-  static const Color _listItemDividerColor = Color(0x336D000D);
-  static const Color _switchListTileTitleColor = UIColors.crusoe;
+  static const Color _listItemDividerColor = UIColors.rosewood20;
+  static const Color _switchListTileTitleColor = UIColors.spruce;
   static const Color _cardColor = UIColors.floralWhite;
-  static const Color settingsHeaderTextColor = UIColors.crusoe;
+  static const Color settingsHeaderTextColor = UIColors.spruce;
   static const Color lightBackgroundColor = UIColors.papayaWhip;
-  static const Color listTileSubtitleColor = Color(0x99461220);
+  static const Color listTileSubtitleColor = UIColors.cocoaBean60;
 
   /// Help page
   static const Color helpTextColor = UIColors.burlyWood;
@@ -162,9 +162,9 @@ class AppTheme {
   static const Color aboutPageBackgroundColor = UIColors.papayaWhip;
 
   /// Drawer
-  static const Color drawerDividerColor = Color(0x993A5160);
-  static const Color drawerBoxerShadowColor = Color(0x993A5160);
-  // TODO: [Leptopoda] Actually store the theme and not the color
-  static const Color drawerAnimationIconColor = Colors.white;
-  static const Color drawerSplashColor = Color(0X1A9E9E9E);
+  static const Color drawerDividerColor = UIColors.riverBed60;
+  static const Color drawerBoxerShadowColor = UIColors.riverBed60;
+
+  static const Color drawerAnimationIconColor = UIColors.seashell;
+  static const Color drawerSplashColor = UIColors.starDust10;
 }

@@ -18,29 +18,63 @@ import 'package:flutter/material.dart';
 
 /// Color Palate
 ///
-/// Gathered from  https://www.htmlcsscolor.com
+/// Gathered from:
+/// https://www.htmlcsscolor.com
+/// https://colors.artyclick.com/color-name-finder/
+///
+/// 100% — FF
+/// 95% — F2
+/// 90% — E6
+/// 85% — D9
+/// 80% — CC
+/// 75% — BF
+/// 70% — B3
+/// 65% — A6
+/// 60% — 99
+/// 55% — 8C
+/// 50% — 80
+/// 45% — 73
+/// 40% — 66
+/// 35% — 59
+/// 30% — 4D
+/// 25% — 40
+/// 20% — 33
+/// 15% — 26
+/// 10% — 1A
+/// 5% — 0D
+/// 0% — 00
+
 class UIColors {
   const UIColors._();
 
-  static const Color white = Color(0xFFFFFFFF);
-  static const Color notWhite = Color(0xFFEDF0F2);
-  static const Color nearlyWhite = Color(0xFFFEFEFE);
+  static const Color burlyWood = Color(0xFFDEB887);
+
+  static const Color cocoaBean = Color(0xFF481C1C);
+  static const Color cocoaBean60 = Color(0x99481C1C);
+
+  static const Color darkJungleGreen = Color(0xFF1A2421);
+
   static const Color floralWhite = Color(0xFFFFFAF0);
 
-  static const Color nearlyBlack = Color(0xFF213333);
+  static const Color highlighterGreen = Color(0xFF1BFC06);
+  static const Color highlighterGreen20 = Color(0x331BFC06);
 
-  static const Color grey = Color(0xFF3A5160);
-  static const Color darkGrey = Color(0xFF313A44);
+  static const Color mediumJungleGreen = Color(0xFF1C352D);
 
-  static const Color burlyWood = Color(0xFFDEB887);
-  static const Color cottonCandy = Color(0XFFFFBDDB);
-  static const Color turkishRose = Color(0XFFA36DAD);
-  static const Color crusoe = Color(0xFF165B31);
-  static const Color forestGreen = Color(0xFF228B22);
-  static const Color freeSpeechGreen = Color(0xFF09F911);
-  static const Color oasis = Color(0XFFFDEFC2);
   static const Color papayaWhip = Color(0xFFFFEFD5);
-  static const Color stormGrey = Color(0XFF777983);
-  static const Color turmeric = Color(0XFFBACA44);
-  static const Color lavenderBlush = Color(0XFFFFF0F6);
+
+  static const Color riverBed = Color(0xFF434C59);
+  static const Color riverBed60 = Color(0x99434C59);
+
+  static const Color rosewood = Color(0xFF65000B);
+  static const Color rosewood20 = Color(0x3365000B);
+  static const Color rosewood50 = Color(0x8065000B);
+
+  static const Color seashell = Color(0xFFF1F1F1);
+  static const Color seashell50 = Color(0x80F1F1F1);
+
+  static const Color spruce = Color(0xFF0A5F38);
+
+  static const Color starDust = Color(0xFF9F9F9C);
+  static const Color starDust10 = Color(0x1A9F9F9C);
 }
