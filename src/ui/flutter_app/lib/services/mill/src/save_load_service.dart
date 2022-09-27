@@ -22,21 +22,22 @@ part of '../mill.dart';
 class LoadService {
   static const _tag = "[Loader]";
 
-  const LoadService._();
-
-  static getFilenameByDateTime() {
-    DateTime dateTime = DateTime.now();
-    String filename = dateTime.toString();
-    filename =
-        filename.replaceAll(" ", "_").replaceAll(":", "-").replaceAll(".", "_");
-    return "/$filename.pgn";
-  }
+  LoadService._();
 
   /// Retrieves the file path.
-  static Future<String> getFilePath() async {
+  static Future<String?> getFilePath(BuildContext context) async {
     Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
     String appDocumentsPath = appDocumentsDirectory.path;
-    String filePath = appDocumentsPath + getFilenameByDateTime();
+
+    var resultLabel = await _showTextInputDialog(context);
+
+    if (resultLabel == null) return null;
+
+    if (resultLabel.endsWith(".pgn") == false) {
+      resultLabel = "$resultLabel.pgn";
+    }
+
+    String filePath = "$appDocumentsPath/$resultLabel";
 
     return filePath;
   }
@@ -72,7 +73,11 @@ class LoadService {
       return;
     }
 
-    File file = File(await getFilePath());
+    final filename = await getFilePath(context);
+
+    if (filename == null) return;
+
+    File file = File(filename);
 
     file.writeAsString(MillController().recorder.moveHistoryText!);
 
@@ -128,5 +133,35 @@ class LoadService {
     }
 
     Navigator.pop(context);
+  }
+
+  static Future<String?> _showTextInputDialog(BuildContext context) async {
+    var textFieldController = TextEditingController();
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('File Name'), // TODO: l10n
+          content: TextField(
+            controller: textFieldController,
+            decoration: const InputDecoration(
+              suffixText: ".pgn",
+              enabled: true,
+            ),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text("Close"), // TODO: l10n
+              onPressed: () => Navigator.pop(context),
+            ),
+            ElevatedButton(
+              child: const Text('OK'), // TODO: l10n
+              onPressed: () => Navigator.pop(context, textFieldController.text),
+            ),
+          ],
+        );
+      },
+      barrierDismissible: false,
+    );
   }
 }
