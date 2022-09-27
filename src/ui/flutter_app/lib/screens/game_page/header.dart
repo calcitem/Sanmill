@@ -118,14 +118,14 @@ class HeaderTip extends StatefulWidget {
   const HeaderTip({Key? key}) : super(key: key);
 
   @override
-  HeaderStateTip createState() => HeaderStateTip();
+  HeaderTipState createState() => HeaderTipState();
 }
 
-class HeaderStateTip extends State<HeaderTip> {
+class HeaderTipState extends State<HeaderTip> {
   final ValueNotifier<String> _messageNotifier = ValueNotifier("");
 
   void showTip() {
-    final tip = MillController().tip;
+    final tip = MillController().headerTipNotifier;
 
     if (tip.showSnackBar) {
       rootScaffoldMessengerKey.currentState!.showSnackBarClear(tip.message);
@@ -137,7 +137,7 @@ class HeaderStateTip extends State<HeaderTip> {
   @override
   void initState() {
     super.initState();
-    MillController().tip.addListener(showTip);
+    MillController().headerTipNotifier.addListener(showTip);
   }
 
   @override
@@ -155,7 +155,7 @@ class HeaderStateTip extends State<HeaderTip> {
 
   @override
   void dispose() {
-    MillController().tip.removeListener(showTip);
+    MillController().headerTipNotifier.removeListener(showTip);
     super.dispose();
   }
 }
@@ -179,7 +179,7 @@ class HeaderStateIcons extends State<HeaderIcons> {
   @override
   void initState() {
     super.initState();
-    MillController().headIcons.addListener(showIcons);
+    MillController().headerIconsNotifier.addListener(showIcons);
   }
 
   @override
@@ -207,7 +207,7 @@ class HeaderStateIcons extends State<HeaderIcons> {
 
   @override
   void dispose() {
-    MillController().headIcons.removeListener(showIcons);
+    MillController().headerIconsNotifier.removeListener(showIcons);
     super.dispose();
   }
 }

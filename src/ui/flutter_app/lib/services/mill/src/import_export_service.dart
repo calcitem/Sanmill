@@ -50,7 +50,7 @@ class ImportService {
       import(data!.text!); // MillController().newRecorder = newHistory;
     } catch (exception) {
       final tip = S.of(context).cannotImport(data!.text!);
-      MillController().tip.showTip(tip, snackBar: true);
+      MillController().headerTipNotifier.showTip(tip, snackBar: true);
       return;
     }
 
@@ -58,10 +58,12 @@ class ImportService {
 
     if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
         const HistoryOK()) {
-      MillController().tip.showTip(S.of(context).gameImported, snackBar: true);
+      MillController()
+          .headerTipNotifier
+          .showTip(S.of(context).gameImported, snackBar: true);
     } else {
       final tip = S.of(context).cannotImport(HistoryNavigator.importFailedStr);
-      MillController().tip.showTip(tip, snackBar: true);
+      MillController().headerTipNotifier.showTip(tip, snackBar: true);
       HistoryNavigator.importFailedStr = "";
     }
   }

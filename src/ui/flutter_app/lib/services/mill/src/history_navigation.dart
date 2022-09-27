@@ -46,11 +46,11 @@ class HistoryNavigator {
 
     final controller = MillController();
 
-    MillController().tip.showTip(S
+    MillController().headerTipNotifier.showTip(S
         .of(context)
         .atEnd); // TODO: Move to the end of this function. Or change to S.of(context).waiting?
 
-    MillController().headIcons.showIcons(); // TODO: See above.
+    MillController().headerIconsNotifier.showIcons(); // TODO: See above.
 
     if (_isGoingToHistory) {
       logger.i(
@@ -70,11 +70,11 @@ class HistoryNavigator {
       case HistoryOK():
         final lastEffectiveMove = controller.recorder.current;
         if (lastEffectiveMove != null) {
-          MillController().tip.showTip(
+          MillController().headerTipNotifier.showTip(
                 S.of(context).lastMove(lastEffectiveMove.notation),
                 snackBar: true,
               );
-          MillController().headIcons.showIcons();
+          MillController().headerIconsNotifier.showIcons();
         }
         break;
       case HistoryRange(): // TODO: Impossible resp

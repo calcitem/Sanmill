@@ -41,7 +41,7 @@ part 'src/controller.dart';
 part 'src/engine.dart';
 part 'src/ext_move.dart';
 part 'src/game.dart';
-part 'src/header_icons_state.dart';
+part 'src/header_icons_notifier.dart';
 part 'src/history_navigation.dart';
 part 'src/import_export_service.dart';
 part 'src/mills.dart';
@@ -49,7 +49,7 @@ part 'src/position.dart';
 part 'src/recorder.dart';
 part 'src/responses.dart';
 part 'src/tap_handler.dart';
-part 'src/tip_state.dart';
+part 'src/tip_notifier.dart';
 part 'src/types.dart';
 part 'src/zobrist.dart';
 

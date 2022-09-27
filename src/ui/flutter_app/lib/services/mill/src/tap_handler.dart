@@ -9,7 +9,7 @@ class TapHandler {
 
   final controller = MillController();
   final gameMode = MillController().gameInstance.gameMode;
-  final showTip = MillController().tip.showTip;
+  final showTip = MillController().headerTipNotifier.showTip;
 
   //final position = MillController().position;
 
@@ -240,7 +240,7 @@ class TapHandler {
 
     controller.gameInstance.sideToMove = MillController().position.sideToMove;
 
-    MillController().headIcons.showIcons();
+    MillController().headerIconsNotifier.showIcons();
 
     return const EngineResponseHumanOK();
   }

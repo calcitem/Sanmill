@@ -49,9 +49,9 @@ class _GameOptionsModal extends StatelessWidget {
                 MillController().reset();
 
                 MillController()
-                    .tip
+                    .headerTipNotifier
                     .showTip(S.of(context).gameStarted, snackBar: true);
-                MillController().headIcons.showIcons();
+                MillController().headerIconsNotifier.showIcons();
 
                 if (MillController().gameInstance.isAiToMove) {
                   logger.i("$_tag New game, AI to move.");
@@ -59,11 +59,11 @@ class _GameOptionsModal extends StatelessWidget {
                   MillController().engineToGo(context, isMoveNow: false);
 
                   MillController()
-                      .tip
+                      .headerTipNotifier
                       .showTip(S.of(context).tipPlace, snackBar: true);
                 }
 
-                MillController().headIcons.showIcons();
+                MillController().headerIconsNotifier.showIcons();
                 timer.cancel();
               }
             });

@@ -16,10 +16,18 @@
 
 part of '../mill.dart';
 
-class HeaderIconsState with ChangeNotifier {
-  HeaderIconsState();
+class HeaderTipNotifier with ChangeNotifier {
+  HeaderTipNotifier();
 
-  void showIcons() {
+  late String _message;
+  bool showSnackBar = false;
+
+  String get message => _message;
+
+  void showTip(String tip, {bool snackBar = false}) {
+    logger.v("[tip] $tip");
+    showSnackBar = (DB().generalSettings.screenReaderSupport && snackBar);
+    _message = tip;
     notifyListeners();
   }
 }

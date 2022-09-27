@@ -21,7 +21,7 @@ part of '../mill.dart';
 /// A singleton class that holds all objects and methods needed to play Mill.
 ///
 /// Controls:
-/// * The tip [HeaderTipState]
+/// * The tip [HeaderTipNotifier]
 /// * The engine [Engine]
 /// * The position [Position]
 /// * The game instance [Game]
@@ -37,8 +37,8 @@ class MillController {
   late Game gameInstance;
   late Position position;
   late Engine engine;
-  final HeaderTipState tip = HeaderTipState();
-  final HeaderIconsState headIcons = HeaderIconsState();
+  final HeaderTipNotifier headerTipNotifier = HeaderTipNotifier();
+  final HeaderIconsNotifier headerIconsNotifier = HeaderIconsNotifier();
   late GameRecorder recorder;
   GameRecorder? newRecorder;
 
@@ -58,7 +58,7 @@ class MillController {
   /// A singleton class that holds all objects and methods needed to play Mill.
   ///
   /// Controls:
-  /// * The tip [HeaderTipState]
+  /// * The tip [HeaderTipNotifier]
   /// * The engine [Engine]
   /// * The position [Position]
   /// * The game instance [Game]
@@ -152,14 +152,16 @@ class MillController {
             (isGameRunning || DB().generalSettings.isAutoRestart)) &&
         MillController().isActive) {
       if (gameMode == GameMode.aiVsAi) {
-        MillController().tip.showTip(MillController().position.scoreString);
+        MillController()
+            .headerTipNotifier
+            .showTip(MillController().position.scoreString);
       } else {
-        MillController().tip.showTip(thinkingStr);
+        MillController().headerTipNotifier.showTip(thinkingStr);
 
         showSnakeBarHumanNotation(humanStr);
       }
 
-      MillController().headIcons.showIcons();
+      MillController().headerIconsNotifier.showIcons();
 
       try {
         logger.v("$tag Searching..., isMoveNow: $isMoveNow");
