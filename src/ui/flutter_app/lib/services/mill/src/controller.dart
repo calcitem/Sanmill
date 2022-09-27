@@ -222,6 +222,14 @@ class MillController {
     }
   }
 
+  /// Starts a game save.
+  static Future<void> save(BuildContext context) async =>
+      LoadService.saveGame(context);
+
+  /// Starts a game load.
+  static Future<void> load(BuildContext context) async =>
+      LoadService.loadGame(context);
+
   /// Starts a game import.
   static Future<void> import(BuildContext context) async =>
       ImportService.importGame(context);
