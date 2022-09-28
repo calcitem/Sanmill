@@ -26,8 +26,8 @@ class LoadService {
 
   /// Retrieves the file path.
   static Future<String?> getFilePath(BuildContext context) async {
-    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
-    String appDocumentsPath = appDocumentsDirectory.path;
+    Directory dir = await getApplicationDocumentsDirectory();
+    String path = dir.path;
 
     var resultLabel = await _showTextInputDialog(context);
 
@@ -37,7 +37,8 @@ class LoadService {
       resultLabel = "$resultLabel.pgn";
     }
 
-    String filePath = "$appDocumentsPath/$resultLabel";
+    String filePath =
+        resultLabel.startsWith(path) ? resultLabel : "$path/$resultLabel";
 
     return filePath;
   }
@@ -150,6 +151,14 @@ class LoadService {
             ),
           ),
           actions: <Widget>[
+            ElevatedButton(
+                child: const Text("Browse..."), // TODO: l10n
+                onPressed: () async {
+                  var result = await pickFile(context);
+                  if (result == null) return;
+                  textFieldController.text = result;
+                  Navigator.pop(context, textFieldController.text);
+                }),
             ElevatedButton(
               child: const Text("Close"), // TODO: l10n
               onPressed: () => Navigator.pop(context),
