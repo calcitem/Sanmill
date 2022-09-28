@@ -121,6 +121,7 @@ class SanmillApp extends StatelessWidget {
 
   Widget _buildHome(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: DoubleBackToCloseApp(
         snackBar: CustomSnackBar(S.of(context).tapBackAgainToLeave),
         child: const Home(),

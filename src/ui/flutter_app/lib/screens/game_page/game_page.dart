@@ -59,6 +59,7 @@ class GamePage extends StatelessWidget {
     controller.gameInstance.gameMode = gameMode;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: GameHeader(),
       backgroundColor: DB().colorSettings.darkBackgroundColor,
       body: FutureBuilder(

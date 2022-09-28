@@ -35,6 +35,7 @@ class LicenseAgreementPage extends StatelessWidget {
         }
 
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text(S.of(context).license),
           ),

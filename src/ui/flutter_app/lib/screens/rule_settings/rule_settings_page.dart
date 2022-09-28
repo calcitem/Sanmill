@@ -358,6 +358,7 @@ class RuleSettingsPage extends StatelessWidget {
     //MillController().engine.shutdown();
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppTheme.lightBackgroundColor,
       appBar: AppBar(
         leading: DrawerIcon.of(context)?.icon,

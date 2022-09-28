@@ -121,6 +121,7 @@ class AboutPage extends StatelessWidget {
     ];
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppTheme.aboutPageBackgroundColor,
       appBar: AppBar(
         leading: DrawerIcon.of(context)?.icon,
