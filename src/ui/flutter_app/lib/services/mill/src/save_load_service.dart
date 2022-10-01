@@ -125,9 +125,8 @@ class LoadService {
 
     if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
         const HistoryOK()) {
-      MillController()
-          .headerTipNotifier
-          .showTip("Game loaded.", snackBar: true); // l10n
+      MillController().headerTipNotifier.showTip(S.of(context).done,
+          snackBar: true); // TODO: "Game loaded." is better.
     } else {
       final tip = S.of(context).cannotImport(HistoryNavigator.importFailedStr);
       MillController().headerTipNotifier.showTip(tip, snackBar: true);
