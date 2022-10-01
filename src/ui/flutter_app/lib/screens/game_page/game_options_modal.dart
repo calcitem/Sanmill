@@ -27,46 +27,19 @@ class _GameOptionsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late Timer timer;
-
     return GamePageDialog(
       semanticLabel: S.of(context).game,
       children: <Widget>[
         SimpleDialogOption(
-          onPressed: () {
-            // TODO: When the AI is thinking,
+          onPressed: () async {
+            //Navigator.pop(context);
+
+            // TODO: If no dialog showing, When the AI is thinking,
             //  restarting the game may cause two or three pieces to appear on the board,
             //  sometimes it will keep displaying Thinking...
 
-            Navigator.pop(context);
-
             MillController().engine.stopSearching();
-            MillController().isActive == false;
-
-            timer =
-                Timer.periodic(const Duration(microseconds: 100), (Timer t) {
-              if (MillController().isEngineGoing == false) {
-                MillController().reset();
-
-                MillController()
-                    .headerTipNotifier
-                    .showTip(S.of(context).gameStarted, snackBar: true);
-                MillController().headerIconsNotifier.showIcons();
-
-                if (MillController().gameInstance.isAiToMove) {
-                  logger.i("$_tag New game, AI to move.");
-
-                  MillController().engineToGo(context, isMoveNow: false);
-
-                  MillController()
-                      .headerTipNotifier
-                      .showTip(S.of(context).tipPlace, snackBar: true);
-                }
-
-                MillController().headerIconsNotifier.showIcons();
-                timer.cancel();
-              }
-            });
+            await showRestartGameAlertDialog(context);
           },
           child: Text(S.of(context).newGame),
         ),
@@ -97,6 +70,62 @@ class _GameOptionsModal extends StatelessWidget {
             child: Text(S.of(context).close),
           ),
       ],
+    );
+  }
+
+  // TODO: l10n
+  showRestartGameAlertDialog(BuildContext context) async {
+    Widget noButton = TextButton(
+      child: const Text("No"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop(false);
+        Navigator.of(context).pop();
+      },
+    );
+    Widget yesButton = TextButton(
+        child: const Text("Yes"),
+        onPressed: () {
+          MillController().isActive == false;
+
+          if (MillController().isEngineGoing == false) {
+            MillController().reset();
+
+            MillController()
+                .headerTipNotifier
+                .showTip(S.of(context).gameStarted, snackBar: true);
+            MillController().headerIconsNotifier.showIcons();
+
+            if (MillController().gameInstance.isAiToMove) {
+              logger.i("$_tag New game, AI to move.");
+
+              MillController().engineToGo(context, isMoveNow: false);
+
+              MillController()
+                  .headerTipNotifier
+                  .showTip(S.of(context).tipPlace, snackBar: true);
+            }
+
+            MillController().headerIconsNotifier.showIcons();
+          }
+
+          Navigator.of(context, rootNavigator: true).pop(true);
+          Navigator.of(context).pop();
+        });
+
+    AlertDialog alert = AlertDialog(
+      title: const Text("Restart Game"),
+      content: const Text("Would you like to restart game?"),
+      actions: [
+        noButton,
+        yesButton,
+      ],
+    );
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
