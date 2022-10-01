@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "browse": "Ko‘rib chiqish…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameSavedTo": "Oʻyin saqlab qolindi",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "gameFiles": "O'yin fayllar",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "loadFailed": "Yuklanmadi.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Fayl nomi",
+  "@filename": {
+    "description": "File name"
   }
 }

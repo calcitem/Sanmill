@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "loadFailed": "Pemuatan gagal.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Nama file",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Jelajahi…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameSavedTo": "Permainan disimpan ke",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "gameFiles": "File permainan",
+  "@gameFiles": {
+    "description": "Game files"
   }
 }

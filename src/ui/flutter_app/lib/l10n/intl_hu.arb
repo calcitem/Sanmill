@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "gameSavedTo": "A játék el lett mentve ide",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "loadFailed": "A betöltés nem sikerült.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Fájl név",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Tallózás…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Játékfájlok",
+  "@gameFiles": {
+    "description": "Game files"
   }
 }

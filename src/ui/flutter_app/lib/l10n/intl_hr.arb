@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "filename": "Naziv datoteke",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameFiles": "Datoteke igre",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "loadFailed": "Učitavanje nije uspjelo.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "browse": "Pretraživati…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameSavedTo": "Igra je spremljena na",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
   }
 }

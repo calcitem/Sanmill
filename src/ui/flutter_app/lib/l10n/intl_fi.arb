@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "loadFailed": "Lataus epäonnistui.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Tiedoston nimi",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Selaa…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameSavedTo": "Peli on tallennettu kohteeseen",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "gameFiles": "Pelitiedostot",
+  "@gameFiles": {
+    "description": "Game files"
   }
 }

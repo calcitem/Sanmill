@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "filename": "Faila nosaukums",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Pārlūkot…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameSavedTo": "Spēle ir saglabāta",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "gameFiles": "Spēļu faili",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "loadFailed": "Ielāde neizdevās.",
+  "@loadFailed": {
+    "description": "Load failed."
   }
 }

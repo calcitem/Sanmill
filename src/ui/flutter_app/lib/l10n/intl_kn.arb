@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "loadFailed": "ಲೋಡ್ ವಿಫಲವಾಗಿದೆ.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "ಕಡತದ ಹೆಸರು",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "ಬ್ರೌಸ್…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "ಆಟದ ಫೈಲ್‌ಗಳು",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "ಆಟವನ್ನು ಉಳಿಸಲಾಗಿದೆ",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
   }
 }

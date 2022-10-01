@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "filename": "ફાઈલનું નામ",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "બ્રાઉઝ કરો…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "loadFailed": "લોડ નિષ્ફળ થયું.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameFiles": "રમત ફાઇલો",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "આ રમત માટે સાચવવામાં આવે છે",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
   }
 }

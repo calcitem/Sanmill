@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "browse": "Shfleto…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Skedarët e lojës",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "loadFailed": "Ngarkimi dështoi.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameSavedTo": "Loja është ruajtur në",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "filename": "Emri i skedarit",
+  "@filename": {
+    "description": "File name"
   }
 }

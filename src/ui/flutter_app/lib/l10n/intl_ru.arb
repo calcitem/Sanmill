@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "gameSavedTo": "Игра сохраняется в",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "browse": "Просматривать…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "filename": "Имя файла",
+  "@filename": {
+    "description": "File name"
+  },
+  "loadFailed": "Загрузка не удалась.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameFiles": "Файлы игры",
+  "@gameFiles": {
+    "description": "Game files"
   }
 }

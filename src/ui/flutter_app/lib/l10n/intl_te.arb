@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "filename": "ఫైల్ పేరు",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "బ్రౌజ్ చేయండి…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "గేమ్ ఫైళ్లు",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "గేమ్ సేవ్ చేయబడింది",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "loadFailed": "లోడ్ విఫలమైంది.",
+  "@loadFailed": {
+    "description": "Load failed."
   }
 }

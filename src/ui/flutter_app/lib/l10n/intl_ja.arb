@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "loadFailed": "読み込みに失敗しました。",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "ファイル名",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameFiles": "ゲームファイル",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "ゲームは次の場所に保存されます",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "browse": "ブラウズ…",
+  "@browse": {
+    "description": "Browse…"
   }
 }

@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "loadFailed": "Yükleme başarısız.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Dosya adı",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameSavedTo": "Oyun şuraya kaydedilir",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "browse": "Araştır…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Oyun dosyaları",
+  "@gameFiles": {
+    "description": "Game files"
   }
 }

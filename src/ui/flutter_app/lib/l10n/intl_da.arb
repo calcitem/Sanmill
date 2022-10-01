@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "gameFiles": "Spil filer",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "loadFailed": "Indlæsning mislykkedes.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Filnavn",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Gennemse…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameSavedTo": "Spillet er gemt til",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
   }
 }

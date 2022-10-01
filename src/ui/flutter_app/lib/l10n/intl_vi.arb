@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "loadFailed": "Tải không thành công.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Tên tệp",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Duyệt qua…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameSavedTo": "Trò chơi được lưu vào",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "gameFiles": "Tệp trò chơi",
+  "@gameFiles": {
+    "description": "Game files"
   }
 }

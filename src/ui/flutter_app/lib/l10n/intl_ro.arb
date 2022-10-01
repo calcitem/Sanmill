@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "filename": "Nume de fișier",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Naviga…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "loadFailed": "Încărcarea nu a reușit.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameSavedTo": "Jocul este salvat în",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "gameFiles": "Fișiere de joc",
+  "@gameFiles": {
+    "description": "Game files"
   }
 }

@@ -1248,5 +1248,25 @@
   "continueToMakeMove": "Млин! Продовжуйте робити рух.",
   "@continueToMakeMove": {
     "description": "Mill! Continue to make a move."
+  },
+  "loadFailed": "Не вдалося завантажити.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Ім'я файлу",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Перегляд…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Файли гри",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "Гра збережена в",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
   }
 }
