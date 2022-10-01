@@ -1249,5 +1249,25 @@
         "example": "3"
       }
     }
+  },
+  "loadFailed": "Load failed.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "File name",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Browse…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Game files",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "The game is saved to",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
   }
 }

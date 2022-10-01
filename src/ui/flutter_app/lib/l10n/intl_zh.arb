@@ -1150,5 +1150,21 @@
         "example": "3"
       }
     }
+  },
+  "filename": "文件名",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "浏览…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "游戏文件",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "游戏已保存至",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
   }
 }

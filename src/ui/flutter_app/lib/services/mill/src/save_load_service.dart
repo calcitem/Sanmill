@@ -50,9 +50,8 @@ class LoadService {
     String? result = await FilesystemPicker.openDialog(
       context: context,
       rootDirectory: dir,
-      rootName: "Game Files", // TODO: l10n
+      rootName: S.of(context).gameFiles,
       fsType: FilesystemType.file,
-      permissionText: "Access to the storage was not granted.", // TODO: l10n
       showGoUp: true,
       allowedExtensions: ['.pgn'],
       fileTileSelectMode:
@@ -68,6 +67,8 @@ class LoadService {
 
   /// Saves the game to the file.
   static Future<void> saveGame(BuildContext context) async {
+    var strGameSavedTo = S.of(context).gameSavedTo;
+
     Navigator.pop(context);
 
     if (MillController().recorder.hasPrevious == false) {
@@ -83,7 +84,7 @@ class LoadService {
     file.writeAsString(MillController().recorder.moveHistoryText!);
 
     rootScaffoldMessengerKey.currentState!
-        .showSnackBarClear("File saved."); // TODO: l10n
+        .showSnackBarClear("$strGameSavedTo $filename");
   }
 
   /// Read the game from the file.
@@ -102,7 +103,7 @@ class LoadService {
     } catch (exception) {
       MillController()
           .headerTipNotifier
-          .showTip("Load failed!", snackBar: true); // TODO: l10n
+          .showTip(S.of(context).loadFailed, snackBar: true);
       Navigator.pop(context);
       return;
     }
@@ -142,7 +143,7 @@ class LoadService {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('File Name'), // TODO: l10n
+          title: Text(S.of(context).filename),
           content: TextField(
             controller: textFieldController,
             decoration: const InputDecoration(
@@ -152,7 +153,7 @@ class LoadService {
           ),
           actions: <Widget>[
             ElevatedButton(
-                child: const Text("Browse..."), // TODO: l10n
+                child: Text(S.of(context).browse),
                 onPressed: () async {
                   var result = await pickFile(context);
                   if (result == null) return;
@@ -160,11 +161,11 @@ class LoadService {
                   Navigator.pop(context, textFieldController.text);
                 }),
             ElevatedButton(
-              child: const Text("Close"), // TODO: l10n
+              child: Text(S.of(context).cancel),
               onPressed: () => Navigator.pop(context),
             ),
             ElevatedButton(
-              child: const Text('OK'), // TODO: l10n
+              child: Text(S.of(context).ok),
               onPressed: () => Navigator.pop(context, textFieldController.text),
             ),
           ],

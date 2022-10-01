@@ -46,12 +46,12 @@ class _GameOptionsModal extends StatelessWidget {
         const CustomSpacer(),
         SimpleDialogOption(
           onPressed: () => MillController.save(context),
-          child: Text("Save Game"), // TODO: l10n
+          child: Text(S.of(context).saveGame),
         ),
         const CustomSpacer(),
         SimpleDialogOption(
           onPressed: () => MillController.load(context),
-          child: Text("Load Game"), // TODO: l10n
+          child: Text(S.of(context).loadGame),
         ),
         const CustomSpacer(),
         SimpleDialogOption(
@@ -73,17 +73,16 @@ class _GameOptionsModal extends StatelessWidget {
     );
   }
 
-  // TODO: l10n
   showRestartGameAlertDialog(BuildContext context) async {
     Widget noButton = TextButton(
-      child: const Text("No"),
+      child: Text(S.of(context).no),
       onPressed: () {
         Navigator.of(context, rootNavigator: true).pop(false);
         Navigator.of(context).pop();
       },
     );
     Widget yesButton = TextButton(
-        child: const Text("Yes"),
+        child: Text(S.of(context).yes),
         onPressed: () {
           MillController().isActive == false;
 
@@ -113,8 +112,8 @@ class _GameOptionsModal extends StatelessWidget {
         });
 
     AlertDialog alert = AlertDialog(
-      title: const Text("Restart Game"),
-      content: const Text("Would you like to restart game?"),
+      title: Text(S.of(context).restart),
+      content: Text(S.of(context).restartGame),
       actions: [
         noButton,
         yesButton,
