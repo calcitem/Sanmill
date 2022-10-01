@@ -1,1252 +1,1174 @@
 {
-    "@@locale": "de",
-    "appName": "Mühle",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Herzlich willkommen",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "Ja",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Nein",
-    "@no": {
-        "description": "No"
-    },
-    "game": "Spiel",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Mensch gegen Computer",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Mensch gegen Mensch",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "Computer gegen Computer",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Mensch gegen Cloud",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Mensch gegen LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Test über LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Ziehen",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " Zieht",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Zugliste",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Zugliste",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Kein Rekord",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "OK",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "Bestätigen",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "Abbrechen",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Copyright © 2021-2022 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Falscher Stein ausgewählt.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Setze deinen Stein.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Hier kannst du nicht hinsetzen.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Gesetzt.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Nimm einen Stein weg.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Kann nicht wegnehmen.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Weggenommen.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Ziehe einen Stein.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Du kannst deinen Stein nicht dahin setzen.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Du kannst deinen Stein nicht dahin ziehen.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Mühle! Nimm einen gegnerischen Stein.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Nimm noch einen gegnerischen Stein.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Wähle einen gegnerischen Stein.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Du kannst keinen Stein aus einer Mühle nehmen.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "Ein Stein kann nur 1 Feld weit gezogen werden.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Du kannst keine gegnerischen Steine nehmen.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "Es sind 3 Steine in einer Reihe.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Wähle deinen Stein zum Ziehen.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "Du hast noch 3 Steine übrig.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Du kannst an jede beliebige Position springen.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " ist am Zug.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "Spieler 1 gewinnt!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "Spieler 2 gewinnt!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Gewonnen",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "Verloren",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "Abgebrochen",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Denke nach...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "Neues Spiel",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Spiel importieren",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Spiel exportieren",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Spiel aus der Zwischenablage importiert.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Kann nicht importieren",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Regeln und Züge stimmen nicht überein.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Starte die Aufnahme",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Aufzeichnung...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Höre auf, aufzunehmen",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Aufnahme anzeigen",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "Kein Aufnehmen.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Warten Sie mal...",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Spiel neu beginnen?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Neustart",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "Spiel begonnen, bitte Stein platzieren",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Analysiere ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "Fehler",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "Gewinnquote",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "Punkte",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "Spieler 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "Spieler 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " hat weniger als 3 Steine.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " gibt auf.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " kann nicht mehr ziehen.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "Das Brett ist voll.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Die Zeit ist um.",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "In der Bewegungsphase wurde in der letzten bestimmten Anzahl von Zügen kein Stein entfernt.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "Unentschieden weil das Brett voll ist.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "Unentschieden wegen dreimaliger Wiederholung.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "Spiel vorbei! Unbekannter Grund.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "Spiel vorbei",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "Glückwunsch, du hast gewonnen!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "Eine schwerere Stufe probieren?\nNeue Stufe:  ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "Du hast verloren!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "Analysiere",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "Spielername",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "Über",
-    "@about": {
-        "description": "About"
-    },
-    "version": "Version",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "Danksagung",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Einstellungen",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Optionen",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "Einstellungen",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Schwierigkeitsstufe",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "Bedenkzeit Computer",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Schwierigkeit",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Töne",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "Töne beim Spielen abspielen",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Beim Zurücknehmen stumm bleiben",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Tone",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Erster Zug",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Mensch",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "Computer",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "Abwechselnd",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "Nach Spielende automatisch neustarten",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Ersten Zug automatisch ändern",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "AI Resign if Most Lose",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Zufallszüge",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Endspiel lernen",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Eröffnungsbuch",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "Verschiedenes",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "Regeln",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Anzahl Steine für jeden Spieler",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Wie viele Steine hat jeder Spieler?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Anzahl der fliegenden Steine",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "Wenn Fliegen aktiviert ist und ein Spieler auf eine bestimmte Steinzahl reduziert wird, können sich seine Steine frei zu jedem unbesetzten Punkt bewegen, anstatt wie im Rest des Spiels auf benachbarte Punkte beschränkt zu sein.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Steine mindestens",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Diagonale Linien",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Vier diagonale Linien zum Brett hinzufügen.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Punkte entfernter Steine sperren",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "In der Setzphase können keine Steine auf Punkte von entfernten Steinen gesetzt werden.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Der zweite Spieler zieht zuerst",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Der in der Setzphase zweite Spieler zieht in der Zugphase zuerst.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Mehrfaches Entfernen",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Wenn ein Spieler mehr als eine Mühle gleichzeitig schließt, darf er entsprechend viele Steine entfernen.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Mühlen zerstören",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "Normalerweise müssen Spieler alle freien Steine entfernen, bevor Steine aus einer Mühle entfernt werden dürfen. Diese Option hebt diese Beschränkung auf.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Zweiter Spieler verliert wenn das Brett voll ist",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Wenn das Brett am Ende der Setzphase voll ist, verliert der Spieler, der zuerst gezogen hat. Sonst unentschieden.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Verlieren wenn kein Zug möglich ist",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Der Spieler verliert, wenn der Gegner ihn so blockiert, daß er keinen Steine mehr bewegen kann. Wenn die Option deaktiviert ist wird die Seite gewechselt.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Fliegen",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Wenn ein Spieler nur noch drei Steine hat, darf ein Stein an beliebige Punkte gezogen werden.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "N-Züge-Regel",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "Das Spiel ist unentschieden, wenn in einer bestimmten Anzahl von Zügen von jedem Spieler keine Entfernung erfolgt ist.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Rollback",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "Bitte auswählen",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "Kopieren",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Zugverlauf in die Zwischenablage kopiert",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Hilfe",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Feedback",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "Beenden",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Regeln",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "Farben",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Brettfarbe",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Steinfarbe",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Hintergrundfarbe",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Linienfarbe",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Steinfarbe Spieler 1",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Steinfarbe Spieler 2",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Nachrichtenfarbe",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "Computer ist faul",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Anzahl an Steinen auf der Hand anzeigen",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Notizen auf dem Brett anzeigen",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Symbolleiste für die Verlaufsnavigation anzeigen",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "Darstellung",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Linienbreite Spielbrettrand",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Innere Linienbreite des Spielbrettes",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Steingröße",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "Schriftgröße",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "WMD-Notation",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Wiederherstellen",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Standardeinstellungen wiederherstellen",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "Die App wird beendet.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "Du musst die App sofort beenden und neustarten, damit die Einstellungen benutzt werden",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Nehmen",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "Info",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "Hinweis",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "Spieler",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "Spieler 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "Spieler 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Spielanleitung",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Tippe auf einen freien Punkt, um den Stein zu setzen.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Tippe auf einen Stein, um ihn zu ziehen.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Tippe auf einen mit einem Stein verbundenen Punkt, um ihn zu ziehen.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Tippe auf einen gegnerischen Stein, um ihn zu entfernen.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Du musst erst eine Mühle machen, bevor du einen Stein entfernen kannst.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Du musst mit deinen eigenen Steinen spielen.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "Statistiken",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Gesamtzahl Spiele",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "Ergebnisse",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Kann nicht aus einer Mühle entfernen.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "links",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Datenschutzerklärung",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Bitte lies sorgfältig und stelle sicher, daß du alles verstanden hast und zustimmst ",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Wenn du den Bestimmungen nicht zustimmst, darfst du diese App nicht benutzen. Die Benutzung der App impliziert, daß du diesen Bestimmungen zustimmst.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " und ",
-    "accept": "Akzeptieren",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "Rückgängig",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "Rückgängig",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Es ist möglich, einen Zug rückgängig zu machen.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Zurücknehmen",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Nehme zurück...",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Warte...",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Schritt vorwärts",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Alles zurücknehmen",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Alles wiederholen",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Jetzt ziehen",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Fertig.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Crack-Mühle",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "Wenn ein Spieler nur Steine in Mühlen hat, können diese Steine entfernt werden.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Animationsdauer",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Kein",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Thema",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Das Ziel des Spiels ist es, daß der Gegner weniger als drei Steine hat oder sich nicht mehr bewegen kann.\n\nDas Spiel endet automatisch unentschieden, wenn eine Spielposition das dritte mal auftritt, oder wenn in den letzten 100 (konfigurierbar) Zügen kein Stein entfernt wurde.\n\nDas Spiel läuft in drei Phasen ab:\n\n1. Steine auf freie Punkte setzen\n2. Steine auf angrenzende Punkte schieben\n3. (optionale Phase) Steine auf beliebige freie Punkte setzen wenn der Spieler nur noch drei Steine hat\n\nSetzphase\n\nDas Spiel beginnt mit einem leeren Spielbrett, das aus einem Gitter mit vierundzwanzig Punkten besteht. Die Spieler setzen abwechselnd Steine auf freie Punkte, bis jeder Spieler alle Steine gesetzt hat. Wenn ein Spieler drei Steine in einer geraden Linie setzt, dann hat er eine \"Mühle\" und darf einen gegnerischen Stein vom Spielbrett nehmen.\n\nIn einigen Regelvarianten müssen die Spieler alle anderen Steine entfernen, bevor ein Stein aus einer Mühle genommen werden kann.\n\nIn einigen Regelvarianten dürfen Steine in der Setzphase nicht wieder auf Punkte gesetzt werden, von denen bereits Steine genommen wurden.\n\nWenn alle Steine gesetzt worden sind, ziehen die Spieler abwechselnd einen Stein.\n\nZugphase\n\nBeim Ziehen bewegt ein Spieler einen seiner Steine entlang einer Linie zum nächsten freien Punkt. Wenn er das nicht kann, hat er verloren. Genau wie in der Setzphase führen drei Steine in einer Linie zu einer Mühle, und der Spieler darf einen der gegnerischen Steine entfernen. Ein Spieler mit nur zwei Steinen kann keine Mühlen mehr bekommen und verliert deshalb. Ein Spieler kann auch mit mehr als drei Steinen verlieren, wenn sein Gegner ihn so blockiert hat, daß er seine Steine nicht mehr bewegen kann.\n\nEndphase\n\nIn einigen Regelvarianten kann ein Spieler, dem nur noch drei Steine verbleiben, mit seinen Steinen auf jeden freien Punkt \"fliegen\", \"hüpfen\" oder \"springen\", nicht nur auf benachbarte.\n\n",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "Versionsinformation",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "Lizenz",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Quellcode",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Drittanbieterhinweise",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "App-Version",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "Generell",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "Fortgeschritten",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "Setze",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Bewege",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Entferne",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "Spielendebedingung",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "Spielstil des Computers",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Passiv",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "Zeitlimit",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Personalisierung",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "Für Entwickler",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Entwicklermodus",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Auf menschliche Erfahrung zurückgreifen",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Verbessern Sie die Beweglichkeit von Steinen",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Anzahl Steine",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "auf der Hand",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "auf dem Spielbrett",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "Abstand Spielbrett von oben",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Der Computer ist nicht am Zug",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "Computer denkt nicht.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Spielzüge automatisch wiederholen",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "Am Ende der Spielzugliste",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Nochmal drücken um zu Beenden.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Umgebungsvariablen",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Mehr",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Dies ist eine experimentelle Funktion.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Experimente",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Open Source Lizenzen",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Sprache",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "Standardsprache",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Die Steine können sich in der Setzphase bewegen",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Es gibt keine getrennten Setz- und Zugphasen, d.h. die Spieler können bei jedem Zug entscheiden, ob sie einen Stein auf dem Brett setzen oder einen ihrer Steine bewegen wollen (solange sie noch Steine zum Setzen haben).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Menüfarbe",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Menütextfarbe",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Menühintergrundfarbe",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Farbe des Menümarkierungselements",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Hintergrundfarbe der Hauptsymbolleiste",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "Symbolfarbe der Hauptsymbolleiste",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Hintergrundfarbe der Navigationsleiste",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Symbolfarbe der Navigationssymbolleiste",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Symbolleiste automatisch ausblenden",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Position der Symbolleiste auf dem Bildschirm",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Oben",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Unterseite",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Center",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Einfarbig",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Bild",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Wähle dein Bild",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Licht",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "Dunkel",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Themen",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Aktuelles Thema",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Thema speichern",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "Schriftarten",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Analysegrafik anzeigen",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Analyse",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "Spiel speichern",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Spiel laden",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "Aufstellungsposition",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Legale Züge anzeigen",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Letzten Zug anzeigen",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Pfeile zeigen",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "Stücke",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Analyse anzeigen",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Themen",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "Machen Sie mit",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Helfen Sie mit, die Übersetzung zu verbessern",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "Lernprogramm",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Klassische Mühle",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Gemischte Mühle",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Ceylon-Mühle",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Mühle kann wiederholt gebrochen und neu hergestellt werden",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Wenn ein Spieler eine Mühle zerstört, um sofort eine neue Mühle zu bauen, kann dieser Spieler diesen Stein in seinem nächsten Zug zurück zur ursprünglichen Kreuzung bewegen, wenn er eine neue Mühle baut.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Das Spiel ist unentschieden, wenn ein Spieler drei Steine hat und nach zehn Zügen keiner der Spieler die Steine des Gegners entfernt remove",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Wenn ein Spieler nur noch drei Steine übrig hat und keiner der Spieler einen gegnerischen Stein innerhalb von zehn Zügen entfernen kann, ist das Spiel unentschieden.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "Schließen Sie",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Weißer Stein",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "Schwarzer Stein",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Verbotsstelle",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "Leere Stelle",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Kein Punkt",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Setzphase",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Bewegungsphase",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Flugphase",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Wer soll umziehen",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Letzter Zug",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Ausgewählt",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Hauptmenü",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Barrierefreiheit",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Unterstützung für Bildschirmlesegeräte",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "Es ist ein Unentschieden!",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "Zeichnen",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Farbe des Stein-Highlights",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "Algorithmus",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "Entfernen Sie nicht platzierte Steine",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Wenn ein Spieler in der Platzierungsphase die Mühle bildet, entfernt er den nicht platzierten Stein des Gegners und macht weiter seinen Zug.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "Endspiel N-Züge-Regel",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Wenn einer der beiden Spieler nur drei Steine hat und keiner der beiden Spieler innerhalb eines bestimmten Zuges einen Stein entfernt, ist das Spiel unentschieden.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Jeder der beiden Spieler hat nur drei Steine und keiner der beiden Spieler entfernt einen Stein innerhalb eines bestimmten Zuges.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Dreifache Wiederholungsregel",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Das Spiel ist unentschieden, wenn eine Stellung zum dritten Mal auftritt.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Mühle! Bewegen Sie sich weiter.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Punkt-Stil",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Breite der Punkte",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Solide",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Hohle",
-    "@hollow": {
-        "description": "Hollow"
+  "appName": "Mühle",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Herzlich willkommen",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Ja",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Nein",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Spiel",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Mensch gegen Computer",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Mensch gegen Mensch",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "Computer gegen Computer",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Mensch gegen Cloud",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Mensch gegen LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Test über LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Ziehen",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Zugliste",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Zugliste",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Kein Rekord",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Bestätigen",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Abbrechen",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Falscher Stein ausgewählt.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Setze deinen Stein.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Hier kannst du nicht hinsetzen.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Gesetzt.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Nimm einen Stein weg.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Kann nicht wegnehmen.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Weggenommen.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Ziehe einen Stein.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Du kannst deinen Stein nicht dahin setzen.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Du kannst deinen Stein nicht dahin ziehen.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Mühle! Nimm einen gegnerischen Stein.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Nimm noch einen gegnerischen Stein.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Wähle einen gegnerischen Stein.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Du kannst keinen Stein aus einer Mühle nehmen.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Ein Stein kann nur 1 Feld weit gezogen werden.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Du kannst keine gegnerischen Steine nehmen.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Wähle deinen Stein zum Ziehen.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Du hast noch 3 Steine übrig.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Du kannst an jede beliebige Position springen.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} zu bewegen.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Spieler 1 gewinnt!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Spieler 2 gewinnt!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Gewonnen",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Verloren",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Denke nach…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Neues Spiel",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Spiel importieren",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Spiel exportieren",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Spiel aus der Zwischenablage importiert.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Kann {invalidMove} nicht importieren",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Regeln und Züge stimmen nicht überein.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Warten Sie mal...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Spiel neu beginnen?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Neustart",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Spiel begonnen, bitte Stein platzieren.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Analysiere…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Fehler: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Gewinnquote",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Punkte:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Spieler 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Spieler 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} Stückzahl ist kleiner als drei.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} ist zurückgetreten.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player} hat keine Möglichkeit zu gehen.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Das Board ist voll und {player} hat keine Möglichkeit sich zu bewegen.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Die Zeit ist vorbei, {player} hat verloren.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "In der Bewegungsphase wurde in der letzten bestimmten Anzahl von Zügen kein Stein entfernt.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Unentschieden weil das Brett voll ist.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Unentschieden wegen dreimaliger Wiederholung.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Spiel vorbei! Unbekannter Grund.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Spiel vorbei",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Glückwunsch, du hast gewonnen!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Willst du ein schwierigeres Level wählen? Das neue Level wird Level {level} sein!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Du hast verloren!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Analysiere",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Über",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Version: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Danksagung",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Einstellungen",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Optionen",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Allgemeine Einstellungen",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Schwierigkeitsstufe",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Bedenkzeit Computer",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Schwierigkeit",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Töne",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Töne beim Spielen abspielen",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Beim Zurücknehmen stumm bleiben",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Ton",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Erster Zug",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Mensch",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "Computer",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Abwechselnd",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Nach Spielende automatisch neustarten",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Ersten Zug automatisch ändern",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Zufallszüge",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Verschiedenes",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Regeln",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Anzahl Steine für jeden Spieler",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Wie viele Steine hat jeder Spieler?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Anzahl der fliegenden Steine",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Wenn Fliegen aktiviert ist und ein Spieler auf eine bestimmte Steinzahl reduziert wird, können sich seine Steine frei zu jedem unbesetzten Punkt bewegen, anstatt wie im Rest des Spiels auf benachbarte Punkte beschränkt zu sein.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Steine mindestens",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Diagonale Linien",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Vier diagonale Linien zum Brett hinzufügen.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Punkte entfernter Steine sperren",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "In der Setzphase können keine Steine auf Punkte von entfernten Steinen gesetzt werden.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Der zweite Spieler zieht zuerst",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Der in der Setzphase zweite Spieler zieht in der Zugphase zuerst.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Mehrfaches Entfernen",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Wenn ein Spieler mehr als eine Mühle gleichzeitig schließt, darf er entsprechend viele Steine entfernen.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Mühlen zerstören",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Normalerweise müssen Spieler alle freien Steine entfernen, bevor Steine aus einer Mühle entfernt werden dürfen. Diese Option hebt diese Beschränkung auf.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Zweiter Spieler verliert wenn das Brett voll ist",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Wenn das Brett am Ende der Setzphase voll ist, verliert der Spieler, der zuerst gezogen hat. Sonst unentschieden.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Verlieren wenn kein Zug möglich ist",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Der Spieler verliert, wenn der Gegner ihn so blockiert, daß er keinen Steine mehr bewegen kann. Wenn die Option deaktiviert ist wird die Seite gewechselt.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Fliegen",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Wenn ein Spieler nur noch drei Steine hat, darf ein Stein an beliebige Punkte gezogen werden.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N-Züge-Regel",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Das Spiel ist unentschieden, wenn in einer bestimmten Anzahl von Zügen von jedem Spieler keine Entfernung erfolgt ist.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Rollback",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Bitte auswählen",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Kopieren",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Zugverlauf wurde in die Zwischenablage kopiert.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Hilfe",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Rückmeldung",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Beenden",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Regeln",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Farben",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Brettfarbe",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Steinfarbe",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Hintergrundfarbe",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Linienfarbe",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Steinfarbe Spieler 1",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Steinfarbe Spieler 2",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Nachrichtenfarbe",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Anzahl an Steinen auf der Hand anzeigen",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Notizen auf dem Brett anzeigen",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Symbolleiste für die Verlaufsnavigation anzeigen",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Darstellung",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Linienbreite Spielbrettrand",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Innere Linienbreite des Spielbrettes",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Steingröße",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Schriftgröße",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD-Notation",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Wiederherstellen",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Standardeinstellungen wiederherstellen",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "{element} nehmen",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Info",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Hinweis",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "Spieler",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Spieler 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Spieler 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Spielanleitung",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Tippe auf einen freien Punkt, um den Stein zu setzen.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Tippe auf einen Stein, um ihn zu ziehen.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Tippe auf einen mit einem Stein verbundenen Punkt, um ihn zu ziehen.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Tippe auf einen gegnerischen Stein, um ihn zu entfernen.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Du musst erst eine Mühle machen, bevor du einen Stein entfernen kannst.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Du musst mit deinen eigenen Steinen spielen.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistiken",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Gesamtzahl Spiele",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Ergebnisse",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "links",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Datenschutzerklärung",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Bitte lies sorgfältig und stelle sicher, daß du alles verstanden hast und zustimmst ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Wenn du den Bestimmungen nicht zustimmst, darfst du diese App nicht benutzen. Die Benutzung der App impliziert, dass du diesen Bestimmungen zustimmst.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " und ",
+  "@and": {},
+  "accept": "Akzeptieren",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Zurücknehmen",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Nehme zurück…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Warte…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Schritt vorwärts",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Alles zurücknehmen",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Alles wiederholen",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Jetzt ziehen",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Fertig.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Crack-Mühle",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Wenn ein Spieler nur Steine in Mühlen hat, können diese Steine entfernt werden.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Animationsdauer",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Kein",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Thema",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Das Ziel des Spiels ist es, dass der Gegner weniger als drei Steine hat oder sich nicht mehr bewegen kann.\n\nDas Spiel endet automatisch unentschieden, wenn eine Spielposition das dritte mal auftritt, oder wenn in den letzten 100 (konfigurierbar) Zügen kein Stein entfernt wurde.\n\nDas Spiel läuft in drei Phasen ab:\n\n1. Steine auf freie Punkte setzen\n2. Steine auf angrenzende Punkte schieben\n3. (optionale Phase) Steine auf beliebige freie Punkte setzen wenn der Spieler nur noch drei Steine hat\n\nSetzphase\n\nDas Spiel beginnt mit einem leeren Spielbrett, das aus einem Gitter mit vierundzwanzig Punkten besteht. Die Spieler setzen abwechselnd Steine auf freie Punkte, bis jeder Spieler alle Steine gesetzt hat. Wenn ein Spieler drei Steine in einer geraden Linie setzt, dann hat er eine „Mühle“ und darf einen gegnerischen Stein vom Spielbrett nehmen.\n\nIn einigen Regelvarianten müssen die Spieler alle anderen Steine entfernen, bevor ein Stein aus einer Mühle genommen werden kann.\n\nIn einigen Regelvarianten dürfen Steine in der Setzphase nicht wieder auf Punkte gesetzt werden, von denen bereits Steine genommen wurden.\n\nWenn alle Steine gesetzt worden sind, ziehen die Spieler abwechselnd einen Stein.\n\nZugphase\n\nBeim Ziehen bewegt ein Spieler einen seiner Steine entlang einer Linie zum nächsten freien Punkt. Wenn er das nicht kann, hat er verloren. Genau wie in der Setzphase führen drei Steine in einer Linie zu einer Mühle, und der Spieler darf einen der gegnerischen Steine entfernen. Ein Spieler mit nur zwei Steinen kann keine Mühlen mehr bekommen und verliert deshalb. Ein Spieler kann auch mit mehr als drei Steinen verlieren, wenn sein Gegner ihn so blockiert hat, dass er seine Steine nicht mehr bewegen kann.\n\nEndphase\n\nIn einigen Regelvarianten kann ein Spieler, dem nur noch drei Steine verbleiben, mit seinen Steinen auf jeden freien Punkt „fliegen“, „hüpfen“ oder „springen“, nicht nur auf benachbarte.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Versionsinformationen",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Lizenz",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Quellcode",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "App-Version",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Generell",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Fortgeschritten",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Setze",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Bewege",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Entferne",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Spielendebedingung",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Spielstil des Computers",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Passiv",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Zeitlimit",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Das Auftreten",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "Auf menschliche Erfahrung zurückgreifen",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Verbessern Sie die Beweglichkeit von Steinen",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Anzahl Steine:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} in der Hand: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} auf dem Bord: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Abstand Spielbrett von oben",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Der Computer ist nicht am Zug.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "Computer denkt nicht.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Am Ende der Spielzugliste.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Nochmal drücken, um zu beenden.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "Mehr",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Dies ist eine experimentelle Funktion.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Experimente",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Quelloffene Lizenzen",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Sprache",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Standardsprache",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Die Steine können sich in der Setzphase bewegen",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Es gibt keine getrennten Setz- und Zugphasen, d.h. die Spieler können bei jedem Zug entscheiden, ob sie einen Stein auf dem Brett setzen oder einen ihrer Steine bewegen wollen (solange sie noch Steine zum Setzen haben).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Menüfarbe",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Menütextfarbe",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Farbe des Menümarkierungselements",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Hintergrundfarbe der Hauptsymbolleiste",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Symbolfarbe der Hauptsymbolleiste",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Hintergrundfarbe der Navigationsleiste",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Symbolfarbe der Navigationssymbolleiste",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Symbolleiste automatisch ausblenden",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Position der Symbolleiste auf dem Bildschirm",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Oben",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Unterseite",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Mitte",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Einfarbig",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Bild",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Wähle dein Bild",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Hell",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Dunkel",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Themen",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Aktuelles Thema",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Thema speichern",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Analysegrafik anzeigen",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Analyse",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Spiel speichern",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Spiel laden",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Aufstellungsposition",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Legale Züge anzeigen",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Letzten Zug anzeigen",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Pfeile zeigen",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Stücke",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Analyse anzeigen",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Themen",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Machen Sie mit",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Helfen Sie mit, die Übersetzung zu verbessern",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Lernprogramm",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Klassische Mühle",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Gemischte Mühle",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Ceylon-Mühle",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Mühle kann wiederholt gebrochen und neu hergestellt werden",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Wenn ein Spieler eine Mühle zerstört, um sofort eine neue Mühle zu bauen, kann dieser Spieler diesen Stein in seinem nächsten Zug zurück zur ursprünglichen Kreuzung bewegen, wenn er eine neue Mühle baut.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Das Spiel ist unentschieden, wenn ein Spieler drei Steine hat und nach zehn Zügen keiner der Spieler die Steine des Gegners entfernt remove",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Wenn ein Spieler nur noch drei Steine übrig hat und keiner der Spieler einen gegnerischen Stein innerhalb von zehn Zügen entfernen kann, ist das Spiel unentschieden.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Schließen Sie",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Weißer Stein",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Schwarzer Stein",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Verbotsstelle",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Leere Stelle",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Kein Punkt",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Setzphase",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Bewegungsphase",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Flugphase",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Seite zum Bewegen: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Letzter Zug: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Ausgewählt",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Barrierefreiheit",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Unterstützung für Bildschirmlesegeräte",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Es ist ein Unentschieden!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Zeichnen",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Farbe des Stein-Highlights",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algorithmus",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "Entfernen Sie nicht platzierte Steine",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Wenn ein Spieler in der Platzierungsphase die Mühle bildet, entfernt er den nicht platzierten Stein des Gegners und macht weiter seinen Zug.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "Endspiel N-Züge-Regel",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Wenn einer der beiden Spieler nur drei Steine hat und keiner der beiden Spieler innerhalb eines bestimmten Zuges einen Stein entfernt, ist das Spiel unentschieden.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Jeder der beiden Spieler hat nur drei Steine und keiner der beiden Spieler entfernt einen Stein innerhalb eines bestimmten Zuges.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Dreifache Wiederholungsregel",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Das Spiel ist unentschieden, wenn eine Stellung zum dritten Mal auftritt.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Mühle! Bewegen Sie sich weiter.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Punkt-Stil",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Breite der Punkte",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Solide",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Hohle",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Deutsch",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Zug}=1{{count} Zug}other{{count} Züge}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  },
+  "loadFailed": "Laden fehlgeschlagen.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameSavedTo": "Das Spiel wird gespeichert unter",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "filename": "Name der Datei",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameFiles": "Spiel-Dateien",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "browse": "Durchsuchen…",
+  "@browse": {
+    "description": "Browse…"
+  }
 }

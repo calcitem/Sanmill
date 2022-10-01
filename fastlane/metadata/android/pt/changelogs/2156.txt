@@ -1,0 +1,6 @@
+v1.1.30
+
+* Evite que a IA seja muito agressiva na fase de abertura, o que pode facilmente levar a perdas.
+* Aumente o valor máximo do nível de habilidade de 20 para 30.
+* Defina 'Considerar mobilidade das peças' como padrão.
+* Adicione a configuração 'Cor de destaque da peça' e defina o vermelho como padrão.

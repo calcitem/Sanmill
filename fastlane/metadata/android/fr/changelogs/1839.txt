@@ -1,0 +1,4 @@
+v1.0.13
+
+* Double retour pour fermer l'application.
+* Boîte de dialogue Popup Privacy Policy lors de la première exécution.

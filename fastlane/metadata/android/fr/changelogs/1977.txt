@@ -1,0 +1,4 @@
+v1.1.6
+
+* Fournissez des commentaires interactifs directement dans l'application en annotant une capture d'écran de la page actuelle et en ajoutant du texte.
+* Améliorer les traductions en roumain et en hongrois.

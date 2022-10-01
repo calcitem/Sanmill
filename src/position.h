@@ -1,20 +1,18 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef POSITION_H_INCLUDED
 #define POSITION_H_INCLUDED
@@ -25,9 +23,9 @@
 #include <string>
 #include <vector>
 
-#include "types.h"
 #include "rule.h"
 #include "stack.h"
+#include "types.h"
 
 /// StateInfo struct stores information needed to restore a Position object to
 /// its previous state when we retract a move. Whenever a move is made on the
@@ -42,7 +40,6 @@ struct StateInfo
     // Not copied when making a move (will be recomputed anyhow)
     Key key;
 };
-
 
 /// Position class stores information regarding the board representation as
 /// pieces, side to move, hash keys, castling info, etc. Important methods are
@@ -62,46 +59,46 @@ public:
 
     // FEN string input/output
     Position &set(const std::string &fenStr, Thread *th);
-    const std::string fen() const;
+    [[nodiscard]] std::string fen() const;
 
     // Position representation
-    Piece piece_on(Square s) const;
-    Color color_on(Square s) const;
-    bool empty(Square s) const;
-    template<PieceType Pt> int count(Color c) const;
+    [[nodiscard]] Piece piece_on(Square s) const;
+    [[nodiscard]] Color color_on(Square s) const;
+    [[nodiscard]] bool empty(Square s) const;
+    template <PieceType Pt>
+    [[nodiscard]] int count(Color c) const;
 
     // Properties of moves
-    bool legal(Move m) const;
-    Piece moved_piece(Move m) const;
+    [[nodiscard]] bool legal(Move m) const;
+    [[nodiscard]] Piece moved_piece(Move m) const;
 
     // Doing and undoing moves
     void do_move(Move m);
     void undo_move(Sanmill::Stack<Position> &ss);
 
     // Accessing hash keys
-    Key key() const noexcept;
-    Key key_after(Move m) const;
+    [[nodiscard]] Key key() const noexcept;
+    [[nodiscard]] Key key_after(Move m) const;
     void construct_key();
     Key revert_key(Square s);
     Key update_key(Square s);
     Key update_key_misc();
 
     // Other properties of the position
-    Color side_to_move() const;
-    int game_ply() const;
-    Thread *this_thread() const;
-    bool has_game_cycle() const;
+    [[nodiscard]] Color side_to_move() const;
+    [[nodiscard]] int game_ply() const;
+    [[nodiscard]] Thread *this_thread() const;
+    [[nodiscard]] bool has_game_cycle() const;
     bool has_repeated(Sanmill::Stack<Position> &ss) const;
-    unsigned int rule50_count() const;
-
+    [[nodiscard]] unsigned int rule50_count() const;
 
     /// Mill Game
 
     Piece *get_board() noexcept;
-    Square current_square() const;
-    enum Phase get_phase() const;
-    enum Action get_action() const;
-    const char *get_record() const;
+    [[nodiscard]] Square current_square() const;
+    [[nodiscard]] Phase get_phase() const;
+    [[nodiscard]] Action get_action() const;
+    [[nodiscard]] const char *get_record() const;
 
     bool reset();
     bool start();
@@ -109,50 +106,54 @@ public:
     bool command(const char *cmd);
     void update_score();
     bool check_if_game_is_over();
-    void remove_ban_stones();
+    void remove_ban_pieces();
     void set_side_to_move(Color c);
 
     void change_side_to_move();
-    Color get_winner() const noexcept;
+    [[nodiscard]] Color get_winner() const noexcept;
     void set_gameover(Color w, GameOverReason reason);
 
-    void mirror(std::vector <std::string> &moveHistory, bool cmdChange = true);
-    void turn(std::vector <std::string> &moveHistory, bool cmdChange = true);
-    void rotate(std::vector <std::string> &moveHistory, int degrees, bool cmdChange = true);
+    void mirror(std::vector<std::string> &moveHistory, bool cmdChange = true);
+    void turn(std::vector<std::string> &moveHistory, bool cmdChange = true);
+    void rotate(std::vector<std::string> &moveHistory, int degrees,
+                bool cmdChange = true);
 
     void reset_bb();
 
-    void create_mill_table();
-    int mills_count(Square s);
+    static void create_mill_table();
+    [[nodiscard]] int mills_count(Square s) const;
 
     // The number of mills that would be closed by the given move.
     int potential_mills_count(Square to, Color c, Square from = SQ_0);
     bool is_all_in_mills(Color c);
 
-    void surrounded_pieces_count(Square s, int &ourPieceCount, int &theirPieceCount, int &bannedCount, int &emptyCount);
-    bool is_all_surrounded(Color c
+    void surrounded_pieces_count(Square s, int &ourPieceCount,
+                                 int &theirPieceCount, int &bannedCount,
+                                 int &emptyCount) const;
+    [[nodiscard]] bool is_all_surrounded(Color c
 #ifdef MADWEASEL_MUEHLE_RULE
-                           , Square from = SQ_0, Square to = SQ_0
+                                         ,
+                                         Square from = SQ_0, Square to = SQ_0
 #endif // MADWEASEL_MUEHLE_RULE
     ) const;
 
     static void print_board();
 
-    int piece_on_board_count(Color c) const;
-    int piece_in_hand_count(Color c) const;
+    [[nodiscard]] int piece_on_board_count(Color c) const;
+    [[nodiscard]] int piece_in_hand_count(Color c) const;
 
-    int piece_to_remove_count() const;
+    [[nodiscard]] int piece_to_remove_count() const;
 
-    int get_mobility_diff() const;
+    [[nodiscard]] int get_mobility_diff() const;
     void updateMobility(MoveType mt, Square s);
-    //template <typename Mt> void updateMobility(Square from, Square to);
+    // template <typename Mt> void updateMobility(Square from, Square to);
     int calculate_mobility_diff();
 
-    bool is_three_endgame() const;
+    [[nodiscard]] bool is_three_endgame() const;
 
     static bool is_star_square(Square s);
 
-    bool bitboard_is_ok();
+    static bool bitboard_is_ok();
 
     // Other helpers
     bool select_piece(Square s);
@@ -169,39 +170,39 @@ public:
     bool move_piece(Square from, Square to);
 
     // Data members
-    Piece board[SQUARE_NB];
+    Piece board[SQUARE_EXT_NB];
     Bitboard byTypeBB[PIECE_TYPE_NB];
     Bitboard byColorBB[COLOR_NB];
-    int pieceInHandCount[COLOR_NB] { 0, 9, 9 };
-    int pieceOnBoardCount[COLOR_NB] { 0, 0, 0 };
-    int pieceToRemoveCount{ 0 };
-    int mobilityDiff { 0 };
-    int gamePly { 0 };
-    Color sideToMove { NOCOLOR };
+    int pieceInHandCount[COLOR_NB] {0, 9, 9};
+    int pieceOnBoardCount[COLOR_NB] {0, 0, 0};
+    int pieceToRemoveCount {0};
+    int mobilityDiff {0};
+    int gamePly {0};
+    Color sideToMove {NOCOLOR};
     Thread *thisThread {nullptr};
     StateInfo st;
 
     /// Mill Game
-    Color them { NOCOLOR };
+    Color them {NOCOLOR};
     Color winner;
-    GameOverReason gameOverReason { GameOverReason::noReason };
+    GameOverReason gameOverReason {GameOverReason::none};
 
-    enum Phase phase {Phase::none};
-    enum Action action;
+    Phase phase {Phase::none};
+    Action action;
 
-    int score[COLOR_NB] { 0 };
-    int score_draw { 0 };
+    int score[COLOR_NB] {0};
+    int score_draw {0};
 
     // Relate to Rule
-    static Bitboard millTableBB[SQUARE_NB][LD_NB];
+    static Bitboard millTableBB[SQUARE_EXT_NB][LD_NB];
 
     Square currentSquare;
-    int gamesPlayedCount { 0 };
+    int gamesPlayedCount {0};
 
-    const static int RECORD_LEN_MAX = 64;
-    char record[RECORD_LEN_MAX] { '\0' };
+    static constexpr int RECORD_LEN_MAX = 64;
+    char record[RECORD_LEN_MAX] {'\0'};
 
-    Move move { MOVE_NONE };
+    Move move {MOVE_NONE};
 };
 
 extern std::ostream &operator<<(std::ostream &os, const Position &pos);
@@ -227,11 +228,14 @@ inline Piece Position::moved_piece(Move m) const
     return piece_on(from_sq(m));
 }
 
-template<PieceType Pt> inline int Position::count(Color c) const
+template <PieceType Pt>
+int Position::count(Color c) const
 {
     if (Pt == ON_BOARD) {
         return pieceOnBoardCount[c];
-    } else if (Pt == IN_HAND) {
+    }
+
+    if (Pt == IN_HAND) {
         return pieceInHandCount[c];
     }
 
@@ -305,12 +309,11 @@ inline bool Position::move_piece(Square from, Square to)
     return false;
 }
 
-
 /// Mill Game
 
 inline Piece *Position::get_board() noexcept
 {
-    return static_cast<Piece *>(board);
+    return board;
 }
 
 inline Square Position::current_square() const
@@ -318,12 +321,12 @@ inline Square Position::current_square() const
     return currentSquare;
 }
 
-inline enum Phase Position::get_phase() const
+inline Phase Position::get_phase() const
 {
     return phase;
 }
 
-inline enum Action Position::get_action() const
+inline Action Position::get_action() const
 {
     return action;
 }

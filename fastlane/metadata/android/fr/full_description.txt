@@ -1,0 +1,16 @@
+Un programme Morris de Nine Men (et ses variantes)
+
+Des règles :
+
+* Un joueur qui aligne trois de ses pièces sur une ligne de plateau dispose d'un moulin et peut retirer la ou les pièces de son adversaire.
+* Tout joueur réduit à deux pièces et n'a pas la possibilité de former de nouveaux moulins et perd ainsi la partie.
+* Si un joueur ne peut pas déplacer une de ses pièces (est enfermé), il a perdu la partie.
+
+Caractéristiques :
+
+* Prend en charge de nombreuses variantes de règles, telles que Nine Men's Morris et Twelve Men's Morris, règle « Vol » ou aucune règle « Vol »
+* Jouez contre l'IA, ou jouez des deux côtés
+* Niveau de jeu réglable
+* Hautement configurable
+* Thèmes de couleurs
+* Accessibilité

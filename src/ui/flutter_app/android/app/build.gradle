@@ -40,7 +40,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     lintOptions {
         disable 'InvalidPackage'
@@ -48,8 +48,8 @@ android {
 
     defaultConfig {
         applicationId "com.calcitem.sanmill"
-        minSdkVersion 17
-        targetSdkVersion 31
+        minSdkVersion 19
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         ndk{

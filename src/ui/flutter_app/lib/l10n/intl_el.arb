@@ -1,1252 +1,1174 @@
 {
-    "@@locale": "el",
-    "appName": "Μύλος",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Καλώς ήρθατε",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "Ναι",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Όχι",
-    "@no": {
-        "description": "No"
-    },
-    "game": "Παιχνίδι",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Άνθρωπος εναντίον AI",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Human Vs Human",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "Τεχνητή Νοημοσύνη εναντίον Τεχνητής Νοημοσύνης",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Human Vs Cloud",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Human Vs LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Δοκιμή μέσω LAN",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Μετακίνηση",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " Μετακινήσεις",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Λίστα κινήσεων",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Λίστα κινήσεων",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Δεν υπάρχει εγγραφή",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "OK",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "Επιβεβαίωση",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "Ακύρωση",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Copyright © 2021-2022 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Επιλέξτε το λάθος κομμάτι.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Τοποθετήστε τα κομμάτια σας.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Δεν μπορείτε να το τοποθετήσετε εδώ.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Τοποθετήσατε.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Αφαιρέστε ένα κομμάτι.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Δεν μπορείτε να το αφαιρέσετε.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Αφαιρέσατε.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Μετακινήστε ένα κομμάτι.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Δεν μπορείτε να τοποθετήσετε το κομμάτι σας εδώ.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Δεν μπορείτε να μετακινήσετε το κομμάτι σας εδώ.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Μύλος! Πάρε το κομμάτι του αντιπάλου σου.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Συνεχίστε να παίρνετε το κομμάτι του αντιπάλου σας.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Επιλέξτε ένα από τα κομμάτια του αντιπάλου σας.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Δεν μπορείτε να αφαιρέσετε ένα κομμάτι από ένα μύλο.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "Ένα κομμάτι μπορεί να μετακινηθεί κατά 1 πόντο.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Δεν μπορείτε να μετακινήσετε τα κομμάτια του αντιπάλου σας.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "Υπάρχουν τρία κομμάτια σε μια γραμμή.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Επιλέξτε το κομμάτι που θέλετε να μετακινήσετε.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "Έχουν απομείνει τρία κομμάτια.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Μπορείς να μετακινηθείς σε όποιο σημείο θέλεις.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " για να μετακινηθείς.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "Ο παίκτης 1 κερδίζει!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "Ο παίκτης 2 κερδίζει!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Κέρδισε",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "Χάθηκε",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "Ματαιώθηκε",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Σκέφτομαι...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "Νέο παιχνίδι",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Εισαγωγή παιχνιδιού",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Εξαγωγή παιχνιδιού",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Παιχνίδι που εισάγεται από το πρόχειρο.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Δεν είναι δυνατή η εισαγωγή",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Οι κινήσεις και οι κανόνες δεν ταιριάζουν.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Έναρξη εγγραφής",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Εγγραφή...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Διακοπή εγγραφής",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Εμφάνιση εγγραφής",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "Δεν υπάρχει εγγραφή.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Παρακαλώ περιμένετε.",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Επανεκκίνηση του τρέχοντος παιχνιδιού;",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Επανεκκίνηση",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "Το παιχνίδι ξεκίνησε, παρακαλώ τοποθετήστε",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Ανάλυση ...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "Σφάλμα",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "Ποσοστό νίκης",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "Βαθμολογία",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "Παίκτης 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "Παίκτης 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " Ο αριθμός των κομματιών είναι μικρότερος από τρία.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " παραιτηθείτε.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " δεν είναι τρόπος να φύγεις.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "Το ταμπλό είναι γεμάτο και δεν υπάρχει τρόπος να φύγετε.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Ο χρόνος τελείωσε.",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "Στη φάση της μετακίνησης, κανένα κομμάτι δεν έχει αφαιρεθεί στον τελευταίο συγκεκριμένο αριθμό κινήσεων.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "Είναι ισοπαλία επειδή το ταμπλό είναι γεμάτο.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "Είναι Ισοπαλία λόγω τριπλής επανάληψης.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "Τέλος παιχνιδιού! Άγνωστος λόγος.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "Game Over",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "Κερδίσατε! Συγχαρητήρια!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "Πρόκληση για πιο δύσκολο επίπεδο; Το νέο επίπεδο θα είναι το επίπεδο ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "Χάνετε!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "Αναλύστε το",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "Επανεκκίνηση του τρέχοντος παιχνιδιού;",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "Σχετικά με το",
-    "@about": {
-        "description": "About"
-    },
-    "version": "Έκδοση",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "Ευχαριστώ",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Ρυθμίσεις",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Επιλογές",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "Προτιμήσεις",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Επίπεδο δυσκολίας",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "Χρόνος σκέψης AI",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Δυσκολία",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Ηχητικά εφέ",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "Αναπαραγωγή ήχων στο παιχνίδι",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Διατηρήστε τη σίγαση όταν παίρνετε πίσω",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Ήχος",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Πρώτη κίνηση",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Ανθρώπινο",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "AI",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "Εναλλακτική",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "Αυτόματη επανεκκίνηση του παιχνιδιού όταν τελειώσει το παιχνίδι",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Αυτόματη αλλαγή πρώτης κίνησης",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "AI παραιτείται αν χάσουν οι περισσότεροι",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Τυχαία κίνηση",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Μάθετε το τελικό παιχνίδι",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Βιβλίο ανοίγματος",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "Διάφορα",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "Κανόνες",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Ο αριθμός των κομματιών που έχει κάθε παίκτης",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Πόσα κομμάτια έχει κάθε παίκτης;",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Ο αριθμός του ιπτάμενου κομματιού",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "Εάν είναι ενεργοποιημένο το Ιπτάμενο κομμάτι, όταν ένας παίκτης μειωθεί σε έναν συγκεκριμένο αριθμό κομματιών, τα κομμάτια του είναι ελεύθερα να μετακινηθούν σε οποιοδήποτε μη κατειλημμένο σημείο αντί να περιορίζονται σε γειτονικά σημεία όπως στο υπόλοιπο παιχνίδι.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Κομμάτια Τουλάχιστον",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Διαγώνιες γραμμές",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Προσθέστε τέσσερις διαγώνιες γραμμές στο ταμπλό.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Σημειώστε και καθυστερήστε την αφαίρεση κομματιών",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "Στη φάση τοποθέτησης, τα σημεία των κομματιών που έχουν αφαιρεθεί δεν θα μπορούν πλέον να τοποθετηθούν.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Ο δεύτερος παίκτης κινείται πρώτος",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Ο παίκτης που κινείται δεύτερος στη φάση τοποθέτησης κινείται πρώτος στη φάση μετακίνησης.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Πολλαπλή αφαίρεση",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Εάν ένας παίκτης κλείσει περισσότερους από έναν μύλους ταυτόχρονα, θα αφαιρέσει τον αριθμό των μύλων που έκλεισε.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Καταστροφή μύλων",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "Από προεπιλογή, οι παίκτες πρέπει να αφαιρέσουν πρώτα τυχόν άλλα κομμάτια πριν αφαιρέσουν ένα κομμάτι από έναν σχηματισμένο μύλο. Ενεργοποιήστε αυτή την επιλογή για να απενεργοποιήσετε τον περιορισμό.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Ο δεύτερος παίκτης χάνει όταν το ταμπλό είναι γεμάτο",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Όταν το ταμπλό είναι γεμάτο στο τέλος της φάσης τοποθέτησης, η πλευρά που τοποθετεί πρώτη χάνει το παιχνίδι. Διαφορετικά, το παιχνίδι είναι ισόπαλο.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Χάνει όταν δεν υπάρχουν νόμιμες κινήσεις",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Ο παίκτης χάνει αν ο αντίπαλός του τους μπλοκάρει έτσι ώστε να μην μπορούν να μετακινηθούν. Αλλάξτε πλευρά για να μετακινηθείτε αν αυτή η επιλογή είναι απενεργοποιημένη.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Ιπτάμενο",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Εάν ένας παίκτης έχει μόνο τρία ή τέσσερα (διαμορφώσιμα) κομμάτια, μπορεί να μετακινήσει το κομμάτι σε οποιοδήποτε ελεύθερο σημείο.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "Κανόνας Ν-κίνησης",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "Το παιχνίδι λήγει αν δεν έχει γίνει καμία αφαίρεση σε συγκεκριμένο αριθμό κινήσεων από κάθε παίκτη.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Rollback",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "Παρακαλώ επιλέξτε",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "Αντιγραφή",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Το ιστορικό κινήσεων αντιγράφεται στο πρόχειρο",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Βοήθεια",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Ανατροφοδότηση",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "Έξοδος",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Ρυθμίσεις κανόνα",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "Χρώμα",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Χρώμα πίνακα",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Χρώμα κομματιού",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Χρώμα φόντου",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Χρώμα γραμμής σκάφους",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Χρώμα κομματιού παίκτη 1",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Χρώμα κομματιού παίκτη 2",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Χρώμα μηνύματος",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "Η AI είναι τεμπέλης",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Εμφάνιση του αριθμού των κομματιών στο χέρι",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Εμφάνιση σημειώσεων στο ταμπλό",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Εμφάνιση γραμμής εργαλείων πλοήγησης ιστορικού",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "Εμφάνιση",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Πλάτος ορίων σκακιέρας",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Πλάτος εσωτερικής γραμμής του ταμπλό",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Πλάτος τεμαχίου",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "Μέγεθος γραμματοσειράς",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "Σημειώσεις WMD",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Επαναφορά",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Επαναφορά προεπιλεγμένων ρυθμίσεων",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "Η εφαρμογή θα τερματίσει.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "Πρέπει να κλείσετε αμέσως και να ανοίξετε ξανά την εφαρμογή για να ισχύσει.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Επιλέξτε",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "Πληροφορίες",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "Υπόδειξη",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "παίκτης",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "Παίκτης 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "Παίκτης 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Πώς να παίξετε",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Πατήστε σε οποιοδήποτε διαθέσιμο σημείο για να τοποθετήσετε το κομμάτι.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Πατήστε σε ένα κομμάτι για να το μετακινήσετε.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Πατήστε σε σημείο που συνδέεται με κομμάτι για να το μετακινήσετε.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Πατήστε σε ένα κομμάτι του αντιπάλου για να το αφαιρέσετε.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Πρέπει πρώτα να δημιουργήσετε έναν μύλο πριν μπορέσετε να αφαιρέσετε ένα κομμάτι.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Πρέπει να παίξετε με τα κομμάτια σας.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "Στατιστικά στοιχεία",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Σύνολο παιχνιδιών",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "Αποτελέσματα",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Δεν μπορείτε να αφαιρέσετε από τον μύλο.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "αριστερά",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Πολιτική απορρήτου",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Παρακαλούμε διαβάστε προσεκτικά και βεβαιωθείτε ότι έχετε κατανοήσει πλήρως και συμφωνείτε με αυτό ",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Εάν δεν συμφωνείτε με την παρούσα Πολιτική, παρακαλούμε μην χρησιμοποιείτε αυτή την εφαρμογή. Η χρήση της Εφαρμογής συνεπάγεται ότι αποδέχεστε αυτούς τους όρους.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " και ",
-    "accept": "Αποδέχομαι το",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "Αναίρεση",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "Επιλογή αναίρεσης",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Είναι δυνατή η αναίρεση μιας κίνησης.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Πάρτε πίσω",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Λήψη πίσω",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Αναμονή",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Βήμα προς τα εμπρός",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Πάρτε τα όλα πίσω",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Βήμα προς τα εμπρός όλοι",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Προχωρήστε τώρα",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Έγινε.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Crack-mill",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "Εάν ένας παίκτης έχει μόνο κομμάτια σε μύλους, τα κομμάτια στους μύλους δεν θα κλειδώσουν για να αφαιρεθούν.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Διάρκεια κίνησης",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Καμία",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Θέμα",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Στόχος του παιχνιδιού είναι να αφήσετε τον αντίπαλο με λιγότερα από τρία κομμάτια ή χωρίς νόμιμες κινήσεις.\n\nΤο παιχνίδι λήγει αυτόματα αν μια θέση εμφανιστεί για τρίτη φορά ή αν δεν γίνει καμία αφαίρεση στις τελευταίες 100 (διαμορφώσιμες) κινήσεις.\n\nΤο παιχνίδι εξελίσσεται σε τρεις φάσεις:\n\n1. Τοποθέτηση κομματιών σε κενά σημεία\n2. Μετακίνηση κομματιών σε γειτονικά σημεία\n3. (προαιρετική φάση) Μετακίνηση κομματιών σε οποιοδήποτε κενό σημείο όταν ο παίκτης μειώνεται σε τρία κομμάτια.\n\nΤοποθέτηση\n\nΤο παιχνίδι ξεκινά με ένα άδειο ταμπλό, το οποίο αποτελείται από ένα πλέγμα με είκοσι τέσσερα σημεία. Οι παίκτες τοποθετούν εναλλάξ τα κομμάτια τους στα κενά σημεία μέχρι κάθε παίκτης να τοποθετήσει όλα τα κομμάτια του στο ταμπλό. Εάν ένας παίκτης μπορεί να τοποθετήσει τρία από τα κομμάτια του στην ευθεία, έχει \"μύλο\" και μπορεί να αφαιρέσει ένα από τα κομμάτια του αντιπάλου του από το ταμπλό.\n\nΣε ορισμένους κανόνες, οι παίκτες πρέπει να αφαιρέσουν πρώτα όλα τα άλλα κομμάτια πριν αφαιρέσουν ένα κομμάτι από ένα σχηματισμένο μύλο.\n\nΣε ορισμένους κανόνες δεν μπορείτε να τοποθετήσετε ξανά τα κομμάτια στα σημεία των αφαιρεθέντων κομματιών στη φάση τοποθέτησης.\n\nΑφού χρησιμοποιήσετε όλα τα κομμάτια, οι παίκτες κινούνται εναλλάξ.\n\nΜετακίνηση\n\nΓια να μετακινηθεί, ένας παίκτης μετακινεί ένα από τα κομμάτια του κατά μήκος μιας γραμμής του ταμπλό σε ένα κενό γειτονικό σημείο. Αν δεν μπορεί να το κάνει αυτό, έχει χάσει το παιχνίδι. Όπως και στη φάση τοποθέτησης, ο παίκτης που ευθυγραμμίζει τρία από τα κομμάτια του σε μια γραμμή του ταμπλό έχει ένα μύλο και μπορεί να αφαιρέσει ένα από τα κομμάτια του αντιπάλου του. Οποιοσδήποτε παίκτης μειώσει σε δύο κομμάτια, δεν έχει τη δυνατότητα να σχηματίσει νέους μύλους και έτσι χάνει το παιχνίδι. Ένας παίκτης μπορεί επίσης να χάσει όταν έχει περισσότερα από τρία κομμάτια, αν ο αντίπαλός του τα εμποδίσει να κινηθούν.\n\nΠετώντας\n\nΣε ορισμένες παραλλαγές των κανόνων, όταν ένας παίκτης έχει μόνο τρία κομμάτια, τα κομμάτια του μπορούν να πετάξουν, να πηδήξουν ή να πηδήξουν σε οποιαδήποτε κενά σημεία, όχι μόνο σε γειτονικά.",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "Πληροφορίες έκδοσης",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "Άδεια χρήσης",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Πηγαίος κώδικας",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Σημειώσεις τρίτων",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "Έκδοση εφαρμογής",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "Γενικά",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "Προηγμένη",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "Τοποθέτηση",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Μετακίνηση",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Αφαίρεση",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "Κατάσταση game over",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "Στυλ παιχνιδιού της AI",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Παθητικό",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "Timeout",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Εξατομίκευση",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "Για προγραμματιστές",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Λειτουργία για προγραμματιστές",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Αξιοποίηση της ανθρώπινης εμπειρίας",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Εξετάστε την κινητικότητα των κομματιών",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Αριθμός κομματιών",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "στο χέρι",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "στο ταμπλό",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "Μετατόπιση του ταμπλό από την κορυφή",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Δεν είναι η σειρά της ΤΝ.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "Η ΤΝ δεν σκέφτεται.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Αυτόματη επανάληψη κινήσεων",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "Βρίσκεστε στο τέλος της λίστας κινήσεων.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Πατήστε ξανά πίσω για να φύγετε.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Μεταβλητές περιβάλλοντος",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Περισσότερα",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Πρόκειται για μια πειραματική λειτουργία.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Πειράματα",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Άδειες χρήσης ανοικτού κώδικα",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Γλώσσα",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "Προεπιλεγμένη γλώσσα",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Τα κομμάτια μπορούν να μετακινηθούν στη φάση τοποθέτησης",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Δεν υπάρχουν διακριτές φάσεις τοποθέτησης και μετακίνησης, δηλαδή, οι παίκτες μπορούν να αποφασίζουν σε κάθε κίνηση αν θέλουν να τοποθετήσουν ένα κομμάτι στο ταμπλό ή να μετακινήσουν ένα από τα κομμάτια τους (εφόσον έχουν εναπομείναντα κομμάτια για τοποθέτηση).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Χρώμα μενού",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Χρώμα κειμένου μενού",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Χρώμα φόντου μενού",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Χρώμα στοιχείου επισήμανσης μενού",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Χρώμα φόντου κύριας γραμμής εργαλείων",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "χρώμα εικονιδίου κύριας γραμμής εργαλείων",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Χρώμα φόντου στη γραμμή εργαλείων πλοήγησης",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Χρώμα εικονιδίου γραμμής εργαλείων πλοήγησης",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Κρύψτε αυτόματα τη γραμμή εργαλείων",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Τοποθεσία γραμμής εργαλείων στην οθόνη",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Μπλουζα",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Κάτω μέρος",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Κέντρο",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Στερεό χρώμα",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Εικόνα",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Επιλέξτε την εικόνα σας",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Φως",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "Σκοτάδι",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Θέματα",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Τρέχον θέμα",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Αποθήκευση θέματος",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "Γραμματοσειρές",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Εμφάνιση γραφήματος ανάλυσης",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Ανάλυση",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "Αποθήκευση παιχνιδιού",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Φόρτωσε το παιχνίδι",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "Θέση εγκατάστασης",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Εμφάνιση νομικών κινήσεων",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Εμφάνιση τελευταίας κίνησης",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Εμφάνιση βελών",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "Κομμάτια",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Εμφάνιση ανάλυσης",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Νήματα",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "Εμπλέκομαι",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Βοηθήστε στη βελτίωση της μετάφρασης",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "Φροντιστήριο",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Κλασικό μύλο",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Μικτός Μύλος",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Μύλος Κεϋλάνης",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Ο μύλος μπορεί να σπάσει και να ξανακατασκευαστεί",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Εάν ένας παίκτης σπάσει ένα μύλο για να δημιουργήσει ένα νέο μύλο αμέσως, ένας τέτοιος παίκτης μπορεί να μετακινήσει ένα τέτοιο κομμάτι πίσω στην αρχική διασταύρωση στην επόμενη κίνηση του, αν κάνει ένα νέο μύλο.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Το παιχνίδι τραβιέται αν ένας παίκτης έχει τρία κομμάτια και μετά από δέκα κινήσεις κανένας παίκτης δεν αφαιρεί τα κομμάτια του αντιπάλου",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Όταν ένας παίκτης είναι κάτω από τρία κομμάτια και κανένας παίκτης δεν μπορεί να αφαιρέσει ένα κομμάτι ενός αντιπάλου μέσα σε δέκα κινήσεις, το παιχνίδι είναι ισοπαλία.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "Κλείσε",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Λευκό κομμάτι",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "Μαύρο κομμάτι",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Σημείο απαγόρευσης",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "Κενό σημείο",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Δεν έχει νόημα",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Φάση τοποθέτησης",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Μετακινούμενη φάση",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Φάση πτήσης",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Πλευρά για μετακίνηση",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Τελευταία κίνηση",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Επιλεγμένο",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Κυρίως μενού",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Προσιτότητα",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Υποστήριξη αναγνώστη οθόνης",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "Είναι Κλήρωση",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "Σχεδιάζω",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Χρώμα φωτισμού κομμάτι",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "Αλγόριθμος",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "Αφαιρέστε το μη τοποθετημένο κομμάτι",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Εάν ένας παίκτης σχηματίσει το μύλο στη φάση τοποθέτησης, θα αφαιρέσει το μη τοποθετημένο κομμάτι του αντιπάλου και θα συνεχίσει να κάνει μια κίνηση.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "Κανόνας N-Move Endgame",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Εάν ένας παίκτης έχει μόνο τρία κομμάτια και κανένας παίκτης δεν αφαιρέσει ένα κομμάτι μέσα σε μια συγκεκριμένη κίνηση, το παιχνίδι κληρώνεται.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Ο κάθε παίκτης έχει μόνο τρία κομμάτια και κανένας παίκτης δεν αφαιρεί ένα κομμάτι μέσα σε μια συγκεκριμένη κίνηση.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Τριπλός κανόνας επανάληψης",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Το παιχνίδι κληρώνεται εάν μια θέση εμφανιστεί για τρίτη φορά.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Μύλος! Συνεχίστε να κάνετε μια κίνηση.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Στυλ σημείου",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Πλάτος σημείου",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Στερεός",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Κοίλος",
-    "@hollow": {
-        "description": "Hollow"
+  "appName": "Μύλος",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Καλώς ήρθατε",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Ναι",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Όχι",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Παιχνίδι",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Άνθρωπος εναντίον AI",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Human Vs Human",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "Τεχνητή Νοημοσύνη εναντίον Τεχνητής Νοημοσύνης",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Human Vs Cloud",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Human Vs LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Δοκιμή μέσω LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Μετακίνηση",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Λίστα κινήσεων",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Λίστα κινήσεων",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Δεν υπάρχει εγγραφή",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Επιβεβαίωση",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Ακύρωση",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Επιλέξτε το λάθος κομμάτι.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Τοποθετήστε τα κομμάτια σας.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Δεν μπορείτε να το τοποθετήσετε εδώ.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Τοποθετήσατε.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Αφαιρέστε ένα κομμάτι.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Δεν μπορείτε να το αφαιρέσετε.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Αφαιρέσατε.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Μετακινήστε ένα κομμάτι.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Δεν μπορείτε να τοποθετήσετε το κομμάτι σας εδώ.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Δεν μπορείτε να μετακινήσετε το κομμάτι σας εδώ.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Μύλος! Πάρε το κομμάτι του αντιπάλου σου.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Συνεχίστε να παίρνετε το κομμάτι του αντιπάλου σας.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Επιλέξτε ένα από τα κομμάτια του αντιπάλου σας.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Δεν μπορείτε να αφαιρέσετε ένα κομμάτι από ένα μύλο.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Ένα κομμάτι μπορεί να μετακινηθεί κατά 1 πόντο.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Δεν μπορείτε να μετακινήσετε τα κομμάτια του αντιπάλου σας.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Επιλέξτε το κομμάτι που θέλετε να μετακινήσετε.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Έχουν απομείνει τρία κομμάτια.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Μπορείς να μετακινηθείς σε όποιο σημείο θέλεις.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} για μετακίνηση.",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "Ο παίκτης 1 κερδίζει!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Ο παίκτης 2 κερδίζει!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Κέρδισε",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Χάθηκε",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Σκέφτομαι…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Νέο παιχνίδι",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Εισαγωγή παιχνιδιού",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Εξαγωγή παιχνιδιού",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Παιχνίδι που εισάγεται από το πρόχειρο.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Δεν είναι δυνατή η εισαγωγή {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "Οι κινήσεις και οι κανόνες δεν ταιριάζουν.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Παρακαλώ περιμένετε.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Επανεκκίνηση του τρέχοντος παιχνιδιού;",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Επανεκκίνηση",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Το παιχνίδι ξεκίνησε, παρακαλώ τοποθετήστε.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Ανάλυση…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Σφάλμα: {message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "Ποσοστό νίκης",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Βαθμολογία:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Παίκτης 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Παίκτης 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} ο αριθμός τεμαχίων είναι μικρότερος από τρία.",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player} παραιτηθείτε.",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "Το {player} δεν έχει δρόμο.",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "Η πλακέτα είναι γεμάτη και το {player} δεν έχει δρόμο.",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "Ο χρόνος τελείωσε, το {player} χάθηκε.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "Στη φάση της μετακίνησης, κανένα κομμάτι δεν έχει αφαιρεθεί στον τελευταίο συγκεκριμένο αριθμό κινήσεων.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Είναι ισοπαλία επειδή το ταμπλό είναι γεμάτο.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Είναι Ισοπαλία λόγω τριπλής επανάληψης.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Τέλος παιχνιδιού! Άγνωστος λόγος.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Τέλος παιχνιδιού",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Κερδίσατε! Συγχαρητήρια!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Πρόκληση πιο δύσκολο επίπεδο; Το νέο επίπεδο θα είναι επίπεδο {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "Χάνετε!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Αναλύστε το",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Σχετικά με το",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Έκδοση: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "Ευχαριστώ",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Ρυθμίσεις",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Επιλογές",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Γενικές Ρυθμίσεις",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Επίπεδο δυσκολίας",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Χρόνος σκέψης AI",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Δυσκολία",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Ηχητικά εφέ",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Αναπαραγωγή ήχων στο παιχνίδι",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Διατηρήστε τη σίγαση όταν παίρνετε πίσω",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Ήχος",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Πρώτη κίνηση",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Ανθρώπινο",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Εναλλακτική",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Αυτόματη επανεκκίνηση του παιχνιδιού όταν τελειώσει το παιχνίδι",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Αυτόματη αλλαγή πρώτης κίνησης",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Τυχαία κίνηση",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Διάφορα",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Κανόνες",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Ο αριθμός των κομματιών που έχει κάθε παίκτης",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Πόσα κομμάτια έχει κάθε παίκτης;",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Ο αριθμός του ιπτάμενου κομματιού",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Εάν είναι ενεργοποιημένο το Ιπτάμενο κομμάτι, όταν ένας παίκτης μειωθεί σε έναν συγκεκριμένο αριθμό κομματιών, τα κομμάτια του είναι ελεύθερα να μετακινηθούν σε οποιοδήποτε μη κατειλημμένο σημείο αντί να περιορίζονται σε γειτονικά σημεία όπως στο υπόλοιπο παιχνίδι.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Κομμάτια Τουλάχιστον",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Διαγώνιες γραμμές",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Προσθέστε τέσσερις διαγώνιες γραμμές στο ταμπλό.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Σημειώστε και καθυστερήστε την αφαίρεση κομματιών",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "Στη φάση τοποθέτησης, τα σημεία των κομματιών που έχουν αφαιρεθεί δεν θα μπορούν πλέον να τοποθετηθούν.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Ο δεύτερος παίκτης κινείται πρώτος",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Ο παίκτης που κινείται δεύτερος στη φάση τοποθέτησης κινείται πρώτος στη φάση μετακίνησης.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Πολλαπλή αφαίρεση",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Εάν ένας παίκτης κλείσει περισσότερους από έναν μύλους ταυτόχρονα, θα αφαιρέσει τον αριθμό των μύλων που έκλεισε.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Καταστροφή μύλων",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Από προεπιλογή, οι παίκτες πρέπει να αφαιρέσουν πρώτα τυχόν άλλα κομμάτια πριν αφαιρέσουν ένα κομμάτι από έναν σχηματισμένο μύλο. Ενεργοποιήστε αυτή την επιλογή για να απενεργοποιήσετε τον περιορισμό.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Ο δεύτερος παίκτης χάνει όταν το ταμπλό είναι γεμάτο",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Όταν το ταμπλό είναι γεμάτο στο τέλος της φάσης τοποθέτησης, η πλευρά που τοποθετεί πρώτη χάνει το παιχνίδι. Διαφορετικά, το παιχνίδι είναι ισόπαλο.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Χάνει όταν δεν υπάρχουν νόμιμες κινήσεις",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Ο παίκτης χάνει αν ο αντίπαλός του τους μπλοκάρει έτσι ώστε να μην μπορούν να μετακινηθούν. Αλλάξτε πλευρά για να μετακινηθείτε αν αυτή η επιλογή είναι απενεργοποιημένη.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Ιπτάμενο",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Εάν ένας παίκτης έχει μόνο τρία ή τέσσερα (διαμορφώσιμα) κομμάτια, μπορεί να μετακινήσει το κομμάτι σε οποιοδήποτε ελεύθερο σημείο.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "Κανόνας Ν-κίνησης",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Το παιχνίδι λήγει αν δεν έχει γίνει καμία αφαίρεση σε συγκεκριμένο αριθμό κινήσεων από κάθε παίκτη.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Επαναφορά",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Παρακαλώ επιλέξτε",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Αντιγραφή",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Το ιστορικό κινήσεων αντιγράφεται στο πρόχειρο.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Βοήθεια",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Ανατροφοδότηση",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Έξοδος",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Ρυθμίσεις κανόνα",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Χρώμα",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Χρώμα πίνακα",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Χρώμα κομματιού",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Χρώμα φόντου",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Χρώμα γραμμής σκάφους",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Χρώμα κομματιού παίκτη 1",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Χρώμα κομματιού παίκτη 2",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Χρώμα μηνύματος",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Εμφάνιση του αριθμού των κομματιών στο χέρι",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Εμφάνιση σημειώσεων στο ταμπλό",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Εμφάνιση γραμμής εργαλείων πλοήγησης ιστορικού",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Εμφάνιση",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Πλάτος ορίων σκακιέρας",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Πλάτος εσωτερικής γραμμής του ταμπλό",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Πλάτος τεμαχίου",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Μέγεθος γραμματοσειράς",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "Σημειώσεις WMD",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Επαναφορά",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Επαναφορά προεπιλεγμένων ρυθμίσεων",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Επιλέξτε {element}",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "Πληροφορίες",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Υπόδειξη",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "παίκτης",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Παίκτης 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Παίκτης 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Πώς να παίξετε",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Πατήστε σε οποιοδήποτε διαθέσιμο σημείο για να τοποθετήσετε το κομμάτι.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Πατήστε σε ένα κομμάτι για να το μετακινήσετε.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Πατήστε σε σημείο που συνδέεται με κομμάτι για να το μετακινήσετε.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Πατήστε σε ένα κομμάτι του αντιπάλου για να το αφαιρέσετε.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Πρέπει πρώτα να δημιουργήσετε έναν μύλο πριν μπορέσετε να αφαιρέσετε ένα κομμάτι.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Πρέπει να παίξετε με τα κομμάτια σας.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Στατιστικά στοιχεία",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Σύνολο παιχνιδιών",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Αποτελέσματα",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "αριστερά",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Πολιτική απορρήτου",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Παρακαλούμε διαβάστε προσεκτικά και βεβαιωθείτε ότι έχετε κατανοήσει πλήρως και συμφωνείτε με αυτό ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Εάν δεν συμφωνείτε με την παρούσα Πολιτική, παρακαλούμε μην χρησιμοποιείτε αυτή την εφαρμογή. Η χρήση της Εφαρμογής συνεπάγεται ότι αποδέχεστε αυτούς τους όρους.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " και ",
+  "@and": {},
+  "accept": "Αποδέχομαι το",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Πάρτε πίσω",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Λήψη πίσω…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Αναμονή…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Βήμα προς τα εμπρός",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Πάρτε τα όλα πίσω",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Βήμα προς τα εμπρός όλοι",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Προχωρήστε τώρα",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Έγινε.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Κρακ-μύλος",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Εάν ένας παίκτης έχει μόνο κομμάτια σε μύλους, τα κομμάτια στους μύλους δεν θα κλειδώσουν για να αφαιρεθούν.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Διάρκεια κίνησης",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Καμία",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Θέμα",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "Στόχος του παιχνιδιού είναι να αφήσετε τον αντίπαλο με λιγότερα από τρία κομμάτια ή χωρίς νόμιμες κινήσεις.\n\nΤο παιχνίδι λήγει αυτόματα αν μια θέση εμφανιστεί για τρίτη φορά ή αν δεν γίνει καμία αφαίρεση στις τελευταίες 100 (διαμορφώσιμες) κινήσεις.\n\nΤο παιχνίδι εξελίσσεται σε τρεις φάσεις:\n\n1. Τοποθέτηση κομματιών σε κενά σημεία\n2. Μετακίνηση κομματιών σε γειτονικά σημεία\n3. (προαιρετική φάση) Μετακίνηση κομματιών σε οποιοδήποτε κενό σημείο όταν ο παίκτης μειώνεται σε τρία κομμάτια.\n\nΤοποθέτηση\n\nΤο παιχνίδι ξεκινά με ένα άδειο ταμπλό, το οποίο αποτελείται από ένα πλέγμα με είκοσι τέσσερα σημεία. Οι παίκτες τοποθετούν εναλλάξ τα κομμάτια τους στα κενά σημεία μέχρι κάθε παίκτης να τοποθετήσει όλα τα κομμάτια του στο ταμπλό. Εάν ένας παίκτης μπορεί να τοποθετήσει τρία από τα κομμάτια του στην ευθεία, έχει \"μύλο\" και μπορεί να αφαιρέσει ένα από τα κομμάτια του αντιπάλου του από το ταμπλό.\n\nΣε ορισμένους κανόνες, οι παίκτες πρέπει να αφαιρέσουν πρώτα όλα τα άλλα κομμάτια πριν αφαιρέσουν ένα κομμάτι από ένα σχηματισμένο μύλο.\n\nΣε ορισμένους κανόνες δεν μπορείτε να τοποθετήσετε ξανά τα κομμάτια στα σημεία των αφαιρεθέντων κομματιών στη φάση τοποθέτησης.\n\nΑφού χρησιμοποιήσετε όλα τα κομμάτια, οι παίκτες κινούνται εναλλάξ.\n\nΜετακίνηση\n\nΓια να μετακινηθεί, ένας παίκτης μετακινεί ένα από τα κομμάτια του κατά μήκος μιας γραμμής του ταμπλό σε ένα κενό γειτονικό σημείο. Αν δεν μπορεί να το κάνει αυτό, έχει χάσει το παιχνίδι. Όπως και στη φάση τοποθέτησης, ο παίκτης που ευθυγραμμίζει τρία από τα κομμάτια του σε μια γραμμή του ταμπλό έχει ένα μύλο και μπορεί να αφαιρέσει ένα από τα κομμάτια του αντιπάλου του. Οποιοσδήποτε παίκτης μειώσει σε δύο κομμάτια, δεν έχει τη δυνατότητα να σχηματίσει νέους μύλους και έτσι χάνει το παιχνίδι. Ένας παίκτης μπορεί επίσης να χάσει όταν έχει περισσότερα από τρία κομμάτια, αν ο αντίπαλός του τα εμποδίσει να κινηθούν.\n\nΠετώντας\n\nΣε ορισμένες παραλλαγές των κανόνων, όταν ένας παίκτης έχει μόνο τρία κομμάτια, τα κομμάτια του μπορούν να πετάξουν, να πηδήξουν ή να πηδήξουν σε οποιαδήποτε κενά σημεία, όχι μόνο σε γειτονικά.",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Πληροφορίες έκδοσης",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Άδεια χρήσης",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Πηγαίος κώδικας",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Έκδοση εφαρμογής",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Γενικά",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Προηγμένη",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Τοποθέτηση",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Μετακίνηση",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Αφαίρεση",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Κατάσταση game over",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Στυλ παιχνιδιού της AI",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Παθητικό",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Τέλος χρόνου",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Εμφάνιση",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "Αξιοποίηση της ανθρώπινης εμπειρίας",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Εξετάστε την κινητικότητα των κομματιών",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Αριθμός κομματιών:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} στο χέρι: {count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player} επί του σκάφους: {count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "Μετατόπιση του ταμπλό από την κορυφή",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Δεν είναι η σειρά της ΤΝ.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "Η ΤΝ δεν σκέφτεται.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Βρίσκεστε στο τέλος της λίστας κινήσεων.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Πατήστε ξανά πίσω για να φύγετε.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "Περισσότερα",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Πρόκειται για μια πειραματική λειτουργία.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Πειράματα",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Άδειες χρήσης ανοικτού κώδικα",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Γλώσσα",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Προεπιλεγμένη γλώσσα",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Τα κομμάτια μπορούν να μετακινηθούν στη φάση τοποθέτησης",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Δεν υπάρχουν διακριτές φάσεις τοποθέτησης και μετακίνησης, δηλαδή, οι παίκτες μπορούν να αποφασίζουν σε κάθε κίνηση αν θέλουν να τοποθετήσουν ένα κομμάτι στο ταμπλό ή να μετακινήσουν ένα από τα κομμάτια τους (εφόσον έχουν εναπομείναντα κομμάτια για τοποθέτηση).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Χρώμα μενού",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Χρώμα κειμένου μενού",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Χρώμα στοιχείου επισήμανσης μενού",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Χρώμα φόντου κύριας γραμμής εργαλείων",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "χρώμα εικονιδίου κύριας γραμμής εργαλείων",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Χρώμα φόντου στη γραμμή εργαλείων πλοήγησης",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Χρώμα εικονιδίου γραμμής εργαλείων πλοήγησης",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Κρύψτε αυτόματα τη γραμμή εργαλείων",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Τοποθεσία γραμμής εργαλείων στην οθόνη",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Μπλουζα",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Κάτω μέρος",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Κέντρο",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Στερεό χρώμα",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Εικόνα",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Επιλέξτε την εικόνα σας",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Φως",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Σκοτάδι",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Θέματα",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Τρέχον θέμα",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Αποθήκευση θέματος",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Εμφάνιση γραφήματος ανάλυσης",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Ανάλυση",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Αποθήκευση παιχνιδιού",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Φόρτωσε το παιχνίδι",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Θέση εγκατάστασης",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Εμφάνιση νομικών κινήσεων",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Εμφάνιση τελευταίας κίνησης",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Εμφάνιση βελών",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Κομμάτια",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Εμφάνιση ανάλυσης",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Νήματα",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Εμπλέκομαι",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Βοηθήστε στη βελτίωση της μετάφρασης",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Φροντιστήριο",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Κλασικό μύλο",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Μικτός Μύλος",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Μύλος Κεϋλάνης",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Ο μύλος μπορεί να σπάσει και να ξανακατασκευαστεί",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Εάν ένας παίκτης σπάσει ένα μύλο για να δημιουργήσει ένα νέο μύλο αμέσως, ένας τέτοιος παίκτης μπορεί να μετακινήσει ένα τέτοιο κομμάτι πίσω στην αρχική διασταύρωση στην επόμενη κίνηση του, αν κάνει ένα νέο μύλο.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Το παιχνίδι τραβιέται αν ένας παίκτης έχει τρία κομμάτια και μετά από δέκα κινήσεις κανένας παίκτης δεν αφαιρεί τα κομμάτια του αντιπάλου",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Όταν ένας παίκτης είναι κάτω από τρία κομμάτια και κανένας παίκτης δεν μπορεί να αφαιρέσει ένα κομμάτι ενός αντιπάλου μέσα σε δέκα κινήσεις, το παιχνίδι είναι ισοπαλία.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Κλείσε",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Λευκό κομμάτι",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Μαύρο κομμάτι",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Σημείο απαγόρευσης",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Κενό σημείο",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Δεν έχει νόημα",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Φάση τοποθέτησης",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Μετακινούμενη φάση",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Φάση πτήσης",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Πλευρά για κίνηση: {player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "Τελευταία κίνηση: {move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "Επιλεγμένο",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Προσιτότητα",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Υποστήριξη αναγνώστη οθόνης",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Είναι Κλήρωση!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Σχεδιάζω",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Χρώμα φωτισμού κομμάτι",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Αλγόριθμος",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "Αφαιρέστε το μη τοποθετημένο κομμάτι",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Εάν ένας παίκτης σχηματίσει το μύλο στη φάση τοποθέτησης, θα αφαιρέσει το μη τοποθετημένο κομμάτι του αντιπάλου και θα συνεχίσει να κάνει μια κίνηση.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "Κανόνας N-Move Endgame",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Εάν ένας παίκτης έχει μόνο τρία κομμάτια και κανένας παίκτης δεν αφαιρέσει ένα κομμάτι μέσα σε μια συγκεκριμένη κίνηση, το παιχνίδι κληρώνεται.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Ο κάθε παίκτης έχει μόνο τρία κομμάτια και κανένας παίκτης δεν αφαιρεί ένα κομμάτι μέσα σε μια συγκεκριμένη κίνηση.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Τριπλός κανόνας επανάληψης",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Το παιχνίδι κληρώνεται εάν μια θέση εμφανιστεί για τρίτη φορά.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Μύλος! Συνεχίστε να κάνετε μια κίνηση.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Στυλ σημείου",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Πλάτος σημείου",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Στερεός",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Κοίλος",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Ελληνικά",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{ખસેડો}=1{{count} ખસેડો}other{{count} ચાલ}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  },
+  "loadFailed": "Η φόρτωση απέτυχε.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameSavedTo": "Το παιχνίδι αποθηκεύεται στο",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "filename": "Ονομα αρχείου",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Ξεφυλλίζω…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Αρχεία παιχνιδιών",
+  "@gameFiles": {
+    "description": "Game files"
+  }
 }

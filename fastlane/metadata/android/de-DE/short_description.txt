@@ -1,1 +1,1 @@
-Flutter Mühle-Brettspielprogramm, das viele Regelvarianten unterstützt.
+Flutter Mühle-Brettspielprogramm, das viele Regelvarianten unterstützt

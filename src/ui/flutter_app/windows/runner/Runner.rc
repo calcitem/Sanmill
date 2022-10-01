@@ -63,13 +63,13 @@ IDI_APP_ICON            ICON                    "resources\\app_icon.ico"
 #ifdef FLUTTER_BUILD_NUMBER
 #define VERSION_AS_NUMBER FLUTTER_BUILD_NUMBER
 #else
-#define VERSION_AS_NUMBER 1,1,43
+#define VERSION_AS_NUMBER 2,0,0
 #endif
 
 #ifdef FLUTTER_BUILD_NAME
 #define VERSION_AS_STRING #FLUTTER_BUILD_NAME
 #else
-#define VERSION_AS_STRING "1.1.43"
+#define VERSION_AS_STRING "2.0.0"
 #endif
 
 VS_VERSION_INFO VERSIONINFO
@@ -93,7 +93,7 @@ BEGIN
             VALUE "FileDescription", "Sanmill for Windows." "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "Sanmill" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2021 Calcitem Studio" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2019-2022 Calcitem Studio and Sanmill Developers" "\0"
             VALUE "OriginalFilename", "Mill.exe" "\0"
             VALUE "ProductName", "Mill (N Men's Morris)" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

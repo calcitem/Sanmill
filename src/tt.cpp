@@ -1,22 +1,21 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "tt.h"
+#include <limits>
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 
@@ -27,15 +26,13 @@ HashMap<Key, TTEntry> TT(TRANSPOSITION_TABLE_SIZE);
 uint8_t transpositionTableAge;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
-Value TranspositionTable::probe(const Key &key,
-                      const Depth &depth,
-                      const Value &alpha,
-                      const Value &beta,
-                      Bound &type
+Value TranspositionTable::probe(Key key, Depth depth, Value alpha, Value beta,
+                                Bound &type
 #ifdef TT_MOVE_ENABLE
-                      , Move &ttMove
+                                ,
+                                Move &ttMove
 #endif // TT_MOVE_ENABLE
-                      )
+)
 {
     TTEntry tte {};
 
@@ -64,7 +61,6 @@ Value TranspositionTable::probe(const Key &key,
     switch (tte.bound()) {
     case BOUND_EXACT:
         return tte.value();
-        break;
     case BOUND_UPPER:
         if (tte.value8 <= alpha) {
             return alpha;
@@ -75,7 +71,7 @@ Value TranspositionTable::probe(const Key &key,
             return beta;
         }
         break;
-    default:
+    case BOUND_NONE:
         break;
     }
 
@@ -88,24 +84,22 @@ out:
     return VALUE_UNKNOWN;
 }
 
-bool TranspositionTable::search(const Key &key, TTEntry &tte)
+bool TranspositionTable::search(Key key, TTEntry &tte)
 {
     return TT.find(key, tte);
 }
 
-void TranspositionTable::prefetch(const Key &key)
+void TranspositionTable::prefetch(Key key)
 {
     TT.prefetchValue(key);
 }
 
-int TranspositionTable::save(const Value &value,
-                   const Depth &depth,
-                   const Bound &type,
-                   const Key &key
+int TranspositionTable::save(Value value, Depth depth, Bound type, Key key
 #ifdef TT_MOVE_ENABLE
-                   , const Move &ttMove
+                             ,
+                             const Move &ttMove
 #endif // TT_MOVE_ENABLE
-                  )
+)
 {
     TTEntry tte {};
 
@@ -113,8 +107,7 @@ int TranspositionTable::save(const Value &value,
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
         if (tte.age8 == transpositionTableAge) {
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
-            if (tte.genBound8 != BOUND_NONE &&
-                tte.depth() > depth) {
+            if (tte.genBound8 != BOUND_NONE && tte.depth() > depth) {
                 return -1;
             }
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
@@ -152,9 +145,8 @@ Bound TranspositionTable::boundType(Value value, Value alpha, Value beta)
 void TranspositionTable::clear()
 {
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    if (transpositionTableAge == std::numeric_limits<uint8_t>::max())
-    {
-        loggerDebug("Clean TT\n");
+    if (transpositionTableAge == std::numeric_limits<uint8_t>::max()) {
+        debugPrintf("Clean TT\n");
         TT.clear();
         transpositionTableAge = 0;
     } else {

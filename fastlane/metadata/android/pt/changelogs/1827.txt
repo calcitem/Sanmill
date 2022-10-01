@@ -1,0 +1,4 @@
+v1.0.10
+
+* Pensamento dos dois primeiros movimentos acelerados.
+* Notação no tabuleiro mostradas apenas em dois lados.

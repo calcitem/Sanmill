@@ -1,5 +1,7 @@
+.project
 gradle-wrapper.jar
 /.gradle
+/.settings
 /captures/
 /gradlew
 /gradlew.bat
@@ -7,6 +9,6 @@ gradle-wrapper.jar
 GeneratedPluginRegistrant.java
 
 /key.properties
-/key.jks
+/*.jks
 
 bt.txt

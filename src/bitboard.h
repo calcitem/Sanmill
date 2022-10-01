@@ -1,20 +1,18 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef BITBOARD_H_INCLUDED
 #define BITBOARD_H_INCLUDED
@@ -23,23 +21,26 @@
 
 #include "types.h"
 
-#define	SET_BIT(x, bit)     (x |= (1 << bit))
-#define	CLEAR_BIT(x, bit)   (x &= ~(1 << bit))
+#define SET_BIT(x, bit) ((x) |= (1 << (bit)))
+#define CLEAR_BIT(x, bit) ((x) &= ~(1 << (bit)))
 
-#define S2(a, b)        (square_bb(SQ_##a) | square_bb(SQ_##b))
-#define S3(a, b, c)     (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c))
-#define S4(a, b, c, d)  (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | square_bb(SQ_##d))
-#define S4(a, b, c, d)  (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | square_bb(SQ_##d))
+#define S2(a, b) (square_bb(SQ_##a) | square_bb(SQ_##b))
+#define S3(a, b, c) (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c))
+#define S4(a, b, c, d) \
+    (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | \
+     square_bb(SQ_##d))
+#define S4(a, b, c, d) \
+    (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | \
+     square_bb(SQ_##d))
 
-namespace Bitboards
-{
+namespace Bitboards {
 
 void init();
-const std::string pretty(Bitboard b);
+std::string pretty(Bitboard b);
 
-}
+} // namespace Bitboards
 
-constexpr Bitboard AllSquares = ~Bitboard(0);
+constexpr Bitboard AllSquares = ~static_cast<Bitboard>(0);
 
 constexpr Bitboard FileABB = 0x0000FF00;
 constexpr Bitboard FileBBB = FileABB << (8 * 1);
@@ -60,27 +61,27 @@ extern Bitboard SquareBB[SQ_32];
 
 inline Bitboard square_bb(Square s) noexcept
 {
-    if (!(SQ_BEGIN <= s && s < SQ_END))
+    if (!(SQ_BEGIN <= s && s < SQ_END)) {
         return 0;
+    }
 
     return SquareBB[s];
 }
 
-
 /// Overloads of bitwise operators between a Bitboard and a Square for testing
 /// whether a given bit is set in a bitboard, and for setting and clearing bits.
 
-inline Bitboard operator&(Bitboard  b, Square s) noexcept
+inline Bitboard operator&(Bitboard b, Square s) noexcept
 {
     return b & square_bb(s);
 }
 
-inline Bitboard operator|(Bitboard  b, Square s) noexcept
+inline Bitboard operator|(Bitboard b, Square s) noexcept
 {
     return b | square_bb(s);
 }
 
-inline Bitboard operator^(Bitboard  b, Square s) noexcept
+inline Bitboard operator^(Bitboard b, Square s) noexcept
 {
     return b ^ square_bb(s);
 }
@@ -120,7 +121,6 @@ constexpr bool more_than_one(Bitboard b)
     return b & (b - 1);
 }
 
-
 /// rank_bb() and file_bb() return a bitboard representing all the squares on
 /// the given file or rank.
 
@@ -148,18 +148,18 @@ constexpr Bitboard file_bb(Square s)
 
 inline int popcount(Bitboard b) noexcept
 {
-#ifdef DONOT_USE_POPCNT
+#ifdef DO_NOT_USE_POPCNT
 
-    union
-    {
-        Bitboard bb; uint16_t u[2];
-    } v = { b };
+    union {
+        Bitboard bb;
+        uint16_t u[2];
+    } v = {b};
 
     return PopCnt16[v.u[0]] + PopCnt16[v.u[1]];
 
 #elif defined(_MSC_VER) || defined(__INTEL_COMPILER)
 
-    return (int)_mm_popcnt_u32(b);
+    return _mm_popcnt_u32(b);
 
 #else // Assumed gcc or compatible compiler
 

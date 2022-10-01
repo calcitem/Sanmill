@@ -1,45 +1,38 @@
-﻿/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-#include "evaluate.h"
-#include "thread.h"
-//#include "uci.h"
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "endgame.h"
+#include "evaluate.h"
 #include "option.h"
+#include "thread.h"
 
-using std::string;
 using Eval::evaluate;
-using namespace Search;
+using std::string;
 
-Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove);
+Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
+           Depth depth, Depth originDepth, Move &bestMove);
 
-Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move &bestMove);
+Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
+              Depth originDepth, Value alpha, Value beta, Move &bestMove);
 
 bool is_timeout(TimePoint startTime);
 
 /// Search::init() is called at startup
 
-void Search::init() noexcept
-{
-    return;
-}
-
+void Search::init() noexcept { }
 
 /// Search::clear() resets search state to its initial value
 
@@ -53,7 +46,6 @@ void Search::clear()
     Threads.clear();
 }
 
-
 /// Thread::search() is the main iterative deepening loop. It calls search()
 /// repeatedly with increasing depth until the allocated thinking time has been
 /// consumed, the user stops the search, or the maximum search depth is reached.
@@ -63,19 +55,18 @@ int Thread::search()
     Sanmill::Stack<Position> ss;
 
     Value value = VALUE_ZERO;
-    Depth d = get_depth();
+    const Depth d = get_depth();
 
     if (gameOptions.getAiIsLazy()) {
-
-        int np = bestvalue / VALUE_EACH_PIECE;
-        if (np > 1) { 
+        const int np = bestvalue / VALUE_EACH_PIECE;
+        if (np > 1) {
             if (d < 4) {
                 originDepth = 1;
                 sync_cout << "Lazy Mode: depth = " << originDepth << sync_endl;
             } else {
                 originDepth = 4;
                 sync_cout << "Lazy Mode: depth = " << originDepth << sync_endl;
-            }            
+            }
         } else {
             originDepth = d;
         }
@@ -108,8 +99,7 @@ int Thread::search()
         }
 #endif // RULE_50
 
-        if (rule.threefoldRepetitionRule &&
-            rootPos->has_game_cycle()) {
+        if (rule.threefoldRepetitionRule && rootPos->has_game_cycle()) {
             return 3;
         }
 
@@ -120,18 +110,21 @@ int Thread::search()
         posKeyHistory.clear();
         rootPos->st.rule50 = 0;
     } else if (rootPos->get_phase() == Phase::moving) {
-        rootPos->st.rule50 = (unsigned int)posKeyHistory.size();
+        rootPos->st.rule50 = static_cast<unsigned>(posKeyHistory.size());
     }
-
 
     MoveList<LEGAL>::shuffle();
 
 #if 0
-    // TODO: Only NMM
-    if (rootPos->piece_on_board_count(WHITE) + rootPos->piece_on_board_count(BLACK) <= 1 &&
-        !rule.hasDiagonalLines && gameOptions.getShufflingEnabled()) {
+    // TODO(calcitem): Only NMM
+    if (rootPos->piece_on_board_count(WHITE)
+                + rootPos->piece_on_board_count(BLACK)
+            <= 1
+        && !rule.hasDiagonalLines && gameOptions.getShufflingEnabled()) {
         const uint32_t seed = static_cast<uint32_t>(now());
-        std::shuffle(MoveList<LEGAL>::movePriorityList.begin(), MoveList<LEGAL>::movePriorityList.end(), std::default_random_engine(seed));
+        std::shuffle(MoveList<LEGAL>::movePriorityList.begin(),
+            MoveList<LEGAL>::movePriorityList.end(),
+            std::default_random_engine(seed));
     }
 #endif
 
@@ -144,12 +137,12 @@ int Thread::search()
     }
 
     if (gameOptions.getMoveTime() > 0 || gameOptions.getIDSEnabled()) {
-        loggerDebug("IDS: ");
+        debugPrintf("IDS: ");
 
-        const Depth depthBegin = 2;
+        constexpr Depth depthBegin = 2;
         Value lastValue = VALUE_ZERO;
 
-        TimePoint startTime = now();
+        const TimePoint startTime = now();
 
         for (Depth i = depthBegin; i < originDepth; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
@@ -159,25 +152,27 @@ int Thread::search()
 #endif
 
             if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
-                //loggerDebug("Algorithm: MTD(f).\n");
+                // debugPrintf("Algorithm: MTD(f).\n");
                 value = MTDF(rootPos, ss, value, i, i, bestMove);
             } else {
                 value = qsearch(rootPos, ss, i, i, alpha, beta, bestMove);
             }
 
-            loggerDebug("%d(%d) ", value, value - lastValue);
+            debugPrintf("%d(%d) ", value, value - lastValue);
 
             lastValue = value;
 
             if (is_timeout(startTime)) {
-                loggerDebug("originDepth = %d, depth = %d\n", originDepth, i);
+                debugPrintf("originDepth = %d, depth = %d\n", originDepth, i);
                 goto out;
             }
         }
 
 #ifdef TIME_STAT
         timeEnd = chrono::steady_clock::now();
-        loggerDebug("\nIDS Time: %llds\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
+        debugPrintf(
+            "\nIDS Time: %llds\n",
+            chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
 #endif
     }
 
@@ -187,7 +182,8 @@ int Thread::search()
 #endif
 #endif
 
-    if (gameOptions.getAlgorithm() != 2 /* !MTD(f) */ && gameOptions.getIDSEnabled()) {
+    if (gameOptions.getAlgorithm() != 2 /* !MTD(f) */
+        && gameOptions.getIDSEnabled()) {
         alpha = -VALUE_INFINITE;
         beta = VALUE_INFINITE;
     }
@@ -202,7 +198,9 @@ out:
 
 #ifdef TIME_STAT
     timeEnd = chrono::steady_clock::now();
-    loggerDebug("Total Time: %llus\n", chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
+    debugPrintf(
+        "Total Time: %llus\n",
+        chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
 #endif
 
     lastvalue = bestvalue;
@@ -211,24 +209,21 @@ out:
     return 0;
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
-
-extern ThreadPool Threads;
 
 vector<Key> posKeyHistory;
 
-Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth, Value alpha, Value beta, Move &bestMove)
+Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
+              Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
-    Value value = VALUE_ZERO;
+    Value value;
     Value bestValue = -VALUE_INFINITE;
 
     Depth epsilon;
 
 #ifdef RULE_50
-    if ((pos->rule50_count() > rule.nMoveRule) ||
-        (rule.endgameNMoveRule < rule.nMoveRule &&
-         pos->is_three_endgame() &&
+    if (pos->rule50_count() > rule.nMoveRule ||
+        (rule.endgameNMoveRule < rule.nMoveRule && pos->is_three_endgame() &&
          pos->rule50_count() >= rule.endgameNMoveRule)) {
         alpha = VALUE_DRAW;
         if (alpha >= beta) {
@@ -241,8 +236,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
     // Check if we have an upcoming move which draws by repetition, or
     // if the opponent had an alternative move earlier to this position.
     if (/* alpha < VALUE_DRAW && */
-        depth != originDepth &&
-        pos->has_repeated(ss)) {
+        depth != originDepth && pos->has_repeated(ss)) {
         alpha = VALUE_DRAW;
         if (alpha >= beta) {
             return alpha;
@@ -256,15 +250,14 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
 
     // Transposition table lookup
 
-#if defined (TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
+#if defined(TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
     const Key posKey = pos->key();
 #endif
 
 #ifdef ENDGAME_LEARNING
     Endgame endgame;
 
-    if (gameOptions.isEndgameLearningEnabled() &&
-        posKey &&
+    if (gameOptions.isEndgameLearningEnabled() && posKey &&
         Thread::probeEndgameHash(posKey, endgame)) {
         switch (endgame.type) {
         case EndGameType::whiteWin:
@@ -287,13 +280,16 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
 
     // check transposition-table
 
-    const Value oldAlpha = alpha;   // To flag BOUND_EXACT when eval above alpha and no available moves
+    const Value oldAlpha = alpha; // To flag BOUND_EXACT when eval above alpha
+                                  // and no available moves
 
     Bound type = BOUND_NONE;
 
-    const Value probeVal = TranspositionTable::probe(posKey, depth, alpha, beta, type
+    const Value probeVal = TranspositionTable::probe(posKey, depth, alpha, beta,
+                                                     type
 #ifdef TT_MOVE_ENABLE
-                                               , ttMove
+                                                     ,
+                                                     ttMove
 #endif // TT_MOVE_ENABLE
     );
 
@@ -307,7 +303,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
         return bestValue;
     }
 #ifdef TRANSPOSITION_TABLE_DEBUG
-    else {
+    if (probeVal == VALUE_UNKNOWN) {
         Threads.main()->ttMissCount++;
     }
 #endif
@@ -317,10 +313,10 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
     // process leaves
 
     // Check for aborted search
-    // TODO: and immediate draw
-    if (unlikely(pos->phase == Phase::gameOver) ||   // TODO: Deal with hash
-        depth <= 0 ||
-        Threads.stop.load(std::memory_order_relaxed)) {
+    // TODO(calcitem): and immediate draw
+    if (unlikely(pos->phase == Phase::gameOver) || // TODO(calcitem): Deal with
+                                                   // hash
+        depth <= 0 || Threads.stop.load(std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
 
         // For win quickly
@@ -337,15 +333,15 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
     // to pick a move and can't simply return VALUE_DRAW) then check to
     // see if the position is a repeat. if so, we can assume that
     // this line is a draw and return VALUE_DRAW.
-    if (rule.threefoldRepetitionRule &&
-        depth != originDepth && pos->has_repeated(ss)) {
+    if (rule.threefoldRepetitionRule && depth != originDepth &&
+        pos->has_repeated(ss)) {
         return VALUE_DRAW;
     }
 
     // Initialize a MovePicker object for the current position, and prepare
-    // to search the moves. 
+    // to search the moves.
     MovePicker mp(*pos);
-    Move nextMove = mp.next_move();
+    const Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
 
     if (moveCount == 1 && depth == originDepth) {
@@ -355,10 +351,11 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
     }
 
 #if 0
-    // TODO: Weak
+    // TODO(calcitem): Weak
     if (bestMove != MOVE_NONE) {
         for (int i = 0; i < moveCount; i++) {
-            if (mp.moves[i].move == bestMove) {    // TODO: need to write value?
+            if (mp.moves[i].move == bestMove) {
+                // TODO(calcitem): need to write value?
                 std::swap(mp.moves[0], mp.moves[i]);
                 break;
             }
@@ -382,9 +379,9 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
 
     // Loop through the moves until no moves remain or a beta cutoff occurs
     for (int i = 0; i < moveCount; i++) {
-        ss.push(*(pos));
+        ss.push(*pos);
         const Color before = pos->sideToMove;
-        Move move = mp.moves[i].move;
+        const Move move = mp.moves[i].move;
 
         // Make and search the move
         pos->do_move(move);
@@ -396,47 +393,56 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
             epsilon = 0;
         }
 
-        //epsilon += pos->piece_to_remove_count();
+        // epsilon += pos->piece_to_remove_count();
 
         if (gameOptions.getAlgorithm() == 1 /* PVS */) {
-            //loggerDebug("Algorithm: PVS.\n");
+            // debugPrintf("Algorithm: PVS.\n");
 
             if (i == 0) {
                 if (after != before) {
-                    value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -beta, -alpha, bestMove);
+                    value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth,
+                                     -beta, -alpha, bestMove);
                 } else {
-                    value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta, bestMove);
+                    value = qsearch(pos, ss, depth - 1 + epsilon, originDepth,
+                                    alpha, beta, bestMove);
                 }
             } else {
                 if (after != before) {
-                    value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -alpha - VALUE_PVS_WINDOW, -alpha, bestMove);
+                    value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth,
+                                     -alpha - VALUE_PVS_WINDOW, -alpha,
+                                     bestMove);
 
                     if (value > alpha && value < beta) {
-                        value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -beta, -alpha, bestMove);
-                        //assert(value >= alpha && value <= beta);
+                        value = -qsearch(pos, ss, depth - 1 + epsilon,
+                                         originDepth, -beta, -alpha, bestMove);
+                        // assert(value >= alpha && value <= beta);
                     }
                 } else {
-                    value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, alpha + VALUE_PVS_WINDOW, bestMove);
+                    value = qsearch(pos, ss, depth - 1 + epsilon, originDepth,
+                                    alpha, alpha + VALUE_PVS_WINDOW, bestMove);
 
                     if (value > alpha && value < beta) {
-                        value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta, bestMove);
-                        //assert(value >= alpha && value <= beta);
+                        value = qsearch(pos, ss, depth - 1 + epsilon,
+                                        originDepth, alpha, beta, bestMove);
+                        // assert(value >= alpha && value <= beta);
                     }
                 }
             }
         } else {
-            //loggerDebug("Algorithm: Alpha-Beta.\n");
+            // debugPrintf("Algorithm: Alpha-Beta.\n");
 
             if (after != before) {
-                value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth, -beta, -alpha, bestMove);
+                value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth,
+                                 -beta, -alpha, bestMove);
             } else {
-                value = qsearch(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta, bestMove);
+                value = qsearch(pos, ss, depth - 1 + epsilon, originDepth,
+                                alpha, beta, bestMove);
             }
         }
 
         pos->undo_move(ss);
 
-        //assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
+        // assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
 
         // Check for a new best move
         // Finished searching the move. If a stop occurred, the return value of
@@ -453,33 +459,35 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth, Depth or
                     bestMove = move;
                 }
 
-                if (value < beta) // Update alpha! Always alpha < beta
+                if (value < beta) {
+                    // Update alpha! Always alpha < beta
                     alpha = value;
-                else {
+                } else {
                     assert(value >= beta); // Fail high
-                    break; // Fail high
+                    break;                 // Fail high
                 }
             }
         }
     }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    TranspositionTable::save(bestValue,
-                             depth,
-                             TranspositionTable::boundType(bestValue, oldAlpha, beta),
-                             posKey
+    TranspositionTable::save(
+        bestValue, depth,
+        TranspositionTable::boundType(bestValue, oldAlpha, beta), posKey
 #ifdef TT_MOVE_ENABLE
-                             , bestMove
+        ,
+        bestMove
 #endif // TT_MOVE_ENABLE
     );
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
-    //assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
+    // assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
 
     return bestValue;
 }
 
-Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth depth, Depth originDepth, Move &bestMove)
+Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
+           Depth depth, Depth originDepth, Move &bestMove)
 {
     Value g = firstguess;
     Value lowerbound = -VALUE_INFINITE;
@@ -493,12 +501,13 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth 
             beta = g;
         }
 
-        g = qsearch(pos, ss, depth, originDepth, beta - VALUE_MTDF_WINDOW, beta, bestMove);
+        g = qsearch(pos, ss, depth, originDepth, beta - VALUE_MTDF_WINDOW, beta,
+                    bestMove);
 
         if (g < beta) {
-            upperbound = g;    // fail low
+            upperbound = g; // fail low
         } else {
-            lowerbound = g;    // fail high
+            lowerbound = g; // fail high
         }
     }
 
@@ -507,12 +516,12 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess, Depth 
 
 bool is_timeout(TimePoint startTime)
 {
-    auto limit = gameOptions.getMoveTime() * 1000;
-    TimePoint elapsed = now() - startTime;
+    const auto limit = gameOptions.getMoveTime() * 1000;
+    const TimePoint elapsed = now() - startTime;
 
     if (elapsed > limit) {
 #ifdef _WIN32
-        loggerDebug("\nTimeout. elapsed = %lld\n", elapsed);
+        debugPrintf("\nTimeout. elapsed = %lld\n", elapsed);
 #endif
         return true;
     }

@@ -1,0 +1,13 @@
+targets:
+  $default:
+    builders:
+      json_serializable|json_serializable:
+        options:
+          field_rename: pascal
+        enabled: true
+        generate_for:
+          - "**/models/**.dart"
+      hive_generator|hive_generator:
+        enabled: true
+        generate_for:
+          - "**/models/**.dart"

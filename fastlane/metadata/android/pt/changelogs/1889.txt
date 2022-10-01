@@ -1,0 +1,3 @@
+v1.0.19
+
+* Adicionar tradução automática Farsi (idioma persa).

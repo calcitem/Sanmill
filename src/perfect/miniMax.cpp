@@ -1,10 +1,14 @@
 /*********************************************************************
     MiniMax.cpp
     Copyright (c) Thomas Weber. All rights reserved.
-    Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
+    Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
     Licensed under the GPLv3 License.
     https://github.com/madweasel/Muehle
 \*********************************************************************/
+
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
 
 #include "miniMax.h"
 
@@ -30,20 +34,16 @@ MiniMax::MiniMax()
     userPrintFunc = nullptr;
     layerStats = nullptr;
     plyInfos = nullptr;
-    fileDirectory.assign("");
+    fileDir.assign("");
     InitializeCriticalSection(&csDatabase);
     InitializeCriticalSection(&csOsPrint);
 
-    // Tausender-Trennzeichen
-    locale locale("German_Switzerland");
-    cout.imbue(locale);
-
-    // for io operations per second measurement
+    // for I/O operations per second measurement
     QueryPerformanceFrequency(&frequency);
-    numReadSkvOperations = 0;
-    numWriteSkvOperations = 0;
-    numReadPlyOperations = 0;
-    numWritePlyOperations = 0;
+    nReadSkvOps = 0;
+    nWriteSkvOps = 0;
+    nReadPlyOps = 0;
+    nWritePlyOps = 0;
 
     if (MEASURE_ONLY_IO) {
         readSkvInterval.QuadPart = 0;
@@ -58,15 +58,20 @@ MiniMax::MiniMax()
     }
 
     // The algorithm assumes that each player does only one move.
-    // That means closing a mill and removing a stone should be one move.
-    // PL_TO_MOVE_CHANGED   means that in the predecessor state the player to move has changed to the other player.
-    // PL_TO_MOVE_UNCHANGED means that the player to move is still the one who shall move.
-    unsigned char skvPerspectiveMatrixTmp[4][2] = {
+    // That means closing a mill and removing a piece should be one move.
+    // PL_TO_MOVE_CHANGED   means that in the predecessor state the player to
+    // move has changed to the other player. PL_TO_MOVE_UNCHANGED means that the
+    // player to move is still the one who shall move.
+    const unsigned char skvPerspectiveMatrixTmp[4][2] = {
         //  PL_TO_MOVE_UNCHANGED    PL_TO_MOVE_CHANGED
-        SKV_VALUE_INVALID, SKV_VALUE_INVALID,		// SKV_VALUE_INVALID
-        SKV_VALUE_GAME_WON, SKV_VALUE_GAME_LOST,	// SKV_VALUE_GAME_LOST
-        SKV_VALUE_GAME_DRAWN, SKV_VALUE_GAME_DRAWN, // SKV_VALUE_GAME_DRAWN
-        SKV_VALUE_GAME_LOST, SKV_VALUE_GAME_WON		// SKV_VALUE_GAME_WON
+        SKV_VALUE_INVALID,
+        SKV_VALUE_INVALID, // SKV_VALUE_INVALID
+        SKV_VALUE_GAME_WON,
+        SKV_VALUE_GAME_LOST, // SKV_VALUE_GAME_LOST
+        SKV_VALUE_GAME_DRAWN,
+        SKV_VALUE_GAME_DRAWN, // SKV_VALUE_GAME_DRAWN
+        SKV_VALUE_GAME_LOST,
+        SKV_VALUE_GAME_WON // SKV_VALUE_GAME_WON
     };
 
     memcpy(skvPerspectiveMatrix, skvPerspectiveMatrixTmp, 4 * 2);
@@ -85,9 +90,9 @@ MiniMax::~MiniMax()
 
 //-----------------------------------------------------------------------------
 // falseOrStop()
-// 
+//
 //-----------------------------------------------------------------------------
-bool MiniMax::falseOrStop()
+bool MiniMax::falseOrStop() const
 {
     if (stopOnCriticalError)
         WaitForSingleObject(GetCurrentProcess(), INFINITE);
@@ -97,29 +102,30 @@ bool MiniMax::falseOrStop()
 
 //-----------------------------------------------------------------------------
 // getBestChoice()
-// Returns the best choice if the database has been opened and 
+// Returns the best choice if the database has been opened and
 // calculates the best choice for that if database is not open.
 //-----------------------------------------------------------------------------
-void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsigned int maximumNumberOfBranches)
+void *MiniMax::getBestChoice(uint32_t tilLevel, uint32_t *choice,
+                             uint32_t branchCountMax)
 {
     // set global vars
-    depthOfFullTree = tilLevel;
-    maxNumBranches = maximumNumberOfBranches;
-    layerInDatabase = isCurrentStateInDatabase(0);
+    fullTreeDepth = tilLevel;
+    maxNumBranches = branchCountMax;
+    layerInDatabase = isCurStateInDatabase(0);
     calcDatabase = false;
 
     // Locals
     Knot root;
     AlphaBetaGlobalVars alphaBetaVars(this, getLayerNumber(0));
     RunAlphaBetaVars tva(this, &alphaBetaVars, alphaBetaVars.layerNumber);
-    srand((unsigned int)time(nullptr));
+    srand(static_cast<uint32_t>(time(nullptr)));
     tva.curThreadNo = 0;
 
     // prepare the situation
-    prepareBestChoiceCalculation();
+    prepareBestChoiceCalc();
 
     // First make a tree until the desired level
-    letTheTreeGrow(&root, &tva, depthOfFullTree, FPKV_MIN_VALUE, FPKV_MAX_VALUE);
+    letTheTreeGrow(&root, &tva, fullTreeDepth, FPKV_MIN_VALUE, FPKV_MAX_VALUE);
 
     // pass best choice and close database
     *choice = root.bestMoveId;
@@ -132,10 +138,10 @@ void *MiniMax::getBestChoice(unsigned int tilLevel, unsigned int *choice, unsign
 // calculateDatabase()
 // Calculates the database, which must be already open.
 //-----------------------------------------------------------------------------
-void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
+void MiniMax::calculateDatabase(uint32_t maxDepthOfTree, bool onlyPrepLayer)
 {
     // locals
-    bool abortCalculation = false;
+    bool abortCalc = false;
     this->onlyPrepareLayer = onlyPrepLayer;
     lastCalculatedLayer.clear();
 
@@ -144,32 +150,36 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
     PRINT(1, this, "*************************");
 
     // call preparation function of parent class
-    prepareDatabaseCalculation();
+    prepareDatabaseCalc();
 
     // when database not completed then do it
     if (hFileShortKnotValues != nullptr && skvfHeader.completed == false) {
         // reserve memory
         lastCalculatedLayer.clear();
-        depthOfFullTree = maxDepthOfTree;
+        fullTreeDepth = maxDepthOfTree;
         layerInDatabase = false;
         calcDatabase = true;
-        threadManager.uncancelExecution();
-        arrayInfos.vectorArrays.resize(ArrayInfo::numArrayTypes * skvfHeader.numLayers, arrayInfos.listArrays.end());
+        threadManager.uncancelExec();
+        arrayInfos.vectorArrays.resize(ArrayInfo::arrayTypeCount *
+                                           skvfHeader.LayerCount,
+                                       arrayInfos.listArrays.end());
 
         // calculate layer after layer, beginning with the last one
-        for (curCalculatedLayer = 0; curCalculatedLayer < skvfHeader.numLayers; curCalculatedLayer++) {
-
+        for (curCalculatedLayer = 0; curCalculatedLayer < skvfHeader.LayerCount;
+             curCalculatedLayer++) {
             // layer already calculated?
             if (layerStats[curCalculatedLayer].layerIsCompletedAndInFile)
                 continue;
 
-            // don't calculate if neither the layer nor the partner layer has any knots
-            if (layerStats[curCalculatedLayer].knotsInLayer == 0 && 
-                layerStats[layerStats[curCalculatedLayer].partnerLayer].knotsInLayer == 0)
+            // don't calculate if neither the layer nor the partner layer has
+            // any knots
+            if (layerStats[curCalculatedLayer].knotsInLayer == 0 &&
+                layerStats[layerStats[curCalculatedLayer].partnerLayer]
+                        .knotsInLayer == 0)
                 continue;
 
             // calculate
-            abortCalculation = (!calcLayer(curCalculatedLayer));
+            abortCalc = !calcLayer(curCalculatedLayer);
 
             // release memory
             unloadAllLayers();
@@ -178,7 +188,7 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
             // don't save layer and header when only preparing layers
             if (onlyPrepLayer)
                 return;
-            if (abortCalculation)
+            if (abortCalc)
                 break;
 
             // save header
@@ -190,9 +200,9 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
         if (onlyPrepLayer)
             return;
 
-        if (!abortCalculation) {
+        if (!abortCalc) {
             // calculate layer statistics
-            calcLayerStatistics((char *)"statistics.txt");
+            calcLayerStatistics("statistics.txt");
 
             // save header
             skvfHeader.completed = true;
@@ -202,27 +212,27 @@ void MiniMax::calculateDatabase(unsigned int maxDepthOfTree, bool onlyPrepLayer)
         }
 
         // free memory
-        curCalculationActionId = MM_ACTION_NONE;
+        curCalcActionId = MM_ACTION_NONE;
     } else {
         PRINT(1, this, "\nThe database is already fully calculated.\n");
     }
 
     // call warp-up function of parent class
-    wrapUpDatabaseCalculation(abortCalculation);
+    wrapUpDatabaseCalc(abortCalc);
 
     PRINT(1, this, "*************************");
-    PRINT(1, this, "* Calculation finished  *");
+    PRINT(1, this, "* Calc finished  *");
     PRINT(1, this, "*************************");
 }
 
 //-----------------------------------------------------------------------------
 // calcLayer()
-// 
+//
 //-----------------------------------------------------------------------------
-bool MiniMax::calcLayer(unsigned int layerNumber)
+bool MiniMax::calcLayer(uint32_t layerNumber)
 {
     // locals
-    vector<unsigned int> layersToCalc;
+    vector<uint32_t> layersToCalc;
 
     // moves can be done reverse, leading to too depth searching trees
     if (shallRetroAnalysisBeUsed(layerNumber)) {
@@ -254,16 +264,19 @@ bool MiniMax::calcLayer(unsigned int layerNumber)
     }
 
     // test partner layer if retro-analysis has been used
-    if (shallRetroAnalysisBeUsed(layerNumber) && layerStats[layerNumber].partnerLayer != layerNumber) {
+    if (shallRetroAnalysisBeUsed(layerNumber) &&
+        layerStats[layerNumber].partnerLayer != layerNumber) {
         if (!testLayer(layerStats[layerNumber].partnerLayer)) {
-            PRINT(0, this, "ERROR: Layer calculation cancelled or failed!" << endl);
+            PRINT(0, this,
+                  "ERROR: Layer calculation cancelled or failed!" << endl);
             return false;
         }
     }
 
-    // update output information
+    // update output info
     EnterCriticalSection(&csOsPrint);
-    if (shallRetroAnalysisBeUsed(layerNumber) && layerNumber != layerStats[layerNumber].partnerLayer) {
+    if (shallRetroAnalysisBeUsed(layerNumber) &&
+        layerNumber != layerStats[layerNumber].partnerLayer) {
         lastCalculatedLayer.push_back(layerStats[layerNumber].partnerLayer);
     }
     lastCalculatedLayer.push_back(layerNumber);
@@ -272,30 +285,4 @@ bool MiniMax::calcLayer(unsigned int layerNumber)
     return true;
 }
 
-//-----------------------------------------------------------------------------
-// pauseDatabaseCalculation()
-// 
-//-----------------------------------------------------------------------------
-void MiniMax::pauseDatabaseCalculation()
-{
-    threadManager.pauseExecution();
-}
-
-//-----------------------------------------------------------------------------
-// cancelDatabaseCalculation()
-// 
-//-----------------------------------------------------------------------------
-void MiniMax::cancelDatabaseCalculation()
-{
-    // when returning from executeParallelLoop() all function shall quit immediatelly up to calculateDatabase()
-    threadManager.cancelExecution();
-}
-
-//-----------------------------------------------------------------------------
-// wasDatabaseCalculationCancelled()
-// 
-//-----------------------------------------------------------------------------
-bool MiniMax::wasDatabaseCalculationCancelled()
-{
-    return threadManager.wasExecutionCancelled();
-}
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

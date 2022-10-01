@@ -80,7 +80,7 @@ HEADERS  += \
     src/ui/qt/gamewindow.h \
     src/ui/qt/graphicsconst.h \
     src/ui/qt/pieceitem.h \
-    src/ui/qt/manuallistview.h \
+    src/ui/qt/movelistview.h \
     src/ui/qt/server.h \
     src/ui/qt/boarditem.h
 
@@ -116,6 +116,6 @@ QMAKE_CXXFLAGS += -std=c++0x
     QMAKE_CXXFLAGS += /MP
 }
 
-android {
-    QMAKE_LFLAGS += -nostdlib++
-}
+#android {
+#    QMAKE_LFLAGS += -nostdlib++
+#}

@@ -1,0 +1,3 @@
+v1.0.8
+
+* Suporte a recuperação de jogadas. Você pode tentar desfazer um movimento ruim e fazer qualquer outro movimento melhor.

@@ -1,244 +1,334 @@
 /*********************************************************************\
     PerfectAI.h
     Copyright (c) Thomas Weber. All rights reserved.
-    Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
+    Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
     Licensed under the GPLv3 License.
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#ifndef PERFEKT_AI_H
-#define PERFEKT_AI_H
+#ifndef PERFECT_AI_H_INCLUDED
+#define PERFECT_AI_H_INCLUDED
 
-#include <iostream>
-#include <cstdio>
-#include <math.h>
 #include "millAI.h"
 #include "miniMax.h"
+#include "types.h"
+#include <cmath>
+#include <cstdio>
+#include <iostream>
 
-//using namespace std;
+// using namespace std;
 
 // values of states/situations
-#define VALUE_GAME_LOST -1000.0f
+#define VALUE_GAME_LOST (-1000.0f)
 #define VALUE_GAME_WON 1000.0f
 
 // since a state must be saved two times,
-// one time where no stone must be removed,
-// one time where a stone must be removed
-#define MAX_NUM_STONES_REMOVED_MINUS_1 2
+// one time where no piece must be removed,
+// one time where a piece must be removed
+constexpr auto MAX_NUM_PIECES_REMOVED_MINUS_1 = 2;
 
-// 10 x 10 since each color can range from 0 to 9 stones
-// x2 since there is the setting phase and the moving phase
-#define NUM_LAYERS 200
-#define MAX_NUM_SUB_LAYERS 100
-#define LAYER_INDEX_SETTING_PHASE 1
-#define LAYER_INDEX_MOVING_PHASE 0
-#define NOT_INDEXED 4294967295
-#define MAX_DEPTH_OF_TREE 100
-#define NUM_STONES_PER_PLAYER 9
-#define NUM_STONES_PER_PLAYER_PLUS_ONE 10
+// 10 x 10 since each color can range from 0 to 9 pieces
+// x2 since there is the placing phase and the moving phase
+constexpr auto LAYER_COUNT = 200;
+constexpr auto SUB_LAYER_COUNT_MAX = 100;
+
+constexpr auto LAYER_INDEX_PLACING_PHASE = 1;
+constexpr auto LAYER_INDEX_MOVING_PHASE = 0;
+constexpr auto NOT_INDEXED = UINT_MAX;
+
+constexpr auto TREE_DEPTH_MAX = 100;
+
+constexpr auto PIECE_PER_PLAYER_COUNT = 9;
+constexpr auto PIECE_PER_PLAYER_PLUS_ONE_COUNT = 10;
 
 // The Four Groups (the board position is divided in four groups A,B,C,D)
-#define numSquaresGroupA 4
-#define numSquaresGroupB 4
-#define numSquaresGroupC 8
-#define numSquaresGroupD 8
-#define GROUP_A 0
-#define GROUP_B 1
-#define GROUP_C 2
-#define GROUP_D 3
-#define MAX_ANZ_STELLUNGEN_A 81
-#define MAX_ANZ_STELLUNGEN_B 81
-#define MAX_ANZ_STELLUNGEN_C (81 * 81)
-#define MAX_ANZ_STELLUNGEN_D (81 * 81)
+constexpr auto nSquaresGroupA = 4;
+constexpr auto nSquaresGroupB = 4;
+constexpr auto nSquaresGroupC = 8;
+constexpr auto nSquaresGroupD = 8;
 
-#define FREE_SQUARE 0
-#define WHITE_STONE 1
-#define BLACK_STONE 2
+enum Group { GROUP_A = 0, GROUP_B = 1, GROUP_C = 2, GROUP_D = 3 };
 
-// Symmetry Operations
-#define SO_TURN_LEFT 0
-#define SO_TURN_180 1
-#define SO_TURN_RIGHT 2
-#define SO_DO_NOTHING 3
-#define SO_INVERT 4
-#define SO_MIRROR_VERT 5
-#define SO_MIRROR_HORI 6
-#define SO_MIRROR_DIAG_1 7
-#define SO_MIRROR_DIAG_2 8
-#define SO_INV_LEFT 9
-#define SO_INV_RIGHT 10
-#define SO_INV_180 11
-#define SO_INV_MIR_VERT 12
-#define SO_INV_MIR_HORI 13
-#define SO_INV_MIR_DIAG_1 14
-#define SO_INV_MIR_DIAG_2 15
-#define NUM_SYM_OPERATIONS 16
+constexpr auto MAX_ANZ_POSITION_A = 81;
+constexpr auto MAX_ANZ_POSITION_B = 81;
+constexpr auto MAX_ANZ_POSITION_C = 81 * 81;
+constexpr auto MAX_ANZ_POSITION_D = 81 * 81;
 
+constexpr auto FREE_SQUARE = 0;
 
-class PerfectAI : public MillAI, public MiniMax
+// Symmetry Ops
+enum SymOp {
+    SO_TURN_LEFT = 0,
+    SO_TURN_180 = 1,
+    SO_TURN_RIGHT = 2,
+    SO_DO_NOTHING = 3,
+    SO_INVERT = 4,
+    SO_MIRROR_VERT = 5,
+    SO_MIRROR_HORI = 6,
+    SO_MIRROR_DIAG_1 = 7,
+    SO_MIRROR_DIAG_2 = 8,
+    SO_INV_LEFT = 9,
+    SO_INV_RIGHT = 10,
+    SO_INV_180 = 11,
+    SO_INV_MIRROR_VERT = 12,
+    SO_INV_MIRROR_HORI = 13,
+    SO_INV_MIRROR_DIAG_1 = 14,
+    SO_INV_MIRROR_DIAG_2 = 15,
+    SO_COUNT = 16,
+};
+
+class PerfectAI final : public MillAI, public MiniMax
 {
 protected:
-    // structs
+    // struct
     struct SubLayer
     {
-        unsigned int minIndex;
-        unsigned int maxIndex;
-        unsigned int numWhiteStonesGroupCD, numBlackStonesGroupCD;
-        unsigned int numWhiteStonesGroupAB, numBlackStonesGroupAB;
+        uint32_t minIndex {0};
+        uint32_t maxIndex {0};
+        uint32_t nWhitePiecesGroupCD {0};
+        uint32_t nBlackPiecesGroupCD {0};
+        uint32_t nWhitePiecesGroupAB {0};
+        uint32_t nBlackPiecesGroupAB {0};
     };
 
     struct Layer
     {
-        unsigned int numWhiteStones;
-        unsigned int numBlackStones;
-        unsigned int numSubLayers;
-        unsigned int subLayerIndexAB[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
-        unsigned int subLayerIndexCD[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
-        SubLayer subLayer[MAX_NUM_SUB_LAYERS];
+        uint32_t whitePieceCount {0};
+        uint32_t blackPieceCount {0};
+        uint32_t subLayerCount {0};
+        uint32_t subLayerIndexAB[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
+                                [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{0}};
+        uint32_t subLayerIndexCD[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
+                                [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{0}};
+        SubLayer subLayer[SUB_LAYER_COUNT_MAX] {};
     };
 
     struct Possibility
     {
-        unsigned int from[MAX_NUM_POS_MOVES];
-        unsigned int to[MAX_NUM_POS_MOVES];
+        uint32_t from[POSIBILE_MOVE_COUNT_MAX] {0};
+        uint32_t to[POSIBILE_MOVE_COUNT_MAX] {0};
     };
 
     struct Backup
     {
-        float floatValue;
-        TwoBit shortValue;
-        bool gameHasFinished;
-        bool settingPhase;
-        int fieldFrom, fieldTo; // value of board
-        unsigned int from, to;	// index of board
-        unsigned int curNumStones, oppNumStones;
-        unsigned int curPosMoves, oppPosMoves;
-        unsigned int curMissStones, oppMissStones;
-        unsigned int stonesSet;
-        unsigned int stoneMustBeRemoved;
-        unsigned int stonePartOfMill[fieldStruct::size];
-        Player *curPlayer, *oppPlayer;
+        float floatValue {0.0f};
+        TwoBit shortValue {0};
+        bool gameHasFinished {false};
+        bool isPlacingPhase {false};
+        int fieldFrom {0}, fieldTo {0}; // value of board
+        uint32_t from {0}, to {0};      // index of board
+        uint32_t curPieceCount {0}, oppPieceCount {0};
+        uint32_t curPosMoves {0}, oppPosMoves {0};
+        uint32_t curMissPieces {0}, oppMissPieces {0};
+        uint32_t piecePlacedCount {0};
+        uint32_t pieceMustBeRemovedCount {0};
+        uint32_t piecePartOfMillCount[SQUARE_NB] {0};
+        Player *curPlayer {nullptr}, *oppPlayer {nullptr};
     };
 
     // preCalcedVars.dat
     struct PreCalcedVarsFileHeader
     {
-        unsigned int sizeInBytes;
+        uint32_t sizeInBytes {0};
     };
 
     // constant variables for state addressing in the database
-    Layer layer[NUM_LAYERS];																	// the layers
-    unsigned int layerIndex[2][NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE]; // indices of layer [moving/setting phase][number of white stones][number of black stones]
-    unsigned int anzahlStellungenCD[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
-    unsigned int anzahlStellungenAB[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
-    unsigned int indexAB[MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B];
-    unsigned int indexCD[MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D];
-    unsigned char symmetryOperationCD[MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D]; // index of symmetry operation used to get from the original state to the current one
-    unsigned int powerOfThree[numSquaresGroupC + numSquaresGroupD];					// 3^0, 3^1, 3^2, ...
-    unsigned int symmetryOperationTable[NUM_SYM_OPERATIONS][fieldStruct::size];		// Matrix used for application of the symmetry operations
-    unsigned int *originalStateCD[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
-    unsigned int *originalStateAB[NUM_STONES_PER_PLAYER_PLUS_ONE][NUM_STONES_PER_PLAYER_PLUS_ONE];
-    unsigned int reverseSymOperation[NUM_SYM_OPERATIONS];							 // index of the reverse symmetry operation
-    unsigned int concSymOperation[NUM_SYM_OPERATIONS][NUM_SYM_OPERATIONS];			 // symmetry operation, which is identical to applying those two in the index
-    unsigned int mOverN[fieldStruct::size + 1][fieldStruct::size + 1];				 // m over n
-    unsigned char valueOfMove[fieldStruct::size * fieldStruct::size];				 // contains the value of the situation, which will be achieved by that move
-    unsigned short plyInfoForOutput[fieldStruct::size * fieldStruct::size];			 // contains the value of the situation, which will be achieved by that move
-    unsigned int incidencesValuesSubMoves[fieldStruct::size * fieldStruct::size][4]; // contains the number of ...
-    unsigned int symmetricStateNumberArray[NUM_SYM_OPERATIONS];						 // array for state numbers
-    string databaseDirectory;														 // directory containing the database files
+
+    // the layers
+    Layer layer[LAYER_COUNT] {0};
+
+    // indices of layer [moving/placing phase][number of white pieces][number of
+    // black pieces]
+    uint32_t layerIndex[2][PIECE_PER_PLAYER_PLUS_ONE_COUNT]
+                       [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{{0}}};
+
+    uint32_t nPositionsCD[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
+                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{0}};
+
+    uint32_t nPositionsAB[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
+                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{0}};
+
+    uint32_t indexAB[MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B] {0};
+
+    uint32_t indexCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D] {0};
+
+    // index of symmetry operation used to get from the orig state to the
+    // current one
+    unsigned char symOpCD[MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D] {0};
+
+    // 3^0, 3^1, 3^2, ...
+    uint32_t powerOfThree[nSquaresGroupC + nSquaresGroupD] {0};
+
+    // Matrix used for application of the symmetry operations
+    uint32_t symOpTable[SO_COUNT][SQUARE_NB] {{0}};
+
+    uint32_t *origStateCD[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
+                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{nullptr}};
+
+    uint32_t *origStateAB[PIECE_PER_PLAYER_PLUS_ONE_COUNT]
+                         [PIECE_PER_PLAYER_PLUS_ONE_COUNT] {{nullptr}};
+
+    // index of the reverse symmetry operation
+    uint32_t reverseSymOp[SO_COUNT] {0};
+
+    // symmetry operation, which is identical to applying those two in the index
+    uint32_t concSymOp[SO_COUNT][SO_COUNT] {{0}};
+
+    // m over n
+    uint32_t mOverN[SQUARE_NB + 1][SQUARE_NB + 1] {{0}};
+
+    // contains the value of the situation, which will be achieved by that move
+    unsigned char moveValue[SQUARE_NB * SQUARE_NB] {0};
+
+    // contains the value of the situation, which will be achieved by that move
+    unsigned short plyInfoForOutput[SQUARE_NB * SQUARE_NB] {0};
+
+    // contains the number of ...
+    uint32_t incidencesValuesSubMoves[SQUARE_NB * SQUARE_NB][4] {{0}};
+
+    // array for state numbers
+    uint32_t symStateNumberArray[SO_COUNT] {0};
+
+    // dir containing the database files
+    string databaseDir;
 
     // Variables used individually by each single thread
     class ThreadVars
     {
     public:
-        fieldStruct *field;			   // pointer of the current board [changed by move()]
-        float floatValue;			   // value of current situation for board->currentPlayer
-        TwoBit shortValue;			   // ''
-        bool gameHasFinished;		   // someone has won or current board is full
-        int ownId;					   // id of the player who called the play()-function
-        unsigned int curSearchDepth;   // current level
-        unsigned int depthOfFullTree;  // search depth where the whole tree is explored
-        unsigned int *idPossibilities; // returned pointer of getPossibilities()-function
-        Backup *oldStates;			   // for undo()-function
-        Possibility *possibilities;	   // for getPossNormalMove()-function
-        PerfectAI *parent;			   //
+        // pointer of the current board [changed by move()]
+        fieldStruct *field {nullptr};
+
+        // value of current situation for board->curPlayer
+        float floatValue {0.0f};
+
+        TwoBit shortValue {0};
+
+        // someone has won or current board is full
+        bool gameHasFinished {false};
+
+        // id of the player who called the play()-function
+        int ownId {0};
+
+        // current level
+        uint32_t curSearchDepth {0};
+
+        // search depth where the whole tree is explored
+        uint32_t fullTreeDepth {0};
+
+        // returned pointer of getPossibilities()-function
+        uint32_t *idPossibilities {nullptr};
+
+        // for undo()-function
+        Backup *oldStates {nullptr};
+
+        // for getPossNormalMove()-function
+        Possibility *possibilities {nullptr};
+
+        PerfectAI *parent {nullptr};
 
         // constructor
         ThreadVars();
 
         // Functions
-        unsigned int *getPossSettingPhase(unsigned int *numPossibilities, void **pPossibilities);
-        unsigned int *getPossNormalMove(unsigned int *numPossibilities, void **pPossibilities);
-        unsigned int *getPossStoneRemove(unsigned int *numPossibilities, void **pPossibilities);
+        uint32_t *getPossPlacingPhase(uint32_t *possibilityCount,
+                                      void **pPossibilities) const;
+        uint32_t *getPossNormalMove(uint32_t *possibilityCount,
+                                    void **pPossibilities) const;
+        uint32_t *getPossPieceRemove(uint32_t *possibilityCount,
+                                     void **pPossibilities) const;
 
         // move functions
-        inline void updatePossibleMoves(unsigned int stone, Player *stoneOwner, bool stoneRemoved, unsigned int ignoreStone);
-        inline void updateWarning(unsigned int firstStone, unsigned int secondStone);
-        inline void setWarning(unsigned int stoneOne, unsigned int stoneTwo, unsigned int stoneThree);
-        inline void removeStone(unsigned int from, Backup *backup);
-        inline void setStone(unsigned int to, Backup *backup);
-        inline void normalMove(unsigned int from, unsigned int to, Backup *backup);
+        inline void updatePossibleMoves(uint32_t piece, Player *pieceOwner,
+                                        bool pieceRemoved,
+                                        uint32_t ignorePiece) const;
+        inline void updateWarning(uint32_t firstPiece,
+                                  uint32_t secondPiece) const;
+        inline void setWarning(uint32_t pieceOne, uint32_t pieceTwo,
+                               uint32_t pieceThree) const;
+        inline void removePiece(uint32_t from, Backup *backup);
+        inline void setPiece(uint32_t to, Backup *backup) const;
+        inline void normalMove(uint32_t from, uint32_t to,
+                               Backup *backup) const;
 
         // database functions
-        unsigned int getLayerAndStateNumber(unsigned int &layerNum, unsigned int &stateNumber);
-        void setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour);
-        bool fieldIntegrityOK(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, bool aStoneCanBeRemovedFromCurPlayer);
-        void calcPossibleMoves(Player *player);
-        void storePredecessor(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars);
+        uint32_t getLayerAndStateNumber(uint32_t &layerNum,
+                                        uint32_t &stateNumber) const;
+        void setWarningAndMill(uint32_t piece, uint32_t firstNeighbor,
+                               uint32_t secondNeighbor) const;
+        bool fieldIntegrityOK(uint32_t nMillsCurPlayer,
+                              uint32_t nMillsOpponentPlayer,
+                              bool aPieceCanBeRemovedFromCurPlayer) const;
+        void generateMoves(Player *player) const;
+        void storePredecessor(uint32_t nMillsCurPlayer,
+                              uint32_t nMillsOpponentPlayer,
+                              uint32_t *amountOfPred,
+                              RetroAnalysisPredVars *predVars) const;
     };
 
     ThreadVars *threadVars;
 
     // database functions
-    unsigned int getNumberOfLayers();
-    unsigned int getNumberOfKnotsInLayer(unsigned int layerNum);
-    long long mOverN_Function(unsigned int m, unsigned int n);
-    void applySymmetrieOperationOnField(unsigned char symmetryOperationNumber, unsigned int *sourceField, unsigned int *destField);
-    bool isSymOperationInvariantOnGroupCD(unsigned int symmetryOperation, int *theField);
-    bool shallRetroAnalysisBeUsed(unsigned int layerNum);
-    void getSuccLayers(unsigned int layerNum, unsigned int *amountOfSuccLayers, unsigned int *succLayers);
-    void getPredecessors(unsigned int threadNo, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars);
-    bool setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber);
-    unsigned int getLayerNumber(unsigned int threadNo);
-    unsigned int getLayerAndStateNumber(unsigned int threadNo, unsigned int &layerNum, unsigned int &stateNumber);
-
-    // integrity test functions
-    bool checkMoveAndSetSituation();
-    bool checkGetPossThanGetPred();
-    bool checkGetPredThanGetPoss();
+    uint32_t getNumberOfLayers() override;
+    uint32_t getNumberOfKnotsInLayer(uint32_t layerNum) override;
+    static int64_t mOverN_Function(uint32_t m, uint32_t n);
+    void applySymOpOnField(unsigned char symOpNumber,
+                           const uint32_t *sourceField,
+                           uint32_t *destField) const;
+    bool isSymOpInvariantOnGroupCD(uint32_t symOp, const int *theField) const;
+    bool shallRetroAnalysisBeUsed(uint32_t layerNum) override;
+    void getSuccLayers(uint32_t layerNum, uint32_t *amountOfSuccLayers,
+                       uint32_t *succeedingLayers) override;
+    void getPredecessors(uint32_t threadNo, uint32_t *amountOfPred,
+                         RetroAnalysisPredVars *predVars) override;
+    bool setSituation(uint32_t threadNo, uint32_t layerNum,
+                      uint32_t stateNumber) override;
+    uint32_t getLayerNumber(uint32_t threadNo) override;
+    uint32_t getLayerAndStateNumber(uint32_t threadNo, uint32_t &layerNum,
+                                    uint32_t &stateNumber) override;
 
     // Virtual Functions
-    void prepareBestChoiceCalculation();
-    void getValueOfSituation(unsigned int threadNo, float &floatValue, TwoBit &shortValue);
-    void setOpponentLevel(unsigned int threadNo, bool isOpponentLevel);
-    bool getOpponentLevel(unsigned int threadNo);
-    void deletePossibilities(unsigned int threadNo, void *pPossibilities);
-    unsigned int *getPossibilities(unsigned int threadNo, unsigned int *numPossibilities, bool *opponentsMove, void **pPossibilities);
-    void undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void *pBackup, void *pPossibilities);
-    void move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void **pBackup, void *pPossibilities);
-    void printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities);
-    void storeValueOfMove(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities, unsigned char value, unsigned int *freqValuesSubMoves, PlyInfoVarType plyInfo);
-    void getSymStateNumWithDoubles(unsigned int threadNo, unsigned int *numSymmetricStates, unsigned int **symStateNumbers);
-    void printBoard(unsigned int threadNo, unsigned char value);
-    string getOutputInformation(unsigned int layerNum);
-    unsigned int getPartnerLayer(unsigned int layerNum);
-    void prepareDatabaseCalculation();
-    void wrapUpDatabaseCalculation(bool calculationAborted);
+    void prepareBestChoiceCalc() override;
+    void getSituationValue(uint32_t threadNo, float &floatValue,
+                           TwoBit &shortValue) override;
+    void setOpponentLevel(uint32_t threadNo, bool isOpponentLevel) override;
+    bool getOpponentLevel(uint32_t threadNo) override;
+    void deletePossibilities(uint32_t threadNo, void *pPossibilities) override;
+    uint32_t *getPossibilities(uint32_t threadNo, uint32_t *possibilityCount,
+                               bool *opponentsMove,
+                               void **pPossibilities) override;
+    void undo(uint32_t threadNo, uint32_t idPossibility, bool opponentsMove,
+              void *pBackup, void *pPossibilities) override;
+    void move(uint32_t threadNo, uint32_t idPossibility, bool opponentsMove,
+              void **pBackup, void *pPossibilities) override;
+    void printMoveInfo(uint32_t threadNo, uint32_t idPossibility,
+                       void *pPossibilities) override;
+    void storeMoveValue(uint32_t threadNo, uint32_t idPossibility,
+                        void *pPossibilities, unsigned char value,
+                        uint32_t *freqValuesSubMoves,
+                        PlyInfoVarType plyInfo) override;
+    void getSymStateNumWithDoubles(uint32_t threadNo, uint32_t *nSymStates,
+                                   uint32_t **symStateNumbers) override;
+    void printBoard(uint32_t threadNo, unsigned char value) override;
+    string getOutputInfo(uint32_t layerNum) override;
+    uint32_t getPartnerLayer(uint32_t layerNum) override;
+    void prepareDatabaseCalc() override;
+    void wrapUpDatabaseCalc(bool calcuAborted) override;
 
 public:
     // Constructor / destructor
-    PerfectAI(const char *directory);
-    ~PerfectAI();
+    explicit PerfectAI(const char *dir);
+    ~PerfectAI() override;
 
     // Functions
-    bool setDatabasePath(const char *directory);
-    void play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo);
-    void getValueOfMoves(unsigned char *moveValue, unsigned int *freqValuesSubMoves, PlyInfoVarType *plyInfo, unsigned int *moveQuality, unsigned char &knotValue, PlyInfoVarType &bestAmountOfPlies);
-    void getField(unsigned int layerNum, unsigned int stateNumber, fieldStruct *field, bool *gameHasFinished);
-    void getLayerAndStateNumber(unsigned int &layerNum, unsigned int &stateNumber);
+    bool setDatabasePath(const char *dir);
+    void play(fieldStruct *theField, uint32_t *pushFrom,
+              uint32_t *pushTo) override;
+    void getLayerAndStateNumber(uint32_t &layerNum,
+                                uint32_t &stateNumber) const;
 
     // Testing functions
-    bool testLayers(unsigned int startTestFromLayer, unsigned int endTestAtLayer);
+    bool testLayers(uint32_t startTestFromLayer, uint32_t endTestAtLayer);
 };
 
-#endif
+#endif // PERFECT_AI_H_INCLUDED

@@ -144,16 +144,7 @@
     <ClInclude Include="src\perfect\miniMax_retroAnalysis.h">
       <Filter>Perfect AI Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\perfect\miniMaxAI.h">
-      <Filter>Perfect AI Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\perfect\miniMaxWin.h">
-      <Filter>Perfect AI Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\perfect\perfectAI.h">
-      <Filter>Perfect AI Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\perfect\randomAI.h">
       <Filter>Perfect AI Files</Filter>
     </ClInclude>
     <ClInclude Include="src\perfect\strLib.h">
@@ -309,7 +300,7 @@
     <QtMoc Include="src\ui\qt\gamewindow.h">
       <Filter>Qt Files</Filter>
     </QtMoc>
-    <QtMoc Include="src\ui\qt\manuallistview.h">
+    <QtMoc Include="src\ui\qt\movelistview.h">
       <Filter>Qt Files</Filter>
     </QtMoc>
     <QtMoc Include="src\ui\qt\pieceitem.h">
@@ -434,13 +425,7 @@
     <ClCompile Include="src\perfect\miniMax_test.cpp">
       <Filter>Perfect AI Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\perfect\minMaxAI.cpp">
-      <Filter>Perfect AI Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\perfect\perfectAI.cpp">
-      <Filter>Perfect AI Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\perfect\randomAI.cpp">
       <Filter>Perfect AI Files</Filter>
     </ClCompile>
     <ClCompile Include="src\perfect\strLib.cpp">
@@ -515,7 +500,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="resources\sound\drog.wav">
+    <Media Include="resources\sound\drag.wav">
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="resources\sound\forbidden.wav">

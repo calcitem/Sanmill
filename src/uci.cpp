@@ -1,43 +1,46 @@
-/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
-
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <sstream>
+#include <vector>
 
 #include "thread.h"
 #include "uci.h"
 
 #ifdef FLUTTER_UI
-#include "command_channel.h"
 #include "base.h"
+#include "command_channel.h"
 #endif
 
-using namespace std;
+using std::cin;
+using std::istream;
+using std::istringstream;
+using std::skipws;
+using std::string;
+using std::stringstream;
+using std::vector;
 
 extern vector<string> setup_bench(Position *, istream &);
 
 extern int repetition;
-extern vector<Key> posKeyHistory;
 
-namespace
-{
+namespace {
 
 // FEN string of the initial position, normal mill game
-const char  *StartFEN9 = "********/********/******** w p p 0 9 0 9 0 0 1";
+const char *StartFEN9 = "********/********/******** w p p 0 9 0 9 0 0 1";
 const char *StartFEN10 = "********/********/******** w p p 0 10 0 10 0 0 1";
 const char *StartFEN11 = "********/********/******** w p p 0 11 0 11 0 0 1";
 const char *StartFEN12 = "********/********/******** w p p 0 12 0 12 0 0 1";
@@ -59,11 +62,13 @@ void position(Position *pos, istringstream &is)
     if (token == "startpos") {
         fen = StartFEN;
         is >> token; // Consume "moves" token if any
-    } else if (token == "fen")
-        while (is >> token && token != "moves")
+    } else if (token == "fen") {
+        while (is >> token && token != "moves") {
             fen += token + " ";
-    else
+        }
+    } else {
         return;
+    }
 
     repetition = 0;
     posKeyHistory.clear();
@@ -80,10 +85,9 @@ void position(Position *pos, istringstream &is)
         }
     }
 
-    // TODO: Stockfish does not have this
+    // TODO(calcitem): Stockfish does not have this
     Threads.main()->us = pos->sideToMove;
 }
-
 
 // setoption() is called when engine receives the "setoption" UCI command. The
 // function updates the UCI option ("name") to the given value ("value").
@@ -108,7 +112,6 @@ void setoption(istringstream &is)
         sync_cout << "No such option: " << name << sync_endl;
 }
 
-
 // go() is called when engine receives the "go" UCI command. The function sets
 // the thinking time and other parameters from the input string, then starts
 // the search.
@@ -116,17 +119,16 @@ void setoption(istringstream &is)
 void go(Position *pos)
 {
 #ifdef UCI_AUTO_RE_GO
-    begin:
+begin:
 #endif
 
     repetition = 0;
 
     Threads.start_thinking(pos);
 
-    if (pos->get_phase() == Phase::gameOver)
-    {
+    if (pos->get_phase() == Phase::gameOver) {
 #ifdef UCI_AUTO_RESTART
-        // TODO
+        // TODO(calcitem)
         while (true) {
             if (Threads.main()->searching == true) {
                 continue;
@@ -148,19 +150,38 @@ void go(Position *pos)
 
 } // namespace
 
-
-/// UCI::loop() waits for a command from stdin, parses it and calls the appropriate
-/// function. Also intercepts EOF from stdin to ensure gracefully exiting if the
-/// GUI dies unexpectedly. When called with some command line arguments, e.g. to
-/// run 'bench', once the command is executed the function returns immediately.
-/// In addition to the UCI ones, also some additional debug commands are supported.
+/// UCI::loop() waits for a command from stdin, parses it and calls the
+/// appropriate function. Also intercepts EOF from stdin to ensure gracefully
+/// exiting if the GUI dies unexpectedly. When called with some command line
+/// arguments, e.g. to run 'bench', once the command is executed the function
+/// returns immediately. In addition to the UCI ones, also some additional debug
+/// commands are supported.
 
 void UCI::loop(int argc, char *argv[])
 {
-    Position *pos = new Position;
+    const auto pos = new Position;
     string token, cmd;
 
-    switch (rule.piecesCount) {
+#ifdef _MSC_VER
+    switch (rule.pieceCount) {
+    case 9:
+        strncpy_s(StartFEN, BUFSIZ, StartFEN9, BUFSIZ - 1);
+        break;
+    case 10:
+        strncpy_s(StartFEN, BUFSIZ, StartFEN10, BUFSIZ - 1);
+        break;
+    case 11:
+        strncpy_s(StartFEN, BUFSIZ, StartFEN11, BUFSIZ - 1);
+        break;
+    case 12:
+        strncpy_s(StartFEN, BUFSIZ, StartFEN12, BUFSIZ - 1);
+        break;
+    default:
+        assert(0);
+        break;
+    }
+#else
+    switch (rule.pieceCount) {
     case 9:
         strncpy(StartFEN, StartFEN9, BUFSIZ - 1);
         break;
@@ -177,6 +198,7 @@ void UCI::loop(int argc, char *argv[])
         assert(0);
         break;
     }
+#endif
 
     StartFEN[BUFSIZ - 1] = '\0';
 
@@ -195,7 +217,8 @@ void UCI::loop(int argc, char *argv[])
         cmd = line;
         LOGD("[uci] input: %s\n", line);
 #else
-        if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or EOF
+        if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or
+                                             // EOF
             cmd = "quit";
 #endif
 
@@ -204,70 +227,73 @@ void UCI::loop(int argc, char *argv[])
         token.clear(); // Avoid a stale if getline() returns empty or blank line
         is >> skipws >> token;
 
-        if (token == "quit"
-            || token == "stop")
+        if (token == "quit" || token == "stop")
             Threads.stop = true;
 
-        // The GUI sends 'ponderhit' to tell us the user has played the expected move.
-        // So 'ponderhit' will be sent if we were told to ponder on the same move the
-        // user has played. We should continue searching but switch from pondering to
-        // normal search.
+        // The GUI sends 'ponderhit' to tell us the user has played the expected
+        // move. So 'ponderhit' will be sent if we were told to ponder on the
+        // same move the user has played. We should continue searching but
+        // switch from pondering to normal search.
         else if (token == "ponderhit")
             Threads.main()->ponder = false; // Switch to normal search
 
         else if (token == "uci")
-            sync_cout << "id name " << engine_info(true)
-            << "\n" << Options
-            << "\nuciok" << sync_endl;
+            sync_cout << "id name " << engine_info(true) << "\n"
+                      << Options << "\nuciok" << sync_endl;
 
-        else if (token == "setoption")  setoption(is);
-        else if (token == "go")         go(pos);
-        else if (token == "position")   position(pos, is);
-        else if (token == "ucinewgame") Search::clear();
-        else if (token == "isready")    sync_cout << "readyok" << sync_endl;
+        else if (token == "setoption")
+            setoption(is);
+        else if (token == "go")
+            go(pos);
+        else if (token == "position")
+            position(pos, is);
+        else if (token == "ucinewgame")
+            Search::clear();
+        else if (token == "isready")
+            sync_cout << "readyok" << sync_endl;
 
         // Additional custom non-UCI commands, mainly for debugging.
         // Do not use these commands during a search!
-        else if (token == "d")        sync_cout << *pos << sync_endl;
-        else if (token == "compiler") sync_cout << compiler_info() << sync_endl;
+        else if (token == "d")
+            sync_cout << *pos << sync_endl;
+        else if (token == "compiler")
+            sync_cout << compiler_info() << sync_endl;
         else
             sync_cout << "Unknown command: " << cmd << sync_endl;
-
     } while (token != "quit" && argc == 1); // Command line args are one-shot
 
     delete pos;
 }
 
-
 /// UCI::value() converts a Value to a string suitable for use with the UCI
 /// protocol specification:
 ///
-/// cp <x>    The score from the engine's point of view in stones.
+/// cp <x>    The score from the engine's point of view in pieces.
 /// mate <y>  Mate in y moves, not plies. If the engine is getting mated
 ///           use negative values for y.
 
 string UCI::value(Value v)
 {
-    assert(-VALUE_INFINITE < v &&v < VALUE_INFINITE);
+    assert(-VALUE_INFINITE < v && v < VALUE_INFINITE);
 
     stringstream ss;
 
     if (abs(v) < VALUE_MATE_IN_MAX_PLY)
-        ss << "cp " << v / StoneValue;
+        ss << "cp " << v / PieceValue;
     else
         ss << "mate " << (v > 0 ? VALUE_MATE - v + 1 : -VALUE_MATE - v) / 2;
 
     return ss.str();
 }
 
-
-/// UCI::square() converts a Square to a string in algebraic notation ((1,2), etc.)
+/// UCI::square() converts a Square to a string in algebraic notation ((1,2),
+/// etc.)
 
 std::string UCI::square(Square s)
 {
-    return std::string{ char('('), char('0' + file_of(s)), char(','), char('0' + rank_of(s)), char(')') };
+    return std::string {'(', static_cast<char>('0' + file_of(s)), ',',
+                        static_cast<char>('0' + rank_of(s)), ')'};
 }
-
 
 /// UCI::move() converts a Move to a string in algebraic notation ((1,2), etc.).
 
@@ -284,25 +310,24 @@ string UCI::move(Move m)
         return "0000";
 
     if (m < 0) {
-        move = "-" + UCI::square(to);
+        move = "-" + square(to);
     } else if (m & 0x7f00) {
         const Square from = from_sq(m);
-        move = UCI::square(from) + "->" + UCI::square(to);
+        move = square(from) + "->" + square(to);
     } else {
-        move = UCI::square(to);
+        move = square(to);
     }
 
     return move;
 }
 
-
 /// UCI::to_move() converts a string representing a move in coordinate notation
 /// to the corresponding legal Move, if any.
 
-Move UCI::to_move(Position *pos, string &str)
+Move UCI::to_move(Position *pos, const string &str)
 {
     for (const auto &m : MoveList<LEGAL>(*pos))
-        if (str == UCI::move(m))
+        if (str == move(m))
             return m;
 
     return MOVE_NONE;

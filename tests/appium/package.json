@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "appium-flutter-finder": "^0.1.0",
+    "cjs": "^0.0.11",
+    "webdriverio": "^7.16.10"
+  },
+  "name": "appium",
+  "description": "https://nodejs.org/en/",
+  "version": "1.0.0",
+  "main": "test.js",
+  "scripts": {
+    "start": "node test.js",
+    "ios": "APPIUM_OS=ios npm start",
+    "android": "APPIUM_OS=android npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Calcitem <calcitem@outlook.com>",
+  "license": "GPLv3"
+}

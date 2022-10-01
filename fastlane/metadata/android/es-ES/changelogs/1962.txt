@@ -1,5 +1,3 @@
 v1.1.4
 
 * Soporta la configuración de idiomas en inglés, alemán, persa, húngaro, rumano y chino.
-
-

@@ -1,0 +1,5 @@
+v1.1.9
+
+* Améliorer la traduction en farsi (langue persane) (WIP).
+* Correction des problèmes de flèches d'options et de boutons de navigation dans les langues RTL.
+* L'icône d'animation du correctif est trop haute lorsque la langue est l'arabe.

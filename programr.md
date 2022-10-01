@@ -10,7 +10,7 @@ Sanmill is written in C++ and Dart. The Sanmill mill game engine supports both W
 
 Sanmill has mostly been tested on Intel & AMD processors but the code is designed to be portable to other processors.
 
-The remainder of this file contains information for use by programmers reading or working on Sanmill source code. I assume that you have a working familiarity with C++. Also, if you have no background in computer chess, you should probably start by reading some of the reference material mentioned at the end of this document.
+The remainder of this file contains information for use by programmers reading or working on Sanmill source code. I assume that you have a working familiarity with C++. Also, if you have no background in computer board game, you should probably start by reading some of the reference material mentioned at the end of this document.
 
 ## Building Sanmill
 
@@ -34,7 +34,7 @@ Following is some information about the algorithms and data structures used by S
 
 The mill game board in Sanmill is represented by an array of `24` squares (points), laid out so that square `A1` has the value `8` and square `C8` has the value `31`.
 
-Each square contains `SQ_NONE` if it is empty, or a piece identifier if it is occupied. White pieces have identifier values between `W_STONE_1` and `W_STONE_12`, while Black pieces have values between `B_STONE_1` and `B_STONE_12`. A special value (`BAN_STONE`) is used to represent a square that is banned.
+Each square contains `SQ_NONE` if it is empty, or a piece identifier if it is occupied. White pieces have identifier values between `W_PIECE_1` and `W_PIECE_12`, while Black pieces have values between `B_PIECE_1` and `B_PIECE_12`. A special value (`BAN_PIECE`) is used to represent a square that is banned.
 
 The Board class also maintains several "bit boards" or quantities that that hold 32 bits. The Bitboard class in the source encapsulates a bit board. For example, the occupied bit board has one bit set for every piece that is on the board (there are actually three such bit boards, one for White, one for Black, and one for Ban).
 

@@ -1,16 +1,20 @@
 /*********************************************************************
     PerfectAI.cpp
     Copyright (c) Thomas Weber. All rights reserved.
-    Copyright (C) 2021 The Sanmill developers (see AUTHORS file)
+    Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
     Licensed under the GPLv3 License.
     https://github.com/madweasel/Muehle
 \*********************************************************************/
 
-#include <cassert>
+#include "config.h"
+
+#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+
 #include "perfectAI.h"
+#include <cassert>
 
-
-unsigned int soTableTurnLeft[] = {
+// clang-format off
+uint32_t soTableTurnLeft[] = {
  2,      14,      23,
     5,   13,   20,
        8,12,17,
@@ -20,7 +24,7 @@ unsigned int soTableTurnLeft[] = {
  0,       9,      21
 };
 
-unsigned int soTableDoNothing[] = {
+uint32_t soTableDoNothing[] = {
  0,       1,       2,
     3,    4,    5,
        6, 7, 8,
@@ -30,7 +34,7 @@ unsigned int soTableDoNothing[] = {
 21,      22,      23
 };
 
-unsigned int soTableMirrorHori[] = {
+uint32_t soTableMirrorHori[] = {
 21,      22,      23,
    18,   19,   20,
       15,16,17,
@@ -40,7 +44,7 @@ unsigned int soTableMirrorHori[] = {
  0,       1,       2
 };
 
-unsigned int soTableTurn180[] = {
+uint32_t soTableTurn180[] = {
  23,      22,      21,
     20,   19,   18,
        17,16,15,
@@ -50,7 +54,7 @@ unsigned int soTableTurn180[] = {
   2,       1,       0
 };
 
-unsigned int soTableInvert[] = {
+uint32_t soTableInvert[] = {
   6,       7,       8,
      3,    4,    5,
         0, 1, 2,
@@ -60,7 +64,7 @@ unsigned int soTableInvert[] = {
  15,      16,      17
 };
 
-unsigned int soTableInvMirHori[] = {
+uint32_t soTableInvMirHori[] = {
  15,      16,      17,
     18,   19,   20,
        21,22,23,
@@ -70,7 +74,7 @@ unsigned int soTableInvMirHori[] = {
   6,       7,       8
 };
 
-unsigned int soTableInvMirVert[] = {
+uint32_t soTableInvMirVert[] = {
   8,       7,       6,
      5,    4,    3,
         2, 1, 0,
@@ -80,7 +84,7 @@ unsigned int soTableInvMirVert[] = {
  17,      16,      15
 };
 
-unsigned int soTableInvMirDiag1[] = {
+uint32_t soTableInvMirDiag1[] = {
  17,      12,       8,
     20,   13,    5,
        23,14, 2,
@@ -90,7 +94,7 @@ unsigned int soTableInvMirDiag1[] = {
  15,      11,       6
 };
 
-unsigned int soTableInvMirDiag2[] = {
+uint32_t soTableInvMirDiag2[] = {
   6,      11,      15,
      3,   10,   18,
         0, 9,21,
@@ -100,7 +104,7 @@ unsigned int soTableInvMirDiag2[] = {
   8,      12,      17
 };
 
-unsigned int soTableInvLeft[] = {
+uint32_t soTableInvLeft[] = {
   8,      12,      17,
      5,   13,   20,
         2,14,23,
@@ -110,7 +114,7 @@ unsigned int soTableInvLeft[] = {
   6,      11,      15
 };
 
-unsigned int soTableInvRight[] = {
+uint32_t soTableInvRight[] = {
  15,      11,       6,
     18,   10,    3,
        21, 9, 0,
@@ -120,7 +124,7 @@ unsigned int soTableInvRight[] = {
  17,      12,       8
 };
 
-unsigned int soTableInv180[] = {
+uint32_t soTableInv180[] = {
  17,      16,      15,
     20,   19,   18,
        23,22,21,
@@ -130,7 +134,7 @@ unsigned int soTableInv180[] = {
   8,       7,       6
 };
 
-unsigned int soTableMirrorDiag1[] = {
+uint32_t soTableMirrorDiag1[] = {
   0,       9,      21,
      3,   10,   18,
         6,11,15,
@@ -140,7 +144,7 @@ unsigned int soTableMirrorDiag1[] = {
   2,      14,      23
 };
 
-unsigned int soTableTurnRight[] = {
+uint32_t soTableTurnRight[] = {
   21,       9,       0,
      18,   10,    3,
         15,11, 6,
@@ -150,7 +154,7 @@ unsigned int soTableTurnRight[] = {
   23,      14,       2
 };
 
-unsigned int soTableMirrorVert[] = {
+uint32_t soTableMirrorVert[] = {
    2,       1,       0,
       5,    4,    3,
          8, 7, 6,
@@ -160,7 +164,7 @@ unsigned int soTableMirrorVert[] = {
   23,      22,      21
 };
 
-unsigned int soTableMirrorDiag2[] = {
+uint32_t soTableMirrorDiag2[] = {
   23,      14,       2,
      20,   13,    5,
         17,12, 8,
@@ -169,114 +173,187 @@ unsigned int soTableMirrorDiag2[] = {
      18,   10,    3,
   21,       9,       0
 };
+// clang-format on
 
 // define the four groups
-unsigned int squareIndexGroupA[] = { 3, 5, 20, 18 };
-unsigned int squareIndexGroupB[8] = { 4, 13, 19, 10 };
-unsigned int squareIndexGroupC[] = { 0, 2, 23, 21, 6, 8, 17, 15 };
-unsigned int squareIndexGroupD[] = { 1, 7, 14, 12, 22, 16, 9, 11 };
+uint32_t squareIdxGroupA[] = {3, 5, 20, 18};
+uint32_t squareIdxGroupB[8] = {4, 13, 19, 10};
+uint32_t squareIdxGroupC[] = {0, 2, 23, 21, 6, 8, 17, 15};
+uint32_t squareIdxGroupD[] = {1, 7, 14, 12, 22, 16, 9, 11};
 
-unsigned int fieldPosIsOfGroup[] = { GROUP_C, GROUP_D, GROUP_C,
-                                    GROUP_A, GROUP_B, GROUP_A,
-                                    GROUP_C, GROUP_D, GROUP_C,
-                                    GROUP_D, GROUP_B, GROUP_D, GROUP_D, GROUP_B, GROUP_D,
-                                    GROUP_C, GROUP_D, GROUP_C,
-                                    GROUP_A, GROUP_B, GROUP_A,
-                                    GROUP_C, GROUP_D, GROUP_C };
+// clang-format off
+uint32_t fieldPosIsOfGroup[] = { GROUP_C,                GROUP_D,                GROUP_C,
+                                         GROUP_A,        GROUP_B,        GROUP_A,
+                                                 GROUP_C,GROUP_D,GROUP_C,
+                                 GROUP_D,GROUP_B,GROUP_D,        GROUP_D,GROUP_B,GROUP_D,
+                                                 GROUP_C,GROUP_D,GROUP_C,
+                                         GROUP_A,        GROUP_B,        GROUP_A,
+                                 GROUP_C,                GROUP_D,                GROUP_C };
+// clang-format on
 
 //-----------------------------------------------------------------------------
 // PerfectAI()
 // PerfectAI class constructor
 //-----------------------------------------------------------------------------
-PerfectAI::PerfectAI(const char *directory)
+PerfectAI::PerfectAI(const char *dir)
 {
-    // loacls
-    unsigned int i, a, b, c, totalNumStones;
-    unsigned int wCD, bCD, wAB, bAB;
-    unsigned int stateAB, stateCD, symStateCD, layerNum;
-    unsigned int myField[fieldStruct::size];
-    unsigned int symField[fieldStruct::size];
-    unsigned int *originalStateCD_tmp[10][10];
+    // locals
+    uint32_t i, a, b, c, totalPieceCount;
+    uint32_t wCD, bCD, wAB, bAB;
+    uint32_t stateAB, stateCD, symStateCD, layerNum;
+    uint32_t myField[SQUARE_NB] {};
+    uint32_t symField[SQUARE_NB];
+    uint32_t *origStateCD_tmp[10][10] {};
     DWORD dwBytesRead = 0;
     DWORD dwBytesWritten = 0;
     HANDLE hFilePreCalcVars;
     stringstream ssPreCalcVarsFilePath;
     PreCalcedVarsFileHeader preCalcVarsHeader;
 
-    //
-    threadVars = new ThreadVars[getNumThreads()];
+    threadVars = new ThreadVars[getThreadCount()];
+    std::memset(threadVars, 0, sizeof(ThreadVars) * getThreadCount());
 
-    for (unsigned int curThread = 0; curThread < getNumThreads(); curThread++) {
-        threadVars[curThread].parent = this;
-        threadVars[curThread].field = &dummyField;
-        threadVars[curThread].possibilities = new Possibility[MAX_DEPTH_OF_TREE + 1];
-        threadVars[curThread].oldStates = new Backup[MAX_DEPTH_OF_TREE + 1];
-        threadVars[curThread].idPossibilities = new unsigned int[(MAX_DEPTH_OF_TREE + 1) * MAX_NUM_POS_MOVES];
+    for (uint32_t thd = 0; thd < getThreadCount(); thd++) {
+        threadVars[thd].parent = this;
+        threadVars[thd].field = &dummyField;
+        threadVars[thd].possibilities = new Possibility[TREE_DEPTH_MAX + 1];
+        std::memset(threadVars[thd].possibilities, 0,
+                    sizeof(Possibility) * (TREE_DEPTH_MAX + 1));
+        threadVars[thd].oldStates = new Backup[TREE_DEPTH_MAX + 1];
+        std::memset(threadVars[thd].oldStates, 0,
+                    sizeof(Backup) * (TREE_DEPTH_MAX + 1));
+        threadVars[thd].idPossibilities =
+            new uint32_t[(TREE_DEPTH_MAX + 1) * POSIBILE_MOVE_COUNT_MAX];
+        std::memset(threadVars[thd].idPossibilities, 0,
+                    sizeof(uint32_t) *
+                        ((TREE_DEPTH_MAX + 1) * POSIBILE_MOVE_COUNT_MAX));
     }
 
     // Open File, which contains the precalculated vars
-    if (strlen(directory) && PathFileExistsA(directory)) {
-        ssPreCalcVarsFilePath << directory << "\\";
+    if (strlen(dir) && PathFileExistsA(dir)) {
+        ssPreCalcVarsFilePath << dir << "\\";
     }
 
     ssPreCalcVarsFilePath << "preCalculatedVars.dat";
-    hFilePreCalcVars = CreateFileA(ssPreCalcVarsFilePath.str().c_str(), GENERIC_READ /*| GENERIC_WRITE*/, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
-    if (!ReadFile(hFilePreCalcVars, &preCalcVarsHeader, sizeof(PreCalcedVarsFileHeader), &dwBytesRead, nullptr))
+    hFilePreCalcVars = CreateFileA(ssPreCalcVarsFilePath.str().c_str(),
+                                   GENERIC_READ /*| GENERIC_WRITE*/,
+                                   FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr,
+                                   OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+    if (!ReadFile(hFilePreCalcVars, &preCalcVarsHeader,
+                  sizeof(PreCalcedVarsFileHeader), &dwBytesRead, nullptr))
         return;
 
     // vars already stored in file?
     if (dwBytesRead) {
         // Read from file
-        if (!ReadFile(hFilePreCalcVars, layer, sizeof(Layer) * NUM_LAYERS, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, layerIndex, sizeof(unsigned int) * 2 * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, anzahlStellungenAB, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, anzahlStellungenCD, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, indexAB, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, indexCD, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, symmetryOperationCD, sizeof(unsigned char) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, powerOfThree, sizeof(unsigned int) * (numSquaresGroupC + numSquaresGroupD), &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, symmetryOperationTable, sizeof(unsigned int) * fieldStruct::size * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, reverseSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, concSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS * NUM_SYM_OPERATIONS, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, mOverN, sizeof(unsigned int) * (fieldStruct::size + 1) * (fieldStruct::size + 1), &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, valueOfMove, sizeof(unsigned char) * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, plyInfoForOutput, sizeof(PlyInfoVarType) * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr)) return;
-        if (!ReadFile(hFilePreCalcVars, incidencesValuesSubMoves, sizeof(unsigned int) * 4 * fieldStruct::size * fieldStruct::size, &dwBytesRead, nullptr)) return;
+        if (!ReadFile(hFilePreCalcVars, layer, sizeof(Layer) * LAYER_COUNT,
+                      &dwBytesRead, nullptr))
+            return;
+        if (!ReadFile(hFilePreCalcVars, layerIndex,
+                      sizeof(uint32_t) * 2 * PIECE_PER_PLAYER_PLUS_ONE_COUNT *
+                          PIECE_PER_PLAYER_PLUS_ONE_COUNT,
+                      &dwBytesRead, nullptr))
+            return;
+        if (!ReadFile(hFilePreCalcVars, nPositionsAB,
+                      sizeof(uint32_t) * PIECE_PER_PLAYER_PLUS_ONE_COUNT *
+                          PIECE_PER_PLAYER_PLUS_ONE_COUNT,
+                      &dwBytesRead, nullptr))
+            return;
+        if (!ReadFile(hFilePreCalcVars, nPositionsCD,
+                      sizeof(uint32_t) * PIECE_PER_PLAYER_PLUS_ONE_COUNT *
+                          PIECE_PER_PLAYER_PLUS_ONE_COUNT,
+                      &dwBytesRead, nullptr))
+            return;
+        if (!ReadFile(hFilePreCalcVars, indexAB,
+                      sizeof(uint32_t) * MAX_ANZ_POSITION_A *
+                          MAX_ANZ_POSITION_B,
+                      &dwBytesRead, nullptr))
+            return;
+        if (!ReadFile(hFilePreCalcVars, indexCD,
+                      sizeof(uint32_t) * MAX_ANZ_POSITION_C *
+                          MAX_ANZ_POSITION_D,
+                      &dwBytesRead, nullptr))
+            return;
+        if (!ReadFile(hFilePreCalcVars, symOpCD,
+                      sizeof(unsigned char) * MAX_ANZ_POSITION_C *
+                          MAX_ANZ_POSITION_D,
+                      &dwBytesRead, nullptr))
+            return;
+        if (!ReadFile(hFilePreCalcVars, powerOfThree,
+                      sizeof(uint32_t) * (nSquaresGroupC + nSquaresGroupD),
+                      &dwBytesRead, nullptr))
+            return;
+        if (!ReadFile(hFilePreCalcVars, symOpTable,
+                      sizeof(uint32_t) * SQUARE_NB * SO_COUNT, &dwBytesRead,
+                      nullptr))
+            return;
+        if (!ReadFile(hFilePreCalcVars, reverseSymOp,
+                      sizeof(uint32_t) * SO_COUNT, &dwBytesRead, nullptr))
+            return;
+        if (!ReadFile(hFilePreCalcVars, concSymOp,
+                      sizeof(uint32_t) * SO_COUNT * SO_COUNT, &dwBytesRead,
+                      nullptr))
+            return;
+        if (!ReadFile(hFilePreCalcVars, mOverN,
+                      sizeof(uint32_t) * (SQUARE_NB + 1) * (SQUARE_NB + 1),
+                      &dwBytesRead, nullptr))
+            return;
+        if (!ReadFile(hFilePreCalcVars, moveValue,
+                      sizeof(unsigned char) * SQUARE_NB * SQUARE_NB,
+                      &dwBytesRead, nullptr))
+            return;
+        if (!ReadFile(hFilePreCalcVars, plyInfoForOutput,
+                      sizeof(PlyInfoVarType) * SQUARE_NB * SQUARE_NB,
+                      &dwBytesRead, nullptr))
+            return;
+        if (!ReadFile(hFilePreCalcVars, incidencesValuesSubMoves,
+                      sizeof(uint32_t) * 4 * SQUARE_NB * SQUARE_NB,
+                      &dwBytesRead, nullptr))
+            return;
 
-        // process originalStateAB[][]
-        for (a = 0; a <= NUM_STONES_PER_PLAYER; a++) {
-            for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
-                if (a + b > numSquaresGroupA + numSquaresGroupB)
+        // process origStateAB[][]
+        for (a = 0; a <= PIECE_PER_PLAYER_COUNT; a++) {
+            for (b = 0; b <= PIECE_PER_PLAYER_COUNT; b++) {
+                if (a + b > nSquaresGroupA + nSquaresGroupB)
                     continue;
-                originalStateAB[a][b] = new unsigned int[anzahlStellungenAB[a][b]];
-                if (!ReadFile(hFilePreCalcVars, originalStateAB[a][b], sizeof(unsigned int) * anzahlStellungenAB[a][b], &dwBytesRead, nullptr)) return;
+                origStateAB[a][b] = new uint32_t[nPositionsAB[a][b]];
+                std::memset(origStateAB[a][b], 0,
+                            sizeof(uint32_t) * nPositionsAB[a][b]);
+                if (!ReadFile(hFilePreCalcVars, origStateAB[a][b],
+                              sizeof(uint32_t) * nPositionsAB[a][b],
+                              &dwBytesRead, nullptr))
+                    return;
             }
         }
 
-        // process originalStateCD[][]
-        for (a = 0; a <= NUM_STONES_PER_PLAYER; a++) {
-            for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
-                if (a + b > numSquaresGroupC + numSquaresGroupD)
+        // process origStateCD[][]
+        for (a = 0; a <= PIECE_PER_PLAYER_COUNT; a++) {
+            for (b = 0; b <= PIECE_PER_PLAYER_COUNT; b++) {
+                if (a + b > nSquaresGroupC + nSquaresGroupD)
                     continue;
-                originalStateCD[a][b] = new unsigned int[anzahlStellungenCD[a][b]];
-                if (!ReadFile(hFilePreCalcVars, originalStateCD[a][b], sizeof(unsigned int) * anzahlStellungenCD[a][b], &dwBytesRead, nullptr)) return;
+                origStateCD[a][b] = new uint32_t[nPositionsCD[a][b]];
+                std::memset(origStateCD[a][b], 0,
+                            sizeof(uint32_t) * nPositionsCD[a][b]);
+                if (!ReadFile(hFilePreCalcVars, origStateCD[a][b],
+                              sizeof(uint32_t) * nPositionsCD[a][b],
+                              &dwBytesRead, nullptr))
+                    return;
             }
         }
 
         // calculate vars and save into file
     } else {
-
-        // calc mOverN
-        for (a = 0; a <= fieldStruct::size; a++) {
-            for (b = 0; b <= fieldStruct::size; b++) {
-                mOverN[a][b] = (unsigned int)mOverN_Function(a, b);
+        // calculate mOverN
+        for (a = 0; a <= SQUARE_NB; a++) {
+            for (b = 0; b <= SQUARE_NB; b++) {
+                mOverN[a][b] = static_cast<uint32_t>(mOverN_Function(a, b));
             }
         }
 
         // reset
-        for (i = 0; i < fieldStruct::size * fieldStruct::size; i++) {
+        for (i = 0; i < SQUARE_NB * SQUARE_NB; i++) {
             plyInfoForOutput[i] = PLYINFO_VALUE_INVALID;
-            valueOfMove[i] = SKV_VALUE_INVALID;
+            moveValue[i] = SKV_VALUE_INVALID;
             incidencesValuesSubMoves[i][SKV_VALUE_INVALID] = 0;
             incidencesValuesSubMoves[i][SKV_VALUE_GAME_LOST] = 0;
             incidencesValuesSubMoves[i][SKV_VALUE_GAME_DRAWN] = 0;
@@ -284,70 +361,69 @@ PerfectAI::PerfectAI(const char *directory)
         }
 
         // power of three
-        for (powerOfThree[0] = 1, i = 1; i < numSquaresGroupC + numSquaresGroupD; i++)
+        for (powerOfThree[0] = 1, i = 1; i < nSquaresGroupC + nSquaresGroupD;
+             i++)
             powerOfThree[i] = 3 * powerOfThree[i - 1];
 
         // symmetry operation table
-        for (i = 0; i < fieldStruct::size; i++) {
-            symmetryOperationTable[SO_TURN_LEFT][i] = soTableTurnLeft[i];
-            symmetryOperationTable[SO_TURN_180][i] = soTableTurn180[i];
-            symmetryOperationTable[SO_TURN_RIGHT][i] = soTableTurnRight[i];
-            symmetryOperationTable[SO_DO_NOTHING][i] = soTableDoNothing[i];
-            symmetryOperationTable[SO_INVERT][i] = soTableInvert[i];
-            symmetryOperationTable[SO_MIRROR_VERT][i] = soTableMirrorVert[i];
-            symmetryOperationTable[SO_MIRROR_HORI][i] = soTableMirrorHori[i];
-            symmetryOperationTable[SO_MIRROR_DIAG_1][i] = soTableMirrorDiag1[i];
-            symmetryOperationTable[SO_MIRROR_DIAG_2][i] = soTableMirrorDiag2[i];
-            symmetryOperationTable[SO_INV_LEFT][i] = soTableInvLeft[i];
-            symmetryOperationTable[SO_INV_RIGHT][i] = soTableInvRight[i];
-            symmetryOperationTable[SO_INV_180][i] = soTableInv180[i];
-            symmetryOperationTable[SO_INV_MIR_VERT][i] = soTableInvMirHori[i];
-            symmetryOperationTable[SO_INV_MIR_HORI][i] = soTableInvMirVert[i];
-            symmetryOperationTable[SO_INV_MIR_DIAG_1][i] = soTableInvMirDiag1[i];
-            symmetryOperationTable[SO_INV_MIR_DIAG_2][i] = soTableInvMirDiag2[i];
+        for (i = 0; i < SQUARE_NB; i++) {
+            symOpTable[SO_TURN_LEFT][i] = soTableTurnLeft[i];
+            symOpTable[SO_TURN_180][i] = soTableTurn180[i];
+            symOpTable[SO_TURN_RIGHT][i] = soTableTurnRight[i];
+            symOpTable[SO_DO_NOTHING][i] = soTableDoNothing[i];
+            symOpTable[SO_INVERT][i] = soTableInvert[i];
+            symOpTable[SO_MIRROR_VERT][i] = soTableMirrorVert[i];
+            symOpTable[SO_MIRROR_HORI][i] = soTableMirrorHori[i];
+            symOpTable[SO_MIRROR_DIAG_1][i] = soTableMirrorDiag1[i];
+            symOpTable[SO_MIRROR_DIAG_2][i] = soTableMirrorDiag2[i];
+            symOpTable[SO_INV_LEFT][i] = soTableInvLeft[i];
+            symOpTable[SO_INV_RIGHT][i] = soTableInvRight[i];
+            symOpTable[SO_INV_180][i] = soTableInv180[i];
+            symOpTable[SO_INV_MIRROR_VERT][i] = soTableInvMirHori[i];
+            symOpTable[SO_INV_MIRROR_HORI][i] = soTableInvMirVert[i];
+            symOpTable[SO_INV_MIRROR_DIAG_1][i] = soTableInvMirDiag1[i];
+            symOpTable[SO_INV_MIRROR_DIAG_2][i] = soTableInvMirDiag2[i];
         }
 
-        // reverse symmetrie operation
-        reverseSymOperation[SO_TURN_LEFT] = SO_TURN_RIGHT;
-        reverseSymOperation[SO_TURN_180] = SO_TURN_180;
-        reverseSymOperation[SO_TURN_RIGHT] = SO_TURN_LEFT;
-        reverseSymOperation[SO_DO_NOTHING] = SO_DO_NOTHING;
-        reverseSymOperation[SO_INVERT] = SO_INVERT;
-        reverseSymOperation[SO_MIRROR_VERT] = SO_MIRROR_VERT;
-        reverseSymOperation[SO_MIRROR_HORI] = SO_MIRROR_HORI;
-        reverseSymOperation[SO_MIRROR_DIAG_1] = SO_MIRROR_DIAG_1;
-        reverseSymOperation[SO_MIRROR_DIAG_2] = SO_MIRROR_DIAG_2;
-        reverseSymOperation[SO_INV_LEFT] = SO_INV_RIGHT;
-        reverseSymOperation[SO_INV_RIGHT] = SO_INV_LEFT;
-        reverseSymOperation[SO_INV_180] = SO_INV_180;
-        reverseSymOperation[SO_INV_MIR_VERT] = SO_INV_MIR_VERT;
-        reverseSymOperation[SO_INV_MIR_HORI] = SO_INV_MIR_HORI;
-        reverseSymOperation[SO_INV_MIR_DIAG_1] = SO_INV_MIR_DIAG_1;
-        reverseSymOperation[SO_INV_MIR_DIAG_2] = SO_INV_MIR_DIAG_2;
+        // reverse symmetry operation
+        reverseSymOp[SO_TURN_LEFT] = SO_TURN_RIGHT;
+        reverseSymOp[SO_TURN_180] = SO_TURN_180;
+        reverseSymOp[SO_TURN_RIGHT] = SO_TURN_LEFT;
+        reverseSymOp[SO_DO_NOTHING] = SO_DO_NOTHING;
+        reverseSymOp[SO_INVERT] = SO_INVERT;
+        reverseSymOp[SO_MIRROR_VERT] = SO_MIRROR_VERT;
+        reverseSymOp[SO_MIRROR_HORI] = SO_MIRROR_HORI;
+        reverseSymOp[SO_MIRROR_DIAG_1] = SO_MIRROR_DIAG_1;
+        reverseSymOp[SO_MIRROR_DIAG_2] = SO_MIRROR_DIAG_2;
+        reverseSymOp[SO_INV_LEFT] = SO_INV_RIGHT;
+        reverseSymOp[SO_INV_RIGHT] = SO_INV_LEFT;
+        reverseSymOp[SO_INV_180] = SO_INV_180;
+        reverseSymOp[SO_INV_MIRROR_VERT] = SO_INV_MIRROR_VERT;
+        reverseSymOp[SO_INV_MIRROR_HORI] = SO_INV_MIRROR_HORI;
+        reverseSymOp[SO_INV_MIRROR_DIAG_1] = SO_INV_MIRROR_DIAG_1;
+        reverseSymOp[SO_INV_MIRROR_DIAG_2] = SO_INV_MIRROR_DIAG_2;
 
         // concatenated symmetry operations
-        for (a = 0; a < NUM_SYM_OPERATIONS; a++) {
-            for (b = 0; b < NUM_SYM_OPERATIONS; b++) {
+        for (a = 0; a < SO_COUNT; a++) {
+            for (b = 0; b < SO_COUNT; b++) {
                 // test each symmetry operation
-                for (c = 0; c < NUM_SYM_OPERATIONS; c++) {
-
+                for (c = 0; c < SO_COUNT; c++) {
                     // look if b(a(state)) == c(state)
-                    for (i = 0; i < fieldStruct::size; i++) {
-                        if (symmetryOperationTable[c][i] != symmetryOperationTable[a][symmetryOperationTable[b][i]])
+                    for (i = 0; i < SQUARE_NB; i++) {
+                        if (symOpTable[c][i] != symOpTable[a][symOpTable[b][i]])
                             break;
                     }
 
                     // match found?
-                    if (i == fieldStruct::size) {
-                        concSymOperation[a][b] = c;
+                    if (i == SQUARE_NB) {
+                        concSymOp[a][b] = c;
                         break;
                     }
                 }
 
                 // no match found
-                if (c == NUM_SYM_OPERATIONS) {
-                    cout << endl
-                        << "ERROR IN SYMMETRY-OPERATIONS!" << endl;
+                if (c == SO_COUNT) {
+                    cout << endl << "ERROR IN SYMMETRY-OPERATIONS!" << endl;
                 }
             }
         }
@@ -355,201 +431,258 @@ PerfectAI::PerfectAI(const char *directory)
         // group A&B //
 
         // reserve memory
-        for (a = 0; a <= NUM_STONES_PER_PLAYER; a++) {
-            for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
-
-                if (a + b > numSquaresGroupA + numSquaresGroupB)
+        for (a = 0; a <= PIECE_PER_PLAYER_COUNT; a++) {
+            for (b = 0; b <= PIECE_PER_PLAYER_COUNT; b++) {
+                if (a + b > nSquaresGroupA + nSquaresGroupB)
                     continue;
 
-                anzahlStellungenAB[a][b] = mOverN[numSquaresGroupA + numSquaresGroupB][a] * mOverN[numSquaresGroupA + numSquaresGroupB - a][b];
-                originalStateAB[a][b] = new unsigned int[anzahlStellungenAB[a][b]];
-                anzahlStellungenAB[a][b] = 0;
+                nPositionsAB[a][b] =
+                    mOverN[nSquaresGroupA + nSquaresGroupB][a] *
+                    mOverN[nSquaresGroupA + nSquaresGroupB - a][b];
+                origStateAB[a][b] = new uint32_t[nPositionsAB[a][b]];
+                std::memset(origStateAB[a][b], 0,
+                            sizeof(uint32_t) * nPositionsAB[a][b]);
+                nPositionsAB[a][b] = 0;
             }
         }
 
         // mark all indexCD as not indexed
-        for (stateAB = 0; stateAB < MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B; stateAB++)
+        for (stateAB = 0; stateAB < MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B;
+             stateAB++)
             indexAB[stateAB] = NOT_INDEXED;
 
-        for (stateAB = 0; stateAB < MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B; stateAB++) {
+        for (stateAB = 0; stateAB < MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B;
+             stateAB++) {
             // new state ?
             if (indexAB[stateAB] == NOT_INDEXED) {
-
                 // zero board
-                for (i = 0; i < fieldStruct::size; i++)
+                for (i = 0; i < SQUARE_NB; i++)
                     myField[i] = FREE_SQUARE;
 
                 // make board
-                myField[squareIndexGroupA[0]] = (stateAB / powerOfThree[7]) % 3;
-                myField[squareIndexGroupA[1]] = (stateAB / powerOfThree[6]) % 3;
-                myField[squareIndexGroupA[2]] = (stateAB / powerOfThree[5]) % 3;
-                myField[squareIndexGroupA[3]] = (stateAB / powerOfThree[4]) % 3;
-                myField[squareIndexGroupB[4]] = (stateAB / powerOfThree[3]) % 3;
-                myField[squareIndexGroupB[5]] = (stateAB / powerOfThree[2]) % 3;
-                myField[squareIndexGroupB[6]] = (stateAB / powerOfThree[1]) % 3;
-                myField[squareIndexGroupB[7]] = (stateAB / powerOfThree[0]) % 3;
+                myField[squareIdxGroupA[0]] = (stateAB / powerOfThree[7]) % 3;
+                myField[squareIdxGroupA[1]] = (stateAB / powerOfThree[6]) % 3;
+                myField[squareIdxGroupA[2]] = (stateAB / powerOfThree[5]) % 3;
+                myField[squareIdxGroupA[3]] = (stateAB / powerOfThree[4]) % 3;
+                myField[squareIdxGroupB[4]] = (stateAB / powerOfThree[3]) % 3;
+                myField[squareIdxGroupB[5]] = (stateAB / powerOfThree[2]) % 3;
+                myField[squareIdxGroupB[6]] = (stateAB / powerOfThree[1]) % 3;
+                myField[squareIdxGroupB[7]] = (stateAB / powerOfThree[0]) % 3;
 
-                // count black and white stones
-                for (a = 0, i = 0; i < fieldStruct::size; i++)
-                    if (myField[i] == WHITE_STONE)
+                // count black and white pieces
+                for (a = 0, i = 0; i < SQUARE_NB; i++)
+                    if (myField[i] == WHITE_PIECE)
                         a++;
-                for (b = 0, i = 0; i < fieldStruct::size; i++)
-                    if (myField[i] == BLACK_STONE)
+                for (b = 0, i = 0; i < SQUARE_NB; i++)
+                    if (myField[i] == BLACK_PIECE)
                         b++;
 
                 // condition
-                if (a + b > numSquaresGroupA + numSquaresGroupB)
+                if (a + b > nSquaresGroupA + nSquaresGroupB)
                     continue;
 
                 // mark original state
-                indexAB[stateAB] = anzahlStellungenAB[a][b];
-                originalStateAB[a][b][anzahlStellungenAB[a][b]] = stateAB;
+                indexAB[stateAB] = nPositionsAB[a][b];
+                origStateAB[a][b][nPositionsAB[a][b]] = stateAB;
 
                 // state counter
-                anzahlStellungenAB[a][b]++;
+                nPositionsAB[a][b]++;
             }
         }
 
         // group C&D //
 
         // reserve memory
-        for (a = 0; a <= NUM_STONES_PER_PLAYER; a++) {
-            for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
-                if (a + b > numSquaresGroupC + numSquaresGroupD)
+        for (a = 0; a <= PIECE_PER_PLAYER_COUNT; a++) {
+            for (b = 0; b <= PIECE_PER_PLAYER_COUNT; b++) {
+                if (a + b > nSquaresGroupC + nSquaresGroupD)
                     continue;
-                originalStateCD_tmp[a][b] =
-                    new unsigned int[mOverN[numSquaresGroupC + numSquaresGroupD][a] * mOverN[numSquaresGroupC + numSquaresGroupD - a][b]];
-                anzahlStellungenCD[a][b] = 0;
+                origStateCD_tmp[a][b] =
+                    new uint32_t[mOverN[nSquaresGroupC + nSquaresGroupD][a] *
+                                 mOverN[nSquaresGroupC + nSquaresGroupD - a][b]];
+                nPositionsCD[a][b] = 0;
             }
         }
 
         // mark all indexCD as not indexed
-        memset(indexCD, NOT_INDEXED, 4 * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D);
+        memset(indexCD, NOT_INDEXED,
+               4 * MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D);
 
-        for (stateCD = 0; stateCD < MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D; stateCD++) {
+        for (stateCD = 0; stateCD < MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D;
+             stateCD++) {
             // new state ?
             if (indexCD[stateCD] == NOT_INDEXED) {
-
                 // zero board
-                for (i = 0; i < fieldStruct::size; i++)
+                for (i = 0; i < SQUARE_NB; i++)
                     myField[i] = FREE_SQUARE;
 
                 // make board
-                myField[squareIndexGroupC[0]] = (stateCD / powerOfThree[15]) % 3;
-                myField[squareIndexGroupC[1]] = (stateCD / powerOfThree[14]) % 3;
-                myField[squareIndexGroupC[2]] = (stateCD / powerOfThree[13]) % 3;
-                myField[squareIndexGroupC[3]] = (stateCD / powerOfThree[12]) % 3;
-                myField[squareIndexGroupC[4]] = (stateCD / powerOfThree[11]) % 3;
-                myField[squareIndexGroupC[5]] = (stateCD / powerOfThree[10]) % 3;
-                myField[squareIndexGroupC[6]] = (stateCD / powerOfThree[9]) % 3;
-                myField[squareIndexGroupC[7]] = (stateCD / powerOfThree[8]) % 3;
-                myField[squareIndexGroupD[0]] = (stateCD / powerOfThree[7]) % 3;
-                myField[squareIndexGroupD[1]] = (stateCD / powerOfThree[6]) % 3;
-                myField[squareIndexGroupD[2]] = (stateCD / powerOfThree[5]) % 3;
-                myField[squareIndexGroupD[3]] = (stateCD / powerOfThree[4]) % 3;
-                myField[squareIndexGroupD[4]] = (stateCD / powerOfThree[3]) % 3;
-                myField[squareIndexGroupD[5]] = (stateCD / powerOfThree[2]) % 3;
-                myField[squareIndexGroupD[6]] = (stateCD / powerOfThree[1]) % 3;
-                myField[squareIndexGroupD[7]] = (stateCD / powerOfThree[0]) % 3;
+                myField[squareIdxGroupC[0]] = (stateCD / powerOfThree[15]) % 3;
+                myField[squareIdxGroupC[1]] = (stateCD / powerOfThree[14]) % 3;
+                myField[squareIdxGroupC[2]] = (stateCD / powerOfThree[13]) % 3;
+                myField[squareIdxGroupC[3]] = (stateCD / powerOfThree[12]) % 3;
+                myField[squareIdxGroupC[4]] = (stateCD / powerOfThree[11]) % 3;
+                myField[squareIdxGroupC[5]] = (stateCD / powerOfThree[10]) % 3;
+                myField[squareIdxGroupC[6]] = (stateCD / powerOfThree[9]) % 3;
+                myField[squareIdxGroupC[7]] = (stateCD / powerOfThree[8]) % 3;
+                myField[squareIdxGroupD[0]] = (stateCD / powerOfThree[7]) % 3;
+                myField[squareIdxGroupD[1]] = (stateCD / powerOfThree[6]) % 3;
+                myField[squareIdxGroupD[2]] = (stateCD / powerOfThree[5]) % 3;
+                myField[squareIdxGroupD[3]] = (stateCD / powerOfThree[4]) % 3;
+                myField[squareIdxGroupD[4]] = (stateCD / powerOfThree[3]) % 3;
+                myField[squareIdxGroupD[5]] = (stateCD / powerOfThree[2]) % 3;
+                myField[squareIdxGroupD[6]] = (stateCD / powerOfThree[1]) % 3;
+                myField[squareIdxGroupD[7]] = (stateCD / powerOfThree[0]) % 3;
 
-                // count black and white stones
-                for (a = 0, i = 0; i < fieldStruct::size; i++)
-                    if (myField[i] == WHITE_STONE)
+                // count black and white pieces
+                for (a = 0, i = 0; i < SQUARE_NB; i++)
+                    if (myField[i] == WHITE_PIECE)
                         a++;
-                for (b = 0, i = 0; i < fieldStruct::size; i++)
-                    if (myField[i] == BLACK_STONE)
+                for (b = 0, i = 0; i < SQUARE_NB; i++)
+                    if (myField[i] == BLACK_PIECE)
                         b++;
 
                 // condition
-                if (a + b > numSquaresGroupC + numSquaresGroupD)
+                if (a + b > nSquaresGroupC + nSquaresGroupD)
                     continue;
-                if (a > NUM_STONES_PER_PLAYER)
+                if (a > PIECE_PER_PLAYER_COUNT)
                     continue;
-                if (b > NUM_STONES_PER_PLAYER)
+                if (b > PIECE_PER_PLAYER_COUNT)
                     continue;
 
-                // mark original state
-                indexCD[stateCD] = anzahlStellungenCD[a][b];
-                symmetryOperationCD[stateCD] = SO_DO_NOTHING;
-                originalStateCD_tmp[a][b][anzahlStellungenCD[a][b]] = stateCD;
+                // mark orig state
+                indexCD[stateCD] = nPositionsCD[a][b];
+                symOpCD[stateCD] = SO_DO_NOTHING;
+                origStateCD_tmp[a][b][nPositionsCD[a][b]] = stateCD;
 
-                // mark all symmetric states
-                for (i = 0; i < NUM_SYM_OPERATIONS; i++) {
+                // mark all sym states
+                for (i = 0; i < SO_COUNT; i++) {
+                    applySymOpOnField(i, myField, symField);
 
-                    applySymmetrieOperationOnField(i, myField, symField);
-
-                    symStateCD = symField[squareIndexGroupC[0]] * powerOfThree[15] + symField[squareIndexGroupC[1]] * powerOfThree[14] + symField[squareIndexGroupC[2]] * powerOfThree[13] + symField[squareIndexGroupC[3]] * powerOfThree[12] + symField[squareIndexGroupC[4]] * powerOfThree[11] + symField[squareIndexGroupC[5]] * powerOfThree[10] + symField[squareIndexGroupC[6]] * powerOfThree[9] + symField[squareIndexGroupC[7]] * powerOfThree[8] + symField[squareIndexGroupD[0]] * powerOfThree[7] + symField[squareIndexGroupD[1]] * powerOfThree[6] + symField[squareIndexGroupD[2]] * powerOfThree[5] + symField[squareIndexGroupD[3]] * powerOfThree[4] + symField[squareIndexGroupD[4]] * powerOfThree[3] + symField[squareIndexGroupD[5]] * powerOfThree[2] + symField[squareIndexGroupD[6]] * powerOfThree[1] + symField[squareIndexGroupD[7]] * powerOfThree[0];
+                    symStateCD =
+                        symField[squareIdxGroupC[0]] * powerOfThree[15] +
+                        symField[squareIdxGroupC[1]] * powerOfThree[14] +
+                        symField[squareIdxGroupC[2]] * powerOfThree[13] +
+                        symField[squareIdxGroupC[3]] * powerOfThree[12] +
+                        symField[squareIdxGroupC[4]] * powerOfThree[11] +
+                        symField[squareIdxGroupC[5]] * powerOfThree[10] +
+                        symField[squareIdxGroupC[6]] * powerOfThree[9] +
+                        symField[squareIdxGroupC[7]] * powerOfThree[8] +
+                        symField[squareIdxGroupD[0]] * powerOfThree[7] +
+                        symField[squareIdxGroupD[1]] * powerOfThree[6] +
+                        symField[squareIdxGroupD[2]] * powerOfThree[5] +
+                        symField[squareIdxGroupD[3]] * powerOfThree[4] +
+                        symField[squareIdxGroupD[4]] * powerOfThree[3] +
+                        symField[squareIdxGroupD[5]] * powerOfThree[2] +
+                        symField[squareIdxGroupD[6]] * powerOfThree[1] +
+                        symField[squareIdxGroupD[7]] * powerOfThree[0];
 
                     if (stateCD != symStateCD) {
-                        indexCD[symStateCD] = anzahlStellungenCD[a][b];
-                        symmetryOperationCD[symStateCD] = reverseSymOperation[i];
+                        indexCD[symStateCD] = nPositionsCD[a][b];
+                        symOpCD[symStateCD] = reverseSymOp[i];
                     }
                 }
 
                 // state counter
-                anzahlStellungenCD[a][b]++;
+                nPositionsCD[a][b]++;
             }
         }
 
-        // copy from originalStateCD_tmp to originalStateCD
-        for (a = 0; a <= NUM_STONES_PER_PLAYER; a++) {
-            for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
-                if (a + b > numSquaresGroupC + numSquaresGroupD)
+        // copy from origStateCD_tmp to origStateCD
+        for (a = 0; a <= PIECE_PER_PLAYER_COUNT; a++) {
+            for (b = 0; b <= PIECE_PER_PLAYER_COUNT; b++) {
+                if (a + b > nSquaresGroupC + nSquaresGroupD)
                     continue;
-                originalStateCD[a][b] = new unsigned int[anzahlStellungenCD[a][b]];
-                for (i = 0; i < anzahlStellungenCD[a][b]; i++)
-                    originalStateCD[a][b][i] = originalStateCD_tmp[a][b][i];
-                SAFE_DELETE_ARRAY(originalStateCD_tmp[a][b]);
+                origStateCD[a][b] = new uint32_t[nPositionsCD[a][b]];
+                std::memset(origStateCD[a][b], 0,
+                            sizeof(uint32_t) * nPositionsCD[a][b]);
+                for (i = 0; i < nPositionsCD[a][b]; i++)
+                    origStateCD[a][b][i] = origStateCD_tmp[a][b][i];
+                SAFE_DELETE_ARRAY(origStateCD_tmp[a][b]);
             }
         }
 
         // moving phase
-        for (totalNumStones = 0, layerNum = 0; totalNumStones <= 18; totalNumStones++) {
-            for (a = 0; a <= totalNumStones; a++) {
-                for (b = 0; b <= totalNumStones - a; b++) {
-                    if (a > NUM_STONES_PER_PLAYER)
+        for (totalPieceCount = 0, layerNum = 0; totalPieceCount <= 18;
+             totalPieceCount++) {
+            for (a = 0; a <= totalPieceCount; a++) {
+                for (b = 0; b <= totalPieceCount - a; b++) {
+                    if (a > PIECE_PER_PLAYER_COUNT)
                         continue;
-                    if (b > NUM_STONES_PER_PLAYER)
+                    if (b > PIECE_PER_PLAYER_COUNT)
                         continue;
-                    if (a + b != totalNumStones)
+                    if (a + b != totalPieceCount)
                         continue;
 
                     layerIndex[LAYER_INDEX_MOVING_PHASE][a][b] = layerNum;
-                    layer[layerNum].numWhiteStones = a;
-                    layer[layerNum].numBlackStones = b;
-                    layer[layerNum].numSubLayers = 0;
+                    layer[layerNum].whitePieceCount = a;
+                    layer[layerNum].blackPieceCount = b;
+                    layer[layerNum].subLayerCount = 0;
 
-                    for (wCD = 0; wCD <= layer[layerNum].numWhiteStones; wCD++) {
-                        for (bCD = 0; bCD <= layer[layerNum].numBlackStones; bCD++) {
-
-                            // calc number of white and black stones for group A&B
-                            wAB = layer[layerNum].numWhiteStones - wCD;
-                            bAB = layer[layerNum].numBlackStones - bCD;
+                    for (wCD = 0; wCD <= layer[layerNum].whitePieceCount;
+                         wCD++) {
+                        for (bCD = 0; bCD <= layer[layerNum].blackPieceCount;
+                             bCD++) {
+                            // calculate number of white and black pieces for
+                            // group A&B
+                            wAB = layer[layerNum].whitePieceCount - wCD;
+                            bAB = layer[layerNum].blackPieceCount - bCD;
 
                             // conditions
-                            if (wCD + wAB != layer[layerNum].numWhiteStones)
+                            if (wCD + wAB != layer[layerNum].whitePieceCount)
                                 continue;
-                            if (bCD + bAB != layer[layerNum].numBlackStones)
+                            if (bCD + bAB != layer[layerNum].blackPieceCount)
                                 continue;
-                            if (wAB + bAB > numSquaresGroupA + numSquaresGroupB)
+                            if (wAB + bAB > nSquaresGroupA + nSquaresGroupB)
                                 continue;
-                            if (wCD + bCD > numSquaresGroupC + numSquaresGroupD)
+                            if (wCD + bCD > nSquaresGroupC + nSquaresGroupD)
                                 continue;
 
-                            if (layer[layerNum].numSubLayers > 0) {
-                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].maxIndex = layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + anzahlStellungenAB[wAB][bAB] * anzahlStellungenCD[wCD][bCD];
-                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].minIndex = layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + 1;
+                            if (layer[layerNum].subLayerCount > 0) {
+                                layer[layerNum]
+                                    .subLayer[layer[layerNum].subLayerCount]
+                                    .maxIndex =
+                                    layer[layerNum]
+                                        .subLayer[layer[layerNum].subLayerCount -
+                                                  1]
+                                        .maxIndex +
+                                    nPositionsAB[wAB][bAB] *
+                                        nPositionsCD[wCD][bCD];
+                                layer[layerNum]
+                                    .subLayer[layer[layerNum].subLayerCount]
+                                    .minIndex =
+                                    layer[layerNum]
+                                        .subLayer[layer[layerNum].subLayerCount -
+                                                  1]
+                                        .maxIndex +
+                                    1;
                             } else {
-                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].maxIndex = anzahlStellungenAB[wAB][bAB] * anzahlStellungenCD[wCD][bCD] - 1;
-                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].minIndex = 0;
+                                layer[layerNum]
+                                    .subLayer[layer[layerNum].subLayerCount]
+                                    .maxIndex = nPositionsAB[wAB][bAB] *
+                                                    nPositionsCD[wCD][bCD] -
+                                                1;
+                                layer[layerNum]
+                                    .subLayer[layer[layerNum].subLayerCount]
+                                    .minIndex = 0;
                             }
-                            layer[layerNum].subLayer[layer[layerNum].numSubLayers].numBlackStonesGroupAB = bAB;
-                            layer[layerNum].subLayer[layer[layerNum].numSubLayers].numBlackStonesGroupCD = bCD;
-                            layer[layerNum].subLayer[layer[layerNum].numSubLayers].numWhiteStonesGroupAB = wAB;
-                            layer[layerNum].subLayer[layer[layerNum].numSubLayers].numWhiteStonesGroupCD = wCD;
-                            layer[layerNum].subLayerIndexAB[wAB][bAB] = layer[layerNum].numSubLayers;
-                            layer[layerNum].subLayerIndexCD[wCD][bCD] = layer[layerNum].numSubLayers;
-                            layer[layerNum].numSubLayers++;
+                            layer[layerNum]
+                                .subLayer[layer[layerNum].subLayerCount]
+                                .nBlackPiecesGroupAB = bAB;
+                            layer[layerNum]
+                                .subLayer[layer[layerNum].subLayerCount]
+                                .nBlackPiecesGroupCD = bCD;
+                            layer[layerNum]
+                                .subLayer[layer[layerNum].subLayerCount]
+                                .nWhitePiecesGroupAB = wAB;
+                            layer[layerNum]
+                                .subLayer[layer[layerNum].subLayerCount]
+                                .nWhitePiecesGroupCD = wCD;
+                            layer[layerNum].subLayerIndexAB[wAB][bAB] =
+                                layer[layerNum].subLayerCount;
+                            layer[layerNum].subLayerIndexCD[wCD][bCD] =
+                                layer[layerNum].subLayerCount;
+                            layer[layerNum].subLayerCount++;
                         }
                     }
                     layerNum++;
@@ -557,52 +690,86 @@ PerfectAI::PerfectAI(const char *directory)
             }
         }
 
-        // setting phase
-        for (totalNumStones = 0, layerNum = NUM_LAYERS - 1; totalNumStones <= 2 * NUM_STONES_PER_PLAYER; totalNumStones++) {
-            for (a = 0; a <= totalNumStones; a++) {
-                for (b = 0; b <= totalNumStones - a; b++) {
-                    if (a > NUM_STONES_PER_PLAYER)
+        // placing phase
+        for (totalPieceCount = 0, layerNum = LAYER_COUNT - 1;
+             totalPieceCount <= 2 * PIECE_PER_PLAYER_COUNT; totalPieceCount++) {
+            for (a = 0; a <= totalPieceCount; a++) {
+                for (b = 0; b <= totalPieceCount - a; b++) {
+                    if (a > PIECE_PER_PLAYER_COUNT)
                         continue;
-                    if (b > NUM_STONES_PER_PLAYER)
+                    if (b > PIECE_PER_PLAYER_COUNT)
                         continue;
-                    if (a + b != totalNumStones)
+                    if (a + b != totalPieceCount)
                         continue;
-                    layer[layerNum].numWhiteStones = a;
-                    layer[layerNum].numBlackStones = b;
-                    layerIndex[LAYER_INDEX_SETTING_PHASE][a][b] = layerNum;
-                    layer[layerNum].numSubLayers = 0;
+                    layer[layerNum].whitePieceCount = a;
+                    layer[layerNum].blackPieceCount = b;
+                    layerIndex[LAYER_INDEX_PLACING_PHASE][a][b] = layerNum;
+                    layer[layerNum].subLayerCount = 0;
 
-                    for (wCD = 0; wCD <= layer[layerNum].numWhiteStones; wCD++) {
-                        for (bCD = 0; bCD <= layer[layerNum].numBlackStones; bCD++) {
-
-                            // calc number of white and black stones for group A&B
-                            wAB = layer[layerNum].numWhiteStones - wCD;
-                            bAB = layer[layerNum].numBlackStones - bCD;
+                    for (wCD = 0; wCD <= layer[layerNum].whitePieceCount;
+                         wCD++) {
+                        for (bCD = 0; bCD <= layer[layerNum].blackPieceCount;
+                             bCD++) {
+                            // calculate number of white and black pieces for
+                            // group A&B
+                            wAB = layer[layerNum].whitePieceCount - wCD;
+                            bAB = layer[layerNum].blackPieceCount - bCD;
 
                             // conditions
-                            if (wCD + wAB != layer[layerNum].numWhiteStones)
+                            if (wCD + wAB != layer[layerNum].whitePieceCount)
                                 continue;
-                            if (bCD + bAB != layer[layerNum].numBlackStones)
+                            if (bCD + bAB != layer[layerNum].blackPieceCount)
                                 continue;
-                            if (wAB + bAB > numSquaresGroupA + numSquaresGroupB)
+                            if (wAB + bAB > nSquaresGroupA + nSquaresGroupB)
                                 continue;
-                            if (wCD + bCD > numSquaresGroupC + numSquaresGroupD)
+                            if (wCD + bCD > nSquaresGroupC + nSquaresGroupD)
                                 continue;
 
-                            if (layer[layerNum].numSubLayers > 0) {
-                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].maxIndex = layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + anzahlStellungenAB[wAB][bAB] * anzahlStellungenCD[wCD][bCD];
-                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].minIndex = layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + 1;
+                            if (layer[layerNum].subLayerCount > 0) {
+                                layer[layerNum]
+                                    .subLayer[layer[layerNum].subLayerCount]
+                                    .maxIndex =
+                                    layer[layerNum]
+                                        .subLayer[layer[layerNum].subLayerCount -
+                                                  1]
+                                        .maxIndex +
+                                    nPositionsAB[wAB][bAB] *
+                                        nPositionsCD[wCD][bCD];
+                                layer[layerNum]
+                                    .subLayer[layer[layerNum].subLayerCount]
+                                    .minIndex =
+                                    layer[layerNum]
+                                        .subLayer[layer[layerNum].subLayerCount -
+                                                  1]
+                                        .maxIndex +
+                                    1;
                             } else {
-                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].maxIndex = anzahlStellungenAB[wAB][bAB] * anzahlStellungenCD[wCD][bCD] - 1;
-                                layer[layerNum].subLayer[layer[layerNum].numSubLayers].minIndex = 0;
+                                layer[layerNum]
+                                    .subLayer[layer[layerNum].subLayerCount]
+                                    .maxIndex = nPositionsAB[wAB][bAB] *
+                                                    nPositionsCD[wCD][bCD] -
+                                                1;
+                                layer[layerNum]
+                                    .subLayer[layer[layerNum].subLayerCount]
+                                    .minIndex = 0;
                             }
-                            layer[layerNum].subLayer[layer[layerNum].numSubLayers].numBlackStonesGroupAB = bAB;
-                            layer[layerNum].subLayer[layer[layerNum].numSubLayers].numBlackStonesGroupCD = bCD;
-                            layer[layerNum].subLayer[layer[layerNum].numSubLayers].numWhiteStonesGroupAB = wAB;
-                            layer[layerNum].subLayer[layer[layerNum].numSubLayers].numWhiteStonesGroupCD = wCD;
-                            layer[layerNum].subLayerIndexAB[wAB][bAB] = layer[layerNum].numSubLayers;
-                            layer[layerNum].subLayerIndexCD[wCD][bCD] = layer[layerNum].numSubLayers;
-                            layer[layerNum].numSubLayers++;
+                            layer[layerNum]
+                                .subLayer[layer[layerNum].subLayerCount]
+                                .nBlackPiecesGroupAB = bAB;
+                            layer[layerNum]
+                                .subLayer[layer[layerNum].subLayerCount]
+                                .nBlackPiecesGroupCD = bCD;
+                            layer[layerNum]
+                                .subLayer[layer[layerNum].subLayerCount]
+                                .nWhitePiecesGroupAB = wAB;
+                            layer[layerNum]
+                                .subLayer[layer[layerNum].subLayerCount]
+                                .nWhitePiecesGroupCD = wCD;
+                            layer[layerNum].subLayerIndexAB[wAB][bAB] =
+                                layer[layerNum].subLayerCount;
+                            layer[layerNum].subLayerIndexCD[wCD][bCD] =
+                                layer[layerNum].subLayerCount;
+                            layer[layerNum].subLayerCount++;
                         }
                     }
                     layerNum--;
@@ -613,38 +780,75 @@ PerfectAI::PerfectAI(const char *directory)
         // write vars into file
         preCalcVarsHeader.sizeInBytes = sizeof(PreCalcedVarsFileHeader);
 
-        WriteFile(hFilePreCalcVars, &preCalcVarsHeader, preCalcVarsHeader.sizeInBytes, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, layer, sizeof(Layer) * NUM_LAYERS, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, layerIndex, sizeof(unsigned int) * 2 * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, anzahlStellungenAB, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, anzahlStellungenCD, sizeof(unsigned int) * NUM_STONES_PER_PLAYER_PLUS_ONE * NUM_STONES_PER_PLAYER_PLUS_ONE, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, indexAB, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_A * MAX_ANZ_STELLUNGEN_B, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, indexCD, sizeof(unsigned int) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, symmetryOperationCD, sizeof(unsigned char) * MAX_ANZ_STELLUNGEN_C * MAX_ANZ_STELLUNGEN_D, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, powerOfThree, sizeof(unsigned int) * (numSquaresGroupC + numSquaresGroupD), &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, symmetryOperationTable, sizeof(unsigned int) * fieldStruct::size * NUM_SYM_OPERATIONS, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, reverseSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, concSymOperation, sizeof(unsigned int) * NUM_SYM_OPERATIONS * NUM_SYM_OPERATIONS, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, mOverN, sizeof(unsigned int) * (fieldStruct::size + 1) * (fieldStruct::size + 1), &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, valueOfMove, sizeof(unsigned char) * fieldStruct::size * fieldStruct::size, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, plyInfoForOutput, sizeof(PlyInfoVarType) * fieldStruct::size * fieldStruct::size, &dwBytesWritten, nullptr);
-        WriteFile(hFilePreCalcVars, incidencesValuesSubMoves, sizeof(unsigned int) * 4 * fieldStruct::size * fieldStruct::size, &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, &preCalcVarsHeader,
+                  preCalcVarsHeader.sizeInBytes, &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, layer, sizeof(Layer) * LAYER_COUNT,
+                  &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, layerIndex,
+                  sizeof(uint32_t) * 2 * PIECE_PER_PLAYER_PLUS_ONE_COUNT *
+                      PIECE_PER_PLAYER_PLUS_ONE_COUNT,
+                  &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, nPositionsAB,
+                  sizeof(uint32_t) * PIECE_PER_PLAYER_PLUS_ONE_COUNT *
+                      PIECE_PER_PLAYER_PLUS_ONE_COUNT,
+                  &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, nPositionsCD,
+                  sizeof(uint32_t) * PIECE_PER_PLAYER_PLUS_ONE_COUNT *
+                      PIECE_PER_PLAYER_PLUS_ONE_COUNT,
+                  &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, indexAB,
+                  sizeof(uint32_t) * MAX_ANZ_POSITION_A * MAX_ANZ_POSITION_B,
+                  &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, indexCD,
+                  sizeof(uint32_t) * MAX_ANZ_POSITION_C * MAX_ANZ_POSITION_D,
+                  &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, symOpCD,
+                  sizeof(unsigned char) * MAX_ANZ_POSITION_C *
+                      MAX_ANZ_POSITION_D,
+                  &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, powerOfThree,
+                  sizeof(uint32_t) * (nSquaresGroupC + nSquaresGroupD),
+                  &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, symOpTable,
+                  sizeof(uint32_t) * SQUARE_NB * SO_COUNT, &dwBytesWritten,
+                  nullptr);
+        WriteFile(hFilePreCalcVars, reverseSymOp, sizeof(uint32_t) * SO_COUNT,
+                  &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, concSymOp,
+                  sizeof(uint32_t) * SO_COUNT * SO_COUNT, &dwBytesWritten,
+                  nullptr);
+        WriteFile(hFilePreCalcVars, mOverN,
+                  sizeof(uint32_t) * (SQUARE_NB + 1) * (SQUARE_NB + 1),
+                  &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, moveValue,
+                  sizeof(unsigned char) * SQUARE_NB * SQUARE_NB,
+                  &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, plyInfoForOutput,
+                  sizeof(PlyInfoVarType) * SQUARE_NB * SQUARE_NB,
+                  &dwBytesWritten, nullptr);
+        WriteFile(hFilePreCalcVars, incidencesValuesSubMoves,
+                  sizeof(uint32_t) * 4 * SQUARE_NB * SQUARE_NB, &dwBytesWritten,
+                  nullptr);
 
-        // process originalStateAB[][]
-        for (a = 0; a <= NUM_STONES_PER_PLAYER; a++) {
-            for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
-                if (a + b > numSquaresGroupA + numSquaresGroupB)
+        // process origStateAB[][]
+        for (a = 0; a <= PIECE_PER_PLAYER_COUNT; a++) {
+            for (b = 0; b <= PIECE_PER_PLAYER_COUNT; b++) {
+                if (a + b > nSquaresGroupA + nSquaresGroupB)
                     continue;
-                WriteFile(hFilePreCalcVars, originalStateAB[a][b], sizeof(unsigned int) * anzahlStellungenAB[a][b], &dwBytesWritten, nullptr);
+                WriteFile(hFilePreCalcVars, origStateAB[a][b],
+                          sizeof(uint32_t) * nPositionsAB[a][b],
+                          &dwBytesWritten, nullptr);
             }
         }
 
-        // process originalStateCD[][]
-        for (a = 0; a <= NUM_STONES_PER_PLAYER; a++) {
-            for (b = 0; b <= NUM_STONES_PER_PLAYER; b++) {
-                if (a + b > numSquaresGroupC + numSquaresGroupD)
+        // process origStateCD[][]
+        for (a = 0; a <= PIECE_PER_PLAYER_COUNT; a++) {
+            for (b = 0; b <= PIECE_PER_PLAYER_COUNT; b++) {
+                if (a + b > nSquaresGroupC + nSquaresGroupD)
                     continue;
-                WriteFile(hFilePreCalcVars, originalStateCD[a][b], sizeof(unsigned int) * anzahlStellungenCD[a][b], &dwBytesWritten, nullptr);
+                WriteFile(hFilePreCalcVars, origStateCD[a][b],
+                          sizeof(uint32_t) * nPositionsCD[a][b],
+                          &dwBytesWritten, nullptr);
             }
         }
     }
@@ -659,39 +863,37 @@ PerfectAI::PerfectAI(const char *directory)
 //-----------------------------------------------------------------------------
 PerfectAI::~PerfectAI()
 {
-    // locals
-    unsigned int curThread;
-
     // release memory
-    for (curThread = 0; curThread < getNumThreads(); curThread++) {
-        SAFE_DELETE_ARRAY(threadVars[curThread].oldStates);
-        SAFE_DELETE_ARRAY(threadVars[curThread].idPossibilities);
-        SAFE_DELETE_ARRAY(threadVars[curThread].possibilities);
-        threadVars[curThread].field->deleteBoard();
+    for (uint32_t thd = 0; thd < getThreadCount(); thd++) {
+        SAFE_DELETE_ARRAY(threadVars[thd].oldStates);
+        SAFE_DELETE_ARRAY(threadVars[thd].idPossibilities);
+        SAFE_DELETE_ARRAY(threadVars[thd].possibilities);
+        threadVars[thd].field->deleteBoard();
     }
     SAFE_DELETE_ARRAY(threadVars);
 }
 
 //-----------------------------------------------------------------------------
 // play()
-// 
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int *pushTo)
+void PerfectAI::play(fieldStruct *theField, uint32_t *pushFrom,
+                     uint32_t *pushTo)
 {
     // ... trick 17
     theField->copyBoard(&dummyField);
-    //assert(dummyField.oppPlayer->id >= -1 && dummyField.oppPlayer->id <= 1);
+    // assert(dummyField.oppPlayer->id >= -1 && dummyField.oppPlayer->id <= 1);
 
     // locals
     threadVars[0].field = theField;
     threadVars[0].ownId = threadVars[0].field->curPlayer->id;
-    unsigned int bestChoice, i;
+    uint32_t bestChoice;
 
-    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
+    // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // reset
-    for (i = 0; i < fieldStruct::size * fieldStruct::size; i++) {
-        valueOfMove[i] = SKV_VALUE_INVALID;
+    for (uint32_t i = 0; i < SQUARE_NB * SQUARE_NB; i++) {
+        moveValue[i] = SKV_VALUE_INVALID;
         plyInfoForOutput[i] = PLYINFO_VALUE_INVALID;
         incidencesValuesSubMoves[i][SKV_VALUE_INVALID] = 0;
         incidencesValuesSubMoves[i][SKV_VALUE_GAME_LOST] = 0;
@@ -699,40 +901,42 @@ void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int
         incidencesValuesSubMoves[i][SKV_VALUE_GAME_WON] = 0;
     }
 
-    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
+    // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // open database file
-    openDatabase(databaseDirectory.c_str(), MAX_NUM_POS_MOVES);
+    openDatabase(databaseDir.c_str(), POSIBILE_MOVE_COUNT_MAX);
 
-    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
+    // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
-    if (theField->settingPhase)
-        threadVars[0].depthOfFullTree = 2;
+    if (theField->isPlacingPhase)
+        threadVars[0].fullTreeDepth = 2;
     else
-        threadVars[0].depthOfFullTree = 2;
+        threadVars[0].fullTreeDepth = 2;
 
-    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
+    // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // current state already calculated?
-    if (isCurrentStateInDatabase(0)) {
+    if (isCurStateInDatabase(0)) {
         cout << "PerfectAI is using database!\n\n\n";
-        threadVars[0].depthOfFullTree = 3;
+        threadVars[0].fullTreeDepth = 3;
     } else {
-        cout << "PerfectAI is thinking thinking with a depth of " << threadVars[0].depthOfFullTree << " steps!\n\n\n";
+        cout << "PerfectAI is thinking thinking with a depth of "
+             << threadVars[0].fullTreeDepth << " steps!\n\n\n";
     }
 
-    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
+    // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // start the miniMax-algorithm
-    Possibility *rootPossibilities = (Possibility *)getBestChoice(threadVars[0].depthOfFullTree, &bestChoice, MAX_NUM_POS_MOVES);
+    const auto rootPossibilities = static_cast<Possibility *>(getBestChoice(
+        threadVars[0].fullTreeDepth, &bestChoice, POSIBILE_MOVE_COUNT_MAX));
 
-    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
+    // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // decode the best choice
-    if (threadVars[0].field->stoneMustBeRemoved) {
+    if (threadVars[0].field->pieceMustBeRemovedCount) {
         *pushFrom = bestChoice;
         *pushTo = 0;
-    } else if (threadVars[0].field->settingPhase) {
+    } else if (threadVars[0].field->isPlacingPhase) {
         *pushFrom = 0;
         *pushTo = bestChoice;
     } else {
@@ -740,64 +944,59 @@ void PerfectAI::play(fieldStruct *theField, unsigned int *pushFrom, unsigned int
         *pushTo = rootPossibilities->to[bestChoice];
     }
 
-    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
+    // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 
     // release memory
     threadVars[0].field = &dummyField;
 
-    //assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
+    // assert(theField->oppPlayer->id >= -1 && theField->oppPlayer->id <= 1);
 }
 
 //-----------------------------------------------------------------------------
-// prepareDatabaseCalculation()
-// 
+// prepareDatabaseCalc()
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::prepareDatabaseCalculation()
+void PerfectAI::prepareDatabaseCalc()
 {
-    // only prepare layers?
-    unsigned int curThread;
-
     // create a temporary board
-    for (curThread = 0; curThread < getNumThreads(); curThread++) {
-        threadVars[curThread].field = new fieldStruct();
-        threadVars[curThread].field->createBoard();
-        setOpponentLevel(curThread, false);
+    for (uint32_t thd = 0; thd < getThreadCount(); thd++) {
+        // only prepare layers ?
+        threadVars[thd].field = new fieldStruct();
+        threadVars[thd].field->createBoard();
+        setOpponentLevel(thd, false);
     }
 
     // open database file
-    openDatabase(databaseDirectory.c_str(), MAX_NUM_POS_MOVES);
+    openDatabase(databaseDir.c_str(), POSIBILE_MOVE_COUNT_MAX);
 }
 
 //-----------------------------------------------------------------------------
-// wrapUpDatabaseCalculation()
-// 
+// wrapUpDatabaseCalc()
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::wrapUpDatabaseCalculation(bool calculationAborted)
+void PerfectAI::wrapUpDatabaseCalc(bool calcuAborted)
 {
-    // locals
-    unsigned int curThread;
-
     // release memory
-    for (curThread = 0; curThread < getNumThreads(); curThread++) {
-        threadVars[curThread].field->deleteBoard();
-        SAFE_DELETE(threadVars[curThread].field);
-        threadVars[curThread].field = &dummyField;
+    for (uint32_t thd = 0; thd < getThreadCount(); thd++) {
+        threadVars[thd].field->deleteBoard();
+        SAFE_DELETE(threadVars[thd].field);
+        threadVars[thd].field = &dummyField;
     }
 }
 
 //-----------------------------------------------------------------------------
 // testLayers()
-// 
+//
 //-----------------------------------------------------------------------------
-bool PerfectAI::testLayers(unsigned int startTestFromLayer, unsigned int endTestAtLayer)
+bool PerfectAI::testLayers(uint32_t startTestFromLayer, uint32_t endTestAtLayer)
 {
     // locals
-    unsigned int curLayer;
     bool result = true;
 
-    for (curLayer = startTestFromLayer; curLayer <= endTestAtLayer; curLayer++) {
+    for (uint32_t curLayer = startTestFromLayer; curLayer <= endTestAtLayer;
+         curLayer++) {
         closeDatabase();
-        if (!openDatabase(databaseDirectory.c_str(), MAX_NUM_POS_MOVES))
+        if (!openDatabase(databaseDir.c_str(), POSIBILE_MOVE_COUNT_MAX))
             result = false;
         if (!testIfSymStatesHaveSameValue(curLayer))
             result = false;
@@ -812,36 +1011,36 @@ bool PerfectAI::testLayers(unsigned int startTestFromLayer, unsigned int endTest
 
 //-----------------------------------------------------------------------------
 // setDatabasePath()
-// 
+//
 //-----------------------------------------------------------------------------
-bool PerfectAI::setDatabasePath(const char *directory)
+bool PerfectAI::setDatabasePath(const char *dir)
 {
-    if (directory == nullptr) {
+    if (dir == nullptr) {
         return false;
-    } else {
-        cout << "Path to database set to: " << directory << endl;
-        databaseDirectory.assign(directory);
-        return true;
     }
+
+    cout << "Path to database set to: " << dir << endl;
+    databaseDir.assign(dir);
+    return true;
 }
 
 //-----------------------------------------------------------------------------
-// prepareBestChoiceCalculation()
-// 
+// prepareBestChoiceCalc()
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::prepareBestChoiceCalculation()
+void PerfectAI::prepareBestChoiceCalc()
 {
-    for (unsigned int curThread = 0; curThread < getNumThreads(); curThread++) {
-        threadVars[curThread].floatValue = 0.0f;
-        threadVars[curThread].shortValue = SKV_VALUE_INVALID;
-        threadVars[curThread].gameHasFinished = false;
-        threadVars[curThread].curSearchDepth = 0;
+    for (uint32_t thd = 0; thd < getThreadCount(); thd++) {
+        threadVars[thd].floatValue = 0.0f;
+        threadVars[thd].shortValue = SKV_VALUE_INVALID;
+        threadVars[thd].gameHasFinished = false;
+        threadVars[thd].curSearchDepth = 0;
     }
 }
 
 //-----------------------------------------------------------------------------
 // ThreadVars()
-// 
+//
 //-----------------------------------------------------------------------------
 PerfectAI::ThreadVars::ThreadVars()
 {
@@ -851,7 +1050,7 @@ PerfectAI::ThreadVars::ThreadVars()
     gameHasFinished = false;
     ownId = 0;
     curSearchDepth = 0;
-    depthOfFullTree = 0;
+    fullTreeDepth = 0;
     idPossibilities = nullptr;
     oldStates = nullptr;
     possibilities = nullptr;
@@ -859,43 +1058,50 @@ PerfectAI::ThreadVars::ThreadVars()
 }
 
 //-----------------------------------------------------------------------------
-// getPossSettingPhase()
-// 
+// getPossPlacingPhase()
+//
 //-----------------------------------------------------------------------------
-unsigned int *PerfectAI::ThreadVars::getPossSettingPhase(unsigned int *numPossibilities, void **pPossibilities)
+uint32_t *
+PerfectAI::ThreadVars::getPossPlacingPhase(uint32_t *possibilityCount,
+                                           void **pPossibilities) const
 {
     // locals
-    unsigned int i;
-    unsigned int *idPossibility = &idPossibilities[curSearchDepth * MAX_NUM_POS_MOVES];
-    bool stoneCanBeRemoved;
-    unsigned int numberOfMillsBeeingClosed;
+    uint32_t i;
+    uint32_t *idPossibility =
+        &idPossibilities[curSearchDepth * POSIBILE_MOVE_COUNT_MAX];
+    bool pieceCanBeRemoved;
 
-    // check if an opponent stone can be removed
-    for (stoneCanBeRemoved = false, i = 0; i < field->size; i++) {
-        if (field->board[i] == field->oppPlayer->id && field->stonePartOfMill[i] == 0) {
-            stoneCanBeRemoved = true;
+    // check if an opponent piece can be removed
+    for (pieceCanBeRemoved = false, i = 0; i < SQUARE_NB; i++) {
+        if (field->board[i] == field->oppPlayer->id &&
+            field->piecePartOfMillCount[i] == 0) {
+            pieceCanBeRemoved = true;
             break;
         }
     }
 
     // possibilities with cut off
-    for ((*numPossibilities) = 0, i = 0; i < field->size; i++) {
-
+    for (*possibilityCount = 0, i = 0; i < SQUARE_NB; i++) {
         // move possible ?
         if (field->board[i] == field->squareIsFree) {
-
             // check if a mill is beeing closed
-            numberOfMillsBeeingClosed = 0;
-            if (field->curPlayer->id == field->board[field->neighbour[i][0][0]] && field->curPlayer->id == field->board[field->neighbour[i][0][1]])
-                numberOfMillsBeeingClosed++;
-            if (field->curPlayer->id == field->board[field->neighbour[i][1][0]] && field->curPlayer->id == field->board[field->neighbour[i][1][1]])
-                numberOfMillsBeeingClosed++;
+            uint32_t nMillsBeeingClosed = 0;
+            if (field->curPlayer->id ==
+                    field->board[field->neighbor[i][0][0]] &&
+                field->curPlayer->id == field->board[field->neighbor[i][0][1]])
+                nMillsBeeingClosed++;
+            if (field->curPlayer->id ==
+                    field->board[field->neighbor[i][1][0]] &&
+                field->curPlayer->id == field->board[field->neighbor[i][1][1]])
+                nMillsBeeingClosed++;
 
             // Version 15: don't allow to close two mills at once
-            // Version 25: don't allow to close a mill, although no stone can be removed from the opponent
-            if ((numberOfMillsBeeingClosed < 2) && (numberOfMillsBeeingClosed == 0 || stoneCanBeRemoved)) {
-                idPossibility[*numPossibilities] = i;
-                (*numPossibilities)++;
+            // Version 25: don't allow to close a mill, although no piece can be
+            // removed from the opponent
+            if (nMillsBeeingClosed < 2 &&
+                (nMillsBeeingClosed == 0 || pieceCanBeRemoved)) {
+                idPossibility[*possibilityCount] = i;
+                (*possibilityCount)++;
             }
         }
     }
@@ -909,82 +1115,83 @@ unsigned int *PerfectAI::ThreadVars::getPossSettingPhase(unsigned int *numPossib
 
 //-----------------------------------------------------------------------------
 // getPossNormalMove()
-// 
+//
 //-----------------------------------------------------------------------------
-unsigned int *PerfectAI::ThreadVars::getPossNormalMove(unsigned int *numPossibilities, void **pPossibilities)
+uint32_t *PerfectAI::ThreadVars::getPossNormalMove(uint32_t *possibilityCount,
+                                                   void **pPossibilities) const
 {
     // locals
-    unsigned int from, to, dir;
-    unsigned int *idPossibility = &idPossibilities[curSearchDepth * MAX_NUM_POS_MOVES];
+    uint32_t from, to, dir;
+    uint32_t *idPossibility =
+        &idPossibilities[curSearchDepth * POSIBILE_MOVE_COUNT_MAX];
     Possibility *possibility = &possibilities[curSearchDepth];
 
     // if he is not allowed to spring
-    if (field->curPlayer->numStones > 3) {
-
-        for ((*numPossibilities) = 0, from = 0; from < field->size; from++) {
-            for (dir = 0; dir < 4; dir++) {
-
-                // destination
+    if (field->curPlayer->pieceCount > 3) {
+        for (*possibilityCount = 0, from = 0; from < SQUARE_NB; from++) {
+            for (dir = 0; dir < MD_NB; dir++) {
+                // dest
                 to = field->connectedSquare[from][dir];
 
                 // move possible ?
-                if (to < field->size && field->board[from] == field->curPlayer->id && field->board[to] == field->squareIsFree) {
-
-                    // stone is moveable
-                    idPossibility[*numPossibilities] = *numPossibilities;
-                    possibility->from[*numPossibilities] = from;
-                    possibility->to[*numPossibilities] = to;
-                    (*numPossibilities)++;
+                if (to < SQUARE_NB &&
+                    field->board[from] == field->curPlayer->id &&
+                    field->board[to] == field->squareIsFree) {
+                    // piece is moveable
+                    idPossibility[*possibilityCount] = *possibilityCount;
+                    possibility->from[*possibilityCount] = from;
+                    possibility->to[*possibilityCount] = to;
+                    (*possibilityCount)++;
 
                     // current player is allowed to spring
                 }
             }
         }
-    } else if (field->curPlayer->numStones == 3) {
-
-        for ((*numPossibilities) = 0, from = 0; from < field->size; from++) {
-            for (to = 0; to < field->size; to++) {
-
+    } else if (field->curPlayer->pieceCount == 3) {
+        for (*possibilityCount = 0, from = 0; from < SQUARE_NB; from++) {
+            for (to = 0; to < SQUARE_NB; to++) {
                 // move possible ?
-                if (field->board[from] == field->curPlayer->id && field->board[to] == field->squareIsFree && *numPossibilities < MAX_NUM_POS_MOVES) {
-
-                    // stone is moveable
-                    idPossibility[*numPossibilities] = *numPossibilities;
-                    possibility->from[*numPossibilities] = from;
-                    possibility->to[*numPossibilities] = to;
-                    (*numPossibilities)++;
+                if (field->board[from] == field->curPlayer->id &&
+                    field->board[to] == field->squareIsFree &&
+                    *possibilityCount < POSIBILE_MOVE_COUNT_MAX) {
+                    // piece is moveable
+                    idPossibility[*possibilityCount] = *possibilityCount;
+                    possibility->from[*possibilityCount] = from;
+                    possibility->to[*possibilityCount] = to;
+                    (*possibilityCount)++;
                 }
             }
         }
     } else {
-        *numPossibilities = 0;
+        *possibilityCount = 0;
     }
 
     // pass possibilities
     if (pPossibilities != nullptr)
-        *pPossibilities = (void *)possibility;
+        *pPossibilities = static_cast<void *>(possibility);
 
     return idPossibility;
 }
 
 //-----------------------------------------------------------------------------
-// getPossStoneRemove()
-// 
+// getPossPieceRemove()
+//
 //-----------------------------------------------------------------------------
-unsigned int *PerfectAI::ThreadVars::getPossStoneRemove(unsigned int *numPossibilities, void **pPossibilities)
+uint32_t *PerfectAI::ThreadVars::getPossPieceRemove(uint32_t *possibilityCount,
+                                                    void **pPossibilities) const
 {
     // locals
-    unsigned int i;
-    unsigned int *idPossibility = &idPossibilities[curSearchDepth * MAX_NUM_POS_MOVES];
+    uint32_t i;
+    uint32_t *idPossibility =
+        &idPossibilities[curSearchDepth * POSIBILE_MOVE_COUNT_MAX];
 
     // possibilities with cut off
-    for ((*numPossibilities) = 0, i = 0; i < field->size; i++) {
-
+    for (*possibilityCount = 0, i = 0; i < SQUARE_NB; i++) {
         // move possible ?
-        if (field->board[i] == field->oppPlayer->id && !field->stonePartOfMill[i]) {
-
-            idPossibility[*numPossibilities] = i;
-            (*numPossibilities)++;
+        if (field->board[i] == field->oppPlayer->id &&
+            !field->piecePartOfMillCount[i]) {
+            idPossibility[*possibilityCount] = i;
+            (*possibilityCount)++;
         }
     }
 
@@ -997,75 +1204,81 @@ unsigned int *PerfectAI::ThreadVars::getPossStoneRemove(unsigned int *numPossibi
 
 //-----------------------------------------------------------------------------
 // getPossibilities()
-// 
+//
 //-----------------------------------------------------------------------------
-unsigned int *PerfectAI::getPossibilities(unsigned int threadNo, unsigned int *numPossibilities, bool *opponentsMove, void **pPossibilities)
+uint32_t *PerfectAI::getPossibilities(uint32_t threadNo,
+                                      uint32_t *possibilityCount,
+                                      bool *opponentsMove,
+                                      void **pPossibilities)
 {
     // locals
-    bool aStoneCanBeRemovedFromCurPlayer = 0;
-    unsigned int numberOfMillsCurrentPlayer = 0;
-    unsigned int numberOfMillsOpponentPlayer = 0;
-    unsigned int i;
+    bool aPieceCanBeRemovedFromCurPlayer = false;
+    uint32_t nMillsCurPlayer = 0;
+    uint32_t nMillsOpponentPlayer = 0;
 
     // set opponentsMove
-    ThreadVars *tv = &threadVars[threadNo];
-    *opponentsMove = (tv->field->curPlayer->id == tv->ownId) ? false : true;
+    const ThreadVars *tv = &threadVars[threadNo];
+    *opponentsMove = tv->field->curPlayer->id == tv->ownId ? false : true;
 
     // count completed mills
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (uint32_t i = 0; i < SQUARE_NB; i++) {
         if (tv->field->board[i] == tv->field->curPlayer->id)
-            numberOfMillsCurrentPlayer += tv->field->stonePartOfMill[i];
+            nMillsCurPlayer += tv->field->piecePartOfMillCount[i];
         else
-            numberOfMillsOpponentPlayer += tv->field->stonePartOfMill[i];
-        if (tv->field->stonePartOfMill[i] == 0 && tv->field->board[i] == tv->field->curPlayer->id)
-            aStoneCanBeRemovedFromCurPlayer = true;
+            nMillsOpponentPlayer += tv->field->piecePartOfMillCount[i];
+        if (tv->field->piecePartOfMillCount[i] == 0 &&
+            tv->field->board[i] == tv->field->curPlayer->id)
+            aPieceCanBeRemovedFromCurPlayer = true;
     }
-    numberOfMillsCurrentPlayer /= 3;
-    numberOfMillsOpponentPlayer /= 3;
+    nMillsCurPlayer /= 3;
+    nMillsOpponentPlayer /= 3;
 
     // When game has ended of course nothing happens any more
-    if (tv->gameHasFinished || !tv->fieldIntegrityOK(numberOfMillsCurrentPlayer, numberOfMillsOpponentPlayer, aStoneCanBeRemovedFromCurPlayer)) {
-        *numPossibilities = 0;
-        return 0;
+    if (tv->gameHasFinished ||
+        !tv->fieldIntegrityOK(nMillsCurPlayer, nMillsOpponentPlayer,
+                              aPieceCanBeRemovedFromCurPlayer)) {
+        *possibilityCount = 0;
+        return nullptr;
         // look what is to do
-    } else {
-        if (tv->field->stoneMustBeRemoved)
-            return tv->getPossStoneRemove(numPossibilities, pPossibilities);
-        else if (tv->field->settingPhase)
-            return tv->getPossSettingPhase(numPossibilities, pPossibilities);
-        else
-            return tv->getPossNormalMove(numPossibilities, pPossibilities);
     }
+
+    if (tv->field->pieceMustBeRemovedCount)
+        return tv->getPossPieceRemove(possibilityCount, pPossibilities);
+
+    if (tv->field->isPlacingPhase)
+        return tv->getPossPlacingPhase(possibilityCount, pPossibilities);
+
+    return tv->getPossNormalMove(possibilityCount, pPossibilities);
 }
 
 //-----------------------------------------------------------------------------
-// getValueOfSituation()
-// 
+// getSituationValue()
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::getValueOfSituation(unsigned int threadNo, float &floatValue, TwoBit &shortValue)
+void PerfectAI::getSituationValue(uint32_t threadNo, float &floatValue,
+                                  TwoBit &shortValue)
 {
-    ThreadVars *tv = &threadVars[threadNo];
+    const ThreadVars *tv = &threadVars[threadNo];
     floatValue = tv->floatValue;
     shortValue = tv->shortValue;
 }
 
 //-----------------------------------------------------------------------------
 // deletePossibilities()
-// 
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::deletePossibilities(unsigned int threadNo, void *pPossibilities)
-{
-}
+void PerfectAI::deletePossibilities(uint32_t threadNo, void *pPossibilities) { }
 
 //-----------------------------------------------------------------------------
 // undo()
-// 
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void *pBackup, void *pPossibilities)
+void PerfectAI::undo(uint32_t threadNo, uint32_t idPossibility,
+                     bool opponentsMove, void *pBackup, void *pPossibilities)
 {
     // locals
     ThreadVars *tv = &threadVars[threadNo];
-    Backup *oldState = (Backup *)pBackup;
+    const auto oldState = static_cast<Backup *>(pBackup);
 
     // reset old value
     tv->floatValue = oldState->floatValue;
@@ -1075,162 +1288,180 @@ void PerfectAI::undo(unsigned int threadNo, unsigned int idPossibility, bool opp
 
     tv->field->curPlayer = oldState->curPlayer;
     tv->field->oppPlayer = oldState->oppPlayer;
-    tv->field->curPlayer->numStones = oldState->curNumStones;
-    tv->field->oppPlayer->numStones = oldState->oppNumStones;
-    tv->field->curPlayer->numStonesMissing = oldState->curMissStones;
-    tv->field->oppPlayer->numStonesMissing = oldState->oppMissStones;
-    tv->field->curPlayer->numPossibleMoves = oldState->curPosMoves;
-    tv->field->oppPlayer->numPossibleMoves = oldState->oppPosMoves;
-    tv->field->settingPhase = oldState->settingPhase;
-    tv->field->stonesSet = oldState->stonesSet;
-    tv->field->stoneMustBeRemoved = oldState->stoneMustBeRemoved;
+    tv->field->curPlayer->pieceCount = oldState->curPieceCount;
+    tv->field->oppPlayer->pieceCount = oldState->oppPieceCount;
+    tv->field->curPlayer->removedPiecesCount = oldState->curMissPieces;
+    tv->field->oppPlayer->removedPiecesCount = oldState->oppMissPieces;
+    tv->field->curPlayer->possibleMovesCount = oldState->curPosMoves;
+    tv->field->oppPlayer->possibleMovesCount = oldState->oppPosMoves;
+    tv->field->isPlacingPhase = oldState->isPlacingPhase;
+    tv->field->piecePlacedCount = oldState->piecePlacedCount;
+    tv->field->pieceMustBeRemovedCount = oldState->pieceMustBeRemovedCount;
     tv->field->board[oldState->from] = oldState->fieldFrom;
     tv->field->board[oldState->to] = oldState->fieldTo;
 
     // very expensive
-    for (int i = 0; i < tv->field->size; i++) {
-        tv->field->stonePartOfMill[i] = oldState->stonePartOfMill[i];
+    for (int i = 0; i < SQUARE_NB; i++) {
+        tv->field->piecePartOfMillCount[i] = oldState->piecePartOfMillCount[i];
     }
 }
 
 //-----------------------------------------------------------------------------
 // setWarning()
-// 
+//
 //-----------------------------------------------------------------------------
-inline void PerfectAI::ThreadVars::setWarning(unsigned int stoneOne, unsigned int stoneTwo, unsigned int stoneThree)
+inline void PerfectAI::ThreadVars::setWarning(uint32_t pieceOne,
+                                              uint32_t pieceTwo,
+                                              uint32_t pieceThree) const
 {
     // if all 3 fields are occupied by current player than he closed a mill
-    if (field->board[stoneOne] == field->curPlayer->id && field->board[stoneTwo] == field->curPlayer->id && field->board[stoneThree] == field->curPlayer->id) {
-        field->stonePartOfMill[stoneOne]++;
-        field->stonePartOfMill[stoneTwo]++;
-        field->stonePartOfMill[stoneThree]++;
-        field->stoneMustBeRemoved = 1;
+    if (field->board[pieceOne] == field->curPlayer->id &&
+        field->board[pieceTwo] == field->curPlayer->id &&
+        field->board[pieceThree] == field->curPlayer->id) {
+        field->piecePartOfMillCount[pieceOne]++;
+        field->piecePartOfMillCount[pieceTwo]++;
+        field->piecePartOfMillCount[pieceThree]++;
+        field->pieceMustBeRemovedCount = 1;
     }
 
     // is a mill destroyed ?
-    if (field->board[stoneOne] == field->squareIsFree && field->stonePartOfMill[stoneOne] && field->stonePartOfMill[stoneTwo] && field->stonePartOfMill[stoneThree]) {
-        field->stonePartOfMill[stoneOne]--;
-        field->stonePartOfMill[stoneTwo]--;
-        field->stonePartOfMill[stoneThree]--;
+    if (field->board[pieceOne] == field->squareIsFree &&
+        field->piecePartOfMillCount[pieceOne] &&
+        field->piecePartOfMillCount[pieceTwo] &&
+        field->piecePartOfMillCount[pieceThree]) {
+        field->piecePartOfMillCount[pieceOne]--;
+        field->piecePartOfMillCount[pieceTwo]--;
+        field->piecePartOfMillCount[pieceThree]--;
     }
 }
 
 //-----------------------------------------------------------------------------
 // updateWarning()
-// 
+//
 //-----------------------------------------------------------------------------
-inline void PerfectAI::ThreadVars::updateWarning(unsigned int firstStone, unsigned int secondStone)
+inline void PerfectAI::ThreadVars::updateWarning(uint32_t firstPiece,
+                                                 uint32_t secondPiece) const
 {
     // set warnings
-    if (firstStone < field->size)
-        this->setWarning(firstStone, field->neighbour[firstStone][0][0], field->neighbour[firstStone][0][1]);
-    if (firstStone < field->size)
-        this->setWarning(firstStone, field->neighbour[firstStone][1][0], field->neighbour[firstStone][1][1]);
+    if (firstPiece < SQUARE_NB)
+        this->setWarning(firstPiece, field->neighbor[firstPiece][0][0],
+                         field->neighbor[firstPiece][0][1]);
+    if (firstPiece < SQUARE_NB)
+        this->setWarning(firstPiece, field->neighbor[firstPiece][1][0],
+                         field->neighbor[firstPiece][1][1]);
 
-    if (secondStone < field->size)
-        this->setWarning(secondStone, field->neighbour[secondStone][0][0], field->neighbour[secondStone][0][1]);
-    if (secondStone < field->size)
-        this->setWarning(secondStone, field->neighbour[secondStone][1][0], field->neighbour[secondStone][1][1]);
+    if (secondPiece < SQUARE_NB)
+        this->setWarning(secondPiece, field->neighbor[secondPiece][0][0],
+                         field->neighbor[secondPiece][0][1]);
+    if (secondPiece < SQUARE_NB)
+        this->setWarning(secondPiece, field->neighbor[secondPiece][1][0],
+                         field->neighbor[secondPiece][1][1]);
 
-    // no stone must be removed if each belongs to a mill
-    unsigned int i;
-    bool atLeastOneStoneRemoveAble = false;
-    if (field->stoneMustBeRemoved)
-        for (i = 0; i < field->size; i++)
-            if (field->stonePartOfMill[i] == 0 && field->board[i] == field->oppPlayer->id) {
-                atLeastOneStoneRemoveAble = true;
+    // no piece must be removed if each belongs to a mill
+    uint32_t i;
+    bool atLeastOnePieceRemoveAble = false;
+    if (field->pieceMustBeRemovedCount) {
+        for (i = 0; i < SQUARE_NB; i++) {
+            if (field->piecePartOfMillCount[i] == 0 &&
+                field->board[i] == field->oppPlayer->id) {
+                atLeastOnePieceRemoveAble = true;
                 break;
             }
-    if (!atLeastOneStoneRemoveAble)
-        field->stoneMustBeRemoved = 0;
+        }
+    }
+    if (!atLeastOnePieceRemoveAble)
+        field->pieceMustBeRemovedCount = 0;
 }
 
 //-----------------------------------------------------------------------------
 // updatePossibleMoves()
-// 
+//
 //-----------------------------------------------------------------------------
-inline void PerfectAI::ThreadVars::updatePossibleMoves(unsigned int stone, Player *stoneOwner, bool stoneRemoved, unsigned int ignoreStone)
+inline void
+PerfectAI::ThreadVars::updatePossibleMoves(uint32_t piece, Player *pieceOwner,
+                                           bool pieceRemoved,
+                                           uint32_t ignorePiece) const
 {
-    // locals
-    unsigned int neighbor, direction;
-
     // look into every direction
-    for (direction = 0; direction < 4; direction++) {
-
-        neighbor = field->connectedSquare[stone][direction];
+    for (uint32_t direction = 0; direction < MD_NB; direction++) {
+        const uint32_t neighbor = field->connectedSquare[piece][direction];
 
         // neighbor must exist
-        if (neighbor < field->size) {
-
+        if (neighbor < SQUARE_NB) {
             // relevant when moving from one square to another connected square
-            if (ignoreStone == neighbor)
+            if (ignorePiece == neighbor)
                 continue;
 
-            // if there is no neighbour stone than it only affects the actual stone
+            // if there is no neighbor piece than it only affects the actual
+            // piece
             if (field->board[neighbor] == field->squareIsFree) {
-
-                if (stoneRemoved)
-                    stoneOwner->numPossibleMoves--;
+                if (pieceRemoved)
+                    pieceOwner->possibleMovesCount--;
                 else
-                    stoneOwner->numPossibleMoves++;
+                    pieceOwner->possibleMovesCount++;
 
-                // if there is a neighbour stone than it effects only this one
+                // if there is a neighbor piece than it effects only this one
             } else if (field->board[neighbor] == field->curPlayer->id) {
-
-                if (stoneRemoved)
-                    field->curPlayer->numPossibleMoves++;
+                if (pieceRemoved)
+                    field->curPlayer->possibleMovesCount++;
                 else
-                    field->curPlayer->numPossibleMoves--;
+                    field->curPlayer->possibleMovesCount--;
             } else {
-
-                if (stoneRemoved)
-                    field->oppPlayer->numPossibleMoves++;
+                if (pieceRemoved)
+                    field->oppPlayer->possibleMovesCount++;
                 else
-                    field->oppPlayer->numPossibleMoves--;
+                    field->oppPlayer->possibleMovesCount--;
             }
         }
     }
 
-    // only 3 stones resting
-    if (field->curPlayer->numStones <= 3 && !field->settingPhase)
-        field->curPlayer->numPossibleMoves = field->curPlayer->numStones * (field->size - field->curPlayer->numStones - field->oppPlayer->numStones);
-    if (field->oppPlayer->numStones <= 3 && !field->settingPhase)
-        field->oppPlayer->numPossibleMoves = field->oppPlayer->numStones * (field->size - field->curPlayer->numStones - field->oppPlayer->numStones);
+    // only 3 pieces resting
+    if (field->curPlayer->pieceCount <= 3 && !field->isPlacingPhase)
+        field->curPlayer->possibleMovesCount = field->curPlayer->pieceCount *
+                                               (SQUARE_NB -
+                                                field->curPlayer->pieceCount -
+                                                field->oppPlayer->pieceCount);
+    if (field->oppPlayer->pieceCount <= 3 && !field->isPlacingPhase)
+        field->oppPlayer->possibleMovesCount = field->oppPlayer->pieceCount *
+                                               (SQUARE_NB -
+                                                field->curPlayer->pieceCount -
+                                                field->oppPlayer->pieceCount);
 }
 
 //-----------------------------------------------------------------------------
-// setStone()
-// 
+// setPiece()
+//
 //-----------------------------------------------------------------------------
-inline void PerfectAI::ThreadVars::setStone(unsigned int to, Backup *backup)
+inline void PerfectAI::ThreadVars::setPiece(uint32_t to, Backup *backup) const
 {
     // backup
-    backup->from = field->size;
+    backup->from = SQUARE_NB;
     backup->to = to;
-    backup->fieldFrom = field->size;
+    backup->fieldFrom = SQUARE_NB;
     backup->fieldTo = field->board[to];
 
-    // set stone into board
+    // set piece into board
     field->board[to] = field->curPlayer->id;
-    field->curPlayer->numStones++;
-    field->stonesSet++;
+    field->curPlayer->pieceCount++;
+    field->piecePlacedCount++;
 
-    // setting phase finished ?
-    if (field->stonesSet == 18)
-        field->settingPhase = false;
+    // placing phase finished ?
+    if (field->piecePlacedCount == 18)
+        field->isPlacingPhase = false;
 
     // update possible moves
-    updatePossibleMoves(to, field->curPlayer, false, field->size);
+    updatePossibleMoves(to, field->curPlayer, false, SQUARE_NB);
 
     // update warnings
-    updateWarning(to, field->size);
+    updateWarning(to, SQUARE_NB);
 }
 
 //-----------------------------------------------------------------------------
 // normalMove()
-// 
+//
 //-----------------------------------------------------------------------------
-inline void PerfectAI::ThreadVars::normalMove(unsigned int from, unsigned int to, Backup *backup)
+inline void PerfectAI::ThreadVars::normalMove(uint32_t from, uint32_t to,
+                                              Backup *backup) const
 {
     // backup
     backup->from = from;
@@ -1238,7 +1469,7 @@ inline void PerfectAI::ThreadVars::normalMove(unsigned int from, unsigned int to
     backup->fieldFrom = field->board[from];
     backup->fieldTo = field->board[to];
 
-    // set stone into board
+    // set piece into board
     field->board[from] = field->squareIsFree;
     field->board[to] = field->curPlayer->id;
 
@@ -1251,81 +1482,84 @@ inline void PerfectAI::ThreadVars::normalMove(unsigned int from, unsigned int to
 }
 
 //-----------------------------------------------------------------------------
-// removeStone()
-// 
+// removePiece()
+//
 //-----------------------------------------------------------------------------
-inline void PerfectAI::ThreadVars::removeStone(unsigned int from, Backup *backup)
+inline void PerfectAI::ThreadVars::removePiece(uint32_t from, Backup *backup)
 {
     // backup
     backup->from = from;
-    backup->to = field->size;
+    backup->to = SQUARE_NB;
     backup->fieldFrom = field->board[from];
-    backup->fieldTo = field->size;
+    backup->fieldTo = SQUARE_NB;
 
-    // remove stone
+    // remove piece
     field->board[from] = field->squareIsFree;
-    field->oppPlayer->numStones--;
-    field->oppPlayer->numStonesMissing++;
-    field->stoneMustBeRemoved--;
+    field->oppPlayer->pieceCount--;
+    field->oppPlayer->removedPiecesCount++;
+    field->pieceMustBeRemovedCount--;
 
     // update possible moves
-    updatePossibleMoves(from, field->oppPlayer, true, field->size);
+    updatePossibleMoves(from, field->oppPlayer, true, SQUARE_NB);
 
     // update warnings
-    updateWarning(from, field->size);
+    updateWarning(from, SQUARE_NB);
 
     // end of game ?
-    if ((field->oppPlayer->numStones < 3) && (!field->settingPhase))
+    if (field->oppPlayer->pieceCount < 3 && !field->isPlacingPhase)
         gameHasFinished = true;
 }
 
 //-----------------------------------------------------------------------------
 // move()
-// 
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::move(unsigned int threadNo, unsigned int idPossibility, bool opponentsMove, void **pBackup, void *pPossibilities)
+void PerfectAI::move(uint32_t threadNo, uint32_t idPossibility,
+                     bool opponentsMove, void **pBackup, void *pPossibilities)
 {
     // locals
     ThreadVars *tv = &threadVars[threadNo];
     Backup *oldState = &tv->oldStates[tv->curSearchDepth];
-    Possibility *tmpPossibility = (Possibility *)pPossibilities;
+    const auto tmpPossibility = static_cast<Possibility *>(pPossibilities);
     Player *tmpPlayer;
-    unsigned int i;
 
-    // calculate place of stone
-    *pBackup = (void *)oldState;
+    // calculate place of piece
+    *pBackup = static_cast<void *>(oldState);
     oldState->floatValue = tv->floatValue;
     oldState->shortValue = tv->shortValue;
     oldState->gameHasFinished = tv->gameHasFinished;
     oldState->curPlayer = tv->field->curPlayer;
     oldState->oppPlayer = tv->field->oppPlayer;
-    oldState->curNumStones = tv->field->curPlayer->numStones;
-    oldState->oppNumStones = tv->field->oppPlayer->numStones;
-    oldState->curPosMoves = tv->field->curPlayer->numPossibleMoves;
-    oldState->oppPosMoves = tv->field->oppPlayer->numPossibleMoves;
-    oldState->curMissStones = tv->field->curPlayer->numStonesMissing;
-    oldState->oppMissStones = tv->field->oppPlayer->numStonesMissing;
-    oldState->settingPhase = tv->field->settingPhase;
-    oldState->stonesSet = tv->field->stonesSet;
-    oldState->stoneMustBeRemoved = tv->field->stoneMustBeRemoved;
+    oldState->curPieceCount = tv->field->curPlayer->pieceCount;
+    oldState->oppPieceCount = tv->field->oppPlayer->pieceCount;
+    oldState->curPosMoves = tv->field->curPlayer->possibleMovesCount;
+    oldState->oppPosMoves = tv->field->oppPlayer->possibleMovesCount;
+    oldState->curMissPieces = tv->field->curPlayer->removedPiecesCount;
+    oldState->oppMissPieces = tv->field->oppPlayer->removedPiecesCount;
+    oldState->isPlacingPhase = tv->field->isPlacingPhase;
+    oldState->piecePlacedCount = tv->field->piecePlacedCount;
+    oldState->pieceMustBeRemovedCount = tv->field->pieceMustBeRemovedCount;
     tv->curSearchDepth++;
 
     // very expensive
-    for (i = 0; i < tv->field->size; i++) {
-        oldState->stonePartOfMill[i] = tv->field->stonePartOfMill[i];
+    for (uint32_t i = 0; i < SQUARE_NB; i++) {
+        oldState->piecePartOfMillCount[i] = tv->field->piecePartOfMillCount[i];
     }
 
     // move
-    if (tv->field->stoneMustBeRemoved) {
-        tv->removeStone(idPossibility, oldState);
-    } else if (tv->field->settingPhase) {
-        tv->setStone(idPossibility, oldState);
+    if (tv->field->pieceMustBeRemovedCount) {
+        tv->removePiece(idPossibility, oldState);
+    } else if (tv->field->isPlacingPhase) {
+        tv->setPiece(idPossibility, oldState);
     } else {
-        tv->normalMove(tmpPossibility->from[idPossibility], tmpPossibility->to[idPossibility], oldState);
+        tv->normalMove(tmpPossibility->from[idPossibility],
+                       tmpPossibility->to[idPossibility], oldState);
     }
 
     // when opponent is unable to move than current player has won
-    if ((!tv->field->oppPlayer->numPossibleMoves) && (!tv->field->settingPhase) && (!tv->field->stoneMustBeRemoved) && (tv->field->oppPlayer->numStones > 3))
+    if (!tv->field->oppPlayer->possibleMovesCount &&
+        !tv->field->isPlacingPhase && !tv->field->pieceMustBeRemovedCount &&
+        tv->field->oppPlayer->pieceCount > 3)
         tv->gameHasFinished = true;
 
     // when game has finished - perfect for the current player
@@ -1336,11 +1570,21 @@ void PerfectAI::move(unsigned int threadNo, unsigned int idPossibility, bool opp
 
     tv->floatValue = tv->shortValue;
 
-    // calc value
+    // calculate value
     if (!opponentsMove)
-        tv->floatValue = (float)tv->field->oppPlayer->numStonesMissing - tv->field->curPlayer->numStonesMissing + tv->field->stoneMustBeRemoved + tv->field->curPlayer->numPossibleMoves * 0.1f - tv->field->oppPlayer->numPossibleMoves * 0.1f;
+        tv->floatValue = static_cast<float>(
+                             tv->field->oppPlayer->removedPiecesCount) -
+                         tv->field->curPlayer->removedPiecesCount +
+                         tv->field->pieceMustBeRemovedCount +
+                         tv->field->curPlayer->possibleMovesCount * 0.1f -
+                         tv->field->oppPlayer->possibleMovesCount * 0.1f;
     else
-        tv->floatValue = (float)tv->field->curPlayer->numStonesMissing - tv->field->oppPlayer->numStonesMissing - tv->field->stoneMustBeRemoved + tv->field->oppPlayer->numPossibleMoves * 0.1f - tv->field->curPlayer->numPossibleMoves * 0.1f;
+        tv->floatValue = static_cast<float>(
+                             tv->field->curPlayer->removedPiecesCount) -
+                         tv->field->oppPlayer->removedPiecesCount -
+                         tv->field->pieceMustBeRemovedCount +
+                         tv->field->oppPlayer->possibleMovesCount * 0.1f -
+                         tv->field->curPlayer->possibleMovesCount * 0.1f;
 
     // when game has finished - perfect for the current player
     if (tv->gameHasFinished && !opponentsMove)
@@ -1349,7 +1593,7 @@ void PerfectAI::move(unsigned int threadNo, unsigned int idPossibility, bool opp
         tv->floatValue = VALUE_GAME_LOST + tv->curSearchDepth;
 
     // set next player
-    if (!tv->field->stoneMustBeRemoved) {
+    if (!tv->field->pieceMustBeRemovedCount) {
         tmpPlayer = tv->field->curPlayer;
         tv->field->curPlayer = tv->field->oppPlayer;
         tv->field->oppPlayer = tmpPlayer;
@@ -1357,189 +1601,123 @@ void PerfectAI::move(unsigned int threadNo, unsigned int idPossibility, bool opp
 }
 
 //-----------------------------------------------------------------------------
-// storeValueOfMove()
-// 
+// storeMoveValue()
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::storeValueOfMove(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities, unsigned char value, unsigned int *freqValuesSubMoves, PlyInfoVarType plyInfo)
+void PerfectAI::storeMoveValue(uint32_t threadNo, uint32_t idPossibility,
+                               void *pPossibilities, unsigned char value,
+                               uint32_t *freqValuesSubMoves,
+                               PlyInfoVarType plyInfo)
 {
     // locals
-    ThreadVars *tv = &threadVars[threadNo];
-    unsigned int index;
-    Possibility *tmpPossibility = (Possibility *)pPossibilities;
+    const ThreadVars *tv = &threadVars[threadNo];
+    uint32_t i;
+    const auto tmpPossibility = static_cast<Possibility *>(pPossibilities);
 
-    if (tv->field->stoneMustBeRemoved)
-        index = idPossibility;
-    else if (tv->field->settingPhase)
-        index = idPossibility;
+    if (tv->field->pieceMustBeRemovedCount)
+        i = idPossibility;
+    else if (tv->field->isPlacingPhase)
+        i = idPossibility;
     else
-        index = tmpPossibility->from[idPossibility] * fieldStruct::size + tmpPossibility->to[idPossibility];
+        i = tmpPossibility->from[idPossibility] * SQUARE_NB +
+            tmpPossibility->to[idPossibility];
 
-    plyInfoForOutput[index] = plyInfo;
-    valueOfMove[index] = value;
-    incidencesValuesSubMoves[index][SKV_VALUE_INVALID] = freqValuesSubMoves[SKV_VALUE_INVALID];
-    incidencesValuesSubMoves[index][SKV_VALUE_GAME_LOST] = freqValuesSubMoves[SKV_VALUE_GAME_LOST];
-    incidencesValuesSubMoves[index][SKV_VALUE_GAME_DRAWN] = freqValuesSubMoves[SKV_VALUE_GAME_DRAWN];
-    incidencesValuesSubMoves[index][SKV_VALUE_GAME_WON] = freqValuesSubMoves[SKV_VALUE_GAME_WON];
+    plyInfoForOutput[i] = plyInfo;
+    moveValue[i] = value;
+    incidencesValuesSubMoves[i][SKV_VALUE_INVALID] =
+        freqValuesSubMoves[SKV_VALUE_INVALID];
+    incidencesValuesSubMoves[i][SKV_VALUE_GAME_LOST] =
+        freqValuesSubMoves[SKV_VALUE_GAME_LOST];
+    incidencesValuesSubMoves[i][SKV_VALUE_GAME_DRAWN] =
+        freqValuesSubMoves[SKV_VALUE_GAME_DRAWN];
+    incidencesValuesSubMoves[i][SKV_VALUE_GAME_WON] =
+        freqValuesSubMoves[SKV_VALUE_GAME_WON];
 }
 
 //-----------------------------------------------------------------------------
-// getValueOfMoves()
-// 
+// printMoveInfo()
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::getValueOfMoves(unsigned char *moveValue, unsigned int *freqValuesSubMoves, PlyInfoVarType *plyInfo, unsigned int *moveQuality, unsigned char &knotValue, PlyInfoVarType &bestAmountOfPlies)
+void PerfectAI::printMoveInfo(uint32_t threadNo, uint32_t idPossibility,
+                              void *pPossibilities)
 {
     // locals
-    unsigned int moveQualities[fieldStruct::size * fieldStruct::size]; // 0 is bad, 1 is good
-    unsigned int i, j;
-
-    // set an invalid default value
-    knotValue = SKV_NUM_VALUES;
-
-    // calc knotValue
-    for (i = 0; i < fieldStruct::size; i++) {
-        for (j = 0; j < fieldStruct::size; j++) {
-            if (valueOfMove[i * fieldStruct::size + j] == SKV_VALUE_GAME_WON) {
-                knotValue = SKV_VALUE_GAME_WON;
-                i = fieldStruct::size;
-                j = fieldStruct::size;
-            } else if (valueOfMove[i * fieldStruct::size + j] == SKV_VALUE_GAME_DRAWN) {
-                knotValue = SKV_VALUE_GAME_DRAWN;
-            } else if (valueOfMove[i * fieldStruct::size + j] == SKV_VALUE_GAME_LOST && knotValue != SKV_VALUE_GAME_DRAWN) {
-                knotValue = SKV_VALUE_GAME_LOST;
-            }
-        }
-    }
-
-    // calc move bestAmountOfPlies
-    if (knotValue == SKV_VALUE_GAME_WON) {
-        bestAmountOfPlies = PLYINFO_VALUE_INVALID;
-
-        for (i = 0; i < fieldStruct::size; i++) {
-            for (j = 0; j < fieldStruct::size; j++) {
-                if (valueOfMove[i * fieldStruct::size + j] == SKV_VALUE_GAME_WON) {
-                    if (bestAmountOfPlies >= plyInfoForOutput[i * fieldStruct::size + j]) {
-                        bestAmountOfPlies = plyInfoForOutput[i * fieldStruct::size + j];
-                    }
-                }
-            }
-        }
-    } else if (knotValue == SKV_VALUE_GAME_LOST) {
-        bestAmountOfPlies = 0;
-
-        for (i = 0; i < fieldStruct::size; i++) {
-            for (j = 0; j < fieldStruct::size; j++) {
-                if (valueOfMove[i * fieldStruct::size + j] == SKV_VALUE_GAME_LOST) {
-                    if (bestAmountOfPlies <= plyInfoForOutput[i * fieldStruct::size + j]) {
-                        bestAmountOfPlies = plyInfoForOutput[i * fieldStruct::size + j];
-                    }
-                }
-            }
-        }
-    } else if (knotValue == SKV_VALUE_GAME_DRAWN) {
-        bestAmountOfPlies = 0;
-
-        for (i = 0; i < fieldStruct::size; i++) {
-            for (j = 0; j < fieldStruct::size; j++) {
-                if (valueOfMove[i * fieldStruct::size + j] == SKV_VALUE_GAME_DRAWN) {
-                    if (bestAmountOfPlies <= incidencesValuesSubMoves[i * fieldStruct::size + j][SKV_VALUE_GAME_WON]) {
-                        bestAmountOfPlies = incidencesValuesSubMoves[i * fieldStruct::size + j][SKV_VALUE_GAME_WON];
-                    }
-                }
-            }
-        }
-    }
-
-    // zero move qualities
-    for (i = 0; i < fieldStruct::size; i++) {
-        for (j = 0; j < fieldStruct::size; j++) {
-            if ((valueOfMove[i * fieldStruct::size + j] == knotValue && bestAmountOfPlies == plyInfoForOutput[i * fieldStruct::size + j] && knotValue != SKV_VALUE_GAME_DRAWN) || (valueOfMove[i * fieldStruct::size + j] == knotValue && bestAmountOfPlies == incidencesValuesSubMoves[i * fieldStruct::size + j][SKV_VALUE_GAME_WON] && knotValue == SKV_VALUE_GAME_DRAWN)) {
-                moveQualities[i * fieldStruct::size + j] = 1;
-            } else {
-                moveQualities[i * fieldStruct::size + j] = 0;
-            }
-        }
-    }
-
-    // copy
-    memcpy(moveQuality, moveQualities, sizeof(unsigned int) * fieldStruct::size * fieldStruct::size);
-    memcpy(plyInfo, plyInfoForOutput, sizeof(PlyInfoVarType) * fieldStruct::size * fieldStruct::size);
-    memcpy(moveValue, valueOfMove, sizeof(unsigned char) * fieldStruct::size * fieldStruct::size);
-    memcpy(freqValuesSubMoves, incidencesValuesSubMoves, sizeof(unsigned int) * fieldStruct::size * fieldStruct::size * 4);
-}
-
-//-----------------------------------------------------------------------------
-// printMoveInformation()
-// 
-//-----------------------------------------------------------------------------
-void PerfectAI::printMoveInformation(unsigned int threadNo, unsigned int idPossibility, void *pPossibilities)
-{
-    // locals
-    ThreadVars *tv = &threadVars[threadNo];
-    Possibility *tmpPossibility = (Possibility *)pPossibilities;
+    const ThreadVars *tv = &threadVars[threadNo];
+    const auto tmpPossibility = static_cast<Possibility *>(pPossibilities);
 
     // move
-    if (tv->field->stoneMustBeRemoved)
-        cout << "remove stone from " << (char)(idPossibility + 97);
-    else if (tv->field->settingPhase)
-        cout << "set stone to " << (char)(idPossibility + 97);
+    if (tv->field->pieceMustBeRemovedCount)
+        cout << "remove piece from " << static_cast<char>(idPossibility + 97);
+    else if (tv->field->isPlacingPhase)
+        cout << "set piece to " << static_cast<char>(idPossibility + 97);
     else
-        cout << "move from " << (char)(tmpPossibility->from[idPossibility] + 97) << " to " << (char)(tmpPossibility->to[idPossibility] + 97);
+        cout << "move from "
+             << static_cast<char>(tmpPossibility->from[idPossibility] + 97)
+             << " to "
+             << static_cast<char>(tmpPossibility->to[idPossibility] + 97);
 }
 
 //-----------------------------------------------------------------------------
 // getNumberOfLayers()
 // called one time
 //-----------------------------------------------------------------------------
-unsigned int PerfectAI::getNumberOfLayers()
+uint32_t PerfectAI::getNumberOfLayers()
 {
-    return NUM_LAYERS;
+    return LAYER_COUNT;
 }
 
 //-----------------------------------------------------------------------------
 // shallRetroAnalysisBeUsed()
 // called one time for each layer time
 //-----------------------------------------------------------------------------
-bool PerfectAI::shallRetroAnalysisBeUsed(unsigned int layerNum)
+bool PerfectAI::shallRetroAnalysisBeUsed(uint32_t layerNum)
 {
     if (layerNum < 100)
         return true;
-    else
-        return false;
+
+    return false;
 }
 
 //-----------------------------------------------------------------------------
 // getNumberOfKnotsInLayer()
 // called one time
 //-----------------------------------------------------------------------------
-unsigned int PerfectAI::getNumberOfKnotsInLayer(unsigned int layerNum)
+uint32_t PerfectAI::getNumberOfKnotsInLayer(uint32_t layerNum)
 {
     // locals
-    unsigned int numberOfKnots = layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + 1;
+    uint32_t nKnots =
+        layer[layerNum].subLayer[layer[layerNum].subLayerCount - 1].maxIndex +
+        1;
 
-    // times two since either an own stone must be moved or an opponent stone must be removed
-    numberOfKnots *= MAX_NUM_STONES_REMOVED_MINUS_1;
+    // times two since either an own piece must be moved or an opponent piece
+    // must be removed
+    nKnots *= MAX_NUM_PIECES_REMOVED_MINUS_1;
 
     // return zero if layer is not reachable
-    if (((layer[layerNum].numBlackStones < 2 || layer[layerNum].numWhiteStones < 2) && layerNum < 100) // moving phase
-        || (layerNum < NUM_LAYERS && layer[layerNum].numBlackStones == 2 && layer[layerNum].numWhiteStones == 2 && layerNum < 100) || (layerNum == 100))
+    if (((layer[layerNum].blackPieceCount < 2 ||
+          layer[layerNum].whitePieceCount < 2) &&
+         layerNum < 100) // moving phase
+        || (layerNum < LAYER_COUNT && layer[layerNum].blackPieceCount == 2 &&
+            layer[layerNum].whitePieceCount == 2 && layerNum < 100) ||
+        layerNum == 100)
         return 0;
 
     // another way
-    return (unsigned int)numberOfKnots;
+    return nKnots;
 }
 
 //-----------------------------------------------------------------------------
 // nOverN()
 // called seldom
 //-----------------------------------------------------------------------------
-long long PerfectAI::mOverN_Function(unsigned int m, unsigned int n)
+int64_t PerfectAI::mOverN_Function(uint32_t m, uint32_t n)
 {
     // locals
-    long long result = 1;
-    long long fakN = 1;
-    unsigned int i;
+    int64_t result = 1;
+    int64_t fakN = 1;
+    uint32_t i;
 
-    // invalid parameters ?
+    // invalid params ?
     if (n > m)
         return 0;
 
@@ -1547,11 +1725,12 @@ long long PerfectAI::mOverN_Function(unsigned int m, unsigned int n)
     if (n > m / 2)
         n = m - n;
 
-    // calc number of possibilities one can put n different stones in m holes
+    // calculate number of possibilities one can put n different pieces in m
+    // holes
     for (i = m - n + 1; i <= m; i++)
         result *= i;
 
-    // calc number of possibilities one can sort n different stones
+    // calculate number of possibilities one can sort n different pieces
     for (i = 1; i <= n; i++)
         fakN *= i;
 
@@ -1562,70 +1741,78 @@ long long PerfectAI::mOverN_Function(unsigned int m, unsigned int n)
 }
 
 //-----------------------------------------------------------------------------
-// applySymmetrieOperationOnField()
+// applySymOpOnField()
 // called very often
 //-----------------------------------------------------------------------------
-void PerfectAI::applySymmetrieOperationOnField(unsigned char symmetryOperationNumber, unsigned int *sourceField, unsigned int *destField)
+void PerfectAI::applySymOpOnField(unsigned char symOpNumber,
+                                  const uint32_t *sourceField,
+                                  uint32_t *destField) const
 {
-    for (unsigned int i = 0; i < fieldStruct::size; i++) {
-        destField[i] = sourceField[symmetryOperationTable[symmetryOperationNumber][i]];
+    for (uint32_t i = 0; i < SQUARE_NB; i++) {
+        destField[i] = sourceField[symOpTable[symOpNumber][i]];
     }
 }
 
 //-----------------------------------------------------------------------------
 // getLayerNumber()
-// 
+//
 //-----------------------------------------------------------------------------
-unsigned int PerfectAI::getLayerNumber(unsigned int threadNo)
+uint32_t PerfectAI::getLayerNumber(uint32_t threadNo)
 {
-    ThreadVars *tv = &threadVars[threadNo];
-    unsigned int numBlackStones = tv->field->oppPlayer->numStones;
-    unsigned int numWhiteStones = tv->field->curPlayer->numStones;
-    unsigned int phaseIndex = (tv->field->settingPhase == true) ? LAYER_INDEX_SETTING_PHASE : LAYER_INDEX_MOVING_PHASE;
-    return layerIndex[phaseIndex][numWhiteStones][numBlackStones];
+    const ThreadVars *tv = &threadVars[threadNo];
+    const uint32_t blackPieceCount = tv->field->oppPlayer->pieceCount;
+    const uint32_t whitePieceCount = tv->field->curPlayer->pieceCount;
+    const uint32_t phaseIndex = tv->field->isPlacingPhase == true ?
+                                    LAYER_INDEX_PLACING_PHASE :
+                                    LAYER_INDEX_MOVING_PHASE;
+    return layerIndex[phaseIndex][whitePieceCount][blackPieceCount];
 }
 
 //-----------------------------------------------------------------------------
 // getLayerAndStateNumber()
-// 
+//
 //-----------------------------------------------------------------------------
-unsigned int PerfectAI::getLayerAndStateNumber(unsigned int threadNo, unsigned int &layerNum, unsigned int &stateNumber)
+uint32_t PerfectAI::getLayerAndStateNumber(uint32_t threadNo,
+                                           uint32_t &layerNum,
+                                           uint32_t &stateNumber)
 {
-    ThreadVars *tv = &threadVars[threadNo];
+    const ThreadVars *tv = &threadVars[threadNo];
     return tv->getLayerAndStateNumber(layerNum, stateNumber);
 }
 
 //-----------------------------------------------------------------------------
 // getLayerAndStateNumber()
-// Current player has white stones, the opponent the black ones.
+// Current player has white pieces, the opponent the black ones.
 //-----------------------------------------------------------------------------
-unsigned int PerfectAI::ThreadVars::getLayerAndStateNumber(unsigned int &layerNum, unsigned int &stateNumber)
+uint32_t
+PerfectAI::ThreadVars::getLayerAndStateNumber(uint32_t &layerNum,
+                                              uint32_t &stateNumber) const
 {
     // locals
-    unsigned int myField[fieldStruct::size];
-    unsigned int symField[fieldStruct::size];
-    unsigned int numBlackStones = field->oppPlayer->numStones;
-    unsigned int numWhiteStones = field->curPlayer->numStones;
-    unsigned int phaseIndex = (field->settingPhase == true) ? LAYER_INDEX_SETTING_PHASE : LAYER_INDEX_MOVING_PHASE;
-    unsigned int wCD = 0, bCD = 0;
-    unsigned int stateAB, stateCD;
-    unsigned int i;
+    uint32_t myField[SQUARE_NB];
+    uint32_t symField[SQUARE_NB];
+    const uint32_t blackPieceCount = field->oppPlayer->pieceCount;
+    const uint32_t whitePieceCount = field->curPlayer->pieceCount;
+    const uint32_t phaseIndex = field->isPlacingPhase == true ?
+                                    LAYER_INDEX_PLACING_PHASE :
+                                    LAYER_INDEX_MOVING_PHASE;
+    uint32_t wCD = 0, bCD = 0;
 
     // layer number
-    layerNum = parent->layerIndex[phaseIndex][numWhiteStones][numBlackStones];
+    layerNum = parent->layerIndex[phaseIndex][whitePieceCount][blackPieceCount];
 
     // make white and black fields
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (uint32_t i = 0; i < SQUARE_NB; i++) {
         if (field->board[i] == fieldStruct::squareIsFree) {
             myField[i] = FREE_SQUARE;
         } else if (field->board[i] == field->curPlayer->id) {
-            myField[i] = WHITE_STONE;
+            myField[i] = WHITE_PIECE;
             if (fieldPosIsOfGroup[i] == GROUP_C)
                 wCD++;
             if (fieldPosIsOfGroup[i] == GROUP_D)
                 wCD++;
         } else {
-            myField[i] = BLACK_STONE;
+            myField[i] = BLACK_PIECE;
             if (fieldPosIsOfGroup[i] == GROUP_C)
                 bCD++;
             if (fieldPosIsOfGroup[i] == GROUP_D)
@@ -1633,29 +1820,63 @@ unsigned int PerfectAI::ThreadVars::getLayerAndStateNumber(unsigned int &layerNu
         }
     }
 
-    // calc stateCD
-    stateCD = myField[squareIndexGroupC[0]] * parent->powerOfThree[15] + myField[squareIndexGroupC[1]] * parent->powerOfThree[14] + myField[squareIndexGroupC[2]] * parent->powerOfThree[13] + myField[squareIndexGroupC[3]] * parent->powerOfThree[12] + myField[squareIndexGroupC[4]] * parent->powerOfThree[11] + myField[squareIndexGroupC[5]] * parent->powerOfThree[10] + myField[squareIndexGroupC[6]] * parent->powerOfThree[9] + myField[squareIndexGroupC[7]] * parent->powerOfThree[8] + myField[squareIndexGroupD[0]] * parent->powerOfThree[7] + myField[squareIndexGroupD[1]] * parent->powerOfThree[6] + myField[squareIndexGroupD[2]] * parent->powerOfThree[5] + myField[squareIndexGroupD[3]] * parent->powerOfThree[4] + myField[squareIndexGroupD[4]] * parent->powerOfThree[3] + myField[squareIndexGroupD[5]] * parent->powerOfThree[2] + myField[squareIndexGroupD[6]] * parent->powerOfThree[1] + myField[squareIndexGroupD[7]] * parent->powerOfThree[0];
+    // calculate stateCD
+    const uint32_t stateCD =
+        myField[squareIdxGroupC[0]] * parent->powerOfThree[15] +
+        myField[squareIdxGroupC[1]] * parent->powerOfThree[14] +
+        myField[squareIdxGroupC[2]] * parent->powerOfThree[13] +
+        myField[squareIdxGroupC[3]] * parent->powerOfThree[12] +
+        myField[squareIdxGroupC[4]] * parent->powerOfThree[11] +
+        myField[squareIdxGroupC[5]] * parent->powerOfThree[10] +
+        myField[squareIdxGroupC[6]] * parent->powerOfThree[9] +
+        myField[squareIdxGroupC[7]] * parent->powerOfThree[8] +
+        myField[squareIdxGroupD[0]] * parent->powerOfThree[7] +
+        myField[squareIdxGroupD[1]] * parent->powerOfThree[6] +
+        myField[squareIdxGroupD[2]] * parent->powerOfThree[5] +
+        myField[squareIdxGroupD[3]] * parent->powerOfThree[4] +
+        myField[squareIdxGroupD[4]] * parent->powerOfThree[3] +
+        myField[squareIdxGroupD[5]] * parent->powerOfThree[2] +
+        myField[squareIdxGroupD[6]] * parent->powerOfThree[1] +
+        myField[squareIdxGroupD[7]] * parent->powerOfThree[0];
 
     // apply symmetry operation on group A&B
-    parent->applySymmetrieOperationOnField(parent->symmetryOperationCD[stateCD], myField, symField);
+    parent->applySymOpOnField(parent->symOpCD[stateCD], myField, symField);
 
-    // calc stateAB
-    stateAB = symField[squareIndexGroupA[0]] * parent->powerOfThree[7] + symField[squareIndexGroupA[1]] * parent->powerOfThree[6] + symField[squareIndexGroupA[2]] * parent->powerOfThree[5] + symField[squareIndexGroupA[3]] * parent->powerOfThree[4] + symField[squareIndexGroupB[0]] * parent->powerOfThree[3] + symField[squareIndexGroupB[1]] * parent->powerOfThree[2] + symField[squareIndexGroupB[2]] * parent->powerOfThree[1] + symField[squareIndexGroupB[3]] * parent->powerOfThree[0];
+    // calculate stateAB
+    const uint32_t stateAB =
+        symField[squareIdxGroupA[0]] * parent->powerOfThree[7] +
+        symField[squareIdxGroupA[1]] * parent->powerOfThree[6] +
+        symField[squareIdxGroupA[2]] * parent->powerOfThree[5] +
+        symField[squareIdxGroupA[3]] * parent->powerOfThree[4] +
+        symField[squareIdxGroupB[0]] * parent->powerOfThree[3] +
+        symField[squareIdxGroupB[1]] * parent->powerOfThree[2] +
+        symField[squareIdxGroupB[2]] * parent->powerOfThree[1] +
+        symField[squareIdxGroupB[3]] * parent->powerOfThree[0];
 
-    // calc index
-    stateNumber = parent->layer[layerNum].subLayer[parent->layer[layerNum].subLayerIndexCD[wCD][bCD]].minIndex * MAX_NUM_STONES_REMOVED_MINUS_1 + parent->indexAB[stateAB] * parent->anzahlStellungenCD[wCD][bCD] * MAX_NUM_STONES_REMOVED_MINUS_1 + parent->indexCD[stateCD] * MAX_NUM_STONES_REMOVED_MINUS_1 + field->stoneMustBeRemoved;
+    // calculate index
+    stateNumber =
+        parent->layer[layerNum]
+                .subLayer[parent->layer[layerNum].subLayerIndexCD[wCD][bCD]]
+                .minIndex *
+            MAX_NUM_PIECES_REMOVED_MINUS_1 +
+        parent->indexAB[stateAB] * parent->nPositionsCD[wCD][bCD] *
+            MAX_NUM_PIECES_REMOVED_MINUS_1 +
+        parent->indexCD[stateCD] * MAX_NUM_PIECES_REMOVED_MINUS_1 +
+        field->pieceMustBeRemovedCount;
 
-    return parent->symmetryOperationCD[stateCD];
+    return parent->symOpCD[stateCD];
 }
 
 //-----------------------------------------------------------------------------
 // setSituation()
-// Current player has white stones, the opponent the black ones.
-//		 Sets up the game situation corresponding to the passed layer number and state.
+// Current player has white pieces, the opponent the black ones.
+//     Sets up the game situation corresponding to the passed layer number and
+//     state.
 //-----------------------------------------------------------------------------
-bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum, unsigned int stateNumber)
+bool PerfectAI::setSituation(uint32_t threadNo, uint32_t layerNum,
+                             uint32_t stateNumber)
 {
-    // parameters ok ?
+    // params ok ?
     if (getNumberOfLayers() <= layerNum)
         return false;
     if (getNumberOfKnotsInLayer(layerNum) <= stateNumber)
@@ -1663,27 +1884,26 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum, unsig
 
     // locals
     ThreadVars *tv = &threadVars[threadNo];
-    unsigned int stateNumberWithInSubLayer;
-    unsigned int stateNumberWithInAB;
-    unsigned int stateNumberWithInCD;
-    unsigned int stateAB, stateCD;
-    unsigned int myField[fieldStruct::size];
-    unsigned int symField[fieldStruct::size];
-    unsigned int numWhiteStones = layer[layerNum].numWhiteStones;
-    unsigned int numBlackStones = layer[layerNum].numBlackStones;
-    unsigned int numberOfMillsCurrentPlayer = 0;
-    unsigned int numberOfMillsOpponentPlayer = 0;
-    unsigned int wCD = 0, bCD = 0, wAB = 0, bAB = 0;
-    unsigned int i;
-    bool aStoneCanBeRemovedFromCurPlayer;
+    uint32_t myField[SQUARE_NB];
+    uint32_t symField[SQUARE_NB];
+    const uint32_t whitePieceCount = layer[layerNum].whitePieceCount;
+    const uint32_t blackPieceCount = layer[layerNum].blackPieceCount;
+    uint32_t nMillsCurPlayer = 0;
+    uint32_t nMillsOpponentPlayer = 0;
+    uint32_t wCD = 0, bCD = 0, wAB = 0, bAB = 0;
+    uint32_t i;
+    bool aPieceCanBeRemovedFromCurPlayer;
 
     // get wCD, bCD, wAB, bAB
-    for (i = 0; i <= layer[layerNum].numSubLayers; i++) {
-        if (layer[layerNum].subLayer[i].minIndex <= stateNumber / MAX_NUM_STONES_REMOVED_MINUS_1 && layer[layerNum].subLayer[i].maxIndex >= stateNumber / MAX_NUM_STONES_REMOVED_MINUS_1) {
-            wCD = layer[layerNum].subLayer[i].numWhiteStonesGroupCD;
-            bCD = layer[layerNum].subLayer[i].numBlackStonesGroupCD;
-            wAB = layer[layerNum].subLayer[i].numWhiteStonesGroupAB;
-            bAB = layer[layerNum].subLayer[i].numBlackStonesGroupAB;
+    for (i = 0; i <= layer[layerNum].subLayerCount; i++) {
+        if (layer[layerNum].subLayer[i].minIndex <=
+                stateNumber / MAX_NUM_PIECES_REMOVED_MINUS_1 &&
+            layer[layerNum].subLayer[i].maxIndex >=
+                stateNumber / MAX_NUM_PIECES_REMOVED_MINUS_1) {
+            wCD = layer[layerNum].subLayer[i].nWhitePiecesGroupCD;
+            bCD = layer[layerNum].subLayer[i].nBlackPiecesGroupCD;
+            wAB = layer[layerNum].subLayer[i].nWhitePiecesGroupAB;
+            bAB = layer[layerNum].subLayer[i].nBlackPiecesGroupAB;
             break;
         }
     }
@@ -1694,155 +1914,176 @@ bool PerfectAI::setSituation(unsigned int threadNo, unsigned int layerNum, unsig
     tv->shortValue = SKV_VALUE_GAME_DRAWN;
     tv->gameHasFinished = false;
 
-    tv->field->settingPhase = (layerNum >= NUM_LAYERS / 2) ? LAYER_INDEX_SETTING_PHASE : LAYER_INDEX_MOVING_PHASE;
-    tv->field->stoneMustBeRemoved = stateNumber % MAX_NUM_STONES_REMOVED_MINUS_1;
-    tv->field->curPlayer->numStones = numWhiteStones;
-    tv->field->oppPlayer->numStones = numBlackStones;
+    tv->field->isPlacingPhase = layerNum >= LAYER_COUNT / 2 ?
+                                    LAYER_INDEX_PLACING_PHASE :
+                                    LAYER_INDEX_MOVING_PHASE;
+    tv->field->pieceMustBeRemovedCount = stateNumber %
+                                         MAX_NUM_PIECES_REMOVED_MINUS_1;
+    tv->field->curPlayer->pieceCount = whitePieceCount;
+    tv->field->oppPlayer->pieceCount = blackPieceCount;
 
     // reconstruct board->board[]
-    stateNumberWithInSubLayer = (stateNumber / MAX_NUM_STONES_REMOVED_MINUS_1) - layer[layerNum].subLayer[layer[layerNum].subLayerIndexCD[wCD][bCD]].minIndex;
-    stateNumberWithInAB = stateNumberWithInSubLayer / anzahlStellungenCD[wCD][bCD];
-    stateNumberWithInCD = stateNumberWithInSubLayer % anzahlStellungenCD[wCD][bCD];
+    const uint32_t stateNumberWithInSubLayer =
+        stateNumber / MAX_NUM_PIECES_REMOVED_MINUS_1 -
+        layer[layerNum]
+            .subLayer[layer[layerNum].subLayerIndexCD[wCD][bCD]]
+            .minIndex;
+    const uint32_t stateNumberWithInAB = stateNumberWithInSubLayer /
+                                         nPositionsCD[wCD][bCD];
+    const uint32_t stateNumberWithInCD = stateNumberWithInSubLayer %
+                                         nPositionsCD[wCD][bCD];
 
     // get stateCD
-    stateCD = originalStateCD[wCD][bCD][stateNumberWithInCD];
-    stateAB = originalStateAB[wAB][bAB][stateNumberWithInAB];
+    const uint32_t stateCD = origStateCD[wCD][bCD][stateNumberWithInCD];
+    const uint32_t stateAB = origStateAB[wAB][bAB][stateNumberWithInAB];
 
     // set myField from stateCD and stateAB
-    myField[squareIndexGroupA[0]] = (stateAB / powerOfThree[7]) % 3;
-    myField[squareIndexGroupA[1]] = (stateAB / powerOfThree[6]) % 3;
-    myField[squareIndexGroupA[2]] = (stateAB / powerOfThree[5]) % 3;
-    myField[squareIndexGroupA[3]] = (stateAB / powerOfThree[4]) % 3;
-    myField[squareIndexGroupB[0]] = (stateAB / powerOfThree[3]) % 3;
-    myField[squareIndexGroupB[1]] = (stateAB / powerOfThree[2]) % 3;
-    myField[squareIndexGroupB[2]] = (stateAB / powerOfThree[1]) % 3;
-    myField[squareIndexGroupB[3]] = (stateAB / powerOfThree[0]) % 3;
+    myField[squareIdxGroupA[0]] = (stateAB / powerOfThree[7]) % 3;
+    myField[squareIdxGroupA[1]] = (stateAB / powerOfThree[6]) % 3;
+    myField[squareIdxGroupA[2]] = (stateAB / powerOfThree[5]) % 3;
+    myField[squareIdxGroupA[3]] = (stateAB / powerOfThree[4]) % 3;
+    myField[squareIdxGroupB[0]] = (stateAB / powerOfThree[3]) % 3;
+    myField[squareIdxGroupB[1]] = (stateAB / powerOfThree[2]) % 3;
+    myField[squareIdxGroupB[2]] = (stateAB / powerOfThree[1]) % 3;
+    myField[squareIdxGroupB[3]] = (stateAB / powerOfThree[0]) % 3;
 
-    myField[squareIndexGroupC[0]] = (stateCD / powerOfThree[15]) % 3;
-    myField[squareIndexGroupC[1]] = (stateCD / powerOfThree[14]) % 3;
-    myField[squareIndexGroupC[2]] = (stateCD / powerOfThree[13]) % 3;
-    myField[squareIndexGroupC[3]] = (stateCD / powerOfThree[12]) % 3;
-    myField[squareIndexGroupC[4]] = (stateCD / powerOfThree[11]) % 3;
-    myField[squareIndexGroupC[5]] = (stateCD / powerOfThree[10]) % 3;
-    myField[squareIndexGroupC[6]] = (stateCD / powerOfThree[9]) % 3;
-    myField[squareIndexGroupC[7]] = (stateCD / powerOfThree[8]) % 3;
-    myField[squareIndexGroupD[0]] = (stateCD / powerOfThree[7]) % 3;
-    myField[squareIndexGroupD[1]] = (stateCD / powerOfThree[6]) % 3;
-    myField[squareIndexGroupD[2]] = (stateCD / powerOfThree[5]) % 3;
-    myField[squareIndexGroupD[3]] = (stateCD / powerOfThree[4]) % 3;
-    myField[squareIndexGroupD[4]] = (stateCD / powerOfThree[3]) % 3;
-    myField[squareIndexGroupD[5]] = (stateCD / powerOfThree[2]) % 3;
-    myField[squareIndexGroupD[6]] = (stateCD / powerOfThree[1]) % 3;
-    myField[squareIndexGroupD[7]] = (stateCD / powerOfThree[0]) % 3;
+    myField[squareIdxGroupC[0]] = (stateCD / powerOfThree[15]) % 3;
+    myField[squareIdxGroupC[1]] = (stateCD / powerOfThree[14]) % 3;
+    myField[squareIdxGroupC[2]] = (stateCD / powerOfThree[13]) % 3;
+    myField[squareIdxGroupC[3]] = (stateCD / powerOfThree[12]) % 3;
+    myField[squareIdxGroupC[4]] = (stateCD / powerOfThree[11]) % 3;
+    myField[squareIdxGroupC[5]] = (stateCD / powerOfThree[10]) % 3;
+    myField[squareIdxGroupC[6]] = (stateCD / powerOfThree[9]) % 3;
+    myField[squareIdxGroupC[7]] = (stateCD / powerOfThree[8]) % 3;
+    myField[squareIdxGroupD[0]] = (stateCD / powerOfThree[7]) % 3;
+    myField[squareIdxGroupD[1]] = (stateCD / powerOfThree[6]) % 3;
+    myField[squareIdxGroupD[2]] = (stateCD / powerOfThree[5]) % 3;
+    myField[squareIdxGroupD[3]] = (stateCD / powerOfThree[4]) % 3;
+    myField[squareIdxGroupD[4]] = (stateCD / powerOfThree[3]) % 3;
+    myField[squareIdxGroupD[5]] = (stateCD / powerOfThree[2]) % 3;
+    myField[squareIdxGroupD[6]] = (stateCD / powerOfThree[1]) % 3;
+    myField[squareIdxGroupD[7]] = (stateCD / powerOfThree[0]) % 3;
 
     // apply symmetry operation on group A&B
-    applySymmetrieOperationOnField(reverseSymOperation[symmetryOperationCD[stateCD]], myField, symField);
+    applySymOpOnField(reverseSymOp[symOpCD[stateCD]], myField, symField);
 
     // translate symField[] to board->board[]
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         if (symField[i] == FREE_SQUARE)
             tv->field->board[i] = fieldStruct::squareIsFree;
-        else if (symField[i] == WHITE_STONE)
+        else if (symField[i] == WHITE_PIECE)
             tv->field->board[i] = tv->field->curPlayer->id;
         else
             tv->field->board[i] = tv->field->oppPlayer->id;
     }
 
-    // calc possible moves
-    tv->calcPossibleMoves(tv->field->curPlayer);
-    tv->calcPossibleMoves(tv->field->oppPlayer);
+    // calculate possible moves
+    tv->generateMoves(tv->field->curPlayer);
+    tv->generateMoves(tv->field->oppPlayer);
 
     // zero
-    for (i = 0; i < fieldStruct::size; i++) {
-        tv->field->stonePartOfMill[i] = 0;
+    for (i = 0; i < SQUARE_NB; i++) {
+        tv->field->piecePartOfMillCount[i] = 0;
     }
 
     // go in every direction
-    for (i = 0; i < fieldStruct::size; i++) {
-        tv->setWarningAndMill(i, tv->field->neighbour[i][0][0], tv->field->neighbour[i][0][1]);
-        tv->setWarningAndMill(i, tv->field->neighbour[i][1][0], tv->field->neighbour[i][1][1]);
+    for (i = 0; i < SQUARE_NB; i++) {
+        tv->setWarningAndMill(i, tv->field->neighbor[i][0][0],
+                              tv->field->neighbor[i][0][1]);
+        tv->setWarningAndMill(i, tv->field->neighbor[i][1][0],
+                              tv->field->neighbor[i][1][1]);
     }
 
     // since every mill was detected 3 times
-    for (i = 0; i < fieldStruct::size; i++)
-        tv->field->stonePartOfMill[i] /= 3;
+    for (i = 0; i < SQUARE_NB; i++)
+        tv->field->piecePartOfMillCount[i] /= 3;
 
     // count completed mills
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         if (tv->field->board[i] == tv->field->curPlayer->id)
-            numberOfMillsCurrentPlayer += tv->field->stonePartOfMill[i];
+            nMillsCurPlayer += tv->field->piecePartOfMillCount[i];
         else
-            numberOfMillsOpponentPlayer += tv->field->stonePartOfMill[i];
+            nMillsOpponentPlayer += tv->field->piecePartOfMillCount[i];
     }
 
-    numberOfMillsCurrentPlayer /= 3;
-    numberOfMillsOpponentPlayer /= 3;
+    nMillsCurPlayer /= 3;
+    nMillsOpponentPlayer /= 3;
 
-    // stonesSet & numStonesMissing
-    if (tv->field->settingPhase) {
-        // BUG: ... This calculation is not correct! It is possible that some mills did not cause a stone removal.
-        tv->field->curPlayer->numStonesMissing = numberOfMillsOpponentPlayer;
-        tv->field->oppPlayer->numStonesMissing = numberOfMillsCurrentPlayer - tv->field->stoneMustBeRemoved;
-        tv->field->stonesSet = tv->field->curPlayer->numStones + tv->field->oppPlayer->numStones + tv->field->curPlayer->numStonesMissing + tv->field->oppPlayer->numStonesMissing;
+    // piecePlacedCount & removedPiecesCount
+    if (tv->field->isPlacingPhase) {
+        // BUG: ... This calculation is not correct! It is possible that some
+        // mills did not cause a piece removal.
+        tv->field->curPlayer->removedPiecesCount = nMillsOpponentPlayer;
+        tv->field->oppPlayer->removedPiecesCount =
+            nMillsCurPlayer - tv->field->pieceMustBeRemovedCount;
+        tv->field->piecePlacedCount = tv->field->curPlayer->pieceCount +
+                                      tv->field->oppPlayer->pieceCount +
+                                      tv->field->curPlayer->removedPiecesCount +
+                                      tv->field->oppPlayer->removedPiecesCount;
     } else {
-        tv->field->stonesSet = 18;
-        tv->field->curPlayer->numStonesMissing = 9 - tv->field->curPlayer->numStones;
-        tv->field->oppPlayer->numStonesMissing = 9 - tv->field->oppPlayer->numStones;
+        tv->field->piecePlacedCount = 18;
+        tv->field->curPlayer->removedPiecesCount = 9 - tv->field->curPlayer
+                                                           ->pieceCount;
+        tv->field->oppPlayer->removedPiecesCount = 9 - tv->field->oppPlayer
+                                                           ->pieceCount;
     }
 
     // when opponent is unable to move than current player has won
-    if ((!tv->field->curPlayer->numPossibleMoves) && (!tv->field->settingPhase) && (!tv->field->stoneMustBeRemoved) && (tv->field->curPlayer->numStones > 3)) {
+    if (!tv->field->curPlayer->possibleMovesCount &&
+        !tv->field->isPlacingPhase && !tv->field->pieceMustBeRemovedCount &&
+        tv->field->curPlayer->pieceCount > 3) {
         tv->gameHasFinished = true;
         tv->shortValue = SKV_VALUE_GAME_LOST;
     }
-    if ((tv->field->curPlayer->numStones < 3) && (!tv->field->settingPhase)) {
+    if (tv->field->curPlayer->pieceCount < 3 && !tv->field->isPlacingPhase) {
         tv->gameHasFinished = true;
         tv->shortValue = SKV_VALUE_GAME_LOST;
     }
-    if ((tv->field->oppPlayer->numStones < 3) && (!tv->field->settingPhase)) {
+    if (tv->field->oppPlayer->pieceCount < 3 && !tv->field->isPlacingPhase) {
         tv->gameHasFinished = true;
         tv->shortValue = SKV_VALUE_GAME_WON;
     }
 
     tv->floatValue = tv->shortValue;
 
-    // precalc aStoneCanBeRemovedFromCurPlayer
-    for (aStoneCanBeRemovedFromCurPlayer = false, i = 0; i < tv->field->size; i++) {
-        if (tv->field->stonePartOfMill[i] == 0 && tv->field->board[i] == tv->field->curPlayer->id) {
-            aStoneCanBeRemovedFromCurPlayer = true;
+    // precalc aPieceCanBeRemovedFromCurPlayer
+    for (aPieceCanBeRemovedFromCurPlayer = false, i = 0; i < SQUARE_NB; i++) {
+        if (tv->field->piecePartOfMillCount[i] == 0 &&
+            tv->field->board[i] == tv->field->curPlayer->id) {
+            aPieceCanBeRemovedFromCurPlayer = true;
             break;
         }
     }
 
     // test if board is ok
-    return tv->fieldIntegrityOK(numberOfMillsCurrentPlayer, numberOfMillsOpponentPlayer, aStoneCanBeRemovedFromCurPlayer);
+    return tv->fieldIntegrityOK(nMillsCurPlayer, nMillsOpponentPlayer,
+                                aPieceCanBeRemovedFromCurPlayer);
 }
 
 //-----------------------------------------------------------------------------
-// calcPossibleMoves()
-// 
+// generateMoves()
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::ThreadVars::calcPossibleMoves(Player *player)
+void PerfectAI::ThreadVars::generateMoves(Player *player) const
 {
     // locals
-    unsigned int i, j, k, movingDirection;
+    uint32_t i, k, movingDirection;
 
-    for (player->numPossibleMoves = 0, i = 0; i < fieldStruct::size; i++) {
-        for (j = 0; j < fieldStruct::size; j++) {
-
-            // is stone from player ?
+    for (player->possibleMovesCount = 0, i = 0; i < SQUARE_NB; i++) {
+        for (uint32_t j = 0; j < SQUARE_NB; j++) {
+            // is piece from player ?
             if (field->board[i] != player->id)
                 continue;
 
-            // is destination free ?
+            // is dest free ?
             if (field->board[j] != field->squareIsFree)
                 continue;
 
-            // when current player has only 3 stones he is allowed to spring his stone
-            if (player->numStones > 3 || field->settingPhase) {
-
+            // when current player has only 3 pieces he is allowed to spring his
+            // piece
+            if (player->pieceCount > 3 || field->isPlacingPhase) {
                 // determine moving direction
-                for (k = 0, movingDirection = 4; k < 4; k++)
+                for (k = 0, movingDirection = MD_NB; k < MD_NB; k++)
                     if (field->connectedSquare[i][k] == j)
                         movingDirection = k;
 
@@ -1852,141 +2093,140 @@ void PerfectAI::ThreadVars::calcPossibleMoves(Player *player)
             }
 
             // everything is ok
-            player->numPossibleMoves++;
+            player->possibleMovesCount++;
         }
     }
 }
 
 //-----------------------------------------------------------------------------
 // setWarningAndMill()
-// 
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::ThreadVars::setWarningAndMill(unsigned int stone, unsigned int firstNeighbour, unsigned int secondNeighbour)
+void PerfectAI::ThreadVars::setWarningAndMill(uint32_t piece,
+                                              uint32_t firstNeighbor,
+                                              uint32_t secondNeighbor) const
 {
     // locals
-    int rowOwner = field->board[stone];
+    const int rowOwner = field->board[piece];
 
     // mill closed ?
-    if (rowOwner != field->squareIsFree && field->board[firstNeighbour] == rowOwner && field->board[secondNeighbour] == rowOwner) {
-
-        field->stonePartOfMill[stone]++;
-        field->stonePartOfMill[firstNeighbour]++;
-        field->stonePartOfMill[secondNeighbour]++;
+    if (rowOwner != field->squareIsFree &&
+        field->board[firstNeighbor] == rowOwner &&
+        field->board[secondNeighbor] == rowOwner) {
+        field->piecePartOfMillCount[piece]++;
+        field->piecePartOfMillCount[firstNeighbor]++;
+        field->piecePartOfMillCount[secondNeighbor]++;
     }
 }
 
 //-----------------------------------------------------------------------------
-// getOutputInformation()
-// 
+// getOutputInfo()
+//
 //-----------------------------------------------------------------------------
-string PerfectAI::getOutputInformation(unsigned int layerNum)
+string PerfectAI::getOutputInfo(uint32_t layerNum)
 {
     stringstream ss;
-    ss << " white stones : " << layer[layerNum].numWhiteStones << "  \tblack stones  : " << layer[layerNum].numBlackStones;
+    ss << " white pieces : " << layer[layerNum].whitePieceCount
+       << "  \tblack pieces  : " << layer[layerNum].blackPieceCount;
     return ss.str();
 }
 
 //-----------------------------------------------------------------------------
 // printBoard()
-// 
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::printBoard(unsigned int threadNo, unsigned char value)
+void PerfectAI::printBoard(uint32_t threadNo, unsigned char value)
 {
-    ThreadVars *tv = &threadVars[threadNo];
+    const ThreadVars *tv = &threadVars[threadNo];
     char wonStr[] = "WON";
     char lostStr[] = "LOST";
     char drawStr[] = "DRAW";
     char invStr[] = "INVALID";
-    char *table[4] = { invStr, lostStr, drawStr, wonStr };
+    char *table[4] = {invStr, lostStr, drawStr, wonStr};
 
     cout << "\nstate value             : " << table[value];
-    cout << "\nstones set              : " << tv->field->stonesSet << "\n";
+    cout << "\npieces set              : " << tv->field->piecePlacedCount
+         << "\n";
     tv->field->printBoard();
 }
 
 //-----------------------------------------------------------------------------
-// getField()
-// 
-//-----------------------------------------------------------------------------
-void PerfectAI::getField(unsigned int layerNum, unsigned int stateNumber, fieldStruct *field, bool *gameHasFinished)
-{
-    // set current desired state on thread zero
-    setSituation(0, layerNum, stateNumber);
-
-    // copy content of fieldStruct
-    threadVars[0].field->copyBoard(field);
-    if (gameHasFinished != nullptr)
-        *gameHasFinished = threadVars[0].gameHasFinished;
-}
-
-//-----------------------------------------------------------------------------
 // getLayerAndStateNumber()
-// 
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::getLayerAndStateNumber(unsigned int &layerNum, unsigned int &stateNumber /*, unsigned int& symmetryOperation*/)
+void PerfectAI::getLayerAndStateNumber(
+    uint32_t &layerNum, uint32_t &stateNumber /*, uint32_t& symOp*/) const
 {
-    /*symmetryOperation = */ threadVars[0].getLayerAndStateNumber(layerNum, stateNumber);
+    /*symOp = */ threadVars[0].getLayerAndStateNumber(layerNum, stateNumber);
 }
 
 //-----------------------------------------------------------------------------
 // setOpponentLevel()
-// 
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::setOpponentLevel(unsigned int threadNo, bool isOpponentLevel)
+void PerfectAI::setOpponentLevel(uint32_t threadNo, bool isOpponentLevel)
 {
     ThreadVars *tv = &threadVars[threadNo];
-    tv->ownId = isOpponentLevel ? tv->field->oppPlayer->id : tv->field->curPlayer->id;
+    tv->ownId = isOpponentLevel ? tv->field->oppPlayer->id :
+                                  tv->field->curPlayer->id;
 }
 
 //-----------------------------------------------------------------------------
 // getOpponentLevel()
-// 
+//
 //-----------------------------------------------------------------------------
-bool PerfectAI::getOpponentLevel(unsigned int threadNo)
+bool PerfectAI::getOpponentLevel(uint32_t threadNo)
 {
-    ThreadVars *tv = &threadVars[threadNo];
-    return (tv->ownId == tv->field->oppPlayer->id);
+    const ThreadVars *tv = &threadVars[threadNo];
+    return tv->ownId == tv->field->oppPlayer->id;
 }
 
 //-----------------------------------------------------------------------------
 // getPartnerLayer()
-// 
+//
 //-----------------------------------------------------------------------------
-unsigned int PerfectAI::getPartnerLayer(unsigned int layerNum)
+uint32_t PerfectAI::getPartnerLayer(uint32_t layerNum)
 {
-    if (layerNum < 100)
+    if (layerNum < 100) {
         for (int i = 0; i < 100; i++) {
-            if (layer[layerNum].numBlackStones == layer[i].numWhiteStones && layer[layerNum].numWhiteStones == layer[i].numBlackStones) {
+            if (layer[layerNum].blackPieceCount == layer[i].whitePieceCount &&
+                layer[layerNum].whitePieceCount == layer[i].blackPieceCount) {
                 return i;
             }
         }
+    }
     return layerNum;
 }
 
 //-----------------------------------------------------------------------------
 // getSuccLayers()
-// 
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::getSuccLayers(unsigned int layerNum, unsigned int *amountOfSuccLayers, unsigned int *succLayers)
+void PerfectAI::getSuccLayers(uint32_t layerNum, uint32_t *amountOfSuccLayers,
+                              uint32_t *succeedingLayers)
 {
     // locals
-    unsigned int i;
-    unsigned int shift = (layerNum >= 100) ? 100 : 0;
-    int diff = (layerNum >= 100) ? 1 : -1;
+    uint32_t i;
+    const uint32_t shift = layerNum >= 100 ? 100 : 0;
+    const int diff = layerNum >= 100 ? 1 : -1;
 
-    // search layer with one white stone less
+    // search layer with one white piece less
     for (*amountOfSuccLayers = 0, i = 0 + shift; i < 100 + shift; i++) {
-        if (layer[i].numWhiteStones == layer[layerNum].numBlackStones + diff && layer[i].numBlackStones == layer[layerNum].numWhiteStones) {
-            succLayers[*amountOfSuccLayers] = i;
+        if (layer[i].whitePieceCount ==
+                layer[layerNum].blackPieceCount + diff &&
+            layer[i].blackPieceCount == layer[layerNum].whitePieceCount) {
+            succeedingLayers[*amountOfSuccLayers] = i;
             *amountOfSuccLayers = *amountOfSuccLayers + 1;
             break;
         }
     }
 
-    // search layer with one black stone less
+    // search layer with one black piece less
     for (i = 0 + shift; i < 100 + shift; i++) {
-        if (layer[i].numWhiteStones == layer[layerNum].numBlackStones && layer[i].numBlackStones == layer[layerNum].numWhiteStones + diff) {
-            succLayers[*amountOfSuccLayers] = i;
+        if (layer[i].whitePieceCount == layer[layerNum].blackPieceCount &&
+            layer[i].blackPieceCount ==
+                layer[layerNum].whitePieceCount + diff) {
+            succeedingLayers[*amountOfSuccLayers] = i;
             *amountOfSuccLayers = *amountOfSuccLayers + 1;
             break;
         }
@@ -1995,89 +2235,113 @@ void PerfectAI::getSuccLayers(unsigned int layerNum, unsigned int *amountOfSuccL
 
 //-----------------------------------------------------------------------------
 // getSymStateNumWithDoubles()
-// 
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::getSymStateNumWithDoubles(unsigned int threadNo, unsigned int *numSymmetricStates, unsigned int **symStateNumbers)
+void PerfectAI::getSymStateNumWithDoubles(uint32_t threadNo,
+                                          uint32_t *nSymStates,
+                                          uint32_t **symStateNumbers)
 {
     // locals
-    ThreadVars *tv = &threadVars[threadNo];
-    int originalField[fieldStruct::size];
-    unsigned int originalPartOfMill[fieldStruct::size];
-    unsigned int i, symmetryOperation;
-    unsigned int layerNum, stateNum;
+    const ThreadVars *tv = &threadVars[threadNo];
+    int origField[SQUARE_NB];
+    uint32_t origPartOfMill[SQUARE_NB];
+    uint32_t i;
+    uint32_t layerNum, stateNum;
 
-    *numSymmetricStates = 0;
-    *symStateNumbers = symmetricStateNumberArray;
+    *nSymStates = 0;
+    *symStateNumbers = symStateNumberArray;
 
     // save current board
-    for (i = 0; i < fieldStruct::size; i++) {
-        originalField[i] = tv->field->board[i];
-        originalPartOfMill[i] = tv->field->stonePartOfMill[i];
+    for (i = 0; i < SQUARE_NB; i++) {
+        origField[i] = tv->field->board[i];
+        origPartOfMill[i] = tv->field->piecePartOfMillCount[i];
     }
 
-    // add all symmetric states
-    for (symmetryOperation = 0; symmetryOperation < NUM_SYM_OPERATIONS; symmetryOperation++) {
-
-        // appy symmetry operation
-        applySymmetrieOperationOnField(symmetryOperation, (unsigned int *)originalField, (unsigned int *)tv->field->board);
-        applySymmetrieOperationOnField(symmetryOperation, (unsigned int *)originalPartOfMill, (unsigned int *)tv->field->stonePartOfMill);
+    // add all sym states
+    for (uint32_t symOp = 0; symOp < SO_COUNT; symOp++) {
+        // apply symmetry operation
+        applySymOpOnField(symOp, reinterpret_cast<uint32_t *>(origField),
+                          reinterpret_cast<uint32_t *>(tv->field->board));
+        applySymOpOnField(symOp, origPartOfMill,
+                          tv->field->piecePartOfMillCount);
 
         getLayerAndStateNumber(threadNo, layerNum, stateNum);
-        symmetricStateNumberArray[*numSymmetricStates] = stateNum;
-        (*numSymmetricStates)++;
+        symStateNumberArray[*nSymStates] = stateNum;
+        (*nSymStates)++;
     }
 
-    // restore original board
-    for (i = 0; i < fieldStruct::size; i++) {
-        tv->field->board[i] = originalField[i];
-        tv->field->stonePartOfMill[i] = originalPartOfMill[i];
+    // restore orig board
+    for (i = 0; i < SQUARE_NB; i++) {
+        tv->field->board[i] = origField[i];
+        tv->field->piecePartOfMillCount[i] = origPartOfMill[i];
     }
 }
 
 //-----------------------------------------------------------------------------
 // fieldIntegrityOK()
-// 
+//
 //-----------------------------------------------------------------------------
-bool PerfectAI::ThreadVars::fieldIntegrityOK(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, bool aStoneCanBeRemovedFromCurPlayer)
+bool PerfectAI::ThreadVars::fieldIntegrityOK(
+    uint32_t nMillsCurPlayer, uint32_t nMillsOpponentPlayer,
+    bool aPieceCanBeRemovedFromCurPlayer) const
 {
     // locals
     int i, j;
     bool noneFullFilled;
 
-    // when stone is going to be removed than at least one opponent stone mustn't be part of a mill
-    if (numberOfMillsOpponentPlayer > 0 && field->stoneMustBeRemoved) {
-        for (i = 0; i < field->size; i++)
-            if (field->stonePartOfMill[i] == 0 && field->oppPlayer->id == field->board[i])
+    // when piece is going to be removed than at least one opponent piece
+    // mustn't be part of a mill
+    if (nMillsOpponentPlayer > 0 && field->pieceMustBeRemovedCount) {
+        for (i = 0; i < SQUARE_NB; i++)
+            if (field->piecePartOfMillCount[i] == 0 &&
+                field->oppPlayer->id == field->board[i])
                 break;
-        if (i == field->size)
+        if (i == SQUARE_NB)
             return false;
     }
 
-    // when no mill is closed than no stone can be removed
-    if (field->stoneMustBeRemoved && numberOfMillsCurrentPlayer == 0) {
+    // when no mill is closed than no piece can be removed
+    if (field->pieceMustBeRemovedCount && nMillsCurPlayer == 0) {
         return false;
 
-        // when in setting phase and difference in number of stones between the two players is not
-    } else if (field->settingPhase) {
+        // when in placing phase and difference in number of pieces between the
+        // two players is not
+    }
 
+    if (field->isPlacingPhase) {
         // Version 8: added for-loop
         noneFullFilled = true;
 
-        for (i = 0; noneFullFilled && i <= (int)numberOfMillsOpponentPlayer && i <= (int)numberOfMillsCurrentPlayer; i++) {
-            for (j = 0; noneFullFilled && j <= (int)numberOfMillsOpponentPlayer && j <= (int)numberOfMillsCurrentPlayer - (int)field->stoneMustBeRemoved; j++) {
-                if (field->curPlayer->numStones + numberOfMillsOpponentPlayer + 0 - field->stoneMustBeRemoved - j == field->oppPlayer->numStones + numberOfMillsCurrentPlayer - field->stoneMustBeRemoved - i)
+        for (i = 0;
+             noneFullFilled && i <= static_cast<int>(nMillsOpponentPlayer) &&
+             i <= static_cast<int>(nMillsCurPlayer);
+             i++) {
+            for (j = 0;
+                 noneFullFilled &&
+                 j <= static_cast<int>(nMillsOpponentPlayer) &&
+                 j <= static_cast<int>(nMillsCurPlayer) -
+                          static_cast<int>(field->pieceMustBeRemovedCount);
+                 j++) {
+                if (field->curPlayer->pieceCount + nMillsOpponentPlayer + 0 -
+                        field->pieceMustBeRemovedCount - j ==
+                    field->oppPlayer->pieceCount + nMillsCurPlayer -
+                        field->pieceMustBeRemovedCount - i)
                     noneFullFilled = false;
-                if (field->curPlayer->numStones + numberOfMillsOpponentPlayer + 1 - field->stoneMustBeRemoved - j == field->oppPlayer->numStones + numberOfMillsCurrentPlayer - field->stoneMustBeRemoved - i)
+                if (field->curPlayer->pieceCount + nMillsOpponentPlayer + 1 -
+                        field->pieceMustBeRemovedCount - j ==
+                    field->oppPlayer->pieceCount + nMillsCurPlayer -
+                        field->pieceMustBeRemovedCount - i)
                     noneFullFilled = false;
             }
         }
 
-        if (noneFullFilled || field->stonesSet >= 18) {
+        if (noneFullFilled || field->piecePlacedCount >= 18) {
             return false;
         }
 
         // moving phase
-    } else if (!field->settingPhase && (field->curPlayer->numStones < 2 || field->oppPlayer->numStones < 2)) {
+    } else if (!field->isPlacingPhase && (field->curPlayer->pieceCount < 2 ||
+                                          field->oppPlayer->pieceCount < 2)) {
         return false;
     }
 
@@ -2085,61 +2349,59 @@ bool PerfectAI::ThreadVars::fieldIntegrityOK(unsigned int numberOfMillsCurrentPl
 }
 
 //-----------------------------------------------------------------------------
-// isSymOperationInvariantOnGroupCD()
-// 
+// isSymOpInvariantOnGroupCD()
+//
 //-----------------------------------------------------------------------------
-bool PerfectAI::isSymOperationInvariantOnGroupCD(unsigned int symmetryOperation, int *theField)
+bool PerfectAI::isSymOpInvariantOnGroupCD(uint32_t symOp,
+                                          const int *theField) const
 {
-    // locals
-    unsigned int i;
-
-    i = squareIndexGroupC[0];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    uint32_t i = squareIdxGroupC[0];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupC[1];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupC[1];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupC[2];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupC[2];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupC[3];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupC[3];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupC[4];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupC[4];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupC[5];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupC[5];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupC[6];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupC[6];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupC[7];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupC[7];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupD[0];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupD[0];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupD[1];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupD[1];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupD[2];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupD[2];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupD[3];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupD[3];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupD[4];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupD[4];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupD[5];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupD[5];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupD[6];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupD[6];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
-    i = squareIndexGroupD[7];
-    if (theField[i] != theField[symmetryOperationTable[symmetryOperation][i]])
+    i = squareIdxGroupD[7];
+    if (theField[i] != theField[symOpTable[symOp][i]])
         return false;
 
     return true;
@@ -2147,152 +2409,173 @@ bool PerfectAI::isSymOperationInvariantOnGroupCD(unsigned int symmetryOperation,
 
 //-----------------------------------------------------------------------------
 // storePredecessor()
-// 
+//
 //-----------------------------------------------------------------------------
-void PerfectAI::ThreadVars::storePredecessor(unsigned int numberOfMillsCurrentPlayer, unsigned int numberOfMillsOpponentPlayer, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars)
+void PerfectAI::ThreadVars::storePredecessor(
+    uint32_t nMillsCurPlayer, uint32_t nMillsOpponentPlayer,
+    uint32_t *amountOfPred, RetroAnalysisPredVars *predVars) const
 {
     // locals
-    int originalField[fieldStruct::size];
-    unsigned int i, symmetryOperation, symOpApplied;
-    unsigned int predLayerNum, predStateNum;
-    unsigned int originalAmountOfPred = *amountOfPred;
+    int origField[SQUARE_NB];
+    uint32_t i, symOp, symOpApplied;
+    uint32_t predLayerNum, predStateNum;
+    const uint32_t origAmountOfPred = *amountOfPred;
 
     // store only if state is valid
-    if (fieldIntegrityOK(numberOfMillsCurrentPlayer, numberOfMillsOpponentPlayer, false)) {
-
+    if (fieldIntegrityOK(nMillsCurPlayer, nMillsOpponentPlayer, false)) {
         // save current board
-        for (i = 0; i < fieldStruct::size; i++)
-            originalField[i] = field->board[i];
+        for (i = 0; i < SQUARE_NB; i++)
+            origField[i] = field->board[i];
 
-        // add all symmetric states
-        for (symmetryOperation = 0; symmetryOperation < NUM_SYM_OPERATIONS; symmetryOperation++) {
-
+        // add all sym states
+        for (symOp = 0; symOp < SO_COUNT; symOp++) {
             // ...
-            if (symmetryOperation == SO_DO_NOTHING || parent->isSymOperationInvariantOnGroupCD(symmetryOperation, originalField)) {
+            if (symOp == SO_DO_NOTHING ||
+                parent->isSymOpInvariantOnGroupCD(symOp, origField)) {
+                // apply symmetry operation
+                parent->applySymOpOnField(
+                    symOp, reinterpret_cast<uint32_t *>(origField),
+                    reinterpret_cast<uint32_t *>(field->board));
 
-                // appy symmetry operation
-                parent->applySymmetrieOperationOnField(symmetryOperation, (unsigned int *)originalField, (unsigned int *)field->board);
-
-                symOpApplied = getLayerAndStateNumber(predLayerNum, predStateNum);
-                predVars[*amountOfPred].predSymOperation = parent->concSymOperation[symmetryOperation][symOpApplied];
+                symOpApplied = getLayerAndStateNumber(predLayerNum,
+                                                      predStateNum);
+                predVars[*amountOfPred].predSymOp =
+                    parent->concSymOp[symOp][symOpApplied];
                 predVars[*amountOfPred].predLayerNumbers = predLayerNum;
                 predVars[*amountOfPred].predStateNumbers = predStateNum;
-                predVars[*amountOfPred].playerToMoveChanged = predVars[originalAmountOfPred].playerToMoveChanged;
+                predVars[*amountOfPred].playerToMoveChanged =
+                    predVars[origAmountOfPred].playerToMoveChanged;
 
                 // add only if not already in list
-                for (i = 0; i < (*amountOfPred); i++)
-                    if (predVars[i].predLayerNumbers == predLayerNum && predVars[i].predStateNumbers == predStateNum)
+                for (i = 0; i < *amountOfPred; i++)
+                    if (predVars[i].predLayerNumbers == predLayerNum &&
+                        predVars[i].predStateNumbers == predStateNum)
                         break;
                 if (i == *amountOfPred)
                     (*amountOfPred)++;
             }
         }
 
-        // restore original board
-        for (i = 0; i < fieldStruct::size; i++)
-            field->board[i] = originalField[i];
+        // restore orig board
+        for (i = 0; i < SQUARE_NB; i++)
+            field->board[i] = origField[i];
     }
 }
 
 //-----------------------------------------------------------------------------
 // getPredecessors()
-// CAUTION: States musn't be returned twice.
+// CAUTION: States mustn't be returned twice.
 //-----------------------------------------------------------------------------
-void PerfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPred, RetroAnalysisPredVars *predVars)
+void PerfectAI::getPredecessors(uint32_t threadNo, uint32_t *amountOfPred,
+                                RetroAnalysisPredVars *predVars)
 {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // the important variables, which much be updated for the getLayerAndStateNumber function are the following ones:
-    // - board->curPlayer->numStones
-    // - board->oppPlayer->numStones
+    ////////////////////////////////////////////////////////////////////////////
+    // the important variables, which much be updated for the
+    // getLayerAndStateNumber function are the following ones:
+    // - board->curPlayer->pieceCount
+    // - board->oppPlayer->pieceCount
     // - board->curPlayer->id
     // - board->board
-    // - board->stoneMustBeRemoved
-    // - board->settingPhase
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // - board->pieceMustBeRemovedCount
+    // - board->isPlacingPhase
+    ////////////////////////////////////////////////////////////////////////////
 
     // locals
-    ThreadVars *tv = &threadVars[threadNo];
-    bool aStoneCanBeRemovedFromCurPlayer;
+    const ThreadVars *tv = &threadVars[threadNo];
+    bool aPieceCanBeRemovedFromCurPlayer;
     bool millWasClosed;
-    unsigned int from, to, dir, i;
+    uint32_t from, to, dir, i;
     Player *tmpPlayer;
-    unsigned int numberOfMillsCurrentPlayer = 0;
-    unsigned int numberOfMillsOpponentPlayer = 0;
+    uint32_t nMillsCurPlayer = 0;
+    uint32_t nMillsOpponentPlayer = 0;
 
     // zero
     *amountOfPred = 0;
 
     // count completed mills
-    for (i = 0; i < fieldStruct::size; i++) {
+    for (i = 0; i < SQUARE_NB; i++) {
         if (tv->field->board[i] == tv->field->curPlayer->id)
-            numberOfMillsCurrentPlayer += tv->field->stonePartOfMill[i];
+            nMillsCurPlayer += tv->field->piecePartOfMillCount[i];
         else
-            numberOfMillsOpponentPlayer += tv->field->stonePartOfMill[i];
+            nMillsOpponentPlayer += tv->field->piecePartOfMillCount[i];
     }
 
-    numberOfMillsCurrentPlayer /= 3;
-    numberOfMillsOpponentPlayer /= 3;
+    nMillsCurPlayer /= 3;
+    nMillsOpponentPlayer /= 3;
 
-    // precalc aStoneCanBeRemovedFromCurPlayer
-    for (aStoneCanBeRemovedFromCurPlayer = false, i = 0; i < tv->field->size; i++) {
-        if (tv->field->stonePartOfMill[i] == 0 && tv->field->board[i] == tv->field->curPlayer->id) {
-            aStoneCanBeRemovedFromCurPlayer = true;
+    // precalc aPieceCanBeRemovedFromCurPlayer
+    for (aPieceCanBeRemovedFromCurPlayer = false, i = 0; i < SQUARE_NB; i++) {
+        if (tv->field->piecePartOfMillCount[i] == 0 &&
+            tv->field->board[i] == tv->field->curPlayer->id) {
+            aPieceCanBeRemovedFromCurPlayer = true;
             break;
         }
     }
 
     // was a mill closed?
-    if (tv->field->stoneMustBeRemoved)
+    if (tv->field->pieceMustBeRemovedCount)
         millWasClosed = true;
     else
         millWasClosed = false;
 
     // in moving phase
-    if (!tv->field->settingPhase && tv->field->curPlayer->numStones >= 3 && tv->field->oppPlayer->numStones >= 3) {
-
+    if (!tv->field->isPlacingPhase && tv->field->curPlayer->pieceCount >= 3 &&
+        tv->field->oppPlayer->pieceCount >= 3) {
         // normal move
-        if ((tv->field->stoneMustBeRemoved && tv->field->curPlayer->numStones > 3) || (!tv->field->stoneMustBeRemoved && tv->field->oppPlayer->numStones > 3)) {
-
-            // when game has finished then because current player can't move anymore or has less then 3 stones
-            if (!tv->gameHasFinished || tv->field->curPlayer->numPossibleMoves == 0) {
-
-                // test each destination
-                for (to = 0; to < tv->field->size; to++) {
-
-                    // was opponent player stone owner?
-                    if (tv->field->board[to] != (tv->field->stoneMustBeRemoved ? tv->field->curPlayer->id : tv->field->oppPlayer->id))
+        if ((tv->field->pieceMustBeRemovedCount &&
+             tv->field->curPlayer->pieceCount > 3) ||
+            (!tv->field->pieceMustBeRemovedCount &&
+             tv->field->oppPlayer->pieceCount > 3)) {
+            // when game has finished then because current player can't move
+            // anymore or has less then 3 pieces
+            if (!tv->gameHasFinished ||
+                tv->field->curPlayer->possibleMovesCount == 0) {
+                // test each dest
+                for (to = 0; to < SQUARE_NB; to++) {
+                    // was opponent player piece owner?
+                    if (tv->field->board[to] !=
+                        (tv->field->pieceMustBeRemovedCount ?
+                             tv->field->curPlayer->id :
+                             tv->field->oppPlayer->id))
                         continue;
 
-                    // when stone is going to be removed than a mill must be closed
-                    if (tv->field->stoneMustBeRemoved && tv->field->stonePartOfMill[to] == 0)
+                    // when piece is going to be removed than a mill must be
+                    // closed
+                    if (tv->field->pieceMustBeRemovedCount &&
+                        tv->field->piecePartOfMillCount[to] == 0)
                         continue;
 
-                    // when stone is part of a mill then a stone must be removed
-                    if (aStoneCanBeRemovedFromCurPlayer && tv->field->stoneMustBeRemoved == 0 && tv->field->stonePartOfMill[to])
+                    // when piece is part of a mill then a piece must be removed
+                    if (aPieceCanBeRemovedFromCurPlayer &&
+                        tv->field->pieceMustBeRemovedCount == 0 &&
+                        tv->field->piecePartOfMillCount[to])
                         continue;
 
                     // test each direction
-                    for (dir = 0; dir < 4; dir++) {
-
+                    for (dir = 0; dir < MD_NB; dir++) {
                         // origin
                         from = tv->field->connectedSquare[to][dir];
 
                         // move possible ?
-                        if (from < tv->field->size && tv->field->board[from] == tv->field->squareIsFree) {
-
+                        if (from < SQUARE_NB &&
+                            tv->field->board[from] == tv->field->squareIsFree) {
                             if (millWasClosed) {
-                                numberOfMillsCurrentPlayer -= tv->field->stonePartOfMill[to];
-                                tv->field->stoneMustBeRemoved = 0;
-                                predVars[*amountOfPred].playerToMoveChanged = false;
+                                nMillsCurPlayer -=
+                                    tv->field->piecePartOfMillCount[to];
+                                tv->field->pieceMustBeRemovedCount = 0;
+                                predVars[*amountOfPred].playerToMoveChanged =
+                                    false;
                             } else {
-                                predVars[*amountOfPred].playerToMoveChanged = true;
+                                predVars[*amountOfPred].playerToMoveChanged =
+                                    true;
                                 tmpPlayer = tv->field->curPlayer;
                                 tv->field->curPlayer = tv->field->oppPlayer;
                                 tv->field->oppPlayer = tmpPlayer;
-                                i = numberOfMillsCurrentPlayer;
-                                numberOfMillsCurrentPlayer = numberOfMillsOpponentPlayer;
-                                numberOfMillsOpponentPlayer = i;
-                                numberOfMillsCurrentPlayer -= tv->field->stonePartOfMill[to];
+                                i = nMillsCurPlayer;
+                                nMillsCurPlayer = nMillsOpponentPlayer;
+                                nMillsOpponentPlayer = i;
+                                nMillsCurPlayer -=
+                                    tv->field->piecePartOfMillCount[to];
                             }
 
                             // make move
@@ -2300,23 +2583,27 @@ void PerfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPre
                             tv->field->board[to] = tv->field->squareIsFree;
 
                             // store predecessor
-                            tv->storePredecessor(numberOfMillsCurrentPlayer, numberOfMillsOpponentPlayer, amountOfPred, predVars);
+                            tv->storePredecessor(nMillsCurPlayer,
+                                                 nMillsOpponentPlayer,
+                                                 amountOfPred, predVars);
 
                             // undo move
                             tv->field->board[to] = tv->field->board[from];
                             tv->field->board[from] = tv->field->squareIsFree;
 
                             if (millWasClosed) {
-                                numberOfMillsCurrentPlayer += tv->field->stonePartOfMill[to];
-                                tv->field->stoneMustBeRemoved = 1;
+                                nMillsCurPlayer +=
+                                    tv->field->piecePartOfMillCount[to];
+                                tv->field->pieceMustBeRemovedCount = 1;
                             } else {
                                 tmpPlayer = tv->field->curPlayer;
                                 tv->field->curPlayer = tv->field->oppPlayer;
                                 tv->field->oppPlayer = tmpPlayer;
-                                numberOfMillsCurrentPlayer += tv->field->stonePartOfMill[to];
-                                i = numberOfMillsCurrentPlayer;
-                                numberOfMillsCurrentPlayer = numberOfMillsOpponentPlayer;
-                                numberOfMillsOpponentPlayer = i;
+                                nMillsCurPlayer +=
+                                    tv->field->piecePartOfMillCount[to];
+                                i = nMillsCurPlayer;
+                                nMillsCurPlayer = nMillsOpponentPlayer;
+                                nMillsOpponentPlayer = i;
                             }
 
                             // current or opponent player were allowed to spring
@@ -2326,42 +2613,47 @@ void PerfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPre
             }
 
         } else if (!tv->gameHasFinished) {
-
-            // test each destination
-            for (to = 0; to < tv->field->size; to++) {
-
-                // when stone must be removed than current player closed a mill, otherwise the opponent did a common spring move
-                if (tv->field->board[to] != (tv->field->stoneMustBeRemoved ? tv->field->curPlayer->id : tv->field->oppPlayer->id))
+            // test each dest
+            for (to = 0; to < SQUARE_NB; to++) {
+                // when piece must be removed than current player closed a mill,
+                // otherwise the opponent did a common spring move
+                if (tv->field->board[to] !=
+                    (tv->field->pieceMustBeRemovedCount ?
+                         tv->field->curPlayer->id :
+                         tv->field->oppPlayer->id))
                     continue;
 
-                // when stone is going to be removed than a mill must be closed
-                if (tv->field->stoneMustBeRemoved && tv->field->stonePartOfMill[to] == 0)
+                // when piece is going to be removed than a mill must be closed
+                if (tv->field->pieceMustBeRemovedCount &&
+                    tv->field->piecePartOfMillCount[to] == 0)
                     continue;
 
-                // when stone is part of a mill then a stone must be removed
-                if (aStoneCanBeRemovedFromCurPlayer && tv->field->stoneMustBeRemoved == 0 && tv->field->stonePartOfMill[to])
+                // when piece is part of a mill then a piece must be removed
+                if (aPieceCanBeRemovedFromCurPlayer &&
+                    tv->field->pieceMustBeRemovedCount == 0 &&
+                    tv->field->piecePartOfMillCount[to])
                     continue;
 
                 // test each direction
-                for (from = 0; from < tv->field->size; from++) {
-
+                for (from = 0; from < SQUARE_NB; from++) {
                     // move possible ?
                     if (tv->field->board[from] == tv->field->squareIsFree) {
-
                         // was a mill closed?
                         if (millWasClosed) {
-                            numberOfMillsCurrentPlayer -= tv->field->stonePartOfMill[to];
-                            tv->field->stoneMustBeRemoved = 0;
+                            nMillsCurPlayer -= tv->field
+                                                   ->piecePartOfMillCount[to];
+                            tv->field->pieceMustBeRemovedCount = 0;
                             predVars[*amountOfPred].playerToMoveChanged = false;
                         } else {
                             predVars[*amountOfPred].playerToMoveChanged = true;
                             tmpPlayer = tv->field->curPlayer;
                             tv->field->curPlayer = tv->field->oppPlayer;
                             tv->field->oppPlayer = tmpPlayer;
-                            i = numberOfMillsCurrentPlayer;
-                            numberOfMillsCurrentPlayer = numberOfMillsOpponentPlayer;
-                            numberOfMillsOpponentPlayer = i;
-                            numberOfMillsCurrentPlayer -= tv->field->stonePartOfMill[to];
+                            i = nMillsCurPlayer;
+                            nMillsCurPlayer = nMillsOpponentPlayer;
+                            nMillsOpponentPlayer = i;
+                            nMillsCurPlayer -= tv->field
+                                                   ->piecePartOfMillCount[to];
                         }
 
                         // make move
@@ -2369,23 +2661,27 @@ void PerfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPre
                         tv->field->board[to] = tv->field->squareIsFree;
 
                         // store predecessor
-                        tv->storePredecessor(numberOfMillsCurrentPlayer, numberOfMillsOpponentPlayer, amountOfPred, predVars);
+                        tv->storePredecessor(nMillsCurPlayer,
+                                             nMillsOpponentPlayer, amountOfPred,
+                                             predVars);
 
                         // undo move
                         tv->field->board[to] = tv->field->board[from];
                         tv->field->board[from] = tv->field->squareIsFree;
 
                         if (millWasClosed) {
-                            numberOfMillsCurrentPlayer += tv->field->stonePartOfMill[to];
-                            tv->field->stoneMustBeRemoved = 1;
+                            nMillsCurPlayer += tv->field
+                                                   ->piecePartOfMillCount[to];
+                            tv->field->pieceMustBeRemovedCount = 1;
                         } else {
                             tmpPlayer = tv->field->curPlayer;
                             tv->field->curPlayer = tv->field->oppPlayer;
                             tv->field->oppPlayer = tmpPlayer;
-                            numberOfMillsCurrentPlayer += tv->field->stonePartOfMill[to];
-                            i = numberOfMillsCurrentPlayer;
-                            numberOfMillsCurrentPlayer = numberOfMillsOpponentPlayer;
-                            numberOfMillsOpponentPlayer = i;
+                            nMillsCurPlayer += tv->field
+                                                   ->piecePartOfMillCount[to];
+                            i = nMillsCurPlayer;
+                            nMillsCurPlayer = nMillsOpponentPlayer;
+                            nMillsOpponentPlayer = i;
                         }
                     }
                 }
@@ -2393,25 +2689,31 @@ void PerfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPre
         }
     }
 
-    // was a stone removed ?
-    if (tv->field->curPlayer->numStones < 9 && tv->field->curPlayer->numStonesMissing > 0 && tv->field->stoneMustBeRemoved == 0) {
-
+    // was a piece removed ?
+    if (tv->field->curPlayer->pieceCount < 9 &&
+        tv->field->curPlayer->removedPiecesCount > 0 &&
+        tv->field->pieceMustBeRemovedCount == 0) {
         // has opponent player a closed mill ?
-        if (numberOfMillsOpponentPlayer) {
-
-            // from each free position the opponent could have removed a stone from the current player
-            for (from = 0; from < tv->field->size; from++) {
-
+        if (nMillsOpponentPlayer) {
+            // from each free position the opponent could have removed a piece
+            // from the current player
+            for (from = 0; from < SQUARE_NB; from++) {
                 // square free?
                 if (tv->field->board[from] == tv->field->squareIsFree) {
-
-                    // stone mustn't be part of mill
-                    if ((!(tv->field->board[tv->field->neighbour[from][0][0]] == tv->field->curPlayer->id && tv->field->board[tv->field->neighbour[from][0][1]] == tv->field->curPlayer->id)) && (!(tv->field->board[tv->field->neighbour[from][1][0]] == tv->field->curPlayer->id && tv->field->board[tv->field->neighbour[from][1][1]] == tv->field->curPlayer->id))) {
-                        // put back stone
-                        tv->field->stoneMustBeRemoved = 1;
+                    // piece mustn't be part of mill
+                    if ((!(tv->field->board[tv->field->neighbor[from][0][0]] ==
+                               tv->field->curPlayer->id &&
+                           tv->field->board[tv->field->neighbor[from][0][1]] ==
+                               tv->field->curPlayer->id)) &&
+                        (!(tv->field->board[tv->field->neighbor[from][1][0]] ==
+                               tv->field->curPlayer->id &&
+                           tv->field->board[tv->field->neighbor[from][1][1]] ==
+                               tv->field->curPlayer->id))) {
+                        // put back piece
+                        tv->field->pieceMustBeRemovedCount = 1;
                         tv->field->board[from] = tv->field->curPlayer->id;
-                        tv->field->curPlayer->numStones++;
-                        tv->field->curPlayer->numStonesMissing--;
+                        tv->field->curPlayer->pieceCount++;
+                        tv->field->curPlayer->removedPiecesCount--;
 
                         // it was an opponent move
                         predVars[*amountOfPred].playerToMoveChanged = true;
@@ -2420,402 +2722,33 @@ void PerfectAI::getPredecessors(unsigned int threadNo, unsigned int *amountOfPre
                         tv->field->oppPlayer = tmpPlayer;
 
                         // store predecessor
-                        tv->storePredecessor(numberOfMillsOpponentPlayer, numberOfMillsCurrentPlayer, amountOfPred, predVars);
+                        tv->storePredecessor(nMillsOpponentPlayer,
+                                             nMillsCurPlayer, amountOfPred,
+                                             predVars);
 
                         tmpPlayer = tv->field->curPlayer;
                         tv->field->curPlayer = tv->field->oppPlayer;
                         tv->field->oppPlayer = tmpPlayer;
 
-                        // remove stone again
-                        tv->field->stoneMustBeRemoved = 0;
+                        // remove piece again
+                        tv->field->pieceMustBeRemovedCount = 0;
                         tv->field->board[from] = tv->field->squareIsFree;
-                        tv->field->curPlayer->numStones--;
-                        tv->field->curPlayer->numStonesMissing++;
+                        tv->field->curPlayer->pieceCount--;
+                        tv->field->curPlayer->removedPiecesCount++;
                     }
                 }
             }
         }
     }
-}
-
-//-----------------------------------------------------------------------------
-// checkMoveAndSetSituation()
-// 
-//-----------------------------------------------------------------------------
-bool PerfectAI::checkMoveAndSetSituation()
-{
-    // locals
-    bool aStoneCanBeRemovedFromCurPlayer;
-    unsigned int numberOfMillsCurrentPlayer, numberOfMillsOpponentPlayer;
-    unsigned int stateNum, layerNum, curMove, i;
-    unsigned int *idPossibility;
-    unsigned int numPossibilities;
-    bool isOpponentLevel;
-    void *pPossibilities;
-    void *pBackup;
-    unsigned int threadNo = 0;
-    ThreadVars *tv = &threadVars[threadNo];
-
-    // output
-    cout << endl
-        << "checkMoveAndSetSituation()" << endl;
-
-    // test if each successor from getPossibilities() leads to the original state using getPredecessors()
-    for (layerNum = 0; layerNum < NUM_LAYERS; layerNum++) {
-
-        // generate random state
-        cout << endl
-            << "TESTING LAYER: " << layerNum;
-        if (layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex == 0)
-            continue;
-
-        // test each state of layer
-        for (stateNum = 0; stateNum < (layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + 1) * MAX_NUM_STONES_REMOVED_MINUS_1; stateNum++) {
-
-            // set situation
-            if (stateNum % OUTPUT_EVERY_N_STATES == 0)
-                cout << endl
-                << "TESTING STATE " << stateNum << " OF " << (layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + 1) * MAX_NUM_STONES_REMOVED_MINUS_1;
-            if (!setSituation(threadNo, layerNum, stateNum))
-                continue;
-
-            // get all possible moves
-            idPossibility = getPossibilities(threadNo, &numPossibilities, &isOpponentLevel, &pPossibilities);
-
-            // go to each successor state
-            for (curMove = 0; curMove < numPossibilities; curMove++) {
-
-                // move
-                move(threadNo, idPossibility[curMove], isOpponentLevel, &pBackup, pPossibilities);
-
-                // count completed mills
-                numberOfMillsCurrentPlayer = 0;
-                numberOfMillsOpponentPlayer = 0;
-
-                for (i = 0; i < fieldStruct::size; i++) {
-                    if (tv->field->board[i] == tv->field->curPlayer->id)
-                        numberOfMillsCurrentPlayer += tv->field->stonePartOfMill[i];
-                    else
-                        numberOfMillsOpponentPlayer += tv->field->stonePartOfMill[i];
-                }
-
-                numberOfMillsCurrentPlayer /= 3;
-                numberOfMillsOpponentPlayer /= 3;
-
-                // precalc aStoneCanBeRemovedFromCurPlayer
-                for (aStoneCanBeRemovedFromCurPlayer = false, i = 0; i < tv->field->size; i++) {
-                    if (tv->field->stonePartOfMill[i] == 0 && tv->field->board[i] == tv->field->curPlayer->id) {
-                        aStoneCanBeRemovedFromCurPlayer = true;
-                        break;
-                    }
-                }
-
-                //
-                if (tv->fieldIntegrityOK(numberOfMillsCurrentPlayer, numberOfMillsOpponentPlayer, aStoneCanBeRemovedFromCurPlayer) == false) {
-                    cout << endl
-                        << "ERROR: STATE " << stateNum << " REACHED WITH move(), BUT IS INVALID!";
-                    //return false;
-                }
-
-                // undo move
-                undo(threadNo, idPossibility[curMove], isOpponentLevel, pBackup, pPossibilities);
-            }
-        }
-        cout << endl
-            << "LAYER OK: " << layerNum << endl;
-    }
-
-    // free mem
-    return true;
-}
-
-//-----------------------------------------------------------------------------
-// checkGetPossThanGetPred()
-// 
-//-----------------------------------------------------------------------------
-bool PerfectAI::checkGetPossThanGetPred()
-{
-    // locals
-    unsigned int stateNum, layerNum, i, j;
-    unsigned int *idPossibility;
-    unsigned int numPossibilities;
-    unsigned int amountOfPred;
-    bool isOpponentLevel;
-    void *pPossibilities;
-    void *pBackup;
-    RetroAnalysisPredVars predVars[MAX_NUM_PREDECESSORS];
-    unsigned int threadNo = 0;
-    //ThreadVars *tv = &threadVars[threadNo];
-
-    // test if each successor from getPossibilities() leads to the original state using getPredecessors()
-    for (layerNum = 0; layerNum < NUM_LAYERS; layerNum++) {
-
-        // generate random state
-        cout << endl
-            << "TESTING LAYER: " << layerNum;
-        if (layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex == 0)
-            continue;
-
-        // test each state of layer
-        for (stateNum = 0; stateNum < (layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + 1) * MAX_NUM_STONES_REMOVED_MINUS_1; stateNum++) {
-
-            // set situation
-            if (stateNum % 10000 == 0)
-                cout << endl
-                << "TESTING STATE " << stateNum << " OF " << (layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + 1) * MAX_NUM_STONES_REMOVED_MINUS_1;
-            if (!setSituation(threadNo, layerNum, stateNum))
-                continue;
-
-            // get all possible moves
-            idPossibility = getPossibilities(threadNo, &numPossibilities, &isOpponentLevel, &pPossibilities);
-
-            // go to each successor state
-            for (i = 0; i < numPossibilities; i++) {
-
-                // move
-                move(threadNo, idPossibility[i], isOpponentLevel, &pBackup, pPossibilities);
-
-                // get predecessors1
-                getPredecessors(threadNo, &amountOfPred, predVars);
-
-                // does it match ?
-                for (j = 0; j < amountOfPred; j++) {
-                    if (predVars[j].predStateNumbers == stateNum && predVars[j].predLayerNumbers == layerNum)
-                        break;
-                }
-
-                // error?
-                if (j == amountOfPred) {
-
-                    cout << endl
-                        << "ERROR: STATE " << stateNum << " NOT FOUND IN PREDECESSOR LIST";
-                    return false;
-
-#if 0
-                    // perform several commands to see in debug mode where the error occurs
-                    undo(threadNo, idPossibility[i], isOpponentLevel, pBackup, pPossibilities);
-                    setSituation(threadNo, layerNum, stateNum);
-                    cout << "current state" << endl;
-                    cout << "   layerNum: " << layerNum << "\tstateNum: " << stateNum << endl;
-                    printBoard(threadNo, 0);
-                    move(threadNo, idPossibility[i], isOpponentLevel, &pBackup, pPossibilities);
-                    cout << "successor" << endl;
-                    printBoard(threadNo, 0);
-                    getPredecessors(threadNo, &amountOfPred, predVars);
-                    getPredecessors(threadNo, &amountOfPred, predVars);
-#endif
-                }
-
-                // undo move
-                undo(threadNo, idPossibility[i], isOpponentLevel, pBackup, pPossibilities);
-            }
-        }
-        cout << endl
-            << "LAYER OK: " << layerNum << endl;
-    }
-
-    // everything fine
-    return true;
-}
-
-//-----------------------------------------------------------------------------
-// checkGetPredThanGetPoss()
-// 
-//-----------------------------------------------------------------------------
-bool PerfectAI::checkGetPredThanGetPoss()
-{
-    // locals
-    unsigned int threadNo = 0;
-    ThreadVars *tv = &threadVars[threadNo];
-    unsigned int stateNum, layerNum, i, j, k;
-    unsigned int stateNumB, layerNumB;
-    unsigned int *idPossibility;
-    unsigned int numPossibilities;
-    unsigned int amountOfPred;
-    bool isOpponentLevel;
-    void *pPossibilities;
-    void *pBackup;
-    int symField[fieldStruct::size];
-    RetroAnalysisPredVars predVars[MAX_NUM_PREDECESSORS];
-
-    // test if each predecessor from getPredecessors() leads to the original state using getPossibilities()
-    for (layerNum = 0; layerNum < NUM_LAYERS; layerNum++) {
-
-        // generate random state
-        cout << endl
-            << "TESTING LAYER: " << layerNum;
-        if (layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex == 0)
-            continue;
-
-        // test each state of layer
-        for (stateNum = 0; stateNum < (layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + 1) * MAX_NUM_STONES_REMOVED_MINUS_1; stateNum++) {
-
-            // set situation
-            if (stateNum % 10000000 == 0)
-                cout << endl
-                << "TESTING STATE " << stateNum << " OF " << (layer[layerNum].subLayer[layer[layerNum].numSubLayers - 1].maxIndex + 1) * MAX_NUM_STONES_REMOVED_MINUS_1;
-            if (!setSituation(threadNo, layerNum, stateNum))
-                continue;
-
-            // get predecessors
-            getPredecessors(threadNo, &amountOfPred, predVars);
-
-            // test each returned predecessor
-            for (j = 0; j < amountOfPred; j++) {
-
-                // set situation
-                if (!setSituation(threadNo, predVars[j].predLayerNumbers, predVars[j].predStateNumbers)) {
-
-                    cout << endl
-                        << "ERROR SETTING SITUATION";
-                    return false;
-
-#if 0
-                    // perform several commands to see in debug mode where the error occurs
-                    for (k = 0; k < tv->field->size; k++)
-                        symField[k] = tv->field->board[k];
-
-                    applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
-
-                    for (k = 0; k < tv->field->size; k++)
-                        symField[k] = tv->field->stonePartOfMill[k];
-
-                    applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
-                    cout << "predecessor" << endl;
-                    cout << "   layerNum: " << predVars[j].predLayerNumbers << "\tstateNum: " << predVars[j].predStateNumbers << endl;
-                    printBoard(threadNo, 0);
-
-                    if (predVars[j].playerToMoveChanged) {
-                        k = tv->field->curPlayer->id;
-                        tv->field->curPlayer->id = tv->field->oppPlayer->id;
-                        tv->field->oppPlayer->id = k;
-                        for (k = 0; k < tv->field->size; k++)
-                            tv->field->board[k] = -1 * tv->field->board[k];
-                    }
-
-                    idPossibility = getPossibilities(threadNo, &numPossibilities, &isOpponentLevel, &pPossibilities);
-                    setSituation(threadNo, layerNum, stateNum);
-                    cout << "current state" << endl;
-                    cout << "   layerNum: " << layerNum << "\tstateNum: " << stateNum << endl;
-                    printBoard(threadNo, 0);
-                    getPredecessors(threadNo, &amountOfPred, predVars);
-#endif
-                }
-
-                // regard used symmetry operation
-                for (k = 0; k < tv->field->size; k++)
-                    symField[k] = tv->field->board[k];
-
-                applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
-
-                for (k = 0; k < tv->field->size; k++)
-                    symField[k] = tv->field->stonePartOfMill[k];
-
-                applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
-
-                if (predVars[j].playerToMoveChanged) {
-                    k = tv->field->curPlayer->id;
-                    tv->field->curPlayer->id = tv->field->oppPlayer->id;
-                    tv->field->oppPlayer->id = k;
-                    for (k = 0; k < tv->field->size; k++)
-                        tv->field->board[k] = -1 * tv->field->board[k];
-                }
-
-                // get all possible moves
-                idPossibility = getPossibilities(threadNo, &numPossibilities, &isOpponentLevel, &pPossibilities);
-
-                // go to each successor state
-                for (i = 0; i < numPossibilities; i++) {
-                    // move
-                    move(threadNo, idPossibility[i], isOpponentLevel, &pBackup, pPossibilities);
-
-                    // get numbers
-                    getLayerAndStateNumber(threadNo, layerNumB, stateNumB);
-
-                    // does states match ?
-                    if (stateNum == stateNumB && layerNum == layerNumB)
-                        break;
-
-                    // undo move
-                    undo(threadNo, idPossibility[i], isOpponentLevel, pBackup, pPossibilities);
-                }
-
-                // error?
-                if (i == numPossibilities) {
-                    cout << endl
-                        << "ERROR: Not all predecessors lead to state " << stateNum << " calling move()" << endl;
-                    //return false;
-
-                    // perform several commands to see in debug mode where the error occurs
-                    setSituation(threadNo, predVars[j].predLayerNumbers, predVars[j].predStateNumbers);
-
-                    for (k = 0; k < tv->field->size; k++)
-                        symField[k] = tv->field->board[k];
-
-                    applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
-
-                    for (k = 0; k < tv->field->size; k++)
-                        symField[k] = tv->field->stonePartOfMill[k];
-
-                    applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
-
-                    cout << "predecessor" << endl;
-                    cout << "   layerNum: " << predVars[j].predLayerNumbers << "\tstateNum: " << predVars[j].predStateNumbers << endl;
-
-                    printBoard(threadNo, 0);
-
-                    if (predVars[j].playerToMoveChanged) {
-                        k = tv->field->curPlayer->id;
-                        tv->field->curPlayer->id = tv->field->oppPlayer->id;
-                        tv->field->oppPlayer->id = k;
-                        for (k = 0; k < tv->field->size; k++)
-                            tv->field->board[k] = -1 * tv->field->board[k];
-                    }
-
-                    idPossibility = getPossibilities(threadNo, &numPossibilities, &isOpponentLevel, &pPossibilities);
-                    setSituation(threadNo, layerNum, stateNum);
-                    cout << "current state" << endl;
-                    cout << "   layerNum: " << layerNum << "\tstateNum: " << stateNum << endl;
-                    printBoard(threadNo, 0);
-                    getPredecessors(threadNo, &amountOfPred, predVars);
-
-                    k = tv->field->curPlayer->id;
-                    tv->field->curPlayer->id = tv->field->oppPlayer->id;
-                    tv->field->oppPlayer->id = k;
-
-                    for (k = 0; k < tv->field->size; k++)
-                        tv->field->board[k] = -1 * tv->field->board[k];
-
-                    setSituation(threadNo, predVars[j].predLayerNumbers, predVars[j].predStateNumbers);
-
-                    for (k = 0; k < tv->field->size; k++)
-                        symField[k] = tv->field->board[k];
-
-                    applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->board);
-
-                    for (k = 0; k < tv->field->size; k++)
-                        symField[k] = tv->field->stonePartOfMill[k];
-
-                    applySymmetrieOperationOnField(reverseSymOperation[predVars[j].predSymOperation], (unsigned int *)symField, (unsigned int *)tv->field->stonePartOfMill);
-
-                    printBoard(threadNo, 0);
-                    idPossibility = getPossibilities(threadNo, &numPossibilities, &isOpponentLevel, &pPossibilities);
-                    move(threadNo, idPossibility[1], isOpponentLevel, &pBackup, pPossibilities);
-                    printBoard(threadNo, 0);
-                    getLayerAndStateNumber(threadNo, layerNumB, stateNumB);
-                }
-            }
-        }
-        cout << endl
-            << "LAYER OK: " << layerNum << endl;
-    }
-
-    // free mem
-    return true;
 }
 
 /*** To Do's ***************************************
-- Possibly save all cyclicArrays in a file. Better to even compress it (at Windows or program level?), Which should work fine because you work in blocks anyway.
-  Since the size was previously unknown, a table must be produced. Possible class name "compressedCyclicArray (blockSize, numBlocks, numArrays, filePath)".
+- Possibly save all cyclicArrays in a file. Better to even compress it (at
+Windows or program level?), Which should work fine because you work in blocks
+anyway. Since the size was previously unknown, a table must be produced.
+Possible class name "compressedCyclicArray (blockSize, blockCount, numArrays,
+filePath)".
 - Implement initFileReader
 ***************************************************/
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI

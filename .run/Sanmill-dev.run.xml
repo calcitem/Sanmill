@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Sanmill-dev" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="additionalArgs" value="--dart-define dev_mode=true --dart-define catcher=false" />
+    <option name="filePath" value="$PROJECT_DIR$/src/ui/flutter_app/lib/main.dart" />
+    <method v="2" />
+  </configuration>
+</component>

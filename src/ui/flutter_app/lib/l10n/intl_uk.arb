@@ -1,1252 +1,1272 @@
 {
-    "@@locale": "uk",
-    "appName": "Млин",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "Ласкаво просимо",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "Так",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "Ні",
-    "@no": {
-        "description": "No"
-    },
-    "game": "Гра",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "Людина проти ШІ",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "Людина проти Людський",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "ШІ проти ШІ",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "Людина проти Хмара",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "Людина проти LAN",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "Тестування через локальну мережу",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "Рухатися",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": " Переміщення",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "Перемістити список",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "Перемістити список",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "Немає запису",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "гаразд",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "Підтвердьте",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "Скасувати",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Copyright © 2021-2022 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "Виберіть неправильний шматок.",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "Розмістіть свої шматочки.",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "Ви не можете розмістити його тут.",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "Ви розмістили.",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "Видаліть шматочок.",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "Ви не можете видалити його.",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "Ви видалили.",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "Перемістіть шматок.",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "Ви не можете помістити свій шматок тут.",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "Ви не можете перемістити свій шматок сюди.",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "Млин! Візьміть фігуру суперника.",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "Продовжуйте забирати фігуру суперника.",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "Виберіть одну з фігур противника.",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "Не можна зняти шматок з млина.",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "Фішка може переміститися на 1 очко.",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "Ви не можете переміщати фігури суперника.",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "У рядку три штуки.",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "Виберіть свій фрагмент для переміщення.",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "У вас залишилося три штуки.",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "Ви можете рухатися в будь-яку точку, яка вам подобається.",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": " рухатись.",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "Гравець 1 перемагає!",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "Гравець 2 перемагає!",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "Виграв",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "Загублено",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "Перервано",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "Думаючи...",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "Нова гра",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "Імпортна гра",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "Експортна гра",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "Гра імпортована з буфера обміну.",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "Не вдається імпортувати",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "Ходи і правила не збігаються.",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "Почніть запис",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "Запис...",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "Зупинити запис",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "Показати запис",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "Немає запису.",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "Будь ласка, зачекайте.",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "Перезапустити поточну гру?",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "Перезапустіть",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "Гра розпочалася, будь ласка, місце",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "Аналізуючи...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "Помилка",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "Рейтинг перемог",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "Оцінка",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "Гравець 1",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "Гравець 2",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": " кількість штук менше трьох.",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": " подати у відставку.",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": " немає шляху.",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "Дошка заповнена, і немає шляху.",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "Час вийшов",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "У фазі переміщення жодна фігура не була вилучена за останню певну кількість ходів.",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "Це нічия, тому що дошка заповнена.",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "Це нічия через триразове повторення.",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "Кінець гри! Невідома причина.",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "Кінець гри",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "Ти виграв! Вітаю!",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "Кинути виклик на більш складний рівень? Новий рівень буде рівнем ",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "Ти програв!",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "Аналізуйте",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "Ім'я гравця",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "Про",
-    "@about": {
-        "description": "About"
-    },
-    "version": "Версія",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "Спасибі",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "Налаштування",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "Параметри",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "вподобання",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "Рівень складності",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "Час мислення AI",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "Труднощі",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "Звукові ефекти",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "Відтворюйте звуки в грі",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "Зберігайте мовчання під час повернення",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "Тон",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "Перший хід",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "Людський",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "ШІ",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "Черговий",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "Автоматичний перезапуск гри після завершення гри",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "Автоматична зміна першого ходу",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "ШІ подає у відставку, якщо більшість програє",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "Рухайтеся довільно",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "Вивчіть Ендшпіль",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "Книга відкриття",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "Різне",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "правила",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "Кількість фігур у кожного гравця",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "Скільки фігур у кожного гравця?",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "Номер літаючого шматка",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "Якщо увімкнено Політ, коли гравець зменшується до певного числа фігур, його фігури можуть вільно переміщатися до будь-якої незайнятої точки замість того, щоб бути обмеженими сусідніми точками, як у решті гри.",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "Принаймні шматочки",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "Діагональні лінії",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "Додайте чотири діагональні лінії на дошку.",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "Позначте та відкладіть видалення частин",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "На етапі розміщення точки вилучених фігур більше не можна буде розмістити.",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "Другий гравець рухається першим",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "Гравець, який рухається другим у фазі розміщення, рухається першим у фазі переміщення.",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "Багаторазове видалення",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "Якщо гравець закриває більше одного млина одночасно, він видаляє кількість закритих млинів.",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "Знищити млини",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "За замовчуванням гравці повинні спочатку видалити будь-які інші шматки, перш ніж витягти шматок зі сформованого млина. Увімкніть цей параметр, щоб вимкнути обмеження.",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "Другий гравець програє, коли дошка заповнена.",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Коли дошка заповнена наприкінці фази розміщення, сторона, яка займає першою, програє. Інакше гра – нічия.",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "Програйте, коли немає жодних законних кроків",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "Гравець програє, якщо його супротивник заблокує їх, щоб їх не можна було перемістити. Змініть сторону, щоб перемістити, якщо ця опція вимкнена.",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "Політ",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "Якщо у гравця залишилося лише три або чотири (конфігуровані) фігури, він може перемістити фігуру на будь-яку вільну точку.",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "Правило N-переміщення",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "Гра вважається нічиєю, якщо за певну кількість ходів не було видалення.",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "Відкат",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "Виберіть будь ласка",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "Копія",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "Історію переміщення скопійовано в буфер обміну",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "Допоможіть",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "Зворотній зв'язок",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "Вихід",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "Налаштування правил",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "Колір",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "Колір дошки",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "Колір шматка",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "Колір фону",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "Колір лінії дошки",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "Гравець 1 шт. колір",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "Колір гравця 2 шт",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "Колір повідомлення",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "ШІ ледачий",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "Показати кількість нерозставлених фігур",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "Показати позначення на борту",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "Показати панель інструментів навігації по історії",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "Дисплей",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "Ширина кордону дошки",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "Ширина внутрішньої лінії дошки",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "Ширина шматка",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "Розмір шрифту",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "Позначення ЗМЗ",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "Відновлювати",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "Відновити налаштування за замовчуванням",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "Програма вийде.",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "Ви повинні негайно закрити та знову відкрити програму, щоб вона вступила в силу.",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "Виберіть",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "Інформація",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "Підказка",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "гравець",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "Гравець 1",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "Гравець 2",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "Як грати",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "Торкніться будь-якої доступної точки, щоб розмістити шматок.",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "Натисніть на шматок, щоб перемістити його.",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "Торкніться точки, пов’язаної з фрагментом, щоб перемістити його.",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "Торкніться однієї частини супротивника, щоб видалити.",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "Перш ніж видалити шматок, вам потрібно створити млин.",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "Вам потрібно грати зі своїми фігурами.",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "Статистика",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "Всього ігор",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "Результати",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "Ви не можете знімати його з млина.",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "ліворуч",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "Політика конфіденційності",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "Будь ласка, прочитайте уважно і переконайтеся, що ви повністю розумієте та погоджуєтеся з цим ",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": ". Якщо ви не згодні з цією Політикою, не використовуйте цю програму. Використання програми означає, що ви приймаєте ці умови.",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": " і ",
-    "accept": "Прийняти",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "Скасувати",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "Опція скасування",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "Можна скасувати рух.",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "Повертати",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "Забираючи назад...",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "Очікування...",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "Крок вперед",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "Забери все назад",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "Всі кроки вперед",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "Рухайтеся зараз",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "Готово.",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "Крік-млин",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "Якщо гравець має лише фігури в млинах, фігури в млинах не блокуються, щоб видалити.",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "Тривалість анімації",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "Жодного",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "Тема",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "Гра спрямована на те, щоб у суперника було менше трьох фігур або не було дозволених ходів.\n\nГра автоматично веде нічию, якщо позиція з’являється втретє або не знімає за останні 100 (конфігурованих) ходів.\n\nГра проходить у три етапи:\n\n1. Розміщення фігур на вільних точках\n2. Переміщення фігур до сусідніх точок\n3. (додаткова фаза) Переміщення фігур на будь-яку вільну точку при зменшенні гравця до трьох фігур\n\nРозміщення\n\nГра починається з порожньої дошки, яка складається з сітки з двадцятьма чотирма очками. Гравці по черзі кладуть свої фігури на вільні очки, поки кожен гравець не розмістить усі фігури на дошці. Якщо гравець може поставити три свої фігури прямо, у нього є «млин» і він може видалити одну з фігур свого суперника з дошки.\n\nЗгідно з деякими правилами, гравці повинні спочатку видалити будь-які інші шматки, перш ніж витягти шматок зі сформованого млина.\n\nЗа деякими правилами ви не можете знову розташувати фігури до точок вилучених фігур у фазі розміщення.\n\nПісля використання всіх фігур гравці рухаються по черзі.\n\nПереміщення\n\nДля переміщення гравець переміщує одну зі своїх фігур уздовж лінії дошки до вільної сусідньої точки. Якщо він не може цього зробити, він програє гру. Гравець, який вирівняв три свої фігури на лінії дошки, має млин і може вилучити одну з фігур свого суперника, як у фазі розміщення. Будь-який гравець скорочується на дві частини, не має можливості створити нові млини, і таким чином програє гру. Гравець також може програти, якщо більше трьох фігур, якщо його супротивник блокує їх рух.\n\nПоліт\n\nУ деяких варіантах правил, коли у гравця залишилося лише три фігури, його фігури можуть літати, стрибати або стрибати на будь-які вільні точки, а не тільки на сусідні.\n",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "Інформація про версію",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "EULA",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "Ліцензія",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "Вихідний код",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "Повідомлення третіх сторін",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "Версія програми",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "Генеральний",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "Розширений",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "Розміщення",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Переміщення",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "Видалення",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "Умова гри закінчена",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "Стиль гри AI",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "Пасивний",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "Час вийшов",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "Персоналізація",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "Для розробників",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "Режим розробника",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "Спирайтеся на людський досвід",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "Враховуйте рухливість частин",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "Кількість штук",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "в руці",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "на борту",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "Зміщення дошки від верху",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "Настала черга ШІ.",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "ШІ не думає.",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "Автоматичне повторне відтворення ходів",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "Ви в кінці списку переміщень.",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "Торкніться назад, щоб вийти.",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "Змінні середовища",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "Більше",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "Це експериментальна функція.",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "Експерименти",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "Ліцензії з відкритим кодом",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "Мову",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "Мова за замовчуванням",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "Фрагменти можуть рухатися на етапі розміщення",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "Немає чітких фаз розміщення та переміщення, тобто гравці можуть при кожному ході вирішувати, чи хочуть вони розмістити фігуру на дошці, чи перемістити одну зі своїх фігур (за умови, що у них залишилися фігури).",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "Колір меню",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "Колір тексту меню",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "Колір фону меню",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "Колір виділення пункту меню",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "Колір фону основної панелі інструментів",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "Колір значка головної панелі інструментів",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "Колір фону панелі інструментів навігації",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "Колір значка панелі інструментів навігації",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "Автоматично приховати панель інструментів",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "Розташування панелі інструментів на екрані",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "Топ",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "Нижня частина",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "Центр",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "Суцільний колір",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "Картина",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "Виберіть своє зображення",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "Світло",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "Темний",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "Теми",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "Актуальна тема",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "Зберегти тему",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "Шрифти",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "Показати графік аналізу",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "Аналіз",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "Зберегти гру",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "Завантажити гру",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "Позиція налаштування",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "Покажіть законні ходи",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "Показати останній хід",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "Показати стрілки",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "шматочки",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "Показати аналіз",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "Нитки",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "Бути втягнутим",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "Допоможіть покращити переклад",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "Підручник",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "Класичний млин",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "Змішаний млин",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "Цейлонський млин",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "Млин може неодноразово ламатися і перероблятися",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "Якщо гравець розбиває млин, щоб негайно створити новий млин, такий гравець може перемістити такий шматок назад до початкового стику у своєму наступному ході, якщо він зробить новий млин.",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Гра вважається нічиєю, якщо гравець має три фігури і після десяти ходів жоден із гравців не знімає фігури суперника",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Коли гравець має три фігури, і жоден гравець не може зняти фігуру суперника протягом десяти ходів, гра вважається нічиєю.",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "Закрити",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "Білий шматок",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "Чорний шматок",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "Пункт заборони",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "Порожня точка",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "Немає сенсу",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "Фаза розміщення",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "Фаза руху",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "Фаза польоту",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "Сторона для переміщення",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "Останній хід",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "Вибрано",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "Головне меню",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "Доступність",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "Підтримка програми зчитування з екрана",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "Це нічия!",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "Намалювати",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "Колір виділення шматка",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "Алгоритм",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "Видаліть нерозміщений шматок",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "Якщо гравець формує млин у фазі розміщення, він знімає нерозставлену фігуру суперника і продовжує робити хід.",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "Правило N-Move в кінці гри",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "Гра вважається нічиєю, якщо будь-який гравець має лише три фігури і жоден гравець не знімає жодної фігури протягом певних ходів.",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "Кожен із гравців має лише три фігури, і жоден гравець не знімає жодної фігури протягом певних ходів.",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "Правило триразового повторення",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "Гра вважається нічиєю, якщо позиція виявляється втретє.",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "Млин! Продовжуйте робити рух.",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "Точковий стиль",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "Ширина точки",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "Тверда",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "Порожнистий",
-    "@hollow": {
-        "description": "Hollow"
+  "appName": "млин",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Ласкаво просимо",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Так",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Ні",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Гра",
+  "@game": {
+    "description": "Game"
+  },
+  "mayRemoveMultiple": "Багаторазове видалення",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "messageColor": "Колір повідомлення",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "stepForwardAll": "Всі кроки вперед",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "theme": "Тема",
+  "@theme": {
+    "description": "Theme"
+  },
+  "getInvolved": "Бути втягнутим",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "draw": "Намалювати",
+  "@draw": {
+    "description": "Draw"
+  },
+  "algorithm": "Алгоритм",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "pointStyle": "Точковий стиль",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Ширина точки",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Тверда",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Порожнистий",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "українська",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{Переїхати}=1{{count} Переїхати}other{{count} Рухає}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  },
+  "humanVsAi": "Людина проти ШІ",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Людина проти Людський",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "ШІ проти ШІ",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Людина проти Хмара",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Людина проти LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Тестування через локальну мережу",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Рухатися",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Перемістити список",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Перемістити список",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Немає запису",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "гаразд",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Підтвердьте",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Скасувати",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Виберіть неправильний шматок.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Розмістіть свої шматочки.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Ви не можете розмістити його тут.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Ви розмістили.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Видаліть шматочок.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Ви не можете видалити його.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Ви видалили.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Перемістіть шматок.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Ви не можете помістити свій шматок тут.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Ви не можете перемістити свій шматок сюди.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Млин! Візьміть фігуру суперника.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Продовжуйте забирати фігуру суперника.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Виберіть одну з фігур противника.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Не можна зняти шматок з млина.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Фішка може переміститися на 1 очко.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Ви не можете переміщати фігури суперника.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Виберіть свій фрагмент для переміщення.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "У вас залишилося три штуки.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Ви можете рухатися в будь-яку точку, яка вам подобається.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} для переміщення.",
+  "@tipToMove": {
+    "description": "The tip that the given player is to move.",
+    "placeholders": {
+      "player": {
+        "description": "The player whose turn it is.",
+        "example": "Player 1"
+      }
+    }
+  },
+  "whiteWin": "Гравець 1 перемагає!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Гравець 2 перемагає!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Виграв",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Загублено",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Думаючи…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Нова гра",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Імпортна гра",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Експортна гра",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Гра імпортована з буфера обміну.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "Не вдається імпортувати {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import",
+    "placeholders": {
+      "invalidMove": {
+        "description": "Invalid move",
+        "example": "x1-y2"
+      }
+    }
+  },
+  "movesAndRulesNotMatch": "Ходи і правила не збігаються.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Будь ласка, зачекайте.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Перезапустити поточну гру?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Перезапустіть",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Гра розпочалася, будь ласка, місце.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Аналізуючи…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Помилка: {message}",
+  "@error": {
+    "description": "Error",
+    "placeholders": {
+      "message": {
+        "description": "The Error message",
+        "example": "Unknown error"
+      }
+    }
+  },
+  "winRate": "Рейтинг перемог",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Оцінка:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Гравець 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Гравець 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} кількість штук менше трьох.",
+  "@loseReasonlessThanThree": {
+    "description": "Indicate that the player lost because they had less than three pieces left.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonResign": "{player} подав у відставку.",
+  "@loseReasonResign": {
+    "description": "Indicate that the player resigned.",
+    "placeholders": {
+      "player": {
+        "description": "The player who resigned",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonNoWay": "{player} не має шляху.",
+  "@loseReasonNoWay": {
+    "description": "Indicate that the player has no way to go.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonBoardIsFull": "Плата заповнена, і {player} не має можливості піти.",
+  "@loseReasonBoardIsFull": {
+    "description": "Indicate that the player has no way to go because the board is full.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonTimeOver": "Час закінчився, {player} втрачено.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "drawReasonRule50": "У фазі переміщення жодна фігура не була вилучена за останню певну кількість ходів.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Це нічия, тому що дошка заповнена.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Це нічия через триразове повторення.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Кінець гри! Невідома причина.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Кінець гри",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Ти виграв! Вітаю!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Кинути виклик на більш складний рівень? Новим рівнем буде рівень {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?",
+    "placeholders": {
+      "level": {
+        "description": "The new level",
+        "example": "5"
+      }
+    }
+  },
+  "youLose": "Ти програв!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Аналізуйте",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Про",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Версія: {versionNumber}",
+  "@version": {
+    "description": "Version",
+    "placeholders": {
+      "versionNumber": {
+        "description": "The current version",
+        "example": "1.1.38"
+      }
+    }
+  },
+  "thanks": "Спасибі",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Налаштування",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Параметри",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Загальні налаштування",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Рівень складності",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Час мислення AI",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Труднощі",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Звукові ефекти",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Відтворюйте звуки в грі",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Зберігайте мовчання, коли повертаєте",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Тон",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Перший хід",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Людський",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "ШІ",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Черговий",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Автоматичний перезапуск гри після завершення гри",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Автоматична зміна першого ходу",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Рухайтеся довільно",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Різне",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "правила",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Кількість фігур у кожного гравця",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Скільки фігур у кожного гравця?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Номер літаючого шматка",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Якщо увімкнено Політ, коли гравець зменшується до певного числа фігур, його фігури можуть вільно переміщатися до будь-якої незайнятої точки замість того, щоб бути обмеженими сусідніми точками, як у решті гри.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Принаймні шматочки",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Діагональні лінії",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Додайте чотири діагональні лінії на дошку.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Позначте та відкладіть видалення частин",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "На етапі розміщення точки вилучених фігур більше не можна буде розмістити.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "Другий гравець рухається першим",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "Гравець, який рухається другим у фазі розміщення, рухається першим у фазі переміщення.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple_Detail": "Якщо гравець закриває більше одного млина одночасно, він видаляє кількість закритих млинів.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Знищити млини",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "За замовчуванням гравці повинні спочатку видалити будь-які інші шматки, перш ніж витягти шматок зі сформованого млина. Увімкніть цей параметр, щоб вимкнути обмеження.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Другий гравець програє, коли дошка заповнена",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Коли дошка заповнена наприкінці фази розміщення, сторона, яка займає першою, програє. Інакше гра – нічия.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Програйте, коли немає жодних законних кроків",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Гравець програє, якщо його супротивник заблокує їх, щоб їх не можна було перемістити. Змініть сторону, щоб перемістити, якщо ця опція вимкнена.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Політ",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Якщо у гравця залишилося лише три або чотири (конфігуровані) фігури, він може перемістити фігуру на будь-яку вільну точку.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "Правило N-переміщення",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Гра вважається нічиєю, якщо за певну кількість ходів не було видалення.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Відкат",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Виберіть будь ласка",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Копія",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Історію переміщення скопійовано в буфер обміну.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Допоможіть",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Зворотній зв'язок",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Вихід",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Налаштування правил",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Колір",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Колір дошки",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Колір шматка",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Колір фону",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Колір лінії дошки",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Гравець 1 шт. колір",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Колір гравця 2 шт",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "isPieceCountInHandShown": "Показати кількість нерозставлених фігур",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Показати позначення на борту",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Показати панель інструментів навігації історії",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Дисплей",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Ширина кордону дошки",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Ширина внутрішньої лінії дошки",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Ширина шматка",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Розмір шрифту",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "Позначення ЗМЗ",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Відновлювати",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Відновити налаштування за замовчуванням",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Виберіть {element}",
+  "@pick": {
+    "description": "Used in the color picker.",
+    "placeholders": {
+      "element": {
+        "description": "The element to pick the color for.",
+        "example": "Background color"
+      }
+    }
+  },
+  "info": "Інформація",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Підказка",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "гравець",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Гравець 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Гравець 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Як грати",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Торкніться будь-якої доступної точки, щоб розмістити шматок.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Натисніть на шматок, щоб перемістити його.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Торкніться точки, пов’язаної з фрагментом, щоб перемістити його.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Торкніться однієї частини супротивника, щоб видалити.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Перш ніж видалити шматок, вам потрібно створити млин.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Вам потрібно грати зі своїми фігурами.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Статистика",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Всього ігор",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Результати",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "ліворуч",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Політика конфіденційності",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Будь ласка, прочитайте уважно і переконайтеся, що ви повністю розумієте та погоджуєтеся з цим ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Якщо ви не згодні з цією Політикою, не використовуйте цю програму. Використання програми означає, що ви приймаєте ці умови.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " і ",
+  "@and": {},
+  "accept": "Прийняти",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Повертати",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Повернення…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Очікування…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Крок вперед",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Забери все назад",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "moveNow": "Рухайтеся зараз",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Готово.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Крік-млин",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Якщо гравець має лише фігури в млинах, фігури в млинах не блокуються, щоб видалити.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Тривалість анімації",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Жодного",
+  "@none": {
+    "description": "None"
+  },
+  "helpContent": "Гра спрямована на те, щоб у суперника було менше трьох фігур або не було дозволених ходів.\n\nГра автоматично веде нічию, якщо позиція з’являється втретє або не знімає за останні 100 (конфігурованих) ходів.\n\nГра проходить у три етапи:\n\n1. Розміщення фігур на вільних точках\n2. Переміщення фігур до сусідніх точок\n3. (додаткова фаза) Переміщення фігур на будь-яку вільну точку при зменшенні гравця до трьох фігур\n\nРозміщення\n\nГра починається з порожньої дошки, яка складається з сітки з двадцятьма чотирма очками. Гравці по черзі ставлять свої фігури на вільні очки, поки кожен гравець не розмістить усі фігури на дошці. Якщо гравець може поставити три свої фігури прямо, у нього є «млин» і він може видалити одну з фігур свого суперника з дошки.\n\nЗгідно з деякими правилами, гравці повинні спочатку видалити будь-які інші шматки, перш ніж витягти шматок зі сформованого млина.\n\nЗа деякими правилами ви не можете знову розташувати фігури до точок вилучених фігур у фазі розміщення.\n\nПісля використання всіх фігур гравці рухаються по черзі.\n\nПереміщення\n\nДля переміщення гравець переміщує одну зі своїх фігур уздовж лінії дошки до вільної сусідньої точки. Якщо він не може цього зробити, він програє гру. Гравець, який вирівняв три свої фігури на лінії дошки, має млин і може вилучити одну з фігур свого суперника, як у фазі розміщення. Будь-який гравець скорочується на дві частини, не має можливості створити нові млини, і таким чином програє гру. Гравець також може програти, якщо більше трьох фігур, якщо його супротивник блокує їх рух.\n\nПоліт\n\nУ деяких варіантах правил, коли у гравця залишилося лише три фігури, його фігури можуть літати, стрибати або стрибати на будь-які вільні точки, а не тільки на сусідні.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Інформація про версію",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Ліцензія",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Вихідний код",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Версія програми",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "Генеральний",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Розширений",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Розміщення",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Переміщення",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Видалення",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Умова гри закінчена",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Стиль гри AI",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Пасивний",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Час вийшов",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Зовнішній вигляд",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "Спирайтеся на людський досвід",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Враховуйте рухливість частин",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Кількість штук:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} у руці: {count}",
+  "@inHand": {
+    "description": "The pieces a player has in his hand.",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "Player 1"
+      },
+      "count": {
+        "description": "The count of pieces in hand",
+        "example": "5"
+      }
+    }
+  },
+  "onBoard": "{player} на борту: {count}",
+  "@onBoard": {
+    "description": "The pieces a player has on the board",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "White"
+      },
+      "count": {
+        "description": "The count of pieces on board",
+        "example": "5"
+      }
+    }
+  },
+  "boardTop": "Зміщення дошки від верху",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Настала черга ШІ.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "ШІ не думає.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Ви в кінці списку переміщень.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Торкніться назад, щоб вийти.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "Більше",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Це експериментальна функція.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Експерименти",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Ліцензії з відкритим кодом",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Мову",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Мова за замовчуванням",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Фрагменти можуть рухатися на етапі розміщення",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "Немає чітких фаз розміщення та переміщення, тобто гравці можуть при кожному ході вирішувати, чи хочуть вони розмістити фігуру на дошці, чи перемістити одну зі своїх фігур (за умови, що у них залишилися фігури).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Колір меню",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Колір тексту меню",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Колір виділення пункту меню",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Колір фону основної панелі інструментів",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Колір значка головної панелі інструментів",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Колір фону панелі інструментів навігації",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Колір значка панелі інструментів навігації",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Автоматично приховати панель інструментів",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Розташування панелі інструментів на екрані",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Топ",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Нижня частина",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Центр",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Суцільний колір",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Картина",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Виберіть своє зображення",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Світло",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Темний",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Теми",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Актуальна тема",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Зберегти тему",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Показати графік аналізу",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Аналіз",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Зберегти гру",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Завантажити гру",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Позиція налаштування",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Покажіть законні ходи",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Показати останній хід",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Показати стрілки",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "шматочки",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Показати аналіз",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Нитки",
+  "@threads": {
+    "description": "Threads"
+  },
+  "helpImproveTranslate": "Допоможіть покращити переклад",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Підручник",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Класичний млин",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Змішаний млин",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Цейлонський млин",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Млин може неодноразово ламатися і перероблятися",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Якщо гравець розбиває млин, щоб негайно створити новий млин, такий гравець може перемістити такий шматок назад до початкового стику у своєму наступному ході, якщо він зробить новий млин.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Гра вважається нічиєю, якщо гравець має три фігури і після десяти ходів жоден із гравців не знімає фігури суперника",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Коли гравець має три фігури, і жоден гравець не може зняти фігуру суперника протягом десяти ходів, гра вважається нічиєю.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Закрити",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Білий шматок",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Чорний шматок",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Пункт заборони",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Порожня точка",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Немає сенсу",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Фаза розміщення",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Фаза руху",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Фаза польоту",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Сторона для переміщення: {player}",
+  "@sideToMove": {
+    "description": "The player whose turn it is.",
+    "placeholders": {
+      "player": {
+        "description": "The player to move",
+        "example": "Player 1"
+      }
+    }
+  },
+  "lastMove": "Останній хід: {move}",
+  "@lastMove": {
+    "description": "Last move",
+    "placeholders": {
+      "move": {
+        "description": "The last move",
+        "example": "d2-d3"
+      }
+    }
+  },
+  "selected": "Вибрано",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Доступність",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Підтримка програми зчитування з екрана",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Це нічия!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "pieceHighlightColor": "Колір виділення шматка",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "removeUnplacedPiece": "Видаліть нерозміщений шматок",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Якщо гравець формує млин у фазі розміщення, він знімає нерозставлену фігуру суперника і продовжує робити хід.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "Правило N-Move в кінці гри",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Гра вважається нічиєю, якщо будь-який гравець має лише три фігури і жоден гравець не знімає жодної фігури протягом певних ходів.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Кожен із гравців має лише три фігури, і жоден гравець не знімає жодної фігури протягом певних ходів.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Правило триразового повторення",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Гра вважається нічиєю, якщо позиція виявляється втретє.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Млин! Продовжуйте робити рух.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "loadFailed": "Не вдалося завантажити.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Ім'я файлу",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Перегляд…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Файли гри",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "Гра збережена в",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  }
 }

@@ -1,0 +1,4 @@
+v1.1.12
+
+* Melhore a tradução persa.
+* Adicione tradução em chinês tradicional.

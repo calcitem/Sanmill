@@ -2,4 +2,3 @@ v1.1.6
 
 * Proporcionar retroalimentación interactiva directamente en la aplicación mediante la anotación de una captura de pantalla de la página actual y la adición de texto.
 * Mejorar las traducciones en rumano y húngaro.
-

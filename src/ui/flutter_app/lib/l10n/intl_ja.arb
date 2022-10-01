@@ -1,1252 +1,1174 @@
 {
-    "@@locale": "ja",
-    "appName": "ミル",
-    "@appName": {
-        "description": "The app name"
-    },
-    "welcome": "ようこそ、ご利用ください。",
-    "@welcome": {
-        "description": "Welcome"
-    },
-    "yes": "はい。",
-    "@yes": {
-        "description": "Yes"
-    },
-    "no": "いいえ",
-    "@no": {
-        "description": "No"
-    },
-    "game": "ゲーム",
-    "@game": {
-        "description": "Game"
-    },
-    "humanVsAi": "チャレンジマシン",
-    "@humanVsAi": {
-        "description": "Human Vs AI"
-    },
-    "humanVsHuman": "2人のプレーヤー",
-    "@humanVsHuman": {
-        "description": "Human Vs Human"
-    },
-    "aiVsAi": "マシン対マシン",
-    "@aiVsAi": {
-        "description": "AI Vs AI"
-    },
-    "humanVsCloud": "チャレンジクラウド",
-    "@humanVsCloud": {
-        "description": "Human Vs Cloud"
-    },
-    "humanVsLAN": "ネットワークマッチメイキング",
-    "@humanVsLAN": {
-        "description": "Human Vs LAN"
-    },
-    "testViaLAN": "ネットワークテスト",
-    "@testViaLAN": {
-        "description": "Test Via LAN"
-    },
-    "move": "ムーブ",
-    "@move": {
-        "description": "Move"
-    },
-    "moves": "ムーブ",
-    "@moves": {
-        "description": " Moves"
-    },
-    "showMoveList": "ゲームを表示する",
-    "@showMoveList": {
-        "description": "Move list"
-    },
-    "moveList": "ゲーム",
-    "@moveList": {
-        "description": "Move list"
-    },
-    "noGameRecord": "ムーブなし",
-    "@noGameRecord": {
-        "description": "No record"
-    },
-    "ok": "OK",
-    "@ok": {
-        "description": "OK"
-    },
-    "confirm": "確認",
-    "@confirm": {
-        "description": "Confirm"
-    },
-    "cancel": "キャンセル",
-    "@cancel": {
-        "description": "Cancel"
-    },
-    "copyright": "Copyright © 2021-2022 Calcitem Studio",
-    "@copyright": {
-        "description": "Copyright"
-    },
-    "tipSelectWrong": "ディスクの選択ミス",
-    "@tipSelectWrong": {
-        "description": "Select the wrong piece."
-    },
-    "tipPlace": "落としてください。",
-    "@tipPlace": {
-        "description": "Place your pieces."
-    },
-    "tipBanPlace": "ここに着地できない",
-    "@tipBanPlace": {
-        "description": "Cannot place it here."
-    },
-    "tipPlaced": "すでに落ちている",
-    "@tipPlaced": {
-        "description": "Placed."
-    },
-    "tipRemove": "ピースを食べてください",
-    "@tipRemove": {
-        "description": "Remove a piece."
-    },
-    "tipBanRemove": "これは取れませんね。",
-    "@tipBanRemove": {
-        "description": "Cannot remove."
-    },
-    "tipRemoved": "食べること。",
-    "@tipRemoved": {
-        "description": "Removed."
-    },
-    "tipMove": "行ってください。",
-    "@tipMove": {
-        "description": "Move a piece."
-    },
-    "tipCannotPlace": "ここで遊ぶことはできません。",
-    "@tipCannotPlace": {
-        "description": "You can't place your piece here."
-    },
-    "tipCannotMove": "ここでは動かないでください。",
-    "@tipCannotMove": {
-        "description": "You can't move your piece here."
-    },
-    "tipMill": "3枚続けて、食べてください。",
-    "@tipMill": {
-        "description": "Mill! Take your opponent's piece."
-    },
-    "tipContinueMill": "引き続き、ディスクをお持ちください。",
-    "@tipContinueMill": {
-        "description": "Continue to take your opponent's piece."
-    },
-    "tipSelectOpponentsPiece": "相手の駒を選んでください",
-    "@tipSelectOpponentsPiece": {
-        "description": "Select one of your opponent's pieces."
-    },
-    "tipCannotRemovePieceFromMill": "トリプレットで駒を取ることはできません",
-    "@tipCannotRemovePieceFromMill": {
-        "description": "You cannot remove a piece from a mill."
-    },
-    "tipCanMoveOnePoint": "隣接する空きマスに移動してください",
-    "@tipCanMoveOnePoint": {
-        "description": "A piece can move 1 point."
-    },
-    "tipCannotMoveOpponentsPieces": "相手のディスクを動かすことはできません",
-    "@tipCannotMoveOpponentsPieces": {
-        "description": "You can't move your opponent's pieces."
-    },
-    "tipThreePiecesInLine": "3つのピースが並ぶ",
-    "@tipThreePiecesInLine": {
-        "description": "There are 3 pieces in a line."
-    },
-    "tipSelectPieceToMove": "移動させたい作品を選択してください。",
-    "@tipSelectPieceToMove": {
-        "description": "Select your piece to move."
-    },
-    "tipHaveThreePiecesLeft": "残りは3枚です。",
-    "@tipHaveThreePiecesLeft": {
-        "description": "You have 3 pieces left."
-    },
-    "tipCanMoveToAnyPoint": "何もない広場にも飛べる",
-    "@tipCanMoveToAnyPoint": {
-        "description": "You can move to any point you like."
-    },
-    "tipToMove": "移動",
-    "@tipToMove": {
-        "description": " to move."
-    },
-    "whiteWin": "先手必勝",
-    "@whiteWin": {
-        "description": "Player 1 wins!"
-    },
-    "blackWin": "クイーンの動きが勝つ",
-    "@blackWin": {
-        "description": "Player 2 wins!"
-    },
-    "won": "勝利",
-    "@won": {
-        "description": "Won"
-    },
-    "lost": "ロース",
-    "@lost": {
-        "description": "Lost"
-    },
-    "aborted": "休憩",
-    "@aborted": {
-        "description": "Aborted"
-    },
-    "thinking": "相手が考えているのは...。",
-    "@thinking": {
-        "description": "Thinking..."
-    },
-    "newGame": "新しいゲームの開始",
-    "@newGame": {
-        "description": "New game"
-    },
-    "importGame": "輸入ゲーム",
-    "@importGame": {
-        "description": "Import game"
-    },
-    "exportGame": "ゲームのエクスポート",
-    "@exportGame": {
-        "description": "Export game"
-    },
-    "gameImported": "ゲームがクリップボードからインポートされている",
-    "@gameImported": {
-        "description": "Game imported from the clipboard."
-    },
-    "cannotImport": "インポートできない",
-    "@cannotImport": {
-        "description": "Cannot import"
-    },
-    "movesAndRulesNotMatch": "動きとルールが一致しない",
-    "@movesAndRulesNotMatch": {
-        "description": "Rules and moves do not match."
-    },
-    "startRecording": "録音開始",
-    "@startRecording": {
-        "description": "Start recording"
-    },
-    "recording": "録音中ですが...。",
-    "@recording": {
-        "description": "Recording..."
-    },
-    "stopRecording": "録音停止",
-    "@stopRecording": {
-        "description": "Stop recording"
-    },
-    "showRecording": "再生録音",
-    "@showRecording": {
-        "description": "Show recording"
-    },
-    "noRecording": "再生できない",
-    "@noRecording": {
-        "description": "No recording."
-    },
-    "pleaseWait": "お待ちください...",
-    "@pleaseWait": {
-        "description": "Please wait..."
-    },
-    "restartGame": "再起動？",
-    "@restartGame": {
-        "description": "Restart current game?"
-    },
-    "restart": "もう一度始めてください。",
-    "@restart": {
-        "description": "Restart"
-    },
-    "gameStarted": "ゲームを開始します。 プレイしてください。",
-    "@gameStarted": {
-        "description": "Game started, please place"
-    },
-    "analyzing": "ポジションを分析しています...",
-    "@analyzing": {
-        "description": "Analyzing ..."
-    },
-    "error": "エラーです。",
-    "@error": {
-        "description": "Error"
-    },
-    "winRate": "勝利率",
-    "@winRate": {
-        "description": "Win Rate"
-    },
-    "score": "スコア",
-    "@score": {
-        "description": "Score"
-    },
-    "white": "ファーストハンド",
-    "@white": {
-        "description": "Player 1"
-    },
-    "black": "女王の側",
-    "@black": {
-        "description": "Player 2"
-    },
-    "loseReasonlessThanThree": "残り3枚以下です。",
-    "@loseReasonlessThanThree": {
-        "description": " piece count is less than three."
-    },
-    "loseReasonResign": "負けを認めた。",
-    "@loseReasonResign": {
-        "description": " resign."
-    },
-    "loseReasonNoWay": "出口はない。",
-    "@loseReasonNoWay": {
-        "description": " is no way to go."
-    },
-    "loseReasonBoardIsFull": "盤面がいっぱいで出口がない。",
-    "@loseReasonBoardIsFull": {
-        "description": "The board is full, no way to go."
-    },
-    "loseReasonTimeOver": "タイムアウトが成立する。",
-    "@loseReasonTimeOver": {
-        "description": "Time Over"
-    },
-    "drawReasonRule50": "ルールで定められた手の数以内にディスクを取らずに、手番で複数回連続して手を打った場合はドローとなります。",
-    "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
-    },
-    "drawReasonBoardIsFull": "ドローは、ボードがいっぱいになり、出口がない場合に与えられます。",
-    "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
-    },
-    "drawReasonThreefoldRepetition": "ポジションドローを3回繰り返します。",
-    "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
-    },
-    "gameOverUnknownReason": "理由は不明ですが、ゲームは終了しました",
-    "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
-    },
-    "gameOver": "ゲームオーバー。",
-    "@gameOver": {
-        "description": "Game Over"
-    },
-    "youWin": "優勝おめでとうございます。",
-    "@youWin": {
-        "description": "You win! Congratulations!"
-    },
-    "challengeHarderLevel": "その後の難易度アップは？\nアップグレード後の難易度は",
-    "@challengeHarderLevel": {
-        "description": "Challenge harder level?"
-    },
-    "youLose": "あなたの負けです。",
-    "@youLose": {
-        "description": "You Lose!"
-    },
-    "analyze": "分析",
-    "@analyze": {
-        "description": "Analyze"
-    },
-    "playerName": "プレーヤーの名前",
-    "@playerName": {
-        "description": "Player Name"
-    },
-    "about": "について",
-    "@about": {
-        "description": "About"
-    },
-    "version": "バージョン",
-    "@version": {
-        "description": "Version"
-    },
-    "thanks": "謝辞",
-    "@thanks": {
-        "description": "Thanks"
-    },
-    "settings": "設定",
-    "@settings": {
-        "description": "Settings"
-    },
-    "options": "オプション",
-    "@options": {
-        "description": "Options"
-    },
-    "preferences": "ゲーム設定",
-    "@preferences": {
-        "description": "Preferences"
-    },
-    "skillLevel": "難易度",
-    "@skillLevel": {
-        "description": "Difficulty level"
-    },
-    "moveTime": "機械思考の時間",
-    "@moveTime": {
-        "description": "AI thinking time"
-    },
-    "difficulty": "ゲームの難易度",
-    "@difficulty": {
-        "description": "Difficulty"
-    },
-    "playSounds": "サウンド",
-    "@playSounds": {
-        "description": "Sound effects"
-    },
-    "playSoundsInTheGame": "移動時に音を出す",
-    "@playSoundsInTheGame": {
-        "description": "Play sounds in the game"
-    },
-    "keepMuteWhenTakingBack": "後悔しているときはミュートにする",
-    "@keepMuteWhenTakingBack": {
-        "description": "Keep mute when taking back"
-    },
-    "tone": "サウンドエフェクトの再生",
-    "@tone": {
-        "description": "Tone"
-    },
-    "whoMovesFirst": "優先順位",
-    "@whoMovesFirst": {
-        "description": "First move"
-    },
-    "human": "人間",
-    "@human": {
-        "description": "Human"
-    },
-    "ai": "マシン",
-    "@ai": {
-        "description": "AI"
-    },
-    "alternate": "オルタネート",
-    "@alternate": {
-        "description": "Alternate"
-    },
-    "isAutoRestart": "ゲーム終了時に自動的にゲームを再起動する",
-    "@isAutoRestart": {
-        "description": "Auto-restart game when game over"
-    },
-    "isAutoChangeFirstMove": "ゲーム開始時に自動的に手を交換する",
-    "@isAutoChangeFirstMove": {
-        "description": "Auto Change First Move"
-    },
-    "resignIfMostLose": "マシンが明らかに不利な場合は自動的に譲歩する",
-    "@resignIfMostLose": {
-        "description": "AI Resign if Most Lose"
-    },
-    "shufflingEnabled": "マシンのランダムな動き",
-    "@shufflingEnabled": {
-        "description": "Random move"
-    },
-    "learnEndgame": "自己学習型ゲームバンク",
-    "@learnEndgame": {
-        "description": "Learn Endgame"
-    },
-    "openingBook": "開設ライブラリーの利用",
-    "@openingBook": {
-        "description": "Opening Book"
-    },
-    "misc": "その他",
-    "@misc": {
-        "description": "Miscellaneous"
-    },
-    "rules": "ルール",
-    "@rules": {
-        "description": "Rules"
-    },
-    "piecesCount": "ピース数",
-    "@piecesCount": {
-        "description": "The number of pieces each player has"
-    },
-    "piecesCount_Detail": "各プレイヤーが持っているディスクの枚数を設定します。",
-    "@piecesCount_Detail": {
-        "description": "How many pieces does each player have?"
-    },
-    "flyPieceCount": "何枚目のディスクが飛ぶか",
-    "@flyPieceCount": {
-        "description": "The number of the flying piece"
-    },
-    "flyPieceCount_Detail": "フライングが許可されている場合、プレイヤーが何枚のディスクを残しているかがフライングになります。",
-    "@flyPieceCount_Detail": {
-        "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
-    },
-    "piecesAtLeastCount": "数枚以下のディスクロス",
-    "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
-    },
-    "hasDiagonalLines": "対角線",
-    "@hasDiagonalLines": {
-        "description": "Diagonal lines"
-    },
-    "hasDiagonalLines_Detail": "盤面に4本の斜めのラインを追加します。",
-    "@hasDiagonalLines_Detail": {
-        "description": "Add four diagonal lines to the board."
-    },
-    "hasBannedLocations": "禁断のポイント",
-    "@hasBannedLocations": {
-        "description": "Mark and delay removing pieces"
-    },
-    "hasBannedLocations_Detail": "振り子の段階では、食べたディスクはマークされ、とりあえずは取り出さない。 両方のプレイヤーがディスクを配置した後、一様にマークされたディスクをすべて取り除き、移動フェイズに移ります。",
-    "@hasBannedLocations_Detail": {
-        "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-    },
-    "isDefenderMoveFirst": "ディスクが振られた後に最初に動く",
-    "@isDefenderMoveFirst": {
-        "description": "The second player moves first"
-    },
-    "isDefenderMoveFirst_Detail": "スイングフェイズで先にスイングしたプレーヤーが、ムーブフェイズで先にムーブします。",
-    "@isDefenderMoveFirst_Detail": {
-        "description": "The player who moves second in the placing phase moves first in the moving phase."
-    },
-    "mayRemoveMultiple": "複数枚のディスクの取り込み",
-    "@mayRemoveMultiple": {
-        "description": "Multi-remove"
-    },
-    "mayRemoveMultiple_Detail": "同時に複数のトリプレットが形成された場合、相手はトリプレットが形成された数だけディスクを食べることができます。",
-    "@mayRemoveMultiple_Detail": {
-        "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
-    },
-    "mayRemoveFromMillsAlways": "トリプレットからピースを取ることは可能です。",
-    "@mayRemoveFromMillsAlways": {
-        "description": "Destroy mills"
-    },
-    "mayRemoveFromMillsAlways_Detail": "デフォルトでは、相手のディスクがすべてトリプレットになっていないと、トリプレットを取ることはできません。 このオプションをオンにすると、この制限が解除されます。",
-    "@mayRemoveFromMillsAlways_Detail": {
-        "description": "mayRemoveFromMillsAlways_Detail"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull": "盤面がいっぱいになると、最初にディスクを置いた人が負けになります。",
-    "@isWhiteLoseButNotDrawWhenBoardFull": {
-        "description": "The second player loses when the board is full"
-    },
-    "isWhiteLoseButNotDrawWhenBoardFull_Detail": "12枚のディスクの場合、ディスクフェイズの終了時にボードが満杯で、どちらのプレイヤーもディスクを取っていない場合、最初のプレイヤーはドローではなく負けとなります。",
-    "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
-        "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
-    },
-    "isLoseButNotChangeSideWhenNoWay": "逃げ場がないときの負け",
-    "@isLoseButNotChangeSideWhenNoWay": {
-        "description": "Lose when no legal moves"
-    },
-    "isLoseButNotChangeSideWhenNoWay_Detail": "ムーブフェーズでは、相手の動きに合わせて切り替えるのではなく、逃げ場がなくなった時点で負けとなります。",
-    "@isLoseButNotChangeSideWhenNoWay_Detail": {
-        "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
-    },
-    "mayFly": "フライングディスク",
-    "@mayFly": {
-        "description": "Flying"
-    },
-    "mayFly_Detail": "一方の側が3枚または4枚（設定可能）のディスクを残している場合、その側はボード上の任意の空のマスにディスクを移動することができます。",
-    "@mayFly_Detail": {
-        "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
-    },
-    "nMoveRule": "N-ステップルール",
-    "@nMoveRule": {
-        "description": "N-move rule"
-    },
-    "nMoveRule_Detail": "ディスクが取られなかった場合に、引き分けが成立する連続した手の数を指定します。",
-    "@nMoveRule_Detail": {
-        "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
-    },
-    "rollback": "ロールバック",
-    "@rollback": {
-        "description": "Rollback"
-    },
-    "pleaseSelect": "選択してください",
-    "@pleaseSelect": {
-        "description": "Please select"
-    },
-    "copy": "コピー",
-    "@copy": {
-        "description": "Copy"
-    },
-    "moveHistoryCopied": "ゲームがクリップボードにコピーされました",
-    "@moveHistoryCopied": {
-        "description": "Move history copied to clipboard"
-    },
-    "help": "ヘルプ",
-    "@help": {
-        "description": "Help"
-    },
-    "feedback": "フィードバック",
-    "@feedback": {
-        "description": "Feedback"
-    },
-    "exit": "ログアウト",
-    "@exit": {
-        "description": "Exit"
-    },
-    "ruleSettings": "ルール設定",
-    "@ruleSettings": {
-        "description": "Rule Settings"
-    },
-    "color": "カラー",
-    "@color": {
-        "description": "Color"
-    },
-    "boardColor": "ボードカラー",
-    "@boardColor": {
-        "description": "Board color"
-    },
-    "pieceColor": "ピースカラー",
-    "@pieceColor": {
-        "description": "Piece color"
-    },
-    "backgroundColor": "背景色",
-    "@backgroundColor": {
-        "description": "Background color"
-    },
-    "lineColor": "ラインカラー",
-    "@lineColor": {
-        "description": "Board line color"
-    },
-    "whitePieceColor": "テンポ側のポーンの色",
-    "@whitePieceColor": {
-        "description": "Player 1 piece color"
-    },
-    "blackPieceColor": "クイーンズサイドピースの色",
-    "@blackPieceColor": {
-        "description": "Player 2 piece color"
-    },
-    "messageColor": "キューメッセージの色",
-    "@messageColor": {
-        "description": "Message color"
-    },
-    "aiIsLazy": "マシンがリードしている時の怠慢",
-    "@aiIsLazy": {
-        "description": "AI is Lazy"
-    },
-    "isPieceCountInHandShown": "手元に残っている枚数を表示",
-    "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
-    },
-    "isNotationsShown": "盤面の端に座標を表示",
-    "@isNotationsShown": {
-        "description": "Show notations on board"
-    },
-    "isHistoryNavigationToolbarShown": "移動ナビゲーションツールバーの表示",
-    "@isHistoryNavigationToolbarShown": {
-        "description": "Show history navigation toolbar"
-    },
-    "display": "ショー",
-    "@display": {
-        "description": "Display"
-    },
-    "boardBorderLineWidth": "ボードの外枠の線幅",
-    "@boardBorderLineWidth": {
-        "description": "Board borderline width"
-    },
-    "boardInnerLineWidth": "ボード内のラインの幅",
-    "@boardInnerLineWidth": {
-        "description": "Board inner line width"
-    },
-    "pieceWidth": "ピースサイズ",
-    "@pieceWidth": {
-        "description": "Piece width"
-    },
-    "fontSize": "文字サイズ",
-    "@fontSize": {
-        "description": "Font size"
-    },
-    "standardNotation": "標準的なゲーム形式",
-    "@standardNotation": {
-        "description": "Standard notation"
-    },
-    "restore": "リセット",
-    "@restore": {
-        "description": "Restore"
-    },
-    "restoreDefaultSettings": "デフォルトの設定に戻す",
-    "@restoreDefaultSettings": {
-        "description": "Restore Default Settings"
-    },
-    "exitApp": "アプリが終了します。",
-    "@exitApp": {
-        "description": "The app will exit."
-    },
-    "exitAppManually": "デフォルトの設定を有効にするには、すぐにアプリを終了して再起動する必要があります。",
-    "@exitAppManually": {
-        "description": "You have to close immediately and reopen the app to take effect."
-    },
-    "pick": "セレクト",
-    "@pick": {
-        "description": "Pick "
-    },
-    "info": "インフォ",
-    "@info": {
-        "description": "Info"
-    },
-    "hint": "チップ",
-    "@hint": {
-        "description": "Hint"
-    },
-    "player": "プレーヤー",
-    "@player": {
-        "description": "player"
-    },
-    "player1": "初手側",
-    "@player1": {
-        "description": "Player 1"
-    },
-    "player2": "バックハンド側",
-    "@player2": {
-        "description": "Player 2"
-    },
-    "howToPlay": "遊び方の説明",
-    "@howToPlay": {
-        "description": "How to play"
-    },
-    "toPlacePiece": "盤面の交点をクリックしてピースを配置します。",
-    "@toPlacePiece": {
-        "description": "Tap on any available point to place the piece."
-    },
-    "toSelectPiece": "移動させたいピースを選択します。",
-    "@toSelectPiece": {
-        "description": "Tap on a piece to move it."
-    },
-    "toMovePiece": "この作品に隣接するポイントをクリックすると、作品が移動します。",
-    "@toMovePiece": {
-        "description": "Tap on point connected to piece to move it."
-    },
-    "toRemovePiece": "相手の駒をクリックすると、その駒を取ることができます。",
-    "@toRemovePiece": {
-        "description": "Tap on the opponent's one piece to remove."
-    },
-    "needToCreateMillFirst": "相手の駒を捕獲するためには、トリプレットを形成する必要があります。",
-    "@needToCreateMillFirst": {
-        "description": "You need to create a mill first before you can remove a piece."
-    },
-    "needToPlayWithOwnPieces": "自分の駒を動かす必要があります。",
-    "@needToPlayWithOwnPieces": {
-        "description": "You need to play with your pieces."
-    },
-    "statistics": "統計情報",
-    "@statistics": {
-        "description": "Statistics"
-    },
-    "totalGames": "ディスクの枚数",
-    "@totalGames": {
-        "description": "Total games"
-    },
-    "results": "結果",
-    "@results": {
-        "description": "Results"
-    },
-    "cannotRemoveFromMill": "トリプレットのディスクは食べられません。",
-    "@cannotRemoveFromMill": {
-        "description": "Cannot remove from the mill."
-    },
-    "left": "残存",
-    "@left": {
-        "description": "left"
-    },
-    "privacyPolicy": "プライバシーポリシー",
-    "@privacyPolicy": {
-        "description": "Privacy Policy"
-    },
-    "privacyPolicy_Detail_1": "User Agreement と \"Privacy Policy \"の条項を注意深く読み、完全に理解することが重要です。",
-    "@privacyPolicy_Detail_1": {
-        "description": "Privacy Policy Detail 1"
-    },
-    "privacyPolicy_Detail_2": "お客様に提供するサービスを向上させるために、お客様の明示的な承認に基づいて、お客様のデバイスモデル、診断データ、電子メールアドレスなどの情報を取得することがありますが、これらの情報はお客様が拒否またはキャンセルする権利を有します。 診断データの送信を依頼するたびに、事前にポップアップでお客様の明示的な同意を求めます。",
-    "@privacyPolicy_Detail_2": {
-        "description": "Privacy Policy Detail 2"
-    },
-    "and": "を読むことができます。",
-    "accept": "をご覧ください。 同意いただける場合は、「同意する」をクリックしていただくと、当社のサービスの提供が開始されます。",
-    "@accept": {
-        "description": "Accept"
-    },
-    "undo": "そして",
-    "@undo": {
-        "description": "Undo"
-    },
-    "undoOption": "コンセント",
-    "@undoOption": {
-        "description": "Undo option"
-    },
-    "undoOption_Detail": "悔い改め",
-    "@undoOption_Detail": {
-        "description": "It is possible to undo a move."
-    },
-    "takeBack": "悔い改め",
-    "@takeBack": {
-        "description": "Take back"
-    },
-    "takingBack": "後悔しないために",
-    "@takingBack": {
-        "description": "Taking back..."
-    },
-    "waiting": "戻る",
-    "@waiting": {
-        "description": "Waiting..."
-    },
-    "stepForward": "リトリート",
-    "@stepForward": {
-        "description": "Step forward"
-    },
-    "takeBackAll": "お待ちください。",
-    "@takeBackAll": {
-        "description": "Take back all"
-    },
-    "stepForwardAll": "一歩前進",
-    "@stepForwardAll": {
-        "description": "Step forward all"
-    },
-    "moveNow": "最後に戻る。",
-    "@moveNow": {
-        "description": "Move now"
-    },
-    "done": "最後までお楽しみください。",
-    "@done": {
-        "description": "Done."
-    },
-    "crackMill": "すぐに動く。",
-    "@crackMill": {
-        "description": "Crack-mill"
-    },
-    "crackMill_Detail": "できました。",
-    "@crackMill_Detail": {
-        "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
-    },
-    "animationDuration": "三つ子の全員を連れて行くことは許されない",
-    "@animationDuration": {
-        "description": "Animation duration"
-    },
-    "none": "それなし",
-    "@none": {
-        "description": "None"
-    },
-    "theme": "動画の再生時間",
-    "@theme": {
-        "description": "Theme"
-    },
-    "helpContent": "ストレート・チェスは、相手のディスクを3枚以下にすることを目的とした、非常に古いマインド・ゲームです。\n\nポジションを3回繰り返すか、100回の連続した動き（設定可能）の中で食われたディスクがないと、引き分けになります。\n\nゲームは3つのフェーズで構成されています。\n\n1.空いているマスにディスクを置く。\n2.隣接する空のマスに駒を移動させる。\n3.残りのピースが3つになったら、「飛ぶ」ことができます（任意）。\n\n振り子の位相\n\n盤面には24個の空のマスがあります。 手持ちの駒がなくなるまで、空いているマスに交互に駒を置いていきます。 一方のプレイヤーが自分の3つの駒を並べると「トリプレット」と呼ばれ、相手の駒を捕獲して動きを続けることができます。\n\nこのルールの中には、相手のディスクがすべて「トリプレット」に入っている場合を除き、「トリプレット」に入っていない相手のディスクのみをキャプチャーすることができると定めているものもあります。\n\n他のルールバリエーションでは、移動フェイズの間、どちらのプレイヤーも捕獲されたディスクがある空のマスにディスクを移動することはできないと規定されています。\n\n両プレイヤーがディスクを手札に配置し終わったら、移動フェイズに移ります。\n\nムーブフェーズ\n\nプレイヤーは、自分のディスクを隣接するポイントに移動させます。 移動するディスクがない場合は、損失が発生します。 ムーブフェーズと同様に、「トリプル」が形成されると、相手のディスクが捕獲されます。 片方のプレイヤーのディスクが2枚しか残っていない場合、ゲームは終了し、そのプレイヤーの負けとなります。 また、ボード上に3枚以上のディスクがあっても、移動できるディスクが残っていない場合も負けとなります。\n\nフライング・ディスク・フェーズ\n\n一部のルールでは、ディスクが3枚になった時点で、隣接しているかどうかに関わらず、空いている任意のマスに「飛ぶ」ことができます。\n",
-    "@helpContent": {
-        "description": "Help Content"
-    },
-    "versionInfo": "バージョン情報",
-    "@versionInfo": {
-        "description": "Version info"
-    },
-    "eula": "利用規約",
-    "@eula": {
-        "description": "EULA"
-    },
-    "license": "ライセンス",
-    "@license": {
-        "description": "License"
-    },
-    "sourceCode": "ソースコード",
-    "@sourceCode": {
-        "description": "Source code"
-    },
-    "thirdPartyNotices": "サードパーティーステートメント",
-    "@thirdPartyNotices": {
-        "description": "Third-party notices"
-    },
-    "appVersion": "アプリケーションのバージョン",
-    "@appVersion": {
-        "description": "App Version"
-    },
-    "general": "一般",
-    "@general": {
-        "description": "General"
-    },
-    "advanced": "アドバンスド",
-    "@advanced": {
-        "description": "Advanced"
-    },
-    "placing": "振り子",
-    "@placing": {
-        "description": "Placing"
-    },
-    "moving": "Go",
-    "@moving": {
-        "description": "Moving"
-    },
-    "removing": "食べる",
-    "@removing": {
-        "description": "Removing"
-    },
-    "gameOverCondition": "終盤の条件",
-    "@gameOverCondition": {
-        "description": "Game over condition"
-    },
-    "aisPlayStyle": "マシンのプレースタイル",
-    "@aisPlayStyle": {
-        "description": "AI's playstyle"
-    },
-    "passive": "負の受動性",
-    "@passive": {
-        "description": "Passive"
-    },
-    "timeout": "タイムアウト",
-    "@timeout": {
-        "description": "Timeout"
-    },
-    "personalization": "外観設定",
-    "@personalization": {
-        "description": "Personalization"
-    },
-    "forDevelopers": "開発オプション",
-    "@forDevelopers": {
-        "description": "For developers"
-    },
-    "developerMode": "デベロッパーモード",
-    "@developerMode": {
-        "description": "Developer mode"
-    },
-    "drawOnHumanExperience": "人間の経験を借りる",
-    "@drawOnHumanExperience": {
-        "description": "Draw on the human experience"
-    },
-    "considerMobility": "ピース活動の強化を検討",
-    "@considerMobility": {
-        "description": "Consider mobility of pieces"
-    },
-    "pieceCount": "ピース数",
-    "@pieceCount": {
-        "description": "Piece count"
-    },
-    "inHand": "手には",
-    "@inHand": {
-        "description": "in hand"
-    },
-    "onBoard": "ボード上",
-    "@onBoard": {
-        "description": "on board"
-    },
-    "boardTop": "盤面と上端の間隔",
-    "@boardTop": {
-        "description": "Board offset from the top"
-    },
-    "notAIsTurn": "コンピュータが動くのではなく",
-    "@notAIsTurn": {
-        "description": "It is not the AI's turn."
-    },
-    "aiIsNotThinking": "コンピューターは考えていない",
-    "@aiIsNotThinking": {
-        "description": "AI is not thinking."
-    },
-    "autoReplay": "オートリプレイ。",
-    "@autoReplay": {
-        "description": "Auto re-play moves"
-    },
-    "atEnd": "ボトムにあります。",
-    "@atEnd": {
-        "description": "At the end of the move list."
-    },
-    "tapBackAgainToLeave": "もう一度returnを押してアプリケーションを終了する",
-    "@tapBackAgainToLeave": {
-        "description": "Tap back again to leave."
-    },
-    "environmentVariables": "環境変数",
-    "@environmentVariables": {
-        "description": "Environment variables"
-    },
-    "more": "さらに",
-    "@more": {
-        "description": "More"
-    },
-    "experimental": "これはまだ実験的な機能です。",
-    "@experimental": {
-        "description": "This is an experimental feature."
-    },
-    "experiments": "実験の特徴",
-    "@experiments": {
-        "description": "Experiments"
-    },
-    "ossLicenses": "オープンソースライセンス",
-    "@ossLicenses": {
-        "description": "Open source licenses"
-    },
-    "language": "表示言語",
-    "@language": {
-        "description": "Languages"
-    },
-    "defaultLanguage": "デフォルト言語",
-    "@defaultLanguage": {
-        "description": "Default language"
-    },
-    "mayMoveInPlacingPhase": "振り子の段階で行くことができる",
-    "@mayMoveInPlacingPhase": {
-        "description": "The pieces can move in the placing phase"
-    },
-    "mayMoveInPlacingPhase_Detail": "スイング・フェーズとムーブ・フェーズの間に厳密な境界はありません。 つまり、プレイヤーは1手ごとにスイングするか移動するかを決めることができます（スイングする駒が残っている限り）。",
-    "@mayMoveInPlacingPhase_Detail": {
-        "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
-    },
-    "drawerColor": "メニューの色",
-    "@drawerColor": {
-        "description": "Menu color"
-    },
-    "drawerTextColor": "メニューのテキストの色",
-    "@drawerTextColor": {
-        "description": "Menu text color"
-    },
-    "drawerBackgroundColor": "メニューの背景色",
-    "@drawerBackgroundColor": {
-        "description": "Menu background color"
-    },
-    "drawerHighlightItemColor": "メニューのハイライトアイテムの色",
-    "@drawerHighlightItemColor": {
-        "description": "Menu highlight item color"
-    },
-    "mainToolbarBackgroundColor": "メインツールバーの背景色",
-    "@mainToolbarBackgroundColor": {
-        "description": "Main toolbar background color"
-    },
-    "mainToolbarIconColor": "メインツールバーアイコンの色",
-    "@mainToolbarIconColor": {
-        "description": "main toolbar icon color"
-    },
-    "navigationToolbarBackgroundColor": "ナビゲーションツールバーの背景色",
-    "@navigationToolbarBackgroundColor": {
-        "description": "Navigation toolbar background color"
-    },
-    "navigationToolbarIconColor": "ナビゲーションツールバーのアイコンの色",
-    "@navigationToolbarIconColor": {
-        "description": "Navigation toolbar icon color"
-    },
-    "autoHideToolbar": "ツールバーを自動的に非表示",
-    "@autoHideToolbar": {
-        "description": "Automatically hide the toolbar"
-    },
-    "toolbarLocationOnScreen": "画面上のツールバーの位置",
-    "@toolbarLocationOnScreen": {
-        "description": "Toolbar location on screen"
-    },
-    "top": "上",
-    "@top": {
-        "description": "Top"
-    },
-    "bottom": "下",
-    "@bottom": {
-        "description": "Bottom"
-    },
-    "center": "センター",
-    "@center": {
-        "description": "Center"
-    },
-    "solidColor": "ソリッドカラー",
-    "@solidColor": {
-        "description": "Solid color"
-    },
-    "picture": "画像",
-    "@picture": {
-        "description": "Picture"
-    },
-    "chooseYourPicture": "あなたの写真を選択してください",
-    "@chooseYourPicture": {
-        "description": "Choose your picture"
-    },
-    "light": "光",
-    "@light": {
-        "description": "Light"
-    },
-    "dark": "闇",
-    "@dark": {
-        "description": "Dark"
-    },
-    "themes": "テーマ",
-    "@themes": {
-        "description": "Themes"
-    },
-    "currentTheme": "現在のテーマ",
-    "@currentTheme": {
-        "description": "Current theme"
-    },
-    "saveTheme": "テーマを保存",
-    "@saveTheme": {
-        "description": "Save theme"
-    },
-    "fonts": "フォント",
-    "@fonts": {
-        "description": "Fonts"
-    },
-    "showAnalysisGraph": "分析グラフを表示する",
-    "@showAnalysisGraph": {
-        "description": "Show analysis graph"
-    },
-    "analysis": "分析",
-    "@analysis": {
-        "description": "Analysis"
-    },
-    "saveGame": "ゲームを保存する",
-    "@saveGame": {
-        "description": "Save game"
-    },
-    "loadGame": "ゲームをロードする",
-    "@loadGame": {
-        "description": "Load game"
-    },
-    "setupPosition": "セットアップ位置",
-    "@setupPosition": {
-        "description": "Setup position"
-    },
-    "showLegalMoves": "法的な動きを示す",
-    "@showLegalMoves": {
-        "description": "Show legal moves"
-    },
-    "showLastMove": "最後の動きを表示",
-    "@showLastMove": {
-        "description": "Show last move"
-    },
-    "showArrows": "矢印を表示",
-    "@showArrows": {
-        "description": "Show arrows"
-    },
-    "pieces": "ピース",
-    "@pieces": {
-        "description": "Pieces"
-    },
-    "showAnalysis": "分析を表示",
-    "@showAnalysis": {
-        "description": "Show analysis"
-    },
-    "threads": "スレッド",
-    "@threads": {
-        "description": "Threads"
-    },
-    "getInvolved": "参加する",
-    "@getInvolved": {
-        "description": "Get Involved"
-    },
-    "helpImproveTranslate": "翻訳の改善にご協力ください",
-    "@helpImproveTranslate": {
-        "description": "Help improve translate"
-    },
-    "tutorial": "チュートリアル",
-    "@tutorial": {
-        "description": "Tutorial"
-    },
-    "classicMill": "クラシックミル",
-    "@classicMill": {
-        "description": "Classic Mill"
-    },
-    "mixedMill": "混合ミル",
-    "@mixedMill": {
-        "description": "Mixed Mill"
-    },
-    "ceylonMill": "セイロンミル",
-    "@ceylonMill": {
-        "description": "Ceylon Mill"
-    },
-    "mayBreakAndRemakeMillRepeatedly": "ミルが壊れて繰り返し作り直される可能性があります",
-    "@mayBreakAndRemakeMillRepeatedly": {
-        "description": "Mill may be broken and remade repeatedly"
-    },
-    "mayBreakAndRemakeMillRepeatedly_Detail": "プレイヤーがミルを壊してすぐに新しいミルを作成した場合、そのようなプレイヤーは、新しいミルを作成した場合、次の移動でそのようなピースを元のジャンクションに戻すことができます。",
-    "@mayBreakAndRemakeMillRepeatedly_Detail": {
-        "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "プレイヤーが3つの駒を持っていて、10回移動した後、どちらのプレイヤーも対戦相手の駒を削除しない場合、ゲームは引き分けになります。",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
-        "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
-    },
-    "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "プレーヤーが3ピースになり、どちらのプレーヤーも10手以内に相手のピースを取り除くことができない場合、ゲームは引き分けになります。",
-    "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
-        "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
-    },
-    "close": "閉鎖",
-    "@close": {
-        "description": "Close"
-    },
-    "whitePiece": "白いチェス",
-    "@whitePiece": {
-        "description": "White piece"
-    },
-    "blackPiece": "黒のチェス",
-    "@blackPiece": {
-        "description": "Black piece"
-    },
-    "banPoint": "押しつぶされる",
-    "@banPoint": {
-        "description": "Ban point"
-    },
-    "emptyPoint": "空のポイント",
-    "@emptyPoint": {
-        "description": "Empty point"
-    },
-    "noPoint": "意味が無い",
-    "@noPoint": {
-        "description": "No point"
-    },
-    "placingPhase": "スイングステージ",
-    "@placingPhase": {
-        "placingPhase": "Placing phase"
-    },
-    "movingPhase": "ウォーキングステージ",
-    "@movingPhase": {
-        "description": "Moving phase"
-    },
-    "flyingPhase": "つま先ステージ",
-    "@flyingPhase": {
-        "description": "Flying phase"
-    },
-    "sideToMove": "振り向く",
-    "@sideToMove": {
-        "description": "Side to move"
-    },
-    "lastMove": "最後の動き",
-    "@lastMove": {
-        "description": "Last move"
-    },
-    "selected": "選択済み",
-    "@selected": {
-        "description": "Selected"
-    },
-    "mainMenu": "メインメニュー",
-    "@mainMenu": {
-        "description": "Main menu"
-    },
-    "accessibility": "アクセシビリティ",
-    "@accessibility": {
-        "description": "Accessibility"
-    },
-    "screenReaderSupport": "スクリーンリーダーのサポート",
-    "@screenReaderSupport": {
-        "description": "Screen reader support"
-    },
-    "isDraw": "引き分けです",
-    "@isDraw": {
-        "description": "It is a Draw!"
-    },
-    "draw": "和牛",
-    "@draw": {
-        "description": "Draw"
-    },
-    "pieceHighlightColor": "チェッカーのハイライト色",
-    "@pieceHighlightColor": {
-        "description": "Piece highlight color"
-    },
-    "algorithm": "アルゴリズム",
-    "@algorithm": {
-        "description": "Algorithm"
-    },
-    "removeUnplacedPiece": "相手の手に残っているチェスの駒しか食べられない",
-    "@removeUnplacedPiece": {
-        "description": "Remove unplaced piece"
-    },
-    "removeUnplacedPiece_Detail": "スリーカムが形成されると、対戦相手の配置されていないピースのみをキャプチャしてゲームを続行できます。",
-    "@removeUnplacedPiece_Detail": {
-        "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
-    },
-    "endgameNMoveRule": "エンドゲームN-移動ルール",
-    "@endgameNMoveRule": {
-        "description": "Endgame N-Move rule"
-    },
-    "endgameNMoveRule_Detail": "少なくとも片側に3個しか残っておらず、両側に連続してピースがない場合、それは同点と判断されることを指定します。",
-    "@endgameNMoveRule_Detail": {
-        "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
-    },
-    "drawReasonEndgameRule50": "少なくとも1つのパーティの残りのピースは3つだけであり、どちらのパーティも複数の連続した動きでピースを取得していません。",
-    "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
-    },
-    "threefoldRepetitionRule": "3回の繰り返しルール",
-    "@threefoldRepetitionRule": {
-        "description": "Threefold repetition rule"
-    },
-    "threefoldRepetitionRule_Detail": "ゲーム中に、同じ位置が3回連続してまたは断続的に表示される場合、それは同点と見なされます。",
-    "@threefoldRepetitionRule_Detail": {
-        "description": "The game is drawn if a position occurs for the third time."
-    },
-    "continueToMakeMove": "3人の息子が続けて、チェスを続けてください",
-    "@continueToMakeMove": {
-        "description": "Mill! Continue to make a move."
-    },
-    "pointStyle": "チェッカーボードの交差点のスタイル",
-    "@pointStyle": {
-        "description": "Point style"
-    },
-    "pointWidth": "チェス盤の交差点のサイズ",
-    "@pointWidth": {
-        "description": "Point width"
-    },
-    "solid": "実線の円",
-    "@solid": {
-        "description": "Solid"
-    },
-    "hollow": "中空円",
-    "@hollow": {
-        "description": "Hollow"
+  "appName": "ミル",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "ようこそ、ご利用ください",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "はい。",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "いいえ",
+  "@no": {
+    "description": "No"
+  },
+  "game": "ゲーム",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "チャレンジマシン",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "2人のプレーヤー",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "マシン対マシン",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "チャレンジクラウド",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "ネットワークマッチメイキング",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "ネットワークテスト",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "ムーブ",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "ゲームを表示する",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "ゲーム",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "ムーブなし",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "確認",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "キャンセル",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "ディスクの選択ミス",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "落としてください。",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "ここに着地できない",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "すでに落ちている",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "ピースを食べてください",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "これは取れませんね。",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "食べること。",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "行ってください。",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "ここで遊ぶことはできません。",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "ここでは動かないでください。",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "3枚続けて、食べてください。",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "引き続き、ディスクをお持ちください。",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "相手の駒を選んでください",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "トリプレットで駒を取ることはできません",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "隣接する空きマスに移動してください",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "相手のディスクを動かすことはできません",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "移動させたい作品を選択してください。",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "残りは3枚です。",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "何もない広場にも飛べる",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player}移動します。",
+  "@tipToMove": {
+    "description": " to move."
+  },
+  "whiteWin": "先手必勝！",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "クイーンの動きが勝つ！",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "勝利",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "ロース",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "相手が考えているのは…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "新しいゲームの開始",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "輸入ゲーム",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "ゲームのエクスポート",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "ゲームがクリップボードからインポートされている。",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "{invalidMove}をインポートできません",
+  "@cannotImport": {
+    "description": "Cannot import"
+  },
+  "movesAndRulesNotMatch": "動きとルールが一致しない",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "お待ちください...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "再起動？",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "もう一度始めてください。",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "ゲームを開始します。 プレイしてください。",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "ポジションを分析しています…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "エラー：{message}",
+  "@error": {
+    "description": "Error"
+  },
+  "winRate": "勝利率",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "スコア:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "ファーストハンド",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "女王の側",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player}個数が3個未満です。",
+  "@loseReasonlessThanThree": {
+    "description": " piece count is less than three."
+  },
+  "loseReasonResign": "{player}は辞任しました。",
+  "@loseReasonResign": {
+    "description": " resign."
+  },
+  "loseReasonNoWay": "{player}は行く方法がありません。",
+  "@loseReasonNoWay": {
+    "description": " is no way to go."
+  },
+  "loseReasonBoardIsFull": "ボードがいっぱいで、{player}は行く方法がありません。",
+  "@loseReasonBoardIsFull": {
+    "description": "The board is full, no way to go."
+  },
+  "loseReasonTimeOver": "時間が終わり、{player}を失いました。",
+  "@loseReasonTimeOver": {
+    "description": "Time Over"
+  },
+  "drawReasonRule50": "ルールで定められた手の数以内にディスクを取らずに、手番で複数回連続して手を打った場合はドローとなります。",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "ドローは、ボードがいっぱいになり、出口がない場合に与えられます。",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "ポジションドローを3回繰り返します。",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "理由は不明ですが、ゲームは終了しました",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "ゲームオーバー",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "優勝おめでとうございます！",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "より難しいレベルに挑戦しますか？新しいレベルはレベル{level}になります！",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?"
+  },
+  "youLose": "あなたの負けです！",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "分析",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "について",
+  "@about": {
+    "description": "About"
+  },
+  "version": "バージョン: {versionNumber}",
+  "@version": {
+    "description": "Version"
+  },
+  "thanks": "謝辞",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "設定",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "オプション",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "一般設定",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "難易度",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "機械思考の時間",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "ゲームの難易度",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "サウンド",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "移動時に音を出す",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "後悔しているときはミュートにする",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "サウンドエフェクトの再生",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "優先順位",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "人間",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "マシン",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "オルタネート",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "ゲーム終了時に自動的にゲームを再起動する",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "ゲーム開始時に自動的に手を交換する",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "マシンのランダムな動き",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "その他",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "ルール",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "ピース数",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "各プレイヤーは何個持っていますか？",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "何枚目のディスクが飛ぶか",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "フライングが許可されている場合、プレイヤーが何枚のディスクを残しているかがフライングになります。",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "数枚以下のディスクロス",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "対角線",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "盤面に4本の斜めのラインを追加します。",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "禁断のポイント",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "振り子の段階では、食べたディスクはマークされ、とりあえずは取り出さない。 両方のプレイヤーがディスクを配置した後、一様にマークされたディスクをすべて取り除き、移動フェイズに移ります。",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst": "ディスクが振られた後に最初に動く",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "スイングフェイズで先にスイングしたプレーヤーが、ムーブフェイズで先にムーブします。",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "複数枚のディスクの取り込み",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "同時に複数のトリプレットが形成された場合、相手はトリプレットが形成された数だけディスクを食べることができます。",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "トリプレットからピースを取ることは可能です",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "デフォルトでは、相手のディスクがすべてトリプレットになっていないと、トリプレットを取ることはできません。 このオプションをオンにすると、この制限が解除されます。",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "盤面がいっぱいになると、最初にディスクを置いた人が負けになります",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "12枚のディスクの場合、ディスクフェイズの終了時にボードが満杯で、どちらのプレイヤーもディスクを取っていない場合、最初のプレイヤーはドローではなく負けとなります。",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "逃げ場がないときの負け",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "ムーブフェーズでは、相手の動きに合わせて切り替えるのではなく、逃げ場がなくなった時点で負けとなります。",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "フライングディスク",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "一方の側が3枚または4枚（設定可能）のディスクを残している場合、その側はボード上の任意の空のマスにディスクを移動することができます。",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N-ステップルール",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "ディスクが取られなかった場合に、引き分けが成立する連続した手の数を指定します。",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "ロールバック",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "選択してください",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "コピー",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "ゲームがクリップボードにコピーされました。",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "ヘルプ",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "フィードバック",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "ログアウト",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "ルール設定",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "カラー",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "ボードカラー",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "ピースカラー",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "背景色",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "ラインカラー",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "テンポ側のポーンの色",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "クイーンズサイドピースの色",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "キューメッセージの色",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "手元に残っている枚数を表示",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "盤面の端に座標を表示",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "移動ナビゲーションツールバーの表示",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "ショー",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "ボードの外枠の線幅",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "ボード内のラインの幅",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "ピースサイズ",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "文字サイズ",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "標準的なゲーム形式",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "リセット",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "デフォルトの設定に戻す",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "{element}を選択",
+  "@pick": {
+    "description": "Pick "
+  },
+  "info": "インフォ",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "チップ",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "プレーヤー",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "初手側",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "バックハンド側",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "遊び方の説明",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "盤面の交点をクリックしてピースを配置します。",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "移動させたいピースを選択します。",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "この作品に隣接するポイントをクリックすると、作品が移動します。",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "相手の駒をクリックすると、その駒を取ることができます。",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "相手の駒を捕獲するためには、トリプレットを形成する必要があります。",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "自分の駒を動かす必要があります。",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "統計情報",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "ディスクの枚数",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "結果",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "残存",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "プライバシーポリシー",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "User Agreement と \"Privacy Policy \"の条項を注意深く読み、完全に理解することが重要です。",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": "お客様に提供するサービスを向上させるために、お客様の明示的な承認に基づいて、お客様のデバイスモデル、診断データ、電子メールアドレスなどの情報を取得することがありますが、これらの情報はお客様が拒否またはキャンセルする権利を有します。 診断データの送信を依頼するたびに、事前にポップアップでお客様の明示的な同意を求めます。",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": "を読むことができます。",
+  "@and": {},
+  "accept": "承認",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "悔い改め",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "後悔しないために…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "戻る…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "リトリート",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "お待ちください",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "一歩前進",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "最後に戻る",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "最後までお楽しみください。",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "すぐに動く",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "できました。",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "三つ子の全員を連れて行くことは許されない",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "それなし",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "動画の再生時間",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "ストレート・チェスは、相手のディスクを3枚以下にすることを目的とした、非常に古いマインド・ゲームです。\n\nポジションを3回繰り返すか、100回の連続した動き（設定可能）の中で食われたディスクがないと、引き分けになります。\n\nゲームは3つのフェーズで構成されています。\n\n1.空いているマスにディスクを置く。\n2.隣接する空のマスに駒を移動させる。\n3.残りのピースが3つになったら、「飛ぶ」ことができます（任意）。\n\n振り子の位相\n\n盤面には24個の空のマスがあります。 手持ちの駒がなくなるまで、空いているマスに交互に駒を置いていきます。 一方のプレイヤーが自分の3つの駒を並べると「トリプレット」と呼ばれ、相手の駒を捕獲して動きを続けることができます。\n\nこのルールの中には、相手のディスクがすべて「トリプレット」に入っている場合を除き、「トリプレット」に入っていない相手のディスクのみをキャプチャーすることができると定めているものもあります。\n\n他のルールバリエーションでは、移動フェイズの間、どちらのプレイヤーも捕獲されたディスクがある空のマスにディスクを移動することはできないと規定されています。\n\n両プレイヤーがディスクを手札に配置し終わったら、移動フェイズに移ります。\n\nムーブフェーズ\n\nプレイヤーは、自分のディスクを隣接するポイントに移動させます。 移動するディスクがない場合は、損失が発生します。 ムーブフェーズと同様に、「トリプル」が形成されると、相手のディスクが捕獲されます。 片方のプレイヤーのディスクが2枚しか残っていない場合、ゲームは終了し、そのプレイヤーの負けとなります。 また、ボード上に3枚以上のディスクがあっても、移動できるディスクが残っていない場合も負けとなります。\n\nフライング・ディスク・フェーズ\n\n一部のルールでは、ディスクが3枚になった時点で、隣接しているかどうかに関わらず、空いている任意のマスに「飛ぶ」ことができます。\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "バージョン情報",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "利用規約",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "ライセンス",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "ソースコード",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "アプリケーションのバージョン",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "一般",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "アドバンスド",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "振り子",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Go",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "食べる",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "終盤の条件",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "マシンのプレースタイル",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "負の受動性",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "タイムアウト",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "外観",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "人間の経験を借りる",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "ピース活動の強化を検討",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "ピース数:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "手持ちの{player}：{count}",
+  "@inHand": {
+    "description": "in hand"
+  },
+  "onBoard": "{player}搭載：{count}",
+  "@onBoard": {
+    "description": "on board"
+  },
+  "boardTop": "盤面と上端の間隔",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "コンピュータが動くのではなく",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "コンピューターは考えていない",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "ボトムにあります。",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "もう一度returnを押してアプリケーションを終了する",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "さらに",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "これはまだ実験的な機能です。",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "実験の特徴",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "オープンソースライセンス",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "表示言語",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "デフォルト言語",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "振り子の段階で行くことができる",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "スイング・フェーズとムーブ・フェーズの間に厳密な境界はありません。 つまり、プレイヤーは1手ごとにスイングするか移動するかを決めることができます（スイングする駒が残っている限り）。",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "メニューの色",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "メニューのテキストの色",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "メニューのハイライトアイテムの色",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "メインツールバーの背景色",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "メインツールバーアイコンの色",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "ナビゲーションツールバーの背景色",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "ナビゲーションツールバーのアイコンの色",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "ツールバーを自動的に非表示",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "画面上のツールバーの位置",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "上",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "下",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "センター",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "ソリッドカラー",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "画像",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "あなたの写真を選択してください",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "光",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "闇",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "テーマ",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "現在のテーマ",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "テーマを保存",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "分析グラフを表示する",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "分析",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "ゲームを保存する",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "ゲームをロードする",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "セットアップ位置",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "法的な動きを示す",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "最後の動きを表示",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "矢印を表示",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "ピース",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "分析を表示",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "スレッド",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "参加する",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "翻訳の改善にご協力ください",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "チュートリアル",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "クラシックミル",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "混合ミル",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "セイロンミル",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "ミルが壊れて繰り返し作り直される可能性があります",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "プレイヤーがミルを壊してすぐに新しいミルを作成した場合、そのようなプレイヤーは、新しいミルを作成した場合、次の移動でそのようなピースを元のジャンクションに戻すことができます。",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "プレイヤーが3つの駒を持っていて、10回移動した後、どちらのプレイヤーも対戦相手の駒を削除しない場合、ゲームは引き分けになります",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "プレーヤーが3ピースになり、どちらのプレーヤーも10手以内に相手のピースを取り除くことができない場合、ゲームは引き分けになります。",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "閉鎖",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "白いチェス",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "黒のチェス",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "押しつぶされる",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "空のポイント",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "意味が無い",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "スイングステージ",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "ウォーキングステージ",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "つま先ステージ",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "移動する側：{player}",
+  "@sideToMove": {
+    "description": "Side to move"
+  },
+  "lastMove": "最後の動き：{move}",
+  "@lastMove": {
+    "description": "Last move"
+  },
+  "selected": "選択済み",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "アクセシビリティ",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "スクリーンリーダーのサポート",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "引き分けです！",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "和牛",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "チェッカーのハイライト色",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "アルゴリズム",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "相手の手に残っているチェスの駒しか食べられない",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "スリーカムが形成されると、対戦相手の配置されていないピースのみをキャプチャしてゲームを続行できます。",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule": "エンドゲームN-移動ルール",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "少なくとも片側に3個しか残っておらず、両側に連続してピースがない場合、それは同点と判断されることを指定します。",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "少なくとも1つのパーティの残りのピースは3つだけであり、どちらのパーティも複数の連続した動きでピースを取得していません。",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "3回の繰り返しルール",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "ゲーム中に、同じ位置が3回連続してまたは断続的に表示される場合、それは同点と見なされます。",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "3人の息子が続けて、チェスを続けてください",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "チェッカーボードの交差点のスタイル",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "チェス盤の交差点のサイズ",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "実線の円",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "中空円",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "日本語",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{ステップ}=1{{count} ステップ}other{{count} ステップ}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
     }
+  },
+  "loadFailed": "読み込みに失敗しました。",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "ファイル名",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameFiles": "ゲームファイル",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "ゲームは次の場所に保存されます",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "browse": "ブラウズ…",
+  "@browse": {
+    "description": "Browse…"
+  }
 }
