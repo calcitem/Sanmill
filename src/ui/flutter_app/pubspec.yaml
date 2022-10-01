@@ -37,7 +37,7 @@ dependencies:
   #localization
   intl: ^0.17.0
 
-  json_annotation: ^4.6.0
+  json_annotation: ^4.7.0
   logger: ^1.1.0
   # Fixed
   package_info_plus: ^1.4.2
