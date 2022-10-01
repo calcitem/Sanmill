@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "loadFailed": "Η φόρτωση απέτυχε.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameSavedTo": "Το παιχνίδι αποθηκεύεται στο",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "filename": "Ονομα αρχείου",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Ξεφυλλίζω…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Αρχεία παιχνιδιών",
+  "@gameFiles": {
+    "description": "Game files"
   }
 }

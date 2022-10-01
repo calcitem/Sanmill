@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "filename": "Filnavn",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameSavedTo": "Spillet er lagret til",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "gameFiles": "Spillfiler",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "loadFailed": "Lasten mislyktes.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "browse": "Bla gjennom…",
+  "@browse": {
+    "description": "Browse…"
   }
 }

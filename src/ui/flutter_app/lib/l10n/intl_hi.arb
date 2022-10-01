@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "gameSavedTo": "खेल सहेजा गया है",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "loadFailed": "लोड विफल हो गया।",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "browse": "ब्राउज़ करें…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "filename": "फ़ाइल का नाम",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameFiles": "खेल फ़ाइलें",
+  "@gameFiles": {
+    "description": "Game files"
   }
 }

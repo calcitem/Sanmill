@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "filename": "Název souboru",
+  "@filename": {
+    "description": "File name"
+  },
+  "loadFailed": "Načtení se nezdařilo.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameSavedTo": "Hra je uložena do",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "browse": "Procházet…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Herní soubory",
+  "@gameFiles": {
+    "description": "Game files"
   }
 }

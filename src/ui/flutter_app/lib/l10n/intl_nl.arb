@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "gameFiles": "Spelbestanden",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "filename": "Bestandsnaam",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Bladeren…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "loadFailed": "Laden mislukt.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameSavedTo": "Het spel is opgeslagen op",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
   }
 }

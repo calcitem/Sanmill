@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "filename": "檔名",
+  "@filename": {
+    "description": "File name"
+  },
+  "loadFailed": "加载失败。",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "browse": "瀏覽…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "遊戲檔",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "遊戲已保存到",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
   }
 }

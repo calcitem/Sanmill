@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "loadFailed": "Laadimine ebaõnnestus.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Faili nimi",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameFiles": "Mängu failid",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "browse": "Sirvi…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameSavedTo": "Mäng salvestatakse asukohta",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
   }
 }

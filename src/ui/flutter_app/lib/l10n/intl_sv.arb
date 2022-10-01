@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "filename": "Filnamn",
+  "@filename": {
+    "description": "File name"
+  },
+  "loadFailed": "Laddningen misslyckades.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameSavedTo": "Spelet sparas till",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "browse": "Bläddra…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Spelfiler",
+  "@gameFiles": {
+    "description": "Game files"
   }
 }

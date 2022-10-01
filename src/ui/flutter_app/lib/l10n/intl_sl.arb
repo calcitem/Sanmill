@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "loadFailed": "Nalaganje ni uspelo.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "browse": "Prebrskaj …",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "filename": "Ime datoteke",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameFiles": "Datoteke iger",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "Igra je shranjena v",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
   }
 }

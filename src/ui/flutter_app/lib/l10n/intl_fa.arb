@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "loadFailed": "بارگیری انجام نشد.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "نام فایل",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameSavedTo": "بازی در ذخیره شده است",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "gameFiles": "فایل های بازی",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "browse": "مرور کردن…",
+  "@browse": {
+    "description": "Browse…"
   }
 }

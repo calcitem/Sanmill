@@ -1166,5 +1166,9 @@
   "gameSavedTo": "游戏已保存至",
   "@gameSavedTo": {
     "description": "The game is saved to"
+  },
+  "loadFailed": "加载失败。",
+  "@loadFailed": {
+    "description": "Load failed."
   }
 }

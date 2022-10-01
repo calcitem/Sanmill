@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "gameFiles": "Файлове за игри",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "Играта е запазена в",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "filename": "Име на файл",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Преглед…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "loadFailed": "Неуспешно зареждане.",
+  "@loadFailed": {
+    "description": "Load failed."
   }
 }

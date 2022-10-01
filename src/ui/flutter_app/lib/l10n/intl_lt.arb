@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "filename": "Failo pavadinimas",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Naršyti…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Žaidimų failai",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "loadFailed": "Įkelti nepavyko.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameSavedTo": "Žaidimas išsaugotas",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
   }
 }

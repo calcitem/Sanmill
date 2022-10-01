@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "filename": "اسم الملف",
+  "@filename": {
+    "description": "File name"
+  },
+  "loadFailed": "فشل التحميل.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameSavedTo": "تم حفظ اللعبة في",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "browse": "تصفح…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "ملفات اللعبة",
+  "@gameFiles": {
+    "description": "Game files"
   }
 }

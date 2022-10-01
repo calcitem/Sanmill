@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "loadFailed": "로드에 실패했습니다.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "파일 이름",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameSavedTo": "게임이 저장됩니다",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "gameFiles": "게임 파일",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "browse": "검색…",
+  "@browse": {
+    "description": "Browse…"
   }
 }

@@ -1150,5 +1150,25 @@
   "generalSettings": "সাধারণ সেটিংস",
   "@generalSettings": {
     "description": "General Settings"
+  },
+  "filename": "ফাইলের নাম",
+  "@filename": {
+    "description": "File name"
+  },
+  "loadFailed": "লোড ব্যর্থ হয়েছে.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameSavedTo": "খেলা সংরক্ষিত হয়",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "browse": "ব্রাউজ করুন…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "গেম ফাইল",
+  "@gameFiles": {
+    "description": "Game files"
   }
 }

@@ -1150,5 +1150,25 @@
         "example": "3"
       }
     }
+  },
+  "loadFailed": "Laden fehlgeschlagen.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameSavedTo": "Das Spiel wird gespeichert unter",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "filename": "Name der Datei",
+  "@filename": {
+    "description": "File name"
+  },
+  "gameFiles": "Spiel-Dateien",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "browse": "Durchsuchen…",
+  "@browse": {
+    "description": "Browse…"
   }
 }
