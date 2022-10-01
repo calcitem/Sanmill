@@ -60,7 +60,6 @@ class GamePage extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: GameHeader(),
       backgroundColor: DB().colorSettings.darkBackgroundColor,
       body: FutureBuilder(
         future: controller.start(),
@@ -211,6 +210,8 @@ class _Game extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        GameHeader(),
+        const SizedBox(height: AppTheme.boardMargin),
         const Board(),
         const SizedBox(height: AppTheme.boardMargin),
         if (DB().displaySettings.isHistoryNavigationToolbarShown)
