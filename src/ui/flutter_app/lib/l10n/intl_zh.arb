@@ -1155,6 +1155,10 @@
   "@filename": {
     "description": "File name"
   },
+  "loadFailed": "加载失败。",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
   "browse": "浏览…",
   "@browse": {
     "description": "Browse…"
@@ -1166,9 +1170,5 @@
   "gameSavedTo": "游戏已保存至",
   "@gameSavedTo": {
     "description": "The game is saved to"
-  },
-  "loadFailed": "加载失败。",
-  "@loadFailed": {
-    "description": "Load failed."
   }
 }
