@@ -21,6 +21,7 @@ import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/services/database/database.dart';
+import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/shared/constants.dart';
@@ -228,16 +229,6 @@ class GeneralSettingsPage extends StatelessWidget {
           ],
         ),
         SettingsCard(
-          title: Text(S.of(context).misc),
-          children: <Widget>[
-            SettingsListTile.switchTile(
-              value: generalSettings.isAutoRestart,
-              onChanged: (val) => _setIsAutoRestart(generalSettings, val),
-              titleString: S.of(context).isAutoRestart,
-            ),
-          ],
-        ),
-        SettingsCard(
           title: Text(S.of(context).restore),
           children: <Widget>[
             SettingsListTile(
@@ -246,6 +237,17 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
           ],
         ),
+        if (EnvironmentConfig.devMode || EnvironmentConfig.test)
+          SettingsCard(
+            title: Text(S.of(context).experiments),
+            children: <Widget>[
+              SettingsListTile.switchTile(
+                value: generalSettings.isAutoRestart,
+                onChanged: (val) => _setIsAutoRestart(generalSettings, val),
+                titleString: S.of(context).isAutoRestart,
+              ),
+            ],
+          ),
       ],
     );
   }
