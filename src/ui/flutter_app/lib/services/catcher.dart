@@ -16,9 +16,13 @@
 
 part of 'package:sanmill/main.dart';
 
+late Catcher catcher;
+
 /// Initializes the given [catcher]
 Future<void> _initCatcher(Catcher catcher) async {
+  Map<String, String> customParameters = <String, String>{};
   late final String externalDirStr;
+
   try {
     final Directory? externalDir = await getExternalStorageDirectory();
     externalDirStr = externalDir != null ? externalDir.path : ".";
@@ -26,28 +30,38 @@ Future<void> _initCatcher(Catcher catcher) async {
     logger.e(e.toString());
     externalDirStr = ".";
   }
+
   final String path = "$externalDirStr/${Constants.crashLogsFileName}";
   logger.v("[env] ExternalStorageDirectory: $externalDirStr");
 
-  final CatcherOptions debugOptions = CatcherOptions(PageReportMode(), [
-    ConsoleHandler(),
-    FileHandler(File(path), printLogs: true),
-    EmailManualHandler(Constants.recipients, printLogs: true)
-  ]);
+  final CatcherOptions debugOptions = CatcherOptions(
+      PageReportMode(),
+      [
+        ConsoleHandler(),
+        FileHandler(File(path), printLogs: true),
+        EmailManualHandler(Constants.recipients, printLogs: true)
+      ],
+      customParameters: customParameters);
 
   /// Release configuration.
   /// Same as above, but once user accepts dialog,
   /// user will be prompted to send email with crash to support.
-  final CatcherOptions releaseOptions = CatcherOptions(PageReportMode(), [
-    FileHandler(File(path), printLogs: true),
-    EmailManualHandler(Constants.recipients, printLogs: true)
-  ]);
+  final CatcherOptions releaseOptions = CatcherOptions(
+      PageReportMode(),
+      [
+        FileHandler(File(path), printLogs: true),
+        EmailManualHandler(Constants.recipients, printLogs: true)
+      ],
+      customParameters: customParameters);
 
-  final CatcherOptions profileOptions = CatcherOptions(PageReportMode(), [
-    ConsoleHandler(),
-    FileHandler(File(path), printLogs: true),
-    EmailManualHandler(Constants.recipients, printLogs: true)
-  ]);
+  final CatcherOptions profileOptions = CatcherOptions(
+      PageReportMode(),
+      [
+        ConsoleHandler(),
+        FileHandler(File(path), printLogs: true),
+        EmailManualHandler(Constants.recipients, printLogs: true)
+      ],
+      customParameters: customParameters);
 
   /// Pass root widget (MyApp) along with Catcher configuration:
   catcher.updateConfig(

@@ -73,6 +73,12 @@ class Game {
 
     MillController().recorder.add(extMove);
 
+    if (EnvironmentConfig.catcher == true) {
+      CatcherOptions options = catcher.getCurrentConfig()!;
+      options.customParameters["Move List"] =
+          MillController().recorder.moveHistoryText;
+    }
+
     sideToMove = MillController().position.sideToMove;
 
     _logStat();
