@@ -70,9 +70,9 @@ class GeneralSettings {
     this.shufflingEnabled = true,
     this.learnEndgame = false,
     this.openingBook = false,
-    this.algorithm = SearchAlgorithm.mtdf,
-    @Deprecated('This only represents the old algorithm type. Use [algorithm] instead')
-        this.oldAlgorithm = 0,
+    @Deprecated('This only represents the old algorithm type. Use [searchAlgorithm] instead')
+        this.algorithm = 2,
+    this.searchAlgorithm = SearchAlgorithm.mtdf,
     this.drawOnHumanExperience = true,
     this.considerMobility = true,
     @Deprecated("We won't export the developer settings anymore. People should use the EnvironmentConfig.devMode")
@@ -83,59 +83,79 @@ class GeneralSettings {
 
   @HiveField(0)
   final bool isPrivacyPolicyAccepted;
+
+  @HiveField(1)
+  final bool toneEnabled;
+
+  @HiveField(2)
+  final bool keepMuteWhenTakingBack;
+
+  @HiveField(3)
+  final bool screenReaderSupport;
+
+  @HiveField(4)
+  final bool aiMovesFirst;
+
+  @HiveField(5)
+  final bool aiIsLazy;
+
+  @HiveField(6)
+  final int skillLevel;
+
+  @HiveField(7)
+  final int moveTime;
+
+  @HiveField(8)
+  final bool isAutoRestart;
+
+  @HiveField(9)
+  final bool isAutoChangeFirstMove;
+
+  @HiveField(10)
+  final bool resignIfMostLose;
+
+  @HiveField(11)
+  final bool shufflingEnabled;
+
+  @HiveField(12)
+  final bool learnEndgame;
+
+  @HiveField(13)
+  final bool openingBook;
+
+  @Deprecated(
+      'This only represents the old algorithm type. Use [searchAlgorithm] instead')
+  @HiveField(14)
+  final int algorithm;
+
+  @HiveField(15)
+  final bool drawOnHumanExperience;
+
+  @HiveField(16)
+  final bool considerMobility;
+
+  @Deprecated(
+    "We won't export the developer settings anymore. People should use the EnvironmentConfig.devMode",
+  )
+  @HiveField(17)
+  final bool developerMode;
+
+  @Deprecated("Use [EnvironmentConfig.devMode] instead")
+  @HiveField(18)
+  final bool experimentsEnabled;
+
   @Deprecated(
     "As this is not a user facing preference we migrated it into another box",
   )
-  @HiveField(1)
+  @HiveField(19)
   final bool usesHiveDB;
 
-  @HiveField(2)
-  final bool toneEnabled;
-  @HiveField(3)
-  final bool keepMuteWhenTakingBack;
-  @HiveField(4)
-  final bool screenReaderSupport;
-  @HiveField(5)
-  final bool aiMovesFirst;
-  @HiveField(6)
-  final bool aiIsLazy;
-  @HiveField(7)
-  final int skillLevel;
-  @HiveField(8)
-  final int moveTime;
-  @HiveField(9)
-  final bool isAutoRestart;
-  @HiveField(10)
-  final bool isAutoChangeFirstMove;
-  @HiveField(11)
-  final bool resignIfMostLose;
-  @HiveField(12)
-  final bool shufflingEnabled;
-  @HiveField(13)
-  final bool learnEndgame;
-  @HiveField(14)
-  final bool openingBook;
   @JsonKey(
     fromJson: AlgorithmAdapter.algorithmFromJson,
     toJson: AlgorithmAdapter.algorithmToJson,
   )
   @HiveField(20)
-  final SearchAlgorithm? algorithm;
-  @Deprecated('This only represents the old algorithm type')
-  @HiveField(15)
-  final int oldAlgorithm;
-  @HiveField(16)
-  final bool drawOnHumanExperience;
-  @HiveField(17)
-  final bool considerMobility;
-  @HiveField(18)
-  @Deprecated(
-    "We won't export the developer settings anymore. People should use the EnvironmentConfig.devMode",
-  )
-  final bool developerMode;
-  @HiveField(19)
-  @Deprecated("Use [EnvironmentConfig.devMode] instead")
-  final bool experimentsEnabled;
+  final SearchAlgorithm? searchAlgorithm;
 
   /// Encodes a Json style map into a [GeneralSettings] object
   factory GeneralSettings.fromJson(Map<String, dynamic> json) =>

@@ -69,18 +69,19 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   void _setAlgorithm(BuildContext context, GeneralSettings generalSettings) {
-    void callback(SearchAlgorithm? algorithm) {
+    void callback(SearchAlgorithm? searchAlgorithm) {
       Navigator.pop(context);
 
-      DB().generalSettings = generalSettings.copyWith(algorithm: algorithm);
+      DB().generalSettings =
+          generalSettings.copyWith(searchAlgorithm: searchAlgorithm);
 
-      logger.v("$_tag algorithm = $algorithm");
+      logger.v("$_tag algorithm = $searchAlgorithm");
     }
 
     showModalBottomSheet(
       context: context,
       builder: (_) => _AlgorithmModal(
-        algorithm: generalSettings.algorithm!,
+        algorithm: generalSettings.searchAlgorithm!,
         onChanged: callback,
       ),
     );
@@ -176,7 +177,7 @@ class GeneralSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile(
               titleString: S.of(context).algorithm,
-              trailingString: generalSettings.algorithm!.name,
+              trailingString: generalSettings.searchAlgorithm!.name,
               onTap: () => _setAlgorithm(context, generalSettings),
             ),
             SettingsListTile.switchTile(

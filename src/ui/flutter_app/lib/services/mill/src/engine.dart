@@ -176,7 +176,8 @@ class Engine {
     final ruleSettings = DB().ruleSettings;
 
     await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
-    await _sendOptions("Algorithm", generalSettings.algorithm?.index ?? 2);
+    await _sendOptions(
+        "Algorithm", generalSettings.searchAlgorithm?.index ?? 2); // TODO: enum
     await _sendOptions(
       "DrawOnHumanExperience",
       generalSettings.drawOnHumanExperience,
