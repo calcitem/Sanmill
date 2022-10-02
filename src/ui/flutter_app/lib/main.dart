@@ -55,7 +55,7 @@ Future<void> main() async {
   _initUI();
 
   if (EnvironmentConfig.catcher && !kIsWeb && Platform.isAndroid) {
-    final catcher = Catcher(
+    catcher = Catcher(
       rootWidget: const SanmillApp(),
       ensureInitialized: true,
     );

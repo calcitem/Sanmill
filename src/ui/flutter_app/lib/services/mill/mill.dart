@@ -20,6 +20,7 @@ library mill;
 import 'dart:async';
 import 'dart:io';
 
+import 'package:catcher/catcher.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
@@ -28,6 +29,7 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/assets/assets.gen.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/main.dart';
 import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';

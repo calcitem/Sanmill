@@ -225,6 +225,13 @@ class TapHandler {
           controller.recorder.lastPositionWithRemove =
               MillController().position._fen;
         }
+
+        // TODO: moveHistoryText is not lightweight.
+        if (EnvironmentConfig.catcher == true) {
+          CatcherOptions options = catcher.getCurrentConfig()!;
+          options.customParameters["MoveList"] =
+              MillController().recorder.moveHistoryText;
+        }
       }
 
       if (_isGameRunning) {

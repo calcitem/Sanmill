@@ -47,6 +47,11 @@ class Engine {
 
     final String command = "setoption name $name value $option";
     await _send(command);
+
+    if (EnvironmentConfig.catcher == true) {
+      CatcherOptions options = catcher.getCurrentConfig()!;
+      options.customParameters[name] = command;
+    }
   }
 
   Future<String?> _read() async {
@@ -236,7 +241,14 @@ class Engine {
       posFenStr.write(" moves $moves");
     }
 
-    return posFenStr.toString();
+    String ret = posFenStr.toString();
+
+    if (EnvironmentConfig.catcher == true) {
+      CatcherOptions options = catcher.getCurrentConfig()!;
+      options.customParameters["PositionFen"] = ret;
+    }
+
+    return ret;
   }
 }
 

@@ -73,6 +73,13 @@ class Game {
 
     MillController().recorder.add(extMove);
 
+    // TODO: moveHistoryText is not lightweight.
+    if (EnvironmentConfig.catcher == true) {
+      CatcherOptions options = catcher.getCurrentConfig()!;
+      options.customParameters["MoveList"] =
+          MillController().recorder.moveHistoryText;
+    }
+
     sideToMove = MillController().position.sideToMove;
 
     _logStat();
