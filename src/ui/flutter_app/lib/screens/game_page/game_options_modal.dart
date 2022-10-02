@@ -76,13 +76,6 @@ class _GameOptionsModal extends StatelessWidget {
   }
 
   showRestartGameAlertDialog(BuildContext context) async {
-    Widget noButton = TextButton(
-      child: Text(S.of(context).no),
-      onPressed: () {
-        Navigator.of(context, rootNavigator: true).pop(false);
-        Navigator.of(context).pop();
-      },
-    );
     Widget yesButton = TextButton(
         child: Text(S.of(context).yes),
         onPressed: () {
@@ -113,12 +106,20 @@ class _GameOptionsModal extends StatelessWidget {
           Navigator.of(context).pop();
         });
 
+    Widget noButton = TextButton(
+      child: Text(S.of(context).no),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop(false);
+        Navigator.of(context).pop();
+      },
+    );
+
     AlertDialog alert = AlertDialog(
       title: Text(S.of(context).restart),
       content: Text(S.of(context).restartGame),
       actions: [
-        noButton,
         yesButton,
+        noButton,
       ],
     );
 
