@@ -35,7 +35,7 @@ import 'services/audios.dart';
 
 Future<void> main() async {
   var catcher = Catcher(rootWidget: SanmillApp(), ensureInitialized: true);
-
+int i = 0;
   String externalDirStr;
   try {
     Directory? externalDir = await getExternalStorageDirectory();

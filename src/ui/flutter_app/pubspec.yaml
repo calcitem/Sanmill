@@ -19,7 +19,7 @@ dependencies:
   url_launcher: ^6.0.3
   intl: 0.17.0
   animated_text_kit: ^4.1.1
-  flutter_colorpicker: ^0.4.0
+  flutter_colorpicker: ^1.0.3
   catcher: ^0.6.6
   stack_trace: ^1.10.0
   device_info_plus_platform_interface: ^1.0.1
