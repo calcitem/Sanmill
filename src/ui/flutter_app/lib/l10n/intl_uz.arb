@@ -1,4 +1,5 @@
 {
+  "@@locale": "uz",
   "appName": "Tegirmon",
   "@appName": {
     "description": "The app name"

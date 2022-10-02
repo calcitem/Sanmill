@@ -1,4 +1,5 @@
 {
+  "@@locale": "ms",
   "appName": "Kilang",
   "@appName": {
     "description": "The app name"
