@@ -19,7 +19,7 @@ import 'dart:io' show File;
 
 import 'package:flutter/foundation.dart'
     show ValueListenable, kIsWeb, visibleForTesting;
-import 'package:flutter/material.dart' show Color, Locale, PaintingStyle;
+import 'package:flutter/material.dart' show Color, Locale;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/models/color_settings.dart';
@@ -169,7 +169,7 @@ class Database {
   /// Initializes the [DisplaySettings] reference
   static Future<void> _initDisplaySettings() async {
     Hive.registerAdapter<Locale?>(LocaleAdapter());
-    Hive.registerAdapter<PaintingStyle?>(PaintingStyleAdapter());
+    Hive.registerAdapter<PointPaintingStyle>(PointPaintingStyleAdapter());
     Hive.registerAdapter<DisplaySettings>(DisplaySettingsAdapter());
     _displaySettingsBox =
         await Hive.openBox<DisplaySettings>(_displaySettingsBoxName);

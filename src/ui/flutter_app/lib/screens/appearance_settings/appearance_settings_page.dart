@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/models/color_settings.dart';
@@ -49,20 +50,20 @@ class AppearanceSettingsPage extends StatelessWidget {
         builder: (_) => const _BoardInnerWidthSlider(),
       );
 
-  void setPointStyle(BuildContext context, DisplaySettings displaySettings) {
-    void callback(PaintingStyle? pointStyle) {
+  void setPointPaintingStyle(
+      BuildContext context, DisplaySettings displaySettings) {
+    dynamic callback(PointPaintingStyle? pointPaintingStyle) {
       Navigator.pop(context);
-      DB().displaySettings = pointStyle == null
-          ? displaySettings.copyWithNull(pointStyle: true)
-          : displaySettings.copyWith(pointStyle: pointStyle);
+      DB().displaySettings =
+          displaySettings.copyWith(pointPaintingStyle: pointPaintingStyle);
 
-      logger.v("[config] pointStyle: $pointStyle");
+      logger.v("[config] pointPaintingStyle: $pointPaintingStyle");
     }
 
     showModalBottomSheet(
       context: context,
-      builder: (_) => _PointStyleModal(
-        pointStyle: displaySettings.pointStyle,
+      builder: (_) => _PointPaintingStyleModal(
+        pointPaintingStyle: displaySettings.pointPaintingStyle,
         onChanged: callback,
       ),
     );
@@ -260,7 +261,7 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile(
           titleString: S.of(context).pointStyle,
-          onTap: () => setPointStyle(context, displaySettings),
+          onTap: () => setPointPaintingStyle(context, displaySettings),
         ),
         SettingsListTile(
           titleString: S.of(context).pointWidth,

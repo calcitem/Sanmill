@@ -16,15 +16,15 @@
 
 part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 
-class _PointStyleModal extends StatelessWidget {
-  const _PointStyleModal({
+class _PointPaintingStyleModal extends StatelessWidget {
+  const _PointPaintingStyleModal({
     Key? key,
-    required this.pointStyle,
+    required this.pointPaintingStyle,
     required this.onChanged,
   }) : super(key: key);
 
-  final PaintingStyle? pointStyle;
-  final Function(PaintingStyle?)? onChanged;
+  final PointPaintingStyle? pointPaintingStyle;
+  final Function(PointPaintingStyle?) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -33,16 +33,16 @@ class _PointStyleModal extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          RadioListTile<PaintingStyle?>(
+          RadioListTile<PointPaintingStyle>(
             title: Text(S.of(context).none),
-            groupValue: pointStyle,
-            value: null,
+            groupValue: pointPaintingStyle,
+            value: PointPaintingStyle.none,
             onChanged: onChanged,
           ),
           RadioListTile(
             title: Text(S.of(context).solid),
-            groupValue: pointStyle,
-            value: PaintingStyle.fill,
+            groupValue: pointPaintingStyle,
+            value: PointPaintingStyle.fill,
             onChanged: onChanged,
           ),
         ],

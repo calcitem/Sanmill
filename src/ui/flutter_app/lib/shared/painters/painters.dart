@@ -18,6 +18,7 @@
 library painters;
 
 import 'package:flutter/material.dart';
+import 'package:sanmill/models/display_settings.dart';
 import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/mill/mill.dart';

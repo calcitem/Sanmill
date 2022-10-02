@@ -23,6 +23,17 @@ import 'package:sanmill/services/database/database.dart';
 
 part 'display_settings.g.dart';
 
+/// Strategies for painting shapes and paths on points.
+@HiveType(typeId: 9)
+enum PointPaintingStyle {
+  @HiveField(0)
+  none,
+  @HiveField(1)
+  fill,
+  @HiveField(2)
+  stroke,
+}
+
 /// Display Settings data model
 ///
 /// Holds the data needed for the Display Settings
@@ -40,8 +51,8 @@ class DisplaySettings {
     this.isHistoryNavigationToolbarShown = false,
     this.boardBorderLineWidth = 2.0,
     this.boardInnerLineWidth = 2.0,
-    this.pointStyle,
-    @Deprecated("Use [pointStyle] instead.") this.oldPointStyle = 0,
+    this.pointPaintingStyle = PointPaintingStyle.none,
+    @Deprecated("Use [pointPaintingStyle] instead.") this.oldPointStyle = 0,
     this.pointWidth = 10.0,
     this.pieceWidth = 0.9 / MigrationValues.pieceWidth,
     this.fontScale = 1.0,
@@ -78,30 +89,30 @@ class DisplaySettings {
   @HiveField(6)
   final double boardInnerLineWidth;
 
-  @Deprecated("Use [pointStyle] instead.")
+  @Deprecated("Use [pointPaintingStyle] instead.")
   @HiveField(7)
   final int oldPointStyle;
 
-  @HiveField(13)
   @JsonKey(
-    fromJson: PaintingStyleAdapter.paintingStyleFromJson,
-    toJson: PaintingStyleAdapter.paintingStyleToJson,
+    fromJson: PointStyleAdapter.pointPaintingStyleFromJson,
+    toJson: PointStyleAdapter.pointPaintingStyleToJson,
   )
-  final PaintingStyle? pointStyle;
-
   @HiveField(8)
-  final double pointWidth;
+  final PointPaintingStyle? pointPaintingStyle;
 
   @HiveField(9)
-  final double pieceWidth;
+  final double pointWidth;
 
   @HiveField(10)
-  final double fontScale;
+  final double pieceWidth;
 
   @HiveField(11)
-  final double boardTop;
+  final double fontScale;
 
   @HiveField(12)
+  final double boardTop;
+
+  @HiveField(13)
   final double animationDuration;
 
   /// Encodes a Json style map into a [DisplaySettings] object

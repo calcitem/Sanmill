@@ -16,35 +16,17 @@
 
 part of '../adapters.dart';
 
-/// PaintingStyle Adapter
+/// PointPaintingStyle Adapter
 ///
 /// This adapter provides helper functions to be used with [JsonSerializable]
-/// and is a general [TypeAdapter] to be used with Hive [Box]es
-class PaintingStyleAdapter extends TypeAdapter<PaintingStyle?> {
-  @override
-  final typeId = 8;
+class PointStyleAdapter {
+  const PointStyleAdapter._();
 
-  @override
-  PaintingStyle? read(BinaryReader reader) {
-    final value = reader.read() as int?;
-
-    if (value == null || value == 0) return null;
-    if (value == 1) return PaintingStyle.fill;
-    return null;
-  }
-
-  @override
-  void write(BinaryWriter writer, PaintingStyle? obj) {
-    if (obj != null) {
-      writer.writeInt(obj.index);
-    }
-  }
-
-  static String? paintingStyleToJson(PaintingStyle? style) =>
-      style?.index.toString();
-  static PaintingStyle? paintingStyleFromJson(int? value) {
+  static int? pointPaintingStyleToJson(PointPaintingStyle? style) =>
+      style?.index;
+  static PointPaintingStyle? pointPaintingStyleFromJson(int? value) {
     if (value != null) {
-      return PaintingStyle.values[value];
+      return PointPaintingStyle.values[value];
     }
     return null;
   }

@@ -106,7 +106,7 @@ class _DatabaseMigration {
   /// - **Algorithm to enum:** Migrates [DB.generalSettings] to use the new Algorithm enum instead of an int representation.
   /// - **Drawer background color:** Migrates [DB.colorSettings] to merge the drawerBackgroundColor and drawerColor.
   /// This reflects the deprecation of drawerBackgroundColor.
-  /// - **Painting Style:** Migrates [DB.displaySettings] to use Flutters [PaintingStyle] enum instead of an int representation.
+  /// - **Painting Style:** Migrates [DB.displaySettings] to use [PointPaintingStyle] enum instead of an int representation.
   /// - **Piece Width:** Migrates [DB.displaySettings] to use a more direct piece width representation so no further calculation is needed.
   /// - **Font Size:** Migrates [DB.displaySettings] store a font scale factor instead of the absolute size.
   static Future<void> _migrateFromV1() async {
@@ -119,9 +119,8 @@ class _DatabaseMigration {
 
     final displaySettings = DB().displaySettings;
     DB().displaySettings = displaySettings.copyWith(
-      pointStyle: (displaySettings.oldPointStyle != 0)
-          ? PaintingStyle.values[displaySettings.oldPointStyle - 1]
-          : null,
+      pointPaintingStyle:
+          PointPaintingStyle.values[displaySettings.oldPointStyle],
       pieceWidth: displaySettings.pieceWidth / MigrationValues.pieceWidth,
       fontScale: displaySettings.fontScale / MigrationValues.fontScale,
     );

@@ -57,9 +57,7 @@ class BoardPainter extends CustomPainter {
     _drawLines(offset, canvas, paint);
 
     // Point
-    if (DB().displaySettings.pointStyle != null) {
-      _drawPoints(offset, canvas, paint);
-    }
+    _drawPoints(offset, canvas, paint);
   }
 
   /// Draws the background of the Board.
@@ -117,7 +115,17 @@ class BoardPainter extends CustomPainter {
 
   /// Draws the points representing each field.
   static void _drawPoints(List<Offset> points, Canvas canvas, Paint paint) {
-    paint.style = DB().displaySettings.pointStyle!;
+    switch (DB().displaySettings.pointPaintingStyle) {
+      case PointPaintingStyle.fill:
+        paint.style = PaintingStyle.fill;
+        break;
+      case PointPaintingStyle.stroke:
+        paint.style = PaintingStyle.stroke;
+        break;
+      default:
+        return;
+    }
+
     final double pointRadius = DB().displaySettings.pointWidth;
 
     for (final point in points) {
