@@ -74,7 +74,7 @@ class _DatabaseMigration {
 
     _currentVersion = _databaseBox.get(_versionKey) as int?;
 
-    if (_currentVersion != null) {
+    if (_currentVersion == null) {
       if (await _DatabaseV1.usesV1) {
         _currentVersion = 0;
       } else if (DB().generalSettings.usesHiveDB) {
