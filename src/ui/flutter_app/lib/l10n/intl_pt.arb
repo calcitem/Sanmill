@@ -500,7 +500,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Configurações de regulamentação",
+  "ruleSettings": "Regras",
   "@ruleSettings": {
     "description": "Rule Settings"
   },

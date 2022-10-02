@@ -20,15 +20,15 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Άνθρωπος εναντίον AI",
+  "humanVsAi": "Άνθρωπος Vs. AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "Human Vs Human",
+  "humanVsHuman": "Άνθρωπος Vs. Άνθρωπος",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "Τεχνητή Νοημοσύνη εναντίον Τεχνητής Νοημοσύνης",
+  "aiVsAi": "AI Vs. AI",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },

@@ -20,7 +20,7 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Cilvēks pret mākslīgo intelektu",
+  "humanVsAi": "Cilvēks vs. AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
@@ -28,7 +28,7 @@
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "Mākslīgais intelekts pret mākslīgo intelektu",
+  "aiVsAi": "AI vs. AI",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },

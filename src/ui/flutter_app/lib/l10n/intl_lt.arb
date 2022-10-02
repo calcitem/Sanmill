@@ -20,7 +20,7 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Žmogus prieš dirbtinį intelektą",
+  "humanVsAi": "Žmogus vs. AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
