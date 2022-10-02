@@ -28,6 +28,7 @@ import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/models/rule_settings.dart';
 import 'package:sanmill/services/database/adapters/adapters.dart';
 import 'package:sanmill/services/logger.dart';
+import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/shared/constants.dart';
 
 part 'package:sanmill/services/database/database_migration.dart';
@@ -123,8 +124,10 @@ class Database {
       _generalSettingsBox.listenable(keys: [generalSettingsKey]);
 
   /// Saves the given [generalSettings] to the settings Box
-  set generalSettings(GeneralSettings generalSettings) =>
-      _generalSettingsBox.put(generalSettingsKey, generalSettings);
+  set generalSettings(GeneralSettings generalSettings) {
+    _generalSettingsBox.put(generalSettingsKey, generalSettings);
+    MillController().engine.setOptions();
+  }
 
   /// Gets the given [GeneralSettings] from the settings Box
   GeneralSettings get generalSettings =>
