@@ -23,8 +23,8 @@ class _AlgorithmModal extends StatelessWidget {
     required this.onChanged,
   }) : super(key: key);
 
-  final Algorithms algorithm;
-  final Function(Algorithms?)? onChanged;
+  final SearchAlgorithm algorithm;
+  final Function(SearchAlgorithm?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -34,21 +34,21 @@ class _AlgorithmModal extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           RadioListTile(
-            title: Text(Algorithms.alphaBeta.name),
+            title: Text(SearchAlgorithm.alphaBeta.name),
             groupValue: algorithm,
-            value: Algorithms.alphaBeta,
+            value: SearchAlgorithm.alphaBeta,
             onChanged: onChanged,
           ),
           RadioListTile(
-            title: Text(Algorithms.pvs.name),
+            title: Text(SearchAlgorithm.pvs.name),
             groupValue: algorithm,
-            value: Algorithms.pvs,
+            value: SearchAlgorithm.pvs,
             onChanged: onChanged,
           ),
           RadioListTile(
-            title: Text(Algorithms.mtdf.name),
+            title: Text(SearchAlgorithm.mtdf.name),
             groupValue: algorithm,
-            value: Algorithms.mtdf,
+            value: SearchAlgorithm.mtdf,
             onChanged: onChanged,
           ),
         ],

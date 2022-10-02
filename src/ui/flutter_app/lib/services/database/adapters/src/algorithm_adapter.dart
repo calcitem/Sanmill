@@ -22,10 +22,10 @@ part of '../adapters.dart';
 class AlgorithmAdapter {
   const AlgorithmAdapter._();
 
-  static int? algorithmToJson(Algorithms? algorithm) => algorithm?.index;
-  static Algorithms? algorithmFromJson(int? value) {
+  static int? algorithmToJson(SearchAlgorithm? algorithm) => algorithm?.index;
+  static SearchAlgorithm? algorithmFromJson(int? value) {
     if (value != null) {
-      return Algorithms.values[value];
+      return SearchAlgorithm.values[value];
     }
     return null;
   }

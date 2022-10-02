@@ -69,7 +69,7 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   void _setAlgorithm(BuildContext context, GeneralSettings generalSettings) {
-    void callback(Algorithms? algorithm) {
+    void callback(SearchAlgorithm? algorithm) {
       Navigator.pop(context);
 
       DB().generalSettings = generalSettings.copyWith(algorithm: algorithm);

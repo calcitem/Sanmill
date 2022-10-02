@@ -23,7 +23,7 @@ import 'package:sanmill/services/database/adapters/adapters.dart';
 part 'general_settings.g.dart';
 
 @HiveType(typeId: 5)
-enum Algorithms {
+enum SearchAlgorithm {
   @HiveField(0)
   alphaBeta,
   @HiveField(1)
@@ -32,14 +32,14 @@ enum Algorithms {
   mtdf,
 }
 
-extension AlgorithmNames on Algorithms {
+extension SearchAlgorithmName on SearchAlgorithm {
   String get name {
     switch (this) {
-      case Algorithms.alphaBeta:
+      case SearchAlgorithm.alphaBeta:
         return 'Alpha-Beta';
-      case Algorithms.pvs:
+      case SearchAlgorithm.pvs:
         return 'PVS';
-      case Algorithms.mtdf:
+      case SearchAlgorithm.mtdf:
         return 'MTD(f)';
     }
   }
@@ -70,7 +70,7 @@ class GeneralSettings {
     this.shufflingEnabled = true,
     this.learnEndgame = false,
     this.openingBook = false,
-    this.algorithm = Algorithms.mtdf,
+    this.algorithm = SearchAlgorithm.mtdf,
     @Deprecated('This only represents the old algorithm type. Use [algorithm] instead')
         this.oldAlgorithm = 0,
     this.drawOnHumanExperience = true,
@@ -120,7 +120,7 @@ class GeneralSettings {
     toJson: AlgorithmAdapter.algorithmToJson,
   )
   @HiveField(20)
-  final Algorithms? algorithm;
+  final SearchAlgorithm? algorithm;
   @Deprecated('This only represents the old algorithm type')
   @HiveField(15)
   final int oldAlgorithm;

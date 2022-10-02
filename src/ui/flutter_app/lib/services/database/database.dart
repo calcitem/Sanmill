@@ -112,7 +112,7 @@ class Database {
 
   /// Initializes the [GeneralSettings] reference
   static Future<void> _initGeneralSettings() async {
-    Hive.registerAdapter<Algorithms>(AlgorithmsAdapter());
+    Hive.registerAdapter<SearchAlgorithm>(SearchAlgorithmAdapter());
     Hive.registerAdapter<GeneralSettings>(GeneralSettingsAdapter());
     _generalSettingsBox =
         await Hive.openBox<GeneralSettings>(_generalSettingsBoxName);

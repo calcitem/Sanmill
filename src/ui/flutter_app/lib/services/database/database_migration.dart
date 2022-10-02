@@ -114,7 +114,7 @@ class _DatabaseMigration {
 
     final generalSettings = DB().generalSettings;
     DB().generalSettings = generalSettings.copyWith(
-      algorithm: Algorithms.values[generalSettings.oldAlgorithm],
+      algorithm: SearchAlgorithm.values[generalSettings.oldAlgorithm],
     );
 
     final displaySettings = DB().displaySettings;
