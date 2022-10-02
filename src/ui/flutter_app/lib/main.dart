@@ -90,7 +90,7 @@ class SanmillApp extends StatelessWidget {
         ...S.localizationsDelegates,
         CustomFeedbackLocalizationsDelegate.delegate,
       ],
-      localeOverride: displaySettings.languageCode,
+      localeOverride: displaySettings.locale,
       theme: AppTheme.feedbackTheme,
       child: MaterialApp(
         /// Add navigator key from Catcher.
@@ -100,7 +100,7 @@ class SanmillApp extends StatelessWidget {
         scaffoldMessengerKey: rootScaffoldMessengerKey,
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
-        locale: displaySettings.languageCode,
+        locale: displaySettings.locale,
         theme: AppTheme.lightThemeData,
         darkTheme: AppTheme.darkThemeData,
         debugShowCheckedModeBanner: EnvironmentConfig.devMode,

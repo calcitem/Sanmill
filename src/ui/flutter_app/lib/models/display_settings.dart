@@ -19,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sanmill/services/database/adapters/adapters.dart';
-import 'package:sanmill/services/database/database.dart';
 
 part 'display_settings.g.dart';
 
@@ -43,30 +42,28 @@ enum PointPaintingStyle {
 @immutable
 class DisplaySettings {
   const DisplaySettings({
-    this.languageCode,
-    @Deprecated("Until other export options are implemented this setting shouldn't be used")
+    @Deprecated("Use [locale] instead.") this.languageCode = "Default",
+    this.locale,
+    @Deprecated("Until other export options are implemented this setting shouldn't be used.")
         this.standardNotationEnabled = true,
     this.isPieceCountInHandShown = true,
     this.isNotationsShown = false,
     this.isHistoryNavigationToolbarShown = false,
     this.boardBorderLineWidth = 2.0,
     this.boardInnerLineWidth = 2.0,
+    @Deprecated("Use [pointPaintingStyle] instead.") this.pointStyle = 0,
     this.pointPaintingStyle = PointPaintingStyle.none,
-    @Deprecated("Use [pointPaintingStyle] instead.") this.oldPointStyle = 0,
     this.pointWidth = 10.0,
-    this.pieceWidth = 0.9 / MigrationValues.pieceWidth,
+    this.pieceWidth = 0.9,
+    @Deprecated("Use [fontScale] instead.") this.fontSize = 16.0,
     this.fontScale = 1.0,
     this.boardTop = kToolbarHeight,
     this.animationDuration = 0.0,
   });
 
-  /// The uses locale
+  @Deprecated("Use [locale] instead.")
   @HiveField(0)
-  @JsonKey(
-    fromJson: LocaleAdapter.localeFromJson,
-    toJson: LocaleAdapter.localeToJson,
-  )
-  final Locale? languageCode;
+  final String languageCode;
 
   @Deprecated(
     "Until other export options are implemented this setting shouldn't be used",
@@ -91,29 +88,36 @@ class DisplaySettings {
 
   @Deprecated("Use [pointPaintingStyle] instead.")
   @HiveField(7)
-  final int oldPointStyle;
+  final int pointStyle;
 
-  @JsonKey(
-    fromJson: PointStyleAdapter.pointPaintingStyleFromJson,
-    toJson: PointStyleAdapter.pointPaintingStyleToJson,
-  )
   @HiveField(8)
-  final PointPaintingStyle? pointPaintingStyle;
-
-  @HiveField(9)
   final double pointWidth;
 
-  @HiveField(10)
+  @HiveField(9)
   final double pieceWidth;
 
-  @HiveField(11)
-  final double fontScale;
+  @Deprecated("Use [fontScale] instead.")
+  @HiveField(10)
+  final double fontSize;
 
-  @HiveField(12)
+  @HiveField(11)
   final double boardTop;
 
-  @HiveField(13)
+  @HiveField(12)
   final double animationDuration;
+
+  @HiveField(13)
+  @JsonKey(
+    fromJson: LocaleAdapter.localeFromJson,
+    toJson: LocaleAdapter.localeToJson,
+  )
+  final Locale? locale;
+
+  @HiveField(14)
+  final PointPaintingStyle pointPaintingStyle;
+
+  @HiveField(15)
+  final double fontScale;
 
   /// Encodes a Json style map into a [DisplaySettings] object
   factory DisplaySettings.fromJson(Map<String, dynamic> json) =>

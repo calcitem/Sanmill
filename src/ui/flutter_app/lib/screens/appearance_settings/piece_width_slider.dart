@@ -34,11 +34,10 @@ class _PieceWidthSlider extends StatelessWidget {
           // Divided by [MigrationValues.pieceWidth] To represent the old behavior
           return Slider(
             value: displaySettings.pieceWidth,
-            min: 0.5 / MigrationValues.pieceWidth,
-            max: 1.0 / MigrationValues.pieceWidth,
+            min: 0.5,
+            max: 1.0,
             divisions: 50,
-            label: (displaySettings.pieceWidth * MigrationValues.pieceWidth)
-                .toStringAsFixed(2),
+            label: (displaySettings.pieceWidth).toStringAsFixed(1),
             onChanged: (value) {
               logger.v("[config] pieceWidth value: $value");
               DB().displaySettings =

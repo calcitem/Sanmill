@@ -101,9 +101,9 @@ class AppearanceSettingsPage extends StatelessWidget {
   ]) {
     Navigator.of(context, rootNavigator: true).pop();
 
-    DB().displaySettings = displaySettings.copyWith(languageCode: locale);
+    DB().displaySettings = displaySettings.copyWith(locale: locale);
 
-    logger.v("[config] languageCode = $locale");
+    logger.v("[config] locale = $locale");
   }
 
   Widget _buildColorSettings(BuildContext context, Box<ColorSettings> box, _) {
@@ -221,13 +221,13 @@ class AppearanceSettingsPage extends StatelessWidget {
       children: <Widget>[
         SettingsListTile(
           titleString: S.of(context).language,
-          trailingString: DB().displaySettings.languageCode != null
-              ? languageCodeToStrings[displaySettings.languageCode]
+          trailingString: DB().displaySettings.locale != null
+              ? localeToLanguageName[displaySettings.locale]
               : null,
           onTap: () => showDialog(
             context: context,
             builder: (_) => _LanguagePicker(
-              currentLocale: displaySettings.languageCode,
+              currentLocale: displaySettings.locale,
               onChanged: (locale) =>
                   langCallback(context, displaySettings, locale),
             ),

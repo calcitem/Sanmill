@@ -60,7 +60,7 @@ import 'package:sanmill/generated/intl/l10n_uz.dart';
 import 'package:sanmill/generated/intl/l10n_vi.dart';
 import 'package:sanmill/generated/intl/l10n_zh.dart';
 
-Map<Locale, String> languageCodeToStrings = {
+Map<Locale, String> localeToLanguageName = {
   const Locale("ar"): SAr().languageName,
   const Locale("bg"): SBg().languageName,
   const Locale("bn"): SBn().languageName,

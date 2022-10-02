@@ -40,9 +40,9 @@ class _LanguagePicker extends StatelessWidget {
           onChanged: onChanged,
         ),
         const Divider(),
-        for (var i in languageCodeToStrings.keys)
+        for (var i in localeToLanguageName.keys)
           RadioListTile<Locale>(
-            title: Text(languageCodeToStrings[i]!),
+            title: Text(localeToLanguageName[i]!),
             groupValue: currentLocale,
             value: i,
             onChanged: onChanged,

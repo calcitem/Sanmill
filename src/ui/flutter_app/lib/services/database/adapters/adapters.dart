@@ -20,8 +20,6 @@ library adapters;
 import 'package:flutter/material.dart' show Locale, Color;
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
-import 'package:sanmill/models/display_settings.dart';
 
 part 'src/color_adapter.dart';
 part 'src/locale_adapter.dart';
-part 'src/point_style_adapter.dart';

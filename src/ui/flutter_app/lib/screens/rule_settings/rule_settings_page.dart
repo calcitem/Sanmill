@@ -208,7 +208,7 @@ class RuleSettingsPage extends StatelessWidget {
   }
 
   Widget _buildRuleSettings(BuildContext context, Box<RuleSettings> box, _) {
-    final locale = DB().displaySettings.languageCode;
+    final locale = DB().displaySettings.locale;
 
     final RuleSettings ruleSettings = box.get(
       DB.ruleSettingsKey,

@@ -18,19 +18,6 @@
 
 part of 'package:sanmill/services/database/database.dart';
 
-/// Database Migration Values
-///
-/// Values that define how much the DB is altered.
-class MigrationValues {
-  const MigrationValues._();
-
-  /// [DisplaySettings.pieceWidth] migration value.
-  static const pieceWidth = 7.0;
-
-  /// [DisplaySettings.fontScale] migration value.
-  static const fontScale = 16.0;
-}
-
 /// Database Migration
 ///
 /// This class provides helper methods to migrate database versions.
@@ -82,8 +69,10 @@ class _DatabaseMigration {
       }
       logger.v("$_tag: Current version is $_currentVersion");
 
-      for (int i = _currentVersion!; i < _newVersion; i++) {
-        await _migrations[i].call();
+      if (_currentVersion != null) {
+        for (int i = _currentVersion!; i < _newVersion; i++) {
+          await _migrations[i].call();
+        }
       }
     }
 
@@ -119,10 +108,11 @@ class _DatabaseMigration {
 
     final displaySettings = DB().displaySettings;
     DB().displaySettings = displaySettings.copyWith(
-      pointPaintingStyle:
-          PointPaintingStyle.values[displaySettings.oldPointStyle],
-      pieceWidth: displaySettings.pieceWidth / MigrationValues.pieceWidth,
-      fontScale: displaySettings.fontScale / MigrationValues.fontScale,
+      locale: DB().displaySettings.languageCode == "Default"
+          ? null
+          : Locale(DB().displaySettings.languageCode),
+      pointPaintingStyle: PointPaintingStyle.values[displaySettings.pointStyle],
+      fontScale: displaySettings.fontSize / 16,
     );
 
     final colorSettings = DB().colorSettings;
