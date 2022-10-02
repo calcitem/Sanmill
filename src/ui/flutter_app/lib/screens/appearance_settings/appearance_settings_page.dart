@@ -53,7 +53,7 @@ class AppearanceSettingsPage extends StatelessWidget {
     void callback(PaintingStyle? pointStyle) {
       Navigator.pop(context);
       DB().displaySettings = pointStyle == null
-          ? displaySettings.copyWith()
+          ? displaySettings.copyWithNull(pointStyle: true)
           : displaySettings.copyWith(pointStyle: pointStyle);
 
       logger.v("[config] pointStyle: $pointStyle");
