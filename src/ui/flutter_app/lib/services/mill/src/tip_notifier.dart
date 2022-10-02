@@ -19,7 +19,7 @@ part of '../mill.dart';
 class HeaderTipNotifier with ChangeNotifier {
   HeaderTipNotifier();
 
-  late String _message;
+  String _message = "";
   bool showSnackBar = false;
 
   String get message => _message;
