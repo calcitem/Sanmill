@@ -15,7 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/models/display_settings.dart';
 import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/mill/mill.dart';
 
@@ -56,29 +55,5 @@ void main() {
 
       expect(controller.recorder.moveHistoryText, testMill.moveList);
     });
-
-    test(
-      "export not standard notation",
-      () async {
-        const testMill = WinLessThanThreeGame();
-
-        // Initialize the test
-        final mockDB = MockDB();
-        // ignore: deprecated_member_use_from_same_package
-        mockDB.displaySettings =
-            const DisplaySettings(standardNotationEnabled: false);
-        DB.instance = mockDB;
-        Audios.instance = MockAudios();
-        final controller = MillController();
-        controller.gameInstance.gameMode = GameMode.humanVsHuman;
-
-        // Import a game
-        ImportService.import(testMill.moveList);
-
-        expect(
-            controller.recorder.moveHistoryText, testMill.nonstandardMoveList);
-      },
-      skip: "Deprecated test. See [DisplaySettings.standardNotationEnabled].",
-    );
   });
 }

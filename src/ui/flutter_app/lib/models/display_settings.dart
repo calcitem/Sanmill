@@ -44,8 +44,8 @@ enum PointPaintingStyle {
 class DisplaySettings {
   const DisplaySettings({
     this.languageCode,
-    // TODO: @Deprecated("Until other export options are implemented this setting shouldn't be used")
-    this.standardNotationEnabled = true,
+    @Deprecated("Until other export options are implemented this setting shouldn't be used")
+        this.standardNotationEnabled = true,
     this.isPieceCountInHandShown = true,
     this.isNotationsShown = false,
     this.isHistoryNavigationToolbarShown = false,
