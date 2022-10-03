@@ -17,13 +17,17 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:catcher/catcher.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/main.dart';
 import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/screens/general_settings/general_settings_page.dart';
 import 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 import 'package:sanmill/services/database/database.dart';
+import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/shared/constants.dart';

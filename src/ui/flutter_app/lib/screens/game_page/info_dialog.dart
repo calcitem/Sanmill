@@ -133,6 +133,62 @@ class _InfoDialog extends StatelessWidget {
         actions: <Widget>[
           TextButton(
             child: Text(
+              S.of(context).more,
+              key: const Key('infoDialogMoreButton'),
+              style: Theme.of(context).textTheme.headline6!.copyWith(
+                    color: AppTheme.gamePageActionSheetTextColor,
+                  ),
+            ),
+            onPressed: () async {
+              String content = "";
+
+              if (EnvironmentConfig.catcher == true) {
+                CatcherOptions options = catcher.getCurrentConfig()!;
+                for (String str in options.customParameters.values) {
+                  str = str
+                      .replaceAll("setoption name ", "")
+                      .replaceAll("value", "=");
+                  content += "$str\n";
+                }
+              }
+
+              Widget copyButton = TextButton(
+                child: Text(S.of(context).copy),
+                onPressed: () {
+                  Navigator.pop(context);
+
+                  Clipboard.setData(
+                    ClipboardData(text: content),
+                  );
+
+                  rootScaffoldMessengerKey.currentState!
+                      .showSnackBarClear(S.of(context).done);
+                },
+              );
+
+              Widget okButton = TextButton(
+                  child: Text(S.of(context).ok),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  });
+
+              AlertDialog alert = AlertDialog(
+                title: Text(S.of(context).more),
+                content: Text(content),
+                actions: [copyButton, okButton],
+                scrollable: true,
+              );
+
+              await showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return alert;
+                },
+              );
+            },
+          ),
+          TextButton(
+            child: Text(
               S.of(context).ok,
               key: const Key('infoDialogOkButton'),
               style: Theme.of(context).textTheme.headline6!.copyWith(
