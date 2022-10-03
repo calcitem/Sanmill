@@ -95,7 +95,7 @@ class GameResultAlert extends StatelessWidget {
             MillController().reset();
             MillController()
                 .headerTipNotifier
-                .showTip(S.of(context).gameStarted, snackBar: true);
+                .showTip(S.of(context).gameStarted);
             MillController().headerIconsNotifier.showIcons();
           },
         ),

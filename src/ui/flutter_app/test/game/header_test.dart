@@ -39,7 +39,7 @@ void main() {
 
       expect(find.text(SEn().welcome), findsOneWidget);
 
-      controller.headerTipNotifier.showTip(testString);
+      controller.headerTipNotifier.showTip(testString, snackBar: false);
 
       await tester.pump();
 

@@ -118,7 +118,8 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
               logger.v("${Board._tag} Tap on square <$square>");
 
               final strTimeout = S.of(context).timeout;
-              final strNoBestMoveErr = S.of(context).error("No best move");
+              final strNoBestMoveErr =
+                  S.of(context).error("No best move"); // TODO: l10n
 
               switch (await tapHandler.onBoardTap(square)) {
                 case EngineResponseOK():
@@ -128,9 +129,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
                   _showResult(force: false);
                   break;
                 case EngineTimeOut():
-                  MillController()
-                      .headerTipNotifier
-                      .showTip(strTimeout, snackBar: true);
+                  MillController().headerTipNotifier.showTip(strTimeout);
                   break;
                 case EngineNoBestMove():
                   MillController().headerTipNotifier.showTip(strNoBestMoveErr);
@@ -154,7 +153,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     final message = winner.getWinString(context);
 
     if (message != null && (force == true || winner != PieceColor.nobody)) {
-      MillController().headerTipNotifier.showTip(message);
+      MillController().headerTipNotifier.showTip(message, snackBar: false);
     }
 
     MillController().headerIconsNotifier.showIcons();
@@ -377,7 +376,9 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
 
   @override
   void dispose() {
-    MillController().boardSemanticsNotifier.removeListener(updateBoardSemantics);
+    MillController()
+        .boardSemanticsNotifier
+        .removeListener(updateBoardSemantics);
     super.dispose();
   }
 }

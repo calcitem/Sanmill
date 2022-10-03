@@ -53,7 +53,7 @@ class _GameOptionsModal extends StatelessWidget {
 
                 MillController()
                     .headerTipNotifier
-                    .showTip(S.of(context).gameStarted, snackBar: true);
+                    .showTip(S.of(context).gameStarted);
                 MillController().headerIconsNotifier.showIcons();
 
                 if (MillController().gameInstance.isAiToMove) {
@@ -63,7 +63,7 @@ class _GameOptionsModal extends StatelessWidget {
 
                   MillController()
                       .headerTipNotifier
-                      .showTip(S.of(context).tipPlace, snackBar: true);
+                      .showTip(S.of(context).tipPlace, snackBar: false);
                 }
 
                 MillController().headerIconsNotifier.showIcons();
@@ -119,7 +119,7 @@ class _GameOptionsModal extends StatelessWidget {
 
             MillController()
                 .headerTipNotifier
-                .showTip(S.of(context).gameStarted, snackBar: true);
+                .showTip(S.of(context).gameStarted);
             MillController().headerIconsNotifier.showIcons();
 
             if (MillController().gameInstance.isAiToMove) {
@@ -129,7 +129,7 @@ class _GameOptionsModal extends StatelessWidget {
 
               MillController()
                   .headerTipNotifier
-                  .showTip(S.of(context).tipPlace, snackBar: true);
+                  .showTip(S.of(context).tipPlace, snackBar: false);
             }
 
             MillController().headerIconsNotifier.showIcons();

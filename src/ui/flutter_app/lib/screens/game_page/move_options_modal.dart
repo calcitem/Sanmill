@@ -57,9 +57,7 @@ class _MoveOptionsModal extends StatelessWidget {
           _showResult(mainContext, force: false);
           break;
         case EngineTimeOut():
-          MillController()
-              .headerTipNotifier
-              .showTip(strTimeout, snackBar: true);
+          MillController().headerTipNotifier.showTip(strTimeout);
           break;
         case EngineNoBestMove():
           MillController().headerTipNotifier.showTip(strNoBestMoveErr);
@@ -75,7 +73,7 @@ class _MoveOptionsModal extends StatelessWidget {
     final message = winner.getWinString(context);
 
     if (message != null && (force == true || winner != PieceColor.nobody)) {
-      MillController().headerTipNotifier.showTip(message);
+      MillController().headerTipNotifier.showTip(message, snackBar: false);
     }
 
     MillController().headerIconsNotifier.showIcons();

@@ -158,9 +158,11 @@ class MillController {
       if (gameMode == GameMode.aiVsAi) {
         MillController()
             .headerTipNotifier
-            .showTip(MillController().position.scoreString);
+            .showTip(MillController().position.scoreString, snackBar: false);
       } else {
-        MillController().headerTipNotifier.showTip(thinkingStr);
+        MillController()
+            .headerTipNotifier
+            .showTip(thinkingStr, snackBar: false);
 
         showSnakeBarHumanNotation(humanStr);
       }
@@ -208,9 +210,9 @@ class MillController {
         } else {
           MillController().isEngineGoing = false;
           if (MillController().gameInstance.gameMode == GameMode.aiVsAi) {
-            MillController()
-                .headerTipNotifier
-                .showTip(MillController().position.scoreString);
+            MillController().headerTipNotifier.showTip(
+                MillController().position.scoreString,
+                snackBar: false);
             MillController().headerIconsNotifier.showIcons();
             MillController().boardSemanticsNotifier.updateSemantics();
           }

@@ -101,9 +101,7 @@ class LoadService {
     try {
       fileContent = await file.readAsString();
     } catch (exception) {
-      MillController()
-          .headerTipNotifier
-          .showTip(S.of(context).loadFailed, snackBar: true);
+      MillController().headerTipNotifier.showTip(S.of(context).loadFailed);
       Navigator.pop(context);
       return;
     }
@@ -115,7 +113,7 @@ class LoadService {
           fileContent); // MillController().newRecorder = newHistory;
     } catch (exception) {
       final tip = S.of(context).cannotImport(fileContent);
-      MillController().headerTipNotifier.showTip(tip, snackBar: true);
+      MillController().headerTipNotifier.showTip(tip);
       Navigator.pop(context);
       return;
     }
@@ -129,7 +127,7 @@ class LoadService {
           snackBar: true); // TODO: "Game loaded." is better.
     } else {
       final tip = S.of(context).cannotImport(HistoryNavigator.importFailedStr);
-      MillController().headerTipNotifier.showTip(tip, snackBar: true);
+      MillController().headerTipNotifier.showTip(tip);
       HistoryNavigator.importFailedStr = "";
     }
 

@@ -62,24 +62,22 @@ class TapHandler {
           MillController().animationController.reset();
           MillController().animationController.animateTo(1.0);
           if (MillController().position._action == Act.remove) {
-            showTip(S.of(context).tipMill, snackBar: true);
+            showTip(S.of(context).tipMill);
           } else {
             if (gameMode == GameMode.humanVsAi) {
               if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
-                showTip(S.of(context).continueToMakeMove);
+                showTip(S.of(context).continueToMakeMove, snackBar: false);
               } else {
-                showTip(S.of(context).tipPlaced);
+                showTip(S.of(context).tipPlaced, snackBar: false);
               }
             } else if (gameMode == GameMode.humanVsHuman) {
               if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                 // TODO: HumanVsHuman - Change tip
-                showTip(S.of(context).tipPlaced);
+                showTip(S.of(context).tipPlaced, snackBar: false);
               } else {
                 final side = controller.gameInstance.sideToMove.opponent
                     .playerName(context);
-                showTip(
-                  S.of(context).tipToMove(side),
-                );
+                showTip(S.of(context).tipToMove(side), snackBar: false);
               }
             }
           }
@@ -101,7 +99,7 @@ class TapHandler {
       select:
       case Act.select:
         if (MillController().position.phase == Phase.placing) {
-          showTip(S.of(context).tipCannotPlace, snackBar: true);
+          showTip(S.of(context).tipCannotPlace);
           break;
         }
 
@@ -122,27 +120,27 @@ class TapHandler {
                 (pieceOnBoardCount! <= DB().ruleSettings.flyPieceCount &&
                     pieceOnBoardCount >= 3)) {
               logger.v("$_tag May fly.");
-              showTip(S.of(context).tipCanMoveToAnyPoint, snackBar: true);
+              showTip(S.of(context).tipCanMoveToAnyPoint);
             } else {
               showTip(S.of(context).tipPlace, snackBar: false);
               if (DB().generalSettings.screenReaderSupport) {
-                showTip(S.of(context).selected, snackBar: true);
+                showTip(S.of(context).selected);
               }
             }
             break;
           case IllegalPhase():
             if (MillController().position.phase != Phase.gameOver) {
-              showTip(S.of(context).tipCannotMove, snackBar: true);
+              showTip(S.of(context).tipCannotMove);
             }
             break;
           case CanOnlyMoveToAdjacentEmptyPoints():
-            showTip(S.of(context).tipCanMoveOnePoint, snackBar: true);
+            showTip(S.of(context).tipCanMoveOnePoint);
             break;
           case SelectOurPieceToMove():
-            showTip(S.of(context).tipSelectPieceToMove, snackBar: true);
+            showTip(S.of(context).tipSelectPieceToMove);
             break;
           case IllegalAction():
-            showTip(S.of(context).tipSelectWrong, snackBar: true);
+            showTip(S.of(context).tipSelectWrong);
             break;
           default:
             Audios().playTone(Sound.illegal);
@@ -163,31 +161,31 @@ class TapHandler {
             ret = true;
             logger.v("$_tag removePiece: [$sq]");
             if (MillController().position._pieceToRemoveCount >= 1) {
-              showTip(S.of(context).tipContinueMill, snackBar: true);
+              showTip(S.of(context).tipContinueMill);
             } else {
               if (gameMode == GameMode.humanVsAi) {
-                showTip(S.of(context).tipRemoved);
+                showTip(S.of(context).tipRemoved, snackBar: false);
               } else if (gameMode == GameMode.humanVsHuman) {
                 final them = controller.gameInstance.sideToMove.opponent
                     .playerName(context);
-                showTip(S.of(context).tipToMove(them));
+                showTip(S.of(context).tipToMove(them), snackBar: false);
               }
             }
             break;
           case CanNotRemoveSelf():
             logger.i("$_tag removePiece: Cannot Remove our pieces, skip [$sq]");
-            showTip(S.of(context).tipSelectOpponentsPiece, snackBar: true);
+            showTip(S.of(context).tipSelectOpponentsPiece);
             break;
           case CanNotRemoveMill():
             logger.i(
               "$_tag removePiece: Cannot remove piece from Mill, skip [$sq]",
             );
-            showTip(S.of(context).tipCannotRemovePieceFromMill, snackBar: true);
+            showTip(S.of(context).tipCannotRemovePieceFromMill);
             break;
           default:
             logger.v("$_tag removePiece: skip [$sq]");
             if (MillController().position.phase != Phase.gameOver) {
-              showTip(S.of(context).tipBanRemove, snackBar: true);
+              showTip(S.of(context).tipBanRemove);
             }
             break;
         }
