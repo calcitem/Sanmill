@@ -177,60 +177,80 @@ class Engine {
   Future<void> setGeneralOptions() async {
     final generalSettings = DB().generalSettings;
 
-    await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
+    // First Move
+    // No need to tell engine.
+
+    // Difficulty
+    await _sendOptions("SkillLevel", generalSettings.skillLevel);
+    await _sendOptions("MoveTime", generalSettings.moveTime);
+
+    // AI's play style
     await _sendOptions(
-        "Algorithm", generalSettings.searchAlgorithm?.index ?? 2); // TODO: enum
+        "Algorithm",
+        generalSettings.searchAlgorithm?.index ??
+            SearchAlgorithm.mtdf.index); // TODO: enum
     await _sendOptions(
       "DrawOnHumanExperience",
       generalSettings.drawOnHumanExperience,
     );
     await _sendOptions("ConsiderMobility", generalSettings.considerMobility);
-    await _sendOptions("SkillLevel", generalSettings.skillLevel);
-    await _sendOptions("MoveTime", generalSettings.moveTime);
     await _sendOptions("AiIsLazy", generalSettings.aiIsLazy);
     await _sendOptions("Shuffling", generalSettings.shufflingEnabled);
+
+    // Control via environment configuration
+    await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
   }
 
   Future<void> setRuleOptions() async {
     final ruleSettings = DB().ruleSettings;
 
+    // General
     await _sendOptions("PiecesCount", ruleSettings.piecesCount);
-    await _sendOptions("FlyPieceCount", ruleSettings.flyPieceCount);
-    await _sendOptions("PiecesAtLeastCount", ruleSettings.piecesAtLeastCount);
     await _sendOptions("HasDiagonalLines", ruleSettings.hasDiagonalLines);
-    await _sendOptions("HasBannedLocations", ruleSettings.hasBannedLocations);
-    await _sendOptions(
-      "MayMoveInPlacingPhase",
-      ruleSettings.mayMoveInPlacingPhase,
-    );
-    await _sendOptions(
-      "IsDefenderMoveFirst",
-      ruleSettings.isDefenderMoveFirst,
-    );
-    await _sendOptions("MayRemoveMultiple", ruleSettings.mayRemoveMultiple);
-    await _sendOptions(
-      "MayRemoveFromMillsAlways",
-      ruleSettings.mayRemoveFromMillsAlways,
-    );
-    await _sendOptions(
-      "MayOnlyRemoveUnplacedPieceInPlacingPhase",
-      ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase,
-    );
-    await _sendOptions(
-      "IsWhiteLoseButNotDrawWhenBoardFull",
-      ruleSettings.isWhiteLoseButNotDrawWhenBoardFull,
-    );
-    await _sendOptions(
-      "IsLoseButNotChangeSideWhenNoWay",
-      ruleSettings.isLoseButNotChangeSideWhenNoWay,
-    );
-    await _sendOptions("MayFly", ruleSettings.mayFly);
     await _sendOptions("NMoveRule", ruleSettings.nMoveRule);
     await _sendOptions("EndgameNMoveRule", ruleSettings.endgameNMoveRule);
     await _sendOptions(
       "ThreefoldRepetitionRule",
       ruleSettings.threefoldRepetitionRule,
     );
+    // Not available to user settings
+    await _sendOptions("PiecesAtLeastCount", ruleSettings.piecesAtLeastCount);
+
+    // Placing
+    await _sendOptions("HasBannedLocations", ruleSettings.hasBannedLocations);
+    await _sendOptions(
+      "IsWhiteLoseButNotDrawWhenBoardFull",
+      ruleSettings.isWhiteLoseButNotDrawWhenBoardFull,
+    );
+    await _sendOptions(
+      "MayOnlyRemoveUnplacedPieceInPlacingPhase",
+      ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase,
+    );
+    await _sendOptions(
+      "MayMoveInPlacingPhase",
+      ruleSettings.mayMoveInPlacingPhase,
+    ); // Not yet implemented
+
+    // Moving
+    await _sendOptions(
+      "IsDefenderMoveFirst",
+      ruleSettings.isDefenderMoveFirst,
+    );
+    await _sendOptions(
+      "IsLoseButNotChangeSideWhenNoWay",
+      ruleSettings.isLoseButNotChangeSideWhenNoWay,
+    );
+
+    // Flying
+    await _sendOptions("MayFly", ruleSettings.mayFly);
+    await _sendOptions("FlyPieceCount", ruleSettings.flyPieceCount);
+
+    // Removing
+    await _sendOptions(
+      "MayRemoveFromMillsAlways",
+      ruleSettings.mayRemoveFromMillsAlways,
+    );
+    await _sendOptions("MayRemoveMultiple", ruleSettings.mayRemoveMultiple);
   }
 
   Future<void> setOptions() async {

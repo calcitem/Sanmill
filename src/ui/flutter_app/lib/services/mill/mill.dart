@@ -30,6 +30,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/assets/assets.gen.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/main.dart';
+import 'package:sanmill/models/general_settings.dart';
 import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/logger.dart';
