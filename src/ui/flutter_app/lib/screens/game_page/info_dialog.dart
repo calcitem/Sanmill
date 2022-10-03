@@ -175,7 +175,10 @@ class _InfoDialog extends StatelessWidget {
 
               AlertDialog alert = AlertDialog(
                 title: Text(S.of(context).more),
-                content: Text(content),
+                content: Text(
+                  content,
+                  textDirection: TextDirection.ltr,
+                ),
                 actions: [copyButton, okButton],
                 scrollable: true,
               );
