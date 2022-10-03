@@ -39,7 +39,40 @@ class _GameOptionsModal extends StatelessWidget {
             //  sometimes it will keep displaying Thinking...
 
             MillController().engine.stopSearching();
-            await showRestartGameAlertDialog(context);
+
+            if (MillController().position.phase == Phase.ready ||
+                (MillController().position.phase == Phase.placing &&
+                    (MillController().recorder.index != null &&
+                        MillController().recorder.index! <= 3)) ||
+                MillController().position.phase == Phase.gameOver) {
+              // TODO: This part of the code is repetitive.
+              MillController().isActive == false;
+
+              if (MillController().isEngineGoing == false) {
+                MillController().reset();
+
+                MillController()
+                    .headerTipNotifier
+                    .showTip(S.of(context).gameStarted, snackBar: true);
+                MillController().headerIconsNotifier.showIcons();
+
+                if (MillController().gameInstance.isAiToMove) {
+                  logger.i("$_tag New game, AI to move.");
+
+                  MillController().engineToGo(context, isMoveNow: false);
+
+                  MillController()
+                      .headerTipNotifier
+                      .showTip(S.of(context).tipPlace, snackBar: true);
+                }
+
+                MillController().headerIconsNotifier.showIcons();
+              }
+
+              Navigator.of(context).pop();
+            } else {
+              await showRestartGameAlertDialog(context);
+            }
           },
           child: Text(S.of(context).newGame),
         ),
