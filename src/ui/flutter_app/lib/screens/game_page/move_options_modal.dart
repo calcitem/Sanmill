@@ -80,7 +80,7 @@ class _MoveOptionsModal extends StatelessWidget {
 
     MillController().headerIconsNotifier.showIcons();
 
-    if (!DB().generalSettings.isAutoRestart &&
+    if (DB().generalSettings.isAutoRestart == false &&
         winner != PieceColor.nobody &&
         gameMode != GameMode.aiVsAi) {
       showDialog(

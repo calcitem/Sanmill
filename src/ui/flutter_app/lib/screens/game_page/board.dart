@@ -160,9 +160,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
     MillController().headerIconsNotifier.showIcons();
 
-    if (!DB().generalSettings.isAutoRestart &&
-        winner != PieceColor.nobody &&
-        gameMode != GameMode.aiVsAi) {
+    if (!DB().generalSettings.isAutoRestart && winner != PieceColor.nobody) {
       showDialog(
         context: context,
         builder: (_) => GameResultAlert(winner: winner),

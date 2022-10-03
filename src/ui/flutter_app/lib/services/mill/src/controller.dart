@@ -202,6 +202,12 @@ class MillController {
           MillController().reset();
         } else {
           MillController().isEngineGoing = false;
+          if (MillController().gameInstance.gameMode == GameMode.aiVsAi) {
+            MillController()
+                .headerTipNotifier
+                .showTip(MillController().position.scoreString);
+            MillController().headerIconsNotifier.showIcons();
+          }
           return const EngineResponseOK();
         }
       }
