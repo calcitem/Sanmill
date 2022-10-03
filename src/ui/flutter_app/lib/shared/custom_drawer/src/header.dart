@@ -37,7 +37,7 @@ class CustomDrawerHeader extends StatelessWidget {
       DB().colorSettings.drawerHighlightItemColor,
     ];
 
-    final animation = AnimatedTextKit(
+    final animatedTitle = AnimatedTextKit(
       animatedTexts: [
         ColorizeAnimatedText(
           title,
@@ -62,7 +62,7 @@ class CustomDrawerHeader extends StatelessWidget {
 
     return Padding(
       padding: padding,
-      child: ExcludeSemantics(child: animation),
+      child: ExcludeSemantics(child: animatedTitle),
     );
   }
 }
