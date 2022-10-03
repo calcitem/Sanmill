@@ -251,6 +251,7 @@ class TapHandler {
     controller.gameInstance.sideToMove = MillController().position.sideToMove;
 
     MillController().headerIconsNotifier.showIcons();
+    MillController().boardSemanticsNotifier.updateSemantics();
 
     return const EngineResponseHumanOK();
   }

@@ -37,8 +37,12 @@ class MillController {
   late Game gameInstance;
   late Position position;
   late Engine engine;
+
   final HeaderTipNotifier headerTipNotifier = HeaderTipNotifier();
   final HeaderIconsNotifier headerIconsNotifier = HeaderIconsNotifier();
+  final BoardSemanticsNotifier boardSemanticsNotifier =
+      BoardSemanticsNotifier();
+
   late GameRecorder recorder;
   GameRecorder? newRecorder;
 
@@ -162,6 +166,7 @@ class MillController {
       }
 
       MillController().headerIconsNotifier.showIcons();
+      MillController().boardSemanticsNotifier.updateSemantics();
 
       try {
         logger.v("$tag Searching..., isMoveNow: $isMoveNow");
@@ -207,6 +212,7 @@ class MillController {
                 .headerTipNotifier
                 .showTip(MillController().position.scoreString);
             MillController().headerIconsNotifier.showIcons();
+            MillController().boardSemanticsNotifier.updateSemantics();
           }
           return const EngineResponseOK();
         }
@@ -214,6 +220,10 @@ class MillController {
     }
 
     MillController().isEngineGoing = false;
+
+    // TODO: Why need not update tip and icons?
+    MillController().boardSemanticsNotifier.updateSemantics();
+
     return searched ? const EngineResponseOK() : const EngineResponseHumanOK();
   }
 

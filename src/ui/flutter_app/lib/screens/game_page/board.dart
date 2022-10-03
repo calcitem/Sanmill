@@ -180,8 +180,23 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 /// Semantics for the Board
 ///
 /// This Widget only contains [Semantics] nodes to help impaired people interact with the [Board].
-class _BoardSemantics extends StatelessWidget {
+class _BoardSemantics extends StatefulWidget {
   const _BoardSemantics({Key? key}) : super(key: key);
+
+  @override
+  State<_BoardSemantics> createState() => _BoardSemanticsState();
+}
+
+class _BoardSemanticsState extends State<_BoardSemantics> {
+  @override
+  void initState() {
+    super.initState();
+    MillController().boardSemanticsNotifier.addListener(updateBoardSemantics);
+  }
+
+  void updateBoardSemantics() {
+    setState(() {}); // TODO
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -358,5 +373,11 @@ class _BoardSemantics extends StatelessWidget {
     }
 
     return squareDesc;
+  }
+
+  @override
+  void dispose() {
+    MillController().boardSemanticsNotifier.removeListener(updateBoardSemantics);
+    super.dispose();
   }
 }

@@ -51,6 +51,7 @@ class HistoryNavigator {
         .atEnd); // TODO: Move to the end of this function. Or change to S.of(context).waiting?
 
     MillController().headerIconsNotifier.showIcons(); // TODO: See above.
+    MillController().boardSemanticsNotifier.updateSemantics();
 
     if (_isGoingToHistory) {
       logger.i(
@@ -75,6 +76,7 @@ class HistoryNavigator {
                 snackBar: true,
               );
           MillController().headerIconsNotifier.showIcons();
+          MillController().boardSemanticsNotifier.updateSemantics();
         }
         break;
       case HistoryRange(): // TODO: Impossible resp

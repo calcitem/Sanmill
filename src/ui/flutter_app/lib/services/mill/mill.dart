@@ -42,6 +42,7 @@ import 'package:sanmill/shared/theme/app_theme.dart';
 import 'package:soundpool/soundpool.dart';
 
 part 'src/audios.dart';
+part 'src/board_semantics_notifier.dart';
 part 'src/controller.dart';
 part 'src/engine.dart';
 part 'src/ext_move.dart';
