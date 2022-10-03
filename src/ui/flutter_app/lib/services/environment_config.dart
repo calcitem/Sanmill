@@ -34,7 +34,7 @@ class EnvironmentConfig {
   /// Defaults to true
   static const catcher = bool.fromEnvironment("catcher", defaultValue: true);
 
-  /// Gets weather we want catcher to be enabled
-  /// Defaults to true
-  static const logLevel = int.fromEnvironment("log_level", defaultValue: 0);
+  /// Gets log level
+  /// Defaults to 4
+  static const logLevel = int.fromEnvironment("log_level", defaultValue: 4);
 }
