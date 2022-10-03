@@ -1171,9 +1171,5 @@
   "gameSavedTo": "游戏已保存至",
   "@gameSavedTo": {
     "description": "The game is saved to"
-  },
-  "mainMenu": "主菜单",
-  "@mainMenu": {
-    "description": "Main menu"
   }
 }

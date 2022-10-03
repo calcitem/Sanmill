@@ -125,17 +125,14 @@ class CustomDrawerState extends State<CustomDrawer>
     );
 
     /// Menu and arrow icon animation overlay
-    final drawerOverlay = Semantics(
-      label: S.of(context).mainMenu,
-      child: IconButton(
-        icon: AnimatedIcon(
-          icon: AnimatedIcons.arrow_menu,
-          progress: ReverseAnimation(_animationController),
-          color: Colors.white,
-        ),
-        tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-        onPressed: () => _controller.toggleDrawer(),
+    final drawerOverlay = IconButton(
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.arrow_menu,
+        progress: ReverseAnimation(_animationController),
+        color: Colors.white,
       ),
+      tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+      onPressed: () => _controller.toggleDrawer(),
     );
 
     final mainView = SlideTransition(

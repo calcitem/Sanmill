@@ -143,14 +143,18 @@ class HeaderTipState extends State<HeaderTip> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: _messageNotifier,
-        builder: (BuildContext context, String value, Widget? child) {
-          return Text(
+      valueListenable: _messageNotifier,
+      builder: (BuildContext context, String value, Widget? child) {
+        return Semantics(
+          enabled: true,
+          child: Text(
             value == "" ? S.of(context).welcome : value,
             maxLines: 1,
             style: TextStyle(color: DB().colorSettings.messageColor),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   @override

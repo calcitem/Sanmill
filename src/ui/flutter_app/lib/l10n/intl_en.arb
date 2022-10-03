@@ -1269,9 +1269,5 @@
   "gameSavedTo": "The game is saved to",
   "@gameSavedTo": {
     "description": "The game is saved to"
-  },
-  "mainMenu": "Main menu",
-  "@mainMenu": {
-    "description": "Main menu"
   }
 }

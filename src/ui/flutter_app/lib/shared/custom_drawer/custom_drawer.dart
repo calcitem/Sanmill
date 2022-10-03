@@ -25,8 +25,6 @@ import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
-import 'package:sanmill/generated/intl/l10n.dart';
-
 part 'src/controller.dart';
 part 'src/header.dart';
 part 'src/icon.dart';
