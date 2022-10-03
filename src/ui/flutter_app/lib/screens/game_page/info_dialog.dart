@@ -62,7 +62,7 @@ class _InfoDialog extends StatelessWidget {
           controller.recorder[controller.recorder.length - 2].notation,
         );
       }
-      buffer.writePeriod(n1);
+      buffer.writeComma(n1);
     }
 
     buffer.writePeriod(S.of(context).sideToMove(us));
