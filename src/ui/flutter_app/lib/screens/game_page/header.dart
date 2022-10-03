@@ -80,14 +80,14 @@ class _GameHeaderState extends State<GameHeader> {
       ),
     );
 
-    final appBar = Stack(
-      children: [
-        Align(
-          alignment: AlignmentDirectional.topStart,
-          child: DrawerIcon.of(context)!.icon,
-        ),
-        Center(
-          child: BlockSemantics(
+    final appBar = BlockSemantics(
+      child: Stack(
+        children: [
+          Align(
+            alignment: AlignmentDirectional.topStart,
+            child: DrawerIcon.of(context)!.icon,
+          ),
+          Center(
             child: Padding(
               padding: EdgeInsets.only(top: DB().displaySettings.boardTop),
               child: Column(
@@ -99,8 +99,8 @@ class _GameHeaderState extends State<GameHeader> {
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
 
     return Align(
