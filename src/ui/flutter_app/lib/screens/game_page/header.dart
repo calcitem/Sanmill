@@ -150,7 +150,10 @@ class HeaderTipState extends State<HeaderTip> {
           child: Text(
             value == "" ? S.of(context).welcome : value,
             maxLines: 1,
-            style: TextStyle(color: DB().colorSettings.messageColor),
+            style: TextStyle(
+              color: DB().colorSettings.messageColor,
+              fontFeatures: const [FontFeature.tabularFigures()],
+            ),
           ),
         );
       },
