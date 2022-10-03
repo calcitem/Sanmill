@@ -46,6 +46,7 @@ class CustomDrawerHeader extends StatelessWidget {
               ),
           colors: animatedTextsColors,
           speed: const Duration(seconds: 3),
+          textDirection: Directionality.of(context),
         ),
       ],
       pause: const Duration(seconds: 3),
