@@ -124,7 +124,10 @@ class TapHandler {
               logger.v("$_tag May fly.");
               showTip(S.of(context).tipCanMoveToAnyPoint, snackBar: true);
             } else {
-              showTip(S.of(context).tipPlace, snackBar: true);
+              showTip(S.of(context).tipPlace, snackBar: false);
+              if (DB().generalSettings.screenReaderSupport) {
+                showTip(S.of(context).selected, snackBar: true);
+              }
             }
             break;
           case IllegalPhase():
