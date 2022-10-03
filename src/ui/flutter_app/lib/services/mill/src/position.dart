@@ -65,7 +65,7 @@ class Position {
   };
 
   String get scoreString =>
-      "${score[PieceColor.white]} : ${score[PieceColor.black]} : ${score[PieceColor.draw]}";
+      "${score[PieceColor.white]} - ${score[PieceColor.draw]} - ${score[PieceColor.black]}";
 
   static void resetScore() => score[PieceColor.white] =
       score[PieceColor.black] = score[PieceColor.draw] = 0;
