@@ -156,6 +156,7 @@ class _InfoDialog extends StatelessWidget {
                 child: Text(S.of(context).copy),
                 onPressed: () {
                   Navigator.pop(context);
+                  Navigator.pop(context);
 
                   Clipboard.setData(
                     ClipboardData(text: content),
