@@ -40,7 +40,7 @@ class AboutPage extends StatelessWidget {
     } else if (kProfileMode) {
       return "- profile";
     } else if (kReleaseMode) {
-      return null;
+      return "";
     } else {
       return "-test";
     }
