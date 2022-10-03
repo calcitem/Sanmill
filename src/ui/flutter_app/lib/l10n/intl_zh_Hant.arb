@@ -1078,7 +1078,7 @@
   "@isDraw": {
     "description": "It is a Draw!"
   },
-  "draw": "Draw",
+  "draw": "和棋",
   "@draw": {
     "description": "Draw"
   },
