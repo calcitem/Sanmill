@@ -126,7 +126,7 @@ class Database {
   /// Saves the given [generalSettings] to the settings Box
   set generalSettings(GeneralSettings generalSettings) {
     _generalSettingsBox.put(generalSettingsKey, generalSettings);
-    MillController().engine.setOptions();
+    MillController().engine.setGeneralOptions();
   }
 
   /// Gets the given [GeneralSettings] from the settings Box
@@ -149,6 +149,7 @@ class Database {
   set _ruleSettings(RuleSettings? ruleSettings) {
     if (ruleSettings != null) {
       _ruleSettingsBox.put(ruleSettingsKey, ruleSettings);
+      MillController().engine.setRuleOptions();
     }
   }
 

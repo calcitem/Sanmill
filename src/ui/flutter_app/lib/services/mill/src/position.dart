@@ -74,8 +74,8 @@ class Position {
 
   ExtMove? _record;
 
-  static final List<List<List<int>>> _millTable = _Mills.millTableInit;
-  static final List<List<int>> _adjacentSquares = _Mills.adjacentSquaresInit;
+  static List<List<List<int>>> get _millTable => _Mills.millTableInit;
+  static List<List<int>> get _adjacentSquares => _Mills.adjacentSquaresInit;
 
   PieceColor pieceOnGrid(int index) => _grid[index];
 

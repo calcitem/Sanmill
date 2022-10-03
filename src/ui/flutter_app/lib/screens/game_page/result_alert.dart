@@ -72,7 +72,7 @@ class GameResultAlert extends StatelessWidget {
             DB().generalSettings =
                 settings.copyWith(skillLevel: settings.skillLevel + 1);
 
-            MillController().engine.setOptions();
+            MillController().engine.setGeneralOptions();
 
             logger.v(
               "[config] skillLevel: ${DB().generalSettings.skillLevel}",

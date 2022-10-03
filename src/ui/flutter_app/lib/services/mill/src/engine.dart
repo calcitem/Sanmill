@@ -174,11 +174,8 @@ class Engine {
     await _send("stop");
   }
 
-  Future<void> setOptions() async {
-    logger.i("$_tag reloaded engine options");
-
+  Future<void> setGeneralOptions() async {
     final generalSettings = DB().generalSettings;
-    final ruleSettings = DB().ruleSettings;
 
     await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
     await _sendOptions(
@@ -192,6 +189,11 @@ class Engine {
     await _sendOptions("MoveTime", generalSettings.moveTime);
     await _sendOptions("AiIsLazy", generalSettings.aiIsLazy);
     await _sendOptions("Shuffling", generalSettings.shufflingEnabled);
+  }
+
+  Future<void> setRuleOptions() async {
+    final ruleSettings = DB().ruleSettings;
+
     await _sendOptions("PiecesCount", ruleSettings.piecesCount);
     await _sendOptions("FlyPieceCount", ruleSettings.flyPieceCount);
     await _sendOptions("PiecesAtLeastCount", ruleSettings.piecesAtLeastCount);
@@ -229,6 +231,13 @@ class Engine {
       "ThreefoldRepetitionRule",
       ruleSettings.threefoldRepetitionRule,
     );
+  }
+
+  Future<void> setOptions() async {
+    logger.i("$_tag reloaded engine options");
+
+    await setGeneralOptions();
+    await setRuleOptions();
   }
 
   String _getPositionFen() {
