@@ -24,7 +24,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: depend_on_referenced_packages
-import 'package:flutter_driver/driver_extension.dart';
+import 'package:flutter_ume/flutter_ume.dart'; // UME framework
+// ignore: depend_on_referenced_packages
+import 'package:flutter_ume_kit_console/flutter_ume_kit_console.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_ume_kit_device/flutter_ume_kit_device.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_ume_kit_ui/flutter_ume_kit_ui.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
@@ -46,10 +52,6 @@ Future<void> main() async {
   logger.i('Environment [dev_mode]: ${EnvironmentConfig.devMode}');
   logger.i('Environment [test]: ${EnvironmentConfig.test}');
 
-  if (EnvironmentConfig.test) {
-    enableFlutterDriverExtension();
-  }
-
   await DB.init();
 
   _initUI();
@@ -69,7 +71,21 @@ Future<void> main() async {
       return true;
     };
   } else {
-    runApp(const SanmillApp());
+    if (kDebugMode) {
+      PluginManager.instance
+        ..register(const WidgetInfoInspector())
+        ..register(const WidgetDetailInspector())
+        ..register(const ColorSucker())
+        ..register(AlignRuler())
+        ..register(const ColorPicker())
+        ..register(const TouchIndicator())
+        ..register(CpuInfoPage())
+        ..register(const DeviceInfoPanel())
+        ..register(Console());
+      runApp(const UMEWidget(enable: true, child: SanmillApp()));
+    } else {
+      runApp(const SanmillApp());
+    }
   }
 }
 
