@@ -138,8 +138,9 @@ class ImportService {
     throw ImportFormatException(playOk);
   }
 
-  static bool _isDalmaxMoveList(String text) {
-    if (text.length >= 15 && text.substring(0, 14) == '[Event "Dalmax') {
+  static bool _isPgnMoveList(String text) {
+    if (text.length >= 15 &&
+        (text.contains("[Event") || text.contains("[White"))) {
       return true;
     }
 
@@ -147,20 +148,30 @@ class ImportService {
   }
 
   static bool _isPlayOkMoveList(String text) {
-    if (text.length >= 4 &&
-        text.substring(0, 3) == "1. " &&
-        int.tryParse(text.substring(3, 4)) != null) {
+    // See https://www.playok.com/en/mill/#t/f
+
+    if (text.contains("PlayOK")) {
       return true;
     }
 
-    if (text.isNotEmpty && text[0] == "[") {
-      return true;
+    String noTag = removeTagPairs(text);
+
+    if (noTag.contains("a") ||
+        noTag.contains("b") ||
+        noTag.contains("c") ||
+        noTag.contains("d") ||
+        noTag.contains("e") ||
+        noTag.contains("f") ||
+        noTag.contains("g")) {
+      return false;
     }
 
-    return false;
+    return true;
   }
 
   static bool _isGoldTokenMoveList(String text) {
+    // Example: https://www.goldtoken.com/games/play?g=13097650;print=yes
+
     if (text.length >= 10 &&
         (text.substring(0, 9) == "GoldToken" ||
             text.substring(0, 10) == "Past Moves" ||
@@ -173,18 +184,27 @@ class ImportService {
     return false;
   }
 
+  static String removeTagPairs(String pgn) {
+    if (pgn.startsWith("[") == false) return pgn;
+
+    String ret = pgn.substring(pgn.lastIndexOf("]"));
+    ret = ret.substring(ret.indexOf("1."));
+
+    return ret;
+  }
+
   @visibleForTesting
   static void import(String moveList) {
     var ml = moveList;
 
     logger.v("Clipboard text: $moveList");
 
-    if (_isDalmaxMoveList(moveList)) {
-      ml = moveList.substring(moveList.indexOf("1. "));
-    }
-
     if (_isPlayOkMoveList(moveList)) {
       return _importPlayOk(moveList);
+    }
+
+    if (_isPgnMoveList(moveList)) {
+      ml = removeTagPairs(moveList);
     }
 
     if (_isGoldTokenMoveList(moveList)) {
@@ -271,17 +291,25 @@ class ImportService {
     }
   }
 
-  static void _importPlayOk(String moveList) {
-    final GameRecorder newHistory =
-        GameRecorder(lastPositionWithRemove: MillController().position._fen);
-
-    final List<String> list = moveList
+  static String removeGameResultAndReplaceLineBreaks(String moveList) {
+    String ret = moveList
         .replaceAll("\n", " ")
         .replaceAll(" 1/2-1/2", "")
         .replaceAll(" 1-0", "")
         .replaceAll(" 0-1", "")
-        .replaceAll("TXT", "")
-        .split(" ");
+        .replaceAll("TXT", "");
+    return ret;
+  }
+
+  static String cleanup(String moveList) {
+    return removeGameResultAndReplaceLineBreaks(removeTagPairs(moveList));
+  }
+
+  static void _importPlayOk(String moveList) {
+    final GameRecorder newHistory =
+        GameRecorder(lastPositionWithRemove: MillController().position._fen);
+
+    final List<String> list = cleanup(moveList).split(" ");
 
     for (var i in list) {
       i = i.trim();
