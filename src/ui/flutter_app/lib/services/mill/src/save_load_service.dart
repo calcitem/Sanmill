@@ -119,6 +119,13 @@ class LoadService {
       return;
     }
 
+    String tagPairs = ImportService.getTagPairs(fileContent);
+
+    if (tagPairs.isNotEmpty) {
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBar(CustomSnackBar(tagPairs));
+    }
+
     // TODO: Duplicate
     await HistoryNavigator.takeBackAll(context, pop: false);
 

@@ -235,6 +235,10 @@ class ImportService {
     return tagPairs + moveList;
   }
 
+  static String getTagPairs(String pgn) {
+    return pgn.substring(0, pgn.lastIndexOf("]") + 1);
+  }
+
   static String removeTagPairs(String pgn) {
     if (pgn.startsWith("[") == false) return pgn;
 
