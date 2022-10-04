@@ -58,6 +58,10 @@ class Position {
   Phase phase = Phase.placing;
   Act _action = Act.place;
 
+  set action(Act action) {
+    _action = action;
+  }
+
   static Map<PieceColor, int> score = {
     PieceColor.white: 0,
     PieceColor.black: 0,
@@ -783,5 +787,140 @@ class Position {
     assert(!moves.contains('-('));
 
     return moves.isNotEmpty ? moves : null;
+  }
+}
+
+extension SetupPosition on Position {
+  PieceColor get sideToSetup => _sideToMove;
+
+  set sideToSetup(PieceColor color) {
+    _sideToMove = color;
+  }
+
+  void reset() {
+    phase = Phase.placing;
+    _action = Act.place;
+
+    _sideToMove = PieceColor.white;
+    _them = PieceColor.black;
+
+    result = null;
+    _winner = PieceColor.nobody;
+    gameOverReason = null;
+
+    _record = null;
+    _currentSquare = 0;
+
+    _gamePly = 0;
+
+    pieceOnBoardCount[PieceColor.white] = 0;
+    pieceOnBoardCount[PieceColor.black] = 0;
+
+    pieceInHandCount[PieceColor.white] = DB().ruleSettings.piecesCount;
+    pieceInHandCount[PieceColor.black] = DB().ruleSettings.piecesCount;
+
+    _pieceToRemoveCount = 0;
+
+    for (int i = 0; i < sqNumber; i++) {
+      _board[i] = PieceColor.none;
+    }
+
+    for (int i = 0; i < 7 * 7; i++) {
+      _grid[i] = PieceColor.none;
+    }
+
+    st.rule50 = 0;
+    st.key = 0;
+    st.pliesFromNull = 0;
+  }
+
+  void copyWith(Position pos) {
+    phase = pos.phase;
+    _action = pos._action;
+
+    _sideToMove = pos._sideToMove;
+    _them = pos._them;
+
+    result = pos.result;
+    _winner = pos._winner;
+    gameOverReason = pos.gameOverReason;
+
+    _record = pos._record;
+    _currentSquare = pos._currentSquare;
+
+    _gamePly = pos._gamePly;
+
+    pieceOnBoardCount[PieceColor.white] =
+        pos.pieceOnBoardCount[PieceColor.white]!;
+    pieceOnBoardCount[PieceColor.black] =
+        pos.pieceOnBoardCount[PieceColor.black]!;
+
+    pieceInHandCount[PieceColor.white] =
+        pos.pieceInHandCount[PieceColor.white]!;
+    pieceInHandCount[PieceColor.black] =
+        pos.pieceInHandCount[PieceColor.black]!;
+
+    _pieceToRemoveCount = pos._pieceToRemoveCount;
+
+    for (int i = 0; i < sqNumber; i++) {
+      _board[i] = pos._board[i];
+    }
+
+    for (int i = 0; i < 7 * 7; i++) {
+      _grid[i] = pos._grid[i];
+    }
+
+    st.rule50 = pos.st.rule50;
+    st.key = pos.st.key;
+    st.pliesFromNull = pos.st.pliesFromNull;
+  }
+
+  Position clone() {
+    Position pos = Position();
+    pos.copyWith(this);
+    return pos;
+  }
+
+  bool _putPieceForSetupPosition(int s) {
+    var piece = sideToMove;
+    final us = _sideToMove;
+
+    // TODO: Allow to overwrite.
+    if (_board[s] != PieceColor.none) {
+      return false;
+    }
+
+    if (pieceInHandCount[us] != null) {
+      pieceInHandCount[us] = pieceInHandCount[us]! - 1;
+    }
+
+    if (pieceOnBoardCount[us] != null) {
+      pieceOnBoardCount[us] = pieceOnBoardCount[us]! + 1;
+    }
+
+    _grid[squareToIndex[s]!] = piece;
+    _board[s] = piece;
+
+    MillController().gameInstance.focusIndex = squareToIndex[s];
+    Audios().playTone(Sound.place);
+
+    return true;
+  }
+
+  MillResponse _removePieceForSetupPosition(int s) {
+    if (_action != Act.remove) {
+      return const IllegalAction();
+    }
+
+    // Remove only
+    _board[s] = _grid[squareToIndex[s]!] = PieceColor.none;
+
+    // TODO: How to use it to verify?
+    if (pieceOnBoardCount[_them] != null) {
+      pieceOnBoardCount[_them] = pieceOnBoardCount[_them]! - 1;
+    }
+
+    Audios().playTone(Sound.remove);
+    return const MillResponseOK();
   }
 }

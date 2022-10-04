@@ -42,6 +42,7 @@ enum _DrawerIndex {
   humanVsAi,
   humanVsHuman,
   aiVsAi,
+  setupPosition,
   generalSettings,
   ruleSettings,
   appearance,
@@ -67,6 +68,11 @@ extension _DrawerScreen on _DrawerIndex {
         return GamePage(
           GameMode.aiVsAi,
           key: const Key("Ai-Ai"),
+        );
+      case _DrawerIndex.setupPosition:
+        return GamePage(
+          GameMode.setupPosition,
+          key: const Key("SetupPosition"),
         );
       case _DrawerIndex.generalSettings:
         return const GeneralSettingsPage();
@@ -154,6 +160,13 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         value: _DrawerIndex.aiVsAi,
         title: S.of(context).aiVsAi,
         icon: const Icon(FluentIcons.bot_24_regular),
+        groupValue: _drawerIndex,
+        onChanged: _changeIndex,
+      ),
+      CustomDrawerItem<_DrawerIndex>(
+        value: _DrawerIndex.setupPosition,
+        title: S.of(context).setupPosition,
+        icon: const Icon(FluentIcons.drafts_24_regular),
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
       ),

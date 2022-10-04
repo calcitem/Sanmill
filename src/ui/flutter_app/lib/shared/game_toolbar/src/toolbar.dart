@@ -60,3 +60,219 @@ class GamePageToolBar extends StatelessWidget {
     );
   }
 }
+
+class SetupPositionToolBar extends StatefulWidget {
+  const SetupPositionToolBar({Key? key}) : super(key: key);
+
+  @override
+  State<SetupPositionToolBar> createState() => SetupPositionToolBarState();
+}
+
+class SetupPositionToolBarState extends State<SetupPositionToolBar> {
+  final Color? backgroundColor = DB().colorSettings.mainToolbarBackgroundColor;
+  final Color? itemColor = DB().colorSettings.mainToolbarIconColor;
+
+  late GameMode gameModeBackup;
+  final position = MillController().position;
+  late Position positionBackup;
+
+  Phase phase = Phase.placing;
+
+  void initContext() {
+    gameModeBackup = MillController().gameInstance.gameMode;
+    MillController().gameInstance.gameMode = GameMode.setupPosition;
+
+    positionBackup = MillController().position.clone();
+    MillController().position.reset();
+  }
+
+  void restoreContext() {
+    MillController().position.copyWith(positionBackup);
+    MillController().gameInstance.gameMode = gameModeBackup;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initContext();
+  }
+
+  static const _padding = EdgeInsets.symmetric(vertical: 2);
+  static const _margin = EdgeInsets.symmetric(vertical: 0.2);
+
+  /// Gets the calculated height this widget adds to it's children.
+  /// To get the absolute height add the surrounding [ButtonThemeData.height].
+  static double get height => (_padding.vertical + _margin.vertical) * 2;
+
+  setSetupPositionPiece(BuildContext context, PieceColor pieceColor) {
+    MillController().position.sideToSetup = pieceColor;
+    MillController().headerTipNotifier.showTip(pieceColor.pieceName(context));
+
+    if (pieceColor == PieceColor.none) {
+      position.action = Act.remove;
+    } else {
+      position.action = Act.place;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Piece
+    final whitePieceButton = ToolbarItem.icon(
+      onPressed: () => setSetupPositionPiece(context, PieceColor.white),
+      icon: Icon(FluentIcons.circle_24_filled,
+          color: DB().colorSettings.whitePieceColor),
+      label: Text(S.of(context).whitePiece),
+    );
+    final blackPieceButton = ToolbarItem.icon(
+      onPressed: () => setSetupPositionPiece(context, PieceColor.black),
+      icon: Icon(FluentIcons.circle_24_filled,
+          color: DB().colorSettings.blackPieceColor),
+      label: Text(S.of(context).blackPiece),
+    );
+    final banPointButton = ToolbarItem.icon(
+      onPressed: () => setSetupPositionPiece(context, PieceColor.ban),
+      icon: const Icon(FluentIcons.prohibited_24_regular),
+      label: Text(S.of(context).banPoint),
+    );
+    final emptyPointButton = ToolbarItem.icon(
+      onPressed: () => setSetupPositionPiece(context, PieceColor.none),
+      icon: const Icon(FluentIcons.add_24_regular),
+      label: Text(S.of(context).emptyPoint),
+    );
+
+    // Clear
+    final clearButton = ToolbarItem.icon(
+      onPressed: () {
+        MillController().position.reset();
+        MillController()
+            .headerTipNotifier
+            .showTip(S.of(context).restart); // TODO: reset
+      },
+      icon: const Icon(FluentIcons.eraser_24_regular),
+      label: const Text("Clean"), // TODO: l10n
+    );
+
+    // Phase
+    final placingButton = ToolbarItem.icon(
+      onPressed: () => {phase = Phase.placing},
+      icon: const Icon(FluentIcons.grid_dots_24_regular),
+      label: const Text("Placing"),
+    );
+
+    final movingButton = ToolbarItem.icon(
+      onPressed: () => {phase = Phase.moving},
+      icon: const Icon(FluentIcons.arrow_move_24_regular),
+      label: const Text("Moving"),
+    );
+
+    final pasteButton = ToolbarItem.icon(
+      onPressed: () => {
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).experimental)
+      },
+      icon: const Icon(FluentIcons.clipboard_paste_24_regular),
+      label: const Text("Paste"),
+    );
+
+    // Cancel
+    final cancelButton = ToolbarItem.icon(
+      onPressed: () => {restoreContext()}, // TODO: setState();
+      icon: const Icon(FluentIcons.dismiss_24_regular),
+      label: Text(S.of(context).cancel),
+    );
+
+    final doneButton = ToolbarItem.icon(
+      onPressed: () {
+        MillController().gameInstance.gameMode = gameModeBackup;
+        MillController().position.phase = phase;
+        if (phase == Phase.placing) {
+          MillController().position.action = Act.place;
+        } else if (phase == Phase.moving) {
+          MillController().position.action = Act.select;
+        }
+      }, // TODO: set position fen
+      icon: const Icon(FluentIcons.hand_left_24_regular),
+      label: Text(S.of(context).done),
+    );
+
+    final rowOne = <Widget>[
+      whitePieceButton,
+      blackPieceButton,
+      //banPointButton,
+      emptyPointButton,
+      clearButton,
+    ];
+
+    final row2 = <Widget>[
+      placingButton,
+      movingButton,
+      //pasteButton,
+      cancelButton,
+      doneButton,
+    ];
+
+    return Column(
+      children: [
+        SetupPositionButtonsContainer(
+          backgroundColor: backgroundColor,
+          margin: _margin,
+          padding: _padding,
+          itemColor: itemColor,
+          child: rowOne,
+        ),
+        SetupPositionButtonsContainer(
+          backgroundColor: backgroundColor,
+          margin: _margin,
+          padding: _padding,
+          itemColor: itemColor,
+          child: row2,
+        ),
+      ],
+    );
+  }
+}
+
+class SetupPositionButtonsContainer extends StatelessWidget {
+  const SetupPositionButtonsContainer({
+    Key? key,
+    required this.backgroundColor,
+    required EdgeInsets margin,
+    required EdgeInsets padding,
+    required this.itemColor,
+    required this.child,
+  })  : _margin = margin,
+        _padding = padding,
+        super(key: key);
+
+  final Color? backgroundColor;
+  final EdgeInsets _margin;
+  final EdgeInsets _padding;
+  final Color? itemColor;
+  final List<Widget> child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: backgroundColor,
+      ),
+      margin: _margin,
+      padding: _padding,
+      child: ToolbarItemTheme(
+        data: ToolbarItemThemeData(
+          style: ToolbarItem.styleFrom(primary: itemColor),
+        ),
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: ButtonBar(
+            buttonPadding: EdgeInsets.zero,
+            alignment: MainAxisAlignment.spaceAround,
+            children: child,
+          ),
+        ),
+      ),
+    );
+  }
+}

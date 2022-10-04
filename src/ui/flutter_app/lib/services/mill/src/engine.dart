@@ -285,6 +285,7 @@ enum GameMode {
   humanVsAi,
   humanVsHuman,
   aiVsAi,
+  setupPosition,
 
   /// Not Implemented
   humanVsCloud,
@@ -307,9 +308,10 @@ extension GameModeExtension on GameMode {
         }
       case GameMode.humanVsHuman:
         return FluentIcons.person_24_filled;
-
       case GameMode.aiVsAi:
         return FluentIcons.bot_24_filled;
+      case GameMode.setupPosition:
+        return FluentIcons.person_24_regular;
       case GameMode.humanVsCloud:
         return FluentIcons.person_24_filled;
       case GameMode.humanVsLAN:
@@ -331,6 +333,8 @@ extension GameModeExtension on GameMode {
         return FluentIcons.person_24_filled;
       case GameMode.aiVsAi:
         return FluentIcons.bot_24_filled;
+      case GameMode.setupPosition:
+        return FluentIcons.person_24_regular;
       case GameMode.humanVsCloud:
         return FluentIcons.cloud_24_filled;
       case GameMode.humanVsLAN:
@@ -348,6 +352,7 @@ extension GameModeExtension on GameMode {
           PieceColor.white: DB().generalSettings.aiMovesFirst,
           PieceColor.black: !DB().generalSettings.aiMovesFirst,
         };
+      case GameMode.setupPosition:
       case GameMode.humanVsHuman:
       case GameMode.humanVsLAN:
       case GameMode.humanVsCloud:

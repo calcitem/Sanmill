@@ -8,7 +8,7 @@ class TapHandler {
   final BuildContext context;
 
   final controller = MillController();
-  final gameMode = MillController().gameInstance.gameMode;
+  //final gameMode = MillController().gameInstance.gameMode;
   final showTip = MillController().headerTipNotifier.showTip;
 
   //final position = MillController().position;
@@ -25,19 +25,37 @@ class TapHandler {
       MillController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
       MillController().position.pieceOnBoardCount[PieceColor.black] == 0;
 
+  Future<EngineResponse> setupPosition(int sq) async {
+    if (MillController().position._action == Act.place) {
+      MillController().position._putPieceForSetupPosition(sq);
+    } else if (MillController().position._action == Act.remove) {
+      MillController().position._removePieceForSetupPosition(sq);
+    } else {
+      assert(false);
+    }
+
+    return const EngineResponseHumanOK(); // TODO: Right?
+  }
+
   Future<EngineResponse> onBoardTap(int sq) async {
     if (!MillController().isReady) {
       logger.i("$_tag Not ready, ignore tapping.");
       return const EngineResponseSkip();
     }
 
-    if (gameMode == GameMode.testViaLAN) {
+    if (MillController().gameInstance.gameMode == GameMode.setupPosition) {
+      logger.v("$_tag Setup position.");
+      await setupPosition(sq);
+      return const EngineResponseSkip();
+    }
+
+    if (MillController().gameInstance.gameMode == GameMode.testViaLAN) {
       logger.v("$_tag Engine type is no human, ignore tapping.");
       return const EngineResponseSkip();
     }
 
     // WAR: Fix first tap response slow when piece count changed
-    if (gameMode != GameMode.humanVsHuman &&
+    if (MillController().gameInstance.gameMode != GameMode.humanVsHuman &&
         MillController().position.phase == Phase.placing &&
         _isBoardEmpty) {
       //controller.reset();
@@ -64,13 +82,14 @@ class TapHandler {
           if (MillController().position._action == Act.remove) {
             showTip(S.of(context).tipMill);
           } else {
-            if (gameMode == GameMode.humanVsAi) {
+            if (MillController().gameInstance.gameMode == GameMode.humanVsAi) {
               if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                 showTip(S.of(context).continueToMakeMove, snackBar: false);
               } else {
                 showTip(S.of(context).tipPlaced, snackBar: false);
               }
-            } else if (gameMode == GameMode.humanVsHuman) {
+            } else if (MillController().gameInstance.gameMode ==
+                GameMode.humanVsHuman) {
               if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                 // TODO: HumanVsHuman - Change tip
                 showTip(S.of(context).tipPlaced, snackBar: false);
@@ -163,9 +182,11 @@ class TapHandler {
             if (MillController().position._pieceToRemoveCount >= 1) {
               showTip(S.of(context).tipContinueMill);
             } else {
-              if (gameMode == GameMode.humanVsAi) {
+              if (MillController().gameInstance.gameMode ==
+                  GameMode.humanVsAi) {
                 showTip(S.of(context).tipRemoved, snackBar: false);
-              } else if (gameMode == GameMode.humanVsHuman) {
+              } else if (MillController().gameInstance.gameMode ==
+                  GameMode.humanVsHuman) {
                 final them = controller.gameInstance.sideToMove.opponent
                     .playerName(context);
                 showTip(S.of(context).tipToMove(them), snackBar: false);
@@ -236,7 +257,7 @@ class TapHandler {
       }
 
       if (_isGameRunning) {
-        if (gameMode == GameMode.humanVsAi) {
+        if (MillController().gameInstance.gameMode == GameMode.humanVsAi) {
           return MillController().engineToGo(context, isMoveNow: false);
         }
       } else {

@@ -80,7 +80,8 @@ class _MoveOptionsModal extends StatelessWidget {
 
     if (DB().generalSettings.isAutoRestart == false &&
         winner != PieceColor.nobody &&
-        gameMode != GameMode.aiVsAi) {
+        gameMode != GameMode.aiVsAi &&
+        gameMode != GameMode.setupPosition) {
       showDialog(
         context: context,
         builder: (_) => GameResultAlert(winner: winner),

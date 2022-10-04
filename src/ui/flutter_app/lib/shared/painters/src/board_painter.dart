@@ -43,6 +43,7 @@ class BoardPainter extends CustomPainter {
     _drawBackground(canvas, size);
 
     if (DB().displaySettings.isPieceCountInHandShown &&
+        MillController().gameInstance.gameMode != GameMode.setupPosition &&
         position.phase == Phase.placing) {
       _drawPieceCount(position, canvas, size);
     }

@@ -52,6 +52,8 @@ part 'game_page_action_sheet.dart';
 class GamePage extends StatelessWidget {
   final GameMode gameMode;
 
+  final bool isSettingsPosition = true;
+
   GamePage(this.gameMode, {Key? key}) : super(key: key) {
     Position.resetScore();
   }
@@ -136,6 +138,8 @@ class _Game extends StatelessWidget {
         builder: (_) => const _InfoDialog(),
       );
 
+  // Icons: https://github.com/microsoft/fluentui-system-icons/blob/main/icons_regular.md
+
   List<Widget> mainToolbarItems(BuildContext context) {
     final gameButton = ToolbarItem.icon(
       onPressed: () => _showGameModalBottomSheet(context),
@@ -218,18 +222,22 @@ class _Game extends StatelessWidget {
         const SizedBox(height: AppTheme.boardMargin),
         const Board(),
         const SizedBox(height: AppTheme.boardMargin),
-        if (DB().displaySettings.isHistoryNavigationToolbarShown)
+        if (MillController().gameInstance.gameMode == GameMode.setupPosition)
+          const SetupPositionToolBar(),
+        if (DB().displaySettings.isHistoryNavigationToolbarShown &&
+            MillController().gameInstance.gameMode != GameMode.setupPosition)
           GamePageToolBar(
             backgroundColor:
                 DB().colorSettings.navigationToolbarBackgroundColor,
             itemColor: DB().colorSettings.navigationToolbarIconColor,
             children: historyNavToolbarItems(context),
           ),
-        GamePageToolBar(
-          backgroundColor: DB().colorSettings.mainToolbarBackgroundColor,
-          itemColor: DB().colorSettings.mainToolbarIconColor,
-          children: mainToolbarItems(context),
-        ),
+        if (MillController().gameInstance.gameMode != GameMode.setupPosition)
+          GamePageToolBar(
+            backgroundColor: DB().colorSettings.mainToolbarBackgroundColor,
+            itemColor: DB().colorSettings.mainToolbarIconColor,
+            children: mainToolbarItems(context),
+          ),
       ],
     );
   }

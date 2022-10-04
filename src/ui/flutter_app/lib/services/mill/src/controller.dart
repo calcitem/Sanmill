@@ -36,6 +36,7 @@ class MillController {
 
   late Game gameInstance;
   late Position position;
+  late Position setupPosition;
   late Engine engine;
 
   final HeaderTipNotifier headerTipNotifier = HeaderTipNotifier();

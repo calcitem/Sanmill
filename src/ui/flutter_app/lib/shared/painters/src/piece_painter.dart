@@ -134,7 +134,8 @@ class PiecePainter extends CustomPainter {
     }
 
     // Draw focus and blur position
-    if (focusIndex != null) {
+    if (focusIndex != null &&
+        MillController().gameInstance.gameMode != GameMode.setupPosition) {
       paint.color = DB().colorSettings.pieceHighlightColor;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;

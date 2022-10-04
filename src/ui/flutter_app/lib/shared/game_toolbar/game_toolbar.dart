@@ -17,11 +17,16 @@
 /// Although marked as a library this package is tightly integrated into the app
 library game_toolbar;
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/services/database/database.dart';
+import 'package:sanmill/services/mill/mill.dart';
+import 'package:sanmill/shared/scaffold_messenger.dart';
 
-part 'src/toolbar.dart';
-part 'src/item_theme_data.dart';
 part 'src/item_theme.dart';
+part 'src/item_theme_data.dart';
+part 'src/toolbar.dart';
 part 'src/toolbar_item.dart';
