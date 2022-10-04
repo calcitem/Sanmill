@@ -136,7 +136,7 @@ class _Game extends StatelessWidget {
         builder: (_) => const _InfoDialog(),
       );
 
-  List<Widget> toolbarItems(BuildContext context) {
+  List<Widget> mainToolbarItems(BuildContext context) {
     final gameButton = ToolbarItem.icon(
       onPressed: () => _showGameModalBottomSheet(context),
       icon: const Icon(FluentIcons.table_simple_24_regular),
@@ -228,7 +228,7 @@ class _Game extends StatelessWidget {
         GamePageToolBar(
           backgroundColor: DB().colorSettings.mainToolbarBackgroundColor,
           itemColor: DB().colorSettings.mainToolbarIconColor,
-          children: toolbarItems(context),
+          children: mainToolbarItems(context),
         ),
       ],
     );
