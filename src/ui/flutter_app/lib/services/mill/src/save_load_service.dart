@@ -81,7 +81,8 @@ class LoadService {
 
     File file = File(filename);
 
-    file.writeAsString(MillController().recorder.moveHistoryText!);
+    file.writeAsString(
+        ImportService.addTagPairs(MillController().recorder.moveHistoryText!));
 
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear("$strGameSavedTo $filename");

@@ -184,6 +184,57 @@ class ImportService {
     return false;
   }
 
+  static String addTagPairs(String moveList) {
+    final DateTime dateTime = DateTime.now();
+    final String date =
+        "${dateTime.year.toString()}.${dateTime.month.toString()}.${dateTime.day}";
+
+    final int total = Position.score[PieceColor.white]! +
+        Position.score[PieceColor.black]! +
+        Position.score[PieceColor.draw]!;
+
+    String white;
+    String black;
+    String result;
+
+    if (MillController().gameInstance._isAi[PieceColor.white]!) {
+      white = "AI";
+    } else {
+      white = "Human";
+    }
+
+    if (MillController().gameInstance._isAi[PieceColor.black]!) {
+      black = "AI";
+    } else {
+      black = "Human";
+    }
+
+    switch (MillController().position.winner) {
+      case PieceColor.white:
+        result = "1-0";
+        break;
+      case PieceColor.black:
+        result = "0-1";
+        break;
+      case PieceColor.draw:
+        result = "1/2-1/2";
+        break;
+      default:
+        result = "*";
+        break;
+    }
+
+    String tagPairs = "[Event \"Sanmill-Game\"]\r\n"
+        "[Site \"Sanmill\"]\r\n"
+        "[Date \"$date\"]\r\n"
+        "[Round \"${total.toString()}\"]\r\n"
+        "[White \"$white\"]\r\n"
+        "[Black \"$black\"]\r\n"
+        "[Result \"$result\"]\r\n\r\n";
+
+    return tagPairs + moveList;
+  }
+
   static String removeTagPairs(String pgn) {
     if (pgn.startsWith("[") == false) return pgn;
 
