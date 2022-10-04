@@ -160,7 +160,7 @@ class Position {
 
       score[PieceColor.draw] = score[PieceColor.draw]! + 1;
 
-      // TODO: WAR to judge rule50
+      // TODO: WAR to judge rule50, and endgameNMoveRule is not right.
       if (DB().ruleSettings.nMoveRule > 0 &&
           posKeyHistory.length >= DB().ruleSettings.nMoveRule - 1) {
         gameOverReason = GameOverReason.drawRule50;

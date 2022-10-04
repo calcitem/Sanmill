@@ -77,8 +77,15 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
+  // TODO: This feature EndgameNMoveRule is not implemented yet
   void _setEndgameNMoveRule(BuildContext context, RuleSettings ruleSettings) {
     void callback(int? endgameNMoveRule) {
+      if (endgameNMoveRule == null ||
+          endgameNMoveRule < DB().ruleSettings.nMoveRule) {
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).experimental);
+      }
+
       Navigator.pop(context);
 
       DB().ruleSettings =
@@ -150,6 +157,7 @@ class RuleSettingsPage extends StatelessWidget {
   }
 
   void _setMayOnlyRemoveUnplacedPieceInPlacingPhase(
+    BuildContext context,
     RuleSettings ruleSettings,
     bool value,
   ) {
@@ -157,6 +165,11 @@ class RuleSettingsPage extends StatelessWidget {
         ruleSettings.copyWith(mayOnlyRemoveUnplacedPieceInPlacingPhase: value);
 
     logger.v("[config] mayOnlyRemoveUnplacedPieceInPlacingPhase: $value");
+
+    if (value) {
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).experimental);
+    }
   }
 
   // Moving
@@ -272,6 +285,7 @@ class RuleSettingsPage extends StatelessWidget {
             SettingsListTile.switchTile(
               value: ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase,
               onChanged: (val) => _setMayOnlyRemoveUnplacedPieceInPlacingPhase(
+                context,
                 ruleSettings,
                 val,
               ),
