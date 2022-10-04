@@ -61,6 +61,13 @@ Future<void> main() async {
     );
 
     await _initCatcher(catcher);
+
+    PlatformDispatcher.instance.onError = (error, stack) {
+      if (EnvironmentConfig.catcher == true) {
+        Catcher.reportCheckedError(error, stack);
+      }
+      return true;
+    };
   } else {
     runApp(const SanmillApp());
   }
