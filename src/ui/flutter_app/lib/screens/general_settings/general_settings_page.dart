@@ -255,16 +255,18 @@ class GeneralSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: AppTheme.lightBackgroundColor,
-      appBar: AppBar(
-        leading: DrawerIcon.of(context)?.icon,
-        title: Text(S.of(context).generalSettings),
-      ),
-      body: ValueListenableBuilder(
-        valueListenable: DB().listenGeneralSettings,
-        builder: _buildGeneralSettingsList,
+    return BlockSemantics(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: AppTheme.lightBackgroundColor,
+        appBar: AppBar(
+          leading: DrawerIcon.of(context)?.icon,
+          title: Text(S.of(context).generalSettings),
+        ),
+        body: ValueListenableBuilder(
+          valueListenable: DB().listenGeneralSettings,
+          builder: _buildGeneralSettingsList,
+        ),
       ),
     );
   }

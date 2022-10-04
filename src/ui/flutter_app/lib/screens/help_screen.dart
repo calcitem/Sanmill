@@ -9,26 +9,28 @@ class HelpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        elevation: 0.0,
+    return BlockSemantics(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: DB().colorSettings.darkBackgroundColor,
+          leading: DrawerIcon.of(context)?.icon,
+          title: Text(
+            S.of(context).howToPlay,
+            style: AppTheme.helpTextStyle,
+          ),
+          iconTheme: const IconThemeData(
+            color: AppTheme.helpTextColor,
+          ),
+        ),
         backgroundColor: DB().colorSettings.darkBackgroundColor,
-        leading: DrawerIcon.of(context)?.icon,
-        title: Text(
-          S.of(context).howToPlay,
-          style: AppTheme.helpTextStyle,
-        ),
-        iconTheme: const IconThemeData(
-          color: AppTheme.helpTextColor,
-        ),
-      ),
-      backgroundColor: DB().colorSettings.darkBackgroundColor,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Text(
-          S.of(context).helpContent,
-          style: AppTheme.helpTextStyle,
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Text(
+            S.of(context).helpContent,
+            style: AppTheme.helpTextStyle,
+          ),
         ),
       ),
     );

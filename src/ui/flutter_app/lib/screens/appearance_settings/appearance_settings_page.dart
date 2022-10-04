@@ -289,24 +289,26 @@ class AppearanceSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: AppTheme.lightBackgroundColor,
-      appBar: AppBar(
-        leading: DrawerIcon.of(context)?.icon,
-        title: Text(S.of(context).appearance),
-      ),
-      body: SettingsList(
-        children: [
-          ValueListenableBuilder(
-            valueListenable: DB().listenDisplaySettings,
-            builder: _buildDisplaySettings,
-          ),
-          ValueListenableBuilder(
-            valueListenable: DB().listenColorSettings,
-            builder: _buildColorSettings,
-          ),
-        ],
+    return BlockSemantics(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: AppTheme.lightBackgroundColor,
+        appBar: AppBar(
+          leading: DrawerIcon.of(context)?.icon,
+          title: Text(S.of(context).appearance),
+        ),
+        body: SettingsList(
+          children: [
+            ValueListenableBuilder(
+              valueListenable: DB().listenDisplaySettings,
+              builder: _buildDisplaySettings,
+            ),
+            ValueListenableBuilder(
+              valueListenable: DB().listenColorSettings,
+              builder: _buildColorSettings,
+            ),
+          ],
+        ),
       ),
     );
   }

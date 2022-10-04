@@ -120,17 +120,19 @@ class AboutPage extends StatelessWidget {
       ),
     ];
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: AppTheme.aboutPageBackgroundColor,
-      appBar: AppBar(
-        leading: DrawerIcon.of(context)?.icon,
-        title: Text(S.of(context).about),
-      ),
-      body: ListView.separated(
-        itemBuilder: (_, index) => children[index],
-        separatorBuilder: (_, __) => const Divider(),
-        itemCount: children.length,
+    return BlockSemantics(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: AppTheme.aboutPageBackgroundColor,
+        appBar: AppBar(
+          leading: DrawerIcon.of(context)?.icon,
+          title: Text(S.of(context).about),
+        ),
+        body: ListView.separated(
+          itemBuilder: (_, index) => children[index],
+          separatorBuilder: (_, __) => const Divider(),
+          itemCount: children.length,
+        ),
       ),
     );
   }
