@@ -64,6 +64,12 @@ class _MoveOptionsModal extends StatelessWidget {
       case EngineNoBestMove():
         MillController().headerTipNotifier.showTip(strNoBestMoveErr);
         break;
+      case EngineResponseSkip():
+        MillController().headerTipNotifier.showTip("Error: Skip"); // TODO
+        break;
+      default:
+        assert(false);
+        break;
     }
   }
 
