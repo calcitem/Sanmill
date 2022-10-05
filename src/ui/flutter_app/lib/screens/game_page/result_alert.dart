@@ -28,7 +28,7 @@ class GameResultAlert extends StatelessWidget {
   static const _tag = "[Game Over Alert]";
 
   GameResult? get _gameResult {
-    if (gameMode == GameMode.aiVsAi || gameMode != GameMode.setupPosition) {
+    if (gameMode == GameMode.aiVsAi || gameMode == GameMode.setupPosition) {
       return null;
     }
 
