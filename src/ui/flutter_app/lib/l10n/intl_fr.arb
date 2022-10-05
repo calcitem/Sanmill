@@ -1152,15 +1152,15 @@
       }
     }
   },
-  "gameSavedTo": "Le jeu est enregistré dans",
+  "gameSavedTo": "La partie est sauvegardée dans",
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "loadFailed": "Chargement raté.",
+  "loadFailed": "Échec du chargement.",
   "@loadFailed": {
     "description": "Load failed."
   },
-  "filename": "Nom de fichier",
+  "filename": "Nom du fichier",
   "@filename": {
     "description": "File name"
   },
