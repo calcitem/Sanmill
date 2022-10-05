@@ -33,6 +33,7 @@ class _MoveOptionsModal extends StatelessWidget {
 
   Future<void> _moveNow(BuildContext context) async {
     const tag = "[engineToGo]";
+    bool isAiThinking = true;
 
     Navigator.pop(context);
 
@@ -41,28 +42,29 @@ class _MoveOptionsModal extends StatelessWidget {
       return rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).notAIsTurn);
     } else if (!MillController().recorder.isClean) {
-      logger.i("$tag History is not clean. Cannot get search result now.");
-      return rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).aiIsNotThinking);
-    } else {
-      final strTimeout = S.of(context).timeout;
-      final strNoBestMoveErr = S.of(context).error("No best move");
+      logger.i("$tag History is not clean. Prune, and think now.");
+      isAiThinking = false;
+      MillController().recorder.prune();
+    }
 
-      switch (await MillController().engineToGo(context, isMoveNow: true)) {
-        // TODO: Looking up a deactivated widget's ancestor is unsafe.
-        case EngineResponseOK():
-          _showResult(mainContext, force: true);
-          break;
-        case EngineResponseHumanOK():
-          _showResult(mainContext, force: false);
-          break;
-        case EngineTimeOut():
-          MillController().headerTipNotifier.showTip(strTimeout);
-          break;
-        case EngineNoBestMove():
-          MillController().headerTipNotifier.showTip(strNoBestMoveErr);
-          break;
-      }
+    final strTimeout = S.of(context).timeout;
+    final strNoBestMoveErr = S.of(context).error("No best move");
+
+    switch (
+        await MillController().engineToGo(context, isMoveNow: isAiThinking)) {
+      // TODO: Looking up a deactivated widget's ancestor is unsafe.
+      case EngineResponseOK():
+        _showResult(mainContext, force: true);
+        break;
+      case EngineResponseHumanOK():
+        _showResult(mainContext, force: false);
+        break;
+      case EngineTimeOut():
+        MillController().headerTipNotifier.showTip(strTimeout);
+        break;
+      case EngineNoBestMove():
+        MillController().headerTipNotifier.showTip(strNoBestMoveErr);
+        break;
     }
   }
 

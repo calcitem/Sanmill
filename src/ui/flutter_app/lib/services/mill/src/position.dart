@@ -314,12 +314,12 @@ class Position {
             }
 
             if (!DB().ruleSettings.isDefenderMoveFirst) {
-              _changeSideToMove();
+              changeSideToMove();
             }
 
             if (_checkIfGameIsOver()) return true;
           } else {
-            _changeSideToMove();
+            changeSideToMove();
           }
           MillController().gameInstance.focusIndex = squareToIndex[s];
           Audios().playTone(Sound.place);
@@ -344,7 +344,7 @@ class Position {
               _action = Act.select;
 
               if (DB().ruleSettings.isDefenderMoveFirst) {
-                _changeSideToMove();
+                changeSideToMove();
               }
 
               if (_checkIfGameIsOver()) return true;
@@ -397,7 +397,7 @@ class Position {
         // midgame
         if (n == 0) {
           _action = Act.select;
-          _changeSideToMove();
+          changeSideToMove();
 
           if (_checkIfGameIsOver()) return true;
           MillController().gameInstance.focusIndex = squareToIndex[s];
@@ -499,7 +499,7 @@ class Position {
       _action = Act.select;
     }
 
-    _changeSideToMove();
+    changeSideToMove();
     _checkIfGameIsOver();
 
     Audios().playTone(Sound.remove);
@@ -601,7 +601,7 @@ class Position {
         _setGameOver(sideToMove.opponent, GameOverReason.loseNoWay);
         return true;
       } else {
-        _changeSideToMove(); // TODO: Need?
+        changeSideToMove(); // TODO: Need?
         return false;
       }
     }
@@ -626,7 +626,7 @@ class Position {
     }
   }
 
-  void _changeSideToMove() {
+  void changeSideToMove() {
     sideToMove = _sideToMove.opponent;
     st.key ^= _Zobrist.side;
     logger.v("[position] $_sideToMove to move.");

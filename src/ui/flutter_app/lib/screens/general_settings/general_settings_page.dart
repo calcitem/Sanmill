@@ -57,6 +57,8 @@ class GeneralSettingsPage extends StatelessWidget {
   void _setWhoMovesFirst(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(aiMovesFirst: value);
 
+    MillController().position.changeSideToMove();
+
     Position.resetScore();
 
     logger.v("$_tag aiMovesFirst: $value");
