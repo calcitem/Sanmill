@@ -125,13 +125,14 @@ class HeaderTipState extends State<HeaderTip> {
   final ValueNotifier<String> _messageNotifier = ValueNotifier("");
 
   void showTip() {
-    final tip = MillController().headerTipNotifier;
+    final headerTipNotifier = MillController().headerTipNotifier;
 
-    if (tip.showSnackBar) {
-      rootScaffoldMessengerKey.currentState!.showSnackBarClear(tip.message);
+    if (headerTipNotifier.showSnackBar) {
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(headerTipNotifier.message);
     }
 
-    _messageNotifier.value = tip.message;
+    _messageNotifier.value = headerTipNotifier.message;
   }
 
   @override

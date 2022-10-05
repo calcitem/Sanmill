@@ -67,13 +67,13 @@ class _InfoDialog extends StatelessWidget {
 
     buffer.writePeriod(S.of(context).sideToMove(us));
 
-    final String tip = MillController().headerTipNotifier.message;
+    final String msg = MillController().headerTipNotifier.message;
 
     // the tip
     if (DB().generalSettings.screenReaderSupport &&
-        tip.endsWith(".") &&
-        tip.endsWith("!")) {
-      buffer.writePeriod(tip);
+        msg.endsWith(".") &&
+        msg.endsWith("!")) {
+      buffer.writePeriod(msg);
     }
 
     buffer.writeln();

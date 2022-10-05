@@ -53,6 +53,7 @@ class _MoveOptionsModal extends StatelessWidget {
     switch (
         await MillController().engineToGo(context, isMoveNow: isAiThinking)) {
       // TODO: Looking up a deactivated widget's ancestor is unsafe.
+      // TODO: Notify listener, do not call directly!
       case EngineResponseOK():
         _showResult(mainContext, force: true);
         break;
