@@ -272,10 +272,14 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       MillController().position.action = Act.select;
     }
 
-    if (MillController().position.sideToMove != PieceColor.white &&
-        MillController().position.sideToMove != PieceColor.black) {
-      MillController().position.sideToMove = PieceColor.white; // TODO: Right?
+    if (newPieceColor != PieceColor.white &&
+        newPieceColor != PieceColor.black) {
+      newPieceColor = PieceColor.white; // TODO: Right?
     }
+
+    // TODO: Two sideToMove
+    MillController().gameInstance.sideToMove =
+        MillController().position.sideToMove = newPieceColor;
 
     updateSetupPositionPiecesCount();
 
@@ -284,6 +288,9 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     //MillController().recorder.clear(); // TODO: Set and parse fen.
     MillController().recorder =
         GameRecorder(lastPositionWithRemove: position.fen);
+
+    MillController().headerIconsNotifier.showIcons();
+    MillController().boardSemanticsNotifier.updateSemantics();
   }
 
   @override
