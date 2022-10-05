@@ -47,6 +47,7 @@ part 'src/controller.dart';
 part 'src/engine.dart';
 part 'src/ext_move.dart';
 part 'src/game.dart';
+part 'src/game_result_notifier.dart';
 part 'src/header_icons_notifier.dart';
 part 'src/history_navigation.dart';
 part 'src/import_export_service.dart';

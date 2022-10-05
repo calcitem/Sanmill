@@ -37,6 +37,8 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
+    MillController().gameResultNotifier.addListener(_showResult);
+
     if (visitedRuleSettingsPage == true) {
       MillController().reset();
       visitedRuleSettingsPage = false;
@@ -123,10 +125,10 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
               switch (await tapHandler.onBoardTap(square)) {
                 case EngineResponseOK():
-                  _showResult(force: true);
+                  MillController().gameResultNotifier.showResult(force: true);
                   break;
                 case EngineResponseHumanOK():
-                  _showResult(force: false);
+                  MillController().gameResultNotifier.showResult(force: false);
                   break;
                 case EngineTimeOut():
                   MillController().headerTipNotifier.showTip(strTimeout);
@@ -146,11 +148,12 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     );
   }
 
-  void _showResult({required bool force}) {
+  void _showResult() {
     if (!mounted) return;
-
+    final gameMode = MillController().gameInstance.gameMode;
     final winner = MillController().position.winner;
     final message = winner.getWinString(context);
+    final force = MillController().gameResultNotifier.force;
 
     if (message != null && (force == true || winner != PieceColor.nobody)) {
       MillController().headerTipNotifier.showTip(message, snackBar: false);
@@ -158,7 +161,10 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
     MillController().headerIconsNotifier.showIcons();
 
-    if (!DB().generalSettings.isAutoRestart && winner != PieceColor.nobody) {
+    if (DB().generalSettings.isAutoRestart == false &&
+        winner != PieceColor.nobody &&
+        gameMode != GameMode.aiVsAi &&
+        gameMode != GameMode.setupPosition) {
       showDialog(
         context: context,
         builder: (_) => GameResultAlert(winner: winner),
@@ -172,6 +178,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     MillController().engine.stopSearching();
     //MillController().engine.shutdown();
     MillController().animationController.dispose();
+    MillController().gameResultNotifier.removeListener(_showResult);
     super.dispose();
   }
 }

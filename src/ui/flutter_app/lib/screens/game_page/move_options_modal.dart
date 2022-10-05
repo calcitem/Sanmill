@@ -52,13 +52,11 @@ class _MoveOptionsModal extends StatelessWidget {
 
     switch (
         await MillController().engineToGo(context, isMoveNow: isAiThinking)) {
-      // TODO: Looking up a deactivated widget's ancestor is unsafe.
-      // TODO: Notify listener, do not call directly!
       case EngineResponseOK():
-        _showResult(mainContext, force: true);
+        MillController().gameResultNotifier.showResult(force: true);
         break;
       case EngineResponseHumanOK():
-        _showResult(mainContext, force: false);
+        MillController().gameResultNotifier.showResult(force: false);
         break;
       case EngineTimeOut():
         MillController().headerTipNotifier.showTip(strTimeout);
@@ -66,29 +64,6 @@ class _MoveOptionsModal extends StatelessWidget {
       case EngineNoBestMove():
         MillController().headerTipNotifier.showTip(strNoBestMoveErr);
         break;
-    }
-  }
-
-  // TODO: Duplicate
-  void _showResult(BuildContext context, {required bool force}) {
-    final gameMode = MillController().gameInstance.gameMode;
-    final winner = MillController().position.winner;
-    final message = winner.getWinString(context);
-
-    if (message != null && (force == true || winner != PieceColor.nobody)) {
-      MillController().headerTipNotifier.showTip(message, snackBar: false);
-    }
-
-    MillController().headerIconsNotifier.showIcons();
-
-    if (DB().generalSettings.isAutoRestart == false &&
-        winner != PieceColor.nobody &&
-        gameMode != GameMode.aiVsAi &&
-        gameMode != GameMode.setupPosition) {
-      showDialog(
-        context: context,
-        builder: (_) => GameResultAlert(winner: winner),
-      );
     }
   }
 
