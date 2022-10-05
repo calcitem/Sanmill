@@ -245,7 +245,7 @@ class TapHandler {
             .addAndDeduplicate(MillController().position._record!);
         if (MillController().position._record!.type == MoveType.remove) {
           controller.recorder.lastPositionWithRemove =
-              MillController().position._fen;
+              MillController().position.fen;
         }
 
         // TODO: moveHistoryText is not lightweight.

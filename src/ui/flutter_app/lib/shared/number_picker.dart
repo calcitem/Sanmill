@@ -24,10 +24,14 @@ class NumberPicker extends StatelessWidget {
     Key? key,
     this.start = 1,
     required this.end,
+    required this.newTitle,
+    required this.showMoveString,
   }) : super(key: key);
 
   final int start;
   final int end;
+  final String newTitle;
+  final bool showMoveString;
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +40,14 @@ class NumberPicker extends StatelessWidget {
 
     final List<Widget> items = List.generate(
       end,
-      (index) => Text(S.of(context).moveNumber(start + index)),
+      (index) => Text(showMoveString
+          ? S.of(context).moveNumber(start + index)
+          : (start + index).toString()),
     );
 
     return AlertDialog(
       title: Text(
-        S.of(context).pleaseSelect,
+        newTitle,
         style: AppTheme.dialogTitleTextStyle,
       ),
       content: ConstrainedBox(

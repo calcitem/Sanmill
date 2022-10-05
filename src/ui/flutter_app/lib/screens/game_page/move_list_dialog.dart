@@ -83,7 +83,8 @@ class _MoveListDialog extends StatelessWidget {
   Future<void> _rollback(BuildContext context, int end) async {
     final selectValue = await showDialog<int?>(
       context: context,
-      builder: (context) => NumberPicker(end: end),
+      builder: (context) => NumberPicker(
+          end: end, newTitle: S.of(context).pleaseSelect, showMoveString: true),
     );
 
     if (selectValue == null) return;

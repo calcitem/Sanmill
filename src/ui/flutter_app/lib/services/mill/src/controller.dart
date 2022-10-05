@@ -33,6 +33,7 @@ class MillController {
   bool isReady = false;
   bool isActive = false;
   bool isEngineGoing = false;
+  bool isPositionSetup = false;
 
   late Game gameInstance;
   late Position position;
@@ -94,6 +95,8 @@ class MillController {
     _init();
 
     gameInstance.gameMode = gameModeBak;
+
+    MillController().isPositionSetup = false;
   }
 
   /// Starts the current game.
@@ -108,7 +111,7 @@ class MillController {
     position = Position();
     gameInstance = Game();
     engine = Engine();
-    recorder = GameRecorder(lastPositionWithRemove: position._fen);
+    recorder = GameRecorder(lastPositionWithRemove: position.fen);
 
     _startGame();
   }

@@ -72,18 +72,27 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   final Color? backgroundColor = DB().colorSettings.mainToolbarBackgroundColor;
   final Color? itemColor = DB().colorSettings.mainToolbarIconColor;
 
+  PieceColor newPieceColor = PieceColor.white;
+  Phase newPhase = Phase.placing;
+  int newPieceCountNeedRemove = 0;
+  int newWhitePieceRemovedInPlacingPhase = 0;
+  int newBlackPieceRemovedInPlacingPhase = 0;
+
   late GameMode gameModeBackup;
   final position = MillController().position;
   late Position positionBackup;
-
-  Phase phase = Phase.placing;
 
   void initContext() {
     gameModeBackup = MillController().gameInstance.gameMode;
     MillController().gameInstance.gameMode = GameMode.setupPosition;
 
     positionBackup = MillController().position.clone();
-    MillController().position.reset();
+    //MillController().position.reset();
+
+    newPieceColor = MillController().position.sideToMove;
+    newPhase = MillController().position.phase;
+    newPieceCountNeedRemove = MillController().position.pieceToRemoveCount;
+    //TODO: newWhitePieceRemovedInPlacingPhase & newBlackPieceRemovedInPlacingPhase;
   }
 
   void restoreContext() {
@@ -105,14 +114,176 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   static double get height => (_padding.vertical + _margin.vertical) * 2;
 
   setSetupPositionPiece(BuildContext context, PieceColor pieceColor) {
-    MillController().position.sideToSetup = pieceColor;
-    MillController().headerTipNotifier.showTip(pieceColor.pieceName(context));
+    if (pieceColor == PieceColor.white) {
+      newPieceColor = PieceColor.black;
+    } else if (pieceColor == PieceColor.black) {
+      if (DB().ruleSettings.hasBannedLocations) {
+        newPieceColor = PieceColor.ban;
+      } else {
+        newPieceColor = PieceColor.none;
+      }
+    } else if (pieceColor == PieceColor.ban) {
+      newPieceColor = PieceColor.none;
+    } else if (pieceColor == PieceColor.none) {
+      newPieceColor = PieceColor.white;
+    } else {
+      assert(false);
+    }
 
-    if (pieceColor == PieceColor.none) {
+    if (newPieceColor == PieceColor.none) {
       position.action = Act.remove;
     } else {
       position.action = Act.place;
     }
+
+    MillController().position.sideToSetup = newPieceColor;
+    MillController()
+        .headerTipNotifier
+        .showTip(newPieceColor.pieceName(context));
+
+    setState(() {});
+    return;
+  }
+
+  setSetupPositionPhase(BuildContext context, Phase phase) {
+    if (phase == Phase.placing) {
+      newPhase = Phase.moving;
+      MillController().headerTipNotifier.showTip(S.of(context).movingPhase);
+    } else if (phase == Phase.moving) {
+      newPhase = Phase.placing;
+      MillController().headerTipNotifier.showTip(S.of(context).placingPhase);
+    }
+
+    setState(() {});
+    return;
+  }
+
+  setSetupPositionNeedRemove(BuildContext context, int count) {
+    // TODO: verify
+    if (count == 0) {
+      newPieceCountNeedRemove = 1;
+    } else {
+      if (DB().ruleSettings.mayRemoveMultiple) {
+        if (count == 1) {
+          newPieceCountNeedRemove = 2;
+        } else if (count == 2) {
+          newPieceCountNeedRemove = 3;
+        } else if (count == 3) {
+          newPieceCountNeedRemove = 0;
+        }
+      } else {
+        newPieceCountNeedRemove = 0;
+      }
+    }
+
+    MillController()
+        .headerTipNotifier
+        .showTip(newPieceCountNeedRemove.toString()); // TODO
+
+    setState(() {});
+    return;
+  }
+
+  setSetupPositionCopy(BuildContext context) async {
+    //String str = S.of(context).moveHistoryCopied; // TODO: l10n
+
+    String fen = MillController().position.fen;
+
+    await Clipboard.setData(
+      ClipboardData(text: MillController().position.fen),
+    );
+
+    rootScaffoldMessengerKey.currentState!.showSnackBarClear("Copy fen: $fen");
+  }
+
+  setSetupPositionPaste() {
+    // TODO:
+    return;
+  }
+
+  Future<void> setSetupPositionRemoval(BuildContext context) async {
+    // TODO: l10n
+    var selectValue = await showDialog<int?>(
+      context: context,
+      builder: (context) => const NumberPicker(
+          start: 0, end: 4, newTitle: "Need to remove", showMoveString: false),
+    );
+
+    newPieceCountNeedRemove = selectValue ?? 0;
+
+    if (newPhase == Phase.placing) {
+      selectValue = await showDialog<int?>(
+        context: context,
+        builder: (context) => const NumberPicker(
+            start: 0,
+            end: 13, // TODO
+            newTitle: "How many player1 pieces are removed?",
+            showMoveString: false),
+      );
+      newWhitePieceRemovedInPlacingPhase = selectValue ?? 0;
+
+      selectValue = await showDialog<int?>(
+        context: context,
+        builder: (context) => const NumberPicker(
+            start: 0,
+            end: 13, // TODO
+            newTitle: "How many player2 pieces are removed?",
+            showMoveString: false),
+      );
+      newBlackPieceRemovedInPlacingPhase = selectValue ?? 0;
+    }
+
+    return;
+  }
+
+  updateSetupPositionPiecesCount() {
+    int w = MillController().position.countPieceOnBoard(PieceColor.white);
+    int b = MillController().position.countPieceOnBoard(PieceColor.black);
+
+    MillController().position.pieceOnBoardCount[PieceColor.white] = w;
+    MillController().position.pieceOnBoardCount[PieceColor.black] = b;
+
+    if (newPhase == Phase.placing) {
+      MillController().position.pieceInHandCount[PieceColor.white] =
+          DB().ruleSettings.piecesCount -
+              w -
+              newWhitePieceRemovedInPlacingPhase;
+      MillController().position.pieceInHandCount[PieceColor.black] =
+          DB().ruleSettings.piecesCount -
+              b -
+              newBlackPieceRemovedInPlacingPhase;
+    } else if (newPhase == Phase.moving) {
+      MillController().position.pieceInHandCount[PieceColor.white] =
+          MillController().position.pieceInHandCount[PieceColor.black] = 0;
+    } else {
+      assert(false);
+    }
+
+    // TODO: Verify count in placing phase.
+  }
+
+  setSetupPositionDone() {
+    // TODO: set position fen, such as piece ect.
+    MillController().gameInstance.gameMode = gameModeBackup;
+    MillController().position.phase = newPhase;
+    if (newPhase == Phase.placing) {
+      MillController().position.action = Act.place;
+    } else if (newPhase == Phase.moving) {
+      MillController().position.action = Act.select;
+    }
+
+    if (MillController().position.sideToMove != PieceColor.white &&
+        MillController().position.sideToMove != PieceColor.black) {
+      MillController().position.sideToMove = PieceColor.white; // TODO: Right?
+    }
+
+    updateSetupPositionPiecesCount();
+
+    MillController().isPositionSetup = true;
+
+    //MillController().recorder.clear(); // TODO: Set and parse fen.
+    MillController().recorder =
+        GameRecorder(lastPositionWithRemove: position.fen);
   }
 
   @override
@@ -122,23 +293,23 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       onPressed: () => setSetupPositionPiece(context, PieceColor.white),
       icon: Icon(FluentIcons.circle_24_filled,
           color: DB().colorSettings.whitePieceColor),
-      label: Text(S.of(context).whitePiece),
+      label: Text(S.of(context).white),
     );
     final blackPieceButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionPiece(context, PieceColor.black),
       icon: Icon(FluentIcons.circle_24_filled,
           color: DB().colorSettings.blackPieceColor),
-      label: Text(S.of(context).blackPiece),
+      label: Text(S.of(context).black),
     );
     final banPointButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionPiece(context, PieceColor.ban),
       icon: const Icon(FluentIcons.prohibited_24_regular),
-      label: Text(S.of(context).banPoint),
+      label: Text(S.of(context).banPoint), // TODO: l10n
     );
     final emptyPointButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionPiece(context, PieceColor.none),
       icon: const Icon(FluentIcons.add_24_regular),
-      label: Text(S.of(context).emptyPoint),
+      label: Text(S.of(context).emptyPoint), // TODO: l10n
     );
 
     // Clear
@@ -155,15 +326,27 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
     // Phase
     final placingButton = ToolbarItem.icon(
-      onPressed: () => {phase = Phase.placing},
+      onPressed: () => {setSetupPositionPhase(context, Phase.placing)},
       icon: const Icon(FluentIcons.grid_dots_24_regular),
       label: const Text("Placing"),
     );
 
     final movingButton = ToolbarItem.icon(
-      onPressed: () => {phase = Phase.moving},
+      onPressed: () => {setSetupPositionPhase(context, Phase.moving)},
       icon: const Icon(FluentIcons.arrow_move_24_regular),
       label: const Text("Moving"),
+    );
+
+    final removalButton = ToolbarItem.icon(
+      onPressed: () => {setSetupPositionRemoval(context)},
+      icon: const Icon(FluentIcons.text_word_count_24_regular),
+      label: const Text("Removal"), // TODO: l10n
+    );
+
+    final copyButton = ToolbarItem.icon(
+      onPressed: () => {setSetupPositionCopy(context)},
+      icon: const Icon(FluentIcons.copy_24_regular),
+      label: const Text("Copy"), // TODO: l10n
     );
 
     final pasteButton = ToolbarItem.icon(
@@ -172,7 +355,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
             .showSnackBarClear(S.of(context).experimental)
       },
       icon: const Icon(FluentIcons.clipboard_paste_24_regular),
-      label: const Text("Paste"),
+      label: const Text("Paste"), // TODO: l10n
     );
 
     // Cancel
@@ -184,30 +367,34 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
     final doneButton = ToolbarItem.icon(
       onPressed: () {
-        MillController().gameInstance.gameMode = gameModeBackup;
-        MillController().position.phase = phase;
-        if (phase == Phase.placing) {
-          MillController().position.action = Act.place;
-        } else if (phase == Phase.moving) {
-          MillController().position.action = Act.select;
-        }
-      }, // TODO: set position fen
+        setSetupPositionDone();
+      },
       icon: const Icon(FluentIcons.hand_left_24_regular),
-      label: Text(S.of(context).done),
+      label: Text(S.of(context).confirm), // TODO: l10n
     );
 
+    Map<PieceColor, ToolbarItem> colorButtonMap = {
+      PieceColor.white: whitePieceButton,
+      PieceColor.black: blackPieceButton,
+      PieceColor.ban: banPointButton,
+      PieceColor.none: emptyPointButton,
+    };
+
+    Map<Phase, ToolbarItem> phaseButtonMap = {
+      Phase.placing: placingButton,
+      Phase.moving: movingButton,
+    };
+
     final rowOne = <Widget>[
-      whitePieceButton,
-      blackPieceButton,
-      //banPointButton,
-      emptyPointButton,
+      colorButtonMap[newPieceColor]!,
+      phaseButtonMap[newPhase]!,
+      removalButton,
       clearButton,
     ];
 
     final row2 = <Widget>[
-      placingButton,
-      movingButton,
-      //pasteButton,
+      copyButton,
+      pasteButton,
       cancelButton,
       doneButton,
     ];

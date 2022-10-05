@@ -45,6 +45,8 @@ class Position {
   };
   int _pieceToRemoveCount = 0;
 
+  int get pieceToRemoveCount => _pieceToRemoveCount;
+
   int _gamePly = 0;
   PieceColor _sideToMove = PieceColor.white;
 
@@ -99,7 +101,7 @@ class Position {
   }
 
   /// Returns a FEN representation of the position.
-  String get _fen {
+  String get fen {
     final buffer = StringBuffer();
 
     // Piece placement data
@@ -199,7 +201,7 @@ class Position {
         }
 
         MillController().recorder.lastPositionWithRemove =
-            MillController().position._fen;
+            MillController().position.fen;
 
         break;
       case MoveType.move:
@@ -922,5 +924,15 @@ extension SetupPosition on Position {
 
     Audios().playTone(Sound.remove);
     return const MillResponseOK();
+  }
+
+  int countPieceOnBoard(PieceColor pieceColor) {
+    int count = 0;
+    for (int i = 0; i < sqNumber; i++) {
+      if (_board[i] == pieceColor) {
+        count++;
+      }
+    }
+    return count;
   }
 }

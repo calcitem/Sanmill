@@ -277,7 +277,7 @@ class ImportService {
     }
 
     final GameRecorder newHistory =
-        GameRecorder(lastPositionWithRemove: MillController().position._fen);
+        GameRecorder(lastPositionWithRemove: MillController().position.fen);
     final List<String> list = ml
         .toLowerCase()
         .replaceAll("\n", " ")
@@ -362,7 +362,7 @@ class ImportService {
 
   static void _importPlayOk(String moveList) {
     final GameRecorder newHistory =
-        GameRecorder(lastPositionWithRemove: MillController().position._fen);
+        GameRecorder(lastPositionWithRemove: MillController().position.fen);
 
     final List<String> list = cleanup(moveList).split(" ");
 
