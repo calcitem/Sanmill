@@ -91,7 +91,9 @@ class PointedList<E> extends DelegatingList<E> {
   }
 
   /// Check if there is still part that can be pruned.
-  bool get isClean => globalIterator.index == _l.length - 1;
+  bool get isClean =>
+      (globalIterator.index == _l.length - 1) ||
+      (globalIterator.index == null && _l.isEmpty);
 
   /// Whether the list has another element previous to the iterator.
   ///
