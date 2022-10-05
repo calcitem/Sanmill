@@ -184,7 +184,10 @@ class MillController {
 
         if (MillController().isActive == false) break;
 
-        controller.gameInstance.doMove(extMove);
+        // TODO: Unify return and throw
+        if (controller.gameInstance.doMove(extMove) == false) {
+          throw const EngineNoBestMove();
+        }
 
         loopIsFirst = false;
         searched = true;
