@@ -26,7 +26,8 @@ class TapHandler {
       MillController().position.pieceOnBoardCount[PieceColor.black] == 0;
 
   Future<EngineResponse> setupPosition(int sq) async {
-    if (MillController().position._action == Act.place) {
+    if (MillController().position._action == Act.place ||
+        MillController().position._action == Act.select) {
       MillController().position._putPieceForSetupPosition(sq);
     } else if (MillController().position._action == Act.remove) {
       MillController().position._removePieceForSetupPosition(sq);
