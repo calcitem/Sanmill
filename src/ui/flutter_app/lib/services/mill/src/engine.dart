@@ -90,6 +90,13 @@ class Engine {
   Future<ExtMove> search({bool moveNow = false}) async {
     if (await isThinking()) {
       await stopSearching();
+    } else if (moveNow) {
+      // TODO: Check if go here.
+      assert(false);
+      await stopSearching();
+      await _send(_getPositionFen());
+      await _send("go");
+      await stopSearching();
     }
 
     if (!moveNow) {
