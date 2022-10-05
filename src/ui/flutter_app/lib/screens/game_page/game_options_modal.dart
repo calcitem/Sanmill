@@ -48,6 +48,7 @@ class _GameOptionsModal extends StatelessWidget {
               // TODO: This part of the code is repetitive.
               MillController().isActive == false;
 
+              // TODO: Called stopSearching(); so isEngineGoing is always false?
               if (MillController().isEngineGoing == false) {
                 MillController().reset();
 
@@ -114,6 +115,7 @@ class _GameOptionsModal extends StatelessWidget {
         onPressed: () {
           MillController().isActive == false;
 
+          // TODO: Called stopSearching(); so isEngineGoing is always false?
           if (MillController().isEngineGoing == false) {
             MillController().reset();
 

@@ -33,7 +33,6 @@ class _MoveOptionsModal extends StatelessWidget {
 
   Future<void> _moveNow(BuildContext context) async {
     const tag = "[engineToGo]";
-    bool isAiThinking = true;
 
     Navigator.pop(context);
 
@@ -41,17 +40,18 @@ class _MoveOptionsModal extends StatelessWidget {
       logger.i("$tag Human to Move. Cannot get search result now.");
       return rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).notAIsTurn);
-    } else if (!MillController().recorder.isClean) {
+    }
+
+    if (!MillController().recorder.isClean) {
       logger.i("$tag History is not clean. Prune, and think now.");
-      isAiThinking = false;
       MillController().recorder.prune();
     }
 
     final strTimeout = S.of(context).timeout;
     final strNoBestMoveErr = S.of(context).error("No best move");
 
-    switch (
-        await MillController().engineToGo(context, isMoveNow: isAiThinking)) {
+    switch (await MillController()
+        .engineToGo(context, isMoveNow: MillController().isEngineGoing)) {
       case EngineResponseOK():
         MillController().gameResultNotifier.showResult(force: true);
         break;

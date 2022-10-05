@@ -144,13 +144,14 @@ class MillController {
       }
     }
 
-    if (MillController().isEngineGoing == true) {
+    if (MillController().isEngineGoing == true && isMoveNow == false) {
       // TODO: No triggering scene found
       logger.v("$tag engineToGo() is still running, skip.");
+      assert(false);
       return const EngineResponseSkip();
-    } else {
-      MillController().isEngineGoing == true;
     }
+
+    MillController().isEngineGoing = true;
 
     MillController().isActive = true;
 
