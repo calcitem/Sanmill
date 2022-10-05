@@ -256,7 +256,7 @@ class TapHandler {
         }
       }
 
-      if (_isGameRunning) {
+      if (_isGameRunning && MillController().gameInstance.isAiToMove) {
         if (MillController().gameInstance.gameMode == GameMode.humanVsAi) {
           return MillController().engineToGo(context, isMoveNow: false);
         }
