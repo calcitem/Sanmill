@@ -16,6 +16,23 @@
 
 part of '../mill.dart';
 
+// Mill boards have concentric square rings joined by edges and an empty
+// middle. Mill games are typically played on the vertices not the cells.
+
+/*
+    31 ----- 24 ----- 25
+    | \       |      / |
+    |  23 -- 16 -- 17  |
+    |  | \    |   / |  |
+    |  |  15 08 09  |  |
+    30-22-14    10-18-26
+    |  |  13 12 11  |  |
+    |  | /    |   \ |  |
+    |  21 -- 20 -- 19  |
+    | /       |     \  |
+    29 ----- 28 ----- 27
+*/
+
 class _Mills {
   const _Mills._();
 
@@ -520,5 +537,33 @@ class _Mills {
       [0, 0],
       [0, 0]
     ]
+  ];
+
+  static const _horizontalAndVerticalLines = [
+    // Horizontal lines
+    [31, 24, 25],
+    [23, 16, 17],
+    [15, 8, 9],
+    [30, 22, 14],
+    [10, 18, 26],
+    [13, 12, 11],
+    [21, 20, 19],
+    [29, 28, 27],
+    // Vertical lines
+    [31, 30, 29],
+    [23, 22, 21],
+    [15, 14, 13],
+    [24, 16, 8],
+    [12, 20, 28],
+    [9, 10, 11],
+    [17, 18, 19],
+    [25, 26, 27],
+  ];
+
+  static const _diagonalLines = [
+    [31, 23, 15],
+    [9, 17, 25],
+    [29, 21, 13],
+    [11, 19, 27],
   ];
 }

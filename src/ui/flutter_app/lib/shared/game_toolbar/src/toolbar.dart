@@ -141,7 +141,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     if (pieceColor == PieceColor.white) {
       newPieceColor = PieceColor.black;
     } else if (pieceColor == PieceColor.black) {
-      if (DB().ruleSettings.hasBannedLocations) {
+      if (DB().ruleSettings.hasBannedLocations && newPhase == Phase.placing) {
         newPieceColor = PieceColor.ban;
       } else {
         newPieceColor = PieceColor.none;
@@ -234,10 +234,36 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
   Future<void> setSetupPositionRemoval(BuildContext context) async {
     // TODO: l10n
+
+    assert(MillController().position.sideToMove == PieceColor.white ||
+        MillController().position.sideToMove == PieceColor.black);
+
+    final sideToMove = MillController().position.sideToMove;
+
+    var limit = MillController()
+        .position
+        .totalMillsCount(MillController().position.sideToMove);
+
+    var opponentCount =
+        MillController().position.countPieceOnBoard(sideToMove.opponent);
+
+    if (newPhase == Phase.placing) {
+      if (limit > opponentCount) limit = opponentCount;
+    } else if (newPhase == Phase.moving) {
+      var newLimit = opponentCount - DB().ruleSettings.piecesAtLeastCount + 1;
+      if (limit > newLimit) {
+        limit = newLimit;
+        limit = limit < 0 ? 0 : limit;
+      }
+    }
+
     var selectValue = await showDialog<int?>(
       context: context,
-      builder: (context) => const NumberPicker(
-          start: 0, end: 4, newTitle: "Need to remove", showMoveString: false),
+      builder: (context) => NumberPicker(
+          start: 0,
+          end: limit + 1,
+          newTitle: "Need to remove",
+          showMoveString: false),
     );
 
     newPieceCountNeedRemove = selectValue ?? 0;
@@ -333,6 +359,37 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     MillController().boardSemanticsNotifier.updateSemantics();
   }
 
+  String setSetupPositionCheck(BuildContext context) {
+    String tag = "[SetupPosition]";
+
+    final sides = [PieceColor.white, PieceColor.black];
+
+    int w = MillController().position.countPieceOnBoard(PieceColor.white);
+    int b = MillController().position.countPieceOnBoard(PieceColor.black);
+    int piecesAtLeast = DB().ruleSettings.piecesAtLeastCount;
+    int piecesCount = DB().ruleSettings.piecesCount;
+
+    if (newPhase == Phase.placing) {
+    } else if (newPhase == Phase.moving) {
+      for (var element in sides) {
+        if (MillController().position.countPieceOnBoard(element) <
+            piecesAtLeast) {
+          return "In moving phase, ${element.pieceName(context)} count is less than ${piecesAtLeast.toString()}.";
+        }
+      }
+    } else {
+      assert(false);
+    }
+
+    for (var element in sides) {
+      if (MillController().position.countPieceOnBoard(element) > piecesCount) {
+        return "${element.pieceName(context)} count is more than ${piecesCount.toString()}.";
+      }
+    }
+
+    return "OK";
+  }
+
   @override
   Widget build(BuildContext context) {
     // Piece
@@ -414,8 +471,9 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
     final checkButton = ToolbarItem.icon(
       onPressed: () {
+        // TODO: l10n
         rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).experimental);
+            .showSnackBarClear(setSetupPositionCheck(context));
       },
       icon: const Icon(FluentIcons.hand_left_24_regular),
       label: const Text("Check"), // TODO: l10n

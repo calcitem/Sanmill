@@ -25,8 +25,8 @@ import 'package:flutter/services.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/mill/mill.dart';
-import 'package:sanmill/shared/scaffold_messenger.dart';
 import 'package:sanmill/shared/number_picker.dart';
+import 'package:sanmill/shared/scaffold_messenger.dart';
 
 part 'src/item_theme.dart';
 part 'src/item_theme_data.dart';

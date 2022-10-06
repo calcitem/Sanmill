@@ -83,6 +83,9 @@ class Position {
   static List<List<List<int>>> get _millTable => _Mills.millTableInit;
   static List<List<int>> get _adjacentSquares => _Mills.adjacentSquaresInit;
 
+  static List<List<int>> get _millLinesHV => _Mills._horizontalAndVerticalLines;
+  static List<List<int>> get _millLinesD => _Mills._diagonalLines;
+
   PieceColor pieceOnGrid(int index) => _grid[index];
 
   PieceColor get sideToMove => _sideToMove;
@@ -680,6 +683,32 @@ class Position {
 
     if (from != 0) {
       _board[from] = _grid[squareToIndex[from]!] = locbak;
+    }
+
+    return n;
+  }
+
+  int totalMillsCount(PieceColor pieceColor) {
+    assert(pieceColor == PieceColor.white || pieceColor == PieceColor.black);
+
+    int n = 0;
+
+    for (final line in _millLinesHV) {
+      if (_board[line[0]] == pieceColor &&
+          _board[line[1]] == pieceColor &&
+          _board[line[2]] == pieceColor) {
+        n++;
+      }
+    }
+
+    if (DB().ruleSettings.hasDiagonalLines == true) {
+      for (final line in _millLinesD) {
+        if (_board[line[0]] == pieceColor &&
+            _board[line[1]] == pieceColor &&
+            _board[line[2]] == pieceColor) {
+          n++;
+        }
+      }
     }
 
     return n;
