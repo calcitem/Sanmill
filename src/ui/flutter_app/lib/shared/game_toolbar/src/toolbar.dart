@@ -371,37 +371,6 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     MillController().boardSemanticsNotifier.updateSemantics();
   }
 
-  String setSetupPositionCheck(BuildContext context) {
-    String tag = "[SetupPosition]";
-
-    final sides = [PieceColor.white, PieceColor.black];
-
-    int w = MillController().position.countPieceOnBoard(PieceColor.white);
-    int b = MillController().position.countPieceOnBoard(PieceColor.black);
-    int piecesAtLeast = DB().ruleSettings.piecesAtLeastCount;
-    int piecesCount = DB().ruleSettings.piecesCount;
-
-    if (newPhase == Phase.placing) {
-    } else if (newPhase == Phase.moving) {
-      for (var element in sides) {
-        if (MillController().position.countPieceOnBoard(element) <
-            piecesAtLeast) {
-          return "In moving phase, ${element.pieceName(context)} count is less than ${piecesAtLeast.toString()}.";
-        }
-      }
-    } else {
-      assert(false);
-    }
-
-    for (var element in sides) {
-      if (MillController().position.countPieceOnBoard(element) > piecesCount) {
-        return "${element.pieceName(context)} count is more than ${piecesCount.toString()}.";
-      }
-    }
-
-    return "OK";
-  }
-
   @override
   Widget build(BuildContext context) {
     // Piece
@@ -481,16 +450,6 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       label: Text(S.of(context).cancel),
     );
 
-    final checkButton = ToolbarItem.icon(
-      onPressed: () {
-        // TODO: l10n
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(setSetupPositionCheck(context));
-      },
-      icon: const Icon(FluentIcons.hand_left_24_regular),
-      label: const Text("Check"), // TODO: l10n
-    );
-
     Map<PieceColor, ToolbarItem> colorButtonMap = {
       PieceColor.white: whitePieceButton,
       PieceColor.black: blackPieceButton,
@@ -509,14 +468,13 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       colorButtonMap[newPieceColor]!,
       phaseButtonMap[newPhase]!,
       removalButton,
-      clearButton,
     ];
 
     final row2 = <Widget>[
+      clearButton,
       copyButton,
       pasteButton,
       cancelButton,
-      checkButton,
     ];
 
     return Column(
