@@ -916,7 +916,8 @@ extension SetupPosition on Position {
   }
 
   bool _putPieceForSetupPosition(int s) {
-    var piece = sideToMove;
+    var piece =
+        MillController().isPositionSetupBanPiece ? PieceColor.ban : sideToMove;
     final us = _sideToMove;
 
     // TODO: Allow to overwrite.
@@ -924,6 +925,8 @@ extension SetupPosition on Position {
       return false;
     }
 
+    /*
+    // No need to update
     if (pieceInHandCount[us] != null) {
       pieceInHandCount[us] = pieceInHandCount[us]! - 1;
     }
@@ -931,12 +934,14 @@ extension SetupPosition on Position {
     if (pieceOnBoardCount[us] != null) {
       pieceOnBoardCount[us] = pieceOnBoardCount[us]! + 1;
     }
+     */
 
     _grid[squareToIndex[s]!] = piece;
     _board[s] = piece;
 
-    MillController().gameInstance.focusIndex = squareToIndex[s];
-    Audios().playTone(Sound.place);
+    //MillController().gameInstance.focusIndex = squareToIndex[s];
+    Audios().playTone(
+        MillController().isPositionSetupBanPiece ? Sound.remove : Sound.place);
 
     return true;
   }
@@ -949,10 +954,13 @@ extension SetupPosition on Position {
     // Remove only
     _board[s] = _grid[squareToIndex[s]!] = PieceColor.none;
 
+    /*
+    // No need to update
     // TODO: How to use it to verify?
     if (pieceOnBoardCount[_them] != null) {
       pieceOnBoardCount[_them] = pieceOnBoardCount[_them]! - 1;
     }
+     */
 
     Audios().playTone(Sound.remove);
     return const MillResponseOK();

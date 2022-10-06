@@ -34,6 +34,7 @@ class MillController {
   bool isActive = false;
   bool isEngineGoing = false;
   bool isPositionSetup = false;
+  bool isPositionSetupBanPiece = false;
 
   late Game gameInstance;
   late Position position;

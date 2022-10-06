@@ -138,11 +138,14 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   static double get height => (_padding.vertical + _margin.vertical) * 2;
 
   setSetupPositionPiece(BuildContext context, PieceColor pieceColor) {
+    MillController().isPositionSetupBanPiece = false; // WAR
+
     if (pieceColor == PieceColor.white) {
       newPieceColor = PieceColor.black;
     } else if (pieceColor == PieceColor.black) {
       if (DB().ruleSettings.hasBannedLocations && newPhase == Phase.placing) {
         newPieceColor = PieceColor.ban;
+        MillController().isPositionSetupBanPiece = true;
       } else {
         newPieceColor = PieceColor.none;
       }
