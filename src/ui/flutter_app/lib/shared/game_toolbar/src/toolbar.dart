@@ -182,6 +182,11 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   setSetupPositionPhase(BuildContext context, Phase phase) {
     if (phase == Phase.placing) {
       newPhase = Phase.moving;
+
+      if (newPieceColor == PieceColor.ban) {
+        setSetupPositionPiece(context, newPieceColor); // Jump to next
+      }
+
       MillController().headerTipNotifier.showTip(S.of(context).movingPhase);
     } else if (phase == Phase.moving) {
       newPhase = Phase.placing;
@@ -258,6 +263,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
         limit = newLimit;
         limit = limit < 0 ? 0 : limit;
       }
+    }
+
+    if (DB().ruleSettings.mayRemoveMultiple == false) {
+      if (limit > 1) limit = 1;
     }
 
     var selectValue = await showDialog<int?>(

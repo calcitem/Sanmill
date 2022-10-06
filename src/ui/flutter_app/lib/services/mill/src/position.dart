@@ -922,7 +922,20 @@ extension SetupPosition on Position {
 
     // TODO: Allow to overwrite.
     if (_board[s] != PieceColor.none) {
+      Audios().playTone(Sound.illegal);
       return false;
+    }
+
+    if (countPieceOnBoard(piece) == DB().ruleSettings.piecesCount) {
+      Audios().playTone(Sound.illegal);
+      return false;
+    }
+
+    if (DB().ruleSettings.hasBannedLocations == true) {
+      if (countTotalPieceOnBoard() >= DB().ruleSettings.piecesCount * 2) {
+        Audios().playTone(Sound.illegal);
+        return false;
+      }
     }
 
     /*
@@ -948,6 +961,12 @@ extension SetupPosition on Position {
 
   MillResponse _removePieceForSetupPosition(int s) {
     if (_action != Act.remove) {
+      Audios().playTone(Sound.illegal);
+      return const IllegalAction();
+    }
+
+    if (_board[s] == PieceColor.none) {
+      Audios().playTone(Sound.illegal);
       return const IllegalAction();
     }
 
@@ -974,5 +993,11 @@ extension SetupPosition on Position {
       }
     }
     return count;
+  }
+
+  int countTotalPieceOnBoard() {
+    return countPieceOnBoard(PieceColor.white) +
+        countPieceOnBoard(PieceColor.black) +
+        countPieceOnBoard(PieceColor.ban);
   }
 }
