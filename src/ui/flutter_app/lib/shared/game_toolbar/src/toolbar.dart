@@ -96,7 +96,12 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
         0) {
       newPhase = Phase.moving;
     } else {
-      newPhase = MillController().position.phase;
+      if (MillController().position.phase == Phase.moving ||
+          MillController().position.phase == Phase.gameOver) {
+        newPhase = Phase.moving;
+      } else {
+        newPhase = Phase.placing;
+      }
     }
 
     newPieceCountNeedRemove = MillController().position.pieceToRemoveCount;
@@ -414,8 +419,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     };
 
     Map<Phase, ToolbarItem> phaseButtonMap = {
+      Phase.ready: placingButton,
       Phase.placing: placingButton,
       Phase.moving: movingButton,
+      Phase.gameOver: movingButton,
     };
 
     final rowOne = <Widget>[
