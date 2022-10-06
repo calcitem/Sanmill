@@ -203,6 +203,7 @@ class HeaderStateIcons extends State<HeaderIcons> {
             key: const Key("HeaderIconRow"),
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              // Header Icons
               Icon(MillController().gameInstance.gameMode.leftHeaderIcon),
               Icon(value),
               Icon(MillController().gameInstance.gameMode.rightHeaderIcon),

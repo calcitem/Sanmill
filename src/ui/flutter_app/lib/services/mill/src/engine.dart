@@ -318,7 +318,11 @@ extension GameModeExtension on GameMode {
       case GameMode.aiVsAi:
         return FluentIcons.bot_24_filled;
       case GameMode.setupPosition:
-        return FluentIcons.person_24_regular;
+        if (DB().generalSettings.aiMovesFirst) {
+          return FluentIcons.bot_24_regular;
+        } else {
+          return FluentIcons.person_24_regular;
+        }
       case GameMode.humanVsCloud:
         return FluentIcons.person_24_filled;
       case GameMode.humanVsLAN:
@@ -341,7 +345,11 @@ extension GameModeExtension on GameMode {
       case GameMode.aiVsAi:
         return FluentIcons.bot_24_filled;
       case GameMode.setupPosition:
-        return FluentIcons.person_24_regular;
+        if (DB().generalSettings.aiMovesFirst) {
+          return FluentIcons.person_24_regular;
+        } else {
+          return FluentIcons.bot_24_regular;
+        }
       case GameMode.humanVsCloud:
         return FluentIcons.cloud_24_filled;
       case GameMode.humanVsLAN:
