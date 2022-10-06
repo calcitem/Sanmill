@@ -36,6 +36,23 @@ class _MoveOptionsModal extends StatelessWidget {
 
     Navigator.pop(context);
 
+    // TODO: WAR
+    if ((MillController().gameInstance.sideToMove == PieceColor.white ||
+            MillController().gameInstance.sideToMove == PieceColor.black) ==
+        false) {
+      // If modify sideToMove, not take effect, I don't know why.
+      return rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).notAIsTurn);
+    }
+
+    if ((MillController().position.sideToMove == PieceColor.white ||
+            MillController().position.sideToMove == PieceColor.black) ==
+        false) {
+      // If modify sideToMove, not take effect, I don't know why.
+      return rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).notAIsTurn);
+    }
+
     if (MillController().gameInstance.isHumanToMove) {
       logger.i("$tag Human to Move. Cannot get search result now.");
       return rootScaffoldMessengerKey.currentState!

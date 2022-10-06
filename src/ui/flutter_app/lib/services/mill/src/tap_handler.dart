@@ -55,6 +55,21 @@ class TapHandler {
       return const EngineResponseSkip();
     }
 
+    // TODO: WAR
+    if ((MillController().gameInstance.sideToMove == PieceColor.white ||
+            MillController().gameInstance.sideToMove == PieceColor.black) ==
+        false) {
+      // If modify sideToMove, not take effect, I don't know why.
+      return const EngineResponseSkip();
+    }
+
+    if ((MillController().position.sideToMove == PieceColor.white ||
+            MillController().position.sideToMove == PieceColor.black) ==
+        false) {
+      // If modify sideToMove, not take effect, I don't know why.
+      return const EngineResponseSkip();
+    }
+
     // WAR: Fix first tap response slow when piece count changed
     if (MillController().gameInstance.gameMode != GameMode.humanVsHuman &&
         MillController().position.phase == Phase.placing &&
