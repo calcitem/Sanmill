@@ -1036,7 +1036,7 @@
   "@loadGame": {
     "description": "Load game"
   },
-  "setupPosition": "Setup position",
+  "setupPosition": "Setup Position",
   "@setupPosition": {
     "description": "Setup position"
   },
