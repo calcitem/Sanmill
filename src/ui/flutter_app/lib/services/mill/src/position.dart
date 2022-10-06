@@ -542,6 +542,9 @@ class Position {
 
   PieceColor get winner => _winner;
 
+  // TODO: Why cannot use winner?
+  set theWinner(PieceColor pieceColor) => _winner = pieceColor;
+
   void _setGameOver(PieceColor w, GameOverReason reason) {
     phase = Phase.gameOver;
     gameOverReason = reason;

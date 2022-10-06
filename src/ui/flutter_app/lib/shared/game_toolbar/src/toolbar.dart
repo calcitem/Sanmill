@@ -98,6 +98,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     } else {
       if (MillController().position.phase == Phase.moving ||
           MillController().position.phase == Phase.gameOver) {
+        // TODO: If gameOver in placing phase?
         newPhase = Phase.moving;
       } else {
         newPhase = Phase.placing;
@@ -105,6 +106,9 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     }
 
     newPieceCountNeedRemove = MillController().position.pieceToRemoveCount;
+
+    MillController().position.phase = newPhase;
+    MillController().position.theWinner = PieceColor.nobody;
 
     //TODO: newWhitePieceRemovedInPlacingPhase & newBlackPieceRemovedInPlacingPhase;
   }
