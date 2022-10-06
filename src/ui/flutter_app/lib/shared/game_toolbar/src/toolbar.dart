@@ -136,12 +136,19 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       position.action = Act.place;
     }
 
-    MillController().position.sideToSetup = newPieceColor;
+    if (newPieceColor == PieceColor.white ||
+        newPieceColor == PieceColor.black) {
+      // TODO: Duplicate: position/gameInstance.sideToMove
+      MillController().position.sideToSetup = newPieceColor;
+      MillController().gameInstance.sideToMove = newPieceColor;
+    }
+
     MillController()
         .headerTipNotifier
         .showTip(newPieceColor.pieceName(context));
-
+    MillController().headerIconsNotifier.showIcons();
     setState(() {});
+
     return;
   }
 
@@ -264,7 +271,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
   setSetupPositionDone() {
     // TODO: set position fen, such as piece ect.
-    MillController().gameInstance.gameMode = gameModeBackup;
+    //MillController().gameInstance.gameMode = gameModeBackup;
     MillController().position.phase = newPhase;
     if (newPhase == Phase.placing) {
       MillController().position.action = Act.place;
@@ -372,12 +379,13 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       label: Text(S.of(context).cancel),
     );
 
-    final doneButton = ToolbarItem.icon(
+    final checkButton = ToolbarItem.icon(
       onPressed: () {
-        setSetupPositionDone();
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).experimental);
       },
       icon: const Icon(FluentIcons.hand_left_24_regular),
-      label: Text(S.of(context).confirm), // TODO: l10n
+      label: const Text("Check"), // TODO: l10n
     );
 
     Map<PieceColor, ToolbarItem> colorButtonMap = {
@@ -403,7 +411,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       copyButton,
       pasteButton,
       cancelButton,
-      doneButton,
+      checkButton,
     ];
 
     return Column(
@@ -424,6 +432,12 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    setSetupPositionDone();
+    super.dispose();
   }
 }
 
