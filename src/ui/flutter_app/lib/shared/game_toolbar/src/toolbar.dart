@@ -96,12 +96,18 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
         0) {
       newPhase = Phase.moving;
     } else {
-      if (MillController().position.phase == Phase.moving ||
-          MillController().position.phase == Phase.gameOver) {
-        // TODO: If gameOver in placing phase?
+      if (MillController().position.phase == Phase.moving) {
         newPhase = Phase.moving;
-      } else {
+      } else if (MillController().position.phase == Phase.ready ||
+          MillController().position.phase == Phase.placing) {
         newPhase = Phase.placing;
+      } else if (MillController().position.phase == Phase.gameOver) {
+        if (MillController().recorder.length >
+            DB().ruleSettings.piecesCount * 2) {
+          newPhase = Phase.moving;
+        } else {
+          newPhase = Phase.placing;
+        }
       }
     }
 
