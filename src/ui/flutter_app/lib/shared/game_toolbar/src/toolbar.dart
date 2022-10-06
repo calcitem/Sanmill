@@ -73,7 +73,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   final Color? itemColor = DB().colorSettings.mainToolbarIconColor;
 
   PieceColor newPieceColor = PieceColor.white;
-  Phase newPhase = Phase.placing;
+  Phase newPhase = Phase.moving;
   int newPieceCountNeedRemove = 0;
   int newWhitePieceRemovedInPlacingPhase = 0;
   int newBlackPieceRemovedInPlacingPhase = 0;
@@ -90,8 +90,17 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     //MillController().position.reset();
 
     newPieceColor = MillController().position.sideToMove;
-    newPhase = MillController().position.phase;
+
+    if (MillController().position.countPieceOnBoard(PieceColor.white) +
+            MillController().position.countPieceOnBoard(PieceColor.black) ==
+        0) {
+      newPhase = Phase.moving;
+    } else {
+      newPhase = MillController().position.phase;
+    }
+
     newPieceCountNeedRemove = MillController().position.pieceToRemoveCount;
+
     //TODO: newWhitePieceRemovedInPlacingPhase & newBlackPieceRemovedInPlacingPhase;
   }
 
@@ -272,7 +281,16 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   setSetupPositionDone() {
     // TODO: set position fen, such as piece ect.
     //MillController().gameInstance.gameMode = gameModeBackup;
-    MillController().position.phase = newPhase;
+
+    if (MillController().position.countPieceOnBoard(PieceColor.white) <
+            DB().ruleSettings.piecesAtLeastCount ||
+        MillController().position.countPieceOnBoard(PieceColor.black) <
+            DB().ruleSettings.piecesAtLeastCount) {
+      MillController().position.phase = Phase.placing;
+    } else {
+      MillController().position.phase = newPhase;
+    }
+
     if (newPhase == Phase.placing) {
       MillController().position.action = Act.place;
     } else if (newPhase == Phase.moving) {

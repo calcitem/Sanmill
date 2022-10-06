@@ -30,6 +30,7 @@ extension _MoveTypeExtension on MoveType {
       logger.i("[TODO] Computer request draw");
       return null;
     } else {
+      // TODO: If Setup Position is illegal
       throw const FormatException();
     }
   }
