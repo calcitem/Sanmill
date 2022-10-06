@@ -197,52 +197,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     return;
   }
 
-  setSetupPositionNeedRemove(BuildContext context, int count) {
-    // TODO: verify
-    if (count == 0) {
-      newPieceCountNeedRemove = 1;
-    } else {
-      if (DB().ruleSettings.mayRemoveMultiple) {
-        if (count == 1) {
-          newPieceCountNeedRemove = 2;
-        } else if (count == 2) {
-          newPieceCountNeedRemove = 3;
-        } else if (count == 3) {
-          newPieceCountNeedRemove = 0;
-        }
-      } else {
-        newPieceCountNeedRemove = 0;
-      }
-    }
-
-    MillController()
-        .headerTipNotifier
-        .showTip(newPieceCountNeedRemove.toString()); // TODO
-
-    setState(() {});
-    return;
-  }
-
-  setSetupPositionCopy(BuildContext context) async {
-    //String str = S.of(context).moveHistoryCopied; // TODO: l10n
-
-    String fen = MillController().position.fen;
-
-    await Clipboard.setData(
-      ClipboardData(text: MillController().position.fen),
-    );
-
-    rootScaffoldMessengerKey.currentState!.showSnackBarClear("Copy fen: $fen");
-  }
-
-  setSetupPositionPaste() {
-    // TODO:
-    return;
-  }
-
-  Future<void> setSetupPositionRemoval(BuildContext context) async {
-    // TODO: l10n
-
+  setSetupPositionNeedRemove(BuildContext context, int count, bool next) async {
     assert(MillController().position.sideToMove == PieceColor.white ||
         MillController().position.sideToMove == PieceColor.black);
 
@@ -269,19 +224,43 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       if (limit > 1) limit = 1;
     }
 
-    var selectValue = await showDialog<int?>(
-      context: context,
-      builder: (context) => NumberPicker(
-          start: 0,
-          end: limit + 1,
-          newTitle: "Need to remove",
-          showMoveString: false),
+    if (next == true) newPieceCountNeedRemove = count + 1;
+
+    if (newPieceCountNeedRemove > limit) newPieceCountNeedRemove = 0;
+
+    MillController().position.setPieceToRemoveCount = newPieceCountNeedRemove;
+
+    MillController()
+        .headerTipNotifier
+        .showTip(newPieceCountNeedRemove.toString()); // TODO
+
+    setState(() {});
+    return;
+  }
+
+  setSetupPositionCopy(BuildContext context) async {
+    //String str = S.of(context).moveHistoryCopied; // TODO: l10n
+
+    String fen = MillController().position.fen;
+
+    await Clipboard.setData(
+      ClipboardData(text: MillController().position.fen),
     );
 
-    newPieceCountNeedRemove = selectValue ?? 0;
+    rootScaffoldMessengerKey.currentState!.showSnackBarClear("Copy fen: $fen");
+  }
 
+  setSetupPositionPaste() {
+    // TODO:
+    return;
+  }
+
+  Future<void> setSetupPositionPlaced(BuildContext context) async {
+    // TODO: l10n
+
+    // TODO: Move
     if (newPhase == Phase.placing) {
-      selectValue = await showDialog<int?>(
+      var selectValue = await showDialog<int?>(
         context: context,
         builder: (context) => const NumberPicker(
             start: 0,
@@ -422,8 +401,33 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       label: const Text("Moving"),
     );
 
+    // Remove
+    final removeZeroButton = ToolbarItem.icon(
+      onPressed: () => {setSetupPositionNeedRemove(context, 0, true)},
+      icon: const Icon(FluentIcons.circle_24_regular),
+      label: const Text("Remove"),
+    );
+
+    final removeOneButton = ToolbarItem.icon(
+      onPressed: () => {setSetupPositionNeedRemove(context, 1, true)},
+      icon: const Icon(FluentIcons.number_circle_1_24_regular),
+      label: const Text("Remove"),
+    );
+
+    final removeTwoButton = ToolbarItem.icon(
+      onPressed: () => {setSetupPositionNeedRemove(context, 2, true)},
+      icon: const Icon(FluentIcons.number_circle_2_24_regular),
+      label: const Text("Remove"),
+    );
+
+    final removeThreeButton = ToolbarItem.icon(
+      onPressed: () => {setSetupPositionNeedRemove(context, 3, true)},
+      icon: const Icon(FluentIcons.number_circle_3_24_regular),
+      label: const Text("Remove"),
+    );
+
     final removalButton = ToolbarItem.icon(
-      onPressed: () => {setSetupPositionRemoval(context)},
+      onPressed: () => {setSetupPositionPlaced(context)},
       icon: const Icon(FluentIcons.text_word_count_24_regular),
       label: const Text("Removal"), // TODO: l10n
     );
@@ -464,16 +468,24 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       Phase.gameOver: movingButton,
     };
 
+    Map<int, ToolbarItem> removeButtonMap = {
+      0: removeZeroButton,
+      1: removeOneButton,
+      2: removeTwoButton,
+      3: removeThreeButton,
+    };
+
     final rowOne = <Widget>[
       colorButtonMap[newPieceColor]!,
       phaseButtonMap[newPhase]!,
+      removeButtonMap[newPieceCountNeedRemove]!,
       removalButton,
     ];
 
     final row2 = <Widget>[
-      clearButton,
       copyButton,
       pasteButton,
+      clearButton,
       cancelButton,
     ];
 

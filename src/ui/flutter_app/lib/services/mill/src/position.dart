@@ -47,6 +47,9 @@ class Position {
 
   int get pieceToRemoveCount => _pieceToRemoveCount;
 
+  // TODO: Why cannot use pieceToRemoveCount?
+  set setPieceToRemoveCount(int count) => _pieceToRemoveCount = count;
+
   int _gamePly = 0;
   PieceColor _sideToMove = PieceColor.white;
 
