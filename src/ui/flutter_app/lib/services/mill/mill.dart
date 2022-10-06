@@ -56,6 +56,7 @@ part 'src/position.dart';
 part 'src/recorder.dart';
 part 'src/responses.dart';
 part 'src/save_load_service.dart';
+part 'src/setup_position_notifier.dart';
 part 'src/tap_handler.dart';
 part 'src/tip_notifier.dart';
 part 'src/types.dart';

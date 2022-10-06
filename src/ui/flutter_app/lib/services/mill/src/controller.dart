@@ -43,6 +43,7 @@ class MillController {
 
   final HeaderTipNotifier headerTipNotifier = HeaderTipNotifier();
   final HeaderIconsNotifier headerIconsNotifier = HeaderIconsNotifier();
+  final SetupPositionNotifier setupPositionNotifier = SetupPositionNotifier();
   final GameResultNotifier gameResultNotifier = GameResultNotifier();
   final BoardSemanticsNotifier boardSemanticsNotifier =
       BoardSemanticsNotifier();

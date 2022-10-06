@@ -35,6 +35,8 @@ class TapHandler {
       assert(false);
     }
 
+    MillController().setupPositionNotifier.updateIcons();
+
     return const EngineResponseHumanOK(); // TODO: Right?
   }
 

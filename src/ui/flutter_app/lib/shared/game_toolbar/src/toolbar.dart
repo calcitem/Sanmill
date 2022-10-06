@@ -75,8 +75,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   PieceColor newPieceColor = PieceColor.white;
   Phase newPhase = Phase.moving;
   int newPieceCountNeedRemove = 0;
-  int newWhitePieceRemovedInPlacingPhase = 0;
-  int newBlackPieceRemovedInPlacingPhase = 0;
+  int newPlaced = 0; // For White
 
   late GameMode gameModeBackup;
   final position = MillController().position;
@@ -127,6 +126,9 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   @override
   void initState() {
     super.initState();
+    MillController()
+        .setupPositionNotifier
+        .addListener(_updateSetupPositionIcons);
     initContext();
   }
 
@@ -187,17 +189,21 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
         setSetupPositionPiece(context, newPieceColor); // Jump to next
       }
 
+      newPlaced = DB().ruleSettings.piecesCount;
+
       MillController().headerTipNotifier.showTip(S.of(context).movingPhase);
     } else if (phase == Phase.moving) {
       newPhase = Phase.placing;
+      newPlaced = setSetupPositionPlacedGetBegin();
       MillController().headerTipNotifier.showTip(S.of(context).placingPhase);
     }
 
     setState(() {});
+
     return;
   }
 
-  setSetupPositionNeedRemove(BuildContext context, int count, bool next) async {
+  setSetupPositionNeedRemove(int count, bool next) async {
     assert(MillController().position.sideToMove == PieceColor.white ||
         MillController().position.sideToMove == PieceColor.black);
 
@@ -234,7 +240,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
         .headerTipNotifier
         .showTip(newPieceCountNeedRemove.toString()); // TODO
 
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
+
     return;
   }
 
@@ -255,33 +264,53 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     return;
   }
 
-  Future<void> setSetupPositionPlaced(BuildContext context) async {
-    // TODO: l10n
+  int setSetupPositionPlacedGetBegin() {
+    int white = MillController().position.countPieceOnBoard(PieceColor.white);
+    int black = MillController().position.countPieceOnBoard(PieceColor.black);
+    late int begin;
 
-    // TODO: Move
-    if (newPhase == Phase.placing) {
-      var selectValue = await showDialog<int?>(
-        context: context,
-        builder: (context) => const NumberPicker(
-            start: 0,
-            end: 13, // TODO
-            newTitle: "How many player1 pieces are removed?",
-            showMoveString: false),
-      );
-      newWhitePieceRemovedInPlacingPhase = selectValue ?? 0;
-
-      selectValue = await showDialog<int?>(
-        context: context,
-        builder: (context) => const NumberPicker(
-            start: 0,
-            end: 13, // TODO
-            newTitle: "How many player2 pieces are removed?",
-            showMoveString: false),
-      );
-      newBlackPieceRemovedInPlacingPhase = selectValue ?? 0;
+    // TODO: Not accurate enough.
+    //  If the difference between the number of pieces on the two sides is large,
+    //  then it means that more values should be subtracted.
+    if (DB().ruleSettings.hasBannedLocations) {
+      //int ban = MillController().position.countPieceOnBoard(PieceColor.ban);
+      begin = max(white, black); // TODO: How to use ban?
+    } else {
+      begin = max(white, black);
     }
 
-    return;
+    return begin;
+  }
+
+  setSetupPositionPlacedUpdateBegin() {
+    int val = setSetupPositionPlacedGetBegin();
+    if (newPlaced < val) newPlaced = val;
+  }
+
+  Future<void> setSetupPositionPlaced(BuildContext context) async {
+    void callback(int? placed) {
+      newPlaced = placed!;
+      Navigator.pop(context);
+      setState(() {});
+    }
+
+    if (newPhase != Phase.placing) {
+      return;
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => _PlacedModal(
+        placedGroupValue: 0, // TODO: placedGroupValue should be?
+        onChanged: callback,
+        begin: setSetupPositionPlacedGetBegin(),
+      ),
+    );
+  }
+
+  _updateSetupPositionIcons() {
+    setSetupPositionPlacedUpdateBegin();
+    setSetupPositionNeedRemove(newPieceCountNeedRemove, false);
   }
 
   updateSetupPositionPiecesCount() {
@@ -291,15 +320,21 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     MillController().position.pieceOnBoardCount[PieceColor.white] = w;
     MillController().position.pieceOnBoardCount[PieceColor.black] = b;
 
+    final piecesCount = DB().ruleSettings.piecesCount;
+
+    // TODO: Update dynamically
     if (newPhase == Phase.placing) {
-      MillController().position.pieceInHandCount[PieceColor.white] =
-          DB().ruleSettings.piecesCount -
-              w -
-              newWhitePieceRemovedInPlacingPhase;
       MillController().position.pieceInHandCount[PieceColor.black] =
-          DB().ruleSettings.piecesCount -
-              b -
-              newBlackPieceRemovedInPlacingPhase;
+          piecesCount - newPlaced;
+      if (MillController().position.sideToMove == PieceColor.white) {
+        MillController().position.pieceInHandCount[PieceColor.white] =
+            MillController().position.pieceInHandCount[PieceColor.black]!;
+      } else if (MillController().position.sideToMove == PieceColor.black) {
+        MillController().position.pieceInHandCount[PieceColor.white] =
+            MillController().position.pieceInHandCount[PieceColor.black]! - 1;
+      } else {
+        assert(false);
+      }
     } else if (newPhase == Phase.moving) {
       MillController().position.pieceInHandCount[PieceColor.white] =
           MillController().position.pieceInHandCount[PieceColor.black] = 0;
@@ -314,6 +349,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     // TODO: set position fen, such as piece ect.
     //MillController().gameInstance.gameMode = gameModeBackup;
 
+    // When the number of pieces is less than 3, it is impossible to be in the Moving Phase.
     if (MillController().position.countPieceOnBoard(PieceColor.white) <
             DB().ruleSettings.piecesAtLeastCount ||
         MillController().position.countPieceOnBoard(PieceColor.black) <
@@ -323,12 +359,14 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       MillController().position.phase = newPhase;
     }
 
+    // Setup the Action.
     if (newPhase == Phase.placing) {
       MillController().position.action = Act.place;
     } else if (newPhase == Phase.moving) {
       MillController().position.action = Act.select;
     }
 
+    // Correct newPieceColor and set sideToMove
     if (newPieceColor != PieceColor.white &&
         newPieceColor != PieceColor.black) {
       newPieceColor = PieceColor.white; // TODO: Right?
@@ -403,33 +441,33 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
     // Remove
     final removeZeroButton = ToolbarItem.icon(
-      onPressed: () => {setSetupPositionNeedRemove(context, 0, true)},
+      onPressed: () => {setSetupPositionNeedRemove(0, true)},
       icon: const Icon(FluentIcons.circle_24_regular),
       label: const Text("Remove"),
     );
 
     final removeOneButton = ToolbarItem.icon(
-      onPressed: () => {setSetupPositionNeedRemove(context, 1, true)},
+      onPressed: () => {setSetupPositionNeedRemove(1, true)},
       icon: const Icon(FluentIcons.number_circle_1_24_regular),
       label: const Text("Remove"),
     );
 
     final removeTwoButton = ToolbarItem.icon(
-      onPressed: () => {setSetupPositionNeedRemove(context, 2, true)},
+      onPressed: () => {setSetupPositionNeedRemove(2, true)},
       icon: const Icon(FluentIcons.number_circle_2_24_regular),
       label: const Text("Remove"),
     );
 
     final removeThreeButton = ToolbarItem.icon(
-      onPressed: () => {setSetupPositionNeedRemove(context, 3, true)},
+      onPressed: () => {setSetupPositionNeedRemove(3, true)},
       icon: const Icon(FluentIcons.number_circle_3_24_regular),
       label: const Text("Remove"),
     );
 
-    final removalButton = ToolbarItem.icon(
+    final placedButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionPlaced(context)},
       icon: const Icon(FluentIcons.text_word_count_24_regular),
-      label: const Text("Removal"), // TODO: l10n
+      label: Text("Placed ($newPlaced)"), // TODO: l10n
     );
 
     final copyButton = ToolbarItem.icon(
@@ -479,7 +517,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       colorButtonMap[newPieceColor]!,
       phaseButtonMap[newPhase]!,
       removeButtonMap[newPieceCountNeedRemove]!,
-      removalButton,
+      placedButton,
     ];
 
     final row2 = <Widget>[
@@ -511,6 +549,9 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
   @override
   void dispose() {
+    MillController()
+        .setupPositionNotifier
+        .addListener(_updateSetupPositionIcons);
     setSetupPositionDone();
     super.dispose();
   }
@@ -554,6 +595,41 @@ class SetupPositionButtonsContainer extends StatelessWidget {
             alignment: MainAxisAlignment.spaceAround,
             children: child,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PlacedModal extends StatelessWidget {
+  const _PlacedModal({
+    Key? key,
+    required this.placedGroupValue,
+    required this.onChanged,
+    required this.begin,
+  }) : super(key: key);
+
+  final int placedGroupValue;
+  final Function(int?)? onChanged;
+
+  final int begin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: S.of(context).endgameNMoveRule,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            for (var i = begin; i <= DB().ruleSettings.piecesCount; i++)
+              RadioListTile(
+                title: Text(i.toString()),
+                groupValue: placedGroupValue,
+                value: i,
+                onChanged: onChanged,
+              ),
+          ],
         ),
       ),
     );

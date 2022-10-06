@@ -921,7 +921,7 @@ extension SetupPosition on Position {
   bool _putPieceForSetupPosition(int s) {
     var piece =
         MillController().isPositionSetupBanPiece ? PieceColor.ban : sideToMove;
-    final us = _sideToMove;
+    //final us = _sideToMove;
 
     // TODO: Allow to overwrite.
     if (_board[s] != PieceColor.none) {
@@ -996,6 +996,13 @@ extension SetupPosition on Position {
       }
     }
     return count;
+  }
+
+  int countPieceOnBoardMax() {
+    int w = countPieceOnBoard(PieceColor.white);
+    int b = countPieceOnBoard(PieceColor.black);
+
+    return w > b ? w : b;
   }
 
   int countTotalPieceOnBoard() {

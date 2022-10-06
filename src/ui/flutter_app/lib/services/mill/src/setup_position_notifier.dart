@@ -14,22 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-/// Although marked as a library this package is tightly integrated into the app
-library game_toolbar;
+part of '../mill.dart';
 
-import 'dart:math';
+class SetupPositionNotifier with ChangeNotifier {
+  SetupPositionNotifier();
 
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/services/mill/mill.dart';
-import 'package:sanmill/shared/scaffold_messenger.dart';
-
-part 'src/item_theme.dart';
-part 'src/item_theme_data.dart';
-part 'src/toolbar.dart';
-part 'src/toolbar_item.dart';
+  void updateIcons() {
+    notifyListeners();
+  }
+}
