@@ -287,6 +287,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       ClipboardData(text: MillController().position.fen),
     );
 
+    if (mounted) {
+      setState(() {});
+    }
+
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear("Copy FEN: $fen"); // TODO: l10n
   }
@@ -527,11 +531,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
             DB().ruleSettings.piecesAtLeastCount ||
         MillController().position.countPieceOnBoard(PieceColor.black) <
             DB().ruleSettings.piecesAtLeastCount) {
-      MillController().position.phase = Phase.placing;
-      MillController().position.action = Act.place;
-    } else {
-      MillController().position.phase = newPhase;
+      newPhase = Phase.placing;
     }
+
+    MillController().position.phase = newPhase;
 
     // Setup the Action.
     if (newPhase == Phase.placing) {
