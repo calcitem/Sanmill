@@ -140,9 +140,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   void restoreContext() {
     MillController().position.copyWith(positionBackup);
     MillController().gameInstance.gameMode = gameModeBackup;
-    MillController()
-        .headerTipNotifier
-        .showTip("Restored position."); // TODO: l10n
+    MillController().headerTipNotifier.showTip(S.of(context).restoredPosition);
   }
 
   @override
@@ -259,13 +257,13 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     MillController().position.setPieceToRemoveCount = newPieceCountNeedRemove;
 
     if (next == true) {
-      if (limit == 0) {
+      if (limit == 0 || newPieceCountNeedRemove == 0) {
         MillController()
             .headerTipNotifier
-            .showTip("No Mill, so no need to remove."); // TODO: l10n
+            .showTip(S.of(context).noPiecesCanBeRemoved);
       } else {
         MillController().headerTipNotifier.showTip(
-            "Need to remove $newPieceCountNeedRemove pieces."); // TODO: l10n
+            S.of(context).pieceCountNeedToRemove(newPieceCountNeedRemove));
       }
     }
 
@@ -277,11 +275,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   }
 
   setSetupPositionCopy(BuildContext context) async {
-    //String str = S.of(context).moveHistoryCopied; // TODO: l10n
-
     setSetupPositionDone();
 
     String fen = MillController().position.fen;
+    String copyStr = S.of(context).copy;
 
     await Clipboard.setData(
       ClipboardData(text: MillController().position.fen),
@@ -292,12 +289,12 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     }
 
     rootScaffoldMessengerKey.currentState!
-        .showSnackBarClear("Copy FEN: $fen"); // TODO: l10n
+        .showSnackBarClear("$copyStr FEN: $fen");
   }
 
   setSetupPositionPaste(BuildContext context) async {
-    final tipFailed = S.of(context).cannotImport(""); // TODO: l10n
-    final tipDone = S.of(context).done; // TODO: l10n
+    final tipFailed = S.of(context).cannotPaste;
+    final tipDone = S.of(context).pasteDone;
 
     final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
 
@@ -310,13 +307,12 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
         MillController().headerTipNotifier.showTip(tipDone);
         initContext();
         _updateSetupPositionIcons();
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear("Apply FEN: $fen"); // TODO: l10n
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear("FEN: $fen");
       } else {
-        MillController().headerTipNotifier.showTip(tipFailed); // TODO: l10n
+        MillController().headerTipNotifier.showTip(tipFailed);
       }
     } catch (e) {
-      MillController().headerTipNotifier.showTip(tipFailed); // TODO: l10n
+      MillController().headerTipNotifier.showTip(tipFailed);
     }
 
     return;
@@ -460,17 +456,15 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       Navigator.pop(context);
       setState(() {});
       MillController().headerTipNotifier.showTip(
-          "XXX has placed $newPlaced pieces!",
-          snackBar: false); // TODO: l10n
+          S.of(context).hasPlacedPieceCount(newPlaced),
+          snackBar: false); // TODO: How to show side to move?
 
       rootScaffoldMessengerKey.currentState!
           .showSnackBar(CustomSnackBar(_infoText(context)));
     }
 
     if (newPhase != Phase.placing) {
-      MillController()
-          .headerTipNotifier
-          .showTip("Not placing phase, cannot change it."); // TODO: l10n
+      MillController().headerTipNotifier.showTip(S.of(context).notPlacingPhase);
       return;
     }
 
@@ -582,66 +576,66 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     final banPointButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionPiece(context, PieceColor.ban),
       icon: const Icon(FluentIcons.prohibited_24_regular),
-      label: Text(S.of(context).banPoint), // TODO: l10n
+      label: Text(S.of(context).ban),
     );
     final emptyPointButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionPiece(context, PieceColor.none),
       icon: const Icon(FluentIcons.add_24_regular),
-      label: Text(S.of(context).emptyPoint), // TODO: l10n
+      label: Text(S.of(context).empty),
     );
 
     // Clear
     final clearButton = ToolbarItem.icon(
       onPressed: () {
         MillController().position.reset();
-        MillController().headerTipNotifier.showTip("Cleaned."); // TODO: l10n
+        MillController().headerTipNotifier.showTip(S.of(context).cleanedUp);
       },
       icon: const Icon(FluentIcons.eraser_24_regular),
-      label: const Text("Clean"), // TODO: l10n
+      label: Text(S.of(context).clean),
     );
 
     // Phase
     final placingButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionPhase(context, Phase.placing)},
       icon: const Icon(FluentIcons.grid_dots_24_regular),
-      label: const Text("Placing"), // TODO: l10n
+      label: Text(S.of(context).placing),
     );
 
     final movingButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionPhase(context, Phase.moving)},
       icon: const Icon(FluentIcons.arrow_move_24_regular),
-      label: const Text("Moving"), // TODO: l10n
+      label: Text(S.of(context).moving),
     );
 
     // Remove
     final removeZeroButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionNeedRemove(0, true)},
       icon: const Icon(FluentIcons.circle_24_regular),
-      label: const Text("Remove"), // TODO: l10n
+      label: Text(S.of(context).remove),
     );
 
     final removeOneButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionNeedRemove(1, true)},
       icon: const Icon(FluentIcons.number_circle_1_24_regular),
-      label: const Text("Remove"), // TODO: l10n
+      label: Text(S.of(context).remove),
     );
 
     final removeTwoButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionNeedRemove(2, true)},
       icon: const Icon(FluentIcons.number_circle_2_24_regular),
-      label: const Text("Remove"), // TODO: l10n
+      label: Text(S.of(context).remove),
     );
 
     final removeThreeButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionNeedRemove(3, true)},
       icon: const Icon(FluentIcons.number_circle_3_24_regular),
-      label: const Text("Remove"), // TODO: l10n
+      label: Text(S.of(context).remove),
     );
 
     final placedButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionPlaced(context)},
       icon: const Icon(FluentIcons.text_word_count_24_regular),
-      label: Text("Placed ($newPlaced)"), // TODO: l10n
+      label: Text(S.of(context).placedCount(newPlaced.toString())),
     );
 
     final copyButton = ToolbarItem.icon(
@@ -653,7 +647,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     final pasteButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionPaste(context)},
       icon: const Icon(FluentIcons.clipboard_paste_24_regular),
-      label: const Text("Paste"), // TODO: l10n
+      label: Text(S.of(context).paste),
     );
 
     // Cancel
@@ -788,7 +782,7 @@ class _PlacedModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: S.of(context).move, // TODO: l10n
+      label: S.of(context).placedPieceCount,
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,

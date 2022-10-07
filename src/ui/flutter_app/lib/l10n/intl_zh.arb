@@ -1171,5 +1171,87 @@
   "gameSavedTo": "游戏已保存至",
   "@gameSavedTo": {
     "description": "The game is saved to"
+  },
+  "ban": "被压",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "空点",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "暂无着法",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "已还原至初始局面",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "清盘",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "已清盘",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "将吃几子",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "无子可吃",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} 枚子}other{{count} 枚子}}将被吃",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "已摆{count}子",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "设置当前行棋方，在摆子阶段，已摆的棋子数量",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "当前轮到的行棋方被设置为已摆了 {count} 枚棋子",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "非摆子阶段，不能设置此值",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "粘贴",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "已粘贴",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "粘贴不成功",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

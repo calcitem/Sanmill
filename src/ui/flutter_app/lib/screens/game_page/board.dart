@@ -121,7 +121,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
               final strTimeout = S.of(context).timeout;
               final strNoBestMoveErr =
-                  S.of(context).error("No best move"); // TODO: l10n
+                  S.of(context).error(S.of(context).noMove);
 
               switch (await tapHandler.onBoardTap(square)) {
                 case EngineResponseOK():

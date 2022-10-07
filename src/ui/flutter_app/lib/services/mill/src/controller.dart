@@ -288,7 +288,7 @@ class MillController {
     }
 
     final strTimeout = S.of(context).timeout;
-    final strNoBestMoveErr = S.of(context).error("No best move");
+    final strNoBestMoveErr = S.of(context).error(S.of(context).noMove);
 
     switch (await MillController()
         .engineToGo(context, isMoveNow: MillController().isEngineGoing)) {

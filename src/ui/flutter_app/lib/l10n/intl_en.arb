@@ -1269,5 +1269,87 @@
   "gameSavedTo": "The game is saved to",
   "@gameSavedTo": {
     "description": "The game is saved to"
+  },
+  "ban": "Ban",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "Empty",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "No move.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Restored initial position.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Clean",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Cleaned up.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Remove",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "No pieces can be removed.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} need to remove.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "Placed ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Placed piece count in the placing phase.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "The current player has placed {count} pieces.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Not placing phase, cannot change it.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Paste",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "The paste is done.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Cannot paste.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }
