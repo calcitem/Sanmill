@@ -71,7 +71,8 @@ class LoadService {
 
     Navigator.pop(context);
 
-    if (MillController().recorder.hasPrevious == false) {
+    if (!(MillController().recorder.hasPrevious == true ||
+        MillController().isPositionSetup == true)) {
       return;
     }
 

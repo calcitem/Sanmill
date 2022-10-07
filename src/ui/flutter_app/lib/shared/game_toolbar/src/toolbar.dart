@@ -437,11 +437,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
     updateSetupPositionPiecesCount();
 
-    MillController().isPositionSetup = true;
-
     //MillController().recorder.clear(); // TODO: Set and parse fen.
+    var fen = position.fen;
     MillController().recorder =
-        GameRecorder(lastPositionWithRemove: position.fen);
+        GameRecorder(lastPositionWithRemove: fen, setupPosition: fen);
 
     MillController().headerIconsNotifier.showIcons();
     MillController().boardSemanticsNotifier.updateSemantics();

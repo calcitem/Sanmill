@@ -50,7 +50,7 @@ class _GameOptionsModal extends StatelessWidget {
 
               // TODO: Called stopSearching(); so isEngineGoing is always false?
               if (MillController().isEngineGoing == false) {
-                MillController().reset();
+                MillController().reset(force: true);
 
                 MillController()
                     .headerTipNotifier
@@ -78,12 +78,15 @@ class _GameOptionsModal extends StatelessWidget {
           child: Text(S.of(context).newGame),
         ),
         const CustomSpacer(),
-        if (MillController().recorder.hasPrevious == true)
+        if (MillController().recorder.hasPrevious == true ||
+            MillController().isPositionSetup == true)
           SimpleDialogOption(
             onPressed: () => MillController.save(context),
             child: Text(S.of(context).saveGame),
           ),
-        if (MillController().recorder.hasPrevious == true) const CustomSpacer(),
+        if (MillController().recorder.hasPrevious == true ||
+            MillController().isPositionSetup == true)
+          const CustomSpacer(),
         SimpleDialogOption(
           onPressed: () => MillController.load(context),
           child: Text(S.of(context).loadGame),
@@ -94,12 +97,15 @@ class _GameOptionsModal extends StatelessWidget {
           child: Text(S.of(context).importGame),
         ),
         const CustomSpacer(),
-        if (MillController().recorder.hasPrevious == true)
+        if (MillController().recorder.hasPrevious == true ||
+            MillController().isPositionSetup == true)
           SimpleDialogOption(
             onPressed: () => MillController.export(context),
             child: Text(S.of(context).exportGame),
           ),
-        if (MillController().recorder.hasPrevious == true) const CustomSpacer(),
+        if (MillController().recorder.hasPrevious == true ||
+            MillController().isPositionSetup == true)
+          const CustomSpacer(),
         if (DB().generalSettings.screenReaderSupport)
           SimpleDialogOption(
             onPressed: () => Navigator.pop(context),
@@ -117,7 +123,7 @@ class _GameOptionsModal extends StatelessWidget {
 
           // TODO: Called stopSearching(); so isEngineGoing is always false?
           if (MillController().isEngineGoing == false) {
-            MillController().reset();
+            MillController().reset(force: true);
 
             MillController()
                 .headerTipNotifier

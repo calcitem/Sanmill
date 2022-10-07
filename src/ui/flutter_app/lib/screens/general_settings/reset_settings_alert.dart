@@ -24,9 +24,10 @@ class _ResetSettingsAlert extends StatelessWidget {
   Future<void> _restore(BuildContext context) async {
     Navigator.pop(context);
 
+    // TODO: Seems to need to close and reopen the program for it to work.
     await DB.reset();
 
-    MillController().reset();
+    MillController().reset(force: true);
   }
 
   @override

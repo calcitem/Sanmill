@@ -33,7 +33,6 @@ class MillController {
   bool isReady = false;
   bool isActive = false;
   bool isEngineGoing = false;
-  bool isPositionSetup = false;
   bool isPositionSetupBanPiece = false;
 
   late Game gameInstance;
@@ -56,6 +55,9 @@ class MillController {
 
   bool _initialized = false;
   bool get initialized => _initialized;
+
+  bool get isPositionSetup => recorder.setupPosition != null;
+  void clearPositionSetupFlag() => recorder.setupPosition = null;
 
   @visibleForTesting
   static MillController instance = MillController._();
@@ -91,15 +93,26 @@ class MillController {
   /// Resets the controller.
   ///
   /// This method is suitable to use for starting a new game.
-  void reset() {
+  void reset({bool force = false}) {
     final gameModeBak = gameInstance.gameMode;
+    String? fen = "";
+    final bool isPositionSetup = MillController().isPositionSetup;
 
     MillController().engine.stopSearching();
+
+    if (isPositionSetup == true && force == false) {
+      fen = MillController().recorder.setupPosition;
+    }
+
     _init();
 
-    gameInstance.gameMode = gameModeBak;
+    if (isPositionSetup == true && force == false) {
+      MillController().recorder.setupPosition = fen;
+      MillController().recorder.lastPositionWithRemove = fen;
+      MillController().position.setFen(fen!);
+    }
 
-    MillController().isPositionSetup = false;
+    gameInstance.gameMode = gameModeBak;
   }
 
   /// Starts the current game.

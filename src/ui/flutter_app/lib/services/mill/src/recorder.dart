@@ -18,8 +18,9 @@ part of '../mill.dart';
 
 class GameRecorder extends PointedList<ExtMove> {
   String? lastPositionWithRemove = "";
+  String? setupPosition;
 
-  GameRecorder({this.lastPositionWithRemove});
+  GameRecorder({this.lastPositionWithRemove, this.setupPosition});
 
   @override
   String toString() {
@@ -48,7 +49,21 @@ class GameRecorder extends PointedList<ExtMove> {
   }
 
   String? get moveHistoryText {
-    if (isEmpty || index == null) return null;
+    String buildTagPairs() {
+      if (MillController().recorder.setupPosition != null) {
+        return "[FEN \"${MillController().recorder.setupPosition!}\"]\r\n[SetUp \"1\"]\r\n\r\n";
+      }
+      return "[FEN \"${MillController().position.fen}\"]\r\n[SetUp \"1\"]\r\n\r\n";
+    }
+
+    if (isEmpty || index == null) {
+      if (MillController().isPositionSetup == true) {
+        return buildTagPairs();
+      } else {
+        return null;
+      }
+    }
+
     final StringBuffer moveHistory = StringBuffer();
     int num = 1;
     int i = 0;
@@ -65,6 +80,10 @@ class GameRecorder extends PointedList<ExtMove> {
       if (i <= index! && this[i].type == MoveType.remove) {
         moveHistory.write(this[i++].notation);
       }
+    }
+
+    if (MillController().isPositionSetup == true) {
+      moveHistory.write(buildTagPairs());
     }
 
     while (i <= index!) {

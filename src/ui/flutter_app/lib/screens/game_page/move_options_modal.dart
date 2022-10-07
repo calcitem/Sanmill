@@ -117,7 +117,8 @@ class _MoveOptionsModal extends StatelessWidget {
           ),
           const CustomSpacer(),
         ],
-        if (MillController().recorder.hasPrevious) ...[
+        if (MillController().recorder.hasPrevious ||
+            MillController().isPositionSetup == true) ...[
           SimpleDialogOption(
             onPressed: () => _showMoveList(context),
             child: Text(S.of(context).showMoveList),

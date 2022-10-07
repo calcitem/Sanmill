@@ -94,7 +94,7 @@ class GameResultAlert extends StatelessWidget {
           child: Text(S.of(context).restart),
           onPressed: () {
             Navigator.pop(context);
-            MillController().reset();
+            MillController().reset(force: true);
             MillController()
                 .headerTipNotifier
                 .showTip(S.of(context).gameStarted);

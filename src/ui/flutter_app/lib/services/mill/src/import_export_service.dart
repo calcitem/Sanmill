@@ -51,6 +51,7 @@ class ImportService {
     } catch (exception) {
       final tip = S.of(context).cannotImport(data!.text!);
       MillController().headerTipNotifier.showTip(tip);
+      //MillController().animationController.forward();
       return;
     }
 
@@ -138,9 +139,32 @@ class ImportService {
     throw ImportFormatException(playOk);
   }
 
+  static bool _isPureFen(String text) {
+    if (text.length >=
+            "********/********/******** w p p 9 0 9 0 0 0 0".length &&
+        (text.contains("/") &&
+            text[8] == "/" &&
+            text[17] == "/" &&
+            text[26] == " ")) {
+      return true;
+    }
+
+    return false;
+  }
+
   static bool _isPgnMoveList(String text) {
     if (text.length >= 15 &&
-        (text.contains("[Event") || text.contains("[White"))) {
+        (text.contains("[Event") ||
+            text.contains("[White") ||
+            text.contains("[FEN"))) {
+      return true;
+    }
+
+    return false;
+  }
+
+  static bool _isFenMoveList(String text) {
+    if (text.length >= 15 && (text.contains("[FEN"))) {
       return true;
     }
 
@@ -156,7 +180,10 @@ class ImportService {
 
     String noTag = removeTagPairs(text);
 
-    if (noTag.contains("a") ||
+    if (noTag.contains("1.") == false) return false;
+
+    if (noTag == "" ||
+        noTag.contains("a") ||
         noTag.contains("b") ||
         noTag.contains("c") ||
         noTag.contains("d") ||
@@ -230,7 +257,11 @@ class ImportService {
         "[Round \"${total.toString()}\"]\r\n"
         "[White \"$white\"]\r\n"
         "[Black \"$black\"]\r\n"
-        "[Result \"$result\"]\r\n\r\n";
+        "[Result \"$result\"]\r\n";
+
+    if (!(moveList.length > 3 && moveList.startsWith("[FEN"))) {
+      tagPairs = tagPairs + "\r\n";
+    }
 
     return tagPairs + moveList;
   }
@@ -243,7 +274,9 @@ class ImportService {
     if (pgn.startsWith("[") == false) return pgn;
 
     String ret = pgn.substring(pgn.lastIndexOf("]"));
-    ret = ret.substring(ret.indexOf("1."));
+    int begin = ret.indexOf("1.");
+    if (begin == -1) return "";
+    ret = ret.substring(begin);
 
     return ret;
   }
@@ -251,11 +284,26 @@ class ImportService {
   @visibleForTesting
   static void import(String moveList) {
     var ml = moveList;
+    String fen = MillController().position.fen;
+    String? setupFen;
 
     logger.v("Clipboard text: $moveList");
 
     if (_isPlayOkMoveList(moveList)) {
       return _importPlayOk(moveList);
+    }
+
+    if (_isFenMoveList(moveList)) {
+      setupFen = moveList.substring(moveList.indexOf("FEN"));
+      setupFen = setupFen.substring(5);
+      setupFen = setupFen.substring(0, setupFen.indexOf("\"]"));
+      MillController().position.setFen(setupFen);
+    }
+
+    if (_isPureFen(moveList)) {
+      setupFen = moveList;
+      MillController().position.setFen(setupFen);
+      ml = "";
     }
 
     if (_isPgnMoveList(moveList)) {
@@ -276,8 +324,9 @@ class ImportService {
       ml = moveList.substring(start);
     }
 
-    final GameRecorder newHistory =
-        GameRecorder(lastPositionWithRemove: MillController().position.fen);
+    // TODO: Is it will cause what?
+    final GameRecorder newHistory = GameRecorder(
+        lastPositionWithRemove: setupFen ?? fen, setupPosition: setupFen);
     final List<String> list = ml
         .toLowerCase()
         .replaceAll("\n", " ")
@@ -341,8 +390,15 @@ class ImportService {
       }
     }
 
-    if (newHistory.isNotEmpty) {
+    // TODO: Is this judge necessary?
+    if (newHistory.isNotEmpty || setupFen != "") {
       MillController().newRecorder = newHistory;
+    }
+
+    // TODO: Just a patch. Let status is setupPosition.
+    //  The judgment of whether it is in the setupPosition state is based on this, not newRecorder.
+    if (setupFen != "") {
+      MillController().recorder.setupPosition = setupFen;
     }
   }
 
