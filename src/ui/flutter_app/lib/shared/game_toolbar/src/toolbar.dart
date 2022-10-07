@@ -414,6 +414,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
         MillController().position.countPieceOnBoard(PieceColor.black) <
             DB().ruleSettings.piecesAtLeastCount) {
       MillController().position.phase = Phase.placing;
+      MillController().position.action = Act.place;
     } else {
       MillController().position.phase = newPhase;
     }

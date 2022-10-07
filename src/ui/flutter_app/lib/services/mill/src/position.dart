@@ -509,6 +509,7 @@ class Position {
         _updateKey(s);
         _revertKey(_currentSquare);
 
+        assert(_currentSquare != 0); // TODO: Deal with it
         _board[_currentSquare] =
             _grid[squareToIndex[_currentSquare]!] = PieceColor.none;
 
