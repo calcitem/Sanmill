@@ -33,6 +33,7 @@ class _MoveOptionsModal extends StatelessWidget {
 
   Future<void> _moveNow(BuildContext context) async {
     const tag = "[engineToGo]";
+    bool reversed = false;
 
     Navigator.pop(context);
 
@@ -54,9 +55,11 @@ class _MoveOptionsModal extends StatelessWidget {
     }
 
     if (MillController().gameInstance.isHumanToMove) {
-      logger.i("$tag Human to Move. Cannot get search result now.");
-      return rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).notAIsTurn);
+      logger.i("$tag Human to Move. Temporarily swap AI and Human roles.");
+      //return rootScaffoldMessengerKey.currentState!
+      //    .showSnackBarClear(S.of(context).notAIsTurn);
+      MillController().gameInstance.reverseWhoIsAi();
+      reversed = true;
     }
 
     if (!MillController().recorder.isClean) {
@@ -88,6 +91,8 @@ class _MoveOptionsModal extends StatelessWidget {
         assert(false);
         break;
     }
+
+    if (reversed) MillController().gameInstance.reverseWhoIsAi();
   }
 
   @override

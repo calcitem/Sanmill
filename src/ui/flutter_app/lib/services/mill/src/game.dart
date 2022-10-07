@@ -39,6 +39,11 @@ class Game {
     PieceColor.black: true,
   };
 
+  reverseWhoIsAi() {
+    _isAi[PieceColor.white] = !_isAi[PieceColor.white]!;
+    _isAi[PieceColor.black] = !_isAi[PieceColor.black]!;
+  }
+
   // TODO: [Leptopoda] Make gameMode final and set it through the constructor.
   late GameMode _gameMode;
   GameMode get gameMode => _gameMode;

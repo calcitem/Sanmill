@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "對方思考中…",
+  "thinking": "思考中…",
   "@thinking": {
     "description": "Thinking..."
   },
