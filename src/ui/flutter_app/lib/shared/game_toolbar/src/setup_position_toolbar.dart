@@ -473,7 +473,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   }
 
   setSetupPositionDone() {
-    // TODO: set position fen, such as piece ect.
+    // TODO: set position fen, such as piece etc.
     //MillController().gameInstance.gameMode = gameModeBackup;
 
     // When the number of pieces is less than 3, it is impossible to be in the Moving Phase.
