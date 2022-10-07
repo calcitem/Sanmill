@@ -131,6 +131,9 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     MillController().position.phase = newPhase;
     MillController().position.theWinner = PieceColor.nobody;
 
+    // Zero rule50, and do not zero gamePly.
+    MillController().position.st.rule50 = 0;
+
     //TODO: newWhitePieceRemovedInPlacingPhase & newBlackPieceRemovedInPlacingPhase;
   }
 
