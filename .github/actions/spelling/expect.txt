@@ -314,7 +314,6 @@ rdtscp
 READONLY
 READWRITE
 readyok
-responsponds
 Resync
 rng
 rotr
