@@ -110,6 +110,22 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       }
     }
 
+    if (newPhase == Phase.moving) {
+      newPlaced = DB().ruleSettings.piecesCount;
+    } else if (newPhase == Phase.placing) {
+      /*
+      int c = MillController().recorder.placeCount;
+
+      if (MillController().position.sideToMove == PieceColor.white) {
+        newPlaced = (c + 1) ~/ 2;
+      } else if (MillController().position.sideToMove == PieceColor.black) {
+        newPlaced = c ~/ 2;
+      }
+      */
+
+      setSetupPositionPlacedUpdateBegin();
+    }
+
     newPieceCountNeedRemove = MillController().position.pieceToRemoveCount;
 
     MillController().position.phase = newPhase;
@@ -279,12 +295,28 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       begin = max(white, black);
     }
 
+    if (MillController().position.sideToMove == PieceColor.black &&
+        white > black) {
+      begin--;
+    }
+
     return begin;
   }
 
   setSetupPositionPlacedUpdateBegin() {
     int val = setSetupPositionPlacedGetBegin();
-    if (newPlaced < val) newPlaced = val;
+
+    newPlaced = val;
+    /*
+    if (newPlaced > val) { // TODO: > or < ? How to Update?
+      newPlaced =
+          val; // TODO: So does it still make sense to read the length of the move list in initContext?
+    }
+    */
+
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   Future<void> setSetupPositionPlaced(BuildContext context) async {
@@ -617,7 +649,7 @@ class _PlacedModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: S.of(context).endgameNMoveRule,
+      label: S.of(context).move, // TODO: l10n
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,

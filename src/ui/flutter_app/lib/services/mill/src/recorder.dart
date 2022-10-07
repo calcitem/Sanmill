@@ -33,6 +33,20 @@ class GameRecorder extends PointedList<ExtMove> {
     return buffer.toString();
   }
 
+  int get placeCount {
+    if (isEmpty || index == null) return 0;
+
+    int n = 0;
+
+    for (int i = 0; i <= index!; i++) {
+      if (this[i].type == MoveType.place) {
+        n++;
+      }
+    }
+
+    return n;
+  }
+
   String? get moveHistoryText {
     if (isEmpty || index == null) return null;
     final StringBuffer moveHistory = StringBuffer();
