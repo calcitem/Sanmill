@@ -307,6 +307,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   }
 
   int setSetupPositionPlacedGetBegin() {
+    if (newPhase == Phase.moving) {
+      return DB().ruleSettings.piecesCount;
+    }
+
     int white = MillController().position.countPieceOnBoard(PieceColor.white);
     int black = MillController().position.countPieceOnBoard(PieceColor.black);
     late int begin;
