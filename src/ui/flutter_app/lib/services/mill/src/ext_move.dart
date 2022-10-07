@@ -76,6 +76,10 @@ class ExtMove {
   // 'move' is the UCI engine's move-string
   final String move;
 
+  static sqToNotation(int sq) {
+    return _squareToWmdNotation[sq];
+  }
+
   // "notation" is Standard Notation
   // Sample: xa1, a1-b2, a1
   String get notation {

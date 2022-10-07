@@ -260,7 +260,7 @@ class ImportService {
         "[Result \"$result\"]\r\n";
 
     if (!(moveList.length > 3 && moveList.startsWith("[FEN"))) {
-      tagPairs = tagPairs + "\r\n";
+      tagPairs = "$tagPairs\r\n";
     }
 
     return tagPairs + moveList;

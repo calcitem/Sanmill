@@ -140,6 +140,9 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   void restoreContext() {
     MillController().position.copyWith(positionBackup);
     MillController().gameInstance.gameMode = gameModeBackup;
+    MillController()
+        .headerTipNotifier
+        .showTip("Restored position."); // TODO: l10n
   }
 
   @override
@@ -255,9 +258,16 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
     MillController().position.setPieceToRemoveCount = newPieceCountNeedRemove;
 
-    MillController()
-        .headerTipNotifier
-        .showTip(newPieceCountNeedRemove.toString()); // TODO
+    if (next == true) {
+      if (limit == 0) {
+        MillController()
+            .headerTipNotifier
+            .showTip("No Mill, so no need to remove."); // TODO: l10n
+      } else {
+        MillController().headerTipNotifier.showTip(
+            "Need to remove $newPieceCountNeedRemove pieces."); // TODO: l10n
+      }
+    }
 
     if (mounted) {
       setState(() {});
@@ -351,14 +361,112 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     }
   }
 
+  // TODO: Duplicate with InfoDialog._infoText
+  String _infoText(BuildContext context) {
+    final controller = MillController();
+    final buffer = StringBuffer();
+    final pos = controller.position;
+
+    late final String us;
+    late final String them;
+    switch (pos.sideToMove) {
+      case PieceColor.white:
+        us = S.of(context).player1;
+        them = S.of(context).player2;
+        break;
+      case PieceColor.black:
+        us = S.of(context).player2;
+        them = S.of(context).player1;
+        break;
+      default:
+    }
+
+    buffer.write(pos.phase.getName(context));
+
+    if (DB().generalSettings.screenReaderSupport) {
+      buffer.writeln(":");
+    } else {
+      buffer.writeln();
+    }
+
+    final String? n1 = controller.recorder.current?.notation;
+    // Last Move information
+    if (n1 != null) {
+      // $them is only shown with the screen reader. It is convenient for
+      // the disabled to recognize whether the opponent has finished the moving.
+      buffer.write(
+        S.of(context).lastMove(
+              DB().generalSettings.screenReaderSupport ? "$them, " : "",
+            ),
+      );
+
+      if (n1.startsWith("x")) {
+        buffer.writeln(
+          controller.recorder[controller.recorder.length - 2].notation,
+        );
+      }
+      buffer.writeComma(n1);
+    }
+
+    buffer.writePeriod(S.of(context).sideToMove(us));
+
+    final String msg = MillController().headerTipNotifier.message;
+
+    // the tip
+    if (DB().generalSettings.screenReaderSupport &&
+        msg.endsWith(".") &&
+        msg.endsWith("!")) {
+      buffer.writePeriod(msg);
+    }
+
+    buffer.writeln();
+    buffer.writeln(S.of(context).pieceCount);
+    buffer.writeComma(
+      S.of(context).inHand(
+            S.of(context).player1,
+            pos.pieceInHandCount[PieceColor.white]!,
+          ),
+    );
+    buffer.writeComma(
+      S.of(context).inHand(
+            S.of(context).player2,
+            pos.pieceInHandCount[PieceColor.black]!,
+          ),
+    );
+    buffer.writeComma(
+      S.of(context).onBoard(
+            S.of(context).player1,
+            pos.pieceOnBoardCount[PieceColor.white]!,
+          ),
+    );
+    buffer.writePeriod(
+      S.of(context).onBoard(
+            S.of(context).player2,
+            pos.pieceOnBoardCount[PieceColor.black]!,
+          ),
+    );
+
+    return buffer.toString();
+  }
+
   Future<void> setSetupPositionPlaced(BuildContext context) async {
     void callback(int? placed) {
       newPlaced = placed!;
+      updateSetupPositionPiecesCount();
       Navigator.pop(context);
       setState(() {});
+      MillController().headerTipNotifier.showTip(
+          "XXX has placed $newPlaced pieces!",
+          snackBar: false); // TODO: l10n
+
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBar(CustomSnackBar(_infoText(context)));
     }
 
     if (newPhase != Phase.placing) {
+      MillController()
+          .headerTipNotifier
+          .showTip("Not placing phase, cannot change it."); // TODO: l10n
       return;
     }
 
@@ -483,9 +591,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     final clearButton = ToolbarItem.icon(
       onPressed: () {
         MillController().position.reset();
-        MillController()
-            .headerTipNotifier
-            .showTip(S.of(context).restart); // TODO: reset
+        MillController().headerTipNotifier.showTip("Cleaned."); // TODO: l10n
       },
       icon: const Icon(FluentIcons.eraser_24_regular),
       label: const Text("Clean"), // TODO: l10n
@@ -495,38 +601,38 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     final placingButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionPhase(context, Phase.placing)},
       icon: const Icon(FluentIcons.grid_dots_24_regular),
-      label: const Text("Placing"),
+      label: const Text("Placing"), // TODO: l10n
     );
 
     final movingButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionPhase(context, Phase.moving)},
       icon: const Icon(FluentIcons.arrow_move_24_regular),
-      label: const Text("Moving"),
+      label: const Text("Moving"), // TODO: l10n
     );
 
     // Remove
     final removeZeroButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionNeedRemove(0, true)},
       icon: const Icon(FluentIcons.circle_24_regular),
-      label: const Text("Remove"),
+      label: const Text("Remove"), // TODO: l10n
     );
 
     final removeOneButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionNeedRemove(1, true)},
       icon: const Icon(FluentIcons.number_circle_1_24_regular),
-      label: const Text("Remove"),
+      label: const Text("Remove"), // TODO: l10n
     );
 
     final removeTwoButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionNeedRemove(2, true)},
       icon: const Icon(FluentIcons.number_circle_2_24_regular),
-      label: const Text("Remove"),
+      label: const Text("Remove"), // TODO: l10n
     );
 
     final removeThreeButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionNeedRemove(3, true)},
       icon: const Icon(FluentIcons.number_circle_3_24_regular),
-      label: const Text("Remove"),
+      label: const Text("Remove"), // TODO: l10n
     );
 
     final placedButton = ToolbarItem.icon(

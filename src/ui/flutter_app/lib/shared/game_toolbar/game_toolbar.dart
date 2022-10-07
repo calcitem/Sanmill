@@ -28,6 +28,7 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/mill/mill.dart';
 import 'package:sanmill/shared/scaffold_messenger.dart';
+import 'package:sanmill/shared/string_buffer_helper.dart';
 
 part 'src/item_theme.dart';
 part 'src/item_theme_data.dart';

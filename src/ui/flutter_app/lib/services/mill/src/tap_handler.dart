@@ -36,6 +36,8 @@ class TapHandler {
     }
 
     MillController().setupPositionNotifier.updateIcons();
+    MillController().headerTipNotifier.showTip(ExtMove.sqToNotation(sq),
+        snackBar: false); // TODO: snackBar is false?
 
     return const EngineResponseHumanOK(); // TODO: Right?
   }
