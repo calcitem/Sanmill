@@ -253,6 +253,68 @@ class MillController {
     return searched ? const EngineResponseOK() : const EngineResponseHumanOK();
   }
 
+  Future<void> moveNow(BuildContext context) async {
+    const tag = "[engineToGo]";
+    bool reversed = false;
+
+    // TODO: WAR
+    if ((MillController().gameInstance.sideToMove == PieceColor.white ||
+            MillController().gameInstance.sideToMove == PieceColor.black) ==
+        false) {
+      // If modify sideToMove, not take effect, I don't know why.
+      return rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).notAIsTurn);
+    }
+
+    if ((MillController().position.sideToMove == PieceColor.white ||
+            MillController().position.sideToMove == PieceColor.black) ==
+        false) {
+      // If modify sideToMove, not take effect, I don't know why.
+      return rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).notAIsTurn);
+    }
+
+    if (MillController().gameInstance.isHumanToMove) {
+      logger.i("$tag Human to Move. Temporarily swap AI and Human roles.");
+      //return rootScaffoldMessengerKey.currentState!
+      //    .showSnackBarClear(S.of(context).notAIsTurn);
+      MillController().gameInstance.reverseWhoIsAi();
+      reversed = true;
+    }
+
+    if (!MillController().recorder.isClean) {
+      logger.i("$tag History is not clean. Prune, and think now.");
+      MillController().recorder.prune();
+    }
+
+    final strTimeout = S.of(context).timeout;
+    final strNoBestMoveErr = S.of(context).error("No best move");
+
+    switch (await MillController()
+        .engineToGo(context, isMoveNow: MillController().isEngineGoing)) {
+      case EngineResponseOK():
+        MillController().gameResultNotifier.showResult(force: true);
+        break;
+      case EngineResponseHumanOK():
+        MillController().gameResultNotifier.showResult(force: false);
+        break;
+      case EngineTimeOut():
+        MillController().headerTipNotifier.showTip(strTimeout);
+        break;
+      case EngineNoBestMove():
+        MillController().headerTipNotifier.showTip(strNoBestMoveErr);
+        break;
+      case EngineResponseSkip():
+        MillController().headerTipNotifier.showTip("Error: Skip"); // TODO
+        break;
+      default:
+        assert(false);
+        break;
+    }
+
+    if (reversed) MillController().gameInstance.reverseWhoIsAi();
+  }
+
   showSnakeBarHumanNotation(String humanStr) {
     final String? n = recorder.lastF?.notation;
 

@@ -190,6 +190,14 @@ class _Game extends StatelessWidget {
       onPressed: () => HistoryNavigator.takeBack(context, pop: false),
     );
 
+    final moveNowButton = ToolbarItem(
+      child: Icon(
+        FluentIcons.play_24_regular,
+        semanticLabel: S.of(context).moveNow,
+      ),
+      onPressed: () => MillController().moveNow(context),
+    );
+
     final stepForwardButton = ToolbarItem(
       child: Icon(
         FluentIcons.chevron_right_24_regular,
@@ -209,6 +217,7 @@ class _Game extends StatelessWidget {
     return <Widget>[
       takeBackAllButton,
       takeBackButton,
+      moveNowButton,
       stepForwardButton,
       stepForwardAllButton,
     ];
