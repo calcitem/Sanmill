@@ -599,7 +599,7 @@ private:
         bool *hasCurPlayerChanged;
     };
 
-    /*** classes for the alpha beta algorithmn
+    /*** classes for the alpha beta algorithm
      * ************************************************************************/
 
     // thread specific variables for each thread in the alpha beta algorithm
@@ -983,7 +983,7 @@ private:
     compressorClass *compressor = nullptr;
 
     // 0 or one of the COMPRESSOR_ALG_... constants
-    uint32_t compressionAlgorithmnId = 0;
+    uint32_t compressionAlgorithmId = 0;
 #endif
 
     // database I/O operations per second

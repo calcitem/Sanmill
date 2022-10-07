@@ -738,7 +738,7 @@
     <ClCompile Include="src\perfect\mill.cpp" />
     <ClCompile Include="src\perfect\millAI.cpp" />
     <ClCompile Include="src\perfect\miniMax.cpp" />
-    <ClCompile Include="src\perfect\miniMax_alphaBetaAlgorithmn.cpp" />
+    <ClCompile Include="src\perfect\miniMax_alphaBetaAlgorithm.cpp" />
     <ClCompile Include="src\perfect\miniMax_database.cpp" />
     <ClCompile Include="src\perfect\miniMax_retroAnalysis.cpp" />
     <ClCompile Include="src\perfect\miniMax_statistics.cpp" />

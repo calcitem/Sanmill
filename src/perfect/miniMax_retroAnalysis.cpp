@@ -15,7 +15,7 @@ s\*********************************************************************/
 //-----------------------------------------------------------------------------
 // calcKnotValuesByRetroAnalysis()
 //
-// The COUNT-ARRAY is the main element of the algorithmn. It contains the number
+// The COUNT-ARRAY is the main element of the algorithm. It contains the number
 // of succeeding states for the drawn gamestates, whose short knot value has to
 // be determined. If all succeeding states (branches representing possible
 // moves) are for example won than, a state can be marked as lost, since no

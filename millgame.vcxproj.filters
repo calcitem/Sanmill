@@ -410,7 +410,7 @@
     <ClCompile Include="src\perfect\miniMax.cpp">
       <Filter>Perfect AI Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\perfect\miniMax_alphaBetaAlgorithmn.cpp">
+    <ClCompile Include="src\perfect\miniMax_alphaBetaAlgorithm.cpp">
       <Filter>Perfect AI Files</Filter>
     </ClCompile>
     <ClCompile Include="src\perfect\miniMax_database.cpp">

@@ -1,5 +1,5 @@
 /*********************************************************************
-    miniMax_alphaBetaAlgorithmn.cpp
+    miniMax_alphaBetaAlgorithm.cpp
     Copyright (c) Thomas Weber. All rights reserved.
     Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
     Licensed under the GPLv3 License.
@@ -24,7 +24,7 @@ bool MiniMax::calcKnotValuesByAlphaBeta(uint32_t layerNumber)
     // Version 10:
     PRINT(1, this,
           "*** Calculate layer " << layerNumber
-                                 << " by alpha-beta-algorithmn ***" << endl);
+                                 << " by alpha-beta-algorithm ***" << endl);
     curCalcActionId = MM_ACTION_PERFORM_ALPHA_BETA;
 
     // initialization
