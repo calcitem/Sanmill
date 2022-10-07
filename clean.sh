@@ -11,7 +11,7 @@ mv ../key.properties src/ui/flutter_app/android/
 if [ "$(uname)" == "Darwin" ]; then
     echo "TODO: macOS"
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-    echo "TODO: Lniux"
+    echo "TODO: Linux"
 else
     ./flutter-windows-init.sh
 fi
