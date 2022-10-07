@@ -272,11 +272,34 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       ClipboardData(text: MillController().position.fen),
     );
 
-    rootScaffoldMessengerKey.currentState!.showSnackBarClear("Copy fen: $fen");
+    rootScaffoldMessengerKey.currentState!
+        .showSnackBarClear("Copy FEN: $fen"); // TODO: l10n
   }
 
-  setSetupPositionPaste() {
-    // TODO:
+  setSetupPositionPaste(BuildContext context) async {
+    final tipFailed = S.of(context).cannotImport(""); // TODO: l10n
+    final tipDone = S.of(context).done; // TODO: l10n
+
+    final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
+
+    if (data?.text == null) return;
+
+    String fen = data!.text!;
+
+    try {
+      if (MillController().position.setFen(fen) == true) {
+        MillController().headerTipNotifier.showTip(tipDone);
+        initContext();
+        _updateSetupPositionIcons();
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear("Apply FEN: $fen"); // TODO: l10n
+      } else {
+        MillController().headerTipNotifier.showTip(tipFailed); // TODO: l10n
+      }
+    } catch (e) {
+      MillController().headerTipNotifier.showTip(tipFailed); // TODO: l10n
+    }
+
     return;
   }
 
@@ -343,6 +366,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   _updateSetupPositionIcons() {
     setSetupPositionPlacedUpdateBegin();
     setSetupPositionNeedRemove(newPieceCountNeedRemove, false);
+    MillController().headerIconsNotifier.showIcons();
   }
 
   updateSetupPositionPiecesCount() {
@@ -505,14 +529,11 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     final copyButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionCopy(context)},
       icon: const Icon(FluentIcons.copy_24_regular),
-      label: const Text("Copy"), // TODO: l10n
+      label: Text(S.of(context).copy),
     );
 
     final pasteButton = ToolbarItem.icon(
-      onPressed: () => {
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).experimental)
-      },
+      onPressed: () => {setSetupPositionPaste(context)},
       icon: const Icon(FluentIcons.clipboard_paste_24_regular),
       label: const Text("Paste"), // TODO: l10n
     );

@@ -107,6 +107,35 @@ class Position {
   }
 
   /// Returns a FEN representation of the position.
+  /// Example: "@*O@O*O*/O*@@O@@@/O@O*@*O* b m s 8 0 9 0 0 3 10"
+  /// Format: "[Inner ring]/[Middle Ring]/[Outer Ring]
+  /// [Side to Move] [Phase] [Action]
+  /// [White Piece On Board] [White Piece In Hand]
+  /// [Black Piece On Board] [Black Piece In Hand]
+  /// [Piece to Remove ]
+  /// [Rule50] [Ply]"
+  ///
+  /// ([Rule50] and [Ply] are unused right now.)
+  /// Param:
+  ///
+  /// Ring
+  /// @ - Black piece
+  /// O - White piece
+  /// * - Empty point
+  /// X - Ban point
+  ///
+  /// Side to move
+  /// w - White to Move
+  /// b - Black to Move
+  ///
+  /// Phase
+  /// p - Placing Phase
+  /// m - Moving Phase
+  ///
+  /// Action
+  /// p - Place Action
+  /// s - Select Action
+  /// r - Remove Action
   String get fen {
     final buffer = StringBuffer();
 
@@ -146,6 +175,92 @@ class Position {
     logger.v("FEN is $buffer");
 
     return buffer.toString();
+  }
+
+  bool setFen(String fen) {
+    bool ret = true;
+    var l = fen.split(" ");
+
+    var boardStr = l[0];
+    var ring = boardStr.split("/");
+
+    Map<String, PieceColor> pieceMap = {
+      "*": PieceColor.none,
+      "O": PieceColor.white,
+      "@": PieceColor.black,
+      "X": PieceColor.ban,
+    };
+
+    // Piece placement data
+    for (int file = 1; file <= fileNumber; file++) {
+      for (int rank = 1; rank <= rankNumber; rank++) {
+        final p = pieceMap[ring[file - 1][rank - 1]]!;
+        final sq = makeSquare(file, rank);
+        _board[sq] = p;
+        _grid[squareToIndex[sq]!] = p;
+      }
+    }
+
+    String sideToMoveStr = l[1];
+
+    Map<String, PieceColor> sideToMoveMap = {
+      "w": PieceColor.white,
+      "b": PieceColor.black,
+    };
+
+    _sideToMove = sideToMoveMap[sideToMoveStr]!;
+    _them = _sideToMove.opponent;
+    MillController().gameInstance.sideToMove = _sideToMove; // Note
+
+    var phaseStr = l[2];
+
+    Map<String, Phase> phaseMap = {
+      "r": Phase.ready,
+      "p": Phase.placing,
+      "m": Phase.moving,
+      "o": Phase.gameOver,
+    };
+
+    phase = phaseMap[phaseStr]!;
+
+    var actionStr = l[3];
+
+    Map<String, Act> actionMap = {
+      "p": Act.place,
+      "s": Act.select,
+      "r": Act.remove,
+    };
+
+    _action = actionMap[actionStr]!;
+
+    var whitePieceOnBoardCountStr = l[4];
+    pieceOnBoardCount[PieceColor.white] = int.parse(whitePieceOnBoardCountStr);
+
+    var whitePieceInHandCountStr = l[5];
+    pieceInHandCount[PieceColor.white] = int.parse(whitePieceInHandCountStr);
+
+    var blackPieceOnBoardCountStr = l[6];
+    pieceOnBoardCount[PieceColor.black] = int.parse(blackPieceOnBoardCountStr);
+
+    var blackPieceInHandCountStr = l[7];
+    pieceInHandCount[PieceColor.black] = int.parse(blackPieceInHandCountStr);
+
+    var pieceToRemoveCountStr = l[8];
+    _pieceToRemoveCount = int.parse(pieceToRemoveCountStr);
+
+    var rule50Str = l[9];
+    st.rule50 = int.parse(rule50Str);
+
+    var gamePlyStr = l[10];
+    _gamePly = int.parse(gamePlyStr);
+
+    // Misc
+    _winner = PieceColor.nobody;
+    gameOverReason = null;
+    _currentSquare = 0;
+    _record = null;
+
+    return ret;
   }
 
   @visibleForTesting
