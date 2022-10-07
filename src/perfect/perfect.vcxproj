@@ -166,7 +166,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="cyclicArray.cpp" />
     <ClCompile Include="miniMax.cpp" />
-    <ClCompile Include="miniMax_alphaBetaAlgorithmn.cpp" />
+    <ClCompile Include="miniMax_alphaBetaAlgorithm.cpp" />
     <ClCompile Include="miniMax_database.cpp" />
     <ClCompile Include="miniMax_retroAnalysis.cpp" />
     <ClCompile Include="miniMax_statistics.cpp" />

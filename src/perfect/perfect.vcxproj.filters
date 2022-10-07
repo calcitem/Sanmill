@@ -71,7 +71,7 @@
     <ClCompile Include="miniMax.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="miniMax_alphaBetaAlgorithmn.cpp">
+    <ClCompile Include="miniMax_alphaBetaAlgorithm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="miniMax_database.cpp">
