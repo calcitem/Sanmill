@@ -1,9 +1,7 @@
-abcdefg
 ALIGNAS
 alignof
 alloc
 amd
-andnetwork
 APARTMENTTHREADED
 APIENTRY
 appbundle
@@ -21,9 +19,7 @@ autobuild
 autofocus
 AVX
 backend
-backends
 bak
-Barlabel
 bestmove
 bestvalue
 bitboard
@@ -31,7 +27,6 @@ Bitboard
 bitboard
 bitset
 boarditem
-bools
 buf
 BUFSIZ
 cafebazaar
@@ -68,17 +63,12 @@ ctx
 cupertino
 cwd
 cygwin
-Dalmax
 DANDROID
 dartpad
-datastore
 dbg
-Deduplicate
-deduplicate
 DEFAULTTONEAREST
 deque
 dest
-devicelocale
 Diagnosticable
 Dieharder
 DISCARDABLE
@@ -103,11 +93,8 @@ fallthrough
 fastlane
 fdroid
 FFDEB
-FFEDF
-FFFEFEFE
 FFFFEFD
 FFFFFAF
-FFFFFFFF
 FILEFLAGS
 FILEFLAGSMASK
 fileno
@@ -115,7 +102,6 @@ FILEOS
 FILESUBTYPE
 FILEVERSION
 firstguess
-flexbox
 fluentui
 FONTCHANGE
 FPKV
@@ -126,9 +112,6 @@ fstream
 ftp
 fullmove
 Func
-GAMEBOOK
-GAMECONTROLLER
-GAMEITEM
 gameover
 gamescene
 gameview
@@ -143,7 +126,6 @@ GNUC
 google
 googletest
 graphicsconst
-GRAPHICSVIEW
 gtest
 gtk
 GWLP
@@ -195,7 +177,6 @@ jstring
 ksize
 lastvalue
 len
-Leptopdoa
 Leptopoda
 libsanmill
 linux
@@ -217,12 +198,9 @@ LPARAM
 lparam
 lpfn
 lpsz
-LPTHREAD
 LPVOID
-LPWSTR
 LRESULT
 LTRB
-LTWH
 luid
 LUID
 luid
@@ -231,14 +209,11 @@ madvise
 MADWEASEL
 MAKEINTRESOURCE
 malloc
-MANUALLISTVIEW
 maxv
 memalign
 memcmp
 memcpy
-MEMORYSTATUSEX
 memset
-MESSAGEBOX
 Microsoft
 midgame
 millgame
@@ -260,13 +235,10 @@ msvc
 mtdf
 Mtdf
 MTDF
-muehle
-MUEHLE
 mul
 mutex
 MVC
 namespace
-NButton
 NCCREATE
 NDEBUG
 NEEDREMOVE
@@ -286,7 +258,6 @@ NOMINMAX
 nop
 noskipws
 NOZORDER
-npos
 nsize
 NTotal
 nullptr
@@ -303,7 +274,6 @@ patchlevel
 pdf
 PDWORD
 pext
-pgmptr
 PGROUP
 pid
 pieceitem
@@ -319,7 +289,6 @@ POSIXALIGNEDALLOC
 pragma
 prefetch
 prefetches
-Prefs
 preloads
 printf
 println
@@ -346,7 +315,6 @@ rdtscp
 READONLY
 READWRITE
 readyok
-refactoring
 registar
 responsponds
 Resync
@@ -389,7 +357,6 @@ skvf
 SLv
 SMk
 SMs
-snackbar
 SNb
 snd
 SNl
@@ -418,7 +385,6 @@ stdio
 stdlib
 stdout
 STe
-sterlund
 STh
 stof
 strcmp
@@ -467,12 +433,10 @@ unencoded
 unimi
 Uninitialize
 unistd
-unregister
 upperbound
 uri
 url
 USERDATA
-ushort
 usleep
 utf
 utils

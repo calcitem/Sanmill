@@ -39,3 +39,4 @@ language_info\.dart$
 zobrist\.dart$
 release\.sh$
 \.txt$
+^\.vscode/settings\.json$
