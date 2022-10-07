@@ -269,6 +269,8 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   setSetupPositionCopy(BuildContext context) async {
     //String str = S.of(context).moveHistoryCopied; // TODO: l10n
 
+    setSetupPositionDone();
+
     String fen = MillController().position.fen;
 
     await Clipboard.setData(
