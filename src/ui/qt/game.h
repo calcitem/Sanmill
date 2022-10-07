@@ -116,7 +116,7 @@ public:
     void appendGameOverReasonToMoveHistory();
     void setTips();
 
-    [[nodiscard]] const std::vector<std::string> *move_hostory() const
+    [[nodiscard]] const std::vector<std::string> *move_history() const
     {
         return &moveHistory;
     }

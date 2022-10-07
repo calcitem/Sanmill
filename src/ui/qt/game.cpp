@@ -740,7 +740,7 @@ void Game::flip()
 
     // Update move history
     int row = 0;
-    for (const auto &str : *move_hostory()) {
+    for (const auto &str : *move_history()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
@@ -763,7 +763,7 @@ void Game::mirror()
     // Update move history
     int row = 0;
 
-    for (const auto &str : *move_hostory()) {
+    for (const auto &str : *move_history()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
@@ -788,7 +788,7 @@ void Game::turnRight()
     // Update move history
     int row = 0;
 
-    for (const auto &str : *move_hostory()) {
+    for (const auto &str : *move_history()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
@@ -810,7 +810,7 @@ void Game::turnLeft()
 
     // Update move history
     int row = 0;
-    for (const auto &str : *move_hostory()) {
+    for (const auto &str : *move_history()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
 
@@ -1050,7 +1050,7 @@ bool Game::actionPiece(QPointF p)
         int k = 0;
 
         // Output command line
-        for (const auto &i : *move_hostory()) {
+        for (const auto &i : *move_history()) {
             // Skip added because the standard list container has no subscripts
             if (k++ <= currentRow)
                 continue;
@@ -1110,7 +1110,7 @@ bool Game::resign()
     int k = 0;
 
     // Output command line
-    for (const auto &i : *move_hostory()) {
+    for (const auto &i : *move_history()) {
         // Skip added because the standard list container has no index
         if (k++ <= currentRow)
             continue;
@@ -1199,7 +1199,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     emit statusBarChanged(message);
 
     // For opening
-    if (move_hostory()->size() <= 1) {
+    if (move_history()->size() <= 1) {
         moveListModel.removeRows(0, moveListModel.rowCount());
         moveListModel.insertRow(0);
         moveListModel.setData(moveListModel.index(0), position.get_record());
@@ -1209,13 +1209,13 @@ bool Game::command(const string &cmd, bool update /* = true */)
         currentRow = moveListModel.rowCount() - 1;
         // Skip the added rows. The iterator does not support the + operator and
         // can only skip one by one++
-        auto i = move_hostory()->begin();
-        for (int r = 0; i != move_hostory()->end(); ++i) {
+        auto i = move_history()->begin();
+        for (int r = 0; i != move_history()->end(); ++i) {
             if (r++ > currentRow)
                 break;
         }
         // Insert the new score line into list model
-        while (i != move_hostory()->end()) {
+        while (i != move_history()->end()) {
             moveListModel.insertRow(++currentRow);
             moveListModel.setData(moveListModel.index(currentRow),
                                   (*i++).c_str());
