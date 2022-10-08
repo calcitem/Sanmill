@@ -29,5 +29,6 @@ extension ScaffoldMessengerExtension on ScaffoldMessengerState {
 }
 
 class CustomSnackBar extends SnackBar {
-  CustomSnackBar(String message, {super.key}) : super(content: Text(message));
+  CustomSnackBar(String message, {super.key, super.duration})
+      : super(content: Text(message));
 }

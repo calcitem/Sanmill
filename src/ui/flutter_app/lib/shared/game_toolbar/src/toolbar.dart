@@ -459,8 +459,9 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
           S.of(context).hasPlacedPieceCount(newPlaced),
           snackBar: false); // TODO: How to show side to move?
 
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBar(CustomSnackBar(_infoText(context)));
+      rootScaffoldMessengerKey.currentState!.showSnackBar(CustomSnackBar(
+          _infoText(context),
+          duration: const Duration(seconds: 6)));
     }
 
     if (newPhase != Phase.placing) {
