@@ -471,7 +471,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     showModalBottomSheet(
       context: context,
       builder: (_) => _PlacedModal(
-        placedGroupValue: 0, // TODO: placedGroupValue should be?
+        placedGroupValue: newPlaced, // TODO: placedGroupValue should be?
         onChanged: callback,
         begin: setSetupPositionPlacedGetBegin(),
       ),
