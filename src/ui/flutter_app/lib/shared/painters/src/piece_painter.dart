@@ -147,7 +147,8 @@ class PiecePainter extends CustomPainter {
       );
     }
 
-    if (blurIndex != null) {
+    if (blurIndex != null &&
+        MillController().gameInstance.gameMode != GameMode.setupPosition) {
       paint.color = blurPositionColor;
       paint.style = PaintingStyle.fill;
 
