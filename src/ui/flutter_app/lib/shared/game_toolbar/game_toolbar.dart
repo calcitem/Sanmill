@@ -32,5 +32,6 @@ import 'package:sanmill/shared/string_buffer_helper.dart';
 
 part 'src/item_theme.dart';
 part 'src/item_theme_data.dart';
-part 'src/toolbar.dart';
+part 'src/game_page_toolbar.dart';
+part 'src/setup_position_toolbar.dart';
 part 'src/toolbar_item.dart';

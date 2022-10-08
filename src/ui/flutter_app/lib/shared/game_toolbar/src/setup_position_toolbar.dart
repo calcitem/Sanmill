@@ -16,51 +16,6 @@
 
 part of '../game_toolbar.dart';
 
-class GamePageToolBar extends StatelessWidget {
-  final List<Widget> children;
-  final Color? backgroundColor;
-  final Color? itemColor;
-
-  static const _padding = EdgeInsets.symmetric(vertical: 2);
-  static const _margin = EdgeInsets.symmetric(vertical: 0.5);
-
-  /// Gets the calculated height this widget adds to it's children.
-  /// To get the absolute height add the surrounding [ButtonThemeData.height].
-  static double get height => (_padding.vertical + _margin.vertical) * 2;
-
-  const GamePageToolBar({
-    Key? key,
-    required this.children,
-    this.backgroundColor,
-    this.itemColor,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: backgroundColor,
-      ),
-      margin: _margin,
-      padding: _padding,
-      child: ToolbarItemTheme(
-        data: ToolbarItemThemeData(
-          style: ToolbarItem.styleFrom(primary: itemColor),
-        ),
-        child: Directionality(
-          textDirection: TextDirection.ltr,
-          child: ButtonBar(
-            buttonPadding: EdgeInsets.zero,
-            alignment: MainAxisAlignment.spaceAround,
-            children: children,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class SetupPositionToolBar extends StatefulWidget {
   const SetupPositionToolBar({Key? key}) : super(key: key);
 
