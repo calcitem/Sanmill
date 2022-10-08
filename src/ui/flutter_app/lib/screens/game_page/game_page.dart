@@ -112,8 +112,28 @@ class GamePage extends StatelessWidget {
 }
 
 // TODO: [Leptopoda] Change layout (landscape mode, padding on small devices)
-class _Game extends StatelessWidget {
+class _Game extends StatefulWidget {
   const _Game({Key? key}) : super(key: key);
+  @override
+  State<_Game> createState() => _GameState();
+}
+
+class _GameState extends State<_Game> {
+  @override
+  void initState() {
+    super.initState();
+    MillController().headerIconsNotifier.addListener(_showPieceIndicator);
+  }
+
+  @override
+  void dispose() {
+    MillController().headerIconsNotifier.removeListener(_showPieceIndicator);
+    super.dispose();
+  }
+
+  void _showPieceIndicator() {
+    setState(() {}); // TODO: Only refresh PieceIndicator.
+  }
 
   void _showGameModalBottomSheet(BuildContext context) => showModalBottomSheet(
         context: context,
@@ -223,14 +243,76 @@ class _Game extends StatelessWidget {
     ];
   }
 
+  String getPiecesText(int count) {
+    String ret = "";
+    for (int i = 0; i < count; i++) {
+      ret = "$ret●";
+    }
+    return ret;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         GameHeader(),
-        const SizedBox(height: AppTheme.boardMargin),
+        //const SizedBox(height: AppTheme.boardMargin),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                  getPiecesText(MillController()
+                      .position
+                      .pieceInHandCount[PieceColor.black]!),
+                  style: TextStyle(
+                      color: DB().generalSettings.aiMovesFirst
+                          ? DB().colorSettings.whitePieceColor
+                          : DB().colorSettings.blackPieceColor)),
+              Text(
+                  getPiecesText(DB().ruleSettings.piecesCount -
+                      MillController()
+                          .position
+                          .pieceInHandCount[PieceColor.white]! -
+                      MillController()
+                          .position
+                          .pieceOnBoardCount[PieceColor.white]!),
+                  style: TextStyle(
+                      color: DB().generalSettings.aiMovesFirst
+                          ? DB().colorSettings.blackPieceColor.withOpacity(0.8)
+                          : DB()
+                              .colorSettings
+                              .whitePieceColor
+                              .withOpacity(0.8)))
+            ]),
         const Board(),
-        const SizedBox(height: AppTheme.boardMargin),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                  getPiecesText(DB().ruleSettings.piecesCount -
+                      MillController()
+                          .position
+                          .pieceInHandCount[PieceColor.black]! -
+                      MillController()
+                          .position
+                          .pieceOnBoardCount[PieceColor.black]!),
+                  style: TextStyle(
+                      color: DB().generalSettings.aiMovesFirst
+                          ? DB().colorSettings.whitePieceColor.withOpacity(0.8)
+                          : DB()
+                              .colorSettings
+                              .blackPieceColor
+                              .withOpacity(0.8))),
+              Text(
+                  getPiecesText(MillController()
+                      .position
+                      .pieceInHandCount[PieceColor.white]!),
+                  style: TextStyle(
+                      color: DB().generalSettings.aiMovesFirst
+                          ? DB().colorSettings.blackPieceColor
+                          : DB().colorSettings.whitePieceColor))
+            ]),
+        //const SizedBox(height: AppTheme.boardMargin),
         if (MillController().gameInstance.gameMode == GameMode.setupPosition)
           const SetupPositionToolBar(),
         if (DB().displaySettings.isHistoryNavigationToolbarShown &&
