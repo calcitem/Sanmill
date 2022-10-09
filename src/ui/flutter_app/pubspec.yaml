@@ -8,6 +8,7 @@ environment:
   sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
+  advance_image_picker: ^0.1.7+1
   animated_text_kit: 4.1.1
   catcher:
     git:
@@ -28,6 +29,7 @@ dependencies:
     sdk: flutter
   flutter_platform_alert: ^0.3.0
   flutter_picker: ^2.0.5
+  google_mlkit_text_recognition: ^0.4.0
 
   # local database
   hive: ^2.2.3
