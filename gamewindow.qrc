@@ -72,8 +72,8 @@
         <file>resources/sound/GameStart.wav</file>
         <file>resources/sound/Mill_B.wav</file>
         <file>resources/sound/Mill_W.wav</file>
-        <file>resources/sound/MillRepeatly_B.wav</file>
-        <file>resources/sound/MillRepeatly_W.wav</file>
+        <file>resources/sound/MillRepeatedly_B.wav</file>
+        <file>resources/sound/MillRepeatedly_W.wav</file>
         <file>resources/sound/NextMill_B.wav</file>
         <file>resources/sound/NextMill_W.wav</file>
         <file>resources/sound/Obvious.wav</file>

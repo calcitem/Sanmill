@@ -904,8 +904,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Media>
-    <Media Include="resources\sound\MillRepeatly_B.wav" />
-    <Media Include="resources\sound\MillRepeatly_W.wav" />
+    <Media Include="resources\sound\MillRepeatedly_B.wav" />
+    <Media Include="resources\sound\MillRepeatedly_W.wav" />
     <Media Include="resources\sound\Mill_B.wav" />
     <Media Include="resources\sound\Mill_W.wav" />
     <Media Include="resources\sound\move.wav">
