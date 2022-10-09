@@ -261,27 +261,30 @@ class _GameState extends State<_Game> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                  getPiecesText(MillController()
-                      .position
-                      .pieceInHandCount[PieceColor.black]!),
+                  getPiecesText(MillController().position.pieceInHandCount[
+                      !DB().generalSettings.aiMovesFirst
+                          ? PieceColor.black
+                          : PieceColor.white]!),
                   style: TextStyle(
-                      color: DB().generalSettings.aiMovesFirst
-                          ? DB().colorSettings.whitePieceColor
-                          : DB().colorSettings.blackPieceColor)),
+                      color: !DB().generalSettings.aiMovesFirst
+                          ? DB().colorSettings.blackPieceColor
+                          : DB().colorSettings.whitePieceColor)),
               Text(
                   getPiecesText(DB().ruleSettings.piecesCount -
-                      MillController()
-                          .position
-                          .pieceInHandCount[PieceColor.white]! -
-                      MillController()
-                          .position
-                          .pieceOnBoardCount[PieceColor.white]!),
+                      MillController().position.pieceInHandCount[
+                          !DB().generalSettings.aiMovesFirst
+                              ? PieceColor.white
+                              : PieceColor.black]! -
+                      MillController().position.pieceOnBoardCount[
+                          !DB().generalSettings.aiMovesFirst
+                              ? PieceColor.white
+                              : PieceColor.black]!),
                   style: TextStyle(
-                      color: DB().generalSettings.aiMovesFirst
-                          ? DB().colorSettings.blackPieceColor.withOpacity(0.8)
+                      color: !DB().generalSettings.aiMovesFirst
+                          ? DB().colorSettings.whitePieceColor.withOpacity(0.8)
                           : DB()
                               .colorSettings
-                              .whitePieceColor
+                              .blackPieceColor
                               .withOpacity(0.8)))
             ]),
         const Board(),
@@ -290,23 +293,26 @@ class _GameState extends State<_Game> {
             children: <Widget>[
               Text(
                   getPiecesText(DB().ruleSettings.piecesCount -
-                      MillController()
-                          .position
-                          .pieceInHandCount[PieceColor.black]! -
-                      MillController()
-                          .position
-                          .pieceOnBoardCount[PieceColor.black]!),
+                      MillController().position.pieceInHandCount[
+                          !DB().generalSettings.aiMovesFirst
+                              ? PieceColor.black
+                              : PieceColor.white]! -
+                      MillController().position.pieceOnBoardCount[
+                          !DB().generalSettings.aiMovesFirst
+                              ? PieceColor.black
+                              : PieceColor.white]!),
                   style: TextStyle(
-                      color: DB().generalSettings.aiMovesFirst
-                          ? DB().colorSettings.whitePieceColor.withOpacity(0.8)
+                      color: !DB().generalSettings.aiMovesFirst
+                          ? DB().colorSettings.blackPieceColor.withOpacity(0.8)
                           : DB()
                               .colorSettings
-                              .blackPieceColor
+                              .whitePieceColor
                               .withOpacity(0.8))),
               Text(
-                  getPiecesText(MillController()
-                      .position
-                      .pieceInHandCount[PieceColor.white]!),
+                  getPiecesText(MillController().position.pieceInHandCount[
+                      !DB().generalSettings.aiMovesFirst
+                          ? PieceColor.white
+                          : PieceColor.black]!),
                   style: TextStyle(
                       color: DB().generalSettings.aiMovesFirst
                           ? DB().colorSettings.blackPieceColor
