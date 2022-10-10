@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "{player} zu bewegen.",
+  "tipToMove": "{player} ist an der Reihe sich zu bewegen.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -240,7 +240,7 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} ist zurückgetreten.",
+  "loseReasonResign": "{player} hat aufgegeben.",
   "@loseReasonResign": {
     "description": " resign."
   },
@@ -778,7 +778,7 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "appearance": "Das Auftreten",
+  "appearance": "Aussehen",
   "@appearance": {
     "description": "Appearance"
   },
@@ -1160,7 +1160,7 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "filename": "Name der Datei",
+  "filename": "Dateiname",
   "@filename": {
     "description": "File name"
   },
