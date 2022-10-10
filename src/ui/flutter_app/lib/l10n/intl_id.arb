@@ -20,23 +20,23 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Manusia Vs AI",
+  "humanVsAi": "Manusia Vs. AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "Manusia Vs Manusia",
+  "humanVsHuman": "Manusia Vs. Manusia",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "AI Vs AI",
+  "aiVsAi": "AI Vs. AI",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Manusia Vs Awan",
+  "humanVsCloud": "Manusia Vs. Awan",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": "Manusia Vs LAN",
+  "humanVsLAN": "Manusia Vs. LAN",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
@@ -60,7 +60,7 @@
   "@noGameRecord": {
     "description": "No record"
   },
-  "ok": "Ok",
+  "ok": "OK",
   "@ok": {
     "description": "OK"
   },
@@ -68,7 +68,7 @@
   "@confirm": {
     "description": "Confirm"
   },
-  "cancel": "Membatalkan",
+  "cancel": "Batalkan",
   "@cancel": {
     "description": "Cancel"
   },
@@ -112,7 +112,7 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Pabrik! Ambil bagian lawan.",
+  "tipMill": "Mill! Ambil bagian lawan.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "{player} untuk bergerak.",
+  "tipToMove": "{player} bergerak.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -204,7 +204,7 @@
   "@restartGame": {
     "description": "Restart current game?"
   },
-  "restart": "Restart",
+  "restart": "Mulai Ulang",
   "@restart": {
     "description": "Restart"
   },
@@ -220,11 +220,11 @@
   "@error": {
     "description": "Error"
   },
-  "winRate": "Win Rate",
+  "winRate": "Tingkat Kemenangan",
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Score:",
+  "score": "Skor:",
   "@score": {
     "description": "Score"
   },
@@ -268,11 +268,11 @@
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
-  "gameOverUnknownReason": "Tamat! Alasan yang tidak diketahui.",
+  "gameOverUnknownReason": "Permainan berakhir! Alasannya tidak diketahui.",
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
-  "gameOver": "Tamat",
+  "gameOver": "Permainan telah berakhir",
   "@gameOver": {
     "description": "Game Over"
   },
@@ -332,7 +332,7 @@
   "@playSounds": {
     "description": "Sound effects"
   },
-  "playSoundsInTheGame": "Mainkan suara dalam game",
+  "playSoundsInTheGame": "Mainkan suara dalam permainan",
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
@@ -356,11 +356,11 @@
   "@ai": {
     "description": "AI"
   },
-  "alternate": "Bergantian",
+  "alternate": "Alternatif",
   "@alternate": {
     "description": "Alternate"
   },
-  "isAutoRestart": "Mulai ulang game secara otomatis saat game berakhir",
+  "isAutoRestart": "Mulai ulang permainan secara otomatis saat permainan berakhir",
   "@isAutoRestart": {
     "description": "Auto-restart game when game over"
   },
@@ -416,7 +416,7 @@
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
   },
-  "isDefenderMoveFirst": "Pemain kedua bergerak lebih dulu",
+  "isDefenderMoveFirst": "Pemain kedua bergerak terlebih dahulu",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"
   },
