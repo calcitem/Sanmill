@@ -29,7 +29,7 @@ dependencies:
     sdk: flutter
   flutter_platform_alert: ^0.3.0
   flutter_picker: ^2.0.5
-  google_mlkit_text_recognition: ^0.4.0
+  flutter_tesseract_ocr: ^0.4.20
 
   # local database
   hive: ^2.2.3
@@ -93,6 +93,7 @@ flutter:
     - assets/audios/remove.mp3
     - assets/audios/select.mp3
     - assets/audios/win.mp3
+    - assets/tessdata_config.json
 
 flutter_intl:
   enabled: true

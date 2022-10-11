@@ -18,9 +18,12 @@ import 'dart:io';
 
 import 'package:advance_image_picker/advance_image_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
 import 'package:intl/intl.dart';
+import 'package:sanmill/services/logger.dart';
 import 'package:sanmill/services/mill/mill.dart';
+
+import '../../../generated/intl/l10n.dart';
 
 // We don't care about missing API docs in the example app.
 // ignore_for_file: public_member_api_docs
@@ -114,15 +117,57 @@ class CameraPage extends StatefulWidget {
 
 class CameraPageState extends State<CameraPage> {
   List<ImageObject> _imgObjs = [];
+  String ocrText = "";
 
-  void capture() async {
-    final inputImage = InputImage.fromFile(File(_imgObjs[0].originalPath));
-    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+  // https://www.gdpicture.com/guides/gdpicture/Affecting%20Tesseract%20OCR%20engine%20with%20special%20parameters.html
+  Future<void> capture() async {
+    ocrText =
+        await FlutterTesseractOcr.extractText(_imgObjs[0].originalPath, args: {
+      "tessedit_char_whitelist": "abcdefgx1234567890.- ",
+      "load_system_dawg": "0",
+      "chs_leading_punct": "",
+      "chs_trailing_punct1": ".",
+      "chs_trailing_punct2": "",
+      "numeric_punctuation": ".",
+    });
 
-    final RecognizedText recognizedText =
-        await textRecognizer.processImage(inputImage);
-    String text = recognizedText.text;
-    ImportService.import(text);
+    logger.v(ocrText);
+
+    var textFieldController = TextEditingController(text: ocrText);
+    setState(() {});
+    if (mounted == false) return;
+
+    ocrText = await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("OCR"), // TODO: l10n
+          content: TextField(
+            maxLines: 200,
+            controller: textFieldController,
+            decoration: const InputDecoration(
+              enabled: true,
+            ),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              child: Text(S.of(context).cancel),
+              onPressed: () => Navigator.pop(context),
+            ),
+            ElevatedButton(
+              child: Text(S.of(context).ok),
+              onPressed: () => Navigator.pop(context, textFieldController.text),
+            ),
+          ],
+        );
+      },
+      barrierDismissible: false,
+    );
+
+    logger.v(ocrText);
+
+    ImportService.import(ocrText);
+    setState(() {});
   }
 
   @override
@@ -163,10 +208,8 @@ class CameraPageState extends State<CameraPage> {
           }));
 
           if ((objects?.length ?? 0) > 0) {
-            setState(() {
-              _imgObjs = objects!;
-              capture();
-            });
+            _imgObjs = objects!;
+            capture();
           }
         },
         child: const Icon(Icons.add),
