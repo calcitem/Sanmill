@@ -96,11 +96,9 @@ class GamePage extends StatelessWidget {
                       : maxWidth,
                 );
 
-                return Center(
-                  child: ConstrainedBox(
-                    constraints: constraint,
-                    child: const SingleChildScrollView(child: _Game()),
-                  ),
+                return ConstrainedBox(
+                  constraints: constraint,
+                  child: const SingleChildScrollView(child: _Game()),
                 );
               },
             ),
