@@ -341,8 +341,4 @@ class MillController {
   /// Starts a game export.
   static Future<void> export(BuildContext context) async =>
       ImportService.exportGame(context);
-
-  /// Starts a smart lens.
-  static Future<void> scan(BuildContext context) async =>
-      ImportService.scanGame(context);
 }

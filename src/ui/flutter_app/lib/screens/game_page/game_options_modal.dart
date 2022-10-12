@@ -106,16 +106,11 @@ class _GameOptionsModal extends StatelessWidget {
         if (MillController().recorder.hasPrevious == true ||
             MillController().isPositionSetup == true)
           const CustomSpacer(),
-        SimpleDialogOption(
-          onPressed: () => MillController.scan(context),
-          child: const Text("Smart lens"),
-        ),
         if (DB().generalSettings.screenReaderSupport)
           SimpleDialogOption(
             onPressed: () => Navigator.pop(context),
             child: Text(S.of(context).close),
           ),
-        const CustomSpacer(),
       ],
     );
   }
