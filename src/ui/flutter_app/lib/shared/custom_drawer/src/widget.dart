@@ -101,24 +101,26 @@ class CustomDrawerState extends State<CustomDrawer>
         widthFactor: _openRatio,
         child: Material(
           color: DB().colorSettings.drawerColor,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              widget.header,
-              const Divider(
-                endIndent: 0.0,
-                indent: 0.0,
-                color: AppTheme.drawerDividerColor,
-              ),
-              ListView.builder(
-                controller: ScrollController(),
-                padding: const EdgeInsets.only(top: 4.0),
-                physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: widget.items.length,
-                itemBuilder: _buildItem,
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                widget.header,
+                const Divider(
+                  endIndent: 0.0,
+                  indent: 0.0,
+                  color: AppTheme.drawerDividerColor,
+                ),
+                ListView.builder(
+                  controller: ScrollController(),
+                  padding: const EdgeInsets.only(top: 4.0),
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: widget.items.length,
+                  itemBuilder: _buildItem,
+                ),
+              ],
+            ),
           ),
         ),
       ),
