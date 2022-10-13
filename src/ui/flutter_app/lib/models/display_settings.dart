@@ -47,6 +47,7 @@ class DisplaySettings {
     @Deprecated("Until other export options are implemented this setting shouldn't be used.")
         this.standardNotationEnabled = true,
     this.isPieceCountInHandShown = true,
+    this.isUnplacedAndRemovedPiecesShown = false,
     this.isNotationsShown = false,
     this.isHistoryNavigationToolbarShown = false,
     this.boardBorderLineWidth = 2.0,
@@ -118,6 +119,9 @@ class DisplaySettings {
 
   @HiveField(15)
   final double fontScale;
+
+  @HiveField(16, defaultValue: false)
+  final bool isUnplacedAndRemovedPiecesShown;
 
   /// Encodes a Json style map into a [DisplaySettings] object
   factory DisplaySettings.fromJson(Map<String, dynamic> json) =>

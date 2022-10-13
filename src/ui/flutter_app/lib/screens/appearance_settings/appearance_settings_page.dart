@@ -240,6 +240,12 @@ class AppearanceSettingsPage extends StatelessWidget {
           titleString: S.of(context).isPieceCountInHandShown,
         ),
         SettingsListTile.switchTile(
+          value: displaySettings.isUnplacedAndRemovedPiecesShown,
+          onChanged: (val) => DB().displaySettings =
+              displaySettings.copyWith(isUnplacedAndRemovedPiecesShown: val),
+          titleString: S.of(context).isUnplacedAndRemovedPiecesShown,
+        ),
+        SettingsListTile.switchTile(
           value: displaySettings.isNotationsShown,
           onChanged: (val) => DB().displaySettings =
               displaySettings.copyWith(isNotationsShown: val),

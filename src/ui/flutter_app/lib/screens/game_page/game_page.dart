@@ -254,69 +254,81 @@ class _GameState extends State<_Game> {
     return Column(
       children: <Widget>[
         GameHeader(),
-        //const SizedBox(height: AppTheme.boardMargin),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                  getPiecesText(MillController().position.pieceInHandCount[
-                      !DB().generalSettings.aiMovesFirst
-                          ? PieceColor.black
-                          : PieceColor.white]!),
-                  style: TextStyle(
-                      color: !DB().generalSettings.aiMovesFirst
-                          ? DB().colorSettings.blackPieceColor
-                          : DB().colorSettings.whitePieceColor)),
-              Text(
-                  getPiecesText(DB().ruleSettings.piecesCount -
-                      MillController().position.pieceInHandCount[
-                          !DB().generalSettings.aiMovesFirst
-                              ? PieceColor.white
-                              : PieceColor.black]! -
-                      MillController().position.pieceOnBoardCount[
-                          !DB().generalSettings.aiMovesFirst
-                              ? PieceColor.white
-                              : PieceColor.black]!),
-                  style: TextStyle(
-                      color: !DB().generalSettings.aiMovesFirst
-                          ? DB().colorSettings.whitePieceColor.withOpacity(0.8)
-                          : DB()
-                              .colorSettings
-                              .blackPieceColor
-                              .withOpacity(0.8)))
-            ]),
+        DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
+                MillController().gameInstance.gameMode == GameMode.setupPosition
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                    Text(
+                        getPiecesText(
+                            MillController().position.pieceInHandCount[
+                                !DB().generalSettings.aiMovesFirst
+                                    ? PieceColor.black
+                                    : PieceColor.white]!),
+                        style: TextStyle(
+                            color: !DB().generalSettings.aiMovesFirst
+                                ? DB().colorSettings.blackPieceColor
+                                : DB().colorSettings.whitePieceColor)),
+                    Text(
+                        getPiecesText(DB().ruleSettings.piecesCount -
+                            MillController().position.pieceInHandCount[
+                                !DB().generalSettings.aiMovesFirst
+                                    ? PieceColor.white
+                                    : PieceColor.black]! -
+                            MillController().position.pieceOnBoardCount[
+                                !DB().generalSettings.aiMovesFirst
+                                    ? PieceColor.white
+                                    : PieceColor.black]!),
+                        style: TextStyle(
+                            color: !DB().generalSettings.aiMovesFirst
+                                ? DB()
+                                    .colorSettings
+                                    .whitePieceColor
+                                    .withOpacity(0.8)
+                                : DB()
+                                    .colorSettings
+                                    .blackPieceColor
+                                    .withOpacity(0.8)))
+                  ])
+            : const SizedBox(height: AppTheme.boardMargin),
         const Board(),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                  getPiecesText(DB().ruleSettings.piecesCount -
-                      MillController().position.pieceInHandCount[
-                          !DB().generalSettings.aiMovesFirst
-                              ? PieceColor.black
-                              : PieceColor.white]! -
-                      MillController().position.pieceOnBoardCount[
-                          !DB().generalSettings.aiMovesFirst
-                              ? PieceColor.black
-                              : PieceColor.white]!),
-                  style: TextStyle(
-                      color: !DB().generalSettings.aiMovesFirst
-                          ? DB().colorSettings.blackPieceColor.withOpacity(0.8)
-                          : DB()
-                              .colorSettings
-                              .whitePieceColor
-                              .withOpacity(0.8))),
-              Text(
-                  getPiecesText(MillController().position.pieceInHandCount[
-                      !DB().generalSettings.aiMovesFirst
-                          ? PieceColor.white
-                          : PieceColor.black]!),
-                  style: TextStyle(
-                      color: DB().generalSettings.aiMovesFirst
-                          ? DB().colorSettings.blackPieceColor
-                          : DB().colorSettings.whitePieceColor))
-            ]),
-        //const SizedBox(height: AppTheme.boardMargin),
+        DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
+                MillController().gameInstance.gameMode == GameMode.setupPosition
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                    Text(
+                        getPiecesText(DB().ruleSettings.piecesCount -
+                            MillController().position.pieceInHandCount[
+                                !DB().generalSettings.aiMovesFirst
+                                    ? PieceColor.black
+                                    : PieceColor.white]! -
+                            MillController().position.pieceOnBoardCount[
+                                !DB().generalSettings.aiMovesFirst
+                                    ? PieceColor.black
+                                    : PieceColor.white]!),
+                        style: TextStyle(
+                            color: !DB().generalSettings.aiMovesFirst
+                                ? DB()
+                                    .colorSettings
+                                    .blackPieceColor
+                                    .withOpacity(0.8)
+                                : DB()
+                                    .colorSettings
+                                    .whitePieceColor
+                                    .withOpacity(0.8))),
+                    Text(
+                        getPiecesText(
+                            MillController().position.pieceInHandCount[
+                                !DB().generalSettings.aiMovesFirst
+                                    ? PieceColor.white
+                                    : PieceColor.black]!),
+                        style: TextStyle(
+                            color: DB().generalSettings.aiMovesFirst
+                                ? DB().colorSettings.blackPieceColor
+                                : DB().colorSettings.whitePieceColor))
+                  ])
+            : const SizedBox(height: AppTheme.boardMargin),
         if (MillController().gameInstance.gameMode == GameMode.setupPosition)
           const SetupPositionToolBar(),
         if (DB().displaySettings.isHistoryNavigationToolbarShown &&
