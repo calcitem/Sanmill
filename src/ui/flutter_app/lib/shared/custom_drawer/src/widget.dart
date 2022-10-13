@@ -96,7 +96,7 @@ class CustomDrawerState extends State<CustomDrawer>
   @override
   Widget build(BuildContext context) {
     final drawer = Align(
-      alignment: AlignmentDirectional.centerStart,
+      alignment: AlignmentDirectional.topStart,
       child: FractionallySizedBox(
         widthFactor: _openRatio,
         child: Material(
