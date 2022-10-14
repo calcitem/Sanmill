@@ -1171,5 +1171,87 @@
   "gameFiles": "Pelitiedostot",
   "@gameFiles": {
     "description": "Game files"
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} on poistettava.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "empty": "Tyhjä",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "ban": "Kieltää",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "noPiecesCanBeRemoved": "Mitään osia ei voi poistaa.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "placedPieceCount": "Sijoitetun kappaleen määrä sijoitusvaiheessa.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "noMove": "Ei liikettä.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "clean": "Puhdas",
+  "@clean": {
+    "description": "Clean"
+  },
+  "restoredPosition": "Alkuasento palautettu.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "cleanedUp": "Siivottu.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Poista",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "Sijoitettu ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "hasPlacedPieceCount": "Nykyinen pelaaja on asettanut {count} nappuloita.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Ei aseta vaihetta, ei voi muuttaa sitä.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Liitä",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Tahna on valmis.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Ei voi liittää.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

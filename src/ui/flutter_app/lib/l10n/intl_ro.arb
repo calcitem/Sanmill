@@ -1171,5 +1171,87 @@
   "gameFiles": "Fișiere de joc",
   "@gameFiles": {
     "description": "Game files"
+  },
+  "empty": "Gol",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "restoredPosition": "Poziția inițială restabilită.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "ban": "Interzice",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "clean": "Curat",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Curatat.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Elimina",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Nicio bucată nu poate fi îndepărtată.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} piese}} trebuie eliminate.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "Plasat ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Număr de piese plasate în faza de plasare.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Jucătorul actual a plasat piese {count}.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Faza nu se plasează, nu o pot schimba.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Pastă",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pasta este gata.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Nu se poate lipi.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "noMove": "Nicio mișcare.",
+  "@noMove": {
+    "description": "No move."
   }
 }

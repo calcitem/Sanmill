@@ -1171,5 +1171,87 @@
   "filename": "ชื่อไฟล์",
   "@filename": {
     "description": "File name"
+  },
+  "ban": "ห้าม",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "noMove": "ไม่มีการเคลื่อนไหว",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "เรียกคืนตำแหน่งเริ่มต้น",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} ชิ้น}} จําเป็นต้องเอาออก",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "empty": "ว่างเปล่า",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "clean": "ทำความสะอาด",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "ทำความสะอาด.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "ลบ",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "ไม่สามารถถอดชิ้นส่วนได้",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "placedCount": "วาง ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "วางนับชิ้นในขั้นตอนการวาง",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "ผู้เล่นปัจจุบันได้วาง {count} ชิ้น",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "ไม่วางเฟสเปลี่ยนไม่ได้",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "แปะ",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "วางเสร็จแล้ว",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "วางไม่ได้",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

@@ -1171,5 +1171,87 @@
   "gameFiles": "Játékfájlok",
   "@gameFiles": {
     "description": "Game files"
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} darab}} el kell távolítani.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "noPiecesCanBeRemoved": "Egyetlen darab sem távolítható el.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "ban": "Tilalom",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "Üres",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Nincs mozgás.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Kiinduló helyzet visszaállítva.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Tiszta",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Feltakarítva.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Távolítsa el",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "Elhelyezve ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Elhelyezett darabszám az elhelyezési fázisban.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Az aktuális játékos {count} figurát helyezett el.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Nem helyezi el a fázist, nem módosíthatja.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Paszta",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "A paszta kész.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Nem lehet beilleszteni.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

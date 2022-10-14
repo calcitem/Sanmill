@@ -1171,5 +1171,87 @@
   "gameSavedTo": "આ રમત માટે સાચવવામાં આવે છે",
   "@gameSavedTo": {
     "description": "The game is saved to"
+  },
+  "placedCount": "મૂકેલ ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "noPiecesCanBeRemoved": "કોઈ ટુકડાઓ દૂર કરી શકાતા નથી.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "ban": "પ્રતિબંધ",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "ખાલી",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "કોઈ ચાલ.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "clean": "ચોખ્ખો",
+  "@clean": {
+    "description": "Clean"
+  },
+  "restoredPosition": "પુનઃસ્થાપિત પ્રારંભિક સ્થિતિ.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "cleanedUp": "સ્વચ્છ કરેલ.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "દૂર કરો",
+  "@remove": {
+    "description": "Remove"
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} ટુકડા}} દૂર કરવાની જરૂર છે.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "મૂકવાના તબક્કામાં મૂકવામાં આવેલા ટુકડાઓની ગણતરી.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "વર્તમાન ખેલાડીએ {count} ટુકડા મૂક્યા છે.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "તબક્કો મૂકતો નથી, તેને બદલી શકતો નથી.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "પેસ્ટ કરો",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "પેસ્ટ થઈ ગઈ છે.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "પેસ્ટ કરી શકાતું નથી.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

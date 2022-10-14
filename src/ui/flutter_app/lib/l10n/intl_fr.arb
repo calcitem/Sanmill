@@ -1171,5 +1171,87 @@
   "gameFiles": "Fichiers de jeu",
   "@gameFiles": {
     "description": "Game files"
+  },
+  "ban": "Interdire",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "noPiecesCanBeRemoved": "Aucune pièce ne peut être retirée.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "placedPieceCount": "Décompte des pièces placées lors de la phase de placement.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "empty": "Vide",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Ne bouge pas.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "clean": "Nettoyer",
+  "@clean": {
+    "description": "Clean"
+  },
+  "restoredPosition": "Position initiale restaurée.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "cleanedUp": "Nettoyé.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Retirer",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "Placé ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} doivent être supprimés.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "hasPlacedPieceCount": "Le joueur actuel a placé {count} pièces.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Ne pas placer la phase, ne peut pas la changer.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Pâte",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "La pâte est faite.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Impossible de coller.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

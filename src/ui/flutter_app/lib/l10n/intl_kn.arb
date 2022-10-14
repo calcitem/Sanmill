@@ -1171,5 +1171,87 @@
   "gameSavedTo": "ಆಟವನ್ನು ಉಳಿಸಲಾಗಿದೆ",
   "@gameSavedTo": {
     "description": "The game is saved to"
+  },
+  "restoredPosition": "ಆರಂಭಿಕ ಸ್ಥಾನವನ್ನು ಮರುಸ್ಥಾಪಿಸಲಾಗಿದೆ.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "noPiecesCanBeRemoved": "ಯಾವುದೇ ತುಣುಕುಗಳನ್ನು ತೆಗೆಯಲಾಗುವುದಿಲ್ಲ.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "ban": "ನಿಷೇಧಿಸಿ",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "ಖಾಲಿ",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "ಯಾವುದೇ ಚಲನೆ ಇಲ್ಲ.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "clean": "ಕ್ಲೀನ್",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "ಸ್ವಚ್ಛಗೊಳಿಸಲಾಗಿದೆ.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "ತೆಗೆದುಹಾಕಿ",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "ಇರಿಸಲಾಗಿದೆ ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count, plural, =0{ಪೀಸ್}=1{{count} ತುಣುಕು}other{{count} ತುಣುಕುಗಳು}} ತೆಗೆದುಹಾಕಬೇಕಾಗಿದೆ.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "ಇರಿಸುವ ಹಂತದಲ್ಲಿ ತುಂಡು ಎಣಿಕೆಯನ್ನು ಇರಿಸಲಾಗಿದೆ.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "ಪ್ರಸ್ತುತ ಆಟಗಾರನು {count} ತುಣುಕುಗಳನ್ನು ಇರಿಸಿದ್ದಾನೆ.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "ಹಂತವನ್ನು ಇಡುವುದಿಲ್ಲ, ಅದನ್ನು ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "ಅಂಟಿಸಿ",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "ಪೇಸ್ಟ್ ಮಾಡಲಾಗುತ್ತದೆ.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "ಅಂಟಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

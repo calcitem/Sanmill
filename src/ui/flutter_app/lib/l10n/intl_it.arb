@@ -1171,5 +1171,87 @@
   "filename": "Nome del file",
   "@filename": {
     "description": "File name"
+  },
+  "ban": "Bandire",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "noPiecesCanBeRemoved": "Nessun pezzo può essere rimosso.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "empty": "Vuoto",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Nessuna mossa.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Posizione iniziale ripristinata.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Pulire",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Pulito.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Rimuovere",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "Posizionato ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} devono essere rimossi.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Conteggio pezzi piazzati nella fase di piazzamento.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Il giocatore attuale ha piazzato {count}.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Non posizionare la fase, non può cambiarla.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Incolla",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "La pasta è fatta.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Impossibile incollare.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

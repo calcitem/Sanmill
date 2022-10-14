@@ -1171,5 +1171,87 @@
   "gameSavedTo": "Hra sa uloží do",
   "@gameSavedTo": {
     "description": "The game is saved to"
+  },
+  "ban": "Zákaz",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "Prázdny",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Žiadny pohyb.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Obnovená počiatočná poloha.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Čistý",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Uprataný.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Odstrániť",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Nedajú sa odstrániť žiadne kusy.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} kus}other{{count} kusy}} je potrebné odstrániť.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "Umiestnené ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Počet umiestnených kusov vo fáze umiestňovania.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Aktuálny hráč umiestnil {count} figúrok.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Fáza umiestňovania sa nedá zmeniť.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Prilepiť",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pasta je hotová.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Nedá sa prilepiť.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

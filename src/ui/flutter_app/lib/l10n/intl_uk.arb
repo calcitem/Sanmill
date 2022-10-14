@@ -1269,5 +1269,87 @@
   "gameSavedTo": "Гра збережена в",
   "@gameSavedTo": {
     "description": "The game is saved to"
+  },
+  "notPlacingPhase": "Не розміщуючи фазу, не можна її змінити.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "cannotPaste": "Неможливо вставити.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "ban": "Забанити",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "Порожній",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Жодного руху.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Відновлено початкове положення.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "чистий",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Прибраний.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "видалити",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Жоден фрагмент не можна видалити.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} piece}} потрібно видалити.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "Розміщено ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Підрахунок розміщених фігур на етапі розміщення.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Поточний гравець розмістив {count} фігур.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "paste": "Вставити",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Паста готова.",
+  "@pasteDone": {
+    "description": "The paste is done."
   }
 }

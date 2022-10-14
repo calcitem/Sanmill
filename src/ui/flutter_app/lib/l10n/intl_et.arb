@@ -1171,5 +1171,87 @@
   "gameSavedTo": "Mäng salvestatakse asukohta",
   "@gameSavedTo": {
     "description": "The game is saved to"
+  },
+  "cannotPaste": "Ei saa kleepida.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "noPiecesCanBeRemoved": "Ühtegi tükki ei saa eemaldada.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "ban": "Keela",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "placedPieceCount": "Paigutatud tükkide arv paigutusfaasis.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "empty": "Tühi",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Ei mingit liigutust.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "clean": "Puhas",
+  "@clean": {
+    "description": "Clean"
+  },
+  "restoredPosition": "Algasend taastatud.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "cleanedUp": "Koristatud.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Eemalda",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "Paigutatud ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} tükki}} tuleb eemaldada.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "hasPlacedPieceCount": "Praegune mängija on asetanud {count} nuppe.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Ei pane faasi, ei saa seda muuta.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Kleebi",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pasta on valmis.",
+  "@pasteDone": {
+    "description": "The paste is done."
   }
 }

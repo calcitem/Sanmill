@@ -1171,5 +1171,87 @@
   "gameFiles": "Spelfiler",
   "@gameFiles": {
     "description": "Game files"
+  },
+  "ban": "Förbjuda",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "noMove": "Ingen rörelse.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Återställt utgångsläge.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "cannotPaste": "Kan inte klistra in.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "empty": "Tömma",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "clean": "Rena",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Städade.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Ta bort",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Inga bitar kan tas bort.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} måste tas bort.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "Placerad ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Placerat antal styck i placeringsfasen.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Den nuvarande spelaren har placerat {count} pjäser.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Inte placerar fasen, kan inte ändra den.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Klistra",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pastan är klar.",
+  "@pasteDone": {
+    "description": "The paste is done."
   }
 }

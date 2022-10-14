@@ -1171,5 +1171,87 @@
   "filename": "Fayl nomi",
   "@filename": {
     "description": "File name"
+  },
+  "pieceCountNeedToRemove": "{count, plural, =0{Piece}=1{{count} dona}other{{count} dona}} olib tashlash kerak.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "ban": "Taqiqlash",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "Bo'sh",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Harakat yo'q.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Dastlabki pozitsiyasi tiklandi.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Toza",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Tozalangan.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "O'chirish",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Hech qanday bo'lakni olib tashlab bo'lmaydi.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "placedCount": "Joylashtirilgan ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Joylashtirish bosqichida joylashtirilgan qismlar soni.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Joriy o'yinchi {count} qismlarini joylashtirdi.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Fazani joylashtirmaslik, uni o'zgartirish mumkin emas.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "joylashtirish",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pasta tayyor.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Qo‘yib bo‘lmadi.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

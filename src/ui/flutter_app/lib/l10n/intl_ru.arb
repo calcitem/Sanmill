@@ -1171,5 +1171,87 @@
   "gameFiles": "Файлы игры",
   "@gameFiles": {
     "description": "Game files"
+  },
+  "hasPlacedPieceCount": "Текущий игрок разместил {count} фишек.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "empty": "Пустой",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "cannotPaste": "Не могу вставить.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "paste": "Вставить",
+  "@paste": {
+    "description": "Paste"
+  },
+  "remove": "Удалять",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedPieceCount": "Подсчет размещенных фигур на этапе размещения.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "clean": "Чистый",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Убрано.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "noPiecesCanBeRemoved": "Никакие фрагменты не могут быть удалены.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "placedCount": "Размещено ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Не размещая фазу, не может ее изменить.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "pasteDone": "Паста готова.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "noMove": "Нет движения.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} piece}} необходимо удалить.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "ban": "Бан",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "restoredPosition": "Восстановлено исходное положение.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
   }
 }

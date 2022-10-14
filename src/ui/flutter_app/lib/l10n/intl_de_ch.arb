@@ -1171,5 +1171,87 @@
   "gameSavedTo": "Das Spiel wird gespeichert unter",
   "@gameSavedTo": {
     "description": "The game is saved to"
+  },
+  "noPiecesCanBeRemoved": "Es können keine Teile entfernt werden.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "ban": "Verbot",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "placedPieceCount": "Platzierte Stückzahl in der Platzierungsphase.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "empty": "Leere",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "remove": "Entfernen",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noMove": "Keine Bewegung.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "clean": "Sauber",
+  "@clean": {
+    "description": "Clean"
+  },
+  "restoredPosition": "Wiederhergestellte Ausgangsposition.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "cleanedUp": "Aufgeräumt.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "placedCount": "Platziert ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} müssen entfernt werden.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "hasPlacedPieceCount": "Der aktuelle Spieler hat {count} Steine gesetzt.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Keine Platzierungsphase, kann sie nicht ändern.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Kleister",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Die Paste ist fertig.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Kann nicht eingefügt werden.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

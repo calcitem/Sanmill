@@ -1171,5 +1171,87 @@
   "gameSavedTo": "Igra je spremljena na",
   "@gameSavedTo": {
     "description": "The game is saved to"
+  },
+  "noMove": "Nema pokreta.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "noPiecesCanBeRemoved": "Nijedan komad se ne može ukloniti.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "ban": "Zabrana",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "Prazan",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "restoredPosition": "Vraćen početni položaj.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Čist",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Očišćeno.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Ukloniti",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "Postavljen ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} komad}other{{count} komadi}} treba ukloniti.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Brojanje postavljenih komada u fazi postavljanja.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Trenutačni igrač postavio je {count} figura.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Ako ne postavite fazu, ne možete je promijeniti.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Zalijepiti",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pasta je gotova.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Nije moguće zalijepiti.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

@@ -1171,5 +1171,87 @@
   "gameFiles": "গেম ফাইল",
   "@gameFiles": {
     "description": "Game files"
+  },
+  "empty": "খালি",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "restoredPosition": "প্রাথমিক অবস্থান পুনরুদ্ধার করা হয়েছে।",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "cleanedUp": "পরিষ্কার করা হয়েছে।",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "ban": "নিষেধাজ্ঞা",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "noPiecesCanBeRemoved": "কোন টুকরা অপসারণ করা যাবে না.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "placedPieceCount": "স্থাপন পর্বে স্থাপিত টুকরা গণনা.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "remove": "অপসারণ",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noMove": "কোন নড়াচড়া নেই।",
+  "@noMove": {
+    "description": "No move."
+  },
+  "clean": "পরিষ্কার",
+  "@clean": {
+    "description": "Clean"
+  },
+  "placedCount": "স্থাপন করা হয়েছে ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} টুকরা}} সরাতে হবে৷",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "hasPlacedPieceCount": "বর্তমান প্লেয়ারটি {count} টুকরা রেখেছে।",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "ফেজ স্থাপন না, এটি পরিবর্তন করতে পারবেন না.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "pasteDone": "পেস্ট করা হয়।",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "পেস্ট করা যাবে না।",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "paste": "পেস্ট করুন",
+  "@paste": {
+    "description": "Paste"
   }
 }

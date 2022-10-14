@@ -1171,5 +1171,87 @@
   "filename": "Emri i skedarit",
   "@filename": {
     "description": "File name"
+  },
+  "paste": "Ngjit",
+  "@paste": {
+    "description": "Paste"
+  },
+  "ban": "Ndalimi",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "Bosh",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Asnjë lëvizje.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Pozicioni fillestar i rivendosur.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "I pastër",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Pastruar.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Hiq",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Asnjë pjesë nuk mund të hiqet.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count, plural, =0{Piece}=1{{count} copë}other{{count} copa}} duhet të hiqen.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "Vendosur ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Numërimi i pjesëve të vendosura në fazën e vendosjes.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Lojtari aktual ka vendosur pjesë {count}.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Mos vendosja e fazës, nuk mund ta ndryshojë atë.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "pasteDone": "Pasta është bërë.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Nuk mund të ngjitet.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

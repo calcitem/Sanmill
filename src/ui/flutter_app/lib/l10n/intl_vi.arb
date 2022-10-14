@@ -1171,5 +1171,87 @@
   "gameFiles": "Tệp trò chơi",
   "@gameFiles": {
     "description": "Game files"
+  },
+  "placedCount": "Đã đặt ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "ban": "Lệnh cấm",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "Trống rỗng",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Không di chuyển.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Đã khôi phục vị trí ban đầu.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Lau dọn",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Làm sạch.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Loại bỏ",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Không có mảnh nào có thể bị loại bỏ.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} cần phải loại bỏ.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Số lượng mảnh đã đặt trong giai đoạn đặt.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Người chơi hiện tại đã đặt {count} mảnh.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Không đặt giai đoạn, không thể thay đổi nó.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Dán",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Việc dán đã hoàn thành.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Không thể dán.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

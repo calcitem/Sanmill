@@ -1171,5 +1171,87 @@
   "loadFailed": "Неуспешно зареждане.",
   "@loadFailed": {
     "description": "Load failed."
+  },
+  "cannotPaste": "Не може да се постави.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "remove": "Премахване",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Никакви парчета не могат да бъдат премахнати.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} piece}} трябва да бъдат премахнати.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "restoredPosition": "Възстановена първоначална позиция.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "cleanedUp": "Почистен.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "ban": "забрана",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "placedPieceCount": "Броят поставени фигури във фазата на поставяне.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "empty": "празна",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Без движение.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "clean": "Чисто",
+  "@clean": {
+    "description": "Clean"
+  },
+  "paste": "Залепете",
+  "@paste": {
+    "description": "Paste"
+  },
+  "placedCount": "Поставен ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "hasPlacedPieceCount": "Текущият играч е поставил {count} фигури.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Не поставя фаза, не може да я промени.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "pasteDone": "Пастата е готова.",
+  "@pasteDone": {
+    "description": "The paste is done."
   }
 }
