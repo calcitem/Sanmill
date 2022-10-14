@@ -1253,5 +1253,9 @@
   "cannotPaste": "Impossibile incollare.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Mostra i pezzi non posizionati e rimossi",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

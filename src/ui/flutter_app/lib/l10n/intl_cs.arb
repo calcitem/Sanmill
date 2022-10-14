@@ -1253,5 +1253,9 @@
   "pasteDone": "Pasta je hotová.",
   "@pasteDone": {
     "description": "The paste is done."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Zobrazit neumístěné a odstraněné kusy",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

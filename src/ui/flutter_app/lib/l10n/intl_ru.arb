@@ -1253,5 +1253,9 @@
   "restoredPosition": "Восстановлено исходное положение.",
   "@restoredPosition": {
     "description": "Restored initial position."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Показать неразмещенные и удаленные фрагменты",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

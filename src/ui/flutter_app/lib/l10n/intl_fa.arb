@@ -1253,5 +1253,9 @@
   "cannotPaste": "نمی توان چسباند.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "نشان دادن مهره های بدون جا و حذف شده",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

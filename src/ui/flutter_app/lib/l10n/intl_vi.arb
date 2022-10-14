@@ -1253,5 +1253,9 @@
   "cannotPaste": "Không thể dán.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Hiển thị các mảnh chưa được đặt và đã loại bỏ",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

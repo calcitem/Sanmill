@@ -1253,5 +1253,9 @@
   "cannotPaste": "Није могуће налепити.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Прикажи непостављене и уклоњене делове",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

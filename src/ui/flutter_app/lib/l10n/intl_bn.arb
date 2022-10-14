@@ -1253,5 +1253,9 @@
   "paste": "পেস্ট করুন",
   "@paste": {
     "description": "Paste"
+  },
+  "isUnplacedAndRemovedPiecesShown": "স্থানহীন এবং সরানো টুকরা দেখান",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

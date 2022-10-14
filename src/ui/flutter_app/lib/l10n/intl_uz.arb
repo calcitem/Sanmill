@@ -1253,5 +1253,9 @@
   "cannotPaste": "Qo‘yib bo‘lmadi.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Joylanmagan va olib tashlangan qismlarni ko'rsating",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

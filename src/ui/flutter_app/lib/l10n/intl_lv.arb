@@ -1253,5 +1253,9 @@
   "ban": "Aizliegt",
   "@ban": {
     "description": "Ban point, used in setup position toolbar."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Rādīt nenovietotos un noņemtos gabalus",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

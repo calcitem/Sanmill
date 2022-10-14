@@ -1253,5 +1253,9 @@
   "pasteDone": "A pasta está pronta.",
   "@pasteDone": {
     "description": "The paste is done."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Mostrar peças não colocadas e removidas",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

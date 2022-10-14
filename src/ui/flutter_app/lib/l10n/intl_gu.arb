@@ -1253,5 +1253,9 @@
   "cannotPaste": "પેસ્ટ કરી શકાતું નથી.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "સ્થાનાંતરિત અને દૂર કરેલા ટુકડાઓ બતાવો",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

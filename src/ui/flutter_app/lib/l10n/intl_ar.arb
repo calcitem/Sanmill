@@ -1253,5 +1253,9 @@
   "cannotPaste": "لا يمكن اللصق.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "إظهار القطع غير الموضوعة والمزالة",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

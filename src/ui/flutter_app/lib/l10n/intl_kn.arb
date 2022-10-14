@@ -1253,5 +1253,9 @@
   "cannotPaste": "ಅಂಟಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "ಇರಿಸದ ಮತ್ತು ತೆಗೆದುಹಾಕಲಾದ ತುಣುಕುಗಳನ್ನು ತೋರಿಸಿ",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

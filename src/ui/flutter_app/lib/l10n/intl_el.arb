@@ -1253,5 +1253,9 @@
   "cannotPaste": "Δεν είναι δυνατή η επικόλληση.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Εμφάνιση τεμαχίων που δεν έχουν τοποθετηθεί και αφαιρεθεί",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

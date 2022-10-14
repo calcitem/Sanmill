@@ -1253,5 +1253,9 @@
   "cannotPaste": "붙여넣을 수 없습니다.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "배치되지 않은 조각과 제거된 조각 표시",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

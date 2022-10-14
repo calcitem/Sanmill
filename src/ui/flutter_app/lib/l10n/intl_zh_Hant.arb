@@ -1253,5 +1253,9 @@
   "cannotPaste": "粘貼不成功",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "顯示未擺和已吃的子",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

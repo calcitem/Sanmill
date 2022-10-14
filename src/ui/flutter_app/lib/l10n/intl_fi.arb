@@ -1253,5 +1253,9 @@
   "cannotPaste": "Ei voi liittää.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Näytä sijoittamattomat ja poistetut osat",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }
