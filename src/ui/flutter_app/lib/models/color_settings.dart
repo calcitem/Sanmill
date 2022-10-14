@@ -40,9 +40,9 @@ class ColorSettings {
     this.blackPieceColor = Colors.black,
     this.pieceHighlightColor = Colors.red,
     this.messageColor = Colors.white,
-    this.drawerColor = UIColors.seashell50,
+    this.drawerColor = Colors.white,
     @Deprecated("Use [drawerColor] instead.")
-        this.drawerBackgroundColor = UIColors.seashell50,
+        this.drawerBackgroundColor = Colors.white,
     this.drawerTextColor = UIColors.mediumJungleGreen,
     this.drawerHighlightItemColor = UIColors.highlighterGreen20,
     this.mainToolbarBackgroundColor = UIColors.burlyWood,
