@@ -1253,5 +1253,9 @@
   "noMove": "Nicio mișcare.",
   "@noMove": {
     "description": "No move."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Afișați piesele neașezate și îndepărtate",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }
