@@ -1253,5 +1253,9 @@
   "pasteDone": "Пастата е готова.",
   "@pasteDone": {
     "description": "The paste is done."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Прикажи непоставени и отстранети парчиња",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

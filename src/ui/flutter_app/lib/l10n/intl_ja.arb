@@ -1253,5 +1253,9 @@
   "cannotPaste": "貼り付けできません。",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "未配置および削除されたピースを表示",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

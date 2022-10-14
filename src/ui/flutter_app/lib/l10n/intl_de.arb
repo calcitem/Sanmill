@@ -1253,5 +1253,9 @@
   "cannotPaste": "Kann nicht einfügen.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Nicht platzierte und entfernte Steine anzeigen",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

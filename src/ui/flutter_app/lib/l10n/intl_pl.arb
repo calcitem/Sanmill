@@ -1253,5 +1253,9 @@
   "cannotPaste": "Nie można wkleić.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Pokaż nieumieszczone i usunięte elementy",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

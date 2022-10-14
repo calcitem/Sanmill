@@ -1253,5 +1253,9 @@
   "cannotPaste": "Nem lehet beilleszteni.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Az el nem helyezett és eltávolított darabok megjelenítése",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

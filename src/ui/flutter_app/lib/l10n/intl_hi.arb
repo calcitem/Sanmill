@@ -1253,5 +1253,9 @@
   "cannotPaste": "चिपकाया नहीं जा सकता।",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "हटाए गए और हटाए गए टुकड़े दिखाएं",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

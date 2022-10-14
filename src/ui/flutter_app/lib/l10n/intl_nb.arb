@@ -1253,5 +1253,9 @@
   "cannotPaste": "Kan ikke lime inn.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Vis uplasserte og fjernede brikker",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

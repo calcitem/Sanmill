@@ -1253,5 +1253,9 @@
   "cannotPaste": "Nuk mund të ngjitet.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Trego pjesët e pavendosura dhe të hequra",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

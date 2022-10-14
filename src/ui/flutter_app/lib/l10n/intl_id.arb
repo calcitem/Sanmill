@@ -1253,5 +1253,9 @@
   "cannotPaste": "Tidak dapat menempel.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Tampilkan potongan yang tidak ditempatkan dan dihapus",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

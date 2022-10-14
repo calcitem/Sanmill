@@ -1253,5 +1253,9 @@
   "cannotPaste": "Negalima įklijuoti.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Rodyti nepadėtas ir pašalintas dalis",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

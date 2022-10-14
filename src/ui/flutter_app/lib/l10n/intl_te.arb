@@ -1253,5 +1253,9 @@
   "cannotPaste": "అతికించలేరు.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "ఉంచని మరియు తీసివేయబడిన ముక్కలను చూపించు",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

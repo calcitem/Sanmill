@@ -1253,5 +1253,9 @@
   "cannotPaste": "Kan niet plakken.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Niet-geplaatste en verwijderde stukken weergeven",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

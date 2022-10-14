@@ -1253,5 +1253,9 @@
   "noMove": "Hareket yok.",
   "@noMove": {
     "description": "No move."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Yerleştirilmemiş ve kaldırılmış parçaları göster",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

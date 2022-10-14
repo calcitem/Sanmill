@@ -1253,5 +1253,9 @@
   "cannotPaste": "Nije moguće zalijepiti.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Prikaži nepostavljene i uklonjene dijelove",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

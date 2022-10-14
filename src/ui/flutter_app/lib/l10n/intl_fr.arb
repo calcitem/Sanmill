@@ -1253,5 +1253,9 @@
   "cannotPaste": "Impossible de coller.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Afficher les pièces non placées et supprimées",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

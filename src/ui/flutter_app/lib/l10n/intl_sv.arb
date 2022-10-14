@@ -1253,5 +1253,9 @@
   "pasteDone": "Pastan är klar.",
   "@pasteDone": {
     "description": "The paste is done."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Visa oplacerade och borttagna bitar",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

@@ -1253,5 +1253,9 @@
   "cannotPaste": "วางไม่ได้",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "แสดงชิ้นส่วนที่ไม่ได้วางและถอดออก",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

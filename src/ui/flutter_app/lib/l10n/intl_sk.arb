@@ -1253,5 +1253,9 @@
   "cannotPaste": "Nedá sa prilepiť.",
   "@cannotPaste": {
     "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Zobraziť neumiestnené a odstránené kusy",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }

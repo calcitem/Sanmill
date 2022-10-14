@@ -1253,5 +1253,9 @@
   "pasteDone": "Pasta on valmis.",
   "@pasteDone": {
     "description": "The paste is done."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Näita asetamata ja eemaldatud tükke",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
   }
 }
