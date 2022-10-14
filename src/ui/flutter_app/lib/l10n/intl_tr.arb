@@ -1171,5 +1171,87 @@
   "gameFiles": "Oyun dosyaları",
   "@gameFiles": {
     "description": "Game files"
+  },
+  "ban": "yasakla",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "Boş",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "restoredPosition": "İlk konumu geri yüklendi.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Temiz",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Temizledik.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Kaldırmak",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Hiçbir parça çıkarılamaz.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Parça}=1{{count} parça}other{{count} parça}} kaldırmanız gerekiyor.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "Yerleştirildi ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Yerleştirme aşamasında yerleştirilen parça sayısı.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Mevcut oyuncu {count} adet taşı yerleştirdi.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Faz koymamak, değiştiremez.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Yapıştırmak",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Yapıştır yapılır.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Yapıştırılamıyor.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "noMove": "Hareket yok.",
+  "@noMove": {
+    "description": "No move."
   }
 }

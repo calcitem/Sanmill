@@ -1171,5 +1171,87 @@
   "gameSavedTo": "Het spel is opgeslagen op",
   "@gameSavedTo": {
     "description": "The game is saved to"
+  },
+  "empty": "Leeg",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Geen zet.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "noPiecesCanBeRemoved": "Er kunnen geen stukken worden verwijderd.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "ban": "Ban",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "restoredPosition": "Herstelde beginpositie.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Schoon",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Schoongemaakt.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Verwijderen",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "Geplaatst ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} moet worden verwijderd.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Aantal geplaatste stukken in de plaatsingsfase.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "De huidige speler heeft {count} stukken geplaatst.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Fase niet plaatsen, kan deze niet veranderen.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Plakken",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "De pasta is klaar.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Kan niet plakken.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

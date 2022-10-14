@@ -1171,5 +1171,87 @@
   "browse": "مرور کردن…",
   "@browse": {
     "description": "Browse…"
+  },
+  "noPiecesCanBeRemoved": "هیچ قطعه ای را نمی توان حذف کرد.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "placedCount": "قرار داده شده ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "ban": "ممنوع کردن",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "placedPieceCount": "تعداد قطعات قرار داده شده در مرحله قرار دادن.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "empty": "خالی",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "بدون حرکت.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "clean": "تمیز",
+  "@clean": {
+    "description": "Clean"
+  },
+  "restoredPosition": "موقعیت اولیه بازیابی شد.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "cleanedUp": "تمیز کردن.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "برداشتن",
+  "@remove": {
+    "description": "Remove"
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} قطعه}other{{count} قطعه}} باید حذف شود.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "hasPlacedPieceCount": "پخش کننده فعلی {count} قطعات را قرار داده است.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "فاز قرار ندادن، نمی توان آن را تغییر داد.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "چسباندن",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "خمیر انجام شده است.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "نمی توان چسباند.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

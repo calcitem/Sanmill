@@ -1171,5 +1171,87 @@
   "gameFiles": "Fail permainan",
   "@gameFiles": {
     "description": "Game files"
+  },
+  "placedPieceCount": "Kiraan kepingan diletakkan dalam fasa meletakkan.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "noPiecesCanBeRemoved": "Tiada kepingan boleh dikeluarkan.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "ban": "Larangan",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "kosong",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Tidak bergerak.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Kedudukan awal dipulihkan.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Bersih",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Dibersihkan.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Alih keluar",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "Diletakkan ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece} other{{count} pieces}} perlu dialih keluar.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "hasPlacedPieceCount": "Pemain semasa telah meletakkan kepingan {count}.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Tidak meletakkan fasa, tidak boleh mengubahnya.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "tampal",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pastu dah siap.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Tidak boleh tampal.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

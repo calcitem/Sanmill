@@ -1171,5 +1171,87 @@
   "loadFailed": "Ielāde neizdevās.",
   "@loadFailed": {
     "description": "Load failed."
+  },
+  "hasPlacedPieceCount": "Pašreizējais spēlētājs ir ievietojis {count} figūras.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "noMove": "Nekādas kustības.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Atjaunota sākotnējā pozīcija.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Tīrs",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Satīrīts.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Noņemt",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Nevienu gabalu nevar noņemt.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "empty": "Tukšs",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "placedCount": "Izvietots ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} ir jānoņem.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Nolikto gabalu skaits izvietošanas fāzē.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "notPlacingPhase": "Nenovieto fāzi, nevar to mainīt.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Ielīmēt",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pasta ir gatava.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Nevar ielīmēt.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "ban": "Aizliegt",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
   }
 }

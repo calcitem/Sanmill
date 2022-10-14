@@ -1171,5 +1171,87 @@
   "browse": "검색…",
   "@browse": {
     "description": "Browse…"
+  },
+  "empty": "비어 있는",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noPiecesCanBeRemoved": "어떤 조각도 제거할 수 없습니다.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "placedCount": "배치됨({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "ban": "반",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "noMove": "움직임이 없습니다.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "초기 위치를 복원했습니다.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "깨끗한",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "정리했습니다.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "제거하다",
+  "@remove": {
+    "description": "Remove"
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count}개}} 제거해야 합니다.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "배치 단계에서 배치된 조각 수입니다.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "현재 플레이어는 {count}개의 조각을 배치했습니다.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "단계를 배치하지 않고 변경할 수 없습니다.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "반죽",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "붙여넣기가 완료되었습니다.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "붙여넣을 수 없습니다.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

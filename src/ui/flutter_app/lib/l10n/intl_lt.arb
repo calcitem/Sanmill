@@ -1171,5 +1171,87 @@
   "gameSavedTo": "Žaidimas išsaugotas",
   "@gameSavedTo": {
     "description": "The game is saved to"
+  },
+  "noMove": "Jokio judesio.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Atkurta pradinė padėtis.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "placedCount": "Įdėta ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} gabalus}} reikia pašalinti.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "noPiecesCanBeRemoved": "Negalima pašalinti jokių gabalų.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "ban": "Uždrausti",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "Tuščia",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "clean": "Švarus",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Išvalyta.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Pašalinti",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedPieceCount": "Padėtų vienetų skaičius dėjimo fazėje.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Dabartinis žaidėjas įdėjo {count} figūras.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Nededa fazės, negali jos pakeisti.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Įklijuoti",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pasta baigta.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Negalima įklijuoti.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

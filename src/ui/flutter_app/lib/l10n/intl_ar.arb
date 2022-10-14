@@ -1171,5 +1171,87 @@
   "gameFiles": "ملفات اللعبة",
   "@gameFiles": {
     "description": "Game files"
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1 {{count} قطعة}other {{count} قطعة}} تحتاج إلى إزالتها.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "ban": "المنع",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "فارغة",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "لا حركة.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "تمت استعادة الوضع الأولي.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "ينظف",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "نظيف.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "إزالة",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "لا يمكن إزالة أي قطعة.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "placedPieceCount": "عدد القطع الموضوعة في مرحلة الوضع.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "pasteDone": "يتم المعجون.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "paste": "معجون",
+  "@paste": {
+    "description": "Paste"
+  },
+  "placedCount": "تم وضعه ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "hasPlacedPieceCount": "وضع اللاعب الحالي {count} قطعة.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "لا يتم وضع المرحلة ، لا يمكن تغييرها.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "cannotPaste": "لا يمكن اللصق.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

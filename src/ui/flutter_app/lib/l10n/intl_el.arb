@@ -1171,5 +1171,87 @@
   "gameFiles": "Αρχεία παιχνιδιών",
   "@gameFiles": {
     "description": "Game files"
+  },
+  "noPiecesCanBeRemoved": "Κανένα κομμάτι δεν μπορεί να αφαιρεθεί.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "ban": "Απαγόρευση",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "placedPieceCount": "Καταμέτρηση τοποθετημένων κομματιών στη φάση τοποθέτησης.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "empty": "Αδειάζω",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "remove": "Αφαιρώ",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noMove": "Καμία κίνηση.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "clean": "ΚΑΘΑΡΗ",
+  "@clean": {
+    "description": "Clean"
+  },
+  "restoredPosition": "Αποκαταστάθηκε η αρχική θέση.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "cleanedUp": "Καθαρισμένο.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "placedCount": "Τοποθετήθηκε ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} κομμάτια}} πρέπει να αφαιρεθεί.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "hasPlacedPieceCount": "Ο τρέχων παίκτης έχει τοποθετήσει κομμάτια {count}.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Δεν τοποθετώ φάση, δεν μπορώ να την αλλάξω.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Επικόλληση",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Η πάστα έχει γίνει.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Δεν είναι δυνατή η επικόλληση.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

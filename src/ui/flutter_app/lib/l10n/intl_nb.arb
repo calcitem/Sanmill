@@ -1171,5 +1171,87 @@
   "browse": "Bla gjennom…",
   "@browse": {
     "description": "Browse…"
+  },
+  "ban": "Forby",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "Tømme",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noPiecesCanBeRemoved": "Ingen biter kan fjernes.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "noMove": "Ingen bevegelse.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Gjenopprettet utgangsposisjon.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Ren",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Ryddet opp.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Fjerne",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "Plassert ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} må fjernes.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Plassert stykktelling i plasseringsfasen.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Den nåværende spilleren har plassert {count} brikker.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Ikke plassere fase, kan ikke endre den.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Lim inn",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pastaen er ferdig.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Kan ikke lime inn.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

@@ -1171,5 +1171,87 @@
   "gameSavedTo": "O jogo é salvo em",
   "@gameSavedTo": {
     "description": "The game is saved to"
+  },
+  "empty": "Vazio",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Nenhum movimento.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "cannotPaste": "Não é possível colar.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "ban": "Banimento",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "restoredPosition": "Posição inicial restaurada.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Limpar",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Limpo.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Remover",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Nenhuma peça pode ser removida.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "placedCount": "Colocado ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} precisam ser removidos.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Contagem de peças colocadas na fase de colocação.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "O jogador atual colocou peças {count}.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Não colocar fase, não pode alterá-la.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Colar",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "A pasta está pronta.",
+  "@pasteDone": {
+    "description": "The paste is done."
   }
 }

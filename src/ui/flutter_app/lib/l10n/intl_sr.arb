@@ -1171,5 +1171,87 @@
   "gameFiles": "Фајлови игара",
   "@gameFiles": {
     "description": "Game files"
+  },
+  "placedCount": "Постављено ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Комад}=1{[Кс27Кс] комад}other{[Кс47Кс] комади}} треба уклонити.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "ban": "Бан",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "Празан",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Без покрета.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Враћена почетна позиција.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Чист",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Очишћено.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Уклони",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Ниједан комад се не може уклонити.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "placedPieceCount": "Број постављених комада у фази постављања.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Тренутни играч је поставио {count} комада.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Фаза не постављања, не може се променити.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Залепите",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Паста је готова.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Није могуће налепити.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

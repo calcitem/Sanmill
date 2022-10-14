@@ -1171,5 +1171,87 @@
   "browse": "Прелистајте…",
   "@browse": {
     "description": "Browse…"
+  },
+  "noPiecesCanBeRemoved": "Ниту едно парче не може да се отстрани.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "hasPlacedPieceCount": "Тековниот играч постави {count} парчиња.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "paste": "Залепи",
+  "@paste": {
+    "description": "Paste"
+  },
+  "cannotPaste": "Не може да се залепи.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} парче}other{{count} парчиња}} треба да се отстрани.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "ban": "забрана",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "Празен",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Нема потег.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Вратена почетна положба.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Чиста",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Исчистено.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Отстрани",
+  "@remove": {
+    "description": "Remove"
+  },
+  "placedCount": "Поставено ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Број на ставени парчиња во фаза на поставување.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "notPlacingPhase": "Не се поставува фаза, не може да се промени.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "pasteDone": "Пастата е готова.",
+  "@pasteDone": {
+    "description": "The paste is done."
   }
 }

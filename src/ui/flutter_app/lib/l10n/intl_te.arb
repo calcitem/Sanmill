@@ -1171,5 +1171,87 @@
   "loadFailed": "లోడ్ విఫలమైంది.",
   "@loadFailed": {
     "description": "Load failed."
+  },
+  "ban": "నిషేధించండి",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "restoredPosition": "ప్రారంభ స్థానం పునరుద్ధరించబడింది.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "hasPlacedPieceCount": "ప్రస్తుత ఆటగాడు {count} ముక్కలను ఉంచాడు.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "empty": "ఖాళీ",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "కదలిక లేదు.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "clean": "శుభ్రంగా",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "శుభ్రం చేశారు.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "తొలగించు",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "ముక్కలు తీసివేయబడవు.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} ముక్క}other{{count} ముక్కలు}} తీసివేయాలి.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "ఉంచబడింది ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "ఉంచే దశలో ముక్కల సంఖ్యను ఉంచారు.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "notPlacingPhase": "దశను ఉంచడం లేదు, దానిని మార్చలేరు.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "అతికించండి",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "పేస్ట్ పూర్తయింది.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "అతికించలేరు.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }

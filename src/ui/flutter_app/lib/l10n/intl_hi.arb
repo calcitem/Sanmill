@@ -1171,5 +1171,87 @@
   "gameFiles": "खेल फ़ाइलें",
   "@gameFiles": {
     "description": "Game files"
+  },
+  "placedCount": "रखा गया ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "noMove": "कोई चाल नहीं।",
+  "@noMove": {
+    "description": "No move."
+  },
+  "noPiecesCanBeRemoved": "कोई टुकड़ा नहीं हटाया जा सकता है।",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "ban": "बन",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "खाली",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "clean": "स्वच्छ",
+  "@clean": {
+    "description": "Clean"
+  },
+  "restoredPosition": "प्रारंभिक स्थिति बहाल।",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "cleanedUp": "सफाई की।",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "हटाना",
+  "@remove": {
+    "description": "Remove"
+  },
+  "pieceCountNeedToRemove": "{count, plural, =0{टुकड़ा}=1{{count} टुकड़ा}other{{count} टुकड़े}} को निकालने की जरूरत है।",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "रखने के चरण में रखा टुकड़ा गिनती।",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "वर्तमान खिलाड़ी ने {count} पीस रखे हैं।",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "चरण नहीं रखना, इसे बदल नहीं सकता।",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "पेस्ट करें",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "पेस्ट बन चुका है।",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "चिपकाया नहीं जा सकता।",
+  "@cannotPaste": {
+    "description": "Cannot paste."
   }
 }
