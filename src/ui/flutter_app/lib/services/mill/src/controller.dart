@@ -160,9 +160,9 @@ class MillController {
     }
 
     if (MillController().isEngineGoing == true && isMoveNow == false) {
-      // TODO: No triggering scene found
+      // TODO: Monkey test trigger
       logger.v("$tag engineToGo() is still running, skip.");
-      assert(false);
+      //assert(false);
       return const EngineResponseSkip();
     }
 
