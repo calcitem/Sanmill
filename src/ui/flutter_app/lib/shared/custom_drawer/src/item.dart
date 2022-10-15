@@ -52,13 +52,15 @@ class CustomDrawerItem<T> extends StatelessWidget {
         const Padding(padding: EdgeInsets.all(4.0)),
         listItemIcon,
         const Padding(padding: EdgeInsets.all(4.0)),
-        Text(
-          title,
-          style: Theme.of(context).textTheme.headline6!.copyWith(
-                fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
-                color: color,
-              ),
-        ),
+        Expanded(
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.headline6!.copyWith(
+                  fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
+                  color: color,
+                ),
+          ),
+        )
       ],
     );
 
