@@ -23,6 +23,7 @@ import 'package:sanmill/models/display_settings.dart';
 import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/language_info.dart';
 import 'package:sanmill/services/logger.dart';
+import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/settings/settings.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
@@ -239,12 +240,14 @@ class AppearanceSettingsPage extends StatelessWidget {
               displaySettings.copyWith(isPieceCountInHandShown: val),
           titleString: S.of(context).isPieceCountInHandShown,
         ),
-        SettingsListTile.switchTile(
-          value: displaySettings.isUnplacedAndRemovedPiecesShown,
-          onChanged: (val) => DB().displaySettings =
-              displaySettings.copyWith(isUnplacedAndRemovedPiecesShown: val),
-          titleString: S.of(context).isUnplacedAndRemovedPiecesShown,
-        ),
+        if (!(Constants.isSmallScreen == true &&
+            DB().ruleSettings.piecesCount > 9))
+          SettingsListTile.switchTile(
+            value: displaySettings.isUnplacedAndRemovedPiecesShown,
+            onChanged: (val) => DB().displaySettings =
+                displaySettings.copyWith(isUnplacedAndRemovedPiecesShown: val),
+            titleString: S.of(context).isUnplacedAndRemovedPiecesShown,
+          ),
         SettingsListTile.switchTile(
           value: displaySettings.isNotationsShown,
           onChanged: (val) => DB().displaySettings =
@@ -309,10 +312,11 @@ class AppearanceSettingsPage extends StatelessWidget {
               valueListenable: DB().listenDisplaySettings,
               builder: _buildDisplaySettings,
             ),
-            ValueListenableBuilder(
-              valueListenable: DB().listenColorSettings,
-              builder: _buildColorSettings,
-            ),
+            if (Constants.isSmallScreen == false)
+              ValueListenableBuilder(
+                valueListenable: DB().listenColorSettings,
+                builder: _buildColorSettings,
+              ),
           ],
         ),
       ),

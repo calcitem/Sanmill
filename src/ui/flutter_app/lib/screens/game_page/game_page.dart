@@ -235,7 +235,7 @@ class _GameState extends State<_Game> {
     return <Widget>[
       takeBackAllButton,
       takeBackButton,
-      moveNowButton,
+      if (Constants.isSmallScreen == false) moveNowButton,
       stepForwardButton,
       stepForwardAllButton,
     ];
@@ -254,8 +254,11 @@ class _GameState extends State<_Game> {
     return Column(
       children: <Widget>[
         GameHeader(),
-        DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
-                MillController().gameInstance.gameMode == GameMode.setupPosition
+        (DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
+                    MillController().gameInstance.gameMode ==
+                        GameMode.setupPosition) &&
+                !(Constants.isSmallScreen == true &&
+                    DB().ruleSettings.piecesCount > 9)
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -292,8 +295,11 @@ class _GameState extends State<_Game> {
                   ])
             : const SizedBox(height: AppTheme.boardMargin),
         const Board(),
-        DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
-                MillController().gameInstance.gameMode == GameMode.setupPosition
+        (DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
+                    MillController().gameInstance.gameMode ==
+                        GameMode.setupPosition) &&
+                !(Constants.isSmallScreen == true &&
+                    DB().ruleSettings.piecesCount > 9)
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
