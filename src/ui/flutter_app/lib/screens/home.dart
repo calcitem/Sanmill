@@ -121,15 +121,20 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     _controller.hideDrawer();
     if (_drawerIndex == index && _drawerIndex != _DrawerIndex.feedback) return;
 
+    if ((index == _DrawerIndex.howToPlay ||
+            index == _DrawerIndex.about ||
+            index == _DrawerIndex.feedback) &&
+        EnvironmentConfig.test == true) {
+      return logger.w("Do not test HowToPlay/Feedback/About page.");
+    }
+
     if (index == _DrawerIndex.feedback) {
-      if (!EnvironmentConfig.test) {
-        if (kIsWeb) {
-          return logger.w("flutter_email_sender does not support Web.");
-        } else if (Platform.isWindows) {
-          return logger.w("flutter_email_sender does not support Windows.");
-        } else {
-          return BetterFeedback.of(context).show(_launchFeedback);
-        }
+      if (kIsWeb) {
+        return logger.w("flutter_email_sender does not support Web.");
+      } else if (Platform.isWindows) {
+        return logger.w("flutter_email_sender does not support Windows.");
+      } else {
+        return BetterFeedback.of(context).show(_launchFeedback);
       }
     }
 

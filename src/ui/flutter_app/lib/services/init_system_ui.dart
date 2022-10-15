@@ -26,7 +26,10 @@ void _initUI() {
   );
 
 // TODO: [Leptopoda] Use layoutBuilder to add adaptiveness
-  if (!kIsWeb && Platform.isAndroid && Constants.isLargeScreen) {
+  if (!kIsWeb &&
+      Platform.isAndroid &&
+      Constants.isLargeScreen &&
+      EnvironmentConfig.test == false) {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -36,7 +39,7 @@ void _initUI() {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
-  } else if (Constants.isSmallScreen) {
+  } else if (Constants.isSmallScreen || EnvironmentConfig.test == true) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 }

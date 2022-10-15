@@ -26,13 +26,14 @@ class LinkTextSpan extends TextSpan {
           text: text ?? url,
           recognizer: TapGestureRecognizer()
             ..onTap = () {
-              if (!EnvironmentConfig.test) {
-                final s = url.substring("https://".length);
-                final authority = s.substring(0, s.indexOf('/'));
-                final unencodedPath = s.substring(s.indexOf('/'));
-                final uri = Uri.https(authority, unencodedPath);
-                launchUrl(uri);
+              if (EnvironmentConfig.test == true) {
+                return;
               }
+              final s = url.substring("https://".length);
+              final authority = s.substring(0, s.indexOf('/'));
+              final unencodedPath = s.substring(s.indexOf('/'));
+              final uri = Uri.https(authority, unencodedPath);
+              launchUrl(uri);
             },
         );
 }

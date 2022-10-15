@@ -67,6 +67,10 @@ class LoadService {
 
   /// Saves the game to the file.
   static Future<void> saveGame(BuildContext context) async {
+    if (EnvironmentConfig.test == true) {
+      return;
+    }
+
     var strGameSavedTo = S.of(context).gameSavedTo;
 
     Navigator.pop(context);
@@ -91,6 +95,10 @@ class LoadService {
 
   /// Read the game from the file.
   static Future<void> loadGame(BuildContext context) async {
+    if (EnvironmentConfig.test == true) {
+      return;
+    }
+
     rootScaffoldMessengerKey.currentState!.clearSnackBars();
 
     String? result = await pickFile(context);
