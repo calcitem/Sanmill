@@ -20,6 +20,7 @@ import 'package:feedback/feedback.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -49,10 +50,11 @@ enum _DrawerIndex {
   feedback,
   help,
   about,
+  exit,
 }
 
 extension _DrawerScreen on _DrawerIndex {
-  Widget get screen {
+  Widget? get screen {
     switch (this) {
       case _DrawerIndex.humanVsAi:
         return GamePage(
@@ -88,6 +90,11 @@ extension _DrawerScreen on _DrawerIndex {
         return const HelpScreen();
       case _DrawerIndex.about:
         return const AboutPage();
+      case _DrawerIndex.exit:
+        if (EnvironmentConfig.test == false) {
+          SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+        }
+        return null;
     }
   }
 }
@@ -105,7 +112,7 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> with TickerProviderStateMixin {
   final _controller = CustomDrawerController();
 
-  Widget _screenView = _DrawerIndex.humanVsAi.screen;
+  Widget _screenView = _DrawerIndex.humanVsAi.screen!;
   _DrawerIndex _drawerIndex = _DrawerIndex.humanVsAi;
 
   /// Callback from drawer for replace screen
@@ -129,7 +136,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     setState(() {
       assert(index != _DrawerIndex.feedback);
       _drawerIndex = index;
-      _screenView = index.screen;
+      if (index.screen != null) {
+        _screenView = index.screen!;
+      }
     });
   }
 
@@ -210,6 +219,13 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         value: _DrawerIndex.about,
         title: S.of(context).about,
         icon: const Icon(FluentIcons.info_24_regular),
+        groupValue: _drawerIndex,
+        onChanged: _changeIndex,
+      ),
+      CustomDrawerItem<_DrawerIndex>(
+        value: _DrawerIndex.exit,
+        title: S.of(context).exit,
+        icon: const Icon(FluentIcons.power_24_regular),
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
       ),
