@@ -106,13 +106,21 @@ class TapHandler {
               if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                 showTip(S.of(context).continueToMakeMove, snackBar: false);
               } else {
-                showTip(S.of(context).tipPlaced, snackBar: false);
+                if (MillController().position.phase == Phase.placing) {
+                  showTip(S.of(context).tipPlaced, snackBar: false);
+                } else {
+                  showTip(S.of(context).tipMove, snackBar: false);
+                }
               }
             } else if (MillController().gameInstance.gameMode ==
                 GameMode.humanVsHuman) {
               if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                 // TODO: HumanVsHuman - Change tip
-                showTip(S.of(context).tipPlaced, snackBar: false);
+                if (MillController().position.phase == Phase.placing) {
+                  showTip(S.of(context).tipPlaced, snackBar: false);
+                } else {
+                  showTip(S.of(context).tipMove, snackBar: false);
+                }
               } else {
                 final side = controller.gameInstance.sideToMove.opponent
                     .playerName(context);
