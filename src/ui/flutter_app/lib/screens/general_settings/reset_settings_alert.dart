@@ -36,21 +36,27 @@ class _ResetSettingsAlert extends StatelessWidget {
       title: Text(
         S.of(context).restore,
         style: AppTheme.dialogTitleTextStyle,
+        textScaleFactor: DB().displaySettings.fontScale,
       ),
       content: SingleChildScrollView(
-        child: Text("${S.of(context).restoreDefaultSettings}?"),
+        child: Text(
+          "${S.of(context).restoreDefaultSettings}?",
+          textScaleFactor: DB().displaySettings.fontScale,
+        ),
       ),
       actions: <Widget>[
         TextButton(
           onPressed: () => _restore(context),
           child: Text(
             S.of(context).ok,
+            textScaleFactor: DB().displaySettings.fontScale,
           ),
         ),
         TextButton(
           onPressed: () => _cancel(context),
           child: Text(
             S.of(context).cancel,
+            textScaleFactor: DB().displaySettings.fontScale,
           ),
         ),
       ],

@@ -117,7 +117,10 @@ class _GameOptionsModal extends StatelessWidget {
 
   showRestartGameAlertDialog(BuildContext context) async {
     Widget yesButton = TextButton(
-        child: Text(S.of(context).yes),
+        child: Text(
+          S.of(context).yes,
+          textScaleFactor: DB().displaySettings.fontScale,
+        ),
         onPressed: () {
           MillController().isActive == false;
 
@@ -148,7 +151,10 @@ class _GameOptionsModal extends StatelessWidget {
         });
 
     Widget noButton = TextButton(
-      child: Text(S.of(context).no),
+      child: Text(
+        S.of(context).no,
+        textScaleFactor: DB().displaySettings.fontScale,
+      ),
       onPressed: () {
         Navigator.of(context, rootNavigator: true).pop(false);
         Navigator.of(context).pop();
@@ -156,8 +162,14 @@ class _GameOptionsModal extends StatelessWidget {
     );
 
     AlertDialog alert = AlertDialog(
-      title: Text(S.of(context).restart),
-      content: Text(S.of(context).restartGame),
+      title: Text(
+        S.of(context).restart,
+        textScaleFactor: DB().displaySettings.fontScale,
+      ),
+      content: Text(
+        S.of(context).restartGame,
+        textScaleFactor: DB().displaySettings.fontScale,
+      ),
       actions: [
         yesButton,
         noButton,

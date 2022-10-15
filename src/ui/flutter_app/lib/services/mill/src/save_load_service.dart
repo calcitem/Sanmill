@@ -149,7 +149,10 @@ class LoadService {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(S.of(context).filename),
+          title: Text(
+            S.of(context).filename,
+            textScaleFactor: DB().displaySettings.fontScale,
+          ),
           content: TextField(
             controller: textFieldController,
             decoration: const InputDecoration(
@@ -159,7 +162,10 @@ class LoadService {
           ),
           actions: <Widget>[
             ElevatedButton(
-                child: Text(S.of(context).browse),
+                child: Text(
+                  S.of(context).browse,
+                  textScaleFactor: DB().displaySettings.fontScale,
+                ),
                 onPressed: () async {
                   var result = await pickFile(context);
                   if (result == null) return;
@@ -167,11 +173,17 @@ class LoadService {
                   Navigator.pop(context, textFieldController.text);
                 }),
             ElevatedButton(
-              child: Text(S.of(context).cancel),
+              child: Text(
+                S.of(context).cancel,
+                textScaleFactor: DB().displaySettings.fontScale,
+              ),
               onPressed: () => Navigator.pop(context),
             ),
             ElevatedButton(
-              child: Text(S.of(context).ok),
+              child: Text(
+                S.of(context).ok,
+                textScaleFactor: DB().displaySettings.fontScale,
+              ),
               onPressed: () => Navigator.pop(context, textFieldController.text),
             ),
           ],

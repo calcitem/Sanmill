@@ -165,7 +165,10 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(S.of(context).confirm),
+          child: Text(
+            S.of(context).confirm,
+            textScaleFactor: DB().displaySettings.fontScale,
+          ),
           onPressed: () {
             logger.v("[config] pickerColor.value: ${pickedColor.value}");
             widget.onChanged(pickedColor);
@@ -173,7 +176,10 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
           },
         ),
         TextButton(
-          child: Text(S.of(context).cancel),
+          child: Text(
+            S.of(context).cancel,
+            textScaleFactor: DB().displaySettings.fontScale,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
       ],

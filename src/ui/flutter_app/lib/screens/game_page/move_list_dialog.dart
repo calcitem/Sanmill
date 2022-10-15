@@ -41,11 +41,13 @@ class _MoveListDialog extends StatelessWidget {
         title: Text(
           S.of(context).moveList,
           style: titleTextStyle,
+          textScaleFactor: DB().displaySettings.fontScale,
         ),
         content: SingleChildScrollView(
           child: Text(
             moveHistoryText,
             textDirection: TextDirection.ltr,
+            textScaleFactor: DB().displaySettings.fontScale,
             style: Theme.of(context).textTheme.headline6!.copyWith(
                 color: AppTheme.gamePageActionSheetTextColor,
                 fontWeight: FontWeight.normal,
@@ -58,6 +60,7 @@ class _MoveListDialog extends StatelessWidget {
               child: Text(
                 S.of(context).rollback,
                 style: buttonTextStyle,
+                textScaleFactor: DB().displaySettings.fontScale,
               ),
               onPressed: () async => _rollback(context, end),
             ),
@@ -65,6 +68,7 @@ class _MoveListDialog extends StatelessWidget {
             child: Text(
               S.of(context).copy,
               style: buttonTextStyle,
+              textScaleFactor: DB().displaySettings.fontScale,
             ),
             onPressed: () => MillController.export(context),
           ),
@@ -72,6 +76,7 @@ class _MoveListDialog extends StatelessWidget {
             child: Text(
               S.of(context).cancel,
               style: buttonTextStyle,
+              textScaleFactor: DB().displaySettings.fontScale,
             ),
             onPressed: () => Navigator.pop(context),
           ),

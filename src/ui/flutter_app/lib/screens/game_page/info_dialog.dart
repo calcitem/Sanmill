@@ -128,6 +128,7 @@ class _InfoDialog extends StatelessWidget {
                   color: AppTheme.gamePageActionSheetTextColor,
                   fontWeight: FontWeight.normal,
                 ),
+            textScaleFactor: DB().displaySettings.fontScale,
           ),
         ),
         actions: <Widget>[
@@ -138,6 +139,7 @@ class _InfoDialog extends StatelessWidget {
               style: Theme.of(context).textTheme.headline6!.copyWith(
                     color: AppTheme.gamePageActionSheetTextColor,
                   ),
+              textScaleFactor: DB().displaySettings.fontScale,
             ),
             onPressed: () async {
               String content = "";
@@ -153,7 +155,10 @@ class _InfoDialog extends StatelessWidget {
               }
 
               Widget copyButton = TextButton(
-                child: Text(S.of(context).copy),
+                child: Text(
+                  S.of(context).copy,
+                  textScaleFactor: DB().displaySettings.fontScale,
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pop(context);
@@ -168,13 +173,19 @@ class _InfoDialog extends StatelessWidget {
               );
 
               Widget okButton = TextButton(
-                  child: Text(S.of(context).ok),
+                  child: Text(
+                    S.of(context).ok,
+                    textScaleFactor: DB().displaySettings.fontScale,
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   });
 
               AlertDialog alert = AlertDialog(
-                title: Text(S.of(context).more),
+                title: Text(
+                  S.of(context).more,
+                  textScaleFactor: DB().displaySettings.fontScale,
+                ),
                 content: Text(
                   content,
                   textDirection: TextDirection.ltr,
@@ -198,6 +209,7 @@ class _InfoDialog extends StatelessWidget {
               style: Theme.of(context).textTheme.headline6!.copyWith(
                     color: AppTheme.gamePageActionSheetTextColor,
                   ),
+              textScaleFactor: DB().displaySettings.fontScale,
             ),
             onPressed: () => Navigator.pop(context),
           ),

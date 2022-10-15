@@ -17,6 +17,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 class NumberPicker extends StatelessWidget {
@@ -49,6 +50,7 @@ class NumberPicker extends StatelessWidget {
       title: Text(
         newTitle,
         style: AppTheme.dialogTitleTextStyle,
+        textScaleFactor: DB().displaySettings.fontScale,
       ),
       content: ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 150),
@@ -62,12 +64,14 @@ class NumberPicker extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).cancel,
+            textScaleFactor: DB().displaySettings.fontScale,
           ),
           onPressed: () => Navigator.pop(context),
         ),
         TextButton(
           child: Text(
             S.of(context).confirm,
+            textScaleFactor: DB().displaySettings.fontScale,
           ),
           onPressed: () => Navigator.pop(context, selectValue),
         ),

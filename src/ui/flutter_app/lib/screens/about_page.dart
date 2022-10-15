@@ -22,6 +22,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sanmill/generated/flutter_version.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/screens/license_page.dart';
+import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/services/environment_config.dart';
 import 'package:sanmill/services/git_info.dart';
 import 'package:sanmill/shared/constants.dart';
@@ -165,12 +166,16 @@ class _VersionDialog extends StatelessWidget {
       title: Text(
         S.of(context).appName,
         style: AppTheme.dialogTitleTextStyle,
+        textScaleFactor: DB().displaySettings.fontScale,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(S.of(context).version(version)),
+          Text(
+            S.of(context).version(version),
+            textScaleFactor: DB().displaySettings.fontScale,
+          ),
           const CustomSpacer(),
           FutureBuilder<GitInformation>(
             future: gitInfo,
@@ -180,11 +185,17 @@ class _VersionDialog extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text('Branch: ${snapshot.data!.branch}'),
+                      child: Text(
+                        'Branch: ${snapshot.data!.branch}',
+                        textScaleFactor: DB().displaySettings.fontScale,
+                      ),
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text('Revision: ${snapshot.data!.revision}'),
+                      child: Text(
+                        'Revision: ${snapshot.data!.revision}',
+                        textScaleFactor: DB().displaySettings.fontScale,
+                      ),
                     ),
                   ],
                 );
@@ -197,19 +208,25 @@ class _VersionDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(S.of(context).more),
+          child: Text(
+            S.of(context).more,
+            textScaleFactor: DB().displaySettings.fontScale,
+          ),
           onPressed: () {
             Navigator.pop(context);
 
             showDialog(
               context: context,
               barrierDismissible: true,
-              builder: (_) => const _FLutterVersionAlert(),
+              builder: (_) => const _FlutterVersionAlert(),
             );
           },
         ),
         TextButton(
-          child: Text(S.of(context).ok),
+          child: Text(
+            S.of(context).ok,
+            textScaleFactor: DB().displaySettings.fontScale,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
       ],
@@ -217,8 +234,8 @@ class _VersionDialog extends StatelessWidget {
   }
 }
 
-class _FLutterVersionAlert extends StatelessWidget {
-  const _FLutterVersionAlert({Key? key}) : super(key: key);
+class _FlutterVersionAlert extends StatelessWidget {
+  const _FlutterVersionAlert({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -226,6 +243,7 @@ class _FLutterVersionAlert extends StatelessWidget {
       title: Text(
         S.of(context).more,
         style: AppTheme.dialogTitleTextStyle,
+        textScaleFactor: DB().displaySettings.fontScale,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -242,7 +260,10 @@ class _FLutterVersionAlert extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(S.of(context).ok),
+          child: Text(
+            S.of(context).ok,
+            textScaleFactor: DB().displaySettings.fontScale,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
       ],

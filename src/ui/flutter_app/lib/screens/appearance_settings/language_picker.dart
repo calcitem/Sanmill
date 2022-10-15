@@ -34,7 +34,10 @@ class _LanguagePicker extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         RadioListTile<Locale?>(
-          title: Text(S.of(context).defaultLanguage),
+          title: Text(
+            S.of(context).defaultLanguage,
+            textScaleFactor: DB().displaySettings.fontScale,
+          ),
           groupValue: currentLocale,
           value: null,
           onChanged: onChanged,
@@ -42,7 +45,10 @@ class _LanguagePicker extends StatelessWidget {
         const Divider(),
         for (var i in localeToLanguageName.keys)
           RadioListTile<Locale>(
-            title: Text(localeToLanguageName[i]!),
+            title: Text(
+              localeToLanguageName[i]!,
+              textScaleFactor: DB().displaySettings.fontScale,
+            ),
             groupValue: currentLocale,
             value: i,
             onChanged: onChanged,

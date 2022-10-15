@@ -68,6 +68,7 @@ class GameResultAlert extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).yes,
+            textScaleFactor: DB().displaySettings.fontScale,
           ),
           onPressed: () async {
             final settings = DB().generalSettings;
@@ -84,14 +85,20 @@ class GameResultAlert extends StatelessWidget {
           },
         ),
         TextButton(
-          child: Text(S.of(context).no),
+          child: Text(
+            S.of(context).no,
+            textScaleFactor: DB().displaySettings.fontScale,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
       ];
     } else {
       actions = [
         TextButton(
-          child: Text(S.of(context).restart),
+          child: Text(
+            S.of(context).restart,
+            textScaleFactor: DB().displaySettings.fontScale,
+          ),
           onPressed: () {
             Navigator.pop(context);
             MillController().reset(force: true);
@@ -102,7 +109,10 @@ class GameResultAlert extends StatelessWidget {
           },
         ),
         TextButton(
-          child: Text(S.of(context).cancel),
+          child: Text(
+            S.of(context).cancel,
+            textScaleFactor: DB().displaySettings.fontScale,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
       ];
@@ -112,8 +122,12 @@ class GameResultAlert extends StatelessWidget {
       title: Text(
         dialogTitle,
         style: AppTheme.dialogTitleTextStyle,
+        textScaleFactor: DB().displaySettings.fontScale,
       ),
-      content: Text(content.toString()),
+      content: Text(
+        content.toString(),
+        textScaleFactor: DB().displaySettings.fontScale,
+      ),
       actions: actions,
     );
   }
