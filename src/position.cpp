@@ -651,8 +651,10 @@ bool Position::put_piece(Square s, bool updateRecord)
             || is_all_in_mills(them)
 #endif
         ) {
-            assert(pieceInHandCount[WHITE] >= 0 &&
-                   pieceInHandCount[BLACK] >= 0);
+            if (pieceInHandCount[WHITE] < 0 ||
+                   pieceInHandCount[BLACK] < 0) {
+                    return false;
+            }
 
             if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0) {
                 if (check_if_game_is_over()) {
@@ -687,8 +689,10 @@ bool Position::put_piece(Square s, bool updateRecord)
                     pieceInHandCount[them] = 0;
                 }
 
-                assert(pieceInHandCount[WHITE] >= 0 &&
-                       pieceInHandCount[BLACK] >= 0);
+                if (pieceInHandCount[WHITE] < 0 ||
+                   pieceInHandCount[BLACK] < 0) {
+                    return false;
+                }
 
                 if (pieceInHandCount[WHITE] == 0 &&
                     pieceInHandCount[BLACK] == 0) {
