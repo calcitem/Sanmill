@@ -163,7 +163,6 @@ class AppTheme {
 
   /// Drawer
   static const Color drawerDividerColor = UIColors.riverBed60;
-  static const Color drawerExitDividerColor = UIColors.riverBed20;
   static const Color drawerBoxerShadowColor = UIColors.riverBed60;
 
   static const Color drawerAnimationIconColor = UIColors.seashell;
