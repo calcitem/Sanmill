@@ -119,6 +119,37 @@ class CustomDrawerState extends State<CustomDrawer>
                   itemCount: widget.items.length,
                   itemBuilder: _buildItem,
                 ),
+                Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: MediaQuery.of(context).padding.top,
+                    ),
+                    const Divider(
+                      endIndent: 0.0,
+                      indent: 0.0,
+                      color: AppTheme.drawerExitDividerColor,
+                    ),
+                    ListTile(
+                      title: Text(
+                        S.of(context).exit,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      trailing: const Icon(
+                        FluentIcons.power_24_regular,
+                        color: Colors.red,
+                      ),
+                      onTap: () async {
+                        if (EnvironmentConfig.test == false) {
+                          await SystemChannels.platform
+                              .invokeMethod<void>('SystemNavigator.pop');
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

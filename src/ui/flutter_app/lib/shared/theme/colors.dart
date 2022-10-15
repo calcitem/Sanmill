@@ -64,6 +64,7 @@ class UIColors {
   static const Color papayaWhip = Color(0xFFFFEFD5);
 
   static const Color riverBed = Color(0xFF434C59);
+  static const Color riverBed20 = Color(0x33434C59);
   static const Color riverBed60 = Color(0x99434C59);
 
   static const Color rosewood = Color(0xFF65000B);
