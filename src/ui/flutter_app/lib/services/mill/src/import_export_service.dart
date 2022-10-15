@@ -344,6 +344,7 @@ class ImportService {
         .replaceAll("resign", " ")
         .replaceAll("-/x", "x")
         .replaceAll("/x", "x")
+        .replaceAll("x", " x")
         .replaceAll(".a", ". a")
         .replaceAll(".b", ". b")
         .replaceAll(".c", ". c")
@@ -368,25 +369,8 @@ class ImportService {
 
       // TODO: [Leptopoda] Deduplicate
       if (i.isNotEmpty && !i.endsWith(".")) {
-        if (i.length == 5 && i[2] == "x") {
-          // "a1xc3"
-          final String m1 = _wmdNotationToMoveString(i.substring(0, 2));
-          newHistory.add(ExtMove(m1));
-
-          final String m2 = _wmdNotationToMoveString(i.substring(2));
-          newHistory.add(ExtMove(m2));
-        } else if (i.length == 8 && i[2] == "-" && i[5] == "x") {
-          // "a1-b2xc3"
-          final String m1 = _wmdNotationToMoveString(i.substring(0, 5));
-          newHistory.add(ExtMove(m1));
-
-          final String m2 = _wmdNotationToMoveString(i.substring(5));
-          newHistory.add(ExtMove(m2));
-        } else {
-          // no x
-          final String m = _wmdNotationToMoveString(i);
-          newHistory.add(ExtMove(m));
-        }
+        final String m = _wmdNotationToMoveString(i);
+        newHistory.add(ExtMove(m));
       }
     }
 

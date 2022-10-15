@@ -77,8 +77,10 @@ class GameRecorder extends PointedList<ExtMove> {
       }
 
       // If next notation is removal, append it directly and don't write number.
-      if (i <= index! && this[i].type == MoveType.remove) {
-        moveHistory.write(this[i++].notation);
+      for (int round = 0; round < 3; round++) {
+        if (i <= index! && this[i].type == MoveType.remove) {
+          moveHistory.write(this[i++].notation);
+        }
       }
     }
 
