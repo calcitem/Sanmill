@@ -47,8 +47,7 @@ class _FontSizeSlider extends StatelessWidget {
                       displaySettings.copyWith(fontScale: value);
                 },
               ),
-              Text(S.of(context).experimental,
-                  textScaleFactor: displaySettings.fontScale),
+              const Text("ABCDEFG1234567"),
             ],
           );
         },

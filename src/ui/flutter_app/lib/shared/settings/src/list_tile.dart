@@ -157,12 +157,10 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        S.of(context).pick(widget.title),
-        style: AppTheme.dialogTitleTextStyle,
-      ),
       content: ColorPicker(
         pickerColor: pickedColor,
+        labelTypes: const [],
+        hexInputBar: false,
         onColorChanged: _changeColor,
       ),
       actions: <Widget>[
