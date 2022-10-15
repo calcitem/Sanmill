@@ -4,8 +4,8 @@ import 'package:sanmill/services/database/database.dart';
 import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
-class HelpScreen extends StatelessWidget {
-  const HelpScreen({Key? key}) : super(key: key);
+class HowToPlayScreen extends StatelessWidget {
+  const HowToPlayScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

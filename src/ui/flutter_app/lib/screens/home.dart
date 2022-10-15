@@ -47,8 +47,8 @@ enum _DrawerIndex {
   generalSettings,
   ruleSettings,
   appearance,
+  howToPlay,
   feedback,
-  help,
   about,
   exit,
 }
@@ -82,12 +82,12 @@ extension _DrawerScreen on _DrawerIndex {
         return const RuleSettingsPage();
       case _DrawerIndex.appearance:
         return const AppearanceSettingsPage();
+      case _DrawerIndex.howToPlay:
+        return const HowToPlayScreen();
       case _DrawerIndex.feedback:
         throw ErrorDescription(
           "Feedback screen is not a widget and should be called separately",
         );
-      case _DrawerIndex.help:
-        return const HelpScreen();
       case _DrawerIndex.about:
         return const AboutPage();
       case _DrawerIndex.exit:
@@ -200,6 +200,13 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
       ),
+      CustomDrawerItem<_DrawerIndex>(
+        value: _DrawerIndex.howToPlay,
+        title: S.of(context).howToPlay,
+        icon: const Icon(FluentIcons.question_circle_24_regular),
+        groupValue: _drawerIndex,
+        onChanged: _changeIndex,
+      ),
       if (kIsWeb || Platform.isAndroid || Platform.isIOS)
         CustomDrawerItem<_DrawerIndex>(
           value: _DrawerIndex.feedback,
@@ -208,13 +215,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           groupValue: _drawerIndex,
           onChanged: _changeIndex,
         ),
-      CustomDrawerItem<_DrawerIndex>(
-        value: _DrawerIndex.help,
-        title: S.of(context).help,
-        icon: const Icon(FluentIcons.question_circle_24_regular),
-        groupValue: _drawerIndex,
-        onChanged: _changeIndex,
-      ),
       CustomDrawerItem<_DrawerIndex>(
         value: _DrawerIndex.about,
         title: S.of(context).about,

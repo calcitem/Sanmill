@@ -670,7 +670,7 @@
   "@player2": {
     "description": "Player 2"
   },
-  "howToPlay": "How to play",
+  "howToPlay": "How to Play",
   "@howToPlay": {
     "description": "How to play"
   },
