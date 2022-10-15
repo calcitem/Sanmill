@@ -418,10 +418,11 @@ class Position {
         final int n = _millsCount(_currentSquare);
 
         if (n == 0) {
-          assert(
-            pieceInHandCount[PieceColor.white]! >= 0 &&
-                pieceInHandCount[PieceColor.black]! >= 0,
-          );
+          if (!(pieceInHandCount[PieceColor.white]! >= 0 &&
+              pieceInHandCount[PieceColor.black]! >= 0)) {
+            // TODO: Maybe setup invalid position and tap the board.
+            return false;
+          }
 
           if (pieceInHandCount[PieceColor.white] == 0 &&
               pieceInHandCount[PieceColor.black] == 0) {
@@ -1075,6 +1076,8 @@ extension SetupPosition on Position {
     Audios().playTone(
         MillController().isPositionSetupBanPiece ? Sound.remove : Sound.place);
 
+    MillController().setupPositionNotifier.updateIcons();
+
     return true;
   }
 
@@ -1101,6 +1104,8 @@ extension SetupPosition on Position {
      */
 
     Audios().playTone(Sound.remove);
+    MillController().setupPositionNotifier.updateIcons();
+
     return const MillResponseOK();
   }
 

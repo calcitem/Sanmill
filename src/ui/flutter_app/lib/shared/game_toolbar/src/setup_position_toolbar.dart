@@ -95,6 +95,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   void restoreContext() {
     MillController().position.copyWith(positionBackup);
     MillController().gameInstance.gameMode = gameModeBackup;
+    _updateSetupPositionIcons();
     MillController().headerTipNotifier.showTip(S.of(context).restoredPosition);
   }
 
@@ -147,6 +148,8 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       MillController().gameInstance.sideToMove = newPieceColor;
     }
 
+    _updateSetupPositionIcons();
+
     MillController()
         .headerTipNotifier
         .showTip(newPieceColor.pieceName(context));
@@ -172,6 +175,8 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       newPlaced = setSetupPositionPlacedGetBegin();
       MillController().headerTipNotifier.showTip(S.of(context).placingPhase);
     }
+
+    _updateSetupPositionIcons();
 
     setState(() {});
 
@@ -437,6 +442,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   _updateSetupPositionIcons() {
     setSetupPositionPlacedUpdateBegin();
     setSetupPositionNeedRemove(newPieceCountNeedRemove, false);
+    updateSetupPositionPiecesCount();
     MillController().headerIconsNotifier.showIcons();
   }
 
@@ -544,6 +550,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     final clearButton = ToolbarItem.icon(
       onPressed: () {
         MillController().position.reset();
+        _updateSetupPositionIcons();
         MillController().headerTipNotifier.showTip(S.of(context).cleanedUp);
       },
       icon: const Icon(FluentIcons.eraser_24_regular),
