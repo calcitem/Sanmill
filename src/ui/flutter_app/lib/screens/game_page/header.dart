@@ -85,7 +85,7 @@ class _GameHeaderState extends State<GameHeader> {
         children: [
           Align(
             alignment: AlignmentDirectional.topStart,
-            child: DrawerIcon.of(context)!.icon,
+            child: DrawerIcon.of(context)?.icon,
           ),
           Center(
             child: Padding(
