@@ -247,6 +247,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   void _showPrivacyDialog() {
+    if (EnvironmentConfig.test == true) return;
+
     if (!DB().generalSettings.isPrivacyPolicyAccepted &&
         Localizations.localeOf(context).languageCode.startsWith("zh")) {
       showDialog(
