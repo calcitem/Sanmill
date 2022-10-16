@@ -7,8 +7,8 @@
         android:icon="@mipmap/ic_launcher"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <meta-data
-          android:name="flutterEmbedding"
-          android:value="2" />
+            android:name="flutterEmbedding"
+            android:value="2"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -16,7 +16,6 @@
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -27,12 +26,14 @@
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
             android:name="flutterEmbedding"
-            android:value="2" />
+            android:value="2"/>
     </application>
-	<queries>
-	  <intent>
-		<action android:name="android.intent.action.SENDTO" />
-		<data android:scheme="mailto" />
-	  </intent>
-	</queries>
+    <queries>
+        <intent>
+            <action
+                android:name="android.intent.action.SENDTO"/>
+            <data
+                android:scheme="mailto"/>
+        </intent>
+    </queries>
 </manifest>
