@@ -25,6 +25,8 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/models/general_settings.dart';
+import 'package:sanmill/models/rule_settings.dart';
 import 'package:sanmill/screens/about_page.dart';
 import 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 import 'package:sanmill/screens/game_page/game_page.dart';
@@ -147,9 +149,29 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     });
   }
 
+  void firstRun(BuildContext context) {
+    if (DB().generalSettings.firstRun == true) {
+      DB().generalSettings = DB().generalSettings.copyWith(firstRun: false);
+
+      String? countryCode = Localizations.localeOf(context).languageCode;
+
+      switch (countryCode) {
+        case "fa": // Iran
+          DB().ruleSettings = DB()
+              .ruleSettings
+              .copyWith(piecesCount: 12, hasDiagonalLines: true);
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
   @override
   void didChangeDependencies() {
     WidgetsBinding.instance.addPostFrameCallback((_) => _showPrivacyDialog());
+    firstRun(context);
+
     super.didChangeDependencies();
   }
 

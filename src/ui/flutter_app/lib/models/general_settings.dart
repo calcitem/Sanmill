@@ -78,6 +78,7 @@ class GeneralSettings {
         this.developerMode = false,
     @Deprecated("Use [EnvironmentConfig.devMode] instead")
         this.experimentsEnabled = false,
+    this.firstRun = true,
   });
 
   @HiveField(0)
@@ -151,6 +152,9 @@ class GeneralSettings {
 
   @HiveField(20)
   final SearchAlgorithm? searchAlgorithm;
+
+  @HiveField(21, defaultValue: true)
+  final bool firstRun;
 
   /// Encodes a Json style map into a [GeneralSettings] object
   factory GeneralSettings.fromJson(Map<String, dynamic> json) =>

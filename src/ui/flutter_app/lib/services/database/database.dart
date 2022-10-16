@@ -98,7 +98,9 @@ class Database {
     await _initDisplaySettings();
     await _initColorSettings();
 
-    await _DatabaseMigration.migrate();
+    if (await _DatabaseMigration.migrate() == true) {
+      DB().generalSettings = DB().generalSettings.copyWith(firstRun: false);
+    }
   }
 
   /// Resets the database
