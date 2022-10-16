@@ -2,7 +2,7 @@
 
 YAML_FILE=src/ui/flutter_app/pubspec.yaml
 QT_RC_FILE=millgame.rc
-FLUTTER_WINDOWS_RC_FILE=src/ui/flutter_app/windows/runner/Runner.rc
+
 EN_CHANGLOG_DIR=fastlane/metadata/android/en-US/changelogs
 DE_CHANGLOG_DIR=fastlane/metadata/android/de-DE/changelogs
 ES_CHANGLOG_DIR=fastlane/metadata/android/es-ES/changelogs
@@ -73,10 +73,6 @@ OLD_FILEVERSION="$MAJOR_NUMBER,$MINOR_NUMBER,$OLD_PATCH_NUMBER"
 FILEVERSION="$MAJOR_NUMBER,$MINOR_NUMBER,$PATCH_NUMBER"
 $SED -i "s/${OLD_FILEVERSION},0/${FILEVERSION},0/g" $QT_RC_FILE
 $SED -i "s/${OLD_VERSION}.0/${NEW_VERSION}.0/g" $QT_RC_FILE
-
-# Modify Runner.rc
-$SED -i "s/${OLD_FILEVERSION}/${FILEVERSION}/g" $FLUTTER_WINDOWS_RC_FILE
-$SED -i "s/${OLD_VERSION}/${NEW_VERSION}/g" $FLUTTER_WINDOWS_RC_FILE
 
 # Changelog
 rm -f ${BUILD_NUMBER}.txt
