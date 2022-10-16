@@ -1,0 +1,3 @@
+v2.0.7
+
+Dieses Update enthält verschiedene Verbesserungen und Fehlerbehebungen, um die App für Sie zu verbessern.
