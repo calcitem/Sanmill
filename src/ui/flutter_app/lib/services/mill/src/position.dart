@@ -281,6 +281,12 @@ class Position {
       return true;
     }
 
+    // TODO: Duplicate with switch (m.type) and should throw exception.
+    if (move == "none") {
+      return false;
+    }
+
+    // TODO: Duplicate with switch (m.type)
     if (move == "draw") {
       phase = Phase.gameOver;
       _winner = PieceColor.draw;
@@ -338,6 +344,10 @@ class Position {
           st.rule50 = 0;
         }
         break;
+      case MoveType.draw:
+        return false; // TODO
+      case MoveType.none:
+        throw const EngineNoBestMove();
       case null:
         assert(false);
         break;

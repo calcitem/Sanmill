@@ -16,7 +16,7 @@
 
 part of '../mill.dart';
 
-enum MoveType { place, move, remove }
+enum MoveType { place, move, remove, draw, none }
 
 extension _MoveTypeExtension on MoveType {
   static MoveType? parse(String move) {
@@ -28,7 +28,10 @@ extension _MoveTypeExtension on MoveType {
       return MoveType.place;
     } else if (move == "draw") {
       logger.i("[TODO] Computer request draw");
-      return null;
+      return MoveType.draw;
+    } else if (move == "(none)") {
+      logger.i("MoveType is (none).");
+      return MoveType.none;
     } else {
       // TODO: If Setup Position is illegal
       throw const FormatException();
@@ -47,6 +50,8 @@ class ExtMove {
   late final int to;
 
   static final Map<int, String> _squareToWmdNotation = {
+    -1: "(none)", // TODO: Can parse it?
+    0: "draw", // TODO: Can parse it?
     8: "d5",
     9: "e5",
     10: "e4",
@@ -90,8 +95,12 @@ class ExtMove {
         return "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}";
       case MoveType.place:
         return _squareToWmdNotation[to]!;
+      case MoveType.draw:
+        return _squareToWmdNotation[to]!; // TODO: Can parse?
+      case MoveType.none:
+        return _squareToWmdNotation[to]!; // TODO: Can parse?
       case null:
-        // For example: draw
+        assert(false);
         return "";
     }
   }
@@ -102,11 +111,6 @@ class ExtMove {
     _checkLegal();
 
     type = _MoveTypeExtension.parse(move);
-
-    if (type == null) {
-      /* Draw, do nothing. */
-      return;
-    }
 
     final int toFile;
     final int toRank;
@@ -124,14 +128,22 @@ class ExtMove {
         toFile = int.parse(move[1]);
         toRank = int.parse(move[3]);
         break;
-      default:
+      case MoveType.draw:
         toFile = 0;
         toRank = 0;
         break;
+      case MoveType.none:
+        toFile = -1;
+        toRank = -1;
+        break;
+      default:
+        // TODO: -2
+        toFile = -2;
+        toRank = -2;
+        break;
     }
-    to = makeSquare(toFile, toRank);
 
-    assert(from != to);
+    to = makeSquare(toFile, toRank);
   }
 
   void _checkLegal() {

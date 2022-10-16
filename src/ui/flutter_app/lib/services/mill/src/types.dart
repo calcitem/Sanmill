@@ -332,6 +332,12 @@ const fileExNumber = fileNumber + 2;
 const rankNumber = 8;
 
 int makeSquare(int file, int rank) {
+  // TODO: -2
+  assert(file != -2 && rank != -2);
+
+  if (file == 0 && rank == 0) return 0;
+  if (file == -1 && rank == -1) return -1;
+
   return (file << 3) + rank - 1;
 }
 
