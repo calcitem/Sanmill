@@ -91,8 +91,8 @@ class Engine {
     if (await isThinking()) {
       await stopSearching();
     } else if (moveNow) {
-      // TODO: Check if go here.
-      assert(false);
+      // TODO: Check why go here.
+      // assert(false);
       await stopSearching();
       await _send(_getPositionFen());
       await _send("go");
@@ -268,6 +268,7 @@ class Engine {
   }
 
   String _getPositionFen() {
+    // TODO: Check position
     final startPosition = MillController().recorder.lastPositionWithRemove;
     final moves = MillController().position.movesSinceLastRemove;
 
