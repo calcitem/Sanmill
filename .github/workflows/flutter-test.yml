@@ -1,33 +1,12 @@
-name: Flutter
+name: Flutter Test
 
 on:
   push:
-    branches: [master, dev]
-  pull_request:
-    types: [review_requested, ready_for_review]
-    paths:
-      - 'src/ui/flutter_app/**'
+    branches: [test]
 
 jobs:
-  linter:
-    runs-on: ubuntu-latest
-    name: Lint flutter code
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
-    - run: bash -x ./flutter-init.sh
-    - run: cp -f ./src/ui/flutter_app/analysis_options.yaml ./
-    - name: Analyze Flutter
-      uses: ValentinVignal/action-dart-analyze@v0.14
-      with:
-        fail-on: 'format'
-        working-directory: src/ui/flutter_app
-
   build:
     runs-on: ubuntu-latest
-    needs: linter
 
     # Note that this workflow uses the latest stable version of the Dart SDK.
     # Docker images for other release channels - like dev and beta - are also
@@ -73,7 +52,7 @@ jobs:
 
       # Build
       - name: Build apk
-        run: cd src/ui/flutter_app; flutter build apk -v; flutter build appbundle -v
+        run: cd src/ui/flutter_app; flutter build apk --dart-define=test=true -v
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
@@ -84,12 +63,5 @@ jobs:
       - name: Archive apk
         uses: actions/upload-artifact@v3
         with:
-          name: sanmill-flutter-apk-release
+          name: sanmill-flutter-apk-test
           path: src/ui/flutter_app/build/app/outputs/flutter-apk/app-release.apk
-
-      # Archive aab
-      - name: Archive aab
-        uses: actions/upload-artifact@v3
-        with:
-          name: sanmill-flutter-aab-release
-          path: src/ui/flutter_app/build/app/outputs/bundle/release/app-release.aab
