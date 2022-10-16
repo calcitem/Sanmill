@@ -93,6 +93,19 @@ class CustomDrawerState extends State<CustomDrawer>
     );
   }
 
+  Widget buildListMenus() {
+    return SliverToBoxAdapter(
+      child: ListView.builder(
+        controller: ScrollController(),
+        padding: const EdgeInsets.only(top: 4.0),
+        physics: const BouncingScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: widget.items.length,
+        itemBuilder: _buildItem,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final drawer = Align(
@@ -101,26 +114,16 @@ class CustomDrawerState extends State<CustomDrawer>
         widthFactor: _openRatio,
         child: Material(
           color: DB().colorSettings.drawerColor,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                widget.header,
-                const Divider(
-                  endIndent: 0.0,
-                  indent: 0.0,
-                  color: AppTheme.drawerDividerColor,
-                ),
-                ListView.builder(
-                  controller: ScrollController(),
-                  padding: const EdgeInsets.only(top: 4.0),
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: widget.items.length,
-                  itemBuilder: _buildItem,
-                ),
-              ],
-            ),
+          child: CustomScrollView(
+            slivers: [
+              SliverPinnedToBoxAdapter(
+                child: Container(
+                    decoration:
+                        BoxDecoration(color: DB().colorSettings.drawerColor),
+                    child: widget.header),
+              ),
+              buildListMenus()
+            ],
           ),
         ),
       ),
