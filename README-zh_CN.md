@@ -136,7 +136,7 @@ sudo apt-get install qt5-default qtmultimedia5-dev qtcreator
 
 ### Flutter App
 
-运行`./flutter-init.sh`，复制`src/ui/flutter_app/android/key.properties.example`到`src/ui/flutter_app/android/key.properties`，修改，然后使用 Android Studio 或 Visual Studio Code 打开 `src/ui/flutter_app` 来构建 Flutter App。
+运行`./flutter-init.sh`，然后使用 Android Studio 或 Visual Studio Code 打开 `src/ui/flutter_app` 来构建 Flutter App。
 
 我们使用编译期环境配置来启用代码的特定部分：
 
