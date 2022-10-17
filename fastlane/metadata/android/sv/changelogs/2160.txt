@@ -1,0 +1,4 @@
+v1.1.31
+
+* Nine Men's Morris: Fix AI kommer sannolikt att blockera vit från att göra en kvarn i öppningsfasen, vilket gör AI sårbar för att förlora spelet.
+* Twelve Men's Morris: Öka AI-kraften.

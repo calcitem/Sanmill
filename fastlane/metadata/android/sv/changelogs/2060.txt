@@ -1,0 +1,3 @@
+v1.1.17
+
+* Tillåter att konfigurera färgen på verktygsfältet.

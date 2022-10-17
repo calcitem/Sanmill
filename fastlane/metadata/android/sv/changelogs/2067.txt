@@ -1,0 +1,5 @@
+v1.1.18
+
+* När färdighetsnivån är 1, rör sig AI mer slumpmässigt för att minska svårigheten.
+* Fixa inställningen för navigeringsverktygsfältet försvinner på vissa enheter.
+* Fixa lådans markeringsobjekts textfärg.

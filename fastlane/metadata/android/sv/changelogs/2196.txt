@@ -1,0 +1,8 @@
+v1.1.38
+
+* Stöd för att ta bort oplacerad pjäs - Om en spelare bildar kvarnen i placeringsfasen kan han ta bort motståndarens oplacerade pjäs och fortsätta att göra ett drag.
+* Stöd Endgame N-Move regel.
+* Ändra bedömningsvillkoret för N-move-regeln från > till =.
+* Stöd trefaldig upprepningsinställning.
+* Tillåt konfigurering av punktstil och punktbredd.
+* Stöd import GoldToken flyttlista.

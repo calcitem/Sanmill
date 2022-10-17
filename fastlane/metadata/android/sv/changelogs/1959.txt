@@ -1,0 +1,3 @@
+v1.1.3
+
+* Få e-postavsändaren att fungera med Android 11-enheter när de kraschar.

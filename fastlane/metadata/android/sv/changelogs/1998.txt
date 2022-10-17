@@ -1,0 +1,5 @@
+v1.1.9
+
+* Förbättra översättningen av farsi (persiska) (WIP).
+* Fixa problem med alternativpilar och navigeringsknappar på RTL-språk.
+* Fix animationsikonen är för hög när språket är arabiskt.

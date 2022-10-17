@@ -1,0 +1,3 @@
+v1.1.19
+
+* Volontärer kan engagera sig i översättningarna på vår POEditor.

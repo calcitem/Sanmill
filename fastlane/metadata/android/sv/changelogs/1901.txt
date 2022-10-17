@@ -1,0 +1,3 @@
+v1.0.21
+
+* Stöd export och import av spelet.

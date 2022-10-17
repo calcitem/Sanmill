@@ -1,0 +1,3 @@
+v2.0.3
+
+Esta atualização inclui várias melhorias e correções de bugs para tornar o aplicativo melhor para você.

@@ -1,0 +1,4 @@
+v1.1.6
+
+* Ge interaktiv feedback direkt i appen genom att kommentera en skärmdump av den aktuella sidan och lägga till text.
+* Förbättra översättningar till rumänska och ungerska.

@@ -1,0 +1,4 @@
+v1.0.13
+
+* Dubbel bakåt för att stänga appen.
+* Popup-dialogrutan för sekretesspolicy vid första körning.

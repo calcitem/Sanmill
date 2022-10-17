@@ -1,0 +1,3 @@
+v1.1.40
+
+Mettez à niveau vers Flutter 2.10.0.

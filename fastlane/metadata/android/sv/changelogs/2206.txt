@@ -1,0 +1,5 @@
+v1.1.39
+
+* Förbättra AI-kraften i den rörliga fasen.
+* Förbättra franska och ungerska översättningar.
+* Android 4.1.x stöds inte längre.

@@ -1,0 +1,3 @@
+v1.1.4
+
+* Stöd för inställning av språk till engelska, tyska, persiska, ungerska, rumänska och kinesiska.

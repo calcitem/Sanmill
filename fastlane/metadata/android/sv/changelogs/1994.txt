@@ -1,0 +1,5 @@
+v1.1.8
+
+* Åtgärda problem med menygränssnittet med höger-till-vänster.
+* Förbättra engelska översättningar.
+* Visa språknamn istället för språkkod i efterföljande menyalternativ.

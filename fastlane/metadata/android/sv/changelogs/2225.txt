@@ -1,0 +1,4 @@
+v1.1.43
+
+* Förbättra koreanska översättningen.
+* Uppgradera Flutter till 2.10.3.
