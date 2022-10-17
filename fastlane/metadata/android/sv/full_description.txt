@@ -1,0 +1,16 @@
+Ett Nine Men's Morris-program (och dess varianter).
+
+Regler:
+
+* En spelare som placerar tre av sina pjäser på en brädlinje har en kvarn och får ta bort sin motståndares pjäs(ar).
+* Vilken spelare som helst reducerar till två stycken och har ingen möjlighet att bilda nya kvarnar och förlorar därmed spelet.
+* Om en spelare inte kan flytta en av sina pjäser (är låst) har han förlorat spelet.
+
+Funktioner:
+
+* Stöd många regelvarianter, till exempel Nine Men's Morris och Twelve Men's Morris, "Flying"-regeln eller ingen "Flying"-regel
+* Spela mot AI, eller spela båda sidor
+* Justerbar spelstyrka
+* Mycket konfigurerbar
+* Färgteman
+* Tillgänglighet

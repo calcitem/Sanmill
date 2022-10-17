@@ -1,0 +1,3 @@
+v1.1.41
+
+Uppgradera till Flutter 2.10.1.

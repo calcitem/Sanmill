@@ -1,0 +1,6 @@
+v1.1.10
+
+* Fixa problem med alternativpilar på RTL-språk.
+* Förbättra översättningen av farsi (persiska) (WIP).
+* Förbättra engelska översättningar.
+* Lägg till bulgariska/bengaliska/danska/grekiska/estniska/finska/gujarati/kroatiska/indonesiska/litauiska/lettiska/makedonska/malajiska/holländska/slovakiska/slovenska/albanska/serbiska/svenska/telugu/thailändska maskinöversättningarna.

@@ -1,0 +1,3 @@
+v1.0.11
+
+* Stöd Steg framåt & Ta tillbaka allt & Steg framåt alla.

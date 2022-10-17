@@ -1,0 +1,5 @@
+v1.1.16
+
+* Visa statusfält för storskärmsenhet.
+* Visa inte inställningen för navigeringsverktygsfältet om fönstrets bildförhållande är mindre än 1,7.
+* Förbättra persiska översättningen.

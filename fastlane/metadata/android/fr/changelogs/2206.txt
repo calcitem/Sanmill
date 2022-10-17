@@ -1,0 +1,5 @@
+v1.1.39
+
+* Améliorer la puissance de l'IA de la phase mobile.
+* Améliorer la traduction française et hongroise.
+* Android 4.1.x n'est plus pris en charge.

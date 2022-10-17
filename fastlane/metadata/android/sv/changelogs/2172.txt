@@ -1,0 +1,3 @@
+v1.1.34
+
+Undvik att den vita är för aggressiv i öppningsfasen, vilket snabbt kan förlora spelet.

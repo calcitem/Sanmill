@@ -1,0 +1,5 @@
+v1.0.5
+
+* Ange vita pjäser som spelare 1 och svart som spelare 2
+* Ändra texten "Tips" till "Info"
+* Åtgärda stavfel

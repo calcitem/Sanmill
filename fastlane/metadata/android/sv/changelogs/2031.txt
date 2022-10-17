@@ -1,0 +1,3 @@
+v1.1.13
+
+* Lägg till maskinöversättningar kannada/norska/uzbekiska/vietnamesiska.

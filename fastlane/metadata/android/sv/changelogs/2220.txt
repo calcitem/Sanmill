@@ -1,0 +1,4 @@
+v1.1.42
+
+* Lägg till ukrainsk översättning.
+* Förbättra översättningen av portugisiska (Brasilien).

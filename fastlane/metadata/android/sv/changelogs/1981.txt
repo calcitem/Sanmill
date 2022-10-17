@@ -1,0 +1,3 @@
+v1.1.7
+
+* Lägg till maskinöversättningar till hindi/italienska/polska/turkiska.

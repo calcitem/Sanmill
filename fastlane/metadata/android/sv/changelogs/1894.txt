@@ -1,0 +1,5 @@
+v1.0.20
+
+* Stöd Ten/Eleven Herr Morris.
+* Du kan ställa in hur många bitar kvar som kan flyga.
+* Lägg till historiknavigeringsverktygsfält.

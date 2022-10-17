@@ -1,0 +1,6 @@
+v1.1.30
+
+* Undvik att AI:n är för aggressiv i öppningsfasen, vilket lätt kan leda till förluster.
+* Öka maxvärdet för färdighetsnivån från 20 till 30.
+* Ställ in "Tänk på rörlighet för bitar" till på som standard.
+* Lägg till inställningen "Piece highlight color" och ställ in röd som standard.

@@ -1,0 +1,4 @@
+v1.0.10
+
+* Snabba på att tänka på de två första dragen.
+* Visa endast notationen ombord på två sidor.
