@@ -472,7 +472,7 @@
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
-  "rollback": "Rollback",
+  "rollback": "Zurücksetzen",
   "@rollback": {
     "description": "Rollback"
   },
@@ -1196,11 +1196,11 @@
   "@noMove": {
     "description": "No move."
   },
-  "clean": "Sauber",
+  "clean": "Aufräumen",
   "@clean": {
     "description": "Clean"
   },
-  "restoredPosition": "Wiederhergestellte Ausgangsposition.",
+  "restoredPosition": "Ausgangsposition wiederhergestellt.",
   "@restoredPosition": {
     "description": "Restored initial position."
   },
@@ -1218,7 +1218,7 @@
       }
     }
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} müssen entfernt werden.",
+  "pieceCountNeedToRemove": "{count,plural, =0{Stein}=1{{count} Stein}other{{count} Steine}} müssen entfernt werden.",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
@@ -1238,15 +1238,15 @@
       }
     }
   },
-  "notPlacingPhase": "Phase nicht platzieren, kann sie nicht ändern.",
+  "notPlacingPhase": "Nicht in der Platzierungsphase, kann nicht geändert werden.",
   "@notPlacingPhase": {
     "description": "Not placing phase, cannot change it."
   },
-  "paste": "Kleister",
+  "paste": "Einfügen",
   "@paste": {
     "description": "Paste"
   },
-  "pasteDone": "Die Paste ist fertig.",
+  "pasteDone": "Einfügen abgeschlossen.",
   "@pasteDone": {
     "description": "The paste is done."
   },
