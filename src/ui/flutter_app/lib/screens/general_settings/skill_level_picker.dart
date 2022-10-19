@@ -16,11 +16,33 @@
 
 part of 'package:sanmill/screens/general_settings/general_settings_page.dart';
 
-class _SkillLevelSlider extends StatelessWidget {
-  const _SkillLevelSlider({Key? key}) : super(key: key);
+class _SkillLevelPicker extends StatefulWidget {
+  const _SkillLevelPicker({Key? key}) : super(key: key);
+
+  @override
+  State<_SkillLevelPicker> createState() => _SkillLevelPickerState();
+}
+
+class _SkillLevelPickerState extends State<_SkillLevelPicker> {
+  late FixedExtentScrollController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = FixedExtentScrollController(
+        initialItem: DB().generalSettings.skillLevel - 1);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final size = Theme.of(context).textTheme.bodyText1!.fontSize!;
+
     return Semantics(
       label: S.of(context).skillLevel,
       child: ValueListenableBuilder(
@@ -31,16 +53,14 @@ class _SkillLevelSlider extends StatelessWidget {
             defaultValue: const GeneralSettings(),
           )!;
 
-          return Slider(
-            value: generalSettings.skillLevel.toDouble(),
-            min: 1,
-            max: Constants.topSkillLevel.toDouble(),
-            divisions: Constants.topSkillLevel - 1,
-            label: generalSettings.skillLevel.toString(),
-            onChanged: (value) {
+          return CupertinoPicker(
+            scrollController: _controller,
+            itemExtent: size + 12,
+            children: List.generate(
+                Constants.topSkillLevel, (index) => Text('${index + 1}')),
+            onSelectedItemChanged: (numb) {
               DB().generalSettings =
-                  generalSettings.copyWith(skillLevel: value.toInt());
-              logger.v("Skill level Slider value: $value");
+                  generalSettings.copyWith(skillLevel: numb + 1);
             },
           );
         },
