@@ -81,25 +81,17 @@ class _GameHeaderState extends State<GameHeader> {
     );
 
     final appBar = BlockSemantics(
-      child: Stack(
-        children: [
-          Align(
-            alignment: AlignmentDirectional.topStart,
-            child: DrawerIcon.of(context)?.icon,
+      child: Center(
+        child: Padding(
+          padding: EdgeInsets.only(top: DB().displaySettings.boardTop),
+          child: Column(
+            children: <Widget>[
+              const HeaderIcons(),
+              divider,
+              const HeaderTip(),
+            ],
           ),
-          Center(
-            child: Padding(
-              padding: EdgeInsets.only(top: DB().displaySettings.boardTop),
-              child: Column(
-                children: <Widget>[
-                  const HeaderIcons(),
-                  divider,
-                  const HeaderTip(),
-                ],
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
 
