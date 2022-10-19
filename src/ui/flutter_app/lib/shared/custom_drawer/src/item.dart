@@ -46,6 +46,14 @@ class CustomDrawerItem<T> extends StatelessWidget {
       color: color,
     );
 
+    final titleStyle = Theme.of(context).textTheme.headline6!.copyWith(
+          fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
+          color: color,
+        );
+
+    final titleSize = TextSizeHelper.boundingTextSize(title, titleStyle, maxLines: 1);
+    final isExpand = (MediaQuery.of(context).size.width * 0.75 - 44) > titleSize.width;
+
     final drawerItem = Row(
       children: <Widget>[
         const SizedBox(height: 46.0, width: 6.0),
@@ -53,13 +61,19 @@ class CustomDrawerItem<T> extends StatelessWidget {
         listItemIcon,
         const Padding(padding: EdgeInsets.all(4.0)),
         Expanded(
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.headline6!.copyWith(
-                  fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
-                  color: color,
+          child: isExpand || !selected
+              ? Text(
+                  title,
+                  maxLines: 1,
+                  style: titleStyle,
+                )
+              : SizedBox(
+                  height: AppTheme.drawerItemHeight,
+                  child: Marquee(
+                    text: title,
+                    style: titleStyle,
+                  ),
                 ),
-          ),
         )
       ],
     );
