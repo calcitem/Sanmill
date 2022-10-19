@@ -16,6 +16,7 @@
 
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/generated/intl/l10n.dart';
@@ -32,7 +33,7 @@ import 'package:sanmill/shared/theme/app_theme.dart';
 part 'package:sanmill/screens/general_settings/algorithm_modal.dart';
 part 'package:sanmill/screens/general_settings/move_time_slider.dart';
 part 'package:sanmill/screens/general_settings/reset_settings_alert.dart';
-part 'package:sanmill/screens/general_settings/skill_level_slider.dart';
+part 'package:sanmill/screens/general_settings/skill_level_picker.dart';
 
 class GeneralSettingsPage extends StatelessWidget {
   const GeneralSettingsPage({Key? key}) : super(key: key);
@@ -46,7 +47,7 @@ class GeneralSettingsPage extends StatelessWidget {
 
   void _setSkillLevel(BuildContext context) => showModalBottomSheet(
         context: context,
-        builder: (_) => const _SkillLevelSlider(),
+        builder: (_) => const _SkillLevelPicker(),
       );
 
   void _setMoveTime(BuildContext context) => showModalBottomSheet(
