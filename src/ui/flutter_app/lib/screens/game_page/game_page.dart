@@ -159,28 +159,41 @@ class _GameState extends State<_Game> {
   // Icons: https://github.com/microsoft/fluentui-system-icons/blob/main/icons_regular.md
 
   List<Widget> mainToolbarItems(BuildContext context) {
+    final itemMaxWidth = (MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) / 4 - 16;
     final gameButton = ToolbarItem.icon(
       onPressed: () => _showGameModalBottomSheet(context),
       icon: const Icon(FluentIcons.table_simple_24_regular),
-      label: Text(S.of(context).game),
+      label: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: itemMaxWidth),
+          child: Text(S.of(context).game, maxLines: 1, overflow: TextOverflow.ellipsis),
+      ),
     );
 
     final optionsButton = ToolbarItem.icon(
       onPressed: () => _showGeneralSettings(context),
       icon: const Icon(FluentIcons.settings_24_regular),
-      label: Text(S.of(context).options),
+      label: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: itemMaxWidth),
+          child: Text(S.of(context).options, maxLines: 1, overflow: TextOverflow.ellipsis),
+      ),
     );
 
     final moveButton = ToolbarItem.icon(
       onPressed: () => _showMoveModalBottomSheet(context),
       icon: const Icon(FluentIcons.calendar_agenda_24_regular),
-      label: Text(S.of(context).move),
+      label: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: itemMaxWidth),
+          child: Text(S.of(context).move, maxLines: 1, overflow: TextOverflow.ellipsis),
+      ),
     );
 
     final infoButton = ToolbarItem.icon(
       onPressed: () => _showInfoDialog(context),
       icon: const Icon(FluentIcons.book_information_24_regular),
-      label: Text(S.of(context).info),
+      label: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: itemMaxWidth),
+          child: Text(S.of(context).info, maxLines: 1, overflow: TextOverflow.ellipsis),
+      ),
     );
 
     return <Widget>[

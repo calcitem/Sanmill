@@ -45,6 +45,7 @@ dependencies:
   #    path: soundpool_windux
   url_launcher: ^6.1.6
   uuid: ^3.0.6
+  marquee: ^2.2.3
 
 dev_dependencies:
   build_runner: ^2.3.0
