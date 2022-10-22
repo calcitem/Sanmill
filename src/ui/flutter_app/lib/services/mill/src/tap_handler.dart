@@ -59,6 +59,11 @@ class TapHandler {
       return const EngineResponseSkip();
     }
 
+    if (MillController().position.phase == Phase.gameOver) {
+      logger.v("$_tag Phase is gameOver, ignore tapping.");
+      return const EngineResponseSkip();
+    }
+
     // TODO: WAR
     if ((MillController().gameInstance.sideToMove == PieceColor.white ||
             MillController().gameInstance.sideToMove == PieceColor.black) ==
