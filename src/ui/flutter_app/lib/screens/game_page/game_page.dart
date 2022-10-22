@@ -165,13 +165,19 @@ class _GameState extends State<_Game> {
       const EdgeInsets.symmetric(horizontal: 4),
       MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
     );
-    final itemMaxWidth = (MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) / 4 - scaledPadding.horizontal;
+    final itemMaxWidth =
+        (MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) / 4 -
+            scaledPadding.horizontal;
     final gameButton = ToolbarItem.icon(
       onPressed: () => _showGameModalBottomSheet(context),
       icon: const Icon(FluentIcons.table_simple_24_regular),
       label: Container(
-          constraints: BoxConstraints(maxWidth: itemMaxWidth),
-          child: Text(S.of(context).game, maxLines: 1, overflow: TextOverflow.ellipsis),
+        constraints: BoxConstraints(maxWidth: itemMaxWidth),
+        child: Text(
+          S.of(context).game,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
 
@@ -179,8 +185,12 @@ class _GameState extends State<_Game> {
       onPressed: () => _showGeneralSettings(context),
       icon: const Icon(FluentIcons.settings_24_regular),
       label: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: itemMaxWidth),
-          child: Text(S.of(context).options, maxLines: 1, overflow: TextOverflow.ellipsis),
+        constraints: BoxConstraints(maxWidth: itemMaxWidth),
+        child: Text(
+          S.of(context).options,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
 
@@ -188,8 +198,12 @@ class _GameState extends State<_Game> {
       onPressed: () => _showMoveModalBottomSheet(context),
       icon: const Icon(FluentIcons.calendar_agenda_24_regular),
       label: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: itemMaxWidth),
-          child: Text(S.of(context).move, maxLines: 1, overflow: TextOverflow.ellipsis),
+        constraints: BoxConstraints(maxWidth: itemMaxWidth),
+        child: Text(
+          S.of(context).move,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
 
@@ -197,8 +211,12 @@ class _GameState extends State<_Game> {
       onPressed: () => _showInfoDialog(context),
       icon: const Icon(FluentIcons.book_information_24_regular),
       label: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: itemMaxWidth),
-          child: Text(S.of(context).info, maxLines: 1, overflow: TextOverflow.ellipsis),
+        constraints: BoxConstraints(maxWidth: itemMaxWidth),
+        child: Text(
+          S.of(context).info,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
 
@@ -359,19 +377,23 @@ class _GameState extends State<_Game> {
                                         : DB().colorSettings.whitePieceColor))
                           ])
                     : const SizedBox(height: AppTheme.boardMargin),
-                if (MillController().gameInstance.gameMode == GameMode.setupPosition)
+                if (MillController().gameInstance.gameMode ==
+                    GameMode.setupPosition)
                   const SetupPositionToolBar(),
                 if (DB().displaySettings.isHistoryNavigationToolbarShown &&
-                    MillController().gameInstance.gameMode != GameMode.setupPosition)
+                    MillController().gameInstance.gameMode !=
+                        GameMode.setupPosition)
                   GamePageToolBar(
                     backgroundColor:
                         DB().colorSettings.navigationToolbarBackgroundColor,
                     itemColor: DB().colorSettings.navigationToolbarIconColor,
                     children: historyNavToolbarItems(context),
                   ),
-                if (MillController().gameInstance.gameMode != GameMode.setupPosition)
+                if (MillController().gameInstance.gameMode !=
+                    GameMode.setupPosition)
                   GamePageToolBar(
-                    backgroundColor: DB().colorSettings.mainToolbarBackgroundColor,
+                    backgroundColor:
+                        DB().colorSettings.mainToolbarBackgroundColor,
                     itemColor: DB().colorSettings.mainToolbarIconColor,
                     children: mainToolbarItems(context),
                   ),
