@@ -45,7 +45,7 @@ class GeneralSettingsPage extends StatelessWidget {
         builder: (_) => const _ResetSettingsAlert(),
       );
 
-  void _setSkillLevel(BuildContext context) => showModalBottomSheet(
+  void _setSkillLevel(BuildContext context) => showDialog(
         context: context,
         builder: (_) => const _SkillLevelPicker(),
       );
