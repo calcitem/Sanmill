@@ -159,11 +159,17 @@ class _GameState extends State<_Game> {
   // Icons: https://github.com/microsoft/fluentui-system-icons/blob/main/icons_regular.md
 
   List<Widget> mainToolbarItems(BuildContext context) {
-    final itemMaxWidth = (MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) / 4 - 16;
+    final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
+      const EdgeInsets.all(8),
+      const EdgeInsets.symmetric(horizontal: 8),
+      const EdgeInsets.symmetric(horizontal: 4),
+      MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
+    );
+    final itemMaxWidth = (MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) / 4 - scaledPadding.horizontal;
     final gameButton = ToolbarItem.icon(
       onPressed: () => _showGameModalBottomSheet(context),
       icon: const Icon(FluentIcons.table_simple_24_regular),
-      label: ConstrainedBox(
+      label: Container(
           constraints: BoxConstraints(maxWidth: itemMaxWidth),
           child: Text(S.of(context).game, maxLines: 1, overflow: TextOverflow.ellipsis),
       ),

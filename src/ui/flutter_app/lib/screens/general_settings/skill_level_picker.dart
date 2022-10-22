@@ -26,11 +26,13 @@ class _SkillLevelPicker extends StatefulWidget {
 class _SkillLevelPickerState extends State<_SkillLevelPicker> {
   late FixedExtentScrollController _controller;
 
+  late int _level;
+
   @override
   void initState() {
     super.initState();
-    _controller = FixedExtentScrollController(
-        initialItem: DB().generalSettings.skillLevel - 1);
+    _level = DB().generalSettings.skillLevel;
+    _controller = FixedExtentScrollController(initialItem: _level - 1);
   }
 
   @override
@@ -41,8 +43,6 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final size = Theme.of(context).textTheme.bodyText1!.fontSize!;
-
     return Semantics(
       label: S.of(context).skillLevel,
       child: ValueListenableBuilder(
@@ -53,15 +53,39 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
             defaultValue: const GeneralSettings(),
           )!;
 
-          return CupertinoPicker(
-            scrollController: _controller,
-            itemExtent: size + 12,
-            children: List.generate(
-                Constants.topSkillLevel, (index) => Text('${index + 1}')),
-            onSelectedItemChanged: (numb) {
-              DB().generalSettings =
-                  generalSettings.copyWith(skillLevel: numb + 1);
-            },
+          return Column(
+            children: [
+              Row(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('取消'),
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      DB().generalSettings =
+                          generalSettings.copyWith(skillLevel: _level);
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('确定'),
+                  )
+                ],
+              ),
+              Expanded(
+                child: CupertinoPicker(
+                  scrollController: _controller,
+                  itemExtent: 44,
+                  children: List.generate(Constants.topSkillLevel,
+                      (level) => Center(child: Text('${level + 1}'))),
+                  onSelectedItemChanged: (numb) {
+                    _level = numb + 1;
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),
