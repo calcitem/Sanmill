@@ -150,7 +150,7 @@ class AboutPage extends StatelessWidget {
     final unencodedPath = s.substring(s.indexOf('/'));
     final uri = Uri.https(authority, unencodedPath);
 
-    await launchUrl(uri);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 }
 

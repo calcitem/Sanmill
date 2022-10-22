@@ -33,7 +33,10 @@ class LinkTextSpan extends TextSpan {
               final authority = s.substring(0, s.indexOf('/'));
               final unencodedPath = s.substring(s.indexOf('/'));
               final uri = Uri.https(authority, unencodedPath);
-              launchUrl(uri);
+              launchUrl(
+                uri,
+                mode: LaunchMode.externalApplication,
+              );
             },
         );
 }
