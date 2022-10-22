@@ -26,7 +26,7 @@ jobs:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.3.4'
+          flutter-version: '3.3.5'
 
       - name: Export environment valuables
         run: export
