@@ -51,7 +51,7 @@ class CustomDrawerItem<T> extends StatelessWidget {
           color: color,
         );
 
-    final titleSize = TextSizeHelper.boundingTextSize(title, titleStyle, maxLines: 1);
+    final titleSize = TextSizeHelper.boundingTextSize(context, title, titleStyle, maxLines: 1);
     final isExpand = (MediaQuery.of(context).size.width * 0.75 * 0.9 - 46) > titleSize.width;
 
     final drawerItem = Row(
