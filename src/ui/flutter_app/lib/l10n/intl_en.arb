@@ -1355,5 +1355,13 @@
   "isUnplacedAndRemovedPiecesShown": "Show unplaced and removed pieces",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Full screen",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Exit and reopen app for settings to take effect.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

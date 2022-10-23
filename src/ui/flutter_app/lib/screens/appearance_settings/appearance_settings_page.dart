@@ -26,6 +26,7 @@ import '../../services/language_info.dart';
 import '../../services/logger.dart';
 import '../../shared/constants.dart';
 import '../../shared/custom_drawer/custom_drawer.dart';
+import '../../shared/scaffold_messenger.dart';
 import '../../shared/settings/settings.dart';
 import '../../shared/theme/app_theme.dart';
 
@@ -278,6 +279,15 @@ class AppearanceSettingsPage extends StatelessWidget {
                   langCallback(context, displaySettings, locale),
             ),
           ),
+        ),
+        SettingsListTile.switchTile(
+          value: displaySettings.isFullScreen,
+          onChanged: (bool val) {
+            DB().displaySettings = displaySettings.copyWith(isFullScreen: val);
+            rootScaffoldMessengerKey.currentState!
+                .showSnackBarClear(S.of(context).reopenToTakeEffect);
+          },
+          titleString: S.of(context).fullScreen,
         ),
         SettingsListTile.switchTile(
           value: displaySettings.isPieceCountInHandShown,

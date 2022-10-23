@@ -45,6 +45,7 @@ class DisplaySettings {
   const DisplaySettings({
     @Deprecated("Use [locale] instead.") this.languageCode = "Default",
     this.locale,
+    this.isFullScreen = false,
     @Deprecated("Until other export options are implemented this setting shouldn't be used.")
         this.standardNotationEnabled = true,
     this.isPieceCountInHandShown = true,
@@ -127,6 +128,9 @@ class DisplaySettings {
 
   @HiveField(16, defaultValue: false)
   final bool isUnplacedAndRemovedPiecesShown;
+
+  @HiveField(17, defaultValue: false)
+  final bool isFullScreen;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
