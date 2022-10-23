@@ -17,10 +17,10 @@
 part of '../mill.dart';
 
 class GameRecorder extends PointedList<ExtMove> {
+  GameRecorder({this.lastPositionWithRemove, this.setupPosition});
+
   String? lastPositionWithRemove = "";
   String? setupPosition;
-
-  GameRecorder({this.lastPositionWithRemove, this.setupPosition});
 
   @override
   String toString() {

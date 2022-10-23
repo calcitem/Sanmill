@@ -27,6 +27,24 @@ part of '../mill.dart';
 /// * The game instance [Game]
 /// * The recorder [GameRecorder]
 class MillController {
+  factory MillController() => instance;
+
+  /// Mill Controller
+  ///
+  /// A singleton class that holds all objects and methods needed to play Mill.
+  ///
+  /// Controls:
+  /// * The tip [HeaderTipNotifier]
+  /// * The engine [Engine]
+  /// * The position [Position]
+  /// * The game instance [Game]
+  /// * The recorder [GameRecorder]
+  ///
+  /// All listed objects should not be crated outside of this scope.
+  MillController._() {
+    _init();
+  }
+
   static const String _tag = "[Controller]";
 
   bool disposed = false;
@@ -61,24 +79,6 @@ class MillController {
 
   @visibleForTesting
   static MillController instance = MillController._();
-
-  factory MillController() => instance;
-
-  /// Mill Controller
-  ///
-  /// A singleton class that holds all objects and methods needed to play Mill.
-  ///
-  /// Controls:
-  /// * The tip [HeaderTipNotifier]
-  /// * The engine [Engine]
-  /// * The position [Position]
-  /// * The game instance [Game]
-  /// * The recorder [GameRecorder]
-  ///
-  /// All listed objects should not be crated outside of this scope.
-  MillController._() {
-    _init();
-  }
 
   /// Starts up the controller. It will initialize the audio subsystem and heat the engine.
   Future<void> start() async {

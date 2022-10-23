@@ -40,19 +40,19 @@ typedef DB = Database;
 ///
 /// The DB act's as a singe source of truth and therefore will be consistent across calls.
 class Database {
-  @visibleForTesting
-  static Database? instance;
-
   /// Gets the current DB instance.
   ///
   /// If it hasn't been set yet a new one will be created. The given [locale] is only used to set the initial rules.
   factory Database([Locale? locale]) => instance ??= Database._(locale);
 
-  /// Locale to set the initial [RuleSettings].
-  final Locale? locale;
-
   /// Internal constructor used to create the instance.
   Database._([this.locale]);
+
+  @visibleForTesting
+  static Database? instance;
+
+  /// Locale to set the initial [RuleSettings].
+  final Locale? locale;
 
   /// [GeneralSettings] Box reference
   static late final Box<GeneralSettings> _generalSettingsBox;

@@ -41,6 +41,40 @@ extension _MoveTypeExtension on MoveType {
 
 // TODO: We should know who do this move
 class ExtMove {
+  ExtMove(this.move) {
+    _checkLegal();
+
+    type = _MoveTypeExtension.parse(move);
+
+    late int toFile;
+    late int toRank;
+
+    switch (type) {
+      case MoveType.place:
+        toFile = int.parse(move[1]);
+        toRank = int.parse(move[3]);
+        break;
+      case MoveType.move:
+        toFile = int.parse(move[8]);
+        toRank = int.parse(move[10]);
+        break;
+      case MoveType.remove:
+        toFile = int.parse(move[2]);
+        toRank = int.parse(move[4]);
+        break;
+      case MoveType.draw:
+        toFile = 0;
+        toRank = 0;
+        break;
+      case MoveType.none:
+        toFile = -1;
+        toRank = -1;
+        break;
+    }
+
+    to = makeSquare(toFile, toRank);
+  }
+
   static const String _tag = "[Move]";
 
   // Square
@@ -106,40 +140,6 @@ class ExtMove {
   }
 
   late final MoveType? type;
-
-  ExtMove(this.move) {
-    _checkLegal();
-
-    type = _MoveTypeExtension.parse(move);
-
-    late int toFile;
-    late int toRank;
-
-    switch (type) {
-      case MoveType.place:
-        toFile = int.parse(move[1]);
-        toRank = int.parse(move[3]);
-        break;
-      case MoveType.move:
-        toFile = int.parse(move[8]);
-        toRank = int.parse(move[10]);
-        break;
-      case MoveType.remove:
-        toFile = int.parse(move[2]);
-        toRank = int.parse(move[4]);
-        break;
-      case MoveType.draw:
-        toFile = 0;
-        toRank = 0;
-        break;
-      case MoveType.none:
-        toFile = -1;
-        toRank = -1;
-        break;
-    }
-
-    to = makeSquare(toFile, toRank);
-  }
 
   void _checkLegal() {
     // TODO: Which one?

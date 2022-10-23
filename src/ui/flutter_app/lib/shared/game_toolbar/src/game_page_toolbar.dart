@@ -17,6 +17,13 @@
 part of '../game_toolbar.dart';
 
 class GamePageToolBar extends StatelessWidget {
+  const GamePageToolBar({
+    super.key,
+    required this.children,
+    this.backgroundColor,
+    this.itemColor,
+  });
+
   final List<Widget> children;
   final Color? backgroundColor;
   final Color? itemColor;
@@ -27,13 +34,6 @@ class GamePageToolBar extends StatelessWidget {
   /// Gets the calculated height this widget adds to it's children.
   /// To get the absolute height add the surrounding [ButtonThemeData.height].
   static double get height => (_padding.vertical + _margin.vertical) * 2;
-
-  const GamePageToolBar({
-    super.key,
-    required this.children,
-    this.backgroundColor,
-    this.itemColor,
-  });
 
   @override
   Widget build(BuildContext context) {

@@ -3,6 +3,12 @@
 part of '../mill.dart';
 
 class TapHandler {
+  TapHandler({
+    required this.context,
+  });
+
+  //final position = MillController().position;
+
   static const String _tag = "[Tap Handler]";
 
   final BuildContext context;
@@ -10,12 +16,6 @@ class TapHandler {
   final MillController controller = MillController();
   //final gameMode = MillController().gameInstance.gameMode;
   final showTip = MillController().headerTipNotifier.showTip;
-
-  //final position = MillController().position;
-
-  TapHandler({
-    required this.context,
-  });
 
   bool get _isGameRunning =>
       MillController().position.winner == PieceColor.nobody;

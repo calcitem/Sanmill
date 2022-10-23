@@ -17,9 +17,9 @@
 part of '../mill.dart';
 
 class Game {
-  static const String _tag = "[game]";
-
   Game();
+
+  static const String _tag = "[game]";
 
   PieceColor sideToMove = PieceColor.white;
 

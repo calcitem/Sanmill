@@ -21,6 +21,13 @@ part of '../painters.dart';
 /// Holds parameters needed to paint each piece.
 @immutable
 class _PiecePaintParam {
+  const _PiecePaintParam({
+    required this.piece,
+    required this.pos,
+    required this.animated,
+    required this.diameter,
+  });
+
   /// The color of the piece.
   final PieceColor piece;
 
@@ -31,13 +38,6 @@ class _PiecePaintParam {
   final Offset pos;
   final bool animated;
   final double diameter;
-
-  const _PiecePaintParam({
-    required this.piece,
-    required this.pos,
-    required this.animated,
-    required this.diameter,
-  });
 }
 
 /// Custom Piece Painter
@@ -46,12 +46,12 @@ class _PiecePaintParam {
 /// The board is drawn by [BoardPainter].
 /// It asserts the Canvas to be a square.
 class PiecePainter extends CustomPainter {
-  /// The value representing the piece animation when placing.
-  final double animationValue;
-
   PiecePainter({
     required this.animationValue,
   });
+
+  /// The value representing the piece animation when placing.
+  final double animationValue;
 
   @override
   void paint(Canvas canvas, Size size) {

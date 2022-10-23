@@ -33,6 +33,10 @@ part 'color_settings.g.dart';
 @CopyWith()
 @immutable
 class ColorSettings {
+  /// Encodes a Json style map Color a [ColorSettings] object
+  factory ColorSettings.fromJson(Map<String, dynamic> json) =>
+      _$ColorSettingsFromJson(json);
+
   const ColorSettings({
     this.boardLineColor = UIColors.rosewood50,
     this.darkBackgroundColor = UIColors.spruce,
@@ -157,10 +161,6 @@ class ColorSettings {
   )
   @HiveField(14)
   final Color navigationToolbarIconColor;
-
-  /// Encodes a Json style map Color a [ColorSettings] object
-  factory ColorSettings.fromJson(Map<String, dynamic> json) =>
-      _$ColorSettingsFromJson(json);
 
   /// Decodes a Json from a [ColorSettings] object
   Map<String, dynamic> toJson() => _$ColorSettingsToJson(this);

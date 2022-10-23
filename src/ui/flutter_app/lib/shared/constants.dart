@@ -17,13 +17,13 @@
 import 'dart:ui';
 
 class URL {
-  final String url;
-  final String urlZh;
-
   const URL({
     required this.url,
     required this.urlZh,
   });
+
+  final String url;
+  final String urlZh;
 
   URL fromSubPath(String path, [String? pathZh]) {
     return URL(

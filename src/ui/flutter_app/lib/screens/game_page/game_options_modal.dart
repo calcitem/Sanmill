@@ -19,9 +19,9 @@
 part of 'game_page.dart';
 
 class _GameOptionsModal extends StatelessWidget {
-  static const _tag = "[GameOptionsModal]";
-
   const _GameOptionsModal();
+
+  static const _tag = "[GameOptionsModal]";
 
   onStartNewGameButtonPressed(BuildContext context) async {}
 

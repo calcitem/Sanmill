@@ -51,13 +51,13 @@ part './result_alert.dart';
 part 'game_page_action_sheet.dart';
 
 class GamePage extends StatelessWidget {
-  final GameMode gameMode;
-
-  final bool isSettingsPosition = true;
-
   GamePage(this.gameMode, {super.key}) {
     Position.resetScore();
   }
+
+  final GameMode gameMode;
+
+  final bool isSettingsPosition = true;
 
   @override
   Widget build(BuildContext context) {

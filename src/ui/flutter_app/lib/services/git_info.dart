@@ -20,14 +20,14 @@ import '../generated/assets/assets.gen.dart';
 
 /// Information about the local git repository
 class GitInformation {
+  /// Construct a [GitInformation] from a [branch] and [revision]
+  const GitInformation({required this.branch, required this.revision});
+
   /// The current checked out branch
   final String branch;
 
   /// The current commit id
   final String? revision;
-
-  /// Construct a [GitInformation] from a [branch] and [revision]
-  const GitInformation({required this.branch, required this.revision});
 }
 
 /// Get the [GitInformation] for the local git repository

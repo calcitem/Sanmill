@@ -23,12 +23,12 @@ enum Sound { draw, fly, go, illegal, lose, mill, place, remove, select, win }
 ///
 /// Service providing a unified abstraction to call different audio backend on our supported platforms.
 class Audios {
-  @visibleForTesting
-  static Audios instance = Audios._();
-
   factory Audios() => instance;
 
   Audios._();
+
+  @visibleForTesting
+  static Audios instance = Audios._();
 
   late Soundpool _soundpool;
   int _alarmSoundStreamId = 0;

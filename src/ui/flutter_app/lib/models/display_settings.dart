@@ -42,6 +42,10 @@ enum PointPaintingStyle {
 @CopyWith(copyWithNull: true)
 @immutable
 class DisplaySettings {
+  /// Encodes a Json style map into a [DisplaySettings] object
+  factory DisplaySettings.fromJson(Map<String, dynamic> json) =>
+      _$DisplaySettingsFromJson(json);
+
   const DisplaySettings({
     @Deprecated("Use [locale] instead.") this.languageCode = "Default",
     this.locale,
@@ -123,10 +127,6 @@ class DisplaySettings {
 
   @HiveField(16, defaultValue: false)
   final bool isUnplacedAndRemovedPiecesShown;
-
-  /// Encodes a Json style map into a [DisplaySettings] object
-  factory DisplaySettings.fromJson(Map<String, dynamic> json) =>
-      _$DisplaySettingsFromJson(json);
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

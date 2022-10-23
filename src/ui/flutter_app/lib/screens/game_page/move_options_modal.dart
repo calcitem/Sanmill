@@ -17,9 +17,9 @@
 part of 'game_page.dart';
 
 class _MoveOptionsModal extends StatelessWidget {
-  final BuildContext mainContext;
-
   const _MoveOptionsModal({required this.mainContext});
+
+  final BuildContext mainContext;
 
   void _showMoveList(BuildContext context) {
     Navigator.pop(context);

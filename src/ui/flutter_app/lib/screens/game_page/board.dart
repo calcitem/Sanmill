@@ -22,9 +22,9 @@ part of 'game_page.dart';
 /// This widget will also handle the input from the user.
 @visibleForTesting
 class Board extends StatefulWidget {
-  static const String _tag = "[board]";
-
   const Board({super.key});
+
+  static const String _tag = "[board]";
 
   @override
   State<Board> createState() => _BoardState();

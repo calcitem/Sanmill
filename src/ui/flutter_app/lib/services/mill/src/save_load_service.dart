@@ -20,9 +20,9 @@ part of '../mill.dart';
 
 @visibleForTesting
 class LoadService {
-  static const String _tag = "[Loader]";
-
   LoadService._();
+
+  static const String _tag = "[Loader]";
 
   /// Retrieves the file path.
   static Future<String?> getFilePath(BuildContext context) async {

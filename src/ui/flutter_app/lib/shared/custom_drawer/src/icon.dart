@@ -17,13 +17,13 @@
 part of '../custom_drawer.dart';
 
 class DrawerIcon extends InheritedWidget {
-  final Widget icon;
-
   const DrawerIcon({
     super.key,
     required this.icon,
     required super.child,
   });
+
+  final Widget icon;
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => false;

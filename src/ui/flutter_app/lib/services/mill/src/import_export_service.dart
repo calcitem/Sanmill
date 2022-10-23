@@ -21,9 +21,9 @@ part of '../mill.dart';
 // TODO: [Leptopoda] Clean up the file
 @visibleForTesting
 class ImportService {
-  static const String _tag = "[Importer]";
-
   const ImportService._();
+
+  static const String _tag = "[Importer]";
 
   /// Exports the game to the devices clipboard.
   static Future<void> exportGame(BuildContext context) async {
