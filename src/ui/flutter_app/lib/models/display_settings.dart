@@ -42,10 +42,6 @@ enum PointPaintingStyle {
 @CopyWith(copyWithNull: true)
 @immutable
 class DisplaySettings {
-  /// Encodes a Json style map into a [DisplaySettings] object
-  factory DisplaySettings.fromJson(Map<String, dynamic> json) =>
-      _$DisplaySettingsFromJson(json);
-
   const DisplaySettings({
     @Deprecated("Use [locale] instead.") this.languageCode = "Default",
     this.locale,
@@ -66,6 +62,10 @@ class DisplaySettings {
     this.boardTop = kToolbarHeight,
     this.animationDuration = 0.0,
   });
+
+  /// Encodes a Json style map into a [DisplaySettings] object
+  factory DisplaySettings.fromJson(Map<String, dynamic> json) =>
+      _$DisplaySettingsFromJson(json);
 
   @Deprecated("Use [locale] instead.")
   @HiveField(0)

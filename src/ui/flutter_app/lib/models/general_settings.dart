@@ -52,10 +52,6 @@ extension SearchAlgorithmName on SearchAlgorithm {
 @CopyWith()
 @immutable
 class GeneralSettings {
-  /// Encodes a Json style map into a [GeneralSettings] object
-  factory GeneralSettings.fromJson(Map<String, dynamic> json) =>
-      _$GeneralSettingsFromJson(json);
-
   const GeneralSettings({
     this.isPrivacyPolicyAccepted = false,
     @Deprecated("As this is not a user facing preference we migrated it into another box")
@@ -84,6 +80,10 @@ class GeneralSettings {
         this.experimentsEnabled = false,
     this.firstRun = true,
   });
+
+  /// Encodes a Json style map into a [GeneralSettings] object
+  factory GeneralSettings.fromJson(Map<String, dynamic> json) =>
+      _$GeneralSettingsFromJson(json);
 
   @HiveField(0)
   final bool isPrivacyPolicyAccepted;

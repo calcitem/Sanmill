@@ -33,19 +33,6 @@ part 'rule_settings.g.dart';
 @CopyWith()
 @immutable
 class RuleSettings {
-  /// Encodes a Json style map into a [RuleSettings] object
-  factory RuleSettings.fromJson(Map<String, dynamic> json) =>
-      _$RuleSettingsFromJson(json);
-
-  /// Creates a Rules object based on the given locale
-  factory RuleSettings.fromLocale(Locale? locale) {
-    switch (locale?.languageCode) {
-      case "fa":
-        return const TwelveMensMorrisRuleSettings();
-      default:
-        return const RuleSettings();
-    }
-  }
   const RuleSettings({
     this.piecesCount = 9,
     this.flyPieceCount = 3,
@@ -64,6 +51,20 @@ class RuleSettings {
     this.endgameNMoveRule = 100,
     this.threefoldRepetitionRule = true,
   });
+
+  /// Encodes a Json style map into a [RuleSettings] object
+  factory RuleSettings.fromJson(Map<String, dynamic> json) =>
+      _$RuleSettingsFromJson(json);
+
+  /// Creates a Rules object based on the given locale
+  factory RuleSettings.fromLocale(Locale? locale) {
+    switch (locale?.languageCode) {
+      case "fa":
+        return const TwelveMensMorrisRuleSettings();
+      default:
+        return const RuleSettings();
+    }
+  }
 
   @HiveField(0)
   final int piecesCount;
