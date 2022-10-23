@@ -213,11 +213,13 @@ class PointedListIterator<E> {
   }
 
   @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
   bool operator ==(Object other) =>
       other is PointedListIterator &&
       _base == other._base &&
       _index == other._index;
 
   @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
   int get hashCode => Object.hash(_base, _index);
 }
