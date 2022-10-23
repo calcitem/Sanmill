@@ -26,7 +26,7 @@ class HeaderTipNotifier with ChangeNotifier {
 
   void showTip(String tip, {bool snackBar = true}) {
     logger.v("[tip] $tip");
-    showSnackBar = (DB().generalSettings.screenReaderSupport && snackBar);
+    showSnackBar = DB().generalSettings.screenReaderSupport && snackBar;
     _message = tip;
     notifyListeners();
   }
