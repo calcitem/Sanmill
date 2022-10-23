@@ -88,7 +88,7 @@ class TapHandler {
       if (isAiToMove) {
         logger.i("$_tag AI is not thinking. AI is to move.");
 
-        return await MillController().engineToGo(context, isMoveNow: false);
+        return MillController().engineToGo(context, isMoveNow: false);
       }
     }
 
