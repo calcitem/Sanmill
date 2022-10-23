@@ -46,9 +46,9 @@ class HistoryNavigator {
 
     final MillController controller = MillController();
 
-    MillController().headerTipNotifier.showTip(S.of(context).atEnd,
-        snackBar:
-            true); // TODO: Move to the end of this function. Or change to S.of(context).waiting?
+    MillController().headerTipNotifier.showTip(S
+        .of(context)
+        .atEnd); // TODO: Move to the end of this function. Or change to S.of(context).waiting?
 
     MillController().headerIconsNotifier.showIcons(); // TODO: See above.
     MillController().boardSemanticsNotifier.updateSemantics();
@@ -74,7 +74,6 @@ class HistoryNavigator {
         if (lastEffectiveMove != null) {
           MillController().headerTipNotifier.showTip(
                 S.of(context).lastMove(lastEffectiveMove.notation),
-                snackBar: true,
               );
           MillController().headerIconsNotifier.showIcons();
           MillController().boardSemanticsNotifier.updateSemantics();

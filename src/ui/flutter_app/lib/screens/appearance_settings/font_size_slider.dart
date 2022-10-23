@@ -32,7 +32,6 @@ class _FontSizeSlider extends StatelessWidget {
           )!;
 
           return Column(
-            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Slider(

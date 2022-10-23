@@ -35,7 +35,6 @@ class _PieceWidthSlider extends StatelessWidget {
           return Slider(
             value: displaySettings.pieceWidth,
             min: 0.5,
-            max: 1.0,
             divisions: 50,
             label: (displaySettings.pieceWidth).toStringAsFixed(1),
             onChanged: (double value) {

@@ -156,7 +156,6 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
       content: ColorPicker(
         pickerColor: pickedColor,
         labelTypes: const [],
-        hexInputBar: false,
         onColorChanged: _changeColor,
       ),
       actions: <Widget>[

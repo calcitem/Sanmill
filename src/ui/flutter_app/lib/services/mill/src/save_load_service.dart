@@ -140,8 +140,9 @@ class LoadService {
 
     if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
         const HistoryOK()) {
-      MillController().headerTipNotifier.showTip(S.of(context).done,
-          snackBar: true); // TODO: "Game loaded." is better.
+      MillController()
+          .headerTipNotifier
+          .showTip(S.of(context).done); // TODO: "Game loaded." is better.
     } else {
       final String tip =
           S.of(context).cannotImport(HistoryNavigator.importFailedStr);
@@ -166,7 +167,6 @@ class LoadService {
             controller: textFieldController,
             decoration: const InputDecoration(
               suffixText: ".pgn",
-              enabled: true,
             ),
           ),
           actions: <Widget>[
