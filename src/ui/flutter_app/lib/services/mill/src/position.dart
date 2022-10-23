@@ -137,12 +137,13 @@ class Position {
   /// s - Select Action
   /// r - Remove Action
   String get fen {
-    final buffer = StringBuffer();
+    final StringBuffer buffer = StringBuffer();
 
     // Piece placement data
-    for (var file = 1; file <= fileNumber; file++) {
-      for (var rank = 1; rank <= rankNumber; rank++) {
-        final piece = pieceOnGrid(squareToIndex[makeSquare(file, rank)]!);
+    for (int file = 1; file <= fileNumber; file++) {
+      for (int rank = 1; rank <= rankNumber; rank++) {
+        final PieceColor piece =
+            pieceOnGrid(squareToIndex[makeSquare(file, rank)]!);
         buffer.write(piece.string);
       }
 
@@ -179,10 +180,10 @@ class Position {
 
   bool setFen(String fen) {
     bool ret = true;
-    var l = fen.split(" ");
+    List<String> l = fen.split(" ");
 
-    var boardStr = l[0];
-    var ring = boardStr.split("/");
+    String boardStr = l[0];
+    List<String> ring = boardStr.split("/");
 
     Map<String, PieceColor> pieceMap = {
       "*": PieceColor.none,
@@ -194,8 +195,8 @@ class Position {
     // Piece placement data
     for (int file = 1; file <= fileNumber; file++) {
       for (int rank = 1; rank <= rankNumber; rank++) {
-        final p = pieceMap[ring[file - 1][rank - 1]]!;
-        final sq = makeSquare(file, rank);
+        final PieceColor p = pieceMap[ring[file - 1][rank - 1]]!;
+        final int sq = makeSquare(file, rank);
         _board[sq] = p;
         _grid[squareToIndex[sq]!] = p;
       }
@@ -212,7 +213,7 @@ class Position {
     _them = _sideToMove.opponent;
     MillController().gameInstance.sideToMove = _sideToMove; // Note
 
-    var phaseStr = l[2];
+    String phaseStr = l[2];
 
     Map<String, Phase> phaseMap = {
       "r": Phase.ready,
@@ -223,7 +224,7 @@ class Position {
 
     phase = phaseMap[phaseStr]!;
 
-    var actionStr = l[3];
+    String actionStr = l[3];
 
     Map<String, Act> actionMap = {
       "p": Act.place,
@@ -233,25 +234,25 @@ class Position {
 
     _action = actionMap[actionStr]!;
 
-    var whitePieceOnBoardCountStr = l[4];
+    String whitePieceOnBoardCountStr = l[4];
     pieceOnBoardCount[PieceColor.white] = int.parse(whitePieceOnBoardCountStr);
 
-    var whitePieceInHandCountStr = l[5];
+    String whitePieceInHandCountStr = l[5];
     pieceInHandCount[PieceColor.white] = int.parse(whitePieceInHandCountStr);
 
-    var blackPieceOnBoardCountStr = l[6];
+    String blackPieceOnBoardCountStr = l[6];
     pieceOnBoardCount[PieceColor.black] = int.parse(blackPieceOnBoardCountStr);
 
-    var blackPieceInHandCountStr = l[7];
+    String blackPieceInHandCountStr = l[7];
     pieceInHandCount[PieceColor.black] = int.parse(blackPieceInHandCountStr);
 
-    var pieceToRemoveCountStr = l[8];
+    String pieceToRemoveCountStr = l[8];
     _pieceToRemoveCount = int.parse(pieceToRemoveCountStr);
 
-    var rule50Str = l[9];
+    String rule50Str = l[9];
     st.rule50 = int.parse(rule50Str);
 
-    var gamePlyStr = l[10];
+    String gamePlyStr = l[10];
     _gamePly = int.parse(gamePlyStr);
 
     // Misc
@@ -379,7 +380,7 @@ class Position {
   /// hasGameCycle() tests if the position has a move which draws by repetition.
   bool get _hasGameCycle {
     int repetition = 0; // Note: Engine is global val
-    for (final i in posKeyHistory) {
+    for (final int i in posKeyHistory) {
       if (st.key == i) {
         repetition++;
         if (repetition == 3) {
@@ -395,8 +396,8 @@ class Position {
 ///////////////////////////////////////////////////////////////////////////////
 
   bool _putPiece(int s) {
-    var piece = PieceColor.none;
-    final us = _sideToMove;
+    PieceColor piece = PieceColor.none;
+    final PieceColor us = _sideToMove;
 
     if (phase == Phase.gameOver ||
         _action != Act.place ||
@@ -823,7 +824,7 @@ class Position {
 
     int n = 0;
 
-    for (final line in _millLinesHV) {
+    for (final List<int> line in _millLinesHV) {
       if (_board[line[0]] == pieceColor &&
           _board[line[1]] == pieceColor &&
           _board[line[2]] == pieceColor) {
@@ -832,7 +833,7 @@ class Position {
     }
 
     if (DB().ruleSettings.hasDiagonalLines == true) {
-      for (final line in _millLinesD) {
+      for (final List<int> line in _millLinesD) {
         if (_board[line[0]] == pieceColor &&
             _board[line[1]] == pieceColor &&
             _board[line[2]] == pieceColor) {
@@ -930,13 +931,13 @@ class Position {
 
   @visibleForTesting
   String? get movesSinceLastRemove {
-    final recorder = MillController().recorder;
+    final GameRecorder recorder = MillController().recorder;
     if (recorder.isEmpty) return null;
 
-    final it = recorder.bidirectionalIterator;
+    final PointedListIterator<ExtMove> it = recorder.bidirectionalIterator;
     it.moveToLast();
 
-    final buffer = StringBuffer();
+    final StringBuffer buffer = StringBuffer();
 
     while (it.current != null && !it.current!.move.startsWith("-")) {
       if (!it.movePrevious()) break;
@@ -1046,7 +1047,7 @@ extension SetupPosition on Position {
   }
 
   bool _putPieceForSetupPosition(int s) {
-    var piece =
+    PieceColor piece =
         MillController().isPositionSetupBanPiece ? PieceColor.ban : sideToMove;
     //final us = _sideToMove;
 

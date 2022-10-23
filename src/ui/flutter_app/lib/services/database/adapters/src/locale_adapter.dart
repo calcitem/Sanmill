@@ -22,11 +22,11 @@ part of '../adapters.dart';
 /// and is a general [TypeAdapter] to be used with Hive [Box]es
 class LocaleAdapter extends TypeAdapter<Locale?> {
   @override
-  final typeId = 7;
+  final int typeId = 7;
 
   @override
   Locale read(BinaryReader reader) {
-    final value = reader.readString();
+    final String value = reader.readString();
     return Locale(value);
   }
 

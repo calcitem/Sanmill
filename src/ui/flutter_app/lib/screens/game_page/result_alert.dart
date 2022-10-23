@@ -25,7 +25,7 @@ class GameResultAlert extends StatelessWidget {
   final GameMode gameMode = MillController().gameInstance.gameMode;
   final PieceColor winner;
 
-  static const _tag = "[Game Over Alert]";
+  static const String _tag = "[Game Over Alert]";
 
   GameResult? get _gameResult {
     if (gameMode == GameMode.aiVsAi || gameMode == GameMode.setupPosition) {
@@ -37,7 +37,7 @@ class GameResultAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final position = MillController().position;
+    final Position position = MillController().position;
     position.result = _gameResult;
 
     final String dialogTitle = _gameResult!.winString(context);
@@ -45,10 +45,11 @@ class GameResultAlert extends StatelessWidget {
     final bool isTopLevel =
         DB().generalSettings.skillLevel == Constants.topSkillLevel;
 
-    final reason = position.gameOverReason?.getName(context, position.winner) ??
-        S.of(context).gameOverUnknownReason;
+    final String reason =
+        position.gameOverReason?.getName(context, position.winner) ??
+            S.of(context).gameOverUnknownReason;
 
-    final content = StringBuffer(reason);
+    final StringBuffer content = StringBuffer(reason);
 
     logger.v("$_tag Game over reason string: $content");
 
@@ -71,7 +72,7 @@ class GameResultAlert extends StatelessWidget {
             textScaleFactor: DB().displaySettings.fontScale,
           ),
           onPressed: () async {
-            final settings = DB().generalSettings;
+            final GeneralSettings settings = DB().generalSettings;
             DB().generalSettings =
                 settings.copyWith(skillLevel: settings.skillLevel + 1);
 

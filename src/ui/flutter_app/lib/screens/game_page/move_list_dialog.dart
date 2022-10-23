@@ -21,16 +21,16 @@ class _MoveListDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = MillController();
+    final MillController controller = MillController();
 
-    final moveHistoryText = controller.recorder.moveHistoryText!;
-    final end = controller.recorder.length - 1;
+    final String moveHistoryText = controller.recorder.moveHistoryText!;
+    final int end = controller.recorder.length - 1;
 
-    final titleTextStyle = Theme.of(context)
+    final TextStyle titleTextStyle = Theme.of(context)
         .textTheme
         .headline6!
         .copyWith(color: AppTheme.gamePageActionSheetTextColor);
-    final buttonTextStyle = titleTextStyle;
+    final TextStyle buttonTextStyle = titleTextStyle;
 
     if (DB().generalSettings.screenReaderSupport) {
       rootScaffoldMessengerKey.currentState!.clearSnackBars();
@@ -86,9 +86,9 @@ class _MoveListDialog extends StatelessWidget {
   }
 
   Future<void> _rollback(BuildContext context, int end) async {
-    final selectValue = await showDialog<int?>(
+    final int? selectValue = await showDialog<int?>(
       context: context,
-      builder: (context) => NumberPicker(
+      builder: (BuildContext context) => NumberPicker(
           end: end, newTitle: S.of(context).pleaseSelect, showMoveString: true),
     );
 

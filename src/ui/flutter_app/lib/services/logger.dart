@@ -17,4 +17,4 @@
 import 'package:logger/logger.dart';
 import 'package:sanmill/services/environment_config.dart';
 
-final logger = Logger(level: Level.values[EnvironmentConfig.logLevel]);
+final Logger logger = Logger(level: Level.values[EnvironmentConfig.logLevel]);

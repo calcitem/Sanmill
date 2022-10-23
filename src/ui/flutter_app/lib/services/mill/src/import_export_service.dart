@@ -21,7 +21,7 @@ part of '../mill.dart';
 // TODO: [Leptopoda] Clean up the file
 @visibleForTesting
 class ImportService {
-  static const _tag = "[Importer]";
+  static const String _tag = "[Importer]";
 
   const ImportService._();
 
@@ -49,7 +49,7 @@ class ImportService {
     try {
       import(data!.text!); // MillController().newRecorder = newHistory;
     } catch (exception) {
-      final tip = S.of(context).cannotImport(data!.text!);
+      final String tip = S.of(context).cannotImport(data!.text!);
       MillController().headerTipNotifier.showTip(tip);
       //MillController().animationController.forward();
       return;
@@ -61,7 +61,8 @@ class ImportService {
         const HistoryOK()) {
       MillController().headerTipNotifier.showTip(S.of(context).gameImported);
     } else {
-      final tip = S.of(context).cannotImport(HistoryNavigator.importFailedStr);
+      final String tip =
+          S.of(context).cannotImport(HistoryNavigator.importFailedStr);
       MillController().headerTipNotifier.showTip(tip);
       HistoryNavigator.importFailedStr = "";
     }
@@ -92,12 +93,12 @@ class ImportService {
   static String _playOkNotationToMoveString(String playOk) {
     if (playOk.isEmpty) throw ImportFormatException(playOk);
 
-    final iDash = playOk.indexOf("-");
-    final iX = playOk.indexOf("x");
+    final int iDash = playOk.indexOf("-");
+    final int iX = playOk.indexOf("x");
 
     if (iDash == -1 && iX == -1) {
       // 12
-      final val = int.parse(playOk);
+      final int val = int.parse(playOk);
       if (val >= 1 && val <= 24) {
         return playOkNotationToMove[playOk]!;
       } else {
@@ -107,8 +108,8 @@ class ImportService {
 
     if (iX == 0) {
       // x12
-      final sub = playOk.substring(1);
-      final val = int.parse(sub);
+      final String sub = playOk.substring(1);
+      final int val = int.parse(sub);
       if (val >= 1 && val <= 24) {
         return "-${playOkNotationToMove[sub]!}";
       } else {
@@ -118,16 +119,16 @@ class ImportService {
     if (iDash != -1 && iX == -1) {
       String? move;
       // 12-13
-      final sub1 = playOk.substring(0, iDash);
-      final val1 = int.parse(sub1);
+      final String sub1 = playOk.substring(0, iDash);
+      final int val1 = int.parse(sub1);
       if (val1 >= 1 && val1 <= 24) {
         move = playOkNotationToMove[sub1];
       } else {
         throw ImportFormatException(playOk);
       }
 
-      final sub2 = playOk.substring(iDash + 1);
-      final val2 = int.parse(sub2);
+      final String sub2 = playOk.substring(iDash + 1);
+      final int val2 = int.parse(sub2);
       if (val2 >= 1 && val2 <= 24) {
         return "$move->${playOkNotationToMove[sub2]!}";
       } else {
@@ -283,7 +284,7 @@ class ImportService {
 
   @visibleForTesting
   static void import(String moveList) {
-    var ml = moveList;
+    String ml = moveList;
     String fen = MillController().position.fen;
     String? setupFen;
 
@@ -360,7 +361,7 @@ class ImportService {
         // Finally
         .split(" ");
 
-    for (var i in list) {
+    for (String i in list) {
       i = i.trim();
 
       if (int.tryParse(i) != null) {
@@ -406,14 +407,14 @@ class ImportService {
 
     final List<String> list = cleanup(moveList).split(" ");
 
-    for (var i in list) {
+    for (String i in list) {
       i = i.trim();
 
       if (i.isNotEmpty &&
           !i.endsWith(".") &&
           !i.startsWith("[") &&
           !i.endsWith("]")) {
-        final iX = i.indexOf("x");
+        final int iX = i.indexOf("x");
         if (iX == -1) {
           final String m = _playOkNotationToMoveString(i);
           newHistory.add(ExtMove(m));

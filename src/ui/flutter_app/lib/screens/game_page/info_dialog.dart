@@ -20,9 +20,9 @@ class _InfoDialog extends StatelessWidget {
   const _InfoDialog({Key? key}) : super(key: key);
 
   String _infoText(BuildContext context) {
-    final controller = MillController();
-    final buffer = StringBuffer();
-    final pos = controller.position;
+    final MillController controller = MillController();
+    final StringBuffer buffer = StringBuffer();
+    final Position pos = controller.position;
 
     late final String us;
     late final String them;

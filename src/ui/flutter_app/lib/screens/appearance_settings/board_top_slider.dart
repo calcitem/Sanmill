@@ -25,7 +25,7 @@ class _BoardTopSlider extends StatelessWidget {
       label: S.of(context).boardTop,
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplaySettings,
-        builder: (context, Box<DisplaySettings> box, _) {
+        builder: (BuildContext context, Box<DisplaySettings> box, _) {
           final DisplaySettings displaySettings = box.get(
             DB.displaySettingsKey,
             defaultValue: const DisplaySettings(),
@@ -36,7 +36,7 @@ class _BoardTopSlider extends StatelessWidget {
             max: 288.0, // TODO: Overflow, convert to v2 config
             divisions: 288,
             label: displaySettings.boardTop.toStringAsFixed(1),
-            onChanged: (value) {
+            onChanged: (double value) {
               logger.v("[config] boardTop value: $value");
               DB().displaySettings = displaySettings.copyWith(boardTop: value);
             },

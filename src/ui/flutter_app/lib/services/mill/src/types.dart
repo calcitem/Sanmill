@@ -111,7 +111,7 @@ extension PieceColorExtension on PieceColor {
   }
 
   GameResult? get result {
-    final isAi = MillController()
+    final bool? isAi = MillController()
         .gameInstance
         ._isAi[this]; // TODO: Sometimes is null, when AI Vs. AI
 
@@ -275,7 +275,7 @@ enum GameOverReason {
 
 extension GameOverReasonExtension on GameOverReason {
   String getName(BuildContext context, PieceColor winner) {
-    final loserStr = winner.opponent.playerName(context);
+    final String loserStr = winner.opponent.playerName(context);
 
     switch (this) {
       case GameOverReason.loseLessThanThree:
@@ -317,19 +317,19 @@ extension GameResultExtension on GameResult {
   }
 }
 
-const sqBegin = 8;
-const sqEnd = 32;
-const sqNumber = 40;
+const int sqBegin = 8;
+const int sqEnd = 32;
+const int sqNumber = 40;
 
-const moveDirectionBegin = 0;
-const moveDirectionNumber = 4;
+const int moveDirectionBegin = 0;
+const int moveDirectionNumber = 4;
 
-const lineDirectionNumber = 3;
+const int lineDirectionNumber = 3;
 
-const fileNumber = 3;
-const fileExNumber = fileNumber + 2;
+const int fileNumber = 3;
+const int fileExNumber = fileNumber + 2;
 
-const rankNumber = 8;
+const int rankNumber = 8;
 
 int makeSquare(int file, int rank) {
   // TODO: -2

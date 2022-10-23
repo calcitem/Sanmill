@@ -27,7 +27,7 @@ part of '../mill.dart';
 /// * The game instance [Game]
 /// * The recorder [GameRecorder]
 class MillController {
-  static const _tag = "[Controller]";
+  static const String _tag = "[Controller]";
 
   bool disposed = false;
   bool isReady = false;
@@ -94,7 +94,7 @@ class MillController {
   ///
   /// This method is suitable to use for starting a new game.
   void reset({bool force = false}) {
-    final gameModeBak = gameInstance.gameMode;
+    final GameMode gameModeBak = gameInstance.gameMode;
     String? fen = "";
     final bool isPositionSetup = MillController().isPositionSetup;
 
@@ -136,17 +136,17 @@ class MillController {
   // We'll need to find a better way for this.
   Future<EngineResponse> engineToGo(BuildContext context,
       {required bool isMoveNow}) async {
-    const tag = "[engineToGo]";
+    const String tag = "[engineToGo]";
 
     bool searched = false;
     bool loopIsFirst = true;
 
-    final aiStr = S.of(context).ai;
-    final thinkingStr = S.of(context).thinking;
-    final humanStr = S.of(context).human;
+    final String aiStr = S.of(context).ai;
+    final String thinkingStr = S.of(context).thinking;
+    final String humanStr = S.of(context).human;
 
-    final controller = MillController();
-    final gameMode = MillController().gameInstance.gameMode;
+    final MillController controller = MillController();
+    final GameMode gameMode = MillController().gameInstance.gameMode;
     bool isGameRunning = position.winner == PieceColor.nobody;
 
     if (isMoveNow == true) {
@@ -194,7 +194,7 @@ class MillController {
       try {
         logger.v("$tag Searching..., isMoveNow: $isMoveNow");
 
-        final extMove = await controller.engine
+        final ExtMove extMove = await controller.engine
             .search(moveNow: loopIsFirst ? isMoveNow : false);
 
         if (MillController().isActive == false) break;
@@ -255,7 +255,7 @@ class MillController {
   }
 
   Future<void> moveNow(BuildContext context) async {
-    const tag = "[engineToGo]";
+    const String tag = "[engineToGo]";
     bool reversed = false;
 
     // TODO: WAR
@@ -288,8 +288,8 @@ class MillController {
       MillController().recorder.prune();
     }
 
-    final strTimeout = S.of(context).timeout;
-    final strNoBestMoveErr = S.of(context).error(S.of(context).noMove);
+    final String strTimeout = S.of(context).timeout;
+    final String strNoBestMoveErr = S.of(context).error(S.of(context).noMove);
 
     switch (await MillController()
         .engineToGo(context, isMoveNow: MillController().isEngineGoing)) {

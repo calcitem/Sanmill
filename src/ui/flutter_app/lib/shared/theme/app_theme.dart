@@ -44,7 +44,7 @@ class AppTheme {
   const AppTheme._();
 
   /// Light theme
-  static final lightThemeData = ThemeData(
+  static final ThemeData lightThemeData = ThemeData(
     brightness: Brightness.light,
     primarySwatch: _appPrimaryColor,
     sliderTheme: _sliderThemeData,
@@ -54,7 +54,7 @@ class AppTheme {
   );
 
   /// Dark theme
-  static final darkThemeData = ThemeData(
+  static final ThemeData darkThemeData = ThemeData(
     brightness: Brightness.dark,
     primarySwatch: _appPrimaryColor,
     toggleableActiveColor: _appPrimaryColor,
@@ -65,10 +65,11 @@ class AppTheme {
   );
 
   // Color
-  static const _appPrimaryColor = Colors.green; // App bar & Dialog button
+  static const MaterialColor _appPrimaryColor =
+      Colors.green; // App bar & Dialog button
 
   // Theme
-  static const _sliderThemeData = SliderThemeData(
+  static const SliderThemeData _sliderThemeData = SliderThemeData(
     trackHeight: 20,
     activeTrackColor: Colors.green,
     inactiveTrackColor: Colors.grey,
@@ -89,14 +90,14 @@ class AppTheme {
     valueIndicatorTextStyle: TextStyle(fontSize: 24),
   );
 
-  static const _dividerTheme = DividerThemeData(
+  static const DividerThemeData _dividerTheme = DividerThemeData(
     indent: 16,
     endIndent: 16,
     space: 1.0,
     thickness: 1.0,
   );
 
-  static const _cardTheme = CardTheme(
+  static const CardTheme _cardTheme = CardTheme(
     margin: EdgeInsets.symmetric(vertical: 4.0),
     color: _cardColor,
   );
@@ -114,19 +115,19 @@ class AppTheme {
     color: DB().colorSettings.boardLineColor,
   );
 
-  static const listTileSubtitleStyle = TextStyle(
+  static const TextStyle listTileSubtitleStyle = TextStyle(
     color: listTileSubtitleColor,
   );
 
-  static const listTileTitleStyle = TextStyle(
+  static const TextStyle listTileTitleStyle = TextStyle(
     color: _switchListTileTitleColor,
   );
 
-  static final mainToolbarTextStyle = TextStyle(
+  static final TextStyle mainToolbarTextStyle = TextStyle(
     color: DB().colorSettings.mainToolbarIconColor,
   );
 
-  static const helpTextStyle = TextStyle(
+  static const TextStyle helpTextStyle = TextStyle(
     color: helpTextColor,
   );
 

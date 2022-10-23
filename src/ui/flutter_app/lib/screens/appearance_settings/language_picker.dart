@@ -30,7 +30,7 @@ class _LanguagePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final languageColumn = Column(
+    final Column languageColumn = Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         RadioListTile<Locale?>(
@@ -43,7 +43,7 @@ class _LanguagePicker extends StatelessWidget {
           onChanged: onChanged,
         ),
         const Divider(),
-        for (var i in localeToLanguageName.keys)
+        for (Locale i in localeToLanguageName.keys)
           RadioListTile<Locale>(
             title: Text(
               localeToLanguageName[i]!,

@@ -17,10 +17,10 @@
 part of '../painters.dart';
 
 /// The names of the rows
-const verticalNotations = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+const List<String> verticalNotations = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
 
 /// The names of the columns
-const horizontalNotations = ['7', '6', '5', '4', '3', '2', '1'];
+const List<String> horizontalNotations = ['7', '6', '5', '4', '3', '2', '1'];
 
 /// The padding applied to the actual mill field
 const double boardMargin = AppTheme.boardPadding;
@@ -44,7 +44,7 @@ int? squareFromPoint(Offset point) {
 
 /// Calculates the pressed point
 Offset pointFromOffset(Offset offset, double dimension) {
-  final point = (offset - const Offset(boardMargin, boardMargin)) /
+  final Offset point = (offset - const Offset(boardMargin, boardMargin)) /
       ((dimension - boardMargin * 2) / 6);
 
   return point.round();
@@ -59,7 +59,7 @@ double offsetFromInt(int point, Size size) =>
     (point * (size.width - boardMargin * 2) / 6) + boardMargin;
 
 /// List of points on the board.
-const points = [
+const List<Offset> points = [
   // ignore: use_named_constants
   Offset(0, 0), // 0
   Offset(0, 3), // 1

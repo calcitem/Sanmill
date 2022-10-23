@@ -81,7 +81,7 @@ class SettingsListTile extends StatelessWidget {
       case _SettingsTileType.switchTile:
         return SwitchListTile(
           value: _switchValue!,
-          onChanged: (val) => _callback(val),
+          onChanged: (bool val) => _callback(val),
           title: title,
           subtitle: subTitle,
         );
@@ -119,7 +119,7 @@ class SettingsListTile extends StatelessWidget {
             builder: (_) => _ColorPickerAlert(
               title: titleString,
               value: _colorValue!,
-              onChanged: (val) => _callback(val),
+              onChanged: (Color val) => _callback(val),
             ),
           ),
         );

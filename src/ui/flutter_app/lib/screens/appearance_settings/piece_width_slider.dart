@@ -25,7 +25,7 @@ class _PieceWidthSlider extends StatelessWidget {
       label: S.of(context).pieceWidth,
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplaySettings,
-        builder: (context, Box<DisplaySettings> box, _) {
+        builder: (BuildContext context, Box<DisplaySettings> box, _) {
           final DisplaySettings displaySettings = box.get(
             DB.displaySettingsKey,
             defaultValue: const DisplaySettings(),
@@ -38,7 +38,7 @@ class _PieceWidthSlider extends StatelessWidget {
             max: 1.0,
             divisions: 50,
             label: (displaySettings.pieceWidth).toStringAsFixed(1),
-            onChanged: (value) {
+            onChanged: (double value) {
               logger.v("[config] pieceWidth value: $value");
               DB().displaySettings =
                   displaySettings.copyWith(pieceWidth: value);

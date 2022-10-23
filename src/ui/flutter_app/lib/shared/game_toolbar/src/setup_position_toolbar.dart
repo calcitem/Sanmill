@@ -33,7 +33,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   int newPlaced = 0; // For White
 
   late GameMode gameModeBackup;
-  final position = MillController().position;
+  final Position position = MillController().position;
   late Position positionBackup;
 
   void initContext() {
@@ -108,8 +108,8 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     initContext();
   }
 
-  static const _padding = EdgeInsets.symmetric(vertical: 2);
-  static const _margin = EdgeInsets.symmetric(vertical: 0.2);
+  static const EdgeInsets _padding = EdgeInsets.symmetric(vertical: 2);
+  static const EdgeInsets _margin = EdgeInsets.symmetric(vertical: 0.2);
 
   /// Gets the calculated height this widget adds to it's children.
   /// To get the absolute height add the surrounding [ButtonThemeData.height].
@@ -187,19 +187,19 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     assert(MillController().position.sideToMove == PieceColor.white ||
         MillController().position.sideToMove == PieceColor.black);
 
-    final sideToMove = MillController().position.sideToMove;
+    final PieceColor sideToMove = MillController().position.sideToMove;
 
-    var limit = MillController()
+    int limit = MillController()
         .position
         .totalMillsCount(MillController().position.sideToMove);
 
-    var opponentCount =
+    int opponentCount =
         MillController().position.countPieceOnBoard(sideToMove.opponent);
 
     if (newPhase == Phase.placing) {
       if (limit > opponentCount) limit = opponentCount;
     } else if (newPhase == Phase.moving) {
-      var newLimit = opponentCount - DB().ruleSettings.piecesAtLeastCount + 1;
+      int newLimit = opponentCount - DB().ruleSettings.piecesAtLeastCount + 1;
       if (limit > newLimit) {
         limit = newLimit;
         limit = limit < 0 ? 0 : limit;
@@ -253,8 +253,8 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   }
 
   setSetupPositionPaste(BuildContext context) async {
-    final tipFailed = S.of(context).cannotPaste;
-    final tipDone = S.of(context).pasteDone;
+    final String tipFailed = S.of(context).cannotPaste;
+    final String tipDone = S.of(context).pasteDone;
 
     final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
 
@@ -323,9 +323,9 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
   // TODO: Duplicate with InfoDialog._infoText
   String _infoText(BuildContext context) {
-    final controller = MillController();
-    final buffer = StringBuffer();
-    final pos = controller.position;
+    final MillController controller = MillController();
+    final StringBuffer buffer = StringBuffer();
+    final Position pos = controller.position;
 
     late final String us;
     late final String them;
@@ -453,7 +453,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     MillController().position.pieceOnBoardCount[PieceColor.white] = w;
     MillController().position.pieceOnBoardCount[PieceColor.black] = b;
 
-    final piecesCount = DB().ruleSettings.piecesCount;
+    final int piecesCount = DB().ruleSettings.piecesCount;
 
     // TODO: Update dynamically
     if (newPhase == Phase.placing) {
@@ -512,7 +512,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     updateSetupPositionPiecesCount();
 
     //MillController().recorder.clear(); // TODO: Set and parse fen.
-    var fen = position.fen;
+    String fen = position.fen;
     MillController().recorder =
         GameRecorder(lastPositionWithRemove: fen, setupPosition: fen);
 
@@ -523,31 +523,31 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   @override
   Widget build(BuildContext context) {
     // Piece
-    final whitePieceButton = ToolbarItem.icon(
+    final ToolbarItem whitePieceButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionPiece(context, PieceColor.white),
       icon: Icon(FluentIcons.circle_24_filled,
           color: DB().colorSettings.whitePieceColor),
       label: Text(S.of(context).white),
     );
-    final blackPieceButton = ToolbarItem.icon(
+    final ToolbarItem blackPieceButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionPiece(context, PieceColor.black),
       icon: Icon(FluentIcons.circle_24_filled,
           color: DB().colorSettings.blackPieceColor),
       label: Text(S.of(context).black),
     );
-    final banPointButton = ToolbarItem.icon(
+    final ToolbarItem banPointButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionPiece(context, PieceColor.ban),
       icon: const Icon(FluentIcons.prohibited_24_regular),
       label: Text(S.of(context).ban),
     );
-    final emptyPointButton = ToolbarItem.icon(
+    final ToolbarItem emptyPointButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionPiece(context, PieceColor.none),
       icon: const Icon(FluentIcons.add_24_regular),
       label: Text(S.of(context).empty),
     );
 
     // Clear
-    final clearButton = ToolbarItem.icon(
+    final ToolbarItem clearButton = ToolbarItem.icon(
       onPressed: () {
         MillController().position.reset();
         _updateSetupPositionIcons();
@@ -558,63 +558,63 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     );
 
     // Phase
-    final placingButton = ToolbarItem.icon(
+    final ToolbarItem placingButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionPhase(context, Phase.placing)},
       icon: const Icon(FluentIcons.grid_dots_24_regular),
       label: Text(S.of(context).placing),
     );
 
-    final movingButton = ToolbarItem.icon(
+    final ToolbarItem movingButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionPhase(context, Phase.moving)},
       icon: const Icon(FluentIcons.arrow_move_24_regular),
       label: Text(S.of(context).moving),
     );
 
     // Remove
-    final removeZeroButton = ToolbarItem.icon(
+    final ToolbarItem removeZeroButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionNeedRemove(0, true)},
       icon: const Icon(FluentIcons.circle_24_regular),
       label: Text(S.of(context).remove),
     );
 
-    final removeOneButton = ToolbarItem.icon(
+    final ToolbarItem removeOneButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionNeedRemove(1, true)},
       icon: const Icon(FluentIcons.number_circle_1_24_regular),
       label: Text(S.of(context).remove),
     );
 
-    final removeTwoButton = ToolbarItem.icon(
+    final ToolbarItem removeTwoButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionNeedRemove(2, true)},
       icon: const Icon(FluentIcons.number_circle_2_24_regular),
       label: Text(S.of(context).remove),
     );
 
-    final removeThreeButton = ToolbarItem.icon(
+    final ToolbarItem removeThreeButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionNeedRemove(3, true)},
       icon: const Icon(FluentIcons.number_circle_3_24_regular),
       label: Text(S.of(context).remove),
     );
 
-    final placedButton = ToolbarItem.icon(
+    final ToolbarItem placedButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionPlaced(context)},
       icon: const Icon(FluentIcons.text_word_count_24_regular),
       label: Text(S.of(context).placedCount(newPlaced.toString())),
     );
 
-    final copyButton = ToolbarItem.icon(
+    final ToolbarItem copyButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionCopy(context)},
       icon: const Icon(FluentIcons.copy_24_regular),
       label: Text(S.of(context).copy),
     );
 
-    final pasteButton = ToolbarItem.icon(
+    final ToolbarItem pasteButton = ToolbarItem.icon(
       onPressed: () => {setSetupPositionPaste(context)},
       icon: const Icon(FluentIcons.clipboard_paste_24_regular),
       label: Text(S.of(context).paste),
     );
 
     // Cancel
-    final cancelButton = ToolbarItem.icon(
+    final ToolbarItem cancelButton = ToolbarItem.icon(
       onPressed: () => {restoreContext()}, // TODO: setState();
       icon: const Icon(FluentIcons.dismiss_24_regular),
       label: Text(S.of(context).cancel),
@@ -641,14 +641,14 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       3: removeThreeButton,
     };
 
-    final rowOne = <Widget>[
+    final List<Widget> rowOne = <Widget>[
       colorButtonMap[newPieceColor]!,
       phaseButtonMap[newPhase]!,
       removeButtonMap[newPieceCountNeedRemove]!,
       placedButton,
     ];
 
-    final row2 = <Widget>[
+    final List<Widget> row2 = <Widget>[
       copyButton,
       pasteButton,
       clearButton,
@@ -750,7 +750,7 @@ class _PlacedModal extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            for (var i = begin; i <= DB().ruleSettings.piecesCount; i++)
+            for (int i = begin; i <= DB().ruleSettings.piecesCount; i++)
               RadioListTile(
                 title: Text(i.toString()),
                 groupValue: placedGroupValue,

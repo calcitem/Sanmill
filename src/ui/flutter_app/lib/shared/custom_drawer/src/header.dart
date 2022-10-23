@@ -37,7 +37,7 @@ class CustomDrawerHeader extends StatelessWidget {
       DB().colorSettings.drawerHighlightItemColor,
     ];
 
-    final animatedTitle = AnimatedTextKit(
+    final AnimatedTextKit animatedTitle = AnimatedTextKit(
       animatedTexts: [
         ColorizeAnimatedText(
           title,
@@ -54,7 +54,7 @@ class CustomDrawerHeader extends StatelessWidget {
       stopPauseOnTap: true,
     );
 
-    final padding = EdgeInsets.only(
+    final EdgeInsets padding = EdgeInsets.only(
       bottom: 16.0,
       top: 16.0 + (Constants.isLargeScreen ? 30.0 : 8.0),
       left: 20.0,

@@ -27,8 +27,8 @@ class SettingsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView.separated(
         padding: const EdgeInsets.all(16),
-        itemBuilder: (_, i) => children[i],
-        separatorBuilder: (_, i) => const CustomSpacer(),
+        itemBuilder: (_, int i) => children[i],
+        separatorBuilder: (_, int i) => const CustomSpacer(),
         itemCount: children.length,
       );
 }

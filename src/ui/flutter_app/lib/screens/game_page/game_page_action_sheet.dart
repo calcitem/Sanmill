@@ -29,17 +29,17 @@ class GamePageActionSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme.apply(
+    final ThemeData theme = Theme.of(context);
+    final TextTheme textTheme = theme.textTheme.apply(
       displayColor: textColor,
       bodyColor: textColor,
     );
 
-    final dialogTheme = DialogTheme.of(context).copyWith(
+    final DialogTheme dialogTheme = DialogTheme.of(context).copyWith(
       backgroundColor: Colors.transparent,
     );
 
-    final buttonStyle = TextButtonThemeData(
+    final TextButtonThemeData buttonStyle = TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: textColor,
       ),
@@ -78,8 +78,8 @@ class GamePageDialog extends StatelessWidget {
     final double paddingScaleFactor =
         _paddingScaleFactor(MediaQuery.of(context).textScaleFactor);
 
-    final contentWidget = Builder(
-      builder: (context) => DefaultTextStyle(
+    final Builder contentWidget = Builder(
+      builder: (BuildContext context) => DefaultTextStyle(
         style: Theme.of(context)
             .textTheme
             .headline6!
@@ -93,7 +93,7 @@ class GamePageDialog extends StatelessWidget {
       ),
     );
 
-    final dialogChild = IntrinsicWidth(
+    final IntrinsicWidth dialogChild = IntrinsicWidth(
       stepWidth: 56.0,
       child: ConstrainedBox(
         constraints: const BoxConstraints(minWidth: 280.0),

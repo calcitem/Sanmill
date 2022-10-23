@@ -86,7 +86,7 @@ class EngineDummy implements EngineResponse {
 
 /// Custom response to throw when navigating the game history.
 abstract class HistoryResponse {
-  static const tag = "[_HistoryResponse]";
+  static const String tag = "[_HistoryResponse]";
 }
 
 class HistoryOK implements HistoryResponse {

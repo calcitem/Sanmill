@@ -24,8 +24,8 @@ class GameRecorder extends PointedList<ExtMove> {
 
   @override
   String toString() {
-    final buffer = StringBuffer("[ ");
-    for (final extMove in this) {
+    final StringBuffer buffer = StringBuffer("[ ");
+    for (final ExtMove extMove in this) {
       buffer.write("${extMove.move}, ");
     }
 
@@ -69,7 +69,7 @@ class GameRecorder extends PointedList<ExtMove> {
     int i = 0;
 
     void buildStandardNotation() {
-      const separator = "    "; // TODO: Align
+      const String separator = "    "; // TODO: Align
 
       if (i <= index!) {
         moveHistory.write(separator);

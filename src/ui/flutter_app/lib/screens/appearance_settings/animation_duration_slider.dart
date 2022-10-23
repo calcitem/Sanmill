@@ -25,7 +25,7 @@ class _AnimationDurationSlider extends StatelessWidget {
       label: S.of(context).animationDuration,
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplaySettings,
-        builder: (context, Box<DisplaySettings> box, _) {
+        builder: (BuildContext context, Box<DisplaySettings> box, _) {
           final DisplaySettings displaySettings = box.get(
             DB.displaySettingsKey,
             defaultValue: const DisplaySettings(),
@@ -36,7 +36,7 @@ class _AnimationDurationSlider extends StatelessWidget {
             max: 5.0,
             divisions: 50,
             label: displaySettings.animationDuration.toStringAsFixed(1),
-            onChanged: (value) {
+            onChanged: (double value) {
               logger.v("[config] AnimationDuration value: $value");
               DB().displaySettings =
                   displaySettings.copyWith(animationDuration: value);

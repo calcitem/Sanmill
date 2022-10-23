@@ -93,7 +93,7 @@ class Game {
   }
 
   void _logStat() {
-    final position = MillController().position;
+    final Position position = MillController().position;
     final int total = Position.score[PieceColor.white]! +
         Position.score[PieceColor.black]! +
         Position.score[PieceColor.draw]!;

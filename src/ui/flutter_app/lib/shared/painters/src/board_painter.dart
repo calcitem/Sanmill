@@ -27,9 +27,9 @@ class BoardPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     assert(size.width == size.height);
 
-    final position = MillController().position;
+    final Position position = MillController().position;
     final colorSettings = DB().colorSettings;
-    final paint = Paint();
+    final Paint paint = Paint();
 
     paint.strokeWidth = DB().displaySettings.boardBorderLineWidth;
     paint.color = Color.lerp(
@@ -53,7 +53,7 @@ class BoardPainter extends CustomPainter {
     }
 
     final List<Offset> offset =
-        points.map((e) => offsetFromPoint(e, size)).toList();
+        points.map((Offset e) => offsetFromPoint(e, size)).toList();
 
     _drawLines(offset, canvas, paint);
 
@@ -63,7 +63,7 @@ class BoardPainter extends CustomPainter {
 
   /// Draws the background of the Board.
   static void _drawBackground(Canvas canvas, Size size) {
-    final paint = Paint();
+    final Paint paint = Paint();
     paint.color = DB().colorSettings.boardBackgroundColor;
 
     canvas.drawRRect(
@@ -82,7 +82,7 @@ class BoardPainter extends CustomPainter {
 
     paint.strokeWidth = DB().displaySettings.boardInnerLineWidth;
 
-    final path = Path();
+    final Path path = Path();
     // File B
     path.addRect(Rect.fromPoints(offset[3], offset[20]));
 
@@ -129,7 +129,7 @@ class BoardPainter extends CustomPainter {
 
     final double pointRadius = DB().displaySettings.pointWidth;
 
-    for (final point in points) {
+    for (final Offset point in points) {
       canvas.drawCircle(point, pointRadius, paint);
     }
   }

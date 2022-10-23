@@ -77,13 +77,13 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final tapHandler = TapHandler(
+    final TapHandler tapHandler = TapHandler(
       context: context,
     );
 
-    final customPaint = AnimatedBuilder(
+    final AnimatedBuilder customPaint = AnimatedBuilder(
       animation: MillController().animation,
-      builder: (_, child) {
+      builder: (_, Widget? child) {
         return CustomPaint(
           painter: BoardPainter(),
           foregroundPainter: PiecePainter(
@@ -100,14 +100,14 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     MillController().animationController.forward();
 
     return LayoutBuilder(
-      builder: (context, constrains) {
-        final dimension = constrains.maxWidth;
+      builder: (BuildContext context, BoxConstraints constrains) {
+        final double dimension = constrains.maxWidth;
 
         return SizedBox.square(
           dimension: dimension,
           child: GestureDetector(
             child: customPaint,
-            onTapUp: (d) async {
+            onTapUp: (TapUpDetails d) async {
               final int? square =
                   squareFromPoint(pointFromOffset(d.localPosition, dimension));
 
@@ -119,8 +119,8 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
               logger.v("${Board._tag} Tap on square <$square>");
 
-              final strTimeout = S.of(context).timeout;
-              final strNoBestMoveErr =
+              final String strTimeout = S.of(context).timeout;
+              final String strNoBestMoveErr =
                   S.of(context).error(S.of(context).noMove);
 
               switch (await tapHandler.onBoardTap(square)) {
@@ -150,10 +150,10 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
   void _showResult() {
     if (!mounted) return;
-    final gameMode = MillController().gameInstance.gameMode;
-    final winner = MillController().position.winner;
-    final message = winner.getWinString(context);
-    final force = MillController().gameResultNotifier.force;
+    final GameMode gameMode = MillController().gameInstance.gameMode;
+    final PieceColor winner = MillController().position.winner;
+    final String? message = winner.getWinString(context);
+    final bool force = MillController().gameResultNotifier.force;
 
     if (message != null && (force == true || winner != PieceColor.nobody)) {
       MillController().headerTipNotifier.showTip(message, snackBar: false);
@@ -206,7 +206,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
 
   @override
   Widget build(BuildContext context) {
-    final squareDesc = _buildSquareDescription(context);
+    final List<String> squareDesc = _buildSquareDescription(context);
 
     return GridView(
       scrollDirection: Axis.horizontal,
@@ -215,7 +215,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
       ),
       children: List.generate(
         7 * 7,
-        (index) => Center(
+        (int index) => Center(
           child: Semantics(
             // TODO: [Calcitem] Add more descriptive information
             label: squareDesc[index],
@@ -231,7 +231,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
     final List<String> pieceDesc = [];
     final List<String> squareDesc = [];
 
-    const map = [
+    const List<int> map = [
       /* 1 */
       1,
       8,
@@ -290,7 +290,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
       49
     ];
 
-    const checkPoints = [
+    const List<int> checkPoints = [
       /* 1 */
       1,
       0,
@@ -349,15 +349,16 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
       1
     ];
 
-    final ltr = Directionality.of(context) == TextDirection.ltr;
+    final bool ltr = Directionality.of(context) == TextDirection.ltr;
 
-    for (final file in ltr ? verticalNotations : verticalNotations.reversed) {
-      for (final rank in horizontalNotations) {
+    for (final String file
+        in ltr ? verticalNotations : verticalNotations.reversed) {
+      for (final String rank in horizontalNotations) {
         coordinates.add("$file$rank");
       }
     }
 
-    for (var i = 0; i < 7 * 7; i++) {
+    for (int i = 0; i < 7 * 7; i++) {
       if (checkPoints[i] == 0) {
         pieceDesc.add(S.of(context).noPoint);
       } else {
@@ -369,8 +370,8 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
 
     squareDesc.clear();
 
-    for (var i = 0; i < 7 * 7; i++) {
-      final desc = pieceDesc[map[i] - 1];
+    for (int i = 0; i < 7 * 7; i++) {
+      final String desc = pieceDesc[map[i] - 1];
       if (desc == S.of(context).emptyPoint) {
         squareDesc.add("${coordinates[i]}: $desc");
       } else {

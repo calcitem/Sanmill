@@ -47,7 +47,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
   showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (context) => AlertDialog(
+    builder: (BuildContext context) => AlertDialog(
       title: Text(S.of(context).privacyPolicy),
       content: RichText(
         text: TextSpan(

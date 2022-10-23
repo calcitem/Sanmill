@@ -23,16 +23,16 @@ void main() {
         "Current should be populated with the first element when parent isNotEmpty",
         () {
       // Initialize
-      final list = [1, 2, 3, 4, 5];
-      final iterator = PointedListIterator(list);
+      final List<int> list = [1, 2, 3, 4, 5];
+      final PointedListIterator<int> iterator = PointedListIterator(list);
 
       expect(iterator.current, list.first);
     });
 
     test("Current should be null when parent isEmpty", () {
       // Initialize
-      final list = [];
-      final iterator = PointedListIterator(list);
+      final List list = [];
+      final PointedListIterator iterator = PointedListIterator(list);
 
       expect(iterator.current, isNull);
     });
@@ -41,9 +41,9 @@ void main() {
   group("PointedListIterator.move", () {
     test("moveTo should return when the parent isEmpty", () {
       // Initialize
-      final list = [];
-      final iterator = PointedListIterator(list);
-      final snapshot = PointedListIterator(list);
+      final List list = [];
+      final PointedListIterator iterator = PointedListIterator(list);
+      final PointedListIterator snapshot = PointedListIterator(list);
 
       iterator.moveTo(2);
 
@@ -51,11 +51,11 @@ void main() {
     });
 
     test("moveTo should move to the given index", () {
-      const index = 2;
+      const int index = 2;
 
       // Initialize
-      final list = [1, 2, 3, 4, 5, 6];
-      final iterator = PointedListIterator(list);
+      final List<int> list = [1, 2, 3, 4, 5, 6];
+      final PointedListIterator<int> iterator = PointedListIterator(list);
 
       iterator.moveTo(index);
 
@@ -64,8 +64,8 @@ void main() {
 
     test("moveToLast should move to the last index", () {
       // Initialize
-      final list = [1, 2, 3, 4];
-      final iterator = PointedListIterator(list);
+      final List<int> list = [1, 2, 3, 4];
+      final PointedListIterator<int> iterator = PointedListIterator(list);
 
       iterator.moveToLast();
 
@@ -74,8 +74,8 @@ void main() {
 
     test("moveToFirst should move to the first index", () {
       // Initialize
-      final list = [1, 2, 3, 4];
-      final iterator = PointedListIterator(list);
+      final List<int> list = [1, 2, 3, 4];
+      final PointedListIterator<int> iterator = PointedListIterator(list);
       iterator.moveToLast();
 
       iterator.moveToFirst();
@@ -85,8 +85,8 @@ void main() {
 
     test("moveNext should move to the next index", () {
       // Initialize
-      final list = [1, 2, 3, 4];
-      final iterator = PointedListIterator(list);
+      final List<int> list = [1, 2, 3, 4];
+      final PointedListIterator<int> iterator = PointedListIterator(list);
 
       expect(iterator.moveNext(), true);
 
@@ -97,8 +97,8 @@ void main() {
         "moveNext should not move to the next index and return false when current is the last element",
         () {
       // Initialize
-      final list = [1, 2, 3, 4];
-      final iterator = PointedListIterator(list);
+      final List<int> list = [1, 2, 3, 4];
+      final PointedListIterator<int> iterator = PointedListIterator(list);
       iterator.moveToLast();
 
       expect(iterator.moveNext(), false);
@@ -108,16 +108,16 @@ void main() {
 
     test("moveNext should not move to the next when the parent is empty", () {
       // Initialize
-      final list = [];
-      final iterator = PointedListIterator(list);
+      final List list = [];
+      final PointedListIterator iterator = PointedListIterator(list);
 
       expect(iterator.moveNext(), false);
     });
 
     test("movePrevious should move to the previous index", () {
       // Initialize
-      final list = [1, 2, 3, 4];
-      final iterator = PointedListIterator(list);
+      final List<int> list = [1, 2, 3, 4];
+      final PointedListIterator<int> iterator = PointedListIterator(list);
       iterator.moveToLast();
 
       expect(iterator.movePrevious(), true);
@@ -129,8 +129,8 @@ void main() {
         "movePrevious should not move to the previous index and return false when current is the first element",
         () {
       // Initialize
-      final list = [1, 2, 3, 4];
-      final iterator = PointedListIterator(list);
+      final List<int> list = [1, 2, 3, 4];
+      final PointedListIterator<int> iterator = PointedListIterator(list);
       iterator.moveToFirst();
 
       expect(iterator.movePrevious(), true);
@@ -142,8 +142,8 @@ void main() {
         "movePrevious should not move to the previous when the parent is empty",
         () {
       // Initialize
-      final list = [];
-      final iterator = PointedListIterator(list);
+      final List list = [];
+      final PointedListIterator iterator = PointedListIterator(list);
 
       expect(iterator.movePrevious(), false);
     });

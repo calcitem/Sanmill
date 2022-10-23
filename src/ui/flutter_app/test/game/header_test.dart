@@ -28,12 +28,12 @@ import '../helpers/mocks/mock_database.dart';
 void main() {
   group("GameHeader", () {
     testWidgets("GameHeader updates tip", (WidgetTester tester) async {
-      const testString = "Test";
+      const String testString = "Test";
 
       DB.instance = MockDB();
-      final controller = MillController();
+      final MillController controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
-      const screen = HeaderTip();
+      const HeaderTip screen = HeaderTip();
 
       await tester.pumpWidget(makeTestableWidget(screen));
 
@@ -48,12 +48,12 @@ void main() {
 
     testWidgets("GameHeader position", (WidgetTester tester) async {
       DB.instance = MockDB();
-      final controller = MillController();
+      final MillController controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
-      const iconKey = Key("DrawerIcon");
+      const Key iconKey = Key("DrawerIcon");
 
-      final screen = DrawerIcon(
+      final DrawerIcon screen = DrawerIcon(
         icon: IconButton(
           icon: const Icon(
             Icons.menu,
@@ -68,8 +68,9 @@ void main() {
 
       await tester.pumpWidget(makeTestableWidget(screen));
 
-      final icon = tester.getCenter(find.byKey(iconKey));
-      final header = tester.getCenter(find.byKey(const Key("HeaderIconRow")));
+      final Offset icon = tester.getCenter(find.byKey(iconKey));
+      final Offset header =
+          tester.getCenter(find.byKey(const Key("HeaderIconRow")));
 
       // TODO: Why 44?
       expect(icon.dy + 44, header.dy);

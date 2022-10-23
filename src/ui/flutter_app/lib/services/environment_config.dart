@@ -21,16 +21,17 @@ class EnvironmentConfig {
   const EnvironmentConfig._();
 
   /// Gets whether we build for Monkey/Appium testing
-  static const test = bool.fromEnvironment('test');
+  static const bool test = bool.fromEnvironment('test');
 
   /// Gets whether we build for devMode
-  static const devMode = bool.fromEnvironment('dev_mode');
+  static const bool devMode = bool.fromEnvironment('dev_mode');
 
   /// Gets whether we want catcher to be enabled
   /// Defaults to true
-  static const catcher = bool.fromEnvironment("catcher", defaultValue: true);
+  static const bool catcher =
+      bool.fromEnvironment("catcher", defaultValue: true);
 
   /// Gets log level
   /// Defaults to 4
-  static const logLevel = int.fromEnvironment("log_level", defaultValue: 4);
+  static const int logLevel = int.fromEnvironment("log_level", defaultValue: 4);
 }

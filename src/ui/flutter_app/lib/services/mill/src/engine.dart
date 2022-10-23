@@ -19,12 +19,13 @@ part of '../mill.dart';
 class Engine {
   Engine();
 
-  static const _platform = MethodChannel("com.calcitem.sanmill/engine");
+  static const MethodChannel _platform =
+      MethodChannel("com.calcitem.sanmill/engine");
 
   bool get _isPlatformChannelAvailable =>
       !kIsWeb && (Platform.isAndroid || Platform.isWindows);
 
-  static const _tag = "[engine]";
+  static const String _tag = "[engine]";
 
   Future<void> startup() async {
     await setOptions();
@@ -78,7 +79,7 @@ class Engine {
   FutureOr<bool> isThinking() async {
     if (!_isPlatformChannelAvailable) return false;
 
-    final isThinking = await _platform.invokeMethod<bool>("isThinking");
+    final bool? isThinking = await _platform.invokeMethod<bool>("isThinking");
 
     if (isThinking is bool) {
       return isThinking;
@@ -106,7 +107,7 @@ class Engine {
       logger.v("$_tag Move now");
     }
 
-    final response = await _waitResponse(["bestmove", "nobestmove"]);
+    final String? response = await _waitResponse(["bestmove", "nobestmove"]);
 
     if (response == null) {
       throw const EngineTimeOut();
@@ -115,7 +116,7 @@ class Engine {
     logger.v("$_tag response: $response");
 
     if (response.startsWith("bestmove")) {
-      var best = response.substring("bestmove".length + 1);
+      String best = response.substring("bestmove".length + 1);
 
       final pos = best.indexOf(" ");
       if (pos > -1) best = best.substring(0, pos);
@@ -161,7 +162,7 @@ class Engine {
     final response = await _read();
 
     if (response != null) {
-      for (final prefix in prefixes) {
+      for (final String prefix in prefixes) {
         if (response.startsWith(prefix)) {
           return response;
         } else {
@@ -269,8 +270,9 @@ class Engine {
 
   String _getPositionFen() {
     // TODO: Check position
-    final startPosition = MillController().recorder.lastPositionWithRemove;
-    final moves = MillController().position.movesSinceLastRemove;
+    final String? startPosition =
+        MillController().recorder.lastPositionWithRemove;
+    final String? moves = MillController().position.movesSinceLastRemove;
 
     final posFenStr = StringBuffer("position fen $startPosition");
 

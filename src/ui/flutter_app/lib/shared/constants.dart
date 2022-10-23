@@ -49,28 +49,28 @@ class Constants {
 
   static const String fullRepoName = "$authorAccount/$projectName";
 
-  static const scmURL = URL(
+  static const URL scmURL = URL(
     url: "https://github.com",
     urlZh: "https://gitee.com",
   );
 
-  static final repoURL = scmURL.fromSubPath(fullRepoName);
-  static final issuesURL = repoURL.fromSubPath("issues");
-  static final wikiURL = repoURL.fromSubPath("wiki", "wikis");
-  static final eulaURL = wikiURL.fromSubPath("EULA", "EULA_zh");
-  static final thirdPartyNoticesURL =
+  static final URL repoURL = scmURL.fromSubPath(fullRepoName);
+  static final URL issuesURL = repoURL.fromSubPath("issues");
+  static final URL wikiURL = repoURL.fromSubPath("wiki", "wikis");
+  static final URL eulaURL = wikiURL.fromSubPath("EULA", "EULA_zh");
+  static final URL thirdPartyNoticesURL =
       wikiURL.fromSubPath("third-party_notices");
-  static final privacyPolicyURL =
+  static final URL privacyPolicyURL =
       wikiURL.fromSubPath("privacy_policy", "privacy_policy_zh");
-  static final helpImproveTranslateURL =
+  static final URL helpImproveTranslateURL =
       wikiURL.fromSubPath("Translation-and-Localization");
-  static final thanksURL = wikiURL.fromSubPath("thanks");
+  static final URL thanksURL = wikiURL.fromSubPath("thanks");
 
-  static final _windowWidth = window.physicalSize.width;
-  static final _windowHeight = window.physicalSize.height;
-  static final windowAspectRatio = _windowHeight / _windowWidth;
+  static final double _windowWidth = window.physicalSize.width;
+  static final double _windowHeight = window.physicalSize.height;
+  static final double windowAspectRatio = _windowHeight / _windowWidth;
 
-  static const screenThreshold = 800;
+  static const int screenThreshold = 800;
   static bool get isSmallScreen => _windowHeight <= screenThreshold;
   static bool get isLargeScreen => !isSmallScreen;
 

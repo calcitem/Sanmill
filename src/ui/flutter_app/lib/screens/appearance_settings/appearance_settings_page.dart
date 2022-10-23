@@ -119,88 +119,88 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsListTile.color(
           titleString: S.of(context).boardColor,
           value: DB().colorSettings.boardBackgroundColor,
-          onChanged: (val) => DB().colorSettings =
+          onChanged: (Color val) => DB().colorSettings =
               colorSettings.copyWith(boardBackgroundColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).backgroundColor,
           value: DB().colorSettings.darkBackgroundColor,
-          onChanged: (val) => DB().colorSettings =
+          onChanged: (Color val) => DB().colorSettings =
               colorSettings.copyWith(darkBackgroundColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).lineColor,
           value: DB().colorSettings.boardLineColor,
-          onChanged: (val) =>
+          onChanged: (Color val) =>
               DB().colorSettings = colorSettings.copyWith(boardLineColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).whitePieceColor,
           value: DB().colorSettings.whitePieceColor,
-          onChanged: (val) =>
+          onChanged: (Color val) =>
               DB().colorSettings = colorSettings.copyWith(whitePieceColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).blackPieceColor,
           value: DB().colorSettings.blackPieceColor,
-          onChanged: (val) =>
+          onChanged: (Color val) =>
               DB().colorSettings = colorSettings.copyWith(blackPieceColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).pieceHighlightColor,
           value: DB().colorSettings.pieceHighlightColor,
-          onChanged: (val) => DB().colorSettings =
+          onChanged: (Color val) => DB().colorSettings =
               colorSettings.copyWith(pieceHighlightColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).messageColor,
           value: DB().colorSettings.messageColor,
-          onChanged: (val) =>
+          onChanged: (Color val) =>
               DB().colorSettings = colorSettings.copyWith(messageColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).drawerColor,
           value: DB().colorSettings.drawerColor,
-          onChanged: (val) =>
+          onChanged: (Color val) =>
               DB().colorSettings = colorSettings.copyWith(drawerColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).drawerTextColor,
           value: DB().colorSettings.drawerTextColor,
-          onChanged: (val) =>
+          onChanged: (Color val) =>
               DB().colorSettings = colorSettings.copyWith(drawerTextColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).drawerHighlightItemColor,
           value: DB().colorSettings.drawerHighlightItemColor,
-          onChanged: (val) => DB().colorSettings = colorSettings.copyWith(
+          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
             drawerHighlightItemColor: val,
           ),
         ),
         SettingsListTile.color(
           titleString: S.of(context).mainToolbarBackgroundColor,
           value: DB().colorSettings.mainToolbarBackgroundColor,
-          onChanged: (val) => DB().colorSettings = colorSettings.copyWith(
+          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
             mainToolbarBackgroundColor: val,
           ),
         ),
         SettingsListTile.color(
           titleString: S.of(context).mainToolbarIconColor,
           value: DB().colorSettings.mainToolbarIconColor,
-          onChanged: (val) => DB().colorSettings =
+          onChanged: (Color val) => DB().colorSettings =
               colorSettings.copyWith(mainToolbarIconColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).navigationToolbarBackgroundColor,
           value: DB().colorSettings.navigationToolbarBackgroundColor,
-          onChanged: (val) => DB().colorSettings = colorSettings.copyWith(
+          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
             navigationToolbarBackgroundColor: val,
           ),
         ),
         SettingsListTile.color(
           titleString: S.of(context).navigationToolbarIconColor,
           value: DB().colorSettings.navigationToolbarIconColor,
-          onChanged: (val) => DB().colorSettings = colorSettings.copyWith(
+          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
             navigationToolbarIconColor: val,
           ),
         ),
@@ -229,14 +229,14 @@ class AppearanceSettingsPage extends StatelessWidget {
             context: context,
             builder: (_) => _LanguagePicker(
               currentLocale: displaySettings.locale,
-              onChanged: (locale) =>
+              onChanged: (Locale? locale) =>
                   langCallback(context, displaySettings, locale),
             ),
           ),
         ),
         SettingsListTile.switchTile(
           value: displaySettings.isPieceCountInHandShown,
-          onChanged: (val) => DB().displaySettings =
+          onChanged: (bool val) => DB().displaySettings =
               displaySettings.copyWith(isPieceCountInHandShown: val),
           titleString: S.of(context).isPieceCountInHandShown,
         ),
@@ -244,19 +244,19 @@ class AppearanceSettingsPage extends StatelessWidget {
             DB().ruleSettings.piecesCount > 9))
           SettingsListTile.switchTile(
             value: displaySettings.isUnplacedAndRemovedPiecesShown,
-            onChanged: (val) => DB().displaySettings =
+            onChanged: (bool val) => DB().displaySettings =
                 displaySettings.copyWith(isUnplacedAndRemovedPiecesShown: val),
             titleString: S.of(context).isUnplacedAndRemovedPiecesShown,
           ),
         SettingsListTile.switchTile(
           value: displaySettings.isNotationsShown,
-          onChanged: (val) => DB().displaySettings =
+          onChanged: (bool val) => DB().displaySettings =
               displaySettings.copyWith(isNotationsShown: val),
           titleString: S.of(context).isNotationsShown,
         ),
         SettingsListTile.switchTile(
           value: displaySettings.isHistoryNavigationToolbarShown,
-          onChanged: (val) => DB().displaySettings =
+          onChanged: (bool val) => DB().displaySettings =
               displaySettings.copyWith(isHistoryNavigationToolbarShown: val),
           titleString: S.of(context).isHistoryNavigationToolbarShown,
         ),

@@ -52,7 +52,7 @@ class AboutPage extends StatelessWidget {
     final List<Widget> children = [
       FutureBuilder<PackageInfo>(
         future: PackageInfo.fromPlatform(),
-        builder: (_, data) {
+        builder: (_, AsyncSnapshot<PackageInfo> data) {
           final String version;
           if (!data.hasData) {
             return Container();
@@ -91,7 +91,7 @@ class AboutPage extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const LicenseAgreementPage(),
+              builder: (BuildContext context) => const LicenseAgreementPage(),
             ),
           );
         },
@@ -130,7 +130,7 @@ class AboutPage extends StatelessWidget {
           title: Text(S.of(context).about),
         ),
         body: ListView.separated(
-          itemBuilder: (_, index) => children[index],
+          itemBuilder: (_, int index) => children[index],
           separatorBuilder: (_, __) => const Divider(),
           itemCount: children.length,
         ),
@@ -143,12 +143,13 @@ class AboutPage extends StatelessWidget {
       return;
     }
 
-    final s = Localizations.localeOf(context).languageCode.startsWith("zh_")
-        ? url.url.substring("https://".length)
-        : url.urlZh.substring("https://".length);
-    final authority = s.substring(0, s.indexOf('/'));
-    final unencodedPath = s.substring(s.indexOf('/'));
-    final uri = Uri.https(authority, unencodedPath);
+    final String s =
+        Localizations.localeOf(context).languageCode.startsWith("zh_")
+            ? url.url.substring("https://".length)
+            : url.urlZh.substring("https://".length);
+    final String authority = s.substring(0, s.indexOf('/'));
+    final String unencodedPath = s.substring(s.indexOf('/'));
+    final Uri uri = Uri.https(authority, unencodedPath);
 
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
@@ -181,7 +182,8 @@ class _VersionDialog extends StatelessWidget {
           const CustomSpacer(),
           FutureBuilder<GitInformation>(
             future: gitInfo,
-            builder: (context, snapshot) {
+            builder:
+                (BuildContext context, AsyncSnapshot<GitInformation> snapshot) {
               if (snapshot.hasData) {
                 return Column(
                   children: [

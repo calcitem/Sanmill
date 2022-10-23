@@ -37,30 +37,31 @@ class CustomDrawerItem<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: drawerHighlightTextColor
-    final color = selected
+    final Color color = selected
         ? DB().colorSettings.drawerTextColor
         : DB().colorSettings.drawerTextColor;
 
-    final listItemIcon = Icon(
+    final Icon listItemIcon = Icon(
       icon.icon,
       color: color,
     );
 
-    final titleStyle = Theme.of(context).textTheme.headline6!.copyWith(
-          fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
-          color: color,
-        );
+    final TextStyle titleStyle =
+        Theme.of(context).textTheme.headline6!.copyWith(
+              fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
+              color: color,
+            );
 
-    final titleSize = TextSizeHelper.boundingTextSize(
+    final Size titleSize = TextSizeHelper.boundingTextSize(
       context,
       title,
       titleStyle,
       maxLines: 1,
     );
-    final isExpand =
+    final bool isExpand =
         (MediaQuery.of(context).size.width * 0.75 * 0.9 - 46) > titleSize.width;
 
-    final drawerItem = Row(
+    final Row drawerItem = Row(
       children: <Widget>[
         const SizedBox(height: 46.0, width: 6.0),
         const Padding(padding: EdgeInsets.all(4.0)),

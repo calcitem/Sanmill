@@ -41,7 +41,7 @@ extension _MoveTypeExtension on MoveType {
 
 // TODO: We should know who do this move
 class ExtMove {
-  static const _tag = "[Move]";
+  static const String _tag = "[Move]";
 
   // Square
   int get from => type == MoveType.move

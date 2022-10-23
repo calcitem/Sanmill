@@ -32,7 +32,8 @@ class CustomFeedbackLocalizationsDelegate
   static const LocalizationsDelegate<FeedbackLocalizations> delegate =
       CustomFeedbackLocalizationsDelegate();
 
-  static final _supportedLocales = <Locale, FeedbackLocalizations>{
+  static final Map<Locale, FeedbackLocalizations> _supportedLocales =
+      <Locale, FeedbackLocalizations>{
     const Locale("ar"): const ArFeedbackLocalizations(), // Arabic
     const Locale("bg"): const BgFeedbackLocalizations(), // Bulgarian
     const Locale("bn"): const BnFeedbackLocalizations(), // Bengali
@@ -90,7 +91,7 @@ class CustomFeedbackLocalizationsDelegate
 
   @override
   Future<FeedbackLocalizations> load(Locale locale) async {
-    final languageLocale = Locale(locale.languageCode);
+    final Locale languageLocale = Locale(locale.languageCode);
     // We only support language codes for now
     if (_supportedLocales.containsKey(languageLocale)) {
       return _supportedLocales[languageLocale]!;
@@ -696,8 +697,7 @@ class RuFeedbackLocalizations extends FeedbackLocalizations {
   String get submitButtonText => 'Отправить';
 
   @override
-  String get feedbackDescriptionText =>
-      'Опишите проблему';
+  String get feedbackDescriptionText => 'Опишите проблему';
 
   @override
   String get draw => 'Рисование';
@@ -895,8 +895,7 @@ class UkFeedbackLocalizations extends FeedbackLocalizations {
   String get submitButtonText => 'Відправити';
 
   @override
-  String get feedbackDescriptionText =>
-      'Опишіть проблему';
+  String get feedbackDescriptionText => 'Опишіть проблему';
 
   @override
   String get draw => 'Малювання';

@@ -221,7 +221,7 @@ class RuleSettingsPage extends StatelessWidget {
   }
 
   Widget _buildRuleSettings(BuildContext context, Box<RuleSettings> box, _) {
-    final locale = DB().displaySettings.locale;
+    final Locale? locale = DB().displaySettings.locale;
 
     final RuleSettings ruleSettings = box.get(
       DB.ruleSettingsKey,
@@ -240,7 +240,7 @@ class RuleSettingsPage extends StatelessWidget {
             ),
             SettingsListTile.switchTile(
               value: ruleSettings.hasDiagonalLines,
-              onChanged: (val) => _setHasDiagonalLines(ruleSettings, val),
+              onChanged: (bool val) => _setHasDiagonalLines(ruleSettings, val),
               titleString: S.of(context).hasDiagonalLines,
               subtitleString: S.of(context).hasDiagonalLines_Detail,
             ),
@@ -258,7 +258,7 @@ class RuleSettingsPage extends StatelessWidget {
             ),
             SettingsListTile.switchTile(
               value: ruleSettings.threefoldRepetitionRule,
-              onChanged: (val) =>
+              onChanged: (bool val) =>
                   _setThreefoldRepetitionRule(ruleSettings, val),
               titleString: S.of(context).threefoldRepetitionRule,
               subtitleString: S.of(context).threefoldRepetitionRule_Detail,
@@ -270,13 +270,14 @@ class RuleSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile.switchTile(
               value: ruleSettings.hasBannedLocations,
-              onChanged: (val) => _setHasBannedLocations(ruleSettings, val),
+              onChanged: (bool val) =>
+                  _setHasBannedLocations(ruleSettings, val),
               titleString: S.of(context).hasBannedLocations,
               subtitleString: S.of(context).hasBannedLocations_Detail,
             ),
             SettingsListTile.switchTile(
               value: ruleSettings.isWhiteLoseButNotDrawWhenBoardFull,
-              onChanged: (val) =>
+              onChanged: (bool val) =>
                   _setIsWhiteLoseButNotDrawWhenBoardFull(ruleSettings, val),
               titleString: S.of(context).isWhiteLoseButNotDrawWhenBoardFull,
               subtitleString:
@@ -284,7 +285,8 @@ class RuleSettingsPage extends StatelessWidget {
             ),
             SettingsListTile.switchTile(
               value: ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase,
-              onChanged: (val) => _setMayOnlyRemoveUnplacedPieceInPlacingPhase(
+              onChanged: (bool val) =>
+                  _setMayOnlyRemoveUnplacedPieceInPlacingPhase(
                 context,
                 ruleSettings,
                 val,
@@ -300,20 +302,21 @@ class RuleSettingsPage extends StatelessWidget {
             if (EnvironmentConfig.devMode)
               SettingsListTile.switchTile(
                 value: ruleSettings.mayMoveInPlacingPhase,
-                onChanged: (val) =>
+                onChanged: (bool val) =>
                     _setMayMoveInPlacingPhase(context, ruleSettings, val),
                 titleString: S.of(context).mayMoveInPlacingPhase,
                 subtitleString: S.of(context).mayMoveInPlacingPhase_Detail,
               ),
             SettingsListTile.switchTile(
               value: ruleSettings.isDefenderMoveFirst,
-              onChanged: (val) => _setIsDefenderMoveFirst(ruleSettings, val),
+              onChanged: (bool val) =>
+                  _setIsDefenderMoveFirst(ruleSettings, val),
               titleString: S.of(context).isDefenderMoveFirst,
               subtitleString: S.of(context).isDefenderMoveFirst_Detail,
             ),
             SettingsListTile.switchTile(
               value: ruleSettings.isLoseButNotChangeSideWhenNoWay,
-              onChanged: (val) =>
+              onChanged: (bool val) =>
                   _setIsLoseButNotChangeSideWhenNoWay(ruleSettings, val),
               titleString: S.of(context).isLoseButNotChangeSideWhenNoWay,
               subtitleString:
@@ -326,7 +329,8 @@ class RuleSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile.switchTile(
               value: ruleSettings.mayFly,
-              onChanged: (val) => _setAllowFlyingAllowed(ruleSettings, val),
+              onChanged: (bool val) =>
+                  _setAllowFlyingAllowed(ruleSettings, val),
               titleString: S.of(context).mayFly,
               subtitleString: S.of(context).mayFly_Detail,
             ),
@@ -343,13 +347,15 @@ class RuleSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile.switchTile(
               value: ruleSettings.mayRemoveFromMillsAlways,
-              onChanged: (val) => _setAllowRemovePieceInMill(ruleSettings, val),
+              onChanged: (bool val) =>
+                  _setAllowRemovePieceInMill(ruleSettings, val),
               titleString: S.of(context).mayRemoveFromMillsAlways,
               subtitleString: S.of(context).mayRemoveFromMillsAlways_Detail,
             ),
             SettingsListTile.switchTile(
               value: ruleSettings.mayRemoveMultiple,
-              onChanged: (val) => _setAllowRemoveMultiPiecesWhenCloseMultiMill(
+              onChanged: (bool val) =>
+                  _setAllowRemoveMultiPiecesWhenCloseMultiMill(
                 ruleSettings,
                 val,
               ),

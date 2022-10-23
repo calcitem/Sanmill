@@ -47,7 +47,7 @@ class _Mills {
   }
 
   // Note: Not follow order of MoveDirection array
-  static const _adjacentSquares = [
+  static const List<List<int>> _adjacentSquares = [
     /*  0 */ [0, 0, 0, 0],
     /*  1 */ [0, 0, 0, 0],
     /*  2 */ [0, 0, 0, 0],
@@ -90,7 +90,7 @@ class _Mills {
     /* 39 */ [0, 0, 0, 0],
   ];
 
-  static const _adjacentSquaresDiagonal = [
+  static const List<List<int>> _adjacentSquaresDiagonal = [
     /*  0 */ [0, 0, 0, 0],
     /*  1 */ [0, 0, 0, 0],
     /*  2 */ [0, 0, 0, 0],
@@ -133,7 +133,7 @@ class _Mills {
     /* 39 */ [0, 0, 0, 0],
   ];
 
-  static const _millTable = [
+  static const List<List<List<int>>> _millTable = [
     /* 0 */ [
       [0, 0],
       [0, 0],
@@ -336,7 +336,7 @@ class _Mills {
     ]
   ];
 
-  static const _millTableDiagonal = [
+  static const List<List<List<int>>> _millTableDiagonal = [
     /*  0 */ [
       [0, 0],
       [0, 0],
@@ -539,7 +539,7 @@ class _Mills {
     ]
   ];
 
-  static const _horizontalAndVerticalLines = [
+  static const List<List<int>> _horizontalAndVerticalLines = [
     // Horizontal lines
     [31, 24, 25],
     [23, 16, 17],
@@ -560,7 +560,7 @@ class _Mills {
     [25, 26, 27],
   ];
 
-  static const _diagonalLines = [
+  static const List<List<int>> _diagonalLines = [
     [31, 23, 15],
     [9, 17, 25],
     [29, 21, 13],

@@ -25,11 +25,11 @@ import '../helpers/test_mills.dart';
 void main() {
   group("MillController", () {
     test("New game should have the same GameMode", () async {
-      const gameMode = GameMode.humanVsAi;
+      const GameMode gameMode = GameMode.humanVsAi;
 
       // Initialize the test
       DB.instance = MockDB();
-      final controller = MillController();
+      final MillController controller = MillController();
 
       controller.gameInstance.gameMode = gameMode;
 
@@ -43,7 +43,7 @@ void main() {
       // initialize the test
       DB.instance = MockDB();
       Audios.instance = MockAudios();
-      final controller = MillController();
+      final MillController controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       // Import a game

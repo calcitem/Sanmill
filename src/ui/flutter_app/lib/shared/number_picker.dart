@@ -36,12 +36,12 @@ class NumberPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = Theme.of(context).textTheme.bodyText1!.fontSize!;
+    final double size = Theme.of(context).textTheme.bodyText1!.fontSize!;
     int selectValue = start;
 
     final List<Widget> items = List.generate(
       end,
-      (index) => Text(showMoveString
+      (int index) => Text(showMoveString
           ? S.of(context).moveNumber(start + index)
           : (start + index).toString()),
     );
@@ -57,7 +57,7 @@ class NumberPicker extends StatelessWidget {
         child: CupertinoPicker(
           itemExtent: size + 12,
           children: items,
-          onSelectedItemChanged: (numb) => selectValue = numb + 1,
+          onSelectedItemChanged: (int numb) => selectValue = numb + 1,
         ),
       ),
       actions: [

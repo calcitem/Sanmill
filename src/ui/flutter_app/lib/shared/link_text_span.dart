@@ -29,10 +29,10 @@ class LinkTextSpan extends TextSpan {
               if (EnvironmentConfig.test == true) {
                 return;
               }
-              final s = url.substring("https://".length);
-              final authority = s.substring(0, s.indexOf('/'));
-              final unencodedPath = s.substring(s.indexOf('/'));
-              final uri = Uri.https(authority, unencodedPath);
+              final String s = url.substring("https://".length);
+              final String authority = s.substring(0, s.indexOf('/'));
+              final String unencodedPath = s.substring(s.indexOf('/'));
+              final Uri uri = Uri.https(authority, unencodedPath);
               launchUrl(
                 uri,
                 mode: LaunchMode.externalApplication,

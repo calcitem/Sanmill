@@ -62,7 +62,7 @@ Future<void> main() async {
 
     await _initCatcher(catcher);
 
-    PlatformDispatcher.instance.onError = (error, stack) {
+    PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
       if (EnvironmentConfig.catcher == true) {
         Catcher.reportCheckedError(error, stack);
       }
@@ -111,7 +111,7 @@ class SanmillApp extends StatelessWidget {
         theme: AppTheme.lightThemeData,
         darkTheme: AppTheme.darkThemeData,
         debugShowCheckedModeBanner: EnvironmentConfig.devMode,
-        builder: (context, child) {
+        builder: (BuildContext context, Widget? child) {
           return MediaQuery(
             data: MediaQuery.of(context).copyWith(
               textScaleFactor: displaySettings.fontScale,

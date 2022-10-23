@@ -44,7 +44,7 @@ class Audios {
   late int _winSoundId;
   bool _isTemporaryMute = false;
 
-  static const _tag = "[audio]";
+  static const String _tag = "[audio]";
 
   Future<void> loadSounds() async {
     assert(!MillController().initialized);

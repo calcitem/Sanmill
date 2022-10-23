@@ -24,7 +24,7 @@ part of 'package:sanmill/services/database/database.dart';
 class _DatabaseMigration {
   const _DatabaseMigration._();
 
-  static const _tag = "[Database Migration]";
+  static const String _tag = "[Database Migration]";
 
   /// The newest DB version.
   static const _newVersion = 2;

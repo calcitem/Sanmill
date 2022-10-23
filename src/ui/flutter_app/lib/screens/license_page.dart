@@ -26,7 +26,7 @@ class LicenseAgreementPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
       future: rootBundle.loadString(Assets.licenses.gpl30),
-      builder: (context, data) {
+      builder: (BuildContext context, AsyncSnapshot<String> data) {
         late final String str;
         if (!data.hasData) {
           str = "Nothing to show";

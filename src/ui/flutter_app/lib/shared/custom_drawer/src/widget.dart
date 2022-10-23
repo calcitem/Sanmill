@@ -59,11 +59,11 @@ class CustomDrawerState extends State<CustomDrawer>
   late Offset _startPosition;
   bool _captured = false;
 
-  static const _duration = Duration(milliseconds: 250);
-  static const _slideThreshold = 0.25;
-  static const _slideVelocityThreshold = 1300;
-  static const _openRatio = 0.75;
-  static const _overlayRadius = 28.0;
+  static const Duration _duration = Duration(milliseconds: 250);
+  static const double _slideThreshold = 0.25;
+  static const int _slideVelocityThreshold = 1300;
+  static const double _openRatio = 0.75;
+  static const double _overlayRadius = 28.0;
 
   @override
   void initState() {
@@ -108,7 +108,7 @@ class CustomDrawerState extends State<CustomDrawer>
 
   @override
   Widget build(BuildContext context) {
-    final drawer = Align(
+    final Align drawer = Align(
       alignment: AlignmentDirectional.topStart,
       child: FractionallySizedBox(
         widthFactor: _openRatio,
@@ -130,7 +130,7 @@ class CustomDrawerState extends State<CustomDrawer>
     );
 
     /// Menu and arrow icon animation overlay
-    final drawerOverlay = IconButton(
+    final IconButton drawerOverlay = IconButton(
       icon: AnimatedIcon(
         icon: AnimatedIcons.arrow_menu,
         progress: ReverseAnimation(_animationController),
@@ -140,13 +140,13 @@ class CustomDrawerState extends State<CustomDrawer>
       onPressed: () => _controller.toggleDrawer(),
     );
 
-    final mainView = SlideTransition(
+    final SlideTransition mainView = SlideTransition(
       position: _childSlideAnimation,
       textDirection: Directionality.of(context),
       child: ValueListenableBuilder<CustomDrawerValue>(
         valueListenable: _controller,
         // TODO: [Leptopoda] Why isn't it working with GestureDetector?
-        builder: (_, value, child) => InkWell(
+        builder: (_, CustomDrawerValue value, Widget? child) => InkWell(
           onTap: _controller.hideDrawer,
           focusColor: Colors.transparent,
           child: IgnorePointer(
@@ -188,16 +188,16 @@ class CustomDrawerState extends State<CustomDrawer>
   }
 
   Widget _buildItem(BuildContext context, int index) {
-    final item = widget.items[index];
+    final CustomDrawerItem item = widget.items[index];
 
-    final itemPadding = window.physicalSize.height >= 1080
+    final double itemPadding = window.physicalSize.height >= 1080
         ? AppTheme.drawerItemPadding
         : AppTheme.drawerItemPaddingSmallScreen;
 
     final Widget child;
 
     if (item.selected) {
-      final overlay = SlideTransition(
+      final SlideTransition overlay = SlideTransition(
         position: _overlaySlideAnimation,
         textDirection: Directionality.of(context),
         child: Container(
@@ -243,12 +243,12 @@ class CustomDrawerState extends State<CustomDrawer>
   void _handleDragUpdate(DragUpdateDetails details) {
     if (!_captured) return;
 
-    final screenSize = MediaQuery.of(context).size;
-    final rtl = Directionality.of(context) == TextDirection.rtl;
+    final Size screenSize = MediaQuery.of(context).size;
+    final bool rtl = Directionality.of(context) == TextDirection.rtl;
 
     _freshPosition = details.globalPosition;
 
-    final diff = (_freshPosition - _startPosition).dx;
+    final double diff = (_freshPosition - _startPosition).dx;
 
     _animationController.value = _offsetValue +
         (diff / (screenSize.width * _openRatio)) * (rtl ? -1 : 1);

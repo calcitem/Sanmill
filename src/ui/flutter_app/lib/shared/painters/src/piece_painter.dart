@@ -56,29 +56,29 @@ class PiecePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     assert(size.width == size.height);
-    final focusIndex = MillController().gameInstance.focusIndex;
-    final blurIndex = MillController().gameInstance.blurIndex;
+    final int? focusIndex = MillController().gameInstance.focusIndex;
+    final int? blurIndex = MillController().gameInstance.blurIndex;
 
-    final paint = Paint();
-    final shadowPath = Path();
-    final piecesToDraw = <_PiecePaintParam>[];
+    final Paint paint = Paint();
+    final Path shadowPath = Path();
+    final List<_PiecePaintParam> piecesToDraw = <_PiecePaintParam>[];
 
-    final pieceWidth = size.width * DB().displaySettings.pieceWidth / 7;
-    final animatedPieceWidth = pieceWidth * animationValue;
+    final double pieceWidth = size.width * DB().displaySettings.pieceWidth / 7;
+    final double animatedPieceWidth = pieceWidth * animationValue;
 
     // Draw pieces on board
-    for (var row = 0; row < 7; row++) {
-      for (var col = 0; col < 7; col++) {
-        final index = row * 7 + col;
+    for (int row = 0; row < 7; row++) {
+      for (int col = 0; col < 7; col++) {
+        final int index = row * 7 + col;
 
-        final piece = MillController()
+        final PieceColor piece = MillController()
             .position
             .pieceOnGrid(index); // No Pieces when initial
 
         if (piece == PieceColor.none) continue;
 
-        final pos = pointFromIndex(index, size);
-        final animated = focusIndex == index;
+        final Offset pos = pointFromIndex(index, size);
+        final bool animated = focusIndex == index;
 
         piecesToDraw.add(
           _PiecePaintParam(
@@ -103,7 +103,7 @@ class PiecePainter extends CustomPainter {
     paint.style = PaintingStyle.fill;
 
     late Color blurPositionColor;
-    for (final piece in piecesToDraw) {
+    for (final _PiecePaintParam piece in piecesToDraw) {
       assert(
         piece.piece == PieceColor.black ||
             piece.piece == PieceColor.white ||
@@ -111,11 +111,11 @@ class PiecePainter extends CustomPainter {
       );
       blurPositionColor = piece.piece.blurPositionColor;
 
-      final pieceRadius = pieceWidth / 2;
-      final pieceInnerRadius = pieceRadius * 0.99;
+      final double pieceRadius = pieceWidth / 2;
+      final double pieceInnerRadius = pieceRadius * 0.99;
 
-      final animatedPieceRadius = animatedPieceWidth / 2;
-      final animatedPieceInnerRadius = animatedPieceRadius * 0.99;
+      final double animatedPieceRadius = animatedPieceWidth / 2;
+      final double animatedPieceInnerRadius = animatedPieceRadius * 0.99;
 
       // Draw Border of Piece
       paint.color = piece.piece.borderColor;

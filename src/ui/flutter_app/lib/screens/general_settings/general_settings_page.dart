@@ -154,7 +154,7 @@ class GeneralSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile.switchTile(
               value: !generalSettings.aiMovesFirst,
-              onChanged: (val) => _setWhoMovesFirst(generalSettings, !val),
+              onChanged: (bool val) => _setWhoMovesFirst(generalSettings, !val),
               titleString: generalSettings.aiMovesFirst
                   ? S.of(context).ai
                   : S.of(context).human,
@@ -185,23 +185,25 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
             SettingsListTile.switchTile(
               value: generalSettings.drawOnHumanExperience,
-              onChanged: (val) =>
+              onChanged: (bool val) =>
                   _setDrawOnHumanExperience(generalSettings, val),
               titleString: S.of(context).drawOnHumanExperience,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.considerMobility,
-              onChanged: (val) => _setConsiderMobility(generalSettings, val),
+              onChanged: (bool val) =>
+                  _setConsiderMobility(generalSettings, val),
               titleString: S.of(context).considerMobility,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.aiIsLazy,
-              onChanged: (val) => _setAiIsLazy(generalSettings, val),
+              onChanged: (bool val) => _setAiIsLazy(generalSettings, val),
               titleString: S.of(context).passive,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.shufflingEnabled,
-              onChanged: (val) => _setShufflingEnabled(generalSettings, val),
+              onChanged: (bool val) =>
+                  _setShufflingEnabled(generalSettings, val),
               titleString: S.of(context).shufflingEnabled,
             ),
           ],
@@ -211,12 +213,12 @@ class GeneralSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile.switchTile(
               value: generalSettings.toneEnabled,
-              onChanged: (val) => _setTone(generalSettings, val),
+              onChanged: (bool val) => _setTone(generalSettings, val),
               titleString: S.of(context).playSoundsInTheGame,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.keepMuteWhenTakingBack,
-              onChanged: (val) =>
+              onChanged: (bool val) =>
                   _setKeepMuteWhenTakingBack(generalSettings, val),
               titleString: S.of(context).keepMuteWhenTakingBack,
             ),
@@ -227,7 +229,8 @@ class GeneralSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile.switchTile(
               value: generalSettings.screenReaderSupport,
-              onChanged: (val) => _setScreenReaderSupport(generalSettings, val),
+              onChanged: (bool val) =>
+                  _setScreenReaderSupport(generalSettings, val),
               titleString: S.of(context).screenReaderSupport,
             ),
           ],
@@ -247,7 +250,8 @@ class GeneralSettingsPage extends StatelessWidget {
             children: <Widget>[
               SettingsListTile.switchTile(
                 value: generalSettings.isAutoRestart,
-                onChanged: (val) => _setIsAutoRestart(generalSettings, val),
+                onChanged: (bool val) =>
+                    _setIsAutoRestart(generalSettings, val),
                 titleString: S.of(context).isAutoRestart,
               ),
             ],

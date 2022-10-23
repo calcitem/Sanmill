@@ -112,7 +112,7 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> with TickerProviderStateMixin {
-  final _controller = CustomDrawerController();
+  final CustomDrawerController _controller = CustomDrawerController();
 
   Widget _screenView = _DrawerIndex.humanVsAi.screen!;
   _DrawerIndex _drawerIndex = _DrawerIndex.humanVsAi;
@@ -276,16 +276,18 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => const PrivacyDialog(),
+        builder: (BuildContext context) => const PrivacyDialog(),
       );
     }
   }
 
   /// Drafts an email and sends it to the developer
   static Future<void> _launchFeedback(UserFeedback feedback) async {
-    final screenshotFilePath = await _saveFeedbackImage(feedback.screenshot);
-    final packageInfo = await PackageInfo.fromPlatform();
-    final version = "${packageInfo.version} (${packageInfo.buildNumber})";
+    final String screenshotFilePath =
+        await _saveFeedbackImage(feedback.screenshot);
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    final String version =
+        "${packageInfo.version} (${packageInfo.buildNumber})";
 
     final Email email = Email(
       body: feedback.text,

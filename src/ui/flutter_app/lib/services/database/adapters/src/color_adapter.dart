@@ -22,11 +22,11 @@ part of '../adapters.dart';
 /// and is a general [TypeAdapter] to be used with Hive [Box]es
 class ColorAdapter extends TypeAdapter<Color> {
   @override
-  final typeId = 6;
+  final int typeId = 6;
 
   @override
   Color read(BinaryReader reader) {
-    final value = reader.readInt();
+    final int value = reader.readInt();
     return Color(value);
   }
 

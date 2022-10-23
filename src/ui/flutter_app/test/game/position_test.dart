@@ -26,12 +26,12 @@ void main() {
   group("Position", () {
     test("_movesSinceLastRemove should output the moves since last remove",
         () async {
-      const testMill = WinLessThanThreeGame();
+      const WinLessThanThreeGame testMill = WinLessThanThreeGame();
 
       // Initialize the test
       DB.instance = MockDB();
       Audios.instance = MockAudios();
-      final controller = MillController();
+      final MillController controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       // Import a game

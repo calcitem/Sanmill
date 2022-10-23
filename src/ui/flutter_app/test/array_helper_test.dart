@@ -22,7 +22,7 @@ void main() {
       "List.lastF should return the last value of the list only if the list is not empty",
       () {
     // Initialize
-    final list = List.generate(5, (index) => index);
+    final List<int> list = List.generate(5, (int index) => index);
 
     expect(list.lastF, 4);
 

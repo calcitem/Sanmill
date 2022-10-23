@@ -27,7 +27,7 @@ class _PointWidthSlider extends StatelessWidget {
       label: S.of(context).pointWidth,
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplaySettings,
-        builder: (context, Box<DisplaySettings> box, _) {
+        builder: (BuildContext context, Box<DisplaySettings> box, _) {
           final DisplaySettings displaySettings = box.get(
             DB.displaySettingsKey,
             defaultValue: const DisplaySettings(),
@@ -38,7 +38,7 @@ class _PointWidthSlider extends StatelessWidget {
             max: 30.0,
             divisions: 30,
             label: displaySettings.pointWidth.toStringAsFixed(1),
-            onChanged: (value) {
+            onChanged: (double value) {
               logger.v("[config] pointWidth value: $value");
               DB().displaySettings =
                   displaySettings.copyWith(pointWidth: value);

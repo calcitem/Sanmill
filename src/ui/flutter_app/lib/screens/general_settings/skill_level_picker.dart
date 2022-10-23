@@ -45,7 +45,7 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: DB().listenGeneralSettings,
-      builder: (context, Box<GeneralSettings> box, _) {
+      builder: (BuildContext context, Box<GeneralSettings> box, _) {
         final GeneralSettings generalSettings = box.get(
           DB.generalSettingsKey,
           defaultValue: const GeneralSettings(),
@@ -62,8 +62,8 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
               scrollController: _controller,
               itemExtent: 44,
               children: List.generate(Constants.topSkillLevel,
-                  (level) => Center(child: Text('${level + 1}'))),
-              onSelectedItemChanged: (value) {
+                  (int level) => Center(child: Text('${level + 1}'))),
+              onSelectedItemChanged: (int value) {
                 _level = value + 1;
               },
             ),

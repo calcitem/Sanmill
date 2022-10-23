@@ -60,7 +60,7 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = MillController();
+    final MillController controller = MillController();
 
     controller.gameInstance.gameMode = gameMode;
 
@@ -69,7 +69,7 @@ class GamePage extends StatelessWidget {
       backgroundColor: DB().colorSettings.darkBackgroundColor,
       body: FutureBuilder(
         future: controller.start(),
-        builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
                 //child: CircularProgressIndicator.adaptive(),
@@ -80,16 +80,16 @@ class GamePage extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: AppTheme.boardMargin),
             child: LayoutBuilder(
-              builder: (context, constraints) {
-                var toolbarHeight =
+              builder: (BuildContext context, BoxConstraints constraints) {
+                double toolbarHeight =
                     GamePageToolBar.height + ButtonTheme.of(context).height;
                 if (DB().displaySettings.isHistoryNavigationToolbarShown) {
                   toolbarHeight *= 2;
                 }
 
                 // Constraints of the game board but applied to the entire child
-                final maxWidth = constraints.maxWidth;
-                final maxHeight = constraints.maxHeight - toolbarHeight;
+                final double maxWidth = constraints.maxWidth;
+                final double maxHeight = constraints.maxHeight - toolbarHeight;
                 final BoxConstraints constraint = BoxConstraints(
                   maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
                       ? maxHeight
@@ -165,10 +165,10 @@ class _GameState extends State<_Game> {
       const EdgeInsets.symmetric(horizontal: 4),
       MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
     );
-    final itemMaxWidth =
+    final double itemMaxWidth =
         (MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) / 4 -
             scaledPadding.horizontal;
-    final gameButton = ToolbarItem.icon(
+    final ToolbarItem gameButton = ToolbarItem.icon(
       onPressed: () => _showGameModalBottomSheet(context),
       icon: const Icon(FluentIcons.table_simple_24_regular),
       label: Container(
@@ -181,7 +181,7 @@ class _GameState extends State<_Game> {
       ),
     );
 
-    final optionsButton = ToolbarItem.icon(
+    final ToolbarItem optionsButton = ToolbarItem.icon(
       onPressed: () => _showGeneralSettings(context),
       icon: const Icon(FluentIcons.settings_24_regular),
       label: ConstrainedBox(
@@ -194,7 +194,7 @@ class _GameState extends State<_Game> {
       ),
     );
 
-    final moveButton = ToolbarItem.icon(
+    final ToolbarItem moveButton = ToolbarItem.icon(
       onPressed: () => _showMoveModalBottomSheet(context),
       icon: const Icon(FluentIcons.calendar_agenda_24_regular),
       label: ConstrainedBox(
@@ -207,7 +207,7 @@ class _GameState extends State<_Game> {
       ),
     );
 
-    final infoButton = ToolbarItem.icon(
+    final ToolbarItem infoButton = ToolbarItem.icon(
       onPressed: () => _showInfoDialog(context),
       icon: const Icon(FluentIcons.book_information_24_regular),
       label: ConstrainedBox(
@@ -229,7 +229,7 @@ class _GameState extends State<_Game> {
   }
 
   List<Widget> historyNavToolbarItems(BuildContext context) {
-    final takeBackAllButton = ToolbarItem(
+    final ToolbarItem takeBackAllButton = ToolbarItem(
       child: Icon(
         FluentIcons.arrow_previous_24_regular,
         semanticLabel: S.of(context).takeBackAll,
@@ -237,7 +237,7 @@ class _GameState extends State<_Game> {
       onPressed: () => HistoryNavigator.takeBackAll(context, pop: false),
     );
 
-    final takeBackButton = ToolbarItem(
+    final ToolbarItem takeBackButton = ToolbarItem(
       child: Icon(
         FluentIcons.chevron_left_24_regular,
         semanticLabel: S.of(context).takeBack,
@@ -245,7 +245,7 @@ class _GameState extends State<_Game> {
       onPressed: () => HistoryNavigator.takeBack(context, pop: false),
     );
 
-    final moveNowButton = ToolbarItem(
+    final ToolbarItem moveNowButton = ToolbarItem(
       child: Icon(
         FluentIcons.play_24_regular,
         semanticLabel: S.of(context).moveNow,
@@ -253,7 +253,7 @@ class _GameState extends State<_Game> {
       onPressed: () => MillController().moveNow(context),
     );
 
-    final stepForwardButton = ToolbarItem(
+    final ToolbarItem stepForwardButton = ToolbarItem(
       child: Icon(
         FluentIcons.chevron_right_24_regular,
         semanticLabel: S.of(context).stepForward,
@@ -261,7 +261,7 @@ class _GameState extends State<_Game> {
       onPressed: () => HistoryNavigator.stepForward(context, pop: false),
     );
 
-    final stepForwardAllButton = ToolbarItem(
+    final ToolbarItem stepForwardAllButton = ToolbarItem(
       child: Icon(
         FluentIcons.arrow_next_24_regular,
         semanticLabel: S.of(context).stepForwardAll,

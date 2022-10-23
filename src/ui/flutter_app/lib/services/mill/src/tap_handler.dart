@@ -3,11 +3,11 @@
 part of '../mill.dart';
 
 class TapHandler {
-  static const _tag = "[Tap Handler]";
+  static const String _tag = "[Tap Handler]";
 
   final BuildContext context;
 
-  final controller = MillController();
+  final MillController controller = MillController();
   //final gameMode = MillController().gameInstance.gameMode;
   final showTip = MillController().headerTipNotifier.showTip;
 
@@ -127,7 +127,7 @@ class TapHandler {
                   showTip(S.of(context).tipMove, snackBar: false);
                 }
               } else {
-                final side = controller.gameInstance.sideToMove.opponent
+                final String side = controller.gameInstance.sideToMove.opponent
                     .playerName(context);
                 showTip(S.of(context).tipToMove(side), snackBar: false);
               }
@@ -155,7 +155,7 @@ class TapHandler {
           break;
         }
 
-        var selectRet = MillController().position._selectPiece(sq);
+        MillResponse selectRet = MillController().position._selectPiece(sq);
 
         switch (selectRet) {
           case MillResponseOK():
@@ -164,7 +164,7 @@ class TapHandler {
             ret = true;
             logger.v("$_tag selectPiece: [$sq]");
 
-            final pieceOnBoardCount = MillController()
+            final int? pieceOnBoardCount = MillController()
                 .position
                 .pieceOnBoardCount[controller.gameInstance.sideToMove];
             if (MillController().position.phase == Phase.moving &&
@@ -203,7 +203,7 @@ class TapHandler {
         break;
 
       case Act.remove:
-        var removeRet = MillController().position._removePiece(sq);
+        MillResponse removeRet = MillController().position._removePiece(sq);
 
         MillController().animationController.reset();
         MillController().animationController.animateTo(1.0);
@@ -220,7 +220,7 @@ class TapHandler {
                 showTip(S.of(context).tipRemoved, snackBar: false);
               } else if (MillController().gameInstance.gameMode ==
                   GameMode.humanVsHuman) {
-                final them = controller.gameInstance.sideToMove.opponent
+                final String them = controller.gameInstance.sideToMove.opponent
                     .playerName(context);
                 showTip(S.of(context).tipToMove(them), snackBar: false);
               }

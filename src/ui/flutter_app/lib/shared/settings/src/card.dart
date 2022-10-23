@@ -28,8 +28,8 @@ class SettingsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textStyle = theme.textTheme.headline6!.apply(
+    final ThemeData theme = Theme.of(context);
+    final TextStyle textStyle = theme.textTheme.headline6!.apply(
       color: AppTheme.settingsHeaderTextColor,
     );
 
@@ -45,7 +45,7 @@ class SettingsCard extends StatelessWidget {
           child: ListView.separated(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemBuilder: (_, index) => children[index],
+            itemBuilder: (_, int index) => children[index],
             separatorBuilder: (_, __) => const Divider(),
             itemCount: children.length,
           ),

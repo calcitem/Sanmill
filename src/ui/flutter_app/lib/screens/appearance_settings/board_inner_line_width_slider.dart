@@ -25,7 +25,7 @@ class _BoardInnerWidthSlider extends StatelessWidget {
       label: S.of(context).boardInnerLineWidth,
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplaySettings,
-        builder: (context, Box<DisplaySettings> box, _) {
+        builder: (BuildContext context, Box<DisplaySettings> box, _) {
           final DisplaySettings displaySettings = box.get(
             DB.displaySettingsKey,
             defaultValue: const DisplaySettings(),
@@ -36,7 +36,7 @@ class _BoardInnerWidthSlider extends StatelessWidget {
             max: 20,
             divisions: 200,
             label: displaySettings.boardInnerLineWidth.toStringAsFixed(1),
-            onChanged: (value) {
+            onChanged: (double value) {
               logger.v("[config] BoardInnerLineWidth value: $value");
               DB().displaySettings =
                   displaySettings.copyWith(boardInnerLineWidth: value);

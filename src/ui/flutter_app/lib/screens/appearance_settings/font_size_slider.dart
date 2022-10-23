@@ -25,7 +25,7 @@ class _FontSizeSlider extends StatelessWidget {
       label: S.of(context).fontSize,
       child: ValueListenableBuilder(
         valueListenable: DB().listenDisplaySettings,
-        builder: (context, Box<DisplaySettings> box, _) {
+        builder: (BuildContext context, Box<DisplaySettings> box, _) {
           final DisplaySettings displaySettings = box.get(
             DB.displaySettingsKey,
             defaultValue: const DisplaySettings(),
@@ -41,7 +41,7 @@ class _FontSizeSlider extends StatelessWidget {
                 max: 2,
                 divisions: 16,
                 label: displaySettings.fontScale.toStringAsFixed(2),
-                onChanged: (value) {
+                onChanged: (double value) {
                   logger.v("[config] fontSize value: $value");
                   DB().displaySettings =
                       displaySettings.copyWith(fontScale: value);

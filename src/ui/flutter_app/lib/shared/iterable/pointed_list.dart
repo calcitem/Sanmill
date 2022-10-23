@@ -20,11 +20,6 @@ import 'package:collection/collection.dart';
 ///
 /// A list with a final [globalIterator] that can be used to navigate through the list.
 class PointedList<E> extends DelegatingList<E> {
-  late final List<E> _l;
-
-  /// The [PointedListIterator] used to navigate through the list.
-  late final PointedListIterator<E> globalIterator;
-
   /// Creates an empty [PointedList].
   PointedList() : this._(<E>[]);
 
@@ -41,6 +36,10 @@ class PointedList<E> extends DelegatingList<E> {
       globalIterator.moveToLast();
     }
   }
+  late final List<E> _l;
+
+  /// The [PointedListIterator] used to navigate through the list.
+  late final PointedListIterator<E> globalIterator;
 
   /// Prunes the list from any element currently out of focus.
   ///
@@ -114,14 +113,13 @@ class PointedList<E> extends DelegatingList<E> {
 
 /// Pointed List Iterator.
 class PointedListIterator<E> {
-  final List<E> _base;
-  int? _index;
-
   PointedListIterator(this._base) {
     if (_base.isNotEmpty) {
       _index = 0;
     }
   }
+  final List<E> _base;
+  int? _index;
 
   bool moveNext() {
     if (!hasNext) {

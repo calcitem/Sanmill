@@ -20,7 +20,7 @@ part of '../mill.dart';
 
 @visibleForTesting
 class LoadService {
-  static const _tag = "[Loader]";
+  static const String _tag = "[Loader]";
 
   LoadService._();
 
@@ -29,7 +29,7 @@ class LoadService {
     Directory dir = await getApplicationDocumentsDirectory();
     String path = dir.path;
 
-    var resultLabel = await _showTextInputDialog(context);
+    String? resultLabel = await _showTextInputDialog(context);
 
     if (resultLabel == null) return null;
 
@@ -71,7 +71,7 @@ class LoadService {
       return;
     }
 
-    var strGameSavedTo = S.of(context).gameSavedTo;
+    String strGameSavedTo = S.of(context).gameSavedTo;
 
     Navigator.pop(context);
 
@@ -80,7 +80,7 @@ class LoadService {
       return;
     }
 
-    final filename = await getFilePath(context);
+    final String? filename = await getFilePath(context);
 
     if (filename == null) return;
 
@@ -122,7 +122,7 @@ class LoadService {
       ImportService.import(
           fileContent); // MillController().newRecorder = newHistory;
     } catch (exception) {
-      final tip = S.of(context).cannotImport(fileContent);
+      final String tip = S.of(context).cannotImport(fileContent);
       MillController().headerTipNotifier.showTip(tip);
       Navigator.pop(context);
       return;
@@ -143,7 +143,8 @@ class LoadService {
       MillController().headerTipNotifier.showTip(S.of(context).done,
           snackBar: true); // TODO: "Game loaded." is better.
     } else {
-      final tip = S.of(context).cannotImport(HistoryNavigator.importFailedStr);
+      final String tip =
+          S.of(context).cannotImport(HistoryNavigator.importFailedStr);
       MillController().headerTipNotifier.showTip(tip);
       HistoryNavigator.importFailedStr = "";
     }
@@ -152,10 +153,10 @@ class LoadService {
   }
 
   static Future<String?> _showTextInputDialog(BuildContext context) async {
-    var textFieldController = TextEditingController();
+    TextEditingController textFieldController = TextEditingController();
     return showDialog(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
             S.of(context).filename,
@@ -175,7 +176,7 @@ class LoadService {
                   textScaleFactor: DB().displaySettings.fontScale,
                 ),
                 onPressed: () async {
-                  var result = await pickFile(context);
+                  String? result = await pickFile(context);
                   if (result == null) return;
                   textFieldController.text = result;
                   Navigator.pop(context, textFieldController.text);

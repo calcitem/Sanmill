@@ -70,7 +70,7 @@ class _GameHeaderState extends State<GameHeader> {
 
   @override
   Widget build(BuildContext context) {
-    final divider = Container(
+    final Container divider = Container(
       height: 4,
       width: 180,
       margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
@@ -80,7 +80,7 @@ class _GameHeaderState extends State<GameHeader> {
       ),
     );
 
-    final appBar = BlockSemantics(
+    final BlockSemantics appBar = BlockSemantics(
       child: Center(
         child: Padding(
           padding: EdgeInsets.only(top: DB().displaySettings.boardTop),
@@ -117,7 +117,8 @@ class HeaderTipState extends State<HeaderTip> {
   final ValueNotifier<String> _messageNotifier = ValueNotifier("");
 
   void showTip() {
-    final headerTipNotifier = MillController().headerTipNotifier;
+    final HeaderTipNotifier headerTipNotifier =
+        MillController().headerTipNotifier;
 
     if (headerTipNotifier.showSnackBar) {
       rootScaffoldMessengerKey.currentState!
