@@ -156,9 +156,21 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      title: DB().displaySettings.fontScale == 1.0
+          ? Text(
+              S.of(context).pick(widget.title),
+              style: AppTheme.dialogTitleTextStyle,
+            )
+          : null,
       content: ColorPicker(
         pickerColor: pickedColor,
-        labelTypes: const <ColorLabelType>[],
+        labelTypes: DB().displaySettings.fontScale == 1.0
+            ? const <ColorLabelType>[
+                ColorLabelType.rgb,
+                ColorLabelType.hsv,
+                ColorLabelType.hsl
+              ]
+            : const <ColorLabelType>[],
         onColorChanged: _changeColor,
       ),
       actions: <Widget>[
