@@ -67,7 +67,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
         .animate(MillController().animationController);
   }
 
-  _setReadyState() async {
+  Future<void> _setReadyState() async {
     logger.i("$_tag Check if need to set Ready state...");
     // TODO: v1 has "&& mounted && Config.settingsLoaded"
     if (MillController().isReady == false) {

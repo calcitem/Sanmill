@@ -23,8 +23,6 @@ class _GameOptionsModal extends StatelessWidget {
 
   static const String _tag = "[GameOptionsModal]";
 
-  onStartNewGameButtonPressed(BuildContext context) async {}
-
   @override
   Widget build(BuildContext context) {
     return GamePageDialog(
@@ -115,7 +113,7 @@ class _GameOptionsModal extends StatelessWidget {
     );
   }
 
-  showRestartGameAlertDialog(BuildContext context) async {
+  Future<Widget?> showRestartGameAlertDialog(BuildContext context) async {
     final Widget yesButton = TextButton(
         child: Text(
           S.of(context).yes,
@@ -182,5 +180,7 @@ class _GameOptionsModal extends StatelessWidget {
         return alert;
       },
     );
+
+    return null;
   }
 }

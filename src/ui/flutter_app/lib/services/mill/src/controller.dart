@@ -322,7 +322,7 @@ class MillController {
     }
   }
 
-  showSnakeBarHumanNotation(String humanStr) {
+  void showSnakeBarHumanNotation(String humanStr) {
     final String? n = recorder.lastF?.notation;
 
     if (DB().generalSettings.screenReaderSupport &&

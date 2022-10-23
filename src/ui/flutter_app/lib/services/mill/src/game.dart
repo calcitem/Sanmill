@@ -39,7 +39,7 @@ class Game {
     PieceColor.black: true,
   };
 
-  reverseWhoIsAi() {
+  void reverseWhoIsAi() {
     _isAi[PieceColor.white] = !_isAi[PieceColor.white]!;
     _isAi[PieceColor.black] = !_isAi[PieceColor.black]!;
   }

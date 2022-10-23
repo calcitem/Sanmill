@@ -70,6 +70,11 @@ class ExtMove {
         toFile = -1;
         toRank = -1;
         break;
+      case null:
+        assert(false);
+        toFile = -2;
+        toRank = -2;
+        break;
     }
 
     to = makeSquare(toFile, toRank);
@@ -115,8 +120,9 @@ class ExtMove {
   // 'move' is the UCI engine's move-string
   final String move;
 
-  static sqToNotation(int sq) {
-    return _squareToWmdNotation[sq];
+  static String sqToNotation(int sq) {
+    final String? ret = _squareToWmdNotation[sq];
+    return ret ?? "";
   }
 
   // "notation" is Standard Notation
