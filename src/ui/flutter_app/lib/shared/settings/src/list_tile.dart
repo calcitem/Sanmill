@@ -126,7 +126,6 @@ class SettingsListTile extends StatelessWidget {
 
 class _ColorPickerAlert extends StatefulWidget {
   const _ColorPickerAlert({
-    super.key,
     required this.value,
     required this.title,
     required this.onChanged,

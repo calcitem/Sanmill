@@ -187,7 +187,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 ///
 /// This Widget only contains [Semantics] nodes to help impaired people interact with the [Board].
 class _BoardSemantics extends StatefulWidget {
-  const _BoardSemantics({super.key});
+  const _BoardSemantics();
 
   @override
   State<_BoardSemantics> createState() => _BoardSemanticsState();

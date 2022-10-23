@@ -20,7 +20,6 @@ part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.da
 
 class _LanguagePicker extends StatelessWidget {
   const _LanguagePicker({
-    super.key,
     required this.currentLocale,
     required this.onChanged,
   });

@@ -111,7 +111,7 @@ class GamePage extends StatelessWidget {
 
 // TODO: [Leptopoda] Change layout (landscape mode, padding on small devices)
 class _Game extends StatefulWidget {
-  const _Game({super.key});
+  const _Game();
   @override
   State<_Game> createState() => _GameState();
 }

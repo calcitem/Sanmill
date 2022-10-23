@@ -17,7 +17,7 @@
 part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 
 class _FontSizeSlider extends StatelessWidget {
-  const _FontSizeSlider({super.key});
+  const _FontSizeSlider();
 
   @override
   Widget build(BuildContext context) {

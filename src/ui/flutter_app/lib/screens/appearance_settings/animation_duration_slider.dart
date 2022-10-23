@@ -17,7 +17,7 @@
 part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 
 class _AnimationDurationSlider extends StatelessWidget {
-  const _AnimationDurationSlider({super.key});
+  const _AnimationDurationSlider();
 
   @override
   Widget build(BuildContext context) {

@@ -734,7 +734,6 @@ class SetupPositionButtonsContainer extends StatelessWidget {
 
 class _PlacedModal extends StatelessWidget {
   const _PlacedModal({
-    super.key,
     required this.placedGroupValue,
     required this.onChanged,
     required this.begin,

@@ -18,7 +18,6 @@ part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.da
 
 class _PointPaintingStyleModal extends StatelessWidget {
   const _PointPaintingStyleModal({
-    super.key,
     required this.pointPaintingStyle,
     required this.onChanged,
   });

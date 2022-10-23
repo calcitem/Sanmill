@@ -17,7 +17,7 @@
 part of 'package:sanmill/screens/general_settings/general_settings_page.dart';
 
 class _ResetSettingsAlert extends StatelessWidget {
-  const _ResetSettingsAlert({super.key});
+  const _ResetSettingsAlert();
 
   void _cancel(BuildContext context) => Navigator.pop(context);
 

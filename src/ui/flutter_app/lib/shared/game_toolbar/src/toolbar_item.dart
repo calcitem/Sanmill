@@ -427,7 +427,6 @@ class _ToolbarItemWithIcon extends ToolbarItem {
 
 class _ToolbarItemChild extends StatelessWidget {
   const _ToolbarItemChild({
-    super.key,
     required this.label,
     required this.icon,
   });

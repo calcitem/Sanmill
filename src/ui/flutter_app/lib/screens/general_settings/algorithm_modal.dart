@@ -18,7 +18,6 @@ part of 'package:sanmill/screens/general_settings/general_settings_page.dart';
 
 class _AlgorithmModal extends StatelessWidget {
   const _AlgorithmModal({
-    super.key,
     required this.algorithm,
     required this.onChanged,
   });

@@ -157,7 +157,6 @@ class AboutPage extends StatelessWidget {
 
 class _VersionDialog extends StatelessWidget {
   const _VersionDialog({
-    super.key,
     required this.version,
   });
 
@@ -239,7 +238,7 @@ class _VersionDialog extends StatelessWidget {
 }
 
 class _FlutterVersionAlert extends StatelessWidget {
-  const _FlutterVersionAlert({super.key});
+  const _FlutterVersionAlert();
 
   @override
   Widget build(BuildContext context) {

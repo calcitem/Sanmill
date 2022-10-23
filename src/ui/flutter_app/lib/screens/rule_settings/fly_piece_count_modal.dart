@@ -18,7 +18,6 @@ part of 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 
 class _FlyPieceCountModal extends StatelessWidget {
   const _FlyPieceCountModal({
-    super.key,
     required this.flyPieceCount,
     required this.onChanged,
   });
