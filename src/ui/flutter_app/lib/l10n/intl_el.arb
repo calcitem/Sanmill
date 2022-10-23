@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Εμφάνιση τεμαχίων που δεν έχουν τοποθετηθεί και αφαιρεθεί",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "Βγείτε και ανοίξτε ξανά την εφαρμογή για να τεθούν σε ισχύ οι ρυθμίσεις.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "ΠΛΗΡΗΣ ΟΘΟΝΗ",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

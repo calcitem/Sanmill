@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "배치되지 않은 조각과 제거된 조각 표시",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "설정을 적용하려면 앱을 종료했다가 다시 엽니다.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "전체 화면",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Rodyti nepadėtas ir pašalintas dalis",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "Išeikite ir iš naujo atidarykite programą, kad nustatymai įsigaliotų.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "Per visą ekraną",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

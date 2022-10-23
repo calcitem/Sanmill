@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "نشان دادن مهره های بدون جا و حذف شده",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "برای اعمال تنظیمات از برنامه خارج شده و دوباره باز کنید.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "تمام صفحه",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

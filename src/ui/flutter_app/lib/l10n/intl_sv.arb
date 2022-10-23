@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Visa oplacerade och borttagna bitar",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "Avsluta och öppna appen igen för att inställningarna ska börja gälla.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "Fullskärm",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

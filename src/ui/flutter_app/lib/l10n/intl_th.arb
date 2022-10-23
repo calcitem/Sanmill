@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "แสดงชิ้นส่วนที่ไม่ได้วางและถอดออก",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "เต็มจอ",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "ออกและเปิดแอปอีกครั้งเพื่อให้การตั้งค่ามีผล",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

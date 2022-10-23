@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Tunjukkan kepingan yang tidak diletakkan dan dialih keluar",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Skrin penuh",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Keluar dan buka semula apl untuk tetapan berkuat kuasa.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

@@ -1355,5 +1355,13 @@
   "isUnplacedAndRemovedPiecesShown": "Показати нерозставлені та видалені частини",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "Вийдіть і знову відкрийте програму, щоб налаштування вступили в силу.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "Повноекранний",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

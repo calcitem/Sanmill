@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "未配置および削除されたピースを表示",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "設定を有効にするには、アプリを終了して再度開きます。",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "全画面表示",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

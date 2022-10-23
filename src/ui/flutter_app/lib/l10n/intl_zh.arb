@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "显示未摆和已吃的子",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "全屏显示",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "您需要退出并重新打开本应用才能生效。",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

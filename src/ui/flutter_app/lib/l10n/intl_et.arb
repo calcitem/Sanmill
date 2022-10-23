@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Näita asetamata ja eemaldatud tükke",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "Väljuge ja avage rakendus uuesti, et seaded jõustuksid.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "Täisekraan",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

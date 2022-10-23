@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Näytä sijoittamattomat ja poistetut osat",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Koko näyttö",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Poistu ja avaa sovellus uudelleen, jotta asetukset tulevat voimaan.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

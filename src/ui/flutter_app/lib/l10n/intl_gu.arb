@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "સ્થાનાંતરિત અને દૂર કરેલા ટુકડાઓ બતાવો",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "સેટિંગ્સને પ્રભાવિત કરવા માટે બહાર નીકળો અને એપ્લિકેશનને ફરીથી ખોલો.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "પૂર્ણ - પટ, આખો પડદો",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

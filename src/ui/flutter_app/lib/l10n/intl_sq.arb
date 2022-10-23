@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Trego pjesët e pavendosura dhe të hequra",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "Dilni dhe rihapni aplikacionin që cilësimet të hyjnë në fuqi.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "Ekran i plotë",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

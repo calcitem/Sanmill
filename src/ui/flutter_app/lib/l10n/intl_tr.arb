@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Yerleştirilmemiş ve kaldırılmış parçaları göster",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Tam ekran",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Ayarların geçerli olması için uygulamadan çıkın ve yeniden açın.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

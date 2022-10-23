@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "ఉంచని మరియు తీసివేయబడిన ముక్కలను చూపించు",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "పూర్తి స్క్రీన్",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "సెట్టింగ్‌లు అమలులోకి రావడానికి యాప్ నుండి నిష్క్రమించి, మళ్లీ తెరవండి.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "স্থানহীন এবং সরানো টুকরা দেখান",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "প্রস্থান করুন এবং সেটিংস কার্যকর করার জন্য অ্যাপ্লিকেশন পুনরায় খুলুন।",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "পূর্ণ পর্দা",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }
