@@ -40,7 +40,7 @@ class CustomDrawer extends StatefulWidget {
 
   /// Items the drawer holds
   // ignore: always_specify_types
-  final List<CustomDrawerItem> items;
+  final List<CustomDrawerItem<dynamic>> items;
 
   /// Header widget of the drawer
   final Widget header;
@@ -190,7 +190,7 @@ class CustomDrawerState extends State<CustomDrawer>
 
   Widget _buildItem(BuildContext context, int index) {
     // ignore: always_specify_types
-    final CustomDrawerItem item = widget.items[index];
+    final CustomDrawerItem<dynamic> item = widget.items[index];
 
     final double itemPadding = window.physicalSize.height >= 1080
         ? AppTheme.drawerItemPadding

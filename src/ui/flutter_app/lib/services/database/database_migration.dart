@@ -42,7 +42,7 @@ class _DatabaseMigration {
 
   /// Database Box reference
   // ignore: always_specify_types
-  static late Box _databaseBox;
+  static late Box<dynamic> _databaseBox;
 
   /// Key at which the [_databaseBox] will be saved
   static const String _databaseBoxName = "database";
