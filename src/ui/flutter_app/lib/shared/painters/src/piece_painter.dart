@@ -75,7 +75,9 @@ class PiecePainter extends CustomPainter {
             .position
             .pieceOnGrid(index); // No Pieces when initial
 
-        if (piece == PieceColor.none) continue;
+        if (piece == PieceColor.none) {
+          continue;
+        }
 
         final Offset pos = pointFromIndex(index, size);
         final bool animated = focusIndex == index;

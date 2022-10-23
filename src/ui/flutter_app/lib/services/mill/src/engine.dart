@@ -30,21 +30,27 @@ class Engine {
   Future<void> startup() async {
     await setOptions();
 
-    if (!_isPlatformChannelAvailable) return;
+    if (!_isPlatformChannelAvailable) {
+      return;
+    }
 
     await _platform.invokeMethod("startup");
     await _waitResponse(["uciok"]);
   }
 
   Future<void> _send(String command) async {
-    if (!_isPlatformChannelAvailable) return;
+    if (!_isPlatformChannelAvailable) {
+      return;
+    }
 
     logger.v("$_tag send: $command");
     await _platform.invokeMethod("send", command);
   }
 
   Future<void> _sendOptions(String name, dynamic option) async {
-    if (!_isPlatformChannelAvailable) return;
+    if (!_isPlatformChannelAvailable) {
+      return;
+    }
 
     final String command = "setoption name $name value $option";
     await _send(command);
@@ -56,14 +62,20 @@ class Engine {
   }
 
   Future<String?> _read() async {
-    if (!_isPlatformChannelAvailable) return "";
+    if (!_isPlatformChannelAvailable) {
+      return "";
+    }
 
     return _platform.invokeMethod("read");
   }
 
   Future<void> shutdown() async {
-    if (kIsWeb) return;
-    if (!_isPlatformChannelAvailable) return;
+    if (kIsWeb) {
+      return;
+    }
+    if (!_isPlatformChannelAvailable) {
+      return;
+    }
 
     await _platform.invokeMethod("shutdown");
   }
@@ -77,7 +89,9 @@ class Engine {
   */
 
   FutureOr<bool> isThinking() async {
-    if (!_isPlatformChannelAvailable) return false;
+    if (!_isPlatformChannelAvailable) {
+      return false;
+    }
 
     final bool? isThinking = await _platform.invokeMethod<bool>("isThinking");
 
@@ -119,7 +133,9 @@ class Engine {
       String best = response.substring("bestmove".length + 1);
 
       final pos = best.indexOf(" ");
-      if (pos > -1) best = best.substring(0, pos);
+      if (pos > -1) {
+        best = best.substring(0, pos);
+      }
 
       return ExtMove(best);
     }

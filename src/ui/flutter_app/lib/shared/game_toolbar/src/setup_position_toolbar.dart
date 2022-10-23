@@ -197,7 +197,9 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
         MillController().position.countPieceOnBoard(sideToMove.opponent);
 
     if (newPhase == Phase.placing) {
-      if (limit > opponentCount) limit = opponentCount;
+      if (limit > opponentCount) {
+        limit = opponentCount;
+      }
     } else if (newPhase == Phase.moving) {
       final int newLimit =
           opponentCount - DB().ruleSettings.piecesAtLeastCount + 1;
@@ -208,12 +210,18 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     }
 
     if (DB().ruleSettings.mayRemoveMultiple == false) {
-      if (limit > 1) limit = 1;
+      if (limit > 1) {
+        limit = 1;
+      }
     }
 
-    if (next == true) newPieceCountNeedRemove = count + 1;
+    if (next == true) {
+      newPieceCountNeedRemove = count + 1;
+    }
 
-    if (newPieceCountNeedRemove > limit) newPieceCountNeedRemove = 0;
+    if (newPieceCountNeedRemove > limit) {
+      newPieceCountNeedRemove = 0;
+    }
 
     MillController().position.setPieceToRemoveCount = newPieceCountNeedRemove;
 
@@ -259,7 +267,9 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
     final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
 
-    if (data?.text == null) return;
+    if (data?.text == null) {
+      return;
+    }
 
     final String fen = data!.text!;
 

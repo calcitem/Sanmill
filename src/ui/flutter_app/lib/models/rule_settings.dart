@@ -33,6 +33,19 @@ part 'rule_settings.g.dart';
 @CopyWith()
 @immutable
 class RuleSettings {
+  /// Encodes a Json style map into a [RuleSettings] object
+  factory RuleSettings.fromJson(Map<String, dynamic> json) =>
+      _$RuleSettingsFromJson(json);
+
+  /// Creates a Rules object based on the given locale
+  factory RuleSettings.fromLocale(Locale? locale) {
+    switch (locale?.languageCode) {
+      case "fa":
+        return const TwelveMensMorrisRuleSettings();
+      default:
+        return const RuleSettings();
+    }
+  }
   const RuleSettings({
     this.piecesCount = 9,
     this.flyPieceCount = 3,
@@ -85,22 +98,8 @@ class RuleSettings {
   @HiveField(15)
   final bool threefoldRepetitionRule;
 
-  /// Encodes a Json style map into a [RuleSettings] object
-  factory RuleSettings.fromJson(Map<String, dynamic> json) =>
-      _$RuleSettingsFromJson(json);
-
   /// decodes a Json from a [RuleSettings] object
   Map<String, dynamic> toJson() => _$RuleSettingsToJson(this);
-
-  /// Creates a Rules object based on the given locale
-  factory RuleSettings.fromLocale(Locale? locale) {
-    switch (locale?.languageCode) {
-      case "fa":
-        return const TwelveMensMorrisRuleSettings();
-      default:
-        return const RuleSettings();
-    }
-  }
 }
 
 /// Twelve Men's Morris Rules

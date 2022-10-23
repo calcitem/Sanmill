@@ -437,7 +437,9 @@ class Position {
 
           if (pieceInHandCount[PieceColor.white] == 0 &&
               pieceInHandCount[PieceColor.black] == 0) {
-            if (_checkIfGameIsOver()) return true;
+            if (_checkIfGameIsOver()) {
+              return true;
+            }
 
             phase = Phase.moving;
             _action = Act.select;
@@ -450,7 +452,9 @@ class Position {
               changeSideToMove();
             }
 
-            if (_checkIfGameIsOver()) return true;
+            if (_checkIfGameIsOver()) {
+              return true;
+            }
           } else {
             changeSideToMove();
           }
@@ -471,7 +475,9 @@ class Position {
 
             if (pieceInHandCount[PieceColor.white] == 0 &&
                 pieceInHandCount[PieceColor.black] == 0) {
-              if (_checkIfGameIsOver()) return true;
+              if (_checkIfGameIsOver()) {
+                return true;
+              }
 
               phase = Phase.moving;
               _action = Act.select;
@@ -480,7 +486,9 @@ class Position {
                 changeSideToMove();
               }
 
-              if (_checkIfGameIsOver()) return true;
+              if (_checkIfGameIsOver()) {
+                return true;
+              }
             }
           } else {
             _action = Act.remove;
@@ -491,7 +499,9 @@ class Position {
         }
         break;
       case Phase.moving:
-        if (_checkIfGameIsOver()) return true;
+        if (_checkIfGameIsOver()) {
+          return true;
+        }
 
         // If illegal
         if (pieceOnBoardCount[sideToMove]! > DB().ruleSettings.flyPieceCount ||
@@ -499,7 +509,9 @@ class Position {
           int md;
 
           for (md = 0; md < moveDirectionNumber; md++) {
-            if (s == _adjacentSquares[_currentSquare][md]) break;
+            if (s == _adjacentSquares[_currentSquare][md]) {
+              break;
+            }
           }
 
           // Not in moveTable
@@ -533,7 +545,9 @@ class Position {
           _action = Act.select;
           changeSideToMove();
 
-          if (_checkIfGameIsOver()) return true;
+          if (_checkIfGameIsOver()) {
+            return true;
+          }
           MillController().gameInstance.focusIndex = squareToIndex[s];
 
           Audios().playTone(Sound.place);
@@ -870,7 +884,9 @@ class Position {
         min = j;
 
         for (int k = j + 1; k < 3; k++) {
-          if (idx[min]! > idx[k]!) min = k;
+          if (idx[min]! > idx[k]!) {
+            min = k;
+          }
         }
 
         if (min == j) {
@@ -933,7 +949,9 @@ class Position {
   @visibleForTesting
   String? get movesSinceLastRemove {
     final GameRecorder recorder = MillController().recorder;
-    if (recorder.isEmpty) return null;
+    if (recorder.isEmpty) {
+      return null;
+    }
 
     final PointedListIterator<ExtMove> it = recorder.bidirectionalIterator;
     it.moveToLast();
@@ -941,7 +959,9 @@ class Position {
     final StringBuffer buffer = StringBuffer();
 
     while (it.current != null && !it.current!.move.startsWith("-")) {
-      if (!it.movePrevious()) break;
+      if (!it.movePrevious()) {
+        break;
+      }
     }
 
     while (it.moveNext()) {

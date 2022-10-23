@@ -44,7 +44,9 @@ class ImportService {
 
     final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
 
-    if (data?.text == null) return;
+    if (data?.text == null) {
+      return;
+    }
 
     try {
       import(data!.text!); // MillController().newRecorder = newHistory;
@@ -91,7 +93,9 @@ class ImportService {
   }
 
   static String _playOkNotationToMoveString(String playOk) {
-    if (playOk.isEmpty) throw ImportFormatException(playOk);
+    if (playOk.isEmpty) {
+      throw ImportFormatException(playOk);
+    }
 
     final int iDash = playOk.indexOf("-");
     final int iX = playOk.indexOf("x");
@@ -181,7 +185,9 @@ class ImportService {
 
     final String noTag = removeTagPairs(text);
 
-    if (noTag.contains("1.") == false) return false;
+    if (noTag.contains("1.") == false) {
+      return false;
+    }
 
     if (noTag == "" ||
         noTag.contains("a") ||
@@ -274,11 +280,15 @@ class ImportService {
   }
 
   static String removeTagPairs(String pgn) {
-    if (pgn.startsWith("[") == false) return pgn;
+    if (pgn.startsWith("[") == false) {
+      return pgn;
+    }
 
     String ret = pgn.substring(pgn.lastIndexOf("]"));
     final int begin = ret.indexOf("1.");
-    if (begin == -1) return "";
+    if (begin == -1) {
+      return "";
+    }
     ret = ret.substring(begin);
 
     return ret;

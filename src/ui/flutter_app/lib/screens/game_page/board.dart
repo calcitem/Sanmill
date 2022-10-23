@@ -149,7 +149,9 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
   }
 
   void _showResult() {
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     final GameMode gameMode = MillController().gameInstance.gameMode;
     final PieceColor winner = MillController().position.winner;
     final String? message = winner.getWinString(context);

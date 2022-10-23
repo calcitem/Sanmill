@@ -122,7 +122,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   /// as user need with passing DrawerIndex (Enum index)
   void _changeIndex(_DrawerIndex index) {
     _controller.hideDrawer();
-    if (_drawerIndex == index && _drawerIndex != _DrawerIndex.feedback) return;
+    if (_drawerIndex == index && _drawerIndex != _DrawerIndex.feedback) {
+      return;
+    }
 
     if ((index == _DrawerIndex.howToPlay ||
             index == _DrawerIndex.about ||
@@ -270,7 +272,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   void _showPrivacyDialog() {
-    if (EnvironmentConfig.test == true) return;
+    if (EnvironmentConfig.test == true) {
+      return;
+    }
 
     if (!DB().generalSettings.isPrivacyPolicyAccepted &&
         Localizations.localeOf(context).languageCode.startsWith("zh")) {

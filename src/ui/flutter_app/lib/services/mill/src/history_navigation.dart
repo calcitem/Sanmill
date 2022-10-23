@@ -42,7 +42,9 @@ class HistoryNavigator {
     MillController().isActive = false;
     MillController().engine.stopSearching();
 
-    if (pop) Navigator.pop(context);
+    if (pop) {
+      Navigator.pop(context);
+    }
 
     final MillController controller = MillController();
 
@@ -167,7 +169,9 @@ class HistoryNavigator {
     final HistoryResponse resp =
         navMode.gotoHistory(number); // Only change index
 
-    if (resp != const HistoryOK()) return resp;
+    if (resp != const HistoryOK()) {
+      return resp;
+    }
 
     // Backup context
     final GameMode gameModeBackup = MillController().gameInstance.gameMode;

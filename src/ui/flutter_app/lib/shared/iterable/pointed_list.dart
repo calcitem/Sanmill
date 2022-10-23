@@ -45,8 +45,12 @@ class PointedList<E> extends DelegatingList<E> {
   ///
   /// This is equivalent to `removeRange(globalIterator.index + 1, this.length)`.
   void prune() {
-    if (_l.isEmpty) return;
-    if (!globalIterator.hasNext) return;
+    if (_l.isEmpty) {
+      return;
+    }
+    if (!globalIterator.hasNext) {
+      return;
+    }
 
     if (globalIterator.index == null) {
       _l.removeRange(0, _l.length);
@@ -82,7 +86,9 @@ class PointedList<E> extends DelegatingList<E> {
   ///
   /// This is equivalent to a loop from `0` to `index`.
   void forEachVisible(void Function(E p1) f) {
-    if (index == null) return;
+    if (index == null) {
+      return;
+    }
 
     for (int i = 0; i <= index!; i++) {
       f(_l[i]);

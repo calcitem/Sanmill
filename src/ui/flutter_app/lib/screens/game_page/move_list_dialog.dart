@@ -92,7 +92,9 @@ class _MoveListDialog extends StatelessWidget {
           end: end, newTitle: S.of(context).pleaseSelect, showMoveString: true),
     );
 
-    if (selectValue == null) return;
+    if (selectValue == null) {
+      return;
+    }
 
     // ignore: use_build_context_synchronously
     await HistoryNavigator.takeBackN(context, selectValue);

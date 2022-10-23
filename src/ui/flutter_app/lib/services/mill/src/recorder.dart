@@ -35,7 +35,9 @@ class GameRecorder extends PointedList<ExtMove> {
   }
 
   int get placeCount {
-    if (isEmpty || index == null) return 0;
+    if (isEmpty || index == null) {
+      return 0;
+    }
 
     int n = 0;
 

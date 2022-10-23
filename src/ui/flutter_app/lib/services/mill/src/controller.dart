@@ -82,7 +82,9 @@ class MillController {
 
   /// Starts up the controller. It will initialize the audio subsystem and heat the engine.
   Future<void> start() async {
-    if (_initialized) return;
+    if (_initialized) {
+      return;
+    }
 
     await Audios().loadSounds();
 
@@ -197,7 +199,9 @@ class MillController {
         final ExtMove extMove = await controller.engine
             .search(moveNow: loopIsFirst ? isMoveNow : false);
 
-        if (MillController().isActive == false) break;
+        if (MillController().isActive == false) {
+          break;
+        }
 
         // TODO: Unify return and throw
         if (controller.gameInstance.doMove(extMove) == false) {
@@ -313,7 +317,9 @@ class MillController {
         break;
     }
 
-    if (reversed) MillController().gameInstance.reverseWhoIsAi();
+    if (reversed) {
+      MillController().gameInstance.reverseWhoIsAi();
+    }
   }
 
   showSnakeBarHumanNotation(String humanStr) {

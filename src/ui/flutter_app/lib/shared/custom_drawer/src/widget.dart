@@ -241,7 +241,9 @@ class CustomDrawerState extends State<CustomDrawer>
   }
 
   void _handleDragUpdate(DragUpdateDetails details) {
-    if (!_captured) return;
+    if (!_captured) {
+      return;
+    }
 
     final Size screenSize = MediaQuery.of(context).size;
     final bool rtl = Directionality.of(context) == TextDirection.rtl;
@@ -255,7 +257,9 @@ class CustomDrawerState extends State<CustomDrawer>
   }
 
   void _handleDragEnd(DragEndDetails details) {
-    if (!_captured) return;
+    if (!_captured) {
+      return;
+    }
 
     _captured = false;
 

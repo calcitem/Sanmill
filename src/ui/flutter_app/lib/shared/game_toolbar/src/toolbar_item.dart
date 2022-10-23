@@ -389,7 +389,9 @@ class _ToolbarItemDefaultMouseCursor extends MaterialStateProperty<MouseCursor>
 
   @override
   MouseCursor resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) return disabledCursor;
+    if (states.contains(MaterialState.disabled)) {
+      return disabledCursor;
+    }
     return enabledCursor;
   }
 }

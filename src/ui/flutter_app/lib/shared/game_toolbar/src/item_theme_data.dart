@@ -55,7 +55,9 @@ class ToolbarItemThemeData with Diagnosticable {
     ToolbarItemThemeData? b,
     double t,
   ) {
-    if (a == null && b == null) return null;
+    if (a == null && b == null) {
+      return null;
+    }
     return ToolbarItemThemeData(
       style: ButtonStyle.lerp(a?.style, b?.style, t),
     );
@@ -66,8 +68,12 @@ class ToolbarItemThemeData with Diagnosticable {
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other.runtimeType != runtimeType) return false;
+    if (identical(this, other)) {
+      return true;
+    }
+    if (other.runtimeType != runtimeType) {
+      return false;
+    }
     return other is ToolbarItemThemeData && other.style == style;
   }
 

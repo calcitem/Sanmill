@@ -155,7 +155,9 @@ class Audios {
   }
 
   Future<void> playTone(Sound sound) async {
-    if (kIsWeb || Platform.isWindows || Platform.isLinux) return;
+    if (kIsWeb || Platform.isWindows || Platform.isLinux) {
+      return;
+    }
 
     assert(MillController().initialized);
 

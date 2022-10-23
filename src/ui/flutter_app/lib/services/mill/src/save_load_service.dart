@@ -31,7 +31,9 @@ class LoadService {
 
     String? resultLabel = await _showTextInputDialog(context);
 
-    if (resultLabel == null) return null;
+    if (resultLabel == null) {
+      return null;
+    }
 
     if (resultLabel.endsWith(".pgn") == false) {
       resultLabel = "$resultLabel.pgn";
@@ -82,7 +84,9 @@ class LoadService {
 
     final String? filename = await getFilePath(context);
 
-    if (filename == null) return;
+    if (filename == null) {
+      return;
+    }
 
     final File file = File(filename);
 
@@ -102,7 +106,9 @@ class LoadService {
     rootScaffoldMessengerKey.currentState!.clearSnackBars();
 
     final String? result = await pickFile(context);
-    if (result == null) return;
+    if (result == null) {
+      return;
+    }
 
     final File file = File(result);
 
@@ -177,7 +183,9 @@ class LoadService {
                 ),
                 onPressed: () async {
                   final String? result = await pickFile(context);
-                  if (result == null) return;
+                  if (result == null) {
+                    return;
+                  }
                   textFieldController.text = result;
                   Navigator.pop(context, textFieldController.text);
                 }),
