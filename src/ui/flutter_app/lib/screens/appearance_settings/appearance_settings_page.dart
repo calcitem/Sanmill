@@ -38,6 +38,7 @@ part 'package:sanmill/screens/appearance_settings/language_picker.dart';
 part 'package:sanmill/screens/appearance_settings/piece_width_slider.dart';
 part 'package:sanmill/screens/appearance_settings/point_style_modal.dart';
 part 'package:sanmill/screens/appearance_settings/point_width_slider.dart';
+part 'package:sanmill/screens/appearance_settings/theme_modal.dart';
 
 class AppearanceSettingsPage extends StatelessWidget {
   const AppearanceSettingsPage({super.key});
@@ -108,6 +109,45 @@ class AppearanceSettingsPage extends StatelessWidget {
     logger.v("[config] locale = $locale");
   }
 
+  void _setTheme(BuildContext context, ColorSettings colorSettings) {
+    void callback(ColorTheme? theme) {
+      Navigator.pop(context);
+
+      if (theme == ColorTheme.current) {
+        return;
+      }
+
+      DB().colorSettings = colorSettings.copyWith(
+        boardLineColor: AppTheme.colorThemes[theme]!.boardLineColor,
+        darkBackgroundColor: AppTheme.colorThemes[theme]!.darkBackgroundColor,
+        boardBackgroundColor: AppTheme.colorThemes[theme]!.boardBackgroundColor,
+        whitePieceColor: AppTheme.colorThemes[theme]!.whitePieceColor,
+        blackPieceColor: AppTheme.colorThemes[theme]!.blackPieceColor,
+        pieceHighlightColor: AppTheme.colorThemes[theme]!.pieceHighlightColor,
+        messageColor: AppTheme.colorThemes[theme]!.messageColor,
+        drawerColor: AppTheme.colorThemes[theme]!.drawerColor,
+        drawerTextColor: AppTheme.colorThemes[theme]!.drawerTextColor,
+        drawerHighlightItemColor:
+            AppTheme.colorThemes[theme]!.drawerHighlightItemColor,
+        mainToolbarBackgroundColor:
+            AppTheme.colorThemes[theme]!.mainToolbarBackgroundColor,
+        mainToolbarIconColor: AppTheme.colorThemes[theme]!.mainToolbarIconColor,
+        navigationToolbarBackgroundColor:
+            AppTheme.colorThemes[theme]!.navigationToolbarBackgroundColor,
+        navigationToolbarIconColor:
+            AppTheme.colorThemes[theme]!.navigationToolbarIconColor,
+      );
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => _ThemeModal(
+        theme: ColorTheme.current,
+        onChanged: callback,
+      ),
+    );
+  }
+
   Widget _buildColorSettings(BuildContext context, Box<ColorSettings> box, _) {
     final ColorSettings colorSettings = box.get(
       DB.colorSettingsKey,
@@ -117,6 +157,10 @@ class AppearanceSettingsPage extends StatelessWidget {
     return SettingsCard(
       title: Text(S.of(context).color),
       children: <Widget>[
+        SettingsListTile(
+          titleString: S.of(context).theme,
+          onTap: () => _setTheme(context, colorSettings),
+        ),
         SettingsListTile.color(
           titleString: S.of(context).boardColor,
           value: DB().colorSettings.boardBackgroundColor,

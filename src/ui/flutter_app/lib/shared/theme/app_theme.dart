@@ -17,6 +17,8 @@
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/color_settings.dart';
+import '../../screens/appearance_settings/appearance_settings_page.dart';
 import '../../services/database/database.dart';
 import 'colors.dart';
 
@@ -169,4 +171,27 @@ class AppTheme {
 
   static const Color drawerAnimationIconColor = UIColors.seashell;
   static const Color drawerSplashColor = UIColors.starDust10;
+
+  /// Color themes
+  // ignore_for_file: avoid_redundant_argument_values
+  static const Map<ColorTheme, ColorSettings> colorThemes =
+      <ColorTheme, ColorSettings>{
+    ColorTheme.light: ColorSettings(),
+    ColorTheme.dark: ColorSettings(
+      boardLineColor: UIColors.osloGrey,
+      darkBackgroundColor: Colors.black,
+      boardBackgroundColor: Colors.black,
+      whitePieceColor: UIColors.citrus,
+      blackPieceColor: UIColors.butterflyBlue,
+      pieceHighlightColor: Colors.white,
+      messageColor: UIColors.tahitiGold,
+      drawerColor: Colors.black,
+      drawerTextColor: Colors.white,
+      drawerHighlightItemColor: UIColors.highlighterGreen20,
+      mainToolbarBackgroundColor: Colors.black,
+      mainToolbarIconColor: UIColors.tahitiGold60,
+      navigationToolbarBackgroundColor: Colors.black,
+      navigationToolbarIconColor: UIColors.tahitiGold60,
+    )
+  };
 }
