@@ -123,7 +123,7 @@ class BoardPainter extends CustomPainter {
       case PointPaintingStyle.stroke:
         paint.style = PaintingStyle.stroke;
         break;
-      default:
+      case PointPaintingStyle.none:
         return;
     }
 

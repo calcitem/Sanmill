@@ -338,7 +338,11 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
         us = S.of(context).player2;
         them = S.of(context).player1;
         break;
-      default:
+      case PieceColor.ban:
+      case PieceColor.draw:
+      case PieceColor.none:
+      case PieceColor.nobody:
+        break;
     }
 
     buffer.write(pos.phase.getName(context));

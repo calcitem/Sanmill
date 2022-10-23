@@ -546,7 +546,8 @@ class Position {
         }
 
         break;
-      default:
+      case Phase.ready:
+      case Phase.gameOver:
         assert(false);
     }
     return true;

@@ -112,21 +112,21 @@ class ExtMove {
 
     type = _MoveTypeExtension.parse(move);
 
-    final int toFile;
-    final int toRank;
+    late int toFile;
+    late int toRank;
 
     switch (type) {
-      case MoveType.remove:
-        toFile = int.parse(move[2]);
-        toRank = int.parse(move[4]);
+      case MoveType.place:
+        toFile = int.parse(move[1]);
+        toRank = int.parse(move[3]);
         break;
       case MoveType.move:
         toFile = int.parse(move[8]);
         toRank = int.parse(move[10]);
         break;
-      case MoveType.place:
-        toFile = int.parse(move[1]);
-        toRank = int.parse(move[3]);
+      case MoveType.remove:
+        toFile = int.parse(move[2]);
+        toRank = int.parse(move[4]);
         break;
       case MoveType.draw:
         toFile = 0;
@@ -135,11 +135,6 @@ class ExtMove {
       case MoveType.none:
         toFile = -1;
         toRank = -1;
-        break;
-      default:
-        // TODO: -2
-        toFile = -2;
-        toRank = -2;
         break;
     }
 

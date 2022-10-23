@@ -89,7 +89,10 @@ extension PieceColorExtension on PieceColor {
         return PieceColor.white;
       case PieceColor.white:
         return PieceColor.black;
-      default:
+      case PieceColor.ban:
+      case PieceColor.draw:
+      case PieceColor.none:
+      case PieceColor.nobody:
         return this;
     }
   }
@@ -134,7 +137,9 @@ extension PieceColorExtension on PieceColor {
         }
       case PieceColor.draw:
         return GameResult.draw;
-      default:
+      case PieceColor.ban:
+      case PieceColor.none:
+      case PieceColor.nobody:
         return null;
     }
   }
@@ -151,7 +156,10 @@ extension PieceColorExtension on PieceColor {
         return FluentIcons.chevron_left_24_regular;
       case PieceColor.black:
         return FluentIcons.chevron_right_24_regular;
-      default:
+      case PieceColor.ban:
+      case PieceColor.draw:
+      case PieceColor.none:
+      case PieceColor.nobody:
         return FluentIcons.code_24_regular;
     }
   }
@@ -162,7 +170,10 @@ extension PieceColorExtension on PieceColor {
         return FluentIcons.toggle_left_24_regular;
       case PieceColor.black:
         return FluentIcons.toggle_right_24_regular;
-      default:
+      case PieceColor.ban:
+      case PieceColor.draw:
+      case PieceColor.none:
+      case PieceColor.nobody:
         return FluentIcons.handshake_24_regular;
     }
   }
@@ -179,7 +190,9 @@ extension PieceColorExtension on PieceColor {
             getAverageColor(
                 colorSettings.whitePieceColor, colorSettings.blackPieceColor),
             0); // Fully transparent
-      default:
+      case PieceColor.draw:
+      case PieceColor.none:
+      case PieceColor.nobody:
         throw Error();
     }
   }
@@ -195,7 +208,9 @@ extension PieceColorExtension on PieceColor {
             getAverageColor(
                 AppTheme.whitePieceBorderColor, AppTheme.blackPieceBorderColor),
             0); // Fully transparent
-      default:
+      case PieceColor.draw:
+      case PieceColor.none:
+      case PieceColor.nobody:
         throw Error();
     }
   }
