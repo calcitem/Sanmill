@@ -155,7 +155,8 @@ class TapHandler {
           break;
         }
 
-        MillResponse selectRet = MillController().position._selectPiece(sq);
+        final MillResponse selectRet =
+            MillController().position._selectPiece(sq);
 
         switch (selectRet) {
           case MillResponseOK():
@@ -203,7 +204,8 @@ class TapHandler {
         break;
 
       case Act.remove:
-        MillResponse removeRet = MillController().position._removePiece(sq);
+        final MillResponse removeRet =
+            MillController().position._removePiece(sq);
 
         MillController().animationController.reset();
         MillController().animationController.animateTo(1.0);
@@ -283,7 +285,7 @@ class TapHandler {
 
         // TODO: moveHistoryText is not lightweight.
         if (EnvironmentConfig.catcher == true) {
-          CatcherOptions options = catcher.getCurrentConfig()!;
+          final CatcherOptions options = catcher.getCurrentConfig()!;
           options.customParameters["MoveList"] =
               MillController().recorder.moveHistoryText;
         }

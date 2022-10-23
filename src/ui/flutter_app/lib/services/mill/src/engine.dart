@@ -50,7 +50,7 @@ class Engine {
     await _send(command);
 
     if (EnvironmentConfig.catcher == true) {
-      CatcherOptions options = catcher.getCurrentConfig()!;
+      final CatcherOptions options = catcher.getCurrentConfig()!;
       options.customParameters[name] = command;
     }
   }
@@ -280,10 +280,10 @@ class Engine {
       posFenStr.write(" moves $moves");
     }
 
-    String ret = posFenStr.toString();
+    final String ret = posFenStr.toString();
 
     if (EnvironmentConfig.catcher == true) {
-      CatcherOptions options = catcher.getCurrentConfig()!;
+      final CatcherOptions options = catcher.getCurrentConfig()!;
       options.customParameters["PositionFen"] = ret;
     }
 

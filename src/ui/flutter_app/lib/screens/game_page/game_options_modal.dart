@@ -116,7 +116,7 @@ class _GameOptionsModal extends StatelessWidget {
   }
 
   showRestartGameAlertDialog(BuildContext context) async {
-    Widget yesButton = TextButton(
+    final Widget yesButton = TextButton(
         child: Text(
           S.of(context).yes,
           textScaleFactor: DB().displaySettings.fontScale,
@@ -150,7 +150,7 @@ class _GameOptionsModal extends StatelessWidget {
           Navigator.of(context).pop();
         });
 
-    Widget noButton = TextButton(
+    final Widget noButton = TextButton(
       child: Text(
         S.of(context).no,
         textScaleFactor: DB().displaySettings.fontScale,
@@ -161,7 +161,7 @@ class _GameOptionsModal extends StatelessWidget {
       },
     );
 
-    AlertDialog alert = AlertDialog(
+    final AlertDialog alert = AlertDialog(
       title: Text(
         S.of(context).restart,
         textScaleFactor: DB().displaySettings.fontScale,

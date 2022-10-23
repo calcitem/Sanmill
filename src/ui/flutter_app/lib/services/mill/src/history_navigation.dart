@@ -65,7 +65,7 @@ class HistoryNavigator {
 
     Audios().mute();
 
-    HistoryResponse resp =
+    final HistoryResponse resp =
         await doEachMove(navMode, number); // doMove() to index
 
     switch (resp) {
@@ -164,7 +164,8 @@ class HistoryNavigator {
       [int? number]) async {
     bool ret = true;
 
-    HistoryResponse resp = navMode.gotoHistory(number); // Only change index
+    final HistoryResponse resp =
+        navMode.gotoHistory(number); // Only change index
 
     if (resp != const HistoryOK()) return resp;
 

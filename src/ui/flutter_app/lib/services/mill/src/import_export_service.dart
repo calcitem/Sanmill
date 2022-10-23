@@ -179,7 +179,7 @@ class ImportService {
       return true;
     }
 
-    String noTag = removeTagPairs(text);
+    final String noTag = removeTagPairs(text);
 
     if (noTag.contains("1.") == false) return false;
 
@@ -277,7 +277,7 @@ class ImportService {
     if (pgn.startsWith("[") == false) return pgn;
 
     String ret = pgn.substring(pgn.lastIndexOf("]"));
-    int begin = ret.indexOf("1.");
+    final int begin = ret.indexOf("1.");
     if (begin == -1) return "";
     ret = ret.substring(begin);
 
@@ -287,7 +287,7 @@ class ImportService {
   @visibleForTesting
   static void import(String moveList) {
     String ml = moveList;
-    String fen = MillController().position.fen;
+    final String fen = MillController().position.fen;
     String? setupFen;
 
     logger.v("Clipboard text: $moveList");
@@ -390,7 +390,7 @@ class ImportService {
   }
 
   static String removeGameResultAndReplaceLineBreaks(String moveList) {
-    String ret = moveList
+    final String ret = moveList
         .replaceAll("\n", " ")
         .replaceAll(" 1/2-1/2", "")
         .replaceAll(" 1-0", "")

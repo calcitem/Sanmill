@@ -179,13 +179,13 @@ class Position {
   }
 
   bool setFen(String fen) {
-    bool ret = true;
-    List<String> l = fen.split(" ");
+    const bool ret = true;
+    final List<String> l = fen.split(" ");
 
-    String boardStr = l[0];
-    List<String> ring = boardStr.split("/");
+    final String boardStr = l[0];
+    final List<String> ring = boardStr.split("/");
 
-    Map<String, PieceColor> pieceMap = {
+    final Map<String, PieceColor> pieceMap = {
       "*": PieceColor.none,
       "O": PieceColor.white,
       "@": PieceColor.black,
@@ -202,9 +202,9 @@ class Position {
       }
     }
 
-    String sideToMoveStr = l[1];
+    final String sideToMoveStr = l[1];
 
-    Map<String, PieceColor> sideToMoveMap = {
+    final Map<String, PieceColor> sideToMoveMap = {
       "w": PieceColor.white,
       "b": PieceColor.black,
     };
@@ -213,9 +213,9 @@ class Position {
     _them = _sideToMove.opponent;
     MillController().gameInstance.sideToMove = _sideToMove; // Note
 
-    String phaseStr = l[2];
+    final String phaseStr = l[2];
 
-    Map<String, Phase> phaseMap = {
+    final Map<String, Phase> phaseMap = {
       "r": Phase.ready,
       "p": Phase.placing,
       "m": Phase.moving,
@@ -224,9 +224,9 @@ class Position {
 
     phase = phaseMap[phaseStr]!;
 
-    String actionStr = l[3];
+    final String actionStr = l[3];
 
-    Map<String, Act> actionMap = {
+    final Map<String, Act> actionMap = {
       "p": Act.place,
       "s": Act.select,
       "r": Act.remove,
@@ -234,25 +234,25 @@ class Position {
 
     _action = actionMap[actionStr]!;
 
-    String whitePieceOnBoardCountStr = l[4];
+    final String whitePieceOnBoardCountStr = l[4];
     pieceOnBoardCount[PieceColor.white] = int.parse(whitePieceOnBoardCountStr);
 
-    String whitePieceInHandCountStr = l[5];
+    final String whitePieceInHandCountStr = l[5];
     pieceInHandCount[PieceColor.white] = int.parse(whitePieceInHandCountStr);
 
-    String blackPieceOnBoardCountStr = l[6];
+    final String blackPieceOnBoardCountStr = l[6];
     pieceOnBoardCount[PieceColor.black] = int.parse(blackPieceOnBoardCountStr);
 
-    String blackPieceInHandCountStr = l[7];
+    final String blackPieceInHandCountStr = l[7];
     pieceInHandCount[PieceColor.black] = int.parse(blackPieceInHandCountStr);
 
-    String pieceToRemoveCountStr = l[8];
+    final String pieceToRemoveCountStr = l[8];
     _pieceToRemoveCount = int.parse(pieceToRemoveCountStr);
 
-    String rule50Str = l[9];
+    final String rule50Str = l[9];
     st.rule50 = int.parse(rule50Str);
 
-    String gamePlyStr = l[10];
+    final String gamePlyStr = l[10];
     _gamePly = int.parse(gamePlyStr);
 
     // Misc
@@ -1042,13 +1042,13 @@ extension SetupPosition on Position {
   }
 
   Position clone() {
-    Position pos = Position();
+    final Position pos = Position();
     pos.copyWith(this);
     return pos;
   }
 
   bool _putPieceForSetupPosition(int s) {
-    PieceColor piece =
+    final PieceColor piece =
         MillController().isPositionSetupBanPiece ? PieceColor.ban : sideToMove;
     //final us = _sideToMove;
 
@@ -1132,8 +1132,8 @@ extension SetupPosition on Position {
   }
 
   int countPieceOnBoardMax() {
-    int w = countPieceOnBoard(PieceColor.white);
-    int b = countPieceOnBoard(PieceColor.black);
+    final int w = countPieceOnBoard(PieceColor.white);
+    final int b = countPieceOnBoard(PieceColor.black);
 
     return w > b ? w : b;
   }

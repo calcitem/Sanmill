@@ -147,7 +147,7 @@ class MillController {
 
     final MillController controller = MillController();
     final GameMode gameMode = MillController().gameInstance.gameMode;
-    bool isGameRunning = position.winner == PieceColor.nobody;
+    final bool isGameRunning = position.winner == PieceColor.nobody;
 
     if (isMoveNow == true) {
       if (MillController().gameInstance.isHumanToMove) {

@@ -80,7 +80,7 @@ class Game {
 
     // TODO: moveHistoryText is not lightweight.
     if (EnvironmentConfig.catcher == true) {
-      CatcherOptions options = catcher.getCurrentConfig()!;
+      final CatcherOptions options = catcher.getCurrentConfig()!;
       options.customParameters["MoveList"] =
           MillController().recorder.moveHistoryText;
     }

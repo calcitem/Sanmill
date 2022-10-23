@@ -153,7 +153,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     if (DB().generalSettings.firstRun == true) {
       DB().generalSettings = DB().generalSettings.copyWith(firstRun: false);
 
-      String? countryCode = Localizations.localeOf(context).languageCode;
+      final String? countryCode = Localizations.localeOf(context).languageCode;
 
       switch (countryCode) {
         case "fa": // Iran

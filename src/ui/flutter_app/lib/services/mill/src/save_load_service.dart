@@ -26,8 +26,8 @@ class LoadService {
 
   /// Retrieves the file path.
   static Future<String?> getFilePath(BuildContext context) async {
-    Directory dir = await getApplicationDocumentsDirectory();
-    String path = dir.path;
+    final Directory dir = await getApplicationDocumentsDirectory();
+    final String path = dir.path;
 
     String? resultLabel = await _showTextInputDialog(context);
 
@@ -37,7 +37,7 @@ class LoadService {
       resultLabel = "$resultLabel.pgn";
     }
 
-    String filePath =
+    final String filePath =
         resultLabel.startsWith(path) ? resultLabel : "$path/$resultLabel";
 
     return filePath;
@@ -45,9 +45,9 @@ class LoadService {
 
   /// Picks file.
   static Future<String?> pickFile(BuildContext context) async {
-    Directory dir = await getApplicationDocumentsDirectory();
+    final Directory dir = await getApplicationDocumentsDirectory();
 
-    String? result = await FilesystemPicker.openDialog(
+    final String? result = await FilesystemPicker.openDialog(
       context: context,
       rootDirectory: dir,
       rootName: S.of(context).gameFiles,
@@ -71,7 +71,7 @@ class LoadService {
       return;
     }
 
-    String strGameSavedTo = S.of(context).gameSavedTo;
+    final String strGameSavedTo = S.of(context).gameSavedTo;
 
     Navigator.pop(context);
 
@@ -84,7 +84,7 @@ class LoadService {
 
     if (filename == null) return;
 
-    File file = File(filename);
+    final File file = File(filename);
 
     file.writeAsString(
         ImportService.addTagPairs(MillController().recorder.moveHistoryText!));
@@ -101,10 +101,10 @@ class LoadService {
 
     rootScaffoldMessengerKey.currentState!.clearSnackBars();
 
-    String? result = await pickFile(context);
+    final String? result = await pickFile(context);
     if (result == null) return;
 
-    File file = File(result);
+    final File file = File(result);
 
     late String fileContent;
 
@@ -128,7 +128,7 @@ class LoadService {
       return;
     }
 
-    String tagPairs = ImportService.getTagPairs(fileContent);
+    final String tagPairs = ImportService.getTagPairs(fileContent);
 
     if (tagPairs.isNotEmpty) {
       rootScaffoldMessengerKey.currentState!
@@ -154,7 +154,7 @@ class LoadService {
   }
 
   static Future<String?> _showTextInputDialog(BuildContext context) async {
-    TextEditingController textFieldController = TextEditingController();
+    final TextEditingController textFieldController = TextEditingController();
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -176,7 +176,7 @@ class LoadService {
                   textScaleFactor: DB().displaySettings.fontScale,
                 ),
                 onPressed: () async {
-                  String? result = await pickFile(context);
+                  final String? result = await pickFile(context);
                   if (result == null) return;
                   textFieldController.text = result;
                   Navigator.pop(context, textFieldController.text);

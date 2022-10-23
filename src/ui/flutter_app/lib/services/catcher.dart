@@ -20,7 +20,7 @@ late Catcher catcher;
 
 /// Initializes the given [catcher]
 Future<void> _initCatcher(Catcher catcher) async {
-  Map<String, String> customParameters = <String, String>{};
+  final Map<String, String> customParameters = <String, String>{};
   late final String externalDirStr;
 
   try {

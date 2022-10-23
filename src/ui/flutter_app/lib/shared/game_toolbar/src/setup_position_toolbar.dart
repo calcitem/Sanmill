@@ -193,13 +193,14 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
         .position
         .totalMillsCount(MillController().position.sideToMove);
 
-    int opponentCount =
+    final int opponentCount =
         MillController().position.countPieceOnBoard(sideToMove.opponent);
 
     if (newPhase == Phase.placing) {
       if (limit > opponentCount) limit = opponentCount;
     } else if (newPhase == Phase.moving) {
-      int newLimit = opponentCount - DB().ruleSettings.piecesAtLeastCount + 1;
+      final int newLimit =
+          opponentCount - DB().ruleSettings.piecesAtLeastCount + 1;
       if (limit > newLimit) {
         limit = newLimit;
         limit = limit < 0 ? 0 : limit;
@@ -237,8 +238,8 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   setSetupPositionCopy(BuildContext context) async {
     setSetupPositionDone();
 
-    String fen = MillController().position.fen;
-    String copyStr = S.of(context).copy;
+    final String fen = MillController().position.fen;
+    final String copyStr = S.of(context).copy;
 
     await Clipboard.setData(
       ClipboardData(text: MillController().position.fen),
@@ -260,7 +261,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
     if (data?.text == null) return;
 
-    String fen = data!.text!;
+    final String fen = data!.text!;
 
     try {
       if (MillController().position.setFen(fen) == true) {
@@ -283,8 +284,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       return DB().ruleSettings.piecesCount;
     }
 
-    int white = MillController().position.countPieceOnBoard(PieceColor.white);
-    int black = MillController().position.countPieceOnBoard(PieceColor.black);
+    final int white =
+        MillController().position.countPieceOnBoard(PieceColor.white);
+    final int black =
+        MillController().position.countPieceOnBoard(PieceColor.black);
     late int begin;
 
     // TODO: Not accurate enough.
@@ -306,7 +309,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   }
 
   setSetupPositionPlacedUpdateBegin() {
-    int val = setSetupPositionPlacedGetBegin();
+    final int val = setSetupPositionPlacedGetBegin();
 
     newPlaced = val;
     /*
@@ -451,8 +454,8 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   }
 
   updateSetupPositionPiecesCount() {
-    int w = MillController().position.countPieceOnBoard(PieceColor.white);
-    int b = MillController().position.countPieceOnBoard(PieceColor.black);
+    final int w = MillController().position.countPieceOnBoard(PieceColor.white);
+    final int b = MillController().position.countPieceOnBoard(PieceColor.black);
 
     MillController().position.pieceOnBoardCount[PieceColor.white] = w;
     MillController().position.pieceOnBoardCount[PieceColor.black] = b;
@@ -516,7 +519,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     updateSetupPositionPiecesCount();
 
     //MillController().recorder.clear(); // TODO: Set and parse fen.
-    String fen = position.fen;
+    final String fen = position.fen;
     MillController().recorder =
         GameRecorder(lastPositionWithRemove: fen, setupPosition: fen);
 
@@ -624,21 +627,21 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       label: Text(S.of(context).cancel),
     );
 
-    Map<PieceColor, ToolbarItem> colorButtonMap = {
+    final Map<PieceColor, ToolbarItem> colorButtonMap = {
       PieceColor.white: whitePieceButton,
       PieceColor.black: blackPieceButton,
       PieceColor.ban: banPointButton,
       PieceColor.none: emptyPointButton,
     };
 
-    Map<Phase, ToolbarItem> phaseButtonMap = {
+    final Map<Phase, ToolbarItem> phaseButtonMap = {
       Phase.ready: placingButton,
       Phase.placing: placingButton,
       Phase.moving: movingButton,
       Phase.gameOver: movingButton,
     };
 
-    Map<int, ToolbarItem> removeButtonMap = {
+    final Map<int, ToolbarItem> removeButtonMap = {
       0: removeZeroButton,
       1: removeOneButton,
       2: removeTwoButton,

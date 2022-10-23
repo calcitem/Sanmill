@@ -149,7 +149,7 @@ class _InfoDialog extends StatelessWidget {
               String content = "";
 
               if (EnvironmentConfig.catcher == true) {
-                CatcherOptions options = catcher.getCurrentConfig()!;
+                final CatcherOptions options = catcher.getCurrentConfig()!;
                 for (String str in options.customParameters.values) {
                   str = str
                       .replaceAll("setoption name ", "")
@@ -158,7 +158,7 @@ class _InfoDialog extends StatelessWidget {
                 }
               }
 
-              Widget copyButton = TextButton(
+              final Widget copyButton = TextButton(
                 child: Text(
                   S.of(context).copy,
                   textScaleFactor: DB().displaySettings.fontScale,
@@ -176,7 +176,7 @@ class _InfoDialog extends StatelessWidget {
                 },
               );
 
-              Widget okButton = TextButton(
+              final Widget okButton = TextButton(
                   child: Text(
                     S.of(context).ok,
                     textScaleFactor: DB().displaySettings.fontScale,
@@ -185,7 +185,7 @@ class _InfoDialog extends StatelessWidget {
                     Navigator.of(context).pop();
                   });
 
-              AlertDialog alert = AlertDialog(
+              final AlertDialog alert = AlertDialog(
                 title: Text(
                   S.of(context).more,
                   textScaleFactor: DB().displaySettings.fontScale,
