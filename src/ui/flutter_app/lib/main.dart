@@ -27,16 +27,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_driver/driver_extension.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/models/display_settings.dart';
-import 'package:sanmill/screens/home.dart';
-import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/services/environment_config.dart';
-import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/shared/constants.dart';
-import 'package:sanmill/shared/feedback_localization.dart';
-import 'package:sanmill/shared/scaffold_messenger.dart';
-import 'package:sanmill/shared/theme/app_theme.dart';
+
+import 'generated/intl/l10n.dart';
+import 'models/display_settings.dart';
+import 'screens/home.dart';
+import 'services/database/database.dart';
+import 'services/environment_config.dart';
+import 'services/logger.dart';
+import 'shared/constants.dart';
+import 'shared/feedback_localization.dart';
+import 'shared/scaffold_messenger.dart';
+import 'shared/theme/app_theme.dart';
 
 part 'package:sanmill/services/catcher.dart';
 part 'package:sanmill/services/init_system_ui.dart';

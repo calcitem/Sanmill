@@ -20,11 +20,12 @@ library settings;
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/shared/custom_spacer.dart';
-import 'package:sanmill/shared/theme/app_theme.dart';
+
+import '../../generated/intl/l10n.dart';
+import '../../services/database/database.dart';
+import '../../services/logger.dart';
+import '../custom_spacer.dart';
+import '../theme/app_theme.dart';
 
 part 'src/card.dart';
 part 'src/list.dart';

@@ -22,14 +22,15 @@ import 'package:flutter/foundation.dart'
 import 'package:flutter/material.dart' show Color, Locale;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/models/color_settings.dart';
-import 'package:sanmill/models/display_settings.dart';
-import 'package:sanmill/models/general_settings.dart';
-import 'package:sanmill/models/rule_settings.dart';
-import 'package:sanmill/services/database/adapters/adapters.dart';
-import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/services/mill/mill.dart';
-import 'package:sanmill/shared/constants.dart';
+
+import '../../models/color_settings.dart';
+import '../../models/display_settings.dart';
+import '../../models/general_settings.dart';
+import '../../models/rule_settings.dart';
+import '../../shared/constants.dart';
+import '../logger.dart';
+import '../mill/mill.dart';
+import 'adapters/adapters.dart';
 
 part 'package:sanmill/services/database/database_migration.dart';
 

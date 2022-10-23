@@ -15,7 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/shared/theme/app_theme.dart';
+
+import 'theme/app_theme.dart';
 
 class CustomSpacer extends StatelessWidget {
   const CustomSpacer({super.key});

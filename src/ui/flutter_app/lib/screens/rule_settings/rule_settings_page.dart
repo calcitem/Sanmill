@@ -16,16 +16,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
-import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/models/rule_settings.dart';
-import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/services/environment_config.dart';
-import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/services/mill/mill.dart';
-import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
-import 'package:sanmill/shared/scaffold_messenger.dart';
-import 'package:sanmill/shared/settings/settings.dart';
-import 'package:sanmill/shared/theme/app_theme.dart';
+
+import '../../generated/intl/l10n.dart';
+import '../../models/rule_settings.dart';
+import '../../services/database/database.dart';
+import '../../services/environment_config.dart';
+import '../../services/logger.dart';
+import '../../services/mill/mill.dart';
+import '../../shared/custom_drawer/custom_drawer.dart';
+import '../../shared/scaffold_messenger.dart';
+import '../../shared/settings/settings.dart';
+import '../../shared/theme/app_theme.dart';
 
 part 'package:sanmill/screens/rule_settings/endgame_n_move_rule_modal.dart';
 part 'package:sanmill/screens/rule_settings/fly_piece_count_modal.dart';

@@ -19,8 +19,9 @@ import 'package:flutter/material.dart' show Colors, Color, immutable;
 import 'package:hive_flutter/adapters.dart'
     show HiveField, HiveType, BinaryReader, BinaryWriter, TypeAdapter;
 import 'package:json_annotation/json_annotation.dart';
-import 'package:sanmill/services/database/adapters/adapters.dart';
-import 'package:sanmill/shared/theme/colors.dart';
+
+import '../services/database/adapters/adapters.dart';
+import '../shared/theme/colors.dart';
 
 part 'color_settings.g.dart';
 

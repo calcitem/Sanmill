@@ -16,8 +16,9 @@
 
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
-import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/shared/theme/colors.dart';
+
+import '../../services/database/database.dart';
+import 'colors.dart';
 
 /// The Apps Theme
 ///

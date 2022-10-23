@@ -18,11 +18,12 @@
 library painters;
 
 import 'package:flutter/material.dart';
-import 'package:sanmill/models/display_settings.dart';
-import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/services/environment_config.dart';
-import 'package:sanmill/services/mill/mill.dart';
-import 'package:sanmill/shared/theme/app_theme.dart';
+
+import '../../models/display_settings.dart';
+import '../../services/database/database.dart';
+import '../../services/environment_config.dart';
+import '../../services/mill/mill.dart';
+import '../theme/app_theme.dart';
 
 part 'src/board_painter.dart';
 part 'src/common.dart';

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
-import 'package:sanmill/shared/theme/app_theme.dart';
+
+import '../generated/intl/l10n.dart';
+import '../services/database/database.dart';
+import '../shared/custom_drawer/custom_drawer.dart';
+import '../shared/theme/app_theme.dart';
 
 class HowToPlayScreen extends StatelessWidget {
   const HowToPlayScreen({super.key});

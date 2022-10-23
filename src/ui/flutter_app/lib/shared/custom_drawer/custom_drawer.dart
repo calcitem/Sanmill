@@ -23,10 +23,11 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
-import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/shared/constants.dart';
-import 'package:sanmill/shared/text_size_helper.dart';
-import 'package:sanmill/shared/theme/app_theme.dart';
+
+import '../../services/database/database.dart';
+import '../constants.dart';
+import '../text_size_helper.dart';
+import '../theme/app_theme.dart';
 
 part 'src/controller.dart';
 part 'src/header.dart';

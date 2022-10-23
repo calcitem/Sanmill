@@ -19,18 +19,19 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:sanmill/generated/flutter_version.dart';
-import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/screens/license_page.dart';
-import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/services/environment_config.dart';
-import 'package:sanmill/services/git_info.dart';
-import 'package:sanmill/shared/constants.dart';
-import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
-import 'package:sanmill/shared/custom_spacer.dart';
-import 'package:sanmill/shared/settings/settings.dart';
-import 'package:sanmill/shared/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../generated/flutter_version.dart';
+import '../generated/intl/l10n.dart';
+import '../services/database/database.dart';
+import '../services/environment_config.dart';
+import '../services/git_info.dart';
+import '../shared/constants.dart';
+import '../shared/custom_drawer/custom_drawer.dart';
+import '../shared/custom_spacer.dart';
+import '../shared/settings/settings.dart';
+import '../shared/theme/app_theme.dart';
+import 'license_page.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});

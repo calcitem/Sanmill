@@ -24,22 +24,23 @@ import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/models/general_settings.dart';
-import 'package:sanmill/models/rule_settings.dart';
-import 'package:sanmill/screens/about_page.dart';
-import 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
-import 'package:sanmill/screens/game_page/game_page.dart';
-import 'package:sanmill/screens/general_settings/general_settings_page.dart';
-import 'package:sanmill/screens/help_screen.dart';
-import 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
-import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/services/environment_config.dart';
-import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/services/mill/mill.dart';
-import 'package:sanmill/shared/constants.dart';
-import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
-import 'package:sanmill/shared/privacy_dialog.dart';
+
+import '../generated/intl/l10n.dart';
+import '../models/general_settings.dart';
+import '../models/rule_settings.dart';
+import '../services/database/database.dart';
+import '../services/environment_config.dart';
+import '../services/logger.dart';
+import '../services/mill/mill.dart';
+import '../shared/constants.dart';
+import '../shared/custom_drawer/custom_drawer.dart';
+import '../shared/privacy_dialog.dart';
+import 'about_page.dart';
+import 'appearance_settings/appearance_settings_page.dart';
+import 'game_page/game_page.dart';
+import 'general_settings/general_settings_page.dart';
+import 'help_screen.dart';
+import 'rule_settings/rule_settings_page.dart';
 
 enum _DrawerIndex {
   humanVsAi,

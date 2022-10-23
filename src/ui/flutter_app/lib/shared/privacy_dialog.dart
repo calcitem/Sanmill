@@ -19,12 +19,13 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/models/general_settings.dart';
-import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/services/logger.dart';
-import 'package:sanmill/shared/constants.dart';
-import 'package:sanmill/shared/link_text_span.dart';
+
+import '../generated/intl/l10n.dart';
+import '../models/general_settings.dart';
+import '../services/database/database.dart';
+import '../services/logger.dart';
+import 'constants.dart';
+import 'link_text_span.dart';
 
 class PrivacyDialog extends StatelessWidget {
   const PrivacyDialog({super.key});

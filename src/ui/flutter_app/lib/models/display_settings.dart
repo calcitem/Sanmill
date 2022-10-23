@@ -18,7 +18,8 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:sanmill/services/database/adapters/adapters.dart';
+
+import '../services/database/adapters/adapters.dart';
 
 part 'display_settings.g.dart';
 

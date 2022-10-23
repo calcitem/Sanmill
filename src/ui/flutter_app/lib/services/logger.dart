@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'package:logger/logger.dart';
-import 'package:sanmill/services/environment_config.dart';
+
+import 'environment_config.dart';
 
 final Logger logger = Logger(level: Level.values[EnvironmentConfig.logLevel]);

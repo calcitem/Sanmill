@@ -24,14 +24,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:sanmill/generated/intl/l10n.dart';
-import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/services/mill/mill.dart';
-import 'package:sanmill/shared/scaffold_messenger.dart';
-import 'package:sanmill/shared/string_buffer_helper.dart';
 
+import '../../generated/intl/l10n.dart';
+import '../../services/database/database.dart';
+import '../../services/mill/mill.dart';
+import '../scaffold_messenger.dart';
+import '../string_buffer_helper.dart';
+
+part 'src/game_page_toolbar.dart';
 part 'src/item_theme.dart';
 part 'src/item_theme_data.dart';
-part 'src/game_page_toolbar.dart';
 part 'src/setup_position_toolbar.dart';
 part 'src/toolbar_item.dart';

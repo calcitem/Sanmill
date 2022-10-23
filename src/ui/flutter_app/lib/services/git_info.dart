@@ -15,7 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'package:flutter/services.dart';
-import 'package:sanmill/generated/assets/assets.gen.dart';
+
+import '../generated/assets/assets.gen.dart';
 
 /// Information about the local git repository
 class GitInformation {
