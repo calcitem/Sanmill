@@ -150,8 +150,9 @@ class _InfoDialog extends StatelessWidget {
 
               if (EnvironmentConfig.catcher == true) {
                 final CatcherOptions options = catcher.getCurrentConfig()!;
-                for (String str in options.customParameters.values) {
-                  str = str
+                for (final dynamic value in options.customParameters.values) {
+                  final String str = value
+                      .toString()
                       .replaceAll("setoption name ", "")
                       .replaceAll("value", "=");
                   content += "$str\n";
