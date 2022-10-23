@@ -309,7 +309,7 @@ class ImportService {
     if (_isFenMoveList(moveList)) {
       setupFen = moveList.substring(moveList.indexOf("FEN"));
       setupFen = setupFen.substring(5);
-      setupFen = setupFen.substring(0, setupFen.indexOf("\"]"));
+      setupFen = setupFen.substring(0, setupFen.indexOf('"]'));
       MillController().position.setFen(setupFen);
     }
 
