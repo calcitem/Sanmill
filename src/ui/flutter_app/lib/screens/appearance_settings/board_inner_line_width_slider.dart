@@ -17,7 +17,7 @@
 part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 
 class _BoardInnerWidthSlider extends StatelessWidget {
-  const _BoardInnerWidthSlider({Key? key}) : super(key: key);
+  const _BoardInnerWidthSlider({super.key});
 
   @override
   Widget build(BuildContext context) {

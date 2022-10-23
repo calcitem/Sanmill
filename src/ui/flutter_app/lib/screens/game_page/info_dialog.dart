@@ -17,7 +17,7 @@
 part of 'game_page.dart';
 
 class _InfoDialog extends StatelessWidget {
-  const _InfoDialog({Key? key}) : super(key: key);
+  const _InfoDialog({super.key});
 
   String _infoText(BuildContext context) {
     final MillController controller = MillController();

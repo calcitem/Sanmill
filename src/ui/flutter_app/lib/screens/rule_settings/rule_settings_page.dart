@@ -35,7 +35,7 @@ part 'package:sanmill/screens/rule_settings/piece_count_modal.dart';
 bool visitedRuleSettingsPage = false;
 
 class RuleSettingsPage extends StatelessWidget {
-  const RuleSettingsPage({Key? key}) : super(key: key);
+  const RuleSettingsPage({super.key});
 
   // General
   void _setNTotalPiecesEachSide(

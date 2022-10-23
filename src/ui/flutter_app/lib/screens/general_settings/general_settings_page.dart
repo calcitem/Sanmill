@@ -36,7 +36,7 @@ part 'package:sanmill/screens/general_settings/reset_settings_alert.dart';
 part 'package:sanmill/screens/general_settings/skill_level_picker.dart';
 
 class GeneralSettingsPage extends StatelessWidget {
-  const GeneralSettingsPage({Key? key}) : super(key: key);
+  const GeneralSettingsPage({super.key});
   static const String _tag = "[general_settings_page]";
 
   // Restore

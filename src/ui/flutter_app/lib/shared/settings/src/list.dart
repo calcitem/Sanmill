@@ -18,9 +18,9 @@ part of '../settings.dart';
 
 class SettingsList extends StatelessWidget {
   const SettingsList({
-    Key? key,
+    super.key,
     required this.children,
-  }) : super(key: key);
+  });
 
   final List<Widget> children;
 

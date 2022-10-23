@@ -54,7 +54,7 @@ class GamePage extends StatelessWidget {
 
   final bool isSettingsPosition = true;
 
-  GamePage(this.gameMode, {Key? key}) : super(key: key) {
+  GamePage(this.gameMode, {super.key}) {
     Position.resetScore();
   }
 
@@ -111,7 +111,7 @@ class GamePage extends StatelessWidget {
 
 // TODO: [Leptopoda] Change layout (landscape mode, padding on small devices)
 class _Game extends StatefulWidget {
-  const _Game({Key? key}) : super(key: key);
+  const _Game({super.key});
   @override
   State<_Game> createState() => _GameState();
 }

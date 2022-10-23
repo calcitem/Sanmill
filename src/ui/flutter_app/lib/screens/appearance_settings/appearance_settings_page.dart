@@ -39,7 +39,7 @@ part 'package:sanmill/screens/appearance_settings/point_style_modal.dart';
 part 'package:sanmill/screens/appearance_settings/point_width_slider.dart';
 
 class AppearanceSettingsPage extends StatelessWidget {
-  const AppearanceSettingsPage({Key? key}) : super(key: key);
+  const AppearanceSettingsPage({super.key});
 
   void setBoardBorderLineWidth(BuildContext context) => showModalBottomSheet(
         context: context,

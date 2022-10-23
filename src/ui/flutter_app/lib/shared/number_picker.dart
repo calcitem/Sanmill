@@ -22,12 +22,12 @@ import 'package:sanmill/shared/theme/app_theme.dart';
 
 class NumberPicker extends StatelessWidget {
   const NumberPicker({
-    Key? key,
+    super.key,
     this.start = 1,
     required this.end,
     required this.newTitle,
     required this.showMoveString,
-  }) : super(key: key);
+  });
 
   final int start;
   final int end;

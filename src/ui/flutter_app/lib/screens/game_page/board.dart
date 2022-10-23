@@ -24,7 +24,7 @@ part of 'game_page.dart';
 class Board extends StatefulWidget {
   static const String _tag = "[board]";
 
-  const Board({Key? key}) : super(key: key);
+  const Board({super.key});
 
   @override
   State<Board> createState() => _BoardState();
@@ -187,7 +187,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 ///
 /// This Widget only contains [Semantics] nodes to help impaired people interact with the [Board].
 class _BoardSemantics extends StatefulWidget {
-  const _BoardSemantics({Key? key}) : super(key: key);
+  const _BoardSemantics({super.key});
 
   @override
   State<_BoardSemantics> createState() => _BoardSemanticsState();

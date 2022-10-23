@@ -21,7 +21,7 @@ part of 'game_page.dart';
 class _GameOptionsModal extends StatelessWidget {
   static const _tag = "[GameOptionsModal]";
 
-  const _GameOptionsModal({Key? key}) : super(key: key);
+  const _GameOptionsModal({super.key});
 
   onStartNewGameButtonPressed(BuildContext context) async {}
 

@@ -19,10 +19,10 @@ part of 'game_page.dart';
 @visibleForTesting
 class GamePageActionSheet extends StatelessWidget {
   const GamePageActionSheet({
-    Key? key,
+    super.key,
     required this.child,
     this.textColor = AppTheme.gamePageActionSheetTextColor,
-  }) : super(key: key);
+  });
 
   final Color textColor;
   final Widget child;
@@ -63,10 +63,10 @@ class GamePageActionSheet extends StatelessWidget {
 @visibleForTesting
 class GamePageDialog extends StatelessWidget {
   const GamePageDialog({
-    Key? key,
+    super.key,
     this.children = const <Widget>[],
     required this.semanticLabel,
-  }) : super(key: key);
+  });
 
   final List<Widget> children;
   final String semanticLabel;

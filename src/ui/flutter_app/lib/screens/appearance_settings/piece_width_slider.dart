@@ -17,7 +17,7 @@
 part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 
 class _PieceWidthSlider extends StatelessWidget {
-  const _PieceWidthSlider({Key? key}) : super(key: key);
+  const _PieceWidthSlider({super.key});
 
   @override
   Widget build(BuildContext context) {

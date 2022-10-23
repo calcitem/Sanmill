@@ -21,7 +21,7 @@ enum _SettingsTileType { standard, color, switchTile }
 // TODO: [Leptopoda] Maybe add link list tile as it needs a separate icon
 class SettingsListTile extends StatelessWidget {
   const SettingsListTile({
-    Key? key,
+    super.key,
     required this.titleString,
     required VoidCallback onTap,
     this.subtitleString,
@@ -29,11 +29,10 @@ class SettingsListTile extends StatelessWidget {
   })  : _type = _SettingsTileType.standard,
         _switchValue = null,
         _callback = onTap,
-        _colorValue = null,
-        super(key: key);
+        _colorValue = null;
 
   const SettingsListTile.color({
-    Key? key,
+    super.key,
     required this.titleString,
     required Color value,
     required ValueChanged<Color> onChanged,
@@ -42,11 +41,10 @@ class SettingsListTile extends StatelessWidget {
         _switchValue = null,
         _callback = onChanged,
         trailingString = null,
-        _colorValue = value,
-        super(key: key);
+        _colorValue = value;
 
   const SettingsListTile.switchTile({
-    Key? key,
+    super.key,
     required this.titleString,
     required bool value,
     required ValueChanged<bool> onChanged,
@@ -55,8 +53,7 @@ class SettingsListTile extends StatelessWidget {
         _switchValue = value,
         _callback = onChanged,
         _colorValue = null,
-        trailingString = null,
-        super(key: key);
+        trailingString = null;
 
   final String titleString;
   final String? subtitleString;
@@ -129,11 +126,11 @@ class SettingsListTile extends StatelessWidget {
 
 class _ColorPickerAlert extends StatefulWidget {
   const _ColorPickerAlert({
-    Key? key,
+    super.key,
     required this.value,
     required this.title,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   final Color value;
   final String title;

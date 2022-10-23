@@ -29,11 +29,11 @@ class GamePageToolBar extends StatelessWidget {
   static double get height => (_padding.vertical + _margin.vertical) * 2;
 
   const GamePageToolBar({
-    Key? key,
+    super.key,
     required this.children,
     this.backgroundColor,
     this.itemColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -17,7 +17,7 @@
 part of 'game_page.dart';
 
 class _MoveListDialog extends StatelessWidget {
-  const _MoveListDialog({Key? key}) : super(key: key);
+  const _MoveListDialog({super.key});
 
   @override
   Widget build(BuildContext context) {

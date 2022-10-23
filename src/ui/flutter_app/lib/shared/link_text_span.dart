@@ -20,9 +20,8 @@ import 'package:sanmill/services/environment_config.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LinkTextSpan extends TextSpan {
-  LinkTextSpan({TextStyle? style, required String url, String? text})
+  LinkTextSpan({super.style, required String url, String? text})
       : super(
-          style: style,
           text: text ?? url,
           recognizer: TapGestureRecognizer()
             ..onTap = () {

@@ -18,10 +18,10 @@ part of 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 
 class _NMoveRuleModal extends StatelessWidget {
   const _NMoveRuleModal({
-    Key? key,
+    super.key,
     required this.nMoveRule,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   final int nMoveRule;
   final Function(int?)? onChanged;

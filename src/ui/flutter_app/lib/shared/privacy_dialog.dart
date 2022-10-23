@@ -27,7 +27,7 @@ import 'package:sanmill/shared/constants.dart';
 import 'package:sanmill/shared/link_text_span.dart';
 
 class PrivacyDialog extends StatelessWidget {
-  const PrivacyDialog({Key? key}) : super(key: key);
+  const PrivacyDialog({super.key});
 
   void _setPrivacyPolicyAccepted() {
     DB().generalSettings =

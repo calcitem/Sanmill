@@ -17,7 +17,7 @@
 part of 'package:sanmill/screens/general_settings/general_settings_page.dart';
 
 class _MoveTimeSlider extends StatelessWidget {
-  const _MoveTimeSlider({Key? key}) : super(key: key);
+  const _MoveTimeSlider({super.key});
 
   @override
   Widget build(BuildContext context) {

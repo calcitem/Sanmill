@@ -18,13 +18,13 @@ part of '../custom_drawer.dart';
 
 class CustomDrawerItem<T> extends StatelessWidget {
   const CustomDrawerItem({
-    Key? key,
+    super.key,
     required this.groupValue,
     required this.onChanged,
     required this.value,
     required this.title,
     required this.icon,
-  }) : super(key: key);
+  });
 
   final T groupValue;
   final Function(T) onChanged;

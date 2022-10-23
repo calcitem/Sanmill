@@ -33,7 +33,7 @@ import 'package:sanmill/shared/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatelessWidget {
-  const AboutPage({Key? key}) : super(key: key);
+  const AboutPage({super.key});
 
   String? get mode {
     if (kDebugMode) {
@@ -157,9 +157,9 @@ class AboutPage extends StatelessWidget {
 
 class _VersionDialog extends StatelessWidget {
   const _VersionDialog({
-    Key? key,
+    super.key,
     required this.version,
-  }) : super(key: key);
+  });
 
   final String version;
 
@@ -239,7 +239,7 @@ class _VersionDialog extends StatelessWidget {
 }
 
 class _FlutterVersionAlert extends StatelessWidget {
-  const _FlutterVersionAlert({Key? key}) : super(key: key);
+  const _FlutterVersionAlert({super.key});
 
   @override
   Widget build(BuildContext context) {

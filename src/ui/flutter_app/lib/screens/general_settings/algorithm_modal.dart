@@ -18,10 +18,10 @@ part of 'package:sanmill/screens/general_settings/general_settings_page.dart';
 
 class _AlgorithmModal extends StatelessWidget {
   const _AlgorithmModal({
-    Key? key,
+    super.key,
     required this.algorithm,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   final SearchAlgorithm algorithm;
   final Function(SearchAlgorithm?)? onChanged;

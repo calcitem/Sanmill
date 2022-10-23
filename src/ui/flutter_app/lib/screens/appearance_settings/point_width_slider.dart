@@ -19,7 +19,7 @@
 part of 'package:sanmill/screens/appearance_settings/appearance_settings_page.dart';
 
 class _PointWidthSlider extends StatelessWidget {
-  const _PointWidthSlider({Key? key}) : super(key: key);
+  const _PointWidthSlider({super.key});
 
   @override
   Widget build(BuildContext context) {

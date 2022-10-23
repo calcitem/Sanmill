@@ -18,10 +18,10 @@ part of 'package:sanmill/screens/rule_settings/rule_settings_page.dart';
 
 class _EndGameNMoveRuleModal extends StatelessWidget {
   const _EndGameNMoveRuleModal({
-    Key? key,
+    super.key,
     required this.endgameNMoveRule,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   final int endgameNMoveRule;
   final Function(int?)? onChanged;

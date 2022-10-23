@@ -20,13 +20,10 @@ class DrawerIcon extends InheritedWidget {
   final Widget icon;
 
   const DrawerIcon({
-    Key? key,
+    super.key,
     required this.icon,
-    required Widget child,
-  }) : super(
-          key: key,
-          child: child,
-        );
+    required super.child,
+  });
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => false;

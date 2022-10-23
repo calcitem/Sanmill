@@ -17,7 +17,7 @@
 part of '../game_toolbar.dart';
 
 class SetupPositionToolBar extends StatefulWidget {
-  const SetupPositionToolBar({Key? key}) : super(key: key);
+  const SetupPositionToolBar({super.key});
 
   @override
   State<SetupPositionToolBar> createState() => SetupPositionToolBarState();
@@ -687,15 +687,14 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
 class SetupPositionButtonsContainer extends StatelessWidget {
   const SetupPositionButtonsContainer({
-    Key? key,
+    super.key,
     required this.backgroundColor,
     required EdgeInsets margin,
     required EdgeInsets padding,
     required this.itemColor,
     required this.child,
   })  : _margin = margin,
-        _padding = padding,
-        super(key: key);
+        _padding = padding;
 
   final Color? backgroundColor;
   final EdgeInsets _margin;
@@ -731,11 +730,11 @@ class SetupPositionButtonsContainer extends StatelessWidget {
 
 class _PlacedModal extends StatelessWidget {
   const _PlacedModal({
-    Key? key,
+    super.key,
     required this.placedGroupValue,
     required this.onChanged,
     required this.begin,
-  }) : super(key: key);
+  });
 
   final int placedGroupValue;
   final Function(int?)? onChanged;

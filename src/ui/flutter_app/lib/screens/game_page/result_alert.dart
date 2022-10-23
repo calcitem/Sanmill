@@ -19,8 +19,8 @@ part of 'game_page.dart';
 class GameResultAlert extends StatelessWidget {
   GameResultAlert({
     required this.winner,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final GameMode gameMode = MillController().gameInstance.gameMode;
   final PieceColor winner;

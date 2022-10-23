@@ -21,13 +21,13 @@ part of '../custom_drawer.dart';
 /// The widget laying out the custom drawer
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({
-    Key? key,
+    super.key,
     required this.child,
     required this.items,
     required this.header,
     this.controller,
     this.disabledGestures = false,
-  }) : super(key: key);
+  });
 
   /// Child widget. (Usually a widget that represents the main screen)
   final Widget child;

@@ -17,7 +17,7 @@
 part of 'package:sanmill/screens/general_settings/general_settings_page.dart';
 
 class _SkillLevelPicker extends StatefulWidget {
-  const _SkillLevelPicker({Key? key}) : super(key: key);
+  const _SkillLevelPicker({super.key});
 
   @override
   State<_SkillLevelPicker> createState() => _SkillLevelPickerState();

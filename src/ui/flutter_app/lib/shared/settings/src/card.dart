@@ -18,10 +18,10 @@ part of '../settings.dart';
 
 class SettingsCard extends StatelessWidget {
   const SettingsCard({
-    Key? key,
+    super.key,
     required this.children,
     required this.title,
-  }) : super(key: key);
+  });
 
   final Widget title;
   final List<Widget> children;

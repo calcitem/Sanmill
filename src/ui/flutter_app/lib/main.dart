@@ -74,7 +74,7 @@ Future<void> main() async {
 }
 
 class SanmillApp extends StatelessWidget {
-  const SanmillApp({Key? key}) : super(key: key);
+  const SanmillApp({super.key});
 
   @override
   Widget build(BuildContext context) {

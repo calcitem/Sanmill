@@ -5,7 +5,7 @@ import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
 import 'package:sanmill/shared/theme/app_theme.dart';
 
 class HowToPlayScreen extends StatelessWidget {
-  const HowToPlayScreen({Key? key}) : super(key: key);
+  const HowToPlayScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

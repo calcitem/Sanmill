@@ -105,7 +105,7 @@ extension _DrawerScreen on _DrawerIndex {
 ///
 /// This widget implements the home view of our app.
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   HomeState createState() => HomeState();

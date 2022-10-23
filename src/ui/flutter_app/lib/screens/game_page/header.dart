@@ -18,7 +18,7 @@ part of 'game_page.dart';
 
 @visibleForTesting
 class GameHeader extends StatefulWidget implements PreferredSizeWidget {
-  GameHeader({Key? key}) : super(key: key);
+  GameHeader({super.key});
 
   @override
   final Size preferredSize = Size.fromHeight(
@@ -107,7 +107,7 @@ class _GameHeaderState extends State<GameHeader> {
 
 @visibleForTesting
 class HeaderTip extends StatefulWidget {
-  const HeaderTip({Key? key}) : super(key: key);
+  const HeaderTip({super.key});
 
   @override
   HeaderTipState createState() => HeaderTipState();
@@ -163,7 +163,7 @@ class HeaderTipState extends State<HeaderTip> {
 
 @visibleForTesting
 class HeaderIcons extends StatefulWidget {
-  const HeaderIcons({Key? key}) : super(key: key);
+  const HeaderIcons({super.key});
 
   @override
   HeaderStateIcons createState() => HeaderStateIcons();

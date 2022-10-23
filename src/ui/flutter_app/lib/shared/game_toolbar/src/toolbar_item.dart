@@ -103,28 +103,17 @@ class ToolbarItem extends ButtonStyleButton {
   ///
   /// The [autofocus] and [clipBehavior] arguments must not be null.
   const ToolbarItem({
-    Key? key,
-    required VoidCallback? onPressed,
-    VoidCallback? onLongPress,
-    ButtonStyle? style,
-    FocusNode? focusNode,
-    bool autofocus = false,
-    Clip clipBehavior = Clip.none,
-    required Widget child,
-    void Function(bool)? onHover,
-    void Function(bool)? onFocusChange,
-  }) : super(
-          key: key,
-          onPressed: onPressed,
-          onLongPress: onLongPress,
-          style: style,
-          focusNode: focusNode,
-          autofocus: autofocus,
-          clipBehavior: clipBehavior,
-          child: child,
-          onHover: onHover,
-          onFocusChange: onFocusChange,
-        );
+    super.key,
+    required super.onPressed,
+    super.onLongPress,
+    super.style,
+    super.focusNode,
+    super.autofocus = false,
+    super.clipBehavior = Clip.none,
+    required Widget super.child,
+    super.onHover,
+    super.onFocusChange,
+  });
 
   /// Create a toolbar button from a pair of widgets that serve as the button's
   /// [icon] and [label].
@@ -407,21 +396,16 @@ class _ToolbarItemDefaultMouseCursor extends MaterialStateProperty<MouseCursor>
 
 class _ToolbarItemWithIcon extends ToolbarItem {
   _ToolbarItemWithIcon({
-    Key? key,
-    required VoidCallback? onPressed,
-    VoidCallback? onLongPress,
-    ButtonStyle? style,
-    FocusNode? focusNode,
+    super.key,
+    required super.onPressed,
+    super.onLongPress,
+    super.style,
+    super.focusNode,
     bool? autofocus,
     Clip? clipBehavior,
     required Widget icon,
     required Widget label,
   }) : super(
-          key: key,
-          onPressed: onPressed,
-          onLongPress: onLongPress,
-          style: style,
-          focusNode: focusNode,
           autofocus: autofocus ?? false,
           clipBehavior: clipBehavior ?? Clip.none,
           child: _ToolbarItemChild(icon: icon, label: label),
@@ -443,10 +427,10 @@ class _ToolbarItemWithIcon extends ToolbarItem {
 
 class _ToolbarItemChild extends StatelessWidget {
   const _ToolbarItemChild({
-    Key? key,
+    super.key,
     required this.label,
     required this.icon,
-  }) : super(key: key);
+  });
 
   final Widget label;
   final Widget icon;

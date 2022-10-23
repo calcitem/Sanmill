@@ -18,9 +18,9 @@ part of '../custom_drawer.dart';
 
 class CustomDrawerHeader extends StatelessWidget {
   const CustomDrawerHeader({
-    Key? key,
+    super.key,
     required this.title,
-  }) : super(key: key);
+  });
 
   final String title;
 
