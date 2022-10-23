@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "हटाए गए और हटाए गए टुकड़े दिखाएं",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "सेटिंग्स के लिए एप्लिकेशन को बाहर निकालें और फिर से खोलना।",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "पूर्ण स्क्रीन",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

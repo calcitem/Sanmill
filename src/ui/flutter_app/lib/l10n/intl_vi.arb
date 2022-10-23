@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Hiển thị các mảnh chưa được đặt và đã loại bỏ",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "Thoát và mở lại ứng dụng để cài đặt có hiệu lực.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "Toàn màn hình",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

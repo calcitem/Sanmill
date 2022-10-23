@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Rādīt nenovietotos un noņemtos gabalus",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "Izejiet un atkārtoti atveriet lietotni, lai iestatījumi stātos spēkā.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "Pilnekrāna režīms",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

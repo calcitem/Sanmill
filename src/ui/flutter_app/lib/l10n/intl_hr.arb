@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Prikaži nepostavljene i uklonjene dijelove",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Puni zaslon",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Izađite i ponovno otvorite aplikaciju kako bi postavke stupile na snagu.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

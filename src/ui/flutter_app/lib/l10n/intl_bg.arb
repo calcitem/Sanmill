@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Показване на непоставени и премахнати фигури",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Цял екран",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Излезте и отворете отново приложението, за да влязат в сила настройките.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

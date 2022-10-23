@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Прикажи непоставени и отстранети парчиња",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "Излезете и отворете ја повторно апликацијата за поставките да стапат на сила.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "Цел екран",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

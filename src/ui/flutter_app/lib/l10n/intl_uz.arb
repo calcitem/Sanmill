@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Joylanmagan va olib tashlangan qismlarni ko'rsating",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "To'liq ekran",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Sozlamalar kuchga kirishi uchun ilovadan chiqing va qayta oching.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

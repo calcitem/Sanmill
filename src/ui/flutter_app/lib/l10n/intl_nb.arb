@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Vis uplasserte og fjernede brikker",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Full skjerm",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Avslutt og åpne appen på nytt for at innstillingene skal tre i kraft.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

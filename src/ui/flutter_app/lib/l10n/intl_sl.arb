@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Pokaži nepostavljene in odstranjene kose",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Celozaslonski način",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Zaprite in znova odprite aplikacijo, da bodo nastavitve začele veljati.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

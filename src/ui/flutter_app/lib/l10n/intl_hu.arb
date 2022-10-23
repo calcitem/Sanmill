@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Az el nem helyezett és eltávolított darabok megjelenítése",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Teljes képernyő",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Lépjen ki, majd nyissa meg újra az alkalmazást, hogy a beállítások érvénybe lépjenek.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

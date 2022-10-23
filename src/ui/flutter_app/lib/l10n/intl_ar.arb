@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "إظهار القطع غير الموضوعة والمزالة",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "اخرج من التطبيق وأعد فتحه لتصبح الإعدادات سارية المفعول.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "شاشة كاملة",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

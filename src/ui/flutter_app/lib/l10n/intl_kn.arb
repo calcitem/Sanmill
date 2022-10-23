@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "ಇರಿಸದ ಮತ್ತು ತೆಗೆದುಹಾಕಲಾದ ತುಣುಕುಗಳನ್ನು ತೋರಿಸಿ",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "ಪೂರ್ಣ ಪರದೆ",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಕಾರ್ಯರೂಪಕ್ಕೆ ಬರಲು ಅಪ್ಲಿಕೇಶನ್‌ನಿಂದ ನಿರ್ಗಮಿಸಿ ಮತ್ತು ಪುನಃ ತೆರೆಯಿರಿ.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

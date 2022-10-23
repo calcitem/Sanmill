@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Zobraziť neumiestnené a odstránené kusy",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "reopenToTakeEffect": "Ukončite a znova otvorte aplikáciu, aby sa nastavenia prejavili.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "fullScreen": "Celá obrazovka",
+  "@fullScreen": {
+    "description": "Full screen"
   }
 }

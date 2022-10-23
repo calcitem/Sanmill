@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Mostrar piezas no colocadas y eliminadas",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Pantalla completa",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Salga y vuelva a abrir la aplicación para que la configuración surta efecto.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }

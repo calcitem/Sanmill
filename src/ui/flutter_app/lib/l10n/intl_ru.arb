@@ -1257,5 +1257,13 @@
   "isUnplacedAndRemovedPiecesShown": "Показать неразмещенные и удаленные фрагменты",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Полноэкранный",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Выйдите и снова откройте приложение, чтобы настройки вступили в силу.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
   }
 }
