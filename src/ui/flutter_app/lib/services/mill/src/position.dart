@@ -45,12 +45,7 @@ class Position {
     PieceColor.white: 0,
     PieceColor.black: 0,
   };
-  int _pieceToRemoveCount = 0;
-
-  int get pieceToRemoveCount => _pieceToRemoveCount;
-
-  // TODO: Why cannot use pieceToRemoveCount?
-  set pieceToRemoveCount(int count) => _pieceToRemoveCount = count;
+  int pieceToRemoveCount = 0;
 
   int _gamePly = 0;
   PieceColor _sideToMove = PieceColor.white;
@@ -58,7 +53,7 @@ class Position {
   final StateInfo st = StateInfo();
 
   PieceColor _them = PieceColor.black;
-  PieceColor _winner = PieceColor.nobody;
+  PieceColor winner = PieceColor.nobody;
 
   GameOverReason? gameOverReason;
 
@@ -165,7 +160,7 @@ class Position {
     buffer.writeSpace(pieceInHandCount[PieceColor.white]);
     buffer.writeSpace(pieceOnBoardCount[PieceColor.black]);
     buffer.writeSpace(pieceInHandCount[PieceColor.black]);
-    buffer.writeSpace(_pieceToRemoveCount);
+    buffer.writeSpace(pieceToRemoveCount);
 
     final int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
 
@@ -245,7 +240,7 @@ class Position {
     pieceInHandCount[PieceColor.black] = int.parse(blackPieceInHandCountStr);
 
     final String pieceToRemoveCountStr = l[8];
-    _pieceToRemoveCount = int.parse(pieceToRemoveCountStr);
+    pieceToRemoveCount = int.parse(pieceToRemoveCountStr);
 
     final String rule50Str = l[9];
     st.rule50 = int.parse(rule50Str);
@@ -254,7 +249,7 @@ class Position {
     _gamePly = int.parse(gamePlyStr);
 
     // Misc
-    _winner = PieceColor.nobody;
+    winner = PieceColor.nobody;
     gameOverReason = null;
     _currentSquare = 0;
     _record = null;
@@ -288,7 +283,7 @@ class Position {
     // TODO: Duplicate with switch (m.type)
     if (move == "draw") {
       phase = Phase.gameOver;
-      _winner = PieceColor.draw;
+      winner = PieceColor.draw;
 
       score[PieceColor.draw] = score[PieceColor.draw]! + 1;
 
@@ -459,7 +454,7 @@ class Position {
           MillController().gameInstance.focusIndex = squareToIndex[s];
           Audios().playTone(Sound.place);
         } else {
-          _pieceToRemoveCount = DB().ruleSettings.mayRemoveMultiple ? n : 1;
+          pieceToRemoveCount = DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
 
           if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
@@ -550,7 +545,7 @@ class Position {
 
           Audios().playTone(Sound.place);
         } else {
-          _pieceToRemoveCount = DB().ruleSettings.mayRemoveMultiple ? n : 1;
+          pieceToRemoveCount = DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
           action = Act.remove;
           MillController().gameInstance.focusIndex = squareToIndex[s];
@@ -574,7 +569,7 @@ class Position {
       return const IllegalAction();
     }
 
-    if (_pieceToRemoveCount <= 0) {
+    if (pieceToRemoveCount <= 0) {
       return const NoPieceToRemove();
     }
 
@@ -616,10 +611,10 @@ class Position {
 
     _currentSquare = 0;
 
-    _pieceToRemoveCount--;
+    pieceToRemoveCount--;
     _updateKeyMisc();
 
-    if (_pieceToRemoveCount != 0) {
+    if (pieceToRemoveCount != 0) {
       Audios().playTone(Sound.remove);
       return const MillResponseOK();
     }
@@ -687,15 +682,10 @@ class Position {
     return true;
   }
 
-  PieceColor get winner => _winner;
-
-  // TODO: Why cannot use winner?
-  set winner(PieceColor pieceColor) => _winner = pieceColor;
-
   void _setGameOver(PieceColor w, GameOverReason reason) {
     phase = Phase.gameOver;
     gameOverReason = reason;
-    _winner = w;
+    winner = w;
 
     logger.i("[position] Game over, $w win, because of $reason");
     _updateScore();
@@ -703,7 +693,7 @@ class Position {
 
   void _updateScore() {
     if (phase == Phase.gameOver) {
-      score[_winner] = score[_winner]! + 1;
+      score[winner] = score[winner]! + 1;
     }
   }
 
@@ -798,7 +788,7 @@ class Position {
   void _updateKeyMisc() {
     st.key = st.key << _Zobrist.keyMiscBit >> _Zobrist.keyMiscBit;
 
-    st.key |= _pieceToRemoveCount << (32 - _Zobrist.keyMiscBit);
+    st.key |= pieceToRemoveCount << (32 - _Zobrist.keyMiscBit);
   }
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -989,7 +979,7 @@ extension SetupPosition on Position {
     _them = PieceColor.black;
 
     result = null;
-    _winner = PieceColor.nobody;
+    winner = PieceColor.nobody;
     gameOverReason = null;
 
     _record = null;
@@ -1003,7 +993,7 @@ extension SetupPosition on Position {
     pieceInHandCount[PieceColor.white] = DB().ruleSettings.piecesCount;
     pieceInHandCount[PieceColor.black] = DB().ruleSettings.piecesCount;
 
-    _pieceToRemoveCount = 0;
+    pieceToRemoveCount = 0;
 
     for (int i = 0; i < sqNumber; i++) {
       _board[i] = PieceColor.none;
@@ -1026,7 +1016,7 @@ extension SetupPosition on Position {
     _them = pos._them;
 
     result = pos.result;
-    _winner = pos._winner;
+    winner = pos.winner;
     gameOverReason = pos.gameOverReason;
 
     _record = pos._record;
@@ -1044,7 +1034,7 @@ extension SetupPosition on Position {
     pieceInHandCount[PieceColor.black] =
         pos.pieceInHandCount[PieceColor.black]!;
 
-    _pieceToRemoveCount = pos._pieceToRemoveCount;
+    pieceToRemoveCount = pos.pieceToRemoveCount;
 
     for (int i = 0; i < sqNumber; i++) {
       _board[i] = pos._board[i];

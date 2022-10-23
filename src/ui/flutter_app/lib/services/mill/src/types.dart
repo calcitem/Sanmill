@@ -160,7 +160,7 @@ extension PieceColorExtension on PieceColor {
   }
 
   IconData get _arrow {
-    switch (MillController().position._winner) {
+    switch (MillController().position.winner) {
       case PieceColor.white:
         return FluentIcons.toggle_left_24_regular;
       case PieceColor.black:
