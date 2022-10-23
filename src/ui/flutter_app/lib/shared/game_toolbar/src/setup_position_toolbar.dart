@@ -84,7 +84,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     newPieceCountNeedRemove = MillController().position.pieceToRemoveCount;
 
     MillController().position.phase = newPhase;
-    MillController().position.theWinner = PieceColor.nobody;
+    MillController().position.winner = PieceColor.nobody;
 
     // Zero rule50, and do not zero gamePly.
     MillController().position.st.rule50 = 0;
@@ -223,7 +223,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       newPieceCountNeedRemove = 0;
     }
 
-    MillController().position.setPieceToRemoveCount = newPieceCountNeedRemove;
+    MillController().position.pieceToRemoveCount = newPieceCountNeedRemove;
 
     if (next == true) {
       if (limit == 0 || newPieceCountNeedRemove == 0) {

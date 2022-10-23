@@ -50,7 +50,7 @@ class Position {
   int get pieceToRemoveCount => _pieceToRemoveCount;
 
   // TODO: Why cannot use pieceToRemoveCount?
-  set setPieceToRemoveCount(int count) => _pieceToRemoveCount = count;
+  set pieceToRemoveCount(int count) => _pieceToRemoveCount = count;
 
   int _gamePly = 0;
   PieceColor _sideToMove = PieceColor.white;
@@ -63,11 +63,7 @@ class Position {
   GameOverReason? gameOverReason;
 
   Phase phase = Phase.placing;
-  Act _action = Act.place;
-
-  set action(Act action) {
-    _action = action;
-  }
+  Act action = Act.place;
 
   static Map<PieceColor, int> score = <PieceColor, int>{
     PieceColor.white: 0,
@@ -163,7 +159,7 @@ class Position {
     buffer.writeSpace(phase.fen);
 
     // Action
-    buffer.writeSpace(_action.fen);
+    buffer.writeSpace(action.fen);
 
     buffer.writeSpace(pieceOnBoardCount[PieceColor.white]);
     buffer.writeSpace(pieceInHandCount[PieceColor.white]);
@@ -234,7 +230,7 @@ class Position {
       "r": Act.remove,
     };
 
-    _action = actionMap[actionStr]!;
+    action = actionMap[actionStr]!;
 
     final String whitePieceOnBoardCountStr = l[4];
     pieceOnBoardCount[PieceColor.white] = int.parse(whitePieceOnBoardCountStr);
@@ -402,7 +398,7 @@ class Position {
     final PieceColor us = _sideToMove;
 
     if (phase == Phase.gameOver ||
-        _action != Act.place ||
+        action != Act.place ||
         !(sqBegin <= s && s < sqEnd) ||
         _board[s] != PieceColor.none) {
       return false;
@@ -444,7 +440,7 @@ class Position {
             }
 
             phase = Phase.moving;
-            _action = Act.select;
+            action = Act.select;
 
             if (DB().ruleSettings.hasBannedLocations) {
               _removeBanStones();
@@ -482,7 +478,7 @@ class Position {
               }
 
               phase = Phase.moving;
-              _action = Act.select;
+              action = Act.select;
 
               if (DB().ruleSettings.isDefenderMoveFirst) {
                 changeSideToMove();
@@ -493,7 +489,7 @@ class Position {
               }
             }
           } else {
-            _action = Act.remove;
+            action = Act.remove;
           }
 
           MillController().gameInstance.focusIndex = squareToIndex[s];
@@ -544,7 +540,7 @@ class Position {
 
         // midgame
         if (n == 0) {
-          _action = Act.select;
+          action = Act.select;
           changeSideToMove();
 
           if (_checkIfGameIsOver()) {
@@ -556,7 +552,7 @@ class Position {
         } else {
           _pieceToRemoveCount = DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
-          _action = Act.remove;
+          action = Act.remove;
           MillController().gameInstance.focusIndex = squareToIndex[s];
           Audios().playTone(Sound.mill);
         }
@@ -574,7 +570,7 @@ class Position {
       return const IllegalPhase();
     }
 
-    if (_action != Act.remove) {
+    if (action != Act.remove) {
       return const IllegalAction();
     }
 
@@ -632,7 +628,7 @@ class Position {
       if (pieceInHandCount[PieceColor.white] == 0 &&
           pieceInHandCount[PieceColor.black] == 0) {
         phase = Phase.moving;
-        _action = Act.select;
+        action = Act.select;
 
         if (DB().ruleSettings.hasBannedLocations) {
           _removeBanStones();
@@ -644,10 +640,10 @@ class Position {
           return const MillResponseOK();
         }
       } else {
-        _action = Act.place;
+        action = Act.place;
       }
     } else {
-      _action = Act.select;
+      action = Act.select;
     }
 
     changeSideToMove();
@@ -662,7 +658,7 @@ class Position {
       return const IllegalPhase();
     }
 
-    if (_action != Act.select && _action != Act.place) {
+    if (action != Act.select && action != Act.place) {
       return const IllegalAction();
     }
 
@@ -675,7 +671,7 @@ class Position {
     }
 
     _currentSquare = sq;
-    _action = Act.place;
+    action = Act.place;
     MillController().gameInstance.blurIndex = squareToIndex[sq];
 
     return const MillResponseOK();
@@ -694,7 +690,7 @@ class Position {
   PieceColor get winner => _winner;
 
   // TODO: Why cannot use winner?
-  set theWinner(PieceColor pieceColor) => _winner = pieceColor;
+  set winner(PieceColor pieceColor) => _winner = pieceColor;
 
   void _setGameOver(PieceColor w, GameOverReason reason) {
     phase = Phase.gameOver;
@@ -750,7 +746,7 @@ class Position {
       return true;
     }
 
-    if (phase == Phase.moving && _action == Act.select && _isAllSurrounded) {
+    if (phase == Phase.moving && action == Act.select && _isAllSurrounded) {
       if (DB().ruleSettings.isLoseButNotChangeSideWhenNoWay) {
         _setGameOver(sideToMove.opponent, GameOverReason.loseNoWay);
         return true;
@@ -987,7 +983,7 @@ extension SetupPosition on Position {
 
   void reset() {
     phase = Phase.placing;
-    _action = Act.place;
+    action = Act.place;
 
     _sideToMove = PieceColor.white;
     _them = PieceColor.black;
@@ -1024,7 +1020,7 @@ extension SetupPosition on Position {
 
   void copyWith(Position pos) {
     phase = pos.phase;
-    _action = pos._action;
+    action = pos.action;
 
     _sideToMove = pos._sideToMove;
     _them = pos._them;
@@ -1116,7 +1112,7 @@ extension SetupPosition on Position {
   }
 
   MillResponse _removePieceForSetupPosition(int s) {
-    if (_action != Act.remove) {
+    if (action != Act.remove) {
       Audios().playTone(Sound.illegal);
       return const IllegalAction();
     }

@@ -27,10 +27,10 @@ class TapHandler {
       MillController().position.pieceOnBoardCount[PieceColor.black] == 0;
 
   Future<EngineResponse> setupPosition(int sq) async {
-    if (MillController().position._action == Act.place ||
-        MillController().position._action == Act.select) {
+    if (MillController().position.action == Act.place ||
+        MillController().position.action == Act.select) {
       MillController().position._putPieceForSetupPosition(sq);
-    } else if (MillController().position._action == Act.remove) {
+    } else if (MillController().position.action == Act.remove) {
       MillController().position._removePieceForSetupPosition(sq);
     } else {
       assert(false);
@@ -100,12 +100,12 @@ class TapHandler {
 
     // Human to go
     bool ret = false;
-    switch (MillController().position._action) {
+    switch (MillController().position.action) {
       case Act.place:
         if (MillController().position._putPiece(sq)) {
           MillController().animationController.reset();
           MillController().animationController.animateTo(1.0);
-          if (MillController().position._action == Act.remove) {
+          if (MillController().position.action == Act.remove) {
             showTip(S.of(context).tipMill);
           } else {
             if (MillController().gameInstance.gameMode == GameMode.humanVsAi) {

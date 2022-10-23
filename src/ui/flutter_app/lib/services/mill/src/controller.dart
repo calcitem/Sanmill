@@ -326,7 +326,7 @@ class MillController {
     final String? n = recorder.lastF?.notation;
 
     if (DB().generalSettings.screenReaderSupport &&
-        MillController().position._action != Act.remove &&
+        MillController().position.action != Act.remove &&
         n != null) {
       rootScaffoldMessengerKey.currentState!
           .showSnackBar(CustomSnackBar("$humanStr: $n"));
