@@ -24,6 +24,9 @@ class _ResetSettingsAlert extends StatelessWidget {
   Future<void> _restore(BuildContext context) async {
     Navigator.pop(context);
 
+    rootScaffoldMessengerKey.currentState!
+        .showSnackBarClear(S.of(context).reopenToTakeEffect);
+
     // TODO: Seems to need to close and reopen the program for it to work.
     await DB.reset();
 

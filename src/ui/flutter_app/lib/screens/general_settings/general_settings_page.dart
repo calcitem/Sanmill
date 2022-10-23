@@ -28,6 +28,7 @@ import '../../services/logger.dart';
 import '../../services/mill/mill.dart';
 import '../../shared/constants.dart';
 import '../../shared/custom_drawer/custom_drawer.dart';
+import '../../shared/scaffold_messenger.dart';
 import '../../shared/settings/settings.dart';
 import '../../shared/theme/app_theme.dart';
 
