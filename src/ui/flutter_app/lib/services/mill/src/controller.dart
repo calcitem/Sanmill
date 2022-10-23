@@ -197,6 +197,7 @@ class MillController {
         logger.v("$tag Searching..., isMoveNow: $isMoveNow");
 
         final ExtMove extMove = await controller.engine
+            // ignore: avoid_bool_literals_in_conditional_expressions
             .search(moveNow: loopIsFirst ? isMoveNow : false);
 
         if (MillController().isActive == false) {
