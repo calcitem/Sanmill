@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: avoid_classes_with_only_static_members
 class TextSizeHelper {
   // Get the size of the text through textPainter
   static Size boundingTextSize(
