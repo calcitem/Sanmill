@@ -151,6 +151,7 @@ class _DatabaseV1 {
     final Directory docDir = await getApplicationDocumentsDirectory();
 
     final File file = File("${docDir.path}/$fileName");
+    // ignore: avoid_slow_async_io
     if (await file.exists()) {
       return file;
     }
