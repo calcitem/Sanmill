@@ -51,9 +51,9 @@ class GameRecorder extends PointedList<ExtMove> {
   String? get moveHistoryText {
     String buildTagPairs() {
       if (MillController().recorder.setupPosition != null) {
-        return "[FEN \"${MillController().recorder.setupPosition!}\"]\r\n[SetUp \"1\"]\r\n\r\n";
+        return '[FEN "${MillController().recorder.setupPosition!}"]\r\n[SetUp "1"]\r\n\r\n';
       }
-      return "[FEN \"${MillController().position.fen}\"]\r\n[SetUp \"1\"]\r\n\r\n";
+      return '[FEN "${MillController().position.fen}"]\r\n[SetUp "1"]\r\n\r\n';
     }
 
     if (isEmpty || index == null) {

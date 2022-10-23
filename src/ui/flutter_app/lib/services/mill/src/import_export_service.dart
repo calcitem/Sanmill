@@ -254,13 +254,13 @@ class ImportService {
         break;
     }
 
-    String tagPairs = "[Event \"Sanmill-Game\"]\r\n"
-        "[Site \"Sanmill\"]\r\n"
-        "[Date \"$date\"]\r\n"
-        "[Round \"${total.toString()}\"]\r\n"
-        "[White \"$white\"]\r\n"
-        "[Black \"$black\"]\r\n"
-        "[Result \"$result\"]\r\n";
+    String tagPairs = '[Event "Sanmill-Game"]\r\n'
+        '[Site "Sanmill"]\r\n'
+        '[Date "$date"]\r\n'
+        '[Round "${total.toString()}"]\r\n'
+        '[White "$white"]\r\n'
+        '[Black "$black"]\r\n'
+        '[Result "$result"]\r\n';
 
     if (!(moveList.length > 3 && moveList.startsWith("[FEN"))) {
       tagPairs = "$tagPairs\r\n";
