@@ -44,6 +44,7 @@ class _GameOptionsModal extends StatelessWidget {
                         MillController().recorder.index! <= 3)) ||
                 MillController().position.phase == Phase.gameOver) {
               // TODO: This part of the code is repetitive.
+              // ignore: unnecessary_statements
               MillController().isActive == false;
 
               // TODO: Called stopSearching(); so isEngineGoing is always false?
@@ -120,6 +121,7 @@ class _GameOptionsModal extends StatelessWidget {
           textScaleFactor: DB().displaySettings.fontScale,
         ),
         onPressed: () {
+          // ignore: unnecessary_statements
           MillController().isActive == false;
 
           // TODO: Called stopSearching(); so isEngineGoing is always false?

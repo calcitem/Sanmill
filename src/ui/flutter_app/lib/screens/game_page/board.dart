@@ -44,6 +44,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
       visitedRuleSettingsPage = false;
     }
 
+    // ignore: unnecessary_statements
     MillController().isReady == false;
 
     MillController().engine.startup();
