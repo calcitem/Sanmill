@@ -121,13 +121,13 @@ extension PieceColorExtension on PieceColor {
 
     switch (this) {
       case PieceColor.white:
-        if (isAi == true) {
+        if (isAi! == true) {
           return GameResult.lose;
         } else {
           return GameResult.win;
         }
       case PieceColor.black:
-        if (isAi == true) {
+        if (isAi! == true) {
           return GameResult.lose;
         } else {
           return GameResult.win;
