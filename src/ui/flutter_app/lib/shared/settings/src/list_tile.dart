@@ -155,7 +155,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
     return AlertDialog(
       content: ColorPicker(
         pickerColor: pickedColor,
-        labelTypes: const [],
+        labelTypes: const <ColorLabelType>[],
         onColorChanged: _changeColor,
       ),
       actions: <Widget>[

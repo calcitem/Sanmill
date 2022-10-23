@@ -21,7 +21,7 @@ part of 'game_page.dart';
 class _GameOptionsModal extends StatelessWidget {
   const _GameOptionsModal();
 
-  static const _tag = "[GameOptionsModal]";
+  static const String _tag = "[GameOptionsModal]";
 
   onStartNewGameButtonPressed(BuildContext context) async {}
 
@@ -170,7 +170,7 @@ class _GameOptionsModal extends StatelessWidget {
         S.of(context).restartGame,
         textScaleFactor: DB().displaySettings.fontScale,
       ),
-      actions: [
+      actions: <Widget>[
         yesButton,
         noButton,
       ],

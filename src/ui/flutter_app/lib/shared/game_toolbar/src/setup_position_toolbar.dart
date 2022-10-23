@@ -576,82 +576,83 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
     // Phase
     final ToolbarItem placingButton = ToolbarItem.icon(
-      onPressed: () => {setSetupPositionPhase(context, Phase.placing)},
+      onPressed: () => <dynamic>{setSetupPositionPhase(context, Phase.placing)},
       icon: const Icon(FluentIcons.grid_dots_24_regular),
       label: Text(S.of(context).placing),
     );
 
     final ToolbarItem movingButton = ToolbarItem.icon(
-      onPressed: () => {setSetupPositionPhase(context, Phase.moving)},
+      onPressed: () => <dynamic>{setSetupPositionPhase(context, Phase.moving)},
       icon: const Icon(FluentIcons.arrow_move_24_regular),
       label: Text(S.of(context).moving),
     );
 
     // Remove
     final ToolbarItem removeZeroButton = ToolbarItem.icon(
-      onPressed: () => {setSetupPositionNeedRemove(0, true)},
+      onPressed: () => <dynamic>{setSetupPositionNeedRemove(0, true)},
       icon: const Icon(FluentIcons.circle_24_regular),
       label: Text(S.of(context).remove),
     );
 
     final ToolbarItem removeOneButton = ToolbarItem.icon(
-      onPressed: () => {setSetupPositionNeedRemove(1, true)},
+      onPressed: () => <dynamic>{setSetupPositionNeedRemove(1, true)},
       icon: const Icon(FluentIcons.number_circle_1_24_regular),
       label: Text(S.of(context).remove),
     );
 
     final ToolbarItem removeTwoButton = ToolbarItem.icon(
-      onPressed: () => {setSetupPositionNeedRemove(2, true)},
+      onPressed: () => <dynamic>{setSetupPositionNeedRemove(2, true)},
       icon: const Icon(FluentIcons.number_circle_2_24_regular),
       label: Text(S.of(context).remove),
     );
 
     final ToolbarItem removeThreeButton = ToolbarItem.icon(
-      onPressed: () => {setSetupPositionNeedRemove(3, true)},
+      onPressed: () => <dynamic>{setSetupPositionNeedRemove(3, true)},
       icon: const Icon(FluentIcons.number_circle_3_24_regular),
       label: Text(S.of(context).remove),
     );
 
     final ToolbarItem placedButton = ToolbarItem.icon(
-      onPressed: () => {setSetupPositionPlaced(context)},
+      onPressed: () => <dynamic>{setSetupPositionPlaced(context)},
       icon: const Icon(FluentIcons.text_word_count_24_regular),
       label: Text(S.of(context).placedCount(newPlaced.toString())),
     );
 
     final ToolbarItem copyButton = ToolbarItem.icon(
-      onPressed: () => {setSetupPositionCopy(context)},
+      onPressed: () => <dynamic>{setSetupPositionCopy(context)},
       icon: const Icon(FluentIcons.copy_24_regular),
       label: Text(S.of(context).copy),
     );
 
     final ToolbarItem pasteButton = ToolbarItem.icon(
-      onPressed: () => {setSetupPositionPaste(context)},
+      onPressed: () => <dynamic>{setSetupPositionPaste(context)},
       icon: const Icon(FluentIcons.clipboard_paste_24_regular),
       label: Text(S.of(context).paste),
     );
 
     // Cancel
     final ToolbarItem cancelButton = ToolbarItem.icon(
-      onPressed: () => {restoreContext()}, // TODO: setState();
+      onPressed: () => <void>{restoreContext()}, // TODO: setState();
       icon: const Icon(FluentIcons.dismiss_24_regular),
       label: Text(S.of(context).cancel),
     );
 
-    final Map<PieceColor, ToolbarItem> colorButtonMap = {
+    final Map<PieceColor, ToolbarItem> colorButtonMap =
+        <PieceColor, ToolbarItem>{
       PieceColor.white: whitePieceButton,
       PieceColor.black: blackPieceButton,
       PieceColor.ban: banPointButton,
       PieceColor.none: emptyPointButton,
     };
 
-    final Map<Phase, ToolbarItem> phaseButtonMap = {
+    final Map<Phase, ToolbarItem> phaseButtonMap = <Phase, ToolbarItem>{
       Phase.ready: placingButton,
       Phase.placing: placingButton,
       Phase.moving: movingButton,
       Phase.gameOver: movingButton,
     };
 
-    final Map<int, ToolbarItem> removeButtonMap = {
+    final Map<int, ToolbarItem> removeButtonMap = <int, ToolbarItem>{
       0: removeZeroButton,
       1: removeOneButton,
       2: removeTwoButton,
@@ -673,7 +674,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     ];
 
     return Column(
-      children: [
+      children: <Widget>[
         SetupPositionButtonsContainer(
           backgroundColor: backgroundColor,
           margin: _margin,
@@ -766,7 +767,7 @@ class _PlacedModal extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             for (int i = begin; i <= DB().ruleSettings.piecesCount; i++)
-              RadioListTile(
+              RadioListTile<int>(
                 title: Text(i.toString()),
                 groupValue: placedGroupValue,
                 value: i,

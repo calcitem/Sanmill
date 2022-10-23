@@ -51,6 +51,7 @@ class _MoveListDialog extends StatelessWidget {
             style: Theme.of(context).textTheme.headline6!.copyWith(
                 color: AppTheme.gamePageActionSheetTextColor,
                 fontWeight: FontWeight.normal,
+                // ignore: always_specify_types
                 fontFeatures: [const FontFeature.tabularFigures()]),
           ),
         ),

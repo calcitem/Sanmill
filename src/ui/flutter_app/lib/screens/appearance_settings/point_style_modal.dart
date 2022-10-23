@@ -38,7 +38,7 @@ class _PointPaintingStyleModal extends StatelessWidget {
             value: PointPaintingStyle.none,
             onChanged: onChanged,
           ),
-          RadioListTile(
+          RadioListTile<PointPaintingStyle>(
             title: Text(S.of(context).solid),
             groupValue: pointPaintingStyle,
             value: PointPaintingStyle.fill,

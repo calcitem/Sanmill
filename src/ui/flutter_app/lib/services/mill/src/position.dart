@@ -16,7 +16,7 @@
 
 part of '../mill.dart';
 
-List<int> posKeyHistory = [];
+List<int> posKeyHistory = <int>[];
 
 class StateInfo {
   // Copied when making a move
@@ -32,14 +32,16 @@ class Position {
 
   GameResult? result;
 
-  final List<PieceColor> _board = List.filled(sqNumber, PieceColor.none);
-  final List<PieceColor> _grid = List.filled(7 * 7, PieceColor.none);
+  final List<PieceColor> _board =
+      List<PieceColor>.filled(sqNumber, PieceColor.none);
+  final List<PieceColor> _grid =
+      List<PieceColor>.filled(7 * 7, PieceColor.none);
 
-  final Map<PieceColor, int> pieceInHandCount = {
+  final Map<PieceColor, int> pieceInHandCount = <PieceColor, int>{
     PieceColor.white: DB().ruleSettings.piecesCount,
     PieceColor.black: DB().ruleSettings.piecesCount,
   };
-  final Map<PieceColor, int> pieceOnBoardCount = {
+  final Map<PieceColor, int> pieceOnBoardCount = <PieceColor, int>{
     PieceColor.white: 0,
     PieceColor.black: 0,
   };
@@ -67,7 +69,7 @@ class Position {
     _action = action;
   }
 
-  static Map<PieceColor, int> score = {
+  static Map<PieceColor, int> score = <PieceColor, int>{
     PieceColor.white: 0,
     PieceColor.black: 0,
     PieceColor.draw: 0,
@@ -185,7 +187,7 @@ class Position {
     final String boardStr = l[0];
     final List<String> ring = boardStr.split("/");
 
-    final Map<String, PieceColor> pieceMap = {
+    final Map<String, PieceColor> pieceMap = <String, PieceColor>{
       "*": PieceColor.none,
       "O": PieceColor.white,
       "@": PieceColor.black,
@@ -204,7 +206,7 @@ class Position {
 
     final String sideToMoveStr = l[1];
 
-    final Map<String, PieceColor> sideToMoveMap = {
+    final Map<String, PieceColor> sideToMoveMap = <String, PieceColor>{
       "w": PieceColor.white,
       "b": PieceColor.black,
     };
@@ -215,7 +217,7 @@ class Position {
 
     final String phaseStr = l[2];
 
-    final Map<String, Phase> phaseMap = {
+    final Map<String, Phase> phaseMap = <String, Phase>{
       "r": Phase.ready,
       "p": Phase.placing,
       "m": Phase.moving,
@@ -226,7 +228,7 @@ class Position {
 
     final String actionStr = l[3];
 
-    final Map<String, Act> actionMap = {
+    final Map<String, Act> actionMap = <String, Act>{
       "p": Act.place,
       "s": Act.select,
       "r": Act.remove,
@@ -862,7 +864,7 @@ class Position {
 
   int _millsCount(int s) {
     int n = 0;
-    final List<int?> idx = [0, 0, 0];
+    final List<int?> idx = <int>[0, 0, 0];
     int min = 0;
     int? temp = 0;
     final PieceColor m = _board[s];

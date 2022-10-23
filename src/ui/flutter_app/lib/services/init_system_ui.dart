@@ -22,7 +22,10 @@ void _initUI() {
   logger.v(Constants.windowAspectRatio.toString());
 
   SystemChrome.setPreferredOrientations(
-    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+    <DeviceOrientation>[
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ],
   );
 
 // TODO: [Leptopoda] Use layoutBuilder to add adaptiveness
@@ -40,6 +43,7 @@ void _initUI() {
       ),
     );
   } else if (Constants.isSmallScreen || EnvironmentConfig.test == true) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: <SystemUiOverlay>[]);
   }
 }

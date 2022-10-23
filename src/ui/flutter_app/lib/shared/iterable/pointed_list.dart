@@ -30,7 +30,7 @@ class PointedList<E> extends DelegatingList<E> {
 
   PointedList._(List<E> l)
       : _l = l,
-        globalIterator = PointedListIterator(l),
+        globalIterator = PointedListIterator<E>(l),
         super(l) {
     if (l.isNotEmpty) {
       globalIterator.moveToLast();
@@ -114,7 +114,8 @@ class PointedList<E> extends DelegatingList<E> {
   /// Modifying the underlying collection after creating the new iterator may cause an error the next time [Iterator.moveNext] is called on that iterator. Any modifiable iterable class should specify which operations will break iteration.
   ///
   /// Copied from Iterable.
-  PointedListIterator<E> get bidirectionalIterator => PointedListIterator(_l);
+  PointedListIterator<E> get bidirectionalIterator =>
+      PointedListIterator<E>(_l);
 }
 
 /// Pointed List Iterator.

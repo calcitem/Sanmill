@@ -34,7 +34,7 @@ class Game {
   int? blurIndex;
 
   // TODO: [Leptopoda] Give a game two players (new class) to hold a player. A player can have a color, be AI ...
-  Map<PieceColor, bool> _isAi = {
+  Map<PieceColor, bool> _isAi = <PieceColor, bool>{
     PieceColor.white: false,
     PieceColor.black: true,
   };

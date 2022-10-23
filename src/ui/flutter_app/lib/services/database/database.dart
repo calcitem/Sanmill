@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'dart:convert' show jsonDecode;
-import 'dart:io' show File;
+import 'dart:io' show Directory, File;
 
 import 'package:flutter/foundation.dart'
     show ValueListenable, kIsWeb, visibleForTesting;
@@ -124,7 +124,7 @@ class Database {
 
   /// Listens to changes inside the settings Box
   ValueListenable<Box<GeneralSettings>> get listenGeneralSettings =>
-      _generalSettingsBox.listenable(keys: [generalSettingsKey]);
+      _generalSettingsBox.listenable(keys: <String>[generalSettingsKey]);
 
   /// Saves the given [generalSettings] to the settings Box
   set generalSettings(GeneralSettings generalSettings) {
@@ -146,7 +146,7 @@ class Database {
 
   /// Listens to changes inside the settings Box
   ValueListenable<Box<RuleSettings>> get listenRuleSettings =>
-      _ruleSettingsBox.listenable(keys: [ruleSettingsKey]);
+      _ruleSettingsBox.listenable(keys: <String>[ruleSettingsKey]);
 
   /// Saves the given [ruleSettings] to the settings Box
   set _ruleSettings(RuleSettings? ruleSettings) {
@@ -184,7 +184,7 @@ class Database {
 
   /// Listens to changes inside the settings Box
   ValueListenable<Box<DisplaySettings>> get listenDisplaySettings =>
-      _displaySettingsBox.listenable(keys: [displaySettingsKey]);
+      _displaySettingsBox.listenable(keys: <String>[displaySettingsKey]);
 
   /// Saves the given [displaySettings] to the settings Box
   set displaySettings(DisplaySettings displaySettings) =>
@@ -206,7 +206,7 @@ class Database {
 
   /// Listens to changes inside the settings Box
   ValueListenable<Box<ColorSettings>> get listenColorSettings =>
-      _colorSettingsBox.listenable(keys: [colorSettingsKey]);
+      _colorSettingsBox.listenable(keys: <String>[colorSettingsKey]);
 
   /// Saves the given [colorSettings] to the settings Box
   set colorSettings(ColorSettings colorSettings) =>

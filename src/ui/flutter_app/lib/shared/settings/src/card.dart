@@ -35,7 +35,7 @@ class SettingsCard extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         DefaultTextStyle(
           style: textStyle,
           textAlign: TextAlign.start,

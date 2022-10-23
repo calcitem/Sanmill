@@ -50,7 +50,7 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = [
+    final List<Widget> children = <Widget>[
       FutureBuilder<PackageInfo>(
         future: PackageInfo.fromPlatform(),
         builder: (_, AsyncSnapshot<PackageInfo> data) {
@@ -91,7 +91,7 @@ class AboutPage extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
+            MaterialPageRoute<LicenseAgreementPage>(
               builder: (BuildContext context) => const LicenseAgreementPage(),
             ),
           );
@@ -186,7 +186,7 @@ class _VersionDialog extends StatelessWidget {
                 (BuildContext context, AsyncSnapshot<GitInformation> snapshot) {
               if (snapshot.hasData) {
                 return Column(
-                  children: [
+                  children: <Widget>[
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(

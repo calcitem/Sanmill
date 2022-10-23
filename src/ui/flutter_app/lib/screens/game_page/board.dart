@@ -48,6 +48,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
     MillController().engine.startup();
 
+    // ignore: always_specify_types
     Future.delayed(const Duration(microseconds: 100), () {
       _setReadyState();
     });
@@ -62,7 +63,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     );
 
     // sqrt(1.618) = 1.272
-    MillController().animation = Tween(begin: 1.27, end: 1.0)
+    MillController().animation = Tween<double>(begin: 1.27, end: 1.0)
         .animate(MillController().animationController);
   }
 
@@ -215,7 +216,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 7,
       ),
-      children: List.generate(
+      children: List<Widget>.generate(
         7 * 7,
         (int index) => Center(
           child: Semantics(
@@ -229,11 +230,11 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
 
   /// Builds a list of Strings representing the label of each semantic node.
   List<String> _buildSquareDescription(BuildContext context) {
-    final List<String> coordinates = [];
-    final List<String> pieceDesc = [];
-    final List<String> squareDesc = [];
+    final List<String> coordinates = <String>[];
+    final List<String> pieceDesc = <String>[];
+    final List<String> squareDesc = <String>[];
 
-    const List<int> map = [
+    const List<int> map = <int>[
       /* 1 */
       1,
       8,
@@ -292,7 +293,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
       49
     ];
 
-    const List<int> checkPoints = [
+    const List<int> checkPoints = <int>[
       /* 1 */
       1,
       0,

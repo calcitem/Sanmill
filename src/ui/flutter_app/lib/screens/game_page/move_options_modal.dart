@@ -35,7 +35,7 @@ class _MoveOptionsModal extends StatelessWidget {
     return GamePageDialog(
       semanticLabel: S.of(context).moveNumber(0),
       children: <Widget>[
-        if (!DB().displaySettings.isHistoryNavigationToolbarShown) ...[
+        if (!DB().displaySettings.isHistoryNavigationToolbarShown) ...<Widget>[
           SimpleDialogOption(
             onPressed: () => HistoryNavigator.takeBack(context),
             child: Text(S.of(context).takeBack),
@@ -58,7 +58,7 @@ class _MoveOptionsModal extends StatelessWidget {
           const CustomSpacer(),
         ],
         if (MillController().recorder.hasPrevious ||
-            MillController().isPositionSetup == true) ...[
+            MillController().isPositionSetup == true) ...<Widget>[
           SimpleDialogOption(
             onPressed: () => _showMoveList(context),
             child: Text(S.of(context).showMoveList),

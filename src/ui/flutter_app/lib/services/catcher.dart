@@ -36,7 +36,7 @@ Future<void> _initCatcher(Catcher catcher) async {
 
   final CatcherOptions debugOptions = CatcherOptions(
       PageReportMode(),
-      [
+      <ReportHandler>[
         ConsoleHandler(),
         FileHandler(File(path), printLogs: true),
         EmailManualHandler(Constants.recipients, printLogs: true)
@@ -48,7 +48,7 @@ Future<void> _initCatcher(Catcher catcher) async {
   /// user will be prompted to send email with crash to support.
   final CatcherOptions releaseOptions = CatcherOptions(
       PageReportMode(),
-      [
+      <ReportHandler>[
         FileHandler(File(path), printLogs: true),
         EmailManualHandler(Constants.recipients, printLogs: true)
       ],
@@ -56,7 +56,7 @@ Future<void> _initCatcher(Catcher catcher) async {
 
   final CatcherOptions profileOptions = CatcherOptions(
       PageReportMode(),
-      [
+      <ReportHandler>[
         ConsoleHandler(),
         FileHandler(File(path), printLogs: true),
         EmailManualHandler(Constants.recipients, printLogs: true)

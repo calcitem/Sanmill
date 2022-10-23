@@ -27,19 +27,21 @@ class _DatabaseMigration {
   static const String _tag = "[Database Migration]";
 
   /// The newest DB version.
-  static const _newVersion = 2;
+  static const int _newVersion = 2;
 
   /// The current DB version.
   /// It will get initialized by [migrate] with the saved value.
   static late int? _currentVersion;
 
   /// The list of migrations
-  static const _migrations = [
+  static const List<Future<void> Function()> _migrations =
+      <Future<void> Function()>[
     _migrateToHive,
     _migrateFromV1,
   ];
 
   /// Database Box reference
+  // ignore: always_specify_types
   static late Box _databaseBox;
 
   /// Key at which the [_databaseBox] will be saved
@@ -109,12 +111,12 @@ class _DatabaseMigration {
   static Future<void> _migrateFromV1() async {
     assert(_currentVersion! <= 1);
 
-    final generalSettings = DB().generalSettings;
+    final GeneralSettings generalSettings = DB().generalSettings;
     DB().generalSettings = generalSettings.copyWith(
       searchAlgorithm: SearchAlgorithm.values[generalSettings.algorithm],
     );
 
-    final displaySettings = DB().displaySettings;
+    final DisplaySettings displaySettings = DB().displaySettings;
     DB().displaySettings = displaySettings.copyWith(
       locale: DB().displaySettings.languageCode == "Default"
           ? null
@@ -123,7 +125,7 @@ class _DatabaseMigration {
       fontScale: displaySettings.fontSize / 16,
     );
 
-    final colorSettings = DB().colorSettings;
+    final ColorSettings colorSettings = DB().colorSettings;
     DB().colorSettings = colorSettings.copyWith(
       drawerColor: Color.lerp(
         colorSettings.drawerColor,
@@ -142,13 +144,13 @@ class _DatabaseMigration {
 class _DatabaseV1 {
   const _DatabaseV1._();
 
-  static const _tag = "[KV store Migration]";
+  static const String _tag = "[KV store Migration]";
 
   static Future<File?> _getFile() async {
-    final fileName = Constants.settingsFilename;
-    final docDir = await getApplicationDocumentsDirectory();
+    final String fileName = Constants.settingsFilename;
+    final Directory docDir = await getApplicationDocumentsDirectory();
 
-    final file = File("${docDir.path}/$fileName");
+    final File file = File("${docDir.path}/$fileName");
     if (await file.exists()) {
       return file;
     }
@@ -157,7 +159,7 @@ class _DatabaseV1 {
 
   /// Checks whether the current DB is still the old KV store by checking the availability of the json file
   static Future<bool> get usesV1 async {
-    final file = await _getFile();
+    final File? file = await _getFile();
     logger.i("$_tag still uses v1: ${file != null}");
     return file != null;
   }
@@ -168,8 +170,9 @@ class _DatabaseV1 {
     logger.v("$_tag Loading $file ...");
 
     try {
-      final contents = await file.readAsString();
-      final values = jsonDecode(contents) as Map<String, dynamic>?;
+      final String contents = await file.readAsString();
+      final Map<String, dynamic>? values =
+          jsonDecode(contents) as Map<String, dynamic>?;
       logger.v(values.toString());
       return values;
     } catch (e) {
@@ -182,10 +185,10 @@ class _DatabaseV1 {
   /// TODO: it won't do anything if the
   static Future<void> migrateDB() async {
     logger.i("$_tag migrate from KV to DB");
-    final file = await _getFile();
+    final File? file = await _getFile();
     assert(file != null);
 
-    final json = await _loadFile(file!);
+    final Map<String, dynamic>? json = await _loadFile(file!);
     if (json != null) {
       DB().generalSettings = GeneralSettings.fromJson(json);
       DB().ruleSettings = RuleSettings.fromJson(json);

@@ -19,6 +19,7 @@ library painters;
 
 import 'package:flutter/material.dart';
 
+import '../../models/color_settings.dart';
 import '../../models/display_settings.dart';
 import '../../services/database/database.dart';
 import '../../services/environment_config.dart';

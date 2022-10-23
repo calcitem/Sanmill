@@ -68,6 +68,7 @@ class GamePage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: DB().colorSettings.darkBackgroundColor,
+      // ignore: always_specify_types
       body: FutureBuilder(
         future: controller.start(),
         builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
@@ -142,7 +143,8 @@ class _GameState extends State<_Game> {
 
   void _showGeneralSettings(BuildContext context) => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => const GeneralSettingsPage()),
+        MaterialPageRoute<GeneralSettingsPage>(
+            builder: (_) => const GeneralSettingsPage()),
       );
 
   void _showMoveModalBottomSheet(BuildContext context) => showModalBottomSheet(
@@ -292,7 +294,7 @@ class _GameState extends State<_Game> {
     return SafeArea(
       bottom: false,
       child: Stack(
-        children: [
+        children: <Widget>[
           SingleChildScrollView(
             child: Column(
               children: <Widget>[

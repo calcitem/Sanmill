@@ -149,7 +149,7 @@ class GeneralSettingsPage extends StatelessWidget {
     )!;
 
     return SettingsList(
-      children: [
+      children: <Widget>[
         SettingsCard(
           title: Text(S.of(context).whoMovesFirst),
           children: <Widget>[
@@ -271,7 +271,7 @@ class GeneralSettingsPage extends StatelessWidget {
           leading: DrawerIcon.of(context)?.icon,
           title: Text(S.of(context).generalSettings),
         ),
-        body: ValueListenableBuilder(
+        body: ValueListenableBuilder<Box<GeneralSettings>>(
           valueListenable: DB().listenGeneralSettings,
           builder: _buildGeneralSettingsList,
         ),

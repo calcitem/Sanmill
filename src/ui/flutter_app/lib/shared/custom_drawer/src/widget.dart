@@ -39,6 +39,7 @@ class CustomDrawer extends StatefulWidget {
   final bool disabledGestures;
 
   /// Items the drawer holds
+  // ignore: always_specify_types
   final List<CustomDrawerItem> items;
 
   /// Header widget of the drawer
@@ -115,7 +116,7 @@ class CustomDrawerState extends State<CustomDrawer>
         child: Material(
           color: DB().colorSettings.drawerColor,
           child: CustomScrollView(
-            slivers: [
+            slivers: <Widget>[
               SliverPinnedToBoxAdapter(
                 child: Container(
                     decoration:
@@ -156,7 +157,7 @@ class CustomDrawerState extends State<CustomDrawer>
         ),
         child: DecoratedBox(
           decoration: const BoxDecoration(
-            boxShadow: [
+            boxShadow: <BoxShadow>[
               BoxShadow(
                 color: AppTheme.drawerBoxerShadowColor,
                 blurRadius: 24,
@@ -188,6 +189,7 @@ class CustomDrawerState extends State<CustomDrawer>
   }
 
   Widget _buildItem(BuildContext context, int index) {
+    // ignore: always_specify_types
     final CustomDrawerItem item = widget.items[index];
 
     final double itemPadding = window.physicalSize.height >= 1080

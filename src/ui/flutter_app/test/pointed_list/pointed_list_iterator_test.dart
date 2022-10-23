@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// ignore_for_file: always_specify_types
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/shared/iterable/pointed_list.dart';
 
@@ -23,7 +25,7 @@ void main() {
         "Current should be populated with the first element when parent isNotEmpty",
         () {
       // Initialize
-      final List<int> list = [1, 2, 3, 4, 5];
+      final List<int> list = <int>[1, 2, 3, 4, 5];
       final PointedListIterator<int> iterator = PointedListIterator(list);
 
       expect(iterator.current, list.first);

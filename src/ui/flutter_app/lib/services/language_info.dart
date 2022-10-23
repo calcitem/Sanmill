@@ -61,7 +61,7 @@ import '../generated/intl/l10n_uz.dart';
 import '../generated/intl/l10n_vi.dart';
 import '../generated/intl/l10n_zh.dart';
 
-Map<Locale, String> localeToLanguageName = {
+Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("ar"): SAr().languageName,
   const Locale("bg"): SBg().languageName,
   const Locale("bn"): SBn().languageName,

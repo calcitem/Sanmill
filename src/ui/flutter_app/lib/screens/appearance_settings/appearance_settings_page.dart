@@ -308,13 +308,13 @@ class AppearanceSettingsPage extends StatelessWidget {
           title: Text(S.of(context).appearance),
         ),
         body: SettingsList(
-          children: [
-            ValueListenableBuilder(
+          children: <Widget>[
+            ValueListenableBuilder<Box<DisplaySettings>>(
               valueListenable: DB().listenDisplaySettings,
               builder: _buildDisplaySettings,
             ),
             if (Constants.isSmallScreen == false)
-              ValueListenableBuilder(
+              ValueListenableBuilder<Box<ColorSettings>>(
                 valueListenable: DB().listenColorSettings,
                 builder: _buildColorSettings,
               ),

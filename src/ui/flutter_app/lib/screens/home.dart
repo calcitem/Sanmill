@@ -180,7 +180,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final List<CustomDrawerItem> drawerItems = [
+    final List<CustomDrawerItem<_DrawerIndex>> drawerItems =
+        <CustomDrawerItem<_DrawerIndex>>[
       CustomDrawerItem<_DrawerIndex>(
         value: _DrawerIndex.humanVsAi,
         title: S.of(context).humanVsAi,
@@ -300,7 +301,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           version +
           Constants.feedbackSubjectSuffix,
       recipients: Constants.recipients,
-      attachmentPaths: [screenshotFilePath],
+      attachmentPaths: <String>[screenshotFilePath],
     );
     await FlutterEmailSender.send(email);
   }

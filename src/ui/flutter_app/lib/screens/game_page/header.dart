@@ -114,7 +114,7 @@ class HeaderTip extends StatefulWidget {
 }
 
 class HeaderTipState extends State<HeaderTip> {
-  final ValueNotifier<String> _messageNotifier = ValueNotifier("");
+  final ValueNotifier<String> _messageNotifier = ValueNotifier<String>("");
 
   void showTip() {
     final HeaderTipNotifier headerTipNotifier =
@@ -136,7 +136,7 @@ class HeaderTipState extends State<HeaderTip> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<String>(
       valueListenable: _messageNotifier,
       builder: (BuildContext context, String value, Widget? child) {
         return Semantics(
@@ -146,6 +146,7 @@ class HeaderTipState extends State<HeaderTip> {
             maxLines: 1,
             style: TextStyle(
               color: DB().colorSettings.messageColor,
+              // ignore: always_specify_types
               fontFeatures: const [FontFeature.tabularFigures()],
             ),
           ),
@@ -171,7 +172,7 @@ class HeaderIcons extends StatefulWidget {
 
 class HeaderStateIcons extends State<HeaderIcons> {
   final ValueNotifier<IconData> _iconDataNotifier =
-      ValueNotifier(MillController().gameInstance.sideToMove.icon);
+      ValueNotifier<IconData>(MillController().gameInstance.sideToMove.icon);
 
   void showIcons() {
     _iconDataNotifier.value = MillController().gameInstance.sideToMove.icon;
@@ -185,7 +186,7 @@ class HeaderStateIcons extends State<HeaderIcons> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<IconData>(
       valueListenable: _iconDataNotifier,
       builder: (BuildContext context, IconData value, Widget? child) {
         return IconTheme(

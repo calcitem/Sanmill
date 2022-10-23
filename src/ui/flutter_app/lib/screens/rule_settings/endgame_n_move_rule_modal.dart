@@ -33,49 +33,49 @@ class _EndGameNMoveRuleModal extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            RadioListTile(
+            RadioListTile<int>(
               title: const Text("5"),
               groupValue: endgameNMoveRule,
               value: 5,
               onChanged: onChanged,
             ),
-            RadioListTile(
+            RadioListTile<int>(
               title: const Text("10"),
               groupValue: endgameNMoveRule,
               value: 10,
               onChanged: onChanged,
             ),
-            RadioListTile(
+            RadioListTile<int>(
               title: const Text("20"),
               groupValue: endgameNMoveRule,
               value: 20,
               onChanged: onChanged,
             ),
-            RadioListTile(
+            RadioListTile<int>(
               title: const Text("30"),
               groupValue: endgameNMoveRule,
               value: 30,
               onChanged: onChanged,
             ),
-            RadioListTile(
+            RadioListTile<int>(
               title: const Text("50"),
               groupValue: endgameNMoveRule,
               value: 50,
               onChanged: onChanged,
             ),
-            RadioListTile(
+            RadioListTile<int>(
               title: const Text("60"),
               groupValue: endgameNMoveRule,
               value: 60,
               onChanged: onChanged,
             ),
-            RadioListTile(
+            RadioListTile<int>(
               title: const Text("100"),
               groupValue: endgameNMoveRule,
               value: 100,
               onChanged: onChanged,
             ),
-            RadioListTile(
+            RadioListTile<int>(
               title: const Text("200"),
               groupValue: endgameNMoveRule,
               value: 200,

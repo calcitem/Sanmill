@@ -32,25 +32,25 @@ class _PieceCountModal extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          RadioListTile(
+          RadioListTile<int>(
             title: const Text("9"),
             groupValue: piecesCount,
             value: 9,
             onChanged: onChanged,
           ),
-          RadioListTile(
+          RadioListTile<int>(
             title: const Text("10"),
             groupValue: piecesCount,
             value: 10,
             onChanged: onChanged,
           ),
-          RadioListTile(
+          RadioListTile<int>(
             title: const Text("11"),
             groupValue: piecesCount,
             value: 11,
             onChanged: onChanged,
           ),
-          RadioListTile(
+          RadioListTile<int>(
             title: const Text("12"),
             groupValue: piecesCount,
             value: 12,

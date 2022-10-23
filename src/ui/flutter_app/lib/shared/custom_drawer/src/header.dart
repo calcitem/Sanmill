@@ -26,7 +26,7 @@ class CustomDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Color> animatedTextsColors = [
+    final List<Color> animatedTextsColors = <Color>[
       DB().colorSettings.drawerTextColor,
       Colors.black,
       Colors.blue,
@@ -38,7 +38,7 @@ class CustomDrawerHeader extends StatelessWidget {
     ];
 
     final AnimatedTextKit animatedTitle = AnimatedTextKit(
-      animatedTexts: [
+      animatedTexts: <ColorizeAnimatedText>[
         ColorizeAnimatedText(
           title,
           textStyle: Theme.of(context).textTheme.headline4!.copyWith(

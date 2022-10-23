@@ -32,19 +32,19 @@ class _AlgorithmModal extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          RadioListTile(
+          RadioListTile<SearchAlgorithm>(
             title: Text(SearchAlgorithm.alphaBeta.name),
             groupValue: algorithm,
             value: SearchAlgorithm.alphaBeta,
             onChanged: onChanged,
           ),
-          RadioListTile(
+          RadioListTile<SearchAlgorithm>(
             title: Text(SearchAlgorithm.pvs.name),
             groupValue: algorithm,
             value: SearchAlgorithm.pvs,
             onChanged: onChanged,
           ),
-          RadioListTile(
+          RadioListTile<SearchAlgorithm>(
             title: Text(SearchAlgorithm.mtdf.name),
             groupValue: algorithm,
             value: SearchAlgorithm.mtdf,

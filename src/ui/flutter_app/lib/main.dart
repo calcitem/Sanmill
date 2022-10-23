@@ -81,7 +81,7 @@ class SanmillApp extends StatelessWidget {
   Widget build(BuildContext context) {
     DB(window.platformDispatcher.locale);
 
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<Box<DisplaySettings>>(
       valueListenable: DB().listenDisplaySettings,
       builder: _buildApp,
     );
@@ -94,7 +94,7 @@ class SanmillApp extends StatelessWidget {
     )!;
 
     return BetterFeedback(
-      localizationsDelegates: const [
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         ...S.localizationsDelegates,
         CustomFeedbackLocalizationsDelegate.delegate,
       ],

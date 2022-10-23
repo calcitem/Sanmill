@@ -83,7 +83,7 @@ class ExtMove {
       : -1;
   late final int to;
 
-  static final Map<int, String> _squareToWmdNotation = {
+  static final Map<int, String> _squareToWmdNotation = <int, String>{
     -1: "(none)", // TODO: Can parse it?
     0: "draw", // TODO: Can parse it?
     8: "d5",

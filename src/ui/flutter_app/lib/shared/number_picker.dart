@@ -40,7 +40,7 @@ class NumberPicker extends StatelessWidget {
     final double size = Theme.of(context).textTheme.bodyText1!.fontSize!;
     int selectValue = start;
 
-    final List<Widget> items = List.generate(
+    final List<Widget> items = List<Widget>.generate(
       end,
       (int index) => Text(showMoveString
           ? S.of(context).moveNumber(start + index)
@@ -61,7 +61,7 @@ class NumberPicker extends StatelessWidget {
           onSelectedItemChanged: (int numb) => selectValue = numb + 1,
         ),
       ),
-      actions: [
+      actions: <Widget>[
         TextButton(
           child: Text(
             S.of(context).cancel,

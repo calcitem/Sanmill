@@ -179,7 +179,7 @@ extension PieceColorExtension on PieceColor {
   }
 
   Color get pieceColor {
-    final colorSettings = DB().colorSettings;
+    final ColorSettings colorSettings = DB().colorSettings;
     switch (this) {
       case PieceColor.white:
         return colorSettings.whitePieceColor;
@@ -390,7 +390,7 @@ int makeMove(int from, int to) {
   return (from << 8) + to;
 }
 
-Map<int, int> squareToIndex = {
+Map<int, int> squareToIndex = <int, int>{
   8: 17,
   9: 18,
   10: 25,
@@ -417,7 +417,8 @@ Map<int, int> squareToIndex = {
   31: 0
 };
 
-Map<int, int> indexToSquare = squareToIndex.map((k, v) => MapEntry(v, k));
+Map<int, int> indexToSquare =
+    squareToIndex.map((int k, int v) => MapEntry<int, int>(v, k));
 
 /*
           a b c d e f g
@@ -435,7 +436,7 @@ Map<int, int> indexToSquare = squareToIndex.map((k, v) => MapEntry(v, k));
           a b c d e f g
  */
 
-Map<String, String> wmdNotationToMove = {
+Map<String, String> wmdNotationToMove = <String, String>{
   "d5": "(1,1)",
   "e5": "(1,2)",
   "e4": "(1,3)",
@@ -462,7 +463,7 @@ Map<String, String> wmdNotationToMove = {
   "a7": "(3,8)",
 };
 
-Map<String, String> playOkNotationToMove = {
+Map<String, String> playOkNotationToMove = <String, String>{
   "8": "(1,1)",
   "9": "(1,2)",
   "13": "(1,3)",

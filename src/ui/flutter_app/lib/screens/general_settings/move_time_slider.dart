@@ -23,7 +23,7 @@ class _MoveTimeSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       label: S.of(context).moveTime,
-      child: ValueListenableBuilder(
+      child: ValueListenableBuilder<Box<GeneralSettings>>(
         valueListenable: DB().listenGeneralSettings,
         builder: (BuildContext context, Box<GeneralSettings> box, _) {
           final GeneralSettings generalSettings = box.get(

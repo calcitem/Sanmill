@@ -15,6 +15,7 @@ class TapHandler {
 
   final MillController controller = MillController();
   //final gameMode = MillController().gameInstance.gameMode;
+  // ignore: always_specify_types
   final showTip = MillController().headerTipNotifier.showTip;
 
   bool get _isGameRunning =>

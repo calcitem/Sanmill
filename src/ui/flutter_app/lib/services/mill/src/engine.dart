@@ -35,7 +35,7 @@ class Engine {
     }
 
     await _platform.invokeMethod("startup");
-    await _waitResponse(["uciok"]);
+    await _waitResponse(<String>["uciok"]);
   }
 
   Future<void> _send(String command) async {
@@ -121,7 +121,8 @@ class Engine {
       logger.v("$_tag Move now");
     }
 
-    final String? response = await _waitResponse(["bestmove", "nobestmove"]);
+    final String? response =
+        await _waitResponse(<String>["bestmove", "nobestmove"]);
 
     if (response == null) {
       throw const EngineTimeOut();
@@ -132,7 +133,7 @@ class Engine {
     if (response.startsWith("bestmove")) {
       String best = response.substring("bestmove".length + 1);
 
-      final pos = best.indexOf(" ");
+      final int pos = best.indexOf(" ");
       if (pos > -1) {
         best = best.substring(0, pos);
       }
@@ -152,9 +153,9 @@ class Engine {
     int sleep = 100,
     int times = 0,
   }) async {
-    final settings = DB().generalSettings;
+    final GeneralSettings settings = DB().generalSettings;
 
-    var timeLimit = EnvironmentConfig.devMode ? 100 : 6000;
+    int timeLimit = EnvironmentConfig.devMode ? 100 : 6000;
 
     if (settings.moveTime > 0) {
       // TODO: Accurate timeLimit
@@ -175,7 +176,7 @@ class Engine {
       return null;
     }
 
-    final response = await _read();
+    final String? response = await _read();
 
     if (response != null) {
       for (final String prefix in prefixes) {
@@ -199,7 +200,7 @@ class Engine {
   }
 
   Future<void> setGeneralOptions() async {
-    final generalSettings = DB().generalSettings;
+    final GeneralSettings generalSettings = DB().generalSettings;
 
     // First Move
     // No need to tell engine.
@@ -226,7 +227,7 @@ class Engine {
   }
 
   Future<void> setRuleOptions() async {
-    final ruleSettings = DB().ruleSettings;
+    final RuleSettings ruleSettings = DB().ruleSettings;
 
     // General
     await _sendOptions("PiecesCount", ruleSettings.piecesCount);
@@ -290,7 +291,7 @@ class Engine {
         MillController().recorder.lastPositionWithRemove;
     final String? moves = MillController().position.movesSinceLastRemove;
 
-    final posFenStr = StringBuffer("position fen $startPosition");
+    final StringBuffer posFenStr = StringBuffer("position fen $startPosition");
 
     if (moves != null) {
       posFenStr.write(" moves $moves");
@@ -382,7 +383,7 @@ extension GameModeExtension on GameMode {
     switch (this) {
       case GameMode.humanVsAi:
       case GameMode.testViaLAN:
-        return {
+        return <PieceColor, bool>{
           PieceColor.white: DB().generalSettings.aiMovesFirst,
           PieceColor.black: !DB().generalSettings.aiMovesFirst,
         };
@@ -390,12 +391,12 @@ extension GameModeExtension on GameMode {
       case GameMode.humanVsHuman:
       case GameMode.humanVsLAN:
       case GameMode.humanVsCloud:
-        return {
+        return <PieceColor, bool>{
           PieceColor.white: false,
           PieceColor.black: false,
         };
       case GameMode.aiVsAi:
-        return {
+        return <PieceColor, bool>{
           PieceColor.white: true,
           PieceColor.black: true,
         };

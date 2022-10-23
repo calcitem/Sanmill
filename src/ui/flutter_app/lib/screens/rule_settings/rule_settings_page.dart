@@ -229,7 +229,7 @@ class RuleSettingsPage extends StatelessWidget {
       defaultValue: RuleSettings.fromLocale(locale),
     )!;
     return SettingsList(
-      children: [
+      children: <Widget>[
         SettingsCard(
           title: Text(S.of(context).general),
           children: <Widget>[
@@ -386,7 +386,7 @@ class RuleSettingsPage extends StatelessWidget {
           leading: DrawerIcon.of(context)?.icon,
           title: Text(S.of(context).ruleSettings),
         ),
-        body: ValueListenableBuilder(
+        body: ValueListenableBuilder<Box<RuleSettings>>(
           valueListenable: DB().listenRuleSettings,
           builder: _buildRuleSettings,
         ),

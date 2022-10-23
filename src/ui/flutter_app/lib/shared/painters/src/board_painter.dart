@@ -28,7 +28,7 @@ class BoardPainter extends CustomPainter {
     assert(size.width == size.height);
 
     final Position position = MillController().position;
-    final colorSettings = DB().colorSettings;
+    final ColorSettings colorSettings = DB().colorSettings;
     final Paint paint = Paint();
 
     paint.strokeWidth = DB().displaySettings.boardBorderLineWidth;
@@ -196,9 +196,9 @@ class BoardPainter extends CustomPainter {
       notationPainterH.layout();
       notationPainterV.layout();
 
-      final horizontalOffset =
+      final double horizontalOffset =
           size.height - (boardMargin + notationPainterH.height) / 2;
-      final verticalOffset = (boardMargin - notationPainterV.width) / 2;
+      final double verticalOffset = (boardMargin - notationPainterV.width) / 2;
 
       // Show notations "a b c d e f" on board
       notationPainterH.paint(

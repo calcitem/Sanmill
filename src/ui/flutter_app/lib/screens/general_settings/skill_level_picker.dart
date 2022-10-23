@@ -43,7 +43,7 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<Box<GeneralSettings>>(
       valueListenable: DB().listenGeneralSettings,
       builder: (BuildContext context, Box<GeneralSettings> box, _) {
         final GeneralSettings generalSettings = box.get(
@@ -61,14 +61,14 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
             child: CupertinoPicker(
               scrollController: _controller,
               itemExtent: 44,
-              children: List.generate(Constants.topSkillLevel,
+              children: List<Widget>.generate(Constants.topSkillLevel,
                   (int level) => Center(child: Text('${level + 1}'))),
               onSelectedItemChanged: (int value) {
                 _level = value + 1;
               },
             ),
           ),
-          actions: [
+          actions: <Widget>[
             TextButton(
               child: Text(
                 S.of(context).cancel,

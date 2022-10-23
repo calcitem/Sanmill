@@ -55,7 +55,7 @@ class LoadService {
       rootName: S.of(context).gameFiles,
       fsType: FilesystemType.file,
       showGoUp: true,
-      allowedExtensions: ['.pgn'],
+      allowedExtensions: <String>[".pgn"],
       fileTileSelectMode:
           FileTileSelectMode.checkButton, //  TODO: whole tile is better.
     );

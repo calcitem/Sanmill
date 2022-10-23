@@ -65,7 +65,7 @@ class GameResultAlert extends StatelessWidget {
             ),
       );
 
-      actions = [
+      actions = <Widget>[
         TextButton(
           child: Text(
             S.of(context).yes,
@@ -94,7 +94,7 @@ class GameResultAlert extends StatelessWidget {
         ),
       ];
     } else {
-      actions = [
+      actions = <Widget>[
         TextButton(
           child: Text(
             S.of(context).restart,

@@ -23,7 +23,7 @@ class _AnimationDurationSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       label: S.of(context).animationDuration,
-      child: ValueListenableBuilder(
+      child: ValueListenableBuilder<Box<DisplaySettings>>(
         valueListenable: DB().listenDisplaySettings,
         builder: (BuildContext context, Box<DisplaySettings> box, _) {
           final DisplaySettings displaySettings = box.get(

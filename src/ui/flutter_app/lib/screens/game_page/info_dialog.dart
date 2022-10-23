@@ -194,7 +194,7 @@ class _InfoDialog extends StatelessWidget {
                   content,
                   textDirection: TextDirection.ltr,
                 ),
-                actions: [copyButton, okButton],
+                actions: <Widget>[copyButton, okButton],
                 scrollable: true,
               );
 

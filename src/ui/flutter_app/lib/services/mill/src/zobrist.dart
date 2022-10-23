@@ -20,8 +20,8 @@ class _Zobrist {
   const _Zobrist._();
 
   static const int keyMiscBit = 2;
-  static const List<List<int>> psq = [
-    [
+  static const List<List<int>> psq = <List<int>>[
+    <int>[
       0x4E421A,
       0x3962FF,
       0x6DB6EE,
@@ -63,7 +63,7 @@ class _Zobrist {
       0x88F5B4,
       0x0A583E,
     ],
-    [
+    <int>[
       0xA0128E,
       0x6F2251,
       0x51E99D,
@@ -105,7 +105,7 @@ class _Zobrist {
       0x410171,
       0x1EDD7A,
     ],
-    [
+    <int>[
       0x1FCF95,
       0xA5634E,
       0x21976A,
@@ -147,7 +147,7 @@ class _Zobrist {
       0xF6C8AC,
       0xD80B94,
     ],
-    [
+    <int>[
       0xF641E9,
       0xF164BF,
       0x2DBE4C,

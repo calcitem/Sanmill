@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// ignore_for_file: always_specify_types
+
 part of '../mill.dart';
 
 // Mill boards have concentric square rings joined by edges and an empty
