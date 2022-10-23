@@ -98,6 +98,7 @@ class Engine {
     if (isThinking is bool) {
       return isThinking;
     } else {
+      // ignore: only_throw_errors
       throw "Invalid platform response. Expected a value of type bool";
     }
   }
@@ -125,6 +126,7 @@ class Engine {
         await _waitResponse(<String>["bestmove", "nobestmove"]);
 
     if (response == null) {
+      // ignore: only_throw_errors
       throw const EngineTimeOut();
     }
 
@@ -142,9 +144,11 @@ class Engine {
     }
 
     if (response.startsWith("nobestmove")) {
+      // ignore: only_throw_errors
       throw const EngineNoBestMove();
     }
 
+    // ignore: only_throw_errors
     throw const EngineTimeOut();
   }
 

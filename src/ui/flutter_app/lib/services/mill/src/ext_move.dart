@@ -190,6 +190,7 @@ class ExtMove {
 
     if (move.length == "(3,1)->(2,1)".length) {
       if (move.substring(0, 4) == move.substring(7, 11)) {
+        // ignore: only_throw_errors
         throw "Error: $_tag Invalid Move: move to the same place";
       }
     }
