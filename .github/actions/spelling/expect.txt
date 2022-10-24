@@ -110,6 +110,7 @@ HINSTANCE
 HMODULE
 HMONITOR
 HREDRAW
+hsl
 html
 http
 https
