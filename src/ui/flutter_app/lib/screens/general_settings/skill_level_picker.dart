@@ -69,13 +69,14 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
             ),
           ),
           actions: <Widget>[
-            TextButton(
-              child: Text(
-                S.of(context).cancel,
-                textScaleFactor: DB().displaySettings.fontScale,
+            if (EnvironmentConfig.test == false)
+              TextButton(
+                child: Text(
+                  S.of(context).cancel,
+                  textScaleFactor: DB().displaySettings.fontScale,
+                ),
+                onPressed: () => Navigator.of(context).pop(),
               ),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
             TextButton(
               child: Text(
                 S.of(context).confirm,

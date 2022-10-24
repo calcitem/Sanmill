@@ -49,6 +49,7 @@ class GeneralSettingsPage extends StatelessWidget {
 
   void _setSkillLevel(BuildContext context) => showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (_) => const _SkillLevelPicker(),
       );
 
