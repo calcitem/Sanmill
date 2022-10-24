@@ -308,35 +308,53 @@ class _GameState extends State<_Game> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                            getPiecesText(
-                                MillController().position.pieceInHandCount[
-                                    !DB().generalSettings.aiMovesFirst
-                                        ? PieceColor.black
-                                        : PieceColor.white]!),
-                            style: TextStyle(
-                                color: !DB().generalSettings.aiMovesFirst
-                                    ? DB().colorSettings.blackPieceColor
-                                    : DB().colorSettings.whitePieceColor)),
+                          getPiecesText(
+                              MillController().position.pieceInHandCount[
+                                  !DB().generalSettings.aiMovesFirst
+                                      ? PieceColor.black
+                                      : PieceColor.white]!),
+                          style: TextStyle(
+                            color: !DB().generalSettings.aiMovesFirst
+                                ? DB().colorSettings.blackPieceColor
+                                : DB().colorSettings.whitePieceColor,
+                            shadows: const <Shadow>[
+                              Shadow(
+                                offset: Offset(1.0, 1.0),
+                                blurRadius: 3.0,
+                                color: Color.fromARGB(255, 128, 128, 128),
+                              ),
+                            ],
+                          ),
+                        ),
                         Text(
-                            getPiecesText(DB().ruleSettings.piecesCount -
-                                MillController().position.pieceInHandCount[
-                                    !DB().generalSettings.aiMovesFirst
-                                        ? PieceColor.white
-                                        : PieceColor.black]! -
-                                MillController().position.pieceOnBoardCount[
-                                    !DB().generalSettings.aiMovesFirst
-                                        ? PieceColor.white
-                                        : PieceColor.black]!),
-                            style: TextStyle(
-                                color: !DB().generalSettings.aiMovesFirst
-                                    ? DB()
-                                        .colorSettings
-                                        .whitePieceColor
-                                        .withOpacity(0.8)
-                                    : DB()
-                                        .colorSettings
-                                        .blackPieceColor
-                                        .withOpacity(0.8)))
+                          getPiecesText(DB().ruleSettings.piecesCount -
+                              MillController().position.pieceInHandCount[
+                                  !DB().generalSettings.aiMovesFirst
+                                      ? PieceColor.white
+                                      : PieceColor.black]! -
+                              MillController().position.pieceOnBoardCount[
+                                  !DB().generalSettings.aiMovesFirst
+                                      ? PieceColor.white
+                                      : PieceColor.black]!),
+                          style: TextStyle(
+                            color: !DB().generalSettings.aiMovesFirst
+                                ? DB()
+                                    .colorSettings
+                                    .whitePieceColor
+                                    .withOpacity(0.8)
+                                : DB()
+                                    .colorSettings
+                                    .blackPieceColor
+                                    .withOpacity(0.8),
+                            shadows: const <Shadow>[
+                              Shadow(
+                                offset: Offset(1.0, 1.0),
+                                blurRadius: 3.0,
+                                color: Color.fromARGB(255, 128, 128, 128),
+                              ),
+                            ],
+                          ),
+                        )
                       ])
                 else
                   const SizedBox(height: AppTheme.boardMargin),
@@ -360,15 +378,23 @@ class _GameState extends State<_Game> {
                                         ? PieceColor.black
                                         : PieceColor.white]!),
                             style: TextStyle(
-                                color: !DB().generalSettings.aiMovesFirst
-                                    ? DB()
-                                        .colorSettings
-                                        .blackPieceColor
-                                        .withOpacity(0.8)
-                                    : DB()
-                                        .colorSettings
-                                        .whitePieceColor
-                                        .withOpacity(0.8))),
+                              color: !DB().generalSettings.aiMovesFirst
+                                  ? DB()
+                                      .colorSettings
+                                      .blackPieceColor
+                                      .withOpacity(0.8)
+                                  : DB()
+                                      .colorSettings
+                                      .whitePieceColor
+                                      .withOpacity(0.8),
+                              shadows: const <Shadow>[
+                                Shadow(
+                                  offset: Offset(1.0, 1.0),
+                                  blurRadius: 3.0,
+                                  color: Color.fromARGB(255, 128, 128, 128),
+                                ),
+                              ],
+                            )),
                         Text(
                             getPiecesText(
                                 MillController().position.pieceInHandCount[
@@ -376,9 +402,17 @@ class _GameState extends State<_Game> {
                                         ? PieceColor.white
                                         : PieceColor.black]!),
                             style: TextStyle(
-                                color: DB().generalSettings.aiMovesFirst
-                                    ? DB().colorSettings.blackPieceColor
-                                    : DB().colorSettings.whitePieceColor))
+                              color: DB().generalSettings.aiMovesFirst
+                                  ? DB().colorSettings.blackPieceColor
+                                  : DB().colorSettings.whitePieceColor,
+                              shadows: const <Shadow>[
+                                Shadow(
+                                  offset: Offset(1.0, 1.0),
+                                  blurRadius: 3.0,
+                                  color: Color.fromARGB(255, 128, 128, 128),
+                                ),
+                              ],
+                            ))
                       ])
                 else
                   const SizedBox(height: AppTheme.boardMargin),
