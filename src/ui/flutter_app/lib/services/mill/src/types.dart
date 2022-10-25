@@ -443,6 +443,39 @@ Map<String, String> wmdNotationToMove = {
   "a7": "(3,8)",
 };
 
+Map<String, String> moveToWmdNotation =
+    wmdNotationToMove.map((k, v) => MapEntry(v, k));
+
+Map<String, String> wmdToPlayOkNotation = {
+  "a7": "1",
+  "d7": "2",
+  "g7": "3",
+  "b6": "4",
+  "d6": "5",
+  "f6": "6",
+  "c5": "7",
+  "d5": "8",
+  "e5": "9",
+  "a4": "10",
+  "b4": "11",
+  "c4": "12",
+  "e4": "13",
+  "f4": "14",
+  "g4": "15",
+  "c3": "16",
+  "d3": "17",
+  "e3": "18",
+  "b2": "19",
+  "d2": "20",
+  "f2": "21",
+  "a1": "22",
+  "d1": "23",
+  "g1": "24",
+};
+
+Map<String, String> playOkToWmdNotation =
+    wmdToPlayOkNotation.map((k, v) => MapEntry(v, k));
+
 Map<String, String> playOkNotationToMove = {
   "8": "(1,1)",
   "9": "(1,2)",
@@ -469,3 +502,6 @@ Map<String, String> playOkNotationToMove = {
   "10": "(3,7)",
   "1": "(3,8)",
 };
+
+Map<String, String> moveToPlayOkNotation =
+    playOkNotationToMove.map((k, v) => MapEntry(v, k));
