@@ -150,27 +150,51 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
     setState(() {
       assert(index != _DrawerIndex.feedback);
+      _pushRoute(index);
       _drawerIndex = index;
-      _routes.push(_drawerIndex);
       if (index.screen != null) {
         _screenView = index.screen!;
       }
     });
   }
 
-  bool _canPopRoute() {
-    if (_routes.length > 1) {
+  bool _isGame(_DrawerIndex index) {
+    return index.index < 4;
+  }
+
+  void _pushRoute(_DrawerIndex index) {
+    final bool curIsGame = _isGame(_drawerIndex);
+    final bool nextIsGame = _isGame(index);
+    if (curIsGame && !nextIsGame) {
+      _routes.push(index);
+    } else if (!curIsGame && nextIsGame) {
+      _routes.clear();
+      _routes.push(index);
+    } else {
       _routes.pop();
-      setState(() {
-        _drawerIndex = _routes.top();
-        if (_drawerIndex.screen != null) {
-          _screenView = _drawerIndex.screen!;
-        }
-        debugPrint('_drawerIndex: $_drawerIndex');
-      });
+      _routes.push(index);
+    }
+    setState(() {});
+  }
+
+  bool _canPopRoute() {
+    if (Navigator.canPop(context)) {
+      Navigator.of(context).pop();
       return true;
     } else {
-      return false;
+      if (_routes.length > 1) {
+        _routes.pop();
+        setState(() {
+          _drawerIndex = _routes.top();
+          if (_drawerIndex.screen != null) {
+            _screenView = _drawerIndex.screen!;
+          }
+          debugPrint('_drawerIndex: $_drawerIndex');
+        });
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 
@@ -190,6 +214,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           break;
       }
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _routes.push(_drawerIndex);
   }
 
   @override

@@ -37,7 +37,7 @@ void _initUI() {
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.light,
         systemNavigationBarColor: Colors.black,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),

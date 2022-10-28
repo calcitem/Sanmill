@@ -142,7 +142,7 @@ class HeaderTipState extends State<HeaderTip> {
         return Semantics(
           enabled: true,
           child: SizedBox(
-            height: 28,
+            height: 24 * DB().displaySettings.fontScale,
             child: Text(
               value == "" ? S.of(context).welcome : value,
               maxLines: 1,

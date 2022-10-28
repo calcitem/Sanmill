@@ -63,7 +63,7 @@ class PiecePainter extends CustomPainter {
     final Path shadowPath = Path();
     final List<_PiecePaintParam> piecesToDraw = <_PiecePaintParam>[];
 
-    final double pieceWidth = size.width * DB().displaySettings.pieceWidth / 7;
+    final double pieceWidth = size.width * DB().displaySettings.pieceWidth * 0.8 / 7;
     final double animatedPieceWidth = pieceWidth * animationValue;
 
     // Draw pieces on board
