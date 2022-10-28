@@ -1,3 +1,19 @@
+// This file is part of Sanmill.
+// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -12,7 +28,6 @@ typedef WillBackCall = bool Function();
 /// Since the back-button is an Android feature, this Widget is going to be
 /// nothing but the own [child] if the current platform is anything but Android.
 class DoubleBackToCloseApp extends StatefulWidget {
-
   /// Creates a widget that allows the user to close the app by double tapping
   /// the back-button.
   const DoubleBackToCloseApp({
@@ -21,6 +36,7 @@ class DoubleBackToCloseApp extends StatefulWidget {
     required this.child,
     this.willBack,
   });
+
   /// The [SnackBar] shown when the user taps the back-button.
   final SnackBar snackBar;
 
@@ -36,8 +52,8 @@ class DoubleBackToCloseApp extends StatefulWidget {
 
 class _DoubleBackToCloseAppState extends State<DoubleBackToCloseApp> {
   /// Completer that gets completed whenever the current snack-bar is closed.
-  Completer<SnackBarClosedReason> _closedCompleter = Completer<SnackBarClosedReason>()
-    ..complete(SnackBarClosedReason.remove);
+  Completer<SnackBarClosedReason> _closedCompleter =
+      Completer<SnackBarClosedReason>()..complete(SnackBarClosedReason.remove);
 
   /// Returns whether the current platform is Android.
   bool get _isAndroid => Theme.of(context).platform == TargetPlatform.android;
@@ -80,7 +96,8 @@ class _DoubleBackToCloseAppState extends State<DoubleBackToCloseApp> {
     if (_isSnackBarVisible || _willHandlePopInternally) {
       return true;
     } else {
-      final ScaffoldMessengerState scaffoldMessenger = ScaffoldMessenger.of(context);
+      final ScaffoldMessengerState scaffoldMessenger =
+          ScaffoldMessenger.of(context);
       scaffoldMessenger.hideCurrentSnackBar();
       _closedCompleter = scaffoldMessenger
           .showSnackBar(widget.snackBar)
