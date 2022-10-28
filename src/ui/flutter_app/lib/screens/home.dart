@@ -320,6 +320,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           title: S.of(context).appName,
         ),
         items: drawerItems,
+        disabledGestures:
+            _drawerIndex.index < 4, // TODO: 4 means Setup Position
         child: _screenView,
       ),
     );
