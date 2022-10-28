@@ -18,7 +18,6 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:catcher/catcher.dart';
-import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -127,12 +126,9 @@ class SanmillApp extends StatelessWidget {
   }
 
   Widget _buildHome(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       resizeToAvoidBottomInset: false,
-      body: DoubleBackToCloseApp(
-        snackBar: CustomSnackBar(S.of(context).tapBackAgainToLeave),
-        child: const Home(),
-      ),
+      body: Home(),
     );
   }
 }

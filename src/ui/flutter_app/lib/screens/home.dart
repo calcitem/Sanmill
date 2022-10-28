@@ -34,7 +34,10 @@ import '../services/logger.dart';
 import '../services/mill/mill.dart';
 import '../shared/constants.dart';
 import '../shared/custom_drawer/custom_drawer.dart';
+import '../shared/double_back_to_close_app.dart';
 import '../shared/privacy_dialog.dart';
+import '../shared/scaffold_messenger.dart';
+import '../shared/stack_list.dart';
 import 'about_page.dart';
 import 'appearance_settings/appearance_settings_page.dart';
 import 'game_page/game_page.dart';
@@ -118,6 +121,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   Widget _screenView = _DrawerIndex.humanVsAi.screen!;
   _DrawerIndex _drawerIndex = _DrawerIndex.humanVsAi;
+  final StackList<_DrawerIndex> _routes = StackList<_DrawerIndex>();
 
   /// Callback from drawer for replace screen
   /// as user need with passing DrawerIndex (Enum index)
@@ -146,11 +150,47 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
     setState(() {
       assert(index != _DrawerIndex.feedback);
+      _pushRoute(index);
       _drawerIndex = index;
       if (index.screen != null) {
         _screenView = index.screen!;
       }
     });
+  }
+
+  bool _isGame(_DrawerIndex index) {
+    return index.index < 4;
+  }
+
+  void _pushRoute(_DrawerIndex index) {
+    final bool curIsGame = _isGame(_drawerIndex);
+    final bool nextIsGame = _isGame(index);
+    if (curIsGame && !nextIsGame) {
+      _routes.push(index);
+    } else if (!curIsGame && nextIsGame) {
+      _routes.clear();
+      _routes.push(index);
+    } else {
+      _routes.pop();
+      _routes.push(index);
+    }
+    setState(() {});
+  }
+
+  bool _canPopRoute() {
+    if (_routes.length > 1) {
+      _routes.pop();
+      setState(() {
+        _drawerIndex = _routes.top();
+        if (_drawerIndex.screen != null) {
+          _screenView = _drawerIndex.screen!;
+        }
+        logger.v('_drawerIndex: $_drawerIndex');
+      });
+      return true;
+    } else {
+      return false;
+    }
   }
 
   void firstRun(BuildContext context) {
@@ -169,6 +209,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           break;
       }
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _routes.push(_drawerIndex);
   }
 
   @override
@@ -263,13 +309,19 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       ),
     ];
 
-    return CustomDrawer(
-      controller: _controller,
-      header: CustomDrawerHeader(
-        title: S.of(context).appName,
+    return DoubleBackToCloseApp(
+      snackBar: CustomSnackBar(S.of(context).tapBackAgainToLeave),
+      willBack: () {
+        return !_canPopRoute();
+      },
+      child: CustomDrawer(
+        controller: _controller,
+        header: CustomDrawerHeader(
+          title: S.of(context).appName,
+        ),
+        items: drawerItems,
+        child: _screenView,
       ),
-      items: drawerItems,
-      child: _screenView,
     );
   }
 
