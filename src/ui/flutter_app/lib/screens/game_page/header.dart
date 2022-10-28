@@ -140,17 +140,19 @@ class HeaderTipState extends State<HeaderTip> {
       valueListenable: _messageNotifier,
       builder: (BuildContext context, String value, Widget? child) {
         return Semantics(
-          enabled: true,
-          child: Text(
-            value == "" ? S.of(context).welcome : value,
-            maxLines: 1,
-            style: TextStyle(
-              color: DB().colorSettings.messageColor,
-              // ignore: always_specify_types
-              fontFeatures: const [FontFeature.tabularFigures()],
-            ),
-          ),
-        );
+            enabled: true,
+            child: SizedBox(
+              height: 20 * DB().displaySettings.fontScale,
+              child: Text(
+                value == "" ? S.of(context).welcome : value,
+                maxLines: 1,
+                style: TextStyle(
+                  color: DB().colorSettings.messageColor,
+                  // ignore: always_specify_types
+                  fontFeatures: const [FontFeature.tabularFigures()],
+                ),
+              ),
+            ));
       },
     );
   }
