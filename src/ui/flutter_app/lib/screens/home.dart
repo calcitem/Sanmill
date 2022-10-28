@@ -178,23 +178,18 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   bool _canPopRoute() {
-    if (Navigator.canPop(context)) {
-      Navigator.of(context).pop();
+    if (_routes.length > 1) {
+      _routes.pop();
+      setState(() {
+        _drawerIndex = _routes.top();
+        if (_drawerIndex.screen != null) {
+          _screenView = _drawerIndex.screen!;
+        }
+        debugPrint('_drawerIndex: $_drawerIndex');
+      });
       return true;
     } else {
-      if (_routes.length > 1) {
-        _routes.pop();
-        setState(() {
-          _drawerIndex = _routes.top();
-          if (_drawerIndex.screen != null) {
-            _screenView = _drawerIndex.screen!;
-          }
-          debugPrint('_drawerIndex: $_drawerIndex');
-        });
-        return true;
-      } else {
-        return false;
-      }
+      return false;
     }
   }
 
