@@ -141,15 +141,18 @@ class HeaderTipState extends State<HeaderTip> {
       builder: (BuildContext context, String value, Widget? child) {
         return Semantics(
           enabled: true,
-          child: Text(
-            value == "" ? S.of(context).welcome : value,
-            maxLines: 1,
-            style: TextStyle(
-              color: DB().colorSettings.messageColor,
-              // ignore: always_specify_types
-              fontFeatures: const [FontFeature.tabularFigures()],
+          child: SizedBox(
+            height: 28,
+            child: Text(
+              value == "" ? S.of(context).welcome : value,
+              maxLines: 1,
+              style: TextStyle(
+                color: DB().colorSettings.messageColor,
+                // ignore: always_specify_types
+                fontFeatures: const [FontFeature.tabularFigures()],
+              ),
             ),
-          ),
+          )
         );
       },
     );
