@@ -314,15 +314,18 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       willBack: () {
         return !_canPopRoute();
       },
-      child: CustomDrawer(
-        controller: _controller,
-        header: CustomDrawerHeader(
-          title: S.of(context).appName,
+      child: ValueListenableBuilder<CustomDrawerValue>(
+        valueListenable: _controller,
+        builder: (_, CustomDrawerValue value, Widget? child) => CustomDrawer(
+          controller: _controller,
+          header: CustomDrawerHeader(
+            title: S.of(context).appName,
+          ),
+          items: drawerItems,
+          // TODO: 4 means Setup Position
+          disabledGestures: _drawerIndex.index < 4 && !value.visible,
+          child: _screenView,
         ),
-        items: drawerItems,
-        disabledGestures:
-            _drawerIndex.index < 4, // TODO: 4 means Setup Position
-        child: _screenView,
       ),
     );
   }
