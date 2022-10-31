@@ -1265,5 +1265,7 @@
   "fullScreen": "Цел екран",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "Шума",
+  "@forest": {}
 }

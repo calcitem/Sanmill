@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "సెట్టింగ్‌లు అమలులోకి రావడానికి యాప్ నుండి నిష్క్రమించి, మళ్లీ తెరవండి.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "అడవి",
+  "@forest": {}
 }

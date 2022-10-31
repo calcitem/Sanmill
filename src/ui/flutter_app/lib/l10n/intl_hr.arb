@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "Izađite i ponovno otvorite aplikaciju kako bi postavke stupile na snagu.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "Šuma",
+  "@forest": {}
 }

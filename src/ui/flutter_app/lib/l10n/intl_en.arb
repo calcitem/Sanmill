@@ -1363,5 +1363,7 @@
   "reopenToTakeEffect": "Exit and reopen app for settings to take effect.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "Forest",
+  "@forest": {}
 }

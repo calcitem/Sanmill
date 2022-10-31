@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "Avslutt og åpne appen på nytt for at innstillingene skal tre i kraft.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "skog",
+  "@forest": {}
 }

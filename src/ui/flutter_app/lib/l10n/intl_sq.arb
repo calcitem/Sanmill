@@ -1265,5 +1265,7 @@
   "fullScreen": "Ekran i plotë",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "Pyll",
+  "@forest": {}
 }

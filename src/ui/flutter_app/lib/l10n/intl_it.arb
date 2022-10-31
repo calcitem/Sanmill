@@ -1265,5 +1265,7 @@
   "fullScreen": "A schermo intero",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "foresta",
+  "@forest": {}
 }

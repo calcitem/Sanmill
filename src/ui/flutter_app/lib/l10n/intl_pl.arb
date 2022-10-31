@@ -1265,5 +1265,7 @@
   "fullScreen": "Pełny ekran",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "Las",
+  "@forest": {}
 }

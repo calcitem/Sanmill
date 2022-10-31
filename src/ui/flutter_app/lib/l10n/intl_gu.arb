@@ -1265,5 +1265,7 @@
   "fullScreen": "પૂર્ણ - પટ, આખો પડદો",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "વન",
+  "@forest": {}
 }

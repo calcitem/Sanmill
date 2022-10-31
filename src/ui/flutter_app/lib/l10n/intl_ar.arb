@@ -1265,5 +1265,7 @@
   "fullScreen": "شاشة كاملة",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "غابة",
+  "@forest": {}
 }

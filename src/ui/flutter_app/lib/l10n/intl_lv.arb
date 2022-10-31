@@ -1265,5 +1265,7 @@
   "fullScreen": "Pilnekrāna režīms",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "Mežs",
+  "@forest": {}
 }

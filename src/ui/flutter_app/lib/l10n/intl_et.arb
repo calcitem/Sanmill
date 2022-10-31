@@ -1265,5 +1265,7 @@
   "fullScreen": "Täisekraan",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "Mets",
+  "@forest": {}
 }

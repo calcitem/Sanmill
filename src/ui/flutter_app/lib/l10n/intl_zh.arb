@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "您需要退出并重新打开本应用才能生效。",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "森林",
+  "@forest": {}
 }

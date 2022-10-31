@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "Poistu ja avaa sovellus uudelleen, jotta asetukset tulevat voimaan.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "Metsä",
+  "@forest": {}
 }

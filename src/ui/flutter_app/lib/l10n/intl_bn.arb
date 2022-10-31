@@ -1265,5 +1265,7 @@
   "fullScreen": "পূর্ণ পর্দা",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "বন। জংগল",
+  "@forest": {}
 }

@@ -1363,5 +1363,7 @@
   "fullScreen": "Повноекранний",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "Ліс",
+  "@forest": {}
 }

@@ -1265,5 +1265,7 @@
   "fullScreen": "Toàn màn hình",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "Rừng",
+  "@forest": {}
 }
