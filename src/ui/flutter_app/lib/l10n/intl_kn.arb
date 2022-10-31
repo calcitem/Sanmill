@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಕಾರ್ಯರೂಪಕ್ಕೆ ಬರಲು ಅಪ್ಲಿಕೇಶನ್‌ನಿಂದ ನಿರ್ಗಮಿಸಿ ಮತ್ತು ಪುನಃ ತೆರೆಯಿರಿ.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "ಅರಣ್ಯ",
+  "@forest": {}
 }

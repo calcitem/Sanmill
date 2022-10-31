@@ -1265,5 +1265,7 @@
   "fullScreen": "Celá obrazovka",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "les",
+  "@forest": {}
 }

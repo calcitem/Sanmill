@@ -1265,5 +1265,7 @@
   "fullScreen": "全画面表示",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "森",
+  "@forest": {}
 }

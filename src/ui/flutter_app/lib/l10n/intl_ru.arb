@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "Выйдите и снова откройте приложение, чтобы настройки вступили в силу.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "Лес",
+  "@forest": {}
 }

@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "Afslut og genåbn appen, for at indstillingerne træder i kraft.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "Skov",
+  "@forest": {}
 }

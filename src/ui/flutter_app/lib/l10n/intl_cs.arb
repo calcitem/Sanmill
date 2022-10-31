@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "Ukončete a znovu otevřete aplikaci, aby se nastavení projevila.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "Les",
+  "@forest": {}
 }

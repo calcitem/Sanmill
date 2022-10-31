@@ -1265,5 +1265,7 @@
   "fullScreen": "Volledig scherm",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "Woud",
+  "@forest": {}
 }

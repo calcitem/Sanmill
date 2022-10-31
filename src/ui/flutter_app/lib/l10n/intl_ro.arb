@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "Ieșiți și redeschideți aplicația pentru ca setările să intre în vigoare.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "pădure",
+  "@forest": {}
 }

@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "ออกและเปิดแอปอีกครั้งเพื่อให้การตั้งค่ามีผล",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "ป่า",
+  "@forest": {}
 }

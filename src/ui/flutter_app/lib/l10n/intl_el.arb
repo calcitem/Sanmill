@@ -1265,5 +1265,7 @@
   "fullScreen": "ΠΛΗΡΗΣ ΟΘΟΝΗ",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "Δάσος",
+  "@forest": {}
 }

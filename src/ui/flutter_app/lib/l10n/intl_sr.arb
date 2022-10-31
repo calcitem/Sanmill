@@ -1265,5 +1265,7 @@
   "fullScreen": "Цео екран",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "Форест",
+  "@forest": {}
 }

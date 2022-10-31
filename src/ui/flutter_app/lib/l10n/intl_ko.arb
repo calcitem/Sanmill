@@ -1265,5 +1265,7 @@
   "fullScreen": "전체 화면",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "숲",
+  "@forest": {}
 }

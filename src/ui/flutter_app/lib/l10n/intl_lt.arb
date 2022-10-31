@@ -1265,5 +1265,7 @@
   "fullScreen": "Per visą ekraną",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "Miškas",
+  "@forest": {}
 }

@@ -1265,5 +1265,7 @@
   "fullScreen": "पूर्ण स्क्रीन",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "जंगल",
+  "@forest": {}
 }

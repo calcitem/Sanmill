@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "Излезте и отворете отново приложението, за да влязат в сила настройките.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "гора",
+  "@forest": {}
 }

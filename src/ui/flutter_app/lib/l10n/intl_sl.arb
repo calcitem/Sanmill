@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "Zaprite in znova odprite aplikacijo, da bodo nastavitve začele veljati.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "Gozd",
+  "@forest": {}
 }

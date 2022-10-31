@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "Sozlamalar kuchga kirishi uchun ilovadan chiqing va qayta oching.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "O'rmon",
+  "@forest": {}
 }

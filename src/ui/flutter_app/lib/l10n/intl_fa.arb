@@ -1265,5 +1265,7 @@
   "fullScreen": "تمام صفحه",
   "@fullScreen": {
     "description": "Full screen"
-  }
+  },
+  "forest": "جنگل",
+  "@forest": {}
 }

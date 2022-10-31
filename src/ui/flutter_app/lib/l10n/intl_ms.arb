@@ -1265,5 +1265,7 @@
   "reopenToTakeEffect": "Keluar dan buka semula apl untuk tetapan berkuat kuasa.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
-  }
+  },
+  "forest": "Hutan",
+  "@forest": {}
 }
