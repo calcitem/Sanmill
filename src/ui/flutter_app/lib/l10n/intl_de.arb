@@ -1258,11 +1258,11 @@
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
   },
-  "fullScreen": "Ganzer Bildschirm",
+  "fullScreen": "Vollbild",
   "@fullScreen": {
     "description": "Full screen"
   },
-  "reopenToTakeEffect": "Beenden Sie die App und öffnen Sie sie erneut, damit die Einstellungen wirksam werden.",
+  "reopenToTakeEffect": "Die App beenden und erneut Öffnen, damit die Einstellungen wirksam werden.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
   },
