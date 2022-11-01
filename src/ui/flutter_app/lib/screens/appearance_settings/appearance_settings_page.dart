@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 
+import '../../generated/assets/assets.gen.dart';
 import '../../generated/intl/l10n.dart';
 import '../../models/color_settings.dart';
 import '../../models/display_settings.dart';
@@ -31,6 +32,7 @@ import '../../shared/settings/settings.dart';
 import '../../shared/theme/app_theme.dart';
 
 part 'package:sanmill/screens/appearance_settings/animation_duration_slider.dart';
+part 'package:sanmill/screens/appearance_settings/board_background_select.dart';
 part 'package:sanmill/screens/appearance_settings/board_boarder_line_width_slider.dart';
 part 'package:sanmill/screens/appearance_settings/board_inner_line_width_slider.dart';
 part 'package:sanmill/screens/appearance_settings/board_top_slider.dart';
@@ -48,6 +50,11 @@ class AppearanceSettingsPage extends StatelessWidget {
         context: context,
         builder: (_) => const _BoardBorderWidthSlider(),
       );
+
+  void setBoardBackground(BuildContext context) => showModalBottomSheet(
+    context: context,
+    builder: (_) => const _BoardBackgroundSelect(),
+  );
 
   void setBoardInnerLineWidth(BuildContext context) => showModalBottomSheet(
         context: context,
@@ -314,6 +321,10 @@ class AppearanceSettingsPage extends StatelessWidget {
           onChanged: (bool val) => DB().displaySettings =
               displaySettings.copyWith(isHistoryNavigationToolbarShown: val),
           titleString: S.of(context).isHistoryNavigationToolbarShown,
+        ),
+        SettingsListTile(
+          titleString: '棋盘背景',
+          onTap: () => setBoardBackground(context),
         ),
         SettingsListTile(
           titleString: S.of(context).boardBorderLineWidth,

@@ -91,7 +91,7 @@ extension _DrawerScreen on _DrawerIndex {
       case _DrawerIndex.howToPlay:
         return const HowToPlayScreen();
       case _DrawerIndex.feedback:
-        // ignore: only_throw_errors
+      // ignore: only_throw_errors
         throw ErrorDescription(
           "Feedback screen is not a widget and should be called separately",
         );
@@ -132,8 +132,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     }
 
     if ((index == _DrawerIndex.howToPlay ||
-            index == _DrawerIndex.about ||
-            index == _DrawerIndex.feedback) &&
+        index == _DrawerIndex.about ||
+        index == _DrawerIndex.feedback) &&
         EnvironmentConfig.test == true) {
       return logger.w("Do not test HowToPlay/Feedback/About page.");
     }
@@ -228,7 +228,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final List<CustomDrawerItem<_DrawerIndex>> drawerItems =
-        <CustomDrawerItem<_DrawerIndex>>[
+    <CustomDrawerItem<_DrawerIndex>>[
       CustomDrawerItem<_DrawerIndex>(
         value: _DrawerIndex.humanVsAi,
         title: S.of(context).humanVsAi,
@@ -314,15 +314,19 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       willBack: () {
         return !_canPopRoute();
       },
-      child: CustomDrawer(
-        controller: _controller,
-        header: CustomDrawerHeader(
-          title: S.of(context).appName,
+      child: ValueListenableBuilder<CustomDrawerValue>(
+        valueListenable: _controller,
+        builder: (_, CustomDrawerValue value, Widget? child) => CustomDrawer(
+          controller: _controller,
+          header: CustomDrawerHeader(
+            title: S.of(context).appName,
+          ),
+          items: drawerItems,
+          disabledGestures:
+          _drawerIndex.index < 4 && !value.visible,
+          // TODO: 4 means Setup Position
+          child: _screenView,
         ),
-        items: drawerItems,
-        disabledGestures:
-            _drawerIndex.index < 4, // TODO: 4 means Setup Position
-        child: _screenView,
       ),
     );
   }
@@ -345,7 +349,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   /// Drafts an email and sends it to the developer
   static Future<void> _launchFeedback(UserFeedback feedback) async {
     final String screenshotFilePath =
-        await _saveFeedbackImage(feedback.screenshot);
+    await _saveFeedbackImage(feedback.screenshot);
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String version =
         "${packageInfo.version} (${packageInfo.buildNumber})";
