@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 
+import '../../generated/assets/assets.gen.dart';
 import '../../generated/intl/l10n.dart';
 import '../../models/color_settings.dart';
 import '../../models/display_settings.dart';
@@ -31,6 +32,7 @@ import '../../shared/settings/settings.dart';
 import '../../shared/theme/app_theme.dart';
 
 part 'package:sanmill/screens/appearance_settings/animation_duration_slider.dart';
+part 'package:sanmill/screens/appearance_settings/background_image_selector.dart';
 part 'package:sanmill/screens/appearance_settings/board_boarder_line_width_slider.dart';
 part 'package:sanmill/screens/appearance_settings/board_inner_line_width_slider.dart';
 part 'package:sanmill/screens/appearance_settings/board_top_slider.dart';
@@ -96,6 +98,11 @@ class AppearanceSettingsPage extends StatelessWidget {
   void setAnimationDuration(BuildContext context) => showModalBottomSheet(
         context: context,
         builder: (_) => const _AnimationDurationSlider(),
+      );
+
+  void setDesktopImage(BuildContext context) => showModalBottomSheet(
+        context: context,
+        builder: (_) => const _DesktopImageSelector(),
       );
 
   void langCallback(
@@ -346,6 +353,10 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsListTile(
           titleString: S.of(context).animationDuration,
           onTap: () => setAnimationDuration(context),
+        ),
+        SettingsListTile(
+          titleString: S.of(context).desktopImage,
+          onTap: () => setDesktopImage(context),
         ),
       ],
     );

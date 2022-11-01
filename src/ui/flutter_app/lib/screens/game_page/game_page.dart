@@ -65,47 +65,66 @@ class GamePage extends StatelessWidget {
 
     controller.gameInstance.gameMode = gameMode;
 
+    final bool isBackgroundDefault = DB().displaySettings.desktopImage.isEmpty;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: DB().colorSettings.darkBackgroundColor,
-      // ignore: always_specify_types
-      body: FutureBuilder(
-        future: controller.start(),
-        builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-                //child: CircularProgressIndicator.adaptive(),
-                );
-          }
-
-          return Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: AppTheme.boardMargin),
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                double toolbarHeight =
-                    GamePageToolBar.height + ButtonTheme.of(context).height;
-                if (DB().displaySettings.isHistoryNavigationToolbarShown) {
-                  toolbarHeight *= 2;
-                }
-
-                // Constraints of the game board but applied to the entire child
-                final double maxWidth = constraints.maxWidth;
-                final double maxHeight = constraints.maxHeight - toolbarHeight;
-                final BoxConstraints constraint = BoxConstraints(
-                  maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
-                      ? maxHeight
-                      : maxWidth,
-                );
-
-                return ConstrainedBox(
-                  constraints: constraint,
-                  child: const _Game(),
-                );
-              },
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              color: isBackgroundDefault
+                  ? DB().colorSettings.darkBackgroundColor
+                  : null,
+              image: isBackgroundDefault
+                  ? null
+                  : DecorationImage(
+                      image: AssetImage(DB().displaySettings.desktopImage),
+                      fit: BoxFit.cover,
+                    ),
             ),
-          );
-        },
+          ),
+          // ignore: always_specify_types
+          FutureBuilder(
+            future: controller.start(),
+            builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                    //child: CircularProgressIndicator.adaptive(),
+                    );
+              }
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppTheme.boardMargin),
+                child: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    double toolbarHeight =
+                        GamePageToolBar.height + ButtonTheme.of(context).height;
+                    if (DB().displaySettings.isHistoryNavigationToolbarShown) {
+                      toolbarHeight *= 2;
+                    }
+
+                    // Constraints of the game board but applied to the entire child
+                    final double maxWidth = constraints.maxWidth;
+                    final double maxHeight =
+                        constraints.maxHeight - toolbarHeight;
+                    final BoxConstraints constraint = BoxConstraints(
+                      maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
+                          ? maxHeight
+                          : maxWidth,
+                    );
+
+                    return ConstrainedBox(
+                      constraints: constraint,
+                      child: const _Game(),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

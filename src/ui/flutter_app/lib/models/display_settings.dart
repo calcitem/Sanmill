@@ -62,6 +62,7 @@ class DisplaySettings {
     this.fontScale = 1.0,
     this.boardTop = kToolbarHeight,
     this.animationDuration = 0.0,
+    this.desktopImage = "",
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -131,6 +132,9 @@ class DisplaySettings {
 
   @HiveField(17, defaultValue: false)
   final bool isFullScreen;
+
+  @HiveField(18, defaultValue: "")
+  final String desktopImage;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
