@@ -76,9 +76,9 @@ class GeneralSettings {
     this.considerMobility = true,
     @Deprecated("We won't export the developer settings anymore. People should use the EnvironmentConfig.devMode")
         this.developerMode = false,
-    @Deprecated("Use [EnvironmentConfig.devMode] instead")
-        this.experimentsEnabled = false,
+    @Deprecated("Use [EnvironmentConfig.devMode] instead") this.experimentsEnabled = false,
     this.firstRun = true,
+    this.showGuide = false,
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -159,6 +159,9 @@ class GeneralSettings {
 
   @HiveField(21, defaultValue: true)
   final bool firstRun;
+
+  @HiveField(22, defaultValue: false)
+  final bool showGuide;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);

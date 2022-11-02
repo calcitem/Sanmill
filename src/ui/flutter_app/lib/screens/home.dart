@@ -35,6 +35,7 @@ import '../services/mill/mill.dart';
 import '../shared/constants.dart';
 import '../shared/custom_drawer/custom_drawer.dart';
 import '../shared/double_back_to_close_app.dart';
+import '../shared/guide/guide_dialog.dart';
 import '../shared/privacy_dialog.dart';
 import '../shared/scaffold_messenger.dart';
 import '../shared/stack_list.dart';
@@ -341,18 +342,29 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => const PrivacyDialog(),
+        builder: (BuildContext context) => PrivacyDialog(onConfirm: _showGuideDialog),
+      );
+    } else {
+      _showGuideDialog();
+    }
+  }
+
+  void _showGuideDialog() {
+    if (!DB().generalSettings.showGuide) {
+      Navigator.of(context).push(
+        MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => const GuideDialog(),
+          fullscreenDialog: true,
+        ),
       );
     }
   }
 
   /// Drafts an email and sends it to the developer
   static Future<void> _launchFeedback(UserFeedback feedback) async {
-    final String screenshotFilePath =
-    await _saveFeedbackImage(feedback.screenshot);
+    final String screenshotFilePath = await _saveFeedbackImage(feedback.screenshot);
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    final String version =
-        "${packageInfo.version} (${packageInfo.buildNumber})";
+    final String version = "${packageInfo.version} (${packageInfo.buildNumber})";
 
     final Email email = Email(
       body: feedback.text,
