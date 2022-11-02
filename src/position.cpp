@@ -163,38 +163,59 @@ std::vector<std::string> trainingDataStringStream {};
 Value theBestValue {VALUE_NONE};
 std::string theBestMove;
 std::string theResult;
+int trainingDataIndex = 0;
 
 void Position::trainingData()
 {
-    static int i = 0;
-
-    i++;
+    trainingDataIndex++;
 
     if (theBestMove != "draw") {
         trainingDataStringStream.emplace_back(
             fen() + " " + std::to_string((int)theBestValue) + " " +
-            theBestMove + " " + std::to_string(i) + " " + theResult + "\n");
-    } else {
+            theBestMove + " " + std::to_string(trainingDataIndex) + " " +
+            theResult + "\n");
+    } else { // bestMove is "draw"
         string temp =
             trainingDataStringStream[trainingDataStringStream.size() - 1];
         temp = temp.substr(0, temp.size() - 2) + "1/2-1/2\n";
         trainingDataStringStream.pop_back();
         trainingDataStringStream.emplace_back(temp);
+        trainingDataIndex = -1;
     }
 
     if (theResult != "#") {
-        std::ofstream file;
-        file.open("filename.txt", std::ios::out);
-
-        for each (string var in trainingDataStringStream) {
-            std::cout << var;
-            file << var;
-        }
-
-        file.close();
-
-        i = 1;
+        trainingDataIndex = -1;
     }
+
+    if (trainingDataIndex == -1) {
+        trainingDataWrite();
+        trainingDataIndex = 0;
+    }
+}
+
+void Position::trainingDataWrite()
+{
+    std::ofstream file;
+    string filename = std::tmpnam(nullptr);
+    filename = filename.substr(filename.find_last_of('\\') + 1);
+    time_t curtime = time(NULL);
+    unsigned long long time = (unsigned long long)curtime;
+    filename = ".\\data\\training-data_" + filename + "_" +
+               std::to_string(time) + ".txt";
+
+    file.open(filename, std::ios::out);
+
+    for each (string var in trainingDataStringStream) {
+        std::cout << var;
+        file << var;
+    }
+
+    file.close();
+
+    trainingDataStringStream.clear();
+    // theBestValue = VALUE_NONE;
+    // theBestMove = "";
+    // theResult = "";
 }
 
 /// Position::init() initializes at startup the various arrays used to compute

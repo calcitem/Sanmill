@@ -68,6 +68,7 @@ public:
     Position &set(const std::string &fenStr, Thread *th);
     [[nodiscard]] std::string fen() const;
     void trainingData();
+    void trainingDataWrite();
 
     // Position representation
     [[nodiscard]] Piece piece_on(Square s) const;
