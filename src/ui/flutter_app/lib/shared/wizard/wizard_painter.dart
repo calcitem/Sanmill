@@ -14,67 +14,35 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-part of '../painters.dart';
+import 'package:flutter/material.dart';
 
-/// Piece Information
-///
-/// Holds parameters needed to paint each piece.
-@immutable
-class PiecePaintParam {
-  const PiecePaintParam({
-    required this.piece,
-    required this.pos,
-    required this.animated,
-    required this.diameter,
-  });
+import '../../services/database/database.dart';
+import '../../services/mill/mill.dart';
+import '../painters/painters.dart';
 
-  /// The color of the piece.
-  final PieceColor piece;
+/// Preview Piece Painter
+class WizardPainter extends CustomPainter {
+  WizardPainter({this.blurIndex, this.focusIndex, required this.pieceList});
 
-  /// The position the piece is placed at.
-  ///
-  /// This represents the final position on the canvas.
-  /// To extract this information from the board index use [pointFromIndex].
-  final Offset pos;
-  final bool animated;
-  final double diameter;
-}
-
-/// Custom Piece Painter
-///
-/// Painter to draw each piece in [MillController.position] on the Board.
-/// The board is drawn by [BoardPainter].
-/// It asserts the Canvas to be a square.
-class PiecePainter extends CustomPainter {
-  PiecePainter({
-    required this.animationValue,
-  });
-
-  /// The value representing the piece animation when placing.
-  final double animationValue;
+  final int? focusIndex;
+  final int? blurIndex;
+  final List<PieceColor> pieceList;
 
   @override
   void paint(Canvas canvas, Size size) {
     assert(size.width == size.height);
-    final int? focusIndex = MillController().gameInstance.focusIndex;
-    final int? blurIndex = MillController().gameInstance.blurIndex;
 
     final Paint paint = Paint();
     final Path shadowPath = Path();
     final List<PiecePaintParam> piecesToDraw = <PiecePaintParam>[];
 
     final double pieceWidth = size.width * DB().displaySettings.pieceWidth / 7;
-    final double animatedPieceWidth = pieceWidth * animationValue;
 
     // Draw pieces on board
     for (int row = 0; row < 7; row++) {
       for (int col = 0; col < 7; col++) {
         final int index = row * 7 + col;
-
-        final PieceColor piece =
-            MillController().position
-            .pieceOnGrid(index); // No Pieces when initial
-
+        final PieceColor piece = pieceList[index]; // No Pieces when initial
         if (piece == PieceColor.none) {
           continue;
         }
@@ -94,7 +62,7 @@ class PiecePainter extends CustomPainter {
         shadowPath.addOval(
           Rect.fromCircle(
             center: pos,
-            radius: (animated ? animatedPieceWidth : pieceWidth) / 2,
+            radius: pieceWidth / 2,
           ),
         );
       }
@@ -116,21 +84,18 @@ class PiecePainter extends CustomPainter {
       final double pieceRadius = pieceWidth / 2;
       final double pieceInnerRadius = pieceRadius * 0.99;
 
-      final double animatedPieceRadius = animatedPieceWidth / 2;
-      final double animatedPieceInnerRadius = animatedPieceRadius * 0.99;
-
       // Draw Border of Piece
       paint.color = piece.piece.borderColor;
       canvas.drawCircle(
         piece.pos,
-        piece.animated ? animatedPieceRadius : pieceRadius,
+        pieceRadius,
         paint,
       );
       // Draw the piece
       paint.color = piece.piece.pieceColor;
       canvas.drawCircle(
         piece.pos,
-        piece.animated ? animatedPieceInnerRadius : pieceInnerRadius,
+        pieceInnerRadius,
         paint,
       );
     }
@@ -143,8 +108,8 @@ class PiecePainter extends CustomPainter {
       paint.strokeWidth = 2;
 
       canvas.drawCircle(
-        pointFromIndex(focusIndex, size),
-        animatedPieceWidth / 2,
+        pointFromIndex(focusIndex!, size),
+        pieceWidth / 2,
         paint,
       );
     }
@@ -155,14 +120,13 @@ class PiecePainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
 
       canvas.drawCircle(
-        pointFromIndex(blurIndex, size),
-        animatedPieceWidth / 2 * 0.8,
+        pointFromIndex(blurIndex!, size),
+        pieceWidth / 2 * 0.8,
         paint,
       );
     }
   }
 
   @override
-  bool shouldRepaint(PiecePainter oldDelegate) =>
-      animationValue != oldDelegate.animationValue;
+  bool shouldRepaint(WizardPainter oldDelegate) => true;
 }

@@ -82,6 +82,7 @@ class GeneralSettings {
     this.gameScreenRecorderSupport = false,
     this.gameScreenRecorderDuration = 2,
     this.gameScreenRecorderPixelRatio = 50,
+    this.showWizard = true,
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -171,6 +172,9 @@ class GeneralSettings {
 
   @HiveField(24, defaultValue: 50)
   final int gameScreenRecorderPixelRatio;
+
+  @HiveField(25, defaultValue: true)
+  final bool showWizard;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);

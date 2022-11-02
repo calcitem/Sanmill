@@ -40,6 +40,7 @@ import '../shared/gif_share/widgets_to_image.dart';
 import '../shared/privacy_dialog.dart';
 import '../shared/scaffold_messenger.dart';
 import '../shared/stack_list.dart';
+import '../shared/wizard/wizard_dialog.dart';
 import 'about_page.dart';
 import 'appearance_settings/appearance_settings_page.dart';
 import 'game_page/game_page.dart';
@@ -216,12 +217,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showPrivacyDialog());
     _routes.push(_drawerIndex);
   }
 
   @override
   void didChangeDependencies() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => _showPrivacyDialog());
     firstRun(context);
 
     super.didChangeDependencies();
@@ -345,7 +346,21 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => const PrivacyDialog(),
+        builder: (BuildContext context) =>
+            PrivacyDialog(onConfirm: _showWizardDialog),
+      );
+    } else {
+      _showWizardDialog();
+    }
+  }
+
+  void _showWizardDialog() {
+    if (DB().generalSettings.showWizard) {
+      Navigator.of(context).push(
+        MaterialPageRoute<dynamic>(
+          builder: (BuildContext context) => const WizardDialog(),
+          fullscreenDialog: true,
+        ),
       );
     }
   }

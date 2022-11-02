@@ -28,11 +28,12 @@ import 'constants.dart';
 import 'link_text_span.dart';
 
 class PrivacyDialog extends StatelessWidget {
-  const PrivacyDialog({super.key});
+  const PrivacyDialog({super.key, this.onConfirm});
+
+  final VoidCallback? onConfirm;
 
   void _setPrivacyPolicyAccepted() {
-    DB().generalSettings =
-        DB().generalSettings.copyWith(isPrivacyPolicyAccepted: true);
+    DB().generalSettings = DB().generalSettings.copyWith(isPrivacyPolicyAccepted: true);
 
     logger.i("[config] isPrivacyPolicyAccepted: true");
   }
@@ -89,6 +90,7 @@ class PrivacyDialog extends StatelessWidget {
           onPressed: () {
             _setPrivacyPolicyAccepted();
             Navigator.pop(context);
+            onConfirm?.call();
           },
         ),
         if (!kIsWeb && Platform.isAndroid)
