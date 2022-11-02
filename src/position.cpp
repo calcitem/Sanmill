@@ -162,27 +162,21 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
 std::vector<std::string> trainingDataStringStream {};
 Value theBestValue {VALUE_NONE};
 std::string theBestMove;
-std::string theResult;
+std::string theResult = "#";
 int trainingDataIndex = 0;
 
 void Position::trainingData()
 {
-    trainingDataIndex++;
-
-    if (theBestMove != "draw") {
-        trainingDataStringStream.emplace_back(
-            fen() + " " + std::to_string((int)theBestValue) + " " +
-            theBestMove + " " + std::to_string(trainingDataIndex) + " " +
-            theResult + "\n");
-    } else { // bestMove is "draw"
-        string temp =
-            trainingDataStringStream[trainingDataStringStream.size() - 1];
-        temp = temp.substr(0, temp.size() - 2) + "1/2-1/2\n";
-        trainingDataStringStream.pop_back();
-        trainingDataStringStream.emplace_back(temp);
-        trainingDataIndex = -1;
+    if (theBestMove == "") {
+        return;
     }
 
+    trainingDataIndex++;
+
+    trainingDataStringStream.emplace_back(
+        fen() + " " + std::to_string((int)theBestValue) + " " + theBestMove +
+        " " + std::to_string(trainingDataIndex) + " " + theResult + "\n");
+#if 0
     if (theResult != "#") {
         trainingDataIndex = -1;
     }
@@ -191,10 +185,21 @@ void Position::trainingData()
         trainingDataWrite();
         trainingDataIndex = 0;
     }
+#endif
 }
 
 void Position::trainingDataWrite()
 {
+    if (trainingDataStringStream.size() == 0) {
+        return;
+    }
+
+    string temp = trainingDataStringStream[trainingDataStringStream.size() - 1];
+    temp = temp.substr(0, temp.size() - 2) + theResult +
+           "\n";
+    trainingDataStringStream.pop_back();
+    trainingDataStringStream.emplace_back(temp);
+
     std::ofstream file;
     string filename = std::tmpnam(nullptr);
     filename = filename.substr(filename.find_last_of('\\') + 1);
@@ -212,10 +217,11 @@ void Position::trainingDataWrite()
 
     file.close();
 
+    trainingDataIndex = 0;
     trainingDataStringStream.clear();
-    // theBestValue = VALUE_NONE;
-    // theBestMove = "";
-    // theResult = "";
+    theBestValue = VALUE_NONE;
+    theBestMove = "";
+    theResult = "#";
 }
 
 /// Position::init() initializes at startup the various arrays used to compute

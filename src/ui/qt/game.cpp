@@ -200,6 +200,8 @@ extern deque<int> openingBookDeque;
 extern deque<int> openingBookDequeBak;
 #endif
 
+extern int trainingDataIndex;
+
 void Game::gameStart()
 {
     // moveHistory.clear();
@@ -1075,6 +1077,7 @@ bool Game::actionPiece(QPointF p)
         } else {
             // If it's decided
             if (gameOptions.getAutoRestart()) {
+                position.trainingDataWrite();
                 saveScore();
 
                 gameReset();
@@ -1301,6 +1304,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 #endif // TRANSPOSITION_TABLE_DEBUG
 
         if (gameOptions.getAutoRestart()) {
+            position.trainingDataWrite();
             saveScore();
 
             gameReset();
@@ -1737,7 +1741,6 @@ void Game::setTips()
     } else if (p.winner == DRAW) {
         theResult = "1/2-1/2";
     } else {
-        theResult = "#";
     }
 
     switch (p.phase) {
