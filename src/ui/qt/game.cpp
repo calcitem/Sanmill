@@ -1125,6 +1125,8 @@ bool Game::resign()
     return result;
 }
 
+extern string theBestMove;
+
 // Key slot function, command line execution of score, independent of
 // actionPiece
 bool Game::command(const string &cmd, bool update /* = true */)
@@ -1168,6 +1170,8 @@ bool Game::command(const string &cmd, bool update /* = true */)
         debugPrintf("Computer: %s\n\n", cmd.c_str());
 
         moveHistory.emplace_back(cmd);
+
+        theBestMove = cmd;
 
         if (cmd.size() > strlen("-(1,2)")) {
             posKeyHistory.push_back(position.key());
@@ -1351,6 +1355,8 @@ bool Game::command(const string &cmd, bool update /* = true */)
     cout << std::fixed << std::setprecision(2) << blackWinRate
          << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
     cout.flags(flags);
+
+    position.trainingData();
 
     return true;
 }
@@ -1709,6 +1715,8 @@ void Game::appendGameOverReasonToMoveHistory()
     moveHistory.emplace_back(record);
 }
 
+extern string theResult;
+
 void Game::setTips()
 {
     Position &p = position;
@@ -1720,6 +1728,16 @@ void Game::setTips()
         turnStr = char_to_string(color_to_char(~p.sideToMove));
     } else {
         turnStr = char_to_string(color_to_char(p.sideToMove));
+    }
+
+    if (p.winner == WHITE) {
+        theResult = "1-0";
+    } else if (p.winner == BLACK) {
+        theResult = "0-1";
+    } else if (p.winner == DRAW) {
+        theResult = "1/2-1/2";
+    } else {
+        theResult = "#";
     }
 
     switch (p.phase) {

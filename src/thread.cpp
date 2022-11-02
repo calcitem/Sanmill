@@ -104,6 +104,8 @@ void Thread::wait_for_search_finished()
     cv.wait(lk, [&] { return !searching; });
 }
 
+extern Value theBestValue;
+
 /// Thread::idle_loop() is where the thread is parked, blocked on the
 /// condition variable, when it has no work to do.
 
@@ -152,6 +154,11 @@ void Thread::idle_loop()
 #endif
                 const int ret = search();
 
+                theBestValue = rootPos->sideToMove == WHITE ? bestvalue :
+                                                              -bestvalue;
+                std::cout << "####################################"
+                          << std::endl;
+
                 if (ret == 3 || ret == 50 || ret == 10) {
                     debugPrintf("Draw\n\n");
                     strCommand = "draw";
@@ -193,10 +200,14 @@ void Thread::setAi(Position *p, int time)
     timeLimit = time;
 }
 
+extern string theBestMove;
+
 void Thread::emitCommand()
 {
 #ifdef QT_GUI_LIB
     emit command(strCommand);
+    // theBestMove = strCommand;
+
 #else
     sync_cout << "bestmove " << strCommand.c_str();
     std::cout << sync_endl;

@@ -27,6 +27,13 @@
 #include "stack.h"
 #include "types.h"
 
+#include <ostream>
+#include <sstream>
+#include <string>
+using std::ostream;
+using std::ostringstream;
+using std::string;
+
 /// StateInfo struct stores information needed to restore a Position object to
 /// its previous state when we retract a move. Whenever a move is made on the
 /// board (by calling Position::do_move), a StateInfo object must be passed.
@@ -60,6 +67,7 @@ public:
     // FEN string input/output
     Position &set(const std::string &fenStr, Thread *th);
     [[nodiscard]] std::string fen() const;
+    void trainingData();
 
     // Position representation
     [[nodiscard]] Piece piece_on(Square s) const;

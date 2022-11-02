@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <sstream>
+#include <string> // std::string, std::stoi
 
 #include "bitboard.h"
 #include "mills.h"
@@ -155,6 +156,45 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
     os.fill(fill);
 
     return os;
+}
+
+// Training data
+std::vector<std::string> trainingDataStringStream {};
+Value theBestValue {VALUE_NONE};
+std::string theBestMove;
+std::string theResult;
+
+void Position::trainingData()
+{
+    static int i = 0;
+
+    i++;
+
+    if (theBestMove != "draw") {
+        trainingDataStringStream.emplace_back(
+            fen() + " " + std::to_string((int)theBestValue) + " " +
+            theBestMove + " " + std::to_string(i) + " " + theResult + "\n");
+    } else {
+        string temp =
+            trainingDataStringStream[trainingDataStringStream.size() - 1];
+        temp = temp.substr(0, temp.size() - 2) + "1/2-1/2\n";
+        trainingDataStringStream.pop_back();
+        trainingDataStringStream.emplace_back(temp);
+    }
+
+    if (theResult != "#") {
+        std::ofstream file;
+        file.open("filename.txt", std::ios::out);
+
+        for each (string var in trainingDataStringStream) {
+            std::cout << var;
+            file << var;
+        }
+
+        file.close();
+
+        i = 1;
+    }
 }
 
 /// Position::init() initializes at startup the various arrays used to compute
@@ -651,9 +691,8 @@ bool Position::put_piece(Square s, bool updateRecord)
             || is_all_in_mills(them)
 #endif
         ) {
-            if (pieceInHandCount[WHITE] < 0 ||
-                   pieceInHandCount[BLACK] < 0) {
-                    return false;
+            if (pieceInHandCount[WHITE] < 0 || pieceInHandCount[BLACK] < 0) {
+                return false;
             }
 
             if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0) {
@@ -690,7 +729,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                 }
 
                 if (pieceInHandCount[WHITE] < 0 ||
-                   pieceInHandCount[BLACK] < 0) {
+                    pieceInHandCount[BLACK] < 0) {
                     return false;
                 }
 
