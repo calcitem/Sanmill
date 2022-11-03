@@ -89,6 +89,7 @@ flutter:
     - assets/images/ic_board_bg_3.png
     - assets/images/ic_board_bg_4.png
     - assets/images/ic_board_bg_5.png
+    - assets/images/ic_guide_pet.png
 
 flutter_intl:
   enabled: true

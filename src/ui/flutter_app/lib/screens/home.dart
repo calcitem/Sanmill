@@ -92,7 +92,7 @@ extension _DrawerScreen on _DrawerIndex {
       case _DrawerIndex.howToPlay:
         return const HowToPlayScreen();
       case _DrawerIndex.feedback:
-      // ignore: only_throw_errors
+        // ignore: only_throw_errors
         throw ErrorDescription(
           "Feedback screen is not a widget and should be called separately",
         );
@@ -133,8 +133,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     }
 
     if ((index == _DrawerIndex.howToPlay ||
-        index == _DrawerIndex.about ||
-        index == _DrawerIndex.feedback) &&
+            index == _DrawerIndex.about ||
+            index == _DrawerIndex.feedback) &&
         EnvironmentConfig.test == true) {
       return logger.w("Do not test HowToPlay/Feedback/About page.");
     }
@@ -215,12 +215,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showPrivacyDialog());
     _routes.push(_drawerIndex);
   }
 
   @override
   void didChangeDependencies() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => _showPrivacyDialog());
     firstRun(context);
 
     super.didChangeDependencies();
@@ -323,8 +323,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             title: S.of(context).appName,
           ),
           items: drawerItems,
-          disabledGestures:
-          _drawerIndex.index < 4 && !value.visible,
+          disabledGestures: _drawerIndex.index < 4 && !value.visible,
           // TODO: 4 means Setup Position
           child: _screenView,
         ),
@@ -342,7 +341,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) => PrivacyDialog(onConfirm: _showGuideDialog),
+        builder: (BuildContext context) =>
+            PrivacyDialog(onConfirm: _showGuideDialog),
       );
     } else {
       _showGuideDialog();
@@ -362,9 +362,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   /// Drafts an email and sends it to the developer
   static Future<void> _launchFeedback(UserFeedback feedback) async {
-    final String screenshotFilePath = await _saveFeedbackImage(feedback.screenshot);
+    final String screenshotFilePath =
+        await _saveFeedbackImage(feedback.screenshot);
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    final String version = "${packageInfo.version} (${packageInfo.buildNumber})";
+    final String version =
+        "${packageInfo.version} (${packageInfo.buildNumber})";
 
     final Email email = Email(
       body: feedback.text,
