@@ -1365,5 +1365,7 @@
     "description": "Full screen"
   },
   "forest": "Ліс",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "Зображення робочого столу",
+  "@desktopImage": {}
 }

@@ -1267,5 +1267,7 @@
     "description": "Exit and reopen app for settings to take effect."
   },
   "forest": "Orman",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "Masaüstü Resmi",
+  "@desktopImage": {}
 }

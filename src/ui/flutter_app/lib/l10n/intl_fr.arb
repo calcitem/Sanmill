@@ -1267,5 +1267,7 @@
     "description": "Full screen"
   },
   "forest": "Forêt",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "Image de bureau",
+  "@desktopImage": {}
 }

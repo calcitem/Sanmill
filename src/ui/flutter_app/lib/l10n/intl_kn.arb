@@ -1267,5 +1267,7 @@
     "description": "Exit and reopen app for settings to take effect."
   },
   "forest": "ಅರಣ್ಯ",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "ಡೆಸ್ಕ್‌ಟಾಪ್ ಚಿತ್ರ",
+  "@desktopImage": {}
 }

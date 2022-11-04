@@ -1267,5 +1267,7 @@
     "description": "Full screen"
   },
   "forest": "غابة",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "صورة سطح المكتب",
+  "@desktopImage": {}
 }

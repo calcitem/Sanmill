@@ -1267,5 +1267,7 @@
     "description": "Full screen"
   },
   "forest": "વન",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "ડેસ્કટૉપ છબી",
+  "@desktopImage": {}
 }

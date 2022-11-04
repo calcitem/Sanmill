@@ -1267,5 +1267,7 @@
     "description": "Full screen"
   },
   "forest": "Шума",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "Слика на работната површина",
+  "@desktopImage": {}
 }
