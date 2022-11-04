@@ -1365,5 +1365,7 @@
     "description": "Exit and reopen app for settings to take effect."
   },
   "forest": "Forest",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "Desktop Image",
+  "@desktopImage": {}
 }

@@ -1267,5 +1267,7 @@
     "description": "Full screen"
   },
   "forest": "Δάσος",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "Εικόνα επιφάνειας εργασίας",
+  "@desktopImage": {}
 }

@@ -1267,5 +1267,7 @@
     "description": "Full screen"
   },
   "forest": "Mežs",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "Darbvirsmas attēls",
+  "@desktopImage": {}
 }

@@ -1267,5 +1267,7 @@
     "description": "Full screen"
   },
   "forest": "Rừng",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "Hình ảnh Máy tính để bàn",
+  "@desktopImage": {}
 }

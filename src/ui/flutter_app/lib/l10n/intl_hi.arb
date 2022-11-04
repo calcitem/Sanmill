@@ -1267,5 +1267,7 @@
     "description": "Full screen"
   },
   "forest": "जंगल",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "डेस्कटॉप छवि",
+  "@desktopImage": {}
 }

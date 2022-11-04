@@ -1267,5 +1267,7 @@
     "description": "Full screen"
   },
   "forest": "숲",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "데스크탑 이미지",
+  "@desktopImage": {}
 }

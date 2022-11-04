@@ -1267,5 +1267,7 @@
     "description": "Exit and reopen app for settings to take effect."
   },
   "forest": "ป่า",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "รูปภาพเดสก์ท็อป",
+  "@desktopImage": {}
 }

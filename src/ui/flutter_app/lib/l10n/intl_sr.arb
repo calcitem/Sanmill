@@ -1267,5 +1267,7 @@
     "description": "Full screen"
   },
   "forest": "Форест",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "Слика радне површине",
+  "@desktopImage": {}
 }

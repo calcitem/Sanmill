@@ -1267,5 +1267,7 @@
     "description": "Full screen"
   },
   "forest": "Las",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "Obraz pulpitu",
+  "@desktopImage": {}
 }

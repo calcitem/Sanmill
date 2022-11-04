@@ -1267,5 +1267,7 @@
     "description": "Full screen"
   },
   "forest": "森",
-  "@forest": {}
+  "@forest": {},
+  "desktopImage": "デスクトップ画像",
+  "@desktopImage": {}
 }
