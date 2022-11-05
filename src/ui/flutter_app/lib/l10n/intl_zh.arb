@@ -1266,10 +1266,10 @@
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
   },
-  "forest": "森林",
+  "forest": "原野森林",
   "@forest": {},
-  "desktopImage": "桌面图像",
+  "desktopImage": "桌面图片",
   "@desktopImage": {},
-  "invalidPosition": "无效的位置。",
+  "invalidPosition": "局面是不合法的。",
   "@invalidPosition": {}
 }
