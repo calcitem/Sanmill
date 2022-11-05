@@ -170,7 +170,9 @@ class _GameState extends State<_Game> {
     );
     final double itemMaxWidth =
         (MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) / 4 -
-            scaledPadding.horizontal;
+            scaledPadding
+                .horizontal; // TODO: Use scaledPadding.horizontal or fixed 16?
+    assert(scaledPadding.horizontal == 16.0);
     final ToolbarItem gameButton = ToolbarItem.icon(
       onPressed: () => _showGameModalBottomSheet(context),
       icon: const Icon(FluentIcons.table_simple_24_regular),
