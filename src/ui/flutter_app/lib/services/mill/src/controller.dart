@@ -321,6 +321,8 @@ class MillController {
     if (reversed) {
       MillController().gameInstance.reverseWhoIsAi();
     }
+
+    GifShare().captureView();
   }
 
   void showSnakeBarHumanNotation(String humanStr) {
@@ -332,6 +334,11 @@ class MillController {
       rootScaffoldMessengerKey.currentState!
           .showSnackBar(CustomSnackBar("$humanStr: $n"));
     }
+  }
+
+  Future<void> gifShare(BuildContext context) async {
+    await GifShare().captureView();
+    GifShare().shareGif();
   }
 
   /// Starts a game save.
