@@ -1269,5 +1269,7 @@
   "forest": "Δάσος",
   "@forest": {},
   "desktopImage": "Εικόνα επιφάνειας εργασίας",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Μη έγκυρη θέση.",
+  "@invalidPosition": {}
 }

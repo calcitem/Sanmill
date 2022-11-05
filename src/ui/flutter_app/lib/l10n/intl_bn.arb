@@ -1269,5 +1269,7 @@
   "forest": "বন। জংগল",
   "@forest": {},
   "desktopImage": "ডেস্কটপ ছবি",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "অবৈধ অবস্থান।",
+  "@invalidPosition": {}
 }

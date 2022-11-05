@@ -1269,5 +1269,7 @@
   "forest": "Šuma",
   "@forest": {},
   "desktopImage": "Slika radne površine",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Nevažeći položaj.",
+  "@invalidPosition": {}
 }

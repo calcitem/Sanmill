@@ -1269,5 +1269,7 @@
   "forest": "Mežs",
   "@forest": {},
   "desktopImage": "Darbvirsmas attēls",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Nederīga pozīcija.",
+  "@invalidPosition": {}
 }

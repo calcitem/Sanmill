@@ -1269,5 +1269,7 @@
   "forest": "Hutan",
   "@forest": {},
   "desktopImage": "Gambar Desktop",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Posisi tidak valid.",
+  "@invalidPosition": {}
 }

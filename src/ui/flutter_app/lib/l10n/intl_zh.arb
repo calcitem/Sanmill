@@ -1269,5 +1269,7 @@
   "forest": "森林",
   "@forest": {},
   "desktopImage": "桌面图像",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "无效的位置。",
+  "@invalidPosition": {}
 }

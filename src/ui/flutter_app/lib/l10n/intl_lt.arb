@@ -1269,5 +1269,7 @@
   "forest": "Miškas",
   "@forest": {},
   "desktopImage": "Darbalaukio vaizdas",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Neteisinga pozicija.",
+  "@invalidPosition": {}
 }

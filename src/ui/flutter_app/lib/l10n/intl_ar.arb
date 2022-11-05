@@ -1269,5 +1269,7 @@
   "forest": "غابة",
   "@forest": {},
   "desktopImage": "صورة سطح المكتب",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "موقف غير صحيح.",
+  "@invalidPosition": {}
 }

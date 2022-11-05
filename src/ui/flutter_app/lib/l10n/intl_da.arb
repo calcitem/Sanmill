@@ -1269,5 +1269,7 @@
   "forest": "Skov",
   "@forest": {},
   "desktopImage": "Desktop billede",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Ugyldig stilling.",
+  "@invalidPosition": {}
 }

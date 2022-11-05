@@ -1269,5 +1269,7 @@
   "forest": "जंगल",
   "@forest": {},
   "desktopImage": "डेस्कटॉप छवि",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "अमान्य स्थिति।",
+  "@invalidPosition": {}
 }

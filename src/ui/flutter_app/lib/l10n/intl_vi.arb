@@ -1269,5 +1269,7 @@
   "forest": "Rừng",
   "@forest": {},
   "desktopImage": "Hình ảnh Máy tính để bàn",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Vị trí không hợp lệ.",
+  "@invalidPosition": {}
 }

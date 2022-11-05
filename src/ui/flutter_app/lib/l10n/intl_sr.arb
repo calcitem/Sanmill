@@ -1269,5 +1269,7 @@
   "forest": "Форест",
   "@forest": {},
   "desktopImage": "Слика радне површине",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Неважећа позиција.",
+  "@invalidPosition": {}
 }

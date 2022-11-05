@@ -1269,5 +1269,7 @@
   "forest": "Erdő",
   "@forest": {},
   "desktopImage": "Asztali kép",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Érvénytelen pozíció.",
+  "@invalidPosition": {}
 }

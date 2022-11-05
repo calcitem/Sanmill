@@ -1269,5 +1269,7 @@
   "forest": "Skog",
   "@forest": {},
   "desktopImage": "Skrivbordsbild",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Ogiltig position.",
+  "@invalidPosition": {}
 }

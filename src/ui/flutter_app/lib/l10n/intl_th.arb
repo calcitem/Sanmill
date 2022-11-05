@@ -1269,5 +1269,7 @@
   "forest": "ป่า",
   "@forest": {},
   "desktopImage": "รูปภาพเดสก์ท็อป",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "ตำแหน่งไม่ถูกต้อง",
+  "@invalidPosition": {}
 }

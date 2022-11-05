@@ -1367,5 +1367,7 @@
   "forest": "Forest",
   "@forest": {},
   "desktopImage": "Desktop Image",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Invalid position.",
+  "@invalidPosition": {}
 }

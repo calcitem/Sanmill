@@ -1269,5 +1269,7 @@
   "forest": "Mets",
   "@forest": {},
   "desktopImage": "Töölaua pilt",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Kehtetu positsioon.",
+  "@invalidPosition": {}
 }

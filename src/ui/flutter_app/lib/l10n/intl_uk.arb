@@ -1367,5 +1367,7 @@
   "forest": "Ліс",
   "@forest": {},
   "desktopImage": "Зображення робочого столу",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Недійсна позиція.",
+  "@invalidPosition": {}
 }

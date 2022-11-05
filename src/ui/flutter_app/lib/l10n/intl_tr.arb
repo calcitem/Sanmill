@@ -1269,5 +1269,7 @@
   "forest": "Orman",
   "@forest": {},
   "desktopImage": "Masaüstü Resmi",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Geçersiz konum.",
+  "@invalidPosition": {}
 }

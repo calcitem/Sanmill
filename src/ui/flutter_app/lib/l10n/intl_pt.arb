@@ -1269,5 +1269,7 @@
   "forest": "Floresta",
   "@forest": {},
   "desktopImage": "Imagem da área de trabalho",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Posição inválida.",
+  "@invalidPosition": {}
 }

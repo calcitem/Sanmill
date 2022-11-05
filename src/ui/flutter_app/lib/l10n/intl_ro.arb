@@ -1269,5 +1269,7 @@
   "forest": "pădure",
   "@forest": {},
   "desktopImage": "Imagine de pe desktop",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Poziție nevalidă.",
+  "@invalidPosition": {}
 }
