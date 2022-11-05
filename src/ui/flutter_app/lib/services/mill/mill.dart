@@ -35,6 +35,7 @@ import '../../main.dart';
 import '../../models/color_settings.dart';
 import '../../models/general_settings.dart';
 import '../../models/rule_settings.dart';
+import '../../shared/gif_share/gif_share.dart';
 import '../../shared/iterable/array_helper.dart';
 import '../../shared/iterable/pointed_list.dart';
 import '../../shared/scaffold_messenger.dart';

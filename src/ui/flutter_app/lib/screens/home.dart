@@ -24,6 +24,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import '../shared/gif_share/widgets_to_image.dart';
+import '../shared/gif_share/gif_share.dart';
 
 import '../generated/intl/l10n.dart';
 import '../models/general_settings.dart';
@@ -314,19 +316,22 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       willBack: () {
         return !_canPopRoute();
       },
-      child: ValueListenableBuilder<CustomDrawerValue>(
-        valueListenable: _controller,
-        builder: (_, CustomDrawerValue value, Widget? child) => CustomDrawer(
-          controller: _controller,
-          header: CustomDrawerHeader(
-            title: S.of(context).appName,
-          ),
-          items: drawerItems,
-          // TODO: 4 means Setup Position
-          disabledGestures: _drawerIndex.index < 4 && !value.visible,
-          child: _screenView,
-        ),
-      ),
+      child: WidgetsToImage(
+          controller: GifShare().controller,
+          child: ValueListenableBuilder<CustomDrawerValue>(
+            valueListenable: _controller,
+            builder: (_, CustomDrawerValue value, Widget? child) =>
+                CustomDrawer(
+              controller: _controller,
+              header: CustomDrawerHeader(
+                title: S.of(context).appName,
+              ),
+              items: drawerItems,
+              // TODO: 4 means Setup Position
+              disabledGestures: _drawerIndex.index < 4 && !value.visible,
+              child: _screenView,
+            ),
+          )),
     );
   }
 
