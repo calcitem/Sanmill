@@ -1269,5 +1269,7 @@
   "forest": "O'rmon",
   "@forest": {},
   "desktopImage": "Ish stoli tasviri",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Yaroqsiz pozitsiya.",
+  "@invalidPosition": {}
 }

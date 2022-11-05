@@ -1269,5 +1269,7 @@
   "forest": "Metsä",
   "@forest": {},
   "desktopImage": "Työpöytäkuva",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Virheellinen sijainti.",
+  "@invalidPosition": {}
 }

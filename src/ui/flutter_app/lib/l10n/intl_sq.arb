@@ -1269,5 +1269,7 @@
   "forest": "Pyll",
   "@forest": {},
   "desktopImage": "Imazhi i desktopit",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Pozicioni i pavlefshëm.",
+  "@invalidPosition": {}
 }

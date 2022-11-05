@@ -1269,5 +1269,7 @@
   "forest": "гора",
   "@forest": {},
   "desktopImage": "Изображение на работния плот",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Невалидна позиция.",
+  "@invalidPosition": {}
 }

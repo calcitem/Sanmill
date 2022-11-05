@@ -1269,5 +1269,7 @@
   "forest": "les",
   "@forest": {},
   "desktopImage": "Obrázok pracovnej plochy",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Neplatná pozícia.",
+  "@invalidPosition": {}
 }

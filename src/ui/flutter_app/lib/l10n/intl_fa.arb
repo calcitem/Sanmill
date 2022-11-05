@@ -1269,5 +1269,7 @@
   "forest": "جنگل",
   "@forest": {},
   "desktopImage": "تصویر دسکتاپ",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "موقعیت نامعتبر",
+  "@invalidPosition": {}
 }

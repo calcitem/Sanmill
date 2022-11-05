@@ -1269,5 +1269,7 @@
   "forest": "Les",
   "@forest": {},
   "desktopImage": "Obrázek na ploše",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Neplatná pozice.",
+  "@invalidPosition": {}
 }

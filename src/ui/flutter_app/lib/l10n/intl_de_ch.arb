@@ -1269,5 +1269,7 @@
   "forest": "Wald",
   "@forest": {},
   "desktopImage": "Desktop-Bild",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Ungültige Position.",
+  "@invalidPosition": {}
 }

@@ -1269,5 +1269,7 @@
   "forest": "વન",
   "@forest": {},
   "desktopImage": "ડેસ્કટૉપ છબી",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "અમાન્ય સ્થિતિ.",
+  "@invalidPosition": {}
 }

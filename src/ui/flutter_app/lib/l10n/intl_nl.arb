@@ -1269,5 +1269,7 @@
   "forest": "Woud",
   "@forest": {},
   "desktopImage": "Bureaubladafbeelding",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Ongeldige positie.",
+  "@invalidPosition": {}
 }

@@ -1269,5 +1269,7 @@
   "forest": "అడవి",
   "@forest": {},
   "desktopImage": "డెస్క్‌టాప్ చిత్రం",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "చెల్లని స్థానం.",
+  "@invalidPosition": {}
 }

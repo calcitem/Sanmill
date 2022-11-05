@@ -1269,5 +1269,7 @@
   "forest": "숲",
   "@forest": {},
   "desktopImage": "데스크탑 이미지",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "잘못된 위치입니다.",
+  "@invalidPosition": {}
 }

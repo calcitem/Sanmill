@@ -1269,5 +1269,7 @@
   "forest": "Gozd",
   "@forest": {},
   "desktopImage": "Slika namizja",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Neveljaven položaj.",
+  "@invalidPosition": {}
 }

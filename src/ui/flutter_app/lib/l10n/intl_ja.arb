@@ -1269,5 +1269,7 @@
   "forest": "森",
   "@forest": {},
   "desktopImage": "デスクトップ画像",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "位置が無効です。",
+  "@invalidPosition": {}
 }

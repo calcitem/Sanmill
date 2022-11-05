@@ -1269,5 +1269,7 @@
   "forest": "Las",
   "@forest": {},
   "desktopImage": "Obraz pulpitu",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Nieprawidłowa pozycja.",
+  "@invalidPosition": {}
 }

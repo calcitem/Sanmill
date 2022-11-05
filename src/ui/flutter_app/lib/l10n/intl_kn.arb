@@ -1269,5 +1269,7 @@
   "forest": "ಅರಣ್ಯ",
   "@forest": {},
   "desktopImage": "ಡೆಸ್ಕ್‌ಟಾಪ್ ಚಿತ್ರ",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "ಅಮಾನ್ಯ ಸ್ಥಾನ.",
+  "@invalidPosition": {}
 }

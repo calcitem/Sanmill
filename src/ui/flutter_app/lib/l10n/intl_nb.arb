@@ -1269,5 +1269,7 @@
   "forest": "skog",
   "@forest": {},
   "desktopImage": "Skrivebordsbilde",
-  "@desktopImage": {}
+  "@desktopImage": {},
+  "invalidPosition": "Ugyldig stilling.",
+  "@invalidPosition": {}
 }
