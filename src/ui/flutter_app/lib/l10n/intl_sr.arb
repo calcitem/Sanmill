@@ -1271,5 +1271,7 @@
   "desktopImage": "Слика радне површине",
   "@desktopImage": {},
   "invalidPosition": "Неважећа позиција.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Поделите ГИФ",
+  "@shareGIF": {}
 }

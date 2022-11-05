@@ -1271,5 +1271,7 @@
   "desktopImage": "Darbvirsmas attēls",
   "@desktopImage": {},
   "invalidPosition": "Nederīga pozīcija.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Kopīgojiet GIF",
+  "@shareGIF": {}
 }

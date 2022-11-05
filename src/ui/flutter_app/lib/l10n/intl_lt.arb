@@ -1271,5 +1271,7 @@
   "desktopImage": "Darbalaukio vaizdas",
   "@desktopImage": {},
   "invalidPosition": "Neteisinga pozicija.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Bendrinkite GIF",
+  "@shareGIF": {}
 }

@@ -1271,5 +1271,7 @@
   "desktopImage": "Obraz pulpitu",
   "@desktopImage": {},
   "invalidPosition": "Nieprawidłowa pozycja.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Udostępnij GIF",
+  "@shareGIF": {}
 }

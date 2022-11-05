@@ -1271,5 +1271,7 @@
   "desktopImage": "Obrázek na ploše",
   "@desktopImage": {},
   "invalidPosition": "Neplatná pozice.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Sdílet GIF",
+  "@shareGIF": {}
 }

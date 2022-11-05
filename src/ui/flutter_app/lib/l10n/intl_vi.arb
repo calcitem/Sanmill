@@ -1271,5 +1271,7 @@
   "desktopImage": "Hình ảnh Máy tính để bàn",
   "@desktopImage": {},
   "invalidPosition": "Vị trí không hợp lệ.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Chia sẻ GIF",
+  "@shareGIF": {}
 }

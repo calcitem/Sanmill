@@ -1271,5 +1271,7 @@
   "desktopImage": "Slika namizja",
   "@desktopImage": {},
   "invalidPosition": "Neveljaven položaj.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Delite GIF",
+  "@shareGIF": {}
 }

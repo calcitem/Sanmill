@@ -1271,5 +1271,7 @@
   "desktopImage": "Ish stoli tasviri",
   "@desktopImage": {},
   "invalidPosition": "Yaroqsiz pozitsiya.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "GIF-ni ulashing",
+  "@shareGIF": {}
 }

@@ -1271,5 +1271,7 @@
   "desktopImage": "డెస్క్‌టాప్ చిత్రం",
   "@desktopImage": {},
   "invalidPosition": "చెల్లని స్థానం.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "GIFని షేర్ చేయండి",
+  "@shareGIF": {}
 }

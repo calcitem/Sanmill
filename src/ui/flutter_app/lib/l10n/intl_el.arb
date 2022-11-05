@@ -1271,5 +1271,7 @@
   "desktopImage": "Εικόνα επιφάνειας εργασίας",
   "@desktopImage": {},
   "invalidPosition": "Μη έγκυρη θέση.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Κοινή χρήση GIF",
+  "@shareGIF": {}
 }

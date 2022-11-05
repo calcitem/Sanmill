@@ -1271,5 +1271,7 @@
   "desktopImage": "Bureaubladafbeelding",
   "@desktopImage": {},
   "invalidPosition": "Ongeldige positie.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Deel GIF",
+  "@shareGIF": {}
 }

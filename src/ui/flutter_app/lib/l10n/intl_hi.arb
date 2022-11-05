@@ -1271,5 +1271,7 @@
   "desktopImage": "डेस्कटॉप छवि",
   "@desktopImage": {},
   "invalidPosition": "अमान्य स्थिति।",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "जीआईएफ साझा करें",
+  "@shareGIF": {}
 }

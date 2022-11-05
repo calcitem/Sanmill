@@ -1271,5 +1271,7 @@
   "desktopImage": "데스크탑 이미지",
   "@desktopImage": {},
   "invalidPosition": "잘못된 위치입니다.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "GIF 공유",
+  "@shareGIF": {}
 }

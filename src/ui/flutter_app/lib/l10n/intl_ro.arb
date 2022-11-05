@@ -1271,5 +1271,7 @@
   "desktopImage": "Imagine de pe desktop",
   "@desktopImage": {},
   "invalidPosition": "Poziție nevalidă.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Distribuie GIF",
+  "@shareGIF": {}
 }

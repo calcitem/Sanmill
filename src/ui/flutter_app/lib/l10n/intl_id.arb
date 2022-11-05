@@ -1271,5 +1271,7 @@
   "desktopImage": "Gambar Desktop",
   "@desktopImage": {},
   "invalidPosition": "Posisi tidak valid.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Bagikan GIF",
+  "@shareGIF": {}
 }

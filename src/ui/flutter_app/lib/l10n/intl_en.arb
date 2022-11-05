@@ -1369,5 +1369,7 @@
   "desktopImage": "Desktop Image",
   "@desktopImage": {},
   "invalidPosition": "Invalid position.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Share GIF",
+  "@shareGIF": {}
 }

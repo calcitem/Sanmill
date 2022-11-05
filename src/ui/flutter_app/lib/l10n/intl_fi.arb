@@ -1271,5 +1271,7 @@
   "desktopImage": "Työpöytäkuva",
   "@desktopImage": {},
   "invalidPosition": "Virheellinen sijainti.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Jaa GIF",
+  "@shareGIF": {}
 }
