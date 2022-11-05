@@ -527,7 +527,13 @@ class Position {
         _updateKey(s);
         _revertKey(_currentSquare);
 
-        assert(_currentSquare != 0); // TODO: Deal with it
+        if (_currentSquare == 0) {
+          // TODO: Find the root cause and fix it
+          logger.e(
+            "[position] putPiece: _currentSquare is 0.",
+          );
+          return false;
+        }
         _board[_currentSquare] =
             _grid[squareToIndex[_currentSquare]!] = PieceColor.none;
 
