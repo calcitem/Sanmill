@@ -168,11 +168,15 @@ class _GameState extends State<_Game> {
       const EdgeInsets.symmetric(horizontal: 4),
       MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
     );
-    final double itemMaxWidth =
+    double itemMaxWidth =
         (MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) / 4 -
-            scaledPadding
-                .horizontal; // TODO: Use scaledPadding.horizontal or fixed 16?
-    assert(scaledPadding.horizontal == 16.0);
+            scaledPadding.horizontal;
+
+    if (itemMaxWidth < 0) {
+      // TODO: WAR, See https://github.com/flutter/flutter/issues/25827
+      itemMaxWidth = 80.0;
+    }
+
     final ToolbarItem gameButton = ToolbarItem.icon(
       onPressed: () => _showGameModalBottomSheet(context),
       icon: const Icon(FluentIcons.table_simple_24_regular),
