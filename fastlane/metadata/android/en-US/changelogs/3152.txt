@@ -1,0 +1,7 @@
+v2.0.13
+
+* Support sharing GIF.
+* Disable gestures on game page.
+* Add shadow to unplaced and removed pieces.
+* Fix status bar icon color to white.
+* Fix edges of pieces located on the edge of the board are blurred.

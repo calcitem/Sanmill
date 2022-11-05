@@ -1,0 +1,7 @@
+v2.0.13
+
+* Unterstützen Sie das Teilen von GIF.
+* Gesten auf der Spielseite deaktivieren.
+* Fügen Sie nicht platzierten und entfernten Teilen Schatten hinzu.
+* Fixieren Sie die Farbe des Statusleistensymbols auf weiß.
+* Korrigieren Sie, dass die Kanten von Teilen, die sich am Rand des Bretts befinden, unscharf sind.

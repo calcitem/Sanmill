@@ -1,0 +1,7 @@
+v2.0.13
+
+* Soporte para compartir GIF.
+* Deshabilitar gestos en la página del juego.
+* Agregue sombra a las piezas no colocadas y eliminadas.
+* Fijar el color del icono de la barra de estado a blanco.
+* Arreglar que los bordes de las piezas ubicadas en el borde del tablero estén borrosos.
