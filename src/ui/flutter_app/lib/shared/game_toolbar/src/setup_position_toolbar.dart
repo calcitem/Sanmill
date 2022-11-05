@@ -528,6 +528,19 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
     updateSetupPositionPiecesCount();
 
+    // TODO: WAR patch. Specifically for the initial position.
+    //  The position is illegal after switching to the Setup Position
+    //  and then switching back.
+    if (MillController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
+        MillController().position.pieceOnBoardCount[PieceColor.black] == 0 &&
+        MillController().position.pieceInHandCount[PieceColor.white] == 0 &&
+        MillController().position.pieceInHandCount[PieceColor.black] == 0) {
+      newPlaced = 0;
+      newPhase = Phase.placing;
+      newPieceCountNeedRemove = 0;
+      MillController().reset(force: true);
+    }
+
     //MillController().recorder.clear(); // TODO: Set and parse fen.
     final String fen = position.fen;
     MillController().recorder =
@@ -699,6 +712,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
         .setupPositionNotifier
         .addListener(_updateSetupPositionIcons);
     setSetupPositionDone();
+    logger.i("FEN: ${MillController().position.fen}");
     super.dispose();
   }
 }

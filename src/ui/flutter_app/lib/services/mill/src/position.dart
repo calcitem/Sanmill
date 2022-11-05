@@ -404,6 +404,11 @@ class Position {
       case Phase.placing:
         piece = sideToMove;
         if (pieceInHandCount[us] != null) {
+          if (pieceInHandCount[us] == 0) {
+            rootScaffoldMessengerKey.currentState!
+                .showSnackBarClear("FEN: ${MillController().position.fen}");
+            return false;
+          }
           pieceInHandCount[us] = pieceInHandCount[us]! - 1;
         }
 

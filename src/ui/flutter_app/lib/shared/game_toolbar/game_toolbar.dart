@@ -27,6 +27,7 @@ import 'package:flutter/services.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../services/database/database.dart';
+import '../../services/logger.dart';
 import '../../services/mill/mill.dart';
 import '../scaffold_messenger.dart';
 import '../string_buffer_helper.dart';
