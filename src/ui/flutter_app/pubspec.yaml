@@ -8,11 +8,7 @@ environment:
 
 dependencies:
   animated_text_kit: 4.1.1
-  catcher:
-    git:
-      url: https://gitlab.com/calcitem/catcher.git
-      ref: master
-      #url: https://github.com/ThexXTURBOXx/catcher.git
+  catcher: ^0.7.0
   collection: ^1.16.0
   copy_with_extension: ^4.0.4
   cupertino_icons: ^1.0.5
