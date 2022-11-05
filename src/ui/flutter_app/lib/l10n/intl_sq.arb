@@ -1271,5 +1271,7 @@
   "desktopImage": "Imazhi i desktopit",
   "@desktopImage": {},
   "invalidPosition": "Pozicioni i pavlefshëm.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Ndani GIF",
+  "@shareGIF": {}
 }

@@ -1271,5 +1271,7 @@
   "desktopImage": "ડેસ્કટૉપ છબી",
   "@desktopImage": {},
   "invalidPosition": "અમાન્ય સ્થિતિ.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "GIF શેર કરો",
+  "@shareGIF": {}
 }

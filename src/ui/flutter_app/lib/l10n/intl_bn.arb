@@ -1271,5 +1271,7 @@
   "desktopImage": "ডেস্কটপ ছবি",
   "@desktopImage": {},
   "invalidPosition": "অবৈধ অবস্থান।",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "GIF শেয়ার করুন",
+  "@shareGIF": {}
 }

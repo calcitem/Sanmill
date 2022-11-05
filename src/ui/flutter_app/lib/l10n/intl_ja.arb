@@ -1271,5 +1271,7 @@
   "desktopImage": "デスクトップ画像",
   "@desktopImage": {},
   "invalidPosition": "位置が無効です。",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "GIF を共有",
+  "@shareGIF": {}
 }

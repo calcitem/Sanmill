@@ -1271,5 +1271,7 @@
   "desktopImage": "صورة سطح المكتب",
   "@desktopImage": {},
   "invalidPosition": "موقف غير صحيح.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "مشاركة GIF",
+  "@shareGIF": {}
 }

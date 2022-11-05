@@ -1271,5 +1271,7 @@
   "desktopImage": "Asztali kép",
   "@desktopImage": {},
   "invalidPosition": "Érvénytelen pozíció.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "GIF megosztása",
+  "@shareGIF": {}
 }

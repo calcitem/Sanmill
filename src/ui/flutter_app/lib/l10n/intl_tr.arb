@@ -1271,5 +1271,7 @@
   "desktopImage": "Masaüstü Resmi",
   "@desktopImage": {},
   "invalidPosition": "Geçersiz konum.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "GIF paylaş",
+  "@shareGIF": {}
 }

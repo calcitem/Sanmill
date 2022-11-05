@@ -1271,5 +1271,7 @@
   "desktopImage": "Töölaua pilt",
   "@desktopImage": {},
   "invalidPosition": "Kehtetu positsioon.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Jagage GIF-i",
+  "@shareGIF": {}
 }

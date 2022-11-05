@@ -1271,5 +1271,7 @@
   "desktopImage": "桌面圖片",
   "@desktopImage": {},
   "invalidPosition": "局面是不合法的。",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "分享 GIF",
+  "@shareGIF": {}
 }

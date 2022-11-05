@@ -1271,5 +1271,7 @@
   "desktopImage": "Skrivebordsbilde",
   "@desktopImage": {},
   "invalidPosition": "Ugyldig stilling.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Del GIF",
+  "@shareGIF": {}
 }

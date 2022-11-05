@@ -1369,5 +1369,7 @@
   "desktopImage": "Зображення робочого столу",
   "@desktopImage": {},
   "invalidPosition": "Недійсна позиція.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Поділіться GIF",
+  "@shareGIF": {}
 }

@@ -1271,5 +1271,7 @@
   "desktopImage": "تصویر دسکتاپ",
   "@desktopImage": {},
   "invalidPosition": "موقعیت نامعتبر",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "GIF را به اشتراک بگذارید",
+  "@shareGIF": {}
 }

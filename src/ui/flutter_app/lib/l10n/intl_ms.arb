@@ -1271,5 +1271,7 @@
   "desktopImage": "Imej Desktop",
   "@desktopImage": {},
   "invalidPosition": "Kedudukan tidak sah.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Kongsi GIF",
+  "@shareGIF": {}
 }

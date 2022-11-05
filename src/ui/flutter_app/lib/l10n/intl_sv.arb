@@ -1271,5 +1271,7 @@
   "desktopImage": "Skrivbordsbild",
   "@desktopImage": {},
   "invalidPosition": "Ogiltig position.",
-  "@invalidPosition": {}
+  "@invalidPosition": {},
+  "shareGIF": "Dela GIF",
+  "@shareGIF": {}
 }
