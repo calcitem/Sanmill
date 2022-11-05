@@ -1266,10 +1266,10 @@
   "@fullScreen": {
     "description": "Full screen"
   },
-  "forest": "森林",
+  "forest": "原野森林",
   "@forest": {},
-  "desktopImage": "桌面圖像",
+  "desktopImage": "桌面圖片",
   "@desktopImage": {},
-  "invalidPosition": "無效的位置。",
+  "invalidPosition": "局面是不合法的。",
   "@invalidPosition": {}
 }
