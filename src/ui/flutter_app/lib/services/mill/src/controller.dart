@@ -115,6 +115,8 @@ class MillController {
     }
 
     gameInstance.gameMode = gameModeBak;
+
+    GifShare().captureView(first: true);
   }
 
   /// Starts the current game.
@@ -321,8 +323,6 @@ class MillController {
     if (reversed) {
       MillController().gameInstance.reverseWhoIsAi();
     }
-
-    GifShare().captureView();
   }
 
   void showSnakeBarHumanNotation(String humanStr) {

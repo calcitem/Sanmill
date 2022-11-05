@@ -24,8 +24,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import '../shared/gif_share/widgets_to_image.dart';
-import '../shared/gif_share/gif_share.dart';
 
 import '../generated/intl/l10n.dart';
 import '../models/general_settings.dart';
@@ -37,6 +35,8 @@ import '../services/mill/mill.dart';
 import '../shared/constants.dart';
 import '../shared/custom_drawer/custom_drawer.dart';
 import '../shared/double_back_to_close_app.dart';
+import '../shared/gif_share/gif_share.dart';
+import '../shared/gif_share/widgets_to_image.dart';
 import '../shared/privacy_dialog.dart';
 import '../shared/scaffold_messenger.dart';
 import '../shared/stack_list.dart';

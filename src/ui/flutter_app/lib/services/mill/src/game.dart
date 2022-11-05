@@ -77,6 +77,7 @@ class Game {
     }
 
     MillController().recorder.add(extMove);
+    GifShare().captureView();
 
     // TODO: moveHistoryText is not lightweight.
     if (EnvironmentConfig.catcher == true) {

@@ -95,16 +95,25 @@ class _GameOptionsModal extends StatelessWidget {
           onPressed: () => MillController.import(context),
           child: Text(S.of(context).importGame),
         ),
-        const CustomSpacer(),
+        if (MillController().recorder.hasPrevious == true ||
+            MillController().isPositionSetup == true)
+          const CustomSpacer(),
         if (MillController().recorder.hasPrevious == true ||
             MillController().isPositionSetup == true)
           SimpleDialogOption(
             onPressed: () => MillController.export(context),
             child: Text(S.of(context).exportGame),
           ),
-        if (MillController().recorder.hasPrevious == true ||
-            MillController().isPositionSetup == true)
-          const CustomSpacer(),
+        if (DB().generalSettings.sharingGifSupport) const CustomSpacer(),
+        if (DB().generalSettings.sharingGifSupport)
+          SimpleDialogOption(
+            onPressed: () {
+              MillController().gifShare(context);
+              Navigator.pop(context);
+            },
+            child: Text(S.of(context).shareGIF),
+          ),
+        if (DB().generalSettings.screenReaderSupport) const CustomSpacer(),
         if (DB().generalSettings.screenReaderSupport)
           SimpleDialogOption(
             onPressed: () => Navigator.pop(context),

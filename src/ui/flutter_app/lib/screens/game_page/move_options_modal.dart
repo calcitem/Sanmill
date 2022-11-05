@@ -73,14 +73,6 @@ class _MoveOptionsModal extends StatelessWidget {
           child: Text(S.of(context).moveNow),
         ),
         const CustomSpacer(),
-        SimpleDialogOption(
-          onPressed: () {
-            MillController().gifShare(context);
-            Navigator.pop(context);
-          }, //Todo
-          child: Text("动图分享"),
-        ),
-        const CustomSpacer(),
         if (DB().generalSettings.screenReaderSupport)
           SimpleDialogOption(
             child: Text(S.of(context).close),

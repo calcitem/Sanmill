@@ -140,6 +140,12 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.v("$_tag screenReaderSupport: $value");
   }
 
+  void _setSharingGifSupport(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(sharingGifSupport: value);
+
+    logger.v("$_tag sharingGifSupport: $value");
+  }
+
   SettingsList _buildGeneralSettingsList(
     BuildContext context,
     Box<GeneralSettings> box,
@@ -235,6 +241,22 @@ class GeneralSettingsPage extends StatelessWidget {
               onChanged: (bool val) =>
                   _setScreenReaderSupport(generalSettings, val),
               titleString: S.of(context).screenReaderSupport,
+            ),
+          ],
+        ),
+        SettingsCard(
+          title: Text(S.of(context).misc),
+          children: <Widget>[
+            SettingsListTile.switchTile(
+              value: generalSettings.sharingGifSupport,
+              onChanged: (bool val) {
+                _setSharingGifSupport(generalSettings, val);
+                if (val == true) {
+                  rootScaffoldMessengerKey.currentState!
+                      .showSnackBarClear(S.of(context).experimental);
+                }
+              },
+              titleString: S.of(context).shareGIF,
             ),
           ],
         ),
