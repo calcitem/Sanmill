@@ -75,6 +75,7 @@ class GifShare {
     final img.Animation animation = img.Animation();
     // ignore: prefer_foreach
     for (final img.Image image in images) {
+      image.duration = 2000;
       animation.addFrame(image);
     }
     final List<int>? gifData =
