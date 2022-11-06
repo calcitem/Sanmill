@@ -1,0 +1,7 @@
+v2.0.13
+
+* Stöd för att dela GIF.
+* Inaktivera gester på spelsidan.
+* Lägg till skugga till oplacerade och borttagna bitar.
+* Fixa statusfältets ikonfärg till vit.
+* Fix kanterna på bitar som ligger på kanten av brädet är suddiga.

@@ -1,0 +1,7 @@
+v2.0.13
+
+* Prise en charge du partage de GIF.
+* Désactiver les gestes sur la page du jeu.
+* Ajoutez de l'ombre aux pièces non placées et supprimées.
+* Correction de la couleur de l'icône de la barre d'état en blanc.
+* Les bords fixes des pièces situées sur le bord du plateau sont flous.
