@@ -1273,5 +1273,11 @@
   "invalidPosition": "Μη έγκυρη θέση.",
   "@invalidPosition": {},
   "shareGIF": "Κοινή χρήση GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Διάρκεια",
+  "@duration": {},
+  "pixelRatio": "Αναλογία εικονοστοιχείων",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Εγγραφή οθόνης παιχνιδιού",
+  "@gameScreenRecorder": {}
 }

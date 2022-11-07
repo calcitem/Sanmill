@@ -1273,5 +1273,11 @@
   "invalidPosition": "Неверная позиция.",
   "@invalidPosition": {},
   "shareGIF": "Поделись гифкой",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Продолжительность",
+  "@duration": {},
+  "pixelRatio": "Соотношение пикселей",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Запись игрового экрана",
+  "@gameScreenRecorder": {}
 }

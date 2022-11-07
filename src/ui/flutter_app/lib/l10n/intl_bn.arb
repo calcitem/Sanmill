@@ -1273,5 +1273,11 @@
   "invalidPosition": "অবৈধ অবস্থান।",
   "@invalidPosition": {},
   "shareGIF": "GIF শেয়ার করুন",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "সময়কাল",
+  "@duration": {},
+  "pixelRatio": "পিক্সেল অনুপাত",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "গেম স্ক্রিন রেকর্ডার",
+  "@gameScreenRecorder": {}
 }

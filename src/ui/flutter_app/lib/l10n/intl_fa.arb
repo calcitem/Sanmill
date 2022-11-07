@@ -1273,5 +1273,11 @@
   "invalidPosition": "موقعیت نامعتبر",
   "@invalidPosition": {},
   "shareGIF": "GIF را به اشتراک بگذارید",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "مدت زمان",
+  "@duration": {},
+  "pixelRatio": "نسبت پیکسل",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "ضبط کننده صفحه بازی",
+  "@gameScreenRecorder": {}
 }

@@ -1273,5 +1273,11 @@
   "invalidPosition": "Poziție nevalidă.",
   "@invalidPosition": {},
   "shareGIF": "Distribuie GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Durată",
+  "@duration": {},
+  "pixelRatio": "Raportul pixelilor",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Recorder ecran joc",
+  "@gameScreenRecorder": {}
 }

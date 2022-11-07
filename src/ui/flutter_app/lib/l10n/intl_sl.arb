@@ -1273,5 +1273,11 @@
   "invalidPosition": "Neveljaven položaj.",
   "@invalidPosition": {},
   "shareGIF": "Delite GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Trajanje",
+  "@duration": {},
+  "pixelRatio": "Razmerje slikovnih pik",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Snemalnik zaslona v igri",
+  "@gameScreenRecorder": {}
 }

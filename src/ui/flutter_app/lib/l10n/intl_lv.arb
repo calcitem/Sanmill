@@ -1273,5 +1273,11 @@
   "invalidPosition": "Nederīga pozīcija.",
   "@invalidPosition": {},
   "shareGIF": "Kopīgojiet GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Ilgums",
+  "@duration": {},
+  "pixelRatio": "Pikseļu attiecība",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Spēles ekrāna ierakstītājs",
+  "@gameScreenRecorder": {}
 }

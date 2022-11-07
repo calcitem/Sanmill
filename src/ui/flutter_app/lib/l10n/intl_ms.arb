@@ -1273,5 +1273,11 @@
   "invalidPosition": "Kedudukan tidak sah.",
   "@invalidPosition": {},
   "shareGIF": "Kongsi GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Tempoh",
+  "@duration": {},
+  "pixelRatio": "Nisbah piksel",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Perakam skrin permainan",
+  "@gameScreenRecorder": {}
 }

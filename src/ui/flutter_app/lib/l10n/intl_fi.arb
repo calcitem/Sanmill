@@ -1273,5 +1273,11 @@
   "invalidPosition": "Virheellinen sijainti.",
   "@invalidPosition": {},
   "shareGIF": "Jaa GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Kesto",
+  "@duration": {},
+  "pixelRatio": "Pikselisuhde",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Pelin näytön tallennin",
+  "@gameScreenRecorder": {}
 }

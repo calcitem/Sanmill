@@ -1273,5 +1273,11 @@
   "invalidPosition": "Vị trí không hợp lệ.",
   "@invalidPosition": {},
   "shareGIF": "Chia sẻ GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Khoảng thời gian",
+  "@duration": {},
+  "pixelRatio": "Tỷ lệ pixel",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Máy ghi màn hình trò chơi",
+  "@gameScreenRecorder": {}
 }

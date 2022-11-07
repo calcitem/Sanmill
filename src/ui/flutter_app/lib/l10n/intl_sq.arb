@@ -1273,5 +1273,11 @@
   "invalidPosition": "Pozicioni i pavlefshëm.",
   "@invalidPosition": {},
   "shareGIF": "Ndani GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Kohëzgjatja",
+  "@duration": {},
+  "pixelRatio": "Raporti i pikselëve",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Regjistrues i ekranit të lojës",
+  "@gameScreenRecorder": {}
 }

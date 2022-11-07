@@ -1273,5 +1273,11 @@
   "invalidPosition": "位置が無効です。",
   "@invalidPosition": {},
   "shareGIF": "GIF を共有",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "間隔",
+  "@duration": {},
+  "pixelRatio": "ピクセル比",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "ゲームスクリーンレコーダー",
+  "@gameScreenRecorder": {}
 }

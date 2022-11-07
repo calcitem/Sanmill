@@ -1273,5 +1273,11 @@
   "invalidPosition": "Ugyldig stilling.",
   "@invalidPosition": {},
   "shareGIF": "Del GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Varighed",
+  "@duration": {},
+  "pixelRatio": "Pixelforhold",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Spil skærmoptager",
+  "@gameScreenRecorder": {}
 }

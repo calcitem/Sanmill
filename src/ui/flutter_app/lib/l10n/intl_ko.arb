@@ -1273,5 +1273,11 @@
   "invalidPosition": "잘못된 위치입니다.",
   "@invalidPosition": {},
   "shareGIF": "GIF 공유",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "지속",
+  "@duration": {},
+  "pixelRatio": "픽셀 비율",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "게임 스크린 레코더",
+  "@gameScreenRecorder": {}
 }

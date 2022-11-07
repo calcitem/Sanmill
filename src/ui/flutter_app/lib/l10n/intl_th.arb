@@ -1273,5 +1273,11 @@
   "invalidPosition": "ตำแหน่งไม่ถูกต้อง",
   "@invalidPosition": {},
   "shareGIF": "แบ่งปัน GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "ระยะเวลา",
+  "@duration": {},
+  "pixelRatio": "อัตราส่วนพิกเซล",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "เครื่องบันทึกหน้าจอเกม",
+  "@gameScreenRecorder": {}
 }

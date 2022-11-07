@@ -1273,5 +1273,11 @@
   "invalidPosition": "Yaroqsiz pozitsiya.",
   "@invalidPosition": {},
   "shareGIF": "GIF-ni ulashing",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Davomiyligi",
+  "@duration": {},
+  "pixelRatio": "Piksel nisbati",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "O'yin ekran yozuvchisi",
+  "@gameScreenRecorder": {}
 }
