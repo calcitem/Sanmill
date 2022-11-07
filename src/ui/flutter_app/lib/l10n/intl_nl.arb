@@ -1273,5 +1273,11 @@
   "invalidPosition": "Ongeldige positie.",
   "@invalidPosition": {},
   "shareGIF": "Deel GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Looptijd",
+  "@duration": {},
+  "pixelRatio": "Pixelverhouding",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Spelschermrecorder",
+  "@gameScreenRecorder": {}
 }

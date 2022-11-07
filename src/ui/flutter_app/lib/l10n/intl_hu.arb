@@ -1273,5 +1273,11 @@
   "invalidPosition": "Érvénytelen pozíció.",
   "@invalidPosition": {},
   "shareGIF": "GIF megosztása",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Időtartam",
+  "@duration": {},
+  "pixelRatio": "Pixel arány",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Játék képernyő felvevő",
+  "@gameScreenRecorder": {}
 }

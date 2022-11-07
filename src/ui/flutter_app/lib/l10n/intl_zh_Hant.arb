@@ -1273,5 +1273,11 @@
   "invalidPosition": "局面是不合法的。",
   "@invalidPosition": {},
   "shareGIF": "動圖分享",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "期間",
+  "@duration": {},
+  "pixelRatio": "像素比",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "遊戲錄屏",
+  "@gameScreenRecorder": {}
 }

@@ -1273,5 +1273,11 @@
   "invalidPosition": "موقف غير صحيح.",
   "@invalidPosition": {},
   "shareGIF": "مشاركة GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "مدة",
+  "@duration": {},
+  "pixelRatio": "نسبة البكسل",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "مسجل شاشة اللعبة",
+  "@gameScreenRecorder": {}
 }

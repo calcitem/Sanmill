@@ -1273,5 +1273,11 @@
   "invalidPosition": "Невалидна позиция.",
   "@invalidPosition": {},
   "shareGIF": "Споделете GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Продължителност",
+  "@duration": {},
+  "pixelRatio": "Съотношение на пикселите",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Рекордер на екрана на играта",
+  "@gameScreenRecorder": {}
 }

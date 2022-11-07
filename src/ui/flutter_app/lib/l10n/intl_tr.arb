@@ -1273,5 +1273,11 @@
   "invalidPosition": "Geçersiz konum.",
   "@invalidPosition": {},
   "shareGIF": "GIF paylaş",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Süre",
+  "@duration": {},
+  "pixelRatio": "piksel oranı",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Oyun ekran kaydedici",
+  "@gameScreenRecorder": {}
 }

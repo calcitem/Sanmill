@@ -1273,5 +1273,11 @@
   "invalidPosition": "చెల్లని స్థానం.",
   "@invalidPosition": {},
   "shareGIF": "GIFని షేర్ చేయండి",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "వ్యవధి",
+  "@duration": {},
+  "pixelRatio": "పిక్సెల్ నిష్పత్తి",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "గేమ్ స్క్రీన్ రికార్డర్",
+  "@gameScreenRecorder": {}
 }

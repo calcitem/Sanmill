@@ -1273,5 +1273,11 @@
   "invalidPosition": "Kehtetu positsioon.",
   "@invalidPosition": {},
   "shareGIF": "Jagage GIF-i",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Kestus",
+  "@duration": {},
+  "pixelRatio": "Pikslite suhe",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Mängu ekraani salvestaja",
+  "@gameScreenRecorder": {}
 }

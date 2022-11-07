@@ -1371,5 +1371,11 @@
   "invalidPosition": "Недійсна позиція.",
   "@invalidPosition": {},
   "shareGIF": "Поділіться GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Тривалість",
+  "@duration": {},
+  "pixelRatio": "Співвідношення пікселів",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Диктофон ігрового екрану",
+  "@gameScreenRecorder": {}
 }

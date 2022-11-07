@@ -1273,5 +1273,11 @@
   "invalidPosition": "Posisi tidak valid.",
   "@invalidPosition": {},
   "shareGIF": "Bagikan GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Durasi",
+  "@duration": {},
+  "pixelRatio": "Rasio piksel",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Perekam layar permainan",
+  "@gameScreenRecorder": {}
 }

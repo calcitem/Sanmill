@@ -1273,5 +1273,11 @@
   "invalidPosition": "Posizione non valida.",
   "@invalidPosition": {},
   "shareGIF": "Condividi GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Durata",
+  "@duration": {},
+  "pixelRatio": "Rapporto pixel",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Registratore dello schermo di gioco",
+  "@gameScreenRecorder": {}
 }

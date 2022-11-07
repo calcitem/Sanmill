@@ -1273,5 +1273,11 @@
   "invalidPosition": "Ogiltig position.",
   "@invalidPosition": {},
   "shareGIF": "Dela GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Varaktighet",
+  "@duration": {},
+  "pixelRatio": "Pixelförhållande",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Spelskärminspelare",
+  "@gameScreenRecorder": {}
 }

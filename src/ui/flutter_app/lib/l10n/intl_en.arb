@@ -1371,5 +1371,11 @@
   "invalidPosition": "Invalid position.",
   "@invalidPosition": {},
   "shareGIF": "Share GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "pixelRatio": "Pixel ratio",
+  "@pixelRatio": {},
+  "duration": "Duration",
+  "@duration": {},
+  "gameScreenRecorder": "Game screen recorder",
+  "@gameScreenRecorder": {}
 }

@@ -1273,5 +1273,11 @@
   "invalidPosition": "Neplatná pozice.",
   "@invalidPosition": {},
   "shareGIF": "Sdílet GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Doba trvání",
+  "@duration": {},
+  "pixelRatio": "Poměr pixelů",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Záznamník herní obrazovky",
+  "@gameScreenRecorder": {}
 }

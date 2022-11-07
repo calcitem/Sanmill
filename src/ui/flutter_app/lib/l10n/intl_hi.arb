@@ -1273,5 +1273,11 @@
   "invalidPosition": "अमान्य स्थिति।",
   "@invalidPosition": {},
   "shareGIF": "जीआईएफ साझा करें",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "अवधि",
+  "@duration": {},
+  "pixelRatio": "पिक्सेल अनुपात",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "गेम स्क्रीन रिकॉर्डर",
+  "@gameScreenRecorder": {}
 }

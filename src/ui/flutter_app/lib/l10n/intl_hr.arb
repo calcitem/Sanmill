@@ -1273,5 +1273,11 @@
   "invalidPosition": "Nevažeći položaj.",
   "@invalidPosition": {},
   "shareGIF": "Dijeli GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Trajanje",
+  "@duration": {},
+  "pixelRatio": "Omjer piksela",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Snimač zaslona igre",
+  "@gameScreenRecorder": {}
 }

@@ -1273,5 +1273,11 @@
   "invalidPosition": "Neteisinga pozicija.",
   "@invalidPosition": {},
   "shareGIF": "Bendrinkite GIF",
-  "@shareGIF": {}
+  "@shareGIF": {},
+  "duration": "Trukmė",
+  "@duration": {},
+  "pixelRatio": "Pikselių santykis",
+  "@pixelRatio": {},
+  "gameScreenRecorder": "Žaidimo ekrano įrašymo įrenginys",
+  "@gameScreenRecorder": {}
 }
