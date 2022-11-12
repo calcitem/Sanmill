@@ -200,6 +200,10 @@ extern deque<int> openingBookDeque;
 extern deque<int> openingBookDequeBak;
 #endif
 
+#ifdef NNUE_SUPPORT
+extern int trainingDataIndex;
+#endif /* NNUE_SUPPORT */
+
 void Game::gameStart()
 {
     // moveHistory.clear();
@@ -1075,6 +1079,10 @@ bool Game::actionPiece(QPointF p)
         } else {
             // If it's decided
             if (gameOptions.getAutoRestart()) {
+#ifdef NNUE_SUPPORT
+                position.trainingDataWrite();
+#endif /* NNUE_SUPPORT */
+
                 saveScore();
 
                 gameReset();
@@ -1125,6 +1133,10 @@ bool Game::resign()
     return result;
 }
 
+#ifdef NNUE_SUPPORT
+extern string theBestMove;
+#endif /* NNUE_SUPPORT */
+
 // Key slot function, command line execution of score, independent of
 // actionPiece
 bool Game::command(const string &cmd, bool update /* = true */)
@@ -1168,6 +1180,10 @@ bool Game::command(const string &cmd, bool update /* = true */)
         debugPrintf("Computer: %s\n\n", cmd.c_str());
 
         moveHistory.emplace_back(cmd);
+
+#ifdef NNUE_SUPPORT
+        theBestMove = cmd;
+#endif /* NNUE_SUPPORT */
 
         if (cmd.size() > strlen("-(1,2)")) {
             posKeyHistory.push_back(position.key());
@@ -1297,6 +1313,10 @@ bool Game::command(const string &cmd, bool update /* = true */)
 #endif // TRANSPOSITION_TABLE_DEBUG
 
         if (gameOptions.getAutoRestart()) {
+#ifdef NNUE_SUPPORT
+            position.trainingDataWrite();
+#endif /* NNUE_SUPPORT */
+
             saveScore();
 
             gameReset();
@@ -1351,6 +1371,10 @@ bool Game::command(const string &cmd, bool update /* = true */)
     cout << std::fixed << std::setprecision(2) << blackWinRate
          << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
     cout.flags(flags);
+
+#ifdef NNUE_SUPPORT
+    position.trainingData();
+#endif /* NNUE_SUPPORT */
 
     return true;
 }
@@ -1709,6 +1733,10 @@ void Game::appendGameOverReasonToMoveHistory()
     moveHistory.emplace_back(record);
 }
 
+#ifdef NNUE_SUPPORT
+extern string theResult;
+#endif /* NNUE_SUPPORT */
+
 void Game::setTips()
 {
     Position &p = position;
@@ -1721,6 +1749,17 @@ void Game::setTips()
     } else {
         turnStr = char_to_string(color_to_char(p.sideToMove));
     }
+
+#ifdef NNUE_SUPPORT
+    if (p.winner == WHITE) {
+        theResult = "1-0";
+    } else if (p.winner == BLACK) {
+        theResult = "0-1";
+    } else if (p.winner == DRAW) {
+        theResult = "1/2-1/2";
+    } else {
+    }
+#endif /* NNUE_SUPPORT */
 
     switch (p.phase) {
     case Phase::ready:

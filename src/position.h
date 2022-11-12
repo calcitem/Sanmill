@@ -27,6 +27,15 @@
 #include "stack.h"
 #include "types.h"
 
+#ifdef NNUE_SUPPORT
+#include <ostream>
+#include <sstream>
+#include <string>
+using std::ostream;
+using std::ostringstream;
+using std::string;
+#endif /* NNUE_SUPPORT */
+
 /// StateInfo struct stores information needed to restore a Position object to
 /// its previous state when we retract a move. Whenever a move is made on the
 /// board (by calling Position::do_move), a StateInfo object must be passed.
@@ -60,6 +69,10 @@ public:
     // FEN string input/output
     Position &set(const std::string &fenStr, Thread *th);
     [[nodiscard]] std::string fen() const;
+#ifdef NNUE_SUPPORT
+    void trainingData();
+    void trainingDataWrite();
+#endif /* NNUE_SUPPORT */
 
     // Position representation
     [[nodiscard]] Piece piece_on(Square s) const;

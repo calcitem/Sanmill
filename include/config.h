@@ -76,6 +76,8 @@
 
 // #define MADWEASEL_MUEHLE_PERFECT_AI_CALCULATE_DATABASE
 
+// #define NNUE_SUPPORT
+
 // #define DEBUG_MODE
 
 constexpr auto DEFAULT_RULE_NUMBER = 2;
