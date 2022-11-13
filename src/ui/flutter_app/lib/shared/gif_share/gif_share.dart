@@ -21,6 +21,7 @@ import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../services/database/database.dart';
 import 'utils.dart';
 
 class GifShare {
@@ -75,7 +76,7 @@ class GifShare {
     final img.Animation animation = img.Animation();
     // ignore: prefer_foreach
     for (final img.Image image in images) {
-      image.duration = 2000;
+      image.duration = DB().generalSettings.gameScreenRecorderDuration * 1000;
       animation.addFrame(image);
     }
     final List<int>? gifData =

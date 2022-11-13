@@ -33,6 +33,7 @@ import '../../shared/settings/settings.dart';
 import '../../shared/theme/app_theme.dart';
 
 part 'package:sanmill/screens/general_settings/algorithm_modal.dart';
+part 'package:sanmill/screens/general_settings/duration_modal.dart';
 part 'package:sanmill/screens/general_settings/move_time_slider.dart';
 part 'package:sanmill/screens/general_settings/reset_settings_alert.dart';
 part 'package:sanmill/screens/general_settings/skill_level_picker.dart';
@@ -148,6 +149,28 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.v("$_tag gameScreenRecorderSupport: $value");
   }
 
+  void _setGameScreenRecorderDuration(
+    BuildContext context,
+    GeneralSettings generalSettings,
+  ) {
+    void callback(int? duration) {
+      Navigator.pop(context);
+
+      DB().generalSettings =
+          generalSettings.copyWith(gameScreenRecorderDuration: duration);
+
+      logger.v("[config] gameScreenRecorderDuration = $duration");
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => _DurationModal(
+        duration: generalSettings.gameScreenRecorderDuration,
+        onChanged: callback,
+      ),
+    );
+  }
+
   SettingsList _buildGeneralSettingsList(
     BuildContext context,
     Box<GeneralSettings> box,
@@ -259,6 +282,13 @@ class GeneralSettingsPage extends StatelessWidget {
                 }
               },
               titleString: S.of(context).shareGIF,
+            ),
+            SettingsListTile(
+              titleString: S.of(context).duration,
+              trailingString:
+                  generalSettings.gameScreenRecorderDuration.toString(),
+              onTap: () =>
+                  _setGameScreenRecorderDuration(context, generalSettings),
             ),
           ],
         ),
