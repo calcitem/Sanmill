@@ -223,6 +223,7 @@ osx
 params
 PATCHLEVEL
 patchlevel
+pngs
 pdf
 PDWORD
 pext
@@ -368,6 +369,7 @@ wparam
 writeln
 wstring
 www
+xfile
 XFile
 XFiles
 xmmintrin
