@@ -80,7 +80,7 @@ class GifShare {
       animation.addFrame(image);
     }
     final List<int>? gifData =
-        img.encodeGifAnimation(animation, samplingFactor: 160);
+        img.encodeGifAnimation(animation, samplingFactor: 160); // TODO: 160
     if (gifData != null) {
       return _writeGifToFile(gifData);
     } else {

@@ -20,6 +20,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import '../../services/database/database.dart';
 import '../../services/logger.dart';
 
 class WidgetsToImageController {
@@ -32,8 +33,13 @@ class WidgetsToImageController {
       final RenderRepaintBoundary? boundary = containerKey.currentContext
           ?.findRenderObject() as RenderRepaintBoundary?;
 
+      final double ratio =
+          DB().generalSettings.gameScreenRecorderPixelRatio / 100;
+
       /// Convert boundary to image
-      final ui.Image image = await boundary!.toImage(pixelRatio: 0.5);
+      final ui.Image image = await boundary!.toImage(
+        pixelRatio: ratio,
+      );
 
       /// Set ImageByteFormat
       final ByteData? byteData =
