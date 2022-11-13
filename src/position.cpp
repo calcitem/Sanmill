@@ -203,8 +203,8 @@ void Position::trainingDataWrite()
     std::ofstream file;
     string filename = std::tmpnam(nullptr);
     filename = filename.substr(filename.find_last_of('\\') + 1);
-    time_t curtime = time(NULL);
-    unsigned long long time = (unsigned long long)curtime;
+    time_t t = time(NULL);
+    unsigned long long time = (unsigned long long)t;
     filename = ".\\data\\training-data_" + filename + "_" +
                std::to_string(time) + ".txt";
 
