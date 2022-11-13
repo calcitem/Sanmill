@@ -337,7 +337,11 @@ class MillController {
   }
 
   Future<void> gifShare(BuildContext context) async {
+    MillController().headerTipNotifier.showTip(S.of(context).pleaseWait);
+    final String done = S.of(context).done;
     await GifShare().captureView();
+    MillController().headerTipNotifier.showTip(done);
+
     GifShare().shareGif();
   }
 
