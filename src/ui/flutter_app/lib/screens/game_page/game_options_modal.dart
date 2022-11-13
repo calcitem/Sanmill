@@ -104,8 +104,9 @@ class _GameOptionsModal extends StatelessWidget {
             onPressed: () => MillController.export(context),
             child: Text(S.of(context).exportGame),
           ),
-        if (DB().generalSettings.sharingGifSupport) const CustomSpacer(),
-        if (DB().generalSettings.sharingGifSupport)
+        if (DB().generalSettings.gameScreenRecorderSupport)
+          const CustomSpacer(),
+        if (DB().generalSettings.gameScreenRecorderSupport)
           SimpleDialogOption(
             onPressed: () {
               MillController().gifShare(context);

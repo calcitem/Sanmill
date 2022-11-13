@@ -79,7 +79,7 @@ class GeneralSettings {
     @Deprecated("Use [EnvironmentConfig.devMode] instead")
         this.experimentsEnabled = false,
     this.firstRun = true,
-    this.sharingGifSupport = false,
+    this.gameScreenRecorderSupport = false,
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -162,7 +162,7 @@ class GeneralSettings {
   final bool firstRun;
 
   @HiveField(22, defaultValue: false)
-  final bool sharingGifSupport;
+  final bool gameScreenRecorderSupport;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);

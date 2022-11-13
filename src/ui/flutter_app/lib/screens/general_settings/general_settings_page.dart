@@ -140,10 +140,12 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.v("$_tag screenReaderSupport: $value");
   }
 
-  void _setSharingGifSupport(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings = generalSettings.copyWith(sharingGifSupport: value);
+  void _setGameScreenRecorderSupport(
+      GeneralSettings generalSettings, bool value) {
+    DB().generalSettings =
+        generalSettings.copyWith(gameScreenRecorderSupport: value);
 
-    logger.v("$_tag sharingGifSupport: $value");
+    logger.v("$_tag gameScreenRecorderSupport: $value");
   }
 
   SettingsList _buildGeneralSettingsList(
@@ -245,12 +247,12 @@ class GeneralSettingsPage extends StatelessWidget {
           ],
         ),
         SettingsCard(
-          title: Text(S.of(context).misc),
+          title: Text(S.of(context).gameScreenRecorder),
           children: <Widget>[
             SettingsListTile.switchTile(
-              value: generalSettings.sharingGifSupport,
+              value: generalSettings.gameScreenRecorderSupport,
               onChanged: (bool val) {
-                _setSharingGifSupport(generalSettings, val);
+                _setGameScreenRecorderSupport(generalSettings, val);
                 if (val == true) {
                   rootScaffoldMessengerKey.currentState!
                       .showSnackBarClear(S.of(context).experimental);
