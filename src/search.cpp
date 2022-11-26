@@ -13,7 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+#include "torch/script.h"
 #include "endgame.h"
 #include "evaluate.h"
 #include "option.h"
@@ -217,6 +217,11 @@ out:
 
 vector<Key> posKeyHistory;
 
+//加载模型
+string module_path = "D:\\Repo\\nnue-pt\\script_model.pt";
+torch::jit::script::Module mod = torch::jit::load(module_path);
+
+
 Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
               Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
@@ -318,10 +323,11 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
     // Check for aborted search
     // TODO(calcitem): and immediate draw
+    
     if (unlikely(pos->phase == Phase::gameOver) || // TODO(calcitem): Deal with
                                                    // hash
         depth <= 0 || Threads.stop.load(std::memory_order_relaxed)) {
-        bestValue = Eval::evaluate(*pos);
+        bestValue = Eval::evaluate(*pos,mod);
 
         // For win quickly
         if (bestValue > 0) {

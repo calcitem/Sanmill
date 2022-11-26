@@ -18,6 +18,7 @@
 #include "bitboard.h"
 #include "option.h"
 #include "thread.h"
+#include "torch/script.h"
 
 namespace {
 
@@ -25,16 +26,19 @@ class Evaluation
 {
 public:
     Evaluation() = delete;
-
-    explicit Evaluation(Position &p) noexcept
-        : pos(p)
-    { }
+    explicit Evaluation(Position &p, torch::jit::script::Module &module1) noexcept
+        : pos(p), mod(module1)
+    {}
 
     Evaluation &operator=(const Evaluation &) = delete;
     [[nodiscard]] Value value() const;
+    [[nodiscard]] Value value_with_nnue();
+    [[nodiscard]] torch::Tensor analysisfen(std::string fen);
 
 private:
     Position &pos;
+    torch::jit::script::Module &mod;
+    
 };
 
 // Evaluation::value() is the main function of the class. It computes the
@@ -44,7 +48,8 @@ private:
 Value Evaluation::value() const
 {
     Value value = VALUE_ZERO;
-
+    //torch::Tensor output = torch::zeros({3, 2});
+    //std::cout << "ahhahah:" << output << std::endl;
     int pieceInHandDiffCount;
     int pieceOnBoardDiffCount;
     const int pieceToRemoveCount = pos.side_to_move() == WHITE ?
@@ -158,12 +163,98 @@ Value Evaluation::value() const
     return value;
 }
 
+
+//将fen串进行split
+
+std::vector<string> split(std::string fen) {
+    vector<string> ans;
+    int i = 0;
+    string t = "";
+    while (fen[i] != ' ') {
+        t.push_back(fen[i]);
+        i++;
+    }
+    ans.push_back(t);
+
+    for (int j = 0; j < 10; j++) {
+        i++;
+        t.clear();
+        t.push_back(fen[i]);
+        i++;
+        ans.push_back(t);
+    }
+    
+    return ans;
+}
+
+//将棋盘表示从字符转换为数值。对应着28个特征。
+
+torch::Tensor Evaluation::analysisfen(std::string fen)
+{
+    vector<string> ls1 = split(fen);
+    vector<float> anst;
+    bool white = true;
+
+    for (int i = 0; i < ls1[0].size(); i++) {
+        if (ls1[0][i] == '*') {
+            anst.push_back(0);
+        }
+        else if (ls1[0][i] == '@') {
+            anst.push_back(-1);
+        } else if (ls1[0][i] == 'O') {
+            anst.push_back(1);
+        }     
+    }
+
+    if (ls1[1] == "b") {
+        white = false;
+        for (int i = 0; i < anst.size(); i++) {
+            anst[i] = 0 - anst[i];
+        }
+        anst.push_back(float(ls1[6][0] - '0'));
+        anst.push_back(float(ls1[7][0] - '0'));
+        anst.push_back(float(ls1[4][0] - '0'));
+        anst.push_back(float(ls1[5][0] - '0'));
+
+    }
+    else {
+        anst.push_back(float(ls1[4][0] - '0'));
+        anst.push_back(float(ls1[5][0] - '0'));
+        anst.push_back(float(ls1[6][0] - '0'));
+        anst.push_back(float(ls1[7][0] - '0'));
+    }
+
+    torch::Tensor ans = torch::from_blob(anst.data(), {1, 28}, torch::kFloat);
+
+    return ans;
+}
+
+// 神经网络的估值函数
+
+Value Evaluation::value_with_nnue()
+{
+    Value value = VALUE_ZERO;
+
+    std::vector<torch::jit::IValue> inputs;
+    torch::Tensor input = analysisfen(pos.fen());
+    
+    inputs.push_back(input);
+    mod.eval();
+    at::Tensor output = mod.forward(inputs).toTensor();
+
+
+    auto score = output.accessor<float,2>();
+    value += int(score[0][0]);
+    
+    return value;                                                             
+}
 } // namespace
+
 
 /// evaluate() is the evaluator for the outer world. It returns a static
 /// evaluation of the position from the point of view of the side to move.
 
-Value Eval::evaluate(Position &pos)
+Value Eval::evaluate(Position &pos, torch::jit::script::Module &module1)
 {
-    return Evaluation(pos).value();
+    return Evaluation(pos, module1).value_with_nnue();
 }

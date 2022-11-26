@@ -18,14 +18,14 @@
 #define EVALUATE_H_INCLUDED
 
 #include <string>
-
+#include "torch/script.h"
 #include "types.h"
 
 class Position;
 
 namespace Eval {
 
-Value evaluate(Position &pos);
+Value evaluate(Position &pos , torch::jit::script::Module &module1);
 
 }
 
