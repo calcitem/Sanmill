@@ -33,7 +33,8 @@ class PrivacyDialog extends StatelessWidget {
   final VoidCallback? onConfirm;
 
   void _setPrivacyPolicyAccepted() {
-    DB().generalSettings = DB().generalSettings.copyWith(isPrivacyPolicyAccepted: true);
+    DB().generalSettings =
+        DB().generalSettings.copyWith(isPrivacyPolicyAccepted: true);
 
     logger.i("[config] isPrivacyPolicyAccepted: true");
   }

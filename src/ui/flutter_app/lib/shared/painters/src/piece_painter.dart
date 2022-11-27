@@ -71,8 +71,8 @@ class PiecePainter extends CustomPainter {
       for (int col = 0; col < 7; col++) {
         final int index = row * 7 + col;
 
-        final PieceColor piece =
-            MillController().position
+        final PieceColor piece = MillController()
+            .position
             .pieceOnGrid(index); // No Pieces when initial
 
         if (piece == PieceColor.none) {
