@@ -256,5 +256,33 @@ Value Evaluation::value_with_nnue()
 
 Value Eval::evaluate(Position &pos, torch::jit::script::Module &module1)
 {
+    if (pos.get_phase() == Phase::gameOver) {
+        Value value = VALUE_ZERO;
+        if (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK) >=
+            SQUARE_NB) {
+            if (rule.isWhiteLoseButNotDrawWhenBoardFull) {
+                value -= VALUE_MATE;
+            } else {
+                value = VALUE_DRAW;
+            }
+        } else if (pos.get_action() == Action::select &&
+                   pos.is_all_surrounded(pos.side_to_move()) &&
+                   rule.isLoseButNotChangeSideWhenNoWay) {
+            const Value delta = pos.side_to_move() == WHITE ? -VALUE_MATE :
+                                                              VALUE_MATE;
+            value += delta;
+        } else if (pos.piece_on_board_count(WHITE) < rule.piecesAtLeastCount) {
+            value -= VALUE_MATE;
+        } else if (pos.piece_on_board_count(BLACK) < rule.piecesAtLeastCount) {
+            value += VALUE_MATE;
+        }
+
+        if (pos.side_to_move() == BLACK) {
+            value = -value;
+        }
+
+        return value;
+    }
+
     return Evaluation(pos, module1).value_with_nnue();
 }
