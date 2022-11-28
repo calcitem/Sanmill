@@ -97,25 +97,37 @@ class _WizardDialogState extends State<WizardDialog> {
                     color: Colors.white,
                     child: Row(
                       children: <Widget>[
-                        IconButton(
-                          onPressed: _curIndex <= 0 ? null : prevStep,
-                          icon: const Icon(Icons.arrow_back),
+                        Semantics(
+                          label: S.of(context).takeBack,
+                          child: IconButton(
+                            onPressed: _curIndex <= 0 ? null : prevStep,
+                            icon: const Icon(Icons.arrow_back),
+                          ),
                         ),
                         const Spacer(),
-                        IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            DB().generalSettings =
-                                DB().generalSettings.copyWith(showWizard: true);
-                          },
-                          icon: isFinally
-                              ? const Icon(Icons.done_outline)
-                              : const Icon(FluentIcons.arrow_exit_20_regular),
+                        Semantics(
+                          label: isFinally
+                              ? S.of(context).done
+                              : S.of(context).exit,
+                          child: IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              DB().generalSettings = DB()
+                                  .generalSettings
+                                  .copyWith(showWizard: true);
+                            },
+                            icon: isFinally
+                                ? const Icon(Icons.done_outline)
+                                : const Icon(FluentIcons.arrow_exit_20_regular),
+                          ),
                         ),
                         const Spacer(),
-                        IconButton(
-                          onPressed: _curIndex >= _maxIndex ? null : nextStep,
-                          icon: const Icon(Icons.arrow_forward_rounded),
+                        Semantics(
+                          label: S.of(context).stepForward,
+                          child: IconButton(
+                            onPressed: _curIndex >= _maxIndex ? null : nextStep,
+                            icon: const Icon(Icons.arrow_forward_rounded),
+                          ),
                         ),
                       ],
                     ),
