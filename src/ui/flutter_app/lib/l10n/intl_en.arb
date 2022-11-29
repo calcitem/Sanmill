@@ -1377,5 +1377,13 @@
   "duration": "Duration",
   "@duration": {},
   "gameScreenRecorder": "Game screen recorder",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Previous",
+  "@previous": {},
+  "next": "Next",
+  "@next": {},
+  "skip": "Skip",
+  "@skip": {},
+  "gotIt": "Got it",
+  "@gotIt": {}
 }

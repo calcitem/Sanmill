@@ -1279,5 +1279,13 @@
   "pixelRatio": "Rasio piksel",
   "@pixelRatio": {},
   "gameScreenRecorder": "Perekam layar permainan",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Sebelumnya",
+  "@previous": {},
+  "next": "Lanjut",
+  "@next": {},
+  "skip": "Melewati",
+  "@skip": {},
+  "gotIt": "Mengerti",
+  "@gotIt": {}
 }

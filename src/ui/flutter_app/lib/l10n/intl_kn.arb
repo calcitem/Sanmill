@@ -1279,5 +1279,13 @@
   "pixelRatio": "ಪಿಕ್ಸೆಲ್ ಅನುಪಾತ",
   "@pixelRatio": {},
   "gameScreenRecorder": "ಗೇಮ್ ಸ್ಕ್ರೀನ್ ರೆಕಾರ್ಡರ್",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "ಹಿಂದಿನ",
+  "@previous": {},
+  "next": "ಮುಂದೆ",
+  "@next": {},
+  "skip": "ಬಿಟ್ಟುಬಿಡಿ",
+  "@skip": {},
+  "gotIt": "ಅರ್ಥವಾಯಿತು",
+  "@gotIt": {}
 }

@@ -1279,5 +1279,13 @@
   "pixelRatio": "Stosunek pikseli",
   "@pixelRatio": {},
   "gameScreenRecorder": "Rejestrator ekranu gry",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Poprzedni",
+  "@previous": {},
+  "next": "Następny",
+  "@next": {},
+  "skip": "Pomijać",
+  "@skip": {},
+  "gotIt": "Rozumiem",
+  "@gotIt": {}
 }

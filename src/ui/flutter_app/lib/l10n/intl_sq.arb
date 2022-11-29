@@ -1279,5 +1279,13 @@
   "pixelRatio": "Raporti i pikselëve",
   "@pixelRatio": {},
   "gameScreenRecorder": "Regjistrues i ekranit të lojës",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "E mëparshme",
+  "@previous": {},
+  "next": "Tjetra",
+  "@next": {},
+  "skip": "Kapërce",
+  "@skip": {},
+  "gotIt": "E kuptova",
+  "@gotIt": {}
 }

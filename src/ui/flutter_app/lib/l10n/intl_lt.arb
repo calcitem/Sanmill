@@ -1279,5 +1279,13 @@
   "pixelRatio": "Pikselių santykis",
   "@pixelRatio": {},
   "gameScreenRecorder": "Žaidimo ekrano įrašymo įrenginys",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Ankstesnis",
+  "@previous": {},
+  "next": "Kitas",
+  "@next": {},
+  "skip": "Praleisti",
+  "@skip": {},
+  "gotIt": "Supratau",
+  "@gotIt": {}
 }

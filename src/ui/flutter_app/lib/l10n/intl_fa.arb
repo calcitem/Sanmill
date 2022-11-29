@@ -1279,5 +1279,13 @@
   "pixelRatio": "نسبت پیکسل",
   "@pixelRatio": {},
   "gameScreenRecorder": "ضبط کننده صفحه بازی",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "قبلی",
+  "@previous": {},
+  "next": "بعد",
+  "@next": {},
+  "skip": "پرش کنید",
+  "@skip": {},
+  "gotIt": "فهمیدم",
+  "@gotIt": {}
 }

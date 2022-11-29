@@ -1279,5 +1279,13 @@
   "pixelRatio": "픽셀 비율",
   "@pixelRatio": {},
   "gameScreenRecorder": "게임 스크린 레코더",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "이전의",
+  "@previous": {},
+  "next": "다음",
+  "@next": {},
+  "skip": "건너뛰다",
+  "@skip": {},
+  "gotIt": "알았어요",
+  "@gotIt": {}
 }

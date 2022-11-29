@@ -1279,5 +1279,13 @@
   "pixelRatio": "Pikselisuhde",
   "@pixelRatio": {},
   "gameScreenRecorder": "Pelin näytön tallennin",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Edellinen",
+  "@previous": {},
+  "next": "Seuraava",
+  "@next": {},
+  "skip": "Ohita",
+  "@skip": {},
+  "gotIt": "Sain sen",
+  "@gotIt": {}
 }

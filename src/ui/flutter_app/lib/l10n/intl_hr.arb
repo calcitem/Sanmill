@@ -1279,5 +1279,13 @@
   "pixelRatio": "Omjer piksela",
   "@pixelRatio": {},
   "gameScreenRecorder": "Snimač zaslona igre",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Prethodno",
+  "@previous": {},
+  "next": "Sljedeći",
+  "@next": {},
+  "skip": "Preskočiti",
+  "@skip": {},
+  "gotIt": "shvaćam",
+  "@gotIt": {}
 }

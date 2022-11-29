@@ -1279,5 +1279,13 @@
   "pixelRatio": "อัตราส่วนพิกเซล",
   "@pixelRatio": {},
   "gameScreenRecorder": "เครื่องบันทึกหน้าจอเกม",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "ก่อนหน้า",
+  "@previous": {},
+  "next": "ต่อไป",
+  "@next": {},
+  "skip": "ข้าม",
+  "@skip": {},
+  "gotIt": "เข้าใจแล้ว",
+  "@gotIt": {}
 }

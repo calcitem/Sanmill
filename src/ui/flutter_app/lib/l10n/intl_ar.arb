@@ -1279,5 +1279,13 @@
   "pixelRatio": "نسبة البكسل",
   "@pixelRatio": {},
   "gameScreenRecorder": "مسجل شاشة اللعبة",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "سابق",
+  "@previous": {},
+  "next": "التالي",
+  "@next": {},
+  "skip": "يتخطى",
+  "@skip": {},
+  "gotIt": "فهمتك",
+  "@gotIt": {}
 }

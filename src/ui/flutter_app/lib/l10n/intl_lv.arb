@@ -1279,5 +1279,13 @@
   "pixelRatio": "Pikseļu attiecība",
   "@pixelRatio": {},
   "gameScreenRecorder": "Spēles ekrāna ierakstītājs",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Iepriekšējais",
+  "@previous": {},
+  "next": "Nākamais",
+  "@next": {},
+  "skip": "Izlaist",
+  "@skip": {},
+  "gotIt": "Sapratu",
+  "@gotIt": {}
 }

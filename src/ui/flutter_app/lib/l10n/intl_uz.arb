@@ -1279,5 +1279,13 @@
   "pixelRatio": "Piksel nisbati",
   "@pixelRatio": {},
   "gameScreenRecorder": "O'yin ekran yozuvchisi",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Oldingi",
+  "@previous": {},
+  "next": "Keyingisi",
+  "@next": {},
+  "skip": "Oʻtkazib yuborish",
+  "@skip": {},
+  "gotIt": "Tushundim",
+  "@gotIt": {}
 }

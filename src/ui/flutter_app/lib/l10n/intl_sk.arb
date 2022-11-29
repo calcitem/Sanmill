@@ -1279,5 +1279,13 @@
   "pixelRatio": "Pomer pixelov",
   "@pixelRatio": {},
   "gameScreenRecorder": "Záznamník hernej obrazovky",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Predchádzajúce",
+  "@previous": {},
+  "next": "Ďalšie",
+  "@next": {},
+  "skip": "Preskočiť",
+  "@skip": {},
+  "gotIt": "Mám to",
+  "@gotIt": {}
 }

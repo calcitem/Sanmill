@@ -1279,5 +1279,13 @@
   "pixelRatio": "ピクセル比",
   "@pixelRatio": {},
   "gameScreenRecorder": "ゲームスクリーンレコーダー",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "前",
+  "@previous": {},
+  "next": "次",
+  "@next": {},
+  "skip": "スキップ",
+  "@skip": {},
+  "gotIt": "とった",
+  "@gotIt": {}
 }
