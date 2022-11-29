@@ -174,7 +174,6 @@ class _WizardDialogState extends State<WizardDialog> {
         break;
       case 2:
         child = const _Step3(key: ValueKey<String>('Step3'));
-
         break;
       case 3:
         child = _Step4(
@@ -255,6 +254,12 @@ class _WizardDialogState extends State<WizardDialog> {
   void onEnd() {
     switch (_curIndex) {
       case 2:
+        {
+          _pieceList[getPieceIndex(5, 3)] = PieceColor.none;
+          _pieceList[getPieceIndex(4, 3)] = PieceColor.white;
+          break;
+        }
+      case 3:
         {
           _pieceList[getPieceIndex(5, 3)] = PieceColor.none;
           _pieceList[getPieceIndex(4, 3)] = PieceColor.white;
