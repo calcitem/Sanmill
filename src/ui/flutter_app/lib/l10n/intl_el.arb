@@ -1279,5 +1279,13 @@
   "pixelRatio": "Αναλογία εικονοστοιχείων",
   "@pixelRatio": {},
   "gameScreenRecorder": "Εγγραφή οθόνης παιχνιδιού",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Προηγούμενος",
+  "@previous": {},
+  "next": "Επόμενο",
+  "@next": {},
+  "skip": "Παραλείπω",
+  "@skip": {},
+  "gotIt": "Το έπιασα",
+  "@gotIt": {}
 }

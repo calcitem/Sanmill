@@ -1279,5 +1279,13 @@
   "pixelRatio": "Raportul pixelilor",
   "@pixelRatio": {},
   "gameScreenRecorder": "Recorder ecran joc",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Anterior",
+  "@previous": {},
+  "next": "Următorul",
+  "@next": {},
+  "skip": "Ocolire",
+  "@skip": {},
+  "gotIt": "Am înţeles",
+  "@gotIt": {}
 }

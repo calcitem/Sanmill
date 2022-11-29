@@ -1279,5 +1279,13 @@
   "pixelRatio": "piksel oranı",
   "@pixelRatio": {},
   "gameScreenRecorder": "Oyun ekran kaydedici",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Öncesi",
+  "@previous": {},
+  "next": "Sonraki",
+  "@next": {},
+  "skip": "Atlamak",
+  "@skip": {},
+  "gotIt": "Anladım",
+  "@gotIt": {}
 }

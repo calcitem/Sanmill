@@ -1279,5 +1279,13 @@
   "pixelRatio": "像素比",
   "@pixelRatio": {},
   "gameScreenRecorder": "遊戲錄屏",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "以前的",
+  "@previous": {},
+  "next": "下一個",
+  "@next": {},
+  "skip": "跳過",
+  "@skip": {},
+  "gotIt": "知道了",
+  "@gotIt": {}
 }

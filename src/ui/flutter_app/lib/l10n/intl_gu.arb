@@ -1279,5 +1279,13 @@
   "pixelRatio": "પિક્સેલ રેશિયો",
   "@pixelRatio": {},
   "gameScreenRecorder": "ગેમ સ્ક્રીન રેકોર્ડર",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "અગાઉના",
+  "@previous": {},
+  "next": "આગળ",
+  "@next": {},
+  "skip": "છોડો",
+  "@skip": {},
+  "gotIt": "જાણ્યું",
+  "@gotIt": {}
 }

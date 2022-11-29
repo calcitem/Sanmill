@@ -1279,5 +1279,13 @@
   "pixelRatio": "Соотношение пикселей",
   "@pixelRatio": {},
   "gameScreenRecorder": "Запись игрового экрана",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Предыдущий",
+  "@previous": {},
+  "next": "Следующий",
+  "@next": {},
+  "skip": "Пропускать",
+  "@skip": {},
+  "gotIt": "Понятно",
+  "@gotIt": {}
 }

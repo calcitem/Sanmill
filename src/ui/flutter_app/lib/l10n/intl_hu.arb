@@ -1279,5 +1279,13 @@
   "pixelRatio": "Pixel arány",
   "@pixelRatio": {},
   "gameScreenRecorder": "Játék képernyő felvevő",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Előző",
+  "@previous": {},
+  "next": "Következő",
+  "@next": {},
+  "skip": "Kihagyás",
+  "@skip": {},
+  "gotIt": "Megvan",
+  "@gotIt": {}
 }

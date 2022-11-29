@@ -1279,5 +1279,13 @@
   "pixelRatio": "Nisbah piksel",
   "@pixelRatio": {},
   "gameScreenRecorder": "Perakam skrin permainan",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Sebelumnya",
+  "@previous": {},
+  "next": "Seterusnya",
+  "@next": {},
+  "skip": "Langkau",
+  "@skip": {},
+  "gotIt": "faham",
+  "@gotIt": {}
 }

@@ -1377,5 +1377,13 @@
   "pixelRatio": "Співвідношення пікселів",
   "@pixelRatio": {},
   "gameScreenRecorder": "Диктофон ігрового екрану",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Попередній",
+  "@previous": {},
+  "next": "Далі",
+  "@next": {},
+  "skip": "Пропустити",
+  "@skip": {},
+  "gotIt": "Зрозумів",
+  "@gotIt": {}
 }

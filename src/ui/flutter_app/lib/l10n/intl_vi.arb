@@ -1279,5 +1279,13 @@
   "pixelRatio": "Tỷ lệ pixel",
   "@pixelRatio": {},
   "gameScreenRecorder": "Máy ghi màn hình trò chơi",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Trước",
+  "@previous": {},
+  "next": "Tiếp theo",
+  "@next": {},
+  "skip": "Nhảy",
+  "@skip": {},
+  "gotIt": "Hiểu rồi",
+  "@gotIt": {}
 }

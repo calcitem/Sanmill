@@ -1279,5 +1279,13 @@
   "pixelRatio": "Pixelverhouding",
   "@pixelRatio": {},
   "gameScreenRecorder": "Spelschermrecorder",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Vorig",
+  "@previous": {},
+  "next": "Volgende",
+  "@next": {},
+  "skip": "Overslaan",
+  "@skip": {},
+  "gotIt": "Ik snap het",
+  "@gotIt": {}
 }

@@ -1279,5 +1279,13 @@
   "pixelRatio": "Pikslite suhe",
   "@pixelRatio": {},
   "gameScreenRecorder": "Mängu ekraani salvestaja",
-  "@gameScreenRecorder": {}
+  "@gameScreenRecorder": {},
+  "previous": "Eelmine",
+  "@previous": {},
+  "next": "Edasi",
+  "@next": {},
+  "skip": "Vahele jätma",
+  "@skip": {},
+  "gotIt": "Sain aru",
+  "@gotIt": {}
 }
