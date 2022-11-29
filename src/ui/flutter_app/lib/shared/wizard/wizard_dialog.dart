@@ -98,7 +98,7 @@ class _WizardDialogState extends State<WizardDialog> {
                     child: Row(
                       children: <Widget>[
                         Semantics(
-                          label: S.of(context).takeBack,
+                          label: S.of(context).previous,
                           child: IconButton(
                             onPressed: _curIndex <= 0 ? null : prevStep,
                             icon: const Icon(Icons.arrow_back),
@@ -107,8 +107,8 @@ class _WizardDialogState extends State<WizardDialog> {
                         const Spacer(),
                         Semantics(
                           label: isFinally
-                              ? S.of(context).done
-                              : S.of(context).exit,
+                              ? S.of(context).gotIt
+                              : S.of(context).skip,
                           child: IconButton(
                             onPressed: () {
                               Navigator.of(context).pop();
@@ -123,7 +123,7 @@ class _WizardDialogState extends State<WizardDialog> {
                         ),
                         const Spacer(),
                         Semantics(
-                          label: S.of(context).stepForward,
+                          label: S.of(context).next,
                           child: IconButton(
                             onPressed: _curIndex >= _maxIndex ? null : nextStep,
                             icon: const Icon(Icons.arrow_forward_rounded),
