@@ -114,7 +114,7 @@ class _WizardDialogState extends State<WizardDialog> {
                               Navigator.of(context).pop();
                               DB().generalSettings = DB()
                                   .generalSettings
-                                  .copyWith(showWizard: true);
+                                  .copyWith(showWizard: false);
                             },
                             icon: isFinally
                                 ? const Icon(Icons.done_outline)
