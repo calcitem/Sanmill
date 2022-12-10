@@ -58,5 +58,9 @@ bool set_rule(int ruleIdx) noexcept
     std::memset(&rule, 0, sizeof(Rule));
     std::memcpy(&rule, &RULES[ruleIdx], sizeof(Rule));
 
+#ifdef NNUE_GENERATE_TRAINING_DATA
+    rule.nMoveRule = 30;
+#endif
+
     return true;
 }
