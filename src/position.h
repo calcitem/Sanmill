@@ -27,14 +27,14 @@
 #include "stack.h"
 #include "types.h"
 
-#ifdef NNUE_SUPPORT
+#ifdef NNUE_GENERATE_TRAINING_DATA
 #include <ostream>
 #include <sstream>
 #include <string>
 using std::ostream;
 using std::ostringstream;
 using std::string;
-#endif /* NNUE_SUPPORT */
+#endif /* NNUE_GENERATE_TRAINING_DATA */
 
 /// StateInfo struct stores information needed to restore a Position object to
 /// its previous state when we retract a move. Whenever a move is made on the
@@ -69,10 +69,10 @@ public:
     // FEN string input/output
     Position &set(const std::string &fenStr, Thread *th);
     [[nodiscard]] std::string fen() const;
-#ifdef NNUE_SUPPORT
+#ifdef NNUE_GENERATE_TRAINING_DATA
     void trainingData();
     void trainingDataWrite();
-#endif /* NNUE_SUPPORT */
+#endif /* NNUE_GENERATE_TRAINING_DATA */
 
     // Position representation
     [[nodiscard]] Piece piece_on(Square s) const;

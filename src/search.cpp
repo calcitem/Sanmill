@@ -46,9 +46,9 @@ void Search::clear()
     Threads.clear();
 }
 
-#ifdef NNUE_SUPPORT
+#ifdef NNUE_GENERATE_TRAINING_DATA
 extern Value theBestValue;
-#endif /* NNUE_SUPPORT */
+#endif /* NNUE_GENERATE_TRAINING_DATA */
 
 /// Thread::search() is the main iterative deepening loop. It calls search()
 /// repeatedly with increasing depth until the allocated thinking time has been
@@ -348,13 +348,13 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     const Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
 
-#ifndef NNUE_SUPPORT
+#ifndef NNUE_GENERATE_TRAINING_DATA
     if (moveCount == 1 && depth == originDepth) {
         bestMove = nextMove;
         bestValue = VALUE_UNIQUE;
         return bestValue;
     }
-#endif /* !NNUE_SUPPORT */
+#endif /* !NNUE_GENERATE_TRAINING_DATA */
 
 #if 0
     // TODO(calcitem): Weak

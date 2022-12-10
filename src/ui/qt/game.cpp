@@ -200,9 +200,9 @@ extern deque<int> openingBookDeque;
 extern deque<int> openingBookDequeBak;
 #endif
 
-#ifdef NNUE_SUPPORT
+#ifdef NNUE_GENERATE_TRAINING_DATA
 extern int trainingDataIndex;
-#endif /* NNUE_SUPPORT */
+#endif /* NNUE_GENERATE_TRAINING_DATA */
 
 void Game::gameStart()
 {
@@ -1079,9 +1079,9 @@ bool Game::actionPiece(QPointF p)
         } else {
             // If it's decided
             if (gameOptions.getAutoRestart()) {
-#ifdef NNUE_SUPPORT
+#ifdef NNUE_GENERATE_TRAINING_DATA
                 position.trainingDataWrite();
-#endif /* NNUE_SUPPORT */
+#endif /* NNUE_GENERATE_TRAINING_DATA */
 
                 saveScore();
 
@@ -1133,9 +1133,9 @@ bool Game::resign()
     return result;
 }
 
-#ifdef NNUE_SUPPORT
+#ifdef NNUE_GENERATE_TRAINING_DATA
 extern string theBestMove;
-#endif /* NNUE_SUPPORT */
+#endif /* NNUE_GENERATE_TRAINING_DATA */
 
 // Key slot function, command line execution of score, independent of
 // actionPiece
@@ -1181,9 +1181,9 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
         moveHistory.emplace_back(cmd);
 
-#ifdef NNUE_SUPPORT
+#ifdef NNUE_GENERATE_TRAINING_DATA
         theBestMove = cmd;
-#endif /* NNUE_SUPPORT */
+#endif /* NNUE_GENERATE_TRAINING_DATA */
 
         if (cmd.size() > strlen("-(1,2)")) {
             posKeyHistory.push_back(position.key());
@@ -1313,9 +1313,9 @@ bool Game::command(const string &cmd, bool update /* = true */)
 #endif // TRANSPOSITION_TABLE_DEBUG
 
         if (gameOptions.getAutoRestart()) {
-#ifdef NNUE_SUPPORT
+#ifdef NNUE_GENERATE_TRAINING_DATA
             position.trainingDataWrite();
-#endif /* NNUE_SUPPORT */
+#endif /* NNUE_GENERATE_TRAINING_DATA */
 
             saveScore();
 
@@ -1372,9 +1372,9 @@ bool Game::command(const string &cmd, bool update /* = true */)
          << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
     cout.flags(flags);
 
-#ifdef NNUE_SUPPORT
+#ifdef NNUE_GENERATE_TRAINING_DATA
     position.trainingData();
-#endif /* NNUE_SUPPORT */
+#endif /* NNUE_GENERATE_TRAINING_DATA */
 
     return true;
 }
@@ -1733,9 +1733,9 @@ void Game::appendGameOverReasonToMoveHistory()
     moveHistory.emplace_back(record);
 }
 
-#ifdef NNUE_SUPPORT
+#ifdef NNUE_GENERATE_TRAINING_DATA
 extern string theResult;
-#endif /* NNUE_SUPPORT */
+#endif /* NNUE_GENERATE_TRAINING_DATA */
 
 void Game::setTips()
 {
@@ -1750,7 +1750,7 @@ void Game::setTips()
         turnStr = char_to_string(color_to_char(p.sideToMove));
     }
 
-#ifdef NNUE_SUPPORT
+#ifdef NNUE_GENERATE_TRAINING_DATA
     if (p.winner == WHITE) {
         theResult = "1-0";
     } else if (p.winner == BLACK) {
@@ -1759,7 +1759,7 @@ void Game::setTips()
         theResult = "1/2-1/2";
     } else {
     }
-#endif /* NNUE_SUPPORT */
+#endif /* NNUE_GENERATE_TRAINING_DATA */
 
     switch (p.phase) {
     case Phase::ready:

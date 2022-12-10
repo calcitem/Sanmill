@@ -158,7 +158,7 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
     return os;
 }
 
-#ifdef NNUE_SUPPORT
+#ifdef NNUE_GENERATE_TRAINING_DATA
 // Training data
 std::vector<std::string> trainingDataStringStream {};
 Value theBestValue {VALUE_NONE};
@@ -223,7 +223,7 @@ void Position::trainingDataWrite()
     theBestMove = "";
     theResult = "#";
 }
-#endif /* NNUE_SUPPORT */
+#endif /* NNUE_GENERATE_TRAINING_DATA */
 
 /// Position::init() initializes at startup the various arrays used to compute
 /// hash keys
