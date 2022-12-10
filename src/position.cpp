@@ -176,7 +176,33 @@ void Position::nnueGenerateTrainingFen()
 
     nnueTrainingDataStringStream.emplace_back(
         fen() + " " + std::to_string((int)nnueTrainingDataBestValue) + " " + nnueTrainingDataBestMove +
-        " " + std::to_string(nnueTrainingDataIndex) + " " + nnueTrainingDataGameResult + "\n");
+        " " + std::to_string(nnueTrainingDataIndex));
+}
+
+string Position::nnueGetOpponentGameResut()
+{
+    if (nnueTrainingDataGameResult == "1-0") {
+        return "0-1";
+    } else if (nnueTrainingDataGameResult == "0-1") {
+        return "1-0";
+    } else if (nnueTrainingDataGameResult == "1/2-1/2") {
+        return nnueTrainingDataGameResult;
+    } else {
+        assert(0);
+    }
+
+    return "";
+}
+
+string Position::nnueGetCurSideGameResult(char lastSide, const string &fen)
+{
+    char side = fen[27];
+
+    if (side == lastSide) {
+        return nnueTrainingDataGameResult;
+    } else {
+        return nnueGetOpponentGameResut();
+    }    
 }
 
 void Position::nnueWriteTrainingData()
@@ -186,9 +212,7 @@ void Position::nnueWriteTrainingData()
     }
 
     string tail = nnueTrainingDataStringStream[nnueTrainingDataStringStream.size() - 1];
-    tail = tail.substr(0, tail.size() - 2) + nnueTrainingDataGameResult + "\n";
-    nnueTrainingDataStringStream.pop_back();
-    nnueTrainingDataStringStream.emplace_back(tail);
+    char lastSide = tail[27];
 
     std::ofstream file;
     string filename = std::tmpnam(nullptr);
@@ -201,8 +225,7 @@ void Position::nnueWriteTrainingData()
     file.open(filename, std::ios::out);
 
     for each (string var in nnueTrainingDataStringStream) {
-        std::cout << var;
-        file << var;
+        file << var + " " + nnueGetCurSideGameResult(lastSide, var) + "\n";
     }
 
     file.close();
