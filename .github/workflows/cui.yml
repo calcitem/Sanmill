@@ -15,12 +15,12 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Cygwin
-        uses: egor-tensin/setup-cygwin@v3
+        uses: cygwin/cygwin-install-action@master
         with:
-          platform: x64
+          platform: x86_64
           packages: make gcc-g++
 
       # Build
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Export environment valuables
         run: export
@@ -64,7 +64,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Export environment valuables
         run: export
