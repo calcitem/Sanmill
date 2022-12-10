@@ -105,7 +105,7 @@ void Thread::wait_for_search_finished()
 }
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-extern Value theBestValue;
+extern Value nnueTrainingDataBestValue;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
 /// Thread::idle_loop() is where the thread is parked, blocked on the
@@ -157,7 +157,7 @@ void Thread::idle_loop()
                 const int ret = search();
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-                theBestValue = rootPos->sideToMove == WHITE ? bestvalue :
+                nnueTrainingDataBestValue = rootPos->sideToMove == WHITE ? bestvalue :
                                                               -bestvalue;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 

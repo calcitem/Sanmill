@@ -160,45 +160,35 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
 // Training data
-std::vector<std::string> trainingDataStringStream {};
-Value theBestValue {VALUE_NONE};
-std::string theBestMove;
-std::string theResult = "#";
-int trainingDataIndex = 0;
+std::vector<std::string> nnueTrainingDataStringStream {};
+Value nnueTrainingDataBestValue {VALUE_NONE};
+std::string nnueTrainingDataBestMove;
+std::string nnueTrainingDataGameResult = "#";
+int nnueTrainingDataIndex = 0;
 
-void Position::trainingData()
+void Position::nnueGenerateTrainingFen()
 {
-    if (theBestMove == "") {
+    if (nnueTrainingDataBestMove == "") {
         return;
     }
 
-    trainingDataIndex++;
+    nnueTrainingDataIndex++;
 
-    trainingDataStringStream.emplace_back(
-        fen() + " " + std::to_string((int)theBestValue) + " " + theBestMove +
-        " " + std::to_string(trainingDataIndex) + " " + theResult + "\n");
-#if 0
-    if (theResult != "#") {
-        trainingDataIndex = -1;
-    }
-
-    if (trainingDataIndex == -1) {
-        trainingDataWrite();
-        trainingDataIndex = 0;
-    }
-#endif
+    nnueTrainingDataStringStream.emplace_back(
+        fen() + " " + std::to_string((int)nnueTrainingDataBestValue) + " " + nnueTrainingDataBestMove +
+        " " + std::to_string(nnueTrainingDataIndex) + " " + nnueTrainingDataGameResult + "\n");
 }
 
-void Position::trainingDataWrite()
+void Position::nnueWriteTrainingData()
 {
-    if (trainingDataStringStream.size() == 0) {
+    if (nnueTrainingDataStringStream.size() == 0) {
         return;
     }
 
-    string temp = trainingDataStringStream[trainingDataStringStream.size() - 1];
-    temp = temp.substr(0, temp.size() - 2) + theResult + "\n";
-    trainingDataStringStream.pop_back();
-    trainingDataStringStream.emplace_back(temp);
+    string tail = nnueTrainingDataStringStream[nnueTrainingDataStringStream.size() - 1];
+    tail = tail.substr(0, tail.size() - 2) + nnueTrainingDataGameResult + "\n";
+    nnueTrainingDataStringStream.pop_back();
+    nnueTrainingDataStringStream.emplace_back(tail);
 
     std::ofstream file;
     string filename = std::tmpnam(nullptr);
@@ -210,18 +200,18 @@ void Position::trainingDataWrite()
 
     file.open(filename, std::ios::out);
 
-    for each (string var in trainingDataStringStream) {
+    for each (string var in nnueTrainingDataStringStream) {
         std::cout << var;
         file << var;
     }
 
     file.close();
 
-    trainingDataIndex = 0;
-    trainingDataStringStream.clear();
-    theBestValue = VALUE_NONE;
-    theBestMove = "";
-    theResult = "#";
+    nnueTrainingDataIndex = 0;
+    nnueTrainingDataStringStream.clear();
+    nnueTrainingDataBestValue = VALUE_NONE;
+    nnueTrainingDataBestMove = "";
+    nnueTrainingDataGameResult = "#";
 }
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 

@@ -70,8 +70,8 @@ public:
     Position &set(const std::string &fenStr, Thread *th);
     [[nodiscard]] std::string fen() const;
 #ifdef NNUE_GENERATE_TRAINING_DATA
-    void trainingData();
-    void trainingDataWrite();
+    void nnueGenerateTrainingFen();
+    void nnueWriteTrainingData();
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
     // Position representation

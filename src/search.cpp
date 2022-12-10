@@ -47,7 +47,7 @@ void Search::clear()
 }
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-extern Value theBestValue;
+extern Value nnueTrainingDataBestValue;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
 /// Thread::search() is the main iterative deepening loop. It calls search()

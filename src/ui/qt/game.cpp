@@ -201,7 +201,7 @@ extern deque<int> openingBookDequeBak;
 #endif
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-extern int trainingDataIndex;
+extern int nnueTrainingDataIndex;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
 void Game::gameStart()
@@ -1080,7 +1080,7 @@ bool Game::actionPiece(QPointF p)
             // If it's decided
             if (gameOptions.getAutoRestart()) {
 #ifdef NNUE_GENERATE_TRAINING_DATA
-                position.trainingDataWrite();
+                position.nnueWriteTrainingData();
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
                 saveScore();
@@ -1134,7 +1134,7 @@ bool Game::resign()
 }
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-extern string theBestMove;
+extern string nnueTrainingDataBestMove;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
 // Key slot function, command line execution of score, independent of
@@ -1182,7 +1182,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
         moveHistory.emplace_back(cmd);
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-        theBestMove = cmd;
+        nnueTrainingDataBestMove = cmd;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
         if (cmd.size() > strlen("-(1,2)")) {
@@ -1314,7 +1314,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
         if (gameOptions.getAutoRestart()) {
 #ifdef NNUE_GENERATE_TRAINING_DATA
-            position.trainingDataWrite();
+            position.nnueWriteTrainingData();
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
             saveScore();
@@ -1373,7 +1373,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     cout.flags(flags);
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-    position.trainingData();
+    position.nnueGenerateTrainingFen();
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
     return true;
@@ -1734,7 +1734,7 @@ void Game::appendGameOverReasonToMoveHistory()
 }
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-extern string theResult;
+extern string nnueTrainingDataGameResult;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
 void Game::setTips()
@@ -1752,11 +1752,11 @@ void Game::setTips()
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
     if (p.winner == WHITE) {
-        theResult = "1-0";
+        nnueTrainingDataGameResult = "1-0";
     } else if (p.winner == BLACK) {
-        theResult = "0-1";
+        nnueTrainingDataGameResult = "0-1";
     } else if (p.winner == DRAW) {
-        theResult = "1/2-1/2";
+        nnueTrainingDataGameResult = "1/2-1/2";
     } else {
     }
 #endif /* NNUE_GENERATE_TRAINING_DATA */
