@@ -8,6 +8,7 @@
         "autobuild",
         "bestmove",
         "Bitboard",
+        "Bitboards",
         "cafebazaar",
         "calcitem",
         "cmake",
