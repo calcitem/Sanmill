@@ -314,8 +314,10 @@ class _Step1 extends StatelessWidget {
         Positioned(
           left: 32,
           bottom: 128,
+          width: 320,
           child: Text(
             "${S.of(context).appName}\n${S.of(context).howToPlay}",
+            maxLines: 4,
             style: const TextStyle(
               fontSize: 32,
               color: Colors.white,
@@ -363,8 +365,10 @@ class _Step3 extends StatelessWidget {
         Positioned(
           left: 32,
           top: 32,
+          width: 320,
           child: Text(
             S.of(context).isPieceCountInHandShown,
+            maxLines: 4,
             style: const TextStyle(
               fontSize: 16,
               color: Colors.white,
@@ -448,8 +452,10 @@ class _Step4State extends State<_Step4> with SingleTickerProviderStateMixin {
         Positioned(
           left: 32,
           top: 32,
+          width: 320,
           child: Text(
             "${S.of(context).movingPhase}\n${S.of(context).toSelectPiece}\n${S.of(context).toMovePiece}",
+            maxLines: 4,
             style: const TextStyle(
               fontSize: 16,
               color: Colors.white,
@@ -478,8 +484,10 @@ class _Step5 extends StatelessWidget {
         Positioned(
           left: 32,
           top: 32,
+          width: 320,
           child: Text(
             text,
+            maxLines: 4,
             style: const TextStyle(
               fontSize: 16,
               color: Colors.white,
@@ -566,7 +574,7 @@ class _Step6State extends State<_Step6> with SingleTickerProviderStateMixin {
           width: 320,
           child: Text(
             S.of(context).mayFly_Detail,
-            maxLines: 2,
+            maxLines: 4,
             style: const TextStyle(
               fontSize: 16,
               color: Colors.white,
