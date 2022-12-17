@@ -1,7 +1,7 @@
 #!/bin/bash
 
 YAML_FILE=src/ui/flutter_app/pubspec.yaml
-QT_RC_FILE=millgame.rc
+QT_RC_FILE=src/ui/qt/millgame.rc
 
 EN_CHANGLOG_DIR=fastlane/metadata/android/en-US/changelogs
 DE_CHANGLOG_DIR=fastlane/metadata/android/de-DE/changelogs
