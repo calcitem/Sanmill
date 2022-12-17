@@ -10,5 +10,8 @@
 *.d
 *autogen*
 
+**/MillGame.dir
+**/.cmake
+
 *.sln
 *.vcxproj*
