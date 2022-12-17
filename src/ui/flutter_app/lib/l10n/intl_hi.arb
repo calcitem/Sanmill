@@ -1287,5 +1287,7 @@
   "skip": "छोड़ें",
   "@skip": {},
   "gotIt": "समझ गया",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "आप नियम सेटिंग्स में खेल के नियमों को संशोधित कर सकते हैं।",
+  "@youCanModifyRules": {}
 }

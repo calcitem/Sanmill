@@ -1287,5 +1287,7 @@
   "skip": "跳過",
   "@skip": {},
   "gotIt": "知道了",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "您可以在規則設置中修改遊戲規則。",
+  "@youCanModifyRules": {}
 }

@@ -1287,5 +1287,7 @@
   "skip": "Пропускать",
   "@skip": {},
   "gotIt": "Понятно",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Вы можете изменить правила игры в настройках правил.",
+  "@youCanModifyRules": {}
 }

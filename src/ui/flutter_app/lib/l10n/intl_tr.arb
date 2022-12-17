@@ -1287,5 +1287,7 @@
   "skip": "Atlamak",
   "@skip": {},
   "gotIt": "Anladım",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Oyunun kurallarını kural ayarlarından değiştirebilirsiniz.",
+  "@youCanModifyRules": {}
 }

@@ -1287,5 +1287,7 @@
   "skip": "Pular",
   "@skip": {},
   "gotIt": "Entendi",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Você pode modificar as regras do jogo nas configurações de regras.",
+  "@youCanModifyRules": {}
 }

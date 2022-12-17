@@ -1287,5 +1287,7 @@
   "skip": "Springe",
   "@skip": {},
   "gotIt": "Forstået",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Du kan ændre spillets regler i regelindstillingerne.",
+  "@youCanModifyRules": {}
 }

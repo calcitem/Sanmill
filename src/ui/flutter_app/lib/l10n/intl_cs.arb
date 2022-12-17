@@ -1287,5 +1287,7 @@
   "skip": "Přeskočit",
   "@skip": {},
   "gotIt": "Mám to",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Pravidla hry můžete upravit v nastavení pravidel.",
+  "@youCanModifyRules": {}
 }

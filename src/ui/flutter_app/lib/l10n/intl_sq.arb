@@ -1287,5 +1287,7 @@
   "skip": "Kapërce",
   "@skip": {},
   "gotIt": "E kuptova",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Ju mund të modifikoni rregullat e lojës në cilësimet e rregullave.",
+  "@youCanModifyRules": {}
 }

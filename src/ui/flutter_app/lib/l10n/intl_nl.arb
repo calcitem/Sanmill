@@ -1287,5 +1287,7 @@
   "skip": "Overslaan",
   "@skip": {},
   "gotIt": "Ik snap het",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "U kunt de spelregels wijzigen in de regelinstellingen.",
+  "@youCanModifyRules": {}
 }

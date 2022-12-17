@@ -1287,5 +1287,7 @@
   "skip": "Скип",
   "@skip": {},
   "gotIt": "Схватио сам",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Можете да измените правила игре у подешавањима правила.",
+  "@youCanModifyRules": {}
 }

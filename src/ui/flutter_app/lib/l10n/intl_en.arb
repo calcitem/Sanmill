@@ -1385,5 +1385,7 @@
   "skip": "Skip",
   "@skip": {},
   "gotIt": "Got it",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "You can modify the rules of the game in the rule settings.",
+  "@youCanModifyRules": {}
 }

@@ -1287,5 +1287,7 @@
   "skip": "এড়িয়ে যান",
   "@skip": {},
   "gotIt": "বুঝেছি",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "আপনি নিয়ম সেটিংসে গেমের নিয়ম পরিবর্তন করতে পারেন।",
+  "@youCanModifyRules": {}
 }

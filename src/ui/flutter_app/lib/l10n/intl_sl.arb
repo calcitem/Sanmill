@@ -1287,5 +1287,7 @@
   "skip": "Preskoči",
   "@skip": {},
   "gotIt": "Razumem",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Pravila igre lahko spremenite v nastavitvah pravil.",
+  "@youCanModifyRules": {}
 }

@@ -1287,5 +1287,7 @@
   "skip": "Izlaist",
   "@skip": {},
   "gotIt": "Sapratu",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Noteikumu iestatījumos varat mainīt spēles noteikumus.",
+  "@youCanModifyRules": {}
 }
