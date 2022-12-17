@@ -1287,5 +1287,7 @@
   "skip": "Praleisti",
   "@skip": {},
   "gotIt": "Supratau",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Žaidimo taisykles galite keisti taisyklių nustatymuose.",
+  "@youCanModifyRules": {}
 }

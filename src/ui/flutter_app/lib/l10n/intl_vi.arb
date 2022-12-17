@@ -1287,5 +1287,7 @@
   "skip": "Nhảy",
   "@skip": {},
   "gotIt": "Hiểu rồi",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Bạn có thể sửa đổi các quy tắc của trò chơi trong cài đặt quy tắc.",
+  "@youCanModifyRules": {}
 }

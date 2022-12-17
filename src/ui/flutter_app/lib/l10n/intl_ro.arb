@@ -1287,5 +1287,7 @@
   "skip": "Ocolire",
   "@skip": {},
   "gotIt": "Am înţeles",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Puteți modifica regulile jocului în setările regulilor.",
+  "@youCanModifyRules": {}
 }

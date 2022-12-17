@@ -1287,5 +1287,7 @@
   "skip": "Sauter",
   "@skip": {},
   "gotIt": "J'ai compris",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Vous pouvez modifier les règles du jeu dans les paramètres de règles.",
+  "@youCanModifyRules": {}
 }

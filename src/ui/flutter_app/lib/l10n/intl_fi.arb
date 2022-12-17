@@ -1287,5 +1287,7 @@
   "skip": "Ohita",
   "@skip": {},
   "gotIt": "Sain sen",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Voit muokata pelin sääntöjä sääntöasetuksissa.",
+  "@youCanModifyRules": {}
 }

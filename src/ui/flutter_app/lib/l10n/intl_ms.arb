@@ -1287,5 +1287,7 @@
   "skip": "Langkau",
   "@skip": {},
   "gotIt": "faham",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Anda boleh mengubah suai peraturan permainan dalam tetapan peraturan.",
+  "@youCanModifyRules": {}
 }

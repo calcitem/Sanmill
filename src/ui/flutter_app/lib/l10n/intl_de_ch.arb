@@ -1287,5 +1287,7 @@
   "skip": "Überspringen",
   "@skip": {},
   "gotIt": "Ich habs",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Sie können die Spielregeln in den Regeleinstellungen ändern.",
+  "@youCanModifyRules": {}
 }

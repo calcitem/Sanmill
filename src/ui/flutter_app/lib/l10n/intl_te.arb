@@ -1287,5 +1287,7 @@
   "skip": "దాటవేయి",
   "@skip": {},
   "gotIt": "దొరికింది",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "మీరు రూల్ సెట్టింగ్‌లలో గేమ్ నియమాలను సవరించవచ్చు.",
+  "@youCanModifyRules": {}
 }

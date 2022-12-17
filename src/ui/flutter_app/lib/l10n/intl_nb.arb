@@ -1287,5 +1287,7 @@
   "skip": "Hopp over",
   "@skip": {},
   "gotIt": "Har det",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Du kan endre spillereglene i regelinnstillingene.",
+  "@youCanModifyRules": {}
 }

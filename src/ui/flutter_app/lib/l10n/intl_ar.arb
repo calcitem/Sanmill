@@ -1287,5 +1287,7 @@
   "skip": "يتخطى",
   "@skip": {},
   "gotIt": "فهمتك",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "يمكنك تعديل قواعد اللعبة في إعدادات القواعد.",
+  "@youCanModifyRules": {}
 }

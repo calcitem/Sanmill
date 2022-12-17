@@ -1287,5 +1287,7 @@
   "skip": "Hoppa",
   "@skip": {},
   "gotIt": "Jag förstår",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Du kan ändra spelets regler i regelinställningarna.",
+  "@youCanModifyRules": {}
 }

@@ -1287,5 +1287,7 @@
   "skip": "Oʻtkazib yuborish",
   "@skip": {},
   "gotIt": "Tushundim",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Siz o'yin qoidalarini qoida sozlamalarida o'zgartirishingiz mumkin.",
+  "@youCanModifyRules": {}
 }

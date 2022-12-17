@@ -1287,5 +1287,7 @@
   "skip": "છોડો",
   "@skip": {},
   "gotIt": "જાણ્યું",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "તમે નિયમ સેટિંગ્સમાં રમતના નિયમોમાં ફેરફાર કરી શકો છો.",
+  "@youCanModifyRules": {}
 }

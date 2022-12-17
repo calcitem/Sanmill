@@ -1287,5 +1287,7 @@
   "skip": "Kihagyás",
   "@skip": {},
   "gotIt": "Megvan",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "A játékszabályokat a szabálybeállításokban módosíthatja.",
+  "@youCanModifyRules": {}
 }

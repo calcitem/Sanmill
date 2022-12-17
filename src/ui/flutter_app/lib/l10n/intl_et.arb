@@ -1287,5 +1287,7 @@
   "skip": "Vahele jätma",
   "@skip": {},
   "gotIt": "Sain aru",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "Mängu reegleid saate muuta reeglite seadetes.",
+  "@youCanModifyRules": {}
 }

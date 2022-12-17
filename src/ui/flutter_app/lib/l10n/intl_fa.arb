@@ -1287,5 +1287,7 @@
   "skip": "پرش کنید",
   "@skip": {},
   "gotIt": "فهمیدم",
-  "@gotIt": {}
+  "@gotIt": {},
+  "youCanModifyRules": "می توانید قوانین بازی را در تنظیمات قوانین تغییر دهید.",
+  "@youCanModifyRules": {}
 }
