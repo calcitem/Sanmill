@@ -132,7 +132,15 @@ make build ARCH=x86-64-modern
 sudo apt-get install qt5-default qtmultimedia5-dev qtcreator
 ```
 
-使用 Qt Creator 打开 `millgame.pro` ，或使用 Visual Studio 打开 `millgame.sln` 来构建 Qt 应用程序。
+使用 Qt Creator 打开 `millgame.pro` ，或者运行：
+
+```shell
+cd src/ui/qt
+cmake .
+cmake --build . --target MillGame
+```
+
+并使用 Visual Studio 打开 `src\ui\qt\millgame.sln` 来构建 Qt 应用程序。
 
 ### Flutter App
 

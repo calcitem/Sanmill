@@ -85,18 +85,18 @@ HEADERS  += \
     src/ui/qt/boarditem.h
 
 FORMS    += \
-    gamewindow.ui
+    src/ui/qt/gamewindow.ui
 
 RESOURCES += \
-    gamewindow.qrc
+    src/ui/qt/gamewindow.qrc
 
 DISTFILES += \
-    MillGame.rc \
+    src/ui/qt/MillGame.rc \
     version.sh
 
-RC_FILE += millgame.rc
+RC_FILE += src/ui/qt/millgame.rc
 
-TRANSLATIONS += millgame-qt_zh_CN.ts
+#TRANSLATIONS += millgame-qt_zh_CN.ts
 
 DEFINES += DISABLE_PERFECT_AI
 

@@ -68,7 +68,14 @@ If you have started using Ubuntu or any Ubuntu-based Linux distribution, you mus
 sudo apt-get install qt5-default qtmultimedia5-dev qtcreator
 ```
 
-Use Qt Creator to open `millgame.pro` , or use Visual Studio to open `millgame.sln` to build Qt Application.
+Use Qt Creator to open `millgame.pro` , or run 
+
+```shell
+cd src/ui/qt
+cmake .
+cmake --build . --target MillGame
+```
+and use Visual Studio to open `src\ui\qt\millgame.sln` to build Qt Application.
 
 ### Flutter App
 
