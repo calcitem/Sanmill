@@ -179,7 +179,7 @@ void Position::nnueGenerateTrainingFen()
         " " + std::to_string(nnueTrainingDataIndex));
 }
 
-string Position::nnueGetOpponentGameResut()
+string Position::nnueGetOpponentGameResult()
 {
     if (nnueTrainingDataGameResult == "1-0") {
         return "0-1";
@@ -201,8 +201,8 @@ string Position::nnueGetCurSideGameResult(char lastSide, const string &fen)
     if (side == lastSide) {
         return nnueTrainingDataGameResult;
     } else {
-        return nnueGetOpponentGameResut();
-    }    
+        return nnueGetOpponentGameResult();
+    }
 }
 
 void Position::nnueWriteTrainingData()

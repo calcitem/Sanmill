@@ -186,10 +186,10 @@ map<int, QStringList> Game::getActions()
     for (int i = 0; i < N_RULES; i++) {
         // The key of map stores int index value, and value stores rule name and
         // rule prompt
-        QStringList strlist;
-        strlist.append(tr(RULES[i].name));
-        strlist.append(tr(RULES[i].description));
-        actions.insert(map<int, QStringList>::value_type(i, strlist));
+        QStringList strList;
+        strList.append(tr(RULES[i].name));
+        strList.append(tr(RULES[i].description));
+        actions.insert(map<int, QStringList>::value_type(i, strList));
     }
 
     return actions;

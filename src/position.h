@@ -70,7 +70,7 @@ public:
     Position &set(const std::string &fenStr, Thread *th);
     [[nodiscard]] std::string fen() const;
 #ifdef NNUE_GENERATE_TRAINING_DATA
-    string Position::nnueGetOpponentGameResut();
+    string Position::nnueGetOpponentGameResult();
     string Position::nnueGetCurSideGameResult(char lastSide, const string &fen);
     void nnueGenerateTrainingFen();
     void nnueWriteTrainingData();

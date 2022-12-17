@@ -512,10 +512,10 @@ void MillGameWindow::saveBook(const QString &path)
     }
 
     QTextStream textStream(&file);
-    const auto *strlist = qobject_cast<QStringListModel *>(
+    const auto *strList = qobject_cast<QStringListModel *>(
         ui.listView->model());
 
-    for (const QString &cmd : strlist->stringList()) {
+    for (const QString &cmd : strList->stringList()) {
         textStream << cmd << "\n";
     }
 
@@ -630,12 +630,12 @@ void MillGameWindow::actionRules_triggered()
 
 void MillGameWindow::on_actionNew_N_triggered()
 {
-    const auto *strlist = qobject_cast<QStringListModel *>(
+    const auto *strList = qobject_cast<QStringListModel *>(
         ui.listView->model());
 
     // If you have not finished playing game and have already taken more than a
     // few steps, you will be lost
-    if (strlist->stringList().size() > 12) {
+    if (strList->stringList().size() > 12) {
         game->humanResign();
     }
 
@@ -669,7 +669,7 @@ void MillGameWindow::on_actionNew_N_triggered()
                          "_" + strDateTime + ".txt";
 
     // After a certain number of steps, save the score when creating a new game
-    if (strlist->stringList().size() > 18) {
+    if (strList->stringList().size() > 18) {
         saveBook(path);
     }
 #endif /* SAVE_GAME_BOOK_WHEN_ACTION_NEW_TRIGGERED */
@@ -750,9 +750,9 @@ void MillGameWindow::on_actionSave_S_triggered()
 
         if (file.open(QFileDevice::WriteOnly | QFileDevice::Text)) {
             QTextStream textStream(&file);
-            const auto *strlist = qobject_cast<QStringListModel *>(
+            const auto *strList = qobject_cast<QStringListModel *>(
                 ui.listView->model());
-            for (const QString &cmd : strlist->stringList())
+            for (const QString &cmd : strList->stringList())
                 textStream << cmd << "\n";
             file.flush();
         }
@@ -804,24 +804,24 @@ void MillGameWindow::on_actionRowChange() const
     const int rows = model->rowCount();
     int currentRow = ui.listView->currentIndex().row();
 
-    QObject *const obsender = sender();
+    QObject *const s = sender();
 
-    if (obsender != nullptr) {
-        if (obsender == ui.actionBegin_S) {
+    if (s != nullptr) {
+        if (s == ui.actionBegin_S) {
             ui.listView->setCurrentIndex(model->index(0, 0));
-        } else if (obsender == ui.actionPrevious_B
+        } else if (s == ui.actionPrevious_B
 #ifdef QT_MOBILE_APP_UI
-                   || obsender == ui.pushButton_retractMove
+                   || s == ui.pushButton_retractMove
 #endif /* QT_MOBILE_APP_UI */
         ) {
             if (currentRow > 0) {
                 ui.listView->setCurrentIndex(model->index(currentRow - 1, 0));
             }
-        } else if (obsender == ui.actionNext_F) {
+        } else if (s == ui.actionNext_F) {
             if (currentRow < rows - 1) {
                 ui.listView->setCurrentIndex(model->index(currentRow + 1, 0));
             }
-        } else if (obsender == ui.actionEnd_E) {
+        } else if (s == ui.actionEnd_E) {
             ui.listView->setCurrentIndex(model->index(rows - 1, 0));
         }
 

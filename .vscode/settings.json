@@ -1,11 +1,13 @@
 {
     "cSpell.words": [
         "ALIGNAS",
+        "Antialiasing",
         "appbundle",
         "Appium",
         "APSTUDIO",
         "ARGB",
         "autobuild",
+        "autofocus",
         "bestmove",
         "Bitboard",
         "Bitboards",
@@ -19,6 +21,8 @@
         "CTSL",
         "cupertino",
         "DANDROID",
+        "dartpad",
+        "Diagnosticable",
         "DISCARDABLE",
         "DNDEBUG",
         "Dont",
@@ -33,11 +37,15 @@
         "fluentui",
         "FPKV",
         "fsanitize",
+        "Fullmove",
+        "gameover",
         "gamewindow",
         "gitee",
         "googletest",
         "gtest",
         "GWLP",
+        "Halfmove",
+        "halfmoves",
         "hhmmss",
         "HMONITOR",
         "Hori",
@@ -72,6 +80,7 @@
         "millgame",
         "minv",
         "Monospace",
+        "MOVETYPE",
         "msix",
         "msvc",
         "Mtdf",
@@ -88,6 +97,8 @@
         "PDWORD",
         "perfekt",
         "PGROUP",
+        "Pixmap",
+        "pngs",
         "println",
         "PRODUCTVERSION",
         "PSYSTEM",
@@ -142,5 +153,10 @@
     "cSpell.enabled": true,
     "cSpell.enableFiletypes": [
         "dart"
-    ]
+    ],
+    "files.associations": {
+        "*.vcxproj": "cpp",
+        "qgraphicsscenemouseevent": "cpp",
+        "qvboxlayout": "cpp"
+    }
 }
