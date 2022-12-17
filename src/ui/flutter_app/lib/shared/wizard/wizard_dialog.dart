@@ -591,7 +591,7 @@ class _Step7 extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            '您可以在配置中修改规则。', // TODO
+            S.of(context).youCanModifyRules,
             style: const TextStyle(
               fontSize: 16,
               color: Colors.white,
