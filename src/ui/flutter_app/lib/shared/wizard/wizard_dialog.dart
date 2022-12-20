@@ -111,10 +111,7 @@ class _WizardDialogState extends State<WizardDialog> {
                               : S.of(context).skip,
                           child: IconButton(
                             onPressed: () {
-                              Navigator.of(context).pop();
-                              DB().generalSettings = DB()
-                                  .generalSettings
-                                  .copyWith(showWizard: false);
+                              _finishWizard(context);
                             },
                             icon: isFinally
                                 ? const Icon(Icons.done_outline)
@@ -133,9 +130,19 @@ class _WizardDialogState extends State<WizardDialog> {
                     ),
                   ),
                   Expanded(
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 400),
-                      child: getWizard(),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (_curIndex >= _maxIndex) {
+                          _finishWizard(context);
+                        } else {
+                          nextStep();
+                        }
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 400),
+                        child: getWizard(),
+                      ),
                     ),
                   ),
                 ],
@@ -145,6 +152,11 @@ class _WizardDialogState extends State<WizardDialog> {
         ),
       ),
     );
+  }
+
+  void _finishWizard(BuildContext context) {
+    Navigator.of(context).pop();
+    DB().generalSettings = DB().generalSettings.copyWith(showWizard: false);
   }
 
   void prevStep() {
