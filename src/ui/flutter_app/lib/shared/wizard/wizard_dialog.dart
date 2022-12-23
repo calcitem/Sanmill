@@ -42,6 +42,7 @@ class _WizardDialogState extends State<WizardDialog> {
   final int _maxIndex = 6;
 
   bool get isFinally => _curIndex == _maxIndex;
+  bool get isStart => _curIndex == 0;
 
   Offset? _maskOffset;
 
@@ -101,7 +102,10 @@ class _WizardDialogState extends State<WizardDialog> {
                           label: S.of(context).previous,
                           child: IconButton(
                             onPressed: _curIndex <= 0 ? null : prevStep,
-                            icon: const Icon(Icons.arrow_back),
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: isStart ? Colors.grey : Colors.black,
+                            ),
                           ),
                         ),
                         const Spacer(),
@@ -114,8 +118,14 @@ class _WizardDialogState extends State<WizardDialog> {
                               _finishWizard(context);
                             },
                             icon: isFinally
-                                ? const Icon(Icons.done_outline)
-                                : const Icon(FluentIcons.arrow_exit_20_regular),
+                                ? const Icon(
+                                    Icons.done_outline,
+                                    color: Colors.black,
+                                  )
+                                : const Icon(
+                                    FluentIcons.arrow_exit_20_regular,
+                                    color: Colors.black,
+                                  ),
                           ),
                         ),
                         const Spacer(),
@@ -123,7 +133,10 @@ class _WizardDialogState extends State<WizardDialog> {
                           label: S.of(context).next,
                           child: IconButton(
                             onPressed: _curIndex >= _maxIndex ? null : nextStep,
-                            icon: const Icon(Icons.arrow_forward_rounded),
+                            icon: Icon(
+                              Icons.arrow_forward_rounded,
+                              color: isFinally ? Colors.grey : Colors.black,
+                            ),
                           ),
                         ),
                       ],
