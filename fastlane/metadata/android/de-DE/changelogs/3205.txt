@@ -1,0 +1,3 @@
+v2.0.20
+
+Beheben Sie das Problem, dass die drei Symbole im Dunkelmodus nicht oben auf der Tutorial-Seite angezeigt werden.

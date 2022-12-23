@@ -1,0 +1,3 @@
+v2.0.20
+
+Fix the problem that the three icons are not displayed at the top of the tutorial page in dark mode.
