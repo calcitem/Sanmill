@@ -3,7 +3,7 @@ project(MillGame)
 
 find_package(Qt5 REQUIRED COMPONENTS Core Gui Multimedia Widgets)
 
-include_directories(../../../include ../.. ../../test ../../perfect)
+include_directories(${CMAKE_SOURCE_DIR} ../../../include ../.. ../../test ../../perfect)
 
 qt5_add_resources(RESOURCES_RCC ${RESOURCES})
 
