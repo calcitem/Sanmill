@@ -1,0 +1,5 @@
+v1.1.18
+
+* Ha a képzettségi szint 1, az AI véletlenszerűbben mozog, hogy csökkentse a nehézséget.
+* A navigációs eszköztár javítási beállításai eltűnnek egyes eszközökön.
+* Fix fiók kiemeli elem szövegének színét.

@@ -1,0 +1,3 @@
+v1.1.4
+
+* Támogatja az angol, német, perzsa, magyar, román és kínai nyelv beállítását.

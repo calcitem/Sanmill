@@ -1,0 +1,4 @@
+v1.1.23
+
+* Állítsa be az el nem helyezett darabok szövegének színét a tábla vonalának színére
+* Svájci német fordítás hozzáadása (WIP)

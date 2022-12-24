@@ -1,0 +1,5 @@
+v1.1.16
+
+* Állapotsor megjelenítése nagy képernyős eszközhöz.
+* Ne jelenítse meg a navigációs eszköztár beállítását, ha az ablak oldalaránya kisebb, mint 1,7.
+* A perzsa fordítás javítása.

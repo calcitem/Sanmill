@@ -1,0 +1,5 @@
+v1.1.39
+
+* Növelje a mozgó fázis AI erejét.
+* A francia és magyar fordítás javítása.
+* Az Android 4.1.x már nem támogatott.

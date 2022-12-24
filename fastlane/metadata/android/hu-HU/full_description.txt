@@ -1,0 +1,16 @@
+Egy Nine Men's Morris (és változatai) program
+
+Szabályok:
+
+* Annak a játékosnak, aki három bábuját igazítja egy táblavonalon, van egy malom, és eltávolíthatja ellenfele bábuját.
+* Bármely játékos két darabra redukál, és nincs lehetősége új malmok kialakítására, így elveszíti a játékot.
+* Ha egy játékos nem tudja mozgatni az egyik bábuját (le van zárva), elvesztette a játékot.
+
+Jellemzők:
+
+* Számos szabályváltozat támogatása, például a Nine Men's Morris és a Twelve Men's Morris, a „Repülő” szabály vagy a „Repülő” szabály hiánya
+* Játssz a mesterséges intelligencia ellen, vagy játssz mindkét oldalon
+* Állítható játékerő
+* Jól konfigurálható
+* Színes témák
+* Hozzáférhetőség

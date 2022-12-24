@@ -1,0 +1,8 @@
+v1.1.38
+
+* Támogatás az el nem helyezett bábu beállítás eltávolításához – Ha egy játékos az elhelyezési fázisban kialakítja a malmot, eltávolíthatja az ellenfél el nem helyezett bábuját, és folytathatja a lépést.
+* Támogatja az Endgame N-Move szabályt.
+* Módosítsa az N-mozgatás szabály megítélési feltételét > értékről = értékre.
+* Támogassa a háromszoros ismétlési beállítást.
+* Lehetővé teszi a pontstílus és a pontszélesség konfigurálását.
+* Támogatja a GoldToken áthelyezési listáját.

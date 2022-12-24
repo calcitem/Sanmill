@@ -1,0 +1,1 @@
+Egy malomjáték, amely számos szabályváltozatot támogat, Flutter nyelven írva

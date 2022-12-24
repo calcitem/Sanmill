@@ -1,0 +1,5 @@
+v1.1.8
+
+* Menü UI probléma javítása jobbról balra.
+* Az angol fordítások javítása.
+* A nyelvnév megjelenítése a nyelvkód helyett a menüelem végén.

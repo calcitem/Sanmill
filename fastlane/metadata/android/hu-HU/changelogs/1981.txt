@@ -1,0 +1,3 @@
+v1.1.7
+
+* Hindi/olasz/lengyel/török gépi fordítások hozzáadása.

@@ -1,0 +1,3 @@
+v1.1.22
+
+Amikor az ember kontra mesterséges intelligencia, a két fél sok lépést tett, de nem vették el az ellenfél bábuit több egymást követő lépésben, és az AI lefagy. Ez a probléma megoldódott.

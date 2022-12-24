@@ -1,0 +1,3 @@
+v1.1.13
+
+* Kannada/norvég/üzbég/vietnami gépi fordítások hozzáadása.

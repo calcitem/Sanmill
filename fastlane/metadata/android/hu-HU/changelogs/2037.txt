@@ -1,0 +1,3 @@
+v1.1.14
+
+* Az alapértelmezett szabály beállítása Twelve Men's Morrisra, ha az ország Irán.

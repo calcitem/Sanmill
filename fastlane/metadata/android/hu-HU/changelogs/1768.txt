@@ -1,0 +1,3 @@
+v1.0.3
+
+* Az újraindítás/mégse gombok megjelenítése az igen/nem gombok helyett a párbeszédpanelen, amikor a játékos megnyeri a legnehezebb szintet.

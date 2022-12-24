@@ -1,0 +1,3 @@
+v1.0.11
+
+* Támogatás Lépjen előre és vegye vissza az összeset és lépjen előre.
