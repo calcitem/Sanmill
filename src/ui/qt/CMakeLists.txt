@@ -33,11 +33,6 @@ endif()
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${FORMS} ${RESOURCES} ${RESOURCE_FILES})
 
 if(MSVC)
-else()
-  add_definitions(-DDISABLE_PERFECT_AI)
-endif()
-
-if(MSVC)
   target_link_libraries(${PROJECT_NAME} shlwapi)
 endif()
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Widgets)
