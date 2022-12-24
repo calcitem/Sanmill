@@ -1,0 +1,4 @@
+v1.0.13
+
+* Dupla vissza az alkalmazás bezárásához.
+* Az első futtatáskor felugró adatvédelmi szabályzat párbeszédpanel.

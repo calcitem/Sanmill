@@ -1,0 +1,4 @@
+v1.1.1
+
+* Támogassa a PlayOK jelölések importálását.
+* Támogassa az "N-mozgatási szabályok" specifikus N-jét.

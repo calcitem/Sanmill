@@ -1,0 +1,4 @@
+v1.1.43
+
+* A koreai fordítás javítása.
+* Frissítse a Fluttert 2.10.3-ra.

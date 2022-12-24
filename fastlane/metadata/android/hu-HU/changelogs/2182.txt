@@ -1,0 +1,4 @@
+v1.1.36
+
+* Javítsa ki az ikonok irányának megjelenítési problémáját a jobbról balra haladó elrendezésben.
+* Továbbfejlesztett arab fordítás.

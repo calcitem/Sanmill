@@ -1,0 +1,3 @@
+v1.0.22
+
+* Javítsa ki a fehér oldaltámadást ilyen korán oldalról a 3. lépésnél.

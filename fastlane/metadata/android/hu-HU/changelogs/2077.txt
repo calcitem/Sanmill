@@ -1,0 +1,3 @@
+v1.1.21
+
+* Javítsa ki a visszavétel és előrelépés gombok ikonjának irányát jobbról balra haladva.

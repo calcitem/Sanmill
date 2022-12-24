@@ -1,0 +1,3 @@
+v1.0.8
+
+* Támogatás a visszavételhez. Megpróbálhat visszavonni egy rossz lépést, és bármilyen más jobb lépést végrehajtani.

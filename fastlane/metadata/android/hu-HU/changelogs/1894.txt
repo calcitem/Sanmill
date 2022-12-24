@@ -1,0 +1,5 @@
+v1.0.20
+
+* Támogassa a Ten/Eleven Men's Morrist.
+* Beállíthatja, hogy hány darab maradt repülni.
+* Add History Navigation Toolbar.

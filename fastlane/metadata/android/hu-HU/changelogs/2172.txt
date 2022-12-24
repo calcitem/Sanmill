@@ -1,0 +1,3 @@
+v1.1.34
+
+Kerülje el, hogy a fehér túl agresszív legyen a nyitó fázisban, ami gyorsan elveszítheti a játékot.

@@ -1,0 +1,3 @@
+v1.1.3
+
+* Működtesse az e-mail küldőt Android 11-es eszközökkel, ha összeomlik.

@@ -1,0 +1,4 @@
+v1.1.31
+
+* A Nine Men's Morris: Fix AI valószínűleg megakadályozza, hogy a fehérek malmot csináljanak a nyitófázisban, így az AI sebezhetővé teszi a játék elvesztését.
+* Twelve Men's Morris: Növelje a mesterséges intelligencia erejét.

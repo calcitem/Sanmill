@@ -1,0 +1,5 @@
+v1.0.5
+
+* Jelölje meg a fehér darabokat 1. játékosként és a feketét 2. játékosként
+* A "Tipp" szöveg módosítása "Információ"-ra
+* Javítsa ki az elírást

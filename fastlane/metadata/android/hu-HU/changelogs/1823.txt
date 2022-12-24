@@ -1,0 +1,3 @@
+v1.0.9
+
+* Jelölések megjelenítése a fedélzeten (konfigurálható).
