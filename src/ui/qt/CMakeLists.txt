@@ -12,17 +12,22 @@ endif()
 
 qt5_add_resources(RESOURCES_RCC ${RESOURCES})
 
-file(GLOB SOURCES ../../*.cpp ../../test/*.cpp *.cpp)
-file(GLOB HEADERS ../../../include/*.h ../../*.h ../../test/*.h *.h)
+file(GLOB SOURCES_CORE ../../*.cpp ../../*.h ../../../include/*.h)
+source_group("Source Files\\Core" FILES ${SOURCES_CORE})
+
+file(GLOB SOURCES_QT *.cpp *.h)
+source_group("Source Files\\Qt" FILES ${SOURCES_QT})
+
+file(GLOB SOURCES_TEST ../../test/*.cpp ../../test/*.h)
+source_group("Source Files\\Test" FILES ${SOURCES_TEST})
+
 if(MSVC)
-  file(GLOB SOURCES_PERFECT ../../perfect/*.cpp)
-  file(GLOB HEADERS_PERFECT ../../perfect/*.h)
-  list(APPEND SOURCES ${SOURCES_PERFECT})
-  list(APPEND HEADERS ${HEADERS_PERFECT})
+  file(GLOB SOURCES_PERFECT ../../perfect/*.cpp ../../perfect/*.h)
+  source_group("Source Files\\Perfect" FILES ${SOURCES_PERFECT})
 endif()
+
 file(GLOB FORMS *.ui)
-file(GLOB RESOURCES *.qrc)
-file(GLOB RESOURCE_FILES *.rc)
+file(GLOB RESOURCE_FILES *.rc *.qrc)
 
 if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /W4")
@@ -30,7 +35,21 @@ else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Wno-long-long -Wno-variadic-macros -Wno-overlength-strings -fdiagnostics-color=auto -Wno-deprecated -Wno-unused-parameter")
 endif()
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS} ${FORMS} ${RESOURCES} ${RESOURCE_FILES})
+source_group("Forms" FILES ${FORMS})
+source_group("Resource Files" FILES ${RESOURCE_FILES})
+
+set(all_sources
+  ${SOURCES_CORE}
+  ${SOURCES_QT}
+  ${SOURCES_TEST}
+  ${FORMS}
+  ${RESOURCE_FILES}
+)
+if(MSVC)
+  list(APPEND all_sources ${SOURCES_PERFECT})
+endif()
+
+add_executable(${PROJECT_NAME} ${all_sources})
 
 if(MSVC)
   target_link_libraries(${PROJECT_NAME} shlwapi)
