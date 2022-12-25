@@ -132,7 +132,7 @@ make build ARCH=x86-64-modern
 sudo apt-get install qt5-default qtmultimedia5-dev qtcreator
 ```
 
-使用 Qt Creator 打开 `millgame.pro` ，或者运行：
+使用 Qt Creator 打开 `src/ui/qt/CMakeLists.txt` ，或者运行：
 
 ```shell
 cd src/ui/qt
