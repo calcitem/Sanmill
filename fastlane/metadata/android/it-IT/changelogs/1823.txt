@@ -1,0 +1,3 @@
+v1.0.9
+
+* Mostra le annotazioni a bordo (configurabile).

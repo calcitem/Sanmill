@@ -1,0 +1,3 @@
+v1.1.22
+
+Když lidé vs. AI, obě strany udělaly mnoho tahů, ale nebraly soupeřovy figurky po mnoho po sobě jdoucích tahů a AI zamrzne. Tento problém byl vyřešen.

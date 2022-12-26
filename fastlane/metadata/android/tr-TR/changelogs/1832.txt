@@ -1,0 +1,3 @@
+v1.0.11
+
+* Destek Bir Adım İleri & Her Şeyi Geri Al & Her Adımı İleri.

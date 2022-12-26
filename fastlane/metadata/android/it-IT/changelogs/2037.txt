@@ -1,0 +1,3 @@
+v1.1.14
+
+* Imposta la regola predefinita su Twelve Men's Morris quando il paese è l'Iran.

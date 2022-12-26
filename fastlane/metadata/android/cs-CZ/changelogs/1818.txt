@@ -1,0 +1,3 @@
+v1.0.8
+
+* Podpora zpětného odběru. Můžete se pokusit vrátit zpět špatný tah a udělat jakýkoli jiný lepší tah.

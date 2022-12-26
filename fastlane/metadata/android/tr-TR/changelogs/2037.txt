@@ -1,0 +1,3 @@
+v1.1.14
+
+* Ülke İran olduğunda varsayılan kuralı Twelve Men's Morris olarak ayarlayın.

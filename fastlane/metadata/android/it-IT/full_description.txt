@@ -1,0 +1,16 @@
+Un programma Morris (e le sue varianti) di Nine Men
+
+Regole:
+
+* Un giocatore che allinea tre dei suoi pezzi su una linea del tabellone ha un mulino e può rimuovere i pezzi del suo avversario.
+* Qualsiasi giocatore si riduce a due pezzi e non ha la possibilità di formare nuovi mulini e quindi perde la partita.
+* Se un giocatore non può muovere uno dei suoi pezzi (è bloccato), ha perso la partita.
+
+Caratteristiche:
+
+* Supporta molte varianti di regole, come la Morris dei nove uomini e la Morris dei dodici uomini, regola "Volante" o nessuna regola "Volante"
+* Gioca contro l'IA o gioca su entrambi i lati
+* Forza di gioco regolabile
+* Altamente configurabile
+* Temi di colore
+* Accessibilità

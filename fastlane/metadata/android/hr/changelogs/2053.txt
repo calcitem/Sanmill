@@ -1,0 +1,5 @@
+v1.1.16
+
+* Prikaži statusnu traku za uređaj s velikim zaslonom.
+* Ne prikazuj postavke alatne trake za navigaciju ako je omjer prozora manji od 1,7.
+* Poboljšajte prijevod na perzijski.

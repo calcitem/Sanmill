@@ -1,0 +1,3 @@
+v1.1.34
+
+Vyhněte se přílišné agresivitě bílého v úvodní fázi, která může rychle prohrát hru.

@@ -1,0 +1,5 @@
+v1.1.9
+
+* Migliora la traduzione Farsi (lingua persiana) (WIP).
+* Risolti i problemi relativi alle frecce delle opzioni e ai pulsanti di navigazione nelle lingue RTL.
+* Risolto il problema con l'icona dell'animazione troppo alta quando la lingua è l'arabo.

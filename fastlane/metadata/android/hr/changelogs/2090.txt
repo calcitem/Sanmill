@@ -1,0 +1,4 @@
+v1.1.24
+
+* Prema zadanim postavkama prikaži brojač nepostavljenih komada.
+* Poboljšajte prijevod na finski.

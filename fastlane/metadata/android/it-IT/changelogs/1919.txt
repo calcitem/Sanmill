@@ -1,0 +1,3 @@
+v1.0.23
+
+* Sono supportate varie varianti di formato durante l'importazione dell'elenco delle mosse.

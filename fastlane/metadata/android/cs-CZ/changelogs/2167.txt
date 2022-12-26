@@ -1,0 +1,3 @@
+v1.1.33
+
+Podpora Flutter 2.5.

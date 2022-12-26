@@ -1,0 +1,3 @@
+v1.0.16
+
+* Supporta l'impostazione dell'animazione del pezzo.

@@ -1,0 +1,16 @@
+Program Devíti mužů Morris (a jeho varianty).
+
+pravidla:
+
+* Hráč, který zarovná tři své figurky na hrací linii, má mlýn a může odstranit figurky svého soupeře.
+* Jakýkoli hráč se zredukuje na dva kusy a nemá možnost tvořit nové mlýny, a tak prohrává hru.
+* Pokud hráč nemůže pohnout jednou ze svých figurek (je uzamčen), prohrál hru.
+
+Funkce:
+
+* Podpora mnoha variant pravidel, jako je Morris devíti mužů a dvanáct mužů, pravidlo „létání“ nebo žádné pravidlo „létání“
+* Hrajte proti AI nebo hrajte na obě strany
+* Nastavitelná síla hraní
+* Vysoce konfigurovatelné
+* Barevná témata
+* Dostupnost

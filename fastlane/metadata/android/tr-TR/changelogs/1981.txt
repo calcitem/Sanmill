@@ -1,0 +1,3 @@
+v1.1.7
+
+* Hintçe/İtalyanca/Lehçe/Türkçe makine çevirileri ekleyin.

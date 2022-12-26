@@ -1,0 +1,3 @@
+v1.0.24
+
+* Supporto considerando la mobilità dei pezzi.

@@ -1,0 +1,4 @@
+v1.1.36
+
+* Risolto il problema di visualizzazione della direzione dell'icona nel layout da destra a sinistra.
+* Migliorata la traduzione araba.

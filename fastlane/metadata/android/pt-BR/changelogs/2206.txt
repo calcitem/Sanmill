@@ -1,0 +1,5 @@
+v1.1.39
+
+* Melhore o poder AI da fase móvel.
+* Melhore a tradução em francês e húngaro.
+* O Android 4.1.x não é mais suportado.

@@ -1,0 +1,16 @@
+Programa Nine Men's Morris (e suas variantes)
+
+Regras:
+
+* Um jogador que alinha três de suas peças em uma linha do tabuleiro tem um moinho e pode remover a(s) peça(s) de seu oponente.
+* Qualquer jogador reduz a duas peças e não tem opção de formar novos moinhos e assim perde o jogo.
+* Se um jogador não puder mover uma de suas peças (está travado), ele perde o jogo.
+
+Recursos:
+
+* Suporta muitas variantes de regras, como Nine Men's Morris e Twelve Men's Morris, regra "Flying" ou nenhuma regra "Flying"
+* Jogue contra a IA ou jogue dos dois lados
+* Força de jogo ajustável
+* Altamente configurável
+* Temas de cores
+* Acessibilidade

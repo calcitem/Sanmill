@@ -1,0 +1,5 @@
+v1.0.5
+
+* Označite bijele figure kao igrača 1, a crne kao igrača 2
+* Promjena teksta 'Savjet' u 'Informacije'
+* Ispravite tipfeler

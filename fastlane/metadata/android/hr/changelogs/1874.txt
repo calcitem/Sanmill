@@ -1,0 +1,4 @@
+v1.0.17
+
+* Podrška za podešavanje veličine fonta (stupa na snagu nakon ponovnog pokretanja aplikacije).
+* Zaustavi zvuk pri preuzimanju (podesivo).

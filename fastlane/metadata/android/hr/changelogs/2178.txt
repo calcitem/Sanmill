@@ -1,0 +1,3 @@
+v1.1.35
+
+Optimizirajte sposobnost umjetne inteligencije da kontrolira situaciju u početnoj fazi.

@@ -1,0 +1,4 @@
+v1.0.13
+
+* Uygulamayı kapatmak için iki kez geri dönün.
+* İlk çalıştırmada Popup Gizlilik Politikası iletişim kutusu.

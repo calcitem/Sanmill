@@ -1,0 +1,3 @@
+v1.0.18
+
+* Puoi eseguire il rollback di diversi passaggi.

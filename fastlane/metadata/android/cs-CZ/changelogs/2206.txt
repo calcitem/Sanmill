@@ -1,0 +1,5 @@
+v1.1.39
+
+* Vylepšete výkon AI pohybové fáze.
+* Zlepšit francouzský a maďarský překlad.
+* Android 4.1.x již není podporován.

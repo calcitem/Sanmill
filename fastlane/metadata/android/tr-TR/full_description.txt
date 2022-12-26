@@ -1,0 +1,16 @@
+Dokuz Erkek Morris (ve çeşitleri) programı
+
+Tüzük:
+
+* Bir tahta çizgisi üzerinde taşlarından üçünü hizalayan bir oyuncunun bir değirmeni vardır ve rakibinin taş(lar)ını çıkarabilir.
+* Herhangi bir oyuncu iki parçaya düşer ve yeni değirmenler oluşturma seçeneği yoktur ve bu nedenle oyunu kaybeder.
+* Bir oyuncu taşlarından birini hareket ettiremezse (kilitlenirse), oyunu kaybetmiş demektir.
+
+Özellikleri:
+
+* Nine Men's Morris ve Twelve Men's Morris, "Uçma" kuralı veya "Uçma" kuralı olmaması gibi birçok kural varyantını destekleyin
+* AI'ya karşı oynayın veya her iki tarafı da oynayın
+* Ayarlanabilir çalma gücü
+* Son derece yapılandırılabilir
+* Renk temaları
+* Ulaşılabilirlik

@@ -1,0 +1,8 @@
+v1.1.38
+
+* Podrška za uklanjanje nepostavljenih figura - Ako igrač formira mlin u fazi postavljanja, može ukloniti protivnikove nepostavljene figure i nastaviti s potezom.
+* Podržava pravilo N-poteza za kraj igre.
+* Promijenite uvjet prosudbe pravila N-pomaka iz > u =.
+* Podrška postavku trostrukog ponavljanja.
+* Omogućuje konfiguriranje stila točke i širine točke.
+* Podržava uvoz GoldToken popisa za premještanje.

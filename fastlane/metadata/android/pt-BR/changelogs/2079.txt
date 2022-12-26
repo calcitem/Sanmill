@@ -1,0 +1,3 @@
+v1.1.22
+
+Quando humanos vs. AI, os dois lados fizeram muitos movimentos, mas não pegaram as peças do oponente por muitos movimentos consecutivos, e o AI ficará congelado. Este problema foi resolvido.

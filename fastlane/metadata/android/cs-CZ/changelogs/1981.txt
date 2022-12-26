@@ -1,0 +1,3 @@
+v1.1.7
+
+* Přidejte strojové překlady do hindštiny/italštiny/polštiny/turečtiny.

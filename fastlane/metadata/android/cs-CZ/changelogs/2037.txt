@@ -1,0 +1,3 @@
+v1.1.14
+
+* Nastavte výchozí pravidlo na Dvanáct mužů Morris, když je zemí Írán.

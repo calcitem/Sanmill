@@ -1,0 +1,3 @@
+v1.0.8
+
+* Supporta la ripresa. Puoi provare a annullare una mossa sbagliata e fare qualsiasi altra mossa migliore.

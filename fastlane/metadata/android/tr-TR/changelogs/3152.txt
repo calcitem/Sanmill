@@ -1,0 +1,7 @@
+v2.0.13
+
+* GIF paylaşımını destekleyin.
+* Oyun sayfasındaki hareketleri devre dışı bırakın.
+* Yerleştirilmemiş ve kaldırılmış parçalara gölge ekleyin.
+* Durum çubuğu simgesi rengini beyaz olarak düzeltin.
+* Tahtanın kenarlarında bulunan taşların sabit kenarları bulanıklaştırıldı.

@@ -1,0 +1,4 @@
+v1.0.17
+
+* Podpora nastavení velikosti písma (projeví se po restartování aplikace).
+* Při zpětném odběru ztlumte (konfigurovatelné).

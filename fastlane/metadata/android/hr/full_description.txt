@@ -1,0 +1,16 @@
+Program Nine Men's Morris (i njegove varijante).
+
+Pravila:
+
+* Igrač koji poravna tri svoje figure na liniji ploče ima mlin i može ukloniti protivničku figuru(e).
+* Bilo koji igrač se smanjuje na dva komada i nema mogućnost formiranja novih mlinova i tako gubi igru.
+* Ako igrač ne može pomaknuti jednu od svojih figura (zaključan je), izgubio je partiju.
+
+Značajke:
+
+* Podržava mnoge varijante pravila, kao što su Morris za devet muškaraca i Morris za dvanaest muškaraca, pravilo "Leteće" ili pravilo bez "Letećeg" pravila
+* Igrajte protiv umjetne inteligencije ili igrajte s obje strane
+* Podesiva snaga sviranja
+* Visoko konfigurabilan
+* Teme u boji
+* Pristupačnost

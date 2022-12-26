@@ -1,0 +1,3 @@
+v1.0.4
+
+* Uzamknout orientaci obrazovky na výšku.

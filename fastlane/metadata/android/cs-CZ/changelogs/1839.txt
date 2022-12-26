@@ -1,0 +1,4 @@
+v1.0.13
+
+* Dvojitým zpět zavřete aplikaci.
+* Vyskakovací dialog Zásady ochrany osobních údajů při prvním spuštění.

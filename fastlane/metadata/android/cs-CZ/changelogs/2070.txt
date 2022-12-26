@@ -1,0 +1,3 @@
+v1.1.19
+
+* Dobrovolníci se mohou zapojit do překladů v našem POEditoru.

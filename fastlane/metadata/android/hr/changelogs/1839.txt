@@ -1,0 +1,4 @@
+v1.0.13
+
+* Dvaput natrag za zatvaranje aplikacije.
+* Skočni dijaloški okvir Pravila privatnosti prilikom prvog pokretanja.

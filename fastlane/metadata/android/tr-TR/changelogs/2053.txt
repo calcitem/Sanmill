@@ -1,0 +1,5 @@
+v1.1.16
+
+* Büyük ekranlı cihaz için durum çubuğunu göster.
+* Pencere en boy oranı 1,7'den küçükse gezinme araç çubuğu ayarını gösterme.
+* Farsça çeviriyi geliştirin.

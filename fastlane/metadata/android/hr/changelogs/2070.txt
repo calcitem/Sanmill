@@ -1,0 +1,3 @@
+v1.1.19
+
+* Volonteri se mogu uključiti u prijevode na našem POEditoru.

@@ -1,0 +1,5 @@
+v1.1.8
+
+* Popravite problem korisničkog sučelja izbornika s desna nalijevo.
+* Poboljšajte prijevode na engleski.
+* Prikaži naziv jezika umjesto koda jezika na kraju stavke izbornika.

@@ -1,0 +1,7 @@
+v2.0.13
+
+* Suporte para compartilhamento de GIF.
+* Desativar gestos na página do jogo.
+* Adicione sombra a peças não colocadas e removidas.
+* Corrigir a cor do ícone da barra de status para branco.
+* As bordas fixas das peças localizadas na borda do tabuleiro estão desfocadas.

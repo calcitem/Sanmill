@@ -1,0 +1,3 @@
+v1.0.3
+
+* Když hráč vyhraje nejvyšší obtížnou úroveň, zobrazit v dialogu tlačítka restart/zrušit namísto tlačítek ano/ne.

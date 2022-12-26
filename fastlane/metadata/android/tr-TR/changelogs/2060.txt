@@ -1,0 +1,3 @@
+v1.1.17
+
+* Araç çubuğunun rengini yapılandırmanıza izin verir.
