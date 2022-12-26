@@ -107,8 +107,9 @@ class SanmillApp extends StatelessWidget {
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
         locale: displaySettings.locale ??
-            (WidgetsBinding.instance.window.locale == const Locale('und') ?
-            const Locale('en', 'US') : WidgetsBinding.instance.window.locale),
+            (WidgetsBinding.instance.window.locale == const Locale('und')
+                ? const Locale('en', 'US')
+                : WidgetsBinding.instance.window.locale),
         theme: AppTheme.lightThemeData,
         darkTheme: AppTheme.darkThemeData,
         debugShowCheckedModeBanner: EnvironmentConfig.devMode,
