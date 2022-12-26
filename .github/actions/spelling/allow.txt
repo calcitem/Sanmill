@@ -28,6 +28,7 @@ Json
 json
 mixin
 namespace
+nnue
 noexcept
 nullptr
 PATCHLEVEL
