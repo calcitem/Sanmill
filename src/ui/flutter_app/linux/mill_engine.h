@@ -14,44 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "bitboard.h"
-#include "position.h"
-#include "search.h"
-#include "thread.h"
-#include "uci.h"
+#include <string>
 
-#ifdef FLUTTER_UI
-#include "engine_main.h"
-#endif
-
-#ifndef QT_GUI_LIB
-#ifdef UNIT_TEST_MODE
-int console_main(void)
-#else
-#ifdef FLUTTER_UI
-int eng_main(int argc, char *argv[])
-#else
-int main(int argc, char *argv[])
-#endif // FLUTTER_UI
-#endif // UNIT_TEST_MODE
+class MillEngine
 {
-    std::cout << engine_info() << std::endl;
+public:
+    int startup();
 
-#ifdef FLUTTER_UI
-    println("uciok");
-#endif
+    int send(const char *arguments);
 
-    UCI::init(Options);
-    Bitboards::init();
-    Position::init();
-    Threads.set(static_cast<size_t>(Options["Threads"]));
-    Search::clear(); // After threads are up
+    std::string read();
 
-#ifndef UNIT_TEST_MODE
-    UCI::loop(argc, argv);
-#endif
+    int shutdown();
 
-    Threads.set(0);
-    return 0;
-}
-#endif // QT_GUI_LIB
+    bool isReady();
+
+    bool isThinking();
+};
+
+extern MillEngine *engine;

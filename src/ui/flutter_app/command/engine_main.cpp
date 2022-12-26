@@ -21,7 +21,7 @@
 #include "base.h"
 #include "command_channel.h"
 
-extern int main(int argc, char *argv[]);
+extern int eng_main(int argc, char *argv[]);
 
 void println(const char *str, ...)
 {
@@ -45,5 +45,5 @@ void println(const char *str, ...)
 
 int engineMain(void)
 {
-    return main(1, 0);
+    return eng_main(1, 0);
 }

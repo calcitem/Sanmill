@@ -40,7 +40,7 @@ endif()
 # default. In most cases, you should add new options to specific targets instead
 # of modifying this function.
 function(APPLY_STANDARD_SETTINGS TARGET)
-  target_compile_features(${TARGET} PUBLIC cxx_std_14)
+  target_compile_features(${TARGET} PUBLIC cxx_std_17)
   target_compile_options(${TARGET} PRIVATE -Wall -Werror)
   target_compile_options(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:-O3>")
   target_compile_definitions(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:NDEBUG>")
@@ -56,6 +56,14 @@ pkg_check_modules(GTK REQUIRED IMPORTED_TARGET gtk+-3.0)
 
 add_definitions(-DAPPLICATION_ID="${APPLICATION_ID}")
 
+add_definitions(-D FLUTTER_UI)
+
+INCLUDE_DIRECTORIES(
+  ../../../
+  ../../../../include
+  ../command
+)
+
 # Define the application target. To change its name, change BINARY_NAME above,
 # not the value here, or `flutter run` will no longer work.
 #
@@ -63,6 +71,26 @@ add_definitions(-DAPPLICATION_ID="${APPLICATION_ID}")
 add_executable(${BINARY_NAME}
   "main.cc"
   "my_application.cc"
+  "mill_engine.cpp"
+  "../command/command_channel.cpp"
+  "../command/command_queue.cpp"
+  "../command/engine_main.cpp"
+  "../../../bitboard.cpp"
+  "../../../endgame.cpp"
+  "../../../evaluate.cpp"
+  "../../../main.cpp"
+  "../../../mills.cpp"
+  "../../../misc.cpp"
+  "../../../movegen.cpp"
+  "../../../movepick.cpp"
+  "../../../option.cpp"
+  "../../../position.cpp"
+  "../../../rule.cpp"
+  "../../../search.cpp"
+  "../../../thread.cpp"
+  "../../../tt.cpp"
+  "../../../uci.cpp"
+  "../../../ucioption.cpp"
   "${FLUTTER_MANAGED_DIR}/generated_plugin_registrant.cc"
 )
 
