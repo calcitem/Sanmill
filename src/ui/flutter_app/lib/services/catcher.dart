@@ -23,12 +23,16 @@ Future<void> _initCatcher(Catcher catcher) async {
   final Map<String, String> customParameters = <String, String>{};
   late final String externalDirStr;
 
-  try {
-    final Directory? externalDir = await getExternalStorageDirectory();
-    externalDirStr = externalDir != null ? externalDir.path : ".";
-  } catch (e) {
-    logger.e(e.toString());
+  if (Platform.isLinux) {
     externalDirStr = ".";
+  } else {
+    try {
+      final Directory? externalDir = await getExternalStorageDirectory();
+      externalDirStr = externalDir != null ? externalDir.path : ".";
+    } catch (e) {
+      logger.e(e.toString());
+      externalDirStr = ".";
+    }
   }
 
   final String path = "$externalDirStr/${Constants.crashLogsFileName}";
