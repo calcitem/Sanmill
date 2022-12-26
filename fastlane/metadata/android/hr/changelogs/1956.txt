@@ -1,0 +1,4 @@
+v1.1.2
+
+* Dodajte strojno prevođenje na rumunjski jezik.
+* Poboljšajte stabilnost uvoza/izvoza.

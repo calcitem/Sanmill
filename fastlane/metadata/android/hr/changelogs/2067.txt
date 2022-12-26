@@ -1,0 +1,5 @@
+v1.1.18
+
+* Kada je razina vještine 1, AI se pomiče nasumičnije kako bi se smanjila težina.
+* Popravak postavki alatne trake za navigaciju nestaje na nekim uređajima.
+* Popravite boju teksta istaknute stavke u ladici.

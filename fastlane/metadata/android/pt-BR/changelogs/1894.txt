@@ -1,0 +1,5 @@
+v1.0.20
+
+* Apoie o Morris masculino Ten/Onze.
+* Você pode definir quantas peças restantes podem voar.
+* Adicionar barra de ferramentas de navegação de histórico.

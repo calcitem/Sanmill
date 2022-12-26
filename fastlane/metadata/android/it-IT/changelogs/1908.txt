@@ -1,0 +1,3 @@
+v1.0.22
+
+* Risolto l'attacco laterale bianco così presto dai lati alla 3a mossa.

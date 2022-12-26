@@ -1,0 +1,3 @@
+v1.0.3
+
+* Mostra i pulsanti di riavvio/annullamento invece dei pulsanti Sì/No nella finestra di dialogo quando il giocatore vince il livello più difficile.

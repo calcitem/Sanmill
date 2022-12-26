@@ -1,0 +1,6 @@
+v1.1.30
+
+* Izbjegavajte da AI bude previše agresivan u početnoj fazi, što može lako dovesti do gubitaka.
+* Povećajte maksimalnu vrijednost razine vještine s 20 na 30.
+* Postavite "Razmotri pokretljivost komada" na uključeno kao zadano.
+* Dodajte postavku 'Piece highlight color' i postavite crvenu kao zadanu.

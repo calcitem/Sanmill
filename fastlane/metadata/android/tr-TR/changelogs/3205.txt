@@ -1,0 +1,3 @@
+v2.0.20
+
+Karanlık modda eğitim sayfasının üst kısmında üç simgenin görüntülenmemesi sorununu düzeltin.

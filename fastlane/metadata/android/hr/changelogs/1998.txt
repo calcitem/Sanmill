@@ -1,0 +1,5 @@
+v1.1.9
+
+* Poboljšajte prijevod na farsi (perzijski jezik) (WIP).
+* Popravite probleme sa strelicama opcija i gumbima za navigaciju u RTL jezicima.
+* Popravak ikone animacije je previsoka kada je jezik arapski.

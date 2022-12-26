@@ -1,0 +1,3 @@
+v1.1.34
+
+Izbjegnite da bijeli bude previše agresivan u uvodnoj fazi, što može brzo izgubiti igru.

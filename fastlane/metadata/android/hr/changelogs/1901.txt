@@ -1,0 +1,3 @@
+v1.0.21
+
+* Podrška za izvoz i uvoz igre.

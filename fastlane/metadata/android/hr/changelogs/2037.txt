@@ -1,0 +1,3 @@
+v1.1.14
+
+* Postavite zadano pravilo na Twelve Men's Morris kada je zemlja Iran.

@@ -1,0 +1,3 @@
+v1.0.11
+
+* Supporto Fai un passo avanti e riprendi tutto e fai un passo avanti tutto.

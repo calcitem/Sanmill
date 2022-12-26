@@ -1,0 +1,5 @@
+v1.0.20
+
+* Supporta Ten/Eleven Men's Morris.
+* Puoi impostare quanti pezzi rimasti possono volare.
+* Aggiungi la barra degli strumenti di navigazione della cronologia.

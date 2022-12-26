@@ -1,0 +1,3 @@
+v1.1.4
+
+* Podrška za postavljanje jezika na engleski, njemački, perzijski, mađarski, rumunjski i kineski.

@@ -1,0 +1,3 @@
+v1.1.3
+
+* Umožněte odesílateli e-mailů pracovat se zařízeními Android 11 při selhání.

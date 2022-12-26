@@ -1,0 +1,3 @@
+v1.1.3
+
+* Kilitlenme sırasında e-posta göndericinin Android 11 cihazlarla çalışmasını sağlayın.

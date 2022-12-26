@@ -1,0 +1,3 @@
+v1.1.19
+
+* Voluntários podem se envolver nas traduções em nosso POEditor.

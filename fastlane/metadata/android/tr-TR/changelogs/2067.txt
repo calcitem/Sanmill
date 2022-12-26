@@ -1,0 +1,5 @@
+v1.1.18
+
+* Beceri seviyesi 1 olduğunda, AI zorluğu azaltmak için daha rastgele hareket eder.
+* Navigasyon araç çubuğunu düzelt ayarı bazı cihazlarda kayboluyor.
+* Çekmece vurgulama öğesi metin rengini düzeltin.

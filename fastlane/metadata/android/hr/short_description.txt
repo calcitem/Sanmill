@@ -1,0 +1,1 @@
+Igra mlina koja podržava mnoge varijante pravila, napisana u Flutteru

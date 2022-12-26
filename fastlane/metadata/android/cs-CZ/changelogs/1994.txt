@@ -1,0 +1,5 @@
+v1.1.8
+
+* Opravte problém s uživatelským rozhraním nabídky se zprava doleva.
+* Zlepšit anglické překlady.
+* Zobrazit název jazyka místo kódu jazyka na konci položky nabídky.

@@ -1,0 +1,3 @@
+v1.1.13
+
+* Adicionar traduções de máquina Kannada/Norueguês/Uzbeque/Vietnamita.

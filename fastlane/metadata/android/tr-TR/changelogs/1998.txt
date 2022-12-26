@@ -1,0 +1,5 @@
+v1.1.9
+
+* Farsça (Farsça) çevirisini (WIP) geliştirin.
+* RTL dillerinde seçenek okları ve gezinme düğmeleri sorunlarını düzeltin.
+* Yerel ayar Arapça olduğunda animasyonu düzelt simgesi çok yüksek.

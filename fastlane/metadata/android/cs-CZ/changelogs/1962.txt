@@ -1,0 +1,3 @@
+v1.1.4
+
+* Podpora nastavení jazyků na angličtinu, němčinu, perštinu, maďarštinu, rumunštinu a čínštinu.

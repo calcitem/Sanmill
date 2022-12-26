@@ -1,0 +1,3 @@
+v1.1.3
+
+* Neka pošiljatelj e-pošte radi s Android 11 uređajima prilikom rušenja.

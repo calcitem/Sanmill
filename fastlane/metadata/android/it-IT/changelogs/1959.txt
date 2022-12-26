@@ -1,0 +1,3 @@
+v1.1.3
+
+* Fai in modo che il mittente dell'email funzioni con i dispositivi Android 11 in caso di arresto anomalo.

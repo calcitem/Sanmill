@@ -1,0 +1,3 @@
+v1.0.8
+
+* Podrška za preuzimanje. Možete pokušati poništiti loš potez i učiniti bilo koji drugi bolji.

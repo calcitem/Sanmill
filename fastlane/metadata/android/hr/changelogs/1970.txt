@@ -1,0 +1,3 @@
+v1.1.5
+
+* Dodajte arapski/španjolski/francuski/japanski/korejski/portugalski/ruski strojni prijevod.

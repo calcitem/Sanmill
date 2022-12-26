@@ -1,0 +1,3 @@
+v1.1.3
+
+* Faça o remetente de e-mail funcionar com dispositivos Android 11 ao travar.

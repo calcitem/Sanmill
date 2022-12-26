@@ -1,0 +1,6 @@
+v1.1.30
+
+* Evita che l'IA sia troppo aggressiva nella fase di apertura, che può facilmente portare a perdite.
+* Aumenta il valore massimo del livello di abilità da 20 a 30.
+* Imposta "Considera la mobilità dei pezzi" come impostazione predefinita.
+* Aggiungi l'impostazione "Colore evidenziazione pezzo" e imposta il rosso come predefinito.

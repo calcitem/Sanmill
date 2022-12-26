@@ -1,0 +1,3 @@
+v1.0.12
+
+* Možete prisiliti AI da se kreće sada kada AI razmišlja.

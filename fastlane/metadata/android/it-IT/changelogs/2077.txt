@@ -1,0 +1,3 @@
+v1.1.21
+
+* Correggi la direzione dell'icona dei pulsanti di ripresa e avanzamento nel layout da destra a sinistra.

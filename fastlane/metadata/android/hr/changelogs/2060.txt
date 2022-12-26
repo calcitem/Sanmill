@@ -1,0 +1,3 @@
+v1.1.17
+
+* Omogućuje konfiguriranje boje alatne trake.

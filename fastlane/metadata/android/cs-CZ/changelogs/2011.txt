@@ -1,0 +1,6 @@
+v1.1.10
+
+* Opravte problémy se šipkami možností v jazycích RTL.
+* Zlepšit překlad perštiny (WIP).
+* Zlepšit anglické překlady.
+* Přidejte strojové překlady do bulharštiny/bengálštiny/dánštiny/řečtiny/estonštiny/finštiny/gudžarátštiny/chorvatštiny/indonéštiny/litevštiny/lotyštiny/makedonštiny/malajštiny/holandštiny/slovensky/slovinštiny/albánštiny/srbštiny/švédštiny/telugštiny/thajštiny.

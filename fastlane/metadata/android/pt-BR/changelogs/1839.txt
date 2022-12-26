@@ -1,0 +1,4 @@
+v1.0.13
+
+* Volte duas vezes para fechar o aplicativo.
+* Diálogo pop-up de política de privacidade quando executado pela primeira vez.

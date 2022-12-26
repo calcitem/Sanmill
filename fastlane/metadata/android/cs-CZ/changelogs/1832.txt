@@ -1,0 +1,3 @@
+v1.0.11
+
+* Podpora Krok vpřed & Vzít zpět vše & Krok vpřed vše.

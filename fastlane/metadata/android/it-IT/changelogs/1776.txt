@@ -1,0 +1,3 @@
+v1.0.4
+
+* Blocca l'orientamento dello schermo in verticale.

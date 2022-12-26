@@ -1,0 +1,3 @@
+v1.0.16
+
+* Podrška za postavljanje animacije komada.

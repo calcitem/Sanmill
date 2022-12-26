@@ -1,0 +1,4 @@
+v1.1.6
+
+* Pružite interaktivne povratne informacije izravno u aplikaciji označavanjem snimke zaslona trenutne stranice i dodavanjem teksta.
+* Poboljšajte prijevode na rumunjski i mađarski jezik.

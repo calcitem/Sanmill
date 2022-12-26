@@ -1,0 +1,3 @@
+v1.1.13
+
+* Dodajte kannada/norveški/uzbečki/vijetnamski strojni prijevod.

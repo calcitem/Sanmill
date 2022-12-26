@@ -1,0 +1,3 @@
+v1.0.8
+
+* Geri alma desteği. Kötü bir hamleyi geri almayı ve daha iyi bir hamle yapmayı deneyebilirsiniz.

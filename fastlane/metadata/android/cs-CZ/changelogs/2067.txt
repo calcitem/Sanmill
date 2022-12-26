@@ -1,0 +1,5 @@
+v1.1.18
+
+* Když je úroveň dovednosti 1, AI se pohybuje náhodněji, aby se snížila obtížnost.
+* Opravit nastavení navigační lišty zmizí na některých zařízeních.
+* Opravte barvu textu položky zvýraznění zásuvky.

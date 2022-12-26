@@ -1,0 +1,3 @@
+v1.0.22
+
+* Ispravite bočni napad bijelaca tako rano sa strane u 3. potezu.

@@ -1,0 +1,3 @@
+v1.0.15
+
+* Podržava snimanje zaslona (eksperimentalno)

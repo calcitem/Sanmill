@@ -1,0 +1,3 @@
+v1.1.21
+
+* Sağdan sola düzende geri alma ve ileri gitme düğmeleri simge yönünü düzeltin.

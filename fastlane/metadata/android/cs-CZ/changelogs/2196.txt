@@ -1,0 +1,8 @@
+v1.1.38
+
+* Podpora odstraňování neposazených figurek – Pokud hráč vytvoří mlýn ve fázi umísťování, může odstranit soupeřovu nepoloženou figurku a pokračovat v tahu.
+* Podpora pravidla Endgame N-Move.
+* Změňte podmínku posouzení pravidla N-tahu z > na =.
+* Podpora nastavení trojnásobného opakování.
+* Povolit konfiguraci stylu bodu a šířky bodu.
+* Podpora importu seznamu přesunů GoldToken.

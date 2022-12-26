@@ -1,0 +1,3 @@
+v1.1.34
+
+Açılış aşamasında beyazın çok agresif olmasını önleyin, bu da oyunu hızla kaybedebilir.

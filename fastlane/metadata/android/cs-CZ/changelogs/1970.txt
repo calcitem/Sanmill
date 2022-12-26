@@ -1,0 +1,3 @@
+v1.1.5
+
+* Přidejte strojové překlady arabština/španělština/francouzština/japonština/korejština/portugalština/ruština.
