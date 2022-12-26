@@ -266,20 +266,22 @@ class AppearanceSettingsPage extends StatelessWidget {
     return SettingsCard(
       title: Text(S.of(context).display),
       children: <Widget>[
-        SettingsListTile(
-          titleString: S.of(context).language,
-          trailingString: DB().displaySettings.locale != null
-              ? localeToLanguageName[displaySettings.locale]
-              : null,
-          onTap: () => showDialog(
-            context: context,
-            builder: (_) => _LanguagePicker(
-              currentLocale: displaySettings.locale,
-              onChanged: (Locale? locale) =>
-                  langCallback(context, displaySettings, locale),
+        // TODO: Exception on Linux if the locale is "und".
+        if (WidgetsBinding.instance.window.locale != const Locale('und'))
+          SettingsListTile(
+            titleString: S.of(context).language,
+            trailingString: DB().displaySettings.locale != null
+                ? localeToLanguageName[displaySettings.locale]
+                : null,
+            onTap: () => showDialog(
+              context: context,
+              builder: (_) => _LanguagePicker(
+                currentLocale: displaySettings.locale,
+                onChanged: (Locale? locale) =>
+                    langCallback(context, displaySettings, locale),
+              ),
             ),
           ),
-        ),
         SettingsListTile.switchTile(
           value: displaySettings.isFullScreen,
           onChanged: (bool val) {
