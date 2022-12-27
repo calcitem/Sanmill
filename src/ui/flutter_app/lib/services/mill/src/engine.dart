@@ -23,7 +23,7 @@ class Engine {
       MethodChannel("com.calcitem.sanmill/engine");
 
   bool get _isPlatformChannelAvailable =>
-      !kIsWeb && (Platform.isAndroid || Platform.isWindows);
+      !kIsWeb && (Platform.isAndroid || Platform.isWindows || Platform.isLinux);
 
   static const String _tag = "[engine]";
 
