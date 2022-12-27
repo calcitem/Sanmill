@@ -6,6 +6,7 @@
 #endif
 
 #include <iostream>
+#include <memory>
 
 #include "flutter/generated_plugin_registrant.h"
 
@@ -26,42 +27,30 @@ static void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call,
     const gchar *method = fl_method_call_get_name(method_call);
     printf("fl_method = %s\n", method);
 
-    if (g_strcmp0 (method, "startup") == 0) {
-        engine->startup();
-    } else if (g_strcmp0 (method, "send") == 0) {
-        // TODO
-        auto *args = fl_method_call_get_args(method_call);
-        FlValue* value = fl_value_lookup_string(args, "str");
-        char* str = (char*)fl_value_get_string(value);
-        engine->send(str);
-    } else if (g_strcmp0 (method, "read") == 0) {
-        engine->read();
-    } else if (g_strcmp0 (method, "shutdown") == 0) {
-        engine->shutdown();
-    } else if (g_strcmp0 (method, "isReady") == 0) {
-        engine->isReady();
-    } else if (g_strcmp0 (method, "isThinking") == 0) {
-        engine->isThinking();
+    if (g_strcmp0(method, "startup") == 0) {
+        FlValue* value = fl_value_new_int(engine->startup());
+        fl_method_call_respond_success(method_call, value, nullptr);
+    } else if (g_strcmp0(method, "send") == 0) {
+        FlValue* args = fl_method_call_get_args(method_call);
+        const char* str = fl_value_get_string(args);
+        FlValue* value = fl_value_new_int(engine->send(str));
+        fl_method_call_respond_success(method_call, value, nullptr);
+    } else if (g_strcmp0(method, "read") == 0) {
+        FlValue* value = fl_value_new_string(engine->read().c_str());
+        fl_method_call_respond_success(method_call, value, nullptr);
+    } else if (g_strcmp0(method, "shutdown") == 0) {
+        FlValue* value = fl_value_new_int(engine->shutdown());
+        fl_method_call_respond_success(method_call, value, nullptr);
+    } else if (g_strcmp0(method, "isReady") == 0) {
+        FlValue* value = fl_value_new_bool(engine->isReady());
+        fl_method_call_respond_success(method_call, value, nullptr);
+    } else if (g_strcmp0(method, "isThinking") == 0) {
+        FlValue* value = fl_value_new_bool(engine->isThinking());
+        fl_method_call_respond_success(method_call, value, nullptr);
     } else {
-        // result->NotImplemented();
-        //  Get Dart arguments
-        FlValue *args = fl_method_call_get_args(method_call);
-        // Fetch string value named "name"
-        FlValue *text_value = fl_value_lookup_string(args, "name");
-
-        // Check if returned value is either null or string
-        if (text_value == nullptr ||
-            fl_value_get_type(text_value) != FL_VALUE_TYPE_STRING) {
-            // Return error
-            g_autoptr(FlMethodResponse) response = FL_METHOD_RESPONSE(
-                fl_method_not_implemented_response_new());
-
-            // Create error, in this case null
-            g_autoptr(GError) error = nullptr;
-
-            // Send response back to dart
-            fl_method_call_respond(method_call, response, &error);
-        }
+        g_autoptr(FlMethodResponse) response = FL_METHOD_RESPONSE(fl_method_not_implemented_response_new());
+        g_autoptr(GError) error = nullptr;
+        fl_method_call_respond(method_call, response, &error);
     }
 }
 #endif
