@@ -26,21 +26,21 @@ static void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call,
     const gchar *method = fl_method_call_get_name(method_call);
     printf("fl_method = %s\n", method);
 
-    if (strcmp(method, "startup") == 0) {
+    if (g_strcmp0 (method, "startup") == 0) {
         engine->startup();
-    } else if (strcmp(method, "send") == 0) {
+    } else if (g_strcmp0 (method, "send") == 0) {
         // TODO
         auto *args = fl_method_call_get_args(method_call);
         FlValue* value = fl_value_lookup_string(args, "str");
         char* str = (char*)fl_value_get_string(value);
         engine->send(str);
-    } else if (strcmp(method, "read") == 0) {
+    } else if (g_strcmp0 (method, "read") == 0) {
         engine->read();
-    } else if (strcmp(method, "shutdown") == 0) {
+    } else if (g_strcmp0 (method, "shutdown") == 0) {
         engine->shutdown();
-    } else if (strcmp(method, "isReady") == 0) {
+    } else if (g_strcmp0 (method, "isReady") == 0) {
         engine->isReady();
-    } else if (strcmp(method, "isThinking") == 0) {
+    } else if (g_strcmp0 (method, "isThinking") == 0) {
         engine->isThinking();
     } else {
         // result->NotImplemented();
