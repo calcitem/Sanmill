@@ -1,0 +1,3 @@
+v1.1.5
+
+* Dodaj tłumaczenia maszynowe arabski/hiszpański/francuski/japoński/koreański/portugalski/rosyjski.

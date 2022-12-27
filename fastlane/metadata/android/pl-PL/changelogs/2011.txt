@@ -1,0 +1,6 @@
+v1.1.10
+
+* Napraw problemy ze strzałkami opcji w językach RTL.
+* Popraw tłumaczenie farsi (język perski) (WIP).
+* Popraw tłumaczenia na język angielski.
+* Dodaj bułgarski / bengalski / duński / grecki / estoński / fiński / gudżarati / chorwacki / indonezyjski / litewski / łotewski / macedoński / malajski / holenderski / słowacki / słoweński / albański / serbski / szwedzki / telugu / tajski.

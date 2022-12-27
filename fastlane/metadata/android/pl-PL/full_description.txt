@@ -1,0 +1,16 @@
+Program A Nine Men's Morris (i jego warianty).
+
+Zasady:
+
+* Gracz, który ustawia trzy swoje piony na linii planszy, ma młyn i może usunąć pion(y) przeciwnika.
+* Każdy gracz redukuje do dwóch elementów i nie ma możliwości tworzenia nowych młynów, a tym samym przegrywa grę.
+* Jeśli gracz nie może poruszyć jednym ze swoich elementów (jest zablokowany), przegrywa grę.
+
+Cechy:
+
+* Obsługa wielu wariantów reguł, takich jak Morris dziewięciu mężczyzn i Morris dwunastu mężczyzn, reguła „latania” lub brak reguły „latania”
+* Graj przeciwko AI lub graj po obu stronach
+* Regulowana siła gry
+* Wysoce konfigurowalny
+* Motywy kolorystyczne
+* Dostępność

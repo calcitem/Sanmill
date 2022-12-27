@@ -1,0 +1,3 @@
+v1.0.11
+
+* Wsparcie Krok naprzód i wycofaj wszystko i krok naprzód.

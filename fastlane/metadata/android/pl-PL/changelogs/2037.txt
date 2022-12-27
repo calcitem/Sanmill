@@ -1,0 +1,3 @@
+v1.1.14
+
+* Ustaw domyślną regułę na Twelve Men's Morris, gdy krajem jest Iran.

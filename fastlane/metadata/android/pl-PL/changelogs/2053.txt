@@ -1,0 +1,5 @@
+v1.1.16
+
+* Pokaż pasek stanu dla urządzenia z dużym ekranem.
+* Nie pokazuj ustawień paska narzędzi nawigacji, jeśli proporcje okna są mniejsze niż 1,7.
+* Popraw tłumaczenie perskie.

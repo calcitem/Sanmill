@@ -1,0 +1,3 @@
+v1.0.23
+
+* Podczas importowania listy ruchów obsługiwane są różne warianty formatu.
