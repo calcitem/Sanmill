@@ -1,0 +1,3 @@
+v1.1.40
+
+Zaktualizuj do Fluttera 2.10.0.

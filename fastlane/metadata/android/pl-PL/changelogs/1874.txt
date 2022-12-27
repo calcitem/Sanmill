@@ -1,0 +1,4 @@
+v1.0.17
+
+* Wsparcie ustawienia rozmiaru czcionki (zastosuj po ponownym uruchomieniu aplikacji).
+* Zachowaj wyciszenie podczas odbierania (konfigurowalne).

@@ -1,0 +1,4 @@
+v1.1.31
+
+* Nine Men's Morris: Napraw sztuczna inteligencja prawdopodobnie zablokuje białym przed zrobieniem młyna w fazie debiutu, przez co sztuczna inteligencja będzie podatna na przegraną.
+* Twelve Men's Morris: Zwiększ moc sztucznej inteligencji.

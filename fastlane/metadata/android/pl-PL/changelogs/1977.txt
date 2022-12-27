@@ -1,0 +1,4 @@
+v1.1.6
+
+* Przekaż interaktywną informację zwrotną bezpośrednio w aplikacji, dodając adnotacje do zrzutu ekranu bieżącej strony i dodając tekst.
+* Popraw tłumaczenia na język rumuński i węgierski.

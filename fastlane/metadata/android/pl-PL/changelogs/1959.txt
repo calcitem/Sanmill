@@ -1,0 +1,3 @@
+v1.1.3
+
+* Spraw, aby nadawca wiadomości e-mail działał z urządzeniami z Androidem 11 podczas awarii.

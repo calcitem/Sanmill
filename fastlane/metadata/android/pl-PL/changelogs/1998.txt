@@ -1,0 +1,5 @@
+v1.1.9
+
+* Popraw tłumaczenie farsi (język perski) (WIP).
+* Napraw problemy ze strzałkami opcji i przyciskami nawigacyjnymi w językach RTL.
+* Napraw ikonę animacji, która jest zbyt wysoka, gdy ustawienia regionalne to arabski.

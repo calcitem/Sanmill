@@ -1,0 +1,3 @@
+v1.0.19
+
+* Dodaj tłumaczenie maszynowe Farsi (język perski).

@@ -1,0 +1,3 @@
+wersja 1.0.3
+
+* Pokaż przyciski ponownego uruchamiania/anulowania zamiast przycisków tak/nie w oknie dialogowym, gdy gracz wygrywa najwyższy poziom trudności.

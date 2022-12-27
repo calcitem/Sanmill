@@ -1,0 +1,3 @@
+v1.1.4
+
+* Obsługa ustawiania języków na angielski, niemiecki, perski, węgierski, rumuński i chiński.

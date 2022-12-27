@@ -1,0 +1,3 @@
+v1.0.15
+
+* Wsparcie nagrywania ekranu (eksperymentalne)
