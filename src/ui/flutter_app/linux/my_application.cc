@@ -25,7 +25,6 @@ static void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call,
                            gpointer user_data)
 {
     const gchar *method = fl_method_call_get_name(method_call);
-    printf("fl_method = %s\n", method);
 
     if (g_strcmp0(method, "startup") == 0) {
         FlValue* value = fl_value_new_int(engine->startup());
