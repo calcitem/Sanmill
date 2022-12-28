@@ -91,14 +91,7 @@ class SanmillApp extends StatelessWidget {
       defaultValue: const DisplaySettings(),
     )!;
 
-    return BetterFeedback(
-      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-        ...S.localizationsDelegates,
-        CustomFeedbackLocalizationsDelegate.delegate,
-      ],
-      localeOverride: displaySettings.locale,
-      theme: AppTheme.feedbackTheme,
-      child: MaterialApp(
+    final MaterialApp materialApp = MaterialApp(
         /// Add navigator key from Catcher.
         /// It will be used to navigate user to report page or to show dialog.
         navigatorKey: EnvironmentConfig.catcher ? Catcher.navigatorKey : null,
@@ -124,8 +117,21 @@ class SanmillApp extends StatelessWidget {
         home: Builder(
           builder: _buildHome,
         ),
-      ),
-    );
+      );
+
+    if (Platform.isAndroid || Platform.isIOS) {
+      return BetterFeedback(
+        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+          ...S.localizationsDelegates,
+          CustomFeedbackLocalizationsDelegate.delegate,
+        ],
+        localeOverride: displaySettings.locale,
+        theme: AppTheme.feedbackTheme,
+        child: materialApp,
+      );
+    } else {
+      return materialApp;
+    }
   }
 
   Widget _buildHome(BuildContext context) {
