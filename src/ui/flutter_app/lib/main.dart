@@ -92,32 +92,32 @@ class SanmillApp extends StatelessWidget {
     )!;
 
     final MaterialApp materialApp = MaterialApp(
-        /// Add navigator key from Catcher.
-        /// It will be used to navigate user to report page or to show dialog.
-        navigatorKey: EnvironmentConfig.catcher ? Catcher.navigatorKey : null,
-        key: GlobalKey<ScaffoldState>(),
-        scaffoldMessengerKey: rootScaffoldMessengerKey,
-        localizationsDelegates: S.localizationsDelegates,
-        supportedLocales: S.supportedLocales,
-        locale: displaySettings.locale ??
-            (WidgetsBinding.instance.window.locale == const Locale('und')
-                ? const Locale('en', 'US')
-                : WidgetsBinding.instance.window.locale),
-        theme: AppTheme.lightThemeData,
-        darkTheme: AppTheme.darkThemeData,
-        debugShowCheckedModeBanner: EnvironmentConfig.devMode,
-        builder: (BuildContext context, Widget? child) {
-          return MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaleFactor: displaySettings.fontScale,
-            ),
-            child: child!,
-          );
-        },
-        home: Builder(
-          builder: _buildHome,
-        ),
-      );
+      /// Add navigator key from Catcher.
+      /// It will be used to navigate user to report page or to show dialog.
+      navigatorKey: EnvironmentConfig.catcher ? Catcher.navigatorKey : null,
+      key: GlobalKey<ScaffoldState>(),
+      scaffoldMessengerKey: rootScaffoldMessengerKey,
+      localizationsDelegates: S.localizationsDelegates,
+      supportedLocales: S.supportedLocales,
+      locale: displaySettings.locale ??
+          (WidgetsBinding.instance.window.locale == const Locale('und')
+              ? const Locale('en', 'US')
+              : WidgetsBinding.instance.window.locale),
+      theme: AppTheme.lightThemeData,
+      darkTheme: AppTheme.darkThemeData,
+      debugShowCheckedModeBanner: EnvironmentConfig.devMode,
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaleFactor: displaySettings.fontScale,
+          ),
+          child: child!,
+        );
+      },
+      home: Builder(
+        builder: _buildHome,
+      ),
+    );
 
     if (Platform.isAndroid || Platform.isIOS) {
       return BetterFeedback(

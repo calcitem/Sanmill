@@ -49,8 +49,8 @@ class Audios {
   Future<void> loadSounds() async {
     assert(!MillController().initialized);
 
-    if (kIsWeb || Platform.isWindows || Platform.isLinux) {
-      logger.w("$_tag Audio Player does not support Web/Windows/Linux.");
+    if (kIsWeb) {
+      logger.w("$_tag Audio Player does not support Web.");
       return;
     }
 
@@ -155,7 +155,7 @@ class Audios {
   }
 
   Future<void> playTone(Sound sound) async {
-    if (kIsWeb || Platform.isWindows || Platform.isLinux) {
+    if (kIsWeb) {
       return;
     }
 
