@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -296,36 +297,37 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        SettingsCard(
-          title: Text(S.of(context).gameScreenRecorder),
-          children: <Widget>[
-            SettingsListTile.switchTile(
-              value: generalSettings.gameScreenRecorderSupport,
-              onChanged: (bool val) {
-                _setGameScreenRecorderSupport(generalSettings, val);
-                if (val == true) {
-                  rootScaffoldMessengerKey.currentState!
-                      .showSnackBarClear(S.of(context).experimental);
-                }
-              },
-              titleString: S.of(context).shareGIF,
-            ),
-            SettingsListTile(
-              titleString: S.of(context).duration,
-              trailingString:
-                  generalSettings.gameScreenRecorderDuration.toString(),
-              onTap: () =>
-                  _setGameScreenRecorderDuration(context, generalSettings),
-            ),
-            SettingsListTile(
-              titleString: S.of(context).pixelRatio,
-              trailingString:
-                  "${generalSettings.gameScreenRecorderPixelRatio}%",
-              onTap: () =>
-                  _setGameScreenRecorderPixelRatio(context, generalSettings),
-            ),
-          ],
-        ),
+        if (Platform.isAndroid || Platform.isIOS)
+          SettingsCard(
+            title: Text(S.of(context).gameScreenRecorder),
+            children: <Widget>[
+              SettingsListTile.switchTile(
+                value: generalSettings.gameScreenRecorderSupport,
+                onChanged: (bool val) {
+                  _setGameScreenRecorderSupport(generalSettings, val);
+                  if (val == true) {
+                    rootScaffoldMessengerKey.currentState!
+                        .showSnackBarClear(S.of(context).experimental);
+                  }
+                },
+                titleString: S.of(context).shareGIF,
+              ),
+              SettingsListTile(
+                titleString: S.of(context).duration,
+                trailingString:
+                    generalSettings.gameScreenRecorderDuration.toString(),
+                onTap: () =>
+                    _setGameScreenRecorderDuration(context, generalSettings),
+              ),
+              SettingsListTile(
+                titleString: S.of(context).pixelRatio,
+                trailingString:
+                    "${generalSettings.gameScreenRecorderPixelRatio}%",
+                onTap: () =>
+                    _setGameScreenRecorderPixelRatio(context, generalSettings),
+              ),
+            ],
+          ),
         SettingsCard(
           title: Text(S.of(context).restore),
           children: <Widget>[
