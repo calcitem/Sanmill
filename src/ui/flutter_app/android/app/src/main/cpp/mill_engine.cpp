@@ -18,26 +18,24 @@
 #include "../../../../../command/engine_main.h"
 #include "../../../../../command/engine_state.h"
 #include <jni.h>
-#include <pthread.h>
-#include <stdio.h>
+#include <iostream>
 #include <string.h>
 #include <sys/types.h>
+#include <thread>
 #include <unistd.h>
 
 extern "C" {
 
 EngineState state = EngineState::STATE_READY;
-pthread_t thread_id = 0;
+std::thread thread;
 
-void *engineThread(void *)
+void engineThread()
 {
-    printf("Engine Think Thread enter.\n");
+    std::cout << "Engine Think Thread enter." << std::endl;
 
     engineMain();
 
-    printf("Engine Think Thread exit.\n");
-
-    return NULL;
+    std::cout << "Engine Think Thread exit." << std::endl;
 }
 
 JNIEXPORT jint JNICALL Java_com_calcitem_sanmill_MillEngine_send(
@@ -49,16 +47,18 @@ JNIEXPORT jint JNICALL Java_com_calcitem_sanmill_MillEngine_shutdown(JNIEnv *,
 JNIEXPORT jint JNICALL Java_com_calcitem_sanmill_MillEngine_startup(JNIEnv *env,
                                                                     jobject obj)
 {
-    if (thread_id) {
+    if (thread.joinable()) {
         Java_com_calcitem_sanmill_MillEngine_shutdown(env, obj);
-        pthread_join(thread_id, NULL);
+        if (thread.joinable()) {
+            thread.join();
+        }
     }
 
     CommandChannel::getInstance();
 
-    usleep(10);
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-    pthread_create(&thread_id, NULL, engineThread, NULL);
+    thread = std::thread(engineThread);
 
     Java_com_calcitem_sanmill_MillEngine_send(env, obj,
                                               env->NewStringUTF("uci"));
@@ -78,7 +78,7 @@ Java_com_calcitem_sanmill_MillEngine_send(JNIEnv *env, jobject, jstring command)
 
     bool success = channel->pushCommand(pCommand);
     if (success)
-        printf(">>> %s\n", pCommand);
+        std::cout << ">>> " << command << std::endl;
 
     env->ReleaseStringUTFChars(command, pCommand);
 
@@ -96,7 +96,7 @@ JNIEXPORT jstring JNICALL Java_com_calcitem_sanmill_MillEngine_read(JNIEnv *env,
     if (!got_response)
         return NULL;
 
-    printf("<<< %s\n", line);
+    std::cout << "<<< " << line << std::endl;
 
     if (strstr(line, "readyok") || strstr(line, "uciok") ||
         strstr(line, "bestmove") || strstr(line, "nobestmove")) {
@@ -112,9 +112,9 @@ Java_com_calcitem_sanmill_MillEngine_shutdown(JNIEnv *env, jobject obj)
     Java_com_calcitem_sanmill_MillEngine_send(env, obj,
                                               env->NewStringUTF("quit"));
 
-    pthread_join(thread_id, NULL);
-
-    thread_id = 0;
+    if (thread.joinable()) {
+        thread.join();
+    }
 
     return 0;
 }
