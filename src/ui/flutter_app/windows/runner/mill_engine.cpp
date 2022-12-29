@@ -45,7 +45,9 @@ int MillEngine::startup()
 {
     if (thread.joinable()) {
         shutdown();
-        thread.join();
+        if (thread.joinable()) {
+            thread.join();
+        }
     }
 
     CommandChannel::getInstance();
@@ -70,7 +72,6 @@ int MillEngine::send(const char *command)
     if (success) {
         std::cout << ">>> " << command << std::endl;
     }
-
 
     return success ? 0 : -1;
 }
@@ -99,9 +100,9 @@ int MillEngine::shutdown()
 {
     send("quit");
 
-    thread.join();
-
-    thread.detach();
+    if (thread.joinable()) {
+        thread.join();
+    }
 
     return 0;
 }
