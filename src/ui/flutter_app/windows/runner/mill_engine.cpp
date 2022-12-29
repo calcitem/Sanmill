@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <process.h>
+#include <iostream>
 #include <stdio.h>
 #include <string.h>
 #include <string>
+#include <thread>
 #include <windows.h>
 
 #include "mill_engine.h"
@@ -26,39 +27,32 @@
 #include "../../../../../command/engine_main.h"
 #include "../../../../../command/engine_state.h"
 
-#define pthread_t HANDLE
-#define pthread_cancel(x) TerminateThread((x), 0)
-#define pthread_exit(x) _endthread
-#define pthread_join(x, nullptr) WaitForSingleObject((x), INFINITE)
-
 extern "C" {
 
 EngineState state = EngineState::STATE_READY;
-pthread_t thread_id = nullptr;
+std::thread thread;
 
-DWORD WINAPI engineThread(LPVOID lpParam)
+void engineThread()
 {
-    printf("Engine Think Thread enter.\n");
+    std::cout << "Engine Think Thread enter." << std::endl;
 
     engineMain();
 
-    printf("Engine Think Thread exit.\n");
-
-    return 0;
+    std::cout << "Engine Think Thread exit." << std::endl;
 }
 
 int MillEngine::startup()
 {
-    if (thread_id) {
+    if (thread.joinable()) {
         shutdown();
-        pthread_join(thread_id, nullptr);
+        thread.join();
     }
 
     CommandChannel::getInstance();
 
-    Sleep(10);
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-    CreateThread(nullptr, 0, engineThread, 0, 0, nullptr);
+    thread = std::thread(engineThread);
 
     send("uci");
 
@@ -73,8 +67,10 @@ int MillEngine::send(const char *command)
     CommandChannel *channel = CommandChannel::getInstance();
 
     bool success = channel->pushCommand(command);
-    if (success)
-        printf(">>> %s\n", command);
+    if (success) {
+        std::cout << ">>> " << command << std::endl;
+    }
+
 
     return success ? 0 : -1;
 }
@@ -89,7 +85,7 @@ std::string MillEngine::read()
     if (!got_response)
         return "";
 
-    printf("<<< %s\n", line);
+    std::cout << "<<< " << line << std::endl;
 
     if (strstr(line, "readyok") || strstr(line, "uciok") ||
         strstr(line, "bestmove") || strstr(line, "nobestmove")) {
@@ -103,9 +99,9 @@ int MillEngine::shutdown()
 {
     send("quit");
 
-    pthread_join(thread_id, nullptr);
+    thread.join();
 
-    thread_id = nullptr;
+    thread.detach();
 
     return 0;
 }
