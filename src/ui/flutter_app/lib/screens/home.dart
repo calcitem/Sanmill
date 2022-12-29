@@ -40,6 +40,7 @@ import '../shared/gif_share/widgets_to_image.dart';
 import '../shared/privacy_dialog.dart';
 import '../shared/scaffold_messenger.dart';
 import '../shared/stack_list.dart';
+import '../shared/theme/app_theme.dart';
 import '../shared/wizard/wizard_dialog.dart';
 import 'about_page.dart';
 import 'appearance_settings/appearance_settings_page.dart';
@@ -231,6 +232,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    AppTheme.boardPadding =
+        ((MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) *
+                DB().displaySettings.pieceWidth /
+                7) /
+            2;
+
     final List<CustomDrawerItem<_DrawerIndex>> drawerItems =
         <CustomDrawerItem<_DrawerIndex>>[
       if (!kIsWeb)

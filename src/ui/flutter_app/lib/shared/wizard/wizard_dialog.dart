@@ -72,7 +72,7 @@ class _WizardDialogState extends State<WizardDialog> {
           children: <Widget>[
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   left: AppTheme.boardPadding,
                   right: AppTheme.boardPadding,
                   top: kToolbarHeight + AppTheme.boardPadding,
@@ -325,7 +325,7 @@ class _WizardDialogState extends State<WizardDialog> {
   Offset getPieceOffset(int row, int col) {
     final int index = getPieceIndex(row, col);
     return pointFromIndex(index, _size) +
-        const Offset(AppTheme.boardPadding, AppTheme.boardPadding);
+        Offset(AppTheme.boardPadding, AppTheme.boardPadding);
   }
 }
 

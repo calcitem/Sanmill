@@ -39,7 +39,7 @@ const List<String> horizontalNotations = <String>[
 ];
 
 /// The padding applied to the actual mill field
-const double boardMargin = AppTheme.boardPadding;
+double boardMargin = AppTheme.boardPadding;
 
 /// Calculates the position of the given point
 Offset pointFromIndex(int index, Size size) {
@@ -60,7 +60,7 @@ int? squareFromPoint(Offset point) {
 
 /// Calculates the pressed point
 Offset pointFromOffset(Offset offset, double dimension) {
-  final Offset point = (offset - const Offset(boardMargin, boardMargin)) /
+  final Offset point = (offset - Offset(boardMargin, boardMargin)) /
       ((dimension - boardMargin * 2) / 6);
 
   return point.round();
@@ -69,7 +69,7 @@ Offset pointFromOffset(Offset offset, double dimension) {
 /// Calculates the offset for the given position
 Offset offsetFromPoint(Offset point, Size size) =>
     (point * (size.width - boardMargin * 2) / 6) +
-    const Offset(boardMargin, boardMargin);
+    Offset(boardMargin, boardMargin);
 
 double offsetFromInt(int point, Size size) =>
     (point * (size.width - boardMargin * 2) / 6) + boardMargin;

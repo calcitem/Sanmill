@@ -136,7 +136,7 @@ class AppTheme {
 
   static const double boardMargin = 10.0;
   static const double boardBorderRadius = 5.0;
-  static const double boardPadding = 30.0;
+  static late double boardPadding;
   static const double sizedBoxHeight = 16.0;
 
   static const double drawerItemHeight = 46.0;

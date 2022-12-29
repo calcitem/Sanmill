@@ -23,9 +23,11 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../main.dart';
+import '../../models/display_settings.dart';
 import '../../models/general_settings.dart';
 import '../../services/database/database.dart';
 import '../../services/environment_config.dart';
