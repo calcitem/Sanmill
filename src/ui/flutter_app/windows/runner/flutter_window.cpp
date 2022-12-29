@@ -32,6 +32,7 @@ FlutterWindow::FlutterWindow(RunLoop *run_loop,
 FlutterWindow::~FlutterWindow()
 {
     if (engine != nullptr) {
+        engine->shutdown();
         delete engine;
         engine = nullptr;
     }
