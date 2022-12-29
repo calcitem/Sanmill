@@ -286,17 +286,18 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        SettingsCard(
-          title: Text(S.of(context).accessibility),
-          children: <Widget>[
-            SettingsListTile.switchTile(
-              value: generalSettings.screenReaderSupport,
-              onChanged: (bool val) =>
-                  _setScreenReaderSupport(generalSettings, val),
-              titleString: S.of(context).screenReaderSupport,
-            ),
-          ],
-        ),
+        if (Platform.isAndroid || Platform.isIOS)
+          SettingsCard(
+            title: Text(S.of(context).accessibility),
+            children: <Widget>[
+              SettingsListTile.switchTile(
+                value: generalSettings.screenReaderSupport,
+                onChanged: (bool val) =>
+                    _setScreenReaderSupport(generalSettings, val),
+                titleString: S.of(context).screenReaderSupport,
+              ),
+            ],
+          ),
         if (Platform.isAndroid || Platform.isIOS)
           SettingsCard(
             title: Text(S.of(context).gameScreenRecorder),
