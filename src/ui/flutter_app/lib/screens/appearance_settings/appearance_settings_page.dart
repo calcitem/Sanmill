@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
@@ -280,15 +282,16 @@ class AppearanceSettingsPage extends StatelessWidget {
             ),
           ),
         ),
-        SettingsListTile.switchTile(
-          value: displaySettings.isFullScreen,
-          onChanged: (bool val) {
-            DB().displaySettings = displaySettings.copyWith(isFullScreen: val);
-            rootScaffoldMessengerKey.currentState!
-                .showSnackBarClear(S.of(context).reopenToTakeEffect);
-          },
-          titleString: S.of(context).fullScreen,
-        ),
+        if (Platform.isAndroid || Platform.isIOS)
+          SettingsListTile.switchTile(
+            value: displaySettings.isFullScreen,
+            onChanged: (bool val) {
+              DB().displaySettings = displaySettings.copyWith(isFullScreen: val);
+              rootScaffoldMessengerKey.currentState!
+                  .showSnackBarClear(S.of(context).reopenToTakeEffect);
+            },
+            titleString: S.of(context).fullScreen,
+          ),
         SettingsListTile.switchTile(
           value: displaySettings.isPieceCountInHandShown,
           onChanged: (bool val) => DB().displaySettings =
