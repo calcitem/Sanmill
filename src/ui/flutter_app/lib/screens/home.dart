@@ -142,12 +142,10 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     }
 
     if (index == _DrawerIndex.feedback) {
-      if (kIsWeb) {
-        return logger.w("flutter_email_sender does not support Web.");
-      } else if (Platform.isWindows) {
-        return logger.w("flutter_email_sender does not support Windows.");
-      } else {
+      if (Platform.isAndroid || Platform.isIOS) {
         return BetterFeedback.of(context).show(_launchFeedback);
+      } else {
+        return logger.w("flutter_email_sender does not support this platform.");
       }
     }
 
