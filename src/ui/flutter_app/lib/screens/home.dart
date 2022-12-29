@@ -234,8 +234,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     AppTheme.boardPadding =
         ((MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) *
-                DB().displaySettings.pieceWidth /
-                7) /
+                    DB().displaySettings.pieceWidth /
+                    7 -
+                1) /
             2;
 
     final List<CustomDrawerItem<_DrawerIndex>> drawerItems =

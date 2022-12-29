@@ -106,8 +106,9 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
       builder: (BuildContext context, Box<DisplaySettings> box, _) {
         AppTheme.boardPadding =
             ((MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) *
-                    DB().displaySettings.pieceWidth /
-                    7) /
+                        DB().displaySettings.pieceWidth /
+                        7 -
+                    1) /
                 2;
 
         return LayoutBuilder(
