@@ -55,7 +55,7 @@ class Engine {
     final String command = "setoption name $name value $option";
     await _send(command);
 
-    if (EnvironmentConfig.catcher == true) {
+    if (EnvironmentConfig.catcher == true && !kIsWeb) {
       final CatcherOptions options = catcher.getCurrentConfig()!;
       options.customParameters[name] = command;
     }
@@ -70,9 +70,6 @@ class Engine {
   }
 
   Future<void> shutdown() async {
-    if (kIsWeb) {
-      return;
-    }
     if (!_isPlatformChannelAvailable) {
       return;
     }
@@ -303,7 +300,7 @@ class Engine {
 
     final String ret = posFenStr.toString();
 
-    if (EnvironmentConfig.catcher == true) {
+    if (EnvironmentConfig.catcher == true && !kIsWeb) {
       final CatcherOptions options = catcher.getCurrentConfig()!;
       options.customParameters["PositionFen"] = ret;
     }

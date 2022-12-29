@@ -122,8 +122,11 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> with TickerProviderStateMixin {
   final CustomDrawerController _controller = CustomDrawerController();
 
-  Widget _screenView = _DrawerIndex.humanVsAi.screen!;
-  _DrawerIndex _drawerIndex = _DrawerIndex.humanVsAi;
+  Widget _screenView = kIsWeb
+      ? _DrawerIndex.humanVsHuman.screen!
+      : _DrawerIndex.humanVsAi.screen!;
+  _DrawerIndex _drawerIndex =
+      kIsWeb ? _DrawerIndex.humanVsHuman : _DrawerIndex.humanVsAi;
   final StackList<_DrawerIndex> _routes = StackList<_DrawerIndex>();
 
   /// Callback from drawer for replace screen
@@ -230,13 +233,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final List<CustomDrawerItem<_DrawerIndex>> drawerItems =
         <CustomDrawerItem<_DrawerIndex>>[
-      CustomDrawerItem<_DrawerIndex>(
-        value: _DrawerIndex.humanVsAi,
-        title: S.of(context).humanVsAi,
-        icon: const Icon(FluentIcons.person_24_regular),
-        groupValue: _drawerIndex,
-        onChanged: _changeIndex,
-      ),
+      if (!kIsWeb)
+        CustomDrawerItem<_DrawerIndex>(
+          value: _DrawerIndex.humanVsAi,
+          title: S.of(context).humanVsAi,
+          icon: const Icon(FluentIcons.person_24_regular),
+          groupValue: _drawerIndex,
+          onChanged: _changeIndex,
+        ),
       CustomDrawerItem<_DrawerIndex>(
         value: _DrawerIndex.humanVsHuman,
         title: S.of(context).humanVsHuman,
@@ -244,13 +248,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
       ),
-      CustomDrawerItem<_DrawerIndex>(
-        value: _DrawerIndex.aiVsAi,
-        title: S.of(context).aiVsAi,
-        icon: const Icon(FluentIcons.bot_24_regular),
-        groupValue: _drawerIndex,
-        onChanged: _changeIndex,
-      ),
+      if (!kIsWeb)
+        CustomDrawerItem<_DrawerIndex>(
+          value: _DrawerIndex.aiVsAi,
+          title: S.of(context).aiVsAi,
+          icon: const Icon(FluentIcons.bot_24_regular),
+          groupValue: _drawerIndex,
+          onChanged: _changeIndex,
+        ),
       CustomDrawerItem<_DrawerIndex>(
         value: _DrawerIndex.setupPosition,
         title: S.of(context).setupPosition,
@@ -301,13 +306,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
       ),
-      CustomDrawerItem<_DrawerIndex>(
-        value: _DrawerIndex.exit,
-        title: S.of(context).exit,
-        icon: const Icon(FluentIcons.power_24_regular),
-        groupValue: _drawerIndex,
-        onChanged: _changeIndex,
-      ),
+      if (!kIsWeb)
+        CustomDrawerItem<_DrawerIndex>(
+          value: _DrawerIndex.exit,
+          title: S.of(context).exit,
+          icon: const Icon(FluentIcons.power_24_regular),
+          groupValue: _drawerIndex,
+          onChanged: _changeIndex,
+        ),
     ];
 
     return DoubleBackToCloseApp(

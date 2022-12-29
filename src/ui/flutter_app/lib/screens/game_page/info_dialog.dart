@@ -148,7 +148,7 @@ class _InfoDialog extends StatelessWidget {
             onPressed: () async {
               String content = "";
 
-              if (EnvironmentConfig.catcher == true) {
+              if (EnvironmentConfig.catcher == true && !kIsWeb) {
                 final CatcherOptions options = catcher.getCurrentConfig()!;
                 for (final dynamic value in options.customParameters.values) {
                   final String str = value

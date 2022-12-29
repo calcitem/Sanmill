@@ -19,6 +19,7 @@ import 'dart:ui';
 
 import 'package:catcher/catcher.dart';
 import 'package:feedback/feedback.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: depend_on_referenced_packages
@@ -53,7 +54,7 @@ Future<void> main() async {
 
   _initUI();
 
-  if (EnvironmentConfig.catcher) {
+  if (EnvironmentConfig.catcher && !kIsWeb) {
     catcher = Catcher(
       rootWidget: const SanmillApp(),
       ensureInitialized: true,
@@ -78,6 +79,30 @@ class SanmillApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DB(window.platformDispatcher.locale);
+
+    if (kIsWeb) {
+      return MaterialApp(
+        key: GlobalKey<ScaffoldState>(),
+        scaffoldMessengerKey: rootScaffoldMessengerKey,
+        localizationsDelegates: S.localizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        locale: WidgetsBinding.instance.window.locale == const Locale('und')
+            ? const Locale('en', 'US')
+            : WidgetsBinding.instance.window.locale,
+        theme: AppTheme.lightThemeData,
+        darkTheme: AppTheme.darkThemeData,
+        debugShowCheckedModeBanner: EnvironmentConfig.devMode,
+        builder: (BuildContext context, Widget? child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(),
+            child: child!,
+          );
+        },
+        home: Builder(
+          builder: _buildHome,
+        ),
+      );
+    }
 
     return ValueListenableBuilder<Box<DisplaySettings>>(
       valueListenable: DB().listenDisplaySettings,
