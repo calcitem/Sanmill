@@ -101,50 +101,67 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
     MillController().animationController.forward();
 
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constrains) {
-        final double dimension = constrains.maxWidth;
+    return ValueListenableBuilder<Box<DisplaySettings>>(
+      valueListenable: DB().listenDisplaySettings,
+      builder: (BuildContext context, Box<DisplaySettings> box, _) {
+        AppTheme.boardPadding =
+            ((MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) *
+                    DB().displaySettings.pieceWidth /
+                    7) /
+                2;
 
-        return SizedBox.square(
-          dimension: dimension,
-          child: GestureDetector(
-            child: customPaint,
-            onTapUp: (TapUpDetails d) async {
-              final int? square =
-                  squareFromPoint(pointFromOffset(d.localPosition, dimension));
+        return LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constrains) {
+            final double dimension = constrains.maxWidth;
 
-              if (square == null) {
-                return logger.v(
-                  "${Board._tag} Tap not on a square $square (ignored).",
-                );
-              }
+            return SizedBox.square(
+              dimension: dimension,
+              child: GestureDetector(
+                child: customPaint,
+                onTapUp: (TapUpDetails d) async {
+                  final int? square = squareFromPoint(
+                      pointFromOffset(d.localPosition, dimension));
 
-              logger.v("${Board._tag} Tap on square <$square>");
+                  if (square == null) {
+                    return logger.v(
+                      "${Board._tag} Tap not on a square $square (ignored).",
+                    );
+                  }
 
-              final String strTimeout = S.of(context).timeout;
-              final String strNoBestMoveErr =
-                  S.of(context).error(S.of(context).noMove);
+                  logger.v("${Board._tag} Tap on square <$square>");
 
-              switch (await tapHandler.onBoardTap(square)) {
-                case EngineResponseOK():
-                  MillController().gameResultNotifier.showResult(force: true);
-                  break;
-                case EngineResponseHumanOK():
-                  MillController().gameResultNotifier.showResult(force: false);
-                  break;
-                case EngineTimeOut():
-                  MillController().headerTipNotifier.showTip(strTimeout);
-                  break;
-                case EngineNoBestMove():
-                  MillController().headerTipNotifier.showTip(strNoBestMoveErr);
-                  break;
-                default:
-                  break;
-              }
+                  final String strTimeout = S.of(context).timeout;
+                  final String strNoBestMoveErr =
+                      S.of(context).error(S.of(context).noMove);
 
-              MillController().disposed = false;
-            },
-          ),
+                  switch (await tapHandler.onBoardTap(square)) {
+                    case EngineResponseOK():
+                      MillController()
+                          .gameResultNotifier
+                          .showResult(force: true);
+                      break;
+                    case EngineResponseHumanOK():
+                      MillController()
+                          .gameResultNotifier
+                          .showResult(force: false);
+                      break;
+                    case EngineTimeOut():
+                      MillController().headerTipNotifier.showTip(strTimeout);
+                      break;
+                    case EngineNoBestMove():
+                      MillController()
+                          .headerTipNotifier
+                          .showTip(strNoBestMoveErr);
+                      break;
+                    default:
+                      break;
+                  }
+
+                  MillController().disposed = false;
+                },
+              ),
+            );
+          },
         );
       },
     );
