@@ -20,7 +20,8 @@ struct _MyApplication
 
 G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
 
-#if 1
+MillEngine *engine = nullptr;
+
 static void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call,
                            gpointer user_data)
 {
@@ -52,7 +53,6 @@ static void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call,
         fl_method_call_respond(method_call, response, &error);
     }
 }
-#endif
 
 // Implements GApplication::activate.
 static void my_application_activate(GApplication *application)
@@ -102,7 +102,7 @@ static void my_application_activate(GApplication *application)
     fl_register_plugins(FL_PLUGIN_REGISTRY(view));
 
     // START OF OUR CUSTOM  BLOCK
-#if 1
+
     if (engine == nullptr) {
         engine = new MillEngine();
 
@@ -117,8 +117,7 @@ static void my_application_activate(GApplication *application)
         fl_method_channel_set_method_call_handler(channel, method_call_cb, g_object_ref(view), g_object_unref);
     }
 
-#endif
-     // END OF OUR CUSTOM BLOCK
+    // END OF OUR CUSTOM BLOCK
 
     gtk_widget_grab_focus(GTK_WIDGET(view));
 }

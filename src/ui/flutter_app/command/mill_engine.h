@@ -31,5 +31,3 @@ public:
 
     bool isThinking();
 };
-
-extern MillEngine *engine;

@@ -25,8 +25,6 @@
 #include "engine_main.h"
 #include "engine_state.h"
 
-MillEngine *engine = nullptr;
-
 EngineState state = EngineState::STATE_READY;
 std::thread thread;
 
