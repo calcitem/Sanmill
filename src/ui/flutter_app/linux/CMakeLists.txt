@@ -71,7 +71,7 @@ INCLUDE_DIRECTORIES(
 add_executable(${BINARY_NAME}
   "main.cc"
   "my_application.cc"
-  "mill_engine.cpp"
+  "../command/mill_engine.cpp"
   "../command/command_channel.cpp"
   "../command/command_queue.cpp"
   "../command/engine_main.cpp"

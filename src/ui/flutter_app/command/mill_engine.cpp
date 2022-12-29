@@ -15,22 +15,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iostream>
-#include <stdio.h>
 #include <string.h>
 #include <string>
 #include <thread>
-#include <unistd.h>
 
 #include "mill_engine.h"
 
-#include "../command/command_channel.h"
-#include "../command/engine_main.h"
-#include "../command/engine_state.h"
+#include "command_channel.h"
+#include "engine_main.h"
+#include "engine_state.h"
 
-// Mill Engine
 MillEngine *engine = nullptr;
-
-extern "C" {
 
 EngineState state = EngineState::STATE_READY;
 std::thread thread;
@@ -66,14 +61,15 @@ int MillEngine::startup()
 
 int MillEngine::send(const char *command)
 {
-    if (command[0] == 'g' && command[1] == 'o')
-        state = EngineState::STATE_THINKING;
-
     CommandChannel *channel = CommandChannel::getInstance();
 
     bool success = channel->pushCommand(command);
     if (success) {
         std::cout << ">>> " << command << std::endl;
+
+        if (command[0] == 'g' && command[1] == 'o') {
+            state = EngineState::STATE_THINKING;
+        }
     }
 
     return success ? 0 : -1;
@@ -86,8 +82,9 @@ std::string MillEngine::read()
     CommandChannel *channel = CommandChannel::getInstance();
     bool got_response = channel->popupResponse(line);
 
-    if (!got_response)
+    if (!got_response) {
         return "";
+    }
 
     std::cout << "<<< " << line << std::endl;
 
@@ -118,5 +115,4 @@ bool MillEngine::isReady()
 bool MillEngine::isThinking()
 {
     return state == EngineState::STATE_THINKING;
-}
 }
