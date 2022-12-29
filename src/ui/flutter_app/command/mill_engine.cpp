@@ -25,6 +25,12 @@
 #include "engine_main.h"
 #include "engine_state.h"
 
+#ifdef __ANDROID__
+#include <jni.h>
+#endif // __ANDROID__
+
+extern "C" {
+
 EngineState state = EngineState::STATE_READY;
 std::thread thread;
 
@@ -37,10 +43,25 @@ void engineThread()
     std::cout << "Engine Think Thread exit." << std::endl;
 }
 
+#ifdef __ANDROID__
+JNIEXPORT jint JNICALL Java_com_calcitem_sanmill_MillEngine_send(
+    JNIEnv *env, jobject, jstring command);
+
+JNIEXPORT jint JNICALL Java_com_calcitem_sanmill_MillEngine_shutdown(JNIEnv *,
+                                                                     jobject);
+
+JNIEXPORT jint JNICALL Java_com_calcitem_sanmill_MillEngine_startup(JNIEnv *env,
+                                                                    jobject obj)
+#else
 int MillEngine::startup()
+#endif // __ANDROID__
 {
     if (thread.joinable()) {
+#ifdef __ANDROID__
+        Java_com_calcitem_sanmill_MillEngine_shutdown(env, obj);
+#else
         shutdown();
+#endif // __ANDROID__
         if (thread.joinable()) {
             thread.join();
         }
@@ -52,11 +73,37 @@ int MillEngine::startup()
 
     thread = std::thread(engineThread);
 
+#ifdef __ANDROID__
+    Java_com_calcitem_sanmill_MillEngine_send(env, obj,
+                                              env->NewStringUTF("uci"));
+#else
     send("uci");
+#endif // __ANDROID__
 
     return 0;
 }
 
+#ifdef __ANDROID__
+JNIEXPORT jint JNICALL
+Java_com_calcitem_sanmill_MillEngine_send(JNIEnv *env, jobject, jstring command)
+{
+    const char *pCommand = env->GetStringUTFChars(command, JNI_FALSE);
+
+    CommandChannel *channel = CommandChannel::getInstance();
+
+    bool success = channel->pushCommand(pCommand);
+    if (success) {
+        std::cout << ">>> " << command << std::endl;
+
+        if (pCommand[0] == 'g' && pCommand[1] == 'o')
+            state = EngineState::STATE_THINKING;
+    }
+
+    env->ReleaseStringUTFChars(command, pCommand);
+
+    return success ? 0 : -1;
+}
+#else
 int MillEngine::send(const char *command)
 {
     CommandChannel *channel = CommandChannel::getInstance();
@@ -72,8 +119,14 @@ int MillEngine::send(const char *command)
 
     return success ? 0 : -1;
 }
+#endif // __ANDROID__
 
+#ifdef __ANDROID__
+JNIEXPORT jstring JNICALL Java_com_calcitem_sanmill_MillEngine_read(JNIEnv *env,
+                                                                    jobject)
+#else
 std::string MillEngine::read()
+#endif // __ANDROID__
 {
     char line[4096] = {0};
 
@@ -81,7 +134,11 @@ std::string MillEngine::read()
     bool got_response = channel->popupResponse(line);
 
     if (!got_response) {
+#ifdef __ANDROID__
+        return NULL;
+#else
         return "";
+#endif // __ANDROID__
     }
 
     std::cout << "<<< " << line << std::endl;
@@ -91,12 +148,26 @@ std::string MillEngine::read()
         state = EngineState::STATE_READY;
     }
 
+#ifdef __ANDROID__
+    return env->NewStringUTF(line);
+#else
     return line; // TODO
+#endif // __ANDROID__
 }
 
+#ifdef __ANDROID__
+JNIEXPORT jint JNICALL
+Java_com_calcitem_sanmill_MillEngine_shutdown(JNIEnv *env, jobject obj)
+#else
 int MillEngine::shutdown()
+#endif // __ANDROID__
 {
+#ifdef __ANDROID__
+    Java_com_calcitem_sanmill_MillEngine_send(env, obj,
+                                              env->NewStringUTF("quit"));
+#else
     send("quit");
+#endif // __ANDROID__
 
     if (thread.joinable()) {
         thread.join();
@@ -104,6 +175,21 @@ int MillEngine::shutdown()
 
     return 0;
 }
+
+#ifdef __ANDROID__
+JNIEXPORT jboolean JNICALL
+Java_com_calcitem_sanmill_MillEngine_isReady(JNIEnv *, jobject)
+{
+    return static_cast<jboolean>(state == EngineState::STATE_READY);
+}
+
+JNIEXPORT jboolean JNICALL
+Java_com_calcitem_sanmill_MillEngine_isThinking(JNIEnv *, jobject)
+{
+    return static_cast<jboolean>(state == EngineState::STATE_THINKING);
+}
+
+#else
 
 bool MillEngine::isReady()
 {
@@ -113,4 +199,6 @@ bool MillEngine::isReady()
 bool MillEngine::isThinking()
 {
     return state == EngineState::STATE_THINKING;
+}
+#endif // __ANDROID__
 }
