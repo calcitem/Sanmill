@@ -1299,5 +1299,19 @@
   "noteActualDifficultyLevelMayBeLimited": "Se si imposta il livello di difficoltà alto ma non si aumenta il tempo di riflessione dell'IA, il livello di difficoltà effettivo potrebbe essere limitato a un valore inferiore a causa del vincolo del tempo di riflessione. Il valore effettivo può variare in base alle prestazioni della macchina.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) è una forma modificata dell'algoritmo di ricerca alfa-beta che mira a migliorare l'efficienza riutilizzando i risultati di ricerca intermedi e utilizzando una buona ipotesi iniziale per restringere lo spazio di ricerca.",
-  "@whatIsMtdf": {}
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) è un algoritmo di ricerca per trovare la mossa migliore in una data posizione. È un miglioramento dell'algoritmo alfa-beta e utilizza ricerche di finestre nulle o nulle per confermare che una mossa è peggiore o non peggiore di un punteggio già sicuro dalla variazione principale. PVS si concentra sulle mosse più promettenti ed evita ricerche non necessarie di rami non ottimali, il che aiuta a migliorare l'efficienza della ricerca.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "L'algoritmo alpha-beta è un algoritmo di ricerca per trovare la mossa migliore. Utilizza il principio minimax e due valori, alfa e beta, per sfoltire l'albero di ricerca e aumentare l'efficienza. Alpha rappresenta il punteggio minimo che il computer è sicuro di poter ottenere, mentre beta rappresenta il punteggio massimo che il suo avversario può ottenere. L'algoritmo aiuta il computer a prendere decisioni intelligenti ed efficienti in un gioco.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "In questo gioco, è più facile vincere per il secondo giocatore rispetto al primo giocatore.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Secondo l'esperienza umana, se provi a vincere, perderai. Punta invece al pareggio come obiettivo ed evita di perdere la partita. Osserva il tuo avversario e attiralo delicatamente in una posizione in cui potrebbe commettere errori. Quando mostrano debolezza, cogli l'opportunità e spingi delicatamente per la vittoria. In questo modo, puoi vincere la partita.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Abilitando l'opzione Passiva, l'IA si rilasserà quando ha un vantaggio nella posizione, piuttosto che tentare aggressivamente di vincere il più rapidamente possibile.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Se l'IA considera la mobilità dei suoi pezzi, non mirerà solo a catturare i pezzi dell'avversario il più rapidamente possibile, ma considererà anche di bloccare i movimenti dell'avversario e impedire loro di fare lo stesso.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Abilitare questa opzione aumenta la casualità e il divertimento del gioco mentre disabilitarla può aiutare a studiare modi per battere l'IA.",
+  "@moveRandomlyDetail": {}
 }

@@ -1299,5 +1299,19 @@
   "noteActualDifficultyLevelMayBeLimited": "Kui seate raskusastme kõrgeks, kuid ei suurenda tehisintellekti mõtlemisaega, võib tegelik raskusaste piirduda mõtlemisaja piirangu tõttu madalama väärtusega. Tegelik väärtus võib olenevalt masina jõudlusest erineda.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) on alfa-beeta otsingualgoritmi muudetud vorm, mille eesmärk on parandada tõhusust, kasutades vahepealseid otsingutulemusi ja kasutades otsinguruumi kitsendamiseks head esialgset oletust.",
-  "@whatIsMtdf": {}
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) on otsingualgoritm, mis võimaldab leida antud positsioonil parima käigu. See on alfa-beeta-algoritmi täiustus ja kasutab null- või nullaknaotsingut, et kinnitada, kas käik on halvem või mitte halvem kui peamise variatsiooni juba ohutu skoor. PVS keskendub kõige paljutõotavamatele käikudele ja väldib ebavajalikke otsinguid suboptimaalsetest harudest, mis aitab parandada otsingu efektiivsust.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Alfa-beeta algoritm on otsingualgoritm parima käigu leidmiseks. See kasutab otsingupuu kärpimiseks ja tõhususe suurendamiseks minimaxi põhimõtet ja kahte väärtust, alfa ja beeta. Alfa esindab minimaalset punktisummat, milleni arvuti on kindel, et ta saab, samas kui beeta esindab maksimaalset punktisummat, mille vastane võib saada. Algoritm aitab arvutil teha mängus nutikaid ja tõhusaid otsuseid.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "Selles mängus on teisel mängijal lihtsam võita võrreldes esimese mängijaga.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Inimkogemuse järgi, kui üritad võita, siis kaotad. Selle asemel seadke oma eesmärgiks viik ja vältige mängu kaotamist. Jälgige oma vastast ja meelitage ta õrnalt asendisse, kus nad võivad vigu teha. Kui nad näitavad nõrkust, kasutage võimalust ja suruge õrnalt võidu poole. Sel viisil võite mängu võita.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Suvandi Passiivne lubamine paneb tehisintellekti lõõgastuma, kui tal on positsioonil eelis, selle asemel, et püüda agressiivselt võita võimalikult kiiresti.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Kui tehisintellekt arvestab oma nuppude liikuvust, ei ole selle eesmärk mitte ainult vastase nuppude võimalikult kiire tabamine, vaid kaalub ka vastase liikumiste blokeerimist ja takistamist neil sama tegemast.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Selle valiku lubamine suurendab mängu juhuslikkust ja lõbusust, samas kui selle keelamine võib aidata uurida viise, kuidas AI-d ületada.",
+  "@moveRandomlyDetail": {}
 }

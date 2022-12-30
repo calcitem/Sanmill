@@ -1299,5 +1299,19 @@
   "noteActualDifficultyLevelMayBeLimited": "Wenn Sie den Schwierigkeitsgrad hoch einstellen, aber die KI-Denkzeit nicht erhöhen, kann der tatsächliche Schwierigkeitsgrad aufgrund der Bedenkzeitbeschränkung auf einen niedrigeren Wert begrenzt werden. Der tatsächliche Wert kann je nach Leistung der Maschine variieren.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) ist eine modifizierte Form des Alpha-Beta-Suchalgorithmus, der darauf abzielt, die Effizienz zu verbessern, indem Zwischenergebnisse wiederverwendet werden und eine gute Anfangsschätzung verwendet wird, um den Suchraum einzugrenzen.",
-  "@whatIsMtdf": {}
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) ist ein Suchalgorithmus, um den besten Zug in einer bestimmten Stellung zu finden. Es ist eine Verbesserung des Alpha-Beta-Algorithmus und verwendet Null- oder Nullfenstersuchen, um zu bestätigen, dass ein Zug schlechter oder nicht schlechter ist als ein bereits sicheres Ergebnis aus der Hauptvariante. PVS konzentriert sich auf die vielversprechendsten Züge und vermeidet unnötige Suchen suboptimaler Verzweigungen, wodurch die Effizienz der Suche verbessert wird.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Der Alpha-Beta-Algorithmus ist ein Suchalgorithmus, um den besten Zug zu finden. Es verwendet das Minimax-Prinzip und zwei Werte, Alpha und Beta, um den Suchbaum zu beschneiden und die Effizienz zu steigern. Alpha stellt die minimale Punktzahl dar, die der Computer sicher erreichen kann, während Beta die maximale Punktzahl darstellt, die sein Gegner erzielen kann. Der Algorithmus hilft dem Computer, intelligente und effiziente Entscheidungen in einem Spiel zu treffen.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "Bei diesem Spiel gewinnt der zweite Spieler leichter als der erste Spieler.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Nach menschlicher Erfahrung werden Sie verlieren, wenn Sie versuchen zu gewinnen. Strebe stattdessen ein Unentschieden als Ziel an und vermeide es, das Spiel zu verlieren. Beobachten Sie Ihren Gegner und locken Sie ihn sanft in eine Position, in der er Fehler machen kann. Wenn sie Schwäche zeigen, nutzen Sie die Gelegenheit und drängen Sie sanft auf den Sieg. Auf diese Weise können Sie das Spiel gewinnen.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Die Aktivierung der passiven Option bewirkt, dass sich die KI entspannt, wenn sie einen Vorteil in der Position hat, anstatt aggressiv zu versuchen, so schnell wie möglich zu gewinnen.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Wenn die KI die Beweglichkeit ihrer Figuren berücksichtigt, wird sie nicht nur darauf abzielen, die gegnerischen Figuren so schnell wie möglich zu erobern, sondern auch erwägen, die Bewegungen des Gegners zu blockieren und ihn daran zu hindern, dasselbe zu tun.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Das Aktivieren dieser Option erhöht die Zufälligkeit und den Spaß des Spiels, während das Deaktivieren dazu beitragen kann, Wege zu finden, die KI zu schlagen.",
+  "@moveRandomlyDetail": {}
 }

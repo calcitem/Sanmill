@@ -1299,5 +1299,19 @@
   "noteActualDifficultyLevelMayBeLimited": "Jeśli ustawisz wysoki poziom trudności, ale nie zwiększysz czasu myślenia AI, rzeczywisty poziom trudności może zostać ograniczony do niższej wartości ze względu na ograniczenie czasu myślenia. Rzeczywista wartość może się różnić w zależności od wydajności urządzenia.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) to zmodyfikowana forma algorytmu wyszukiwania alfa-beta, której celem jest poprawa wydajności poprzez ponowne wykorzystanie pośrednich wyników wyszukiwania i użycie dobrego wstępnego przypuszczenia w celu zawężenia przestrzeni wyszukiwania.",
-  "@whatIsMtdf": {}
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) to algorytm wyszukiwania w celu znalezienia najlepszego ruchu na danej pozycji. Jest to ulepszenie algorytmu alfa-beta i wykorzystuje przeszukiwanie okna zerowego lub zerowego, aby potwierdzić, że ruch jest gorszy lub nie gorszy niż już bezpieczny wynik z głównej zmiany. PVS koncentruje się na najbardziej obiecujących ruchach i unika niepotrzebnych poszukiwań nieoptymalnych gałęzi, co pomaga poprawić efektywność wyszukiwania.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Algorytm alfa-beta to algorytm wyszukiwania w celu znalezienia najlepszego ruchu. Wykorzystuje zasadę minimax i dwie wartości, alfa i beta, aby przyciąć drzewo wyszukiwania i zwiększyć wydajność. Alfa reprezentuje minimalny wynik, jaki komputer jest pewien, że może uzyskać, podczas gdy beta reprezentuje maksymalny wynik, jaki może uzyskać jego przeciwnik. Algorytm pomaga komputerowi podejmować mądre i efektywne decyzje w grze.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "W tej grze drugiemu graczowi łatwiej jest wygrać niż pierwszemu graczowi.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Zgodnie z ludzkim doświadczeniem, jeśli spróbujesz wygrać, przegrasz. Zamiast tego celuj w remis i unikaj przegranej. Obserwuj swojego przeciwnika i delikatnie zwab go w miejsce, w którym może popełnić błąd. Kiedy okazują słabość, wykorzystaj okazję i delikatnie naciskaj, by wygrać. W ten sposób możesz wygrać grę.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Włączenie opcji pasywnej spowoduje, że sztuczna inteligencja rozluźni się, gdy będzie miała przewagę na pozycji, zamiast agresywnie próbować wygrać tak szybko, jak to możliwe.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Jeśli sztuczna inteligencja bierze pod uwagę mobilność swoich pionków, będzie dążyć nie tylko do jak najszybszego zbicia pionków przeciwnika, ale także rozważy blokowanie ruchów przeciwnika i uniemożliwienie mu zrobienia tego samego.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Włączenie tej opcji zwiększa losowość i frajdę z gry, a jej wyłączenie może pomóc w badaniu sposobów na pokonanie sztucznej inteligencji.",
+  "@moveRandomlyDetail": {}
 }

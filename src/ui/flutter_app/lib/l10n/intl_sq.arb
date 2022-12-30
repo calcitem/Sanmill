@@ -1299,5 +1299,19 @@
   "noteActualDifficultyLevelMayBeLimited": "Nëse e vendosni nivelin e vështirësisë të lartë, por nuk e rritni kohën e të menduarit të AI, niveli aktual i vështirësisë mund të kufizohet në një vlerë më të ulët për shkak të kufizimit të kohës së të menduarit. Vlera aktuale mund të ndryshojë në bazë të performancës së makinës.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) është një formë e modifikuar e algoritmit alfa-beta të kërkimit që synon të përmirësojë efikasitetin duke ripërdorur rezultatet e ndërmjetme të kërkimit dhe duke përdorur një supozim të mirë fillestar për të ngushtuar hapësirën e kërkimit.",
-  "@whatIsMtdf": {}
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) është një algoritëm kërkimi për të gjetur lëvizjen më të mirë në një pozicion të caktuar. Është një përmirësim i algoritmit alfa-beta dhe përdor kërkime të dritareve null ose zero për të konfirmuar se një lëvizje është më e keqe ose jo më e keqe se një rezultat tashmë i sigurt nga variacioni kryesor. PVS fokusohet në lëvizjet më premtuese dhe shmang kërkimet e panevojshme të degëve jooptimale, gjë që ndihmon në përmirësimin e efikasitetit të kërkimit.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Algoritmi alfa-beta është një algoritëm kërkimi për të gjetur lëvizjen më të mirë. Ai përdor parimin minimax dhe dy vlera, alfa dhe beta, për të krasitur pemën e kërkimit dhe për të rritur efikasitetin. Alfa përfaqëson rezultatin minimal që kompjuteri është i sigurt se mund të marrë, ndërsa beta përfaqëson rezultatin maksimal që mund të marrë kundërshtari i tij. Algoritmi ndihmon kompjuterin të marrë vendime të zgjuara dhe efikase në një lojë.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "Në këtë lojë, lojtari i dytë është më i lehtë të fitojë në krahasim me lojtarin e parë.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Sipas përvojës njerëzore, nëse përpiqeni të fitoni, do të humbni. Në vend të kësaj, synoni për një barazim si objektivin tuaj dhe shmangni humbjen e lojës. Vëzhgoni kundërshtarin tuaj dhe joshni butësisht në një pozicion ku ata mund të bëjnë gabime. Kur ata tregojnë dobësi, shfrytëzojeni mundësinë dhe nxitoni butësisht për fitore. Në këtë mënyrë, ju mund të fitoni lojën.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Aktivizimi i opsionit Pasiv do të bëjë që AI të relaksohet kur ka një avantazh në pozicion, në vend që të përpiqet në mënyrë agresive të fitojë sa më shpejt që të jetë e mundur.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Nëse AI merr në konsideratë lëvizshmërinë e pjesëve të saj, ajo jo vetëm që do të synojë të kapë copat e kundërshtarit sa më shpejt që të jetë e mundur, por gjithashtu do të konsiderojë bllokimin e lëvizjeve të kundërshtarit dhe pengimin e tyre që të bëjnë të njëjtën gjë.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Aktivizimi i këtij opsioni rrit rastësinë dhe argëtimin e lojës, ndërsa çaktivizimi i tij mund të ndihmojë në studimin e mënyrave për të mposhtur AI.",
+  "@moveRandomlyDetail": {}
 }

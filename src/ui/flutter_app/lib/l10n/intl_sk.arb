@@ -1299,5 +1299,19 @@
   "noteActualDifficultyLevelMayBeLimited": "Ak nastavíte vysokú úroveň obtiažnosti, ale nepredĺžite čas myslenia AI, skutočná úroveň obtiažnosti môže byť obmedzená na nižšiu hodnotu z dôvodu časového obmedzenia. Skutočná hodnota sa môže líšiť v závislosti od výkonu stroja.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) je upravená forma vyhľadávacieho algoritmu alfa-beta, ktorého cieľom je zlepšiť efektivitu opätovným použitím medzivýsledkov vyhľadávania a použitím dobrého počiatočného odhadu na zúženie priestoru vyhľadávania.",
-  "@whatIsMtdf": {}
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) je vyhľadávací algoritmus na nájdenie najlepšieho pohybu na danej pozícii. Ide o vylepšenie alfa-beta algoritmu a využíva vyhľadávanie nulového alebo nulového okna na potvrdenie, že pohyb je horší alebo nie horší ako už bezpečné skóre z hlavnej variácie. PVS sa zameriava na najsľubnejšie ťahy a vyhýba sa zbytočnému prehľadávaniu suboptimálnych vetiev, čo pomáha zlepšiť efektivitu vyhľadávania.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Algoritmus alfa-beta je vyhľadávací algoritmus na nájdenie najlepšieho ťahu. Používa princíp minimax a dve hodnoty, alfa a beta, na orezanie stromu vyhľadávania a zvýšenie efektivity. Alfa predstavuje minimálne skóre, ktoré môže počítač získať, zatiaľ čo beta predstavuje maximálne skóre, ktoré môže získať jeho súper. Algoritmus pomáha počítaču robiť inteligentné a efektívne rozhodnutia v hre.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "V tejto hre je pre druhého hráča jednoduchšie vyhrať v porovnaní s prvým hráčom.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Podľa ľudských skúseností, ak sa pokúsite vyhrať, prehráte. Namiesto toho sa zamerajte na remízu a vyhnite sa strate hry. Pozorujte svojho súpera a jemne ho nalákajte do pozície, kde môže robiť chyby. Keď ukážu slabosť, chopte sa príležitosti a jemne zatlačte na víťazstvo. Týmto spôsobom môžete vyhrať hru.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Povolenie možnosti Passive spôsobí, že AI sa uvoľní, keď má v pozícii výhodu, namiesto toho, aby sa agresívne snažila vyhrať čo najrýchlejšie.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Ak AI zváži mobilitu svojich figúrok, nezameria sa len na to, aby čo najrýchlejšie zajali súperove figúrky, ale zváži aj blokovanie súperových pohybov a zabránenie im v tom, aby urobili to isté.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Povolenie tejto možnosti zvyšuje náhodnosť a zábavu hry, zatiaľ čo jej zakázanie môže pomôcť pri štúdiu spôsobov, ako poraziť AI.",
+  "@moveRandomlyDetail": {}
 }

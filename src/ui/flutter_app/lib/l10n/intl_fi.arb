@@ -1299,5 +1299,19 @@
   "noteActualDifficultyLevelMayBeLimited": "Jos asetat vaikeustason korkeaksi, mutta et lisää tekoälyn ajatteluaikaa, todellinen vaikeustaso voi rajoittua pienempään arvoon ajatteluaikarajoituksen vuoksi. Todellinen arvo voi vaihdella koneen suorituskyvyn mukaan.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) on alfabeta-hakualgoritmin muunneltu muoto, jonka tavoitteena on parantaa tehokkuutta käyttämällä uudelleen välihakutuloksia ja käyttämällä hyvää alkuarvausta hakutilan kaventamiseksi.",
-  "@whatIsMtdf": {}
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) on hakualgoritmi parhaan liikkeen löytämiseksi tietyssä paikassa. Se on alfa-beta-algoritmin parannus ja käyttää nolla- tai nollaikkunahakuja varmistaakseen, että liike on huonompi tai ei huonompi kuin päämuunnelman jo turvallinen pistemäärä. PVS keskittyy lupaavimpiin liikkeisiin ja välttää tarpeettomia etsintää alioptimaalisista haaroista, mikä auttaa parantamaan haun tehokkuutta.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Alfa-beta-algoritmi on hakualgoritmi parhaan liikkeen löytämiseksi. Se käyttää minimax-periaatetta ja kahta arvoa, alfaa ja betaa, karsimaan hakupuuta ja lisäämään tehokkuutta. Alfa edustaa vähimmäispistemäärää, jonka tietokone on varma, että se voi saada, kun taas beta edustaa vastustajansa enimmäispistemäärää. Algoritmi auttaa tietokonetta tekemään älykkäitä ja tehokkaita päätöksiä pelissä.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "Tässä pelissä toisen pelaajan on helpompi voittaa kuin ensimmäisellä pelaajalla.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Ihmiskokemuksen mukaan jos yrität voittaa, häviät. Pyri sen sijaan tasapeliin ja vältä pelin häviämistä. Tarkkaile vastustajaasi ja houkuttele hellästi asentoon, jossa he voivat tehdä virheitä. Kun he osoittavat heikkoutta, tartu tilaisuuteen ja työnnä hellästi voittoon. Tällä tavalla voit voittaa pelin.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Passiivisen vaihtoehdon ottaminen käyttöön saa tekoälyn rentoutumaan, kun sillä on asemassa etua, sen sijaan, että se yrittäisi aggressiivisesti voittaa mahdollisimman nopeasti.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Jos tekoäly ottaa huomioon nappuloidensa liikkuvuuden, se ei ainoastaan pyri vangitsemaan vastustajan nappuloita mahdollisimman nopeasti, vaan myös harkitsemaan vastustajan liikkeiden estämistä ja estämistä heidän tekemästä samoin.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Tämän vaihtoehdon ottaminen käyttöön lisää pelin satunnaisuutta ja hauskuutta, kun taas sen poistaminen käytöstä voi auttaa tutkimaan tapoja voittaa tekoäly.",
+  "@moveRandomlyDetail": {}
 }

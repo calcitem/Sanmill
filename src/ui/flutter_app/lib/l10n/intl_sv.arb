@@ -1299,5 +1299,19 @@
   "noteActualDifficultyLevelMayBeLimited": "Om du ställer in svårighetsgraden högt men inte ökar AI-tänketiden, kan den faktiska svårighetsgraden begränsas till ett lägre värde på grund av tanketidsbegränsningen. Det faktiska värdet kan variera beroende på maskinens prestanda.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) är en modifierad form av alfa-beta-sökalgoritmen som syftar till att förbättra effektiviteten genom att återanvända mellanliggande sökresultat och använda en bra initial gissning för att begränsa sökutrymmet.",
-  "@whatIsMtdf": {}
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) är en sökalgoritm för att hitta det bästa draget i en given position. Det är en förbättring av alfa-beta-algoritmen och använder noll- eller noll-fönstersökningar för att bekräfta att ett drag är sämre eller inte sämre än en redan säker poäng från huvudvarianten. PVS fokuserar på de mest lovande dragen och undviker onödiga sökningar av suboptimala grenar, vilket hjälper till att förbättra effektiviteten i sökningen.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Alfa-beta-algoritmen är en sökalgoritm för att hitta det bästa draget. Den använder minimax-principen och två värden, alfa och beta, för att beskära sökträdet och öka effektiviteten. Alfa representerar den lägsta poäng som datorn är säker på att den kan få, medan beta representerar den maximala poäng som motståndaren kan få. Algoritmen hjälper datorn att fatta smarta, effektiva beslut i ett spel.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "I det här spelet är det lättare för den andra spelaren att vinna jämfört med den första spelaren.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Enligt mänsklig erfarenhet kommer du att förlora om du försöker vinna. Sikta istället på oavgjort som ditt mål och undvik att förlora matchen. Observera din motståndare och lura dem försiktigt till en position där de kan göra misstag. När de visar svaghet, ta tillfället i akt och tryck försiktigt för vinsten. På så sätt kan du vinna spelet.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Om du aktiverar alternativet Passive kommer AI:n att slappna av när den har en fördel i positionen, snarare än att aggressivt försöka vinna så snabbt som möjligt.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Om AI:n överväger rörligheten hos sina pjäser, kommer den inte bara att sträva efter att fånga motståndarens pjäser så snabbt som möjligt, utan också överväga att blockera motståndarens rörelser och förhindra dem från att göra detsamma.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Om du aktiverar det här alternativet ökar spelets slumpmässighet och nöje samtidigt som du inaktiverar det kan hjälpa till att studera sätt att slå AI.",
+  "@moveRandomlyDetail": {}
 }

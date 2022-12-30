@@ -1299,5 +1299,19 @@
   "noteActualDifficultyLevelMayBeLimited": "Nếu bạn đặt độ khó cao nhưng không tăng thời gian suy nghĩ của AI, thì độ khó thực tế có thể bị giới hạn ở giá trị thấp hơn do hạn chế về thời gian suy nghĩ. Giá trị thực tế có thể thay đổi dựa trên hiệu suất của máy.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) là một dạng đã sửa đổi của thuật toán tìm kiếm alpha-beta nhằm nâng cao hiệu quả bằng cách sử dụng lại các kết quả tìm kiếm trung gian và sử dụng dự đoán ban đầu tốt để thu hẹp không gian tìm kiếm.",
-  "@whatIsMtdf": {}
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) là một thuật toán tìm kiếm để tìm ra nước đi tốt nhất ở một vị trí nhất định. Nó là một cải tiến của thuật toán alpha-beta và sử dụng các tìm kiếm cửa sổ null hoặc zero để xác nhận rằng một nước đi tệ hơn hoặc không tệ hơn một điểm đã an toàn từ biến thể chính. PVS tập trung vào các động thái hứa hẹn nhất và tránh các tìm kiếm không cần thiết của các nhánh dưới mức tối ưu, giúp cải thiện hiệu quả của việc tìm kiếm.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Thuật toán alpha-beta là thuật toán tìm kiếm để tìm nước đi tốt nhất. Nó sử dụng nguyên tắc minimax và hai giá trị, alpha và beta, để cắt bớt cây tìm kiếm và tăng hiệu quả. Alpha đại diện cho số điểm tối thiểu mà máy tính chắc chắn có thể đạt được, trong khi beta đại diện cho số điểm tối đa mà đối thủ của nó có thể đạt được. Thuật toán giúp máy tính đưa ra quyết định thông minh, hiệu quả trong trò chơi.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "Trong trò chơi này, người chơi thứ hai sẽ dễ thắng hơn người chơi thứ nhất.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Theo kinh nghiệm của loài người, nếu bạn cố gắng giành chiến thắng, bạn sẽ thua. Thay vào đó, hãy nhắm đến một trận hòa làm mục tiêu của bạn và tránh thua trò chơi. Quan sát đối thủ của bạn và nhẹ nhàng dụ họ vào vị trí mà họ có thể phạm sai lầm. Khi họ tỏ ra yếu kém, hãy nắm bắt cơ hội và nhẹ nhàng thúc đẩy để giành chiến thắng. Bằng cách này, bạn có thể giành chiến thắng trong trò chơi.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Kích hoạt tùy chọn Bị động sẽ khiến AI thư giãn khi có lợi thế ở vị trí đó, thay vì tích cực cố gắng giành chiến thắng càng nhanh càng tốt.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Nếu AI xem xét tính cơ động của các quân cờ của mình, nó sẽ không chỉ nhằm mục đích bắt quân của đối thủ càng nhanh càng tốt mà còn xem xét việc chặn các chuyển động của đối thủ và ngăn họ làm điều tương tự.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Kích hoạt tùy chọn này làm tăng tính ngẫu nhiên và thú vị của trò chơi trong khi tắt tùy chọn này có thể giúp nghiên cứu các cách đánh bại AI.",
+  "@moveRandomlyDetail": {}
 }

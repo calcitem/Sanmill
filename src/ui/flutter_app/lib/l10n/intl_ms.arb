@@ -1299,5 +1299,19 @@
   "noteActualDifficultyLevelMayBeLimited": "Jika anda menetapkan tahap kesukaran tinggi tetapi tidak meningkatkan masa berfikir AI, tahap kesukaran sebenar mungkin dihadkan kepada nilai yang lebih rendah kerana kekangan masa berfikir. Nilai sebenar mungkin berbeza-beza berdasarkan prestasi mesin.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) ialah bentuk algoritma carian alfa-beta yang diubah suai yang bertujuan untuk meningkatkan kecekapan dengan menggunakan semula hasil carian perantaraan dan menggunakan tekaan awal yang baik untuk mengecilkan ruang carian.",
-  "@whatIsMtdf": {}
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) ialah algoritma carian untuk mencari langkah terbaik dalam kedudukan tertentu. Ia adalah peningkatan algoritma alfa-beta dan menggunakan carian tetingkap nol atau sifar untuk mengesahkan bahawa satu langkah adalah lebih teruk atau tidak lebih teruk daripada skor yang sudah selamat daripada variasi utama. PVS memfokuskan pada langkah yang paling menjanjikan dan mengelakkan carian yang tidak perlu bagi cawangan suboptimum, yang membantu meningkatkan kecekapan carian.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Algoritma alfa-beta ialah algoritma carian untuk mencari langkah terbaik. Ia menggunakan prinsip minimax dan dua nilai, alfa dan beta, untuk memangkas pokok carian dan meningkatkan kecekapan. Alfa mewakili skor minimum yang komputer pasti boleh perolehi, manakala beta mewakili skor maksimum yang boleh diperolehi oleh lawannya. Algoritma membantu komputer membuat keputusan yang bijak dan cekap dalam permainan.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "Dalam permainan ini, lebih mudah untuk pemain kedua untuk menang berbanding dengan pemain pertama.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Mengikut pengalaman manusia, jika anda cuba untuk menang, anda akan kalah. Sebaliknya, sasarkan untuk seri sebagai matlamat anda dan elakkan kalah dalam permainan. Perhatikan lawan anda dan perlahan-lahan tarik mereka ke posisi di mana mereka mungkin membuat kesilapan. Apabila mereka menunjukkan kelemahan, rebut peluang dan tolak perlahan-lahan untuk menang. Dengan cara ini, anda boleh memenangi permainan.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Mendayakan pilihan Pasif akan menyebabkan AI berehat apabila ia mempunyai kelebihan dalam kedudukan, dan bukannya cuba secara agresif untuk menang secepat mungkin.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Jika AI mempertimbangkan mobiliti kepingannya, ia bukan sahaja bertujuan untuk menangkap kepingan lawan secepat mungkin, tetapi juga mempertimbangkan untuk menyekat pergerakan lawan dan menghalang mereka daripada melakukan perkara yang sama.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Mendayakan pilihan ini meningkatkan rawak dan keseronokan permainan sambil melumpuhkannya boleh membantu mengkaji cara untuk mengalahkan AI.",
+  "@moveRandomlyDetail": {}
 }
