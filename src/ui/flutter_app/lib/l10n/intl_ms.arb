@@ -1299,7 +1299,5 @@
   "noteActualDifficultyLevelMayBeLimited": "Jika anda menetapkan tahap kesukaran tinggi tetapi tidak meningkatkan masa berfikir AI, tahap kesukaran sebenar mungkin dihadkan kepada nilai yang lebih rendah kerana kekangan masa berfikir. Nilai sebenar mungkin berbeza-beza berdasarkan prestasi mesin.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) ialah bentuk algoritma carian alfa-beta yang diubah suai yang bertujuan untuk meningkatkan kecekapan dengan menggunakan semula hasil carian perantaraan dan menggunakan tekaan awal yang baik untuk mengecilkan ruang carian.",
-  "@whatIsMtdf": {},
-  "whatIs": "Alfa-beta ialah algoritma carian untuk mencari langkah terbaik. Ia menggunakan prinsip minimax dan dua nilai, alfa dan beta, untuk memangkas pokok carian dan meningkatkan kecekapan. Alfa mewakili skor minimum yang komputer pasti boleh perolehi, manakala beta mewakili skor maksimum yang boleh diperolehi oleh lawannya. Algoritma membantu komputer membuat keputusan yang bijak dan cekap dalam permainan.",
-  "@whatIs": {}
+  "@whatIsMtdf": {}
 }

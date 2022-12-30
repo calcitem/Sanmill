@@ -1299,7 +1299,5 @@
   "noteActualDifficultyLevelMayBeLimited": "Agar siz qiyinchilik darajasini yuqori o'rnatsangiz, lekin AI fikrlash vaqtini oshirmasangiz, fikrlash vaqti cheklanganligi sababli haqiqiy qiyinchilik darajasi pastroq qiymat bilan cheklanishi mumkin. Haqiqiy qiymat mashinaning ishlashiga qarab farq qilishi mumkin.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) alfa-beta qidiruv algoritmining o'zgartirilgan shakli bo'lib, qidiruv natijalarini qayta ishlatish va qidiruv maydonini toraytirish uchun yaxshi dastlabki taxminni qo'llash orqali samaradorlikni oshirishga qaratilgan.",
-  "@whatIsMtdf": {},
-  "whatIs": "Alfa-beta eng yaxshi harakatni topish uchun qidiruv algoritmidir. Qidiruv daraxtini kesish va samaradorlikni oshirish uchun u minimax printsipidan va ikkita qiymatdan, alfa va betadan foydalanadi. Alpha kompyuter olishi mumkin bo'lgan minimal ballni, beta esa raqib olishi mumkin bo'lgan maksimal ballni ifodalaydi. Algoritm kompyuterga o'yinda oqilona va samarali qarorlar qabul qilishga yordam beradi.",
-  "@whatIs": {}
+  "@whatIsMtdf": {}
 }

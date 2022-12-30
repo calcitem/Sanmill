@@ -1299,7 +1299,5 @@
   "noteActualDifficultyLevelMayBeLimited": "Pokud nastavíte vysokou úroveň obtížnosti, ale nezvýšíte dobu přemýšlení AI, může být skutečná úroveň obtížnosti omezena na nižší hodnotu kvůli časovému omezení. Skutečná hodnota se může lišit v závislosti na výkonu stroje.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) je upravená forma vyhledávacího algoritmu alfa-beta, jehož cílem je zlepšit efektivitu opakovaným použitím mezivýsledků vyhledávání a použitím dobrého počátečního odhadu k zúžení prostoru pro vyhledávání.",
-  "@whatIsMtdf": {},
-  "whatIs": "Alfa-beta je vyhledávací algoritmus k nalezení nejlepšího tahu. Využívá princip minimaxu a dvou hodnot, alfa a beta, k ořezávání vyhledávacího stromu a zvýšení efektivity. Alfa představuje minimální skóre, o kterém si je počítač jistý, že může získat, zatímco beta představuje maximální skóre, které může získat jeho soupeř. Algoritmus pomáhá počítači činit chytrá a efektivní rozhodnutí ve hře.",
-  "@whatIs": {}
+  "@whatIsMtdf": {}
 }

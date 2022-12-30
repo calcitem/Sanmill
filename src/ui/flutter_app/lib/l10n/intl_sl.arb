@@ -1299,7 +1299,5 @@
   "noteActualDifficultyLevelMayBeLimited": "Če nastavite visoko težavnostno stopnjo, vendar ne povečate časa za razmišljanje AI, je lahko dejanska težavnostna stopnja omejena na nižjo vrednost zaradi časovne omejitve razmišljanja. Dejanska vrednost se lahko razlikuje glede na delovanje stroja.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) je spremenjena oblika iskalnega algoritma alfa-beta, katerega namen je izboljšati učinkovitost s ponovno uporabo vmesnih rezultatov iskanja in uporabo dobrega začetnega ugibanja za zožitev iskalnega prostora.",
-  "@whatIsMtdf": {},
-  "whatIs": "Alfa-beta je iskalni algoritem za iskanje najboljše poteze. Uporablja načelo minimax in dve vrednosti, alfa in beta, za zmanjšanje iskalnega drevesa in povečanje učinkovitosti. Alfa predstavlja najnižji rezultat, za katerega je računalnik prepričan, da ga lahko dobi, medtem ko beta predstavlja najvišji rezultat, ki ga lahko doseže nasprotnik. Algoritem pomaga računalniku sprejemati pametne in učinkovite odločitve v igri.",
-  "@whatIs": {}
+  "@whatIsMtdf": {}
 }

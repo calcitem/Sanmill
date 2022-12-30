@@ -1299,7 +1299,5 @@
   "noteActualDifficultyLevelMayBeLimited": "Nëse e vendosni nivelin e vështirësisë të lartë, por nuk e rritni kohën e të menduarit të AI, niveli aktual i vështirësisë mund të kufizohet në një vlerë më të ulët për shkak të kufizimit të kohës së të menduarit. Vlera aktuale mund të ndryshojë në bazë të performancës së makinës.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) është një formë e modifikuar e algoritmit alfa-beta të kërkimit që synon të përmirësojë efikasitetin duke ripërdorur rezultatet e ndërmjetme të kërkimit dhe duke përdorur një supozim të mirë fillestar për të ngushtuar hapësirën e kërkimit.",
-  "@whatIsMtdf": {},
-  "whatIs": "Alfa-beta është një algoritëm kërkimi për të gjetur lëvizjen më të mirë. Ai përdor parimin minimax dhe dy vlera, alfa dhe beta, për të krasitur pemën e kërkimit dhe për të rritur efikasitetin. Alfa përfaqëson rezultatin minimal që kompjuteri është i sigurt se mund të marrë, ndërsa beta përfaqëson rezultatin maksimal që mund të marrë kundërshtari i tij. Algoritmi ndihmon kompjuterin të marrë vendime të zgjuara dhe efikase në një lojë.",
-  "@whatIs": {}
+  "@whatIsMtdf": {}
 }

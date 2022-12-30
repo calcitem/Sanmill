@@ -1299,7 +1299,5 @@
   "noteActualDifficultyLevelMayBeLimited": "Jos asetat vaikeustason korkeaksi, mutta et lisää tekoälyn ajatteluaikaa, todellinen vaikeustaso voi rajoittua pienempään arvoon ajatteluaikarajoituksen vuoksi. Todellinen arvo voi vaihdella koneen suorituskyvyn mukaan.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) on alfabeta-hakualgoritmin muunneltu muoto, jonka tavoitteena on parantaa tehokkuutta käyttämällä uudelleen välihakutuloksia ja käyttämällä hyvää alkuarvausta hakutilan kaventamiseksi.",
-  "@whatIsMtdf": {},
-  "whatIs": "Alfa-beta on hakualgoritmi parhaan liikkeen löytämiseksi. Se käyttää minimax-periaatetta ja kahta arvoa, alfaa ja betaa, karsimaan hakupuuta ja lisäämään tehokkuutta. Alfa edustaa vähimmäispistemäärää, jonka tietokone on varma, että se voi saada, kun taas beta edustaa enimmäispistemäärää, jonka vastustaja voi saada. Algoritmi auttaa tietokonetta tekemään älykkäitä ja tehokkaita päätöksiä pelissä.",
-  "@whatIs": {}
+  "@whatIsMtdf": {}
 }

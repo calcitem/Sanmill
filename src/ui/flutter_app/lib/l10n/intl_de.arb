@@ -1299,7 +1299,5 @@
   "noteActualDifficultyLevelMayBeLimited": "Wenn Sie den Schwierigkeitsgrad hoch einstellen, aber die KI-Denkzeit nicht erhöhen, kann der tatsächliche Schwierigkeitsgrad aufgrund der Bedenkzeitbeschränkung auf einen niedrigeren Wert begrenzt werden. Der tatsächliche Wert kann je nach Leistung der Maschine variieren.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) ist eine modifizierte Form des Alpha-Beta-Suchalgorithmus, der darauf abzielt, die Effizienz zu verbessern, indem Zwischenergebnisse wiederverwendet werden und eine gute Anfangsschätzung verwendet wird, um den Suchraum einzugrenzen.",
-  "@whatIsMtdf": {},
-  "whatIs": "Alpha-Beta ist ein Suchalgorithmus, um den besten Zug zu finden. Es verwendet das Minimax-Prinzip und zwei Werte, Alpha und Beta, um den Suchbaum zu beschneiden und die Effizienz zu steigern. Alpha stellt die minimale Punktzahl dar, die der Computer sicher erreichen kann, während Beta die maximale Punktzahl darstellt, die sein Gegner erreichen kann. Der Algorithmus hilft dem Computer, intelligente und effiziente Entscheidungen in einem Spiel zu treffen.",
-  "@whatIs": {}
+  "@whatIsMtdf": {}
 }

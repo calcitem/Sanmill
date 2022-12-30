@@ -1299,7 +1299,5 @@
   "noteActualDifficultyLevelMayBeLimited": "Als u de moeilijkheidsgraad hoog instelt maar de AI-denktijd niet verlengt, kan de werkelijke moeilijkheidsgraad worden beperkt tot een lagere waarde vanwege de beperking van de denktijd. De werkelijke waarde kan variëren op basis van de prestaties van de machine.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) is een gewijzigde vorm van het alfa-bèta-zoekalgoritme dat tot doel heeft de efficiëntie te verbeteren door tussentijdse zoekresultaten te hergebruiken en een goede initiële schatting te gebruiken om de zoekruimte te verkleinen.",
-  "@whatIsMtdf": {},
-  "whatIs": "De alpha-bèta is een zoekalgoritme om de beste zet te vinden. Het gebruikt het minimax-principe en twee waarden, alfa en bèta, om de zoekboom te snoeien en de efficiëntie te verhogen. Alfa staat voor de minimale score die de computer zeker kan behalen, terwijl bèta de maximale score vertegenwoordigt die de tegenstander kan behalen. Het algoritme helpt de computer om slimme, efficiënte beslissingen te nemen in een game.",
-  "@whatIs": {}
+  "@whatIsMtdf": {}
 }

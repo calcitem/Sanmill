@@ -1397,7 +1397,5 @@
   "noteAiThinkingTimeMayNotBePrecise": "Please be aware that the AI thinking time adjustment may not be entirely precise. The actual thinking time may be shorter when the difficulty level is set to a lower value and may be longer when the AI is mid-thought when the time runs out.",
   "@noteAiThinkingTimeMayNotBePrecise": {},
   "noteActualDifficultyLevelMayBeLimited": "If you set the difficulty level high but do not increase the AI thinking time, the actual difficulty level may be limited to a lower value due to the thinking time constraint. The actual value may vary based on the machine's performance.",
-  "@noteActualDifficultyLevelMayBeLimited": {},
-  "whatIs": "The alpha-beta is a search algorithm to find the best move. It uses the minimax principle and two values, alpha and beta, to prune the search tree and increase efficiency. Alpha represents the minimum score the computer is sure it can get, while beta represents the maximum score its opponent can get. The algorithm helps the computer make smart, efficient decisions in a game.",
-  "@whatIs": {}
+  "@noteActualDifficultyLevelMayBeLimited": {}
 }
