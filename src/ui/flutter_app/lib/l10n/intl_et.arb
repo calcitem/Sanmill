@@ -1289,5 +1289,17 @@
   "gotIt": "Sain aru",
   "@gotIt": {},
   "youCanModifyRules": "Mängu reegleid saate muuta reeglite seadetes.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Väärtuse muutmiseks valijas saate kasutada hiire ratast.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI Kui mõtlemisaeg on seatud väärtusele 0, siis mõtlemisel pole ajalimiiti.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Pange tähele, et AI mõtlemisaja reguleerimine ei pruugi olla täiesti täpne. Tegelik mõtlemisaeg võib olla lühem, kui raskusaste on seatud madalamale väärtusele, ja võib olla pikem, kui AI on keskmise mõtteviisiga, kui aeg otsa saab.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Kui seate raskusastme kõrgeks, kuid ei suurenda tehisintellekti mõtlemisaega, võib tegelik raskusaste piirduda mõtlemisaja piirangu tõttu madalama väärtusega. Tegelik väärtus võib olenevalt masina jõudlusest erineda.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) on alfa-beeta otsingualgoritmi muudetud vorm, mille eesmärk on parandada tõhusust, kasutades vahepealseid otsingutulemusi ja kasutades otsinguruumi kitsendamiseks head esialgset oletust.",
+  "@whatIsMtdf": {},
+  "whatIs": "Alfa-beeta on otsingualgoritm parima käigu leidmiseks. See kasutab otsingupuu kärpimiseks ja tõhususe suurendamiseks minimaxi põhimõtet ja kahte väärtust, alfa ja beeta. Alfa esindab minimaalset punktisummat, milleni arvuti on kindel, et ta saab, samas kui beeta esindab maksimaalset punktisummat, mille vastane võib saada. Algoritm aitab arvutil teha mängus nutikaid ja tõhusaid otsuseid.",
+  "@whatIs": {}
 }

@@ -1289,5 +1289,17 @@
   "gotIt": "Fatto",
   "@gotIt": {},
   "youCanModifyRules": "Puoi modificare le regole del gioco nelle impostazioni delle regole.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "È possibile utilizzare la rotellina del mouse per modificare il valore nel selettore.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "Tempo di pensiero AI impostato su 0 significa che non c'è limite di tempo per pensare.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Tieni presente che la regolazione del tempo di pensiero dell'IA potrebbe non essere del tutto precisa. Il tempo di pensiero effettivo può essere più breve quando il livello di difficoltà è impostato su un valore inferiore e può essere più lungo quando l'IA è a metà pensiero allo scadere del tempo.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Se si imposta il livello di difficoltà alto ma non si aumenta il tempo di riflessione dell'IA, il livello di difficoltà effettivo potrebbe essere limitato a un valore inferiore a causa del vincolo del tempo di riflessione. Il valore effettivo può variare in base alle prestazioni della macchina.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) è una forma modificata dell'algoritmo di ricerca alfa-beta che mira a migliorare l'efficienza riutilizzando i risultati di ricerca intermedi e utilizzando una buona ipotesi iniziale per restringere lo spazio di ricerca.",
+  "@whatIsMtdf": {},
+  "whatIs": "L'alpha-beta è un algoritmo di ricerca per trovare la mossa migliore. Utilizza il principio minimax e due valori, alfa e beta, per sfoltire l'albero di ricerca e aumentare l'efficienza. Alpha rappresenta il punteggio minimo che il computer è sicuro di poter ottenere, mentre beta rappresenta il punteggio massimo che il suo avversario può ottenere. L'algoritmo aiuta il computer a prendere decisioni intelligenti ed efficienti in un gioco.",
+  "@whatIs": {}
 }

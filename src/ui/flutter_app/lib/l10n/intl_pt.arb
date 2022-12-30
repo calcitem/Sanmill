@@ -1289,5 +1289,17 @@
   "gotIt": "Entendi",
   "@gotIt": {},
   "youCanModifyRules": "Você pode modificar as regras do jogo nas configurações de regras.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Você pode usar a roda do mouse para alterar o valor no seletor.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "O tempo de pensamento AI definido como 0 significa que não há limite de tempo para pensar.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Esteja ciente de que o ajuste do tempo de pensamento da IA pode não ser totalmente preciso. O tempo real de pensamento pode ser menor quando o nível de dificuldade é definido para um valor mais baixo e pode ser maior quando a IA está no meio do pensamento quando o tempo se esgota.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Se você definir o nível de dificuldade alto, mas não aumentar o tempo de pensamento da IA, o nível de dificuldade real pode ser limitado a um valor mais baixo devido à restrição do tempo de pensamento. O valor real pode variar de acordo com o desempenho da máquina.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) é uma forma modificada do algoritmo de busca alfa-beta que visa melhorar a eficiência reutilizando resultados de busca intermediários e usando uma boa suposição inicial para estreitar o espaço de busca.",
+  "@whatIsMtdf": {},
+  "whatIs": "O alfa-beta é um algoritmo de busca para encontrar a melhor jogada. Ele usa o princípio minimax e dois valores, alfa e beta, para podar a árvore de busca e aumentar a eficiência. Alpha representa a pontuação mínima que o computador tem certeza que pode obter, enquanto beta representa a pontuação máxima que seu oponente pode obter. O algoritmo ajuda o computador a tomar decisões inteligentes e eficientes em um jogo.",
+  "@whatIs": {}
 }

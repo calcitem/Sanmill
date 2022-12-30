@@ -1289,5 +1289,17 @@
   "gotIt": "shvaćam",
   "@gotIt": {},
   "youCanModifyRules": "Pravila igre možete mijenjati u postavkama pravila.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Možete koristiti kotačić miša za promjenu vrijednosti u biraču.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI Vrijeme razmišljanja postavljeno na 0 znači da nema vremenskog ograničenja za razmišljanje.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Imajte na umu da prilagodba vremena razmišljanja umjetne inteligencije možda neće biti sasvim precizna. Stvarno vrijeme razmišljanja može biti kraće kada je razina težine postavljena na nižu vrijednost i može biti duže kada je AI u fazi razmišljanja kada vrijeme istekne.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Ako postavite visoku razinu težine, ali ne povećate vrijeme AI razmišljanja, stvarna razina težine može biti ograničena na nižu vrijednost zbog vremenskog ograničenja razmišljanja. Stvarna vrijednost može varirati ovisno o performansama stroja.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) je modificirani oblik alfa-beta algoritma pretraživanja koji ima za cilj poboljšati učinkovitost ponovnim korištenjem posrednih rezultata pretraživanja i korištenjem dobrog početnog pogađanja za sužavanje prostora pretraživanja.",
+  "@whatIsMtdf": {},
+  "whatIs": "Alfa-beta je algoritam pretraživanja za pronalaženje najboljeg poteza. Koristi minimax princip i dvije vrijednosti, alfa i beta, za smanjenje stabla pretraživanja i povećanje učinkovitosti. Alpha predstavlja minimalni rezultat za koji je računalo sigurno da može dobiti, dok beta predstavlja maksimalni rezultat koji njegov protivnik može dobiti. Algoritam pomaže računalu da donosi pametne i učinkovite odluke u igri.",
+  "@whatIs": {}
 }

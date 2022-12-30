@@ -1289,5 +1289,17 @@
   "gotIt": "Har det",
   "@gotIt": {},
   "youCanModifyRules": "Du kan endre spillereglene i regelinnstillingene.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Du kan bruke musehjulet til å endre verdien i velgeren.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI Tenketid satt til 0 betyr at det ikke er noen tidsbegrensning for å tenke.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Vær oppmerksom på at AI-tenkningstidsjusteringen kanskje ikke er helt presis. Den faktiske tenketiden kan være kortere når vanskelighetsgraden er satt til en lavere verdi og kan være lengre når AI-en er midt i tanken når tiden renner ut.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Hvis du setter vanskelighetsnivået høyt, men ikke øker AI-tenketiden, kan det faktiske vanskelighetsnivået begrenses til en lavere verdi på grunn av tenketidsbegrensningen. Den faktiske verdien kan variere basert på maskinens ytelse.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) er en modifisert form av alfa-beta-søkealgoritmen som har som mål å forbedre effektiviteten ved å gjenbruke mellomliggende søkeresultater og bruke en god innledende gjetning for å begrense søkeområdet.",
+  "@whatIsMtdf": {},
+  "whatIs": "Alfa-beta er en søkealgoritme for å finne det beste trekket. Den bruker minimax-prinsippet og to verdier, alfa og beta, for å beskjære søketreet og øke effektiviteten. Alfa representerer den minste poengsummen datamaskinen er sikker på at den kan få, mens beta representerer den maksimale poengsummen motstanderen kan få. Algoritmen hjelper datamaskinen med å ta smarte, effektive avgjørelser i et spill.",
+  "@whatIs": {}
 }

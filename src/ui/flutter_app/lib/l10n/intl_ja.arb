@@ -1289,5 +1289,17 @@
   "gotIt": "とった",
   "@gotIt": {},
   "youCanModifyRules": "ルール設定でゲームのルールを変更できます。",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "マウス ホイールを使用して、ピッカーの値を変更できます。",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI 思考時間を 0 に設定すると、思考の時間制限がなくなります。",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "AIの思考時間の調整は完全に正確ではない可能性があることに注意してください。実際の思考時間は、難易度を低く設定すると短くなり、時間切れでAIが思考中の場合は長くなる場合があります。",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "難易度を高く設定してもAIの思考時間を増やさないと、思考時間の制約により、実際の難易度は低い値に制限される場合があります。実際の値は、マシンのパフォーマンスによって異なる場合があります。",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) は、中間検索結果を再利用し、適切な初期推定を使用して検索スペースを狭めることによって効率を向上させることを目的とした、アルファ ベータ検索アルゴリズムの修正された形式です。",
+  "@whatIsMtdf": {},
+  "whatIs": "alpha-beta は、最適な動きを見つけるための検索アルゴリズムです。これは、ミニマックスの原理と 2 つの値 (アルファとベータ) を使用して、検索ツリーを剪定し、効率を高めます。アルファはコンピューターが獲得できると確信している最小スコアを表し、ベータは対戦相手が獲得できる最大スコアを表します。このアルゴリズムは、コンピューターがゲームでスマートで効率的な決定を下すのに役立ちます。",
+  "@whatIs": {}
 }

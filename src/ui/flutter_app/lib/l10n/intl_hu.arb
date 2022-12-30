@@ -1289,5 +1289,17 @@
   "gotIt": "Megvan",
   "@gotIt": {},
   "youCanModifyRules": "A játékszabályokat a szabálybeállításokban módosíthatja.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Az egérgörgővel módosíthatja az értéket a kiválasztóban.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "A 0-ra beállított AI gondolkodási idő azt jelenti, hogy a gondolkodásnak nincs időkorlátja.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Kérjük, vegye figyelembe, hogy az AI gondolkodási idő beállítása nem feltétlenül teljesen pontos. A tényleges gondolkodási idő rövidebb lehet, ha a nehézségi szint alacsonyabb értékre van állítva, és hosszabb lehet, ha az AI középen gondolkodik, amikor lejár az idő.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Ha magasra állítja a nehézségi szintet, de nem növeli az AI gondolkodási idejét, a tényleges nehézségi szint alacsonyabb értékre korlátozódhat a gondolkodási idő korlátja miatt. A tényleges érték a gép teljesítményétől függően változhat.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "Az MTD(f) az alfa-béta keresési algoritmus egy módosított formája, amelynek célja a hatékonyság javítása a közbenső keresési eredmények újrafelhasználásával és egy jó kezdeti találgatással a keresési tér szűkítésére.",
+  "@whatIsMtdf": {},
+  "whatIs": "Az alfa-béta egy keresési algoritmus a legjobb lépés megtalálásához. A minimax elvet és két értéket, az alfa és a béta értéket használja a keresési fa metszéséhez és a hatékonyság növeléséhez. Az alfa azt a minimális pontszámot jelöli, amelyet a számítógép biztosan el tud érni, míg a béta azt a maximális pontszámot jelenti, amelyet az ellenfél elérhet. Az algoritmus segít a számítógépnek okos, hatékony döntések meghozatalában a játék során.",
+  "@whatIs": {}
 }

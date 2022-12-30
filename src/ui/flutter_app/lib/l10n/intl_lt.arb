@@ -1289,5 +1289,17 @@
   "gotIt": "Supratau",
   "@gotIt": {},
   "youCanModifyRules": "Žaidimo taisykles galite keisti taisyklių nustatymuose.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Galite naudoti pelės ratuką, norėdami pakeisti rinkiklio vertę.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI Jei mąstymo laikas nustatytas į 0, tai reiškia, kad mąstymui nėra laiko apribojimų.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Atminkite, kad AI mąstymo laiko koregavimas gali būti ne visai tikslus. Tikrasis mąstymo laikas gali būti trumpesnis, kai sunkumo lygis nustatytas į mažesnę reikšmę, ir gali būti ilgesnis, kai AI yra vidutinio mąstymo, kai laikas baigiasi.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Jei nustatysite aukštą sudėtingumo lygį, bet nepadidinsite AI mąstymo laiko, tikrasis sunkumo lygis gali būti apribotas iki mažesnės vertės dėl mąstymo laiko apribojimo. Tikroji vertė gali skirtis priklausomai nuo mašinos veikimo.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) yra modifikuota alfa-beta paieškos algoritmo forma, kuria siekiama pagerinti efektyvumą pakartotinai naudojant tarpinius paieškos rezultatus ir naudojant gerą pradinį spėjimą susiaurinti paieškos erdvę.",
+  "@whatIsMtdf": {},
+  "whatIs": "Alfa-beta yra paieškos algoritmas, leidžiantis rasti geriausią žingsnį. Jis naudoja minimalaus maksimalaus principą ir dvi vertes – alfa ir beta, kad apkarpytų paieškos medį ir padidintų efektyvumą. Alfa reiškia mažiausią balą, kuriuo kompiuteris yra įsitikinęs, kad gali gauti, o beta – didžiausią rezultatą, kurį gali gauti jo priešininkas. Algoritmas padeda kompiuteriui priimti protingus ir efektyvius žaidimo sprendimus.",
+  "@whatIs": {}
 }

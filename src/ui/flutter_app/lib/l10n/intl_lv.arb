@@ -1289,5 +1289,17 @@
   "gotIt": "Sapratu",
   "@gotIt": {},
   "youCanModifyRules": "Noteikumu iestatījumos varat mainīt spēles noteikumus.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Varat izmantot peles ritenīti, lai mainītu atlasītāja vērtību.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI Domāšanas laiks, kas iestatīts uz 0, nozīmē, ka domāšanai nav laika ierobežojumu.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Lūdzu, ņemiet vērā, ka AI domāšanas laika pielāgošana var nebūt pilnīgi precīza. Faktiskais domāšanas laiks var būt īsāks, ja grūtības līmenis ir iestatīts uz zemāku vērtību, un var būt garāks, ja AI ir vidējas domāšanas laiks, kad laiks beidzas.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Ja iestatāt augstu grūtības pakāpi, bet nepalielināt AI domāšanas laiku, domāšanas laika ierobežojuma dēļ faktiskais grūtības līmenis var būt ierobežots līdz zemākam. Faktiskā vērtība var atšķirties atkarībā no iekārtas veiktspējas.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) ir alfa-beta meklēšanas algoritma modificēts veids, kura mērķis ir uzlabot efektivitāti, atkārtoti izmantojot starpposma meklēšanas rezultātus un izmantojot labu sākotnējo minējumu, lai sašaurinātu meklēšanas vietu.",
+  "@whatIsMtdf": {},
+  "whatIs": "Alfa-beta ir meklēšanas algoritms, lai atrastu labāko kustību. Tas izmanto minimax principu un divas vērtības — alfa un beta, lai apgrieztu meklēšanas koku un palielinātu efektivitāti. Alfa ir minimālais rezultāts, par kuru dators ir pārliecināts, ka tas var iegūt, bet beta ir maksimālais rezultāts, ko var iegūt pretinieks. Algoritms palīdz datoram pieņemt gudrus un efektīvus lēmumus spēlē.",
+  "@whatIs": {}
 }

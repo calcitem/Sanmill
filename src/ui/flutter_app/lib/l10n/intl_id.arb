@@ -1289,5 +1289,17 @@
   "gotIt": "Mengerti",
   "@gotIt": {},
   "youCanModifyRules": "Anda dapat mengubah aturan permainan di pengaturan aturan.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Anda dapat menggunakan roda tetikus untuk mengubah nilai di pemilih.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "Waktu berpikir AI diatur ke 0 berarti tidak ada batasan waktu untuk berpikir.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Perlu diketahui bahwa penyesuaian waktu berpikir AI mungkin tidak sepenuhnya tepat. Waktu berpikir yang sebenarnya mungkin lebih pendek saat tingkat kesulitan diatur ke nilai yang lebih rendah dan mungkin lebih lama saat AI sedang berpikir saat waktu habis.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Jika Anda menyetel tingkat kesulitan tinggi tetapi tidak menambah waktu berpikir AI, tingkat kesulitan sebenarnya mungkin dibatasi ke nilai yang lebih rendah karena batasan waktu berpikir. Nilai sebenarnya dapat bervariasi berdasarkan performa mesin.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) adalah bentuk modifikasi dari algoritme pencarian alfa-beta yang bertujuan untuk meningkatkan efisiensi dengan menggunakan kembali hasil pencarian antara dan menggunakan tebakan awal yang baik untuk mempersempit ruang pencarian.",
+  "@whatIsMtdf": {},
+  "whatIs": "Alfa-beta adalah algoritma pencarian untuk menemukan langkah terbaik. Ia menggunakan prinsip minimax dan dua nilai, alfa dan beta, untuk memangkas pohon pencarian dan meningkatkan efisiensi. Alpha mewakili skor minimum yang bisa didapat komputer, sedangkan beta mewakili skor maksimum yang bisa didapat lawannya. Algoritme membantu komputer membuat keputusan yang cerdas dan efisien dalam sebuah game.",
+  "@whatIs": {}
 }

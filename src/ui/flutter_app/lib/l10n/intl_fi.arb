@@ -1289,5 +1289,17 @@
   "gotIt": "Sain sen",
   "@gotIt": {},
   "youCanModifyRules": "Voit muokata pelin sääntöjä sääntöasetuksissa.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Voit muuttaa arvoa poimijassa hiiren rullalla.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI Ajatteluajaksi asetettu 0 tarkoittaa, että ajattelulle ei ole aikarajaa.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Huomaa, että tekoälyn ajatteluajan säätö ei välttämättä ole täysin tarkka. Todellinen ajatteluaika voi olla lyhyempi, kun vaikeustaso on asetettu pienemmälle arvolle, ja voi olla pidempi, kun tekoäly on puoliajattelu, kun aika loppuu.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Jos asetat vaikeustason korkeaksi, mutta et lisää tekoälyn ajatteluaikaa, todellinen vaikeustaso voi rajoittua pienempään arvoon ajatteluaikarajoituksen vuoksi. Todellinen arvo voi vaihdella koneen suorituskyvyn mukaan.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) on alfabeta-hakualgoritmin muunneltu muoto, jonka tavoitteena on parantaa tehokkuutta käyttämällä uudelleen välihakutuloksia ja käyttämällä hyvää alkuarvausta hakutilan kaventamiseksi.",
+  "@whatIsMtdf": {},
+  "whatIs": "Alfa-beta on hakualgoritmi parhaan liikkeen löytämiseksi. Se käyttää minimax-periaatetta ja kahta arvoa, alfaa ja betaa, karsimaan hakupuuta ja lisäämään tehokkuutta. Alfa edustaa vähimmäispistemäärää, jonka tietokone on varma, että se voi saada, kun taas beta edustaa enimmäispistemäärää, jonka vastustaja voi saada. Algoritmi auttaa tietokonetta tekemään älykkäitä ja tehokkaita päätöksiä pelissä.",
+  "@whatIs": {}
 }
