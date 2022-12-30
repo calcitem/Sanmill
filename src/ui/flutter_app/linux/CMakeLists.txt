@@ -1,6 +1,6 @@
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.10)
-project(runner LANGUAGES CXX)
+project(sanmill LANGUAGES CXX)
 
 option(ENABLE_ASAN "Enable AddressSanitizer" OFF)
 option(ENABLE_MSAN "Enable MemorySanitizer" OFF)
@@ -9,10 +9,10 @@ option(ENABLE_UBSAN "Enable UndefinedBehaviorSanitizer" OFF)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
-set(BINARY_NAME "flutter_app")
+set(BINARY_NAME "mill")
 # The unique GTK application identifier for this application. See:
 # https://wiki.gnome.org/HowDoI/ChooseApplicationID
-set(APPLICATION_ID "com.calcitem.flutter_app")
+set(APPLICATION_ID "com.calcitem.sanmill")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-project(Mill LANGUAGES CXX)
+project(sanmill LANGUAGES CXX)
 
-set(BINARY_NAME "Mill")
+set(BINARY_NAME "mill")
 
 cmake_policy(SET CMP0063 NEW)
 
