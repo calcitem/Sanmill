@@ -1299,7 +1299,5 @@
   "noteActualDifficultyLevelMayBeLimited": "Jei nustatysite aukštą sudėtingumo lygį, bet nepadidinsite AI mąstymo laiko, tikrasis sunkumo lygis gali būti apribotas iki mažesnės vertės dėl mąstymo laiko apribojimo. Tikroji vertė gali skirtis priklausomai nuo mašinos veikimo.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) yra modifikuota alfa-beta paieškos algoritmo forma, kuria siekiama pagerinti efektyvumą pakartotinai naudojant tarpinius paieškos rezultatus ir naudojant gerą pradinį spėjimą susiaurinti paieškos erdvę.",
-  "@whatIsMtdf": {},
-  "whatIs": "Alfa-beta yra paieškos algoritmas, leidžiantis rasti geriausią žingsnį. Jis naudoja minimalaus maksimalaus principą ir dvi vertes – alfa ir beta, kad apkarpytų paieškos medį ir padidintų efektyvumą. Alfa reiškia mažiausią balą, kuriuo kompiuteris yra įsitikinęs, kad gali gauti, o beta – didžiausią rezultatą, kurį gali gauti jo priešininkas. Algoritmas padeda kompiuteriui priimti protingus ir efektyvius žaidimo sprendimus.",
-  "@whatIs": {}
+  "@whatIsMtdf": {}
 }

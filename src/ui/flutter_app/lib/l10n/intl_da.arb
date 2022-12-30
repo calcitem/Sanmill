@@ -1299,7 +1299,5 @@
   "noteActualDifficultyLevelMayBeLimited": "Hvis du indstiller sværhedsgraden højt, men ikke øger AI-tænketiden, kan det faktiske sværhedsgrad være begrænset til en lavere værdi på grund af tænketidsbegrænsningen. Den faktiske værdi kan variere baseret på maskinens ydeevne.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) er en modificeret form af alfa-beta-søgealgoritmen, der har til formål at forbedre effektiviteten ved at genbruge mellemliggende søgeresultater og bruge et godt indledende gæt til at indsnævre søgerummet.",
-  "@whatIsMtdf": {},
-  "whatIs": "Alfa-beta er en søgealgoritme til at finde det bedste træk. Den bruger minimax-princippet og to værdier, alfa og beta, til at beskære søgetræet og øge effektiviteten. Alfa repræsenterer den mindste score, som computeren er sikker på, den kan få, mens beta repræsenterer den maksimale score, dens modstander kan få. Algoritmen hjælper computeren med at træffe smarte, effektive beslutninger i et spil.",
-  "@whatIs": {}
+  "@whatIsMtdf": {}
 }

@@ -1299,7 +1299,5 @@
   "noteActualDifficultyLevelMayBeLimited": "如果你把難度設置的很高，但不增加AI的思考時間，實際的難度可能會因為思考時間的限製而被限制在一個較低的值。實際值可能因機器性能而異。",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) 是 alpha-beta 搜索算法的一種改進形式，旨在通過重用中間搜索結果和使用良好的初始猜測來縮小搜索空間來提高效率。",
-  "@whatIsMtdf": {},
-  "whatIs": "alpha-beta 是一種尋找最佳著法的搜索算法。它使用 minimax 原則和兩個值 alpha 和 beta 來修剪搜索樹並提高效率。 Alpha 代表計算機確定能得到的最低分數，而 beta 代表它的對手能得到的最大分數。該算法幫助計算機在遊戲中做出明智、高效的決策。",
-  "@whatIs": {}
+  "@whatIsMtdf": {}
 }

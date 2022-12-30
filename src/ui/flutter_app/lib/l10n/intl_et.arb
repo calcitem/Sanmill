@@ -1299,7 +1299,5 @@
   "noteActualDifficultyLevelMayBeLimited": "Kui seate raskusastme kõrgeks, kuid ei suurenda tehisintellekti mõtlemisaega, võib tegelik raskusaste piirduda mõtlemisaja piirangu tõttu madalama väärtusega. Tegelik väärtus võib olenevalt masina jõudlusest erineda.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) on alfa-beeta otsingualgoritmi muudetud vorm, mille eesmärk on parandada tõhusust, kasutades vahepealseid otsingutulemusi ja kasutades otsinguruumi kitsendamiseks head esialgset oletust.",
-  "@whatIsMtdf": {},
-  "whatIs": "Alfa-beeta on otsingualgoritm parima käigu leidmiseks. See kasutab otsingupuu kärpimiseks ja tõhususe suurendamiseks minimaxi põhimõtet ja kahte väärtust, alfa ja beeta. Alfa esindab minimaalset punktisummat, milleni arvuti on kindel, et ta saab, samas kui beeta esindab maksimaalset punktisummat, mille vastane võib saada. Algoritm aitab arvutil teha mängus nutikaid ja tõhusaid otsuseid.",
-  "@whatIs": {}
+  "@whatIsMtdf": {}
 }

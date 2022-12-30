@@ -1299,7 +1299,5 @@
   "noteActualDifficultyLevelMayBeLimited": "Si vous définissez un niveau de difficulté élevé mais n'augmentez pas le temps de réflexion de l'IA, le niveau de difficulté réel peut être limité à une valeur inférieure en raison de la contrainte de temps de réflexion. La valeur réelle peut varier en fonction des performances de la machine.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) est une forme modifiée de l'algorithme de recherche alpha-bêta qui vise à améliorer l'efficacité en réutilisant les résultats de recherche intermédiaires et en utilisant une bonne estimation initiale pour réduire l'espace de recherche.",
-  "@whatIsMtdf": {},
-  "whatIs": "L'alpha-beta est un algorithme de recherche pour trouver le meilleur coup. Il utilise le principe minimax et deux valeurs, alpha et bêta, pour élaguer l'arbre de recherche et augmenter l'efficacité. Alpha représente le score minimum que l'ordinateur est sûr de pouvoir obtenir, tandis que bêta représente le score maximum que son adversaire peut obtenir. L'algorithme aide l'ordinateur à prendre des décisions intelligentes et efficaces dans un jeu.",
-  "@whatIs": {}
+  "@whatIsMtdf": {}
 }
