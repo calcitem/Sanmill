@@ -1310,7 +1310,7 @@
   "@drawOnTheHumanExperienceDetail": {},
   "passiveDetail": "Die Aktivierung der passiven Option bewirkt, dass sich die KI entspannt, wenn sie einen Vorteil in der Position hat, anstatt aggressiv zu versuchen, so schnell wie möglich zu gewinnen.",
   "@passiveDetail": {},
-  "considerMobilityOfPiecesDetail": "Wenn die KI die Beweglichkeit ihrer Figuren berücksichtigt, wird sie nicht nur darauf abzielen, die gegnerischen Figuren so schnell wie möglich zu erobern, sondern auch erwägen, die Bewegungen des Gegners zu blockieren und ihn daran zu hindern, dasselbe zu tun.",
+  "considerMobilityOfPiecesDetail": "Wenn die KI die Beweglichkeit ihrer Steine berücksichtigt, wird sie nicht nur versuchen, die Steine des Gegners so schnell wie möglich zu erobern, sondern auch die Bewegungen des Gegners blockieren und verhindern, dass dieser das Gleiche tut.",
   "@considerMobilityOfPiecesDetail": {},
   "moveRandomlyDetail": "Das Aktivieren dieser Option erhöht die Zufälligkeit und den Spaß des Spiels, während das Deaktivieren dazu beitragen kann, Wege zu finden, die KI zu schlagen.",
   "@moveRandomlyDetail": {}
