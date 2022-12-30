@@ -148,6 +148,7 @@ static gboolean my_application_local_command_line(GApplication *application,
 static void my_application_dispose(GObject *object)
 {
     if (engine != nullptr) {
+        engine->shutdown();
         delete engine;
         engine = nullptr;
     }
