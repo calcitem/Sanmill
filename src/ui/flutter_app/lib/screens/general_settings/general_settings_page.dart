@@ -84,6 +84,21 @@ class GeneralSettingsPage extends StatelessWidget {
       DB().generalSettings =
           generalSettings.copyWith(searchAlgorithm: searchAlgorithm);
 
+      switch (searchAlgorithm) {
+        case SearchAlgorithm.alphaBeta:
+          rootScaffoldMessengerKey.currentState!
+              .showSnackBarClear(S.of(context).whatIsAlphaBeta);
+          break;
+        case SearchAlgorithm.pvs:
+          rootScaffoldMessengerKey.currentState!
+              .showSnackBarClear(S.of(context).whatIsPvs);
+          break;
+        case SearchAlgorithm.mtdf:
+          rootScaffoldMessengerKey.currentState!
+              .showSnackBarClear(S.of(context).whatIsMtdf);
+          break;
+      }
+
       logger.v("$_tag algorithm = $searchAlgorithm");
     }
 
@@ -216,7 +231,13 @@ class GeneralSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile.switchTile(
               value: !generalSettings.aiMovesFirst,
-              onChanged: (bool val) => _setWhoMovesFirst(generalSettings, !val),
+              onChanged: (bool val) {
+                _setWhoMovesFirst(generalSettings, !val);
+                if (val == false) {
+                  rootScaffoldMessengerKey.currentState!
+                      .showSnackBarClear(S.of(context).firstMoveDetail);
+                }
+              },
               titleString: generalSettings.aiMovesFirst
                   ? S.of(context).ai
                   : S.of(context).human,
@@ -247,25 +268,42 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
             SettingsListTile.switchTile(
               value: generalSettings.drawOnHumanExperience,
-              onChanged: (bool val) =>
-                  _setDrawOnHumanExperience(generalSettings, val),
+              onChanged: (bool val) {
+                _setDrawOnHumanExperience(generalSettings, val);
+                if (val == true) {
+                  rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                      S.of(context).drawOnTheHumanExperienceDetail);
+                }
+              },
               titleString: S.of(context).drawOnHumanExperience,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.considerMobility,
-              onChanged: (bool val) =>
-                  _setConsiderMobility(generalSettings, val),
+              onChanged: (bool val) {
+                _setConsiderMobility(generalSettings, val);
+                rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                    S.of(context).considerMobilityOfPiecesDetail);
+              },
               titleString: S.of(context).considerMobility,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.aiIsLazy,
-              onChanged: (bool val) => _setAiIsLazy(generalSettings, val),
+              onChanged: (bool val) {
+                _setAiIsLazy(generalSettings, val);
+                if (val == true) {
+                  rootScaffoldMessengerKey.currentState!
+                      .showSnackBarClear(S.of(context).passiveDetail);
+                }
+              },
               titleString: S.of(context).passive,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.shufflingEnabled,
-              onChanged: (bool val) =>
-                  _setShufflingEnabled(generalSettings, val),
+              onChanged: (bool val) {
+                _setShufflingEnabled(generalSettings, val);
+                rootScaffoldMessengerKey.currentState!
+                    .showSnackBarClear(S.of(context).moveRandomlyDetail);
+              },
               titleString: S.of(context).shufflingEnabled,
             ),
           ],

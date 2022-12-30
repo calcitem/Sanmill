@@ -75,7 +75,16 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
                   S.of(context).cancel,
                   textScaleFactor: DB().displaySettings.fontScale,
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  Navigator.of(context).pop();
+
+                  if (Platform.isWindows ||
+                      Platform.isLinux ||
+                      Platform.isMacOS) {
+                    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                        S.of(context).youCanUseMouseWheelInPicker);
+                  }
+                },
               ),
             TextButton(
               child: Text(
@@ -85,6 +94,13 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
               onPressed: () {
                 DB().generalSettings =
                     generalSettings.copyWith(skillLevel: _level);
+
+                if (DB().generalSettings.skillLevel > 15 &&
+                    DB().generalSettings.moveTime < 10) {
+                  rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                      S.of(context).noteActualDifficultyLevelMayBeLimited);
+                }
+
                 Navigator.of(context).pop();
               },
             ),

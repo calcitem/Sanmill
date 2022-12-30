@@ -40,6 +40,14 @@ class _MoveTimeSlider extends StatelessWidget {
               DB().generalSettings =
                   generalSettings.copyWith(moveTime: value.toInt());
 
+              if (DB().generalSettings.moveTime == 0) {
+                rootScaffoldMessengerKey.currentState!
+                    .showSnackBarClear(S.of(context).noTimeLimitForThinking);
+              } else {
+                rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                    S.of(context).noteAiThinkingTimeMayNotBePrecise);
+              }
+
               logger.v("Move time Slider value: $value");
             },
           );
