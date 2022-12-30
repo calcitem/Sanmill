@@ -68,9 +68,7 @@ Thread::~Thread()
 
     exit = true;
     start_searching();
-    if (stdThread.joinable()) {
-        stdThread.join();
-    }
+    stdThread.join();
 }
 
 /// Thread::clear() reset histories, usually before a new game
