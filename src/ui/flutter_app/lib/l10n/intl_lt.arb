@@ -1299,5 +1299,19 @@
   "noteActualDifficultyLevelMayBeLimited": "Jei nustatysite aukštą sudėtingumo lygį, bet nepadidinsite AI mąstymo laiko, tikrasis sunkumo lygis gali būti apribotas iki mažesnės vertės dėl mąstymo laiko apribojimo. Tikroji vertė gali skirtis priklausomai nuo mašinos veikimo.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) yra modifikuota alfa-beta paieškos algoritmo forma, kuria siekiama pagerinti efektyvumą pakartotinai naudojant tarpinius paieškos rezultatus ir naudojant gerą pradinį spėjimą susiaurinti paieškos erdvę.",
-  "@whatIsMtdf": {}
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) yra paieškos algoritmas, leidžiantis rasti geriausią žingsnį tam tikroje pozicijoje. Tai alfa-beta algoritmo patobulinimas ir naudoja nulio arba nulio langų paieškas, kad patvirtintų, jog žingsnis yra blogesnis ar ne blogesnis nei jau saugus pagrindinio varianto balas. PVS orientuojasi į perspektyviausius žingsnius ir vengia nereikalingų neoptimalių šakų paieškų, o tai padeda pagerinti paieškos efektyvumą.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Alfa-beta algoritmas yra paieškos algoritmas, skirtas rasti geriausią žingsnį. Jis naudoja minimalaus maksimalaus principą ir dvi vertes – alfa ir beta, kad apkarpytų paieškos medį ir padidintų efektyvumą. Alfa reiškia mažiausią balą, kuriuo kompiuteris yra įsitikinęs, kad gali gauti, o beta – didžiausią rezultatą, kurį gali gauti jo priešininkas. Algoritmas padeda kompiuteriui priimti protingus ir efektyvius žaidimo sprendimus.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "Šiame žaidime antrajam žaidėjui lengviau laimėti nei pirmajam.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Remiantis žmonių patirtimi, jei bandysi laimėti, pralaimėsi. Vietoj to siekite lygiosiomis ir nepralaimėkite žaidimo. Stebėkite savo priešininką ir švelniai pritraukite jį į tokią padėtį, kurioje jie gali klysti. Kai jie parodo silpnumą, pasinaudokite proga ir švelniai stumkite pergalę. Tokiu būdu galite laimėti žaidimą.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Įjungus pasyvų parinktį AI atsipalaiduos, kai turės pranašumą pozicijoje, o ne agresyviai bandys laimėti kuo greičiau.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Jei dirbtinis intelektas atsižvelgs į savo figūrų mobilumą, jis ne tik sieks kuo greičiau užfiksuoti priešininko figūras, bet ir apsvarstys galimybę blokuoti priešininko judesius ir neleisti jiems daryti to paties.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Įjungus šią parinktį padidėja žaidimo atsitiktinumas ir linksmumas, o išjungus ją galima ištirti būdus, kaip įveikti AI.",
+  "@moveRandomlyDetail": {}
 }

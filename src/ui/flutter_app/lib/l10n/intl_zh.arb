@@ -1299,5 +1299,19 @@
   "noteActualDifficultyLevelMayBeLimited": "如果你把难度设置的很高，但不增加AI的思考时间，实际的难度可能会因为思考时间的限制而被限制在一个较低的值。实际值可能因机器性能而异。",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) 是 alpha-beta 搜索算法的一种改进形式，旨在通过重用中间搜索结果和使用良好的初始猜测来缩小搜索空间来提高效率。",
-  "@whatIsMtdf": {}
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS（Principal Variation Search）是一种搜索算法，用于在给定位置找到最佳着法。它是对 alpha-beta 算法的增强，并使用空或零窗口搜索来确认移动是否比主要变化的安全分数更差或不差。 PVS 关注最有前途的动作，避免不必要的次优分支搜索，有助于提高搜索效率。",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "alpha-beta 算法是一种寻找最佳着法的搜索算法。它使用 minimax 原则和两个值 alpha 和 beta 来修剪搜索树并提高效率。 Alpha 代表计算机确定能得到的最低分数，而 beta 代表它的对手能得到的最大分数。该算法帮助计算机在游戏中做出明智、高效的决策。",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "在这个游戏中，与第一个玩家相比，第二个玩家更容易获胜。",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "根据人类的经验，如果你想赢，你就会输。相反，以平局为目标，避免输掉比赛。观察你的对手并轻轻地将他们引诱到他们可能犯错的位置。当他们示弱时，抓住机会，轻轻推动胜利。这样，您就可以赢得比赛。",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "启用被动选项将导致 AI 在处于有利位置时放松，而不是积极尝试尽快获胜。",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "如果AI考虑到自己棋子的机动性，那么它不仅会以最快的速度吃掉对方的棋子为目标，还会考虑阻挡对方的动作，阻止对方的动作。",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "启用此选项可增加游戏的随机性和趣味性，而禁用此选项可帮助研究打败 AI 的方法。",
+  "@moveRandomlyDetail": {}
 }

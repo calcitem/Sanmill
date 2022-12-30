@@ -1299,5 +1299,19 @@
   "noteActualDifficultyLevelMayBeLimited": "Si vous définissez un niveau de difficulté élevé mais n'augmentez pas le temps de réflexion de l'IA, le niveau de difficulté réel peut être limité à une valeur inférieure en raison de la contrainte de temps de réflexion. La valeur réelle peut varier en fonction des performances de la machine.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) est une forme modifiée de l'algorithme de recherche alpha-bêta qui vise à améliorer l'efficacité en réutilisant les résultats de recherche intermédiaires et en utilisant une bonne estimation initiale pour réduire l'espace de recherche.",
-  "@whatIsMtdf": {}
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) est un algorithme de recherche pour trouver le meilleur coup dans une position donnée. Il s'agit d'une amélioration de l'algorithme alpha-bêta et utilise des recherches de fenêtre nulle ou nulle pour confirmer qu'un mouvement est pire ou pas pire qu'un score déjà sûr de la variation principale. PVS se concentre sur les mouvements les plus prometteurs et évite les recherches inutiles de branches sous-optimales, ce qui contribue à améliorer l'efficacité de la recherche.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "L'algorithme alpha-bêta est un algorithme de recherche pour trouver le meilleur coup. Il utilise le principe minimax et deux valeurs, alpha et bêta, pour élaguer l'arbre de recherche et augmenter l'efficacité. Alpha représente le score minimum que l'ordinateur est sûr de pouvoir obtenir, tandis que bêta représente le score maximum que son adversaire peut obtenir. L'algorithme aide l'ordinateur à prendre des décisions intelligentes et efficaces dans un jeu.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "Dans ce jeu, il est plus facile pour le deuxième joueur de gagner que pour le premier joueur.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Selon l'expérience humaine, si vous essayez de gagner, vous perdrez. Au lieu de cela, visez un match nul comme objectif et évitez de perdre la partie. Observez votre adversaire et attirez-le doucement dans une position où il pourrait faire des erreurs. Quand ils montrent de la faiblesse, saisissez l'opportunité et poussez doucement pour la victoire. De cette façon, vous pouvez gagner la partie.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "L'activation de l'option Passive amènera l'IA à se détendre lorsqu'elle a un avantage dans la position, plutôt que d'essayer agressivement de gagner le plus rapidement possible.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Si l'IA considère la mobilité de ses pièces, elle visera non seulement à capturer les pièces de l'adversaire le plus rapidement possible, mais envisagera également de bloquer les mouvements de l'adversaire et de l'empêcher de faire de même.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "L'activation de cette option augmente le caractère aléatoire et le plaisir du jeu, tandis que la désactiver peut aider à étudier les moyens de battre l'IA.",
+  "@moveRandomlyDetail": {}
 }

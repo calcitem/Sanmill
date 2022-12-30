@@ -1299,5 +1299,19 @@
   "noteActualDifficultyLevelMayBeLimited": "Ako postavite visoku razinu težine, ali ne povećate vrijeme AI razmišljanja, stvarna razina težine može biti ograničena na nižu vrijednost zbog vremenskog ograničenja razmišljanja. Stvarna vrijednost može varirati ovisno o performansama stroja.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) je modificirani oblik alfa-beta algoritma pretraživanja koji ima za cilj poboljšati učinkovitost ponovnim korištenjem posrednih rezultata pretraživanja i korištenjem dobrog početnog pogađanja za sužavanje prostora pretraživanja.",
-  "@whatIsMtdf": {}
+  "@whatIsMtdf": {},
+  "whatIsPvs": "PVS (Principal Variation Search) je algoritam pretraživanja za pronalaženje najboljeg poteza u određenoj poziciji. To je poboljšanje alfa-beta algoritma i koristi nulte ili nulte pretrage prozora za potvrdu da je potez lošiji ili nije lošiji od već sigurnog rezultata iz glavne varijacije. PVS se fokusira na poteze koji najviše obećavaju i izbjegava nepotrebne pretrage suboptimalnih grana, što pomaže u poboljšanju učinkovitosti pretrage.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Alfa-beta algoritam je algoritam pretraživanja za pronalaženje najboljeg poteza. Koristi minimax princip i dvije vrijednosti, alfa i beta, za smanjenje stabla pretraživanja i povećanje učinkovitosti. Alpha predstavlja minimalni rezultat za koji je računalo sigurno da može dobiti, dok beta predstavlja maksimalni rezultat koji njegov protivnik može dobiti. Algoritam pomaže računalu da donosi pametne i učinkovite odluke u igri.",
+  "@whatIsAlphaBeta": {},
+  "firstMoveDetail": "U ovoj igri lakše je pobijediti drugi igrač nego prvi igrač.",
+  "@firstMoveDetail": {},
+  "drawOnTheHumanExperienceDetail": "Prema ljudskom iskustvu, ako pokušate pobijediti, izgubit ćete. Umjesto toga, ciljajte na remi kao svoj cilj i izbjegnite gubitak igre. Promatrajte svog protivnika i nježno ga namamite u poziciju u kojoj bi mogao pogriješiti. Kada pokažu slabost, zgrabite priliku i nježno gurnite za pobjedu. Na taj način možete pobijediti u igri.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "passiveDetail": "Omogućavanje pasivne opcije će uzrokovati da se AI opusti kada ima prednost u poziciji, umjesto da agresivno pokušava pobijediti što je brže moguće.",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "Ako umjetna inteligencija uzme u obzir pokretljivost svojih figura, neće samo nastojati uhvatiti protivničke figure što je brže moguće, već će također razmotriti blokiranje protivničkih pokreta i spriječiti ih da učine isto.",
+  "@considerMobilityOfPiecesDetail": {},
+  "moveRandomlyDetail": "Uključivanje ove opcije povećava nasumičnost i zabavu igre, dok njezino isključivanje može pomoći u proučavanju načina da se pobijedi AI.",
+  "@moveRandomlyDetail": {}
 }
