@@ -36,6 +36,8 @@ echo "OLD_VERSION = $OLD_VERSION"
 MAJOR_NUMBER=`echo $VERSION | cut -d "." -f 1`
 MINOR_NUMBER=`echo $VERSION | cut -d "." -f 2`
 PATCH_NUMBER=`echo $VERSION | cut -d "." -f 3`
+
+echo "Old:"
 echo "MAJOR_NUMBER = $MAJOR_NUMBER"
 echo "MINOR_NUMBER = $MINOR_NUMBER"
 echo "PATCH_NUMBER = $PATCH_NUMBER"
@@ -44,7 +46,21 @@ OLD_PATCH_NUMBER=$PATCH_NUMBER
 echo "OLD_PATCH_NUMBER = $OLD_PATCH_NUMBER"
 
 # 7
-let "PATCH_NUMBER+=1"
+
+if [ "$1" == "x" ]; then
+  let "MAJOR_NUMBER+=1"
+  MINOR_NUMBER=0
+  PATCH_NUMBER=0
+elif [ "$1" == "y" ]; then
+  let "MINOR_NUMBER+=1"
+  PATCH_NUMBER=0
+else
+  let "PATCH_NUMBER+=1"
+fi
+
+echo "New:"
+echo "MAJOR_NUMBER = $MAJOR_NUMBER"
+echo "MINOR_NUMBER = $MINOR_NUMBER"
 echo "PATCH_NUMBER = $PATCH_NUMBER"
 
 # 1.0.7
@@ -97,6 +113,7 @@ $EDITOR $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 git status -s
 git add .
 git commit -m "Sanmill v$NEW_VERSION (${BUILD_NUMBER})" -m "Official release version of Sanmill v$NEW_VERSION" -s
+#exit
 git tag -d v$NEW_VERSION || true
 git tag -m "Sanmill v$NEW_VERSION (${BUILD_NUMBER})" -m "Official release version of Sanmill v$NEW_VERSION" -s v$NEW_VERSION
 git tag -v v$NEW_VERSION
