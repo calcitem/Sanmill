@@ -10,7 +10,7 @@
 *.d
 *autogen*
 
-**/MillGame.dir
+**/mill-pro.dir
 **/.cmake
 
 *.sln

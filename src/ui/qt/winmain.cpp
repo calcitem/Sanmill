@@ -19,7 +19,7 @@
 #include "misc.h"
 #include "position.h"
 
-QString APP_FILENAME_DEFAULT = "MillGame";
+QString APP_FILENAME_DEFAULT = "mill-pro";
 
 #ifdef QT_GUI_LIB
 #include <QCoreApplication>
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
     QTranslator translator;
-    translator.load("millgame-qt_zh_CN");
+    translator.load("mill-pro-qt_zh_CN");
     a.installTranslator(&translator);
     MillGameWindow w;
     w.show();

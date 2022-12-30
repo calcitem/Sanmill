@@ -19,7 +19,7 @@ jobs:
 
       - name: Setup VS
         uses: seanmiddleditch/gha-setup-vsdevenv@master
-        
+
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
         with:
@@ -42,10 +42,10 @@ jobs:
         run: |
           cd src/ui/qt
           cmake . -DCMAKE_PREFIX_PATH="D:\\a\\Sanmill\\Qt\\5.15.2\\msvc2019_64"
-          cmake --build . --target MillGame --config Release
+          cmake --build . --target mill-pro --config Release
 
       - name: Archive Qt
         uses: actions/upload-artifact@v2
         with:
-          name: MIllGame
-          path: src/ui/qt/release/MillGame.exe
+          name: mill-pro
+          path: src/ui/qt/release/mill-pro.exe

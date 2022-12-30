@@ -1602,7 +1602,7 @@ void Game::saveScore()
     const QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
     const qint64 pid = QCoreApplication::applicationPid();
 
-    const QString path = QDir::currentPath() + "/" + tr("Score-MillGame_") +
+    const QString path = QDir::currentPath() + "/" + tr("Score-MillPro_") +
                          strDate + "_" + QString::number(pid) + ".txt";
 
     QFile file;

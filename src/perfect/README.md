@@ -8,7 +8,7 @@ Extract the zip file.
 
 ## Load and run
 
-Use Microsoft Visual Studio to open `millgame.sln`.
+Use Microsoft Visual Studio to open `mill-pro.sln`.
 
 Specify database path in `include/config.h` -> PERFECT_AI_DATABASE_DIR.
 

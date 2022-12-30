@@ -137,10 +137,10 @@ sudo apt-get install qt5-default qtmultimedia5-dev qtcreator
 ```shell
 cd src/ui/qt
 cmake .
-cmake --build . --target MillGame
+cmake --build . --target mill-pro
 ```
 
-并使用 Visual Studio 打开 `src\ui\qt\millgame.sln` 来构建 Qt 应用程序。
+并使用 Visual Studio 打开 `src\ui\qt\mill-pro.sln` 来构建 Qt 应用程序。
 
 ### Flutter App
 
