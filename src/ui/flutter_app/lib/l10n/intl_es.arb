@@ -1289,5 +1289,17 @@
   "gotIt": "Entiendo",
   "@gotIt": {},
   "youCanModifyRules": "Puedes modificar las reglas del juego en la configuración de reglas.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Puede usar la rueda del mouse para cambiar el valor en el selector.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI Thinking time establecido en 0 significa que no hay límite de tiempo para pensar.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Tenga en cuenta que el ajuste del tiempo de pensamiento de la IA puede no ser del todo preciso. El tiempo de pensamiento real puede ser más corto cuando el nivel de dificultad se establece en un valor más bajo y puede ser más largo cuando la IA está en medio del pensamiento cuando se acaba el tiempo.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Si establece un nivel de dificultad alto pero no aumenta el tiempo de reflexión de la IA, el nivel de dificultad real puede estar limitado a un valor más bajo debido a la restricción del tiempo de reflexión. El valor real puede variar según el rendimiento de la máquina.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) es una forma modificada del algoritmo de búsqueda alfa-beta que tiene como objetivo mejorar la eficiencia mediante la reutilización de resultados de búsqueda intermedios y el uso de una buena suposición inicial para reducir el espacio de búsqueda.",
+  "@whatIsMtdf": {},
+  "whatIs": "El alfa-beta es un algoritmo de búsqueda para encontrar la mejor jugada. Utiliza el principio minimax y dos valores, alfa y beta, para podar el árbol de búsqueda y aumentar la eficiencia. Alpha representa la puntuación mínima que la computadora está segura de que puede obtener, mientras que beta representa la puntuación máxima que su oponente puede obtener. El algoritmo ayuda a la computadora a tomar decisiones inteligentes y eficientes en un juego.",
+  "@whatIs": {}
 }

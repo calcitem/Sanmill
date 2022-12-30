@@ -1289,5 +1289,17 @@
   "gotIt": "Am înţeles",
   "@gotIt": {},
   "youCanModifyRules": "Puteți modifica regulile jocului în setările regulilor.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Puteți folosi rotița mouse-ului pentru a modifica valoarea din selector.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "Timpul de gândire AI setat la 0 înseamnă că nu există limită de timp pentru gândire.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Vă rugăm să rețineți că ajustarea timpului de gândire AI poate să nu fie complet precisă. Timpul real de gândire poate fi mai scurt atunci când nivelul de dificultate este setat la o valoare mai mică și poate fi mai lung atunci când IA este la mijlocul gândirii când timpul expiră.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Dacă setați nivelul de dificultate ridicat, dar nu creșteți timpul de gândire AI, nivelul de dificultate real poate fi limitat la o valoare mai mică din cauza constrângerii timpului de gândire. Valoarea reală poate varia în funcție de performanța mașinii.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) este o formă modificată a algoritmului de căutare alfa-beta care urmărește să îmbunătățească eficiența prin reutilizarea rezultatelor de căutare intermediare și folosind o estimare inițială bună pentru a restrânge spațiul de căutare.",
+  "@whatIsMtdf": {},
+  "whatIs": "Alfa-beta este un algoritm de căutare pentru a găsi cea mai bună mișcare. Utilizează principiul minimax și două valori, alfa și beta, pentru a tăia arborele de căutare și a crește eficiența. Alpha reprezintă scorul minim pe care computerul este sigur că îl poate obține, în timp ce beta reprezintă scorul maxim pe care îl poate obține adversarul său. Algoritmul ajută computerul să ia decizii inteligente și eficiente într-un joc.",
+  "@whatIs": {}
 }

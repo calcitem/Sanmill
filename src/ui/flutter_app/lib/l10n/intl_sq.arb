@@ -1289,5 +1289,17 @@
   "gotIt": "E kuptova",
   "@gotIt": {},
   "youCanModifyRules": "Ju mund të modifikoni rregullat e lojës në cilësimet e rregullave.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Mund të përdorni rrotën e miut për të ndryshuar vlerën në zgjedhës.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "Koha e të menduarit e AI e vendosur në 0 do të thotë se nuk ka kufi kohor për të menduar.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Ju lutemi, kini parasysh se rregullimi i kohës së të menduarit të AI mund të mos jetë plotësisht i saktë. Koha aktuale e të menduarit mund të jetë më e shkurtër kur niveli i vështirësisë është vendosur në një vlerë më të ulët dhe mund të jetë më e gjatë kur AI është në mes të mendimit kur koha mbaron.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Nëse e vendosni nivelin e vështirësisë të lartë, por nuk e rritni kohën e të menduarit të AI, niveli aktual i vështirësisë mund të kufizohet në një vlerë më të ulët për shkak të kufizimit të kohës së të menduarit. Vlera aktuale mund të ndryshojë në bazë të performancës së makinës.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) është një formë e modifikuar e algoritmit alfa-beta të kërkimit që synon të përmirësojë efikasitetin duke ripërdorur rezultatet e ndërmjetme të kërkimit dhe duke përdorur një supozim të mirë fillestar për të ngushtuar hapësirën e kërkimit.",
+  "@whatIsMtdf": {},
+  "whatIs": "Alfa-beta është një algoritëm kërkimi për të gjetur lëvizjen më të mirë. Ai përdor parimin minimax dhe dy vlera, alfa dhe beta, për të krasitur pemën e kërkimit dhe për të rritur efikasitetin. Alfa përfaqëson rezultatin minimal që kompjuteri është i sigurt se mund të marrë, ndërsa beta përfaqëson rezultatin maksimal që mund të marrë kundërshtari i tij. Algoritmi ndihmon kompjuterin të marrë vendime të zgjuara dhe efikase në një lojë.",
+  "@whatIs": {}
 }

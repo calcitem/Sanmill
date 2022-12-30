@@ -1289,5 +1289,17 @@
   "gotIt": "知道了",
   "@gotIt": {},
   "youCanModifyRules": "您可以在规则设置中修改游戏规则。",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "您可以使用鼠标滚轮更改选取器中的值。",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI思考时间设置为0表示没有思考时间限制。",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "请注意，AI 思考时间的调整可能并不完全准确。当难度级别设置为较低值时，实际思考时间可能会更短，而当时间耗尽时 AI 正在思考时，实际思考时间可能会更长。",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "如果你把难度设置的很高，但不增加AI的思考时间，实际的难度可能会因为思考时间的限制而被限制在一个较低的值。实际值可能因机器性能而异。",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) 是 alpha-beta 搜索算法的一种改进形式，旨在通过重用中间搜索结果和使用良好的初始猜测来缩小搜索空间来提高效率。",
+  "@whatIsMtdf": {},
+  "whatIs": "alpha-beta 是一种寻找最佳着法的搜索算法。它使用 minimax 原则和两个值 alpha 和 beta 来修剪搜索树并提高效率。 Alpha 代表计算机确定能得到的最低分数，而 beta 代表它的对手能得到的最大分数。该算法帮助计算机在游戏中做出明智、高效的决策。",
+  "@whatIs": {}
 }

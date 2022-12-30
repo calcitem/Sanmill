@@ -1289,5 +1289,17 @@
   "gotIt": "알았어요",
   "@gotIt": {},
   "youCanModifyRules": "규칙 설정에서 게임 규칙을 수정할 수 있습니다.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "선택기에서 마우스 휠을 사용하여 값을 변경할 수 있습니다.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI 생각 시간을 0으로 설정하면 생각하는 데 시간 제한이 없음을 의미합니다.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "AI 사고 시간 조정이 완전히 정확하지 않을 수 있음을 유의하십시오. 실제 생각하는 시간은 난이도가 낮은 값으로 설정되어 있을 때 더 짧을 수 있고 시간이 다 되어 AI가 중간 생각일 때 더 길어질 수 있습니다.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "난이도를 높게 설정했지만 AI 생각 시간을 늘리지 않으면 생각 시간 제약으로 인해 실제 난이도가 더 낮은 값으로 제한될 수 있습니다. 실제 값은 기계의 성능에 따라 다를 수 있습니다.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f)는 중간 검색 결과를 재사용하고 좋은 초기 추측을 사용하여 검색 공간을 좁혀 효율성을 향상시키는 것을 목표로 하는 알파-베타 검색 알고리즘의 수정된 형태입니다.",
+  "@whatIsMtdf": {},
+  "whatIs": "알파-베타는 최상의 움직임을 찾는 검색 알고리즘입니다. 검색 트리를 가지치기하고 효율성을 높이기 위해 minimax 원리와 두 값(알파와 베타)을 사용합니다. 알파는 컴퓨터가 얻을 수 있다고 확신하는 최소 점수를 나타내고 베타는 상대방이 얻을 수 있는 최대 점수를 나타냅니다. 알고리즘은 컴퓨터가 게임에서 현명하고 효율적인 결정을 내리는 데 도움이 됩니다.",
+  "@whatIs": {}
 }

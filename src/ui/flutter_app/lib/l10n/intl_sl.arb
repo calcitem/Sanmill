@@ -1289,5 +1289,17 @@
   "gotIt": "Razumem",
   "@gotIt": {},
   "youCanModifyRules": "Pravila igre lahko spremenite v nastavitvah pravil.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Za spreminjanje vrednosti v izbirniku lahko uporabite kolesce miške.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "Čas razmišljanja AI, nastavljen na 0, pomeni, da za razmišljanje ni časovne omejitve.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Zavedajte se, da prilagoditev časa razmišljanja AI morda ni povsem natančna. Dejanski čas razmišljanja je lahko krajši, če je težavnostna stopnja nastavljena na nižjo vrednost, in je lahko daljši, ko je AI sredi razmišljanja, ko se čas izteče.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Če nastavite visoko težavnostno stopnjo, vendar ne povečate časa za razmišljanje AI, je lahko dejanska težavnostna stopnja omejena na nižjo vrednost zaradi časovne omejitve razmišljanja. Dejanska vrednost se lahko razlikuje glede na delovanje stroja.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) je spremenjena oblika iskalnega algoritma alfa-beta, katerega namen je izboljšati učinkovitost s ponovno uporabo vmesnih rezultatov iskanja in uporabo dobrega začetnega ugibanja za zožitev iskalnega prostora.",
+  "@whatIsMtdf": {},
+  "whatIs": "Alfa-beta je iskalni algoritem za iskanje najboljše poteze. Uporablja načelo minimax in dve vrednosti, alfa in beta, za zmanjšanje iskalnega drevesa in povečanje učinkovitosti. Alfa predstavlja najnižji rezultat, za katerega je računalnik prepričan, da ga lahko dobi, medtem ko beta predstavlja najvišji rezultat, ki ga lahko doseže nasprotnik. Algoritem pomaga računalniku sprejemati pametne in učinkovite odločitve v igri.",
+  "@whatIs": {}
 }

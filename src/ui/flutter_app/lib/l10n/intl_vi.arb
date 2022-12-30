@@ -1289,5 +1289,17 @@
   "gotIt": "Hiểu rồi",
   "@gotIt": {},
   "youCanModifyRules": "Bạn có thể sửa đổi các quy tắc của trò chơi trong cài đặt quy tắc.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Bạn có thể sử dụng con lăn chuột để thay đổi giá trị trong bộ chọn.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "Thời gian suy nghĩ AI được đặt thành 0 có nghĩa là không có giới hạn thời gian suy nghĩ.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Xin lưu ý rằng việc điều chỉnh thời gian suy nghĩ của AI có thể không hoàn toàn chính xác. Thời gian suy nghĩ thực tế có thể ngắn hơn khi mức độ khó được đặt ở giá trị thấp hơn và có thể dài hơn khi AI đang suy nghĩ giữa chừng khi hết thời gian.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Nếu bạn đặt độ khó cao nhưng không tăng thời gian suy nghĩ của AI, thì độ khó thực tế có thể bị giới hạn ở giá trị thấp hơn do hạn chế về thời gian suy nghĩ. Giá trị thực tế có thể thay đổi dựa trên hiệu suất của máy.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f) là một dạng đã sửa đổi của thuật toán tìm kiếm alpha-beta nhằm nâng cao hiệu quả bằng cách sử dụng lại các kết quả tìm kiếm trung gian và sử dụng dự đoán ban đầu tốt để thu hẹp không gian tìm kiếm.",
+  "@whatIsMtdf": {},
+  "whatIs": "Alpha-beta là một thuật toán tìm kiếm để tìm nước đi tốt nhất. Nó sử dụng nguyên tắc minimax và hai giá trị, alpha và beta, để cắt bớt cây tìm kiếm và tăng hiệu quả. Alpha đại diện cho số điểm tối thiểu mà máy tính chắc chắn có thể đạt được, trong khi beta đại diện cho số điểm tối đa mà đối thủ của nó có thể đạt được. Thuật toán giúp máy tính đưa ra quyết định thông minh, hiệu quả trong trò chơi.",
+  "@whatIs": {}
 }

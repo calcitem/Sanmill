@@ -1289,5 +1289,17 @@
   "gotIt": "Anladım",
   "@gotIt": {},
   "youCanModifyRules": "Oyunun kurallarını kural ayarlarından değiştirebilirsiniz.",
-  "@youCanModifyRules": {}
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Seçicideki değeri değiştirmek için fare tekerleğini kullanabilirsiniz.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI Düşünme süresinin 0 olarak ayarlanması, düşünmek için herhangi bir zaman sınırı olmadığı anlamına gelir.",
+  "@noTimeLimitForThinking": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Lütfen AI düşünme süresi ayarının tamamen kesin olmayabileceğini unutmayın. Gerçek düşünme süresi, zorluk seviyesi daha düşük bir değere ayarlandığında daha kısa olabilir ve süre dolduğunda yapay zeka orta düşüncede olduğunda daha uzun olabilir.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Zorluk seviyesini yüksek ayarlarsanız ancak AI düşünme süresini artırmazsanız, gerçek zorluk seviyesi, düşünme süresi kısıtlaması nedeniyle daha düşük bir değerle sınırlandırılabilir. Gerçek değer, makinenin performansına bağlı olarak değişebilir.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsMtdf": "MTD(f), ara arama sonuçlarını yeniden kullanarak ve arama alanını daraltmak için iyi bir ilk tahmin kullanarak verimliliği artırmayı amaçlayan alfa-beta arama algoritmasının değiştirilmiş bir biçimidir.",
+  "@whatIsMtdf": {},
+  "whatIs": "Alfa-beta, en iyi hamleyi bulmak için bir arama algoritmasıdır. Arama ağacını budamak ve verimliliği artırmak için minimax ilkesini ve alfa ve beta olmak üzere iki değeri kullanır. Alfa, bilgisayarın alabileceğinden emin olduğu minimum puanı, beta ise rakibinin alabileceği maksimum puanı temsil eder. Algoritma, bilgisayarın bir oyunda akıllı ve verimli kararlar almasına yardımcı olur.",
+  "@whatIs": {}
 }
