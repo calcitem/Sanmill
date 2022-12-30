@@ -97,6 +97,8 @@ class GeneralSettingsPage extends StatelessWidget {
           rootScaffoldMessengerKey.currentState!
               .showSnackBarClear(S.of(context).whatIsMtdf);
           break;
+        case null:
+          break;
       }
 
       logger.v("$_tag algorithm = $searchAlgorithm");
