@@ -1,0 +1,3 @@
+v3.0.0
+
+Tato aktualizace obsahuje různá vylepšení a opravy chyb, aby pro vás byla aplikace lepší.
