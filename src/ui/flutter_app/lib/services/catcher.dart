@@ -23,7 +23,7 @@ Future<void> _initCatcher(Catcher catcher) async {
   final Map<String, String> customParameters = <String, String>{};
   late final String externalDirStr;
 
-  if (Platform.isLinux || Platform.isWindows || kIsWeb) {
+  if (Platform.isIOS || Platform.isLinux || Platform.isWindows || kIsWeb) {
     externalDirStr = ".";
   } else {
     try {
