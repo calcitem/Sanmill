@@ -31,7 +31,7 @@
 
 extern "C" {
 
-EngineState state = EngineState::STATE_READY;
+EngineState state = ENGINE_STATE_READY;
 std::thread thread;
 
 void engineThread()
@@ -96,7 +96,7 @@ Java_com_calcitem_sanmill_MillEngine_send(JNIEnv *env, jobject, jstring command)
         std::cout << ">>> " << command << std::endl;
 
         if (pCommand[0] == 'g' && pCommand[1] == 'o')
-            state = EngineState::STATE_THINKING;
+            state = ENGINE_STATE_THINKING;
     }
 
     env->ReleaseStringUTFChars(command, pCommand);
@@ -113,7 +113,7 @@ int MillEngine::send(const char *command)
         std::cout << ">>> " << command << std::endl;
 
         if (command[0] == 'g' && command[1] == 'o') {
-            state = EngineState::STATE_THINKING;
+            state = ENGINE_STATE_THINKING;
         }
     }
 
@@ -145,7 +145,7 @@ std::string MillEngine::read()
 
     if (strstr(line, "readyok") || strstr(line, "uciok") ||
         strstr(line, "bestmove") || strstr(line, "nobestmove")) {
-        state = EngineState::STATE_READY;
+        state = ENGINE_STATE_READY;
     }
 
 #ifdef __ANDROID__
@@ -180,25 +180,25 @@ int MillEngine::shutdown()
 JNIEXPORT jboolean JNICALL
 Java_com_calcitem_sanmill_MillEngine_isReady(JNIEnv *, jobject)
 {
-    return static_cast<jboolean>(state == EngineState::STATE_READY);
+    return static_cast<jboolean>(state == ENGINE_STATE_READY);
 }
 
 JNIEXPORT jboolean JNICALL
 Java_com_calcitem_sanmill_MillEngine_isThinking(JNIEnv *, jobject)
 {
-    return static_cast<jboolean>(state == EngineState::STATE_THINKING);
+    return static_cast<jboolean>(state == ENGINE_STATE_THINKING);
 }
 
 #else
 
 bool MillEngine::isReady()
 {
-    return state == EngineState::STATE_READY;
+    return state == ENGINE_STATE_READY;
 }
 
 bool MillEngine::isThinking()
 {
-    return state == EngineState::STATE_THINKING;
+    return state == ENGINE_STATE_THINKING;
 }
 #endif // __ANDROID__
 }

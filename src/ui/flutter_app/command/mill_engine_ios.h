@@ -14,9 +14,30 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ENGINE_STATE_H
-#define ENGINE_STATE_H
+#import <Foundation/Foundation.h>
+#import <Flutter/Flutter.h>
+#import "engine_state.h"
 
-enum EngineState { ENGINE_STATE_READY, ENGINE_STATE_THINKING };
+NS_ASSUME_NONNULL_BEGIN
 
-#endif /* ENGINE_STATE_H */
+@interface MillEngine : NSObject {
+    NSOperationQueue *operationQueue;
+}
+
+@property(nonatomic) enum EngineState state;
+
+-(int) startup: (FlutterViewController *) controller;
+
+-(int) send: (NSString *) command;
+
+-(NSString *) read;
+
+-(int) shutdown;
+
+-(BOOL) isReady;
+
+-(BOOL) isThinking;
+
+@end
+
+NS_ASSUME_NONNULL_END
