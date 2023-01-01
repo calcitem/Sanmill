@@ -243,6 +243,14 @@ class _FlutterVersionAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String flutterVersionStr = flutterVersion.toString();
+    flutterVersionStr = flutterVersionStr
+        .replaceAll("{", "")
+        .replaceAll("}", "")
+        .replaceAll(", ", "\n");
+    flutterVersionStr = flutterVersionStr.substring(
+        0, flutterVersionStr.indexOf("flutterRoot"));
+
     return AlertDialog(
       title: Text(
         S.of(context).more,
@@ -254,11 +262,7 @@ class _FlutterVersionAlert extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            flutterVersion
-                .toString()
-                .replaceAll("{", "")
-                .replaceAll("}", "")
-                .replaceAll(", ", "\n"),
+            flutterVersionStr,
           ),
         ],
       ),
