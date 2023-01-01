@@ -54,7 +54,7 @@ Future<void> main() async {
 
   _initUI();
 
-  if (EnvironmentConfig.catcher && !kIsWeb) {
+  if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
     catcher = Catcher(
       rootWidget: const SanmillApp(),
       ensureInitialized: true,
@@ -119,7 +119,9 @@ class SanmillApp extends StatelessWidget {
     final MaterialApp materialApp = MaterialApp(
       /// Add navigator key from Catcher.
       /// It will be used to navigate user to report page or to show dialog.
-      navigatorKey: EnvironmentConfig.catcher ? Catcher.navigatorKey : null,
+      navigatorKey: (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
+          ? Catcher.navigatorKey
+          : null,
       key: GlobalKey<ScaffoldState>(),
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       localizationsDelegates: S.localizationsDelegates,
