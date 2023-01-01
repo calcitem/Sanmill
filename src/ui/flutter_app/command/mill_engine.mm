@@ -44,8 +44,8 @@
 
 -(int) startup: (FlutterViewController *) controller {
     if (operationQueue != nil) {
-        [operationQueue cancelAllOperations];
-        operationQueue = nil;
+        [self shutdown];
+        [operationQueue waitUntilAllOperationsAreFinished];
     }
 
     operationQueue = [[NSOperationQueue alloc] init];
