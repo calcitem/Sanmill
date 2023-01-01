@@ -333,7 +333,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
               ),
               items: drawerItems,
               // TODO: 4 means Setup Position
-              disabledGestures: _drawerIndex.index < 4 && !value.visible,
+              disabledGestures: Platform.isWindows &&
+                  Platform.isLinux &&
+                  Platform.isMacOS &&
+                  _drawerIndex.index < 4 &&
+                  !value.visible,
               child: _screenView,
             ),
           )),
