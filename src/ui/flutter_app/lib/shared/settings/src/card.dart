@@ -42,12 +42,19 @@ class SettingsCard extends StatelessWidget {
           child: title,
         ),
         Card(
-          child: ListView.separated(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (_, int index) => children[index],
-            separatorBuilder: (_, __) => const Divider(),
-            itemCount: children.length,
+          child: Padding(
+            // ignore: use_named_constants
+            padding: const EdgeInsets.all(0),
+            child: Column(
+              children: <Widget>[
+                for (int i = 0; i < children.length; i++)
+                  i == children.length - 1
+                      ? children[i]
+                      : Column(
+                          children: <Widget>[children[i], const Divider()],
+                        ),
+              ],
+            ),
           ),
         ),
       ],
