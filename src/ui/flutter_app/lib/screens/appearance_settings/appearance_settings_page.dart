@@ -1,5 +1,5 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -286,7 +286,8 @@ class AppearanceSettingsPage extends StatelessWidget {
           SettingsListTile.switchTile(
             value: displaySettings.isFullScreen,
             onChanged: (bool val) {
-              DB().displaySettings = displaySettings.copyWith(isFullScreen: val);
+              DB().displaySettings =
+                  displaySettings.copyWith(isFullScreen: val);
               rootScaffoldMessengerKey.currentState!
                   .showSnackBarClear(S.of(context).reopenToTakeEffect);
             },
