@@ -81,14 +81,17 @@
 }
 
 -(NSString *) read {
-
-    CommandChannel *channel = CommandChannel::getInstance();
     char buffer[4096] = {0};
 
+    CommandChannel *channel = CommandChannel::getInstance();
     bool got_response = channel->popupResponse(buffer);
-    if (!got_response) return nil;
+
+    if (!got_response) {
+        return nil;
+    }
 
     NSString *line = [NSString stringWithFormat:@"%s", buffer];
+
     NSLog(@"<<<=== %@\n", line);
 
     if ([line isEqualToString:@"readyok"] ||
@@ -107,7 +110,10 @@
     [self send:@"quit"];
 
     [operationQueue cancelAllOperations];
-    [operationQueue waitUntilAllOperationsAreFinished];
+
+    if (operationQueue.operationCount > 0) {
+        [operationQueue waitUntilAllOperationsAreFinished];
+    }
 
     operationQueue = nil;
 
