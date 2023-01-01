@@ -291,7 +291,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
       ),
-      if (kIsWeb || Platform.isAndroid || Platform.isIOS)
+      if (kIsWeb || Platform.isAndroid)
         CustomDrawerItem<_DrawerIndex>(
           value: _DrawerIndex.feedback,
           title: S.of(context).feedback,
