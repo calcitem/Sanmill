@@ -274,7 +274,7 @@
 			dependencies = (
 			);
 			name = sanmill;
-			productName = Runner;
+			productName = sanmill;
 			productReference = 97C146EE1CF9000F007C117D /* sanmill.app */;
 			productType = "com.apple.product-type.application";
 		};
