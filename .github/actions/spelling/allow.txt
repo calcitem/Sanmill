@@ -24,6 +24,7 @@ foreach
 goto
 https
 int
+itunes
 Json
 json
 mixin
@@ -37,6 +38,7 @@ plugins
 reflexpr
 rethrow
 sizeof
+stdeula
 struct
 typedef
 typeid
