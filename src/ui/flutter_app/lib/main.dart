@@ -121,7 +121,7 @@ class SanmillApp extends StatelessWidget {
       /// It will be used to navigate user to report page or to show dialog.
       navigatorKey: (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
           ? Catcher.navigatorKey
-          : null,
+          : navigatorKey,
       key: GlobalKey<ScaffoldState>(),
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       localizationsDelegates: S.localizationsDelegates,

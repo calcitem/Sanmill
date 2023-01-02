@@ -16,6 +16,8 @@
 
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
+
 class URL {
   const URL({
     required this.url,
@@ -76,3 +78,5 @@ class Constants {
 
   static const int topSkillLevel = 30;
 }
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
