@@ -82,10 +82,11 @@ class AboutPage extends StatelessWidget {
         titleString: S.of(context).feedback,
         onTap: () => _launchURL(context, Constants.issuesURL),
       ),
-      SettingsListTile(
-        titleString: S.of(context).eula,
-        onTap: () => _launchURL(context, Constants.eulaURL),
-      ),
+      if (!(Platform.isIOS || Platform.isMacOS))
+        SettingsListTile(
+          titleString: S.of(context).eula,
+          onTap: () => _launchURL(context, Constants.eulaURL),
+        ),
       SettingsListTile(
         titleString: S.of(context).license,
         onTap: () {

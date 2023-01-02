@@ -58,6 +58,8 @@ class Constants {
   static final URL issuesURL = repoURL.fromSubPath("issues");
   static final URL wikiURL = repoURL.fromSubPath("wiki", "wikis");
   static final URL eulaURL = wikiURL.fromSubPath("EULA", "EULA_zh");
+  static const String appleStdEulaURL =
+      "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/";
   static final URL thirdPartyNoticesURL =
       wikiURL.fromSubPath("third-party_notices");
   static final URL privacyPolicyURL =
