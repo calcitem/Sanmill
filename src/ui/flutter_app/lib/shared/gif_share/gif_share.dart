@@ -41,6 +41,10 @@ class GifShare {
   final int frameRate = 1;
 
   Future<void> captureView({bool first = false}) async {
+    if (DB().generalSettings.gameScreenRecorderSupport == false) {
+      return;
+    }
+
     if (first) {
       releaseData();
     }
@@ -60,6 +64,10 @@ class GifShare {
 
   /// Call when "Share GIF" is tapped.
   Future<bool> shareGif() async {
+    if (DB().generalSettings.gameScreenRecorderSupport == false) {
+      return false;
+    }
+
     final img.PngDecoder decoder = img.PngDecoder();
 
     if (pngs.isNotEmpty) {
@@ -89,6 +97,10 @@ class GifShare {
   }
 
   Future<bool> _writeGifToFile(List<int> gif) async {
+    if (DB().generalSettings.gameScreenRecorderSupport == false) {
+      return false;
+    }
+
     final String time = DateTime.now().millisecondsSinceEpoch.toString();
     final String gifFileName = "Mill-$time.gif";
     final Directory docDir = await getApplicationDocumentsDirectory();
