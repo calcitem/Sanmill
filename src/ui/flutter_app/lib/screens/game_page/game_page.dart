@@ -188,78 +188,51 @@ class _GameState extends State<_Game> {
   // Icons: https://github.com/microsoft/fluentui-system-icons/blob/main/icons_regular.md
 
   List<Widget> mainToolbarItems(BuildContext context) {
-    final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
-      const EdgeInsets.all(8),
-      const EdgeInsets.symmetric(horizontal: 8),
-      const EdgeInsets.symmetric(horizontal: 4),
-      MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
-    );
-    double itemMaxWidth =
-        (deviceWidth(context) - AppTheme.boardMargin * 2) / 4 -
-            scaledPadding.horizontal;
-
-    if (itemMaxWidth < 0) {
-      // TODO: WAR, See https://github.com/flutter/flutter/issues/25827
-      itemMaxWidth = 80.0;
-    }
-
     final ToolbarItem gameButton = ToolbarItem.icon(
       onPressed: () => _showGameModalBottomSheet(context),
       icon: const Icon(FluentIcons.table_simple_24_regular),
-      label: Container(
-        constraints: BoxConstraints(maxWidth: itemMaxWidth),
-        child: Text(
-          S.of(context).game,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+      label: Text(
+        S.of(context).game,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
 
     final ToolbarItem optionsButton = ToolbarItem.icon(
       onPressed: () => _showGeneralSettings(context),
       icon: const Icon(FluentIcons.settings_24_regular),
-      label: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: itemMaxWidth),
-        child: Text(
-          S.of(context).options,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+      label: Text(
+        S.of(context).options,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
 
     final ToolbarItem moveButton = ToolbarItem.icon(
       onPressed: () => _showMoveModalBottomSheet(context),
       icon: const Icon(FluentIcons.calendar_agenda_24_regular),
-      label: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: itemMaxWidth),
-        child: Text(
-          S.of(context).move,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+      label: Text(
+        S.of(context).move,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
 
     final ToolbarItem infoButton = ToolbarItem.icon(
       onPressed: () => _showInfoDialog(context),
       icon: const Icon(FluentIcons.book_information_24_regular),
-      label: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: itemMaxWidth),
-        child: Text(
-          S.of(context).info,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+      label: Text(
+        S.of(context).info,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
 
     return <Widget>[
-      gameButton,
-      optionsButton,
-      moveButton,
-      infoButton,
+      Expanded(child: gameButton),
+      Expanded(child: optionsButton),
+      Expanded(child: moveButton),
+      Expanded(child: infoButton),
     ];
   }
 
@@ -305,11 +278,11 @@ class _GameState extends State<_Game> {
     );
 
     return <Widget>[
-      takeBackAllButton,
-      takeBackButton,
-      if (Constants.isSmallScreen == false) moveNowButton,
-      stepForwardButton,
-      stepForwardAllButton,
+      Expanded(child: takeBackAllButton),
+      Expanded(child: takeBackButton),
+      if (Constants.isSmallScreen == false) Expanded(child: moveNowButton),
+      Expanded(child: stepForwardButton),
+      Expanded(child: stepForwardAllButton),
     ];
   }
 

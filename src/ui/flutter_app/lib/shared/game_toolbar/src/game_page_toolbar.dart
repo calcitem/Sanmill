@@ -50,9 +50,8 @@ class GamePageToolBar extends StatelessWidget {
         ),
         child: Directionality(
           textDirection: TextDirection.ltr,
-          child: ButtonBar(
-            buttonPadding: EdgeInsets.zero,
-            alignment: MainAxisAlignment.spaceAround,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: children,
           ),
         ),
