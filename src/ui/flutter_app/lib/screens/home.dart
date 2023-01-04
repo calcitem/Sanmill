@@ -359,7 +359,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     }
 
     if (!DB().generalSettings.isPrivacyPolicyAccepted &&
-        Localizations.localeOf(context).languageCode.startsWith("zh")) {
+        Localizations.localeOf(context).languageCode.startsWith("zh") &&
+        !Platform.isIOS) {
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -386,8 +387,6 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   static Future<void> _launchFeedback(UserFeedback feedback) async {
     final String screenshotFilePath =
         await _saveFeedbackImage(feedback.screenshot);
-        Localizations.localeOf(context).languageCode.startsWith("zh") &&
-        !Platform.isIOS) {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String version =
         "${packageInfo.version} (${packageInfo.buildNumber})";

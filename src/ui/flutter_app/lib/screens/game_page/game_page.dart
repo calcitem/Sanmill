@@ -46,12 +46,19 @@ import '../general_settings/general_settings_page.dart';
 import '../rule_settings/rule_settings_page.dart';
 
 part './board.dart';
+
 part './game_options_modal.dart';
+
 part './header.dart';
+
 part './info_dialog.dart';
+
 part './move_list_dialog.dart';
+
 part './move_options_modal.dart';
+
 part './result_alert.dart';
+
 part 'game_page_action_sheet.dart';
 
 class GamePage extends StatelessWidget {
@@ -132,6 +139,7 @@ class GamePage extends StatelessWidget {
 // TODO: [Leptopoda] Change layout (landscape mode, padding on small devices)
 class _Game extends StatefulWidget {
   const _Game();
+
   @override
   State<_Game> createState() => _GameState();
 }
@@ -187,7 +195,7 @@ class _GameState extends State<_Game> {
       MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
     );
     double itemMaxWidth =
-        (MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) / 4 -
+        (deviceWidth(context) - AppTheme.boardMargin * 2) / 4 -
             scaledPadding.horizontal;
 
     if (itemMaxWidth < 0) {
