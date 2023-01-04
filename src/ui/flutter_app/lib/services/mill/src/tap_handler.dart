@@ -285,7 +285,7 @@ class TapHandler {
         }
 
         // TODO: moveHistoryText is not lightweight.
-        if (EnvironmentConfig.catcher == true && !kIsWeb) {
+        if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
           final CatcherOptions options = catcher.getCurrentConfig()!;
           options.customParameters["MoveList"] =
               MillController().recorder.moveHistoryText;

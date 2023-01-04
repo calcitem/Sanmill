@@ -1,5 +1,5 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -35,7 +35,9 @@ Future<void> showPrivacyDialog(BuildContext context) async {
   final TextStyle linkStyle =
       aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
 
-  final String eulaURL = Constants.eulaURL.urlZh;
+  final String eulaURL = Platform.isIOS || Platform.isMacOS
+      ? Constants.appleStdEulaURL
+      : Constants.eulaURL.urlZh;
   final String privacyPolicyURL = Constants.privacyPolicyURL.urlZh;
 
   Future<void> setPrivacyPolicyAccepted({required bool value}) async {

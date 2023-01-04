@@ -9,10 +9,10 @@ add_library( # Sets the name of the library.
         SHARED
 
         # Provides a relative path to your source file(s).
-        src/main/cpp/mill_engine.cpp
         ../../command/command_channel.cpp
         ../../command/command_queue.cpp
         ../../command/engine_main.cpp
+        ../../command/mill_engine.cpp
         ../../../../bitboard.cpp
         ../../../../endgame.cpp
         ../../../../evaluate.cpp

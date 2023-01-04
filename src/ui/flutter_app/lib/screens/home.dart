@@ -1,5 +1,5 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -233,12 +233,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    AppTheme.boardPadding =
-        ((deviceWidth(context) - AppTheme.boardMargin * 2) *
+    AppTheme.boardPadding = ((deviceWidth(context) - AppTheme.boardMargin * 2) *
                 DB().displaySettings.pieceWidth /
-                7 -
-            1) /
-            2;
+                7) /
+            2 +
+        4;
 
     final List<CustomDrawerItem<_DrawerIndex>> drawerItems =
         <CustomDrawerItem<_DrawerIndex>>[
@@ -300,7 +299,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
       ),
-      if (kIsWeb || Platform.isAndroid || Platform.isIOS)
+      if (kIsWeb || Platform.isAndroid)
         CustomDrawerItem<_DrawerIndex>(
           value: _DrawerIndex.feedback,
           title: S.of(context).feedback,
@@ -315,7 +314,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
       ),
-      if (!kIsWeb)
+      if (Platform.isAndroid)
         CustomDrawerItem<_DrawerIndex>(
           value: _DrawerIndex.exit,
           title: S.of(context).exit,
@@ -336,13 +335,17 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             valueListenable: _controller,
             builder: (_, CustomDrawerValue value, Widget? child) =>
                 CustomDrawer(
-                  controller: _controller,
+              controller: _controller,
               header: CustomDrawerHeader(
                 title: S.of(context).appName,
               ),
               items: drawerItems,
               // TODO: 4 means Setup Position
-              disabledGestures: _drawerIndex.index < 4 && !value.visible,
+              disabledGestures: Platform.isWindows &&
+                  Platform.isLinux &&
+                  Platform.isMacOS &&
+                  _drawerIndex.index < 4 &&
+                  !value.visible,
               orientation: MediaQuery.of(context).orientation,
               child: _screenView,
             ),
@@ -383,6 +386,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   static Future<void> _launchFeedback(UserFeedback feedback) async {
     final String screenshotFilePath =
         await _saveFeedbackImage(feedback.screenshot);
+        Localizations.localeOf(context).languageCode.startsWith("zh") &&
+        !Platform.isIOS) {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String version =
         "${packageInfo.version} (${packageInfo.buildNumber})";

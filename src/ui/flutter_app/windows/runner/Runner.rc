@@ -93,7 +93,7 @@ BEGIN
             VALUE "FileDescription", "Sanmill for Windows." "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "Sanmill" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2019-2022 Calcitem Studio and Sanmill Developers" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2019-2023 Calcitem Studio and Sanmill Developers" "\0"
             VALUE "OriginalFilename", "Mill.exe" "\0"
             VALUE "ProductName", "Mill (N Men's Morris)" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

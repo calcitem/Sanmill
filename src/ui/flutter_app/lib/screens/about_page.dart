@@ -1,5 +1,5 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -82,10 +82,11 @@ class AboutPage extends StatelessWidget {
         titleString: S.of(context).feedback,
         onTap: () => _launchURL(context, Constants.issuesURL),
       ),
-      SettingsListTile(
-        titleString: S.of(context).eula,
-        onTap: () => _launchURL(context, Constants.eulaURL),
-      ),
+      if (!(Platform.isIOS || Platform.isMacOS))
+        SettingsListTile(
+          titleString: S.of(context).eula,
+          onTap: () => _launchURL(context, Constants.eulaURL),
+        ),
       SettingsListTile(
         titleString: S.of(context).license,
         onTap: () {
@@ -243,6 +244,14 @@ class _FlutterVersionAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String flutterVersionStr = flutterVersion.toString();
+    flutterVersionStr = flutterVersionStr
+        .replaceAll("{", "")
+        .replaceAll("}", "")
+        .replaceAll(", ", "\n");
+    flutterVersionStr = flutterVersionStr.substring(
+        0, flutterVersionStr.indexOf("flutterRoot"));
+
     return AlertDialog(
       title: Text(
         S.of(context).more,
@@ -254,11 +263,7 @@ class _FlutterVersionAlert extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            flutterVersion
-                .toString()
-                .replaceAll("{", "")
-                .replaceAll("}", "")
-                .replaceAll(", ", "\n"),
+            flutterVersionStr,
           ),
         ],
       ),

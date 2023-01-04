@@ -1,5 +1,5 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,8 +22,7 @@ class Engine {
   static const MethodChannel _platform =
       MethodChannel("com.calcitem.sanmill/engine");
 
-  bool get _isPlatformChannelAvailable =>
-      !kIsWeb && (Platform.isAndroid || Platform.isWindows || Platform.isLinux);
+  bool get _isPlatformChannelAvailable => !kIsWeb;
 
   static const String _tag = "[engine]";
 
@@ -55,7 +54,7 @@ class Engine {
     final String command = "setoption name $name value $option";
     await _send(command);
 
-    if (EnvironmentConfig.catcher == true && !kIsWeb) {
+    if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
       final CatcherOptions options = catcher.getCurrentConfig()!;
       options.customParameters[name] = command;
     }
@@ -300,7 +299,7 @@ class Engine {
 
     final String ret = posFenStr.toString();
 
-    if (EnvironmentConfig.catcher == true && !kIsWeb) {
+    if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
       final CatcherOptions options = catcher.getCurrentConfig()!;
       options.customParameters["PositionFen"] = ret;
     }

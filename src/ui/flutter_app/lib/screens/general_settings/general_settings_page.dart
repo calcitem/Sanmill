@@ -1,5 +1,5 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -83,6 +83,23 @@ class GeneralSettingsPage extends StatelessWidget {
 
       DB().generalSettings =
           generalSettings.copyWith(searchAlgorithm: searchAlgorithm);
+
+      switch (searchAlgorithm) {
+        case SearchAlgorithm.alphaBeta:
+          rootScaffoldMessengerKey.currentState!
+              .showSnackBarClear(S.of(context).whatIsAlphaBeta);
+          break;
+        case SearchAlgorithm.pvs:
+          rootScaffoldMessengerKey.currentState!
+              .showSnackBarClear(S.of(context).whatIsPvs);
+          break;
+        case SearchAlgorithm.mtdf:
+          rootScaffoldMessengerKey.currentState!
+              .showSnackBarClear(S.of(context).whatIsMtdf);
+          break;
+        case null:
+          break;
+      }
 
       logger.v("$_tag algorithm = $searchAlgorithm");
     }
@@ -216,7 +233,13 @@ class GeneralSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile.switchTile(
               value: !generalSettings.aiMovesFirst,
-              onChanged: (bool val) => _setWhoMovesFirst(generalSettings, !val),
+              onChanged: (bool val) {
+                _setWhoMovesFirst(generalSettings, !val);
+                if (val == false) {
+                  rootScaffoldMessengerKey.currentState!
+                      .showSnackBarClear(S.of(context).firstMoveDetail);
+                }
+              },
               titleString: generalSettings.aiMovesFirst
                   ? S.of(context).ai
                   : S.of(context).human,
@@ -247,25 +270,42 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
             SettingsListTile.switchTile(
               value: generalSettings.drawOnHumanExperience,
-              onChanged: (bool val) =>
-                  _setDrawOnHumanExperience(generalSettings, val),
+              onChanged: (bool val) {
+                _setDrawOnHumanExperience(generalSettings, val);
+                if (val == true) {
+                  rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                      S.of(context).drawOnTheHumanExperienceDetail);
+                }
+              },
               titleString: S.of(context).drawOnHumanExperience,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.considerMobility,
-              onChanged: (bool val) =>
-                  _setConsiderMobility(generalSettings, val),
+              onChanged: (bool val) {
+                _setConsiderMobility(generalSettings, val);
+                rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                    S.of(context).considerMobilityOfPiecesDetail);
+              },
               titleString: S.of(context).considerMobility,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.aiIsLazy,
-              onChanged: (bool val) => _setAiIsLazy(generalSettings, val),
+              onChanged: (bool val) {
+                _setAiIsLazy(generalSettings, val);
+                if (val == true) {
+                  rootScaffoldMessengerKey.currentState!
+                      .showSnackBarClear(S.of(context).passiveDetail);
+                }
+              },
               titleString: S.of(context).passive,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.shufflingEnabled,
-              onChanged: (bool val) =>
-                  _setShufflingEnabled(generalSettings, val),
+              onChanged: (bool val) {
+                _setShufflingEnabled(generalSettings, val);
+                rootScaffoldMessengerKey.currentState!
+                    .showSnackBarClear(S.of(context).moveRandomlyDetail);
+              },
               titleString: S.of(context).shufflingEnabled,
             ),
           ],
@@ -286,7 +326,7 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        if (Platform.isAndroid || Platform.isIOS)
+        if (Platform.isAndroid)
           SettingsCard(
             title: Text(S.of(context).accessibility),
             children: <Widget>[

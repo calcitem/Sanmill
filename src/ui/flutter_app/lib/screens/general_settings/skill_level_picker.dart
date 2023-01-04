@@ -1,5 +1,5 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -75,7 +75,16 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
                   S.of(context).cancel,
                   textScaleFactor: DB().displaySettings.fontScale,
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  Navigator.of(context).pop();
+
+                  if (Platform.isWindows ||
+                      Platform.isLinux ||
+                      Platform.isMacOS) {
+                    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                        S.of(context).youCanUseMouseWheelInPicker);
+                  }
+                },
               ),
             TextButton(
               child: Text(
@@ -85,6 +94,13 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
               onPressed: () {
                 DB().generalSettings =
                     generalSettings.copyWith(skillLevel: _level);
+
+                if (DB().generalSettings.skillLevel > 15 &&
+                    DB().generalSettings.moveTime < 10) {
+                  rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                      S.of(context).noteActualDifficultyLevelMayBeLimited);
+                }
+
                 Navigator.of(context).pop();
               },
             ),

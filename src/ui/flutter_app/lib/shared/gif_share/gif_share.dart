@@ -1,5 +1,5 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -41,6 +41,10 @@ class GifShare {
   final int frameRate = 1;
 
   Future<void> captureView({bool first = false}) async {
+    if (DB().generalSettings.gameScreenRecorderSupport == false) {
+      return;
+    }
+
     if (first) {
       releaseData();
     }
@@ -60,6 +64,10 @@ class GifShare {
 
   /// Call when "Share GIF" is tapped.
   Future<bool> shareGif() async {
+    if (DB().generalSettings.gameScreenRecorderSupport == false) {
+      return false;
+    }
+
     final img.PngDecoder decoder = img.PngDecoder();
 
     if (pngs.isNotEmpty) {
@@ -89,6 +97,10 @@ class GifShare {
   }
 
   Future<bool> _writeGifToFile(List<int> gif) async {
+    if (DB().generalSettings.gameScreenRecorderSupport == false) {
+      return false;
+    }
+
     final String time = DateTime.now().millisecondsSinceEpoch.toString();
     final String gifFileName = "Mill-$time.gif";
     final Directory docDir = await getApplicationDocumentsDirectory();

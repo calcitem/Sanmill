@@ -1,3 +1,19 @@
+// This file is part of Sanmill.
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 #include "my_application.h"
 
 #include <flutter_linux/flutter_linux.h>
@@ -20,7 +36,8 @@ struct _MyApplication
 
 G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
 
-#if 1
+MillEngine *engine = nullptr;
+
 static void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call,
                            gpointer user_data)
 {
@@ -52,7 +69,6 @@ static void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call,
         fl_method_call_respond(method_call, response, &error);
     }
 }
-#endif
 
 // Implements GApplication::activate.
 static void my_application_activate(GApplication *application)
@@ -89,6 +105,7 @@ static void my_application_activate(GApplication *application)
     }
 
     gtk_window_set_default_size(window, 428, 926);
+    gtk_window_set_resizable(GTK_WINDOW (window), FALSE);
     gtk_widget_show(GTK_WIDGET(window));
 
     g_autoptr(FlDartProject) project = fl_dart_project_new();
@@ -102,7 +119,7 @@ static void my_application_activate(GApplication *application)
     fl_register_plugins(FL_PLUGIN_REGISTRY(view));
 
     // START OF OUR CUSTOM  BLOCK
-#if 1
+
     if (engine == nullptr) {
         engine = new MillEngine();
 
@@ -117,8 +134,7 @@ static void my_application_activate(GApplication *application)
         fl_method_channel_set_method_call_handler(channel, method_call_cb, g_object_ref(view), g_object_unref);
     }
 
-#endif
-     // END OF OUR CUSTOM BLOCK
+    // END OF OUR CUSTOM BLOCK
 
     gtk_widget_grab_focus(GTK_WIDGET(view));
 }
@@ -149,6 +165,7 @@ static gboolean my_application_local_command_line(GApplication *application,
 static void my_application_dispose(GObject *object)
 {
     if (engine != nullptr) {
+        engine->shutdown();
         delete engine;
         engine = nullptr;
     }

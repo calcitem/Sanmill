@@ -1,5 +1,5 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ Future<void> main() async {
 
   _initUI();
 
-  if (EnvironmentConfig.catcher && !kIsWeb) {
+  if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
     catcher = Catcher(
       rootWidget: const SanmillApp(),
       ensureInitialized: true,
@@ -119,7 +119,9 @@ class SanmillApp extends StatelessWidget {
     final MaterialApp materialApp = MaterialApp(
       /// Add navigator key from Catcher.
       /// It will be used to navigate user to report page or to show dialog.
-      navigatorKey: EnvironmentConfig.catcher ? Catcher.navigatorKey : null,
+      navigatorKey: (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
+          ? Catcher.navigatorKey
+          : navigatorKey,
       key: GlobalKey<ScaffoldState>(),
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       localizationsDelegates: S.localizationsDelegates,

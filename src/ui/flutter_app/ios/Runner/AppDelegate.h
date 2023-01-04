@@ -1,9 +1,9 @@
 #import <Flutter/Flutter.h>
 #import <UIKit/UIKit.h>
-#import "SanmillCore.h"
+#import "../../command/mill_engine_ios.h"
 
 @interface AppDelegate : FlutterAppDelegate {
-    SanmillCore* core;
+    MillEngine* engine;
 }
 
 @end

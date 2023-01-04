@@ -68,14 +68,14 @@ If you have started using Ubuntu or any Ubuntu-based Linux distribution, you mus
 sudo apt-get install qt5-default qtmultimedia5-dev qtcreator
 ```
 
-Use Qt Creator to open `src/ui/qt/CMakeLists.txt` , or run 
+Use Qt Creator to open `src/ui/qt/CMakeLists.txt` , or run
 
 ```shell
 cd src/ui/qt
 cmake .
-cmake --build . --target MillGame
+cmake --build . --target mill-pro
 ```
-and use Visual Studio to open `src\ui\qt\millgame.sln` to build Qt Application.
+and use Visual Studio to open `src\ui\qt\mill-pro.sln` to build Qt Application.
 
 ### Flutter App
 
@@ -112,17 +112,12 @@ If you want to help improve the code, there are several valuable resources:
 
 ## Terms of use
 
-Sanmill is free and distributed under the **GNU General Public License version 3**
-(GPL v3). Essentially, this means you are free to do almost exactly
-what you want with the program, including distributing it among your
-friends, making it available for download from your website, selling
-it (either by itself or as part of some bigger software package), or
-using it as the starting point for a software project of your own.
+Sanmill is free and distributed under the **GNU General Public License version 3** (GPL v3). Essentially, this means you are free to do almost exactly what you want with the program, including distributing it among your friends, making it available for download from your website, selling it (either by itself or as part of some bigger software package), or using it as the starting point for a software project of your own.
 
-The only real limitation is that whenever you distribute Sanmill in
-some way, you must always include the full source code or a pointer
-to where the source code can be found. If you make any changes to the
-source code, these changes must also be made available under the GPL.
+The only real limitation is that whenever you distribute Sanmill in some way, you must always include the full source code or a pointer to where the source code can be found. If you make any changes to the source code, these changes must also be made available under the GPL.
 
-For full details, read the copy of the GPL v3 found in the file named
-*Copying.txt*.
+For full details, read the copy of the GPL v3 found in the file named *Copying.txt*.
+
+As additional permission under section 7, you are allowed to distribute the software through an app store, even if that store has restrictive terms and conditions that are incompatible with the GPL, provided that the source is also available under the GPL with or without this permission through a channel without those restrictive terms and conditions.
+
+All unofficial builds and forks of the app must be clearly labeled as unofficial in the app's name (e.g. "Sanmill  UNOFFICIAL", never just "Sanmill") or use a different name altogether. If any code changes are made, the fork should use a completely different name and app icon. All unofficial builds and forks MUST use a different application ID, in order to not conflict with a potential official release.

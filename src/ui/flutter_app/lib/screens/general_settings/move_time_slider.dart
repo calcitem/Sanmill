@@ -1,5 +1,5 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -39,6 +39,14 @@ class _MoveTimeSlider extends StatelessWidget {
             onChanged: (double value) {
               DB().generalSettings =
                   generalSettings.copyWith(moveTime: value.toInt());
+
+              if (DB().generalSettings.moveTime == 0) {
+                rootScaffoldMessengerKey.currentState!
+                    .showSnackBarClear(S.of(context).noTimeLimitForThinking);
+              } else {
+                rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                    S.of(context).noteAiThinkingTimeMayNotBePrecise);
+              }
 
               logger.v("Move time Slider value: $value");
             },

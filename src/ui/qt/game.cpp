@@ -1,5 +1,5 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -1602,7 +1602,7 @@ void Game::saveScore()
     const QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
     const qint64 pid = QCoreApplication::applicationPid();
 
-    const QString path = QDir::currentPath() + "/" + tr("Score-MillGame_") +
+    const QString path = QDir::currentPath() + "/" + tr("Score-MillPro_") +
                          strDate + "_" + QString::number(pid) + ".txt";
 
     QFile file;

@@ -1,5 +1,5 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -80,7 +80,7 @@ class Game {
     GifShare().captureView();
 
     // TODO: moveHistoryText is not lightweight.
-    if (EnvironmentConfig.catcher == true && !kIsWeb) {
+    if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
       final CatcherOptions options = catcher.getCurrentConfig()!;
       options.customParameters["MoveList"] =
           MillController().recorder.moveHistoryText;

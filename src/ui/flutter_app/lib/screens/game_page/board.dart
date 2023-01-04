@@ -1,5 +1,5 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -107,9 +107,9 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
         AppTheme.boardPadding =
             ((deviceWidth(context) - AppTheme.boardMargin * 2) *
                         DB().displaySettings.pieceWidth /
-                        7 -
-                    1) /
-                2;
+                        7) /
+                    2 +
+                4;
 
         return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constrains) {
@@ -207,7 +207,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
 /// Semantics for the Board
 ///
-/// This Widget only contains [Semantics] nodes to help impaired people interact with the [Board].
+/// This Widget only contains [Semantics] nodes to help impaired people interact with the [Board].class _BoardSemantics extends StatefulWidget {
 class _BoardSemantics extends StatefulWidget {
   const _BoardSemantics();
 

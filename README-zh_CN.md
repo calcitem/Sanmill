@@ -137,10 +137,10 @@ sudo apt-get install qt5-default qtmultimedia5-dev qtcreator
 ```shell
 cd src/ui/qt
 cmake .
-cmake --build . --target MillGame
+cmake --build . --target mill-pro
 ```
 
-并使用 Visual Studio 打开 `src\ui\qt\millgame.sln` 来构建 Qt 应用程序。
+并使用 Visual Studio 打开 `src\ui\qt\mill-pro.sln` 来构建 Qt 应用程序。
 
 ### Flutter App
 
@@ -182,3 +182,7 @@ Sanmill 是免费的，并根据 **GNU 通用公共许可证版本 3**（GPL v3�
 唯一真正的限制是，每当您以某种方式分发 Sanmill 时，您必须始终包含完整的源代码或指向可以找到源代码的位置的链接。 如果您对源代码进行任何更改，这些更改也必须在 GPL 下可用。
 
 有关详细信息，请阅读在名为 *Copying.txt* 的文件中找到的 GPL v3 副本。
+
+根据第 7 条的附加许可，您被允许通过应用商店进行软件分发，即使该商店的条款和条件与 GPL 不兼容，只要通过没有这些限制性条款和条件的渠道，也可以在 GPL 下提供源代码。
+
+所有非官方版本和分支必须在应用程序的名称中清楚地标注为非官方版本（例如“Sanmill UNOFFICIAL”，永远不是“Sanmill”），或者使用一个完全不同的名称。如果进行了代码更改，则分支应使用完全不同的名称和应用图标。所有非官方版本和分支必须使用不同的应用程序 ID，以避免与潜在的官方版本发生冲突。

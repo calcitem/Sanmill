@@ -1,5 +1,5 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2022 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ Future<void> _initCatcher(Catcher catcher) async {
   final Map<String, String> customParameters = <String, String>{};
   late final String externalDirStr;
 
-  if (Platform.isLinux || Platform.isWindows || kIsWeb) {
+  if (Platform.isIOS || Platform.isLinux || Platform.isWindows || kIsWeb) {
     externalDirStr = ".";
   } else {
     try {
