@@ -72,43 +72,57 @@ class GamePage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: DB().colorSettings.darkBackgroundColor,
       // ignore: always_specify_types
-      body: FutureBuilder(
-        future: controller.start(),
-        builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-                //child: CircularProgressIndicator.adaptive(),
-                );
-          }
-
-          return Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: AppTheme.boardMargin),
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                double toolbarHeight =
-                    GamePageToolBar.height + ButtonTheme.of(context).height;
-                if (DB().displaySettings.isHistoryNavigationToolbarShown) {
-                  toolbarHeight *= 2;
+      body: Stack(
+        children: <Widget>[
+          Align(
+            alignment: Alignment.topCenter,
+            child: FutureBuilder<void>(
+              future: controller.start(),
+              builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                      //child: CircularProgressIndicator.adaptive(),
+                      );
                 }
 
-                // Constraints of the game board but applied to the entire child
-                final double maxWidth = constraints.maxWidth;
-                final double maxHeight = constraints.maxHeight - toolbarHeight;
-                final BoxConstraints constraint = BoxConstraints(
-                  maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
-                      ? maxHeight
-                      : maxWidth,
-                );
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppTheme.boardMargin),
+                  child: LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      double toolbarHeight = GamePageToolBar.height +
+                          ButtonTheme.of(context).height;
+                      if (DB()
+                          .displaySettings
+                          .isHistoryNavigationToolbarShown) {
+                        toolbarHeight *= 2;
+                      }
+                      // Constraints of the game board but applied to the entire child
+                      final double maxWidth = constraints.maxWidth;
+                      final double maxHeight =
+                          constraints.maxHeight - toolbarHeight;
+                      final BoxConstraints constraint = BoxConstraints(
+                        maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
+                            ? maxHeight
+                            : maxWidth,
+                      );
 
-                return ConstrainedBox(
-                  constraints: constraint,
-                  child: const _Game(),
+                      return ConstrainedBox(
+                        constraints: constraint,
+                        child: const _Game(),
+                      );
+                    },
+                  ),
                 );
               },
             ),
-          );
-        },
+          ),
+          Align(
+            alignment: AlignmentDirectional.topStart,
+            child: SafeArea(child: DrawerIcon.of(context)!.icon),
+          ),
+        ],
       ),
     );
   }
@@ -302,157 +316,142 @@ class _GameState extends State<_Game> {
   Widget build(BuildContext context) {
     return SafeArea(
       bottom: false,
-      child: Stack(
-        children: <Widget>[
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                GameHeader(),
-                if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
-                        MillController().gameInstance.gameMode ==
-                            GameMode.setupPosition) &&
-                    !(Constants.isSmallScreen == true &&
-                        DB().ruleSettings.piecesCount > 9))
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          getPiecesText(
-                              MillController().position.pieceInHandCount[
-                                  !DB().generalSettings.aiMovesFirst
-                                      ? PieceColor.black
-                                      : PieceColor.white]!),
-                          style: TextStyle(
-                            color: !DB().generalSettings.aiMovesFirst
-                                ? DB().colorSettings.blackPieceColor
-                                : DB().colorSettings.whitePieceColor,
-                            shadows: const <Shadow>[
-                              Shadow(
-                                offset: Offset(1.0, 1.0),
-                                blurRadius: 3.0,
-                                color: Color.fromARGB(255, 128, 128, 128),
-                              ),
-                            ],
+      right: false,
+      left: false,
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            GameHeader(),
+            if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
+                    MillController().gameInstance.gameMode ==
+                        GameMode.setupPosition) &&
+                !(Constants.isSmallScreen == true &&
+                    DB().ruleSettings.piecesCount > 9))
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      getPiecesText(MillController().position.pieceInHandCount[
+                          !DB().generalSettings.aiMovesFirst
+                              ? PieceColor.black
+                              : PieceColor.white]!),
+                      style: TextStyle(
+                        color: !DB().generalSettings.aiMovesFirst
+                            ? DB().colorSettings.blackPieceColor
+                            : DB().colorSettings.whitePieceColor,
+                        shadows: const <Shadow>[
+                          Shadow(
+                            offset: Offset(1.0, 1.0),
+                            blurRadius: 3.0,
+                            color: Color.fromARGB(255, 128, 128, 128),
                           ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      getPiecesText(DB().ruleSettings.piecesCount -
+                          MillController().position.pieceInHandCount[
+                              !DB().generalSettings.aiMovesFirst
+                                  ? PieceColor.white
+                                  : PieceColor.black]! -
+                          MillController().position.pieceOnBoardCount[
+                              !DB().generalSettings.aiMovesFirst
+                                  ? PieceColor.white
+                                  : PieceColor.black]!),
+                      style: TextStyle(
+                        color: !DB().generalSettings.aiMovesFirst
+                            ? DB()
+                                .colorSettings
+                                .whitePieceColor
+                                .withOpacity(0.8)
+                            : DB()
+                                .colorSettings
+                                .blackPieceColor
+                                .withOpacity(0.8),
+                        shadows: const <Shadow>[
+                          Shadow(
+                            offset: Offset(1.0, 1.0),
+                            blurRadius: 3.0,
+                            color: Color.fromARGB(255, 128, 128, 128),
+                          ),
+                        ],
+                      ),
+                    )
+                  ])
+            else
+              const SizedBox(height: AppTheme.boardMargin),
+            const Board(),
+            if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
+                    MillController().gameInstance.gameMode ==
+                        GameMode.setupPosition) &&
+                !(Constants.isSmallScreen == true &&
+                    DB().ruleSettings.piecesCount > 9))
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <
+                  Widget>[
+                Text(
+                    getPiecesText(DB().ruleSettings.piecesCount -
+                        MillController().position.pieceInHandCount[
+                            !DB().generalSettings.aiMovesFirst
+                                ? PieceColor.black
+                                : PieceColor.white]! -
+                        MillController().position.pieceOnBoardCount[
+                            !DB().generalSettings.aiMovesFirst
+                                ? PieceColor.black
+                                : PieceColor.white]!),
+                    style: TextStyle(
+                      color: !DB().generalSettings.aiMovesFirst
+                          ? DB().colorSettings.blackPieceColor.withOpacity(0.8)
+                          : DB().colorSettings.whitePieceColor.withOpacity(0.8),
+                      shadows: const <Shadow>[
+                        Shadow(
+                          offset: Offset(1.0, 1.0),
+                          blurRadius: 3.0,
+                          color: Color.fromARGB(255, 128, 128, 128),
                         ),
-                        Text(
-                          getPiecesText(DB().ruleSettings.piecesCount -
-                              MillController().position.pieceInHandCount[
-                                  !DB().generalSettings.aiMovesFirst
-                                      ? PieceColor.white
-                                      : PieceColor.black]! -
-                              MillController().position.pieceOnBoardCount[
-                                  !DB().generalSettings.aiMovesFirst
-                                      ? PieceColor.white
-                                      : PieceColor.black]!),
-                          style: TextStyle(
-                            color: !DB().generalSettings.aiMovesFirst
-                                ? DB()
-                                    .colorSettings
-                                    .whitePieceColor
-                                    .withOpacity(0.8)
-                                : DB()
-                                    .colorSettings
-                                    .blackPieceColor
-                                    .withOpacity(0.8),
-                            shadows: const <Shadow>[
-                              Shadow(
-                                offset: Offset(1.0, 1.0),
-                                blurRadius: 3.0,
-                                color: Color.fromARGB(255, 128, 128, 128),
-                              ),
-                            ],
-                          ),
-                        )
-                      ])
-                else
-                  const SizedBox(height: AppTheme.boardMargin),
-                const Board(),
-                if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
-                        MillController().gameInstance.gameMode ==
-                            GameMode.setupPosition) &&
-                    !(Constants.isSmallScreen == true &&
-                        DB().ruleSettings.piecesCount > 9))
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                            getPiecesText(DB().ruleSettings.piecesCount -
-                                MillController().position.pieceInHandCount[
-                                    !DB().generalSettings.aiMovesFirst
-                                        ? PieceColor.black
-                                        : PieceColor.white]! -
-                                MillController().position.pieceOnBoardCount[
-                                    !DB().generalSettings.aiMovesFirst
-                                        ? PieceColor.black
-                                        : PieceColor.white]!),
-                            style: TextStyle(
-                              color: !DB().generalSettings.aiMovesFirst
-                                  ? DB()
-                                      .colorSettings
-                                      .blackPieceColor
-                                      .withOpacity(0.8)
-                                  : DB()
-                                      .colorSettings
-                                      .whitePieceColor
-                                      .withOpacity(0.8),
-                              shadows: const <Shadow>[
-                                Shadow(
-                                  offset: Offset(1.0, 1.0),
-                                  blurRadius: 3.0,
-                                  color: Color.fromARGB(255, 128, 128, 128),
-                                ),
-                              ],
-                            )),
-                        Text(
-                            getPiecesText(
-                                MillController().position.pieceInHandCount[
-                                    !DB().generalSettings.aiMovesFirst
-                                        ? PieceColor.white
-                                        : PieceColor.black]!),
-                            style: TextStyle(
-                              color: DB().generalSettings.aiMovesFirst
-                                  ? DB().colorSettings.blackPieceColor
-                                  : DB().colorSettings.whitePieceColor,
-                              shadows: const <Shadow>[
-                                Shadow(
-                                  offset: Offset(1.0, 1.0),
-                                  blurRadius: 3.0,
-                                  color: Color.fromARGB(255, 128, 128, 128),
-                                ),
-                              ],
-                            ))
-                      ])
-                else
-                  const SizedBox(height: AppTheme.boardMargin),
-                if (MillController().gameInstance.gameMode ==
+                      ],
+                    )),
+                Text(
+                    getPiecesText(MillController().position.pieceInHandCount[
+                        !DB().generalSettings.aiMovesFirst
+                            ? PieceColor.white
+                            : PieceColor.black]!),
+                    style: TextStyle(
+                      color: DB().generalSettings.aiMovesFirst
+                          ? DB().colorSettings.blackPieceColor
+                          : DB().colorSettings.whitePieceColor,
+                      shadows: const <Shadow>[
+                        Shadow(
+                          offset: Offset(1.0, 1.0),
+                          blurRadius: 3.0,
+                          color: Color.fromARGB(255, 128, 128, 128),
+                        ),
+                      ],
+                    ))
+              ])
+            else
+              const SizedBox(height: AppTheme.boardMargin),
+            if (MillController().gameInstance.gameMode ==
+                GameMode.setupPosition)
+              const SetupPositionToolBar(),
+            if (DB().displaySettings.isHistoryNavigationToolbarShown &&
+                MillController().gameInstance.gameMode !=
                     GameMode.setupPosition)
-                  const SetupPositionToolBar(),
-                if (DB().displaySettings.isHistoryNavigationToolbarShown &&
-                    MillController().gameInstance.gameMode !=
-                        GameMode.setupPosition)
-                  GamePageToolBar(
-                    backgroundColor:
-                        DB().colorSettings.navigationToolbarBackgroundColor,
-                    itemColor: DB().colorSettings.navigationToolbarIconColor,
-                    children: historyNavToolbarItems(context),
-                  ),
-                if (MillController().gameInstance.gameMode !=
-                    GameMode.setupPosition)
-                  GamePageToolBar(
-                    backgroundColor:
-                        DB().colorSettings.mainToolbarBackgroundColor,
-                    itemColor: DB().colorSettings.mainToolbarIconColor,
-                    children: mainToolbarItems(context),
-                  ),
-              ],
-            ),
-          ),
-          Align(
-            alignment: AlignmentDirectional.topStart,
-            child: DrawerIcon.of(context)?.icon,
-          ),
-        ],
+              GamePageToolBar(
+                backgroundColor:
+                    DB().colorSettings.navigationToolbarBackgroundColor,
+                itemColor: DB().colorSettings.navigationToolbarIconColor,
+                children: historyNavToolbarItems(context),
+              ),
+            if (MillController().gameInstance.gameMode !=
+                GameMode.setupPosition)
+              GamePageToolBar(
+                backgroundColor: DB().colorSettings.mainToolbarBackgroundColor,
+                itemColor: DB().colorSettings.mainToolbarIconColor,
+                children: mainToolbarItems(context),
+              ),
+            const SizedBox(height: AppTheme.boardMargin),
+          ],
+        ),
       ),
     );
   }

@@ -27,6 +27,7 @@ class CustomDrawer extends StatefulWidget {
     required this.header,
     this.controller,
     this.disabledGestures = false,
+    required this.orientation,
   });
 
   /// Child widget. (Usually a widget that represents the main screen)
@@ -45,6 +46,8 @@ class CustomDrawer extends StatefulWidget {
   /// Header widget of the drawer
   final Widget header;
 
+  final Orientation orientation;
+
   @override
   CustomDrawerState createState() => CustomDrawerState();
 }
@@ -53,7 +56,7 @@ class CustomDrawerState extends State<CustomDrawer>
     with SingleTickerProviderStateMixin {
   late final CustomDrawerController _controller;
   late final AnimationController _animationController;
-  late final Animation<Offset> _childSlideAnimation;
+  late Animation<Offset> _childSlideAnimation;
   late final Animation<Offset> _overlaySlideAnimation;
   late double _offsetValue;
   late Offset _freshPosition;
@@ -63,13 +66,12 @@ class CustomDrawerState extends State<CustomDrawer>
   static const Duration _duration = Duration(milliseconds: 250);
   static const double _slideThreshold = 0.25;
   static const int _slideVelocityThreshold = 1300;
-  static const double _openRatio = 0.75;
+  late double _openRatio;
   static const double _overlayRadius = 28.0;
 
   @override
   void initState() {
     super.initState();
-
     _controller = widget.controller ?? CustomDrawerController();
     _controller.addListener(_handleControllerChanged);
 
@@ -79,16 +81,18 @@ class CustomDrawerState extends State<CustomDrawer>
       value: _controller.value.visible ? 1 : 0,
     );
 
-    _childSlideAnimation = Tween<Offset>(
-      begin: Offset.zero,
-      end: const Offset(_openRatio, 0),
+    _overlaySlideAnimation = Tween<Offset>(
+      begin: const Offset(-1, 0),
+      end: Offset.zero,
     ).animate(
       _animationController,
     );
 
-    _overlaySlideAnimation = Tween<Offset>(
-      begin: const Offset(-1, 0),
-      end: Offset.zero,
+    _openRatio = widget.orientation == Orientation.portrait ? 0.75 : 0.45;
+
+    _childSlideAnimation = Tween<Offset>(
+      begin: Offset.zero,
+      end: Offset(_openRatio, 0),
     ).animate(
       _animationController,
     );
@@ -105,6 +109,22 @@ class CustomDrawerState extends State<CustomDrawer>
         itemBuilder: _buildItem,
       ),
     );
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomDrawer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.orientation != widget.orientation) {
+      _openRatio = widget.orientation == Orientation.portrait ? 0.75 : 0.45;
+
+      _childSlideAnimation = Tween<Offset>(
+        begin: Offset.zero,
+        end: Offset(_openRatio, 0),
+      ).animate(
+        _animationController,
+      );
+      setState(() {});
+    }
   }
 
   @override

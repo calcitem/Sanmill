@@ -97,10 +97,7 @@ class _GameHeaderState extends State<GameHeader> {
 
     return Align(
       alignment: Alignment.topCenter,
-      child: SafeArea(
-        bottom: false,
-        child: appBar,
-      ),
+      child: appBar,
     );
   }
 }

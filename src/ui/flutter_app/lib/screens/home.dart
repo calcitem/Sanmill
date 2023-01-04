@@ -37,6 +37,7 @@ import '../shared/custom_drawer/custom_drawer.dart';
 import '../shared/double_back_to_close_app.dart';
 import '../shared/gif_share/gif_share.dart';
 import '../shared/gif_share/widgets_to_image.dart';
+import '../shared/painters/painters.dart';
 import '../shared/privacy_dialog.dart';
 import '../shared/scaffold_messenger.dart';
 import '../shared/stack_list.dart';
@@ -233,10 +234,10 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     AppTheme.boardPadding =
-        ((MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) *
-                    DB().displaySettings.pieceWidth /
-                    7 -
-                1) /
+        ((deviceWidth(context) - AppTheme.boardMargin * 2) *
+                DB().displaySettings.pieceWidth /
+                7 -
+            1) /
             2;
 
     final List<CustomDrawerItem<_DrawerIndex>> drawerItems =
@@ -336,14 +337,15 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             builder: (_, CustomDrawerValue value, Widget? child) =>
                 CustomDrawer(
                   controller: _controller,
-                  header: CustomDrawerHeader(
-                    title: S.of(context).appName,
-                  ),
-                  items: drawerItems,
-                  // TODO: 4 means Setup Position
-                  disabledGestures: _drawerIndex.index < 4 && !value.visible,
-                  child: _screenView,
-                ),
+              header: CustomDrawerHeader(
+                title: S.of(context).appName,
+              ),
+              items: drawerItems,
+              // TODO: 4 means Setup Position
+              disabledGestures: _drawerIndex.index < 4 && !value.visible,
+              orientation: MediaQuery.of(context).orientation,
+              child: _screenView,
+            ),
           )),
     );
   }

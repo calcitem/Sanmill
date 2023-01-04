@@ -21,12 +21,12 @@ void _initUI() {
   logger.v(window.physicalSize.toString());
   logger.v(Constants.windowAspectRatio.toString());
 
-  SystemChrome.setPreferredOrientations(
-    <DeviceOrientation>[
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown
-    ],
-  );
+  // SystemChrome.setPreferredOrientations(
+  //   <DeviceOrientation>[
+  //     DeviceOrientation.portraitUp,
+  //     DeviceOrientation.portraitDown
+  //   ],
+  // );
 
 // TODO: [Leptopoda] Use layoutBuilder to add adaptiveness
   if (DB().displaySettings.isFullScreen) {

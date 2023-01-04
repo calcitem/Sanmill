@@ -39,7 +39,7 @@ const List<String> horizontalNotations = <String>[
 ];
 
 /// The padding applied to the actual mill field
-double boardMargin = AppTheme.boardPadding;
+double get boardMargin => AppTheme.boardPadding;
 
 /// Calculates the position of the given point
 Offset pointFromIndex(int index, Size size) {
@@ -112,4 +112,10 @@ extension _PathExtension on Path {
 
 extension _OffsetExtension on Offset {
   Offset round() => Offset(dx.roundToDouble(), dy.roundToDouble());
+}
+
+double deviceWidth(BuildContext context) {
+  return MediaQuery.of(context).orientation == Orientation.portrait
+      ? MediaQuery.of(context).size.width
+      : MediaQuery.of(context).size.height;
 }
