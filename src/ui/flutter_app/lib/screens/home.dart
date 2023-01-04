@@ -373,7 +373,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   void _showWizardDialog() {
-    if (DB().generalSettings.showWizard) {
+    if (DB().generalSettings.showWizard &&
+        MediaQuery.of(context).orientation == Orientation.portrait) {
       Navigator.of(context).push(
         MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => const WizardDialog(),
