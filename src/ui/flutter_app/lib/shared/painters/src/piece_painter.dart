@@ -64,7 +64,7 @@ class PiecePainter extends CustomPainter {
     final List<PiecePaintParam> piecesToDraw = <PiecePaintParam>[];
 
     final double pieceWidth =
-        size.width * DB().displaySettings.pieceWidth / 7 - 1;
+        (size.width - AppTheme.boardPadding * 2) * DB().displaySettings.pieceWidth / 6  - 1;
     final double animatedPieceWidth = pieceWidth * animationValue;
 
     // Draw pieces on board
