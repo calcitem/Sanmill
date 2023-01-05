@@ -124,11 +124,8 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> with TickerProviderStateMixin {
   final CustomDrawerController _controller = CustomDrawerController();
 
-  Widget _screenView = kIsWeb
-      ? _DrawerIndex.humanVsHuman.screen!
-      : _DrawerIndex.humanVsAi.screen!;
-  _DrawerIndex _drawerIndex =
-      kIsWeb ? _DrawerIndex.humanVsHuman : _DrawerIndex.humanVsAi;
+  Widget _screenView = kIsWeb ? _DrawerIndex.humanVsHuman.screen! : _DrawerIndex.humanVsAi.screen!;
+  _DrawerIndex _drawerIndex = kIsWeb ? _DrawerIndex.humanVsHuman : _DrawerIndex.humanVsAi;
   final StackList<_DrawerIndex> _routes = StackList<_DrawerIndex>();
 
   /// Callback from drawer for replace screen
@@ -207,9 +204,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
       switch (countryCode) {
         case "fa": // Iran
-          DB().ruleSettings = DB()
-              .ruleSettings
-              .copyWith(piecesCount: 12, hasDiagonalLines: true);
+          DB().ruleSettings = DB().ruleSettings.copyWith(piecesCount: 12, hasDiagonalLines: true);
           break;
         default:
           break;
@@ -233,14 +228,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    AppTheme.boardPadding = ((deviceWidth(context) - AppTheme.boardMargin * 2) *
-                DB().displaySettings.pieceWidth /
-                7) /
-            2 +
-        4;
+    AppTheme.boardPadding =
+        ((deviceWidth(context) - AppTheme.boardMargin * 2) * DB().displaySettings.pieceWidth / 7) /
+                2 +
+            4;
 
-    final List<CustomDrawerItem<_DrawerIndex>> drawerItems =
-        <CustomDrawerItem<_DrawerIndex>>[
+    final List<CustomDrawerItem<_DrawerIndex>> drawerItems = <CustomDrawerItem<_DrawerIndex>>[
       if (!kIsWeb)
         CustomDrawerItem<_DrawerIndex>(
           value: _DrawerIndex.humanVsAi,
@@ -333,8 +326,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           controller: GifShare().controller,
           child: ValueListenableBuilder<CustomDrawerValue>(
             valueListenable: _controller,
-            builder: (_, CustomDrawerValue value, Widget? child) =>
-                CustomDrawer(
+            builder: (_, CustomDrawerValue value, Widget? child) => CustomDrawer(
               controller: _controller,
               header: CustomDrawerHeader(
                 title: S.of(context).appName,
@@ -364,39 +356,45 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) =>
-            PrivacyDialog(onConfirm: _showWizardDialog),
+        builder: (BuildContext context) => PrivacyDialog(onConfirm: _showWizardDialog),
       );
     } else {
       _showWizardDialog();
     }
   }
 
-  void _showWizardDialog() {
+  Future<void> _showWizardDialog() async {
     if (DB().generalSettings.showWizard &&
         MediaQuery.of(context).orientation == Orientation.portrait) {
-      Navigator.of(context).push(
+      SystemChrome.setPreferredOrientations(
+        <DeviceOrientation>[DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+      );
+      await Navigator.of(context).push(
         MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => const WizardDialog(),
           fullscreenDialog: true,
         ),
+      );
+      SystemChrome.setPreferredOrientations(
+        <DeviceOrientation>[
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+          DeviceOrientation.landscapeLeft,
+          DeviceOrientation.landscapeRight
+        ],
       );
     }
   }
 
   /// Drafts an email and sends it to the developer
   static Future<void> _launchFeedback(UserFeedback feedback) async {
-    final String screenshotFilePath =
-        await _saveFeedbackImage(feedback.screenshot);
+    final String screenshotFilePath = await _saveFeedbackImage(feedback.screenshot);
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    final String version =
-        "${packageInfo.version} (${packageInfo.buildNumber})";
+    final String version = "${packageInfo.version} (${packageInfo.buildNumber})";
 
     final Email email = Email(
       body: feedback.text,
-      subject: Constants.feedbackSubjectPrefix +
-          version +
-          Constants.feedbackSubjectSuffix,
+      subject: Constants.feedbackSubjectPrefix + version + Constants.feedbackSubjectSuffix,
       recipients: Constants.recipients,
       attachmentPaths: <String>[screenshotFilePath],
     );

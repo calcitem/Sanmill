@@ -83,7 +83,9 @@ class _GameHeaderState extends State<GameHeader> {
     final BlockSemantics appBar = BlockSemantics(
       child: Center(
         child: Padding(
-          padding: EdgeInsets.only(top: DB().displaySettings.boardTop),
+          padding: EdgeInsets.only(
+              top: DB().displaySettings.boardTop *
+                  (MediaQuery.of(context).orientation == Orientation.landscape ? 0.25 : 1.0)),
           child: Column(
             children: <Widget>[
               const HeaderIcons(),
@@ -114,12 +116,10 @@ class HeaderTipState extends State<HeaderTip> {
   final ValueNotifier<String> _messageNotifier = ValueNotifier<String>("");
 
   void showTip() {
-    final HeaderTipNotifier headerTipNotifier =
-        MillController().headerTipNotifier;
+    final HeaderTipNotifier headerTipNotifier = MillController().headerTipNotifier;
 
     if (headerTipNotifier.showSnackBar) {
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(headerTipNotifier.message);
+      rootScaffoldMessengerKey.currentState!.showSnackBarClear(headerTipNotifier.message);
     }
 
     _messageNotifier.value = headerTipNotifier.message;
