@@ -77,29 +77,35 @@ class _GameOptionsModal extends StatelessWidget {
           child: Text(S.of(context).newGame),
         ),
         const CustomSpacer(),
-        if (MillController().recorder.hasPrevious == true ||
-            MillController().isPositionSetup == true)
+        if (!kIsWeb &&
+            (MillController().recorder.hasPrevious == true ||
+                MillController().isPositionSetup == true))
           SimpleDialogOption(
             onPressed: () => MillController.save(context),
             child: Text(S.of(context).saveGame),
           ),
-        if (MillController().recorder.hasPrevious == true ||
-            MillController().isPositionSetup == true)
+        if (!kIsWeb &&
+            (MillController().recorder.hasPrevious == true ||
+                MillController().isPositionSetup == true))
           const CustomSpacer(),
-        SimpleDialogOption(
-          onPressed: () => MillController.load(context),
-          child: Text(S.of(context).loadGame),
-        ),
+        if (!kIsWeb)
+          SimpleDialogOption(
+            onPressed: () => MillController.load(context),
+            child: Text(S.of(context).loadGame),
+          ),
         const CustomSpacer(),
-        SimpleDialogOption(
-          onPressed: () => MillController.import(context),
-          child: Text(S.of(context).importGame),
-        ),
-        if (MillController().recorder.hasPrevious == true ||
-            MillController().isPositionSetup == true)
+        if (!kIsWeb)
+          SimpleDialogOption(
+            onPressed: () => MillController.import(context),
+            child: Text(S.of(context).importGame),
+          ),
+        if (!kIsWeb &&
+            (MillController().recorder.hasPrevious == true ||
+                MillController().isPositionSetup == true))
           const CustomSpacer(),
-        if (MillController().recorder.hasPrevious == true ||
-            MillController().isPositionSetup == true)
+        if (!kIsWeb &&
+            (MillController().recorder.hasPrevious == true ||
+                MillController().isPositionSetup == true))
           SimpleDialogOption(
             onPressed: () => MillController.export(context),
             child: Text(S.of(context).exportGame),
