@@ -147,7 +147,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     }
 
     if (index == _DrawerIndex.feedback) {
-      if (Platform.isAndroid || Platform.isIOS) {
+      if (Platform.isAndroid) {
         return BetterFeedback.of(context).show(_launchFeedback);
       } else {
         return logger.w("flutter_email_sender does not support this platform.");
@@ -299,7 +299,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
       ),
-      if (kIsWeb || Platform.isAndroid)
+      if (!kIsWeb && Platform.isAndroid)
         CustomDrawerItem<_DrawerIndex>(
           value: _DrawerIndex.feedback,
           title: S.of(context).feedback,
@@ -314,7 +314,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         groupValue: _drawerIndex,
         onChanged: _changeIndex,
       ),
-      if (Platform.isAndroid)
+      if (!kIsWeb && Platform.isAndroid)
         CustomDrawerItem<_DrawerIndex>(
           value: _DrawerIndex.exit,
           title: S.of(context).exit,
@@ -341,9 +341,10 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
               ),
               items: drawerItems,
               // TODO: 4 means Setup Position
-              disabledGestures: Platform.isWindows &&
-                  Platform.isLinux &&
-                  Platform.isMacOS &&
+              disabledGestures: (kIsWeb ||
+                      Platform.isWindows ||
+                      Platform.isLinux ||
+                      Platform.isMacOS) &&
                   _drawerIndex.index < 4 &&
                   !value.visible,
               orientation: MediaQuery.of(context).orientation,
@@ -360,7 +361,10 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
     if (!DB().generalSettings.isPrivacyPolicyAccepted &&
         Localizations.localeOf(context).languageCode.startsWith("zh") &&
-        !Platform.isIOS) {
+        (kIsWeb ||
+            Platform.isAndroid ||
+            Platform.isWindows ||
+            Platform.isLinux)) {
       showDialog(
         context: context,
         barrierDismissible: false,

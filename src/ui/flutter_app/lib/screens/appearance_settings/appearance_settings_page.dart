@@ -16,6 +16,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
@@ -282,7 +283,7 @@ class AppearanceSettingsPage extends StatelessWidget {
             ),
           ),
         ),
-        if (Platform.isAndroid || Platform.isIOS)
+        if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
           SettingsListTile.switchTile(
             value: displaySettings.isFullScreen,
             onChanged: (bool val) {

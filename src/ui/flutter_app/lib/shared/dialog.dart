@@ -35,7 +35,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
   final TextStyle linkStyle =
       aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
 
-  final String eulaURL = Platform.isIOS || Platform.isMacOS
+  final String eulaURL = !kIsWeb && (Platform.isIOS || Platform.isMacOS)
       ? Constants.appleStdEulaURL
       : Constants.eulaURL.urlZh;
   final String privacyPolicyURL = Constants.privacyPolicyURL.urlZh;

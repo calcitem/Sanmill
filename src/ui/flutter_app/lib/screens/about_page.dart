@@ -59,10 +59,13 @@ class AboutPage extends StatelessWidget {
             return Container();
           } else {
             final PackageInfo packageInfo = data.data!;
-            if (Platform.isIOS || Platform.isAndroid) {
-              version = "${packageInfo.version} (${packageInfo.buildNumber})";
-            } else {
+            if (kIsWeb ||
+                Platform.isWindows ||
+                Platform.isLinux ||
+                Platform.isMacOS) {
               version = packageInfo.version;
+            } else {
+              version = "${packageInfo.version} (${packageInfo.buildNumber})";
             }
           }
           return SettingsListTile(
@@ -82,7 +85,10 @@ class AboutPage extends StatelessWidget {
         titleString: S.of(context).feedback,
         onTap: () => _launchURL(context, Constants.issuesURL),
       ),
-      if (!(Platform.isIOS || Platform.isMacOS))
+      if (kIsWeb ||
+          Platform.isAndroid ||
+          Platform.isWindows ||
+          Platform.isLinux)
         SettingsListTile(
           titleString: S.of(context).eula,
           onTap: () => _launchURL(context, Constants.eulaURL),

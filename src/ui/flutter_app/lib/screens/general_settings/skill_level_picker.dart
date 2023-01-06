@@ -78,9 +78,10 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
                 onPressed: () {
                   Navigator.of(context).pop();
 
-                  if (Platform.isWindows ||
-                      Platform.isLinux ||
-                      Platform.isMacOS) {
+                  if (!kIsWeb &&
+                      (Platform.isWindows ||
+                          Platform.isLinux ||
+                          Platform.isMacOS)) {
                     rootScaffoldMessengerKey.currentState!.showSnackBarClear(
                         S.of(context).youCanUseMouseWheelInPicker);
                   }

@@ -54,7 +54,7 @@ class LoadService {
       rootDirectory: dir,
       rootName: S.of(context).gameFiles,
       fsType: FilesystemType.file,
-      showGoUp: !Platform.isLinux,
+      showGoUp: !kIsWeb && !Platform.isLinux,
       allowedExtensions: <String>[".pgn"],
       fileTileSelectMode:
           FileTileSelectMode.checkButton, //  TODO: whole tile is better.

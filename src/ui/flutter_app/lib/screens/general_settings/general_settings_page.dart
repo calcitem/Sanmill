@@ -18,6 +18,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 
@@ -326,7 +327,7 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        if (Platform.isAndroid)
+        if (!kIsWeb && Platform.isAndroid)
           SettingsCard(
             title: Text(S.of(context).accessibility),
             children: <Widget>[
@@ -338,7 +339,7 @@ class GeneralSettingsPage extends StatelessWidget {
               ),
             ],
           ),
-        if (Platform.isAndroid || Platform.isIOS)
+        if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
           SettingsCard(
             title: Text(S.of(context).gameScreenRecorder),
             children: <Widget>[

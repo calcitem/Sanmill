@@ -146,7 +146,9 @@ class SanmillApp extends StatelessWidget {
       ),
     );
 
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (kIsWeb || Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      return materialApp;
+    } else if (Platform.isAndroid || Platform.isIOS) {
       return BetterFeedback(
         localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
           ...S.localizationsDelegates,
@@ -156,9 +158,9 @@ class SanmillApp extends StatelessWidget {
         theme: AppTheme.feedbackTheme,
         child: materialApp,
       );
-    } else {
-      return materialApp;
     }
+
+    return materialApp;
   }
 
   Widget _buildHome(BuildContext context) {
