@@ -1,0 +1,3 @@
+v3.1.0
+
+Support landscape orientation.
