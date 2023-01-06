@@ -209,6 +209,7 @@ class MillController {
         // TODO: Unify return and throw
         if (controller.gameInstance.doMove(extMove) == false) {
           // TODO: Should catch it and throw.
+          MillController().isEngineGoing = false;
           return const EngineNoBestMove();
         }
 
