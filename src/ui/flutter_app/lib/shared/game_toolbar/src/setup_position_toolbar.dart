@@ -557,23 +557,39 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       onPressed: () => setSetupPositionPiece(context, PieceColor.white),
       icon: Icon(FluentIcons.circle_24_filled,
           color: DB().colorSettings.whitePieceColor),
-      label: Text(S.of(context).white),
+      label: Text(
+        S.of(context).white,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
     final ToolbarItem blackPieceButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionPiece(context, PieceColor.black),
       icon: Icon(FluentIcons.circle_24_filled,
           color: DB().colorSettings.blackPieceColor),
-      label: Text(S.of(context).black),
+      label: Text(
+        S.of(context).black,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
     final ToolbarItem banPointButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionPiece(context, PieceColor.ban),
       icon: const Icon(FluentIcons.prohibited_24_regular),
-      label: Text(S.of(context).ban),
+      label: Text(
+        S.of(context).ban,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
     final ToolbarItem emptyPointButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionPiece(context, PieceColor.none),
       icon: const Icon(FluentIcons.add_24_regular),
-      label: Text(S.of(context).empty),
+      label: Text(
+        S.of(context).empty,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
 
     // Clear
@@ -584,70 +600,114 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
         MillController().headerTipNotifier.showTip(S.of(context).cleanedUp);
       },
       icon: const Icon(FluentIcons.eraser_24_regular),
-      label: Text(S.of(context).clean),
+      label: Text(
+        S.of(context).clean,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
 
     // Phase
     final ToolbarItem placingButton = ToolbarItem.icon(
       onPressed: () => <void>{setSetupPositionPhase(context, Phase.placing)},
       icon: const Icon(FluentIcons.grid_dots_24_regular),
-      label: Text(S.of(context).placing),
+      label: Text(
+        S.of(context).placing,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
 
     final ToolbarItem movingButton = ToolbarItem.icon(
       onPressed: () => <void>{setSetupPositionPhase(context, Phase.moving)},
       icon: const Icon(FluentIcons.arrow_move_24_regular),
-      label: Text(S.of(context).moving),
+      label: Text(
+        S.of(context).moving,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
 
     // Remove
     final ToolbarItem removeZeroButton = ToolbarItem.icon(
       onPressed: () => <void>{setSetupPositionNeedRemove(0, true)},
       icon: const Icon(FluentIcons.circle_24_regular),
-      label: Text(S.of(context).remove),
+      label: Text(
+        S.of(context).remove,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
 
     final ToolbarItem removeOneButton = ToolbarItem.icon(
       onPressed: () => <void>{setSetupPositionNeedRemove(1, true)},
       icon: const Icon(FluentIcons.number_circle_1_24_regular),
-      label: Text(S.of(context).remove),
+      label: Text(
+        S.of(context).remove,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
 
     final ToolbarItem removeTwoButton = ToolbarItem.icon(
       onPressed: () => <void>{setSetupPositionNeedRemove(2, true)},
       icon: const Icon(FluentIcons.number_circle_2_24_regular),
-      label: Text(S.of(context).remove),
+      label: Text(
+        S.of(context).remove,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
 
     final ToolbarItem removeThreeButton = ToolbarItem.icon(
       onPressed: () => <void>{setSetupPositionNeedRemove(3, true)},
       icon: const Icon(FluentIcons.number_circle_3_24_regular),
-      label: Text(S.of(context).remove),
+      label: Text(
+        S.of(context).remove,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
 
     final ToolbarItem placedButton = ToolbarItem.icon(
       onPressed: () => <void>{setSetupPositionPlaced(context)},
       icon: const Icon(FluentIcons.text_word_count_24_regular),
-      label: Text(S.of(context).placedCount(newPlaced.toString())),
+      label: Text(
+        S.of(context).placedCount(newPlaced.toString()),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
 
     final ToolbarItem copyButton = ToolbarItem.icon(
       onPressed: () => <void>{setSetupPositionCopy(context)},
       icon: const Icon(FluentIcons.copy_24_regular),
-      label: Text(S.of(context).copy),
+      label: Text(
+        S.of(context).copy,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
 
     final ToolbarItem pasteButton = ToolbarItem.icon(
       onPressed: () => <void>{setSetupPositionPaste(context)},
       icon: const Icon(FluentIcons.clipboard_paste_24_regular),
-      label: Text(S.of(context).paste),
+      label: Text(
+        S.of(context).paste,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
 
     // Cancel
     final ToolbarItem cancelButton = ToolbarItem.icon(
       onPressed: () => <void>{restoreContext()}, // TODO: setState();
       icon: const Icon(FluentIcons.dismiss_24_regular),
-      label: Text(S.of(context).cancel),
+      label: Text(
+        S.of(context).cancel,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
 
     final Map<PieceColor, ToolbarItem> colorButtonMap =
@@ -673,17 +733,17 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     };
 
     final List<Widget> rowOne = <Widget>[
-      colorButtonMap[newPieceColor]!,
-      phaseButtonMap[newPhase]!,
-      removeButtonMap[newPieceCountNeedRemove]!,
-      placedButton,
+      Expanded(child: colorButtonMap[newPieceColor]!),
+      Expanded(child: phaseButtonMap[newPhase]!),
+      Expanded(child: removeButtonMap[newPieceCountNeedRemove]!),
+      Expanded(child: placedButton),
     ];
 
     final List<Widget> row2 = <Widget>[
-      copyButton,
-      pasteButton,
-      clearButton,
-      cancelButton,
+      Expanded(child: copyButton),
+      Expanded(child: pasteButton),
+      Expanded(child: clearButton),
+      Expanded(child: cancelButton),
     ];
 
     return Column(
@@ -749,9 +809,8 @@ class SetupPositionButtonsContainer extends StatelessWidget {
         ),
         child: Directionality(
           textDirection: TextDirection.ltr,
-          child: ButtonBar(
-            buttonPadding: EdgeInsets.zero,
-            alignment: MainAxisAlignment.spaceAround,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: child,
           ),
         ),

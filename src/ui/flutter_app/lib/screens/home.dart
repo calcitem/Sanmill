@@ -37,6 +37,7 @@ import '../shared/custom_drawer/custom_drawer.dart';
 import '../shared/double_back_to_close_app.dart';
 import '../shared/gif_share/gif_share.dart';
 import '../shared/gif_share/widgets_to_image.dart';
+import '../shared/painters/painters.dart';
 import '../shared/privacy_dialog.dart';
 import '../shared/scaffold_messenger.dart';
 import '../shared/stack_list.dart';
@@ -232,12 +233,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    AppTheme.boardPadding =
-        ((MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) *
-                    DB().displaySettings.pieceWidth /
-                    7) /
-                2 +
-            4;
+    AppTheme.boardPadding = ((deviceWidth(context) - AppTheme.boardMargin * 2) *
+                DB().displaySettings.pieceWidth /
+                7) /
+            2 +
+        4;
 
     final List<CustomDrawerItem<_DrawerIndex>> drawerItems =
         <CustomDrawerItem<_DrawerIndex>>[
@@ -346,6 +346,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                   Platform.isMacOS &&
                   _drawerIndex.index < 4 &&
                   !value.visible,
+              orientation: MediaQuery.of(context).orientation,
               child: _screenView,
             ),
           )),
@@ -371,13 +372,29 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     }
   }
 
-  void _showWizardDialog() {
-    if (DB().generalSettings.showWizard) {
-      Navigator.of(context).push(
+  Future<void> _showWizardDialog() async {
+    if (DB().generalSettings.showWizard &&
+        MediaQuery.of(context).orientation == Orientation.portrait) {
+      // TODO: Support landscape orientation for wizard
+      SystemChrome.setPreferredOrientations(
+        <DeviceOrientation>[
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown
+        ],
+      );
+      await Navigator.of(context).push(
         MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => const WizardDialog(),
           fullscreenDialog: true,
         ),
+      );
+      SystemChrome.setPreferredOrientations(
+        <DeviceOrientation>[
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+          DeviceOrientation.landscapeLeft,
+          DeviceOrientation.landscapeRight
+        ],
       );
     }
   }

@@ -47,8 +47,8 @@ class _WizardDialogState extends State<WizardDialog> {
   Offset? _maskOffset;
 
   Size get _size => Size(
-        MediaQuery.of(context).size.width - AppTheme.boardPadding * 2,
-        MediaQuery.of(context).size.width - AppTheme.boardPadding * 2,
+        deviceWidth(context) - AppTheme.boardPadding * 2,
+        deviceWidth(context) - AppTheme.boardPadding * 2,
       );
 
   @override

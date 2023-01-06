@@ -73,43 +73,57 @@ class GamePage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: DB().colorSettings.darkBackgroundColor,
       // ignore: always_specify_types
-      body: FutureBuilder(
-        future: controller.start(),
-        builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-                //child: CircularProgressIndicator.adaptive(),
-                );
-          }
-
-          return Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: AppTheme.boardMargin),
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                double toolbarHeight =
-                    GamePageToolBar.height + ButtonTheme.of(context).height;
-                if (DB().displaySettings.isHistoryNavigationToolbarShown) {
-                  toolbarHeight *= 2;
+      body: Stack(
+        children: <Widget>[
+          Align(
+            alignment: Alignment.topCenter,
+            child: FutureBuilder<void>(
+              future: controller.start(),
+              builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                      //child: CircularProgressIndicator.adaptive(),
+                      );
                 }
 
-                // Constraints of the game board but applied to the entire child
-                final double maxWidth = constraints.maxWidth;
-                final double maxHeight = constraints.maxHeight - toolbarHeight;
-                final BoxConstraints constraint = BoxConstraints(
-                  maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
-                      ? maxHeight
-                      : maxWidth,
-                );
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppTheme.boardMargin),
+                  child: LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      double toolbarHeight = GamePageToolBar.height +
+                          ButtonTheme.of(context).height;
+                      if (DB()
+                          .displaySettings
+                          .isHistoryNavigationToolbarShown) {
+                        toolbarHeight *= 2;
+                      }
+                      // Constraints of the game board but applied to the entire child
+                      final double maxWidth = constraints.maxWidth;
+                      final double maxHeight =
+                          constraints.maxHeight - toolbarHeight;
+                      final BoxConstraints constraint = BoxConstraints(
+                        maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
+                            ? maxHeight
+                            : maxWidth,
+                      );
 
-                return ConstrainedBox(
-                  constraints: constraint,
-                  child: const _Game(),
+                      return ConstrainedBox(
+                        constraints: constraint,
+                        child: const _Game(),
+                      );
+                    },
+                  ),
                 );
               },
             ),
-          );
-        },
+          ),
+          Align(
+            alignment: AlignmentDirectional.topStart,
+            child: SafeArea(child: DrawerIcon.of(context)!.icon),
+          ),
+        ],
       ),
     );
   }
@@ -166,78 +180,51 @@ class _GameState extends State<_Game> {
   // Icons: https://github.com/microsoft/fluentui-system-icons/blob/main/icons_regular.md
 
   List<Widget> mainToolbarItems(BuildContext context) {
-    final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
-      const EdgeInsets.all(8),
-      const EdgeInsets.symmetric(horizontal: 8),
-      const EdgeInsets.symmetric(horizontal: 4),
-      MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
-    );
-    double itemMaxWidth =
-        (MediaQuery.of(context).size.width - AppTheme.boardMargin * 2) / 4 -
-            scaledPadding.horizontal;
-
-    if (itemMaxWidth < 0) {
-      // TODO: WAR, See https://github.com/flutter/flutter/issues/25827
-      itemMaxWidth = 80.0;
-    }
-
     final ToolbarItem gameButton = ToolbarItem.icon(
       onPressed: () => _showGameModalBottomSheet(context),
       icon: const Icon(FluentIcons.table_simple_24_regular),
-      label: Container(
-        constraints: BoxConstraints(maxWidth: itemMaxWidth),
-        child: Text(
-          S.of(context).game,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+      label: Text(
+        S.of(context).game,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
 
     final ToolbarItem optionsButton = ToolbarItem.icon(
       onPressed: () => _showGeneralSettings(context),
       icon: const Icon(FluentIcons.settings_24_regular),
-      label: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: itemMaxWidth),
-        child: Text(
-          S.of(context).options,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+      label: Text(
+        S.of(context).options,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
 
     final ToolbarItem moveButton = ToolbarItem.icon(
       onPressed: () => _showMoveModalBottomSheet(context),
       icon: const Icon(FluentIcons.calendar_agenda_24_regular),
-      label: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: itemMaxWidth),
-        child: Text(
-          S.of(context).move,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+      label: Text(
+        S.of(context).move,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
 
     final ToolbarItem infoButton = ToolbarItem.icon(
       onPressed: () => _showInfoDialog(context),
       icon: const Icon(FluentIcons.book_information_24_regular),
-      label: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: itemMaxWidth),
-        child: Text(
-          S.of(context).info,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+      label: Text(
+        S.of(context).info,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
 
     return <Widget>[
-      gameButton,
-      optionsButton,
-      moveButton,
-      infoButton,
+      Expanded(child: gameButton),
+      Expanded(child: optionsButton),
+      Expanded(child: moveButton),
+      Expanded(child: infoButton),
     ];
   }
 
@@ -283,11 +270,11 @@ class _GameState extends State<_Game> {
     );
 
     return <Widget>[
-      takeBackAllButton,
-      takeBackButton,
-      if (Constants.isSmallScreen == false) moveNowButton,
-      stepForwardButton,
-      stepForwardAllButton,
+      Expanded(child: takeBackAllButton),
+      Expanded(child: takeBackButton),
+      if (Constants.isSmallScreen == false) Expanded(child: moveNowButton),
+      Expanded(child: stepForwardButton),
+      Expanded(child: stepForwardAllButton),
     ];
   }
 
@@ -301,11 +288,21 @@ class _GameState extends State<_Game> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      child: Stack(
-        children: <Widget>[
-          SingleChildScrollView(
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constrains) {
+      final double dimension = (constrains.maxWidth) *
+          (MediaQuery.of(context).orientation == Orientation.portrait
+              ? 1.0
+              : 0.65);
+
+      return SizedBox(
+        width: dimension,
+        child: SafeArea(
+          top: MediaQuery.of(context).orientation == Orientation.portrait,
+          bottom: false,
+          right: false,
+          left: false,
+          child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
                 GameHeader(),
@@ -446,15 +443,12 @@ class _GameState extends State<_Game> {
                     itemColor: DB().colorSettings.mainToolbarIconColor,
                     children: mainToolbarItems(context),
                   ),
+                const SizedBox(height: AppTheme.boardMargin),
               ],
             ),
           ),
-          Align(
-            alignment: AlignmentDirectional.topStart,
-            child: DrawerIcon.of(context)?.icon,
-          ),
-        ],
-      ),
-    );
+        ),
+      );
+    });
   }
 }
