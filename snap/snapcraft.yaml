@@ -1,0 +1,46 @@
+name: mill
+version: 3.1.0
+summary: A Mill Game which supports many rule variants.
+description: |
+  Nine men's morris is a strategy board game for two players
+  dating at least to the Roman Empire. The game is also
+  known as nine-man morris, mill, mills, the mill game,
+  merels, merrills, merelles, marelles, morelles, and
+  ninepenny marl in English.
+
+  **Rules:**
+
+  * A player who aligns three of his pieces on a board line
+    has a mill and may remove his opponent's piece(s).
+  * Any player reduces to two pieces and has no option to
+    form new mills and thus loses the game.
+  * A player can also lose with more than three pieces
+    if his opponent blocks them not to be moved.
+
+  _More build details: https://github.com/calcitem/Sanmill.git_
+
+grade: stable
+confinement: strict
+base: core18
+license: 'GPL-3.0+'
+
+apps:
+  mill:
+    command: mill
+    extensions: [flutter-stable]
+
+parts:
+  mill:
+    plugin: flutter
+    source: .
+    override-build: |
+      sudo apt-get install git -y
+      sed -i '/^  catcher:/d' src/ui/flutter_app/pubspec.yaml
+      cat src/ui/flutter_app/pubspec.yaml
+      ./flutter-init.sh
+      flutter config --enable-linux-desktop
+      cd src/ui/flutter_app
+      flutter create --platforms=linux .
+      flutter clean
+      flutter build linux --release -v
+

@@ -21,7 +21,7 @@ flutter gen-l10n
 mkdir -p "$GEN_FILE_PATH" || true
 
 echo "const Map<String, String> flutterVersion =" >"$FLUTTER_VERSION_FILE"
-flutter --version --machine >>"$FLUTTER_VERSION_FILE"
+flutter --version --machine | tee -a ${FLUTTER_VERSION_FILE}
 echo ";" >>"$FLUTTER_VERSION_FILE"
 
 flutter pub global deactivate build_runner
