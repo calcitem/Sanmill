@@ -35,6 +35,7 @@ import 'services/environment_config.dart';
 import 'services/logger.dart';
 import 'shared/constants.dart';
 import 'shared/feedback_localization.dart';
+import 'shared/painters/painters.dart';
 import 'shared/scaffold_messenger.dart';
 import 'shared/theme/app_theme.dart';
 
@@ -93,6 +94,7 @@ class SanmillApp extends StatelessWidget {
         darkTheme: AppTheme.darkThemeData,
         debugShowCheckedModeBanner: EnvironmentConfig.devMode,
         builder: (BuildContext context, Widget? child) {
+          _initOrientation(context);
           return MediaQuery(
             data: MediaQuery.of(context).copyWith(),
             child: child!,
@@ -134,6 +136,7 @@ class SanmillApp extends StatelessWidget {
       darkTheme: AppTheme.darkThemeData,
       debugShowCheckedModeBanner: EnvironmentConfig.devMode,
       builder: (BuildContext context, Widget? child) {
+        _initOrientation(context);
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
             textScaleFactor: displaySettings.fontScale,

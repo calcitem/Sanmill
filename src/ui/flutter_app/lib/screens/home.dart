@@ -392,14 +392,20 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           fullscreenDialog: true,
         ),
       );
-      SystemChrome.setPreferredOrientations(
-        <DeviceOrientation>[
-          DeviceOrientation.portraitUp,
-          DeviceOrientation.portraitDown,
-          DeviceOrientation.landscapeLeft,
-          DeviceOrientation.landscapeRight
-        ],
-      );
+
+      if (!mounted) {
+        return;
+      }
+      if (isPad(context)) {
+        SystemChrome.setPreferredOrientations(
+          <DeviceOrientation>[
+            DeviceOrientation.portraitUp,
+            DeviceOrientation.portraitDown,
+            DeviceOrientation.landscapeLeft,
+            DeviceOrientation.landscapeRight
+          ],
+        );
+      }
     }
   }
 
