@@ -37,3 +37,14 @@ void _initUI() {
     );
   }
 }
+
+void _initOrientation(BuildContext context) {
+  if (!isPad(context)) {
+    SystemChrome.setPreferredOrientations(
+      <DeviceOrientation>[
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown
+      ],
+    );
+  }
+}

@@ -76,7 +76,10 @@ class GamePage extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Align(
-            alignment: Alignment.topCenter,
+            alignment:
+                MediaQuery.of(context).orientation == Orientation.landscape
+                    ? Alignment.center
+                    : Alignment.topCenter,
             child: FutureBuilder<void>(
               future: controller.start(),
               builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {

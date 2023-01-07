@@ -83,11 +83,7 @@ class _GameHeaderState extends State<GameHeader> {
     final BlockSemantics appBar = BlockSemantics(
       child: Center(
         child: Padding(
-          padding: EdgeInsets.only(
-              top: DB().displaySettings.boardTop *
-                  (MediaQuery.of(context).orientation == Orientation.landscape
-                      ? 0.25
-                      : 1.0)),
+          padding: EdgeInsets.only(top: DB().displaySettings.boardTop),
           child: Column(
             children: <Widget>[
               const HeaderIcons(),
