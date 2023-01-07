@@ -437,3 +437,6 @@ cov-int
 *generated*
 flutter_export_environment.sh
 .autogit
+
+# Snapcraft
+*.snap
