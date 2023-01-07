@@ -42,14 +42,25 @@ class _WizardDialogState extends State<WizardDialog> {
   final int _maxIndex = 6;
 
   bool get isFinally => _curIndex == _maxIndex;
+
   bool get isStart => _curIndex == 0;
 
   Offset? _maskOffset;
 
-  Size get _size => Size(
-        deviceWidth(context) - AppTheme.boardPadding * 2,
-        deviceWidth(context) - AppTheme.boardPadding * 2,
-      );
+  Size get _size => _isLandscape
+      ? Size(landscapeBoardWidth, landscapeBoardWidth)
+      : Size(
+          deviceWidth(context) - AppTheme.boardPadding * 2,
+          deviceWidth(context) - AppTheme.boardPadding * 2,
+        );
+
+  late Orientation _orientation;
+
+  double get landscapeBoardWidth => deviceWidth(context) * 0.6;
+
+  double get pieceWidth => _size.width * DB().displaySettings.pieceWidth / 7;
+
+  bool get _isLandscape => _orientation == Orientation.landscape;
 
   @override
   void initState() {
@@ -60,109 +71,223 @@ class _WizardDialogState extends State<WizardDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final double pieceWidth = _size.width * DB().displaySettings.pieceWidth / 7;
+    _orientation = MediaQuery.of(context).orientation;
+
     return WillPopScope(
       onWillPop: () async {
         prevStep();
         return false;
       },
-      child: Scaffold(
-        backgroundColor: DB().colorSettings.darkBackgroundColor,
-        body: Stack(
-          children: <Widget>[
-            SafeArea(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: AppTheme.boardPadding,
-                  right: AppTheme.boardPadding,
-                  top: kToolbarHeight + AppTheme.boardPadding,
-                ),
-                child: WizardBoard(
-                  focusIndex: _focusIndex,
-                  blurIndex: _blurIndex,
-                  pieceList: _pieceList,
-                ),
-              ),
-            ),
-            CustomPaint(
-              painter: WizardMaskPainter(
-                maskOffset: _maskOffset,
-                maskRadius: pieceWidth * 1.5,
-              ),
-            ),
-            SafeArea(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    height: kToolbarHeight,
-                    color: Colors.white,
-                    child: Row(
+      child: OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
+          _orientation = orientation;
+          setPiece();
+          return Scaffold(
+            backgroundColor: DB().colorSettings.darkBackgroundColor,
+            body: _isLandscape
+                ? SafeArea(
+                    child: Stack(
                       children: <Widget>[
-                        Semantics(
-                          label: S.of(context).previous,
-                          child: IconButton(
-                            onPressed: _curIndex <= 0 ? null : prevStep,
-                            icon: Icon(
-                              Icons.arrow_back,
-                              color: isStart ? Colors.grey : Colors.black,
+                        Align(
+                          child: SizedBox(
+                            width: landscapeBoardWidth,
+                            height: landscapeBoardWidth,
+                            child: WizardBoard(
+                              focusIndex: _focusIndex,
+                              blurIndex: _blurIndex,
+                              pieceList: _pieceList,
                             ),
                           ),
                         ),
-                        const Spacer(),
-                        Semantics(
-                          label: isFinally
-                              ? S.of(context).gotIt
-                              : S.of(context).skip,
-                          child: IconButton(
-                            onPressed: () {
-                              _finishWizard(context);
-                            },
-                            icon: isFinally
-                                ? const Icon(
-                                    Icons.done_outline,
-                                    color: Colors.black,
-                                  )
-                                : const Icon(
-                                    FluentIcons.arrow_exit_20_regular,
-                                    color: Colors.black,
+                        CustomPaint(
+                          painter: WizardMaskPainter(
+                            maskOffset: _maskOffset,
+                            maskRadius: pieceWidth * 1.5,
+                          ),
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Container(
+                              height: kToolbarHeight,
+                              color: Colors.white,
+                              child: Row(
+                                children: <Widget>[
+                                  Semantics(
+                                    label: S.of(context).previous,
+                                    child: IconButton(
+                                      onPressed:
+                                          _curIndex <= 0 ? null : prevStep,
+                                      icon: Icon(
+                                        Icons.arrow_back,
+                                        color: isStart
+                                            ? Colors.grey
+                                            : Colors.black,
+                                      ),
+                                    ),
                                   ),
-                          ),
-                        ),
-                        const Spacer(),
-                        Semantics(
-                          label: S.of(context).next,
-                          child: IconButton(
-                            onPressed: _curIndex >= _maxIndex ? null : nextStep,
-                            icon: Icon(
-                              Icons.arrow_forward_rounded,
-                              color: isFinally ? Colors.grey : Colors.black,
+                                  const Spacer(),
+                                  Semantics(
+                                    label: isFinally
+                                        ? S.of(context).gotIt
+                                        : S.of(context).skip,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        _finishWizard(context);
+                                      },
+                                      icon: isFinally
+                                          ? const Icon(
+                                              Icons.done_outline,
+                                              color: Colors.black,
+                                            )
+                                          : const Icon(
+                                              FluentIcons.arrow_exit_20_regular,
+                                              color: Colors.black,
+                                            ),
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Semantics(
+                                    label: S.of(context).next,
+                                    child: IconButton(
+                                      onPressed: _curIndex >= _maxIndex
+                                          ? null
+                                          : nextStep,
+                                      icon: Icon(
+                                        Icons.arrow_forward_rounded,
+                                        color: isFinally
+                                            ? Colors.grey
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (_curIndex >= _maxIndex) {
+                                    _finishWizard(context);
+                                  } else {
+                                    nextStep();
+                                  }
+                                },
+                                behavior: HitTestBehavior.opaque,
+                                child: AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 400),
+                                  child: getWizard(),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        if (_curIndex >= _maxIndex) {
-                          _finishWizard(context);
-                        } else {
-                          nextStep();
-                        }
-                      },
-                      behavior: HitTestBehavior.opaque,
-                      child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 400),
-                        child: getWizard(),
+                  )
+                : Stack(
+                    children: <Widget>[
+                      SafeArea(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: AppTheme.boardPadding,
+                            right: AppTheme.boardPadding,
+                            top: kToolbarHeight + AppTheme.boardPadding,
+                          ),
+                          child: WizardBoard(
+                            focusIndex: _focusIndex,
+                            blurIndex: _blurIndex,
+                            pieceList: _pieceList,
+                          ),
+                        ),
                       ),
-                    ),
+                      CustomPaint(
+                        painter: WizardMaskPainter(
+                          maskOffset: _maskOffset,
+                          maskRadius: pieceWidth * 1.5,
+                        ),
+                      ),
+                      SafeArea(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              height: kToolbarHeight,
+                              color: Colors.white,
+                              child: Row(
+                                children: <Widget>[
+                                  Semantics(
+                                    label: S.of(context).previous,
+                                    child: IconButton(
+                                      onPressed:
+                                          _curIndex <= 0 ? null : prevStep,
+                                      icon: Icon(
+                                        Icons.arrow_back,
+                                        color: isStart
+                                            ? Colors.grey
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Semantics(
+                                    label: isFinally
+                                        ? S.of(context).gotIt
+                                        : S.of(context).skip,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        _finishWizard(context);
+                                      },
+                                      icon: isFinally
+                                          ? const Icon(
+                                              Icons.done_outline,
+                                              color: Colors.black,
+                                            )
+                                          : const Icon(
+                                              FluentIcons.arrow_exit_20_regular,
+                                              color: Colors.black,
+                                            ),
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Semantics(
+                                    label: S.of(context).next,
+                                    child: IconButton(
+                                      onPressed: _curIndex >= _maxIndex
+                                          ? null
+                                          : nextStep,
+                                      icon: Icon(
+                                        Icons.arrow_forward_rounded,
+                                        color: isFinally
+                                            ? Colors.grey
+                                            : Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (_curIndex >= _maxIndex) {
+                                    _finishWizard(context);
+                                  } else {
+                                    nextStep();
+                                  }
+                                },
+                                behavior: HitTestBehavior.opaque,
+                                child: AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 400),
+                                  child: getWizard(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -313,19 +438,45 @@ class _WizardDialogState extends State<WizardDialog> {
 
   Offset getMaskOffset(int row, int col) {
     final int index = getPieceIndex(row, col);
-    return pointFromIndex(index, _size) +
-        Offset(
-          AppTheme.boardPadding,
-          AppTheme.boardPadding +
-              kToolbarHeight +
-              MediaQuery.of(context).padding.top,
-        );
+    return _isLandscape
+        ? pointFromIndex(index, _size) +
+            Offset(
+              (MediaQuery.of(context).size.width -
+                      MediaQuery.of(context).padding.horizontal -
+                      landscapeBoardWidth) /
+                  2,
+              (MediaQuery.of(context).size.height -
+                      landscapeBoardWidth -
+                      MediaQuery.of(context).padding.vertical) /
+                  2,
+            )
+        : pointFromIndex(index, _size) +
+            Offset(
+              AppTheme.boardPadding,
+              AppTheme.boardPadding +
+                  kToolbarHeight +
+                  MediaQuery.of(context).padding.top,
+            );
   }
 
   Offset getPieceOffset(int row, int col) {
     final int index = getPieceIndex(row, col);
-    return pointFromIndex(index, _size) +
-        Offset(AppTheme.boardPadding, AppTheme.boardPadding);
+    return _isLandscape
+        ? pointFromIndex(index, _size) +
+            Offset(
+              (MediaQuery.of(context).size.width -
+                      MediaQuery.of(context).padding.horizontal -
+                      landscapeBoardWidth) /
+                  2,
+              (MediaQuery.of(context).size.height -
+                          landscapeBoardWidth -
+                          MediaQuery.of(context).padding.vertical) /
+                      2 -
+                  kToolbarHeight -
+                  MediaQuery.of(context).padding.top,
+            )
+        : pointFromIndex(index, _size) +
+            Offset(AppTheme.boardPadding, AppTheme.boardPadding);
   }
 }
 

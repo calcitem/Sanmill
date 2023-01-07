@@ -377,35 +377,13 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   Future<void> _showWizardDialog() async {
-    if (DB().generalSettings.showWizard &&
-        MediaQuery.of(context).orientation == Orientation.portrait) {
-      // TODO: Support landscape orientation for wizard
-      SystemChrome.setPreferredOrientations(
-        <DeviceOrientation>[
-          DeviceOrientation.portraitUp,
-          DeviceOrientation.portraitDown
-        ],
-      );
+    if (DB().generalSettings.showWizard) {
       await Navigator.of(context).push(
         MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => const WizardDialog(),
           fullscreenDialog: true,
         ),
       );
-
-      if (!mounted) {
-        return;
-      }
-      if (isPad(context)) {
-        SystemChrome.setPreferredOrientations(
-          <DeviceOrientation>[
-            DeviceOrientation.portraitUp,
-            DeviceOrientation.portraitDown,
-            DeviceOrientation.landscapeLeft,
-            DeviceOrientation.landscapeRight
-          ],
-        );
-      }
     }
   }
 
