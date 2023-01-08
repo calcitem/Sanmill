@@ -54,7 +54,7 @@ class _WizardDialogState extends State<WizardDialog> {
           deviceWidth(context) - AppTheme.boardPadding * 2,
         );
 
-  late Orientation _orientation;
+  Orientation? _orientation;
 
   double get landscapeBoardWidth => deviceWidth(context) * 0.6;
 
@@ -71,8 +71,6 @@ class _WizardDialogState extends State<WizardDialog> {
 
   @override
   Widget build(BuildContext context) {
-    _orientation = MediaQuery.of(context).orientation;
-
     return WillPopScope(
       onWillPop: () async {
         prevStep();
@@ -80,8 +78,10 @@ class _WizardDialogState extends State<WizardDialog> {
       },
       child: OrientationBuilder(
         builder: (BuildContext context, Orientation orientation) {
-          _orientation = orientation;
-          setPiece();
+          if (_orientation != orientation) {
+            _orientation = orientation;
+            setPiece();
+          }
           return Scaffold(
             backgroundColor: DB().colorSettings.darkBackgroundColor,
             body: _isLandscape
