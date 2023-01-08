@@ -39,7 +39,9 @@ Future<void> _initCatcher(Catcher catcher) async {
   logger.v("[env] ExternalStorageDirectory: $externalDirStr");
 
   final CatcherOptions debugOptions = CatcherOptions(
-      PageReportMode(),
+      kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
+          ? SilentReportMode()
+          : PageReportMode(),
       <ReportHandler>[
         ConsoleHandler(),
         FileHandler(File(path), printLogs: true),
@@ -51,7 +53,9 @@ Future<void> _initCatcher(Catcher catcher) async {
   /// Same as above, but once user accepts dialog,
   /// user will be prompted to send email with crash to support.
   final CatcherOptions releaseOptions = CatcherOptions(
-      PageReportMode(),
+      kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
+          ? SilentReportMode()
+          : PageReportMode(),
       <ReportHandler>[
         FileHandler(File(path), printLogs: true),
         EmailManualHandler(Constants.recipients, printLogs: true)
