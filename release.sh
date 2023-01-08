@@ -17,6 +17,11 @@ if [ "$(uname)" == "Darwin" ]; then
 	EDITOR=vi
 fi
 
+if [ "$(uname)" == "Linux" ]; then
+	SED=sed
+	EDITOR=vi
+fi
+
 # Update Build Number
 ./version.sh
 
@@ -86,7 +91,7 @@ $SED -i "s/${VERSION_STRING}/${NEW_VERSION_STRING}/g" $YAML_FILE
 
 # Modify Snap
 $SED -i "s/version: ${OLD_VERSION}/version: ${NEW_VERSION}/g" $SNAP_YAML_FILE
-$SED -i "s/version: ${OLD_VERSION}/version: ${NEW_VERSION}/g" $SNAP_DESKTOP_FILE
+$SED -i "s/Version=${OLD_VERSION}/Version=${NEW_VERSION}/g" $SNAP_DESKTOP_FILE
 
 # Modify Qt
 OLD_FILEVERSION="$MAJOR_NUMBER,$MINOR_NUMBER,$OLD_PATCH_NUMBER"
