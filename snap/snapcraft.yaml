@@ -22,18 +22,20 @@ description: |
 grade: stable
 confinement: strict
 base: core18
-license: 'GPL-3.0+'
+license: 'GPL-3.0'
 
 apps:
   mill:
     command: usr/local/bin/mill
     extensions: [flutter-stable]
+    plugs: [home]
 
 parts:
   mill:
     plugin: flutter
     source: .
-    build-packages: [git]
+    build-packages: [git, g++-8, libstdc++6]
+    stage-packages: [g++-8, libstdc++6]
     override-build: |
       ./flutter-init.sh
       flutter config --enable-linux-desktop
@@ -42,8 +44,5 @@ parts:
       flutter clean
       flutter build linux --release -v
       mkdir -p ${SNAPCRAFT_PART_INSTALL}/usr/local/bin
-      cp build/linux/x64/release/bundle/mill ${SNAPCRAFT_PART_INSTALL}/usr/local/bin/
-      mkdir -p ${SNAPCRAFT_PART_INSTALL}/usr/lib
-      cp build/linux/x64/release/bundle/lib/*.so ${SNAPCRAFT_PART_INSTALL}/usr/lib/
-      cp -r build/linux/x64/release/bundle/data ${SNAPCRAFT_PART_INSTALL}/
+      cp -r build/linux/x64/release/bundle/* ${SNAPCRAFT_PART_INSTALL}/usr/local/bin/
 

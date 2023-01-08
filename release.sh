@@ -1,7 +1,8 @@
 #!/bin/bash
 
 YAML_FILE=src/ui/flutter_app/pubspec.yaml
-SNAP_FILE=snap/snapcraft.yaml
+SNAP_YAML_FILE=snap/snapcraft.yaml
+SNAP_DESKTOP_FILE=snap/gui/mill.desktop
 QT_RC_FILE=src/ui/qt/mill-pro.rc
 
 EN_CHANGLOG_DIR=fastlane/metadata/android/en-US/changelogs
@@ -84,7 +85,8 @@ echo "NEW_VERSION_STRING = $NEW_VERSION_STRING"
 $SED -i "s/${VERSION_STRING}/${NEW_VERSION_STRING}/g" $YAML_FILE
 
 # Modify Snap
-$SED -i "s/version: ${OLD_VERSION}/version: ${NEW_VERSION}/g" $SNAP_FILE
+$SED -i "s/version: ${OLD_VERSION}/version: ${NEW_VERSION}/g" $SNAP_YAML_FILE
+$SED -i "s/version: ${OLD_VERSION}/version: ${NEW_VERSION}/g" $SNAP_DESKTOP_FILE
 
 # Modify Qt
 OLD_FILEVERSION="$MAJOR_NUMBER,$MINOR_NUMBER,$OLD_PATCH_NUMBER"
