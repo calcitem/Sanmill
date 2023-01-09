@@ -361,10 +361,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
     if (!DB().generalSettings.isPrivacyPolicyAccepted &&
         Localizations.localeOf(context).languageCode.startsWith("zh") &&
-        (kIsWeb ||
-            Platform.isAndroid ||
-            Platform.isWindows ||
-            Platform.isLinux)) {
+        (!kIsWeb && Platform.isAndroid)) {
       showDialog(
         context: context,
         barrierDismissible: false,

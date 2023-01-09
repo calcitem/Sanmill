@@ -108,10 +108,11 @@ class AboutPage extends StatelessWidget {
         titleString: S.of(context).sourceCode,
         onTap: () => _launchURL(context, Constants.repoURL),
       ),
-      SettingsListTile(
-        titleString: S.of(context).privacyPolicy,
-        onTap: () => _launchURL(context, Constants.privacyPolicyURL),
-      ),
+      if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
+        SettingsListTile(
+          titleString: S.of(context).privacyPolicy,
+          onTap: () => _launchURL(context, Constants.privacyPolicyURL),
+        ),
       SettingsListTile(
         titleString: S.of(context).ossLicenses,
         onTap: () => showLicensePage(
