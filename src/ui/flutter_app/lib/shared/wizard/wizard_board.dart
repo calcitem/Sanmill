@@ -41,7 +41,7 @@ class WizardBoard extends StatelessWidget {
         return SizedBox.square(
           dimension: dimension,
           child: CustomPaint(
-            painter: BoardPainter(),
+            painter: BoardPainter(context),
             foregroundPainter: WizardPainter(
               focusIndex: focusIndex,
               blurIndex: blurIndex,

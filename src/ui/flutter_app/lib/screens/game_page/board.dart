@@ -87,7 +87,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
       animation: MillController().animation,
       builder: (_, Widget? child) {
         return CustomPaint(
-          painter: BoardPainter(),
+          painter: BoardPainter(context),
           foregroundPainter: PiecePainter(
             animationValue: MillController().animation.value,
           ),

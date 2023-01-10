@@ -21,7 +21,9 @@ part of '../painters.dart';
 /// Painter to draw the Board. The pieces are drawn by [PiecePainter].
 /// It asserts the Canvas to be a square.
 class BoardPainter extends CustomPainter {
-  BoardPainter();
+  BoardPainter(this.context);
+
+  final BuildContext context;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -31,7 +33,12 @@ class BoardPainter extends CustomPainter {
     final ColorSettings colorSettings = DB().colorSettings;
     final Paint paint = Paint();
 
-    paint.strokeWidth = DB().displaySettings.boardBorderLineWidth;
+    final double boardBorderLineWidth =
+        DB().displaySettings.boardBorderLineWidth;
+    paint.strokeWidth = boardBorderLineWidth *
+        (boardBorderLineWidth < 10 && isPad(context)
+            ? deviceWidth(context) / 375
+            : 1);
     paint.color = Color.lerp(
       colorSettings.boardBackgroundColor,
       colorSettings.boardLineColor,
@@ -76,11 +83,15 @@ class BoardPainter extends CustomPainter {
   }
 
   /// Draws the lines of the Board.
-  static void _drawLines(List<Offset> offset, Canvas canvas, Paint paint) {
+  void _drawLines(List<Offset> offset, Canvas canvas, Paint paint) {
     // File C
     canvas.drawRect(Rect.fromPoints(offset[0], offset[23]), paint);
 
-    paint.strokeWidth = DB().displaySettings.boardInnerLineWidth;
+    final double boardInnerLineWidth = DB().displaySettings.boardInnerLineWidth;
+    paint.strokeWidth = boardInnerLineWidth *
+        (boardInnerLineWidth < 10 && isPad(context)
+            ? deviceWidth(context) / 375
+            : 1);
 
     final Path path = Path();
     // File B
