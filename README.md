@@ -11,6 +11,9 @@
 <a href="https://play.google.com/store/apps/details?id=com.calcitem.sanmill" target="_blank">
 <img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="80"/></a>
 
+<a href="https://apps.apple.com/us/app/mill-n-mens-morris/id1662297339?itsct=apps_box_badge&amp;itscg=30200" target="_blank">
+<img src="src/ui/flutter_app/assets/badges/download-on-the-app-store-en-us.svg" alt="Download on the App Store" height="54"/></a>
+
 <a href="https://cafebazaar.ir/app/com.calcitem.sanmill" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/get-it-on-cafebazaar.png" alt="Get it on CafeBazaar" height="54"/></a>
 
@@ -18,9 +21,7 @@
   <img alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg" />
 </a>
 
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/Calcitem/Sanmill?branch=master&svg=true)](https://ci.appveyor.com/project/Calcitem/Sanmill/branch/master)
-[![snapcraft](https://snapcraft.io/sanmill/badge.svg)](https://snapcraft.io/sanmill)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/dd51135302af45a989a382d3a3d9eadc)](https://www.codacy.com/gh/calcitem/Sanmill/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=calcitem/Sanmill&amp;utm_campaign=Badge_Grade)
+[![snapcraft](https://snapcraft.io/mill/badge.svg)](https://snapcraft.io/mill)
 [![Translation status](https://hosted.weblate.org/widgets/sanmill/-/svg-badge.svg)](https://hosted.weblate.org/engage/sanmill/)
 [![Readme-Chinese](https://img.shields.io/badge/README-简体中文-red.svg)](README-zh_CN.md)
 
@@ -79,6 +80,7 @@ cd src/ui/qt
 cmake .
 cmake --build . --target mill-pro
 ```
+
 and use Visual Studio to open `src\ui\qt\mill-pro.sln` to build Qt Application.
 
 ### Flutter App
@@ -97,8 +99,7 @@ All environment configs can be combined and take a value of bool like:
 flutter run --dart-define catcher=false dev_mode=true
 ```
 
-For ease of use, some launch configs for Android Studio or Visual Studio Code are available. Just select the
-needed one in the `Run and Debug` or `Run/Debug Configurations` tab.
+For ease of use, some launch configs for Android Studio or Visual Studio Code are available. Just select the needed one in the `Run and Debug` or `Run/Debug Configurations` tab.
 
 ## Understanding the code base and participating in the project
 

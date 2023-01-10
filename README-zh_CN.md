@@ -3,19 +3,20 @@
 <a href="https://f-droid.org/zh_Hans/packages/com.calcitem.sanmill/" target="_blank">
 <img src="fastlane/metadata/android/zh-CN/images/featureGraphic.png" alt="Get it on F-Droid"/></a>
 
+<a href="https://apps.apple.com/cn/app/mill-n-mens-morris/id1662297339?itsct=apps_box_badge&amp;itscg=30200" target="_blank">
+<img src="src/ui/flutter_app/assets/badges/download-on-the-app-store-zh-cn.svg" alt="Download on the App Store" height="54"/></a>
+
 <a href="https://f-droid.org/zh_Hans/packages/com.calcitem.sanmill/" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/get-it-on-fdroid.png" alt="Get it on F-Droid" height="80"/></a>
-
-<a href="https://gitee.com/calcitem/Sanmill" target="_blank">
-<img src="src/ui/flutter_app/assets/badges/get-it-on-gitee.png" alt="Get it on Gitee" height="80"/></a>
 
 <a href="https://snapcraft.io/mill">
   <img alt="安裝软件请移步 Snap Store" src="https://snapcraft.io/static/images/badges/tw/snap-store-black.svg" />
 </a>
 
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/Calcitem/Sanmill?branch=master&svg=true)](https://ci.appveyor.com/project/Calcitem/Sanmill/branch/master)
-[![snapcraft](https://snapcraft.io/sanmill/badge.svg)](https://snapcraft.io/sanmill)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/dd51135302af45a989a382d3a3d9eadc)](https://www.codacy.com/gh/calcitem/Sanmill/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=calcitem/Sanmill&amp;utm_campaign=Badge_Grade)
+<a href="https://gitee.com/calcitem/Sanmill" target="_blank">
+<img src="src/ui/flutter_app/assets/badges/get-it-on-gitee.png" alt="Get it on Gitee" height="80"/></a>
+
+[![snapcraft](https://snapcraft.io/mill/badge.svg)](https://snapcraft.io/mill)
 
 [Sanmill](https://gitee.com/calcitem/Sanmill) 是一个直棋程序，具有命令行、移动端 Flutter 和 PC 端 Qt 三个界面。
 
@@ -162,8 +163,7 @@ cmake --build . --target mill-pro
 flutter run --dart-define catcher=false dev_mode=true
 ```
 
-为了便于使用，可以使用一些 Android Studio 或 Visual Studio Code 的启动配置。只需
-在“运行和调试”或“运行/调试配置”选项卡中选择所需要一个。
+为了便于使用，可以使用一些 Android Studio 或 Visual Studio Code 的启动配置。只需在“运行和调试”或“运行/调试配置”选项卡中选择所需要一个。
 
 ## 了解代码库并参与项目
 
