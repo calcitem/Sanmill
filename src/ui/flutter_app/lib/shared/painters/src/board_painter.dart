@@ -36,9 +36,7 @@ class BoardPainter extends CustomPainter {
     final double boardBorderLineWidth =
         DB().displaySettings.boardBorderLineWidth;
     paint.strokeWidth = boardBorderLineWidth *
-        (boardBorderLineWidth < 10 && isPad(context)
-            ? deviceWidth(context) / 375
-            : 1);
+        (boardBorderLineWidth < 10 && isPad(context) ? size.width / 375 : 1);
     paint.color = Color.lerp(
       colorSettings.boardBackgroundColor,
       colorSettings.boardLineColor,
@@ -62,7 +60,7 @@ class BoardPainter extends CustomPainter {
     final List<Offset> offset =
         points.map((Offset e) => offsetFromPoint(e, size)).toList();
 
-    _drawLines(offset, canvas, paint);
+    _drawLines(offset, canvas, paint, size);
 
     // Point
     _drawPoints(offset, canvas, paint);
@@ -83,15 +81,13 @@ class BoardPainter extends CustomPainter {
   }
 
   /// Draws the lines of the Board.
-  void _drawLines(List<Offset> offset, Canvas canvas, Paint paint) {
+  void _drawLines(List<Offset> offset, Canvas canvas, Paint paint, Size size) {
     // File C
     canvas.drawRect(Rect.fromPoints(offset[0], offset[23]), paint);
 
     final double boardInnerLineWidth = DB().displaySettings.boardInnerLineWidth;
     paint.strokeWidth = boardInnerLineWidth *
-        (boardInnerLineWidth < 10 && isPad(context)
-            ? deviceWidth(context) / 375
-            : 1);
+        (boardInnerLineWidth < 10 && isPad(context) ? size.width / 375 : 1);
 
     final Path path = Path();
     // File B
