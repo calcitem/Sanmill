@@ -1290,7 +1290,7 @@
   "@gotIt": {},
   "youCanModifyRules": "Você pode modificar as regras do jogo nas configurações de regras.",
   "@youCanModifyRules": {},
-  "youCanUseMouseWheelInPicker": "Você pode usar a roda do mouse para alterar o valor no seletor.",
+  "youCanUseMouseWheelInPicker": "Pode usar a roda do rato para alterar o valor no seletor.",
   "@youCanUseMouseWheelInPicker": {},
   "noTimeLimitForThinking": "O tempo de pensamento AI definido como 0 significa que não há limite de tempo para pensar.",
   "@noTimeLimitForThinking": {},
