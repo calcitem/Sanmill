@@ -3,11 +3,11 @@
 <a href="https://f-droid.org/zh_Hans/packages/com.calcitem.sanmill/" target="_blank">
 <img src="fastlane/metadata/android/zh-CN/images/featureGraphic.png" alt="Get it on F-Droid"/></a>
 
-<a href="https://apps.apple.com/cn/app/mill-n-mens-morris/id1662297339?itsct=apps_box_badge&amp;itscg=30200" target="_blank">
-<img src="src/ui/flutter_app/assets/badges/download-on-the-app-store-zh-cn.svg" alt="Download on the App Store" height="54"/></a>
-
 <a href="https://f-droid.org/zh_Hans/packages/com.calcitem.sanmill/" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/get-it-on-fdroid.png" alt="Get it on F-Droid" height="80"/></a>
+
+<a href="https://apps.apple.com/cn/app/mill-n-mens-morris/id1662297339?itsct=apps_box_badge&amp;itscg=30200" target="_blank">
+<img src="src/ui/flutter_app/assets/badges/download-on-the-app-store-zh-cn.svg" alt="Download on the App Store" height="54"/></a>
 
 <a href="https://www.microsoft.com/zh-cn/p/mill-n-mens-morris/9nv3wz4zdtjh" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/git-it-from-microsoft-zh-cn.svg" alt="Get it from the Microsoft Store" height="54"/></a>
