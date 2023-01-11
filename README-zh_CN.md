@@ -9,6 +9,9 @@
 <a href="https://f-droid.org/zh_Hans/packages/com.calcitem.sanmill/" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/get-it-on-fdroid.png" alt="Get it on F-Droid" height="80"/></a>
 
+<a href="https://www.microsoft.com/zh-cn/p/mill-n-mens-morris/9nv3wz4zdtjh" target="_blank">
+<img src="src/ui/flutter_app/assets/badges/git-it-from-microsoft-zh-cn.svg" alt="Get it from the Microsoft Store" height="54"/></a>
+
 <a href="https://snapcraft.io/mill">
   <img alt="安裝软件请移步 Snap Store" src="https://snapcraft.io/static/images/badges/tw/snap-store-black.svg" />
 </a>

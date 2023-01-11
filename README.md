@@ -5,21 +5,26 @@
 <a href="https://github.com/calcitem/Sanmill/actions/workflows/flutter.yml?query=branch%3Amaster+is%3Asuccess+event%3Apush" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/get-it-on-github.png" alt="Get it on GitHub" height="80"/></a>
 
+<a href="https://play.google.com/store/apps/details?id=com.calcitem.sanmill" target="_blank">
+<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="80"/></a>
+
 <a href="https://f-droid.org/packages/com.calcitem.sanmill/" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/get-it-on-fdroid.png" alt="Get it on F-Droid" height="80"/></a>
 
-<a href="https://play.google.com/store/apps/details?id=com.calcitem.sanmill" target="_blank">
-<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="80"/></a>
+</br>
 
 <a href="https://apps.apple.com/us/app/mill-n-mens-morris/id1662297339?itsct=apps_box_badge&amp;itscg=30200" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/download-on-the-app-store-en-us.svg" alt="Download on the App Store" height="54"/></a>
 
-<a href="https://cafebazaar.ir/app/com.calcitem.sanmill" target="_blank">
-<img src="src/ui/flutter_app/assets/badges/get-it-on-cafebazaar.png" alt="Get it on CafeBazaar" height="54"/></a>
+<a href="https://www.microsoft.com/en-us/p/mill-n-mens-morris/9nv3wz4zdtjh" target="_blank">
+<img src="src/ui/flutter_app/assets/badges/git-it-from-microsoft-en-us.svg" alt="Get it from the Microsoft Store" height="54"/></a>
 
 <a href="https://snapcraft.io/mill">
   <img alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg" />
 </a>
+
+<a href="https://cafebazaar.ir/app/com.calcitem.sanmill" target="_blank">
+<img src="src/ui/flutter_app/assets/badges/get-it-on-cafebazaar.png" alt="Get it on CafeBazaar" height="54"/></a>
 
 [![snapcraft](https://snapcraft.io/mill/badge.svg)](https://snapcraft.io/mill)
 [![Translation status](https://hosted.weblate.org/widgets/sanmill/-/svg-badge.svg)](https://hosted.weblate.org/engage/sanmill/)
