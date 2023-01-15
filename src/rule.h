@@ -22,9 +22,9 @@
 // The rule struct manages the various variants of the rules.
 struct Rule
 {
-    const char name[32];
+    char name[32];
 
-    const char description[512];
+    char description[512];
 
     // The number of pieces each player has
     int pieceCount;
