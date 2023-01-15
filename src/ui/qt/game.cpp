@@ -1763,6 +1763,8 @@ void Game::setTips()
 
     switch (p.phase) {
     case Phase::ready:
+        // TODO: Uncaught fun_call_w_exception:
+        // Called function throws an exception of type std::bad_array_new_length.
         tips = turnStr + " to place, " +
                std::to_string(p.pieceInHandCount[WHITE]) +
                " pieces are unplaced." + "  Score " +
