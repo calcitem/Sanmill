@@ -1,6 +1,6 @@
 //
 // This is a file created to work around an issue where
-// GeneratedPluginRegistrant.h inlucde <Flutter/Flutter.h>
+// GeneratedPluginRegistrant.h include <Flutter/Flutter.h>
 // instead of <FlutterMacOS/FlutterMacOS.h> causing the build to fail.
 //
 // When the package list changes, the content of this file needs to be
