@@ -660,6 +660,7 @@
 					"$(inherited)",
 					"COCOAPODS=1",
 					FLUTTER_UI,
+					"TARGET_OS_OSX=0",
 				);
 				INFOPLIST_FILE = "Runner/Info-$(CONFIGURATION).plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Mill;
@@ -811,6 +812,7 @@
 					"$(inherited)",
 					"COCOAPODS=1",
 					FLUTTER_UI,
+					"TARGET_OS_OSX=0",
 				);
 				INFOPLIST_FILE = "Runner/Info-$(CONFIGURATION).plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Mill;
@@ -847,6 +849,7 @@
 					"$(inherited)",
 					"COCOAPODS=1",
 					FLUTTER_UI,
+					"TARGET_OS_OSX=0",
 				);
 				INFOPLIST_FILE = "Runner/Info-$(CONFIGURATION).plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Mill;
