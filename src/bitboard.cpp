@@ -50,6 +50,6 @@ void Bitboards::init()
     }
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
-        SquareBB[s] = (1UL << s);
+        SquareBB[s] = (1U << s);
     }
 }
