@@ -86,10 +86,10 @@ class SanmillApp extends StatelessWidget {
         key: GlobalKey<ScaffoldState>(),
         scaffoldMessengerKey: rootScaffoldMessengerKey,
         localizationsDelegates: S.localizationsDelegates,
-        supportedLocales: S.supportedLocales,
-        locale: WidgetsBinding.instance.window.locale == const Locale('und')
-            ? const Locale('en', 'US')
-            : WidgetsBinding.instance.window.locale,
+        supportedLocales: const <Locale>[
+          Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')
+        ],
+        locale: const Locale('zh', 'Hant'),
         theme: AppTheme.lightThemeData,
         darkTheme: AppTheme.darkThemeData,
         debugShowCheckedModeBanner: EnvironmentConfig.devMode,
@@ -127,11 +127,10 @@ class SanmillApp extends StatelessWidget {
       key: GlobalKey<ScaffoldState>(),
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       localizationsDelegates: S.localizationsDelegates,
-      supportedLocales: S.supportedLocales,
-      locale: displaySettings.locale ??
-          (WidgetsBinding.instance.window.locale == const Locale('und')
-              ? const Locale('en', 'US')
-              : WidgetsBinding.instance.window.locale),
+      supportedLocales: const <Locale>[
+        Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')
+      ],
+      locale: const Locale('zh', 'Hant'),
       theme: AppTheme.lightThemeData,
       darkTheme: AppTheme.darkThemeData,
       debugShowCheckedModeBanner: EnvironmentConfig.devMode,
