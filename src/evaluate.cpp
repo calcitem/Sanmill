@@ -104,12 +104,15 @@ Value Evaluation::value() const
         break;
 
     case Phase::gameOver:
-        if (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK) >=
-            SQUARE_NB) {
-            if (rule.isWhiteLoseButNotDrawWhenBoardFull) {
+        if (rule.pieceCount == 12 && (pos.piece_on_board_count(WHITE) +
+                                          pos.piece_on_board_count(BLACK) >=
+                                      SQUARE_NB)) {
+            if (rule.boardFullAction == BoardFullAction::firstPlayerLose) {
                 value -= VALUE_MATE;
-            } else {
+            } else if (rule.boardFullAction == BoardFullAction::agreeToDraw) {
                 value = VALUE_DRAW;
+            } else {
+                assert(0);
             }
         } else if (pos.get_action() == Action::select &&
                    pos.is_all_surrounded(pos.side_to_move()) &&

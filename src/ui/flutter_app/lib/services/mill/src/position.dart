@@ -449,19 +449,24 @@ class Position {
               return true;
             }
 
-            phase = Phase.moving;
-            action = Act.select;
+            if (pieceToRemoveCount[sideToMove]! > 0) {
+              action = Act.remove;
+              _updateKeyMisc();
+            } else {
+              phase = Phase.moving;
+              action = Act.select;
 
-            if (DB().ruleSettings.hasBannedLocations) {
-              _removeBanStones();
-            }
+              if (DB().ruleSettings.hasBannedLocations) {
+                _removeBanStones();
+              }
 
-            if (!DB().ruleSettings.isDefenderMoveFirst) {
-              changeSideToMove();
-            }
+              if (!DB().ruleSettings.isDefenderMoveFirst) {
+                changeSideToMove();
+              }
 
-            if (_checkIfGameIsOver()) {
-              return true;
+              if (_checkIfGameIsOver()) {
+                return true;
+              }
             }
           } else {
             changeSideToMove();
@@ -642,6 +647,13 @@ class Position {
       return const MillResponseOK();
     }
 
+    changeSideToMove();
+
+    if (pieceToRemoveCount[sideToMove] != 0) {
+      // Audios().playTone(Sound.remove);
+      return const MillResponseOK();
+    }
+
     if (phase == Phase.placing) {
       if (pieceInHandCount[PieceColor.white] == 0 &&
           pieceInHandCount[PieceColor.black] == 0) {
@@ -653,9 +665,12 @@ class Position {
         }
 
         if (DB().ruleSettings.isDefenderMoveFirst) {
+          _sideToMove = PieceColor.black;
           _checkIfGameIsOver();
           Audios().playTone(Sound.remove);
           return const MillResponseOK();
+        } else {
+          _sideToMove = PieceColor.white;
         }
       } else {
         action = Act.place;
@@ -664,7 +679,6 @@ class Position {
       action = Act.select;
     }
 
-    changeSideToMove();
     _checkIfGameIsOver();
 
     Audios().playTone(Sound.remove);
@@ -747,13 +761,38 @@ class Position {
       return true;
     }
 
-    if (pieceOnBoardCount[PieceColor.white]! +
-            pieceOnBoardCount[PieceColor.black]! >=
-        rankNumber * fileNumber) {
-      if (DB().ruleSettings.isWhiteLoseButNotDrawWhenBoardFull) {
-        _setGameOver(PieceColor.black, GameOverReason.loseBoardIsFull);
-      } else {
-        _setGameOver(PieceColor.draw, GameOverReason.drawBoardIsFull);
+    if (DB().ruleSettings.piecesCount == 12 &&
+        (pieceOnBoardCount[PieceColor.white]! +
+                pieceOnBoardCount[PieceColor.black]! >=
+            rankNumber * fileNumber)) {
+      // TODO: BoardFullAction: Support other actions
+      switch (DB().ruleSettings.boardFullAction) {
+        case BoardFullAction.firstPlayerLose:
+          _setGameOver(PieceColor.black, GameOverReason.loseBoardIsFull);
+          return true;
+        case BoardFullAction.firstAndSecondPlayerRemovePiece:
+          pieceToRemoveCount[PieceColor.white] =
+              pieceToRemoveCount[PieceColor.black] = 1;
+          changeSideToMove();
+          return false;
+        case BoardFullAction.secondAndFirstPlayerRemovePiece:
+          pieceToRemoveCount[PieceColor.white] =
+              pieceToRemoveCount[PieceColor.black] = 1;
+          return false;
+        case BoardFullAction.sideToMoveRemovePiece:
+          if (DB().ruleSettings.isDefenderMoveFirst) {
+            _sideToMove = PieceColor.black;
+          } else {
+            _sideToMove = PieceColor.white;
+          }
+          pieceToRemoveCount[sideToMove] = 1;
+          return false;
+        case BoardFullAction.agreeToDraw:
+          _setGameOver(PieceColor.draw, GameOverReason.drawBoardIsFull);
+          return true;
+        case null:
+          assert(false);
+          break;
       }
 
       return true;
@@ -1179,5 +1218,20 @@ extension SetupPosition on Position {
     return countPieceOnBoard(PieceColor.white) +
         countPieceOnBoard(PieceColor.black) +
         countPieceOnBoard(PieceColor.ban);
+  }
+
+  bool isBoardFullRemovalAtPlacingPhaseEnd() {
+    // TODO: BoardFullAction: The judgment conditions are not perfect.
+    //  It may be misjudged that it is not mill in the last move.
+    if (DB().ruleSettings.piecesCount == 12 &&
+        DB().ruleSettings.boardFullAction != BoardFullAction.firstPlayerLose &&
+        DB().ruleSettings.boardFullAction != BoardFullAction.agreeToDraw &&
+        phase == Phase.placing &&
+        pieceInHandCount[PieceColor.white] == 0 &&
+        pieceInHandCount[PieceColor.black] == 0) {
+      return true;
+    }
+
+    return false;
   }
 }

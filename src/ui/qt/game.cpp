@@ -1778,7 +1778,7 @@ void Game::setTips()
                    std::to_string(p.pieceInHandCount[p.sideToMove]) +
                    " pieces are unplaced.";
         } else if (p.action == Action::remove) {
-            tips = "Mill! " + turnStr + " to remove, " +
+            tips = turnStr + " to remove, " +
                    std::to_string(p.pieceToRemoveCount[p.sideToMove]) +
                    " pieces to remove.";
         }

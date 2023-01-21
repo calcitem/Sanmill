@@ -18,8 +18,8 @@
 
 #include "rule.h"
 
-Rule rule = {"Nine men's morris",
-             "Nine men's morris",
+Rule rule = {"Nine Men's Morris",
+             "Nine Men's Morris",
              9,
              3,
              3,
@@ -30,7 +30,7 @@ Rule rule = {"Nine men's morris",
              false,
              false,
              false,
-             true,
+             BoardFullAction::firstPlayerLose,
              true,
              true,
              100,
@@ -38,16 +38,28 @@ Rule rule = {"Nine men's morris",
              true};
 
 const Rule RULES[N_RULES] = {
+    {"Nine Men's Morris", "Nine Men's Morris", 9, 3, 3, false, false, false,
+     false, false, false, false, BoardFullAction::firstPlayerLose, true, true,
+     100, 100, true},
+    {"Twelve Men's morris", "Twelve Men's Morris", 12, 3, 3, true, false, false,
+     false, false, false, false, BoardFullAction::firstPlayerLose, true, true,
+     100, 100, true},
+    {"Lasker Morris (WIP)", "Lasker Morris", 10, 3, 3, false, false, true,
+     false, false, false, false, BoardFullAction::firstPlayerLose, true, true,
+     100, 100, true},
     {"Cheng San Qi", "Cheng San Qi", 9, 3, 3, false, false, false, false, false,
-     false, false, true, true, false, 100, 100, true},
+     false, false, BoardFullAction::firstPlayerLose, true, false, 100, 100,
+     true},
     {"Da San Qi", "Da San Qi", 12, 3, 3, true, true, false, true, false, true,
-     false, true, true, false, 100, 100, true},
-    {"Nine men's morris", "Nine men's morris", 9, 3, 3, false, false, false,
-     false, false, false, false, true, true, true, 100, 100, true},
-    {"Twelve men's morris", "Twelve men's morris", 12, 3, 3, true, false, false,
-     false, false, false, false, true, true, true, 100, 100, true},
-    {"Lasker Morris", "Lasker Morris", 10, 3, 3, false, false, true, false,
-     false, false, false, true, true, true, 100, 100, true}};
+     false, BoardFullAction::firstPlayerLose, true, false, 100, 100, true},
+    {"Zhi Qi", "Zhi Qi", 12, 3, 3, true, false, false, false /* bmf */, false,
+     false, false, BoardFullAction::firstAndSecondPlayerRemovePiece, true, true,
+     100,
+     100, true},
+    {"Experimental", "Experimental", 12, 3, 3, true, true, false, true, false,
+     true, false, BoardFullAction::secondAndFirstPlayerRemovePiece, true, false,
+     100, 100, true},
+};
 
 bool set_rule(int ruleIdx) noexcept
 {

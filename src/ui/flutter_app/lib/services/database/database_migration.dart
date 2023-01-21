@@ -84,6 +84,8 @@ class _DatabaseMigration {
       }
     }
 
+    await _migrateFromDeprecation();
+
     await _databaseBox.put(_versionKey, _newVersion);
     _databaseBox.close();
 
@@ -135,6 +137,24 @@ class _DatabaseMigration {
     );
 
     logger.v("$_tag Migrated from v1");
+  }
+
+  /// Migration  - Sanmill version 3.3.2+
+  /// If the deprecated setting item is not the default value,
+  /// execute the migration operation and set the deprecated setting item
+  /// to the default value.
+  static Future<void> _migrateFromDeprecation() async {
+    // Migrates isWhiteLoseButNotDrawWhenBoardFull to boardFullAction
+    if (DB().ruleSettings.isWhiteLoseButNotDrawWhenBoardFull == false) {
+      DB().ruleSettings = DB().ruleSettings.copyWith(
+            boardFullAction: BoardFullAction.agreeToDraw,
+          );
+      DB().ruleSettings = DB().ruleSettings.copyWith(
+            isWhiteLoseButNotDrawWhenBoardFull: true,
+          );
+    }
+
+    logger.v("$_tag Migrated from deprecation");
   }
 }
 

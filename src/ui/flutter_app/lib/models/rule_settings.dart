@@ -23,6 +23,37 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'rule_settings.g.dart';
 
+@HiveType(typeId: 4)
+enum BoardFullAction {
+  @HiveField(0)
+  firstPlayerLose,
+  @HiveField(1)
+  firstAndSecondPlayerRemovePiece,
+  @HiveField(2)
+  secondAndFirstPlayerRemovePiece,
+  @HiveField(3)
+  sideToMoveRemovePiece,
+  @HiveField(4)
+  agreeToDraw,
+}
+
+extension BoardFullActionName on BoardFullAction {
+  String get name {
+    switch (this) {
+      case BoardFullAction.firstPlayerLose:
+        return "0-1";
+      case BoardFullAction.firstAndSecondPlayerRemovePiece:
+        return 'W->B';
+      case BoardFullAction.secondAndFirstPlayerRemovePiece:
+        return 'B->W';
+      case BoardFullAction.sideToMoveRemovePiece:
+        return 'X';
+      case BoardFullAction.agreeToDraw:
+        return '=';
+    }
+  }
+}
+
 /// Rule Settings data model
 ///
 /// Holds the default rule settings for the Mill game.
@@ -44,7 +75,9 @@ class RuleSettings {
     this.mayRemoveMultiple = false,
     this.mayRemoveFromMillsAlways = false,
     this.mayOnlyRemoveUnplacedPieceInPlacingPhase = false,
-    this.isWhiteLoseButNotDrawWhenBoardFull = true,
+    @Deprecated('Use [boardFullAction] instead')
+        this.isWhiteLoseButNotDrawWhenBoardFull = true,
+    this.boardFullAction = BoardFullAction.firstPlayerLose,
     this.isLoseButNotChangeSideWhenNoWay = true,
     this.mayFly = true,
     this.nMoveRule = 100,
@@ -86,6 +119,7 @@ class RuleSettings {
   final bool mayRemoveFromMillsAlways;
   @HiveField(9)
   final bool mayOnlyRemoveUnplacedPieceInPlacingPhase;
+  @Deprecated('Use [boardFullAction] instead')
   @HiveField(10)
   final bool isWhiteLoseButNotDrawWhenBoardFull;
   @HiveField(11)
@@ -98,6 +132,8 @@ class RuleSettings {
   final int endgameNMoveRule;
   @HiveField(15)
   final bool threefoldRepetitionRule;
+  @HiveField(16, defaultValue: BoardFullAction.firstPlayerLose)
+  final BoardFullAction? boardFullAction;
 
   /// decodes a Json from a [RuleSettings] object
   Map<String, dynamic> toJson() => _$RuleSettingsToJson(this);

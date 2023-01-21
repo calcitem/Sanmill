@@ -28,6 +28,7 @@ import '../../shared/scaffold_messenger.dart';
 import '../../shared/settings/settings.dart';
 import '../../shared/theme/app_theme.dart';
 
+part 'package:sanmill/screens/rule_settings/board_full_action_modal.dart';
 part 'package:sanmill/screens/rule_settings/endgame_n_move_rule_modal.dart';
 part 'package:sanmill/screens/rule_settings/fly_piece_count_modal.dart';
 part 'package:sanmill/screens/rule_settings/n_move_rule_modal.dart';
@@ -147,14 +148,23 @@ class RuleSettingsPage extends StatelessWidget {
     logger.v("[config] hasBannedLocations: $value");
   }
 
-  void _setIsWhiteLoseButNotDrawWhenBoardFull(
-    RuleSettings ruleSettings,
-    bool value,
-  ) {
-    DB().ruleSettings =
-        ruleSettings.copyWith(isWhiteLoseButNotDrawWhenBoardFull: value);
+  void _setBoardFullAction(BuildContext context, RuleSettings ruleSettings) {
+    void callback(BoardFullAction? boardFullAction) {
+      Navigator.pop(context);
 
-    logger.v("[config] isWhiteLoseButNotDrawWhenBoardFull: $value");
+      DB().ruleSettings =
+          ruleSettings.copyWith(boardFullAction: boardFullAction);
+
+      logger.v("[config] boardFullAction = $boardFullAction");
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => _BoardFullActionModal(
+        boardFullAction: ruleSettings.boardFullAction!,
+        onChanged: callback,
+      ),
+    );
   }
 
   void _setMayOnlyRemoveUnplacedPieceInPlacingPhase(
@@ -276,13 +286,10 @@ class RuleSettingsPage extends StatelessWidget {
               titleString: S.of(context).hasBannedLocations,
               subtitleString: S.of(context).hasBannedLocations_Detail,
             ),
-            SettingsListTile.switchTile(
-              value: ruleSettings.isWhiteLoseButNotDrawWhenBoardFull,
-              onChanged: (bool val) =>
-                  _setIsWhiteLoseButNotDrawWhenBoardFull(ruleSettings, val),
-              titleString: S.of(context).isWhiteLoseButNotDrawWhenBoardFull,
-              subtitleString:
-                  S.of(context).isWhiteLoseButNotDrawWhenBoardFull_Detail,
+            SettingsListTile(
+              onTap: () => _setBoardFullAction(context, ruleSettings),
+              titleString: S.of(context).whenBoardIsFull,
+              subtitleString: S.of(context).whenBoardIsFull_Detail,
             ),
             SettingsListTile.switchTile(
               value: ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase,

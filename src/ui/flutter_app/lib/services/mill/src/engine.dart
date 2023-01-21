@@ -244,9 +244,9 @@ class Engine {
     // Placing
     await _sendOptions("HasBannedLocations", ruleSettings.hasBannedLocations);
     await _sendOptions(
-      "IsWhiteLoseButNotDrawWhenBoardFull",
-      ruleSettings.isWhiteLoseButNotDrawWhenBoardFull,
-    );
+        "BoardFullAction",
+        ruleSettings.boardFullAction?.index ??
+            BoardFullAction.firstPlayerLose.index); // TODO: enum
     await _sendOptions(
       "MayOnlyRemoveUnplacedPieceInPlacingPhase",
       ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase,

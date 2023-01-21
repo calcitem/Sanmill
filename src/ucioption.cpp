@@ -141,9 +141,9 @@ void on_mayOnlyRemoveUnplacedPieceInPlacingPhase(const Option &o)
     rule.mayOnlyRemoveUnplacedPieceInPlacingPhase = static_cast<bool>(o);
 }
 
-void on_isWhiteLoseButNotDrawWhenBoardFull(const Option &o)
+void on_boardFullAction(const Option &o)
 {
-    rule.isWhiteLoseButNotDrawWhenBoardFull = static_cast<bool>(o);
+    rule.boardFullAction = static_cast<BoardFullAction>(static_cast<int>(o));
 }
 
 void on_isLoseButNotChangeSideWhenNoWay(const Option &o)
@@ -223,8 +223,10 @@ void init(OptionsMap &o)
     o["MayRemoveFromMillsAlways"] << Option(false, on_mayRemoveFromMillsAlways);
     o["MayOnlyRemoveUnplacedPieceInPlacingPhase"]
         << Option(false, on_mayOnlyRemoveUnplacedPieceInPlacingPhase);
-    o["IsWhiteLoseButNotDrawWhenBoardFull"]
-        << Option(true, on_isWhiteLoseButNotDrawWhenBoardFull);
+    o["BoardFullAction"] << Option(
+        static_cast<int>(BoardFullAction::firstPlayerLose),
+        static_cast<int>(BoardFullAction::firstPlayerLose),
+        static_cast<int>(BoardFullAction::agreeToDraw), on_boardFullAction);
     o["IsLoseButNotChangeSideWhenNoWay"]
         << Option(true, on_isLoseButNotChangeSideWhenNoWay);
     o["MayFly"] << Option(true, on_mayFly);

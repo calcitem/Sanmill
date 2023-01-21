@@ -741,19 +741,24 @@ bool Position::put_piece(Square s, bool updateRecord)
                     return true;
                 }
 
-                phase = Phase::moving;
-                action = Action::select;
+                if (pieceToRemoveCount[sideToMove] > 0) {
+                    action = Action::remove;
+                    update_key_misc();
+                } else {
+                    phase = Phase::moving;
+                    action = Action::select;
 
-                if (rule.hasBannedLocations) {
-                    remove_ban_pieces();
-                }
+                    if (rule.hasBannedLocations) {
+                        remove_ban_pieces();
+                    }
 
-                if (!rule.isDefenderMoveFirst) {
-                    change_side_to_move();
-                }
+                    if (!rule.isDefenderMoveFirst) {
+                        change_side_to_move();
+                    }
 
-                if (check_if_game_is_over()) {
-                    return true;
+                    if (check_if_game_is_over()) {
+                        return true;
+                    }
                 }
             } else {
                 change_side_to_move();
@@ -936,6 +941,12 @@ bool Position::remove_piece(Square s, bool updateRecord)
         return true;
     }
 
+    change_side_to_move();
+
+    if (pieceToRemoveCount[sideToMove] > 0) {
+         return true;
+    }
+
     if (phase == Phase::placing) {
         if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0) {
             phase = Phase::moving;
@@ -946,7 +957,10 @@ bool Position::remove_piece(Square s, bool updateRecord)
             }
 
             if (rule.isDefenderMoveFirst) {
+                set_side_to_move(BLACK);
                 goto check;
+            } else {
+                set_side_to_move(WHITE);
             }
         } else {
             action = Action::place;
@@ -954,8 +968,6 @@ bool Position::remove_piece(Square s, bool updateRecord)
     } else {
         action = Action::select;
     }
-
-    change_side_to_move();
 
 check:
     if (check_if_game_is_over()) {
@@ -1098,14 +1110,33 @@ bool Position::check_if_game_is_over()
     }
 #endif // RULE_50
 
-    if (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >= SQUARE_NB) {
-        if (rule.isWhiteLoseButNotDrawWhenBoardFull) {
+    if (rule.pieceCount == 12 &&
+        (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >= SQUARE_NB)) {
+        // TODO: BoardFullAction: Support other actions
+        switch (rule.boardFullAction) {
+        case BoardFullAction::firstPlayerLose:
             set_gameover(BLACK, GameOverReason::loseBoardIsFull);
-        } else {
+            return true;
+        case BoardFullAction::firstAndSecondPlayerRemovePiece:
+            pieceToRemoveCount[WHITE] = pieceToRemoveCount[BLACK] = 1;
+            // Pursue performance at the expense of maintainability
+            change_side_to_move();
+            return false;
+        case BoardFullAction::secondAndFirstPlayerRemovePiece:
+            pieceToRemoveCount[WHITE] = pieceToRemoveCount[BLACK] = 1;
+            return false;
+        case BoardFullAction::sideToMoveRemovePiece:
+            if (rule.isDefenderMoveFirst) {
+                set_side_to_move(BLACK);
+            } else {
+                set_side_to_move(WHITE);
+            }
+            pieceToRemoveCount[sideToMove] = 1;
+            return false;
+        case BoardFullAction::agreeToDraw:
             set_gameover(DRAW, GameOverReason::drawBoardIsFull);
-        }
-
-        return true;
+            return true;
+        };
     }
 
     if (phase == Phase::moving && action == Action::select &&

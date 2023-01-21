@@ -19,6 +19,14 @@
 
 #include "types.h"
 
+enum class BoardFullAction {
+    firstPlayerLose = 0,
+    firstAndSecondPlayerRemovePiece = 1,
+    secondAndFirstPlayerRemovePiece = 2,
+    sideToMoveRemovePiece = 3,
+    agreeToDraw = 4,
+};
+
 // The rule struct manages the various variants of the rules.
 struct Rule
 {
@@ -61,9 +69,9 @@ struct Rule
     // opponent's unplaced piece and continue to make a move.
     bool mayOnlyRemoveUnplacedPieceInPlacingPhase;
 
-    // At the end of the placing phase, when the board is full,
-    // the side that places first loses the game, otherwise, the game is a draw.
-    bool isWhiteLoseButNotDrawWhenBoardFull;
+    // At the end of the placing phase, before the moving phase begins,
+    // the action follows if the board is full of pieces.
+    BoardFullAction boardFullAction;
 
     // The player will lose if his opponent blocks them so that they cannot be
     // moved. Change side to move if this option is disabled.
@@ -87,7 +95,7 @@ struct Rule
     bool threefoldRepetitionRule;
 };
 
-constexpr auto N_RULES = 5;
+constexpr auto N_RULES = 7;
 extern const Rule RULES[N_RULES];
 extern Rule rule;
 extern bool set_rule(int ruleIdx) noexcept;

@@ -140,6 +140,7 @@ class Database {
 
   /// Initializes the [RuleSettings] reference
   static Future<void> _initRuleSettings() async {
+    Hive.registerAdapter<BoardFullAction>(BoardFullActionAdapter());
     Hive.registerAdapter<RuleSettings>(RuleSettingsAdapter());
     _ruleSettingsBox = await Hive.openBox<RuleSettings>(_ruleSettingsBoxName);
   }
