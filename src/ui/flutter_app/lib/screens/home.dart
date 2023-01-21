@@ -355,6 +355,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   void _showPrivacyDialog() {
+    return;
+
     if (EnvironmentConfig.test == true) {
       return;
     }
