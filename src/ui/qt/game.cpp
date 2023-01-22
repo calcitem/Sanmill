@@ -1262,7 +1262,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
         gameEndCycle = stopwatch::rdtscp_clock::now();
 
-        debugPrintf("Game Duration Time: %ldms\n", gameDurationTime);
+        debugPrintf("Game Duration Time: %lldms\n", gameDurationTime);
 
 #ifdef TIME_STAT
         debugPrintf("Sort Time: %I64d + %I64d = %I64dms\n",
