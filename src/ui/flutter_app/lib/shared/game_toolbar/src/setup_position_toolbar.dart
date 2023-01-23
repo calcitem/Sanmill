@@ -81,7 +81,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       setSetupPositionPlacedUpdateBegin();
     }
 
-    newPieceCountNeedRemove = MillController().position.pieceToRemoveCount;
+    // TODO: BoardFullAction: No Bug?
+    newPieceCountNeedRemove = MillController()
+        .position
+        .pieceToRemoveCount[MillController().position.sideToMove]!;
 
     MillController().position.phase = newPhase;
     MillController().position.winner = PieceColor.nobody;
@@ -223,7 +226,11 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       newPieceCountNeedRemove = 0;
     }
 
-    MillController().position.pieceToRemoveCount = newPieceCountNeedRemove;
+    // TODO: BoardFullAction: No Bug?
+    MillController()
+            .position
+            .pieceToRemoveCount[MillController().position.sideToMove] =
+        newPieceCountNeedRemove;
 
     if (next == true) {
       if (limit == 0 || newPieceCountNeedRemove == 0) {

@@ -47,9 +47,8 @@ Value Evaluation::value() const
 
     int pieceInHandDiffCount;
     int pieceOnBoardDiffCount;
-    const int pieceToRemoveCount = pos.side_to_move() == WHITE ?
-                                       pos.piece_to_remove_count() :
-                                       -pos.piece_to_remove_count();
+    const int pieceToRemoveDiffCount = pos.piece_to_remove_count(WHITE) -
+                                       pos.piece_to_remove_count(BLACK);
 
     switch (pos.get_phase()) {
     case Phase::none:
@@ -74,7 +73,7 @@ Value Evaluation::value() const
         case Action::place:
             break;
         case Action::remove:
-            value += VALUE_EACH_PIECE_PLACING_NEEDREMOVE * pieceToRemoveCount;
+            value += VALUE_EACH_PIECE_PLACING_NEEDREMOVE * pieceToRemoveDiffCount;
             break;
         case Action::none:
             break;
@@ -96,7 +95,7 @@ Value Evaluation::value() const
         case Action::place:
             break;
         case Action::remove:
-            value += VALUE_EACH_PIECE_MOVING_NEEDREMOVE * pieceToRemoveCount;
+            value += VALUE_EACH_PIECE_MOVING_NEEDREMOVE * pieceToRemoveDiffCount;
             break;
         case Action::none:
             break;
@@ -138,11 +137,11 @@ Value Evaluation::value() const
         int piece_on_board_count_future_black = pos.piece_on_board_count(BLACK);
 
         if (pos.side_to_move() == WHITE) {
-            piece_on_board_count_future_black -= pos.piece_to_remove_count();
+            piece_on_board_count_future_black -= pos.piece_to_remove_count(WHITE) - pos.piece_to_remove_count(BLACK);
         }
 
         if (pos.side_to_move() == BLACK) {
-            piece_on_board_count_future_white -= pos.piece_to_remove_count();
+            piece_on_board_count_future_white -= pos.piece_to_remove_count(BLACK) - pos.piece_to_remove_count(WHITE);;
         }
 
         // TODO(calcitem): flyPieceCount?

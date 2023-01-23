@@ -364,11 +364,11 @@ Position &Position::set(const string &fenStr, Thread *th)
         action = Action::none;
     }
 
-    // 5. White on board / White in hand / Black on board / Black in hand / need
-    // to remove
+    // 5. White on board / White in hand / Black on board / Black in hand /
+    // White need to remove / Black need to remove
     ss >> std::skipws >> pieceOnBoardCount[WHITE] >> pieceInHandCount[WHITE] >>
         pieceOnBoardCount[BLACK] >> pieceInHandCount[BLACK] >>
-        pieceToRemoveCount;
+        pieceToRemoveCount[WHITE] >> pieceToRemoveCount[BLACK];
 
     // 6-7. Halfmove clock and fullmove number
     ss >> std::skipws >> st.rule50 >> gamePly;
@@ -448,7 +448,7 @@ string Position::fen() const
 
     ss << pieceOnBoardCount[WHITE] << " " << pieceInHandCount[WHITE] << " "
        << pieceOnBoardCount[BLACK] << " " << pieceInHandCount[BLACK] << " "
-       << pieceToRemoveCount << " ";
+       << pieceToRemoveCount[WHITE] << " " << pieceToRemoveCount[BLACK] << " ";
 
     ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
@@ -629,7 +629,7 @@ bool Position::reset()
 
     pieceOnBoardCount[WHITE] = pieceOnBoardCount[BLACK] = 0;
     pieceInHandCount[WHITE] = pieceInHandCount[BLACK] = rule.pieceCount;
-    pieceToRemoveCount = 0;
+    pieceToRemoveCount[WHITE] = pieceToRemoveCount[BLACK] = 0;
 
     mobilityDiff = 0;
 
@@ -759,7 +759,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                 change_side_to_move();
             }
         } else {
-            pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
+            pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
             update_key_misc();
 
             if (rule.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
@@ -859,7 +859,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                 return true;
             }
         } else {
-            pieceToRemoveCount = rule.mayRemoveMultiple ? n : 1;
+            pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
             update_key_misc();
             action = Action::remove;
         }
@@ -878,7 +878,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
     if (action != Action::remove)
         return false;
 
-    if (pieceToRemoveCount <= 0)
+    if (pieceToRemoveCount[sideToMove] <= 0)
         return false;
 
     // if piece is not their
@@ -929,10 +929,10 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     currentSquare = SQ_0;
 
-    pieceToRemoveCount--;
+    pieceToRemoveCount[sideToMove]--;
     update_key_misc();
 
-    if (pieceToRemoveCount > 0) {
+    if (pieceToRemoveCount[sideToMove] > 0) {
         return true;
     }
 
@@ -1196,7 +1196,9 @@ Key Position::update_key_misc()
 {
     st.key = st.key << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
 
-    st.key |= static_cast<Key>(pieceToRemoveCount)
+    // TODO: pieceToRemoveCount[sideToMove] or
+    // abs(pieceToRemoveCount[sideToMove] - pieceToRemoveCount[~sideToMove])?
+    st.key |= static_cast<Key>(pieceToRemoveCount[sideToMove])
               << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
 
     return st.key;

@@ -215,7 +215,9 @@ class TapHandler {
           case MillResponseOK():
             ret = true;
             logger.v("$_tag removePiece: [$sq]");
-            if (MillController().position.pieceToRemoveCount >= 1) {
+            if (MillController().position.pieceToRemoveCount[
+                    MillController().position.sideToMove]! >=
+                1) {
               showTip(S.of(context).tipContinueMill);
             } else {
               if (MillController().gameInstance.gameMode ==

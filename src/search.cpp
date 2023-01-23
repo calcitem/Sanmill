@@ -399,7 +399,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             epsilon = 0;
         }
 
-        // epsilon += pos->piece_to_remove_count();
+        // epsilon += pos->piece_to_remove_count(pos->sideToMove);
 
         if (gameOptions.getAlgorithm() == 1 /* PVS */) {
             // debugPrintf("Algorithm: PVS.\n");

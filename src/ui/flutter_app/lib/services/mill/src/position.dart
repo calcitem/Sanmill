@@ -45,7 +45,10 @@ class Position {
     PieceColor.white: 0,
     PieceColor.black: 0,
   };
-  int pieceToRemoveCount = 0;
+  final Map<PieceColor, int> pieceToRemoveCount = <PieceColor, int>{
+    PieceColor.white: 0,
+    PieceColor.black: 0,
+  };
 
   int _gamePly = 0;
   PieceColor _sideToMove = PieceColor.white;
@@ -160,7 +163,8 @@ class Position {
     buffer.writeSpace(pieceInHandCount[PieceColor.white]);
     buffer.writeSpace(pieceOnBoardCount[PieceColor.black]);
     buffer.writeSpace(pieceInHandCount[PieceColor.black]);
-    buffer.writeSpace(pieceToRemoveCount);
+    buffer.writeSpace(pieceToRemoveCount[PieceColor.white]);
+    buffer.writeSpace(pieceToRemoveCount[PieceColor.black]);
 
     final int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
 
@@ -239,13 +243,18 @@ class Position {
     final String blackPieceInHandCountStr = l[7];
     pieceInHandCount[PieceColor.black] = int.parse(blackPieceInHandCountStr);
 
-    final String pieceToRemoveCountStr = l[8];
-    pieceToRemoveCount = int.parse(pieceToRemoveCountStr);
+    final String whitePieceToRemoveCountStr = l[8];
+    pieceToRemoveCount[PieceColor.white] =
+        int.parse(whitePieceToRemoveCountStr);
 
-    final String rule50Str = l[9];
+    final String blackPieceToRemoveCountStr = l[9];
+    pieceToRemoveCount[PieceColor.black] =
+        int.parse(blackPieceToRemoveCountStr);
+
+    final String rule50Str = l[10];
     st.rule50 = int.parse(rule50Str);
 
-    final String gamePlyStr = l[10];
+    final String gamePlyStr = l[11];
     _gamePly = int.parse(gamePlyStr);
 
     // Misc
@@ -460,7 +469,8 @@ class Position {
           MillController().gameInstance.focusIndex = squareToIndex[s];
           Audios().playTone(Sound.place);
         } else {
-          pieceToRemoveCount = DB().ruleSettings.mayRemoveMultiple ? n : 1;
+          pieceToRemoveCount[sideToMove] =
+              DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
 
           if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
@@ -557,7 +567,8 @@ class Position {
 
           Audios().playTone(Sound.place);
         } else {
-          pieceToRemoveCount = DB().ruleSettings.mayRemoveMultiple ? n : 1;
+          pieceToRemoveCount[sideToMove] =
+              DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
           action = Act.remove;
           MillController().gameInstance.focusIndex = squareToIndex[s];
@@ -581,7 +592,7 @@ class Position {
       return const IllegalAction();
     }
 
-    if (pieceToRemoveCount <= 0) {
+    if (pieceToRemoveCount[sideToMove]! <= 0) {
       return const NoPieceToRemove();
     }
 
@@ -623,10 +634,10 @@ class Position {
 
     _currentSquare = 0;
 
-    pieceToRemoveCount--;
+    pieceToRemoveCount[sideToMove] = pieceToRemoveCount[sideToMove]! - 1;
     _updateKeyMisc();
 
-    if (pieceToRemoveCount != 0) {
+    if (pieceToRemoveCount[sideToMove] != 0) {
       Audios().playTone(Sound.remove);
       return const MillResponseOK();
     }
@@ -800,7 +811,9 @@ class Position {
   void _updateKeyMisc() {
     st.key = st.key << _Zobrist.keyMiscBit >> _Zobrist.keyMiscBit;
 
-    st.key |= pieceToRemoveCount << (32 - _Zobrist.keyMiscBit);
+    // TODO: pieceToRemoveCount[sideToMove] or
+    // abs(pieceToRemoveCount[sideToMove] - pieceToRemoveCount[~sideToMove])?
+    st.key |= pieceToRemoveCount[sideToMove]! << (32 - _Zobrist.keyMiscBit);
   }
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -1005,7 +1018,8 @@ extension SetupPosition on Position {
     pieceInHandCount[PieceColor.white] = DB().ruleSettings.piecesCount;
     pieceInHandCount[PieceColor.black] = DB().ruleSettings.piecesCount;
 
-    pieceToRemoveCount = 0;
+    pieceToRemoveCount[PieceColor.white] = 0;
+    pieceToRemoveCount[PieceColor.black] = 0;
 
     for (int i = 0; i < sqNumber; i++) {
       _board[i] = PieceColor.none;
@@ -1046,7 +1060,10 @@ extension SetupPosition on Position {
     pieceInHandCount[PieceColor.black] =
         pos.pieceInHandCount[PieceColor.black]!;
 
-    pieceToRemoveCount = pos.pieceToRemoveCount;
+    pieceToRemoveCount[PieceColor.white] =
+        pos.pieceToRemoveCount[PieceColor.white]!;
+    pieceToRemoveCount[PieceColor.black] =
+        pos.pieceToRemoveCount[PieceColor.black]!;
 
     for (int i = 0; i < sqNumber; i++) {
       _board[i] = pos._board[i];

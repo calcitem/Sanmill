@@ -157,7 +157,7 @@ public:
     [[nodiscard]] int piece_on_board_count(Color c) const;
     [[nodiscard]] int piece_in_hand_count(Color c) const;
 
-    [[nodiscard]] int piece_to_remove_count() const;
+    [[nodiscard]] int piece_to_remove_count(Color c) const;
 
     [[nodiscard]] int get_mobility_diff() const;
     void updateMobility(MoveType mt, Square s);
@@ -190,7 +190,7 @@ public:
     Bitboard byColorBB[COLOR_NB];
     int pieceInHandCount[COLOR_NB] {0, 9, 9};
     int pieceOnBoardCount[COLOR_NB] {0, 0, 0};
-    int pieceToRemoveCount {0};
+    int pieceToRemoveCount[COLOR_NB] {0, 0, 0};
     int mobilityDiff {0};
     int gamePly {0};
     Color sideToMove {NOCOLOR};
@@ -361,9 +361,9 @@ inline int Position::piece_in_hand_count(Color c) const
     return pieceInHandCount[c];
 }
 
-inline int Position::piece_to_remove_count() const
+inline int Position::piece_to_remove_count(Color c) const
 {
-    return pieceToRemoveCount;
+    return pieceToRemoveCount[c];
 }
 
 inline int Position::get_mobility_diff() const

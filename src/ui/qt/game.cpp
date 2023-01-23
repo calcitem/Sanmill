@@ -1779,7 +1779,8 @@ void Game::setTips()
                    " pieces are unplaced.";
         } else if (p.action == Action::remove) {
             tips = "Mill! " + turnStr + " to remove, " +
-                   std::to_string(p.pieceToRemoveCount) + " pieces to remove.";
+                   std::to_string(p.pieceToRemoveCount[p.sideToMove]) +
+                   " pieces to remove.";
         }
         break;
 
@@ -1788,7 +1789,8 @@ void Game::setTips()
             tips = turnStr + " to move.";
         } else if (p.action == Action::remove) {
             tips = "Mill " + turnStr + " to remove, " +
-                   std::to_string(p.pieceToRemoveCount) + " pieces to remove.";
+                   std::to_string(p.pieceToRemoveCount[p.sideToMove]) +
+                   " pieces to remove.";
         }
         break;
 
