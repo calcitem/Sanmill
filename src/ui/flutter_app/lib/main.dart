@@ -82,14 +82,22 @@ class SanmillApp extends StatelessWidget {
     DB(window.platformDispatcher.locale);
 
     if (kIsWeb) {
+      Locale? locale;
+
+      if (WidgetsBinding.instance.window.locale == const Locale('und') ||
+          !S.supportedLocales.contains(
+              Locale(WidgetsBinding.instance.window.locale.languageCode))) {
+        locale = const Locale('en');
+      } else {
+        locale = WidgetsBinding.instance.window.locale;
+      }
+
       return MaterialApp(
         key: GlobalKey<ScaffoldState>(),
         scaffoldMessengerKey: rootScaffoldMessengerKey,
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
-        locale: WidgetsBinding.instance.window.locale == const Locale('und')
-            ? const Locale('en', 'US')
-            : WidgetsBinding.instance.window.locale,
+        locale: locale,
         theme: AppTheme.lightThemeData,
         darkTheme: AppTheme.darkThemeData,
         debugShowCheckedModeBanner: EnvironmentConfig.devMode,
@@ -118,6 +126,22 @@ class SanmillApp extends StatelessWidget {
       defaultValue: const DisplaySettings(),
     )!;
 
+    Locale? locale;
+
+    if (displaySettings.locale == null) {
+      if (WidgetsBinding.instance.window.locale == const Locale('und') ||
+          !S.supportedLocales.contains(
+              Locale(WidgetsBinding.instance.window.locale.languageCode))) {
+        DB().displaySettings =
+            displaySettings.copyWith(locale: const Locale('en'));
+        locale = const Locale('en');
+      } else {
+        locale = WidgetsBinding.instance.window.locale;
+      }
+    } else {
+      locale = displaySettings.locale;
+    }
+
     final MaterialApp materialApp = MaterialApp(
       /// Add navigator key from Catcher.
       /// It will be used to navigate user to report page or to show dialog.
@@ -128,10 +152,7 @@ class SanmillApp extends StatelessWidget {
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       localizationsDelegates: S.localizationsDelegates,
       supportedLocales: S.supportedLocales,
-      locale: displaySettings.locale ??
-          (WidgetsBinding.instance.window.locale == const Locale('und')
-              ? const Locale('en', 'US')
-              : WidgetsBinding.instance.window.locale),
+      locale: locale,
       theme: AppTheme.lightThemeData,
       darkTheme: AppTheme.darkThemeData,
       debugShowCheckedModeBanner: EnvironmentConfig.devMode,
