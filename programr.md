@@ -114,34 +114,50 @@ Contact information and additional information about Sanmill can be found at htt
 
 ### Android
 
-Use [GitHub Actions](https://github.com/calcitem/Sanmill/actions) to build.
+Use [GitHub Actions](https://github.com/calcitem/Sanmill/actions) to build. 
+
+Download `aab` file and upload to [Play Console](https://play.google.com/console).
+
+Download `apk` from `Bundle Explorer Selector` and upload to [Cafe Bazaar](https://pishkhan.cafebazaar.ir/apps/com.calcitem.sanmill/releases) and other app stores.
+
 ### iOS
 
 ```shell
+./flutter-init.sh
 cd src/ui/flutter_app
 flutter build ios --release -v
 ```
 
 Use `Xcode -> Product -> Archive` to archive and upload ipa.
 
+Wait for a while, open [App Store Connect](https://appstoreconnect.apple.com/apps/1662297339/appstore/ios/version/deliverable), add the new version and publish.
+
 ### Linux
 
+[Snapcraft](https://snapcraft.io/mill/):
+
 ```shell
+cd Sanmill
 rm *.snap
 snapcraft --use-lxd
-snapcraft login
 sudo snap remove mill
 sudo snap install --dangerous mill*.snap
 sudo snap remove mill
+snapcraft login
 snapcraft upload --release=stable mill*.snap
 ```
 
 ### Windows
 
-```bat
-cd src\ui\flutter_app
+```shell
+./flutter-windows-init.sh
+cd src/ui/flutter_app
 flutter pub run msix:create
 ```
+
+Use `Windows App Cert Kit` to verify `src\ui\flutter_app\build\windows\runner\Release\sanmill.msix`.
+
+Open [Microsoft Partner](https://partner.microsoft.com/), and upload the msix file.
 
 ## References
 
