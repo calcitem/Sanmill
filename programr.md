@@ -110,6 +110,28 @@ While no formal support is offered for this software, if you do find bugs in it,
 
 Contact information and additional information about Sanmill can be found at https://github.com/calcitem/Sanmill
 
+## Deploy
+
+### Linux
+
+```shell
+cd Sanmill
+rm *.snap
+snapcraft --use-lxd
+snapcraft login
+sudo snap remove mill
+sudo snap install --dangerous mill*.snap
+sudo snap remove mill
+snapcraft upload --release=stable mill*.snap
+```
+
+### Windows
+
+```bat
+cd src\ui\flutter_app
+flutter pub run msix:create
+```
+
 ## References
 
 [Arasan Programmer's Guide - version 22.0](https://www.arasanchess.org/programr.html)
