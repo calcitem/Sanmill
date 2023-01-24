@@ -112,10 +112,21 @@ Contact information and additional information about Sanmill can be found at htt
 
 ## Deploy
 
+### Android
+
+Use [GitHub Actions](https://github.com/calcitem/Sanmill/actions) to build.
+### iOS
+
+```shell
+cd src/ui/flutter_app
+flutter build ios --release -v
+```
+
+Use `Xcode -> Product -> Archive` to archive and upload ipa.
+
 ### Linux
 
 ```shell
-cd Sanmill
 rm *.snap
 snapcraft --use-lxd
 snapcraft login
