@@ -1,0 +1,3 @@
+v3.3.3
+
+Es wurde ein Problem behoben, bei dem die angezeigte Sprache in kleineren Gebietsschemas wie erwartet Arabisch statt Englisch war.
