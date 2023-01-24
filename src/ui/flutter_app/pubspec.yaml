@@ -95,6 +95,6 @@ msix_config:
   publisher: CN=3413C020-B420-4E0A-8687-A2C35E878F3A
   logo_path: ..\..\..\fastlane\metadata\android\en-US\images\icon.png
   capabilities: ""
-  languages: en-us, zh-cn
+  languages: en-us, de-de, hu-hu, zh-cn
   execution_alias: mill
   store: true
