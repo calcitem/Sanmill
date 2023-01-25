@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Il secondo e il primo giocatore rimuovono uno dei pezzi dell'avversario.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Entrati ora nella fase di volo, i pezzi dell'avversario possono saltare in qualsiasi punto vuoto della scacchiera. Puoi disattivare la regola di volo nelle \"Impostazioni regole\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Quando stallo",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Quale azione segue quando nessun pezzo può essere mosso?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Termina con una perdita di stallo.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Cambia il lato per muoverti.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Rimuovi uno dei pezzi dell'avversario e fai la mossa successiva.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Termina con un pareggio di stallo.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Rimuovi uno dei pezzi dell'avversario e cambia il lato da muovere.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

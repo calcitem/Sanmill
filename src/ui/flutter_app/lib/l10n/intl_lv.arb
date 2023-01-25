@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Otrais un pirmais spēlētājs noņem vienu no pretinieka figūrām.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Tagad iegājis lidošanas fāzē, pretinieka figūras var pārlēkt uz jebkuru tukšu punktu uz galda. Lidošanas kārtulu varat izslēgt sadaļā \"Noteikumu iestatījumi\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Kad strupceļš",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Kāda darbība notiek, ja nevienu gabalu nevar pārvietot?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Beidziet ar strupceļa zaudējumu.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Mainiet pusi, lai pārvietotos.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Noņemiet vienu no pretinieka figūrām un veiciet nākamo gājienu.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Beidziet ar strupceļa neizšķirtu.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Noņemiet vienu no pretinieka figūrām un mainiet pusi, lai pārvietotos.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

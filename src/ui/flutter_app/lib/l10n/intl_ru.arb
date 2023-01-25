@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Второй и первый игроки убирают по одной из фигур соперника.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Теперь наступила фаза полета, фигуры противника могут прыгнуть в любую свободную точку на доске. Вы можете отключить правило полета в «Настройках правила».",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Когда тупик",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Какое действие следует, если ни одна фигура не может быть перемещена?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Закончим патовой потерей.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Меняйте сторону, чтобы двигаться.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Уберите одну из фигур соперника и сделайте следующий ход.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Закончим патовой ничьей.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Уберите одну из фигур противника и поменяйте сторону хода.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

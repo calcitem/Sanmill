@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Druhý a prvý hráč odstráni jednu zo súperových figúrok.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Teraz vstúpil do fázy lietania, súperove figúrky môžu skákať na ľubovoľný prázdny bod na šachovnici. Pravidlo lietania môžete vypnúť v časti „Nastavenia pravidiel“.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Pri patovej situácii",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Aká akcia nasleduje, keď nie je možné pohnúť žiadnou figúrkou?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Koniec patovou prehrou.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Zmeňte stranu na pohyb.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Odstráňte jednu zo súperových figúrok a urobte ďalší ťah.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Koniec nerozhodným výsledkom.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Odstráňte jednu zo súperových figúrok a zmeňte stranu na pohyb.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "दूसरे और पहले खिलाड़ी प्रतिद्वंद्वी के टुकड़ों में से एक को हटा देते हैं।",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "अब उड़ान चरण में प्रवेश कर चुके हैं, प्रतिद्वंद्वी के गोटियां बोर्ड पर किसी भी खाली बिंदु पर कूद सकती हैं। आप \"नियम सेटिंग्स\" में उड़ान नियम को बंद कर सकते हैं।",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "जब गतिरोध",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "जब कोई टुकड़ा नहीं ले जाया जा सकता है तो क्या कार्रवाई होती है?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "गतिरोध हार के साथ समाप्त करें।",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "स्थानांतरित करने के लिए पक्ष बदलें।",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "विरोधी की एक गोटी हटाएं और अगली चाल चलें।",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "एक गतिरोध ड्रा के साथ समाप्त करें।",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "प्रतिद्वंद्वी के टुकड़ों में से एक को हटाएं और स्थानांतरित करने के लिए पक्ष बदलें।",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

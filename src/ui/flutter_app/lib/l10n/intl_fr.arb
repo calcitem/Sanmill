@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Les deuxième et premier joueurs enlèvent une des pièces de l'adversaire.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Maintenant entrées dans la phase de vol, les pièces de l'adversaire peuvent sauter vers n'importe quel point vide du plateau. Vous pouvez désactiver la règle de vol dans les \"Paramètres de règle\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Quand l'impasse",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Quelle action suit lorsqu'aucune pièce ne peut être déplacée ?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Terminez par une défaite en impasse.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Changez de côté pour vous déplacer.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Retirez l'une des pièces de l'adversaire et effectuez le coup suivant.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Terminez par un match nul.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Retirez l'une des pièces de l'adversaire et changez de côté pour vous déplacer.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

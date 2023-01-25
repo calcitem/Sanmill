@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "ಎರಡನೇ ಮತ್ತು ಮೊದಲ ಆಟಗಾರರು ಎದುರಾಳಿಯ ತುಂಡುಗಳಲ್ಲಿ ಒಂದನ್ನು ತೆಗೆದುಹಾಕುತ್ತಾರೆ.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "ಈಗ ಹಾರುವ ಹಂತವನ್ನು ಪ್ರವೇಶಿಸಿದೆ, ಎದುರಾಳಿಯ ತುಣುಕುಗಳು ಬೋರ್ಡ್‌ನಲ್ಲಿ ಯಾವುದೇ ಖಾಲಿ ಬಿಂದುವಿಗೆ ಹೋಗಬಹುದು. ನೀವು \"ನಿಯಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳು\" ನಲ್ಲಿ ಹಾರುವ ನಿಯಮವನ್ನು ಆಫ್ ಮಾಡಬಹುದು.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "ಸ್ಥಗಿತಗೊಂಡಾಗ",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "ಯಾವುದೇ ತುಂಡನ್ನು ಸರಿಸಲು ಸಾಧ್ಯವಾಗದಿದ್ದಾಗ ಯಾವ ಕ್ರಮ ಅನುಸರಿಸುತ್ತದೆ?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "ಸ್ಥಬ್ದ ನಷ್ಟದೊಂದಿಗೆ ಕೊನೆಗೊಳ್ಳುತ್ತದೆ.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "ಸರಿಸಲು ಬದಿಯನ್ನು ಬದಲಾಯಿಸಿ.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "ಎದುರಾಳಿಯ ತುಂಡುಗಳಲ್ಲಿ ಒಂದನ್ನು ತೆಗೆದುಹಾಕಿ ಮತ್ತು ಮುಂದಿನ ನಡೆಯನ್ನು ಮಾಡಿ.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "ಸ್ಥಬ್ದ ಡ್ರಾದೊಂದಿಗೆ ಕೊನೆಗೊಳ್ಳುತ್ತದೆ.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "ಎದುರಾಳಿಯ ತುಂಡುಗಳಲ್ಲಿ ಒಂದನ್ನು ತೆಗೆದುಹಾಕಿ ಮತ್ತು ಸರಿಸಲು ಬದಿಯನ್ನು ಬದಲಾಯಿಸಿ.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

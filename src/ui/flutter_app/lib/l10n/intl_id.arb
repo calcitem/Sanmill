@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Pemain kedua dan pertama membuang salah satu bidak lawan.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Sekarang memasuki fase terbang, bidak lawan bisa melompat ke titik kosong mana pun di papan. Anda dapat mematikan aturan terbang di \"Pengaturan Aturan\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Ketika kebuntuan",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Tindakan apa yang terjadi jika tidak ada bagian yang dapat dipindahkan?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Berakhir dengan kekalahan telak.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Ubah sisi untuk bergerak.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Hapus salah satu bidak lawan dan lakukan langkah selanjutnya.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Berakhir dengan hasil imbang.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Hapus salah satu bidak lawan dan ubah sisi untuk bergerak.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

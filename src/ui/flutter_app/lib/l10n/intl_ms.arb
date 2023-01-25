@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Pemain kedua dan pertama mengeluarkan salah satu kepingan lawan.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Kini memasuki fasa terbang, kepingan lawan boleh melompat ke mana-mana titik kosong di papan. Anda boleh mematikan peraturan terbang dalam \"Tetapan Peraturan\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Apabila kebuntuan",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Apakah tindakan yang berlaku apabila tiada kepingan boleh digerakkan?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Berakhir dengan kekalahan yang buntu.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Tukar sisi untuk bergerak.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Keluarkan salah satu kepingan lawan dan buat langkah seterusnya.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Diakhiri dengan keputusan seri.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Keluarkan salah satu bahagian lawan dan tukar bahagian tepi untuk bergerak.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

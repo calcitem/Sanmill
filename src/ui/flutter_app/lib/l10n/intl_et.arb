@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Teine ja esimene mängija eemaldavad ühe vastase nupu.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Nüüd lendamisfaasi sisenedes võivad vastase nupud hüpata suvalisse tühja punkti laual. Lennureegli saate välja lülitada jaotises \"Reegli seaded\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Kui ummikseisus",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Mis toiming järgneb, kui ühtegi tükki ei saa liigutada?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Lõpeta ummikkaotusega.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Muutke liikumiseks külge.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Eemaldage üks vastase nuppudest ja tehke järgmine käik.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Lõpeta ummikseisuga.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Eemaldage üks vastase nupp ja muutke liikumiseks külge.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

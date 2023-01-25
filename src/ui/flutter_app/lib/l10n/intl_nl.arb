@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "De tweede en eerste speler verwijderen een stuk van de tegenstander.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Nu de vliegende fase is ingegaan, kunnen de stukken van de tegenstander naar elk leeg punt op het bord springen. U kunt de vliegregel uitschakelen in de \"Regelinstellingen\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Bij patstelling",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Welke actie volgt als er geen stuk kan worden verplaatst?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Eindig met een patstelling.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Verander de kant om te bewegen.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Verwijder een van de stukken van de tegenstander en doe de volgende zet.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Eindig met een patstelling.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Verwijder een van de stukken van de tegenstander en verander de kant om te bewegen.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

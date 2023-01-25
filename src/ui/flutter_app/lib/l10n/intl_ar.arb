@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "يقوم اللاعبان الثاني والأول بإزالة إحدى قطع الخصم.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "دخلت الآن مرحلة الطيران ، يمكن لقطع الخصم القفز إلى أي نقطة فارغة على اللوحة. يمكنك إيقاف تشغيل قاعدة الطيران في \"إعدادات القاعدة\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "عند الجمود",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "ما هو العمل الذي يتبع عندما لا يمكن تحريك قطعة؟",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "إنهاء مع خسارة مأزق.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "تغيير الجانب للتحرك.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "قم بإزالة إحدى قطع الخصم وقم بالحركة التالية.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "اختتم بالتعادل في طريق مسدود.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "قم بإزالة إحدى قطع الخصم وقم بتغيير الجانب المراد تحريكه.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

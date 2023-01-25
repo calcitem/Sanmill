@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "A második és az első játékos eltávolítja az ellenfél egyik bábuját.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "A repülési fázisba lépve az ellenfél bábuja a tábla bármely üres pontjára ugorhat. A repülési szabályt a „Szabálybeállítások” alatt kapcsolhatja ki.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Amikor patthelyzet",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Mi történik, ha egyetlen darabot sem lehet mozgatni?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "A vége patthelyzet veszteséggel.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Változtassa meg az oldalt a mozgáshoz.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Távolítsd el az ellenfél egyik bábuját, és tedd meg a következő lépést.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Patthelyzet döntetlennel fejezzük be.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Távolítsd el az ellenfél egyik bábuját, és változtasd meg az oldalt a mozgáshoz.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

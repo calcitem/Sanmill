@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Ο δεύτερος και ο πρώτος παίκτης αφαιρούν ένα από τα κομμάτια του αντιπάλου.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Τώρα που μπήκε στη φάση πτήσης, τα πιόνια του αντιπάλου μπορούν να πηδήξουν σε οποιοδήποτε κενό σημείο του ταμπλό. Μπορείτε να απενεργοποιήσετε τον κανόνα πτήσης στις \"Ρυθμίσεις κανόνων\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Όταν βρίσκεται σε αδιέξοδο",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Ποια ενέργεια ακολουθεί όταν κανένα κομμάτι δεν μπορεί να μετακινηθεί;",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Τέλος με αδιέξοδο απώλεια.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Αλλάξτε την πλευρά για να μετακινηθείτε.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Αφαιρέστε ένα από τα κομμάτια του αντιπάλου και κάντε την επόμενη κίνηση.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Τέλος με ισοπαλία.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Αφαιρέστε ένα από τα κομμάτια του αντιπάλου και αλλάξτε την πλευρά για να μετακινηθείτε.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

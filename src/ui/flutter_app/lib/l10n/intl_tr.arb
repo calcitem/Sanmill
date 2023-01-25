@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "İkinci ve birinci oyuncular rakibin taşlarından birini alır.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Şimdi uçma aşamasına girildi, rakibin taşları tahtadaki herhangi bir boş noktaya atlayabilir. Uçuş kuralını \"Kural Ayarları\"ndan kapatabilirsiniz.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Çıkmaz olduğunda",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Hiçbir parça hareket ettirilemediğinde hangi eylem izlenir?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Çıkmaz kaybıyla bitirin.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Hareket etmek için tarafı değiştirin.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Rakibin taşlarından birini çıkarın ve bir sonraki hamleyi yapın.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Çıkmaz beraberliği ile bitirin.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Rakibin taşlarından birini çıkarın ve hareket etmek için tarafı değiştirin.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

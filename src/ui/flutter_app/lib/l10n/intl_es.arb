@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "El segundo y el primer jugador quitan una de las piezas del oponente.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Ahora entrado en la fase de vuelo, las piezas del oponente pueden saltar a cualquier punto vacío en el tablero. Puede desactivar la regla de vuelo en \"Configuración de la regla\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "cuando estancamiento",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "¿Qué acción sigue cuando no se puede mover ninguna pieza?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Terminar con una derrota estancada.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Cambia de lado para moverte.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Retire una de las piezas del oponente y haga el siguiente movimiento.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Termine con un empate estancado.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Retire una de las piezas del oponente y cambie el lado para moverse.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

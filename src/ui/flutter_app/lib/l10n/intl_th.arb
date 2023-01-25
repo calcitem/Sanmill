@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "ผู้เล่นคนที่สองและคนแรกถอดชิ้นส่วนของฝ่ายตรงข้ามออก",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "ตอนนี้เข้าสู่ช่วงการบิน ชิ้นส่วนของฝ่ายตรงข้ามสามารถข้ามไปยังจุดที่ว่างบนกระดานได้ คุณสามารถปิดกฎการบินได้ใน \"การตั้งค่ากฎ\"",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "เมื่อจนมุม",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "การดำเนินการใดที่ตามมาเมื่อไม่สามารถเคลื่อนย้ายชิ้นส่วนได้",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "จบลงด้วยการสูญเสียทางตัน",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "เปลี่ยนด้านที่จะย้าย",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "นำชิ้นส่วนของคู่ต่อสู้ออกหนึ่งชิ้นแล้วทำการเคลื่อนไหวต่อไป",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "จบลงด้วยการเสมอกัน",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "นำชิ้นส่วนของฝ่ายตรงข้ามออกหนึ่งชิ้นและเปลี่ยนด้านที่จะย้าย",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

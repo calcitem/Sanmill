@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Antrasis ir pirmasis žaidėjai pašalina vieną iš priešininko figūrų.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Įėjus į skraidymo fazę, priešininko figūros gali šokti į bet kurį tuščią lentos tašką. Skrydžio taisyklę galite išjungti „Taisyklių nustatymuose“.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Kai aklavietė",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Kokie veiksmai atliekami, kai negalima perkelti nė vienos dalies?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Baigti su aklavietės praradimu.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Norėdami judėti, pakeiskite šoną.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Pašalinkite vieną iš priešininko figūrų ir atlikite kitą ėjimą.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Baigti aklavietės lygiosiomis.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Pašalinkite vieną iš priešininko figūrų ir pakeiskite šoną, kad galėtumėte judėti.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

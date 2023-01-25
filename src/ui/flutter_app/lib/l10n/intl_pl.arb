@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Drugi i pierwszy gracz usuwają jeden z pionków przeciwnika.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Po wejściu w fazę latania pionki przeciwnika mogą przeskoczyć do dowolnego pustego miejsca na planszy. Regułę latania można wyłączyć w „Ustawieniach reguł”.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Kiedy impas",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Jaka akcja następuje, gdy nie można poruszyć żadnej figury?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Koniec z impasową porażką.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Zmień stronę, aby się poruszać.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Usuń jeden z pionków przeciwnika i wykonaj następny ruch.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Koniec z remisem impasowym.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Usuń jeden z pionków przeciwnika i zmień stronę, aby się poruszyć.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

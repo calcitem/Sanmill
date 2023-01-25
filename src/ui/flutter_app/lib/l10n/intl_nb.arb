@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Den andre og første spilleren fjerner en av motstanderens brikker.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Nå inn i flyfasen, kan motstanderens brikker hoppe til et hvilket som helst tomt punkt på brettet. Du kan slå av flyregelen i \"Regelinnstillinger\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Når det står fast",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Hvilken handling følger når ingen brikker kan flyttes?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Avslutt med et dødsulykketap.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Bytt side for å flytte.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Fjern en av motstanderens brikker og gjør neste trekk.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Avslutt med uavgjort uavgjort.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Fjern en av motstanderens brikker og bytt side for å flytte.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

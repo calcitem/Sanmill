@@ -1331,5 +1331,17 @@
   "secondAndFirstPlayerRemovePiece": "后手方和先手方先后移除对方的一枚棋子。",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "现已进入“飞行阶段”，对方棋子可跳到棋盘上的任意空点。您可以在“规则设置”中关闭飞子规则。",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "僵持时",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "当没有棋子可以移动时，接下来的动作是什么？",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "以僵持的失败告终。",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "换边移动。",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "移除对手的一个棋子并进行下一步。",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "以平局告终。",
+  "@endWithStalemateDraw": {}
 }

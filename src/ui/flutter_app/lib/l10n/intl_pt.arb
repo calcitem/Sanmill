@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "O segundo e o primeiro jogadores removem uma das peças do adversário.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Agora que entrou na fase voadora, as peças do adversário podem pular para qualquer ponto vazio do tabuleiro. Você pode desativar a regra de vôo nas \"Configurações de regras\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Quando o impasse",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Que ação se segue quando nenhuma peça pode ser movida?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Terminar com uma perda de impasse.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Mude o lado para mover.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Remova uma das peças do adversário e faça o próximo movimento.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Terminar com um empate impasse.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Remova uma das peças do adversário e mude o lado para mover.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

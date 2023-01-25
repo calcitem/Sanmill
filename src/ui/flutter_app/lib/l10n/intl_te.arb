@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "రెండవ మరియు మొదటి ఆటగాళ్ళు ప్రత్యర్థి ముక్కలలో ఒకదాన్ని తీసివేస్తారు.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "ఇప్పుడు ఎగిరే దశలోకి ప్రవేశించింది, ప్రత్యర్థి పావులు బోర్డ్‌లోని ఏదైనా ఖాళీ పాయింట్‌కి వెళ్లవచ్చు. మీరు \"రూల్ సెట్టింగ్‌లు\"లో ఫ్లయింగ్ నియమాన్ని ఆఫ్ చేయవచ్చు.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "ప్రతిష్టంభన ఏర్పడినప్పుడు",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "ఏ భాగాన్ని తరలించలేనప్పుడు ఏ చర్య అనుసరిస్తుంది?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "ప్రతిష్టంభన నష్టంతో ముగించండి.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "తరలించడానికి వైపు మార్చండి.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "ప్రత్యర్థి ముక్కల్లో ఒకదాన్ని తీసివేసి, తదుపరి కదలికను చేయండి.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "ప్రతిష్టంభన డ్రాతో ముగించండి.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "ప్రత్యర్థి ముక్కల్లో ఒకదాన్ని తీసివేసి, తరలించడానికి వైపు మార్చండి.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

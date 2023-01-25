@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "2 番目と 1 番目のプレーヤーは、対戦相手の駒の 1 つを取り除きます。",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "飛行フェイズに入ると、対戦相手の駒はボード上の空いている場所にジャンプできます。 「ルール設定」で飛行ルールをオフにすることができます。",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "膠着状態のとき",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "駒を動かせない場合の次のアクションは?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "膠着状態での敗戦で終了。",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "移動する側を変更します。",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "対戦相手の駒を1つ取り除き、次の動きをします。",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "膠着状態の引き分けで終了。",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "相手の駒を1つ取り除き、移動する面を変える。",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

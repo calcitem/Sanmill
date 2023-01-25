@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "두 번째와 첫 번째 플레이어는 상대방의 조각 중 하나를 제거합니다.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "이제 비행 단계에 접어들면 상대방의 말은 보드의 빈 지점으로 이동할 수 있습니다. \"규칙 설정\"에서 비행 규칙을 끌 수 있습니다.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "교착 상태일 때",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "어떤 조각도 움직일 수 없을 때 뒤따르는 행동은 무엇입니까?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "교착 상태의 손실로 끝납니다.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "이동할 면을 변경합니다.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "상대방의 조각 중 하나를 제거하고 다음 이동을 합니다.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "무승부로 종료합니다.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "상대방의 조각 중 하나를 제거하고 이동할 측면을 변경하십시오.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }
