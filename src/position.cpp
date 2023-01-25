@@ -863,6 +863,11 @@ bool Position::put_piece(Square s, bool updateRecord)
             if (check_if_game_is_over()) {
                 return true;
             }
+
+            if (pieceToRemoveCount[sideToMove] == 1) {
+                update_key_misc();
+                action = Action::remove;
+            }
         } else {
             pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
             update_key_misc();
@@ -941,10 +946,14 @@ bool Position::remove_piece(Square s, bool updateRecord)
         return true;
     }
 
-    change_side_to_move();
+    if (isStalemateRemoving) {
+        isStalemateRemoving = false;
+    } else {
+        change_side_to_move();
+    }
 
     if (pieceToRemoveCount[sideToMove] > 0) {
-         return true;
+        return true;
     }
 
     if (phase == Phase::placing) {
@@ -1141,12 +1150,26 @@ bool Position::check_if_game_is_over()
 
     if (phase == Phase::moving && action == Action::select &&
         is_all_surrounded(sideToMove)) {
-        if (rule.isLoseButNotChangeSideWhenNoWay) {
+        switch (rule.stalemateAction) {
+        case StalemateAction::endWithStalemateLoss:
             set_gameover(~sideToMove, GameOverReason::loseNoWay);
             return true;
+        case StalemateAction::changeSideToMove:
+            change_side_to_move(); // TODO(calcitem): Need?
+            return false;
+        case StalemateAction::removeOpponentsPieceAndMakeNextMove:
+            pieceToRemoveCount[sideToMove] = 1;
+            isStalemateRemoving = true;
+            action = Action::remove;
+            return false;
+        case StalemateAction::removeOpponentsPieceAndChangeSideToMove:
+            pieceToRemoveCount[sideToMove] = 1;
+            action = Action::remove;
+            return false;
+        case StalemateAction::endWithStalemateDraw:
+            set_gameover(DRAW, GameOverReason::drawNoWay);
+            return true;
         }
-        change_side_to_move(); // TODO(calcitem): Need?
-        return false;
     }
 
     return false;

@@ -27,6 +27,14 @@ enum class BoardFullAction {
     agreeToDraw = 4,
 };
 
+enum class StalemateAction {
+    endWithStalemateLoss = 0,
+    changeSideToMove = 1,
+    removeOpponentsPieceAndMakeNextMove = 2,
+    removeOpponentsPieceAndChangeSideToMove = 3,
+    endWithStalemateDraw = 4,
+};
+
 // The rule struct manages the various variants of the rules.
 struct Rule
 {
@@ -73,9 +81,8 @@ struct Rule
     // the action follows if the board is full of pieces.
     BoardFullAction boardFullAction;
 
-    // The player will lose if his opponent blocks them so that they cannot be
-    // moved. Change side to move if this option is disabled.
-    bool isLoseButNotChangeSideWhenNoWay;
+    // What action follows when no piece can be moved?
+    StalemateAction stalemateAction;
 
     // Player may fly if he is down to three or four (configurable) pieces.
     // If a player has only three or four (configurable) pieces left,

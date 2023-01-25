@@ -28,6 +28,7 @@
 #define drawReasonEndgameRule50Str "Endgame N-move rule. Draw!"
 #define loseReasonBoardIsFullStr "Full. Player2 win!"
 #define drawReasonBoardIsFullStr "Full. In draw!"
+#define drawReasonNoWayStr "Stalemate. In draw!"
 #define loseReasonlessThanThreeStr "Player%hhu win!"
 #define loseReasonResignStr "Player%hhu give up!"
 

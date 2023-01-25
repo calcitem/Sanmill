@@ -107,9 +107,10 @@ class TapHandler {
           MillController().animationController.animateTo(1.0);
           if (MillController().position.action == Act.remove) {
             if (MillController()
-                    .position
-                    .isBoardFullRemovalAtPlacingPhaseEnd() ==
-                true) {
+                        .position
+                        .isBoardFullRemovalAtPlacingPhaseEnd() ==
+                    true ||
+                MillController().position.isNeedStalemateRemoval == true) {
               showTip(S.of(context).tipRemove);
             } else {
               showTip(S.of(context).tipMill);
@@ -232,21 +233,22 @@ class TapHandler {
                 showTip(S.of(context).tipRemoved, snackBar: false);
               } else if (MillController().gameInstance.gameMode ==
                   GameMode.humanVsHuman) {
-                if (DB().ruleSettings.piecesCount == 12 &&
-                    DB().ruleSettings.boardFullAction !=
-                        BoardFullAction.firstPlayerLose &&
-                    DB().ruleSettings.boardFullAction !=
-                        BoardFullAction.agreeToDraw &&
-                    MillController().position.phase == Phase.moving &&
-                    MillController()
-                            .position
-                            .pieceOnBoardCount[PieceColor.white] ==
-                        11 &&
-                    MillController()
-                            .position
-                            .pieceOnBoardCount[PieceColor.white] ==
-                        11) {
-                  // TODO: boardFullAction: Judging condition is not perfect.
+                if ((DB().ruleSettings.piecesCount == 12 &&
+                        DB().ruleSettings.boardFullAction !=
+                            BoardFullAction.firstPlayerLose &&
+                        DB().ruleSettings.boardFullAction !=
+                            BoardFullAction.agreeToDraw &&
+                        MillController().position.phase == Phase.moving &&
+                        MillController()
+                                .position
+                                .pieceOnBoardCount[PieceColor.white] ==
+                            11 &&
+                        MillController()
+                                .position
+                                .pieceOnBoardCount[PieceColor.white] ==
+                            11) ||
+                    MillController().position.isNeedStalemateRemoval == true) {
+                  // TODO: boardFullAction & StalemateAction: Judging condition is not perfect.
                   //  Causes under this condition and can not prompt exactly
                   //  which player's turn to move.
                   showTip(S.of(context).tipMove, snackBar: false);

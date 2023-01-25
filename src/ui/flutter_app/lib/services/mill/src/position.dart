@@ -50,6 +50,9 @@ class Position {
     PieceColor.black: 0,
   };
 
+  bool isNeedStalemateRemoval = false;
+  bool isStalemateRemoving = false;
+
   int _gamePly = 0;
   PieceColor _sideToMove = PieceColor.white;
 
@@ -409,6 +412,8 @@ class Position {
       return false;
     }
 
+    isNeedStalemateRemoval = false;
+
     switch (phase) {
       case Phase.placing:
         piece = sideToMove;
@@ -568,6 +573,13 @@ class Position {
           if (_checkIfGameIsOver()) {
             return true;
           }
+
+          if (pieceToRemoveCount[sideToMove] == 1) {
+            _updateKeyMisc();
+            action = Act.remove;
+            isNeedStalemateRemoval = true;
+          }
+
           MillController().gameInstance.focusIndex = squareToIndex[s];
 
           Audios().playTone(Sound.place);
@@ -647,7 +659,11 @@ class Position {
       return const MillResponseOK();
     }
 
-    changeSideToMove();
+    if (isStalemateRemoving) {
+      isStalemateRemoving = false;
+    } else {
+      changeSideToMove();
+    }
 
     if (pieceToRemoveCount[sideToMove] != 0) {
       // Audios().playTone(Sound.remove);
@@ -799,12 +815,28 @@ class Position {
     }
 
     if (phase == Phase.moving && action == Act.select && _isAllSurrounded) {
-      if (DB().ruleSettings.isLoseButNotChangeSideWhenNoWay) {
-        _setGameOver(sideToMove.opponent, GameOverReason.loseNoWay);
-        return true;
-      } else {
-        changeSideToMove(); // TODO: Need?
-        return false;
+      switch (DB().ruleSettings.stalemateAction) {
+        case StalemateAction.endWithStalemateLoss:
+          _setGameOver(sideToMove.opponent, GameOverReason.loseNoWay);
+          return true;
+        case StalemateAction.changeSideToMove:
+          changeSideToMove(); // TODO(calcitem): Need?
+          return false;
+        case StalemateAction.removeOpponentsPieceAndMakeNextMove:
+          pieceToRemoveCount[sideToMove] = 1;
+          isStalemateRemoving = true;
+          action = Act.remove;
+          return false;
+        case StalemateAction.removeOpponentsPieceAndChangeSideToMove:
+          pieceToRemoveCount[sideToMove] = 1;
+          action = Act.remove;
+          return false;
+        case StalemateAction.endWithStalemateDraw:
+          _setGameOver(PieceColor.draw, GameOverReason.drawNoWay);
+          return true;
+        case null:
+          assert(false);
+          return false;
       }
     }
 
@@ -1060,6 +1092,9 @@ extension SetupPosition on Position {
     pieceToRemoveCount[PieceColor.white] = 0;
     pieceToRemoveCount[PieceColor.black] = 0;
 
+    isNeedStalemateRemoval = false;
+    isStalemateRemoving = false;
+
     for (int i = 0; i < sqNumber; i++) {
       _board[i] = PieceColor.none;
     }
@@ -1103,6 +1138,9 @@ extension SetupPosition on Position {
         pos.pieceToRemoveCount[PieceColor.white]!;
     pieceToRemoveCount[PieceColor.black] =
         pos.pieceToRemoveCount[PieceColor.black]!;
+
+    isNeedStalemateRemoval = pos.isNeedStalemateRemoval;
+    isStalemateRemoving = pos.isStalemateRemoving;
 
     for (int i = 0; i < sqNumber; i++) {
       _board[i] = pos._board[i];

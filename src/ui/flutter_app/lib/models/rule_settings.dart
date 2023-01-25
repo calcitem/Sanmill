@@ -54,6 +54,37 @@ extension BoardFullActionName on BoardFullAction {
   }
 }
 
+@HiveType(typeId: 8)
+enum StalemateAction {
+  @HiveField(0)
+  endWithStalemateLoss,
+  @HiveField(1)
+  changeSideToMove,
+  @HiveField(2)
+  removeOpponentsPieceAndMakeNextMove,
+  @HiveField(3)
+  removeOpponentsPieceAndChangeSideToMove,
+  @HiveField(4)
+  endWithStalemateDraw,
+}
+
+extension StalemateActionName on StalemateAction {
+  String get name {
+    switch (this) {
+      case StalemateAction.endWithStalemateLoss:
+        return "0-1";
+      case StalemateAction.changeSideToMove:
+        return '->';
+      case StalemateAction.removeOpponentsPieceAndMakeNextMove:
+        return 'XM';
+      case StalemateAction.removeOpponentsPieceAndChangeSideToMove:
+        return 'X ->';
+      case StalemateAction.endWithStalemateDraw:
+        return '=';
+    }
+  }
+}
+
 /// Rule Settings data model
 ///
 /// Holds the default rule settings for the Mill game.
@@ -78,7 +109,9 @@ class RuleSettings {
     @Deprecated('Use [boardFullAction] instead')
         this.isWhiteLoseButNotDrawWhenBoardFull = true,
     this.boardFullAction = BoardFullAction.firstPlayerLose,
-    this.isLoseButNotChangeSideWhenNoWay = true,
+    @Deprecated('Use [StalemateAction] instead')
+        this.isLoseButNotChangeSideWhenNoWay = true,
+    this.stalemateAction = StalemateAction.endWithStalemateLoss,
     this.mayFly = true,
     this.nMoveRule = 100,
     this.endgameNMoveRule = 100,
@@ -122,6 +155,7 @@ class RuleSettings {
   @Deprecated('Use [boardFullAction] instead')
   @HiveField(10)
   final bool isWhiteLoseButNotDrawWhenBoardFull;
+  @Deprecated('Use [StalemateAction] instead')
   @HiveField(11)
   final bool isLoseButNotChangeSideWhenNoWay;
   @HiveField(12)
@@ -134,6 +168,8 @@ class RuleSettings {
   final bool threefoldRepetitionRule;
   @HiveField(16, defaultValue: BoardFullAction.firstPlayerLose)
   final BoardFullAction? boardFullAction;
+  @HiveField(17, defaultValue: StalemateAction.endWithStalemateLoss)
+  final StalemateAction? stalemateAction;
 
   /// decodes a Json from a [RuleSettings] object
   Map<String, dynamic> toJson() => _$RuleSettingsToJson(this);

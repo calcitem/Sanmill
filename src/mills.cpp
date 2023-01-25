@@ -655,8 +655,9 @@ Depth get_search_depth(const Position *pos)
     }
 #endif
 
-    // WAR: Limit depth if change side when no way
-    if (!rule.isLoseButNotChangeSideWhenNoWay) {
+    // WAR: Limit depth if continue to move when stalemate
+    if (rule.stalemateAction != StalemateAction::endWithStalemateLoss &&
+        rule.stalemateAction != StalemateAction::endWithStalemateDraw) {
         if (d > 9) {
             d = 9;
         }

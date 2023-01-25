@@ -154,6 +154,16 @@ class _DatabaseMigration {
           );
     }
 
+    // Migrates isLoseButNotChangeSideWhenNoWay to stalemateAction
+    if (DB().ruleSettings.isLoseButNotChangeSideWhenNoWay == false) {
+      DB().ruleSettings = DB().ruleSettings.copyWith(
+            stalemateAction: StalemateAction.changeSideToMove,
+          );
+      DB().ruleSettings = DB().ruleSettings.copyWith(
+            isLoseButNotChangeSideWhenNoWay: true,
+          );
+    }
+
     logger.v("$_tag Migrated from deprecation");
   }
 }

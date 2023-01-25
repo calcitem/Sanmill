@@ -161,6 +161,7 @@ enum class GameOverReason {
     drawRule50,
     drawEndgameRule50,
     drawBoardIsFull,
+    drawNoWay,
 };
 
 enum Bound : uint8_t {

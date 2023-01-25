@@ -262,9 +262,9 @@ class Engine {
       ruleSettings.isDefenderMoveFirst,
     );
     await _sendOptions(
-      "IsLoseButNotChangeSideWhenNoWay",
-      ruleSettings.isLoseButNotChangeSideWhenNoWay,
-    );
+        "StalemateAction",
+        ruleSettings.stalemateAction?.index ??
+            StalemateAction.endWithStalemateLoss.index); // TODO: enum
 
     // Flying
     await _sendOptions("MayFly", ruleSettings.mayFly);

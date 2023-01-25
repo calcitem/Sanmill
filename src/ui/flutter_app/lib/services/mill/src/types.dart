@@ -280,7 +280,8 @@ enum GameOverReason {
   drawThreefoldRepetition,
   drawRule50,
   drawEndgameRule50,
-  drawBoardIsFull
+  drawBoardIsFull,
+  drawNoWay,
 }
 
 extension GameOverReasonExtension on GameOverReason {
@@ -304,6 +305,8 @@ extension GameOverReasonExtension on GameOverReason {
         return S.of(context).drawReasonEndgameRule50;
       case GameOverReason.drawBoardIsFull:
         return S.of(context).drawReasonBoardIsFull;
+      case GameOverReason.drawNoWay:
+        return S.of(context).endWithStalemateDraw; // TODO: Not drawReasonXXX
       case GameOverReason.drawThreefoldRepetition:
         return S.of(context).drawReasonThreefoldRepetition;
     }

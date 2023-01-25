@@ -191,6 +191,7 @@ public:
     int pieceInHandCount[COLOR_NB] {0, 9, 9};
     int pieceOnBoardCount[COLOR_NB] {0, 0, 0};
     int pieceToRemoveCount[COLOR_NB] {0, 0, 0};
+    bool isStalemateRemoving {false};
     int mobilityDiff {0};
     int gamePly {0};
     Color sideToMove {NOCOLOR};

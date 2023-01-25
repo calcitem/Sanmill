@@ -1716,6 +1716,9 @@ void Game::appendGameOverReasonToMoveHistory()
     case GameOverReason::drawBoardIsFull:
         snprintf(record, Position::RECORD_LEN_MAX, drawReasonBoardIsFullStr);
         break;
+    case GameOverReason::drawNoWay:
+        snprintf(record, Position::RECORD_LEN_MAX, drawReasonNoWayStr);
+        break;
     case GameOverReason::loseLessThanThree:
         snprintf(record, Position::RECORD_LEN_MAX, loseReasonlessThanThreeStr,
                  position.winner);
@@ -1788,7 +1791,7 @@ void Game::setTips()
         if (p.action == Action::place || p.action == Action::select) {
             tips = turnStr + " to move.";
         } else if (p.action == Action::remove) {
-            tips = "Mill " + turnStr + " to remove, " +
+            tips = turnStr + " to remove, " +
                    std::to_string(p.pieceToRemoveCount[p.sideToMove]) +
                    " pieces to remove.";
         }
@@ -1849,6 +1852,9 @@ void Game::setTips()
             break;
         case GameOverReason::drawBoardIsFull:
             reasonStr = "Draw because of board is full.";
+            break;
+        case GameOverReason::drawNoWay:
+            reasonStr = "Draw because of stalemate.";
             break;
         case GameOverReason::none:
             break;

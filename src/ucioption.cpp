@@ -146,9 +146,9 @@ void on_boardFullAction(const Option &o)
     rule.boardFullAction = static_cast<BoardFullAction>(static_cast<int>(o));
 }
 
-void on_isLoseButNotChangeSideWhenNoWay(const Option &o)
+void on_stalemateAction(const Option &o)
 {
-    rule.isLoseButNotChangeSideWhenNoWay = static_cast<bool>(o);
+    rule.stalemateAction = static_cast<StalemateAction>(static_cast<int>(o));
 }
 
 void on_mayFly(const Option &o)
@@ -227,8 +227,11 @@ void init(OptionsMap &o)
         static_cast<int>(BoardFullAction::firstPlayerLose),
         static_cast<int>(BoardFullAction::firstPlayerLose),
         static_cast<int>(BoardFullAction::agreeToDraw), on_boardFullAction);
-    o["IsLoseButNotChangeSideWhenNoWay"]
-        << Option(true, on_isLoseButNotChangeSideWhenNoWay);
+    o["StalemateAction"] << Option(
+        static_cast<int>(StalemateAction::endWithStalemateLoss),
+        static_cast<int>(StalemateAction::endWithStalemateLoss),
+        static_cast<int>(StalemateAction::endWithStalemateDraw),
+        on_stalemateAction);
     o["MayFly"] << Option(true, on_mayFly);
     o["NMoveRule"] << Option(100, 10, 200, on_nMoveRule);
     o["EndgameNMoveRule"] << Option(100, 5, 200, on_endgameNMoveRule);

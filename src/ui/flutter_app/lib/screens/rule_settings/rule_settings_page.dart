@@ -33,6 +33,7 @@ part 'package:sanmill/screens/rule_settings/endgame_n_move_rule_modal.dart';
 part 'package:sanmill/screens/rule_settings/fly_piece_count_modal.dart';
 part 'package:sanmill/screens/rule_settings/n_move_rule_modal.dart';
 part 'package:sanmill/screens/rule_settings/piece_count_modal.dart';
+part 'package:sanmill/screens/rule_settings/stalemate_action_modal.dart';
 
 bool visitedRuleSettingsPage = false;
 
@@ -205,14 +206,23 @@ class RuleSettingsPage extends StatelessWidget {
     logger.v("[config] isDefenderMoveFirst: $value");
   }
 
-  void _setIsLoseButNotChangeSideWhenNoWay(
-    RuleSettings ruleSettings,
-    bool value,
-  ) {
-    DB().ruleSettings =
-        ruleSettings.copyWith(isLoseButNotChangeSideWhenNoWay: value);
+  void _setStalemateAction(BuildContext context, RuleSettings ruleSettings) {
+    void callback(StalemateAction? stalemateAction) {
+      Navigator.pop(context);
 
-    logger.v("[config] isLoseButNotChangeSideWhenNoWay: $value");
+      DB().ruleSettings =
+          ruleSettings.copyWith(stalemateAction: stalemateAction);
+
+      logger.v("[config] stalemateAction = $stalemateAction");
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => _StalemateActionModal(
+        stalemateAction: ruleSettings.stalemateAction!,
+        onChanged: callback,
+      ),
+    );
   }
 
   // Removing
@@ -322,13 +332,10 @@ class RuleSettingsPage extends StatelessWidget {
               titleString: S.of(context).isDefenderMoveFirst,
               subtitleString: S.of(context).isDefenderMoveFirst_Detail,
             ),
-            SettingsListTile.switchTile(
-              value: ruleSettings.isLoseButNotChangeSideWhenNoWay,
-              onChanged: (bool val) =>
-                  _setIsLoseButNotChangeSideWhenNoWay(ruleSettings, val),
-              titleString: S.of(context).isLoseButNotChangeSideWhenNoWay,
-              subtitleString:
-                  S.of(context).isLoseButNotChangeSideWhenNoWay_Detail,
+            SettingsListTile(
+              onTap: () => _setStalemateAction(context, ruleSettings),
+              titleString: S.of(context).whenStalemate,
+              subtitleString: S.of(context).whenStalemate_Detail,
             ),
           ],
         ),
