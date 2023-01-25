@@ -1344,6 +1344,6 @@
   "@removeOpponentsPieceAndMakeNextMove": {},
   "endWithStalemateDraw": "因無子可走而判和。",
   "@endWithStalemateDraw": {},
-  "removeOpponentsPieceAndChangeSideToMove": "移除對手的一個棋子並改變一側移動。",
+  "removeOpponentsPieceAndChangeSideToMove": "移除對手的一枚棋子然後由對方繼續走棋。",
   "@removeOpponentsPieceAndChangeSideToMove": {}
 }
