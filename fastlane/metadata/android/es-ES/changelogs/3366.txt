@@ -1,0 +1,3 @@
+v3.3.3
+
+Se solucionó un problema por el cual el idioma que se mostraba era el árabe en lugar del inglés, como se esperaba en las configuraciones regionales menores.

@@ -1,0 +1,3 @@
+v3.3.3
+
+Fixade ett problem där det visade språket var arabiska istället för engelska som förväntat i mindre språk.

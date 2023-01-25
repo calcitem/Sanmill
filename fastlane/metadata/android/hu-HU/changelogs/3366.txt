@@ -1,0 +1,3 @@
+v3.3.3
+
+Kijavítottuk azt a hibát, amely miatt a megjelenített nyelv az angol helyett arab volt, ahogy az a kisebb területeken elvárható volt.

@@ -1,0 +1,3 @@
+v3.3.3
+
+Riješen je problem u kojem je prikazani jezik bio arapski umjesto engleskog kao što se očekivalo u manjim jezicima.
