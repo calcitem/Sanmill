@@ -1336,7 +1336,7 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "Ce acțiune urmează când nicio piesă nu poate fi mutată?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "Încheiați cu o pierdere în impas.",
+  "endWithStalemateLoss": "Încheiați cu o pierdere în impas pentru partea care este blocată.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "Schimbați partea pentru a muta.",
   "@changeSideToMove": {},

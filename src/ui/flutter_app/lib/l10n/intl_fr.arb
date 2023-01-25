@@ -1336,7 +1336,7 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "Quelle action suit lorsqu'aucune pièce ne peut être déplacée ?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "Terminez par une défaite en impasse.",
+  "endWithStalemateLoss": "Terminez par une défaite par impasse pour le camp qui est bloqué.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "Changez de côté pour vous déplacer.",
   "@changeSideToMove": {},

@@ -1336,7 +1336,7 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "駒を動かせない場合の次のアクションは?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "膠着状態での敗戦で終了。",
+  "endWithStalemateLoss": "ブロックされた側の膠着状態の損失で終了します。",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "移動する側を変更します。",
   "@changeSideToMove": {},
@@ -1344,6 +1344,6 @@
   "@removeOpponentsPieceAndMakeNextMove": {},
   "endWithStalemateDraw": "膠着状態の引き分けで終了。",
   "@endWithStalemateDraw": {},
-  "removeOpponentsPieceAndChangeSideToMove": "相手の駒を1つ取り除き、移動する面を変える。",
+  "removeOpponentsPieceAndChangeSideToMove": "相手の駒を1枚取り除き、相手が碁を続けます。",
   "@removeOpponentsPieceAndChangeSideToMove": {}
 }

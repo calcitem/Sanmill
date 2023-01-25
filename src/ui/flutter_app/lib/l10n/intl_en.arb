@@ -1434,7 +1434,7 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "What action follows when no piece can be moved?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "End with a stalemate loss.",
+  "endWithStalemateLoss": "End with a stalemate loss for the side that is blocked.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "Change the side to move.",
   "@changeSideToMove": {},

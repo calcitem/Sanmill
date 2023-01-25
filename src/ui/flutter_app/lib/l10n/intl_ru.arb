@@ -1336,7 +1336,7 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "Какое действие следует, если ни одна фигура не может быть перемещена?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "Закончим патовой потерей.",
+  "endWithStalemateLoss": "Конец с патовой потерей для стороны, которая заблокирована.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "Меняйте сторону, чтобы двигаться.",
   "@changeSideToMove": {},

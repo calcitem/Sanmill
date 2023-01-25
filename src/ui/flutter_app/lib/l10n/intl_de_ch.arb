@@ -1336,7 +1336,7 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "Was passiert, wenn keine Figur bewegt werden kann?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "Ende mit einem Pattverlust.",
+  "endWithStalemateLoss": "Beenden Sie mit einem Pattverlust für die Seite, die blockiert ist.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "Wechsle die Seite, um dich zu bewegen.",
   "@changeSideToMove": {},
