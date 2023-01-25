@@ -1336,7 +1336,7 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "어떤 조각도 움직일 수 없을 때 뒤따르는 행동은 무엇입니까?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "교착 상태의 손실로 끝납니다.",
+  "endWithStalemateLoss": "막힌 쪽의 교착 상태에서 패배로 끝납니다.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "이동할 면을 변경합니다.",
   "@changeSideToMove": {},

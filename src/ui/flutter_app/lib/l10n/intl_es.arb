@@ -1336,7 +1336,7 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "¿Qué acción sigue cuando no se puede mover ninguna pieza?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "Terminar con una derrota estancada.",
+  "endWithStalemateLoss": "Termine con una derrota por tablas para el lado que está bloqueado.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "Cambia de lado para moverte.",
   "@changeSideToMove": {},

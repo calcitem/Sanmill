@@ -1336,7 +1336,7 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "وقتی هیچ قطعه ای قابل جابجایی نباشد چه عملی انجام می شود؟",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "با یک باخت در بن بست پایان دهید.",
+  "endWithStalemateLoss": "با یک باخت در بن بست برای طرفی که مسدود شده است پایان دهید.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "سمت را برای حرکت تغییر دهید.",
   "@changeSideToMove": {},

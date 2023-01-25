@@ -1336,7 +1336,7 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "Mi történik, ha egyetlen darabot sem lehet mozgatni?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "A vége patthelyzet veszteséggel.",
+  "endWithStalemateLoss": "Vége a blokkolt oldal patthelyzeti veszteségével.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "Változtassa meg az oldalt a mozgáshoz.",
   "@changeSideToMove": {},
