@@ -1441,5 +1441,7 @@
   "removeOpponentsPieceAndMakeNextMove": "Видаліть одну з фігур супротивника і зробіть наступний хід.",
   "@removeOpponentsPieceAndMakeNextMove": {},
   "endWithStalemateDraw": "Закінчиться нічиєю.",
-  "@endWithStalemateDraw": {}
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Видаліть одну з фігур супротивника та змініть бік руху.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }
