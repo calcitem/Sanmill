@@ -1429,5 +1429,17 @@
   "secondAndFirstPlayerRemovePiece": "Другий і перший гравці знімають одну з фігур суперника.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Тепер у фазі польоту фігури супротивника можуть стрибати на будь-яку порожню точку на дошці. Ви можете вимкнути правило польоту в «Налаштуваннях правил».",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Коли пат",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Яка дія виконується, якщо жодну фігуру не можна перемістити?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Закінчиться безвихідною втратою.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Змініть сторону для руху.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Видаліть одну з фігур супротивника і зробіть наступний хід.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Закінчиться нічиєю.",
+  "@endWithStalemateDraw": {}
 }

@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Други и први играч уклањају једну од противничких фигура.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Сада када сте ушли у фазу летења, противничке фигуре могу скочити на било коју празну тачку на табли. Можете да искључите правило летења у „Подешавања правила“.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Када застој",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Која радња следи када се ниједан комад не може померити?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Завршите са губитком.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Промените страну да бисте се померили.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Уклоните једну од противничких фигура и направите следећи потез.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Завршите нерешеним резултатом.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Уклоните једну од противничких фигура и промените страну за кретање.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

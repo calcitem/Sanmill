@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Druhý a první hráč odstraní jednu ze soupeřových figurek.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Nyní vstoupila fáze létání, soupeřovy figurky mohou skákat na jakýkoli prázdný bod na desce. Pravidlo létání můžete vypnout v \"Nastavení pravidel\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Při patové situaci",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Jaká akce následuje, když nelze pohnout žádnou figurkou?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Konec patovou prohrou.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Změňte stranu pro pohyb.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Odstraňte jednu ze soupeřových figurek a proveďte další tah.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Končí patovou remízou.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Odstraňte jednu ze soupeřových figurek a změňte stranu pro pohyb.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

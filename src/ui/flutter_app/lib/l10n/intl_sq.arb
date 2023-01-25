@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Lojtarët e dytë dhe të parë heqin një nga pjesët e kundërshtarit.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Tani që hynë në fazën e fluturimit, pjesët e kundërshtarit mund të kërcejnë në çdo pikë boshe në tabelë. Mund ta çaktivizoni rregullin e fluturimit në \"Cilësimet e rregullave\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Kur në ngërç",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Çfarë veprimi pason kur asnjë pjesë nuk mund të zhvendoset?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Përfundoni me një humbje në ngërç.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Ndryshoni anën për të lëvizur.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Hiqni një nga pjesët e kundërshtarit dhe bëni lëvizjen tjetër.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Përfundoni me një barazim në ngërç.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Hiqni një nga pjesët e kundërshtarit dhe ndryshoni anën për të lëvizur.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

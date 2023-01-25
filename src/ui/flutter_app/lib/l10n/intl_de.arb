@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Der zweite und der erste Spieler entfernen einen der Steine des Gegners.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Jetzt in die Flugphase eingetreten, können die Figuren des Gegners zu jedem leeren Punkt auf dem Brett springen. Sie können die Flugregel in den \"Regeln\" deaktivieren.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Bei Patt",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Was passiert, wenn keine Figur bewegt werden kann?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Ende mit einem Pattverlust.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Wechsle die Seite, um dich zu bewegen.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Entfernen Sie eine der gegnerischen Figuren und machen Sie den nächsten Zug.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Beenden Sie mit einem Patt-Unentschieden.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Entfernen Sie eine der gegnerischen Figuren und wechseln Sie die Seite, um sich zu bewegen.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

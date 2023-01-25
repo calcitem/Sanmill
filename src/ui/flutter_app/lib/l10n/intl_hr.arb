@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Drugi i prvi igrač uklanjaju jednu od protivničkih figura.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Sada kada smo ušli u fazu letenja, protivničke figure mogu skočiti na bilo koje prazno mjesto na ploči. Možete isključiti pravilo letenja u \"Postavke pravila\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Kada zastoj",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Koja radnja slijedi kada se nijedna figura ne može pomaknuti?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Završiti gubitkom iz mrtve točke.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Promijenite stranu za kretanje.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Uklonite jednu od protivničkih figura i napravite sljedeći potez.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Završite neodlučenim rezultatom.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Uklonite jednu od protivničkih figura i promijenite stranu za kretanje.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

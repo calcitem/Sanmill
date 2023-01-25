@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Toinen ja ensimmäinen pelaaja poistavat yhden vastustajan nappuloista.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Nyt lentovaiheessa vastustajan nappulat voivat hypätä mihin tahansa tyhjään kohtaan laudalla. Voit kytkeä lentosäännön pois päältä \"Sääntöasetuksissa\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Kun umpikuja",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Mitä tapahtuu, kun yhtään kappaletta ei voi siirtää?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Loppu umpikujaan.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Vaihda puolta liikkuaksesi.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Poista yksi vastustajan nappuloista ja tee seuraava siirto.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Päätä tasapeliin.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Poista yksi vastustajan nappuloista ja vaihda puolta liikkuaksesi.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

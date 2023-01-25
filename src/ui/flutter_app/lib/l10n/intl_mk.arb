@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Вториот и првиот играч отстрануваат една од фигурите на противникот.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Сега влезе во фазата на летање, фигурите на противникот можат да скокаат на која било празна точка на таблата. Можете да го исклучите правилото за летање во „Поставки за правила“.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Кога е во ќор-сокак",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Какво дејство следи кога ниедно парче не може да се помести?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Заврши со загуба во ќор-сокак.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Сменете ја страната за да се движите.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Отстранете една од фигурите на противникот и направете го следниот потег.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Заврши со ќор-сокак нерешено.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Отстранете една од фигурите на противникот и сменете ја страната за да се движите.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

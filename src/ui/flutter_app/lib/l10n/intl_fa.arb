@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "بازیکنان دوم و اول یکی از مهره های حریف را برمی دارند.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "حالا که وارد فاز پرواز شده، مهره های حریف می توانند به هر نقطه خالی روی تخته بپرند. می توانید قانون پرواز را در \"تنظیمات قانون\" خاموش کنید.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "وقتی بن بست",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "وقتی هیچ قطعه ای قابل جابجایی نباشد چه عملی انجام می شود؟",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "با یک باخت در بن بست پایان دهید.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "سمت را برای حرکت تغییر دهید.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "یکی از مهره های حریف را بردارید و حرکت بعدی را انجام دهید.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "با تساوی بن بست پایان دهید.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "یکی از مهره های حریف را بردارید و طرف را برای حرکت تغییر دهید.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

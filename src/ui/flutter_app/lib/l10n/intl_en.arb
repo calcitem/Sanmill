@@ -1429,5 +1429,19 @@
   "secondAndFirstPlayerRemovePiece": "The second and first players remove one of the opponent's pieces.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Now entered the flying phase, the opponent's pieces can jump to any empty point on the board. You can turn off the flying rule in the \"Rule Settings\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "When stalemate",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "What action follows when no piece can be moved?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "End with a stalemate loss.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Change the side to move.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Remove one of the opponent's pieces and make the next move.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "End with a stalemate draw.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Remove one of the opponent's pieces and change the side to move.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

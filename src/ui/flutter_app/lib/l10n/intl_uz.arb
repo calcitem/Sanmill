@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Ikkinchi va birinchi o'yinchilar raqibning donalaridan birini olib tashlashadi.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Endi uchish bosqichiga kirdi, raqibning donalari doskadagi istalgan bo'sh nuqtaga sakrashi mumkin. \"Qoida sozlamalari\" da uchish qoidasini o'chirib qo'yishingiz mumkin.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Turg'unlashganda",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Hech qanday bo'lakni ko'chirish mumkin bo'lmasa, qanday harakat bajariladi?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Turg'un yo'qotish bilan yakunlang.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Harakat qilish uchun tomonni o'zgartiring.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Raqibning donalaridan birini olib tashlang va keyingi harakatni bajaring.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Durang durang bilan yakunlang.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Raqibning donalaridan birini olib tashlang va harakat qilish uchun tomonni o'zgartiring.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

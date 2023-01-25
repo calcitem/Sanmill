@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Al doilea și primul jucător scot una dintre piesele adversarului.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Intrate acum în faza de zbor, piesele adversarului pot sări în orice punct gol de pe tablă. Puteți dezactiva regula de zbor în „Setări reguli”.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Când în impas",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Ce acțiune urmează când nicio piesă nu poate fi mutată?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Încheiați cu o pierdere în impas.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Schimbați partea pentru a muta.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Scoateți una dintre piesele adversarului și faceți următoarea mișcare.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Încheiați cu o remiză în impas.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Scoateți una dintre piesele adversarului și schimbați partea pentru a muta.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

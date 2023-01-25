@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Вторият и първият играч премахват една от фигурите на противника.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "След навлизане във фазата на летене фигурите на противника могат да скочат до всяка празна точка на дъската. Можете да изключите правилото за летене в „Настройки на правилото“.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "При патова ситуация",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Какво действие следва, когато нито една фигура не може да бъде преместена?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Край със загуба в безизходица.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Променете страната, за да се движите.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Премахнете една от фигурите на противника и направете следващия ход.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Завършете с патово равенство.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Премахнете една от фигурите на противника и сменете страната, за да се движите.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

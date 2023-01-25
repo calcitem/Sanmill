@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "দ্বিতীয় এবং প্রথম খেলোয়াড়রা প্রতিপক্ষের একটি টুকরো সরিয়ে দেয়।",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "এখন উড়ন্ত পর্বে প্রবেশ করেছে, প্রতিপক্ষের টুকরো বোর্ডের যে কোনও খালি পয়েন্টে লাফ দিতে পারে। আপনি \"নিয়ম সেটিংস\" এ উড়ন্ত নিয়মটি বন্ধ করতে পারেন।",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "যখন অচলাবস্থা",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "কোন ক্রিয়াটি অনুসরণ করে যখন কোন অংশ সরানো যায় না?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "একটি অচলাবস্থা হার সঙ্গে শেষ.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "সরানোর জন্য পাশ পরিবর্তন করুন।",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "প্রতিপক্ষের একটি টুকরা সরান এবং পরবর্তী পদক্ষেপ করুন।",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "একটি অচলাবস্থা ড্র সঙ্গে শেষ.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "প্রতিপক্ষের একটি টুকরো সরান এবং সরানোর জন্য পাশ পরিবর্তন করুন।",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

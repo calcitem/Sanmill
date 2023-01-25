@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "બીજા અને પ્રથમ ખેલાડીઓ વિરોધીના ટુકડામાંથી એકને દૂર કરે છે.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "હવે ઉડતા તબક્કામાં પ્રવેશ કર્યો છે, વિરોધીના ટુકડાઓ બોર્ડ પરના કોઈપણ ખાલી બિંદુ પર કૂદી શકે છે. તમે \"નિયમ સેટિંગ્સ\" માં ફ્લાઇંગ નિયમને બંધ કરી શકો છો.",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "જ્યારે મડાગાંઠ",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "જ્યારે કોઈ ભાગ ખસેડી શકાતો નથી ત્યારે કઈ ક્રિયા થાય છે?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "મડાગાંઠની ખોટ સાથે અંત.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "ખસેડવા માટે બાજુ બદલો.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "વિરોધીના ટુકડામાંથી એકને દૂર કરો અને આગળની ચાલ કરો.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "સ્ટેલમેટ ડ્રો સાથે અંત.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "વિરોધીના ટુકડામાંથી એકને દૂર કરો અને ખસેડવા માટે બાજુ બદલો.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Người chơi thứ hai và thứ nhất loại bỏ một trong các quân cờ của đối phương.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Bây giờ đã bước vào giai đoạn bay, các quân cờ của đối phương có thể nhảy đến bất kỳ điểm trống nào trên bàn cờ. Bạn có thể tắt quy tắc bay trong \"Cài đặt quy tắc\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Khi bế tắc",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Hành động nào tiếp theo khi không thể di chuyển quân nào?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Kết thúc với một trận thua bế tắc.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Thay đổi bên để di chuyển.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Loại bỏ một trong các quân cờ của đối thủ và thực hiện nước đi tiếp theo.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Kết thúc với một trận hòa bế tắc.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Loại bỏ một trong các quân cờ của đối thủ và đổi bên để di chuyển.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }

@@ -1331,5 +1331,19 @@
   "secondAndFirstPlayerRemovePiece": "Den andra och första spelaren tar bort en av motståndarens pjäser.",
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Nu när man kommit in i flygfasen, kan motståndarens pjäser hoppa till vilken tom punkt som helst på brädet. Du kan stänga av flygregeln i \"Regelinställningar\".",
-  "@enteredFlyingPhase": {}
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "När ett dödläge",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Vilken åtgärd följer när ingen pjäs kan flyttas?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Sluta med en dödläge förlust.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Byt sida för att flytta.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Ta bort en av motståndarens pjäser och gör nästa drag.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Avsluta med ett dödläge oavgjort.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Ta bort en av motståndarens pjäser och byt sida för att flytta.",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }
