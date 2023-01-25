@@ -1343,5 +1343,7 @@
   "removeOpponentsPieceAndMakeNextMove": "移除对手的一枚棋子然后自己继续走棋。",
   "@removeOpponentsPieceAndMakeNextMove": {},
   "endWithStalemateDraw": "因无子可走而判和。",
-  "@endWithStalemateDraw": {}
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "移除对手的一个棋子并改变一侧移动。",
+  "@removeOpponentsPieceAndChangeSideToMove": {}
 }
