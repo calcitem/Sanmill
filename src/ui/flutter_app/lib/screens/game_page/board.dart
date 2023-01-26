@@ -181,7 +181,13 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     final bool force = MillController().gameResultNotifier.force;
 
     if (message != null && (force == true || winner != PieceColor.nobody)) {
-      MillController().headerTipNotifier.showTip(message, snackBar: false);
+      if (MillController().position.action == Act.remove) {
+        MillController()
+            .headerTipNotifier
+            .showTip(S.of(context).tipRemove, snackBar: false);
+      } else {
+        MillController().headerTipNotifier.showTip(message, snackBar: false);
+      }
     }
 
     MillController().headerIconsNotifier.showIcons();
