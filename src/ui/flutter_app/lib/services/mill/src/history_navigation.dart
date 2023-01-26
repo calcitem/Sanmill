@@ -39,12 +39,18 @@ class HistoryNavigator {
   }) async {
     assert(navMode != HistoryNavMode.takeBackN || number != null);
 
-    MillController().isActive = false;
-    MillController().engine.stopSearching();
-
     if (pop) {
       Navigator.pop(context);
     }
+
+    if (MillController().isEngineDelaying == true) {
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).aiIsDelaying);
+      return const HistoryOK();
+    }
+
+    MillController().isActive = false;
+    MillController().engine.stopSearching();
 
     final MillController controller = MillController();
 

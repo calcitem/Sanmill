@@ -51,6 +51,7 @@ class MillController {
   bool isReady = false;
   bool isActive = false;
   bool isEngineGoing = false;
+  bool isEngineDelaying = false;
   bool isPositionSetupBanPiece = false;
 
   late Game gameInstance;
@@ -198,6 +199,11 @@ class MillController {
       try {
         logger.v("$tag Searching..., isMoveNow: $isMoveNow");
 
+        isEngineDelaying = true;
+        await Future<void>.delayed(Duration(
+            seconds: DB().displaySettings.aiResponseDelayTime.toInt()));
+        isEngineDelaying = false;
+
         final ExtMove extMove = await controller.engine
             // ignore: avoid_bool_literals_in_conditional_expressions
             .search(moveNow: loopIsFirst ? isMoveNow : false);
@@ -265,6 +271,11 @@ class MillController {
   Future<void> moveNow(BuildContext context) async {
     const String tag = "[engineToGo]";
     bool reversed = false;
+
+    if (isEngineDelaying == true) {
+      return rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).aiIsDelaying);
+    }
 
     // TODO: WAR
     if ((MillController().gameInstance.sideToMove == PieceColor.white ||

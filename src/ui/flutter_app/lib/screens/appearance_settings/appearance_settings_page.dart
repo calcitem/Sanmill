@@ -33,6 +33,7 @@ import '../../shared/scaffold_messenger.dart';
 import '../../shared/settings/settings.dart';
 import '../../shared/theme/app_theme.dart';
 
+part 'package:sanmill/screens/appearance_settings/ai_response_delay_time_slider.dart';
 part 'package:sanmill/screens/appearance_settings/animation_duration_slider.dart';
 part 'package:sanmill/screens/appearance_settings/board_boarder_line_width_slider.dart';
 part 'package:sanmill/screens/appearance_settings/board_inner_line_width_slider.dart';
@@ -99,6 +100,11 @@ class AppearanceSettingsPage extends StatelessWidget {
   void setAnimationDuration(BuildContext context) => showModalBottomSheet(
         context: context,
         builder: (_) => const _AnimationDurationSlider(),
+      );
+
+  void setAiResponseDelayTime(BuildContext context) => showModalBottomSheet(
+        context: context,
+        builder: (_) => const _AiResponseDelayTimeSlider(),
       );
 
   void langCallback(
@@ -351,6 +357,10 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsListTile(
           titleString: S.of(context).animationDuration,
           onTap: () => setAnimationDuration(context),
+        ),
+        SettingsListTile(
+          titleString: S.of(context).aiResponseDelayTime,
+          onTap: () => setAiResponseDelayTime(context),
         ),
       ],
     );
