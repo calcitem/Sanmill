@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Fjern en af modstanderens brikker og skift side for at flytte.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI-svarforsinkelse",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI er i øjeblikket i en forsinket responsfase. Vent venligst et stykke tid, før du fortsætter.",
+  "@aiIsDelaying": {}
 }

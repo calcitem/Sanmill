@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Scoateți una dintre piesele adversarului și schimbați partea pentru a muta.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Timp de întârziere a răspunsului AI",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI se află în prezent într-o fază de răspuns întârziat. Vă rugăm să așteptați puțin înainte de a continua.",
+  "@aiIsDelaying": {}
 }

@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Noņemiet vienu no pretinieka figūrām un mainiet pusi, lai pārvietotos.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI reakcijas aizkaves laiks",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI pašlaik ir aizkavētas reakcijas fāzē. Pirms turpināt, lūdzu, uzgaidiet kādu laiku.",
+  "@aiIsDelaying": {}
 }

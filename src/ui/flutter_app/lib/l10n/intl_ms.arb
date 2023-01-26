@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Keluarkan salah satu bahagian lawan dan tukar bahagian tepi untuk bergerak.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Masa kelewatan tindak balas AI",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI kini dalam fasa respons tertunda. Sila tunggu sebentar sebelum meneruskan.",
+  "@aiIsDelaying": {}
 }

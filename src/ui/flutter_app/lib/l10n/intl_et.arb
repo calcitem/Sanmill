@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Eemaldage üks vastase nupp ja muutke liikumiseks külge.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI reageerimise viivitusaeg",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI on praegu viivitatud reageerimise faasis. Enne jätkamist oodake veidi.",
+  "@aiIsDelaying": {}
 }

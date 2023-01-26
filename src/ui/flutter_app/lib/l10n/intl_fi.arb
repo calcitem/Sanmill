@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Poista yksi vastustajan nappuloista ja vaihda puolta liikkuaksesi.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI-vasteen viive",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "Tekoäly on tällä hetkellä viivästyneen vasteen vaiheessa. Odota hetki ennen kuin jatkat.",
+  "@aiIsDelaying": {}
 }

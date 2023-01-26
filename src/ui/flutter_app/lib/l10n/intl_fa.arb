@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "یکی از مهره های حریف را بردارید و طرف را برای حرکت تغییر دهید.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "زمان تاخیر پاسخ هوش مصنوعی",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "هوش مصنوعی در حال حاضر در مرحله پاسخ تاخیری قرار دارد. لطفاً قبل از ادامه مدتی صبر کنید.",
+  "@aiIsDelaying": {}
 }

@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Уклоните једну од противничких фигура и промените страну за кретање.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Време кашњења одговора АИ",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "АИ је тренутно у фази одложеног одговора. Сачекајте неко време пре него што наставите.",
+  "@aiIsDelaying": {}
 }

@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "ప్రత్యర్థి ముక్కల్లో ఒకదాన్ని తీసివేసి, తరలించడానికి వైపు మార్చండి.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI ప్రతిస్పందన ఆలస్యం సమయం",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI ప్రస్తుతం ఆలస్యం ప్రతిస్పందన దశలో ఉంది. దయచేసి కొనసాగడానికి ముందు కొంతసేపు వేచి ఉండండి.",
+  "@aiIsDelaying": {}
 }

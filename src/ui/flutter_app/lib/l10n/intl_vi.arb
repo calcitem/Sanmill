@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Loại bỏ một trong các quân cờ của đối thủ và đổi bên để di chuyển.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Thời gian trễ phản hồi AI",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI hiện đang trong giai đoạn phản hồi chậm. Vui lòng đợi một lúc trước khi tiếp tục.",
+  "@aiIsDelaying": {}
 }

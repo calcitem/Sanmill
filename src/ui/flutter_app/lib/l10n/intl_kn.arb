@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "ಎದುರಾಳಿಯ ತುಂಡುಗಳಲ್ಲಿ ಒಂದನ್ನು ತೆಗೆದುಹಾಕಿ ಮತ್ತು ಸರಿಸಲು ಬದಿಯನ್ನು ಬದಲಾಯಿಸಿ.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI ಪ್ರತಿಕ್ರಿಯೆ ವಿಳಂಬ ಸಮಯ",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI ಪ್ರಸ್ತುತ ವಿಳಂಬವಾದ ಪ್ರತಿಕ್ರಿಯೆ ಹಂತದಲ್ಲಿದೆ. ಮುಂದುವರಿಯುವ ಮೊದಲು ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯ ಕಾಯಿರಿ.",
+  "@aiIsDelaying": {}
 }

@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "প্রতিপক্ষের একটি টুকরো সরান এবং সরানোর জন্য পাশ পরিবর্তন করুন।",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "এআই প্রতিক্রিয়া বিলম্বের সময়",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "এআই বর্তমানে একটি বিলম্বিত প্রতিক্রিয়া পর্যায়ে রয়েছে। এগিয়ে যাওয়ার আগে অনুগ্রহ করে কিছুক্ষণ অপেক্ষা করুন।",
+  "@aiIsDelaying": {}
 }

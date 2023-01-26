@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Remova uma das peças do adversário e mude o lado para mover.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Tempo de atraso de resposta de IA",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "A IA está atualmente em uma fase de resposta atrasada. Aguarde um pouco antes de prosseguir.",
+  "@aiIsDelaying": {}
 }

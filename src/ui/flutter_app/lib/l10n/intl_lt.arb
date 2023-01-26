@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Pašalinkite vieną iš priešininko figūrų ir pakeiskite šoną, kad galėtumėte judėti.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI atsako delsos laikas",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI šiuo metu yra atidėto atsako fazėje. Prieš tęsdami palaukite šiek tiek.",
+  "@aiIsDelaying": {}
 }

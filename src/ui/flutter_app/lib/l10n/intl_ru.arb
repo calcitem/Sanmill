@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Уберите одну из фигур противника и поменяйте сторону хода.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Время задержки ответа ИИ",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "ИИ в настоящее время находится в фазе отложенного ответа. Пожалуйста, подождите некоторое время, прежде чем продолжить.",
+  "@aiIsDelaying": {}
 }

@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Αφαιρέστε ένα από τα κομμάτια του αντιπάλου και αλλάξτε την πλευρά για να μετακινηθείτε.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Χρόνος καθυστέρησης απόκρισης AI",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "Η τεχνητή νοημοσύνη βρίσκεται επί του παρόντος σε φάση καθυστερημένης απόκρισης. Περιμένετε λίγο πριν συνεχίσετε.",
+  "@aiIsDelaying": {}
 }
