@@ -1350,6 +1350,6 @@
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI 目前处于延迟响应阶段。请稍等片刻再继续。",
   "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "您不能删除不相邻的一块。",
+  "tipCanNotRemoveNonadjacent": "只能移除和自己棋子相邻的棋子",
   "@tipCanNotRemoveNonadjacent": {}
 }

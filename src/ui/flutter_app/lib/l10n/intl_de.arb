@@ -1350,6 +1350,6 @@
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "KI befindet sich derzeit in einer verzögerten Reaktionsphase. Bitte warten Sie eine Weile, bevor Sie fortfahren.",
   "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "Sie können kein nicht benachbartes Stück entfernen.",
+  "tipCanNotRemoveNonadjacent": "Sie können keinen nicht angrenzenden Stein entfernen.",
   "@tipCanNotRemoveNonadjacent": {}
 }
