@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Czas opóźnienia odpowiedzi AI",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "Sztuczna inteligencja znajduje się obecnie w fazie opóźnionej reakcji. Odczekaj chwilę, zanim przejdziesz dalej.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Nie możesz usunąć nieprzylegającego elementu.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

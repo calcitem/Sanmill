@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Thời gian trễ phản hồi AI",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI hiện đang trong giai đoạn phản hồi chậm. Vui lòng đợi một lúc trước khi tiếp tục.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Bạn không thể loại bỏ một phần không liền kề.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

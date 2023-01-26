@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Tempo de atraso de resposta de IA",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "A IA está atualmente em uma fase de resposta atrasada. Aguarde um pouco antes de prosseguir.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Você não pode remover uma peça não adjacente.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

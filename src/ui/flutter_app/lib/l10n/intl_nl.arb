@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI reactievertragingstijd",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI bevindt zich momenteel in een vertraagde reactiefase. Wacht even voordat u verder gaat.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "U kunt een niet-aangrenzend stuk niet verwijderen.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

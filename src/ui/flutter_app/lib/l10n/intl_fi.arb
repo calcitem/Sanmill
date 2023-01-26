@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI-vasteen viive",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "Tekoäly on tällä hetkellä viivästyneen vasteen vaiheessa. Odota hetki ennen kuin jatkat.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Et voi poistaa vierekkäistä osaa.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

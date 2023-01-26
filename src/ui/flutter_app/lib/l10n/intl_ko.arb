@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI 응답 지연 시간",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI는 현재 지연된 응답 단계에 있습니다. 계속하기 전에 잠시 기다리십시오.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "인접하지 않은 부분은 제거할 수 없습니다.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

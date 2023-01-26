@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Čas oneskorenia odozvy AI",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI je momentálne vo fáze oneskorenej odozvy. Pred pokračovaním chvíľu počkajte.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Nesusediaci kus nemôžete odstrániť.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

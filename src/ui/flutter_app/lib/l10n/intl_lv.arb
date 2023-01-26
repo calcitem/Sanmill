@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI reakcijas aizkaves laiks",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI pašlaik ir aizkavētas reakcijas fāzē. Pirms turpināt, lūdzu, uzgaidiet kādu laiku.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Jūs nevarat noņemt blakus esošo gabalu.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

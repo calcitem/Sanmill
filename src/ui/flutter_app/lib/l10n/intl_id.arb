@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Waktu tunda respons AI",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI saat ini sedang dalam fase respons tertunda. Harap tunggu beberapa saat sebelum melanjutkan.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Anda tidak dapat menghapus bagian yang tidak berdekatan.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

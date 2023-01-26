@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Délai de réponse de l'IA",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI est actuellement dans une phase de réponse différée. Veuillez patienter un moment avant de continuer.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Vous ne pouvez pas supprimer une pièce non adjacente.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

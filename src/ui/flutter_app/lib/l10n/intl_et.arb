@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI reageerimise viivitusaeg",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI on praegu viivitatud reageerimise faasis. Enne jätkamist oodake veidi.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Te ei saa eemaldada mittekülgnevat tükki.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

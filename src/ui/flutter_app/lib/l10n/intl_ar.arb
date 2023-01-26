@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "وقت تأخير استجابة الذكاء الاصطناعي",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "يمر الذكاء الاصطناعي حاليًا بمرحلة استجابة متأخرة. يرجى الانتظار لبعض الوقت قبل المتابعة.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "لا يمكنك إزالة قطعة غير متجاورة.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

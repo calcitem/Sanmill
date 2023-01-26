@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI yanıt gecikme süresi",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI şu anda gecikmeli bir yanıt aşamasındadır. Devam etmeden önce lütfen bir süre bekleyin.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Bitişik olmayan bir parçayı kaldıramazsınız.",
+  "@tipCanNotRemoveNonadjacent": {}
 }
