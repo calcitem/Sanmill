@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "एक गतिरोध ड्रा के साथ समाप्त करें।",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "प्रतिद्वंद्वी के टुकड़ों में से एक को हटाएं और स्थानांतरित करने के लिए पक्ष बदलें।",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "एआई प्रतिक्रिया विलंब समय",
+  "@aiResponseDelayTime": {}
 }

@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "因无子可走而判和。",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "移除对手的一枚棋子然后由对方继续走棋。",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI响应延迟时间",
+  "@aiResponseDelayTime": {}
 }

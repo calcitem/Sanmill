@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Закончим патовой ничьей.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Уберите одну из фигур противника и поменяйте сторону хода.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Время задержки ответа ИИ",
+  "@aiResponseDelayTime": {}
 }

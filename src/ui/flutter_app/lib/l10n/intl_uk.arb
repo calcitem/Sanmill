@@ -1443,5 +1443,7 @@
   "endWithStalemateDraw": "Закінчиться нічиєю.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Видаліть одну з фігур супротивника та змініть бік руху.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Час затримки відповіді ШІ",
+  "@aiResponseDelayTime": {}
 }

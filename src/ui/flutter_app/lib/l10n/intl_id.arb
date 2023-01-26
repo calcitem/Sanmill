@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Berakhir dengan hasil imbang.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Hapus salah satu bidak lawan dan ubah sisi untuk bergerak.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Waktu tunda respons AI",
+  "@aiResponseDelayTime": {}
 }

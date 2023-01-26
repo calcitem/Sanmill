@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Patthelyzet döntetlennel fejezzük be.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Távolítsd el az ellenfél egyik bábuját, és változtasd meg az oldalt a mozgáshoz.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI válasz késleltetési ideje",
+  "@aiResponseDelayTime": {}
 }

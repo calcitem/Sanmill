@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Çıkmaz beraberliği ile bitirin.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Rakibin taşlarından birini çıkarın ve hareket etmek için tarafı değiştirin.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI yanıt gecikme süresi",
+  "@aiResponseDelayTime": {}
 }

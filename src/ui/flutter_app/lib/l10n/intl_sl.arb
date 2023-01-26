@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Konec z neodločenim izidom.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Odstranite eno od nasprotnikovih figur in spremenite stran za premikanje.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Čas zakasnitve odziva AI",
+  "@aiResponseDelayTime": {}
 }

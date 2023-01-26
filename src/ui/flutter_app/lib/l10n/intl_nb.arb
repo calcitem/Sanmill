@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Avslutt med uavgjort uavgjort.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Fjern en av motstanderens brikker og bytt side for å flytte.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI-responsforsinkelsestid",
+  "@aiResponseDelayTime": {}
 }

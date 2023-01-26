@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Terminez par un match nul.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Retirez l'une des pièces de l'adversaire et changez de côté pour vous déplacer.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Délai de réponse de l'IA",
+  "@aiResponseDelayTime": {}
 }

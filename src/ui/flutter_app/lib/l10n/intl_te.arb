@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "ప్రతిష్టంభన డ్రాతో ముగించండి.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "ప్రత్యర్థి ముక్కల్లో ఒకదాన్ని తీసివేసి, తరలించడానికి వైపు మార్చండి.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI ప్రతిస్పందన ఆలస్యం సమయం",
+  "@aiResponseDelayTime": {}
 }

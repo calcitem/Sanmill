@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Заврши со ќор-сокак нерешено.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Отстранете една од фигурите на противникот и сменете ја страната за да се движите.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Време на одложување на одговорот со вештачка интелигенција",
+  "@aiResponseDelayTime": {}
 }

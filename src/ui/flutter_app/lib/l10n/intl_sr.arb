@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Завршите нерешеним резултатом.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Уклоните једну од противничких фигура и промените страну за кретање.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Време кашњења одговора АИ",
+  "@aiResponseDelayTime": {}
 }

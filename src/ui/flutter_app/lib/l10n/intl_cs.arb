@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Končí patovou remízou.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Odstraňte jednu ze soupeřových figurek a změňte stranu pro pohyb.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Doba zpoždění odezvy AI",
+  "@aiResponseDelayTime": {}
 }

@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Beidziet ar strupceļa neizšķirtu.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Noņemiet vienu no pretinieka figūrām un mainiet pusi, lai pārvietotos.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI reakcijas aizkaves laiks",
+  "@aiResponseDelayTime": {}
 }
