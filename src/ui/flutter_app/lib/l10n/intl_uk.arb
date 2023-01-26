@@ -1447,5 +1447,7 @@
   "aiResponseDelayTime": "Час затримки відповіді ШІ",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "Наразі штучний інтелект перебуває у фазі відкладеної реакції. Зачекайте деякий час, перш ніж продовжити.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Ви не можете видалити несусідний фрагмент.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

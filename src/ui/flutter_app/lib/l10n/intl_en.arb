@@ -1447,5 +1447,7 @@
   "aiResponseDelayTime": "AI response delay time",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI is currently in a delayed response phase. Please wait for a while before proceeding.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "You cannot remove a nonadjacent piece.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

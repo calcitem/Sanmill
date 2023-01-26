@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Време за забавяне на реакцията на AI",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI в момента е във фаза на забавена реакция. Моля, изчакайте известно време, преди да продължите.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Не можете да премахнете несъседна част.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

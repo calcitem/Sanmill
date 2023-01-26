@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Koha e vonesës së përgjigjes së AI",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI është aktualisht në një fazë reagimi të vonuar. Ju lutemi prisni pak përpara se të vazhdoni.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Ju nuk mund të hiqni një pjesë jo ngjitur.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

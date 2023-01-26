@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Време кашњења одговора АИ",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "АИ је тренутно у фази одложеног одговора. Сачекајте неко време пре него што наставите.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Не можете уклонити несуседни комад.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

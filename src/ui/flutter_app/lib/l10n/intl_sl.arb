@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Čas zakasnitve odziva AI",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI je trenutno v fazi zakasnjenega odziva. Počakajte nekaj časa, preden nadaljujete.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Nesosednjega kosa ne morete odstraniti.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

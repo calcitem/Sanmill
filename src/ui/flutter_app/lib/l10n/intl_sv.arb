@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI svarsfördröjningstid",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI befinner sig för närvarande i en fördröjd svarsfas. Vänta ett tag innan du fortsätter.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Du kan inte ta bort en icke-intilliggande del.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

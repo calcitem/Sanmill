@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI ప్రతిస్పందన ఆలస్యం సమయం",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI ప్రస్తుతం ఆలస్యం ప్రతిస్పందన దశలో ఉంది. దయచేసి కొనసాగడానికి ముందు కొంతసేపు వేచి ఉండండి.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "మీరు పక్కనే లేని భాగాన్ని తీసివేయలేరు.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

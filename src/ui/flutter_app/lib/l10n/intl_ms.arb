@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Masa kelewatan tindak balas AI",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI kini dalam fasa respons tertunda. Sila tunggu sebentar sebelum meneruskan.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Anda tidak boleh mengeluarkan bahagian yang tidak bersebelahan.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "एआई प्रतिक्रिया विलंब समय",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "एआई वर्तमान में विलंबित प्रतिक्रिया चरण में है। कृपया आगे बढ़ने से पहले कुछ देर प्रतीक्षा करें।",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "आप एक असन्निकट टुकड़ा नहीं निकाल सकते।",
+  "@tipCanNotRemoveNonadjacent": {}
 }

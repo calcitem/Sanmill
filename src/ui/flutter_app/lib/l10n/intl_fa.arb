@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "زمان تاخیر پاسخ هوش مصنوعی",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "هوش مصنوعی در حال حاضر در مرحله پاسخ تاخیری قرار دارد. لطفاً قبل از ادامه مدتی صبر کنید.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "شما نمی توانید یک قطعه غیر مجاور را بردارید.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

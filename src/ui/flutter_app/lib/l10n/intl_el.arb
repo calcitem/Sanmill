@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Χρόνος καθυστέρησης απόκρισης AI",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "Η τεχνητή νοημοσύνη βρίσκεται επί του παρόντος σε φάση καθυστερημένης απόκρισης. Περιμένετε λίγο πριν συνεχίσετε.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Δεν μπορείτε να αφαιρέσετε ένα μη γειτονικό κομμάτι.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

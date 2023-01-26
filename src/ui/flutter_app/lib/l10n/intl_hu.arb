@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI válasz késleltetési ideje",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "A mesterséges intelligencia jelenleg egy késleltetett válaszfázisban van. Kérjük, várjon egy kicsit a folytatás előtt.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Nem távolíthat el egy nem szomszédos darabot.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

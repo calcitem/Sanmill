@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI atsako delsos laikas",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI šiuo metu yra atidėto atsako fazėje. Prieš tęsdami palaukite šiek tiek.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Negalite pašalinti gretimos dalies.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

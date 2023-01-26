@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI javobni kechiktirish vaqti",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI hozirda kechiktirilgan javob bosqichida. Davom etishdan oldin biroz kuting.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Siz qo'shni bo'lmagan qismni olib tashlay olmaysiz.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

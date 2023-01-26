@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI પ્રતિભાવમાં વિલંબનો સમય",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI હાલમાં વિલંબિત પ્રતિભાવ તબક્કામાં છે. કૃપા કરીને આગળ વધતા પહેલા થોડીવાર રાહ જુઓ.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "તમે અડીને આવેલા ભાગને દૂર કરી શકતા નથી.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

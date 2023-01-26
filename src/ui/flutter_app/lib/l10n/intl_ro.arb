@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Timp de întârziere a răspunsului AI",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI se află în prezent într-o fază de răspuns întârziat. Vă rugăm să așteptați puțin înainte de a continua.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Nu puteți elimina o piesă neadiacentă.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

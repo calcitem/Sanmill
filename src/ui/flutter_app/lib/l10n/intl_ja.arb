@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI 応答遅延時間",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI は現在、遅延応答段階にあります。続行する前に、しばらくお待ちください。",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "隣接していないピースを削除することはできません。",
+  "@tipCanNotRemoveNonadjacent": {}
 }

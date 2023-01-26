@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "เวลาตอบสนองของ AI ล่าช้า",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "ขณะนี้ AI อยู่ในช่วงการตอบสนองที่ล่าช้า โปรดรอสักครู่ก่อนดำเนินการต่อ",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "คุณไม่สามารถลบชิ้นส่วนที่ไม่ติดกันได้",
+  "@tipCanNotRemoveNonadjacent": {}
 }

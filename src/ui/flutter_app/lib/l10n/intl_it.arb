@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Tempo di ritardo della risposta AI",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI è attualmente in una fase di risposta ritardata. Si prega di attendere un po' prima di procedere.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Non puoi rimuovere un pezzo non adiacente.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

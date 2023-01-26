@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Време на одложување на одговорот со вештачка интелигенција",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "Вештачката интелигенција моментално е во фаза на одложен одговор. Ве молиме почекајте некое време пред да продолжите.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Не можете да отстраните непосредно парче.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

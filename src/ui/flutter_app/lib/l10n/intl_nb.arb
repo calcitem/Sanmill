@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI-responsforsinkelsestid",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI er for tiden i en forsinket responsfase. Vennligst vent en stund før du fortsetter.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Du kan ikke fjerne en ikke-tilstøtende del.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

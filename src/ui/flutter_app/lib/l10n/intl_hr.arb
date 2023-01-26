@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Vrijeme odgode odgovora AI",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI je trenutno u fazi odgođenog odgovora. Pričekajte neko vrijeme prije nastavka.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Ne možete ukloniti nesusjedni dio.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

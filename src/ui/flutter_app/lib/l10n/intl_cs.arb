@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "Doba zpoždění odezvy AI",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "Umělá inteligence je momentálně ve fázi zpožděné odezvy. Než budete pokračovat, chvíli počkejte.",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Nesousedící kus nelze odstranit.",
+  "@tipCanNotRemoveNonadjacent": {}
 }

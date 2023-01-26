@@ -1349,5 +1349,7 @@
   "aiResponseDelayTime": "AI 響應延遲時間",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI 目前處於延遲響應階段。請稍等片刻再繼續。",
-  "@aiIsDelaying": {}
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "您不能刪除不相鄰的一塊。",
+  "@tipCanNotRemoveNonadjacent": {}
 }
