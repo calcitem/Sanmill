@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Baigti aklavietės lygiosiomis.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Pašalinkite vieną iš priešininko figūrų ir pakeiskite šoną, kad galėtumėte judėti.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI atsako delsos laikas",
+  "@aiResponseDelayTime": {}
 }

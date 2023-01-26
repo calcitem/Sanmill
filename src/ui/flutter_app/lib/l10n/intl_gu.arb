@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "સ્ટેલમેટ ડ્રો સાથે અંત.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "વિરોધીના ટુકડામાંથી એકને દૂર કરો અને ખસેડવા માટે બાજુ બદલો.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI પ્રતિભાવમાં વિલંબનો સમય",
+  "@aiResponseDelayTime": {}
 }

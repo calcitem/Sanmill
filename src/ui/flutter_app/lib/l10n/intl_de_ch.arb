@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Beenden Sie mit einem Patt-Unentschieden.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Entfernen Sie eine der gegnerischen Figuren und wechseln Sie die Seite, um sich zu bewegen.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "KI-Antwortverzögerungszeit",
+  "@aiResponseDelayTime": {}
 }

@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "اختتم بالتعادل في طريق مسدود.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "قم بإزالة إحدى قطع الخصم وقم بتغيير الجانب المراد تحريكه.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "وقت تأخير استجابة الذكاء الاصطناعي",
+  "@aiResponseDelayTime": {}
 }

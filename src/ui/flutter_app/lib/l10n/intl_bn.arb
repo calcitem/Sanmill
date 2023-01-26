@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "একটি অচলাবস্থা ড্র সঙ্গে শেষ.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "প্রতিপক্ষের একটি টুকরো সরান এবং সরানোর জন্য পাশ পরিবর্তন করুন।",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "এআই প্রতিক্রিয়া বিলম্বের সময়",
+  "@aiResponseDelayTime": {}
 }

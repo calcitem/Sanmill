@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Diakhiri dengan keputusan seri.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Keluarkan salah satu bahagian lawan dan tukar bahagian tepi untuk bergerak.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Masa kelewatan tindak balas AI",
+  "@aiResponseDelayTime": {}
 }

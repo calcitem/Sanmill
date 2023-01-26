@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Päätä tasapeliin.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Poista yksi vastustajan nappuloista ja vaihda puolta liikkuaksesi.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI-vasteen viive",
+  "@aiResponseDelayTime": {}
 }

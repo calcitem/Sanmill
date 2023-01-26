@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Termine con un empate estancado.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Retire una de las piezas del oponente y cambie el lado para moverse.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Tiempo de retraso de respuesta de IA",
+  "@aiResponseDelayTime": {}
 }

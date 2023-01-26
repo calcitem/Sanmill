@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Durang durang bilan yakunlang.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Raqibning donalaridan birini olib tashlang va harakat qilish uchun tomonni o'zgartiring.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI javobni kechiktirish vaqti",
+  "@aiResponseDelayTime": {}
 }

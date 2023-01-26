@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "ಸ್ಥಬ್ದ ಡ್ರಾದೊಂದಿಗೆ ಕೊನೆಗೊಳ್ಳುತ್ತದೆ.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "ಎದುರಾಳಿಯ ತುಂಡುಗಳಲ್ಲಿ ಒಂದನ್ನು ತೆಗೆದುಹಾಕಿ ಮತ್ತು ಸರಿಸಲು ಬದಿಯನ್ನು ಬದಲಾಯಿಸಿ.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI ಪ್ರತಿಕ್ರಿಯೆ ವಿಳಂಬ ಸಮಯ",
+  "@aiResponseDelayTime": {}
 }

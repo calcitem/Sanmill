@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Kết thúc với một trận hòa bế tắc.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Loại bỏ một trong các quân cờ của đối thủ và đổi bên để di chuyển.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Thời gian trễ phản hồi AI",
+  "@aiResponseDelayTime": {}
 }

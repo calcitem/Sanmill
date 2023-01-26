@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Lõpeta ummikseisuga.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Eemaldage üks vastase nupp ja muutke liikumiseks külge.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI reageerimise viivitusaeg",
+  "@aiResponseDelayTime": {}
 }

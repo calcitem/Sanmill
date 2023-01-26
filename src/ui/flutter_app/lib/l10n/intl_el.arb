@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Τέλος με ισοπαλία.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Αφαιρέστε ένα από τα κομμάτια του αντιπάλου και αλλάξτε την πλευρά για να μετακινηθείτε.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Χρόνος καθυστέρησης απόκρισης AI",
+  "@aiResponseDelayTime": {}
 }

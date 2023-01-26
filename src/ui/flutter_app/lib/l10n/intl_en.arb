@@ -1443,5 +1443,7 @@
   "endWithStalemateDraw": "End with a stalemate draw.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Remove one of the opponent's pieces and change the side to move.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI response delay time",
+  "@aiResponseDelayTime": {}
 }

@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "膠着状態の引き分けで終了。",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "相手の駒を1枚取り除き、相手が碁を続けます。",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI 応答遅延時間",
+  "@aiResponseDelayTime": {}
 }

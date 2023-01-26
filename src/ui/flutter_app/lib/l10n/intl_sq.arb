@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "Përfundoni me një barazim në ngërç.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Hiqni një nga pjesët e kundërshtarit dhe ndryshoni anën për të lëvizur.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Koha e vonesës së përgjigjes së AI",
+  "@aiResponseDelayTime": {}
 }

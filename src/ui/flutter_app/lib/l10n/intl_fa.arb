@@ -1345,5 +1345,7 @@
   "endWithStalemateDraw": "با تساوی بن بست پایان دهید.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "یکی از مهره های حریف را بردارید و طرف را برای حرکت تغییر دهید.",
-  "@removeOpponentsPieceAndChangeSideToMove": {}
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "زمان تاخیر پاسخ هوش مصنوعی",
+  "@aiResponseDelayTime": {}
 }
