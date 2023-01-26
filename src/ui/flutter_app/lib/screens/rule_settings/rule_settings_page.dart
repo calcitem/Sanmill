@@ -157,6 +157,13 @@ class RuleSettingsPage extends StatelessWidget {
           ruleSettings.copyWith(boardFullAction: boardFullAction);
 
       logger.v("[config] boardFullAction = $boardFullAction");
+
+      // TODO: BoardFullAction: experimental
+      if (boardFullAction != BoardFullAction.firstPlayerLose &&
+          boardFullAction != BoardFullAction.agreeToDraw) {
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).experimental);
+      }
     }
 
     showModalBottomSheet(
@@ -214,6 +221,13 @@ class RuleSettingsPage extends StatelessWidget {
           ruleSettings.copyWith(stalemateAction: stalemateAction);
 
       logger.v("[config] stalemateAction = $stalemateAction");
+
+      // TODO: StalemateAction: experimental
+      if (stalemateAction != StalemateAction.endWithStalemateLoss &&
+          stalemateAction != StalemateAction.changeSideToMove) {
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).experimental);
+      }
     }
 
     showModalBottomSheet(
