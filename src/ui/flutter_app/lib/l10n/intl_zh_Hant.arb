@@ -1346,6 +1346,6 @@
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "移除對手的一枚棋子然後由對方繼續走棋。",
   "@removeOpponentsPieceAndChangeSideToMove": {},
-  "aiResponseDelayTime": "AI響應延遲時間",
+  "aiResponseDelayTime": "AI 響應延遲時間",
   "@aiResponseDelayTime": {}
 }
