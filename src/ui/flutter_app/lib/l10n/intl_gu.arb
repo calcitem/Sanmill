@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "વિરોધીના ટુકડામાંથી એકને દૂર કરો અને ખસેડવા માટે બાજુ બદલો.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI પ્રતિભાવમાં વિલંબનો સમય",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI હાલમાં વિલંબિત પ્રતિભાવ તબક્કામાં છે. કૃપા કરીને આગળ વધતા પહેલા થોડીવાર રાહ જુઓ.",
+  "@aiIsDelaying": {}
 }

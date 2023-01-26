@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "移除對手的一枚棋子然後由對方繼續走棋。",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI 響應延遲時間",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI 目前處於延遲響應階段。請稍等片刻再繼續。",
+  "@aiIsDelaying": {}
 }

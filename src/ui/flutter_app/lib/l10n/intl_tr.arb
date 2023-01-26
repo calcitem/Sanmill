@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Rakibin taşlarından birini çıkarın ve hareket etmek için tarafı değiştirin.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI yanıt gecikme süresi",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI şu anda gecikmeli bir yanıt aşamasındadır. Devam etmeden önce lütfen bir süre bekleyin.",
+  "@aiIsDelaying": {}
 }

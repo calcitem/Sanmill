@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Entferne einen der gegnerischen Steine und wechsle die Seite, um dich zu bewegen.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "KI-Antwortverzögerungszeit",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "KI befindet sich derzeit in einer verzögerten Reaktionsphase. Bitte warten Sie eine Weile, bevor Sie fortfahren.",
+  "@aiIsDelaying": {}
 }

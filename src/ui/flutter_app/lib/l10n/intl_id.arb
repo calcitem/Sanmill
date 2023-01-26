@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Hapus salah satu bidak lawan dan ubah sisi untuk bergerak.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Waktu tunda respons AI",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI saat ini sedang dalam fase respons tertunda. Harap tunggu beberapa saat sebelum melanjutkan.",
+  "@aiIsDelaying": {}
 }

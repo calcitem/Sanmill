@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Entfernen Sie eine der gegnerischen Figuren und wechseln Sie die Seite, um sich zu bewegen.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "KI-Antwortverzögerungszeit",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "KI befindet sich derzeit in einer verzögerten Reaktionsphase. Bitte warten Sie eine Weile, bevor Sie fortfahren.",
+  "@aiIsDelaying": {}
 }

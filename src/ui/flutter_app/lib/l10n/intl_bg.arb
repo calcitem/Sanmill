@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Премахнете една от фигурите на противника и сменете страната, за да се движите.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Време за забавяне на реакцията на AI",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI в момента е във фаза на забавена реакция. Моля, изчакайте известно време, преди да продължите.",
+  "@aiIsDelaying": {}
 }

@@ -1445,5 +1445,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Видаліть одну з фігур супротивника та змініть бік руху.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Час затримки відповіді ШІ",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "Наразі штучний інтелект перебуває у фазі відкладеної реакції. Зачекайте деякий час, перш ніж продовжити.",
+  "@aiIsDelaying": {}
 }

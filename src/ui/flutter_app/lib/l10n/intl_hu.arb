@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Távolítsd el az ellenfél egyik bábuját, és változtasd meg az oldalt a mozgáshoz.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI válasz késleltetési ideje",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "A mesterséges intelligencia jelenleg egy késleltetett válaszfázisban van. Kérjük, várjon egy kicsit a folytatás előtt.",
+  "@aiIsDelaying": {}
 }

@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "นำชิ้นส่วนของฝ่ายตรงข้ามออกหนึ่งชิ้นและเปลี่ยนด้านที่จะย้าย",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "เวลาตอบสนองของ AI ล่าช้า",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "ขณะนี้ AI อยู่ในช่วงการตอบสนองที่ล่าช้า โปรดรอสักครู่ก่อนดำเนินการต่อ",
+  "@aiIsDelaying": {}
 }

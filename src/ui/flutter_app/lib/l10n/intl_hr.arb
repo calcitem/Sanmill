@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Uklonite jednu od protivničkih figura i promijenite stranu za kretanje.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Vrijeme odgode odgovora AI",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI je trenutno u fazi odgođenog odgovora. Pričekajte neko vrijeme prije nastavka.",
+  "@aiIsDelaying": {}
 }

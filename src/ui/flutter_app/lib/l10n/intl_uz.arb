@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Raqibning donalaridan birini olib tashlang va harakat qilish uchun tomonni o'zgartiring.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI javobni kechiktirish vaqti",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI hozirda kechiktirilgan javob bosqichida. Davom etishdan oldin biroz kuting.",
+  "@aiIsDelaying": {}
 }

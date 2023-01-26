@@ -1445,5 +1445,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Remove one of the opponent's pieces and change the side to move.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI response delay time",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI is currently in a delayed response phase. Please wait for a while before proceeding.",
+  "@aiIsDelaying": {}
 }

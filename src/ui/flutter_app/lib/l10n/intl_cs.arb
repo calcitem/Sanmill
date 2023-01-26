@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Odstraňte jednu ze soupeřových figurek a změňte stranu pro pohyb.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Doba zpoždění odezvy AI",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "Umělá inteligence je momentálně ve fázi zpožděné odezvy. Než budete pokračovat, chvíli počkejte.",
+  "@aiIsDelaying": {}
 }

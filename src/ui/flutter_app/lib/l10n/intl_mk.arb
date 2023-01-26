@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Отстранете една од фигурите на противникот и сменете ја страната за да се движите.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Време на одложување на одговорот со вештачка интелигенција",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "Вештачката интелигенција моментално е во фаза на одложен одговор. Ве молиме почекајте некое време пред да продолжите.",
+  "@aiIsDelaying": {}
 }

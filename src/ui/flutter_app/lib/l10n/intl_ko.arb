@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "상대방의 조각 중 하나를 제거하고 이동할 측면을 변경하십시오.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI 응답 지연 시간",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI는 현재 지연된 응답 단계에 있습니다. 계속하기 전에 잠시 기다리십시오.",
+  "@aiIsDelaying": {}
 }

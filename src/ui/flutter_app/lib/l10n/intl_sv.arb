@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Ta bort en av motståndarens pjäser och byt sida för att flytta.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI svarsfördröjningstid",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI befinner sig för närvarande i en fördröjd svarsfas. Vänta ett tag innan du fortsätter.",
+  "@aiIsDelaying": {}
 }

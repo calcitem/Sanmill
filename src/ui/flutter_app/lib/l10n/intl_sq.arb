@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Hiqni një nga pjesët e kundërshtarit dhe ndryshoni anën për të lëvizur.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Koha e vonesës së përgjigjes së AI",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI është aktualisht në një fazë reagimi të vonuar. Ju lutemi prisni pak përpara se të vazhdoni.",
+  "@aiIsDelaying": {}
 }

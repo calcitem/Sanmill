@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Usuń jeden z pionków przeciwnika i zmień stronę, aby się poruszyć.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Czas opóźnienia odpowiedzi AI",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "Sztuczna inteligencja znajduje się obecnie w fazie opóźnionej reakcji. Odczekaj chwilę, zanim przejdziesz dalej.",
+  "@aiIsDelaying": {}
 }

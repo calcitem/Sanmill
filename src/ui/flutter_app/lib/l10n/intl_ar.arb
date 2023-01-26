@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "قم بإزالة إحدى قطع الخصم وقم بتغيير الجانب المراد تحريكه.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "وقت تأخير استجابة الذكاء الاصطناعي",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "يمر الذكاء الاصطناعي حاليًا بمرحلة استجابة متأخرة. يرجى الانتظار لبعض الوقت قبل المتابعة.",
+  "@aiIsDelaying": {}
 }

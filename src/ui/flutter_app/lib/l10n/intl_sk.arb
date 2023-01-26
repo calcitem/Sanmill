@@ -1347,5 +1347,7 @@
   "removeOpponentsPieceAndChangeSideToMove": "Odstráňte jednu zo súperových figúrok a zmeňte stranu na pohyb.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Čas oneskorenia odozvy AI",
-  "@aiResponseDelayTime": {}
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI je momentálne vo fáze oneskorenej odozvy. Pred pokračovaním chvíľu počkajte.",
+  "@aiIsDelaying": {}
 }
