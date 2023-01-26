@@ -128,6 +128,8 @@ public:
     [[nodiscard]] Color get_winner() const noexcept;
     void set_gameover(Color w, GameOverReason reason);
 
+    bool is_stalemate_removal();
+
     void mirror(std::vector<std::string> &moveHistory, bool cmdChange = true);
     void turn(std::vector<std::string> &moveHistory, bool cmdChange = true);
     void rotate(std::vector<std::string> &moveHistory, int degrees,
@@ -184,6 +186,10 @@ public:
     bool move_piece(File f1, Rank r1, File f2, Rank r2);
     bool move_piece(Square from, Square to);
 
+    int total_mills_count(Color c);
+    bool is_board_full_removal_at_placing_phase_end();
+    bool is_adjacent_to(Square s, Color c);
+
     // Data members
     Piece board[SQUARE_EXT_NB];
     Bitboard byTypeBB[PIECE_TYPE_NB];
@@ -191,6 +197,7 @@ public:
     int pieceInHandCount[COLOR_NB] {0, 9, 9};
     int pieceOnBoardCount[COLOR_NB] {0, 0, 0};
     int pieceToRemoveCount[COLOR_NB] {0, 0, 0};
+    bool isNeedStalemateRemoval {false};
     bool isStalemateRemoving {false};
     int mobilityDiff {0};
     int gamePly {0};

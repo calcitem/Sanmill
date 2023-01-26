@@ -618,7 +618,11 @@ class Position {
       return const CanNotRemoveSelf();
     }
 
-    if (!DB().ruleSettings.mayRemoveFromMillsAlways &&
+    if (isStalemateRemoval()) {
+      if (isAdjacentTo(s, sideToMove) == false) {
+        return const CanNotRemoveNonadjacent();
+      }
+    } else if (!DB().ruleSettings.mayRemoveFromMillsAlways &&
         _potentialMillsCount(s, PieceColor.nobody) > 0 &&
         !_isAllInMills(sideToMove.opponent)) {
       return const CanNotRemoveMill();
@@ -1259,14 +1263,49 @@ extension SetupPosition on Position {
   }
 
   bool isBoardFullRemovalAtPlacingPhaseEnd() {
-    // TODO: BoardFullAction: The judgment conditions are not perfect.
-    //  It may be misjudged that it is not mill in the last move.
     if (DB().ruleSettings.piecesCount == 12 &&
         DB().ruleSettings.boardFullAction != BoardFullAction.firstPlayerLose &&
         DB().ruleSettings.boardFullAction != BoardFullAction.agreeToDraw &&
         phase == Phase.placing &&
         pieceInHandCount[PieceColor.white] == 0 &&
-        pieceInHandCount[PieceColor.black] == 0) {
+        pieceInHandCount[PieceColor.black] == 0 &&
+        // TODO: Performance
+        totalMillsCount(PieceColor.black) == 0) {
+      return true;
+    }
+
+    return false;
+  }
+
+  bool isAdjacentTo(int sq, PieceColor c) {
+    for (int d = moveDirectionBegin; d < moveDirectionNumber; d++) {
+      final int moveSquare = Position._adjacentSquares[sq][d];
+      if (moveSquare != 0 && _board[moveSquare] == c) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool isStalemateRemoval() {
+    if (isBoardFullRemovalAtPlacingPhaseEnd()) {
+      return true;
+    }
+
+    if ((DB().ruleSettings.stalemateAction ==
+                StalemateAction.removeOpponentsPieceAndChangeSideToMove ||
+            DB().ruleSettings.stalemateAction ==
+                StalemateAction.removeOpponentsPieceAndMakeNextMove) ==
+        false) {
+      return false;
+    }
+
+    if (isStalemateRemoving == true) {
+      return true;
+    }
+
+    // TODO: StalemateAction: Improve performance.
+    if (_isAllSurrounded) {
       return true;
     }
 

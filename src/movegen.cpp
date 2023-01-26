@@ -82,6 +82,19 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 
     ExtMove *cur = moveList;
 
+     if (pos.is_stalemate_removal()) {
+        for (auto i = SQUARE_NB - 1; i >= 0; i--) {
+            Square s = MoveList<LEGAL>::movePriorityList[i];
+            if (pos.get_board()[s] & make_piece(them)) {
+                if (pos.is_adjacent_to(s, us) == true) {
+                    *cur++ = static_cast<Move>(-s);
+                }
+            }
+        }
+    
+        return cur;
+    } 
+
     if (pos.is_all_in_mills(them)) {
 #ifndef MADWEASEL_MUEHLE_RULE
         for (auto i = SQUARE_NB - 1; i >= 0; i--) {

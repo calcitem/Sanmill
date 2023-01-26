@@ -631,6 +631,9 @@ bool Position::reset()
     pieceInHandCount[WHITE] = pieceInHandCount[BLACK] = rule.pieceCount;
     pieceToRemoveCount[WHITE] = pieceToRemoveCount[BLACK] = 0;
 
+    isNeedStalemateRemoval = false;
+    isStalemateRemoving = false;
+
     mobilityDiff = 0;
 
     MoveList<LEGAL>::create();
@@ -689,6 +692,8 @@ bool Position::put_piece(Square s, bool updateRecord)
         !(SQ_BEGIN <= s && s < SQ_END) || board[s]) {
         return false;
     }
+
+    isNeedStalemateRemoval = false;
 
     if (phase == Phase::ready) {
         start();
@@ -867,6 +872,7 @@ bool Position::put_piece(Square s, bool updateRecord)
             if (pieceToRemoveCount[sideToMove] == 1) {
                 update_key_misc();
                 action = Action::remove;
+                isNeedStalemateRemoval = true;
             }
         } else {
             pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
@@ -895,9 +901,14 @@ bool Position::remove_piece(Square s, bool updateRecord)
     if (!(make_piece(~side_to_move()) & board[s]))
         return false;
 
-    if (!rule.mayRemoveFromMillsAlways && potential_mills_count(s, NOBODY)
+    if (is_stalemate_removal()) {
+        if (is_adjacent_to(s, sideToMove) == false) {
+            return false;
+        }
+    } else if (!rule.mayRemoveFromMillsAlways &&
+               potential_mills_count(s, NOBODY)
 #ifndef MADWEASEL_MUEHLE_RULE
-        && !is_all_in_mills(~sideToMove)
+               && !is_all_in_mills(~sideToMove)
 #endif
     ) {
         return false;
@@ -1546,6 +1557,116 @@ void Position::updateMobility(MoveType mt, Square s)
     } else {
         assert(0);
     }
+}
+
+int Position::total_mills_count(Color c)
+{
+    assert(c == WHITE || c == BLACK);
+
+    // TODO: Move to mills.cpp
+    static const int horizontalAndVerticalLines[16][3] = {
+        // Horizontal lines
+        {31, 24, 25},
+        {23, 16, 17},
+        {15, 8, 9},
+        {30, 22, 14},
+        {10, 18, 26},
+        {13, 12, 11},
+        {21, 20, 19},
+        {29, 28, 27},
+        // Vertical lines
+        {31, 30, 29},
+        {23, 22, 21},
+        {15, 14, 13},
+        {24, 16, 8},
+        {12, 20, 28},
+        {9, 10, 11},
+        {17, 18, 19},
+        {25, 26, 27},
+    };
+
+    static const int diagonalLines[4][3] = {
+        {31, 23, 15},
+        {9, 17, 25},
+        {29, 21, 13},
+        {11, 19, 27},
+    };
+
+    int n = 0;
+
+        for (int i  = 0; i < 16; i++) {
+        if (color_on(static_cast<Square>(horizontalAndVerticalLines[i][0])) == c &&
+            color_on(static_cast<Square>(horizontalAndVerticalLines[i][1])) ==
+                c &&
+            color_on(static_cast<Square>(horizontalAndVerticalLines[i][2])) ==
+                c) {
+            n++;
+        }
+    }
+
+    if (rule.hasDiagonalLines == true) {
+        for (int i = 0; i < 4; i++) {
+            if (color_on(static_cast<Square>(diagonalLines[i][0])) == c &&
+                color_on(static_cast<Square>(diagonalLines[i][1])) == c &&
+                color_on(static_cast<Square>(diagonalLines[i][2])) == c) {
+                n++;
+            }
+        }
+    }
+
+    return n;
+}
+
+bool Position::is_board_full_removal_at_placing_phase_end()
+{
+    if (rule.pieceCount == 12 &&
+        rule.boardFullAction != BoardFullAction::firstPlayerLose &&
+        rule.boardFullAction != BoardFullAction::agreeToDraw &&
+        phase == Phase::placing && pieceInHandCount[WHITE] == 0 &&
+        pieceInHandCount[BLACK] == 0 &&
+        // TODO: Performance
+        total_mills_count(BLACK) == 0) {
+        return true;
+    }
+
+    return false;
+}
+
+bool Position::is_adjacent_to(Square s, Color c)
+{
+    for (int d = MD_BEGIN; d < MD_NB; d++) {
+        const Square moveSquare = MoveList<LEGAL>::adjacentSquares[s][d];
+        if (moveSquare != SQ_0 && color_on(moveSquare) == c) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Position::is_stalemate_removal()
+{
+    if (is_board_full_removal_at_placing_phase_end()) {
+        return true;
+    }
+
+    if (!(rule.stalemateAction ==
+              StalemateAction::removeOpponentsPieceAndChangeSideToMove ||
+          rule.stalemateAction ==
+              StalemateAction::removeOpponentsPieceAndMakeNextMove)) {
+        return false;
+    }
+
+    if (isStalemateRemoving == true) {
+        return true;
+    }
+
+    // TODO: StalemateAction: It is best to inform the engine of this state by
+    // the front end to improve performance.
+    if (is_all_surrounded(sideToMove)) {
+        return true;
+    }
+
+    return false;
 }
 
 void Position::mirror(vector<string> &moveHistory, bool cmdChange /*= true*/)

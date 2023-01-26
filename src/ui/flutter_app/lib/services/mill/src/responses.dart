@@ -57,6 +57,10 @@ class CanNotRemoveMill implements RemoveResponse {
   const CanNotRemoveMill();
 }
 
+class CanNotRemoveNonadjacent implements RemoveResponse {
+  const CanNotRemoveNonadjacent();
+}
+
 /// Custom response to throw related to the engine.
 abstract class EngineResponse {}
 

@@ -106,11 +106,7 @@ class TapHandler {
           MillController().animationController.reset();
           MillController().animationController.animateTo(1.0);
           if (MillController().position.action == Act.remove) {
-            if (MillController()
-                        .position
-                        .isBoardFullRemovalAtPlacingPhaseEnd() ==
-                    true ||
-                MillController().position.isNeedStalemateRemoval == true) {
+            if (MillController().position.isStalemateRemoval()) {
               showTip(S.of(context).tipRemove);
             } else {
               showTip(S.of(context).tipMill);
@@ -270,6 +266,12 @@ class TapHandler {
               "$_tag removePiece: Cannot remove piece from Mill, skip [$sq]",
             );
             showTip(S.of(context).tipCannotRemovePieceFromMill);
+            break;
+          case CanNotRemoveNonadjacent():
+            logger.i(
+              "$_tag removePiece: Cannot remove piece nonadjacent, skip [$sq]",
+            );
+            showTip(S.of(context).tipCanNotRemoveNonadjacent);
             break;
           default:
             logger.v("$_tag removePiece: skip [$sq]");
