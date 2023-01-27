@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI 目前處於延遲響應階段。請稍等片刻再繼續。",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "只能移除和自己棋子相鄰的棋子",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "如果陷入僵局，則可以移除與您相鄰的對手的棋子，而不管磨坊的形成。",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

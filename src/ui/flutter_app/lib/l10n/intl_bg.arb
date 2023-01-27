@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI в момента е във фаза на забавена реакция. Моля, изчакайте известно време, преди да продължите.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Не можете да премахнете несъседна част.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Ако е безизходица, фигурите на противника, съседни на вашите, могат да бъдат премахнати, независимо от формацията на мелницата.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

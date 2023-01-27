@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI ಪ್ರಸ್ತುತ ವಿಳಂಬವಾದ ಪ್ರತಿಕ್ರಿಯೆ ಹಂತದಲ್ಲಿದೆ. ಮುಂದುವರಿಯುವ ಮೊದಲು ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯ ಕಾಯಿರಿ.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "ನೀವು ಪಕ್ಕದಲ್ಲಿಲ್ಲದ ತುಂಡನ್ನು ತೆಗೆದುಹಾಕಲಾಗುವುದಿಲ್ಲ.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "ಸ್ಥಗಿತಗೊಂಡರೆ, ಗಿರಣಿ ರಚನೆಯನ್ನು ಲೆಕ್ಕಿಸದೆಯೇ ನಿಮ್ಮ ಪಕ್ಕದಲ್ಲಿರುವ ಎದುರಾಳಿಯ ತುಂಡುಗಳನ್ನು ತೆಗೆದುಹಾಕಬಹುದು.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI est actuellement dans une phase de réponse différée. Veuillez patienter un moment avant de continuer.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Vous ne pouvez pas supprimer une pièce non adjacente.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "En cas d'impasse, les pièces de l'adversaire adjacentes aux vôtres peuvent être retirées, quelle que soit la formation du moulin.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

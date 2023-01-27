@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI saat ini sedang dalam fase respons tertunda. Harap tunggu beberapa saat sebelum melanjutkan.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Anda tidak dapat menghapus bagian yang tidak berdekatan.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Jika menemui jalan buntu, bidak lawan yang berdekatan dengan milik Anda dapat dihilangkan, terlepas dari formasi gilingan.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "ขณะนี้ AI อยู่ในช่วงการตอบสนองที่ล่าช้า โปรดรอสักครู่ก่อนดำเนินการต่อ",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "คุณไม่สามารถลบชิ้นส่วนที่ไม่ติดกันได้",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "หากจนมุม ชิ้นส่วนของฝ่ายตรงข้ามที่อยู่ติดกับคุณจะถูกลบออกได้ โดยไม่คำนึงถึงรูปแบบโรงสี",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "يمر الذكاء الاصطناعي حاليًا بمرحلة استجابة متأخرة. يرجى الانتظار لبعض الوقت قبل المتابعة.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "لا يمكنك إزالة قطعة غير متجاورة.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "في حالة الجمود ، يمكن إزالة قطع الخصم المجاورة لك ، بغض النظر عن تشكيل الطاحونة.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

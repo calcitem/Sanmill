@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI hozirda kechiktirilgan javob bosqichida. Davom etishdan oldin biroz kuting.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Siz qo'shni bo'lmagan qismni olib tashlay olmaysiz.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Agar turg'un bo'lsa, tegirmon shakllanishidan qat'i nazar, raqibning sizning yoningizda joylashgan donalarini olib tashlash mumkin.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

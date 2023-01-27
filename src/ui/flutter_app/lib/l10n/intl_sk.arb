@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI je momentálne vo fáze oneskorenej odozvy. Pred pokračovaním chvíľu počkajte.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Nesusediaci kus nemôžete odstrániť.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Ak ste v patovej situácii, súperove figúrky susediace s vašimi môžu byť odstránené bez ohľadu na formáciu mlyna.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

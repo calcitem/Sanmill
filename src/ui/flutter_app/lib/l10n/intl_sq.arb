@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI është aktualisht në një fazë reagimi të vonuar. Ju lutemi prisni pak përpara se të vazhdoni.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Ju nuk mund të hiqni një pjesë jo ngjitur.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Nëse ngërçi, pjesët e kundërshtarit ngjitur me tuajat mund të hiqen, pavarësisht nga formimi i mullirit.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

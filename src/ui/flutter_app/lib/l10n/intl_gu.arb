@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI હાલમાં વિલંબિત પ્રતિભાવ તબક્કામાં છે. કૃપા કરીને આગળ વધતા પહેલા થોડીવાર રાહ જુઓ.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "તમે અડીને આવેલા ભાગને દૂર કરી શકતા નથી.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "જો મડાગાંઠ હોય, તો મિલની રચનાને ધ્યાનમાં લીધા વિના, તમારી બાજુના વિરોધીના ટુકડાઓ દૂર કરી શકાય છે.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

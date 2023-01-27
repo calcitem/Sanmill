@@ -1449,5 +1449,7 @@
   "aiIsDelaying": "Наразі штучний інтелект перебуває у фазі відкладеної реакції. Зачекайте деякий час, перш ніж продовжити.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Ви не можете видалити несусідний фрагмент.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "У разі патової ситуації фігури супротивника, які знаходяться поруч із вашими, можуть бути видалені, незалежно від формування млина.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

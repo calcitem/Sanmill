@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "Umělá inteligence je momentálně ve fázi zpožděné odezvy. Než budete pokračovat, chvíli počkejte.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Nesousedící kus nelze odstranit.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "V případě patové situace mohou být soupeřovy figurky sousedící s vašimi odstraněny, bez ohledu na formaci mlýna.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

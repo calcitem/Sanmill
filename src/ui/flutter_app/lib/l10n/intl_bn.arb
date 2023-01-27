@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "এআই বর্তমানে একটি বিলম্বিত প্রতিক্রিয়া পর্যায়ে রয়েছে। এগিয়ে যাওয়ার আগে অনুগ্রহ করে কিছুক্ষণ অপেক্ষা করুন।",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "আপনি একটি অসংলগ্ন টুকরা অপসারণ করতে পারবেন না.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "অচলাবস্থা হলে, মিল গঠন নির্বিশেষে, আপনার সংলগ্ন প্রতিপক্ষের টুকরা সরানো যেতে পারে।",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

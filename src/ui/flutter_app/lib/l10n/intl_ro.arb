@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI se află în prezent într-o fază de răspuns întârziat. Vă rugăm să așteptați puțin înainte de a continua.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Nu puteți elimina o piesă neadiacentă.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Dacă sunt în impas, piesele adversarului adiacente ale tale pot fi eliminate, indiferent de formarea morii.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

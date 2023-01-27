@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI pašlaik ir aizkavētas reakcijas fāzē. Pirms turpināt, lūdzu, uzgaidiet kādu laiku.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Jūs nevarat noņemt blakus esošo gabalu.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Ja ir strupceļš, pretinieka figūras, kas atrodas blakus jums, var tikt noņemtas neatkarīgi no dzirnavu veidošanās.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI は現在、遅延応答段階にあります。続行する前に、しばらくお待ちください。",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "隣接していないピースを削除することはできません。",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "膠着状態の場合、ミルのフォーメーションに関係なく、自分の駒に隣接する相手の駒を取り除くことができます。",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

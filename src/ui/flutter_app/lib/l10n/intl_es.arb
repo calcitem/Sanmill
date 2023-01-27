@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI se encuentra actualmente en una fase de respuesta retrasada. Espere un momento antes de continuar.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "No puedes eliminar una pieza no adyacente.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Si llega a un punto muerto, las piezas del oponente adyacentes a las suyas pueden eliminarse, independientemente de la formación del molino.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

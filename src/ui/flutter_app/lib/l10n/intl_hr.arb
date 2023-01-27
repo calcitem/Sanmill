@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI je trenutno u fazi odgođenog odgovora. Pričekajte neko vrijeme prije nastavka.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Ne možete ukloniti nesusjedni dio.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Ako je pat pozicija, protivnikove figure uz vaše mogu se ukloniti, bez obzira na formaciju mlina.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

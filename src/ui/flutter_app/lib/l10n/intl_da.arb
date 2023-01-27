@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI er i øjeblikket i en forsinket responsfase. Vent venligst et stykke tid, før du fortsætter.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Du kan ikke fjerne et ikke-tilstødende stykke.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Hvis det går i stå, kan modstanderens brikker, der støder op til din, fjernes, uanset mølleformationen.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

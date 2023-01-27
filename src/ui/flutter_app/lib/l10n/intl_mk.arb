@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "Вештачката интелигенција моментално е во фаза на одложен одговор. Ве молиме почекајте некое време пред да продолжите.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Не можете да отстраните непосредно парче.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Доколку дојде до ќор-сокак, противничките фигури во непосредна близина на вашите може да се отстранат, без оглед на формирањето на мелницата.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }
