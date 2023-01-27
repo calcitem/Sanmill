@@ -62,9 +62,16 @@ class _InfoDialog extends StatelessWidget {
       );
 
       if (n1.startsWith("x")) {
-        buffer.writeln(
-          controller.recorder[controller.recorder.length - 2].notation,
-        );
+        if (controller.recorder.length == 1) {
+          // TODO: Right? (Issue #686)
+          buffer.writeln(
+            controller.recorder[controller.recorder.length - 1].notation,
+          );
+        } else if (controller.recorder.length >= 2) {
+          buffer.writeln(
+            controller.recorder[controller.recorder.length - 2].notation,
+          );
+        }
       }
       buffer.writeComma(n1);
     }
