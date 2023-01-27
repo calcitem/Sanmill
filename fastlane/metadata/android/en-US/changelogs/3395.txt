@@ -1,0 +1,7 @@
+v3.4.0
+
+1. Add a setting for AI response delay time. If you find that the AI moves too quickly and it is difficult to see the moves clearly, you can increase this value.
+
+2. Fixed an issue where, when forming a mill, the move that forms the mill is not always displayed first but is shown together with the removal move, making it unclear how the AI formed the mill.
+
+3. Fixed the issue where the red circle indicating a selected piece would not be transferred to a new piece when tapping on another piece instead of the selected piece.

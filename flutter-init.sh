@@ -16,7 +16,7 @@ flutter config --no-analytics
 
 flutter pub get
 
-flutter gen-l10n
+flutter gen-l10n -v
 
 mkdir -p "$GEN_FILE_PATH" || true
 

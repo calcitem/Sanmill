@@ -1,0 +1,7 @@
+v3.4.0
+
+1. Fügen Sie eine Einstellung für die AI-Antwortverzögerungszeit hinzu. Wenn Sie feststellen, dass sich die KI zu schnell bewegt und es schwierig ist, die Bewegungen klar zu sehen, können Sie diesen Wert erhöhen.
+
+2. Es wurde ein Problem behoben, bei dem beim Bilden einer Mühle die Bewegung, die die Mühle bildet, nicht immer zuerst angezeigt wird, sondern zusammen mit der Entfernungsbewegung angezeigt wird, wodurch unklar wird, wie die KI die Mühle gebildet hat.
+
+3. Das Problem wurde behoben, bei dem der rote Kreis, der ein ausgewähltes Stück anzeigt, nicht auf ein neues Stück übertragen wurde, wenn auf ein anderes Stück anstelle des ausgewählten Stücks getippt wurde.
