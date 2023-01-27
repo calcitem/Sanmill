@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "هوش مصنوعی در حال حاضر در مرحله پاسخ تاخیری قرار دارد. لطفاً قبل از ادامه مدتی صبر کنید.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "شما نمی توانید یک قطعه غیر مجاور را بردارید.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "در صورت بن بست، مهره های حریف در مجاورت مهره شما بدون توجه به شکل گیری آسیاب می توانند حذف شوند.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

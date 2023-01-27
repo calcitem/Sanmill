@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "Η τεχνητή νοημοσύνη βρίσκεται επί του παρόντος σε φάση καθυστερημένης απόκρισης. Περιμένετε λίγο πριν συνεχίσετε.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Δεν μπορείτε να αφαιρέσετε ένα μη γειτονικό κομμάτι.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Σε περίπτωση αδιεξόδου, τα κομμάτια του αντιπάλου που βρίσκονται δίπλα στο δικό σας μπορούν να αφαιρεθούν, ανεξάρτητα από τον σχηματισμό μύλου.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

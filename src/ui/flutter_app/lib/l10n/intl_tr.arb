@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI şu anda gecikmeli bir yanıt aşamasındadır. Devam etmeden önce lütfen bir süre bekleyin.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Bitişik olmayan bir parçayı kaldıramazsınız.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Çıkmaz durumunda, rakibin size bitişik taşları, değirmen oluşumundan bağımsız olarak kaldırılabilir.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

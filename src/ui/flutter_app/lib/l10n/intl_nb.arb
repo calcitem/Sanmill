@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI er for tiden i en forsinket responsfase. Vennligst vent en stund før du fortsetter.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Du kan ikke fjerne en ikke-tilstøtende del.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Hvis det går i stå, kan motstanderens brikker ved siden av din fjernes, uavhengig av mølleformasjonen.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

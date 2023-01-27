@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "A mesterséges intelligencia jelenleg egy késleltetett válaszfázisban van. Kérjük, várjon egy kicsit a folytatás előtt.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Nem távolíthat el egy nem szomszédos darabot.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Patthelyzet esetén az ellenfél a tieddel szomszédos bábuit el lehet távolítani, függetlenül a malomfelállástól.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

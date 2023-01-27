@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI on praegu viivitatud reageerimise faasis. Enne jätkamist oodake veidi.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Te ei saa eemaldada mittekülgnevat tükki.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Kui ummikseisus on, saab sinu omadega külgnevad vastase nupud eemaldada, olenemata veski moodustamisest.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI ప్రస్తుతం ఆలస్యం ప్రతిస్పందన దశలో ఉంది. దయచేసి కొనసాగడానికి ముందు కొంతసేపు వేచి ఉండండి.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "మీరు పక్కనే లేని భాగాన్ని తీసివేయలేరు.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "ప్రతిష్టంభన ఏర్పడితే, మిల్లు నిర్మాణంతో సంబంధం లేకుండా మీ పక్కనే ఉన్న ప్రత్యర్థి ముక్కలను తీసివేయవచ్చు.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI šiuo metu yra atidėto atsako fazėje. Prieš tęsdami palaukite šiek tiek.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Negalite pašalinti gretimos dalies.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Jei atsidursite aklavietėje, priešininko figūros, esančios šalia jūsų, gali būti pašalintos, neatsižvelgiant į malūno formavimąsi.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

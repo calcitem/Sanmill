@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI는 현재 지연된 응답 단계에 있습니다. 계속하기 전에 잠시 기다리십시오.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "인접하지 않은 부분은 제거할 수 없습니다.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "교착 상태인 경우 밀 형성에 관계없이 상대방의 인접한 말을 제거할 수 있습니다.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

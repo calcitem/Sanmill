@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "АИ је тренутно у фази одложеног одговора. Сачекајте неко време пре него што наставите.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Не можете уклонити несуседни комад.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Ако дође до застоја, противничке фигуре које се налазе поред ваших могу бити уклоњене, без обзира на формацију млина.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

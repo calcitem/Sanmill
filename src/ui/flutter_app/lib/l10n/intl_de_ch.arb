@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "KI befindet sich derzeit in einer verzögerten Reaktionsphase. Bitte warten Sie eine Weile, bevor Sie fortfahren.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Sie können kein nicht benachbartes Stück entfernen.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Bei einer Pattsituation können die an deine angrenzenden Steine des Gegners unabhängig von der Mühlenformation entfernt werden.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI je trenutno v fazi zakasnjenega odziva. Počakajte nekaj časa, preden nadaljujete.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Nesosednjega kosa ne morete odstraniti.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Če je pat položaj, se lahko nasprotnikove figure, ki mejijo na vaše, odstranijo, ne glede na sestavo mlina.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

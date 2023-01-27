@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI hiện đang trong giai đoạn phản hồi chậm. Vui lòng đợi một lúc trước khi tiếp tục.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Bạn không thể loại bỏ một phần không liền kề.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Nếu bế tắc, các quân của đối thủ liền kề với quân của bạn có thể bị loại bỏ, bất kể đội hình của nhà máy.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

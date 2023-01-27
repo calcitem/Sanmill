@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "Tekoäly on tällä hetkellä viivästyneen vasteen vaiheessa. Odota hetki ennen kuin jatkat.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Et voi poistaa vierekkäistä osaa.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Pattitilanteessa vastustajan nappulat, jotka ovat sinun vieressäsi, voidaan poistaa myllymuodostuksesta riippumatta.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

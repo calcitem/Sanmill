@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "Sztuczna inteligencja znajduje się obecnie w fazie opóźnionej reakcji. Odczekaj chwilę, zanim przejdziesz dalej.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Nie możesz usunąć nieprzylegającego elementu.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "W przypadku impasu piony przeciwnika sąsiadujące z twoimi mogą zostać usunięte, niezależnie od formacji młyna.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

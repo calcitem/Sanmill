@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "AI bevindt zich momenteel in een vertraagde reactiefase. Wacht even voordat u verder gaat.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "U kunt een niet-aangrenzend stuk niet verwijderen.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Als er een patstelling is, kunnen de stukken van de tegenstander naast die van jou worden verwijderd, ongeacht de opstelling van de molen.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }

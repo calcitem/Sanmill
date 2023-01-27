@@ -1351,5 +1351,7 @@
   "aiIsDelaying": "ИИ в настоящее время находится в фазе отложенного ответа. Пожалуйста, подождите некоторое время, прежде чем продолжить.",
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Вы не можете удалить несмежную часть.",
-  "@tipCanNotRemoveNonadjacent": {}
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "В случае пата фигуры противника, соседние с вашими, могут быть удалены, независимо от формации мельницы.",
+  "@stalemateRemovalRegardlessOfMillFormation": {}
 }
