@@ -220,6 +220,7 @@ oss
 ostream
 ostringstream
 osx
+OVERLAPPEDWINDOW
 params
 PATCHLEVEL
 patchlevel
