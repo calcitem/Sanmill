@@ -1,0 +1,7 @@
+v3.4.0
+
+1. Přidejte nastavení pro dobu zpoždění odezvy AI. Pokud zjistíte, že se AI pohybuje příliš rychle a je obtížné pohyby jasně vidět, můžete tuto hodnotu zvýšit.
+
+2. Opraven problém, kdy při formování frézy není pohyb, který tvoří frézu, vždy zobrazen jako první, ale je zobrazen společně s pohybem odstranění, takže není jasné, jak AI formovala frézu.
+
+3. Opraven problém, kdy se červený kruh označující vybraný dílek nepřenesl na nový díl při klepnutí na jiný dílek místo vybraného dílku.
