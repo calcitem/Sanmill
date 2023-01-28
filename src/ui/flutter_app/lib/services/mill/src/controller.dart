@@ -199,10 +199,13 @@ class MillController {
       try {
         logger.v("$tag Searching..., isMoveNow: $isMoveNow");
 
-        isEngineDelaying = true;
-        await Future<void>.delayed(Duration(
-            seconds: DB().displaySettings.aiResponseDelayTime.toInt()));
-        isEngineDelaying = false;
+        if (MillController().position.pieceOnBoardCount[PieceColor.black]! >
+            0) {
+          isEngineDelaying = true;
+          await Future<void>.delayed(Duration(
+              seconds: DB().displaySettings.aiResponseDelayTime.toInt()));
+          isEngineDelaying = false;
+        }
 
         final ExtMove extMove = await controller.engine
             // ignore: avoid_bool_literals_in_conditional_expressions
