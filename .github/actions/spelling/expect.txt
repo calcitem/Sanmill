@@ -258,6 +258,7 @@ pubsync
 pvs
 qgraphics
 qgraphicsitem
+Qi
 qint
 qobject
 qsearch
@@ -374,6 +375,7 @@ XFile
 XFiles
 xmmintrin
 xorshift
+Zhi
 zeroland
 zobrist
 ZValue
