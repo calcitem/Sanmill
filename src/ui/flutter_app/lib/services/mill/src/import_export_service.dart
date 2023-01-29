@@ -220,8 +220,7 @@ class ImportService {
 
   static String addTagPairs(String moveList) {
     final DateTime dateTime = DateTime.now();
-    final String date =
-        "${dateTime.year.toString()}.${dateTime.month.toString()}.${dateTime.day}";
+    final String date = "${dateTime.year}.${dateTime.month}.${dateTime.day}";
 
     final int total = Position.score[PieceColor.white]! +
         Position.score[PieceColor.black]! +
@@ -263,7 +262,7 @@ class ImportService {
     String tagPairs = '[Event "Sanmill-Game"]\r\n'
         '[Site "Sanmill"]\r\n'
         '[Date "$date"]\r\n'
-        '[Round "${total.toString()}"]\r\n'
+        '[Round "$total"]\r\n'
         '[White "$white"]\r\n'
         '[Black "$black"]\r\n'
         '[Result "$result"]\r\n';

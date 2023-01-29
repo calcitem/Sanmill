@@ -53,7 +53,7 @@ class GamePageActionSheet extends StatelessWidget {
         textButtonTheme: buttonStyle,
       ),
       child: DefaultTextStyle(
-        style: textTheme.headline6!,
+        style: textTheme.titleLarge!,
         child: child,
       ),
     );
@@ -82,7 +82,7 @@ class GamePageDialog extends StatelessWidget {
       builder: (BuildContext context) => DefaultTextStyle(
         style: Theme.of(context)
             .textTheme
-            .headline6!
+            .titleLarge!
             .copyWith(color: AppTheme.gamePageActionSheetTextColor),
         textAlign: TextAlign.center,
         child: SingleChildScrollView(

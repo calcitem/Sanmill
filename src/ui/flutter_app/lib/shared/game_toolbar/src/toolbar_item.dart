@@ -308,7 +308,7 @@ class ToolbarItem extends ButtonStyleButton {
       backgroundColor: Colors.transparent,
       shadowColor: theme.shadowColor,
       elevation: 0,
-      textStyle: theme.textTheme.button,
+      textStyle: theme.textTheme.labelLarge,
       padding: scaledPadding,
       minimumSize: const Size(64, 36),
       maximumSize: Size.infinite,

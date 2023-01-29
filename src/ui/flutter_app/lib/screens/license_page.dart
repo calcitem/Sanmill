@@ -45,7 +45,7 @@ class LicenseAgreementPage extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Text(
                 str,
-                style: Theme.of(context).textTheme.caption!.copyWith(
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       fontFamily: "Monospace",
                     ),
                 textAlign: TextAlign.left,

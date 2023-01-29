@@ -28,7 +28,7 @@ class _MoveListDialog extends StatelessWidget {
 
     final TextStyle titleTextStyle = Theme.of(context)
         .textTheme
-        .headline6!
+        .titleLarge!
         .copyWith(color: AppTheme.gamePageActionSheetTextColor);
     final TextStyle buttonTextStyle = titleTextStyle;
 
@@ -48,7 +48,7 @@ class _MoveListDialog extends StatelessWidget {
             moveHistoryText,
             textDirection: TextDirection.ltr,
             textScaleFactor: DB().displaySettings.fontScale,
-            style: Theme.of(context).textTheme.headline6!.copyWith(
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 color: AppTheme.gamePageActionSheetTextColor,
                 fontWeight: FontWeight.normal,
                 // ignore: always_specify_types

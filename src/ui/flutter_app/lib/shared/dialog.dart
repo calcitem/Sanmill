@@ -31,7 +31,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
   assert(Localizations.localeOf(context).languageCode.startsWith("zh_"));
 
   final ThemeData themeData = Theme.of(context);
-  final TextStyle aboutTextStyle = themeData.textTheme.bodyText1!;
+  final TextStyle aboutTextStyle = themeData.textTheme.bodyLarge!;
   final TextStyle linkStyle =
       aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
 

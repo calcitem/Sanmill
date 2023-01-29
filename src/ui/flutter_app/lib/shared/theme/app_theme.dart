@@ -60,11 +60,56 @@ class AppTheme {
   static final ThemeData darkThemeData = ThemeData(
     brightness: Brightness.dark,
     primarySwatch: _appPrimaryColor,
-    toggleableActiveColor: _appPrimaryColor,
     sliderTheme: _sliderThemeData,
     dividerColor: _listItemDividerColor,
     cardTheme: _cardTheme,
     dividerTheme: _dividerTheme,
+    checkboxTheme: CheckboxThemeData(
+      fillColor: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return _appPrimaryColor;
+        }
+        return null;
+      }),
+    ),
+    radioTheme: RadioThemeData(
+      fillColor: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return _appPrimaryColor;
+        }
+        return null;
+      }),
+    ),
+    switchTheme: SwitchThemeData(
+      thumbColor: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return _appPrimaryColor;
+        }
+        return null;
+      }),
+      trackColor: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return _appPrimaryColor;
+        }
+        return null;
+      }),
+    ),
   );
 
   // Color

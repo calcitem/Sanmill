@@ -29,7 +29,7 @@ class SettingsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final TextStyle textStyle = theme.textTheme.headline6!.apply(
+    final TextStyle textStyle = theme.textTheme.titleLarge!.apply(
       color: AppTheme.settingsHeaderTextColor,
     );
 

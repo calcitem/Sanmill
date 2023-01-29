@@ -47,7 +47,7 @@ class CustomDrawerItem<T> extends StatelessWidget {
     );
 
     final TextStyle titleStyle =
-        Theme.of(context).textTheme.headline6!.copyWith(
+        Theme.of(context).textTheme.titleLarge!.copyWith(
               fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
               color: color,
             );

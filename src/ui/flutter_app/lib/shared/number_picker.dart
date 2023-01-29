@@ -37,7 +37,7 @@ class NumberPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double size = Theme.of(context).textTheme.bodyText1!.fontSize!;
+    final double size = Theme.of(context).textTheme.bodyLarge!.fontSize!;
     int selectValue = start;
 
     final List<Widget> items = List<Widget>.generate(

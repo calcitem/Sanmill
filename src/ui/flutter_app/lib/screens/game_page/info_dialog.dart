@@ -135,7 +135,7 @@ class _InfoDialog extends StatelessWidget {
         content: SingleChildScrollView(
           child: Text(
             _infoText(context),
-            style: Theme.of(context).textTheme.headline6!.copyWith(
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   color: AppTheme.gamePageActionSheetTextColor,
                   fontWeight: FontWeight.normal,
                 ),
@@ -148,7 +148,7 @@ class _InfoDialog extends StatelessWidget {
               child: Text(
                 S.of(context).more,
                 key: const Key('infoDialogMoreButton'),
-                style: Theme.of(context).textTheme.headline6!.copyWith(
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: AppTheme.gamePageActionSheetTextColor,
                     ),
                 textScaleFactor: DB().displaySettings.fontScale,
@@ -219,7 +219,7 @@ class _InfoDialog extends StatelessWidget {
             child: Text(
               S.of(context).ok,
               key: const Key('infoDialogOkButton'),
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: AppTheme.gamePageActionSheetTextColor,
                   ),
               textScaleFactor: DB().displaySettings.fontScale,
