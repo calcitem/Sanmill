@@ -523,6 +523,13 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       MillController().position.action = Act.select;
     }
 
+    if (MillController()
+            .position
+            .pieceToRemoveCount[MillController().position.sideToMove]! >
+        0) {
+      MillController().position.action = Act.remove;
+    }
+
     // Correct newPieceColor and set sideToMove
     if (newPieceColor != PieceColor.white &&
         newPieceColor != PieceColor.black) {
