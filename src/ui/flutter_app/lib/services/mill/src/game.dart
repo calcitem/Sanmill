@@ -40,8 +40,17 @@ class Game {
   };
 
   void reverseWhoIsAi() {
-    _isAi[PieceColor.white] = !_isAi[PieceColor.white]!;
-    _isAi[PieceColor.black] = !_isAi[PieceColor.black]!;
+    if (MillController().gameInstance.gameMode == GameMode.humanVsAi) {
+      _isAi[PieceColor.white] = !_isAi[PieceColor.white]!;
+      _isAi[PieceColor.black] = !_isAi[PieceColor.black]!;
+    } else if (MillController().gameInstance.gameMode ==
+        GameMode.humanVsHuman) {
+      if (_isAi[PieceColor.white] == _isAi[PieceColor.black]!) {
+        _isAi[MillController().position.sideToMove] = true;
+      } else {
+        _isAi[PieceColor.white] = _isAi[PieceColor.black] = false;
+      }
+    }
   }
 
   // TODO: [Leptopoda] Make gameMode final and set it through the constructor.
