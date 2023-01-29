@@ -106,7 +106,9 @@ class TapHandler {
           MillController().animationController.reset();
           MillController().animationController.animateTo(1.0);
           if (MillController().position.action == Act.remove) {
-            if (MillController().position.isStalemateRemoval()) {
+            if (MillController()
+                .position
+                .isStalemateRemoval(MillController().position.sideToMove)) {
               showTip(S.of(context).tipRemove);
             } else {
               showTip(S.of(context).tipMill);

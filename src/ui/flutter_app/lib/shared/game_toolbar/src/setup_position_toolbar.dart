@@ -29,7 +29,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
   PieceColor newPieceColor = PieceColor.white;
   Phase newPhase = Phase.moving;
-  int newPieceCountNeedRemove = 0;
+  Map<PieceColor, int> newPieceCountNeedRemove = <PieceColor, int>{
+    PieceColor.white: 0,
+    PieceColor.black: 0,
+  };
   int newPlaced = 0; // For White
 
   late GameMode gameModeBackup;
@@ -81,10 +84,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       setSetupPositionPlacedUpdateBegin();
     }
 
-    // TODO: BoardFullAction: No Bug?
-    newPieceCountNeedRemove = MillController()
-        .position
-        .pieceToRemoveCount[MillController().position.sideToMove]!;
+    newPieceCountNeedRemove[PieceColor.white] =
+        MillController().position.pieceToRemoveCount[PieceColor.white]!;
+    newPieceCountNeedRemove[PieceColor.black] =
+        MillController().position.pieceToRemoveCount[PieceColor.black]!;
 
     MillController().position.phase = newPhase;
     MillController().position.winner = PieceColor.nobody;
@@ -212,34 +215,37 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       }
     }
 
-    if (DB().ruleSettings.mayRemoveMultiple == false) {
-      if (limit > 1) {
-        limit = 1;
-      }
+    if (DB().ruleSettings.mayRemoveMultiple == false && limit > 1 ||
+        newPhase == Phase.moving &&
+            MillController().position.isStalemateRemoval(newPieceColor) ==
+                true) {
+      limit = 1;
     }
 
     if (next == true) {
-      newPieceCountNeedRemove = count + 1;
+      newPieceCountNeedRemove[newPieceColor] = count + 1;
     }
 
-    if (newPieceCountNeedRemove > limit) {
-      newPieceCountNeedRemove = 0;
+    if (newPieceCountNeedRemove[newPieceColor]! > limit) {
+      newPieceCountNeedRemove[newPieceColor] = 0;
     }
 
-    // TODO: BoardFullAction: No Bug?
-    MillController()
-            .position
-            .pieceToRemoveCount[MillController().position.sideToMove] =
-        newPieceCountNeedRemove;
+    // TODO: BoardFullAction: Not adapted
+    newPieceCountNeedRemove[newPieceColor.opponent] = 0;
+    MillController().position.pieceToRemoveCount[newPieceColor.opponent] = 0;
+
+    MillController().position.pieceToRemoveCount[newPieceColor] =
+        newPieceCountNeedRemove[newPieceColor]!;
 
     if (next == true) {
-      if (limit == 0 || newPieceCountNeedRemove == 0) {
+      if (limit == 0 || newPieceCountNeedRemove[newPieceColor] == 0) {
         MillController()
             .headerTipNotifier
             .showTip(S.of(context).noPiecesCanBeRemoved);
       } else {
-        MillController().headerTipNotifier.showTip(
-            S.of(context).pieceCountNeedToRemove(newPieceCountNeedRemove));
+        MillController().headerTipNotifier.showTip(S
+            .of(context)
+            .pieceCountNeedToRemove(newPieceCountNeedRemove[newPieceColor]!));
       }
     }
 
@@ -465,7 +471,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
   void _updateSetupPositionIcons() {
     setSetupPositionPlacedUpdateBegin();
-    setSetupPositionNeedRemove(newPieceCountNeedRemove, false);
+    if (newPieceColor != null && newPieceColor != PieceColor.none) {
+      setSetupPositionNeedRemove(
+          newPieceCountNeedRemove[newPieceColor]!, false);
+    }
     updateSetupPositionPiecesCount();
     MillController().headerIconsNotifier.showIcons();
   }
@@ -551,7 +560,8 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
         MillController().position.pieceInHandCount[PieceColor.black] == 0) {
       newPlaced = 0;
       newPhase = Phase.placing;
-      newPieceCountNeedRemove = 0;
+      newPieceCountNeedRemove[PieceColor.white] =
+          newPieceCountNeedRemove[PieceColor.black] = 0;
       MillController().reset(force: true);
     }
 
@@ -749,7 +759,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     final List<Widget> rowOne = <Widget>[
       Expanded(child: colorButtonMap[newPieceColor]!),
       Expanded(child: phaseButtonMap[newPhase]!),
-      Expanded(child: removeButtonMap[newPieceCountNeedRemove]!),
+      Expanded(
+          child: newPieceColor == null || newPieceColor == PieceColor.none
+              ? removeZeroButton
+              : removeButtonMap[newPieceCountNeedRemove[newPieceColor]]!),
       Expanded(child: placedButton),
     ];
 

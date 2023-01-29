@@ -618,7 +618,7 @@ class Position {
       return const CanNotRemoveSelf();
     }
 
-    if (isStalemateRemoval()) {
+    if (isStalemateRemoval(sideToMove)) {
       if (isAdjacentTo(s, sideToMove) == false) {
         return const CanNotRemoveNonadjacent();
       }
@@ -818,7 +818,9 @@ class Position {
       return true;
     }
 
-    if (phase == Phase.moving && action == Act.select && _isAllSurrounded) {
+    if (phase == Phase.moving &&
+        action == Act.select &&
+        _isAllSurrounded(sideToMove)) {
       switch (DB().ruleSettings.stalemateAction) {
         case StalemateAction.endWithStalemateLoss:
           _setGameOver(sideToMove.opponent, GameOverReason.loseNoWay);
@@ -1004,7 +1006,7 @@ class Position {
     return true;
   }
 
-  bool get _isAllSurrounded {
+  bool _isAllSurrounded(PieceColor c) {
     // Full
     if (pieceOnBoardCount[PieceColor.white]! +
             pieceOnBoardCount[PieceColor.black]! >=
@@ -1013,13 +1015,13 @@ class Position {
     }
 
     // Can fly
-    if (pieceOnBoardCount[sideToMove]! <= DB().ruleSettings.flyPieceCount &&
+    if (pieceOnBoardCount[c]! <= DB().ruleSettings.flyPieceCount &&
         DB().ruleSettings.mayFly) {
       return false;
     }
 
     for (int s = sqBegin; s < sqEnd; s++) {
-      if (sideToMove != _board[s]) {
+      if (c != _board[s]) {
         continue;
       }
 
@@ -1287,7 +1289,7 @@ extension SetupPosition on Position {
     return false;
   }
 
-  bool isStalemateRemoval() {
+  bool isStalemateRemoval(PieceColor c) {
     if (isBoardFullRemovalAtPlacingPhaseEnd()) {
       return true;
     }
@@ -1305,7 +1307,7 @@ extension SetupPosition on Position {
     }
 
     // TODO: StalemateAction: Improve performance.
-    if (_isAllSurrounded) {
+    if (_isAllSurrounded(c)) {
       return true;
     }
 
