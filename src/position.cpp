@@ -377,6 +377,16 @@ Position &Position::set(const string &fenStr, Thread *th)
     // handle also common incorrect FEN with fullmove = 0.
     gamePly = std::max(2 * (gamePly - 1), 0) + (sideToMove == BLACK);
 
+    // For Mill only
+    check_if_game_is_over();
+#if 0
+    // It doesn't work
+    if (pieceToRemoveCount[sideToMove] == 1) {
+        action = Action::remove;
+        isStalemateRemoving = true;
+    }
+#endif
+
     thisThread = th;
 
     return *this;
