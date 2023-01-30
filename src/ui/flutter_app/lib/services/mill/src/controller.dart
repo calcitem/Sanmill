@@ -162,6 +162,10 @@ class MillController {
       if (!MillController().recorder.isClean) {
         return const EngineResponseSkip();
       }
+    } else {
+      if (MillController().position._checkIfGameIsOver() == true) {
+        return const EngineNoBestMove();
+      }
     }
 
     if (MillController().isEngineGoing == true && isMoveNow == false) {

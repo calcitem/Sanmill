@@ -768,6 +768,13 @@ class Position {
       return true;
     }
 
+    if (pieceOnBoardCount[sideToMove]! + pieceInHandCount[sideToMove]! <
+        DB().ruleSettings.piecesAtLeastCount) {
+      // Engine doesn't have this because of improving performance.
+      _setGameOver(sideToMove.opponent, GameOverReason.loseLessThanThree);
+      return true;
+    }
+
     if (DB().ruleSettings.nMoveRule > 0 &&
         posKeyHistory.length >= DB().ruleSettings.nMoveRule) {
       _setGameOver(PieceColor.draw, GameOverReason.drawRule50);
