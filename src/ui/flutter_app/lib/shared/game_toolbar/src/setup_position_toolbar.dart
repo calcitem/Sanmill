@@ -471,7 +471,8 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
   void _updateSetupPositionIcons() {
     setSetupPositionPlacedUpdateBegin();
-    if (newPieceColor != null && newPieceColor != PieceColor.none) {
+    if (newPieceColor == PieceColor.white ||
+        newPieceColor == PieceColor.black) {
       setSetupPositionNeedRemove(
           newPieceCountNeedRemove[newPieceColor]!, false);
     }
@@ -760,9 +761,10 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       Expanded(child: colorButtonMap[newPieceColor]!),
       Expanded(child: phaseButtonMap[newPhase]!),
       Expanded(
-          child: newPieceColor == null || newPieceColor == PieceColor.none
-              ? removeZeroButton
-              : removeButtonMap[newPieceCountNeedRemove[newPieceColor]]!),
+          child: newPieceColor == PieceColor.white ||
+                  newPieceColor == PieceColor.black
+              ? removeButtonMap[newPieceCountNeedRemove[newPieceColor]]!
+              : removeZeroButton),
       Expanded(child: placedButton),
     ];
 
