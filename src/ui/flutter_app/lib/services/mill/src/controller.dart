@@ -166,6 +166,13 @@ class MillController {
       if (MillController().position._checkIfGameIsOver() == true) {
         return const EngineNoBestMove();
       }
+
+      if (MillController()
+              .position
+              .pieceToRemoveCount[MillController().position.sideToMove]! >
+          0) {
+        MillController().position.action = Act.remove;
+      }
     }
 
     if (MillController().isEngineGoing == true && isMoveNow == false) {

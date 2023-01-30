@@ -297,7 +297,15 @@ class Engine {
       posFenStr.write(" moves $moves");
     }
 
-    final String ret = posFenStr.toString();
+    String ret = posFenStr.toString();
+
+    // WAR
+    if (MillController().recorder.lastPositionWithRemove ==
+        MillController().recorder.setupPosition) {
+      if (MillController().position.action == Act.remove) {
+        ret = ret.replaceFirst(" s ", " r ");
+      }
+    }
 
     if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
       final CatcherOptions options = catcher.getCurrentConfig()!;
