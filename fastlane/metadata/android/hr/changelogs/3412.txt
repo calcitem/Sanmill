@@ -1,0 +1,3 @@
+v3.4.1
+
+Popravljeno je nekoliko problema s funkcijom postavljanja položaja.
