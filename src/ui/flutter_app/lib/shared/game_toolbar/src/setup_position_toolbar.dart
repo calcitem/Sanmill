@@ -193,6 +193,11 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     assert(MillController().position.sideToMove == PieceColor.white ||
         MillController().position.sideToMove == PieceColor.black);
 
+    if (newPieceColor != PieceColor.white &&
+        newPieceColor != PieceColor.black) {
+      return;
+    }
+
     final PieceColor sideToMove = MillController().position.sideToMove;
 
     int limit = MillController()
