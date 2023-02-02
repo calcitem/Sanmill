@@ -38,6 +38,7 @@ class GameResultAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Position position = MillController().position;
+    // TODO: Why sometimes _gameResult is null?
     position.result = _gameResult;
 
     final String dialogTitle = _gameResult!.winString(context);
@@ -83,11 +84,30 @@ class GameResultAlert extends StatelessWidget {
             );
 
             Navigator.pop(context);
+            MillController().reset(force: true);
+            MillController()
+                .headerTipNotifier
+                .showTip(S.of(context).gameStarted);
+            MillController().headerIconsNotifier.showIcons();
           },
         ),
         TextButton(
           child: Text(
             S.of(context).no,
+            textScaleFactor: DB().displaySettings.fontScale,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            MillController().reset(force: true);
+            MillController()
+                .headerTipNotifier
+                .showTip(S.of(context).gameStarted);
+            MillController().headerIconsNotifier.showIcons();
+          },
+        ),
+        TextButton(
+          child: Text(
+            S.of(context).cancel,
             textScaleFactor: DB().displaySettings.fontScale,
           ),
           onPressed: () => Navigator.pop(context),
