@@ -253,7 +253,11 @@ class GeneralSettingsPage extends StatelessWidget {
             SettingsListTile(
               titleString: S.of(context).skillLevel,
               //trailingString: "L" + DB().generalSettings.skillLevel.toString(),
-              onTap: () => _setSkillLevel(context),
+              onTap: () {
+                if (EnvironmentConfig.test == false) {
+                  _setSkillLevel(context);
+                }
+              },
             ),
             SettingsListTile(
               titleString: S.of(context).moveTime,
