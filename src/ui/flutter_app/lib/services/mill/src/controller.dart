@@ -189,6 +189,28 @@ class MillController {
     // TODO
     logger.v("$tag engine type is $gameMode");
 
+    if (gameMode == GameMode.humanVsAi &&
+        MillController().position.phase == Phase.moving &&
+        isMoveNow == false &&
+        DB().ruleSettings.mayFly &&
+        DB().generalSettings.remindedOpponentMayFly == false &&
+        (MillController()
+                    .position
+                    .pieceOnBoardCount[MillController().position.sideToMove]! <=
+                DB().ruleSettings.flyPieceCount &&
+            MillController()
+                    .position
+                    .pieceOnBoardCount[MillController().position.sideToMove]! >=
+                3)) {
+      rootScaffoldMessengerKey.currentState!.showSnackBar(CustomSnackBar(
+          S.of(context).enteredFlyingPhase,
+          duration: const Duration(seconds: 8)));
+
+      DB().generalSettings = DB().generalSettings.copyWith(
+            remindedOpponentMayFly: true,
+          );
+    }
+
     while ((gameInstance.isAiToMove &&
             (isGameRunning || DB().generalSettings.isAutoRestart)) &&
         MillController().isActive) {
