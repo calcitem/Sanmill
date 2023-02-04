@@ -1,0 +1,3 @@
+v3.4.2
+
+Okno dialogowe naprawy wyniku gry jest wyświetlane dwukrotnie.
