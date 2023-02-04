@@ -1,0 +1,3 @@
+v3.4.2
+
+El cuadro de diálogo Arreglar el resultado del juego se muestra dos veces.
