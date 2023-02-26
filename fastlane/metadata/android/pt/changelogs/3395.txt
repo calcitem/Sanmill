@@ -1,0 +1,7 @@
+v3.4.0
+
+1. Adicione uma configuração para o tempo de atraso de resposta IA. Se achar que a IA move muito rapidamente e é difícil ver os movimentos com clareza, pode aumentar este valor.
+
+2. Corrigido um problema em que, ao formar um moinho, o movimento que forma o moinho nem sempre é exibido primeiro, mas é mostrado com o movimento de remoção, deixando claro como a IA formou o moinho.
+
+3. Corrigido o problema em que o círculo vermelho indicando uma peça selecionada não seria transferido para uma nova peça ao tocar em outra peça em vez da peça selecionada.
