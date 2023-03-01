@@ -276,7 +276,7 @@
   "@gameOver": {
     "description": "Game Over"
   },
-  "youWin": "Você ganhou. Parabéns!",
+  "youWin": "Você ganho! Parabéns!",
   "@youWin": {
     "description": "You win! Congratulations!"
   },
