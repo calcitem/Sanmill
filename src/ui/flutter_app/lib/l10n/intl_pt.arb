@@ -196,7 +196,7 @@
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "pleaseWait": "Por favor, aguarde...",
+  "pleaseWait": "Por favor, aguarde.",
   "@pleaseWait": {
     "description": "Please wait..."
   },
