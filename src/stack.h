@@ -38,7 +38,7 @@ public:
 
     bool operator==(const T &other) const
     {
-        return p == other.p && memcmp(arr, other.arr, size());
+        memcpy(arr, other.arr, sizeof(T) * other.size());
     }
 
     T &operator[](int i) { return arr[i]; }
@@ -77,11 +77,31 @@ public:
 
     void erase(int index)
     {
-        for (int i = index; i < capacity - 1; i++) {
+        for (int i = index; i < p; i++) {
             arr[i] = arr[i + 1];
         }
 
         p--;
+    }
+
+    void remove(T entry)
+    {
+        for (int i = 0; i <= p; i++) {
+            if (arr[i] == entry) {
+                erase(i);
+                return;
+            }
+        }
+    }
+
+    int indexOf(T entry)
+    {
+        for (int i = 0; i <= p; i++) {
+            if (!memcmp(arr[i], entry, sizeof(T))) {
+                return i;
+            }
+        }
+        return -1;
     }
 
 private:
