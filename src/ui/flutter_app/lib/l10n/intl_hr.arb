@@ -690,7 +690,7 @@
   "@stepForwardAll": {
     "description": "Step forward all"
   },
-  "moveNow": "Pomakni se sada",
+  "moveNow": "Pomakni sada",
   "@moveNow": {
     "description": "Move now"
   },
@@ -710,7 +710,7 @@
   "@animationDuration": {
     "description": "Animation duration"
   },
-  "none": "Nijedna",
+  "none": "Ništa",
   "@none": {
     "description": "None"
   },
@@ -746,7 +746,7 @@
   "@general": {
     "description": "General"
   },
-  "advanced": "Napredna",
+  "advanced": "Napredno",
   "@advanced": {
     "description": "Advanced"
   },
@@ -754,7 +754,7 @@
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Kretanje",
+  "moving": "Micanje",
   "@moving": {
     "description": "Moving"
   },
@@ -1214,7 +1214,7 @@
       }
     }
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} komad}other{{count} komadi}} treba ukloniti.",
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} komad}few{{count} komada}other{{count} komada}} treba ukloniti.",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
