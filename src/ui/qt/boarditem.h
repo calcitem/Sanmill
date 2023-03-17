@@ -17,10 +17,8 @@
 #ifndef BOARDITEM_H_INCLUDED
 #define BOARDITEM_H_INCLUDED
 
-#include <QGraphicsItem>
-
-#include "config.h"
 #include "types.h"
+#include <QGraphicsItem>
 
 class BoardItem : public QGraphicsItem
 {
@@ -28,40 +26,25 @@ public:
     explicit BoardItem(const QGraphicsItem *parent = nullptr);
     ~BoardItem() override;
 
-    [[nodiscard]] QRectF boundingRect() const override;
-
-    [[nodiscard]] QPainterPath shape() const override;
-
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = nullptr) override;
 
-    // Use UserType + 1 to represent mill pieces, and determines whether it is
-    // an object of the boarditem class Another way is to put the class name in
-    // the 0key position of data, SetData(0, "BoardItem"), and then use data(0)
-    // to judge
-    enum { Type = UserType + 1 };
-
-    [[nodiscard]] int type() const noexcept override { return Type; }
-
-    // Set with or without diagonal
+    int type() const noexcept override;
     void setDiagonal(bool arg = true);
 
-    // Return to the nearest placing point
-    QPointF nearestPosition(QPointF pos);
-
-    // The circle and position of the model are transformed into the point
-    // coordinates
-    [[nodiscard]] QPointF polar2pos(File file, Rank rank) const;
-
-    // The coordinates of the falling point are transformed into circles and
-    // positions for the model
-    [[nodiscard]] bool pos2polar(QPointF pos, File &f, Rank &r) const;
+    QPointF nearestPosition(const QPointF &pos);
+    QPointF polar2pos(File file, Rank rank) const;
+    bool pos2polar(const QPointF &pos, File &f, Rank &r) const;
 
 private:
     int size; // board size
     int sizeShadow {5};
     QPointF position[SQUARE_NB]; // 24 points
     bool hasDiagonalLine {false};
+
+    static constexpr int BoardItemType = UserType + 1;
 };
 
 #endif // BOARDITEM_H_INCLUDED

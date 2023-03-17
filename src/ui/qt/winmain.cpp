@@ -39,28 +39,43 @@ QString getAppFileName()
     return filename;
 }
 
-#ifndef MADWEASEL_MUEHLE_PERFECT_AI_TEST
-int main(int argc, char *argv[])
+void initializeResources()
 {
     Bitboards::init();
     Position::init();
-
     QResource::registerResource("gamewindow.rcc");
+}
 
-    QApplication a(argc, argv);
+void setupTranslator(QApplication &app)
+{
     QTranslator translator;
     translator.load("mill-pro-qt_zh_CN");
-    a.installTranslator(&translator);
-    MillGameWindow w;
-    w.show();
+    app.installTranslator(&translator);
+}
 
-    w.setWindowTitle(getAppFileName() + " (" +
-                     QString::number(QCoreApplication::applicationPid()) + ")");
+void centerWindowOnScreen(MillGameWindow &window)
+{
+    const QRect desktopRect = QGuiApplication::primaryScreen()->geometry();
+    window.move((desktopRect.width() - window.width()) / 4,
+                (desktopRect.height() - window.height()) / 2);
+}
+
+#ifndef MADWEASEL_MUEHLE_PERFECT_AI_TEST
+int main(int argc, char *argv[])
+{
+    initializeResources();
+
+    QApplication app(argc, argv);
+    setupTranslator(app);
+
+    MillGameWindow window;
+    window.setWindowTitle(getAppFileName() + " (" +
+                          QString::number(QCoreApplication::applicationPid()) +
+                          ")");
+    window.show();
 
 #ifndef _DEBUG
-    const QRect desktopRect = QGuiApplication::primaryScreen()->geometry();
-    w.move((desktopRect.width() - w.width()) / 4,
-           (desktopRect.height() - w.height()) / 2);
+    centerWindowOnScreen(window);
 #endif
 
     return QApplication::exec();

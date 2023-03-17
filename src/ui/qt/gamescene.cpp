@@ -25,10 +25,12 @@
 #include "pieceitem.h"
 #include "types.h"
 
+class BoardItem;
+
 GameScene::GameScene(QObject *parent)
     : QGraphicsScene(parent)
+    , board(new BoardItem)
 {
-    board = new BoardItem;
     board->setDiagonal(false);
     addItem(board);
 }
@@ -40,36 +42,29 @@ GameScene::~GameScene()
 
 void GameScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    // Block double click events
     mouseEvent->accept();
 }
 
 void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    // Screen mouse down events
     mouseEvent->accept();
 }
 
 void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-    // Only handle left click events
     if (mouseEvent->button() != Qt::LeftButton) {
         mouseEvent->accept();
         return;
     }
 
-    // If it's a board
     const QGraphicsItem *item = itemAt(mouseEvent->scenePos(), QTransform());
+    QPointF p = mouseEvent->scenePos();
 
     if (!item || item->type() == BoardItem::Type) {
-        QPointF p = mouseEvent->scenePos();
         p = board->nearestPosition(p);
         if (p != QPointF(0, 0))
-            // Send the nearest drop point of the mouse point
             emit mouseReleased(p);
     } else if (item->type() == PieceItem::Type) {
-        // If it's a piece
-        // Send out the position of the current piece in the scene
         emit mouseReleased(item->scenePos());
     }
 
