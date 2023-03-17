@@ -18,7 +18,9 @@
 
 GameView::GameView(QWidget *parent)
     : QGraphicsView(parent)
-{ }
+{
+    Q_UNUSED(parent)
+}
 
 GameView::~GameView() = default;
 

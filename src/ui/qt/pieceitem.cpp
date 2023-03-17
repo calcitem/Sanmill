@@ -24,21 +24,25 @@ PieceItem::PieceItem(QGraphicsItem *parent)
     : QGraphicsItem(parent)
 {
     Q_UNUSED(parent)
-    configurePieceItem();
-}
+    setFlags(ItemIsSelectable
+             // | ItemIsMovable
+    );
 
-PieceItem::~PieceItem() = default;
-
-void PieceItem::configurePieceItem()
-{
-    setFlags(ItemIsSelectable);
     setCacheMode(DeviceCoordinateCache);
+
     setCursor(Qt::OpenHandCursor);
+
+    // setAcceptedMouseButtons(Qt::LeftButton);
+
     setAcceptedMouseButtons(Qt::MouseButtons());
+    // setAcceptHoverEvents(true);
 
     model = Models::noPiece;
+
     size = PIECE_SIZE;
+
     selectLineWeight = LINE_WEIGHT;
+
     removeLineWeight = LINE_WEIGHT * 5;
 
 #ifdef QT_MOBILE_APP_UI
@@ -50,6 +54,8 @@ void PieceItem::configurePieceItem()
     removeLineColor = QColor(227, 23, 13);
     removeLineColor.setAlphaF(0.9);
 }
+
+PieceItem::~PieceItem() = default;
 
 QRectF PieceItem::boundingRect() const
 {
@@ -68,33 +74,12 @@ void PieceItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
-    drawPiece(painter);
-    drawNum(painter);
-    drawSelected(painter);
-    drawDeleted(painter);
-}
 
-void PieceItem::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
-{
-    setCursor(Qt::ClosedHandCursor);
-    QGraphicsItem::mousePressEvent(mouseEvent);
-}
+    // Empty models don't draw pieces
 
-void PieceItem::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
-{
-    QGraphicsItem::mouseMoveEvent(mouseEvent);
-}
-
-void PieceItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
-{
-    setCursor(Qt::OpenHandCursor);
-    QGraphicsItem::mouseReleaseEvent(mouseEvent);
-}
-
-void PieceItem::drawPiece(QPainter *painter)
-{
     switch (model) {
     case Models::whitePiece:
+        // If the model is white, draw white pieces
 #ifdef QT_MOBILE_APP_UI
         painter->setPen(Qt::NoPen);
         painter->setBrush(QColor(0, 93, 172));
@@ -106,6 +91,7 @@ void PieceItem::drawPiece(QPainter *painter)
         break;
 
     case Models::blackPiece:
+        // If the model is black, draw black pieces
 #ifdef QT_MOBILE_APP_UI
         painter->setPen(Qt::NoPen);
         painter->setBrush(QColor(231, 36, 46));
@@ -118,10 +104,8 @@ void PieceItem::drawPiece(QPainter *painter)
     case Models::noPiece:
         break;
     }
-}
 
-void PieceItem::drawNum(QPainter *painter)
-{
+    // If the model requires the serial number to be displayed
     if (showNum) {
         if (model == Models::whitePiece)
             painter->setPen(QColor(255, 255, 255));
@@ -137,10 +121,8 @@ void PieceItem::drawNum(QPainter *painter)
         painter->drawText(boundingRect().adjusted(0, 0, 0, -size / 12),
                           Qt::AlignCenter, QString::number(num));
     }
-}
 
-void PieceItem::drawSelected(QPainter *painter)
-{
+    // If the model is selected, draw four small right angles
     if (isSelected()) {
         const QPen pen(selectLineColor, selectLineWeight, Qt::SolidLine,
                        Qt::SquareCap, Qt::BevelJoin);
@@ -156,10 +138,8 @@ void PieceItem::drawSelected(QPainter *painter)
         painter->drawLine(-xy, xy, -xy, xy / 2);
         painter->drawLine(-xy, xy, -xy / 2, xy);
     }
-}
 
-void PieceItem::drawDeleted(QPainter *painter)
-{
+    // If the model is deleted, cross it
     if (deleted) {
         const QPen pen(removeLineColor, removeLineWeight, Qt::SolidLine,
                        Qt::SquareCap, Qt::BevelJoin);
@@ -168,4 +148,23 @@ void PieceItem::drawDeleted(QPainter *painter)
         painter->drawLine(-size / 3, -size / 3, size / 3, size / 3);
         painter->drawLine(size / 3, -size / 3, -size / 3, size / 3);
     }
+}
+
+void PieceItem::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+    // When the mouse is pressed, it becomes the shape of the hand it holds
+    setCursor(Qt::ClosedHandCursor);
+    QGraphicsItem::mousePressEvent(mouseEvent);
+}
+
+void PieceItem::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+    QGraphicsItem::mouseMoveEvent(mouseEvent);
+}
+
+void PieceItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+    // When the mouse is released, it becomes an extended hand
+    setCursor(Qt::OpenHandCursor);
+    QGraphicsItem::mouseReleaseEvent(mouseEvent);
 }

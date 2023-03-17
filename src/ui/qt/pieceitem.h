@@ -101,13 +101,6 @@ private:
     QColor selectLineColor;
 
     QColor removeLineColor;
-
-    void configurePieceItem();
-
-    void drawPiece(QPainter *painter);
-    void drawNum(QPainter *painter);
-    void drawSelected(QPainter *painter);
-    void drawDeleted(QPainter *painter);
 };
 
 #endif // PIECE_ITEM_H_INCLUDED
