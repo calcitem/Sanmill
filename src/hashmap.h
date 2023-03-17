@@ -50,7 +50,7 @@ namespace CTSL // Concurrent Thread Safe Library
 #ifdef HASH_KEY_DISABLE
 #define hashFn Key
 template <typename K, typename V>
-#else // HASH_KEY_DISABLE
+#else  // HASH_KEY_DISABLE
 template <typename K, typename V, typename F = std::key<K>>
 #endif // HASH_KEY_DISABLE
 class HashMap
@@ -63,15 +63,15 @@ public:
 #ifdef ALIGNED_LARGE_PAGES
         hashTable = (HashNode<K, V> *)aligned_large_pages_alloc(
             sizeof(HashNode<K, V>) * hashSize);
-#else // ALIGNED_LARGE_PAGES
+#else  // ALIGNED_LARGE_PAGES
 
         // Create the key table as an array of key nodes
         hashTable = new HashNode<K, V>[hashSize];
 #endif // ALIGNED_LARGE_PAGES
 
         memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
-#else // DISABLE_HASHBUCKET
-      // create the key table as an array of key buckets
+#else  // DISABLE_HASHBUCKET
+       // create the key table as an array of key buckets
         hashTable = new HashBucket<K, V>[hashSize];
 #endif // DISABLE_HASHBUCKET
     }
@@ -80,7 +80,7 @@ public:
     {
 #ifdef ALIGNED_LARGE_PAGES
         aligned_large_pages_free(hashTable);
-#else // ALIGNED_LARGE_PAGES
+#else  // ALIGNED_LARGE_PAGES
 
         delete[] hashTable;
 #endif // ALIGNED_LARGE_PAGES
@@ -105,13 +105,14 @@ public:
         std::shared_lock<std::shared_timed_mutex> lock(mutex_);
 #endif /* HASHMAP_NOLOCK */
 
-        if (hashTable[hashValue].getKey() == key) {
-            value = hashTable[hashValue].getValue();
+        auto &node = hashTable[hashValue];
+        if (node.getKey() == key) {
+            value = node.getValue();
             return true;
         }
 
         return false;
-#else // DISABLE_HASHBUCKET
+#else  // DISABLE_HASHBUCKET
         return hashTable[hashValue].find(key, value);
 #endif // DISABLE_HASHBUCKET
     }
@@ -135,9 +136,10 @@ public:
         std::unique_lock<std::shared_timed_mutex> lock(mutex_);
 #endif /* HASHMAP_NOLOCK */
 
-        hashTable[hashValue].setKey(key);
-        hashTable[hashValue].setValue(value);
-#else // DISABLE_HASHBUCKET
+        auto &node = hashTable[hashValue];
+        node.setKey(key);
+        node.setValue(value);
+#else  // DISABLE_HASHBUCKET
         hashTable[hashValue].insert(key, value);
 #endif // DISABLE_HASHBUCKET
 
@@ -153,7 +155,7 @@ public:
     {
 #ifdef DISABLE_HASHBUCKET
         // std::unique_lock<std::shared_timed_mutex> lock(mutex_);
-#else // DISABLE_HASHBUCKET
+#else  // DISABLE_HASHBUCKET
         size_t hashValue = hashFn(key) & (hashSize - 1);
         hashTable[hashValue].erase(key);
 #endif // DISABLE_HASHBUCKET
@@ -164,7 +166,7 @@ public:
     {
 #ifdef DISABLE_HASHBUCKET
         memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
-#else // DISABLE_HASHBUCKET
+#else  // DISABLE_HASHBUCKET
         for (size_t i = 0; i < hashSize; i++) {
             (hashTable[i]).clear();
         }
@@ -181,7 +183,7 @@ public:
 
 #ifdef TRANSPOSITION_TABLE_64BIT_KEY
         hashSize = size;
-#else // TRANSPOSITION_TABLE_64BIT_KEY
+#else  // TRANSPOSITION_TABLE_64BIT_KEY
         hashSize = static_cast<uint32_t>(size);
 #endif // TRANSPOSITION_TABLE_64BIT_KEY
     }
@@ -296,12 +298,12 @@ public:
 private:
 #ifdef DISABLE_HASHBUCKET
     HashNode<K, V> *hashTable;
-#else // DISABLE_HASHBUCKET
+#else  // DISABLE_HASHBUCKET
     HashBucket<K, V> *hashTable;
 #endif // DISABLE_HASHBUCKET
 
 #ifdef HASH_KEY_DISABLE
-#else // HASH_KEY_DISABLE
+#else  // HASH_KEY_DISABLE
     F hashFn;
 #endif // HASH_KEY_DISABLE
 
