@@ -17,9 +17,9 @@
 part of '../painters.dart';
 
 List<Piece> pieces = <Piece>[
-  const Piece(color: PieceColor.white),
-  const Piece(color: PieceColor.black),
-  const Piece(color: PieceColor.none),
+  const Piece(color: PieceColor.white, position: Offset.zero),
+  const Piece(color: PieceColor.black, position: Offset.zero),
+  const Piece(color: PieceColor.none, position: Offset.zero),
 ];
 
 /// The names of the rows

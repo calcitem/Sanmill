@@ -20,10 +20,12 @@ class Piece extends StatefulWidget {
   const Piece({
     super.key,
     required this.color,
+    required this.position,
     this.diameter = 30.0,
     this.animated = false,
   });
   final PieceColor color;
+  final Offset position;
   final double diameter;
   final bool animated;
 
@@ -39,9 +41,14 @@ class Piece extends StatefulWidget {
 class PieceState extends State<Piece> {
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(widget.diameter, widget.diameter),
-      painter: _PiecePainter(piece: widget),
+    return AnimatedPositioned(
+      duration: const Duration(milliseconds: 500),
+      left: widget.position.dx - widget.diameter / 2,
+      top: widget.position.dy - widget.diameter / 2,
+      child: CustomPaint(
+        size: Size(widget.diameter, widget.diameter),
+        painter: _PiecePainter(piece: widget),
+      ),
     );
   }
 }

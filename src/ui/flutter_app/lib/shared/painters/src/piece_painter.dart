@@ -86,7 +86,10 @@ class PiecePainter extends CustomPainter {
 
         piecesToDraw.add(
           PiecePaintParam(
-            piece: Piece(color: pieceColor),
+            piece: Piece(
+              color: pieceColor,
+              position: pos,
+            ),
             pos: pos,
             animated: animated,
             diameter: pieceWidth,
