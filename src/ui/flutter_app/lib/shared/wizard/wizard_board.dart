@@ -16,7 +16,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../services/mill/mill.dart';
+import '../../screens/game_page/game_page.dart';
 import '../painters/painters.dart';
 import 'wizard_painter.dart';
 
@@ -30,7 +30,7 @@ class WizardBoard extends StatelessWidget {
 
   final int? focusIndex;
   final int? blurIndex;
-  final List<PieceColor> pieceList;
+  final List<Piece> pieceList;
 
   @override
   Widget build(BuildContext context) {

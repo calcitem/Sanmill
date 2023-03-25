@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../models/general_settings.dart';
+import '../../screens/game_page/game_page.dart';
 import '../../services/database/database.dart';
 import '../../services/mill/mill.dart';
 import '../painters/painters.dart';
@@ -36,7 +37,8 @@ class WizardDialog extends StatefulWidget {
 class _WizardDialogState extends State<WizardDialog> {
   int? _focusIndex;
   int? _blurIndex;
-  List<PieceColor> _pieceList = List<PieceColor>.filled(7 * 7, PieceColor.none);
+  List<Piece> _pieceList =
+      List<Piece>.filled(7 * 7, const Piece(color: PieceColor.none));
 
   int _curIndex = 0;
   final int _maxIndex = 6;
@@ -65,8 +67,8 @@ class _WizardDialogState extends State<WizardDialog> {
   @override
   void initState() {
     super.initState();
-    _pieceList[getPieceIndex(3, 1)] = PieceColor.black;
-    _pieceList[getPieceIndex(3, 5)] = PieceColor.white;
+    _pieceList[getPieceIndex(3, 1)] = const Piece(color: PieceColor.black);
+    _pieceList[getPieceIndex(3, 5)] = const Piece(color: PieceColor.white);
   }
 
   @override
@@ -355,7 +357,8 @@ class _WizardDialogState extends State<WizardDialog> {
       case 1: // Placing phase
         {
           _maskOffset = getMaskOffset(3, 5);
-          _pieceList[getPieceIndex(3, 5)] = PieceColor.white;
+          _pieceList[getPieceIndex(3, 5)] =
+              const Piece(color: PieceColor.white);
           break;
         }
       case 2: // Counter
@@ -366,36 +369,55 @@ class _WizardDialogState extends State<WizardDialog> {
       case 3: // Moving phase
         {
           _maskOffset = getMaskOffset(5, 3);
-          _pieceList[getPieceIndex(4, 2)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 4)] = PieceColor.white;
-          _pieceList[getPieceIndex(2, 4)] = PieceColor.black;
-          _pieceList[getPieceIndex(2, 3)] = PieceColor.black;
-          _pieceList[getPieceIndex(3, 4)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.white;
+          _pieceList[getPieceIndex(4, 2)] =
+              const Piece(color: PieceColor.white);
+          _pieceList[getPieceIndex(4, 4)] =
+              const Piece(color: PieceColor.white);
+          _pieceList[getPieceIndex(2, 4)] =
+              const Piece(color: PieceColor.black);
+          _pieceList[getPieceIndex(2, 3)] =
+              const Piece(color: PieceColor.black);
+          _pieceList[getPieceIndex(3, 4)] =
+              const Piece(color: PieceColor.black);
+          _pieceList[getPieceIndex(5, 3)] =
+              const Piece(color: PieceColor.white);
           break;
         }
       case 4: // Mill
         {
           _maskOffset = getMaskOffset(5, 3);
-          _pieceList[getPieceIndex(4, 2)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 3)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 4)] = PieceColor.white;
-          _pieceList[getPieceIndex(5, 1)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 5)] = PieceColor.black;
+          _pieceList[getPieceIndex(4, 2)] =
+              const Piece(color: PieceColor.white);
+          _pieceList[getPieceIndex(4, 3)] =
+              const Piece(color: PieceColor.white);
+          _pieceList[getPieceIndex(4, 4)] =
+              const Piece(color: PieceColor.white);
+          _pieceList[getPieceIndex(5, 1)] =
+              const Piece(color: PieceColor.black);
+          _pieceList[getPieceIndex(5, 3)] =
+              const Piece(color: PieceColor.black);
+          _pieceList[getPieceIndex(5, 5)] =
+              const Piece(color: PieceColor.black);
           _focusIndex = getPieceIndex(5, 3);
           break;
         }
       case 5: // Flying
         {
           _maskOffset = getMaskOffset(4, 2);
-          _pieceList[getPieceIndex(3, 2)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 2)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 4)] = PieceColor.white;
-          _pieceList[getPieceIndex(5, 1)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 5)] = PieceColor.black;
-          _pieceList[getPieceIndex(6, 3)] = PieceColor.black;
+          _pieceList[getPieceIndex(3, 2)] =
+              const Piece(color: PieceColor.white);
+          _pieceList[getPieceIndex(4, 2)] =
+              const Piece(color: PieceColor.white);
+          _pieceList[getPieceIndex(4, 4)] =
+              const Piece(color: PieceColor.white);
+          _pieceList[getPieceIndex(5, 1)] =
+              const Piece(color: PieceColor.black);
+          _pieceList[getPieceIndex(5, 3)] =
+              const Piece(color: PieceColor.black);
+          _pieceList[getPieceIndex(5, 5)] =
+              const Piece(color: PieceColor.black);
+          _pieceList[getPieceIndex(6, 3)] =
+              const Piece(color: PieceColor.black);
           break;
         }
     }
@@ -405,20 +427,23 @@ class _WizardDialogState extends State<WizardDialog> {
     switch (_curIndex) {
       case 2:
         {
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.none;
-          _pieceList[getPieceIndex(4, 3)] = PieceColor.white;
+          _pieceList[getPieceIndex(5, 3)] = const Piece(color: PieceColor.none);
+          _pieceList[getPieceIndex(4, 3)] =
+              const Piece(color: PieceColor.white);
           break;
         }
       case 3:
         {
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.none;
-          _pieceList[getPieceIndex(4, 3)] = PieceColor.white;
+          _pieceList[getPieceIndex(5, 3)] = const Piece(color: PieceColor.none);
+          _pieceList[getPieceIndex(4, 3)] =
+              const Piece(color: PieceColor.white);
           break;
         }
       case 5:
         {
-          _pieceList[getPieceIndex(3, 2)] = PieceColor.none;
-          _pieceList[getPieceIndex(4, 3)] = PieceColor.white;
+          _pieceList[getPieceIndex(3, 2)] = const Piece(color: PieceColor.none);
+          _pieceList[getPieceIndex(4, 3)] =
+              const Piece(color: PieceColor.white);
           break;
         }
     }
@@ -426,7 +451,7 @@ class _WizardDialogState extends State<WizardDialog> {
   }
 
   void pieceReset() {
-    _pieceList = List<PieceColor>.filled(7 * 7, PieceColor.none);
+    _pieceList = List<Piece>.filled(7 * 7, const Piece(color: PieceColor.none));
     _maskOffset = null;
     _focusIndex = null;
     _blurIndex = null;

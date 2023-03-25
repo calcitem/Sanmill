@@ -16,6 +16,12 @@
 
 part of '../painters.dart';
 
+List<Piece> pieces = <Piece>[
+  const Piece(color: PieceColor.white),
+  const Piece(color: PieceColor.black),
+  const Piece(color: PieceColor.none),
+];
+
 /// The names of the rows
 const List<String> verticalNotations = <String>[
   'a',

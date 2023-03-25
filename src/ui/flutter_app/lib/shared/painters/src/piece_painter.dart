@@ -28,8 +28,8 @@ class PiecePaintParam {
     required this.diameter,
   });
 
-  /// The color of the piece.
-  final PieceColor piece;
+  /// The piece.
+  final Piece piece;
 
   /// The position the piece is placed at.
   ///
@@ -59,7 +59,6 @@ class PiecePainter extends CustomPainter {
     final int? focusIndex = MillController().gameInstance.focusIndex;
     final int? blurIndex = MillController().gameInstance.blurIndex;
 
-    final Paint paint = Paint();
     final Path shadowPath = Path();
     final List<PiecePaintParam> piecesToDraw = <PiecePaintParam>[];
 
@@ -74,11 +73,11 @@ class PiecePainter extends CustomPainter {
       for (int col = 0; col < 7; col++) {
         final int index = row * 7 + col;
 
-        final PieceColor piece = MillController()
+        final PieceColor pieceColor = MillController()
             .position
             .pieceOnGrid(index); // No Pieces when initial
 
-        if (piece == PieceColor.none) {
+        if (pieceColor == PieceColor.none) {
           continue;
         }
 
@@ -87,7 +86,7 @@ class PiecePainter extends CustomPainter {
 
         piecesToDraw.add(
           PiecePaintParam(
-            piece: piece,
+            piece: Piece(color: pieceColor),
             pos: pos,
             animated: animated,
             diameter: pieceWidth,
@@ -105,63 +104,20 @@ class PiecePainter extends CustomPainter {
 
     // Draw shadow of piece
     canvas.drawShadow(shadowPath, Colors.black, 2, true);
-    paint.style = PaintingStyle.fill;
 
-    late Color blurPositionColor;
-    for (final PiecePaintParam piece in piecesToDraw) {
-      assert(
-        piece.piece == PieceColor.black ||
-            piece.piece == PieceColor.white ||
-            piece.piece == PieceColor.ban,
-      );
-      blurPositionColor = piece.piece.blurPositionColor;
+    // Draw the pieces
+    for (final PiecePaintParam pieceParam in piecesToDraw) {
+      final Piece pieceWidget = pieceParam.piece;
 
-      final double pieceRadius = pieceWidth / 2;
-      final double pieceInnerRadius = pieceRadius * 0.99;
+      final double pieceDiameter = pieceParam.animated
+          ? pieceParam.diameter * animationValue
+          : pieceParam.diameter;
 
-      final double animatedPieceRadius = animatedPieceWidth / 2;
-      final double animatedPieceInnerRadius = animatedPieceRadius * 0.99;
-
-      // Draw Border of Piece
-      paint.color = piece.piece.borderColor;
-      canvas.drawCircle(
-        piece.pos,
-        piece.animated ? animatedPieceRadius : pieceRadius,
-        paint,
-      );
-      // Draw the piece
-      paint.color = piece.piece.pieceColor;
-      canvas.drawCircle(
-        piece.pos,
-        piece.animated ? animatedPieceInnerRadius : pieceInnerRadius,
-        paint,
-      );
-    }
-
-    // Draw focus and blur position
-    if (focusIndex != null &&
-        MillController().gameInstance.gameMode != GameMode.setupPosition) {
-      paint.color = DB().colorSettings.pieceHighlightColor;
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 2;
-
-      canvas.drawCircle(
-        pointFromIndex(focusIndex, size),
-        animatedPieceWidth / 2,
-        paint,
-      );
-    }
-
-    if (blurIndex != null &&
-        MillController().gameInstance.gameMode != GameMode.setupPosition) {
-      paint.color = blurPositionColor;
-      paint.style = PaintingStyle.fill;
-
-      canvas.drawCircle(
-        pointFromIndex(blurIndex, size),
-        animatedPieceWidth / 2 * 0.8,
-        paint,
-      );
+      canvas.save();
+      canvas.translate(pieceParam.pos.dx - pieceDiameter / 2,
+          pieceParam.pos.dy - pieceDiameter / 2);
+      pieceWidget.paint(canvas, Size(pieceDiameter, pieceDiameter));
+      canvas.restore();
     }
   }
 

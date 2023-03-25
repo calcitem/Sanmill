@@ -16,6 +16,7 @@
 
 import 'package:flutter/material.dart';
 
+import '../../screens/game_page/game_page.dart';
 import '../../services/database/database.dart';
 import '../../services/mill/mill.dart';
 import '../painters/painters.dart';
@@ -26,7 +27,7 @@ class WizardPainter extends CustomPainter {
 
   final int? focusIndex;
   final int? blurIndex;
-  final List<PieceColor> pieceList;
+  final List<Piece> pieceList;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -42,8 +43,8 @@ class WizardPainter extends CustomPainter {
     for (int row = 0; row < 7; row++) {
       for (int col = 0; col < 7; col++) {
         final int index = row * 7 + col;
-        final PieceColor piece = pieceList[index]; // No Pieces when initial
-        if (piece == PieceColor.none) {
+        final Piece piece = pieceList[index]; // No Pieces when initial
+        if (piece.color == PieceColor.none) {
           continue;
         }
 
@@ -73,28 +74,24 @@ class WizardPainter extends CustomPainter {
     paint.style = PaintingStyle.fill;
 
     late Color blurPositionColor;
-    for (final PiecePaintParam piece in piecesToDraw) {
-      assert(
-        piece.piece == PieceColor.black ||
-            piece.piece == PieceColor.white ||
-            piece.piece == PieceColor.ban,
-      );
-      blurPositionColor = piece.piece.blurPositionColor;
+    for (final PiecePaintParam pieceParam in piecesToDraw) {
+      final Piece piece = pieceParam.piece;
+      blurPositionColor = piece.color.blurPositionColor;
 
       final double pieceRadius = pieceWidth / 2;
       final double pieceInnerRadius = pieceRadius * 0.99;
 
       // Draw Border of Piece
-      paint.color = piece.piece.borderColor;
+      paint.color = piece.color.borderColor;
       canvas.drawCircle(
-        piece.pos,
+        pieceParam.pos,
         pieceRadius,
         paint,
       );
       // Draw the piece
-      paint.color = piece.piece.pieceColor;
+      paint.color = piece.color.pieceColor;
       canvas.drawCircle(
-        piece.pos,
+        pieceParam.pos,
         pieceInnerRadius,
         paint,
       );
