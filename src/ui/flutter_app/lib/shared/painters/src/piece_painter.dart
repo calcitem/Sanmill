@@ -16,9 +16,6 @@
 
 part of '../painters.dart';
 
-/// Piece Information
-///
-/// Holds parameters needed to paint each piece.
 @immutable
 class PiecePaintParam {
   const PiecePaintParam({
@@ -28,30 +25,56 @@ class PiecePaintParam {
     required this.diameter,
   });
 
-  /// The piece.
   final Piece piece;
-
-  /// The position the piece is placed at.
-  ///
-  /// This represents the final position on the canvas.
-  /// To extract this information from the board index use [pointFromIndex].
   final Offset pos;
   final bool animated;
   final double diameter;
 }
 
-/// Custom Piece Painter
-///
-/// Painter to draw each piece in [MillController.position] on the Board.
-/// The board is drawn by [BoardPainter].
-/// It asserts the Canvas to be a square.
-class PiecePainter extends CustomPainter {
-  PiecePainter({
-    required this.animationValue,
-  });
+class PiecePainter extends StatefulWidget {
+  const PiecePainter({super.key});
 
-  /// The value representing the piece animation when placing.
-  final double animationValue;
+  @override
+  PiecePainterState createState() => PiecePainterState();
+}
+
+class PiecePainterState extends State<PiecePainter>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<Offset> _animation;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
+    _animation = Tween<Offset>(begin: Offset.zero, end: Offset.zero)
+        .animate(_animationController);
+
+    _animationController.addListener(() {
+      setState(() {});
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: _PiecePainting(animation: _animation),
+    );
+  }
+}
+
+class _PiecePainting extends CustomPainter {
+  _PiecePainting({required this.animation});
+
+  final Animation<Offset> animation;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -66,7 +89,7 @@ class PiecePainter extends CustomPainter {
             DB().displaySettings.pieceWidth /
             6 -
         1;
-    final double animatedPieceWidth = pieceWidth * animationValue;
+    final double animatedPieceWidth = pieceWidth * animation.value.distance;
 
     // Draw pieces on board
     for (int row = 0; row < 7; row++) {
@@ -90,7 +113,7 @@ class PiecePainter extends CustomPainter {
               color: pieceColor,
               position: pos,
             ),
-            pos: pos,
+            pos: animated ? pos + animation.value : pos,
             animated: animated,
             diameter: pieceWidth,
           ),
@@ -113,7 +136,7 @@ class PiecePainter extends CustomPainter {
       final Piece pieceWidget = pieceParam.piece;
 
       final double pieceDiameter = pieceParam.animated
-          ? pieceParam.diameter * animationValue
+          ? pieceParam.diameter * animation.value.distance
           : pieceParam.diameter;
 
       canvas.save();
@@ -125,6 +148,7 @@ class PiecePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(PiecePainter oldDelegate) =>
-      animationValue != oldDelegate.animationValue;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
 }

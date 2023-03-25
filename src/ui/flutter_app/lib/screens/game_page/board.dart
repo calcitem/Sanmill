@@ -30,7 +30,7 @@ class Board extends StatefulWidget {
   State<Board> createState() => _BoardState();
 }
 
-class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
+class _BoardState extends State<Board> with TickerProviderStateMixin {
   static const String _tag = "[board]";
 
   @override
@@ -87,10 +87,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
       animation: MillController().animation,
       builder: (_, Widget? child) {
         return CustomPaint(
-          painter: BoardPainter(context),
-          foregroundPainter: PiecePainter(
-            animationValue: MillController().animation.value,
-          ),
+          painter: BoardPainter(context, animation: MillController().animation),
           child: child,
         );
       },

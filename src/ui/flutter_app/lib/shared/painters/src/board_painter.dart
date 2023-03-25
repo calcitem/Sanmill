@@ -21,9 +21,10 @@ part of '../painters.dart';
 /// Painter to draw the Board. The pieces are drawn by [PiecePainter].
 /// It asserts the Canvas to be a square.
 class BoardPainter extends CustomPainter {
-  BoardPainter(this.context);
+  BoardPainter(this.context, {this.animation});
 
   final BuildContext context;
+  final Animation<double>? animation;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -64,6 +65,19 @@ class BoardPainter extends CustomPainter {
 
     // Point
     _drawPoints(offset, canvas, paint);
+
+    // Draw pieces using animation value
+    const double pieceSize = 10; // TODO: 根据应用程序设置棋子大小
+    final Paint piecePaint = Paint();
+    piecePaint.color = Colors.black; // TODO: 设置棋子颜色
+
+    // TODO:设置  Offset
+    final Offset pieceOffset = Offset(
+      (animation?.value ?? 0) * size.width,
+      (animation?.value ?? 0) * size.height,
+    );
+
+    canvas.drawCircle(pieceOffset, pieceSize / 2, piecePaint);
   }
 
   /// Draws the background of the Board.

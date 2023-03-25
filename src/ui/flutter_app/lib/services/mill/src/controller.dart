@@ -78,6 +78,19 @@ class MillController {
   bool get isPositionSetup => recorder.setupPosition != null;
   void clearPositionSetupFlag() => recorder.setupPosition = null;
 
+  // StreamController to handle piece move animations
+  final StreamController<void> _animatePieceMoveStreamController =
+      StreamController<void>.broadcast();
+
+  // Getter for the stream
+  Stream<void> get animatePieceMoveStream =>
+      _animatePieceMoveStreamController.stream;
+
+  // Call this method to trigger piece move animation
+  void triggerPieceMoveAnimation() {
+    _animatePieceMoveStreamController.add(null);
+  }
+
   @visibleForTesting
   static MillController instance = MillController._();
 
@@ -371,6 +384,11 @@ class MillController {
     if (reversed) {
       MillController().gameInstance.reverseWhoIsAi();
     }
+  }
+
+  // Dispose method to close the StreamController
+  void dispose() {
+    _animatePieceMoveStreamController.close();
   }
 
   void showSnakeBarHumanNotation(String humanStr) {
