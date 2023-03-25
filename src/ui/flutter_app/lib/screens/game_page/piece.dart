@@ -16,7 +16,7 @@
 
 part of 'game_page.dart';
 
-class Piece extends StatelessWidget {
+class Piece extends StatefulWidget {
   const Piece({
     super.key,
     required this.color,
@@ -28,16 +28,21 @@ class Piece extends StatelessWidget {
   final bool animated;
 
   @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(diameter, diameter),
-      painter: _PiecePainter(piece: this),
-    );
-  }
+  PieceState createState() => PieceState();
 
   void paint(Canvas canvas, Size size) {
     final _PiecePainter painter = _PiecePainter(piece: this);
     painter.paint(canvas, size);
+  }
+}
+
+class PieceState extends State<Piece> {
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size(widget.diameter, widget.diameter),
+      painter: _PiecePainter(piece: widget),
+    );
   }
 }
 
