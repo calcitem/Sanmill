@@ -35,8 +35,6 @@ class WizardPainter extends CustomPainter {
 
     final Paint paint = Paint();
     final Path shadowPath = Path();
-    final List<PiecePaintParam> piecesToDraw = <PiecePaintParam>[];
-
     final double pieceWidth = size.width * DB().displaySettings.pieceWidth / 7;
 
     // Draw pieces on board
@@ -50,15 +48,6 @@ class WizardPainter extends CustomPainter {
 
         final Offset pos = pointFromIndex(index, size);
         final bool animated = focusIndex == index;
-
-        piecesToDraw.add(
-          PiecePaintParam(
-            piece: piece,
-            pos: pos,
-            animated: animated,
-            diameter: pieceWidth,
-          ),
-        );
 
         shadowPath.addOval(
           Rect.fromCircle(
@@ -74,29 +63,6 @@ class WizardPainter extends CustomPainter {
     paint.style = PaintingStyle.fill;
 
     late Color blurPositionColor;
-    for (final PiecePaintParam pieceParam in piecesToDraw) {
-      final Piece piece = pieceParam.piece;
-      blurPositionColor = piece.color.blurPositionColor;
-
-      final double pieceRadius = pieceWidth / 2;
-      final double pieceInnerRadius = pieceRadius * 0.99;
-
-      // Draw Border of Piece
-      paint.color = piece.color.borderColor;
-      canvas.drawCircle(
-        pieceParam.pos,
-        pieceRadius,
-        paint,
-      );
-      // Draw the piece
-      paint.color = piece.color.pieceColor;
-      canvas.drawCircle(
-        pieceParam.pos,
-        pieceInnerRadius,
-        paint,
-      );
-    }
-
     // Draw focus and blur position
     if (focusIndex != null &&
         MillController().gameInstance.gameMode != GameMode.setupPosition) {
@@ -113,7 +79,6 @@ class WizardPainter extends CustomPainter {
 
     if (blurIndex != null &&
         MillController().gameInstance.gameMode != GameMode.setupPosition) {
-      paint.color = blurPositionColor;
       paint.style = PaintingStyle.fill;
 
       canvas.drawCircle(

@@ -16,61 +16,29 @@
 
 part of 'game_page.dart';
 
-class Piece extends StatelessWidget {
-  const Piece({
-    super.key,
-    required this.color,
-    this.diameter = 30.0,
-    this.animated = false,
-  });
+class Piece extends StatefulWidget {
+  const Piece({super.key, required this.color});
+
   final PieceColor color;
-  final double diameter;
-  final bool animated;
 
   @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(diameter, diameter),
-      painter: _PiecePainter(piece: this),
-    );
-  }
-
-  void paint(Canvas canvas, Size size) {
-    final _PiecePainter painter = _PiecePainter(piece: this);
-    painter.paint(canvas, size);
-  }
+  PieceState createState() => PieceState();
 }
 
-class _PiecePainter extends CustomPainter {
-  _PiecePainter({required this.piece});
-  final Piece piece;
-
+class PieceState extends State<Piece> {
   @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint();
-    final double pieceWidth = size.width;
-
-    // Draw the piece
-    paint.color = piece.color.pieceColor;
-    canvas.drawCircle(
-      Offset(size.width / 2, size.height / 2),
-      piece.animated ? pieceWidth * 0.99 / 2 : pieceWidth / 2,
-      paint,
-    );
-
-    // Draw Border of Piece
-    paint.color = piece.color.borderColor;
-    paint.style = PaintingStyle.stroke;
-    paint.strokeWidth = 1;
-    canvas.drawCircle(
-      Offset(size.width / 2, size.height / 2),
-      pieceWidth / 2,
-      paint,
+  Widget build(BuildContext context) {
+    // 这里返回一个表示棋子的小部件，根据color属性确定棋子的颜色
+    // 可以根据需要自定义棋子的外观
+    return Container(
+      decoration: BoxDecoration(
+        color: widget.color == PieceColor.white
+            ? Colors.white
+            : widget.color == PieceColor.black
+                ? Colors.black
+                : Colors.transparent,
+        shape: BoxShape.circle,
+      ),
     );
   }
-
-  @override
-  bool shouldRepaint(_PiecePainter oldDelegate) =>
-      piece.color != oldDelegate.piece.color ||
-      piece.animated != oldDelegate.piece.animated;
 }

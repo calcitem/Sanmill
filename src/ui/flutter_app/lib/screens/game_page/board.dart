@@ -77,6 +77,47 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     }
   }
 
+  Size get _size => _isLandscape
+      ? Size(landscapeBoardWidth, landscapeBoardWidth)
+      : Size(
+          deviceWidth(context) - AppTheme.boardPadding * 2,
+          deviceWidth(context) - AppTheme.boardPadding * 2,
+        );
+
+  Orientation? _orientation;
+
+  double get landscapeBoardWidth => deviceWidth(context) * 0.6;
+
+  double get pieceWidth => _size.width * DB().displaySettings.pieceWidth / 7;
+
+  bool get _isLandscape => _orientation == Orientation.landscape;
+
+  Positioned _buildPiece(int index) {
+    final PieceColor piece = MillController().position.pieceOnGrid(index);
+    final Offset point = pointFromIndex(index, _size);
+    final Offset offset = offsetFromPoint(point, _size);
+
+    return Positioned(
+      left: offset.dx,
+      top: offset.dy,
+      child: SizedBox(
+        width: DB().displaySettings.pieceWidth,
+        height: DB().displaySettings.pieceWidth,
+        child: Piece(color: piece),
+      ),
+    );
+  }
+
+  List<Positioned> _buildPieces(BuildContext context) {
+    final List<Positioned> pieces = <Positioned>[];
+
+    for (int i = 0; i < points.length; i++) {
+      pieces.add(_buildPiece(i));
+    }
+
+    return pieces;
+  }
+
   @override
   Widget build(BuildContext context) {
     final TapHandler tapHandler = TapHandler(
@@ -86,12 +127,14 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     final AnimatedBuilder customPaint = AnimatedBuilder(
       animation: MillController().animation,
       builder: (_, Widget? child) {
-        return CustomPaint(
-          painter: BoardPainter(context),
-          foregroundPainter: PiecePainter(
-            animationValue: MillController().animation.value,
-          ),
-          child: child,
+        return Stack(
+          children: <Widget>[
+            CustomPaint(
+              painter: BoardPainter(context),
+              //size: Size.square(dimension),
+            ),
+            ..._buildPieces(context), // TODO
+          ],
         );
       },
       child: DB().generalSettings.screenReaderSupport
