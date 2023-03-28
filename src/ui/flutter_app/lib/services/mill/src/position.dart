@@ -50,6 +50,8 @@ class Position {
     PieceColor.black: 0,
   };
 
+  List<PieceColor> get board => _board;
+
   bool isNeedStalemateRemoval = false;
   bool isStalemateRemoving = false;
 

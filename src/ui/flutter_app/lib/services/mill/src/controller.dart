@@ -76,6 +76,11 @@ class MillController {
   bool get initialized => _initialized;
 
   bool get isPositionSetup => recorder.setupPosition != null;
+
+  List<PieceColor> get board => position.board;
+
+  int get selectSquare => position._currentSquare;
+
   void clearPositionSetupFlag() => recorder.setupPosition = null;
 
   @visibleForTesting

@@ -9,6 +9,61 @@ class TapHandler {
 
   //final position = MillController().position;
 
+  void onPieceTap() {
+    final int sq = MillController().position._currentSquare;
+    if (MillController().gameInstance.gameMode == GameMode.setupPosition) {
+      MillController().position._putPieceForSetupPosition(sq);
+      MillController().setupPositionNotifier.updateIcons();
+    } else {
+      MillController().position._putPiece(sq);
+    }
+  }
+
+  void onPieceDoubleTap() {
+    final int sq = MillController().position._currentSquare;
+    if (MillController().gameInstance.gameMode == GameMode.setupPosition) {
+      MillController().position._removePieceForSetupPosition(sq);
+      MillController().setupPositionNotifier.updateIcons();
+    } else {
+      MillController().position._removePiece(sq);
+    }
+  }
+
+  void onPieceLongPress() {
+    final int sq = MillController().position._currentSquare;
+    if (MillController().gameInstance.gameMode == GameMode.setupPosition) {
+      MillController().position._removePieceForSetupPosition(sq);
+      MillController().setupPositionNotifier.updateIcons();
+    } else {
+      MillController().position._removePiece(sq);
+    }
+  }
+
+  Future<EngineResponse?> onTap(int sq) async {
+    if (MillController().gameInstance.gameMode == GameMode.setupPosition) {
+      await setupPosition(sq);
+    } else {
+      await onBoardTap(sq);
+    }
+    return null;
+  }
+
+  Future<EngineResponse?> onDoubleTap(int sq) async {
+    if (MillController().gameInstance.gameMode == GameMode.setupPosition) {
+      MillController().position._putPieceForSetupPosition(sq);
+      MillController().setupPositionNotifier.updateIcons();
+    }
+    return null;
+  }
+
+  Future<EngineResponse?> onLongPress(int sq) async {
+    if (MillController().gameInstance.gameMode == GameMode.setupPosition) {
+      MillController().position._removePieceForSetupPosition(sq);
+      MillController().setupPositionNotifier.updateIcons();
+    }
+    return null;
+  }
+
   static const String _tag = "[Tap Handler]";
 
   final BuildContext context;

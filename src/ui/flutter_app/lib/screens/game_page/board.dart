@@ -68,6 +68,14 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
         .animate(MillController().animationController);
   }
 
+  double squareToX(int square, double diameter) {
+    return (square % 6) * diameter;
+  }
+
+  double squareToY(int square, double diameter) {
+    return (square ~/ 6) * diameter;
+  }
+
   Future<void> _setReadyState() async {
     logger.i("$_tag Check if need to set Ready state...");
     // TODO: v1 has "&& mounted && Config.settingsLoaded"
@@ -75,6 +83,55 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
       logger.i("$_tag Set Ready State...");
       MillController().isReady = true;
     }
+  }
+
+  Positioned _buildPiece(
+    int square,
+    double diameter,
+    bool animated,
+    VoidCallback onTap,
+    VoidCallback onDoubleTap,
+    VoidCallback onLongPress,
+  ) {
+    final PieceColor piece = MillController().board[square];
+
+    return Positioned(
+      left: squareToX(square, diameter),
+      top: squareToY(square, diameter),
+      child: Piece(
+        piece: piece,
+        diameter: diameter,
+        animated: animated,
+        onTap: onTap,
+        onDoubleTap: onDoubleTap,
+        onLongPress: onLongPress,
+      ),
+    );
+  }
+
+  List<Positioned> _buildPieces(
+    double diameter,
+    bool animated,
+    VoidCallback onTap,
+    VoidCallback onDoubleTap,
+    VoidCallback onLongPress,
+  ) {
+    final List<Positioned> pieces = <Positioned>[];
+
+    for (int square = 0; square < 24; square++) {
+      pieces.add(
+        _buildPiece(
+          square,
+          diameter,
+          animated,
+          onTap,
+          onDoubleTap,
+          onLongPress,
+        ),
+      );
+    }
+
+    return pieces;
   }
 
   @override
@@ -86,12 +143,20 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     final AnimatedBuilder customPaint = AnimatedBuilder(
       animation: MillController().animation,
       builder: (_, Widget? child) {
-        return CustomPaint(
-          painter: BoardPainter(context),
-          foregroundPainter: PiecePainter(
-            animationValue: MillController().animation.value,
-          ),
-          child: child,
+        return Stack(
+          children: <Widget>[
+            CustomPaint(
+              painter: BoardPainter(context),
+              child: child,
+            ),
+            ..._buildPieces(
+              DB().displaySettings.pieceWidth,
+              MillController().animationController.isAnimating,
+              () => tapHandler.onPieceTap(),
+              () => tapHandler.onPieceDoubleTap(),
+              () => tapHandler.onPieceLongPress(),
+            ),
+          ],
         );
       },
       child: DB().generalSettings.screenReaderSupport

@@ -25,6 +25,8 @@ class BoardPainter extends CustomPainter {
 
   final BuildContext context;
 
+  final Animation<double> animation = MillController().animation;
+
   @override
   void paint(Canvas canvas, Size size) {
     assert(size.width == size.height);
