@@ -14,7 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-part of 'game_page.dart';
+import 'package:flutter/material.dart';
+
+import '../../services/database/database.dart';
+import '../../services/mill/mill.dart';
+import '../../shared/theme/app_theme.dart';
 
 @immutable
 class PieceWidget extends StatelessWidget {
