@@ -51,7 +51,7 @@ part './header.dart';
 part './info_dialog.dart';
 part './move_list_dialog.dart';
 part './move_options_modal.dart';
-part './piece.dart';
+part './piece_widget.dart';
 part './result_alert.dart';
 part 'game_page_action_sheet.dart';
 

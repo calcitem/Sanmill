@@ -85,55 +85,6 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     }
   }
 
-  Positioned _buildPiece(
-    int square,
-    double diameter,
-    bool animated,
-    VoidCallback onTap,
-    VoidCallback onDoubleTap,
-    VoidCallback onLongPress,
-  ) {
-    final PieceColor piece = MillController().board[square];
-
-    return Positioned(
-      left: squareToX(square, diameter),
-      top: squareToY(square, diameter),
-      child: Piece(
-        piece: piece,
-        diameter: diameter,
-        animated: animated,
-        onTap: onTap,
-        onDoubleTap: onDoubleTap,
-        onLongPress: onLongPress,
-      ),
-    );
-  }
-
-  List<Positioned> _buildPieces(
-    double diameter,
-    bool animated,
-    VoidCallback onTap,
-    VoidCallback onDoubleTap,
-    VoidCallback onLongPress,
-  ) {
-    final List<Positioned> pieces = <Positioned>[];
-
-    for (int square = 0; square < 24; square++) {
-      pieces.add(
-        _buildPiece(
-          square,
-          diameter,
-          animated,
-          onTap,
-          onDoubleTap,
-          onLongPress,
-        ),
-      );
-    }
-
-    return pieces;
-  }
-
   @override
   Widget build(BuildContext context) {
     final TapHandler tapHandler = TapHandler(
@@ -143,20 +94,9 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     final AnimatedBuilder customPaint = AnimatedBuilder(
       animation: MillController().animation,
       builder: (_, Widget? child) {
-        return Stack(
-          children: <Widget>[
-            CustomPaint(
-              painter: BoardPainter(context),
-              child: child,
-            ),
-            ..._buildPieces(
-              DB().displaySettings.pieceWidth,
-              MillController().animationController.isAnimating,
-              () => tapHandler.onPieceTap(),
-              () => tapHandler.onPieceDoubleTap(),
-              () => tapHandler.onPieceLongPress(),
-            ),
-          ],
+        return CustomPaint(
+          painter: BoardPainter(context),
+          child: child,
         );
       },
       child: DB().generalSettings.screenReaderSupport
