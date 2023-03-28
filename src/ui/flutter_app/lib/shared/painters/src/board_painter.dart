@@ -18,8 +18,7 @@ part of '../painters.dart';
 
 /// Custom Board Painter
 ///
-/// Painter to draw the Board. The pieces are drawn by [PiecePainter].
-/// It asserts the Canvas to be a square.
+/// Painter to draw the Board.
 class BoardPainter extends CustomPainter {
   BoardPainter(this.context);
 
