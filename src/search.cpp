@@ -46,6 +46,138 @@ void Search::clear()
     Threads.clear();
 }
 
+/// MainThread::search() is started when the program receives the UCI 'go'
+/// command. It searches from the root position and outputs the "bestmove".
+
+/// MainThread::search() is started when the program receives the UCI 'go'
+/// command. It searches from the root position and outputs the "bestmove".
+
+void MainThread::search()
+{
+  Color us = rootPos.side_to_move();
+  Time.init(rootPos, Limits, us, rootPos.game_ply());
+  TT.new_search();
+
+  Eval::NNUE::verify();
+
+  if (rootMoves.empty() || (CurrentProtocol == XBOARD && rootPos.is_optional_game_end()))
+  {
+      rootMoves.emplace_back(MOVE_NONE);
+      Value variantResult;
+      Value result =  rootPos.is_game_end(variantResult) ? variantResult
+                    : rootPos.checkers()                 ? rootPos.checkmate_value()
+                                                         : rootPos.stalemate_value();
+      if (CurrentProtocol == XBOARD)
+      {
+          // rotate MOVE_NONE to front (for optional game end)
+          std::rotate(rootMoves.rbegin(), rootMoves.rbegin() + 1, rootMoves.rend());
+          sync_cout << (  result == VALUE_DRAW ? "1/2-1/2 {Draw}"
+                        : (rootPos.side_to_move() == BLACK ? -result : result) == VALUE_MATE ? "1-0 {White wins}"
+                        : "0-1 {Black wins}")
+                    << sync_endl;
+      }
+      else
+      sync_cout << "info depth 0 score "
+                << UCI::value(result)
+                << sync_endl;
+  }
+  else
+  {
+      Threads.start_searching(); // start non-main threads
+      Thread::search();          // main thread start searching
+  }
+
+  // Sit in bughouse variants if partner requested it or we are dead
+  if (rootPos.two_boards() && !Threads.abort && CurrentProtocol == XBOARD)
+  {
+      while (!Threads.stop && (Partner.sitRequested || (Partner.weDead && !Partner.partnerDead)) && Time.elapsed() < Limits.time[us] - 1000)
+      {}
+  }
+
+  // When we reach the maximum depth, we can arrive here without a raise of
+  // Threads.stop. However, if we are pondering or in an infinite search,
+  // the UCI protocol states that we shouldn't print the best move before the
+  // GUI sends a "stop" or "ponderhit" command. We therefore simply wait here
+  // until the GUI sends one of those commands.
+
+  while (!Threads.stop && (ponder || Limits.infinite))
+  {} // Busy wait for a stop or a ponder reset
+
+  // Stop the threads if not already stopped (also raise the stop if
+  // "ponderhit" just reset Threads.ponder).
+  Threads.stop = true;
+
+  // Wait until all threads have finished
+  Threads.wait_for_search_finished();
+
+  // When playing in 'nodes as time' mode, subtract the searched nodes from
+  // the available ones before exiting.
+  if (Limits.npmsec)
+      Time.availableNodes += Limits.inc[us] - Threads.nodes_searched();
+
+  bestThread = this;
+
+  if (   int(Options["MultiPV"]) == 1
+      && !Limits.depth
+      && !(Skill(Options["Skill Level"]).enabled() || int(Options["UCI_LimitStrength"]))
+      && rootMoves[0].pv[0] != MOVE_NONE)
+      bestThread = Threads.get_best_thread();
+
+  bestPreviousScore = bestThread->rootMoves[0].score;
+
+  // Send again PV info if we have a new best thread
+  if (bestThread != this)
+      sync_cout << UCI::pv(bestThread->rootPos, bestThread->completedDepth, -VALUE_INFINITE, VALUE_INFINITE) << sync_endl;
+
+  if (CurrentProtocol == XBOARD)
+  {
+      Move bestMove = bestThread->rootMoves[0].pv[0];
+      // Wait for virtual drop to become real
+      if (rootPos.two_boards() && rootPos.virtual_drop(bestMove))
+      {
+          Partner.ptell("fast");
+          while (!Threads.abort && !Partner.partnerDead && !Partner.fast && Limits.time[us] - Time.elapsed() > Partner.opptime)
+          {}
+          Partner.ptell("x");
+          // Find best real move
+          for (const auto& m : this->rootMoves)
+              if (!rootPos.virtual_drop(m.pv[0]))
+              {
+                  bestMove = m.pv[0];
+                  break;
+              }
+      }
+      // Send move only when not in analyze mode and not at game end
+      if (!Limits.infinite && !ponder && rootMoves[0].pv[0] != MOVE_NONE && !Threads.abort.exchange(true))
+      {
+          std::string move = UCI::move(rootPos, bestMove);
+          if (rootPos.wall_gating())
+          {
+              sync_cout << "move " << move.substr(0, move.find(",")) << "," << sync_endl;
+              sync_cout << "move " << move.substr(move.find(",") + 1) << sync_endl;
+          }
+          else
+              sync_cout << "move " << UCI::move(rootPos, bestMove) << sync_endl;
+          if (XBoard::stateMachine->moveAfterSearch)
+          {
+              XBoard::stateMachine->do_move(bestMove);
+              XBoard::stateMachine->moveAfterSearch = false;
+              if (Options["Ponder"] && (   bestThread->rootMoves[0].pv.size() > 1
+                                        || bestThread->rootMoves[0].extract_ponder_from_tt(rootPos)))
+                  XBoard::stateMachine->ponderMove = bestThread->rootMoves[0].pv[1];
+          }
+      }
+      return;
+  }
+
+  sync_cout << "bestmove " << UCI::move(rootPos, bestThread->rootMoves[0].pv[0]);
+
+  if (bestThread->rootMoves[0].pv.size() > 1 || bestThread->rootMoves[0].extract_ponder_from_tt(rootPos))
+      std::cout << " ponder " << UCI::move(rootPos, bestThread->rootMoves[0].pv[1]);
+
+  std::cout << sync_endl;
+}
+
 #ifdef NNUE_GENERATE_TRAINING_DATA
 extern Value nnueTrainingDataBestValue;
 #endif /* NNUE_GENERATE_TRAINING_DATA */

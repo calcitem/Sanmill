@@ -67,8 +67,13 @@ public:
     void idle_loop();
     void start_searching();
     void wait_for_search_finished();
+    size_t id() const { return idx; }
+    std::atomic<uint64_t> nodes, tbHits, bestMoveChanges;
 
     Position *rootPos {nullptr};
+    StateInfo rootState;
+    Search::RootMoves rootMoves;
+    Depth rootDepth, completedDepth;
 
     // Mill Game
 
@@ -147,8 +152,15 @@ struct MainThread final : Thread
 {
     using Thread::Thread;
 
+    void search() override;
+
+    double previousTimeReduction;
+    Value bestPreviousScore;
+    Value iterValue[4];
+    int callsCnt;
     bool stopOnPonderhit {false};
     std::atomic_bool ponder {false};
+    Thread *bestThread; // to fetch best move when in XBoard mode
 };
 
 /// ThreadPool struct handles all the threads-related stuff like init, starting,
@@ -162,6 +174,9 @@ struct ThreadPool : std::vector<Thread *>
     void set(size_t);
 
     MainThread *main() const { return dynamic_cast<MainThread *>(front()); }
+    Thread *get_best_thread() const;
+    void start_searching();
+    void wait_for_search_finished() const;
 
     std::atomic_bool stop, increaseDepth;
 
