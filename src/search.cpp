@@ -18,6 +18,7 @@
 #include "evaluate.h"
 #include "option.h"
 #include "thread.h"
+#include "mcts.h"
 
 using Eval::evaluate;
 using std::string;
@@ -192,11 +193,14 @@ int Thread::search()
         beta = VALUE_INFINITE;
     }
 
+#if 0
     if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
         value = MTDF(rootPos, ss, value, originDepth, originDepth, bestMove);
     } else {
         value = qsearch(rootPos, ss, d, originDepth, alpha, beta, bestMove);
     }
+#endif
+    value = monte_carlo_tree_search(rootPos, bestMove);
 
 out:
 
@@ -534,3 +538,4 @@ bool is_timeout(TimePoint startTime)
 
     return false;
 }
+

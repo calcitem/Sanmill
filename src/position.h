@@ -63,8 +63,9 @@ public:
 
     Position();
 
-    Position(const Position &) = delete;
-    Position &operator=(const Position &) = delete;
+    //Position(const Position &) = delete;
+    //Position(const Position &other) { memcpy(this, &other, sizeof(Position)); }
+    //Position &operator=(const Position &) = delete;
 
     // FEN string input/output
     Position &set(const std::string &fenStr, Thread *th);
