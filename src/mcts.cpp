@@ -8,9 +8,16 @@
 #include "types.h"
 #include "movegen.h"
 #include "option.h"
+#include "search.h"
 #include <algorithm>
 #include <vector>
 #include <cmath>
+
+Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
+           Depth depth, Depth originDepth, Move &bestMove);
+
+Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
+              Depth originDepth, Value alpha, Value beta, Move &bestMove);
 
 using namespace std;
 
@@ -99,7 +106,7 @@ Node *expand(Node *node)
     return node->children.empty() ? node : node->children.front();
 }
 
-bool simulate(Node *node)
+bool simulate(Node *node, int alpha_beta_depth)
 {
     if (gameOptions.getShufflingEnabled() == false) {
         srand(42);
@@ -108,22 +115,14 @@ bool simulate(Node *node)
     Position *pos = node->position;
     Color side_to_move = pos->side_to_move();
 
-    while (pos->phase != Phase::gameOver) {
-        std::vector<Move> legal_moves;
-        MoveList<LEGAL> ml(*pos);
+    Move bestMove {MOVE_NONE};
+    Sanmill::Stack<Position> ss;
+    Value value = qsearch(pos, ss, alpha_beta_depth, alpha_beta_depth,
+                          -VALUE_INFINITE,
+                          VALUE_INFINITE,
+                         bestMove);
 
-        for (const ExtMove *it = ml.begin(); it != ml.end(); ++it) {
-            legal_moves.push_back(it->move);
-        }
-
-        if (legal_moves.empty())
-            break;
-
-        Move random_move = legal_moves[rand() % legal_moves.size()];
-        pos->do_move(random_move);
-    }
-
-    return pos->get_winner() == side_to_move;
+    return value > 0;
 }
 
 void backpropagate(Node *node, bool win)
@@ -139,15 +138,16 @@ void backpropagate(Node *node, bool win)
 
 Value monte_carlo_tree_search(Position *pos, Move &bestMove)
 {
-    const int max_iterations = 1000;
+    const int max_iterations = 100000;
     const double exploration_parameter = 1.0;
+    const int alpha_beta_depth = 3; 
 
     Node *root = new Node(pos, MOVE_NONE, nullptr);
 
     for (int i = 0; i < max_iterations; ++i) {
         Node *node = select(root, exploration_parameter);
         Node *expanded_node = expand(node);
-        bool win = simulate(expanded_node);
+        bool win = simulate(expanded_node, alpha_beta_depth);
         backpropagate(expanded_node, win);
     }
 
