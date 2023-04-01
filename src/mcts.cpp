@@ -28,7 +28,8 @@ public:
         : position(position)
         , move(move)
         , parent(parent)
-    { }
+    {
+    }
 
     double win_score() const
     {
@@ -41,7 +42,7 @@ public:
 
     void increment_wins() { ++num_wins; }
 
-    void add_child(Node *child) { children.push_back(child); }
+    void add_child(Node *child) { children.emplace_back(child); }
 
     Position *position;
     Move move;
@@ -103,7 +104,7 @@ Node *expand(Node *node)
     MoveList<LEGAL> ml(*pos);
 
     for (const ExtMove *it = ml.begin(); it != ml.end(); ++it) {
-        legal_moves.push_back(it->move);
+        legal_moves.emplace_back(it->move);
     }
 
     for (const Move &move : legal_moves) {
