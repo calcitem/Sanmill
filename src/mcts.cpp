@@ -6,6 +6,7 @@
 #include "mcts.h"
 #include "position.h"
 #include "types.h"
+#include "memmgr.h"
 #include "movegen.h"
 #include "option.h"
 #include "search.h"
@@ -20,6 +21,8 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
               Depth originDepth, Value alpha, Value beta, Move &bestMove);
 
 using namespace std;
+
+MemoryManager memoryManager;
 
 class Node
 {
@@ -51,13 +54,22 @@ public:
     uint32_t num_wins = 0;
 };
 
+Node *new_node(Position *position, Move move, Node *parent)
+{
+    Node *node = static_cast<Node *>(memoryManager.memmgr_alloc(sizeof(Node)));
+    new (node) Node(position, move, parent);
+    return node;
+}
+
 void delete_tree(Node *node)
 {
     for (Node *child : node->children) {
         delete_tree(child);
     }
-    delete node->position;
-    delete node;
+    node->position->~Position(); // Call the destructor for the Position object
+    memoryManager.memmgr_free(node->position);
+    node->~Node(); // Call the destructor for the Node object
+    memoryManager.memmgr_free(node);
 }
 
 double uct_value_tuned(const Node *node, double exploration_parameter)
@@ -107,10 +119,12 @@ Node *expand(Node *node)
     }
 
     for (const Move &move : legal_moves) {
-        Position *child_position = new Position(*pos);
+        Position *child_position = static_cast<Position *>(
+            memoryManager.memmgr_alloc(sizeof(Position)));
+        new (child_position) Position(*pos); // placement new
         child_position->do_move(move);
 
-        Node *child = new Node(child_position, move, node);
+        Node *child = new_node(child_position, move, node);
         node->add_child(child);
     }
 
@@ -151,9 +165,14 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
 {
     const int max_iterations = 10000;
     const double exploration_parameter = 1.0;
-    const int alpha_beta_depth = 3; 
+    const int alpha_beta_depth = 3;
 
-    Node *root = new Node(new Position(*pos), MOVE_NONE, nullptr);
+    memoryManager.memmgr_init();
+
+    Position *root_position = static_cast<Position *>(
+        memoryManager.memmgr_alloc(sizeof(Position)));
+    new (root_position) Position(*pos);
+    Node *root = new_node(root_position, MOVE_NONE, nullptr);
 
     for (int i = 0; i < max_iterations; ++i) {
         Node *node = select(root, exploration_parameter);
@@ -175,6 +194,8 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
 
     // Free memory
     delete_tree(root);
+
+    memoryManager.memmgr_exit();
 
     return best_value;
 }
