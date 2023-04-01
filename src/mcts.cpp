@@ -154,7 +154,7 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
 {
     const int max_iterations = 10000;
     const double exploration_parameter = 1.0;
-    const int alpha_beta_depth = 3; 
+    const int alpha_beta_depth = 7; 
 
     Node *root = new Node(new Position(*pos), MOVE_NONE, nullptr);
 
