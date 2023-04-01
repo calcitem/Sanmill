@@ -51,23 +51,25 @@ public:
     uint32_t num_wins = 0;
 };
 
-double uct_value(const Node *node, double exploration_parameter)
+double uct_value_tuned(const Node *node, double exploration_parameter)
 {
     if (node->num_visits == 0)
         return std::numeric_limits<double>::max();
-    return node->win_score() +
-           exploration_parameter *
-               std::sqrt(2 * std::log(node->parent->num_visits) /
-                         node->num_visits);
+    double mean = node->win_score();
+    double exploration_term = exploration_parameter *
+                              std::sqrt(2 * std::log(node->parent->num_visits) /
+                                        node->num_visits);
+    double variance_term = std::sqrt((mean * (1 - mean)) / node->num_visits);
+    return mean + exploration_term + variance_term;
 }
 
-Node *best_uct_child(Node *node, double exploration_parameter)
+Node *best_uct_child_tuned(Node *node, double exploration_parameter)
 {
     Node *best_child = nullptr;
     double best_value = std::numeric_limits<double>::lowest();
 
     for (Node *child : node->children) {
-        double value = uct_value(child, exploration_parameter);
+        double value = uct_value_tuned(child, exploration_parameter);
         if (value > best_value) {
             best_value = value;
             best_child = child;
@@ -80,7 +82,7 @@ Node *best_uct_child(Node *node, double exploration_parameter)
 Node *select(Node *node, double exploration_parameter)
 {
     while (!node->children.empty()) {
-        node = best_uct_child(node, exploration_parameter);
+        node = best_uct_child_tuned(node, exploration_parameter);
     }
     return node;
 }
@@ -151,7 +153,7 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
         backpropagate(expanded_node, win);
     }
 
-    Node *best_child = best_uct_child(root, 0.0);
+    Node *best_child = best_uct_child_tuned(root, 0.0);
 
     if (best_child == nullptr) {
         bestMove = MOVE_NONE;
