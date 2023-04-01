@@ -51,6 +51,15 @@ public:
     uint32_t num_wins = 0;
 };
 
+void delete_tree(Node *node)
+{
+    for (Node *child : node->children) {
+        delete_tree(child);
+    }
+    delete node->position;
+    delete node;
+}
+
 double uct_value_tuned(const Node *node, double exploration_parameter)
 {
     if (node->num_visits == 0)
@@ -140,11 +149,11 @@ void backpropagate(Node *node, bool win)
 
 Value monte_carlo_tree_search(Position *pos, Move &bestMove)
 {
-    const int max_iterations = 100000;
+    const int max_iterations = 10000;
     const double exploration_parameter = 1.0;
     const int alpha_beta_depth = 3; 
 
-    Node *root = new Node(pos, MOVE_NONE, nullptr);
+    Node *root = new Node(new Position(*pos), MOVE_NONE, nullptr);
 
     for (int i = 0; i < max_iterations; ++i) {
         Node *node = select(root, exploration_parameter);
@@ -165,11 +174,7 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
                                           1.0); // Convert win rate to value
 
     // Free memory
-    for (Node *child : root->children) {
-        for (Node *grandchild : child->children)
-            delete grandchild->position;
-        delete child->position;
-    }
+    delete_tree(root);
 
     return best_value;
 }
