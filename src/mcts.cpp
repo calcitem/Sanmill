@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <vector>
 #include <cmath>
+#include <memory_resource> 
 
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
            Depth depth, Depth originDepth, Move &bestMove);
@@ -24,10 +25,12 @@ using namespace std;
 class Node
 {
 public:
-    Node(Position *position, Move move, Node *parent)
+    Node(Position *position, Move move, Node *parent,
+         std::pmr::memory_resource *mr)
         : position(position)
         , move(move)
         , parent(parent)
+        , children(mr)
     { }
 
     double win_score() const
@@ -46,7 +49,7 @@ public:
     Position *position;
     Move move;
     Node *parent;
-    std::vector<Node *> children;
+    std::pmr::vector<Node *> children;
     uint32_t num_visits = 0;
     uint32_t num_wins = 0;
 };
@@ -96,7 +99,7 @@ Node *select(Node *node, double exploration_parameter)
     return node;
 }
 
-Node *expand(Node *node)
+Node *expand(Node *node, std::pmr::memory_resource *mr)
 {
     Position *pos = node->position;
     std::vector<Move> legal_moves;
@@ -110,7 +113,7 @@ Node *expand(Node *node)
         Position *child_position = new Position(*pos);
         child_position->do_move(move);
 
-        Node *child = new Node(child_position, move, node);
+        Node *child = new Node(child_position, move, node, mr);
         node->add_child(child);
     }
 
@@ -153,13 +156,20 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
 {
     const int max_iterations = 10000;
     const double exploration_parameter = 1.0;
-    const int alpha_beta_depth = 3; 
+    const int alpha_beta_depth = 3;
 
-    Node *root = new Node(new Position(*pos), MOVE_NONE, nullptr);
+    constexpr size_t initial_memory_pool_size = 512 * 1024 * 1024;  // 512MB
+    std::vector<std::byte> memory_pool_buffer(
+        initial_memory_pool_size);
+    std::pmr::monotonic_buffer_resource memory_pool(
+        memory_pool_buffer.data(),
+        memory_pool_buffer.size());
+
+    Node *root = new Node(new Position(*pos), MOVE_NONE, nullptr, &memory_pool);
 
     for (int i = 0; i < max_iterations; ++i) {
         Node *node = select(root, exploration_parameter);
-        Node *expanded_node = expand(node);
+        Node *expanded_node = expand(node, &memory_pool); 
         bool win = simulate(expanded_node, alpha_beta_depth);
         backpropagate(expanded_node, win);
     }
