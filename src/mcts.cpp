@@ -117,6 +117,8 @@ Node *expand(Node *node)
     return node->children.empty() ? node : node->children.front();
 }
 
+static Sanmill::Stack<Position> ss;
+
 bool simulate(Node *node, int alpha_beta_depth)
 {
     if (gameOptions.getShufflingEnabled() == false) {
@@ -127,7 +129,7 @@ bool simulate(Node *node, int alpha_beta_depth)
     Color side_to_move = pos->side_to_move();
 
     Move bestMove {MOVE_NONE};
-    Sanmill::Stack<Position> ss;
+    ss.clear();
     Value value = qsearch(pos, ss, alpha_beta_depth, alpha_beta_depth,
                           -VALUE_INFINITE,
                           VALUE_INFINITE,
