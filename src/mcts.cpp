@@ -3,17 +3,17 @@
 // Originally based on Python code at
 // http://mcts.ai/code/python.html
 
-#include "evaluate.h"
 #include "mcts.h"
-#include "position.h"
-#include "types.h"
+#include "evaluate.h"
 #include "movegen.h"
 #include "option.h"
+#include "position.h"
 #include "search.h"
+#include "types.h"
 #include <algorithm>
 #include <cmath>
-#include <thread>
 #include <mutex>
+#include <thread>
 #include <vector>
 
 using namespace std;
@@ -29,12 +29,11 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 class Node
 {
 public:
-    Node(Position *position, Move move, Node *parent)
+    Node(Position *position, Move move, shared_ptr<Node> parent)
         : position(position)
         , move(move)
         , parent(parent)
-    {
-    }
+    { }
 
     double win_score() const
     {
@@ -47,34 +46,34 @@ public:
 
     void increment_wins() { ++num_wins; }
 
-    void add_child(Node *child) { children.emplace_back(child); }
+    void add_child(shared_ptr<Node> child) { children.emplace_back(child); }
 
     Position *position;
     Move move;
-    Node *parent;
-    std::vector<Node *> children;
+    shared_ptr<Node> parent;
+    std::vector<shared_ptr<Node>> children;
     uint32_t num_visits = 0;
     uint32_t num_wins = 0;
 };
 
-void delete_tree(Node *node)
+void delete_tree(shared_ptr<Node> node)
 {
-    for (Node *child : node->children) {
+    for (auto &child : node->children) {
         delete_tree(child);
     }
     delete node->position;
-    delete node;
 }
 
-Value heuristic_evaluation(const Node *node)
+Value heuristic_evaluation(const shared_ptr<Node> &node)
 {
-    //Position *pos = node->position;
-    //return Eval::evaluate(*pos);
-    //return (Value)node->children.size();
+    // Position *pos = node->position;
+    // return Eval::evaluate(*pos);
+    // return (Value)node->children.size();
     return VALUE_ZERO;
 }
 
-double uct_value_tuned(const Node *node, double exploration_parameter,
+double uct_value_tuned(const shared_ptr<Node> &node,
+                       double exploration_parameter,
                        double progressive_bias_weight)
 {
     if (node->num_visits == 0)
@@ -89,13 +88,14 @@ double uct_value_tuned(const Node *node, double exploration_parameter,
     return mean + exploration_term + variance_term + progressive_bias_term;
 }
 
-Node *best_uct_child_tuned(Node *node, double exploration_parameter,
-                           double progressive_bias_weight)
+shared_ptr<Node> best_uct_child_tuned(shared_ptr<Node> node,
+                                      double exploration_parameter,
+                                      double progressive_bias_weight)
 {
-    Node *best_child = nullptr;
+    shared_ptr<Node> best_child = nullptr;
     double best_value = std::numeric_limits<double>::lowest();
 
-    for (Node *child : node->children) {
+    for (auto &child : node->children) {
         double value = uct_value_tuned(child, exploration_parameter,
                                        progressive_bias_weight);
         if (value > best_value) {
@@ -107,8 +107,8 @@ Node *best_uct_child_tuned(Node *node, double exploration_parameter,
     return best_child;
 }
 
-Node *select(Node *node, double exploration_parameter,
-             double progressive_bias_weight)
+shared_ptr<Node> select(shared_ptr<Node> node, double exploration_parameter,
+                        double progressive_bias_weight)
 {
     while (!node->children.empty()) {
         node = best_uct_child_tuned(node, exploration_parameter,
@@ -117,7 +117,7 @@ Node *select(Node *node, double exploration_parameter,
     return node;
 }
 
-Node *expand(Node *node)
+shared_ptr<Node> expand(shared_ptr<Node> node)
 {
     Position *pos = node->position;
     std::vector<Move> legal_moves;
@@ -131,14 +131,15 @@ Node *expand(Node *node)
         Position *child_position = new Position(*pos);
         child_position->do_move(move);
 
-        Node *child = new Node(child_position, move, node);
+        shared_ptr<Node> child = make_shared<Node>(child_position, move, node);
         node->add_child(child);
     }
 
     return node->children.empty() ? node : node->children.front();
 }
 
-bool simulate(Node *node, int alpha_beta_depth, Sanmill::Stack<Position> &ss)
+bool simulate(const shared_ptr<Node> &node, int alpha_beta_depth,
+              Sanmill::Stack<Position> &ss)
 {
     if (gameOptions.getShufflingEnabled() == false) {
         srand(42);
@@ -150,14 +151,12 @@ bool simulate(Node *node, int alpha_beta_depth, Sanmill::Stack<Position> &ss)
     Move bestMove {MOVE_NONE};
     ss.clear();
     Value value = qsearch(pos, ss, alpha_beta_depth, alpha_beta_depth,
-                          -VALUE_INFINITE,
-                          VALUE_INFINITE,
-                         bestMove);
+                          -VALUE_INFINITE, VALUE_INFINITE, bestMove);
 
     return value > 0;
 }
 
-void backpropagate(Node *node, bool win)
+void backpropagate(shared_ptr<Node> node, bool win)
 {
     while (node != nullptr) {
         node->increment_visits();
@@ -171,11 +170,11 @@ void backpropagate(Node *node, bool win)
 class ThreadResult
 {
 public:
-    Node *best_child = nullptr;
+    shared_ptr<Node> best_child = nullptr;
     uint32_t num_visits = 0;
 };
 
-void monte_carlo_tree_search_worker(Node *root, int iterations,
+void monte_carlo_tree_search_worker(shared_ptr<Node> root, int iterations,
                                     double exploration_parameter,
                                     int alpha_beta_depth,
                                     double progressive_bias_weight,
@@ -183,9 +182,9 @@ void monte_carlo_tree_search_worker(Node *root, int iterations,
 {
     Sanmill::Stack<Position> ss;
     for (int i = 0; i < iterations; ++i) {
-        Node *node = select(root, exploration_parameter,
-                            progressive_bias_weight);
-        Node *expanded_node = expand(node);
+        shared_ptr<Node> node = select(root, exploration_parameter,
+                                       progressive_bias_weight);
+        shared_ptr<Node> expanded_node = expand(node);
         bool win = simulate(expanded_node, alpha_beta_depth, ss);
         backpropagate(expanded_node, win);
     }
@@ -202,9 +201,9 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
     const double progressive_bias_weight = 0.1;
     const int num_threads = std::thread::hardware_concurrency();
 
-    std::vector<Node *> roots(num_threads);
+    std::vector<shared_ptr<Node>> roots(num_threads);
     for (int i = 0; i < num_threads; ++i) {
-        roots[i] = new Node(new Position(*pos), MOVE_NONE, nullptr);
+        roots[i] = make_shared<Node>(new Position(*pos), MOVE_NONE, nullptr);
     }
 
     std::vector<ThreadResult> thread_results(num_threads);
@@ -223,16 +222,16 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
         t.join();
     }
 
-    Node *root = roots[0];
+    shared_ptr<Node> root = roots[0];
     for (int i = 1; i < num_threads; ++i) {
         root->num_visits += thread_results[i].num_visits;
-        for (Node *child : roots[i]->children) {
+        for (const shared_ptr<Node> &child : roots[i]->children) {
             root->children.push_back(child);
         }
-        delete roots[i];
     }
 
-    Node *best_child = best_uct_child_tuned(root, 0.0, progressive_bias_weight);
+    shared_ptr<Node> best_child = best_uct_child_tuned(root, 0.0,
+                                                       progressive_bias_weight);
 
     if (best_child == nullptr) {
         bestMove = MOVE_NONE;
