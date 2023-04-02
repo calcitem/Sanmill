@@ -3,6 +3,7 @@
 // Originally based on Python code at
 // http://mcts.ai/code/python.html
 
+#include "evaluate.h"
 #include "mcts.h"
 #include "position.h"
 #include "types.h"
@@ -61,7 +62,16 @@ void delete_tree(Node *node)
     delete node;
 }
 
-double uct_value_tuned(const Node *node, double exploration_parameter)
+Value heuristic_evaluation(const Node *node)
+{
+    //Position *pos = node->position;
+    //return Eval::evaluate(*pos);
+    //return (Value)node->children.size();
+    return VALUE_ZERO;
+}
+
+double uct_value_tuned(const Node *node, double exploration_parameter,
+                       double progressive_bias_weight)
 {
     if (node->num_visits == 0)
         return std::numeric_limits<double>::max();
@@ -70,16 +80,20 @@ double uct_value_tuned(const Node *node, double exploration_parameter)
                               std::sqrt(2 * std::log(node->parent->num_visits) /
                                         node->num_visits);
     double variance_term = std::sqrt((mean * (1 - mean)) / node->num_visits);
-    return mean + exploration_term + variance_term;
+    double progressive_bias_term = progressive_bias_weight *
+                                   (double)heuristic_evaluation(node);
+    return mean + exploration_term + variance_term + progressive_bias_term;
 }
 
-Node *best_uct_child_tuned(Node *node, double exploration_parameter)
+Node *best_uct_child_tuned(Node *node, double exploration_parameter,
+                           double progressive_bias_weight)
 {
     Node *best_child = nullptr;
     double best_value = std::numeric_limits<double>::lowest();
 
     for (Node *child : node->children) {
-        double value = uct_value_tuned(child, exploration_parameter);
+        double value = uct_value_tuned(child, exploration_parameter,
+                                       progressive_bias_weight);
         if (value > best_value) {
             best_value = value;
             best_child = child;
@@ -89,10 +103,12 @@ Node *best_uct_child_tuned(Node *node, double exploration_parameter)
     return best_child;
 }
 
-Node *select(Node *node, double exploration_parameter)
+Node *select(Node *node, double exploration_parameter,
+             double progressive_bias_weight)
 {
     while (!node->children.empty()) {
-        node = best_uct_child_tuned(node, exploration_parameter);
+        node = best_uct_child_tuned(node, exploration_parameter,
+                                    progressive_bias_weight);
     }
     return node;
 }
@@ -152,20 +168,23 @@ void backpropagate(Node *node, bool win)
 
 Value monte_carlo_tree_search(Position *pos, Move &bestMove)
 {
+    // Adjust these values according to your needs
     const int max_iterations = 10000;
     const double exploration_parameter = 1.0;
-    const int alpha_beta_depth = 7; 
+    const int alpha_beta_depth = 7;
+    const double progressive_bias_weight = 0.1; 
 
     Node *root = new Node(new Position(*pos), MOVE_NONE, nullptr);
 
     for (int i = 0; i < max_iterations; ++i) {
-        Node *node = select(root, exploration_parameter);
+        Node *node = select(root, exploration_parameter,
+                            progressive_bias_weight);
         Node *expanded_node = expand(node);
         bool win = simulate(expanded_node, alpha_beta_depth);
         backpropagate(expanded_node, win);
     }
 
-    Node *best_child = best_uct_child_tuned(root, 0.0);
+    Node *best_child = best_uct_child_tuned(root, 0.0, progressive_bias_weight);
 
     if (best_child == nullptr) {
         bestMove = MOVE_NONE;
