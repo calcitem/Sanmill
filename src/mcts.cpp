@@ -3,15 +3,17 @@
 // Originally based on Python code at
 // http://mcts.ai/code/python.html
 
+#include "config.h"
 #include "mcts.h"
-#include "position.h"
-#include "types.h"
 #include "movegen.h"
 #include "option.h"
+#include "position.h"
 #include "search.h"
+#include "tt.h"
+#include "types.h"
 #include <algorithm>
-#include <vector>
 #include <cmath>
+#include <vector>
 
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
            Depth depth, Depth originDepth, Move &bestMove);
@@ -24,12 +26,18 @@ using namespace std;
 class Node
 {
 public:
-    Node(Position *position, Move move, Node *parent)
+    Node(Position *position, Move move, Node *parent,
+#ifdef TRANSPOSITION_TABLE_ENABLE
+         Key key
+#endif
+         )
         : position(position)
         , move(move)
         , parent(parent)
-    {
-    }
+#ifdef TRANSPOSITION_TABLE_ENABLE
+        , key(key)
+#endif
+    { }
 
     double win_score() const
     {
@@ -50,6 +58,10 @@ public:
     std::vector<Node *> children;
     uint32_t num_visits = 0;
     uint32_t num_wins = 0;
+#ifdef TRANSPOSITION_TABLE_ENABLE
+    Key key;
+    TTEntry tt_entry;
+#endif
 };
 
 void delete_tree(Node *node)
@@ -91,7 +103,14 @@ Node *best_uct_child_tuned(Node *node, double exploration_parameter)
 
 Node *select(Node *node, double exploration_parameter)
 {
-    while (!node->children.empty()) {
+    while (node!= nullptr && !node->children.empty()) {
+#ifdef TRANSPOSITION_TABLE_ENABLE
+        if (TranspositionTable::search(node->key, node->tt_entry)) {
+            // Update node state based on tt_entry
+            node->num_visits = node->tt_entry.visits();
+            node->num_wins = node->tt_entry.wins();
+        }
+#endif
         node = best_uct_child_tuned(node, exploration_parameter);
     }
     return node;
@@ -99,6 +118,9 @@ Node *select(Node *node, double exploration_parameter)
 
 Node *expand(Node *node)
 {
+    if (node == nullptr)
+        return nullptr;
+
     Position *pos = node->position;
     std::vector<Move> legal_moves;
     MoveList<LEGAL> ml(*pos);
@@ -110,9 +132,29 @@ Node *expand(Node *node)
     for (const Move &move : legal_moves) {
         Position *child_position = new Position(*pos);
         child_position->do_move(move);
+#ifdef TRANSPOSITION_TABLE_ENABLE
+        Key child_key = child_position->key();
+#endif
 
-        Node *child = new Node(child_position, move, node);
+        Node *child = new Node(child_position, move, node
+#ifdef TRANSPOSITION_TABLE_ENABLE
+                               ,
+                               child_key
+#endif
+        );
         node->add_child(child);
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+        // Set default values for value, depth, and type
+        Value value = VALUE_NONE;
+        Depth depth = DEPTH_NONE;
+        Bound type = BOUND_NONE;
+        uint32_t visits = 0;
+        uint32_t wins = 0;
+
+        // Save the child node in the transposition table
+        TranspositionTable::save(value, depth, type, child_key, visits, wins);
+#endif
     }
 
     return node->children.empty() ? node : node->children.front();
@@ -122,6 +164,10 @@ static Sanmill::Stack<Position> ss;
 
 bool simulate(Node *node, int alpha_beta_depth)
 {
+    if (node == nullptr) {
+        return false;
+    }
+
     if (gameOptions.getShufflingEnabled() == false) {
         srand(42);
     }
@@ -131,10 +177,21 @@ bool simulate(Node *node, int alpha_beta_depth)
 
     Move bestMove {MOVE_NONE};
     ss.clear();
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+    Bound boiund_type = BOUND_NONE;
+    Value value = TranspositionTable::probe(node->key, alpha_beta_depth,
+                                            -VALUE_INFINITE, VALUE_INFINITE,
+                                            boiund_type);
+
+    if (value == VALUE_NONE) {
+        value = qsearch(pos, ss, alpha_beta_depth, alpha_beta_depth,
+                        -VALUE_INFINITE, VALUE_INFINITE, bestMove);
+    }
+#else
     Value value = qsearch(pos, ss, alpha_beta_depth, alpha_beta_depth,
-                          -VALUE_INFINITE,
-                          VALUE_INFINITE,
-                         bestMove);
+                          -VALUE_INFINITE, VALUE_INFINITE, bestMove);
+#endif
 
     return value > 0;
 }
@@ -154,9 +211,14 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
 {
     const int max_iterations = 10000;
     const double exploration_parameter = 1.0;
-    const int alpha_beta_depth = 7; 
+    const int alpha_beta_depth = 7;
 
-    Node *root = new Node(new Position(*pos), MOVE_NONE, nullptr);
+    Node *root = new Node(new Position(*pos), MOVE_NONE, nullptr
+#ifdef TRANSPOSITION_TABLE_ENABLE
+                          ,
+                          pos->key()
+#endif
+    );
 
     for (int i = 0; i < max_iterations; ++i) {
         Node *node = select(root, exploration_parameter);
@@ -178,6 +240,11 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
 
     // Free memory
     delete_tree(root);
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+    // Clear transposition table
+    TranspositionTable::clear();
+#endif // TRANSPOSITION_TABLE_ENABLE
 
     return best_value;
 }
