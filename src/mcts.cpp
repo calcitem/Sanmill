@@ -11,16 +11,20 @@
 #include "option.h"
 #include "search.h"
 #include <algorithm>
-#include <vector>
 #include <cmath>
+#include <thread>
+#include <mutex>
+#include <vector>
+
+using namespace std;
+
+std::mutex mtx;
 
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
            Depth depth, Depth originDepth, Move &bestMove);
 
 Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
               Depth originDepth, Value alpha, Value beta, Move &bestMove);
-
-using namespace std;
 
 class Node
 {
@@ -134,9 +138,7 @@ Node *expand(Node *node)
     return node->children.empty() ? node : node->children.front();
 }
 
-static Sanmill::Stack<Position> ss;
-
-bool simulate(Node *node, int alpha_beta_depth)
+bool simulate(Node *node, int alpha_beta_depth, Sanmill::Stack<Position> &ss)
 {
     if (gameOptions.getShufflingEnabled() == false) {
         srand(42);
@@ -166,22 +168,68 @@ void backpropagate(Node *node, bool win)
     }
 }
 
-Value monte_carlo_tree_search(Position *pos, Move &bestMove)
+class ThreadResult
 {
-    // Adjust these values according to your needs
-    const int max_iterations = 10000;
-    const double exploration_parameter = 1.0;
-    const int alpha_beta_depth = 7;
-    const double progressive_bias_weight = 0.1; 
+public:
+    Node *best_child = nullptr;
+    uint32_t num_visits = 0;
+};
 
-    Node *root = new Node(new Position(*pos), MOVE_NONE, nullptr);
-
-    for (int i = 0; i < max_iterations; ++i) {
+void monte_carlo_tree_search_worker(Node *root, int iterations,
+                                    double exploration_parameter,
+                                    int alpha_beta_depth,
+                                    double progressive_bias_weight,
+                                    ThreadResult *result, int thread_index)
+{
+    Sanmill::Stack<Position> ss;
+    for (int i = 0; i < iterations; ++i) {
         Node *node = select(root, exploration_parameter,
                             progressive_bias_weight);
         Node *expanded_node = expand(node);
-        bool win = simulate(expanded_node, alpha_beta_depth);
+        bool win = simulate(expanded_node, alpha_beta_depth, ss);
         backpropagate(expanded_node, win);
+    }
+    result->best_child = best_uct_child_tuned(root, 0.0,
+                                              progressive_bias_weight);
+    result->num_visits = root->num_visits;
+}
+
+Value monte_carlo_tree_search(Position *pos, Move &bestMove)
+{
+    const int max_iterations = 10000;
+    const double exploration_parameter = 1.0;
+    const int alpha_beta_depth = 7;
+    const double progressive_bias_weight = 0.1;
+    const int num_threads = std::thread::hardware_concurrency();
+
+    std::vector<Node *> roots(num_threads);
+    for (int i = 0; i < num_threads; ++i) {
+        roots[i] = new Node(new Position(*pos), MOVE_NONE, nullptr);
+    }
+
+    std::vector<ThreadResult> thread_results(num_threads);
+    std::vector<std::thread> threads;
+
+    int iterations_per_thread = max_iterations / num_threads;
+
+    for (int i = 0; i < num_threads; ++i) {
+        threads.emplace_back(std::thread(
+            monte_carlo_tree_search_worker, roots[i], iterations_per_thread,
+            exploration_parameter, alpha_beta_depth, progressive_bias_weight,
+            &thread_results[i], i));
+    }
+
+    for (auto &t : threads) {
+        t.join();
+    }
+
+    Node *root = roots[0];
+    for (int i = 1; i < num_threads; ++i) {
+        root->num_visits += thread_results[i].num_visits;
+        for (Node *child : roots[i]->children) {
+            root->children.push_back(child);
+        }
+        delete roots[i];
     }
 
     Node *best_child = best_uct_child_tuned(root, 0.0, progressive_bias_weight);
@@ -192,11 +240,10 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
     }
 
     bestMove = best_child->move;
-    Value best_value = static_cast<Value>(best_child->win_score() * 2.0 -
-                                          1.0); // Convert win rate to value
+    Value best_value = static_cast<Value>(best_child->win_score() * 2.0 - 1.0);
 
-    // Free memory
     delete_tree(root);
 
     return best_value;
 }
+
