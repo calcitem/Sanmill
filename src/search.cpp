@@ -193,14 +193,15 @@ int Thread::search()
         beta = VALUE_INFINITE;
     }
 
-#if 0
+#ifdef MONTE_CARLO_TREE_SEARCH
+    value = monte_carlo_tree_search(rootPos, bestMove);
+#else
     if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
         value = MTDF(rootPos, ss, value, originDepth, originDepth, bestMove);
     } else {
         value = qsearch(rootPos, ss, d, originDepth, alpha, beta, bestMove);
     }
 #endif
-    value = monte_carlo_tree_search(rootPos, bestMove);
 
 out:
 

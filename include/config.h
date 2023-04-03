@@ -60,6 +60,8 @@
 
 // #define UCT_DEMO
 
+//#define MONTE_CARLO_TREE_SEARCH
+
 #ifndef DISABLE_PERFECT_AI
 #ifdef _MSC_VER
 #ifndef __clang__
