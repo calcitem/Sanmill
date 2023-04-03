@@ -23,6 +23,40 @@
 using Eval::evaluate;
 using std::string;
 
+vector<vector<int>> historyHeuristicTable(72, vector<int>(72, 0));
+
+void reset_history_heuristic_table()
+{
+    for (int i = 0; i < 72; i++) {
+        for (int j = 0; j < 72; j++) {
+            historyHeuristicTable[i][j] = 0;
+        }
+    }
+}
+
+void update_history_heuristic(const Move &move, Depth depth)
+{
+    int from = from_sq(move);
+    int to = to_sq(move);
+    historyHeuristicTable[from][to] += depth * depth;
+}
+
+bool history_heuristic_comparator(const ExtMove &em1, const ExtMove &em2)
+{
+    int from1 = from_sq(em1.move);
+    int to1 = to_sq(em1.move);
+    int from2 = from_sq(em2.move);
+    int to2 = to_sq(em2.move);
+
+    return historyHeuristicTable[from1][to1] >
+           historyHeuristicTable[from2][to2];
+}
+
+void sort_moves_by_history_heuristic(ExtMove moves[72], int size)
+{
+    std::sort(moves, moves + size, history_heuristic_comparator);
+}
+
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
            Depth depth, Depth originDepth, Move &bestMove);
 
@@ -61,6 +95,8 @@ int Thread::search()
 
     Value value = VALUE_ZERO;
     const Depth d = get_depth();
+
+    reset_history_heuristic_table();
 
     if (gameOptions.getAiIsLazy()) {
         const int np = bestvalue / VALUE_EACH_PIECE;
@@ -374,6 +410,8 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     }
 #endif // TT_MOVE_ENABLE
 
+    sort_moves_by_history_heuristic(mp.moves, moveCount);
+
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifndef DISABLE_PREFETCH
     for (int i = 0; i < moveCount; i++) {
@@ -473,6 +511,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                 if (value < beta) {
                     // Update alpha! Always alpha < beta
                     alpha = value;
+                    update_history_heuristic(move, depth);
                 } else {
                     assert(value >= beta); // Fail high
                     break;                 // Fail high
