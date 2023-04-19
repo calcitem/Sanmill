@@ -27,24 +27,24 @@ UCI::OptionsMap Options; // Global object
 namespace UCI {
 
 /// 'On change' actions, triggered by an option's value change
-void on_clear_hash(const Option &)
+static void on_clear_hash(const Option &)
 {
     Search::clear();
 }
 
-void on_hash_size(const Option &o)
+static void on_hash_size(const Option &o)
 {
 #ifdef TRANSPOSITION_TABLE_ENABLE
     TT.resize(static_cast<size_t>(o));
 #endif
 }
 
-void on_logger(const Option &o)
+static void on_logger(const Option &o)
 {
     start_logger(o);
 }
 
-void on_threads(const Option &o)
+static void on_threads(const Option &o)
 {
     Threads.set(static_cast<size_t>(o));
 }
@@ -54,119 +54,119 @@ void on_skill_level(const Option &o)
     gameOptions.setSkillLevel(static_cast<int>(o));
 }
 
-void on_move_time(const Option &o)
+static void on_move_time(const Option &o)
 {
     gameOptions.setMoveTime(static_cast<int>(o));
 }
 
-void on_aiIsLazy(const Option &o)
+static void on_aiIsLazy(const Option &o)
 {
     gameOptions.setAiIsLazy(static_cast<bool>(o));
 }
 
-void on_random_move(const Option &o)
+static void on_random_move(const Option &o)
 {
     gameOptions.setShufflingEnabled(o);
 }
 
-void on_algorithm(const Option &o)
+static void on_algorithm(const Option &o)
 {
     gameOptions.setAlgorithm(static_cast<int>(o));
 }
 
-void on_drawOnHumanExperience(const Option &o)
+static void on_drawOnHumanExperience(const Option &o)
 {
     gameOptions.setDrawOnHumanExperience(o);
 }
 
-void on_considerMobility(const Option &o)
+static void on_considerMobility(const Option &o)
 {
     gameOptions.setConsiderMobility(o);
 }
 
-void on_developerMode(const Option &o)
+static void on_developerMode(const Option &o)
 {
     gameOptions.setDeveloperMode(o);
 }
 
 // Rules
 
-void on_piecesCount(const Option &o)
+static void on_piecesCount(const Option &o)
 {
     rule.pieceCount = static_cast<int>(o);
 }
 
-void on_flyPieceCount(const Option &o)
+static void on_flyPieceCount(const Option &o)
 {
     rule.flyPieceCount = static_cast<int>(o);
 }
 
-void on_piecesAtLeastCount(const Option &o)
+static void on_piecesAtLeastCount(const Option &o)
 {
     rule.piecesAtLeastCount = static_cast<int>(o);
 }
 
-void on_hasDiagonalLines(const Option &o)
+static void on_hasDiagonalLines(const Option &o)
 {
     rule.hasDiagonalLines = static_cast<bool>(o);
 }
 
-void on_hasBannedLocations(const Option &o)
+static void on_hasBannedLocations(const Option &o)
 {
     rule.hasBannedLocations = static_cast<bool>(o);
 }
 
-void on_mayMoveInPlacingPhase(const Option &o)
+static void on_mayMoveInPlacingPhase(const Option &o)
 {
     rule.mayMoveInPlacingPhase = static_cast<bool>(o);
 }
 
-void on_isDefenderMoveFirst(const Option &o)
+static void on_isDefenderMoveFirst(const Option &o)
 {
     rule.isDefenderMoveFirst = static_cast<bool>(o);
 }
 
-void on_mayRemoveMultiple(const Option &o)
+static void on_mayRemoveMultiple(const Option &o)
 {
     rule.mayRemoveMultiple = static_cast<bool>(o);
 }
 
-void on_mayRemoveFromMillsAlways(const Option &o)
+static void on_mayRemoveFromMillsAlways(const Option &o)
 {
     rule.mayRemoveFromMillsAlways = static_cast<bool>(o);
 }
 
-void on_mayOnlyRemoveUnplacedPieceInPlacingPhase(const Option &o)
+static void on_mayOnlyRemoveUnplacedPieceInPlacingPhase(const Option &o)
 {
     rule.mayOnlyRemoveUnplacedPieceInPlacingPhase = static_cast<bool>(o);
 }
 
-void on_boardFullAction(const Option &o)
+static void on_boardFullAction(const Option &o)
 {
     rule.boardFullAction = static_cast<BoardFullAction>(static_cast<int>(o));
 }
 
-void on_stalemateAction(const Option &o)
+static void on_stalemateAction(const Option &o)
 {
     rule.stalemateAction = static_cast<StalemateAction>(static_cast<int>(o));
 }
 
-void on_mayFly(const Option &o)
+static void on_mayFly(const Option &o)
 {
     rule.mayFly = static_cast<bool>(o);
 }
 
-void on_nMoveRule(const Option &o)
+static void on_nMoveRule(const Option &o)
 {
     rule.nMoveRule = static_cast<unsigned>(o);
 }
 
-void on_endgameNMoveRule(const Option &o)
+static void on_endgameNMoveRule(const Option &o)
 {
     rule.endgameNMoveRule = static_cast<unsigned>(o);
 }
 
-void on_threefoldRepetitionRule(const Option &o)
+static void on_threefoldRepetitionRule(const Option &o)
 {
     rule.threefoldRepetitionRule = static_cast<bool>(o);
 }
