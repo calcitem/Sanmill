@@ -397,7 +397,7 @@ void move_priority_list_shuffle()
         movePriorityList2 = {SQ_17, SQ_19, SQ_21, SQ_23};
         movePriorityList3 = {SQ_25, SQ_27, SQ_29, SQ_31,
                              SQ_9,  SQ_11, SQ_13, SQ_15};
-    } else if (rule.hasDiagonalLines) {
+    } else {
         movePriorityList0 = {SQ_17, SQ_19, SQ_21, SQ_23};
         movePriorityList1 = {SQ_25, SQ_27, SQ_29, SQ_31,
                              SQ_9,  SQ_11, SQ_13, SQ_15};
