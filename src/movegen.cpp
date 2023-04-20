@@ -149,7 +149,6 @@ ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
 #ifdef FLUTTER_UI
         LOGD("generate(): action = %hu\n", pos.get_action());
 #endif
-        assert(0);
         break;
     }
 

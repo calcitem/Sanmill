@@ -890,7 +890,7 @@ bool Position::put_piece(Square s, bool updateRecord)
             action = Action::remove;
         }
     } else {
-        assert(0);
+        return false;
     }
 
     return true;
