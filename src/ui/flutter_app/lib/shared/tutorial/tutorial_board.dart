@@ -18,10 +18,10 @@ import 'package:flutter/material.dart';
 
 import '../../services/mill/mill.dart';
 import '../painters/painters.dart';
-import 'wizard_painter.dart';
+import 'tutorial_painter.dart';
 
-class WizardBoard extends StatelessWidget {
-  const WizardBoard({
+class TutorialBoard extends StatelessWidget {
+  const TutorialBoard({
     super.key,
     required this.pieceList,
     this.focusIndex,
@@ -42,7 +42,7 @@ class WizardBoard extends StatelessWidget {
           dimension: dimension,
           child: CustomPaint(
             painter: BoardPainter(context),
-            foregroundPainter: WizardPainter(
+            foregroundPainter: TutorialPainter(
               focusIndex: focusIndex,
               blurIndex: blurIndex,
               pieceList: pieceList,

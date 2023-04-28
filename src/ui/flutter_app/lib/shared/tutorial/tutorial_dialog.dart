@@ -23,17 +23,17 @@ import '../../services/database/database.dart';
 import '../../services/mill/mill.dart';
 import '../painters/painters.dart';
 import '../theme/app_theme.dart';
-import 'wizard_board.dart';
-import 'wizard_mask_painter.dart';
+import 'tutorial_board.dart';
+import 'tutorial_mask_painter.dart';
 
-class WizardDialog extends StatefulWidget {
-  const WizardDialog({super.key});
+class TutorialDialog extends StatefulWidget {
+  const TutorialDialog({super.key});
 
   @override
-  State<WizardDialog> createState() => _WizardDialogState();
+  State<TutorialDialog> createState() => _TutorialDialogState();
 }
 
-class _WizardDialogState extends State<WizardDialog> {
+class _TutorialDialogState extends State<TutorialDialog> {
   int? _focusIndex;
   int? _blurIndex;
   List<PieceColor> _pieceList = List<PieceColor>.filled(7 * 7, PieceColor.none);
@@ -92,7 +92,7 @@ class _WizardDialogState extends State<WizardDialog> {
                           child: SizedBox(
                             width: landscapeBoardWidth,
                             height: landscapeBoardWidth,
-                            child: WizardBoard(
+                            child: TutorialBoard(
                               focusIndex: _focusIndex,
                               blurIndex: _blurIndex,
                               pieceList: _pieceList,
@@ -100,7 +100,7 @@ class _WizardDialogState extends State<WizardDialog> {
                           ),
                         ),
                         CustomPaint(
-                          painter: WizardMaskPainter(
+                          painter: TutorialMaskPainter(
                             maskOffset: _maskOffset,
                             maskRadius: pieceWidth * 1.5,
                           ),
@@ -132,7 +132,7 @@ class _WizardDialogState extends State<WizardDialog> {
                                         : S.of(context).skip,
                                     child: IconButton(
                                       onPressed: () {
-                                        _finishWizard(context);
+                                        _finishTutorial(context);
                                       },
                                       icon: isFinally
                                           ? const Icon(
@@ -167,7 +167,7 @@ class _WizardDialogState extends State<WizardDialog> {
                               child: GestureDetector(
                                 onTap: () {
                                   if (_curIndex >= _maxIndex) {
-                                    _finishWizard(context);
+                                    _finishTutorial(context);
                                   } else {
                                     nextStep();
                                   }
@@ -175,7 +175,7 @@ class _WizardDialogState extends State<WizardDialog> {
                                 behavior: HitTestBehavior.opaque,
                                 child: AnimatedSwitcher(
                                   duration: const Duration(milliseconds: 400),
-                                  child: getWizard(),
+                                  child: getTutorial(),
                                 ),
                               ),
                             ),
@@ -193,7 +193,7 @@ class _WizardDialogState extends State<WizardDialog> {
                             right: AppTheme.boardPadding,
                             top: kToolbarHeight + AppTheme.boardPadding,
                           ),
-                          child: WizardBoard(
+                          child: TutorialBoard(
                             focusIndex: _focusIndex,
                             blurIndex: _blurIndex,
                             pieceList: _pieceList,
@@ -201,7 +201,7 @@ class _WizardDialogState extends State<WizardDialog> {
                         ),
                       ),
                       CustomPaint(
-                        painter: WizardMaskPainter(
+                        painter: TutorialMaskPainter(
                           maskOffset: _maskOffset,
                           maskRadius: pieceWidth * 1.5,
                         ),
@@ -234,7 +234,7 @@ class _WizardDialogState extends State<WizardDialog> {
                                         : S.of(context).skip,
                                     child: IconButton(
                                       onPressed: () {
-                                        _finishWizard(context);
+                                        _finishTutorial(context);
                                       },
                                       icon: isFinally
                                           ? const Icon(
@@ -269,7 +269,7 @@ class _WizardDialogState extends State<WizardDialog> {
                               child: GestureDetector(
                                 onTap: () {
                                   if (_curIndex >= _maxIndex) {
-                                    _finishWizard(context);
+                                    _finishTutorial(context);
                                   } else {
                                     nextStep();
                                   }
@@ -277,7 +277,7 @@ class _WizardDialogState extends State<WizardDialog> {
                                 behavior: HitTestBehavior.opaque,
                                 child: AnimatedSwitcher(
                                   duration: const Duration(milliseconds: 400),
-                                  child: getWizard(),
+                                  child: getTutorial(),
                                 ),
                               ),
                             ),
@@ -292,9 +292,9 @@ class _WizardDialogState extends State<WizardDialog> {
     );
   }
 
-  void _finishWizard(BuildContext context) {
+  void _finishTutorial(BuildContext context) {
     Navigator.of(context).pop();
-    DB().generalSettings = DB().generalSettings.copyWith(showWizard: false);
+    DB().generalSettings = DB().generalSettings.copyWith(showTutorial: false);
   }
 
   void prevStep() {
@@ -313,7 +313,7 @@ class _WizardDialogState extends State<WizardDialog> {
     }
   }
 
-  Widget getWizard() {
+  Widget getTutorial() {
     Widget? child;
     switch (_curIndex) {
       case 0:

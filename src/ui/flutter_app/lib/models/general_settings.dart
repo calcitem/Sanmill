@@ -82,7 +82,7 @@ class GeneralSettings {
     this.gameScreenRecorderSupport = false,
     this.gameScreenRecorderDuration = 2,
     this.gameScreenRecorderPixelRatio = 50,
-    this.showWizard = true,
+    this.showTutorial = true,
     this.remindedOpponentMayFly = false,
   });
 
@@ -175,7 +175,7 @@ class GeneralSettings {
   final int gameScreenRecorderPixelRatio;
 
   @HiveField(25, defaultValue: true)
-  final bool showWizard;
+  final bool showTutorial;
 
   @HiveField(26, defaultValue: false)
   final bool remindedOpponentMayFly;

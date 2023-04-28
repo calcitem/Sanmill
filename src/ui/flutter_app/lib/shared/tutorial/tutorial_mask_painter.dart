@@ -16,8 +16,8 @@
 
 import 'package:flutter/material.dart';
 
-class WizardMaskPainter extends CustomPainter {
-  WizardMaskPainter({
+class TutorialMaskPainter extends CustomPainter {
+  TutorialMaskPainter({
     this.background = Colors.black38,
     this.maskOffset,
     this.maskRadius = 56,

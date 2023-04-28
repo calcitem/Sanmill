@@ -42,7 +42,7 @@ import '../shared/privacy_dialog.dart';
 import '../shared/scaffold_messenger.dart';
 import '../shared/stack_list.dart';
 import '../shared/theme/app_theme.dart';
-import '../shared/wizard/wizard_dialog.dart';
+import '../shared/tutorial/tutorial_dialog.dart';
 import 'about_page.dart';
 import 'appearance_settings/appearance_settings_page.dart';
 import 'game_page/game_page.dart';
@@ -366,18 +366,18 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) =>
-            PrivacyDialog(onConfirm: _showWizardDialog),
+            PrivacyDialog(onConfirm: _showTutorialDialog),
       );
     } else {
-      _showWizardDialog();
+      _showTutorialDialog();
     }
   }
 
-  Future<void> _showWizardDialog() async {
-    if (DB().generalSettings.showWizard) {
+  Future<void> _showTutorialDialog() async {
+    if (DB().generalSettings.showTutorial) {
       await Navigator.of(context).push(
         MaterialPageRoute<dynamic>(
-          builder: (BuildContext context) => const WizardDialog(),
+          builder: (BuildContext context) => const TutorialDialog(),
           fullscreenDialog: true,
         ),
       );

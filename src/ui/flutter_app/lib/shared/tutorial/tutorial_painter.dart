@@ -21,8 +21,8 @@ import '../../services/mill/mill.dart';
 import '../painters/painters.dart';
 
 /// Preview Piece Painter
-class WizardPainter extends CustomPainter {
-  WizardPainter({this.blurIndex, this.focusIndex, required this.pieceList});
+class TutorialPainter extends CustomPainter {
+  TutorialPainter({this.blurIndex, this.focusIndex, required this.pieceList});
 
   final int? focusIndex;
   final int? blurIndex;
@@ -128,5 +128,5 @@ class WizardPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(WizardPainter oldDelegate) => true;
+  bool shouldRepaint(TutorialPainter oldDelegate) => true;
 }
