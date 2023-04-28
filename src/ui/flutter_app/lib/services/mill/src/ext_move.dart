@@ -18,8 +18,8 @@ part of '../mill.dart';
 
 enum MoveType { place, move, remove, draw, none }
 
-extension _MoveTypeExtension on MoveType {
-  static MoveType? parse(String move) {
+class MoveParser {
+  MoveType parseMoveType(String move) {
     if (move.startsWith("-") && move.length == "-(1,2)".length) {
       return MoveType.remove;
     } else if (move.length == "(1,2)->(3,4)".length) {
@@ -40,11 +40,13 @@ extension _MoveTypeExtension on MoveType {
 }
 
 // TODO: We should know who do this move
+@immutable
 class ExtMove {
   ExtMove(this.move) {
     _checkLegal();
 
-    type = _MoveTypeExtension.parse(move);
+    final MoveParser moveParser = MoveParser();
+    type = moveParser.parseMoveType(move);
 
     late int toFile;
     late int toRank;
@@ -155,7 +157,7 @@ class ExtMove {
 
     if (move.length > "(3,1)->(2,1)".length) {
       throw FormatException(
-        "$_tag Invalid Move: move representation is to long",
+        "$_tag Invalid Move: move representation is too long",
         move,
       );
     }
@@ -197,10 +199,8 @@ class ExtMove {
   }
 
   @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes
   int get hashCode => move.hashCode;
 
   @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes
   bool operator ==(Object other) => other is ExtMove && other.move == move;
 }
