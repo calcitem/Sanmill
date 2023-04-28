@@ -16,8 +16,16 @@
 
 part of '../mill.dart';
 
+class Player {
+  Player({required this.color, required this.isAi});
+  final PieceColor color;
+  bool isAi;
+}
+
 class Game {
-  Game();
+  Game({required GameMode gameMode}) {
+    this.gameMode = gameMode;
+  }
 
   static const String _tag = "[game]";
 
@@ -25,7 +33,7 @@ class Game {
 
   bool get isAiToMove {
     assert(sideToMove == PieceColor.white || sideToMove == PieceColor.black);
-    return _isAi[sideToMove]!;
+    return getPlayerByColor(sideToMove).isAi;
   }
 
   bool get isHumanToMove => !isAiToMove;
@@ -33,27 +41,34 @@ class Game {
   int? focusIndex;
   int? blurIndex;
 
-  // TODO: [Leptopoda] Give a game two players (new class) to hold a player. A player can have a color, be AI ...
-  Map<PieceColor, bool> _isAi = <PieceColor, bool>{
-    PieceColor.white: false,
-    PieceColor.black: true,
-  };
+  final List<Player> players = <Player>[
+    Player(color: PieceColor.white, isAi: false),
+    Player(color: PieceColor.black, isAi: true),
+  ];
+
+  Player getPlayerByColor(PieceColor color) {
+    return players.firstWhere((Player player) => player.color == color);
+  }
 
   void reverseWhoIsAi() {
     if (MillController().gameInstance.gameMode == GameMode.humanVsAi) {
-      _isAi[PieceColor.white] = !_isAi[PieceColor.white]!;
-      _isAi[PieceColor.black] = !_isAi[PieceColor.black]!;
+      for (final Player player in players) {
+        player.isAi = !player.isAi;
+      }
     } else if (MillController().gameInstance.gameMode ==
         GameMode.humanVsHuman) {
-      if (_isAi[PieceColor.white] == _isAi[PieceColor.black]!) {
-        _isAi[MillController().position.sideToMove] = true;
+      final bool whiteIsAi = getPlayerByColor(PieceColor.white).isAi;
+      final bool blackIsAi = getPlayerByColor(PieceColor.black).isAi;
+      if (whiteIsAi == blackIsAi) {
+        getPlayerByColor(MillController().position.sideToMove).isAi = true;
       } else {
-        _isAi[PieceColor.white] = _isAi[PieceColor.black] = false;
+        for (final Player player in players) {
+          player.isAi = false;
+        }
       }
     }
   }
 
-  // TODO: [Leptopoda] Make gameMode final and set it through the constructor.
   late GameMode _gameMode;
   GameMode get gameMode => _gameMode;
 
@@ -62,11 +77,14 @@ class Game {
 
     logger.i("$_tag Engine type: $type");
 
-    _isAi = type.whoIsAI;
+    final Map<PieceColor, bool> whoIsAi = type.whoIsAI;
+    for (final Player player in players) {
+      player.isAi = whoIsAi[player.color]!;
+    }
 
     logger.i(
-      "$_tag White is AI? ${_isAi[PieceColor.white]}\n"
-      "$_tag Black is AI? ${_isAi[PieceColor.black]}\n",
+      "$_tag White is AI? ${getPlayerByColor(PieceColor.white).isAi}\n"
+      "$_tag Black is AI? ${getPlayerByColor(PieceColor.black).isAi}\n",
     );
   }
 

@@ -130,7 +130,7 @@ class MillController {
   /// Initializes the controller.
   void _init() {
     position = Position();
-    gameInstance = Game();
+    gameInstance = Game(gameMode: GameMode.humanVsAi);
     engine = Engine();
     recorder = GameRecorder(lastPositionWithRemove: position.fen);
 

@@ -226,17 +226,21 @@ class ImportService {
         Position.score[PieceColor.black]! +
         Position.score[PieceColor.draw]!;
 
+    final Game gameInstance = MillController().gameInstance;
+    final Player whitePlayer = gameInstance.getPlayerByColor(PieceColor.white);
+    final Player blackPlayer = gameInstance.getPlayerByColor(PieceColor.black);
+
     String white;
     String black;
     String result;
 
-    if (MillController().gameInstance._isAi[PieceColor.white]!) {
+    if (whitePlayer.isAi) {
       white = "AI";
     } else {
       white = "Human";
     }
 
-    if (MillController().gameInstance._isAi[PieceColor.black]!) {
+    if (blackPlayer.isAi) {
       black = "AI";
     } else {
       black = "Human";
