@@ -32,16 +32,19 @@ class Audios {
 
   late Soundpool _soundpool;
   int _alarmSoundStreamId = 0;
-  late int _drawSoundId;
-  late int _flySoundId;
-  late int _goSoundId;
-  late int _illegalSoundId;
-  late int _loseSoundId;
-  late int _millSoundId;
-  late int _placeSoundId;
-  late int _removeSoundId;
-  late int _selectSoundId;
-  late int _winSoundId;
+  final Map<Sound, String> _soundFiles = <Sound, String>{
+    Sound.draw: Assets.audios.draw,
+    Sound.fly: Assets.audios.fly,
+    Sound.go: Assets.audios.go,
+    Sound.illegal: Assets.audios.illegal,
+    Sound.lose: Assets.audios.lose,
+    Sound.mill: Assets.audios.mill,
+    Sound.place: Assets.audios.place,
+    Sound.remove: Assets.audios.remove,
+    Sound.select: Assets.audios.select,
+    Sound.win: Assets.audios.win,
+  };
+  final Map<Sound, int> _soundIds = <Sound, int>{};
   bool _isTemporaryMute = false;
 
   static const String _tag = "[audio]";
@@ -56,84 +59,15 @@ class Audios {
 
     _soundpool = Soundpool.fromOptions();
 
-    _drawSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.draw),
-    );
-
-    _flySoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.fly),
-    );
-
-    _goSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.go),
-    );
-
-    _illegalSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.illegal),
-    );
-
-    _loseSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.lose),
-    );
-
-    _millSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.mill),
-    );
-
-    _placeSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.place),
-    );
-
-    _removeSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.remove),
-    );
-
-    _selectSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.select),
-    );
-
-    _winSoundId = await _soundpool.load(
-      await rootBundle.load(Assets.audios.win),
-    );
+    for (final Sound sound in Sound.values) {
+      _soundIds[sound] = await _soundpool.load(
+        await rootBundle.load(_soundFiles[sound]!),
+      );
+    }
   }
 
   Future<void> _playSound(Sound sound) async {
-    final int soundId;
-
-    switch (sound) {
-      case Sound.draw:
-        soundId = _drawSoundId;
-        break;
-      case Sound.fly:
-        soundId = _flySoundId;
-        break;
-      case Sound.go:
-        soundId = _goSoundId;
-        break;
-      case Sound.illegal:
-        soundId = _illegalSoundId;
-        break;
-      case Sound.lose:
-        soundId = _loseSoundId;
-        break;
-      case Sound.mill:
-        soundId = _millSoundId;
-        break;
-      case Sound.place:
-        soundId = _placeSoundId;
-        break;
-      case Sound.remove:
-        soundId = _removeSoundId;
-        break;
-      case Sound.select:
-        soundId = _selectSoundId;
-        break;
-      case Sound.win:
-        soundId = _winSoundId;
-        break;
-    }
-
-    _alarmSoundStreamId = await _soundpool.play(soundId);
+    _alarmSoundStreamId = await _soundpool.play(_soundIds[sound]!);
   }
 
   Future<void> _stopSound() async {
