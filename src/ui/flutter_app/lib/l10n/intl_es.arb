@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "{player} para moverse.",
+  "tipToMove": "{player} para mover.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -240,19 +240,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} dimitió.",
+  "loseReasonResign": "{player} renunció.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "{player} no tiene camino a seguir.",
+  "loseReasonNoWay": "{player} no tiene forma de irse.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "La placa está llena y {player} no tiene camino por recorrer.",
+  "loseReasonBoardIsFull": "El tablero está lleno y el {player} no tiene forma de moverse.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Se acabó el tiempo, {player} perdido.",
+  "loseReasonTimeOver": "Se acabó el tiempo, {player} ha perdido.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -280,7 +280,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "¿Desafiar el nivel más difícil? ¡El nuevo nivel será el nivel {level}!",
+  "challengeHarderLevel": "¿Desafias al nivel más difícil? ¡El nuevo nivel será el nivel {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -312,7 +312,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "Configuración general",
+  "generalSettings": "Parámetros generales",
   "@generalSettings": {
     "description": "General Settings"
   },
@@ -580,7 +580,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Seleccione {element}",
+  "pick": "Elige {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -604,7 +604,7 @@
   "@player2": {
     "description": "Player 2"
   },
-  "howToPlay": "Cómo se juega",
+  "howToPlay": "Cómo jugar",
   "@howToPlay": {
     "description": "How to play"
   },
@@ -718,7 +718,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "El objetivo del juego es dejar al adversario con menos de tres piezas o sin movimientos legales.\n\nLa partida se empata automáticamente si se reposiciona por tercera vez, o si no se ha realizado ninguna retirada en los últimos 100 movimientos (configurable).\n\nEl juego se desarrolla en tres fases:\n\n1. Colocación de las piezas en los puntos vacíos\n2. Movimiento de piezas a los puntos adyacentes\n3. (fase opcional) Movimiento de piezas a cualquier punto libre cuando el jugador se ha quedado con tres piezas\n\nColocación\n\nEl juego comienza con un tablero vacío, que consiste en una cuadrícula con veinticuatro puntos. Los jugadores se turnan para colocar sus piezas en los puntos libres hasta que cada jugador haya colocado todas las piezas del tablero. Si un jugador consigue colocar tres de sus piezas en línea recta, tiene un \"molino\" y puede remover una de las piezas de su oponente del tablero.\n\nEn algunas varaciones, ocurre que los jugadores deben remover primero cualquier otra pieza antes de retirar una pieza de un molino formado.\n\nEn algunas variantes, exista la regla que todos los puntos de las piezas retiradas no pueden volver al tablero en la fase de colocación.\n\nUna vez que se han utilizado todas las piezas, los jugadores se turnan para mover.\n\nMovimiento\n\nPara mover, un jugador mueve una de sus piezas a lo largo de una línea del tablero hasta un punto adyacente libre. Si no puede hacerlo, ha perdido la partida. Al igual que en la fase de colocación, un jugador que alinea tres de sus piezas en una línea del tablero tiene un molino y puede retirar una de las piezas de su oponente. Cualquier jugador que le restará dos piezas, no tendrá opción de formar nuevos molinos y perderá la partida. Un jugador también puede perder con más de tres piezas si su oponente las bloquea para que no puedan moverse.\n\nVuelo\n\nEn una variante común, una vez que un jugador le quede sólo tres piezas, sus piezas podrán \"\"volar\"\", \"\"saltar\"\" o \"\"brincar\"\" a cualquier punto libre, no sólo a los adyacentes.",
+  "helpContent": "El objetivo del juego es dejar al adversario con menos de tres piezas o sin movimientos legales.\n\nEl juego empata automáticamente si una posición se produce por tercera vez o no hace ninguna retirada en los últimos 100 movimientos (configurables).\n\nEl juego se desarrolla en tres fases:\n\n1. 1. Colocación de las piezas en los puntos vacantes\n2. 2. Mover piezas a puntos adyacentes\n3. (fase opcional) Mover las piezas a cualquier punto vacío al reducir el jugador a tres piezas\n\nColocación de\n\nEl juego comienza con un tablero vacío, que consiste en una cuadrícula con veinticuatro puntos. Los jugadores se turnan para colocar sus piezas en los puntos vacantes hasta que cada jugador haya colocado todas las piezas en el tablero. Si un jugador consigue colocar tres de sus piezas en línea recta, tiene un \"molino\" y puede retirar del tablero una de las piezas de su adversario.\n\nEn algunas reglas, los jugadores deben eliminar primero cualquier otra pieza antes de eliminar una pieza de un molino formado.\n\nEn algunas reglas no se pueden volver a colocar las piezas en los puntos de las piezas eliminadas en la fase de colocación.\n\nUna vez utilizadas todas las piezas, los jugadores se mueven por turnos.\n\nMover\n\nPara mover, un jugador mueve una de sus piezas a lo largo de una línea del tablero hasta un punto adyacente libre. Si no puede hacerlo, ha perdido la partida. Un jugador que alinea tres de sus piezas en una línea del tablero tiene un molino y puede eliminar una de las piezas de su adversario como en la fase de colocación. Si un jugador se reduce a dos piezas, no tiene opción de formar nuevos molinos y, por tanto, pierde la partida. Un jugador también puede perder cuando tiene más de tres piezas si su adversario bloquea su movimiento.\n\nVolando\n\nEn algunas variantes de las reglas, una vez que a un jugador sólo le quedan tres piezas, sus piezas pueden volar, saltar o brincar a cualquier punto libre, no sólo a los adyacentes.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -778,7 +778,7 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "appearance": "Apariencia",
+  "appearance": "Aspecto",
   "@appearance": {
     "description": "Appearance"
   },
@@ -794,11 +794,11 @@
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "{player} en mano: {count}",
+  "inHand": "El {player} en la mano: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "{player} a bordo: {count}",
+  "onBoard": "El {player} en el tablero: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -950,7 +950,7 @@
   "@loadGame": {
     "description": "Load game"
   },
-  "setupPosition": "Posición de instalación",
+  "setupPosition": "Preparar el escenario",
   "@setupPosition": {
     "description": "Setup position"
   },
@@ -1054,11 +1054,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Lado para mover: {player}",
+  "sideToMove": "Mover hacía: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Última jugada: {move}",
+  "lastMove": "Último movimiento: {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1142,7 +1142,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{Muevete}=1{{count} Muevete}other{{count} Se mueve}}",
+  "moveNumber": "{count,plural, =0{Movimiento}=1{{count} Movimiento}other{{count} Movimientos}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
@@ -1152,15 +1152,15 @@
       }
     }
   },
-  "loadFailed": "Carga fallida.",
+  "loadFailed": "Falló al cargar.",
   "@loadFailed": {
     "description": "Load failed."
   },
-  "browse": "Navegar…",
+  "browse": "Explorar…",
   "@browse": {
     "description": "Browse…"
   },
-  "gameFiles": "Archivos de juego",
+  "gameFiles": "Archivos del juego",
   "@gameFiles": {
     "description": "Game files"
   },
@@ -1168,11 +1168,11 @@
   "@filename": {
     "description": "File name"
   },
-  "gameSavedTo": "El juego se guarda en",
+  "gameSavedTo": "La partida se guarda en",
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "placedCount": "Colocado ({count})",
+  "placedCount": "Situado ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {
@@ -1182,15 +1182,15 @@
       }
     }
   },
-  "ban": "Prohibición",
+  "ban": "Prohibido",
   "@ban": {
     "description": "Ban point, used in setup position toolbar."
   },
-  "noPiecesCanBeRemoved": "No se pueden quitar piezas.",
+  "noPiecesCanBeRemoved": "No se pueden retirar las piezas.",
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "placedPieceCount": "Recuento de piezas colocadas en la fase de colocación.",
+  "placedPieceCount": "Número de piezas colocadas en la fase de colocación.",
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
   },
@@ -1198,27 +1198,27 @@
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
   },
-  "remove": "Remover",
+  "remove": "Quitar",
   "@remove": {
     "description": "Remove"
   },
-  "noMove": "Ningún movimiento.",
+  "noMove": "Sin movimientos.",
   "@noMove": {
     "description": "No move."
   },
-  "clean": "Limpio",
+  "clean": "Limpiar",
   "@clean": {
     "description": "Clean"
   },
-  "restoredPosition": "Posición inicial restaurada.",
+  "restoredPosition": "Restablecida la posición inicial.",
   "@restoredPosition": {
     "description": "Restored initial position."
   },
-  "cleanedUp": "Limpiado.",
+  "cleanedUp": "Limpio.",
   "@cleanedUp": {
     "description": "Cleaned up."
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Pieza}=1{{count} pieza}other{{count} piezas}} deben eliminarse.",
+  "pieceCountNeedToRemove": "{count,plural, =0{Ficha}=1{{count} Ficha}other{{count} Fichas}} necesitan quitarse.",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
@@ -1238,7 +1238,7 @@
       }
     }
   },
-  "notPlacingPhase": "No colocando fase, no puede cambiarla.",
+  "notPlacingPhase": "No establezca la fase, no puede cambiarla.",
   "@notPlacingPhase": {
     "description": "Not placing phase, cannot change it."
   },
@@ -1246,7 +1246,7 @@
   "@paste": {
     "description": "Paste"
   },
-  "pasteDone": "La pasta está lista.",
+  "pasteDone": "Se ha pegado.",
   "@pasteDone": {
     "description": "The paste is done."
   },
@@ -1254,15 +1254,15 @@
   "@cannotPaste": {
     "description": "Cannot paste."
   },
-  "isUnplacedAndRemovedPiecesShown": "Mostrar piezas no colocadas y eliminadas",
+  "isUnplacedAndRemovedPiecesShown": "Mostrar las piezas no colocadas y retiradas",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
   },
-  "fullScreen": "Pantalla completa",
+  "fullScreen": "A pantalla completa",
   "@fullScreen": {
     "description": "Full screen"
   },
-  "reopenToTakeEffect": "Salga y vuelva a abrir la aplicación para que la configuración surta efecto.",
+  "reopenToTakeEffect": "Sal y vuelve a abrir la aplicación para que los ajustes surtan efecto.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
   },
@@ -1336,7 +1336,7 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "¿Qué acción sigue cuando no se puede mover ninguna pieza?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "Termine con una derrota por tablas para el lado que está bloqueado.",
+  "endWithStalemateLoss": "Termina con una derrota por empate para el bando bloqueado.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "Cambia de lado para moverte.",
   "@changeSideToMove": {},
