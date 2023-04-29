@@ -37,23 +37,6 @@ enum BoardFullAction {
   agreeToDraw,
 }
 
-extension BoardFullActionName on BoardFullAction {
-  String get name {
-    switch (this) {
-      case BoardFullAction.firstPlayerLose:
-        return "0-1";
-      case BoardFullAction.firstAndSecondPlayerRemovePiece:
-        return 'W->B';
-      case BoardFullAction.secondAndFirstPlayerRemovePiece:
-        return 'B->W';
-      case BoardFullAction.sideToMoveRemovePiece:
-        return 'X';
-      case BoardFullAction.agreeToDraw:
-        return '=';
-    }
-  }
-}
-
 @HiveType(typeId: 8)
 enum StalemateAction {
   @HiveField(0)
@@ -68,21 +51,22 @@ enum StalemateAction {
   endWithStalemateDraw,
 }
 
-extension StalemateActionName on StalemateAction {
-  String get name {
-    switch (this) {
-      case StalemateAction.endWithStalemateLoss:
-        return "0-1";
-      case StalemateAction.changeSideToMove:
-        return '->';
-      case StalemateAction.removeOpponentsPieceAndMakeNextMove:
-        return 'XM';
-      case StalemateAction.removeOpponentsPieceAndChangeSideToMove:
-        return 'X ->';
-      case StalemateAction.endWithStalemateDraw:
-        return '=';
-    }
-  }
+// Currently unused
+String enumName(Object enumEntry) {
+  final Map<Object, String> nameMap = <Object, String>{
+    BoardFullAction.firstPlayerLose: "0-1",
+    BoardFullAction.firstAndSecondPlayerRemovePiece: 'W->B',
+    BoardFullAction.secondAndFirstPlayerRemovePiece: 'B->W',
+    BoardFullAction.sideToMoveRemovePiece: 'X',
+    BoardFullAction.agreeToDraw: '=',
+    StalemateAction.endWithStalemateLoss: "0-1",
+    StalemateAction.changeSideToMove: '->',
+    StalemateAction.removeOpponentsPieceAndMakeNextMove: 'XM',
+    StalemateAction.removeOpponentsPieceAndChangeSideToMove: 'X ->',
+    StalemateAction.endWithStalemateDraw: '=',
+  };
+
+  return nameMap[enumEntry] ?? '';
 }
 
 /// Rule Settings data model
