@@ -50,6 +50,7 @@ import 'general_settings/general_settings_page.dart';
 import 'help_screen.dart';
 import 'rule_settings/rule_settings_page.dart';
 
+// Define the possible states of the drawer
 enum _DrawerIndex {
   humanVsAi,
   humanVsHuman,
@@ -64,6 +65,7 @@ enum _DrawerIndex {
   exit,
 }
 
+// Extension to handle widget selection based on drawer state
 extension _DrawerScreen on _DrawerIndex {
   Widget? get screen {
     switch (this) {
@@ -164,10 +166,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     });
   }
 
+  // Function to check if the current drawer state corresponds to a game
   bool _isGame(_DrawerIndex index) {
     return index.index < 4;
   }
 
+  // Function to handle route changes
   void _pushRoute(_DrawerIndex index) {
     final bool curIsGame = _isGame(_drawerIndex);
     final bool nextIsGame = _isGame(index);
@@ -199,6 +203,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     }
   }
 
+  // Function to handle first time run
   void firstRun(BuildContext context) {
     if (DB().generalSettings.firstRun == true) {
       DB().generalSettings = DB().generalSettings.copyWith(firstRun: false);
