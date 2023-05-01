@@ -98,6 +98,10 @@ class GeneralSettingsPage extends StatelessWidget {
           rootScaffoldMessengerKey.currentState!
               .showSnackBarClear(S.of(context).whatIsMtdf);
           break;
+        case SearchAlgorithm.mcts:
+          rootScaffoldMessengerKey.currentState!
+              .showSnackBarClear(S.of(context).whatIsMcts);
+          break;
         case null:
           break;
       }

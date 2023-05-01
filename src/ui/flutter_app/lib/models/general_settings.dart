@@ -29,6 +29,8 @@ enum SearchAlgorithm {
   pvs,
   @HiveField(2)
   mtdf,
+  @HiveField(3)
+  mcts,
 }
 
 extension SearchAlgorithmName on SearchAlgorithm {
@@ -40,6 +42,8 @@ extension SearchAlgorithmName on SearchAlgorithm {
         return 'PVS';
       case SearchAlgorithm.mtdf:
         return 'MTD(f)';
+      case SearchAlgorithm.mcts:
+        return 'MCTS';
     }
   }
 }

@@ -212,6 +212,9 @@ void MillGameWindow::initialize()
     connect(ui.actionMtdfAlgorithm, SIGNAL(toggled(bool)), game,
             SLOT(setMtdfAlgorithm(bool)));
 
+    connect(ui.actionMctsAlgorithm, SIGNAL(toggled(bool)), game,
+            SLOT(setMctsAlgorithm(bool)));
+
     connect(ui.actionDrawOnHumanExperience, SIGNAL(toggled(bool)), game,
             SLOT(setDrawOnHumanExperience(bool)));
 
@@ -406,6 +409,7 @@ void MillGameWindow::initialize()
     alignmentGroup->addAction(ui.actionAlphaBetaAlgorithm);
     alignmentGroup->addAction(ui.actionPvsAlgorithm);
     alignmentGroup->addAction(ui.actionMtdfAlgorithm);
+    alignmentGroup->addAction(ui.actionMctsAlgorithm);
     alignmentGroup->addAction(ui.actionPerfect_AI);
 
     switch (gameOptions.getAlgorithm()) {
@@ -413,6 +417,7 @@ void MillGameWindow::initialize()
         ui.actionAlphaBetaAlgorithm->setChecked(true);
         ui.actionPvsAlgorithm->setChecked(false);
         ui.actionMtdfAlgorithm->setChecked(false);
+        ui.actionMctsAlgorithm->setChecked(false);
         ui.actionPerfect_AI->setChecked(false);
         debugPrintf("Algorithm is Alpha-Beta.\n");
         break;
@@ -420,6 +425,7 @@ void MillGameWindow::initialize()
         ui.actionAlphaBetaAlgorithm->setChecked(false);
         ui.actionPvsAlgorithm->setChecked(true);
         ui.actionMtdfAlgorithm->setChecked(false);
+        ui.actionMctsAlgorithm->setChecked(false);
         ui.actionPerfect_AI->setChecked(false);
         debugPrintf("Algorithm is PVS.\n");
         break;
@@ -427,13 +433,23 @@ void MillGameWindow::initialize()
         ui.actionAlphaBetaAlgorithm->setChecked(false);
         ui.actionPvsAlgorithm->setChecked(false);
         ui.actionMtdfAlgorithm->setChecked(true);
+        ui.actionMctsAlgorithm->setChecked(false);
         ui.actionPerfect_AI->setChecked(false);
         debugPrintf("Algorithm is MTD(f).\n");
+        break;
+    case 3:
+        ui.actionAlphaBetaAlgorithm->setChecked(false);
+        ui.actionPvsAlgorithm->setChecked(false);
+        ui.actionMtdfAlgorithm->setChecked(false);
+        ui.actionMctsAlgorithm->setChecked(false);
+        ui.actionPerfect_AI->setChecked(true);
+        debugPrintf("Algorithm is MCTS.\n");
         break;
     default:
         ui.actionAlphaBetaAlgorithm->setChecked(false);
         ui.actionPvsAlgorithm->setChecked(false);
         ui.actionMtdfAlgorithm->setChecked(false);
+        ui.actionMctsAlgorithm->setChecked(false);
         ui.actionPerfect_AI->setChecked(true);
         debugPrintf("Algorithm is other.\n");
         break;
