@@ -635,6 +635,15 @@ void Game::setMtdfAlgorithm(bool enabled) const
     }
 }
 
+void Game::setMctsAlgorithm(bool enabled) const
+{
+    if (enabled) {
+        gameOptions.setAlgorithm(3);
+        settings->setValue("Options/Algorithm", 3);
+        debugPrintf("Algorithm is changed to MCTS.\n");
+    }
+}
+
 void Game::setAlgorithm(int val) const
 {
     gameOptions.setAlgorithm(val);

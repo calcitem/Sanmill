@@ -166,6 +166,18 @@ public:
         return algorithm == 2;
     }
 
+    void setMctsAlgorithm(bool enabled) noexcept
+    {
+        if (enabled) {
+            algorithm = 3;
+        }
+    }
+
+    [[nodiscard]] bool getMctsAlgorithm() const noexcept
+    {
+        return algorithm == 3;
+    }
+
     void setAlgorithm(int val) noexcept
     {
         algorithm = val;
@@ -177,24 +189,35 @@ public:
             setPvsAlgorithm(false);
             setMtdfAlgorithm(false);
             setPerfectAiEnabled(false);
+            setMctsEnabled(false);
             break;
         case 1:
             setAlphaBetaAlgorithm(false);
             setPvsAlgorithm(true);
             setMtdfAlgorithm(false);
             setPerfectAiEnabled(false);
+            setMctsEnabled(false);
             break;
         case 2:
             setAlphaBetaAlgorithm(false);
             setPvsAlgorithm(false);
             setMtdfAlgorithm(true);
             setPerfectAiEnabled(false);
+            setMctsEnabled(false);
+            break;
+         case 3:
+            setAlphaBetaAlgorithm(false);
+            setPvsAlgorithm(false);
+            setMtdfAlgorithm(false);
+            setPerfectAiEnabled(false);
+            setMctsEnabled(true);
             break;
         default:
             setAlphaBetaAlgorithm(false);
             setPvsAlgorithm(false);
             setMtdfAlgorithm(false);
             setPerfectAiEnabled(true);
+            setMctsEnabled(false);
             break;
         }
 #endif

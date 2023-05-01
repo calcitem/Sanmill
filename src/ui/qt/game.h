@@ -216,6 +216,7 @@ public slots:
     void setAlphaBetaAlgorithm(bool enabled) const;
     void setPvsAlgorithm(bool enabled) const;
     void setMtdfAlgorithm(bool enabled) const;
+    void setMctsAlgorithm(bool enabled) const;
     void setAlgorithm(int val) const;
 
     // Draw on human experience

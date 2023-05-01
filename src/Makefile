@@ -34,7 +34,7 @@ BINDIR = $(PREFIX)/bin
 PGOBENCH = ./$(EXE) bench
 
 ### Source and object files
-SRCS = bitboard.cpp endgame.cpp evaluate.cpp main.cpp \
+SRCS = bitboard.cpp endgame.cpp evaluate.cpp main.cpp mcts.cpp \
 	mills.cpp misc.cpp movegen.cpp movepick.cpp option.cpp position.cpp rule.cpp \
 	search.cpp thread.cpp tt.cpp uci.cpp ucioption.cpp
 

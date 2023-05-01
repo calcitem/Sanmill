@@ -323,6 +323,7 @@
     <addaction name="actionAlphaBetaAlgorithm"/>
     <addaction name="actionPvsAlgorithm"/>
     <addaction name="actionMtdfAlgorithm"/>
+    <addaction name="actionMctsAlgorithm"/>
     <addaction name="actionPerfect_AI"/>
     <addaction name="separator"/>
     <addaction name="actionDrawOnHumanExperience"/>
@@ -1346,6 +1347,17 @@
    </property>
    <property name="text">
     <string>MTD(f) Algorithm</string>
+   </property>
+  </action>
+  <action name="actionMctsAlgorithm">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>MCTS Algorithm</string>
    </property>
   </action>
   <action name="actionPerfect_AI">

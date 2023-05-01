@@ -16,6 +16,7 @@
 
 #include "endgame.h"
 #include "evaluate.h"
+#include "mcts.h"
 #include "option.h"
 #include "thread.h"
 
@@ -158,6 +159,8 @@ int Thread::search()
             if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
                 // debugPrintf("Algorithm: MTD(f).\n");
                 value = MTDF(rootPos, ss, value, i, i, bestMove);
+            } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
+                value = monte_carlo_tree_search(rootPos, bestMove);
             } else {
                 value = qsearch(rootPos, ss, i, i, alpha, beta, bestMove);
             }
@@ -194,6 +197,8 @@ int Thread::search()
 
     if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
         value = MTDF(rootPos, ss, value, originDepth, originDepth, bestMove);
+    } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
+        value = monte_carlo_tree_search(rootPos, bestMove);
     } else {
         value = qsearch(rootPos, ss, d, originDepth, alpha, beta, bestMove);
     }
