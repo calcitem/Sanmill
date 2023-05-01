@@ -159,6 +159,8 @@ public:
     [[nodiscard]] int piece_on_board_count(Color c) const;
     [[nodiscard]] int piece_in_hand_count(Color c) const;
 
+    [[nodiscard]] bool is_board_empty() const;
+
     [[nodiscard]] int piece_to_remove_count(Color c) const;
 
     [[nodiscard]] int get_mobility_diff() const;
@@ -367,6 +369,11 @@ inline int Position::piece_on_board_count(Color c) const
 inline int Position::piece_in_hand_count(Color c) const
 {
     return pieceInHandCount[c];
+}
+
+inline bool Position::is_board_empty() const
+{
+    return pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] == 0;
 }
 
 inline int Position::piece_to_remove_count(Color c) const

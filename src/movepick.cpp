@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "movepick.h"
+#include "option.h"
 
 // partial_insertion_sort() sorts moves in descending order up to and including
 // a given limit. The order of moves smaller than the limit is left unspecified.
@@ -99,7 +100,7 @@ void MovePicker::score()
 
             // If has Diagonal Lines, black 2nd move place star point is as
             // important as close mill (TODO)
-            if (rule.hasDiagonalLines &&
+            if ((rule.hasDiagonalLines || gameOptions.getAlgorithm() == 3) &&
                 pos.count<ON_BOARD>(BLACK) < 2 && // patch: only when black 2nd
                 // move
                 Position::is_star_square(static_cast<Square>(m))) {

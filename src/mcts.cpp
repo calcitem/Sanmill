@@ -175,8 +175,13 @@ void backpropagate(Node *node, bool win)
 Value monte_carlo_tree_search(Position *pos, Move &bestMove)
 {
     // Adjust these values according to your needs
-    const int max_iterations = gameOptions.getSkillLevel() *
+    int max_iterations = gameOptions.getSkillLevel() *
                                ITERATIONS_PER_SKILL_LEVEL;
+
+    // Workaround fix: The first move is slow.
+    if (pos->is_board_empty()) {
+        max_iterations = 1;
+    }
 
     // Add time limit (no limit if gameOptions.getMoveTime() returns 0)
     const auto start_time = std::chrono::steady_clock::now();

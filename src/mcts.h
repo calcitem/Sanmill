@@ -58,7 +58,7 @@ static constexpr int ALPHA_BETA_DEPTH = 6;
 static constexpr int CHECK_TIME_FREQUENCY = 128;
 
 // Iterations per skill level
-static constexpr int ITERATIONS_PER_SKILL_LEVEL = 4096;
+static constexpr int ITERATIONS_PER_SKILL_LEVEL = 2048;
 
 Value monte_carlo_tree_search(Position *pos, Move &bestMove);
 
