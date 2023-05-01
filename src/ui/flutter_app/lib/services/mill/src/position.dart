@@ -401,77 +401,14 @@ class Position {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-  bool isWithinBoard(int s) {
-    return sqBegin <= s && s < sqEnd;
-  }
-
-  bool isSquareEmpty(int s) {
-    return _board[s] == PieceColor.none;
-  }
-
-  void increasePieceOnBoardCount(PieceColor color) {
-    if (pieceOnBoardCount[color] != null) {
-      pieceOnBoardCount[color] = pieceOnBoardCount[color]! + 1;
-    }
-  }
-
-  void decreasePieceInHandCount(PieceColor color) {
-    if (pieceInHandCount[color] != null) {
-      pieceInHandCount[color] = pieceInHandCount[color]! - 1;
-    }
-  }
-
-  bool canPlacePiece(int s) {
-    if (phase == Phase.gameOver ||
-        action != Act.place ||
-        !isWithinBoard(s) ||
-        !isSquareEmpty(s)) {
-      return false;
-    }
-    return true;
-  }
-
-  bool canMovePiece(int from, int to) {
-    int md;
-
-    if (phase != Phase.moving ||
-        (pieceOnBoardCount[sideToMove]! > DB().ruleSettings.flyPieceCount &&
-            !DB().ruleSettings.mayFly)) {
-      return false;
-    }
-
-    for (md = 0; md < moveDirectionNumber; md++) {
-      if (to == _adjacentSquares[from][md]) {
-        break;
-      }
-    }
-
-    // Not in moveTable
-    if (md == moveDirectionNumber) {
-      logger.i(
-        "[position] putPiece: [$to] is not in [$from]'s move table.",
-      );
-      return false;
-    }
-
-    return true;
-  }
-
-  bool isGameOverMaterialConditionMet() {
-    if (pieceOnBoardCount[_them]! + pieceInHandCount[_them]! <
-        DB().ruleSettings.piecesAtLeastCount) {
-      return true;
-    }
-    return false;
-  }
-
-  //////////////////////////////////////////////////////////////////////////////
-
   bool _putPiece(int s) {
     PieceColor piece = PieceColor.none;
     final PieceColor us = _sideToMove;
 
-    if (!canPlacePiece(s)) {
+    if (phase == Phase.gameOver ||
+        action != Act.place ||
+        !(sqBegin <= s && s < sqEnd) ||
+        _board[s] != PieceColor.none) {
       return false;
     }
 
@@ -486,10 +423,12 @@ class Position {
                 .showSnackBarClear("FEN: ${MillController().position.fen}");
             return false;
           }
-          decreasePieceInHandCount(us);
+          pieceInHandCount[us] = pieceInHandCount[us]! - 1;
         }
 
-        increasePieceOnBoardCount(us);
+        if (pieceOnBoardCount[us] != null) {
+          pieceOnBoardCount[us] = pieceOnBoardCount[us]! + 1;
+        }
 
         _grid[squareToIndex[s]!] = piece;
         _board[s] = piece;
@@ -546,7 +485,8 @@ class Position {
 
           if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
               pieceInHandCount[_them] != null) {
-            decreasePieceInHandCount(_them); // Or pieceToRemoveCount?
+            pieceInHandCount[_them] =
+                pieceInHandCount[_them]! - 1; // Or pieceToRemoveCount?
 
             if (pieceInHandCount[_them]! < 0) {
               pieceInHandCount[_them] = 0;
@@ -583,8 +523,23 @@ class Position {
         }
 
         // If illegal
-        if (!canMovePiece(_currentSquare, s)) {
-          return false;
+        if (pieceOnBoardCount[sideToMove]! > DB().ruleSettings.flyPieceCount ||
+            !DB().ruleSettings.mayFly) {
+          int md;
+
+          for (md = 0; md < moveDirectionNumber; md++) {
+            if (s == _adjacentSquares[_currentSquare][md]) {
+              break;
+            }
+          }
+
+          // Not in moveTable
+          if (md == moveDirectionNumber) {
+            logger.i(
+              "[position] putPiece: [$s] is not in [$_currentSquare]'s move table.",
+            );
+            return false;
+          }
         }
 
         _record = ExtMove(
@@ -691,7 +646,8 @@ class Position {
       pieceOnBoardCount[_them] = pieceOnBoardCount[_them]! - 1;
     }
 
-    if (isGameOverMaterialConditionMet()) {
+    if (pieceOnBoardCount[_them]! + pieceInHandCount[_them]! <
+        DB().ruleSettings.piecesAtLeastCount) {
       _setGameOver(sideToMove, GameOverReason.loseLessThanThree);
       Audios().playTone(Sound.remove);
       return const MillResponseOK();
