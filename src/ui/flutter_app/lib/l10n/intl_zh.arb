@@ -1354,6 +1354,6 @@
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "在无路可走的情况下，只要对方的子和自己的子相邻，则无论这些子是否在三连中，都可以被移除。",
   "@stalemateRemovalRegardlessOfMillFormation": {},
-  "whatIsMcts": "MCTS 是一种对初学者友好的算法，它通过模拟探索和评估不同的动作来做出决策。",
+  "whatIsMcts": "MCTS 是一种对初学者友好的算法，它通过模拟探索和评估不同的着法来做出决策。",
   "@whatIsMcts": {}
 }
