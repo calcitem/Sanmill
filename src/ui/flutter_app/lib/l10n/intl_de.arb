@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "Sie können keinen nicht angrenzenden Stein entfernen.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Bei einer Pattsituation können die an deine angrenzenden Steine des Gegners unabhängig von der Mühlenformation entfernt werden.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS ist ein anfängerfreundlicher Algorithmus, der Entscheidungen trifft, indem er verschiedene Bewegungen durch Simulationen untersucht und bewertet.",
+  "@whatIsMcts": {}
 }

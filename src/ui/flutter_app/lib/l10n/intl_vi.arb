@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "Bạn không thể loại bỏ một phần không liền kề.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Nếu bế tắc, các quân của đối thủ liền kề với quân của bạn có thể bị loại bỏ, bất kể đội hình của nhà máy.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS là một thuật toán thân thiện với người mới bắt đầu đưa ra quyết định bằng cách khám phá và đánh giá các nước đi khác nhau thông qua mô phỏng.",
+  "@whatIsMcts": {}
 }

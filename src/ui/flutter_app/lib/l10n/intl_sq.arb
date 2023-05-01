@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "Ju nuk mund të hiqni një pjesë jo ngjitur.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Nëse ngërçi, pjesët e kundërshtarit ngjitur me tuajat mund të hiqen, pavarësisht nga formimi i mullirit.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS është një algoritëm miqësor për fillestarët që merr vendime duke eksploruar dhe vlerësuar lëvizje të ndryshme përmes simulimeve.",
+  "@whatIsMcts": {}
 }

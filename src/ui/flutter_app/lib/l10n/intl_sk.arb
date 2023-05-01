@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "Nesusediaci kus nemôžete odstrániť.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Ak ste v patovej situácii, súperove figúrky susediace s vašimi môžu byť odstránené bez ohľadu na formáciu mlyna.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS je algoritmus vhodný pre začiatočníkov, ktorý robí rozhodnutia skúmaním a vyhodnocovaním rôznych pohybov prostredníctvom simulácií.",
+  "@whatIsMcts": {}
 }

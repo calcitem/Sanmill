@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "Вы не можете удалить несмежную часть.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "В случае пата фигуры противника, соседние с вашими, могут быть удалены, независимо от формации мельницы.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS — это удобный для начинающих алгоритм, который принимает решения, исследуя и оценивая различные ходы с помощью симуляций.",
+  "@whatIsMcts": {}
 }

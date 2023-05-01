@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "Bitişik olmayan bir parçayı kaldıramazsınız.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Çıkmaz durumunda, rakibin size bitişik taşları, değirmen oluşumundan bağımsız olarak kaldırılabilir.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS, simülasyonlar aracılığıyla farklı hareketleri keşfederek ve değerlendirerek kararlar veren başlangıç seviyesindeki bir algoritmadır.",
+  "@whatIsMcts": {}
 }

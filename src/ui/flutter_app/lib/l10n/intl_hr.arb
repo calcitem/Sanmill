@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "Ne možete ukloniti nesusjedni dio.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Ako je pat pozicija, protivnikove figure uz vaše mogu se ukloniti, bez obzira na formaciju mlina.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS je algoritam prilagođen početnicima koji donosi odluke istražujući i procjenjujući različite poteze kroz simulacije.",
+  "@whatIsMcts": {}
 }
