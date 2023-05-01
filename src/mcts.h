@@ -60,8 +60,8 @@ static constexpr double exploration_parameter = 1.0;
 // performance of the algorithm change. In this way, you can find the value
 // of c that suits your problem and application scenario.
 // (The above c refers to confidence_threshold.)
-static constexpr double confidence_threshold =
-    std::numeric_limits<double>::max();
+static constexpr double confidence_threshold = 0.1;
+    //std::numeric_limits<double>::max();
 
 // Depth for alpha-beta search
 static constexpr int alpha_beta_depth = 7;

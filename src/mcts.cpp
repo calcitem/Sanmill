@@ -1,19 +1,3 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 #include "mcts.h"
 #include "movegen.h"
 #include "option.h"
@@ -72,6 +56,19 @@ void delete_tree(Node *node)
     delete node;
 }
 
+bool confident_enough(const Node *node)
+{
+    if (node->num_visits == 0) {
+        return false;
+    }
+
+    double mean = node->win_score();
+    double delta = confidence_threshold * std::sqrt(std::log(node->parent->num_visits) /
+                                 node->num_visits);
+
+    return mean - delta > 0.5;
+}
+
 double uct_value_tuned(const Node *node)
 {
     if (node->num_visits == 0)
@@ -87,14 +84,30 @@ double uct_value_tuned(const Node *node)
 Node *best_uct_child_tuned(Node *node)
 {
     Node *best_child = nullptr;
+    Node *fallback_child = nullptr;
     double best_value = std::numeric_limits<double>::lowest();
+    uint32_t min_visits = std::numeric_limits<uint32_t>::max();
 
     for (Node *child : node->children) {
+        if (!confident_enough(child)) {
+            // Fall back to the child with the least visits
+            if (child->num_visits < min_visits) {
+                min_visits = child->num_visits;
+                fallback_child = child;
+            }
+            continue;
+        }
+
         double value = uct_value_tuned(child);
         if (value > best_value) {
             best_value = value;
             best_child = child;
         }
+    }
+
+    // If all children are not confident enough, use the fall back child
+    if (best_child == nullptr) {
+        return fallback_child;
     }
 
     return best_child;
@@ -177,7 +190,7 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
     int iteration = 0;
 
     // Bit mask for bitwise AND operation
-    const int check_time_mask = check_time_frequency - 1; 
+    const int check_time_mask = check_time_frequency - 1;
 
     while (iteration < max_iterations) {
         Node *node = select(root);
