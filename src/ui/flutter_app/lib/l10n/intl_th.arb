@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "คุณไม่สามารถลบชิ้นส่วนที่ไม่ติดกันได้",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "หากจนมุม ชิ้นส่วนของฝ่ายตรงข้ามที่อยู่ติดกับคุณจะถูกลบออกได้ โดยไม่คำนึงถึงรูปแบบโรงสี",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS เป็นอัลกอริทึมที่เป็นมิตรกับผู้เริ่มต้นซึ่งทำการตัดสินใจโดยการสำรวจและประเมินการเคลื่อนไหวต่างๆ ผ่านการจำลองสถานการณ์",
+  "@whatIsMcts": {}
 }

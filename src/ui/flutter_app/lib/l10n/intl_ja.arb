@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "隣接していないピースを削除することはできません。",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "膠着状態の場合、ミルのフォーメーションに関係なく、自分の駒に隣接する相手の駒を取り除くことができます。",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS は、シミュレーションを通じてさまざまな動きを調査および評価することによって決定を下す、初心者に優しいアルゴリズムです。",
+  "@whatIsMcts": {}
 }

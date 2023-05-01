@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "Nie możesz usunąć nieprzylegającego elementu.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "W przypadku impasu piony przeciwnika sąsiadujące z twoimi mogą zostać usunięte, niezależnie od formacji młyna.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS to przyjazny dla początkujących algorytm, który podejmuje decyzje, badając i oceniając różne ruchy za pomocą symulacji.",
+  "@whatIsMcts": {}
 }

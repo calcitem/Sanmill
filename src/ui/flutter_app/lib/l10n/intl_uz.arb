@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "Siz qo'shni bo'lmagan qismni olib tashlay olmaysiz.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Agar turg'un bo'lsa, tegirmon shakllanishidan qat'i nazar, raqibning sizning yoningizda joylashgan donalarini olib tashlash mumkin.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS - bu yangi boshlanuvchilar uchun qulay algoritm bo'lib, u simulyatsiyalar orqali turli harakatlarni o'rganish va baholash orqali qaror qabul qiladi.",
+  "@whatIsMcts": {}
 }

@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "Du kan ikke fjerne et ikke-tilstødende stykke.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Hvis det går i stå, kan modstanderens brikker, der støder op til din, fjernes, uanset mølleformationen.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS er en begyndervenlig algoritme, der træffer beslutninger ved at udforske og evaluere forskellige bevægelser gennem simuleringer.",
+  "@whatIsMcts": {}
 }

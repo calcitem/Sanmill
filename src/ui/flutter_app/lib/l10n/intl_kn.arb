@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "ನೀವು ಪಕ್ಕದಲ್ಲಿಲ್ಲದ ತುಂಡನ್ನು ತೆಗೆದುಹಾಕಲಾಗುವುದಿಲ್ಲ.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "ಸ್ಥಗಿತಗೊಂಡರೆ, ಗಿರಣಿ ರಚನೆಯನ್ನು ಲೆಕ್ಕಿಸದೆಯೇ ನಿಮ್ಮ ಪಕ್ಕದಲ್ಲಿರುವ ಎದುರಾಳಿಯ ತುಂಡುಗಳನ್ನು ತೆಗೆದುಹಾಕಬಹುದು.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS ಒಂದು ಹರಿಕಾರ-ಸ್ನೇಹಿ ಅಲ್ಗಾರಿದಮ್ ಆಗಿದ್ದು ಅದು ಸಿಮ್ಯುಲೇಶನ್‌ಗಳ ಮೂಲಕ ವಿಭಿನ್ನ ಚಲನೆಗಳನ್ನು ಅನ್ವೇಷಿಸುವ ಮತ್ತು ಮೌಲ್ಯಮಾಪನ ಮಾಡುವ ಮೂಲಕ ನಿರ್ಧಾರಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತದೆ.",
+  "@whatIsMcts": {}
 }

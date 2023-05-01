@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "Nem távolíthat el egy nem szomszédos darabot.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Patthelyzet esetén az ellenfél a tieddel szomszédos bábuit el lehet távolítani, függetlenül a malomfelállástól.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "Az MCTS egy kezdőbarát algoritmus, amely a különböző mozgások szimulációkon keresztüli feltárásával és értékelésével hoz döntéseket.",
+  "@whatIsMcts": {}
 }

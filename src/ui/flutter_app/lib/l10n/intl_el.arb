@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "Δεν μπορείτε να αφαιρέσετε ένα μη γειτονικό κομμάτι.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Σε περίπτωση αδιεξόδου, τα κομμάτια του αντιπάλου που βρίσκονται δίπλα στο δικό σας μπορούν να αφαιρεθούν, ανεξάρτητα από τον σχηματισμό μύλου.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "Το MCTS είναι ένας φιλικός προς τους αρχάριους αλγόριθμος που λαμβάνει αποφάσεις εξερευνώντας και αξιολογώντας διαφορετικές κινήσεις μέσω προσομοιώσεων.",
+  "@whatIsMcts": {}
 }

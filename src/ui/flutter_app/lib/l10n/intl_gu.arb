@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "તમે અડીને આવેલા ભાગને દૂર કરી શકતા નથી.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "જો મડાગાંઠ હોય, તો મિલની રચનાને ધ્યાનમાં લીધા વિના, તમારી બાજુના વિરોધીના ટુકડાઓ દૂર કરી શકાય છે.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS એ શિખાઉ માણસ-મૈત્રીપૂર્ણ અલ્ગોરિધમ છે જે સિમ્યુલેશન દ્વારા વિવિધ ચાલોનું અન્વેષણ અને મૂલ્યાંકન કરીને નિર્ણયો લે છે.",
+  "@whatIsMcts": {}
 }

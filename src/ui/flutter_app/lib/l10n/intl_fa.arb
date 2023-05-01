@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "شما نمی توانید یک قطعه غیر مجاور را بردارید.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "در صورت بن بست، مهره های حریف در مجاورت مهره شما بدون توجه به شکل گیری آسیاب می توانند حذف شوند.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS یک الگوریتم مبتدی دوست است که با کاوش و ارزیابی حرکات مختلف از طریق شبیه سازی، تصمیم می گیرد.",
+  "@whatIsMcts": {}
 }

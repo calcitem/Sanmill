@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "Te ei saa eemaldada mittekülgnevat tükki.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Kui ummikseisus on, saab sinu omadega külgnevad vastase nupud eemaldada, olenemata veski moodustamisest.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS on algajasõbralik algoritm, mis teeb otsuseid simulatsioonide abil erinevaid käike uurides ja hinnates.",
+  "@whatIsMcts": {}
 }

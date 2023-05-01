@@ -1451,5 +1451,7 @@
   "tipCanNotRemoveNonadjacent": "Ви не можете видалити несусідний фрагмент.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "У разі патової ситуації фігури супротивника, які знаходяться поруч із вашими, можуть бути видалені, незалежно від формування млина.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS — це зручний для початківців алгоритм, який приймає рішення, досліджуючи та оцінюючи різні рухи за допомогою моделювання.",
+  "@whatIsMcts": {}
 }

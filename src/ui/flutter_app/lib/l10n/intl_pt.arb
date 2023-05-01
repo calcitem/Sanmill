@@ -1353,5 +1353,7 @@
   "tipCanNotRemoveNonadjacent": "Você não pode remover uma peça não adjacente.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Em caso de impasse, as peças do adversário adjacentes às suas podem ser removidas, independentemente da formação do moinho.",
-  "@stalemateRemovalRegardlessOfMillFormation": {}
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "O MCTS é um algoritmo amigável para iniciantes que toma decisões explorando e avaliando diferentes movimentos por meio de simulações.",
+  "@whatIsMcts": {}
 }
