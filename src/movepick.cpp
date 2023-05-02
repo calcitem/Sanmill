@@ -88,8 +88,7 @@ void MovePicker::score()
 
                     if (to % 2 == 0 && theirPiecesCount == 3) {
                         cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
-                    } else if (to % 2 == 1 && theirPiecesCount == 2 &&
-                               rule.hasDiagonalLines) {
+                    } else if (to % 2 == 1 && theirPiecesCount == 2) {
                         cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
                     }
                 }
