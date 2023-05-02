@@ -230,7 +230,7 @@ class _VersionDialog extends StatelessWidget {
             showDialog(
               context: context,
               barrierDismissible: true,
-              builder: (_) => const _FlutterVersionAlert(),
+              builder: (_) => const FlutterVersionAlert(),
             );
           },
         ),
@@ -246,19 +246,32 @@ class _VersionDialog extends StatelessWidget {
   }
 }
 
-class _FlutterVersionAlert extends StatelessWidget {
-  const _FlutterVersionAlert();
+class FlutterVersionAlert extends StatefulWidget {
+  const FlutterVersionAlert({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    String flutterVersionStr = flutterVersion.toString();
+  FlutterVersionAlertState createState() => FlutterVersionAlertState();
+}
+
+class FlutterVersionAlertState extends State<FlutterVersionAlert> {
+  String flutterVersionStr = "";
+  int tapCount = 0;
+  DateTime startTime = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    flutterVersionStr = flutterVersion.toString();
     flutterVersionStr = flutterVersionStr
         .replaceAll("{", "")
         .replaceAll("}", "")
         .replaceAll(", ", "\n");
     flutterVersionStr = flutterVersionStr.substring(
         0, flutterVersionStr.indexOf("flutterRoot"));
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
         S.of(context).more,
@@ -269,8 +282,20 @@ class _FlutterVersionAlert extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            flutterVersionStr,
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                tapCount++;
+                if (tapCount >= 10 &&
+                    DateTime.now().difference(startTime).inSeconds <= 10) {
+                  // Used to test whether the Catcher is working properly.
+                  assert(false);
+                }
+              });
+            },
+            child: Text(
+              flutterVersionStr,
+            ),
           ),
         ],
       ),
