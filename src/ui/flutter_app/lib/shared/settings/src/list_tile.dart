@@ -162,16 +162,22 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
               style: AppTheme.dialogTitleTextStyle,
             )
           : null,
-      content: ColorPicker(
-        pickerColor: pickedColor,
-        labelTypes: DB().displaySettings.fontScale == 1.0
-            ? const <ColorLabelType>[
-                ColorLabelType.rgb,
-                ColorLabelType.hsv,
-                ColorLabelType.hsl
-              ]
-            : const <ColorLabelType>[],
-        onColorChanged: _changeColor,
+      content: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 1.0,
+          child: SlidePicker(
+            pickerColor: pickedColor,
+            labelTypes: DB().displaySettings.fontScale == 1.0
+                ? const <ColorLabelType>[
+                    ColorLabelType.hex,
+                    ColorLabelType.rgb,
+                    ColorLabelType.hsv,
+                    ColorLabelType.hsl
+                  ]
+                : const <ColorLabelType>[],
+            onColorChanged: _changeColor,
+          ),
+        ),
       ),
       actions: <Widget>[
         TextButton(
