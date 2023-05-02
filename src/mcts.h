@@ -49,7 +49,7 @@ static constexpr double EXPLORATION_PATAMETER = 0.5;
 // will result in a stronger preference for earlier moves, while a lower value
 // will reduce this preference. Be cautious when adjusting this value, as
 // introducing excessive bias may negatively impact the search quality.
-static constexpr double BIAS_FACTOR = 0.028;
+static constexpr double BIAS_FACTOR = 0.05;
 
 // Depth for alpha-beta search
 static constexpr int ALPHA_BETA_DEPTH = 6;
