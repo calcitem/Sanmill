@@ -60,12 +60,13 @@ void MovePicker::score()
         Move m = cur->move;
 
 #ifdef TT_MOVE_ENABLE
+        // TODO: Never came here.
         if (m == ttMove) {
             // TT move, give it a large value
             cur->value = RATING_TT;
             return;
         }
-#endif
+#endif // TT_MOVE_ENABLE
 
         const Square to = to_sq(m);
         const Square from = from_sq(m);

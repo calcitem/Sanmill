@@ -309,6 +309,17 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
         bestValue = probeVal;
 
+#if 0
+#ifdef TT_MOVE_ENABLE
+        if (depth == originDepth) {
+            // TODO: beseMove is always same with ttMove
+            if (bestMove != ttMove) {
+                bestMove = ttMove;
+            }
+        }
+#endif // TT_MOVE_ENABLE
+#endif
+
         return bestValue;
     }
 #ifdef TRANSPOSITION_TABLE_DEBUG

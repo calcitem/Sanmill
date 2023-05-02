@@ -56,6 +56,10 @@ Value TranspositionTable::probe(Key key, Depth depth, Value alpha, Value beta,
         goto out;
     }
 
+#ifdef TT_MOVE_ENABLE
+    ttMove = tte.ttMove;
+#endif // TT_MOVE_ENABLE
+
     type = tte.bound();
 
     switch (tte.bound()) {
@@ -76,11 +80,6 @@ Value TranspositionTable::probe(Key key, Depth depth, Value alpha, Value beta,
     }
 
 out:
-
-#ifdef TT_MOVE_ENABLE
-    ttMove = tte.ttMove;
-#endif // TT_MOVE_ENABLE
-
     return VALUE_UNKNOWN;
 }
 
