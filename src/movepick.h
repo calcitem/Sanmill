@@ -41,7 +41,11 @@ class MovePicker
 public:
     MovePicker(const MovePicker &) = delete;
     MovePicker &operator=(const MovePicker &) = delete;
-    explicit MovePicker(Position &p) noexcept;
+    explicit MovePicker(Position &p
+#ifdef TT_MOVE_ENABLE
+                        , Move tt_move = MOVE_NONE
+#endif
+    ) noexcept;
 
     Move next_move();
 
@@ -53,7 +57,9 @@ public:
     [[nodiscard]] ExtMove *end() const noexcept { return endMoves; }
 
     Position &pos;
+#ifdef TT_MOVE_ENABLE
     Move ttMove {MOVE_NONE};
+#endif // TT_MOVE_ENABLE
     ExtMove *cur {nullptr};
     ExtMove *endMoves {nullptr};
     ExtMove moves[MAX_MOVES] {{MOVE_NONE, 0}};

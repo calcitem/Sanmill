@@ -34,8 +34,15 @@ void partial_insertion_sort(ExtMove *begin, const ExtMove *end, int limit)
 /// Constructors of the MovePicker class.
 
 /// MovePicker constructor for the main search
-MovePicker::MovePicker(Position &p) noexcept
+MovePicker::MovePicker(Position &p
+#ifdef TT_MOVE_ENABLE
+                       , Move tt_move
+#endif
+) noexcept
     : pos(p)
+#ifdef TT_MOVE_ENABLE
+    , ttMove(tt_move)
+#endif
 { }
 
 /// MovePicker::score() assigns a numerical value to each move in a list, used
@@ -43,19 +50,26 @@ MovePicker::MovePicker(Position &p) noexcept
 template <GenType Type>
 void MovePicker::score()
 {
-    cur = moves;
-
     int theirMillsCount;
     int ourPieceCount = 0;
     int theirPiecesCount = 0;
     int bannedCount = 0;
     int emptyCount = 0;
 
-    while (cur++->move != MOVE_NONE) {
+    for (cur = moves; cur->move != MOVE_NONE; cur++) {
         Move m = cur->move;
+
+#ifdef TT_MOVE_ENABLE
+        if (m == ttMove) {
+            // TT move, give it a large value
+            cur->value = RATING_TT;
+            return;
+        }
+#endif
 
         const Square to = to_sq(m);
         const Square from = from_sq(m);
+
 
         // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but
         // no mill, so need |from| to judge
