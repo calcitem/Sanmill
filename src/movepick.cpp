@@ -43,15 +43,13 @@ MovePicker::MovePicker(Position &p) noexcept
 template <GenType Type>
 void MovePicker::score()
 {
-    cur = moves;
-
     int theirMillsCount;
     int ourPieceCount = 0;
     int theirPiecesCount = 0;
     int bannedCount = 0;
     int emptyCount = 0;
 
-    while (cur++->move != MOVE_NONE) {
+    for (cur = moves; cur->move != MOVE_NONE; cur++) {
         Move m = cur->move;
 
         const Square to = to_sq(m);
