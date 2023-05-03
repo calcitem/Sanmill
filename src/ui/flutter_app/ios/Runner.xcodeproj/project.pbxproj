@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 53;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0011EECF2A02A3CC00E4431D /* mcts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0011EECD2A02A3CC00E4431D /* mcts.cpp */; };
 		00174357296080FA00F72763 /* command_channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0017434D296080FA00F72763 /* command_channel.cpp */; };
 		00174358296080FA00F72763 /* command_queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00174350296080FA00F72763 /* command_queue.cpp */; };
 		00174359296080FA00F72763 /* engine_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00174352296080FA00F72763 /* engine_main.cpp */; };
@@ -52,6 +53,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0011EECD2A02A3CC00E4431D /* mcts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mcts.cpp; path = ../../../../../mcts.cpp; sourceTree = "<group>"; };
+		0011EECE2A02A3CC00E4431D /* mcts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mcts.h; path = ../../../../../mcts.h; sourceTree = "<group>"; };
 		0017434D296080FA00F72763 /* command_channel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = command_channel.cpp; path = ../../../command/command_channel.cpp; sourceTree = "<group>"; };
 		0017434E296080FA00F72763 /* command_channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = command_channel.h; path = ../../../command/command_channel.h; sourceTree = "<group>"; };
 		0017434F296080FA00F72763 /* engine_state.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = engine_state.h; path = ../../../command/engine_state.h; sourceTree = "<group>"; };
@@ -181,6 +184,8 @@
 		0017434C296080BD00F72763 /* engine */ = {
 			isa = PBXGroup;
 			children = (
+				0011EECD2A02A3CC00E4431D /* mcts.cpp */,
+				0011EECE2A02A3CC00E4431D /* mcts.h */,
 				001743922960818200F72763 /* config.h */,
 				001743932960818200F72763 /* version.h */,
 				0017436C2960813100F72763 /* bitboard.cpp */,
@@ -419,6 +424,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		3B06AD1E1E4923F5004D2608 /* Thin Binary */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -433,6 +439,7 @@
 		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -499,6 +506,7 @@
 				0017438F2960813200F72763 /* main.cpp in Sources */,
 				001743802960813200F72763 /* evaluate.cpp in Sources */,
 				001743832960813200F72763 /* movegen.cpp in Sources */,
+				0011EECF2A02A3CC00E4431D /* mcts.cpp in Sources */,
 				00174357296080FA00F72763 /* command_channel.cpp in Sources */,
 				00174358296080FA00F72763 /* command_queue.cpp in Sources */,
 				001743982960A3E200F72763 /* main.m in Sources */,
