@@ -1,0 +1,11 @@
+v3.5.0
+
+New Features:
+
+* Added MCTS algorithm.
+* Introduced new GoldenJade color theme.
+
+Improvements:
+
+* Changed Color Panel Picker style to Color Slide Picker in settings.
+* Enhanced performance, especially in the flying phase.
