@@ -104,6 +104,7 @@ add_executable(${BINARY_NAME}
   "../../../endgame.cpp"
   "../../../evaluate.cpp"
   "../../../main.cpp"
+  "../../../mcts.cpp"
   "../../../mills.cpp"
   "../../../misc.cpp"
   "../../../movegen.cpp"
