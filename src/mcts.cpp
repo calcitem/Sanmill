@@ -25,6 +25,9 @@
 #include <cmath>
 #include <stack>
 #include <vector>
+#include <thread>
+#include <mutex>
+#include <atomic>
 
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
            Depth depth, Depth originDepth, Move &bestMove);
@@ -33,6 +36,30 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
               Depth originDepth, Value alpha, Value beta, Move &bestMove);
 
 using namespace std;
+
+class ThreadSafeNodeVisits
+{
+public:
+    explicit ThreadSafeNodeVisits(size_t initial_size)
+        : node_visits_(initial_size, 0)
+    { }
+
+    void increment_visits(int move_index, uint32_t visits)
+    {
+        std::unique_lock<std::mutex> lock(mutex_);
+        node_visits_[move_index] += visits;
+    }
+
+    uint32_t visits(int move_index)
+    {
+        std::unique_lock<std::mutex> lock(mutex_);
+        return node_visits_[move_index];
+    }
+
+private:
+    std::vector<uint32_t> node_visits_;
+    std::mutex mutex_;
+};
 
 // Class representing a node in the Monte Carlo Tree Search
 class Node
@@ -154,15 +181,12 @@ Node *expand(Node *node)
     return node->children.empty() ? node : node->children.front();
 }
 
-static Sanmill::Stack<Position> ss;
-
 // Simulate a game from the given node and return whether it resulted in a win
-bool simulate(Node *node)
+bool simulate(Node *node, Sanmill::Stack<Position> &ss)
 {
     Position *pos = node->position;
 
     Move bestMove {MOVE_NONE};
-    ss.clear();
 
     Value value = qsearch(pos, ss, ALPHA_BETA_DEPTH, ALPHA_BETA_DEPTH,
                           -VALUE_INFINITE, VALUE_INFINITE, bestMove);
@@ -182,17 +206,15 @@ void backpropagate(Node *node, bool win)
     }
 }
 
-// Perform Monte Carlo Tree Search to find the best move and its value
-Value monte_carlo_tree_search(Position *pos, Move &bestMove)
+void mcts_worker(Position *pos, int max_iterations,
+                 ThreadSafeNodeVisits &shared_visits)
 {
-    // Adjust these values according to your needs
-    int max_iterations = gameOptions.getSkillLevel() *
-                               ITERATIONS_PER_SKILL_LEVEL;
+    Sanmill::Stack<Position> ss;
 
-    // Workaround fix: The first move is slow.
-    if (pos->is_board_empty()) {
-        max_iterations = 1;
-    }
+    Node *root = new Node(new Position(*pos), MOVE_NONE, nullptr, 0);
+
+    int iteration = 0;
+    const int check_time_mask = CHECK_TIME_FREQUENCY - 1;
 
     // Add time limit (no limit if gameOptions.getMoveTime() returns 0)
     const auto start_time = std::chrono::steady_clock::now();
@@ -202,24 +224,14 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
                                 std::chrono::steady_clock::time_point::max() -
                                     std::chrono::steady_clock::now();
 
-    // Create the root node
-    Node *root = new Node(new Position(*pos), MOVE_NONE, nullptr, 0);
-
-    int iteration = 0;
-
-    // Bit mask for bitwise AND operation
-    const int check_time_mask = CHECK_TIME_FREQUENCY - 1;
-
-    // Main MCTS loop
     while (iteration < max_iterations) {
         Node *node = select(root, EXPLORATION_PATAMETER);
         Node *expanded_node = expand(node);
-        bool win = simulate(expanded_node);
+        bool win = simulate(expanded_node, ss);
         backpropagate(expanded_node, win);
 
         iteration++;
 
-        // Check if the time limit has expired, but not for every iteration
         if ((iteration & check_time_mask) == 0) {
             auto current_time = std::chrono::steady_clock::now();
             if (move_time > 0 && current_time - start_time >= time_limit) {
@@ -228,28 +240,63 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
         }
     }
 
-    // Find the best child node according to UCT value tuned
-    // Note:
-    // At the end of the search, we use 0.0 as the exploration parameter
-    // to focus only on the win rate. This is because,
-    // during the search process, we want to find a good balance point,
-    // while at the end of the search, we are only concerned with
-    // the win rate of each child node.
-    Node *best_child = best_uct_child_tuned(root, 0.0);
-
-    if (best_child == nullptr) {
-        bestMove = MOVE_NONE;
-        return VALUE_DRAW;
+    for (Node *child : root->children) {
+        shared_visits.increment_visits(child->move_index, child->num_visits);
     }
 
-    // Set the best move and calculate its value based on the win rate
-    bestMove = best_child->move;
-
-    // Convert win rate to value
-    Value best_value = static_cast<Value>(best_child->win_score() * 2.0 - 1.0);
-
-    // Free memory
     delete_tree(root);
+}
+
+// Perform Monte Carlo Tree Search to find the best move and its value
+Value monte_carlo_tree_search(Position *pos, Move &bestMove)
+{
+    // Adjust these values according to your needs
+    int max_iterations = gameOptions.getSkillLevel() *
+                         ITERATIONS_PER_SKILL_LEVEL;
+
+    // Workaround fix: The first move is slow.
+    if (pos->is_board_empty()) {
+        max_iterations = 1;
+    }
+
+    ThreadSafeNodeVisits shared_visits(MAX_MOVES);
+
+    int num_threads = std::thread::hardware_concurrency();
+    if (num_threads == 0) {
+        num_threads = 1;
+    }
+    std::vector<std::thread> threads(num_threads);
+
+    for (int i = 0; i < num_threads; ++i) {
+        threads[i] = std::thread(mcts_worker, pos, max_iterations / num_threads,
+                                 std::ref(shared_visits));
+    }
+
+    for (auto &t : threads) {
+        if (t.joinable()) {
+            t.join();
+        }
+    }
+
+    MovePicker mp(*pos);
+    mp.next_move();
+
+    int best_move_index = 0;
+    uint32_t max_visits = 0;
+
+    for (int i = 0; i < mp.move_count(); ++i) {
+        uint32_t visits = shared_visits.visits(i); 
+        if (visits > max_visits) {
+            max_visits = visits;
+            best_move_index = i;
+        }
+    }
+
+    bestMove = mp.moves[best_move_index].move;
+
+    double win_score = static_cast<double>(max_visits) /
+                       (max_iterations / num_threads);
+    Value best_value = static_cast<Value>(win_score * 2.0 - 1.0);
 
     return best_value;
 }
