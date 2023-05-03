@@ -41,7 +41,7 @@
 // can be used, such as the common values of 0.5 or sqrt(2), but this may not
 // work in all cases. Therefore, it is recommended that you adjust the
 // exploration_parameter according to your actual needs.
-static constexpr double EXPLORATION_PATAMETER = 0.5;
+static constexpr double EXPLORATION_PARAMETER = 0.5;
 
 // BIAS_FACTOR is a constant factor used to adjust the initial number
 // of wins assigned to the child nodes during the expansion phase of the Monte

@@ -282,7 +282,7 @@ void mcts_worker(Position *pos, int max_iterations,
                                     std::chrono::steady_clock::now();
 
     while (iteration < max_iterations) {
-        Node *node = select(root, EXPLORATION_PATAMETER);
+        Node *node = select(root, EXPLORATION_PARAMETER);
         Node *expanded_node = expand(node);
         bool win = simulate(expanded_node, ss);
         backpropagate(expanded_node, win);
@@ -312,7 +312,7 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
     int max_iterations = gameOptions.getSkillLevel() *
                          ITERATIONS_PER_SKILL_LEVEL;
 
-    // Workaround fix: The first move is slow.
+    // WAR fix: The first move is slow.
     if (pos->is_board_empty()) {
         max_iterations = 1;
     }

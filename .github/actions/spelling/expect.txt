@@ -13,6 +13,7 @@ attr
 autofocus
 AVX
 backend
+backpropagate
 bak
 bestmove
 bestvalue
@@ -75,6 +76,7 @@ filesystem
 firstguess
 fluentui
 FONTCHANGE
+FRE
 freopen
 fst
 fstream
@@ -334,6 +336,7 @@ uci
 ucinewgame
 uciok
 UCT
+uct
 uflow
 uint
 uintptr
