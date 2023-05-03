@@ -241,19 +241,19 @@ class AppTheme {
     ColorTheme.goldenJade: ColorSettings(
       boardBackgroundColor: Color(0xFFC89B42), // golden
       darkBackgroundColor: Color(0xFFE9E7D7), // light beige
-      boardLineColor: Color(0xFF8B6B29), // dark gold
+      boardLineColor: Color(0xFF496D88), // steel blue
       whitePieceColor: Color(0xFFF8F3F6), // off-white
       blackPieceColor: Color(0xFF7FE3AF), // jade green
-      pieceHighlightColor: Color(0xB3C89B42), // semi-transparent golden
-      messageColor: Color(0x621C352D), // dark maroon
+      pieceHighlightColor: Color(0xB3009600), // semi-transparent deep green
+      messageColor: Color(0x62000000), // semi-transparent black
       drawerColor: Color(0xFF1C352D), // dark green
       drawerTextColor: Color(0xFFFFFFFF), // white
       drawerHighlightItemColor:
           Color(0x331BFC06), // semi-transparent bright green
       mainToolbarBackgroundColor: Color(0xFFE9E7D7), // light beige
-      mainToolbarIconColor: Color(0xFF8B6B29), // dark gold
+      mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFFE9E7D7), // light beige
-      navigationToolbarIconColor: Color(0xFF8B6B29), // dark gold
+      navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
     )
   };
 }
