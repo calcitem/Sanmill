@@ -54,6 +54,13 @@ static constexpr double BIAS_FACTOR = 0.05;
 // Depth for alpha-beta search
 static constexpr int ALPHA_BETA_DEPTH = 6;
 
+// The SEARCH_PRUNING_FACTOR is used to reduce the number of moves
+// considered during the search process. A larger value results in
+// fewer moves being considered, potentially speeding up the search
+// at the cost of search accuracy. The value should be adjusted
+// according to the specific problem and performance requirements.
+//static constexpr int SEARCH_PRUNING_FACTOR = 1;
+
 // Check time limit every N iterations
 static constexpr int CHECK_TIME_FREQUENCY = 128;
 

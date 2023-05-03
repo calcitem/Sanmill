@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <stack>
 #include <vector>
 
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
@@ -67,13 +68,22 @@ public:
 };
 
 // Recursively delete tree starting from the given node
-void delete_tree(Node *node)
+void delete_tree(Node *root)
 {
-    for (Node *child : node->children) {
-        delete_tree(child);
+    std::stack<Node *> nodes;
+    nodes.push(root);
+
+    while (!nodes.empty()) {
+        Node *node = nodes.top();
+        nodes.pop();
+
+        for (Node *child : node->children) {
+            nodes.push(child);
+        }
+
+        delete node->position;
+        delete node;
     }
-    delete node->position;
-    delete node;
 }
 
 // Compute the UCT (Upper Confidence Bound for Trees) value tuned for a node
@@ -128,6 +138,7 @@ Node *expand(Node *node)
 
     MovePicker mp(*pos);
     mp.next_move(); // Sort moves
+    //const int moveCount = std::max(mp.move_count() / SEARCH_PRUNING_FACTOR, 1);
     const int moveCount = mp.move_count();
 
     // Add child nodes for each sorted legal move
