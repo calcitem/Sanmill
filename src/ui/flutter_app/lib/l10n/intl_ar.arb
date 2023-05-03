@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "في حالة الجمود ، يمكن إزالة قطع الخصم المجاورة لك ، بغض النظر عن تشكيل الطاحونة.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS هي خوارزمية صديقة للمبتدئين تتخذ القرارات من خلال استكشاف وتقييم الحركات المختلفة من خلال عمليات المحاكاة.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "اليشم الذهبي",
+  "@goldenJade": {}
 }

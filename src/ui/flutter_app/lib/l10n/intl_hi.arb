@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "यदि गतिरोध होता है, तो मिल के गठन की परवाह किए बिना, आपके आस-पास के प्रतिद्वंद्वी के टुकड़ों को हटाया जा सकता है।",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "एमसीटीएस शुरुआती-अनुकूल एल्गोरिदम है जो सिमुलेशन के माध्यम से विभिन्न चालों की खोज और मूल्यांकन करके निर्णय लेता है।",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "गोल्डन जेड",
+  "@goldenJade": {}
 }

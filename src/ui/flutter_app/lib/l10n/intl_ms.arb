@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Jika kebuntuan, kepingan lawan yang bersebelahan dengan anda boleh dikeluarkan, tanpa mengira pembentukan kilang.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS ialah algoritma mesra pemula yang membuat keputusan dengan meneroka dan menilai pergerakan berbeza melalui simulasi.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Jade Emas",
+  "@goldenJade": {}
 }

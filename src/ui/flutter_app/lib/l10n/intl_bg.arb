@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Ако е безизходица, фигурите на противника, съседни на вашите, могат да бъдат премахнати, независимо от формацията на мелницата.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS е удобен за начинаещи алгоритъм, който взема решения, като изследва и оценява различни ходове чрез симулации.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Златен нефрит",
+  "@goldenJade": {}
 }

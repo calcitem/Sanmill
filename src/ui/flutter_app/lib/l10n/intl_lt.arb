@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Jei atsidursite aklavietėje, priešininko figūros, esančios šalia jūsų, gali būti pašalintos, neatsižvelgiant į malūno formavimąsi.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS yra pradedantiesiems patogus algoritmas, kuris priima sprendimus tyrinėdamas ir įvertindamas įvairius judesius per modeliavimą.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Auksinis nefritas",
+  "@goldenJade": {}
 }

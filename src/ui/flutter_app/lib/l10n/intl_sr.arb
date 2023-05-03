@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Ако дође до застоја, противничке фигуре које се налазе поред ваших могу бити уклоњене, без обзира на формацију млина.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "МЦТС је алгоритам прилагођен почетницима који доноси одлуке истражујући и процењујући различите потезе кроз симулације.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Голден Јаде",
+  "@goldenJade": {}
 }

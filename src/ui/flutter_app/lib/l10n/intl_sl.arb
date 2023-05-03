@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Če je pat položaj, se lahko nasprotnikove figure, ki mejijo na vaše, odstranijo, ne glede na sestavo mlina.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS je začetnikom prijazen algoritem, ki sprejema odločitve z raziskovanjem in vrednotenjem različnih potez s pomočjo simulacij.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Zlati žad",
+  "@goldenJade": {}
 }

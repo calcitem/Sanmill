@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Patthelyzet esetén az ellenfél a tieddel szomszédos bábuit el lehet távolítani, függetlenül a malomfelállástól.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "Az MCTS egy kezdőbarát algoritmus, amely a különböző mozgások szimulációkon keresztüli feltárásával és értékelésével hoz döntéseket.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Arany Jade",
+  "@goldenJade": {}
 }

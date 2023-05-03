@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "교착 상태인 경우 밀 형성에 관계없이 상대방의 인접한 말을 제거할 수 있습니다.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS는 시뮬레이션을 통해 다양한 동작을 탐색하고 평가하여 결정을 내리는 초보자 친화적인 알고리즘입니다.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "골든 제이드",
+  "@goldenJade": {}
 }

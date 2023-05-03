@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Ja ir strupceļš, pretinieka figūras, kas atrodas blakus jums, var tikt noņemtas neatkarīgi no dzirnavu veidošanās.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS ir iesācējiem draudzīgs algoritms, kas pieņem lēmumus, pētot un novērtējot dažādas kustības, izmantojot simulācijas.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Zelta skuķis",
+  "@goldenJade": {}
 }

@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Bei einer Pattsituation können die an deine angrenzenden Steine des Gegners unabhängig von der Mühlenformation entfernt werden.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS ist ein anfängerfreundlicher Algorithmus, der Entscheidungen trifft, indem er verschiedene Bewegungen durch Simulationen untersucht und bewertet.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Goldene Jade",
+  "@goldenJade": {}
 }

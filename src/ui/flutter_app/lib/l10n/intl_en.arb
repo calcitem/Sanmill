@@ -1453,5 +1453,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "If stalemate, the opponent's pieces adjacent to yours can be removed, regardless of mill formation.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS is a beginner-friendly algorithm that makes decisions by exploring and evaluating different moves through simulations.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Golden Jade",
+  "@goldenJade": {}
 }
