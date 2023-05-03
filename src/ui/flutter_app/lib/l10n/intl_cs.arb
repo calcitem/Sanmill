@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "V případě patové situace mohou být soupeřovy figurky sousedící s vašimi odstraněny, bez ohledu na formaci mlýna.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS je pro začátečníky přívětivý algoritmus, který se rozhoduje na základě zkoumání a vyhodnocování různých pohybů prostřednictvím simulací.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Zlatý nefrit",
+  "@goldenJade": {}
 }

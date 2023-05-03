@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Si llega a un punto muerto, las piezas del oponente adyacentes a las suyas pueden eliminarse, independientemente de la formación del molino.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS es un algoritmo para principiantes que toma decisiones explorando y evaluando diferentes movimientos a través de simulaciones.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "jade dorado",
+  "@goldenJade": {}
 }

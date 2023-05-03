@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Доколку дојде до ќор-сокак, противничките фигури во непосредна близина на вашите може да се отстранат, без оглед на формирањето на мелницата.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS е алгоритам за почетници кој донесува одлуки со истражување и евалуација на различни потези преку симулации.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Златен жад",
+  "@goldenJade": {}
 }

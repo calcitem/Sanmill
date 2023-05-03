@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Jika menemui jalan buntu, bidak lawan yang berdekatan dengan milik Anda dapat dihilangkan, terlepas dari formasi gilingan.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS adalah algoritme ramah-pemula yang membuat keputusan dengan menjelajahi dan mengevaluasi berbagai gerakan melalui simulasi.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Giok Emas",
+  "@goldenJade": {}
 }

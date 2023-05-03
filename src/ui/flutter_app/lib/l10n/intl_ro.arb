@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Dacă sunt în impas, piesele adversarului adiacente ale tale pot fi eliminate, indiferent de formarea morii.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS este un algoritm prietenos pentru începători care ia decizii prin explorarea și evaluarea diferitelor mișcări prin simulări.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Jad auriu",
+  "@goldenJade": {}
 }

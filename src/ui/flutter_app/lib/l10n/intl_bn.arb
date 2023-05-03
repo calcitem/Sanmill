@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "অচলাবস্থা হলে, মিল গঠন নির্বিশেষে, আপনার সংলগ্ন প্রতিপক্ষের টুকরা সরানো যেতে পারে।",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS হল একটি শিক্ষানবিস-বান্ধব অ্যালগরিদম যা সিমুলেশনের মাধ্যমে বিভিন্ন চাল অন্বেষণ এবং মূল্যায়ন করে সিদ্ধান্ত নেয়।",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "গোল্ডেন জেড",
+  "@goldenJade": {}
 }

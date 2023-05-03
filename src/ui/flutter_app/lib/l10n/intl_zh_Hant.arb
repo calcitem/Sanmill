@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "在無路可走的情況下，只要對方的子和自己的子相鄰，則無論這些子是否在三連中，都可以被移除。",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS 是一種對初學者友好的算法，它通過模擬探索和評估不同的著法來做出決策。",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "金玉",
+  "@goldenJade": {}
 }

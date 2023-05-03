@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Pattitilanteessa vastustajan nappulat, jotka ovat sinun vieressäsi, voidaan poistaa myllymuodostuksesta riippumatta.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS on aloittelijaystävällinen algoritmi, joka tekee päätöksiä tutkimalla ja arvioimalla erilaisia liikkeitä simulaatioiden avulla.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Kultainen Jade",
+  "@goldenJade": {}
 }

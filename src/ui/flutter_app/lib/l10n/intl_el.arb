@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Σε περίπτωση αδιεξόδου, τα κομμάτια του αντιπάλου που βρίσκονται δίπλα στο δικό σας μπορούν να αφαιρεθούν, ανεξάρτητα από τον σχηματισμό μύλου.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "Το MCTS είναι ένας φιλικός προς τους αρχάριους αλγόριθμος που λαμβάνει αποφάσεις εξερευνώντας και αξιολογώντας διαφορετικές κινήσεις μέσω προσομοιώσεων.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Golden Jade",
+  "@goldenJade": {}
 }

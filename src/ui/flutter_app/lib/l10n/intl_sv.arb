@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Om ett dödläge, kan motståndarens pjäser intill din tas bort, oavsett kvarn formation.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS är en nybörjarvänlig algoritm som fattar beslut genom att utforska och utvärdera olika rörelser genom simuleringar.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Golden Jade",
+  "@goldenJade": {}
 }

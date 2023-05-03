@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Kui ummikseisus on, saab sinu omadega külgnevad vastase nupud eemaldada, olenemata veski moodustamisest.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS on algajasõbralik algoritm, mis teeb otsuseid simulatsioonide abil erinevaid käike uurides ja hinnates.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Kuldne Jade",
+  "@goldenJade": {}
 }

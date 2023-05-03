@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Nëse ngërçi, pjesët e kundërshtarit ngjitur me tuajat mund të hiqen, pavarësisht nga formimi i mullirit.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS është një algoritëm miqësor për fillestarët që merr vendime duke eksploruar dhe vlerësuar lëvizje të ndryshme përmes simulimeve.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Nefriti i Artë",
+  "@goldenJade": {}
 }

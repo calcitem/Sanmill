@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Hvis det går i stå, kan motstanderens brikker ved siden av din fjernes, uavhengig av mølleformasjonen.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS er en nybegynnervennlig algoritme som tar beslutninger ved å utforske og evaluere forskjellige bevegelser gjennom simuleringer.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Golden Jade",
+  "@goldenJade": {}
 }

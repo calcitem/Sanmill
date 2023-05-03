@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "In caso di stallo, i pezzi dell'avversario adiacenti ai tuoi possono essere rimossi, indipendentemente dalla formazione del mulino.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS è un algoritmo adatto ai principianti che prende decisioni esplorando e valutando diverse mosse attraverso simulazioni.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Giada d'oro",
+  "@goldenJade": {}
 }

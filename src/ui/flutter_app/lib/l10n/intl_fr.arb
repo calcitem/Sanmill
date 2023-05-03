@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "En cas d'impasse, les pièces de l'adversaire adjacentes aux vôtres peuvent être retirées, quelle que soit la formation du moulin.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS est un algorithme adapté aux débutants qui prend des décisions en explorant et en évaluant différents mouvements à travers des simulations.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Jade doré",
+  "@goldenJade": {}
 }

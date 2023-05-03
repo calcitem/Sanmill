@@ -1355,5 +1355,7 @@
   "stalemateRemovalRegardlessOfMillFormation": "Als er een patstelling is, kunnen de stukken van de tegenstander naast die van jou worden verwijderd, ongeacht de opstelling van de molen.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS is een beginnersvriendelijk algoritme dat beslissingen neemt door verschillende bewegingen te verkennen en te evalueren door middel van simulaties.",
-  "@whatIsMcts": {}
+  "@whatIsMcts": {},
+  "goldenJade": "Gouden jade",
+  "@goldenJade": {}
 }
