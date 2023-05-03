@@ -20,6 +20,8 @@
 #include "position.h"
 #include "types.h"
 
+//#define MCTS_PRINT_STAT
+
 // The role of exploration_parameter in Monte Carlo Tree Search (MCTS) is to
 // balance exploration and utilization. During the search,
 // MCTS needs to choose between nodes that have not been fully explored
