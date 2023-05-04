@@ -1,0 +1,11 @@
+v3.5.0
+
+Nouvelles fonctionnalités:
+
+* Algorithme MCTS ajouté.
+* Introduction du nouveau thème de couleur GoldenJade.
+
+Améliorations :
+
+* Changement du style du sélecteur de panneau de couleur en sélecteur de diapositives de couleur dans les paramètres.
+* Performances améliorées, notamment en phase de vol.

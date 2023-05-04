@@ -1,0 +1,11 @@
+v3.5.0
+
+Nowe funkcje:
+
+* Dodano algorytm MCTS.
+* Wprowadzono nowy motyw kolorystyczny GoldenJade.
+
+Ulepszenia:
+
+* Zmieniono styl selektora panelu kolorów na selektor slajdów kolorów w ustawieniach.
+* Zwiększona wydajność, szczególnie w fazie lotu.

@@ -1,0 +1,11 @@
+v3.5.0
+
+Nove značajke:
+
+* Dodan MCTS algoritam.
+* Predstavljena nova GoldenJade tema boja.
+
+poboljšanja:
+
+* Promijenjen je stil alata za odabir ploče u boji u odabir slajdova u boji u postavkama.
+* Poboljšane performanse, posebno u fazi letenja.
