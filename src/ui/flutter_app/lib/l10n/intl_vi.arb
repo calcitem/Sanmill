@@ -1,4 +1,5 @@
 {
+  "@@locale": "vi",
   "tipCannotPlace": "Bạn không thể đặt mảnh của bạn ở đây.",
   "@tipCannotPlace": {
     "description": "You can't place your piece here."
@@ -171,7 +172,7 @@
   "@threefoldRepetitionRule": {
     "description": "Threefold repetition rule"
   },
-  "languageName": "Tiếng Anh",
+  "languageName": "Tiếng Việt",
   "@languageName": {
     "description": "The name of the current language"
   },
