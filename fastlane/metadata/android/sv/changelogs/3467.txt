@@ -1,0 +1,11 @@
+v3.5.0
+
+Nya egenskaper:
+
+* Lade till MCTS-algoritm.
+* Introducerat nytt GoldenJade färgtema.
+
+Förbättringar:
+
+* Ändrade färgpanelväljarstil till färgbildväljare i inställningarna.
+* Förbättrad prestanda, särskilt i flygfasen.
