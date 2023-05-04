@@ -254,6 +254,205 @@ class AppTheme {
       mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFFE9E7D7), // light beige
       navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
-    )
+    ),
+    ColorTheme.forestWood: ColorSettings(
+      boardBackgroundColor: Color(0xFFC19A6B), // wood brown
+      darkBackgroundColor: Color(0xFF8B5A2B), // dark wood brown
+      boardLineColor: Color(0xFF4B5320), // army green
+      whitePieceColor: Color(0xFFEAE6C1), // light beige
+      blackPieceColor: Color(0xFF3C3B3F), // dark gray
+      pieceHighlightColor: Color(0x88F08080), // semi-transparent light coral
+      messageColor: Color(0x88000000), // semi-transparent black
+      drawerColor: Color(0xFF8B5A2B), // dark wood brown
+      drawerTextColor: Color(0xFFFFFFFF), // white
+      drawerHighlightItemColor:
+          Color(0x33FFB6C1), // semi-transparent light pink
+      mainToolbarBackgroundColor: Color(0xFF8B5A2B), // dark wood brown
+      mainToolbarIconColor: Color(0xFFA4A293), // warm gray
+      navigationToolbarBackgroundColor: Color(0xFF8B5A2B), // dark wood brown
+      navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+    ),
+    ColorTheme.greenMeadow: ColorSettings(
+      boardBackgroundColor: Color(0xFF9ACD32), // yellow-green
+      darkBackgroundColor: Color(0xFF228B22), // forest green
+      boardLineColor: Color(0xFF6B8E23), // olive green
+      whitePieceColor: Color(0xFFF8F8FF), // ghost white
+      blackPieceColor: Color(0xFF556B2F), // dark olive green
+      pieceHighlightColor: Color(0x8870C1B3), // semi-transparent sea green
+      messageColor: Color(0x88000000), // semi-transparent black
+      drawerColor: Color(0xFF228B22), // forest green
+      drawerTextColor: Color(0xFFFFFFFF), // white
+      drawerHighlightItemColor:
+          Color(0x33B0C4DE), // semi-transparent light steel blue
+      mainToolbarBackgroundColor: Color(0xFF228B22), // forest green
+      mainToolbarIconColor: Color(0xFFA4A293), // warm gray
+      navigationToolbarBackgroundColor: Color(0xFF228B22), // forest green
+      navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+    ),
+    ColorTheme.stonyPath: ColorSettings(
+      boardBackgroundColor: Color(0xFFC0C0C0), // silver
+      darkBackgroundColor: Color(0xFF808080), // gray
+      boardLineColor: Color(0xFF696969), // dim gray
+      whitePieceColor: Color(0xFFF5F5F5), // white smoke
+      blackPieceColor: Color(0xFF2F4F4F), // dark slate gray
+      pieceHighlightColor: Color(0x88FFA07A), // semi-transparent light salmon
+      messageColor: Color(0x88000000), // semi-transparent black
+      drawerColor: Color(0xFF808080), // gray
+      drawerTextColor: Color(0xFFFFFFFF), // white
+      drawerHighlightItemColor: Color(0x3399CCFF), // semi-transparent sky blue
+      mainToolbarBackgroundColor: Color(0xFF808080), // gray
+      mainToolbarIconColor: Color(0xFFA4A293), // warm gray
+      navigationToolbarBackgroundColor: Color(0xFF808080), // gray
+      navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+    ),
+    ColorTheme.midnightBlue: ColorSettings(
+      boardBackgroundColor: Color(0xFF162447), // midnight blue
+      darkBackgroundColor: Color(0xFF1f4068), // deep blue
+      boardLineColor: Color(0xFFe43f5a), // reddish-pink
+      whitePieceColor: Color(0xFFf9f7f7), // off-white
+      blackPieceColor: Color(0xFF8338ec), // purple
+      pieceHighlightColor: Color(0x880000FF), // semi-transparent blue
+      messageColor: Color(0x88000000), // semi-transparent black
+      drawerColor: Color(0xFF1f4068), // deep blue
+      drawerTextColor: Color(0xFFFFFFFF), // white
+      drawerHighlightItemColor:
+          Color(0x33D3FF00), // semi-transparent bright green
+      mainToolbarBackgroundColor: Color(0xFF1f4068), // deep blue
+      mainToolbarIconColor: Color(0xFFA4A293), // warm gray
+      navigationToolbarBackgroundColor: Color(0xFF1f4068), // deep blue
+      navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+    ),
+    ColorTheme.greenForest: ColorSettings(
+      boardBackgroundColor: Color(0xFFa9eec2), // light green
+      darkBackgroundColor: Color(0xFF4DAA4C), // forest green
+      boardLineColor: Color(0xFF7a9e9f), // greenish gray
+      whitePieceColor: Color(0xFFffffff), // white
+      blackPieceColor: Color(0xFF0a2239), // dark blue
+      pieceHighlightColor: Color(0x88FF0000), // semi-transparent red
+      messageColor: Color(0x88000000), // semi-transparent black
+      drawerColor: Color(0xFF4DAA4C), // forest green
+      drawerTextColor: Color(0xFFFFFFFF), // white
+      drawerHighlightItemColor: Color(0x33FFB800), // semi-transparent orange
+      mainToolbarBackgroundColor: Color(0xFF4DAA4C), // forest green
+      mainToolbarIconColor: Color(0xFFA4A293), // warm gray
+      navigationToolbarBackgroundColor: Color(0xFF4DAA4C), // forest green
+      navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+    ),
+    ColorTheme.pastelPink: ColorSettings(
+      boardBackgroundColor: Color(0xFFf7bacf), // pastel pink
+      darkBackgroundColor: Color(0xFFefc3e6), // light pink
+      boardLineColor: Color(0xFFa95c5c), // brownish pink
+      whitePieceColor: Color(0xFFffffff), // white
+      blackPieceColor: Color(0xFF000000), // black
+      pieceHighlightColor: Color(0x8800FFFF), // semi-transparent cyan
+      messageColor: Color(0x88000000), // semi-transparent black
+      drawerColor: Color(0xFFa95c5c), // brownish pink
+      drawerTextColor: Color(0xFFFFFFFF), // white
+      drawerHighlightItemColor: Color(0x33FFA500), // semi-transparent orange
+      mainToolbarBackgroundColor: Color(0xFFa95c5c), // brownish pink
+      mainToolbarIconColor: Color(0xFFA4A293), // warm gray
+      navigationToolbarBackgroundColor: Color(0xFFa95c5c), // brownish pink
+      navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+    ),
+    ColorTheme.turquoiseSea: ColorSettings(
+      boardBackgroundColor: Color(0xFFc9ada1), // beige
+      darkBackgroundColor: Color(0xFF1f7a8c), // dark turquoise
+      boardLineColor: Color(0xFFeae2b7), // off-white
+      whitePieceColor: Color(0xFFffffff), // white
+      blackPieceColor: Color(0xFFd9b08c), // light brown
+      pieceHighlightColor: Color(0x88ADFF2F), // semi-transparent green-yellow
+      messageColor: Color(0x88000000), // semi-transparent black
+      drawerColor: Color(0xFF1f7a8c), // dark turquoise
+      drawerTextColor: Color(0xFFFFFFFF), // white
+      drawerHighlightItemColor: Color(0x33DC143C), // semi-transparent crimson
+      mainToolbarBackgroundColor: Color(0xFF1f7a8c), // dark turquoise
+      mainToolbarIconColor: Color(0xFFA4A293), // warm gray
+      navigationToolbarBackgroundColor: Color(0xFF1f7a8c), // dark turquoise
+      navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+    ),
+    ColorTheme.violetDream: ColorSettings(
+      boardBackgroundColor: Color(0xFF8b77a9), // violet
+      darkBackgroundColor: Color(0xFF583d72), // dark violet
+      boardLineColor: Color(0xFFC5A3B5), // lavender
+      whitePieceColor: Color(0xFFffffff), // white
+      blackPieceColor: Color(0xFF000000), // black
+      pieceHighlightColor: Color(0x88FFD700), // semi-transparent gold
+      messageColor: Color(0x88000000), // semi-transparent black
+      drawerColor: Color(0xFF583d72), // dark violet
+      drawerTextColor: Color(0xFFFFFFFF), // white
+      drawerHighlightItemColor:
+          Color(0x3393C47D), // semi-transparent dark sea green
+      mainToolbarBackgroundColor: Color(0xFF583d72), // dark violet
+      mainToolbarIconColor: Color(0xFFA4A293), // warm gray
+      navigationToolbarBackgroundColor: Color(0xFF583d72), // dark violet
+      navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+    ),
+    ColorTheme.mintChocolate: ColorSettings(
+      boardBackgroundColor: Color(0xFFA1E8AF), // mint
+      darkBackgroundColor: Color(0xFF0B3D0B), // dark green
+      boardLineColor: Color(0xFF8B4513), // saddle brown
+      whitePieceColor: Color(0xFFffffff), // white
+      blackPieceColor: Color(0xFF000000), // black
+      pieceHighlightColor: Color(0x88FF69B4), // semi-transparent hot pink
+      messageColor: Color(0xFFA4A293), // warm gray
+      drawerColor: Color(0xFF0B3D0B), // dark green
+      drawerTextColor: Color(0xFFFFFFFF), // white
+      drawerHighlightItemColor:
+          Color(0x33F08080), // semi-transparent light coral
+      mainToolbarBackgroundColor: Color(0xFF0B3D0B), // dark green
+      mainToolbarIconColor: Color(0xFFA4A293), // warm gray
+      navigationToolbarBackgroundColor: Color(0xFF0B3D0B), // dark green
+      navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+    ),
+    ColorTheme.skyBlue: ColorSettings(
+      boardBackgroundColor: Color(0xFFD0E1F9), // light sky blue
+      darkBackgroundColor: Color(0xFF4B89AC), // steel blue
+      boardLineColor: Color(0xFF1C1C1C), // dark gray
+      whitePieceColor: Color(0xFFffffff), // white
+      blackPieceColor: Color(0xFF000000), // black
+      pieceHighlightColor: Color(0x88FFFF00), // semi-transparent yellow
+      messageColor: Color(0x88000000), // semi-transparent black
+      drawerColor: Color(0xFF4B89AC), // steel blue
+      drawerTextColor: Color(0xFFFFFFFF), // white
+      drawerHighlightItemColor: Color(0x33FFC0CB), // semi-transparent pink
+      mainToolbarBackgroundColor: Color(0xFF4B89AC), // steel blue
+      mainToolbarIconColor: Color(0xFFA4A293), // warm gray
+      navigationToolbarBackgroundColor: Color(0xFF4B89AC), // steel blue
+      navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+    ),
+    ColorTheme.playfulGarden: ColorSettings(
+      boardBackgroundColor: Color(0xFFFBE9A6), // light yellow
+      darkBackgroundColor: Color(0xFFB8DCAC), // light green
+      boardLineColor: Color(0xFF90BE6D), // green
+      whitePieceColor: Color(0xFFEFEFEF), // off white
+      blackPieceColor: Color(0xFF588C7E), // teal
+      pieceHighlightColor: Color(0x88F08080), // semi-transparent light coral
+      messageColor: Color(0x88000000), // semi-transparent black
+      drawerColor: Color(0xFF90BE6D), // green
+      drawerTextColor: Color(0xFFFFFFFF), // white
+      drawerHighlightItemColor: Color(0x33FFD700), // semi-transparent gold
+      mainToolbarBackgroundColor: Color(0xFFB8DCAC), // light green
+      mainToolbarIconColor: Color(0xFFA4A293), // warm gray
+      navigationToolbarBackgroundColor: Color(0xFFB8DCAC), // light green
+      navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+    ),
+    ColorTheme.darkMystery: ColorSettings(
+      boardBackgroundColor: Color(0xFF5C5C5C), // dark silver
+      darkBackgroundColor: Color(0xFF0F0F0F), // almost black
+      boardLineColor: Color(0xFF404040), // gray
+      whitePieceColor: Color(0xFFE0E0E0), // very light gray
+      blackPieceColor: Color(0xFF1A1A1A), // very dark gray
+      pieceHighlightColor:
+          Color(0x88C71585), // semi-transparent medium violet red
+      messageColor: Color(0xFFA4A293), // warm gray
+      drawerColor: Color(0xFF0F0F0F), // almost black
+      drawerTextColor: Color(0xFFFFFFFF), // white
+      drawerHighlightItemColor:
+          Color(0x33F08080), // semi-transparent light coral
+      mainToolbarBackgroundColor: Color(0xFF0F0F0F), // almost black
+      mainToolbarIconColor: Color(0xFFA4A293), // warm gray
+      navigationToolbarBackgroundColor: Color(0xFF0F0F0F), // almost black
+      navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+    ),
   };
 }
