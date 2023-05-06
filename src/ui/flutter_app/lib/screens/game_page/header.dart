@@ -71,7 +71,7 @@ class _GameHeaderState extends State<GameHeader> {
   @override
   Widget build(BuildContext context) {
     final Container divider = Container(
-      height: 4,
+      height: 2,
       width: 180,
       margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
       decoration: BoxDecoration(
