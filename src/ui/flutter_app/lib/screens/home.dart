@@ -44,10 +44,10 @@ import '../shared/stack_list.dart';
 import '../shared/theme/app_theme.dart';
 import '../shared/tutorial/widgets/tutorial_dialog.dart';
 import 'appearance_settings/widgets/appearance_settings_page.dart';
-import 'common/about_page.dart';
-import 'common/help_screen.dart';
 import 'game_page/widgets/game_page.dart';
 import 'general_settings/widgets/general_settings_page.dart';
+import 'misc/about_page.dart';
+import 'misc/help_screen.dart';
 import 'rule_settings/widgets/rule_settings_page.dart';
 
 // Define the possible states of the drawer
