@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-part of '../mill.dart';
+part of 'mill.dart';
 
 /// Sounds the [Audios] can play through [Audios.playTone].
 enum Sound { draw, fly, go, illegal, lose, mill, place, remove, select, win }
