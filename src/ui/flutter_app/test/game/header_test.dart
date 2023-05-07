@@ -16,11 +16,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/custom_drawer/custom_drawer.dart';
+import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/generated/intl/l10n_en.dart';
-import 'package:sanmill/screens/game_page/widgets/game_page.dart';
-import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/services/mill/mill.dart';
-import 'package:sanmill/shared/custom_drawer/custom_drawer.dart';
+import 'package:sanmill/shared/database/database.dart';
 
 import '../helpers/locale_helper.dart';
 import '../helpers/mocks/mock_database.dart';
@@ -53,7 +53,7 @@ void main() {
 
       const Key iconKey = Key("DrawerIcon");
 
-      final DrawerIcon screen = DrawerIcon(
+      final CustomDrawerIcon screen = CustomDrawerIcon(
         icon: IconButton(
           icon: const Icon(
             Icons.menu,

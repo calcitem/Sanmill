@@ -15,8 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/services/database/database.dart';
-import 'package:sanmill/services/mill/mill.dart';
+import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/shared/database/database.dart';
 
 import '../helpers/mocks/mock_audios.dart';
 import '../helpers/mocks/mock_database.dart';

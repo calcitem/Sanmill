@@ -27,20 +27,20 @@ import 'package:flutter_driver/driver_extension.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:path_provider/path_provider.dart';
 
+import 'appearance_settings/models/display_settings.dart';
+import 'game_page/widgets/painters/painters.dart';
 import 'generated/intl/l10n.dart';
-import 'models/display_settings.dart';
-import 'screens/home.dart';
-import 'services/database/database.dart';
-import 'services/environment_config/environment_config.dart';
-import 'services/logger/logger.dart';
-import 'shared/constants.dart';
-import 'shared/feedback_localization.dart';
-import 'shared/scaffold_messenger.dart';
-import 'shared/theme/app_theme.dart';
-import 'shared/utils/helpers/painters.dart';
+import 'home/home.dart';
+import 'shared/config/constants.dart';
+import 'shared/database/database.dart';
+import 'shared/services/environment_config.dart';
+import 'shared/services/logger.dart';
+import 'shared/themes/app_theme.dart';
+import 'shared/utils/localizations/feedback_localization.dart';
+import 'shared/widgets/snackbars/scaffold_messenger.dart';
 
-part 'package:sanmill/services/catcher/catcher.dart';
-part 'package:sanmill/services/init_system_ui/init_system_ui.dart';
+part 'package:sanmill/shared/services/catcher_service.dart';
+part 'package:sanmill/shared/services/system_ui_service.dart';
 
 Future<void> main() async {
   logger.i('Environment [catcher]: ${EnvironmentConfig.catcher}');

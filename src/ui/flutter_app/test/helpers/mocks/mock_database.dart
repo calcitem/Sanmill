@@ -15,11 +15,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'package:mockito/mockito.dart';
-import 'package:sanmill/models/color_settings.dart';
-import 'package:sanmill/models/display_settings.dart';
-import 'package:sanmill/models/general_settings.dart';
-import 'package:sanmill/models/rule_settings.dart';
-import 'package:sanmill/services/database/database.dart';
+import 'package:sanmill/appearance_settings/models/color_settings.dart';
+import 'package:sanmill/appearance_settings/models/display_settings.dart';
+import 'package:sanmill/general_settings/models/general_settings.dart';
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
+import 'package:sanmill/shared/database/database.dart';
 
 class MockDB extends Mock implements DB {
   GeneralSettings _generalSettings = const GeneralSettings();

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'package:mockito/mockito.dart';
-import 'package:sanmill/services/mill/mill.dart';
+import 'package:sanmill/game_page/services/mill.dart';
 
 class MockAudios extends Mock implements SoundManager {
   @override
