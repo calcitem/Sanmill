@@ -71,7 +71,7 @@ class HistoryNavigator {
 
     _isGoingToHistory = true;
 
-    Audios().mute();
+    SoundManager().mute();
 
     final HistoryResponse resp =
         await doEachMove(navMode, number); // doMove() to index
@@ -100,7 +100,7 @@ class HistoryNavigator {
         break;
     }
 
-    Audios().unMute();
+    SoundManager().unMute();
     await navMode.gotoHistoryPlaySound();
 
     _isGoingToHistory = false;
@@ -268,11 +268,11 @@ extension HistoryNavModeExtension on HistoryNavMode {
     switch (this) {
       case HistoryNavMode.stepForwardAll:
       case HistoryNavMode.stepForward:
-        return Audios().playTone(Sound.place);
+        return SoundManager().playTone(Sound.place);
       case HistoryNavMode.takeBackAll:
       case HistoryNavMode.takeBackN:
       case HistoryNavMode.takeBack:
-        return Audios().playTone(Sound.remove);
+        return SoundManager().playTone(Sound.remove);
     }
   }
 }

@@ -477,7 +477,7 @@ class Position {
             changeSideToMove();
           }
           MillController().gameInstance.focusIndex = squareToIndex[s];
-          Audios().playTone(Sound.place);
+          SoundManager().playTone(Sound.place);
         } else {
           pieceToRemoveCount[sideToMove] =
               DB().ruleSettings.mayRemoveMultiple ? n : 1;
@@ -514,7 +514,7 @@ class Position {
           }
 
           MillController().gameInstance.focusIndex = squareToIndex[s];
-          Audios().playTone(Sound.mill);
+          SoundManager().playTone(Sound.mill);
         }
         break;
       case Phase.moving:
@@ -582,14 +582,14 @@ class Position {
 
           MillController().gameInstance.focusIndex = squareToIndex[s];
 
-          Audios().playTone(Sound.place);
+          SoundManager().playTone(Sound.place);
         } else {
           pieceToRemoveCount[sideToMove] =
               DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
           action = Act.remove;
           MillController().gameInstance.focusIndex = squareToIndex[s];
-          Audios().playTone(Sound.mill);
+          SoundManager().playTone(Sound.mill);
         }
 
         break;
@@ -649,7 +649,7 @@ class Position {
     if (pieceOnBoardCount[_them]! + pieceInHandCount[_them]! <
         DB().ruleSettings.piecesAtLeastCount) {
       _setGameOver(sideToMove, GameOverReason.loseLessThanThree);
-      Audios().playTone(Sound.remove);
+      SoundManager().playTone(Sound.remove);
       return const MillResponseOK();
     }
 
@@ -659,7 +659,7 @@ class Position {
     _updateKeyMisc();
 
     if (pieceToRemoveCount[sideToMove] != 0) {
-      Audios().playTone(Sound.remove);
+      SoundManager().playTone(Sound.remove);
       return const MillResponseOK();
     }
 
@@ -687,7 +687,7 @@ class Position {
         if (DB().ruleSettings.isDefenderMoveFirst) {
           _sideToMove = PieceColor.black;
           _checkIfGameIsOver();
-          Audios().playTone(Sound.remove);
+          SoundManager().playTone(Sound.remove);
           return const MillResponseOK();
         } else {
           _sideToMove = PieceColor.white;
@@ -701,7 +701,7 @@ class Position {
 
     _checkIfGameIsOver();
 
-    Audios().playTone(Sound.remove);
+    SoundManager().playTone(Sound.remove);
     return const MillResponseOK();
   }
 
@@ -1181,18 +1181,18 @@ extension SetupPosition on Position {
 
     // TODO: Allow to overwrite.
     if (_board[s] != PieceColor.none) {
-      Audios().playTone(Sound.illegal);
+      SoundManager().playTone(Sound.illegal);
       return false;
     }
 
     if (countPieceOnBoard(piece) == DB().ruleSettings.piecesCount) {
-      Audios().playTone(Sound.illegal);
+      SoundManager().playTone(Sound.illegal);
       return false;
     }
 
     if (DB().ruleSettings.hasBannedLocations == true) {
       if (countTotalPieceOnBoard() >= DB().ruleSettings.piecesCount * 2) {
-        Audios().playTone(Sound.illegal);
+        SoundManager().playTone(Sound.illegal);
         return false;
       }
     }
@@ -1212,7 +1212,7 @@ extension SetupPosition on Position {
     _board[s] = piece;
 
     //MillController().gameInstance.focusIndex = squareToIndex[s];
-    Audios().playTone(
+    SoundManager().playTone(
         MillController().isPositionSetupBanPiece ? Sound.remove : Sound.place);
 
     MillController().setupPositionNotifier.updateIcons();
@@ -1222,12 +1222,12 @@ extension SetupPosition on Position {
 
   MillResponse _removePieceForSetupPosition(int s) {
     if (action != Act.remove) {
-      Audios().playTone(Sound.illegal);
+      SoundManager().playTone(Sound.illegal);
       return const IllegalAction();
     }
 
     if (_board[s] == PieceColor.none) {
-      Audios().playTone(Sound.illegal);
+      SoundManager().playTone(Sound.illegal);
       return const IllegalAction();
     }
 
@@ -1242,7 +1242,7 @@ extension SetupPosition on Position {
     }
      */
 
-    Audios().playTone(Sound.remove);
+    SoundManager().playTone(Sound.remove);
     MillController().setupPositionNotifier.updateIcons();
 
     return const MillResponseOK();

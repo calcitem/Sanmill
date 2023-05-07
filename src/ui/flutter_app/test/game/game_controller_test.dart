@@ -42,7 +42,7 @@ void main() {
     test("Import should clear the focus", () async {
       // initialize the test
       DB.instance = MockDB();
-      Audios.instance = MockAudios();
+      SoundManager.instance = MockAudios();
       final MillController controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 

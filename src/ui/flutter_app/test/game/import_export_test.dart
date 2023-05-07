@@ -31,7 +31,7 @@ void main() {
 
       // Initialize the test
       DB.instance = MockDB();
-      Audios.instance = MockAudios();
+      SoundManager.instance = MockAudios();
       final MillController controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
@@ -46,7 +46,7 @@ void main() {
 
       // Initialize the test
       DB.instance = MockDB();
-      Audios.instance = MockAudios();
+      SoundManager.instance = MockAudios();
       final MillController controller = MillController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 

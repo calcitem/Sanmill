@@ -17,7 +17,7 @@
 import 'package:mockito/mockito.dart';
 import 'package:sanmill/services/mill/mill.dart';
 
-class MockAudios extends Mock implements Audios {
+class MockAudios extends Mock implements SoundManager {
   @override
   Future<void> loadSounds() async {}
 

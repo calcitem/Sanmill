@@ -47,7 +47,6 @@ import '../logger/logger.dart';
 
 part '../import_export/import_export_service.dart';
 part '../save_load/save_load_service.dart';
-part 'audios.dart';
 part 'controller/controller.dart';
 part 'controller/history_navigation.dart';
 part 'controller/recorder.dart';
@@ -65,5 +64,6 @@ part 'notifiers/game_result_notifier.dart';
 part 'notifiers/header_icons_notifier.dart';
 part 'notifiers/setup_position_notifier.dart';
 part 'notifiers/tip_notifier.dart';
+part 'sounds/sound_manager.dart';
 
 // TODO: [Leptopoda] Separate the ui from the logic

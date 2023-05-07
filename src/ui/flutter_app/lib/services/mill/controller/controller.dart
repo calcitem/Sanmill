@@ -87,7 +87,7 @@ class MillController {
       return;
     }
 
-    await Audios().loadSounds();
+    await SoundManager().loadSounds();
 
     _initialized = true;
     logger.i("$_tag initialized");

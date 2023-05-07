@@ -167,7 +167,7 @@ class TapHandler {
 
         switch (selectRet) {
           case MillResponseOK():
-            Audios().playTone(Sound.select);
+            SoundManager().playTone(Sound.select);
             controller.gameInstance._select(squareToIndex[sq]!);
             ret = true;
             logger.v("$_tag selectPiece: [$sq]");
@@ -203,7 +203,7 @@ class TapHandler {
             showTip(S.of(context).tipSelectWrong);
             break;
           default:
-            Audios().playTone(Sound.illegal);
+            SoundManager().playTone(Sound.illegal);
             logger.v("$_tag selectPiece: skip [$sq]");
             break;
         }
@@ -336,7 +336,7 @@ class TapHandler {
         return const EngineResponseHumanOK();
       }
     } else {
-      Audios().playTone(Sound.illegal);
+      SoundManager().playTone(Sound.illegal);
     }
 
     controller.gameInstance.sideToMove = MillController().position.sideToMove;

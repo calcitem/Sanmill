@@ -14,21 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-part of 'mill.dart';
+part of '../mill.dart';
 
-/// Sounds the [Audios] can play through [Audios.playTone].
+/// Sounds the [SoundManager] can play through [SoundManager.playTone].
 enum Sound { draw, fly, go, illegal, lose, mill, place, remove, select, win }
 
-/// Audio Service
+/// Sound Manager
 ///
 /// Service providing a unified abstraction to call different audio backend on our supported platforms.
-class Audios {
-  factory Audios() => instance;
+class SoundManager {
+  factory SoundManager() => instance;
 
-  Audios._();
+  SoundManager._();
 
   @visibleForTesting
-  static Audios instance = Audios._();
+  static SoundManager instance = SoundManager._();
 
   late Soundpool _soundpool;
   int _alarmSoundStreamId = 0;
