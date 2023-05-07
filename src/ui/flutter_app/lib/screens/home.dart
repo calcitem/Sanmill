@@ -29,26 +29,26 @@ import '../generated/intl/l10n.dart';
 import '../models/general_settings.dart';
 import '../models/rule_settings.dart';
 import '../services/database/database.dart';
-import '../services/environment_config.dart';
-import '../services/logger.dart';
+import '../services/environment_config/environment_config.dart';
+import '../services/logger/logger.dart';
 import '../services/mill/mill.dart';
 import '../shared/constants.dart';
 import '../shared/custom_drawer/custom_drawer.dart';
 import '../shared/double_back_to_close_app.dart';
 import '../shared/gif_share/gif_share.dart';
-import '../shared/gif_share/widgets_to_image.dart';
+import '../shared/gif_share/utils/widgets_to_image.dart';
 import '../shared/painters/painters.dart';
 import '../shared/privacy_dialog.dart';
 import '../shared/scaffold_messenger.dart';
 import '../shared/stack_list.dart';
 import '../shared/theme/app_theme.dart';
-import '../shared/tutorial/tutorial_dialog.dart';
+import '../shared/tutorial/widgets/tutorial_dialog.dart';
 import 'about_page.dart';
-import 'appearance_settings/appearance_settings_page.dart';
-import 'game_page/game_page.dart';
-import 'general_settings/general_settings_page.dart';
+import 'appearance_settings/widgets/appearance_settings_page.dart';
+import 'game_page/widgets/game_page.dart';
+import 'general_settings/widgets/general_settings_page.dart';
 import 'help_screen.dart';
-import 'rule_settings/rule_settings_page.dart';
+import 'rule_settings/widgets/rule_settings_page.dart';
 
 // Define the possible states of the drawer
 enum _DrawerIndex {

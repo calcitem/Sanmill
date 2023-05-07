@@ -23,10 +23,10 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../services/database/database.dart';
-import '../../services/logger.dart';
+import '../../services/logger/logger.dart';
 import '../custom_spacer.dart';
 import '../theme/app_theme.dart';
 
-part 'src/card.dart';
-part 'src/list.dart';
-part 'src/list_tile.dart';
+part 'widgets/card.dart';
+part 'widgets/list.dart';
+part 'widgets/list_tile.dart';

@@ -22,7 +22,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../services/database/database.dart';
-import 'utils.dart';
+import 'utils/utils.dart';
 
 class GifShare {
   factory GifShare() => _instance ?? GifShare._internal();

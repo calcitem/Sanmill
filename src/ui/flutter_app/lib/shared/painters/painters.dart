@@ -22,10 +22,10 @@ import 'package:flutter/material.dart';
 import '../../models/color_settings.dart';
 import '../../models/display_settings.dart';
 import '../../services/database/database.dart';
-import '../../services/environment_config.dart';
+import '../../services/environment_config/environment_config.dart';
 import '../../services/mill/mill.dart';
 import '../theme/app_theme.dart';
 
-part 'src/board_painter.dart';
-part 'src/common.dart';
-part 'src/piece_painter.dart';
+part 'widgets/board_painter.dart';
+part 'widgets/common.dart';
+part 'widgets/piece_painter.dart';

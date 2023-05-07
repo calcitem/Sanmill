@@ -14,26 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-/// Although marked as a library this package is tightly integrated into the app
-library game_toolbar;
-
-import 'dart:math';
-
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
-import '../../generated/intl/l10n.dart';
-import '../../services/database/database.dart';
-import '../../services/logger/logger.dart';
-import '../../services/mill/mill.dart';
-import '../scaffold_messenger.dart';
-import '../string_buffer_helper.dart';
+import '../../generated/assets/assets.gen.dart';
 
-part 'widgets/game_page_toolbar.dart';
-part 'widgets/item_theme.dart';
-part 'widgets/item_theme_data.dart';
-part 'widgets/setup_position_toolbar.dart';
-part 'widgets/toolbar_item.dart';
+/// Information about the local git repository
+class GitInformation {
+  /// Construct a [GitInformation] from a [branch] and [revision]
+  const GitInformation({required this.branch, required this.revision});
+
+  /// The current checked out branch
+  final String branch;
+
+  /// The current commit id
+  final String? revision;
+}
+
+/// Get the [GitInformation] for the local git repository
+Future<GitInformation> get gitInfo async {
+  final String branch = await rootBundle.loadString(Assets.files.gitBranch);
+  final String revision = await rootBundle.loadString(Assets.files.gitRevision);
+
+  return GitInformation(branch: branch, revision: revision);
+}

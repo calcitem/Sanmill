@@ -23,7 +23,7 @@ import 'package:flutter/services.dart';
 import '../generated/intl/l10n.dart';
 import '../models/general_settings.dart';
 import '../services/database/database.dart';
-import '../services/logger.dart';
+import '../services/logger/logger.dart';
 import 'constants.dart';
 import 'link_text_span.dart';
 

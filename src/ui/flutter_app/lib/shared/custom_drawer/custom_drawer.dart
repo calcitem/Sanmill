@@ -29,9 +29,9 @@ import '../constants.dart';
 import '../text_size_helper.dart';
 import '../theme/app_theme.dart';
 
-part 'src/controller.dart';
-part 'src/header.dart';
-part 'src/icon.dart';
-part 'src/item.dart';
-part 'src/value.dart';
-part 'src/widget.dart';
+part 'widgets/controller.dart';
+part 'widgets/header.dart';
+part 'widgets/icon.dart';
+part 'widgets/item.dart';
+part 'widgets/value.dart';
+part 'widgets/widget.dart';

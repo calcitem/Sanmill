@@ -28,7 +28,7 @@ import '../../models/display_settings.dart';
 import '../../models/general_settings.dart';
 import '../../models/rule_settings.dart';
 import '../../shared/constants.dart';
-import '../logger.dart';
+import '../logger/logger.dart';
 import '../mill/mill.dart';
 import 'adapters/adapters.dart';
 

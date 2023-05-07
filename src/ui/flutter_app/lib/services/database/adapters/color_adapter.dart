@@ -14,12 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-/// Although marked as a library this package is tightly integrated into the app
-library adapters;
+part of 'adapters.dart';
 
-import 'package:flutter/material.dart' show Locale, Color;
-import 'package:hive_flutter/adapters.dart';
-import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
+/// Color Adapter
+///
+/// This adapter provides helper functions to be used with [JsonSerializable]
+/// and is a general [TypeAdapter] to be used with Hive [Box]es
+class ColorAdapter extends TypeAdapter<Color> {
+  @override
+  final int typeId = 6;
 
-part 'color_adapter.dart';
-part 'locale_adapter.dart';
+  @override
+  Color read(BinaryReader reader) {
+    final int value = reader.readInt();
+    return Color(value);
+  }
+
+  @override
+  void write(BinaryWriter writer, Color obj) => writer.writeInt(obj.value);
+
+  static int colorToJson(Color color) => color.value;
+  static Color colorFromJson(int value) => Color(value);
+}

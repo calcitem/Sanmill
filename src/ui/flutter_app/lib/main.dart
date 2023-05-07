@@ -31,16 +31,16 @@ import 'generated/intl/l10n.dart';
 import 'models/display_settings.dart';
 import 'screens/home.dart';
 import 'services/database/database.dart';
-import 'services/environment_config.dart';
-import 'services/logger.dart';
+import 'services/environment_config/environment_config.dart';
+import 'services/logger/logger.dart';
 import 'shared/constants.dart';
 import 'shared/feedback_localization.dart';
 import 'shared/painters/painters.dart';
 import 'shared/scaffold_messenger.dart';
 import 'shared/theme/app_theme.dart';
 
-part 'package:sanmill/services/catcher.dart';
-part 'package:sanmill/services/init_system_ui.dart';
+part 'package:sanmill/services/catcher/catcher.dart';
+part 'package:sanmill/services/init_system_ui/init_system_ui.dart';
 
 Future<void> main() async {
   logger.i('Environment [catcher]: ${EnvironmentConfig.catcher}');

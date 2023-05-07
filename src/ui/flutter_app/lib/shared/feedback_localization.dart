@@ -18,7 +18,7 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../services/logger.dart';
+import '../services/logger/logger.dart';
 
 // TODO: [Leptopoda] This implementation is shitty and I don't like it. Just a reminder that I wanted to rewrite it.
 

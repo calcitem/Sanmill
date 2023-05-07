@@ -14,12 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-/// Although marked as a library this package is tightly integrated into the app
-library adapters;
+import 'package:logger/logger.dart';
 
-import 'package:flutter/material.dart' show Locale, Color;
-import 'package:hive_flutter/adapters.dart';
-import 'package:json_annotation/json_annotation.dart' show JsonSerializable;
+import '../environment_config/environment_config.dart';
 
-part 'color_adapter.dart';
-part 'locale_adapter.dart';
+final Logger logger = Logger(level: Level.values[EnvironmentConfig.logLevel]);

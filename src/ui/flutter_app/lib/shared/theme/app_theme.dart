@@ -18,7 +18,7 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/color_settings.dart';
-import '../../screens/appearance_settings/appearance_settings_page.dart';
+import '../../screens/appearance_settings/widgets/appearance_settings_page.dart';
 import '../../services/database/database.dart';
 import 'colors.dart';
 

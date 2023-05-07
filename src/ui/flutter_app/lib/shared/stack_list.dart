@@ -17,7 +17,7 @@
 import 'dart:collection';
 import 'dart:core';
 
-import '../services/logger.dart';
+import '../services/logger/logger.dart';
 
 class StackList<T> {
   /// Default constructor sets the maximum stack size to 'no limit.'

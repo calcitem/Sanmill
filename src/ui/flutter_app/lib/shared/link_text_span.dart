@@ -18,7 +18,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../services/environment_config.dart';
+import '../services/environment_config/environment_config.dart';
 
 class LinkTextSpan extends TextSpan {
   LinkTextSpan({super.style, required String url, String? text})
