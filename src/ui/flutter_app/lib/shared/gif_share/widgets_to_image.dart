@@ -16,7 +16,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'utils.dart';
+import 'widgets_to_image_controller.dart';
 
 class WidgetsToImage extends StatelessWidget {
   const WidgetsToImage({
