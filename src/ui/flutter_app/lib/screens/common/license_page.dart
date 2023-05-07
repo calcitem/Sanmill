@@ -17,8 +17,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
-import '../generated/assets/assets.gen.dart';
-import '../generated/intl/l10n.dart';
+import '../../generated/assets/assets.gen.dart';
+import '../../generated/intl/l10n.dart';
 
 class LicenseAgreementPage extends StatelessWidget {
   const LicenseAgreementPage({super.key});

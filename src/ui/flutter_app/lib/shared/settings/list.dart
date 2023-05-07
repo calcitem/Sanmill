@@ -14,18 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-/// Although marked as a library this package is tightly integrated into the app
-library painters;
+part of 'settings.dart';
 
-import 'package:flutter/material.dart';
+class SettingsList extends StatelessWidget {
+  const SettingsList({
+    super.key,
+    required this.children,
+  });
 
-import '../../models/color_settings.dart';
-import '../../models/display_settings.dart';
-import '../../services/database/database.dart';
-import '../../services/environment_config/environment_config.dart';
-import '../../services/mill/mill.dart';
-import '../theme/app_theme.dart';
+  final List<Widget> children;
 
-part 'widgets/board_painter.dart';
-part 'widgets/common.dart';
-part 'widgets/piece_painter.dart';
+  @override
+  Widget build(BuildContext context) => ListView.separated(
+        padding: const EdgeInsets.all(16),
+        itemBuilder: (_, int i) => children[i],
+        separatorBuilder: (_, int i) => const CustomSpacer(),
+        itemCount: children.length,
+      );
+}

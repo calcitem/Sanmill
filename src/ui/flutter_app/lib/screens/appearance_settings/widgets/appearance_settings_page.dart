@@ -43,7 +43,7 @@ part 'package:sanmill/screens/appearance_settings/widgets/language_picker.dart';
 part 'package:sanmill/screens/appearance_settings/widgets/piece_width_slider.dart';
 part 'package:sanmill/screens/appearance_settings/widgets/point_style_modal.dart';
 part 'package:sanmill/screens/appearance_settings/widgets/point_width_slider.dart';
-part 'package:sanmill/screens/appearance_settings/widgets/theme_modal.dart';
+part 'package:sanmill/shared/theme/theme_modal.dart';
 
 class AppearanceSettingsPage extends StatelessWidget {
   const AppearanceSettingsPage({super.key});

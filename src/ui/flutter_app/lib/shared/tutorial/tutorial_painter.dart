@@ -18,7 +18,7 @@ import 'package:flutter/material.dart';
 
 import '../../services/database/database.dart';
 import '../../services/mill/mill.dart';
-import '../painters/painters.dart';
+import '../helpers/painters.dart';
 
 /// Preview Piece Painter
 class TutorialPainter extends CustomPainter {

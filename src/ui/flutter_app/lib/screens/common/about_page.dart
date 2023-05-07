@@ -21,16 +21,16 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../generated/flutter_version.dart';
-import '../generated/intl/l10n.dart';
-import '../services/database/database.dart';
-import '../services/environment_config/environment_config.dart';
-import '../services/git_info/git_info.dart';
-import '../shared/constants.dart';
-import '../shared/custom_drawer/custom_drawer.dart';
-import '../shared/custom_spacer.dart';
-import '../shared/settings/settings.dart';
-import '../shared/theme/app_theme.dart';
+import '../../generated/flutter_version.dart';
+import '../../generated/intl/l10n.dart';
+import '../../services/database/database.dart';
+import '../../services/environment_config/environment_config.dart';
+import '../../services/git_info/git_info.dart';
+import '../../shared/constants.dart';
+import '../../shared/custom_drawer/custom_drawer.dart';
+import '../../shared/custom_spacer.dart';
+import '../../shared/settings/settings.dart';
+import '../../shared/theme/app_theme.dart';
 import 'license_page.dart';
 
 class AboutPage extends StatelessWidget {

@@ -35,7 +35,7 @@ import 'services/environment_config/environment_config.dart';
 import 'services/logger/logger.dart';
 import 'shared/constants.dart';
 import 'shared/feedback_localization.dart';
-import 'shared/painters/painters.dart';
+import 'shared/helpers/painters.dart';
 import 'shared/scaffold_messenger.dart';
 import 'shared/theme/app_theme.dart';
 

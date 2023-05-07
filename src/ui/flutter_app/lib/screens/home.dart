@@ -36,18 +36,18 @@ import '../shared/constants.dart';
 import '../shared/custom_drawer/custom_drawer.dart';
 import '../shared/double_back_to_close_app.dart';
 import '../shared/gif_share/gif_share.dart';
-import '../shared/gif_share/utils/widgets_to_image.dart';
-import '../shared/painters/painters.dart';
+import '../shared/gif_share/widgets_to_image.dart';
+import '../shared/helpers/painters.dart';
 import '../shared/privacy_dialog.dart';
 import '../shared/scaffold_messenger.dart';
 import '../shared/stack_list.dart';
 import '../shared/theme/app_theme.dart';
 import '../shared/tutorial/widgets/tutorial_dialog.dart';
-import 'about_page.dart';
 import 'appearance_settings/widgets/appearance_settings_page.dart';
+import 'common/about_page.dart';
+import 'common/help_screen.dart';
 import 'game_page/widgets/game_page.dart';
 import 'general_settings/widgets/general_settings_page.dart';
-import 'help_screen.dart';
 import 'rule_settings/widgets/rule_settings_page.dart';
 
 // Define the possible states of the drawer

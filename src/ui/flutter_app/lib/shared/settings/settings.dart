@@ -27,6 +27,6 @@ import '../../services/logger/logger.dart';
 import '../custom_spacer.dart';
 import '../theme/app_theme.dart';
 
-part 'widgets/card.dart';
-part 'widgets/list.dart';
-part 'widgets/list_tile.dart';
+part 'card.dart';
+part 'list.dart';
+part 'list_tile.dart';
