@@ -35,9 +35,9 @@ import 'services/environment_config/environment_config.dart';
 import 'services/logger/logger.dart';
 import 'shared/constants.dart';
 import 'shared/feedback_localization.dart';
-import 'shared/helpers/painters.dart';
 import 'shared/scaffold_messenger.dart';
 import 'shared/theme/app_theme.dart';
+import 'shared/utils/helpers/painters.dart';
 
 part 'package:sanmill/services/catcher/catcher.dart';
 part 'package:sanmill/services/init_system_ui/init_system_ui.dart';

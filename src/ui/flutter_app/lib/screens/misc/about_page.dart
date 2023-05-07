@@ -28,9 +28,9 @@ import '../../services/environment_config/environment_config.dart';
 import '../../services/git_info/git_info.dart';
 import '../../shared/constants.dart';
 import '../../shared/custom_drawer/custom_drawer.dart';
-import '../../shared/custom_spacer.dart';
 import '../../shared/settings/settings.dart';
 import '../../shared/theme/app_theme.dart';
+import '../../shared/widgets/custom_spacer.dart';
 import 'license_page.dart';
 
 class AboutPage extends StatelessWidget {

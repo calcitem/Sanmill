@@ -24,8 +24,8 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../../generated/intl/l10n.dart';
 import '../../services/database/database.dart';
 import '../../services/logger/logger.dart';
-import '../custom_spacer.dart';
 import '../theme/app_theme.dart';
+import '../widgets/custom_spacer.dart';
 
 part 'card.dart';
 part 'list.dart';

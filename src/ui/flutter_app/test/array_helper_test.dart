@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/shared/helpers/array_helper.dart';
+import 'package:sanmill/shared/utils/helpers/array_helper.dart';
 
 void main() {
   test(

@@ -17,7 +17,7 @@
 // ignore_for_file: always_specify_types, strict_raw_type
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/shared/helpers/pointed_list.dart';
+import 'package:sanmill/shared/utils/helpers/pointed_list.dart';
 
 void main() {
   group("PointedListIterator", () {

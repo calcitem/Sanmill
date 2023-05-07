@@ -25,7 +25,7 @@ import '../models/general_settings.dart';
 import '../services/database/database.dart';
 import '../services/logger/logger.dart';
 import 'constants.dart';
-import 'link_text_span.dart';
+import 'widgets/link_text_span.dart';
 
 class PrivacyDialog extends StatelessWidget {
   const PrivacyDialog({super.key, this.onConfirm});

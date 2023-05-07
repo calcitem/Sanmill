@@ -35,13 +35,13 @@ import '../../../services/logger/logger.dart';
 import '../../../services/mill/mill.dart';
 import '../../../shared/constants.dart';
 import '../../../shared/custom_drawer/custom_drawer.dart';
-import '../../../shared/custom_spacer.dart';
 import '../../../shared/game_toolbar/game_toolbar.dart';
-import '../../../shared/helpers/painters.dart';
 import '../../../shared/number_picker.dart';
 import '../../../shared/scaffold_messenger.dart';
 import '../../../shared/string_buffer_helper.dart';
 import '../../../shared/theme/app_theme.dart';
+import '../../../shared/utils/helpers/painters.dart';
+import '../../../shared/widgets/custom_spacer.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
 import '../../rule_settings/widgets/rule_settings_page.dart';
 

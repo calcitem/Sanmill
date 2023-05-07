@@ -21,8 +21,8 @@ import '../../../generated/intl/l10n.dart';
 import '../../../models/general_settings.dart';
 import '../../../services/database/database.dart';
 import '../../../services/mill/mill.dart';
-import '../../helpers/painters.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/helpers/painters.dart';
 import 'tutorial_board.dart';
 import 'tutorial_mask_painter.dart';
 

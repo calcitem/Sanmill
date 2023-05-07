@@ -19,12 +19,12 @@ library painters;
 
 import 'package:flutter/material.dart';
 
-import '../../models/color_settings.dart';
-import '../../models/display_settings.dart';
-import '../../services/database/database.dart';
-import '../../services/environment_config/environment_config.dart';
-import '../../services/mill/mill.dart';
-import '../theme/app_theme.dart';
+import '../../../models/color_settings.dart';
+import '../../../models/display_settings.dart';
+import '../../../services/database/database.dart';
+import '../../../services/environment_config/environment_config.dart';
+import '../../../services/mill/mill.dart';
+import '../../theme/app_theme.dart';
 
 part '../painters/board_painter.dart';
 part '../painters/common.dart';
