@@ -36,11 +36,6 @@ public:
         return *this;
     }
 
-    bool operator==(const T &other) const
-    {
-        memcpy(arr, other.arr, sizeof(T) * other.size());
-    }
-
     T &operator[](int i) { return arr[i]; }
 
     const T &operator[](int i) const { return arr[i]; }

@@ -82,11 +82,11 @@ private:
 class Node
 {
 public:
-    Node(Position *position, Move move, Node *parent, int index)
-        : position(position)
-        , move(move)
-        , move_index(index)
-        , parent(parent)
+    Node(Position *pos, Move m, Node *prt, int idx)
+        : position(pos)
+        , move(m)
+        , parent(prt)
+        , move_index(idx) 
     { }
 
     double win_score() const
