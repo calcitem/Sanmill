@@ -37,17 +37,17 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    MillController().gameResultNotifier.addListener(_showResult);
+    GameController().gameResultNotifier.addListener(_showResult);
 
     if (visitedRuleSettingsPage == true) {
-      MillController().reset();
+      GameController().reset();
       visitedRuleSettingsPage = false;
     }
 
     // ignore: unnecessary_statements
-    MillController().isReady == false;
+    GameController().isReady == false;
 
-    MillController().engine.startup();
+    GameController().engine.startup();
 
     // ignore: always_specify_types
     Future.delayed(const Duration(microseconds: 100), () {
@@ -56,7 +56,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
     // TODO: Check _initAnimation() on branch master.
 
-    MillController().animationController = AnimationController(
+    GameController().animationController = AnimationController(
       vsync: this,
       duration: Duration(
         seconds: DB().displaySettings.animationDuration.toInt(),
@@ -64,16 +64,16 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     );
 
     // sqrt(1.618) = 1.272
-    MillController().animation = Tween<double>(begin: 1.27, end: 1.0)
-        .animate(MillController().animationController);
+    GameController().animation = Tween<double>(begin: 1.27, end: 1.0)
+        .animate(GameController().animationController);
   }
 
   Future<void> _setReadyState() async {
     logger.i("$_tag Check if need to set Ready state...");
     // TODO: v1 has "&& mounted && Config.settingsLoaded"
-    if (MillController().isReady == false) {
+    if (GameController().isReady == false) {
       logger.i("$_tag Set Ready State...");
-      MillController().isReady = true;
+      GameController().isReady = true;
     }
   }
 
@@ -84,12 +84,12 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     );
 
     final AnimatedBuilder customPaint = AnimatedBuilder(
-      animation: MillController().animation,
+      animation: GameController().animation,
       builder: (_, Widget? child) {
         return CustomPaint(
           painter: BoardPainter(context),
           foregroundPainter: PiecePainter(
-            animationValue: MillController().animation.value,
+            animationValue: GameController().animation.value,
           ),
           child: child,
         );
@@ -99,7 +99,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
           : null,
     );
 
-    MillController().animationController.forward();
+    GameController().animationController.forward();
 
     return ValueListenableBuilder<Box<DisplaySettings>>(
       valueListenable: DB().listenDisplaySettings,
@@ -137,20 +137,20 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
                   switch (await tapHandler.onBoardTap(square)) {
                     case EngineResponseOK():
-                      MillController()
+                      GameController()
                           .gameResultNotifier
                           .showResult(force: true);
                       break;
                     case EngineResponseHumanOK():
-                      MillController()
+                      GameController()
                           .gameResultNotifier
                           .showResult(force: false);
                       break;
                     case EngineTimeOut():
-                      MillController().headerTipNotifier.showTip(strTimeout);
+                      GameController().headerTipNotifier.showTip(strTimeout);
                       break;
                     case EngineNoBestMove():
-                      MillController()
+                      GameController()
                           .headerTipNotifier
                           .showTip(strNoBestMoveErr);
                       break;
@@ -158,7 +158,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
                       break;
                   }
 
-                  MillController().disposed = false;
+                  GameController().disposed = false;
                 },
               ),
             );
@@ -175,22 +175,22 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
     setState(() {});
 
-    final GameMode gameMode = MillController().gameInstance.gameMode;
-    final PieceColor winner = MillController().position.winner;
+    final GameMode gameMode = GameController().gameInstance.gameMode;
+    final PieceColor winner = GameController().position.winner;
     final String? message = winner.getWinString(context);
-    final bool force = MillController().gameResultNotifier.force;
+    final bool force = GameController().gameResultNotifier.force;
 
     if (message != null && (force == true || winner != PieceColor.nobody)) {
-      if (MillController().position.action == Act.remove) {
-        MillController()
+      if (GameController().position.action == Act.remove) {
+        GameController()
             .headerTipNotifier
             .showTip(S.of(context).tipRemove, snackBar: false);
       } else {
-        MillController().headerTipNotifier.showTip(message, snackBar: false);
+        GameController().headerTipNotifier.showTip(message, snackBar: false);
       }
     }
 
-    MillController().headerIconsNotifier.showIcons();
+    GameController().headerIconsNotifier.showIcons();
 
     if (DB().generalSettings.isAutoRestart == false &&
         winner != PieceColor.nobody &&
@@ -205,11 +205,11 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    MillController().disposed = true;
-    MillController().engine.stopSearching();
+    GameController().disposed = true;
+    GameController().engine.stopSearching();
     //MillController().engine.shutdown();
-    MillController().animationController.dispose();
-    MillController().gameResultNotifier.removeListener(_showResult);
+    GameController().animationController.dispose();
+    GameController().gameResultNotifier.removeListener(_showResult);
     super.dispose();
   }
 }
@@ -228,7 +228,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
   @override
   void initState() {
     super.initState();
-    MillController().boardSemanticsNotifier.addListener(updateBoardSemantics);
+    GameController().boardSemanticsNotifier.addListener(updateBoardSemantics);
   }
 
   void updateBoardSemantics() {
@@ -394,7 +394,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
         pieceDesc.add(S.of(context).noPoint);
       } else {
         pieceDesc.add(
-          MillController().position.pieceOnGrid(i).pieceName(context),
+          GameController().position.pieceOnGrid(i).pieceName(context),
         );
       }
     }
@@ -415,7 +415,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
 
   @override
   void dispose() {
-    MillController()
+    GameController()
         .boardSemanticsNotifier
         .removeListener(updateBoardSemantics);
     super.dispose();

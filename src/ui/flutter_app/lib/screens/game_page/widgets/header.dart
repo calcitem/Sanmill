@@ -115,7 +115,7 @@ class HeaderTipState extends State<HeaderTip> {
 
   void showTip() {
     final HeaderTipNotifier headerTipNotifier =
-        MillController().headerTipNotifier;
+        GameController().headerTipNotifier;
 
     if (headerTipNotifier.showSnackBar) {
       rootScaffoldMessengerKey.currentState!
@@ -128,7 +128,7 @@ class HeaderTipState extends State<HeaderTip> {
   @override
   void initState() {
     super.initState();
-    MillController().headerTipNotifier.addListener(showTip);
+    GameController().headerTipNotifier.addListener(showTip);
   }
 
   @override
@@ -156,7 +156,7 @@ class HeaderTipState extends State<HeaderTip> {
 
   @override
   void dispose() {
-    MillController().headerTipNotifier.removeListener(showTip);
+    GameController().headerTipNotifier.removeListener(showTip);
     super.dispose();
   }
 }
@@ -171,16 +171,16 @@ class HeaderIcons extends StatefulWidget {
 
 class HeaderStateIcons extends State<HeaderIcons> {
   final ValueNotifier<IconData> _iconDataNotifier =
-      ValueNotifier<IconData>(MillController().gameInstance.sideToMove.icon);
+      ValueNotifier<IconData>(GameController().gameInstance.sideToMove.icon);
 
   void showIcons() {
-    _iconDataNotifier.value = MillController().gameInstance.sideToMove.icon;
+    _iconDataNotifier.value = GameController().gameInstance.sideToMove.icon;
   }
 
   @override
   void initState() {
     super.initState();
-    MillController().headerIconsNotifier.addListener(showIcons);
+    GameController().headerIconsNotifier.addListener(showIcons);
   }
 
   @override
@@ -197,9 +197,9 @@ class HeaderStateIcons extends State<HeaderIcons> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               // Header Icons
-              Icon(MillController().gameInstance.gameMode.leftHeaderIcon),
+              Icon(GameController().gameInstance.gameMode.leftHeaderIcon),
               Icon(value),
-              Icon(MillController().gameInstance.gameMode.rightHeaderIcon),
+              Icon(GameController().gameInstance.gameMode.rightHeaderIcon),
             ],
           ),
         );
@@ -209,7 +209,7 @@ class HeaderStateIcons extends State<HeaderIcons> {
 
   @override
   void dispose() {
-    MillController().headerIconsNotifier.removeListener(showIcons);
+    GameController().headerIconsNotifier.removeListener(showIcons);
     super.dispose();
   }
 }

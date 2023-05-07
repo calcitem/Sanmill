@@ -22,7 +22,7 @@ class GameResultAlert extends StatelessWidget {
     super.key,
   });
 
-  final GameMode gameMode = MillController().gameInstance.gameMode;
+  final GameMode gameMode = GameController().gameInstance.gameMode;
   final PieceColor winner;
 
   static const String _tag = "[Game Over Alert]";
@@ -37,7 +37,7 @@ class GameResultAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Position position = MillController().position;
+    final Position position = GameController().position;
     // TODO: Why sometimes _gameResult is null?
     position.result = _gameResult;
 
@@ -77,18 +77,18 @@ class GameResultAlert extends StatelessWidget {
             DB().generalSettings =
                 settings.copyWith(skillLevel: settings.skillLevel + 1);
 
-            MillController().engine.setGeneralOptions();
+            GameController().engine.setGeneralOptions();
 
             logger.v(
               "[config] skillLevel: ${DB().generalSettings.skillLevel}",
             );
 
             Navigator.pop(context);
-            MillController().reset(force: true);
-            MillController()
+            GameController().reset(force: true);
+            GameController()
                 .headerTipNotifier
                 .showTip(S.of(context).gameStarted);
-            MillController().headerIconsNotifier.showIcons();
+            GameController().headerIconsNotifier.showIcons();
           },
         ),
         TextButton(
@@ -98,11 +98,11 @@ class GameResultAlert extends StatelessWidget {
           ),
           onPressed: () {
             Navigator.pop(context);
-            MillController().reset(force: true);
-            MillController()
+            GameController().reset(force: true);
+            GameController()
                 .headerTipNotifier
                 .showTip(S.of(context).gameStarted);
-            MillController().headerIconsNotifier.showIcons();
+            GameController().headerIconsNotifier.showIcons();
           },
         ),
         TextButton(
@@ -122,11 +122,11 @@ class GameResultAlert extends StatelessWidget {
           ),
           onPressed: () {
             Navigator.pop(context);
-            MillController().reset(force: true);
-            MillController()
+            GameController().reset(force: true);
+            GameController()
                 .headerTipNotifier
                 .showTip(S.of(context).gameStarted);
-            MillController().headerIconsNotifier.showIcons();
+            GameController().headerIconsNotifier.showIcons();
           },
         ),
         TextButton(

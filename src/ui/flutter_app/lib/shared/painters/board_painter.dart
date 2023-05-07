@@ -29,7 +29,7 @@ class BoardPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     assert(size.width == size.height);
 
-    final Position position = MillController().position;
+    final Position position = GameController().position;
     final ColorSettings colorSettings = DB().colorSettings;
     final Paint paint = Paint();
 
@@ -48,7 +48,7 @@ class BoardPainter extends CustomPainter {
     _drawBackground(canvas, size);
 
     if (DB().displaySettings.isPieceCountInHandShown &&
-        MillController().gameInstance.gameMode != GameMode.setupPosition &&
+        GameController().gameInstance.gameMode != GameMode.setupPosition &&
         position.phase == Phase.placing) {
       _drawPieceCount(position, canvas, size);
     }

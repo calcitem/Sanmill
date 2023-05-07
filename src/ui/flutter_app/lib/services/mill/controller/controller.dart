@@ -16,7 +16,7 @@
 
 part of '../mill.dart';
 
-/// Mill Controller
+/// Game Controller
 ///
 /// A singleton class that holds all objects and methods needed to play Mill.
 ///
@@ -26,8 +26,8 @@ part of '../mill.dart';
 /// * The position [Position]
 /// * The game instance [Game]
 /// * The recorder [GameRecorder]
-class MillController {
-  factory MillController() => instance;
+class GameController {
+  factory GameController() => instance;
 
   /// Mill Controller
   ///
@@ -41,7 +41,7 @@ class MillController {
   /// * The recorder [GameRecorder]
   ///
   /// All listed objects should not be crated outside of this scope.
-  MillController._() {
+  GameController._() {
     _init();
   }
 
@@ -79,7 +79,7 @@ class MillController {
   void clearPositionSetupFlag() => recorder.setupPosition = null;
 
   @visibleForTesting
-  static MillController instance = MillController._();
+  static GameController instance = GameController._();
 
   /// Starts up the controller. It will initialize the audio subsystem and heat the engine.
   Future<void> start() async {
@@ -99,20 +99,20 @@ class MillController {
   void reset({bool force = false}) {
     final GameMode gameModeBak = gameInstance.gameMode;
     String? fen = "";
-    final bool isPositionSetup = MillController().isPositionSetup;
+    final bool isPositionSetup = GameController().isPositionSetup;
 
-    MillController().engine.stopSearching();
+    GameController().engine.stopSearching();
 
     if (isPositionSetup == true && force == false) {
-      fen = MillController().recorder.setupPosition;
+      fen = GameController().recorder.setupPosition;
     }
 
     _init();
 
     if (isPositionSetup == true && force == false) {
-      MillController().recorder.setupPosition = fen;
-      MillController().recorder.lastPositionWithRemove = fen;
-      MillController().position.setFen(fen!);
+      GameController().recorder.setupPosition = fen;
+      GameController().recorder.lastPositionWithRemove = fen;
+      GameController().position.setFen(fen!);
     }
 
     gameInstance.gameMode = gameModeBak;
@@ -150,57 +150,57 @@ class MillController {
     final String thinkingStr = S.of(context).thinking;
     final String humanStr = S.of(context).human;
 
-    final MillController controller = MillController();
-    final GameMode gameMode = MillController().gameInstance.gameMode;
+    final GameController controller = GameController();
+    final GameMode gameMode = GameController().gameInstance.gameMode;
     final bool isGameRunning = position.winner == PieceColor.nobody;
 
     if (isMoveNow == true) {
-      if (MillController().gameInstance.isHumanToMove) {
+      if (GameController().gameInstance.isHumanToMove) {
         return const EngineResponseSkip();
       }
 
-      if (!MillController().recorder.isClean) {
+      if (!GameController().recorder.isClean) {
         return const EngineResponseSkip();
       }
     } else {
-      if (MillController().position._checkIfGameIsOver() == true) {
+      if (GameController().position._checkIfGameIsOver() == true) {
         return const EngineNoBestMove();
       }
 
-      if (MillController()
+      if (GameController()
               .position
-              .pieceToRemoveCount[MillController().position.sideToMove]! >
+              .pieceToRemoveCount[GameController().position.sideToMove]! >
           0) {
-        MillController().position.action = Act.remove;
+        GameController().position.action = Act.remove;
       }
     }
 
-    if (MillController().isEngineGoing == true && isMoveNow == false) {
+    if (GameController().isEngineGoing == true && isMoveNow == false) {
       // TODO: Monkey test trigger
       logger.v("$tag engineToGo() is still running, skip.");
       //assert(false);
       return const EngineResponseSkip();
     }
 
-    MillController().isEngineGoing = true;
+    GameController().isEngineGoing = true;
 
-    MillController().isActive = true;
+    GameController().isActive = true;
 
     // TODO
     logger.v("$tag engine type is $gameMode");
 
     if (gameMode == GameMode.humanVsAi &&
-        MillController().position.phase == Phase.moving &&
+        GameController().position.phase == Phase.moving &&
         isMoveNow == false &&
         DB().ruleSettings.mayFly &&
         DB().generalSettings.remindedOpponentMayFly == false &&
-        (MillController()
+        (GameController()
                     .position
-                    .pieceOnBoardCount[MillController().position.sideToMove]! <=
+                    .pieceOnBoardCount[GameController().position.sideToMove]! <=
                 DB().ruleSettings.flyPieceCount &&
-            MillController()
+            GameController()
                     .position
-                    .pieceOnBoardCount[MillController().position.sideToMove]! >=
+                    .pieceOnBoardCount[GameController().position.sideToMove]! >=
                 3)) {
       rootScaffoldMessengerKey.currentState!.showSnackBar(CustomSnackBar(
           S.of(context).enteredFlyingPhase,
@@ -213,26 +213,26 @@ class MillController {
 
     while ((gameInstance.isAiToMove &&
             (isGameRunning || DB().generalSettings.isAutoRestart)) &&
-        MillController().isActive) {
+        GameController().isActive) {
       if (gameMode == GameMode.aiVsAi) {
-        MillController()
+        GameController()
             .headerTipNotifier
-            .showTip(MillController().position.scoreString, snackBar: false);
+            .showTip(GameController().position.scoreString, snackBar: false);
       } else {
-        MillController()
+        GameController()
             .headerTipNotifier
             .showTip(thinkingStr, snackBar: false);
 
         showSnakeBarHumanNotation(humanStr);
       }
 
-      MillController().headerIconsNotifier.showIcons();
-      MillController().boardSemanticsNotifier.updateSemantics();
+      GameController().headerIconsNotifier.showIcons();
+      GameController().boardSemanticsNotifier.updateSemantics();
 
       try {
         logger.v("$tag Searching..., isMoveNow: $isMoveNow");
 
-        if (MillController().position.pieceOnBoardCount[PieceColor.black]! >
+        if (GameController().position.pieceOnBoardCount[PieceColor.black]! >
             0) {
           isEngineDelaying = true;
           await Future<void>.delayed(Duration(
@@ -244,23 +244,23 @@ class MillController {
             // ignore: avoid_bool_literals_in_conditional_expressions
             .search(moveNow: loopIsFirst ? isMoveNow : false);
 
-        if (MillController().isActive == false) {
+        if (GameController().isActive == false) {
           break;
         }
 
         // TODO: Unify return and throw
         if (controller.gameInstance.doMove(extMove) == false) {
           // TODO: Should catch it and throw.
-          MillController().isEngineGoing = false;
+          GameController().isEngineGoing = false;
           return const EngineNoBestMove();
         }
 
         loopIsFirst = false;
         searched = true;
 
-        if (MillController().disposed == false) {
-          MillController().animationController.reset();
-          MillController().animationController.animateTo(1.0);
+        if (GameController().disposed == false) {
+          GameController().animationController.reset();
+          GameController().animationController.animateTo(1.0);
         }
 
         // TODO: Do not use BuildContexts across async gaps.
@@ -271,35 +271,35 @@ class MillController {
         }
       } on EngineTimeOut {
         logger.i("$tag Engine response type: timeout");
-        MillController().isEngineGoing = false;
+        GameController().isEngineGoing = false;
         return const EngineTimeOut();
       } on EngineNoBestMove {
         logger.i("$tag Engine response type: nobestmove");
-        MillController().isEngineGoing = false;
+        GameController().isEngineGoing = false;
         return const EngineNoBestMove();
       }
 
-      if (MillController().position.winner != PieceColor.nobody) {
+      if (GameController().position.winner != PieceColor.nobody) {
         if (DB().generalSettings.isAutoRestart == true) {
-          MillController().reset();
+          GameController().reset();
         } else {
-          MillController().isEngineGoing = false;
-          if (MillController().gameInstance.gameMode == GameMode.aiVsAi) {
-            MillController().headerTipNotifier.showTip(
-                MillController().position.scoreString,
+          GameController().isEngineGoing = false;
+          if (GameController().gameInstance.gameMode == GameMode.aiVsAi) {
+            GameController().headerTipNotifier.showTip(
+                GameController().position.scoreString,
                 snackBar: false);
-            MillController().headerIconsNotifier.showIcons();
-            MillController().boardSemanticsNotifier.updateSemantics();
+            GameController().headerIconsNotifier.showIcons();
+            GameController().boardSemanticsNotifier.updateSemantics();
           }
           return const EngineResponseOK();
         }
       }
     }
 
-    MillController().isEngineGoing = false;
+    GameController().isEngineGoing = false;
 
     // TODO: Why need not update tip and icons?
-    MillController().boardSemanticsNotifier.updateSemantics();
+    GameController().boardSemanticsNotifier.updateSemantics();
 
     return searched ? const EngineResponseOK() : const EngineResponseHumanOK();
   }
@@ -314,54 +314,54 @@ class MillController {
     }
 
     // TODO: WAR
-    if ((MillController().gameInstance.sideToMove == PieceColor.white ||
-            MillController().gameInstance.sideToMove == PieceColor.black) ==
+    if ((GameController().gameInstance.sideToMove == PieceColor.white ||
+            GameController().gameInstance.sideToMove == PieceColor.black) ==
         false) {
       // If modify sideToMove, not take effect, I don't know why.
       return rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).notAIsTurn);
     }
 
-    if ((MillController().position.sideToMove == PieceColor.white ||
-            MillController().position.sideToMove == PieceColor.black) ==
+    if ((GameController().position.sideToMove == PieceColor.white ||
+            GameController().position.sideToMove == PieceColor.black) ==
         false) {
       // If modify sideToMove, not take effect, I don't know why.
       return rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).notAIsTurn);
     }
 
-    if (MillController().gameInstance.isHumanToMove) {
+    if (GameController().gameInstance.isHumanToMove) {
       logger.i("$tag Human to Move. Temporarily swap AI and Human roles.");
       //return rootScaffoldMessengerKey.currentState!
       //    .showSnackBarClear(S.of(context).notAIsTurn);
-      MillController().gameInstance.reverseWhoIsAi();
+      GameController().gameInstance.reverseWhoIsAi();
       reversed = true;
     }
 
-    if (!MillController().recorder.isClean) {
+    if (!GameController().recorder.isClean) {
       logger.i("$tag History is not clean. Prune, and think now.");
-      MillController().recorder.prune();
+      GameController().recorder.prune();
     }
 
     final String strTimeout = S.of(context).timeout;
     final String strNoBestMoveErr = S.of(context).error(S.of(context).noMove);
 
-    switch (await MillController()
-        .engineToGo(context, isMoveNow: MillController().isEngineGoing)) {
+    switch (await GameController()
+        .engineToGo(context, isMoveNow: GameController().isEngineGoing)) {
       case EngineResponseOK():
-        MillController().gameResultNotifier.showResult(force: true);
+        GameController().gameResultNotifier.showResult(force: true);
         break;
       case EngineResponseHumanOK():
-        MillController().gameResultNotifier.showResult(force: false);
+        GameController().gameResultNotifier.showResult(force: false);
         break;
       case EngineTimeOut():
-        MillController().headerTipNotifier.showTip(strTimeout);
+        GameController().headerTipNotifier.showTip(strTimeout);
         break;
       case EngineNoBestMove():
-        MillController().headerTipNotifier.showTip(strNoBestMoveErr);
+        GameController().headerTipNotifier.showTip(strNoBestMoveErr);
         break;
       case EngineResponseSkip():
-        MillController().headerTipNotifier.showTip("Error: Skip"); // TODO
+        GameController().headerTipNotifier.showTip("Error: Skip"); // TODO
         break;
       default:
         assert(false);
@@ -369,7 +369,7 @@ class MillController {
     }
 
     if (reversed) {
-      MillController().gameInstance.reverseWhoIsAi();
+      GameController().gameInstance.reverseWhoIsAi();
     }
   }
 
@@ -377,7 +377,7 @@ class MillController {
     final String? n = recorder.lastF?.notation;
 
     if (DB().generalSettings.screenReaderSupport &&
-        MillController().position.action != Act.remove &&
+        GameController().position.action != Act.remove &&
         n != null) {
       rootScaffoldMessengerKey.currentState!
           .showSnackBar(CustomSnackBar("$humanStr: $n"));
@@ -385,10 +385,10 @@ class MillController {
   }
 
   Future<void> gifShare(BuildContext context) async {
-    MillController().headerTipNotifier.showTip(S.of(context).pleaseWait);
+    GameController().headerTipNotifier.showTip(S.of(context).pleaseWait);
     final String done = S.of(context).done;
     await GifShare().captureView();
-    MillController().headerTipNotifier.showTip(done);
+    GameController().headerTipNotifier.showTip(done);
 
     GifShare().shareGif();
   }

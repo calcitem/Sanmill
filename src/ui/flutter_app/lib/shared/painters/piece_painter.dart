@@ -42,7 +42,7 @@ class PiecePaintParam {
 
 /// Custom Piece Painter
 ///
-/// Painter to draw each piece in [MillController.position] on the Board.
+/// Painter to draw each piece in [GameController.position] on the Board.
 /// The board is drawn by [BoardPainter].
 /// It asserts the Canvas to be a square.
 class PiecePainter extends CustomPainter {
@@ -56,8 +56,8 @@ class PiecePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     assert(size.width == size.height);
-    final int? focusIndex = MillController().gameInstance.focusIndex;
-    final int? blurIndex = MillController().gameInstance.blurIndex;
+    final int? focusIndex = GameController().gameInstance.focusIndex;
+    final int? blurIndex = GameController().gameInstance.blurIndex;
 
     final Paint paint = Paint();
     final Path shadowPath = Path();
@@ -74,7 +74,7 @@ class PiecePainter extends CustomPainter {
       for (int col = 0; col < 7; col++) {
         final int index = row * 7 + col;
 
-        final PieceColor piece = MillController()
+        final PieceColor piece = GameController()
             .position
             .pieceOnGrid(index); // No Pieces when initial
 
@@ -140,7 +140,7 @@ class PiecePainter extends CustomPainter {
 
     // Draw focus and blur position
     if (focusIndex != null &&
-        MillController().gameInstance.gameMode != GameMode.setupPosition) {
+        GameController().gameInstance.gameMode != GameMode.setupPosition) {
       paint.color = DB().colorSettings.pieceHighlightColor;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;
@@ -153,7 +153,7 @@ class PiecePainter extends CustomPainter {
     }
 
     if (blurIndex != null &&
-        MillController().gameInstance.gameMode != GameMode.setupPosition) {
+        GameController().gameInstance.gameMode != GameMode.setupPosition) {
       paint.color = blurPositionColor;
       paint.style = PaintingStyle.fill;
 

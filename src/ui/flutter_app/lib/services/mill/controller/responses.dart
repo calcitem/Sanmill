@@ -17,22 +17,22 @@
 part of '../mill.dart';
 
 /// Custom response we can catch without affecting other thrown exceptions.
-abstract class MillResponse {}
+abstract class GameResponse {}
 
-class MillResponseOK implements MillResponse {
-  const MillResponseOK();
+class GameResponseOK implements GameResponse {
+  const GameResponseOK();
 }
 
-class IllegalAction implements MillResponse {
+class IllegalAction implements GameResponse {
   const IllegalAction();
 }
 
-class IllegalPhase implements MillResponse {
+class IllegalPhase implements GameResponse {
   const IllegalPhase();
 }
 
 /// Custom response we throw when selecting a piece.
-abstract class SelectResponse implements MillResponse {}
+abstract class SelectResponse implements GameResponse {}
 
 class CanOnlyMoveToAdjacentEmptyPoints implements SelectResponse {
   const CanOnlyMoveToAdjacentEmptyPoints();
@@ -43,7 +43,7 @@ class SelectOurPieceToMove implements SelectResponse {
 }
 
 /// Custom response we throw when removing pieces.
-abstract class RemoveResponse implements MillResponse {}
+abstract class RemoveResponse implements GameResponse {}
 
 class NoPieceToRemove implements RemoveResponse {
   const NoPieceToRemove();

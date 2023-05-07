@@ -21,7 +21,7 @@ class _MoveListDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MillController controller = MillController();
+    final GameController controller = GameController();
 
     final String moveHistoryText = controller.recorder.moveHistoryText!;
     final int end = controller.recorder.length - 1;
@@ -71,7 +71,7 @@ class _MoveListDialog extends StatelessWidget {
               style: buttonTextStyle,
               textScaleFactor: DB().displaySettings.fontScale,
             ),
-            onPressed: () => MillController.export(context),
+            onPressed: () => GameController.export(context),
           ),
           TextButton(
             child: Text(

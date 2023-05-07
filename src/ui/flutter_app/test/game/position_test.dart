@@ -31,7 +31,7 @@ void main() {
       // Initialize the test
       DB.instance = MockDB();
       SoundManager.instance = MockAudios();
-      final MillController controller = MillController();
+      final GameController controller = GameController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       // Import a game

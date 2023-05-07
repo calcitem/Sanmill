@@ -36,37 +36,37 @@ class _GameOptionsModal extends StatelessWidget {
             //  restarting the game may cause two or three pieces to appear on the board,
             //  sometimes it will keep displaying Thinking...
 
-            MillController().engine.stopSearching();
+            GameController().engine.stopSearching();
 
-            if (MillController().position.phase == Phase.ready ||
-                (MillController().position.phase == Phase.placing &&
-                    (MillController().recorder.index != null &&
-                        MillController().recorder.index! <= 3)) ||
-                MillController().position.phase == Phase.gameOver) {
+            if (GameController().position.phase == Phase.ready ||
+                (GameController().position.phase == Phase.placing &&
+                    (GameController().recorder.index != null &&
+                        GameController().recorder.index! <= 3)) ||
+                GameController().position.phase == Phase.gameOver) {
               // TODO: This part of the code is repetitive.
               // ignore: unnecessary_statements
-              MillController().isActive == false;
+              GameController().isActive == false;
 
               // TODO: Called stopSearching(); so isEngineGoing is always false?
-              if (MillController().isEngineGoing == false) {
-                MillController().reset(force: true);
+              if (GameController().isEngineGoing == false) {
+                GameController().reset(force: true);
 
-                MillController()
+                GameController()
                     .headerTipNotifier
                     .showTip(S.of(context).gameStarted);
-                MillController().headerIconsNotifier.showIcons();
+                GameController().headerIconsNotifier.showIcons();
 
-                if (MillController().gameInstance.isAiToMove) {
+                if (GameController().gameInstance.isAiToMove) {
                   logger.i("$_tag New game, AI to move.");
 
-                  MillController().engineToGo(context, isMoveNow: false);
+                  GameController().engineToGo(context, isMoveNow: false);
 
-                  MillController()
+                  GameController()
                       .headerTipNotifier
                       .showTip(S.of(context).tipPlace, snackBar: false);
                 }
 
-                MillController().headerIconsNotifier.showIcons();
+                GameController().headerIconsNotifier.showIcons();
               }
 
               Navigator.of(context).pop();
@@ -78,36 +78,36 @@ class _GameOptionsModal extends StatelessWidget {
         ),
         const CustomSpacer(),
         if (!kIsWeb &&
-            (MillController().recorder.hasPrevious == true ||
-                MillController().isPositionSetup == true))
+            (GameController().recorder.hasPrevious == true ||
+                GameController().isPositionSetup == true))
           SimpleDialogOption(
-            onPressed: () => MillController.save(context),
+            onPressed: () => GameController.save(context),
             child: Text(S.of(context).saveGame),
           ),
         if (!kIsWeb &&
-            (MillController().recorder.hasPrevious == true ||
-                MillController().isPositionSetup == true))
+            (GameController().recorder.hasPrevious == true ||
+                GameController().isPositionSetup == true))
           const CustomSpacer(),
         if (!kIsWeb)
           SimpleDialogOption(
-            onPressed: () => MillController.load(context),
+            onPressed: () => GameController.load(context),
             child: Text(S.of(context).loadGame),
           ),
         const CustomSpacer(),
         if (!kIsWeb)
           SimpleDialogOption(
-            onPressed: () => MillController.import(context),
+            onPressed: () => GameController.import(context),
             child: Text(S.of(context).importGame),
           ),
         if (!kIsWeb &&
-            (MillController().recorder.hasPrevious == true ||
-                MillController().isPositionSetup == true))
+            (GameController().recorder.hasPrevious == true ||
+                GameController().isPositionSetup == true))
           const CustomSpacer(),
         if (!kIsWeb &&
-            (MillController().recorder.hasPrevious == true ||
-                MillController().isPositionSetup == true))
+            (GameController().recorder.hasPrevious == true ||
+                GameController().isPositionSetup == true))
           SimpleDialogOption(
-            onPressed: () => MillController.export(context),
+            onPressed: () => GameController.export(context),
             child: Text(S.of(context).exportGame),
           ),
         if (DB().generalSettings.gameScreenRecorderSupport)
@@ -115,7 +115,7 @@ class _GameOptionsModal extends StatelessWidget {
         if (DB().generalSettings.gameScreenRecorderSupport)
           SimpleDialogOption(
             onPressed: () {
-              MillController().gifShare(context);
+              GameController().gifShare(context);
               Navigator.pop(context);
             },
             child: Text(S.of(context).shareGIF),
@@ -138,28 +138,28 @@ class _GameOptionsModal extends StatelessWidget {
         ),
         onPressed: () {
           // ignore: unnecessary_statements
-          MillController().isActive == false;
+          GameController().isActive == false;
 
           // TODO: Called stopSearching(); so isEngineGoing is always false?
-          if (MillController().isEngineGoing == false) {
-            MillController().reset(force: true);
+          if (GameController().isEngineGoing == false) {
+            GameController().reset(force: true);
 
-            MillController()
+            GameController()
                 .headerTipNotifier
                 .showTip(S.of(context).gameStarted);
-            MillController().headerIconsNotifier.showIcons();
+            GameController().headerIconsNotifier.showIcons();
 
-            if (MillController().gameInstance.isAiToMove) {
+            if (GameController().gameInstance.isAiToMove) {
               logger.i("$_tag New game, AI to move.");
 
-              MillController().engineToGo(context, isMoveNow: false);
+              GameController().engineToGo(context, isMoveNow: false);
 
-              MillController()
+              GameController()
                   .headerTipNotifier
                   .showTip(S.of(context).tipPlace, snackBar: false);
             }
 
-            MillController().headerIconsNotifier.showIcons();
+            GameController().headerIconsNotifier.showIcons();
           }
 
           Navigator.of(context, rootNavigator: true).pop(true);

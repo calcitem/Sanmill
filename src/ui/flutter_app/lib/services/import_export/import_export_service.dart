@@ -30,7 +30,7 @@ class ImportService {
     Navigator.pop(context);
 
     await Clipboard.setData(
-      ClipboardData(text: MillController().recorder.moveHistoryText),
+      ClipboardData(text: GameController().recorder.moveHistoryText),
     );
 
     rootScaffoldMessengerKey.currentState!
@@ -52,7 +52,7 @@ class ImportService {
       import(data!.text!); // MillController().newRecorder = newHistory;
     } catch (exception) {
       final String tip = S.of(context).cannotImport(data!.text!);
-      MillController().headerTipNotifier.showTip(tip);
+      GameController().headerTipNotifier.showTip(tip);
       //MillController().animationController.forward();
       return;
     }
@@ -61,11 +61,11 @@ class ImportService {
 
     if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
         const HistoryOK()) {
-      MillController().headerTipNotifier.showTip(S.of(context).gameImported);
+      GameController().headerTipNotifier.showTip(S.of(context).gameImported);
     } else {
       final String tip =
           S.of(context).cannotImport(HistoryNavigator.importFailedStr);
-      MillController().headerTipNotifier.showTip(tip);
+      GameController().headerTipNotifier.showTip(tip);
       HistoryNavigator.importFailedStr = "";
     }
   }
@@ -226,7 +226,7 @@ class ImportService {
         Position.score[PieceColor.black]! +
         Position.score[PieceColor.draw]!;
 
-    final Game gameInstance = MillController().gameInstance;
+    final Game gameInstance = GameController().gameInstance;
     final Player whitePlayer = gameInstance.getPlayerByColor(PieceColor.white);
     final Player blackPlayer = gameInstance.getPlayerByColor(PieceColor.black);
 
@@ -246,7 +246,7 @@ class ImportService {
       black = "Human";
     }
 
-    switch (MillController().position.winner) {
+    switch (GameController().position.winner) {
       case PieceColor.white:
         result = "1-0";
         break;
@@ -300,7 +300,7 @@ class ImportService {
   @visibleForTesting
   static void import(String moveList) {
     String ml = moveList;
-    final String fen = MillController().position.fen;
+    final String fen = GameController().position.fen;
     String? setupFen;
 
     logger.v("Clipboard text: $moveList");
@@ -313,12 +313,12 @@ class ImportService {
       setupFen = moveList.substring(moveList.indexOf("FEN"));
       setupFen = setupFen.substring(5);
       setupFen = setupFen.substring(0, setupFen.indexOf('"]'));
-      MillController().position.setFen(setupFen);
+      GameController().position.setFen(setupFen);
     }
 
     if (_isPureFen(moveList)) {
       setupFen = moveList;
-      MillController().position.setFen(setupFen);
+      GameController().position.setFen(setupFen);
       ml = "";
     }
 
@@ -392,13 +392,13 @@ class ImportService {
 
     // TODO: Is this judge necessary?
     if (newHistory.isNotEmpty || setupFen != "") {
-      MillController().newRecorder = newHistory;
+      GameController().newRecorder = newHistory;
     }
 
     // TODO: Just a patch. Let status is setupPosition.
     //  The judgment of whether it is in the setupPosition state is based on this, not newRecorder.
     if (setupFen != "") {
-      MillController().recorder.setupPosition = setupFen;
+      GameController().recorder.setupPosition = setupFen;
     }
   }
 
@@ -418,7 +418,7 @@ class ImportService {
 
   static void _importPlayOk(String moveList) {
     final GameRecorder newHistory =
-        GameRecorder(lastPositionWithRemove: MillController().position.fen);
+        GameRecorder(lastPositionWithRemove: GameController().position.fen);
 
     final List<String> list = cleanup(moveList).split(" ");
 
@@ -444,7 +444,7 @@ class ImportService {
     }
 
     if (newHistory.isNotEmpty) {
-      MillController().newRecorder = newHistory;
+      GameController().newRecorder = newHistory;
     }
   }
 }

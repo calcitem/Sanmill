@@ -57,8 +57,8 @@ class _MoveOptionsModal extends StatelessWidget {
           ),
           const CustomSpacer(),
         ],
-        if (MillController().recorder.hasPrevious ||
-            MillController().isPositionSetup == true) ...<Widget>[
+        if (GameController().recorder.hasPrevious ||
+            GameController().isPositionSetup == true) ...<Widget>[
           SimpleDialogOption(
             onPressed: () => _showMoveList(context),
             child: Text(S.of(context).showMoveList),
@@ -67,7 +67,7 @@ class _MoveOptionsModal extends StatelessWidget {
         ],
         SimpleDialogOption(
           onPressed: () {
-            MillController().moveNow(context);
+            GameController().moveNow(context);
             Navigator.pop(context);
           },
           child: Text(S.of(context).moveNow),

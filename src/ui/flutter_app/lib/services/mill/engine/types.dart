@@ -106,7 +106,7 @@ extension PieceColorExtension on PieceColor {
       case PieceColor.draw:
         return S.of(context).isDraw;
       case PieceColor.nobody:
-        return MillController().position.phase.getTip(context);
+        return GameController().position.phase.getTip(context);
       case PieceColor.none:
       case PieceColor.ban:
         return null;
@@ -114,7 +114,7 @@ extension PieceColorExtension on PieceColor {
   }
 
   GameResult? get result {
-    final Game gameInstance = MillController().gameInstance;
+    final Game gameInstance = GameController().gameInstance;
     final Player currentPlayer = gameInstance.getPlayerByColor(this);
 
     final bool isAi = currentPlayer.isAi;
@@ -142,7 +142,7 @@ extension PieceColorExtension on PieceColor {
   }
 
   IconData get icon {
-    return MillController().position.phase == Phase.gameOver
+    return GameController().position.phase == Phase.gameOver
         ? _arrow
         : _chevron;
   }
@@ -162,7 +162,7 @@ extension PieceColorExtension on PieceColor {
   }
 
   IconData get _arrow {
-    switch (MillController().position.winner) {
+    switch (GameController().position.winner) {
       case PieceColor.white:
         return FluentIcons.toggle_left_24_regular;
       case PieceColor.black:
@@ -321,7 +321,7 @@ extension GameResultExtension on GameResult {
   String winString(BuildContext context) {
     switch (this) {
       case GameResult.win:
-        return MillController().gameInstance.gameMode == GameMode.humanVsAi
+        return GameController().gameInstance.gameMode == GameMode.humanVsAi
             ? S.of(context).youWin
             : S.of(context).gameOver;
       case GameResult.lose:

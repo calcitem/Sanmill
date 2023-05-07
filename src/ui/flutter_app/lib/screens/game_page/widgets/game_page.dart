@@ -65,7 +65,7 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MillController controller = MillController();
+    final GameController controller = GameController();
 
     controller.gameInstance.gameMode = gameMode;
 
@@ -143,12 +143,12 @@ class _GameState extends State<_Game> {
   @override
   void initState() {
     super.initState();
-    MillController().headerIconsNotifier.addListener(_showPieceIndicator);
+    GameController().headerIconsNotifier.addListener(_showPieceIndicator);
   }
 
   @override
   void dispose() {
-    MillController().headerIconsNotifier.removeListener(_showPieceIndicator);
+    GameController().headerIconsNotifier.removeListener(_showPieceIndicator);
     super.dispose();
   }
 
@@ -253,7 +253,7 @@ class _GameState extends State<_Game> {
         FluentIcons.play_24_regular,
         semanticLabel: S.of(context).moveNow,
       ),
-      onPressed: () => MillController().moveNow(context),
+      onPressed: () => GameController().moveNow(context),
     );
 
     final ToolbarItem stepForwardButton = ToolbarItem(
@@ -310,7 +310,7 @@ class _GameState extends State<_Game> {
               children: <Widget>[
                 GameHeader(),
                 if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
-                        MillController().gameInstance.gameMode ==
+                        GameController().gameInstance.gameMode ==
                             GameMode.setupPosition) &&
                     !(Constants.isSmallScreen == true &&
                         DB().ruleSettings.piecesCount > 9))
@@ -319,7 +319,7 @@ class _GameState extends State<_Game> {
                       children: <Widget>[
                         Text(
                           getPiecesText(
-                              MillController().position.pieceInHandCount[
+                              GameController().position.pieceInHandCount[
                                   !DB().generalSettings.aiMovesFirst
                                       ? PieceColor.black
                                       : PieceColor.white]!),
@@ -338,11 +338,11 @@ class _GameState extends State<_Game> {
                         ),
                         Text(
                           getPiecesText(DB().ruleSettings.piecesCount -
-                              MillController().position.pieceInHandCount[
+                              GameController().position.pieceInHandCount[
                                   !DB().generalSettings.aiMovesFirst
                                       ? PieceColor.white
                                       : PieceColor.black]! -
-                              MillController().position.pieceOnBoardCount[
+                              GameController().position.pieceOnBoardCount[
                                   !DB().generalSettings.aiMovesFirst
                                       ? PieceColor.white
                                       : PieceColor.black]!),
@@ -370,7 +370,7 @@ class _GameState extends State<_Game> {
                   const SizedBox(height: AppTheme.boardMargin),
                 const Board(),
                 if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
-                        MillController().gameInstance.gameMode ==
+                        GameController().gameInstance.gameMode ==
                             GameMode.setupPosition) &&
                     !(Constants.isSmallScreen == true &&
                         DB().ruleSettings.piecesCount > 9))
@@ -379,11 +379,11 @@ class _GameState extends State<_Game> {
                       children: <Widget>[
                         Text(
                             getPiecesText(DB().ruleSettings.piecesCount -
-                                MillController().position.pieceInHandCount[
+                                GameController().position.pieceInHandCount[
                                     !DB().generalSettings.aiMovesFirst
                                         ? PieceColor.black
                                         : PieceColor.white]! -
-                                MillController().position.pieceOnBoardCount[
+                                GameController().position.pieceOnBoardCount[
                                     !DB().generalSettings.aiMovesFirst
                                         ? PieceColor.black
                                         : PieceColor.white]!),
@@ -407,7 +407,7 @@ class _GameState extends State<_Game> {
                             )),
                         Text(
                             getPiecesText(
-                                MillController().position.pieceInHandCount[
+                                GameController().position.pieceInHandCount[
                                     !DB().generalSettings.aiMovesFirst
                                         ? PieceColor.white
                                         : PieceColor.black]!),
@@ -426,11 +426,11 @@ class _GameState extends State<_Game> {
                       ])
                 else
                   const SizedBox(height: AppTheme.boardMargin),
-                if (MillController().gameInstance.gameMode ==
+                if (GameController().gameInstance.gameMode ==
                     GameMode.setupPosition)
                   const SetupPositionToolBar(),
                 if (DB().displaySettings.isHistoryNavigationToolbarShown &&
-                    MillController().gameInstance.gameMode !=
+                    GameController().gameInstance.gameMode !=
                         GameMode.setupPosition)
                   GamePageToolBar(
                     backgroundColor:
@@ -438,7 +438,7 @@ class _GameState extends State<_Game> {
                     itemColor: DB().colorSettings.navigationToolbarIconColor,
                     children: historyNavToolbarItems(context),
                   ),
-                if (MillController().gameInstance.gameMode !=
+                if (GameController().gameInstance.gameMode !=
                     GameMode.setupPosition)
                   GamePageToolBar(
                     backgroundColor:

@@ -29,7 +29,7 @@ void main() {
 
       // Initialize the test
       DB.instance = MockDB();
-      final MillController controller = MillController();
+      final GameController controller = GameController();
 
       controller.gameInstance.gameMode = gameMode;
 
@@ -43,13 +43,13 @@ void main() {
       // initialize the test
       DB.instance = MockDB();
       SoundManager.instance = MockAudios();
-      final MillController controller = MillController();
+      final GameController controller = GameController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       // Import a game
       ImportService.import(const WinLessThanThreeGame().moveList);
 
-      expect(MillController().gameInstance.focusIndex, isNull);
+      expect(GameController().gameInstance.focusIndex, isNull);
     });
   });
 }

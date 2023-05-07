@@ -31,7 +31,7 @@ void main() {
       const String testString = "Test";
 
       DB.instance = MockDB();
-      final MillController controller = MillController();
+      final GameController controller = GameController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
       const HeaderTip screen = HeaderTip();
 
@@ -48,7 +48,7 @@ void main() {
 
     testWidgets("GameHeader position", (WidgetTester tester) async {
       DB.instance = MockDB();
-      final MillController controller = MillController();
+      final GameController controller = GameController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       const Key iconKey = Key("DrawerIcon");

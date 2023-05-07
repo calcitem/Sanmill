@@ -50,7 +50,7 @@ class SoundManager {
   static const String _tag = "[audio]";
 
   Future<void> loadSounds() async {
-    assert(!MillController().initialized);
+    assert(!GameController().initialized);
 
     if (kIsWeb) {
       logger.w("$_tag Audio Player does not support Web.");
@@ -93,7 +93,7 @@ class SoundManager {
       return;
     }
 
-    assert(MillController().initialized);
+    assert(GameController().initialized);
 
     if (!DB().generalSettings.toneEnabled ||
         _isTemporaryMute ||

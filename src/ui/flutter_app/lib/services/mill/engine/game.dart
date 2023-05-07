@@ -51,16 +51,16 @@ class Game {
   }
 
   void reverseWhoIsAi() {
-    if (MillController().gameInstance.gameMode == GameMode.humanVsAi) {
+    if (GameController().gameInstance.gameMode == GameMode.humanVsAi) {
       for (final Player player in players) {
         player.isAi = !player.isAi;
       }
-    } else if (MillController().gameInstance.gameMode ==
+    } else if (GameController().gameInstance.gameMode ==
         GameMode.humanVsHuman) {
       final bool whiteIsAi = getPlayerByColor(PieceColor.white).isAi;
       final bool blackIsAi = getPlayerByColor(PieceColor.black).isAi;
       if (whiteIsAi == blackIsAi) {
-        getPlayerByColor(MillController().position.sideToMove).isAi = true;
+        getPlayerByColor(GameController().position.sideToMove).isAi = true;
       } else {
         for (final Player player in players) {
           player.isAi = false;
@@ -95,18 +95,18 @@ class Game {
 
   @visibleForTesting
   bool doMove(ExtMove extMove) {
-    assert(MillController().position.phase != Phase.ready);
+    assert(GameController().position.phase != Phase.ready);
 
     logger.i("$_tag AI do move: $extMove");
 
-    if (MillController().position.doMove(extMove.move) == false) {
+    if (GameController().position.doMove(extMove.move) == false) {
       return false;
     }
 
-    MillController().recorder.add(extMove);
+    GameController().recorder.add(extMove);
 
-    if (MillController().position.phase != Phase.gameOver) {
-      MillController().gameResultNotifier.showResult(force: false);
+    if (GameController().position.phase != Phase.gameOver) {
+      GameController().gameResultNotifier.showResult(force: false);
     }
 
     GifShare().captureView();
@@ -115,10 +115,10 @@ class Game {
     if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
       final CatcherOptions options = catcher.getCurrentConfig()!;
       options.customParameters["MoveList"] =
-          MillController().recorder.moveHistoryText;
+          GameController().recorder.moveHistoryText;
     }
 
-    sideToMove = MillController().position.sideToMove;
+    sideToMove = GameController().position.sideToMove;
 
     _logStat();
 
@@ -126,7 +126,7 @@ class Game {
   }
 
   void _logStat() {
-    final Position position = MillController().position;
+    final Position position = GameController().position;
     final int total = Position.score[PieceColor.white]! +
         Position.score[PieceColor.black]! +
         Position.score[PieceColor.draw]!;

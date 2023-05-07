@@ -77,8 +77,8 @@ class LoadService {
 
     Navigator.pop(context);
 
-    if (!(MillController().recorder.hasPrevious == true ||
-        MillController().isPositionSetup == true)) {
+    if (!(GameController().recorder.hasPrevious == true ||
+        GameController().isPositionSetup == true)) {
       return;
     }
 
@@ -91,7 +91,7 @@ class LoadService {
     final File file = File(filename);
 
     file.writeAsString(
-        ImportService.addTagPairs(MillController().recorder.moveHistoryText!));
+        ImportService.addTagPairs(GameController().recorder.moveHistoryText!));
 
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear("$strGameSavedTo $filename");
@@ -117,7 +117,7 @@ class LoadService {
     try {
       fileContent = await file.readAsString();
     } catch (exception) {
-      MillController().headerTipNotifier.showTip(S.of(context).loadFailed);
+      GameController().headerTipNotifier.showTip(S.of(context).loadFailed);
       Navigator.pop(context);
       return;
     }
@@ -129,7 +129,7 @@ class LoadService {
           fileContent); // MillController().newRecorder = newHistory;
     } catch (exception) {
       final String tip = S.of(context).cannotImport(fileContent);
-      MillController().headerTipNotifier.showTip(tip);
+      GameController().headerTipNotifier.showTip(tip);
       Navigator.pop(context);
       return;
     }
@@ -146,13 +146,13 @@ class LoadService {
 
     if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
         const HistoryOK()) {
-      MillController()
+      GameController()
           .headerTipNotifier
           .showTip(S.of(context).done); // TODO: "Game loaded." is better.
     } else {
       final String tip =
           S.of(context).cannotImport(HistoryNavigator.importFailedStr);
-      MillController().headerTipNotifier.showTip(tip);
+      GameController().headerTipNotifier.showTip(tip);
       HistoryNavigator.importFailedStr = "";
     }
 

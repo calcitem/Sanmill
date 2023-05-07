@@ -32,13 +32,13 @@ void main() {
       // Initialize the test
       DB.instance = MockDB();
       SoundManager.instance = MockAudios();
-      final MillController controller = MillController();
+      final GameController controller = GameController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       // Import a game
       ImportService.import(testMill.moveList);
 
-      expect(MillController().recorder.toString(), testMill.recorderToString);
+      expect(GameController().recorder.toString(), testMill.recorderToString);
     });
 
     test("export standard notation", () async {
@@ -47,7 +47,7 @@ void main() {
       // Initialize the test
       DB.instance = MockDB();
       SoundManager.instance = MockAudios();
-      final MillController controller = MillController();
+      final GameController controller = GameController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
       // Import a game

@@ -36,30 +36,30 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   int newPlaced = 0; // For White
 
   late GameMode gameModeBackup;
-  final Position position = MillController().position;
+  final Position position = GameController().position;
   late Position positionBackup;
 
   void initContext() {
-    gameModeBackup = MillController().gameInstance.gameMode;
-    MillController().gameInstance.gameMode = GameMode.setupPosition;
+    gameModeBackup = GameController().gameInstance.gameMode;
+    GameController().gameInstance.gameMode = GameMode.setupPosition;
 
-    positionBackup = MillController().position.clone();
+    positionBackup = GameController().position.clone();
     //MillController().position.reset();
 
-    newPieceColor = MillController().position.sideToMove;
+    newPieceColor = GameController().position.sideToMove;
 
-    if (MillController().position.countPieceOnBoard(PieceColor.white) +
-            MillController().position.countPieceOnBoard(PieceColor.black) ==
+    if (GameController().position.countPieceOnBoard(PieceColor.white) +
+            GameController().position.countPieceOnBoard(PieceColor.black) ==
         0) {
       newPhase = Phase.moving;
     } else {
-      if (MillController().position.phase == Phase.moving) {
+      if (GameController().position.phase == Phase.moving) {
         newPhase = Phase.moving;
-      } else if (MillController().position.phase == Phase.ready ||
-          MillController().position.phase == Phase.placing) {
+      } else if (GameController().position.phase == Phase.ready ||
+          GameController().position.phase == Phase.placing) {
         newPhase = Phase.placing;
-      } else if (MillController().position.phase == Phase.gameOver) {
-        if (MillController().recorder.length >
+      } else if (GameController().position.phase == Phase.gameOver) {
+        if (GameController().recorder.length >
             DB().ruleSettings.piecesCount * 2) {
           newPhase = Phase.moving;
         } else {
@@ -85,30 +85,30 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     }
 
     newPieceCountNeedRemove[PieceColor.white] =
-        MillController().position.pieceToRemoveCount[PieceColor.white]!;
+        GameController().position.pieceToRemoveCount[PieceColor.white]!;
     newPieceCountNeedRemove[PieceColor.black] =
-        MillController().position.pieceToRemoveCount[PieceColor.black]!;
+        GameController().position.pieceToRemoveCount[PieceColor.black]!;
 
-    MillController().position.phase = newPhase;
-    MillController().position.winner = PieceColor.nobody;
+    GameController().position.phase = newPhase;
+    GameController().position.winner = PieceColor.nobody;
 
     // Zero rule50, and do not zero gamePly.
-    MillController().position.st.rule50 = 0;
+    GameController().position.st.rule50 = 0;
 
     //TODO: newWhitePieceRemovedInPlacingPhase & newBlackPieceRemovedInPlacingPhase;
   }
 
   void restoreContext() {
-    MillController().position.copyWith(positionBackup);
-    MillController().gameInstance.gameMode = gameModeBackup;
+    GameController().position.copyWith(positionBackup);
+    GameController().gameInstance.gameMode = gameModeBackup;
     _updateSetupPositionIcons();
-    MillController().headerTipNotifier.showTip(S.of(context).restoredPosition);
+    GameController().headerTipNotifier.showTip(S.of(context).restoredPosition);
   }
 
   @override
   void initState() {
     super.initState();
-    MillController()
+    GameController()
         .setupPositionNotifier
         .addListener(_updateSetupPositionIcons);
     initContext();
@@ -122,14 +122,14 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   static double get height => (_padding.vertical + _margin.vertical) * 2;
 
   void setSetupPositionPiece(BuildContext context, PieceColor pieceColor) {
-    MillController().isPositionSetupBanPiece = false; // WAR
+    GameController().isPositionSetupBanPiece = false; // WAR
 
     if (pieceColor == PieceColor.white) {
       newPieceColor = PieceColor.black;
     } else if (pieceColor == PieceColor.black) {
       if (DB().ruleSettings.hasBannedLocations && newPhase == Phase.placing) {
         newPieceColor = PieceColor.ban;
-        MillController().isPositionSetupBanPiece = true;
+        GameController().isPositionSetupBanPiece = true;
       } else {
         newPieceColor = PieceColor.none;
       }
@@ -150,16 +150,16 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     if (newPieceColor == PieceColor.white ||
         newPieceColor == PieceColor.black) {
       // TODO: Duplicate: position/gameInstance.sideToMove
-      MillController().position.sideToSetup = newPieceColor;
-      MillController().gameInstance.sideToMove = newPieceColor;
+      GameController().position.sideToSetup = newPieceColor;
+      GameController().gameInstance.sideToMove = newPieceColor;
     }
 
     _updateSetupPositionIcons();
 
-    MillController()
+    GameController()
         .headerTipNotifier
         .showTip(newPieceColor.pieceName(context));
-    MillController().headerIconsNotifier.showIcons();
+    GameController().headerIconsNotifier.showIcons();
     setState(() {});
 
     return;
@@ -175,11 +175,11 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
       newPlaced = DB().ruleSettings.piecesCount;
 
-      MillController().headerTipNotifier.showTip(S.of(context).movingPhase);
+      GameController().headerTipNotifier.showTip(S.of(context).movingPhase);
     } else if (phase == Phase.moving) {
       newPhase = Phase.placing;
       newPlaced = setSetupPositionPlacedGetBegin();
-      MillController().headerTipNotifier.showTip(S.of(context).placingPhase);
+      GameController().headerTipNotifier.showTip(S.of(context).placingPhase);
     }
 
     _updateSetupPositionIcons();
@@ -190,22 +190,22 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   }
 
   Future<void> setSetupPositionNeedRemove(int count, bool next) async {
-    assert(MillController().position.sideToMove == PieceColor.white ||
-        MillController().position.sideToMove == PieceColor.black);
+    assert(GameController().position.sideToMove == PieceColor.white ||
+        GameController().position.sideToMove == PieceColor.black);
 
     if (newPieceColor != PieceColor.white &&
         newPieceColor != PieceColor.black) {
       return;
     }
 
-    final PieceColor sideToMove = MillController().position.sideToMove;
+    final PieceColor sideToMove = GameController().position.sideToMove;
 
-    int limit = MillController()
+    int limit = GameController()
         .position
-        .totalMillsCount(MillController().position.sideToMove);
+        .totalMillsCount(GameController().position.sideToMove);
 
     final int opponentCount =
-        MillController().position.countPieceOnBoard(sideToMove.opponent);
+        GameController().position.countPieceOnBoard(sideToMove.opponent);
 
     if (newPhase == Phase.placing) {
       if (limit > opponentCount) {
@@ -222,7 +222,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
     if (DB().ruleSettings.mayRemoveMultiple == false && limit > 1 ||
         newPhase == Phase.moving &&
-            MillController().position.isStalemateRemoval(newPieceColor) ==
+            GameController().position.isStalemateRemoval(newPieceColor) ==
                 true) {
       limit = 1;
     }
@@ -237,18 +237,18 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
     // TODO: BoardFullAction: Not adapted
     newPieceCountNeedRemove[newPieceColor.opponent] = 0;
-    MillController().position.pieceToRemoveCount[newPieceColor.opponent] = 0;
+    GameController().position.pieceToRemoveCount[newPieceColor.opponent] = 0;
 
-    MillController().position.pieceToRemoveCount[newPieceColor] =
+    GameController().position.pieceToRemoveCount[newPieceColor] =
         newPieceCountNeedRemove[newPieceColor]!;
 
     if (next == true) {
       if (limit == 0 || newPieceCountNeedRemove[newPieceColor] == 0) {
-        MillController()
+        GameController()
             .headerTipNotifier
             .showTip(S.of(context).noPiecesCanBeRemoved);
       } else {
-        MillController().headerTipNotifier.showTip(S
+        GameController().headerTipNotifier.showTip(S
             .of(context)
             .pieceCountNeedToRemove(newPieceCountNeedRemove[newPieceColor]!));
       }
@@ -264,11 +264,11 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
   Future<void> setSetupPositionCopy(BuildContext context) async {
     setSetupPositionDone();
 
-    final String fen = MillController().position.fen;
+    final String fen = GameController().position.fen;
     final String copyStr = S.of(context).copy;
 
     await Clipboard.setData(
-      ClipboardData(text: MillController().position.fen),
+      ClipboardData(text: GameController().position.fen),
     );
 
     if (mounted) {
@@ -292,16 +292,16 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     final String fen = data!.text!;
 
     try {
-      if (MillController().position.setFen(fen) == true) {
-        MillController().headerTipNotifier.showTip(tipDone);
+      if (GameController().position.setFen(fen) == true) {
+        GameController().headerTipNotifier.showTip(tipDone);
         initContext();
         _updateSetupPositionIcons();
         rootScaffoldMessengerKey.currentState!.showSnackBarClear("FEN: $fen");
       } else {
-        MillController().headerTipNotifier.showTip(tipFailed);
+        GameController().headerTipNotifier.showTip(tipFailed);
       }
     } catch (e) {
-      MillController().headerTipNotifier.showTip(tipFailed);
+      GameController().headerTipNotifier.showTip(tipFailed);
     }
 
     return;
@@ -313,9 +313,9 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     }
 
     final int white =
-        MillController().position.countPieceOnBoard(PieceColor.white);
+        GameController().position.countPieceOnBoard(PieceColor.white);
     final int black =
-        MillController().position.countPieceOnBoard(PieceColor.black);
+        GameController().position.countPieceOnBoard(PieceColor.black);
     late int begin;
 
     // TODO: Not accurate enough.
@@ -328,7 +328,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       begin = max(white, black);
     }
 
-    if (MillController().position.sideToMove == PieceColor.black &&
+    if (GameController().position.sideToMove == PieceColor.black &&
         white > black) {
       begin--;
     }
@@ -354,7 +354,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
   // TODO: Duplicate with InfoDialog._infoText
   String _infoText(BuildContext context) {
-    final MillController controller = MillController();
+    final GameController controller = GameController();
     final StringBuffer buffer = StringBuffer();
     final Position pos = controller.position;
 
@@ -405,7 +405,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
     buffer.writePeriod(S.of(context).sideToMove(us));
 
-    final String msg = MillController().headerTipNotifier.message;
+    final String msg = GameController().headerTipNotifier.message;
 
     // the tip
     if (DB().generalSettings.screenReaderSupport &&
@@ -450,7 +450,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
       updateSetupPositionPiecesCount();
       Navigator.pop(context);
       setState(() {});
-      MillController().headerTipNotifier.showTip(
+      GameController().headerTipNotifier.showTip(
           S.of(context).hasPlacedPieceCount(newPlaced),
           snackBar: false); // TODO: How to show side to move?
 
@@ -460,7 +460,7 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     }
 
     if (newPhase != Phase.placing) {
-      MillController().headerTipNotifier.showTip(S.of(context).notPlacingPhase);
+      GameController().headerTipNotifier.showTip(S.of(context).notPlacingPhase);
       return;
     }
 
@@ -482,34 +482,34 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
           newPieceCountNeedRemove[newPieceColor]!, false);
     }
     updateSetupPositionPiecesCount();
-    MillController().headerIconsNotifier.showIcons();
+    GameController().headerIconsNotifier.showIcons();
   }
 
   void updateSetupPositionPiecesCount() {
-    final int w = MillController().position.countPieceOnBoard(PieceColor.white);
-    final int b = MillController().position.countPieceOnBoard(PieceColor.black);
+    final int w = GameController().position.countPieceOnBoard(PieceColor.white);
+    final int b = GameController().position.countPieceOnBoard(PieceColor.black);
 
-    MillController().position.pieceOnBoardCount[PieceColor.white] = w;
-    MillController().position.pieceOnBoardCount[PieceColor.black] = b;
+    GameController().position.pieceOnBoardCount[PieceColor.white] = w;
+    GameController().position.pieceOnBoardCount[PieceColor.black] = b;
 
     final int piecesCount = DB().ruleSettings.piecesCount;
 
     // TODO: Update dynamically
     if (newPhase == Phase.placing) {
-      MillController().position.pieceInHandCount[PieceColor.black] =
+      GameController().position.pieceInHandCount[PieceColor.black] =
           piecesCount - newPlaced;
-      if (MillController().position.sideToMove == PieceColor.white) {
-        MillController().position.pieceInHandCount[PieceColor.white] =
-            MillController().position.pieceInHandCount[PieceColor.black]!;
-      } else if (MillController().position.sideToMove == PieceColor.black) {
-        MillController().position.pieceInHandCount[PieceColor.white] =
-            MillController().position.pieceInHandCount[PieceColor.black]! - 1;
+      if (GameController().position.sideToMove == PieceColor.white) {
+        GameController().position.pieceInHandCount[PieceColor.white] =
+            GameController().position.pieceInHandCount[PieceColor.black]!;
+      } else if (GameController().position.sideToMove == PieceColor.black) {
+        GameController().position.pieceInHandCount[PieceColor.white] =
+            GameController().position.pieceInHandCount[PieceColor.black]! - 1;
       } else {
         assert(false);
       }
     } else if (newPhase == Phase.moving) {
-      MillController().position.pieceInHandCount[PieceColor.white] =
-          MillController().position.pieceInHandCount[PieceColor.black] = 0;
+      GameController().position.pieceInHandCount[PieceColor.white] =
+          GameController().position.pieceInHandCount[PieceColor.black] = 0;
     } else {
       assert(false);
     }
@@ -522,27 +522,27 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     //MillController().gameInstance.gameMode = gameModeBackup;
 
     // When the number of pieces is less than 3, it is impossible to be in the Moving Phase.
-    if (MillController().position.countPieceOnBoard(PieceColor.white) <
+    if (GameController().position.countPieceOnBoard(PieceColor.white) <
             DB().ruleSettings.piecesAtLeastCount ||
-        MillController().position.countPieceOnBoard(PieceColor.black) <
+        GameController().position.countPieceOnBoard(PieceColor.black) <
             DB().ruleSettings.piecesAtLeastCount) {
       newPhase = Phase.placing;
     }
 
-    MillController().position.phase = newPhase;
+    GameController().position.phase = newPhase;
 
     // Setup the Action.
     if (newPhase == Phase.placing) {
-      MillController().position.action = Act.place;
+      GameController().position.action = Act.place;
     } else if (newPhase == Phase.moving) {
-      MillController().position.action = Act.select;
+      GameController().position.action = Act.select;
     }
 
-    if (MillController()
+    if (GameController()
             .position
-            .pieceToRemoveCount[MillController().position.sideToMove]! >
+            .pieceToRemoveCount[GameController().position.sideToMove]! >
         0) {
-      MillController().position.action = Act.remove;
+      GameController().position.action = Act.remove;
     }
 
     // Correct newPieceColor and set sideToMove
@@ -552,32 +552,32 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     }
 
     // TODO: Two sideToMove
-    MillController().gameInstance.sideToMove =
-        MillController().position.sideToMove = newPieceColor;
+    GameController().gameInstance.sideToMove =
+        GameController().position.sideToMove = newPieceColor;
 
     updateSetupPositionPiecesCount();
 
     // TODO: WAR patch. Specifically for the initial position.
     //  The position is illegal after switching to the Setup Position
     //  and then switching back.
-    if (MillController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
-        MillController().position.pieceOnBoardCount[PieceColor.black] == 0 &&
-        MillController().position.pieceInHandCount[PieceColor.white] == 0 &&
-        MillController().position.pieceInHandCount[PieceColor.black] == 0) {
+    if (GameController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
+        GameController().position.pieceOnBoardCount[PieceColor.black] == 0 &&
+        GameController().position.pieceInHandCount[PieceColor.white] == 0 &&
+        GameController().position.pieceInHandCount[PieceColor.black] == 0) {
       newPlaced = 0;
       newPhase = Phase.placing;
       newPieceCountNeedRemove[PieceColor.white] =
           newPieceCountNeedRemove[PieceColor.black] = 0;
-      MillController().reset(force: true);
+      GameController().reset(force: true);
     }
 
     //MillController().recorder.clear(); // TODO: Set and parse fen.
     final String fen = position.fen;
-    MillController().recorder =
+    GameController().recorder =
         GameRecorder(lastPositionWithRemove: fen, setupPosition: fen);
 
-    MillController().headerIconsNotifier.showIcons();
-    MillController().boardSemanticsNotifier.updateSemantics();
+    GameController().headerIconsNotifier.showIcons();
+    GameController().boardSemanticsNotifier.updateSemantics();
   }
 
   @override
@@ -625,9 +625,9 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
     // Clear
     final ToolbarItem clearButton = ToolbarItem.icon(
       onPressed: () {
-        MillController().position.reset();
+        GameController().position.reset();
         _updateSetupPositionIcons();
-        MillController().headerTipNotifier.showTip(S.of(context).cleanedUp);
+        GameController().headerTipNotifier.showTip(S.of(context).cleanedUp);
       },
       icon: const Icon(FluentIcons.eraser_24_regular),
       label: Text(
@@ -802,11 +802,11 @@ class SetupPositionToolBarState extends State<SetupPositionToolBar> {
 
   @override
   void dispose() {
-    MillController()
+    GameController()
         .setupPositionNotifier
         .addListener(_updateSetupPositionIcons);
     setSetupPositionDone();
-    logger.i("FEN: ${MillController().position.fen}");
+    logger.i("FEN: ${GameController().position.fen}");
     super.dispose();
   }
 }

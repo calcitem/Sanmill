@@ -30,7 +30,7 @@ class _ResetSettingsAlert extends StatelessWidget {
     // TODO: Seems to need to close and reopen the program for it to work.
     await DB.reset();
 
-    MillController().reset(force: true);
+    GameController().reset(force: true);
   }
 
   @override

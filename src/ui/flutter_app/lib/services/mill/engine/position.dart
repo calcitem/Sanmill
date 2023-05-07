@@ -100,7 +100,7 @@ class Position {
     try {
       _selectPiece(from);
       return _putPiece(to);
-    } on MillResponse {
+    } on GameResponse {
       return false;
     }
   }
@@ -211,7 +211,7 @@ class Position {
 
     _sideToMove = sideToMoveMap[sideToMoveStr]!;
     _them = _sideToMove.opponent;
-    MillController().gameInstance.sideToMove = _sideToMove; // Note
+    GameController().gameInstance.sideToMove = _sideToMove; // Note
 
     final String phaseStr = l[2];
 
@@ -326,15 +326,15 @@ class Position {
     // TODO: [Leptopoda] The below functions should all throw exceptions so the ret and conditional stuff can be removed
     switch (m.type) {
       case MoveType.remove:
-        if (_removePiece(m.to) == const MillResponseOK()) {
+        if (_removePiece(m.to) == const GameResponseOK()) {
           ret = true;
           st.rule50 = 0;
         } else {
           return false;
         }
 
-        MillController().recorder.lastPositionWithRemove =
-            MillController().position.fen;
+        GameController().recorder.lastPositionWithRemove =
+            GameController().position.fen;
 
         break;
       case MoveType.move:
@@ -420,7 +420,7 @@ class Position {
         if (pieceInHandCount[us] != null) {
           if (pieceInHandCount[us] == 0) {
             rootScaffoldMessengerKey.currentState!
-                .showSnackBarClear("FEN: ${MillController().position.fen}");
+                .showSnackBarClear("FEN: ${GameController().position.fen}");
             return false;
           }
           pieceInHandCount[us] = pieceInHandCount[us]! - 1;
@@ -476,7 +476,7 @@ class Position {
           } else {
             changeSideToMove();
           }
-          MillController().gameInstance.focusIndex = squareToIndex[s];
+          GameController().gameInstance.focusIndex = squareToIndex[s];
           SoundManager().playTone(Sound.place);
         } else {
           pieceToRemoveCount[sideToMove] =
@@ -513,7 +513,7 @@ class Position {
             action = Act.remove;
           }
 
-          MillController().gameInstance.focusIndex = squareToIndex[s];
+          GameController().gameInstance.focusIndex = squareToIndex[s];
           SoundManager().playTone(Sound.mill);
         }
         break;
@@ -580,7 +580,7 @@ class Position {
             isNeedStalemateRemoval = true;
           }
 
-          MillController().gameInstance.focusIndex = squareToIndex[s];
+          GameController().gameInstance.focusIndex = squareToIndex[s];
 
           SoundManager().playTone(Sound.place);
         } else {
@@ -588,7 +588,7 @@ class Position {
               DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
           action = Act.remove;
-          MillController().gameInstance.focusIndex = squareToIndex[s];
+          GameController().gameInstance.focusIndex = squareToIndex[s];
           SoundManager().playTone(Sound.mill);
         }
 
@@ -600,7 +600,7 @@ class Position {
     return true;
   }
 
-  MillResponse _removePiece(int s) {
+  GameResponse _removePiece(int s) {
     if (phase == Phase.ready || phase == Phase.gameOver) {
       return const IllegalPhase();
     }
@@ -650,7 +650,7 @@ class Position {
         DB().ruleSettings.piecesAtLeastCount) {
       _setGameOver(sideToMove, GameOverReason.loseLessThanThree);
       SoundManager().playTone(Sound.remove);
-      return const MillResponseOK();
+      return const GameResponseOK();
     }
 
     _currentSquare = 0;
@@ -660,7 +660,7 @@ class Position {
 
     if (pieceToRemoveCount[sideToMove] != 0) {
       SoundManager().playTone(Sound.remove);
-      return const MillResponseOK();
+      return const GameResponseOK();
     }
 
     if (isStalemateRemoving) {
@@ -671,7 +671,7 @@ class Position {
 
     if (pieceToRemoveCount[sideToMove] != 0) {
       // Audios().playTone(Sound.remove);
-      return const MillResponseOK();
+      return const GameResponseOK();
     }
 
     if (phase == Phase.placing) {
@@ -688,7 +688,7 @@ class Position {
           _sideToMove = PieceColor.black;
           _checkIfGameIsOver();
           SoundManager().playTone(Sound.remove);
-          return const MillResponseOK();
+          return const GameResponseOK();
         } else {
           _sideToMove = PieceColor.white;
         }
@@ -702,10 +702,10 @@ class Position {
     _checkIfGameIsOver();
 
     SoundManager().playTone(Sound.remove);
-    return const MillResponseOK();
+    return const GameResponseOK();
   }
 
-  MillResponse _selectPiece(int sq) {
+  GameResponse _selectPiece(int sq) {
     if (phase != Phase.moving) {
       return const IllegalPhase();
     }
@@ -724,9 +724,9 @@ class Position {
 
     _currentSquare = sq;
     action = Act.place;
-    MillController().gameInstance.blurIndex = squareToIndex[sq];
+    GameController().gameInstance.blurIndex = squareToIndex[sq];
 
-    return const MillResponseOK();
+    return const GameResponseOK();
   }
 
   bool _resign(PieceColor loser) {
@@ -1045,7 +1045,7 @@ class Position {
 
   @visibleForTesting
   String? get movesSinceLastRemove {
-    final GameRecorder recorder = MillController().recorder;
+    final GameRecorder recorder = GameController().recorder;
     if (recorder.isEmpty) {
       return null;
     }
@@ -1176,7 +1176,7 @@ extension SetupPosition on Position {
 
   bool _putPieceForSetupPosition(int s) {
     final PieceColor piece =
-        MillController().isPositionSetupBanPiece ? PieceColor.ban : sideToMove;
+        GameController().isPositionSetupBanPiece ? PieceColor.ban : sideToMove;
     //final us = _sideToMove;
 
     // TODO: Allow to overwrite.
@@ -1213,14 +1213,14 @@ extension SetupPosition on Position {
 
     //MillController().gameInstance.focusIndex = squareToIndex[s];
     SoundManager().playTone(
-        MillController().isPositionSetupBanPiece ? Sound.remove : Sound.place);
+        GameController().isPositionSetupBanPiece ? Sound.remove : Sound.place);
 
-    MillController().setupPositionNotifier.updateIcons();
+    GameController().setupPositionNotifier.updateIcons();
 
     return true;
   }
 
-  MillResponse _removePieceForSetupPosition(int s) {
+  GameResponse _removePieceForSetupPosition(int s) {
     if (action != Act.remove) {
       SoundManager().playTone(Sound.illegal);
       return const IllegalAction();
@@ -1243,9 +1243,9 @@ extension SetupPosition on Position {
      */
 
     SoundManager().playTone(Sound.remove);
-    MillController().setupPositionNotifier.updateIcons();
+    GameController().setupPositionNotifier.updateIcons();
 
-    return const MillResponseOK();
+    return const GameResponseOK();
   }
 
   int countPieceOnBoard(PieceColor pieceColor) {

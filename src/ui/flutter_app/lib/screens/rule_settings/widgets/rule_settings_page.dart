@@ -401,8 +401,8 @@ class RuleSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     visitedRuleSettingsPage = true;
 
-    MillController().isActive = false;
-    MillController().reset();
+    GameController().isActive = false;
+    GameController().reset();
 
     //MillController().engine.shutdown();
 

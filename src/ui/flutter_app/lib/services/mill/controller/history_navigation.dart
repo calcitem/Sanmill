@@ -43,23 +43,23 @@ class HistoryNavigator {
       Navigator.pop(context);
     }
 
-    if (MillController().isEngineDelaying == true) {
+    if (GameController().isEngineDelaying == true) {
       rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).aiIsDelaying);
       return const HistoryOK();
     }
 
-    MillController().isActive = false;
-    MillController().engine.stopSearching();
+    GameController().isActive = false;
+    GameController().engine.stopSearching();
 
-    final MillController controller = MillController();
+    final GameController controller = GameController();
 
-    MillController().headerTipNotifier.showTip(S
+    GameController().headerTipNotifier.showTip(S
         .of(context)
         .atEnd); // TODO: Move to the end of this function. Or change to S.of(context).waiting?
 
-    MillController().headerIconsNotifier.showIcons(); // TODO: See above.
-    MillController().boardSemanticsNotifier.updateSemantics();
+    GameController().headerIconsNotifier.showIcons(); // TODO: See above.
+    GameController().boardSemanticsNotifier.updateSemantics();
 
     if (_isGoingToHistory) {
       logger.i(
@@ -80,11 +80,11 @@ class HistoryNavigator {
       case HistoryOK():
         final ExtMove? lastEffectiveMove = controller.recorder.current;
         if (lastEffectiveMove != null) {
-          MillController().headerTipNotifier.showTip(
+          GameController().headerTipNotifier.showTip(
                 S.of(context).lastMove(lastEffectiveMove.notation),
               );
-          MillController().headerIconsNotifier.showIcons();
-          MillController().boardSemanticsNotifier.updateSemantics();
+          GameController().headerIconsNotifier.showIcons();
+          GameController().boardSemanticsNotifier.updateSemantics();
         }
         break;
       case HistoryRange(): // TODO: Impossible resp
@@ -180,19 +180,19 @@ class HistoryNavigator {
     }
 
     // Backup context
-    final GameMode gameModeBackup = MillController().gameInstance.gameMode;
-    MillController().gameInstance.gameMode = GameMode.humanVsHuman;
+    final GameMode gameModeBackup = GameController().gameInstance.gameMode;
+    GameController().gameInstance.gameMode = GameMode.humanVsHuman;
 
-    if (MillController().newRecorder == null) {
-      MillController().newRecorder = MillController().recorder;
+    if (GameController().newRecorder == null) {
+      GameController().newRecorder = GameController().recorder;
     }
 
-    MillController().reset();
+    GameController().reset();
 
-    MillController().newRecorder!.forEachVisible((ExtMove extMove) async {
-      if (MillController().gameInstance.doMove(extMove) == false) {
-        if (MillController().newRecorder != null) {
-          MillController().newRecorder!.prune();
+    GameController().newRecorder!.forEachVisible((ExtMove extMove) async {
+      if (GameController().gameInstance.doMove(extMove) == false) {
+        if (GameController().newRecorder != null) {
+          GameController().newRecorder!.prune();
           importFailedStr = extMove.notation;
           ret = false;
         }
@@ -200,12 +200,12 @@ class HistoryNavigator {
     });
 
     // Restore context
-    MillController().gameInstance.gameMode = gameModeBackup;
+    GameController().gameInstance.gameMode = gameModeBackup;
     final String? lastPositionWithRemove =
-        MillController().recorder.lastPositionWithRemove;
-    MillController().recorder = MillController().newRecorder!;
-    MillController().recorder.lastPositionWithRemove = lastPositionWithRemove;
-    MillController().newRecorder = null;
+        GameController().recorder.lastPositionWithRemove;
+    GameController().recorder = GameController().newRecorder!;
+    GameController().recorder.lastPositionWithRemove = lastPositionWithRemove;
+    GameController().newRecorder = null;
 
     return ret ? const HistoryOK() : const HistoryRule();
   }
@@ -224,9 +224,9 @@ extension HistoryNavModeExtension on HistoryNavMode {
   ///
   /// Throws [HistoryResponse] When trying to access a value outside of the bounds.
   HistoryResponse gotoHistory([int? number]) {
-    final int? cur = MillController().recorder.index;
+    final int? cur = GameController().recorder.index;
     final PointedListIterator<ExtMove> it =
-        MillController().recorder.globalIterator;
+        GameController().recorder.globalIterator;
 
     switch (this) {
       case HistoryNavMode.stepForwardAll:

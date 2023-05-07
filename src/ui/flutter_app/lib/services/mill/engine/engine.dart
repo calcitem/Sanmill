@@ -288,8 +288,8 @@ class Engine {
   String _getPositionFen() {
     // TODO: Check position
     final String? startPosition =
-        MillController().recorder.lastPositionWithRemove;
-    final String? moves = MillController().position.movesSinceLastRemove;
+        GameController().recorder.lastPositionWithRemove;
+    final String? moves = GameController().position.movesSinceLastRemove;
 
     final StringBuffer posFenStr = StringBuffer("position fen $startPosition");
 
@@ -300,9 +300,9 @@ class Engine {
     String ret = posFenStr.toString();
 
     // WAR
-    if (MillController().recorder.lastPositionWithRemove ==
-        MillController().recorder.setupPosition) {
-      if (MillController().position.action == Act.remove) {
+    if (GameController().recorder.lastPositionWithRemove ==
+        GameController().recorder.setupPosition) {
+      if (GameController().position.action == Act.remove) {
         ret = ret.replaceFirst(" s ", " r ");
       }
     }

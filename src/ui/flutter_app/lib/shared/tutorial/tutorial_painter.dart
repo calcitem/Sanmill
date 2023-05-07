@@ -102,7 +102,7 @@ class TutorialPainter extends CustomPainter {
 
     // Draw focus and blur position
     if (focusIndex != null &&
-        MillController().gameInstance.gameMode != GameMode.setupPosition) {
+        GameController().gameInstance.gameMode != GameMode.setupPosition) {
       paint.color = DB().colorSettings.pieceHighlightColor;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;
@@ -115,7 +115,7 @@ class TutorialPainter extends CustomPainter {
     }
 
     if (blurIndex != null &&
-        MillController().gameInstance.gameMode != GameMode.setupPosition) {
+        GameController().gameInstance.gameMode != GameMode.setupPosition) {
       paint.color = blurPositionColor;
       paint.style = PaintingStyle.fill;
 

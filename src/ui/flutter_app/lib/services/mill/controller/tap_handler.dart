@@ -13,83 +13,83 @@ class TapHandler {
 
   final BuildContext context;
 
-  final MillController controller = MillController();
+  final GameController controller = GameController();
   //final gameMode = MillController().gameInstance.gameMode;
   // ignore: always_specify_types
-  final showTip = MillController().headerTipNotifier.showTip;
+  final showTip = GameController().headerTipNotifier.showTip;
 
   bool get _isGameRunning =>
-      MillController().position.winner == PieceColor.nobody;
+      GameController().position.winner == PieceColor.nobody;
   bool get isAiToMove => controller.gameInstance.isAiToMove;
 
   bool get _isBoardEmpty =>
-      MillController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
-      MillController().position.pieceOnBoardCount[PieceColor.black] == 0;
+      GameController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
+      GameController().position.pieceOnBoardCount[PieceColor.black] == 0;
 
   Future<EngineResponse> setupPosition(int sq) async {
-    if (MillController().position.action == Act.place ||
-        MillController().position.action == Act.select) {
-      MillController().position._putPieceForSetupPosition(sq);
-    } else if (MillController().position.action == Act.remove) {
-      MillController().position._removePieceForSetupPosition(sq);
+    if (GameController().position.action == Act.place ||
+        GameController().position.action == Act.select) {
+      GameController().position._putPieceForSetupPosition(sq);
+    } else if (GameController().position.action == Act.remove) {
+      GameController().position._removePieceForSetupPosition(sq);
     } else {
       assert(false);
     }
 
-    MillController().setupPositionNotifier.updateIcons();
-    MillController().headerTipNotifier.showTip(ExtMove.sqToNotation(sq),
+    GameController().setupPositionNotifier.updateIcons();
+    GameController().headerTipNotifier.showTip(ExtMove.sqToNotation(sq),
         snackBar: false); // TODO: snackBar is false?
 
     return const EngineResponseHumanOK(); // TODO: Right?
   }
 
   Future<EngineResponse> onBoardTap(int sq) async {
-    if (!MillController().isReady) {
+    if (!GameController().isReady) {
       logger.i("$_tag Not ready, ignore tapping.");
       return const EngineResponseSkip();
     }
 
-    if (MillController().gameInstance.gameMode == GameMode.setupPosition) {
+    if (GameController().gameInstance.gameMode == GameMode.setupPosition) {
       logger.v("$_tag Setup position.");
       await setupPosition(sq);
       return const EngineResponseSkip();
     }
 
-    if (MillController().gameInstance.gameMode == GameMode.testViaLAN) {
+    if (GameController().gameInstance.gameMode == GameMode.testViaLAN) {
       logger.v("$_tag Engine type is no human, ignore tapping.");
       return const EngineResponseSkip();
     }
 
-    if (MillController().position.phase == Phase.gameOver) {
+    if (GameController().position.phase == Phase.gameOver) {
       logger.v("$_tag Phase is gameOver, ignore tapping.");
       return const EngineResponseSkip();
     }
 
     // TODO: WAR
-    if ((MillController().gameInstance.sideToMove == PieceColor.white ||
-            MillController().gameInstance.sideToMove == PieceColor.black) ==
+    if ((GameController().gameInstance.sideToMove == PieceColor.white ||
+            GameController().gameInstance.sideToMove == PieceColor.black) ==
         false) {
       // If modify sideToMove, not take effect, I don't know why.
       return const EngineResponseSkip();
     }
 
-    if ((MillController().position.sideToMove == PieceColor.white ||
-            MillController().position.sideToMove == PieceColor.black) ==
+    if ((GameController().position.sideToMove == PieceColor.white ||
+            GameController().position.sideToMove == PieceColor.black) ==
         false) {
       // If modify sideToMove, not take effect, I don't know why.
       return const EngineResponseSkip();
     }
 
     // WAR: Fix first tap response slow when piece count changed
-    if (MillController().gameInstance.gameMode != GameMode.humanVsHuman &&
-        MillController().position.phase == Phase.placing &&
+    if (GameController().gameInstance.gameMode != GameMode.humanVsHuman &&
+        GameController().position.phase == Phase.placing &&
         _isBoardEmpty) {
       //controller.reset();
 
       if (isAiToMove) {
         logger.i("$_tag AI is not thinking. AI is to move.");
 
-        return MillController().engineToGo(context, isMoveNow: false);
+        return GameController().engineToGo(context, isMoveNow: false);
       }
     }
 
@@ -100,35 +100,35 @@ class TapHandler {
 
     // Human to go
     bool ret = false;
-    switch (MillController().position.action) {
+    switch (GameController().position.action) {
       case Act.place:
-        if (MillController().position._putPiece(sq)) {
-          MillController().animationController.reset();
-          MillController().animationController.animateTo(1.0);
-          if (MillController().position.action == Act.remove) {
-            if (MillController()
+        if (GameController().position._putPiece(sq)) {
+          GameController().animationController.reset();
+          GameController().animationController.animateTo(1.0);
+          if (GameController().position.action == Act.remove) {
+            if (GameController()
                 .position
-                .isStalemateRemoval(MillController().position.sideToMove)) {
+                .isStalemateRemoval(GameController().position.sideToMove)) {
               showTip(S.of(context).tipRemove);
             } else {
               showTip(S.of(context).tipMill);
             }
           } else {
-            if (MillController().gameInstance.gameMode == GameMode.humanVsAi) {
+            if (GameController().gameInstance.gameMode == GameMode.humanVsAi) {
               if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                 showTip(S.of(context).continueToMakeMove, snackBar: false);
               } else {
-                if (MillController().position.phase == Phase.placing) {
+                if (GameController().position.phase == Phase.placing) {
                   showTip(S.of(context).tipPlaced, snackBar: false);
                 } else {
                   showTip(S.of(context).tipMove, snackBar: false);
                 }
               }
-            } else if (MillController().gameInstance.gameMode ==
+            } else if (GameController().gameInstance.gameMode ==
                 GameMode.humanVsHuman) {
               if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
                 // TODO: HumanVsHuman - Change tip
-                if (MillController().position.phase == Phase.placing) {
+                if (GameController().position.phase == Phase.placing) {
                   showTip(S.of(context).tipPlaced, snackBar: false);
                 } else {
                   showTip(S.of(context).tipMove, snackBar: false);
@@ -145,9 +145,9 @@ class TapHandler {
           break;
         } else {
           logger.v("$_tag putPiece: skip [$sq]");
-          if (!(MillController().position.phase == Phase.moving &&
-              MillController().position._board[sq] ==
-                  MillController().position.sideToMove)) {
+          if (!(GameController().position.phase == Phase.moving &&
+              GameController().position._board[sq] ==
+                  GameController().position.sideToMove)) {
             showTip(S.of(context).tipBanPlace);
           }
         }
@@ -157,25 +157,25 @@ class TapHandler {
         continue select;
       select:
       case Act.select:
-        if (MillController().position.phase == Phase.placing) {
+        if (GameController().position.phase == Phase.placing) {
           showTip(S.of(context).tipCannotPlace);
           break;
         }
 
-        final MillResponse selectRet =
-            MillController().position._selectPiece(sq);
+        final GameResponse selectRet =
+            GameController().position._selectPiece(sq);
 
         switch (selectRet) {
-          case MillResponseOK():
+          case GameResponseOK():
             SoundManager().playTone(Sound.select);
             controller.gameInstance._select(squareToIndex[sq]!);
             ret = true;
             logger.v("$_tag selectPiece: [$sq]");
 
-            final int? pieceOnBoardCount = MillController()
+            final int? pieceOnBoardCount = GameController()
                 .position
                 .pieceOnBoardCount[controller.gameInstance.sideToMove];
-            if (MillController().position.phase == Phase.moving &&
+            if (GameController().position.phase == Phase.moving &&
                 DB().ruleSettings.mayFly &&
                 (pieceOnBoardCount! <= DB().ruleSettings.flyPieceCount &&
                     pieceOnBoardCount >= 3)) {
@@ -189,7 +189,7 @@ class TapHandler {
             }
             break;
           case IllegalPhase():
-            if (MillController().position.phase != Phase.gameOver) {
+            if (GameController().position.phase != Phase.gameOver) {
               showTip(S.of(context).tipCannotMove);
             }
             break;
@@ -211,41 +211,41 @@ class TapHandler {
         break;
 
       case Act.remove:
-        final MillResponse removeRet =
-            MillController().position._removePiece(sq);
+        final GameResponse removeRet =
+            GameController().position._removePiece(sq);
 
-        MillController().animationController.reset();
-        MillController().animationController.animateTo(1.0);
+        GameController().animationController.reset();
+        GameController().animationController.animateTo(1.0);
 
         switch (removeRet) {
-          case MillResponseOK():
+          case GameResponseOK():
             ret = true;
             logger.v("$_tag removePiece: [$sq]");
-            if (MillController().position.pieceToRemoveCount[
-                    MillController().position.sideToMove]! >=
+            if (GameController().position.pieceToRemoveCount[
+                    GameController().position.sideToMove]! >=
                 1) {
               showTip(S.of(context).tipContinueMill);
             } else {
-              if (MillController().gameInstance.gameMode ==
+              if (GameController().gameInstance.gameMode ==
                   GameMode.humanVsAi) {
                 showTip(S.of(context).tipRemoved, snackBar: false);
-              } else if (MillController().gameInstance.gameMode ==
+              } else if (GameController().gameInstance.gameMode ==
                   GameMode.humanVsHuman) {
                 if ((DB().ruleSettings.piecesCount == 12 &&
                         DB().ruleSettings.boardFullAction !=
                             BoardFullAction.firstPlayerLose &&
                         DB().ruleSettings.boardFullAction !=
                             BoardFullAction.agreeToDraw &&
-                        MillController().position.phase == Phase.moving &&
-                        MillController()
+                        GameController().position.phase == Phase.moving &&
+                        GameController()
                                 .position
                                 .pieceOnBoardCount[PieceColor.white] ==
                             11 &&
-                        MillController()
+                        GameController()
                                 .position
                                 .pieceOnBoardCount[PieceColor.white] ==
                             11) ||
-                    MillController().position.isNeedStalemateRemoval == true) {
+                    GameController().position.isNeedStalemateRemoval == true) {
                   // TODO: boardFullAction & StalemateAction: Judging condition is not perfect.
                   //  Causes under this condition and can not prompt exactly
                   //  which player's turn to move.
@@ -277,7 +277,7 @@ class TapHandler {
             break;
           default:
             logger.v("$_tag removePiece: skip [$sq]");
-            if (MillController().position.phase != Phase.gameOver) {
+            if (GameController().position.phase != Phase.gameOver) {
               showTip(S.of(context).tipBanRemove);
             }
             break;
@@ -285,24 +285,24 @@ class TapHandler {
     }
 
     if (ret) {
-      controller.gameInstance.sideToMove = MillController().position.sideToMove;
+      controller.gameInstance.sideToMove = GameController().position.sideToMove;
 
       // TODO: Need Others?
       // Increment ply counters. In particular,
       // rule50 will be reset to zero later on
       // in case of a remove.
-      ++MillController().position._gamePly;
-      ++MillController().position.st.rule50;
-      ++MillController().position.st.pliesFromNull;
+      ++GameController().position._gamePly;
+      ++GameController().position.st.rule50;
+      ++GameController().position.st.pliesFromNull;
 
-      if (MillController().position._record != null &&
-          MillController().position._record!.move.length > "-(1,2)".length) {
+      if (GameController().position._record != null &&
+          GameController().position._record!.move.length > "-(1,2)".length) {
         if (posKeyHistory.isEmpty ||
-            posKeyHistory.last != MillController().position.st.key) {
-          posKeyHistory.add(MillController().position.st.key);
+            posKeyHistory.last != GameController().position.st.key) {
+          posKeyHistory.add(GameController().position.st.key);
           if (DB().ruleSettings.threefoldRepetitionRule &&
-              MillController().position._hasGameCycle) {
-            MillController().position._setGameOver(
+              GameController().position._hasGameCycle) {
+            GameController().position._setGameOver(
                   PieceColor.draw,
                   GameOverReason.drawThreefoldRepetition,
                 );
@@ -312,25 +312,25 @@ class TapHandler {
         posKeyHistory.clear();
       }
 
-      if (MillController().position._record != null) {
+      if (GameController().position._record != null) {
         controller.recorder
-            .addAndDeduplicate(MillController().position._record!);
-        if (MillController().position._record!.type == MoveType.remove) {
+            .addAndDeduplicate(GameController().position._record!);
+        if (GameController().position._record!.type == MoveType.remove) {
           controller.recorder.lastPositionWithRemove =
-              MillController().position.fen;
+              GameController().position.fen;
         }
 
         // TODO: moveHistoryText is not lightweight.
         if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
           final CatcherOptions options = catcher.getCurrentConfig()!;
           options.customParameters["MoveList"] =
-              MillController().recorder.moveHistoryText;
+              GameController().recorder.moveHistoryText;
         }
       }
 
-      if (_isGameRunning && MillController().gameInstance.isAiToMove) {
-        if (MillController().gameInstance.gameMode == GameMode.humanVsAi) {
-          return MillController().engineToGo(context, isMoveNow: false);
+      if (_isGameRunning && GameController().gameInstance.isAiToMove) {
+        if (GameController().gameInstance.gameMode == GameMode.humanVsAi) {
+          return GameController().engineToGo(context, isMoveNow: false);
         }
       } else {
         return const EngineResponseHumanOK();
@@ -339,10 +339,10 @@ class TapHandler {
       SoundManager().playTone(Sound.illegal);
     }
 
-    controller.gameInstance.sideToMove = MillController().position.sideToMove;
+    controller.gameInstance.sideToMove = GameController().position.sideToMove;
 
-    MillController().headerIconsNotifier.showIcons();
-    MillController().boardSemanticsNotifier.updateSemantics();
+    GameController().headerIconsNotifier.showIcons();
+    GameController().boardSemanticsNotifier.updateSemantics();
 
     return const EngineResponseHumanOK();
   }

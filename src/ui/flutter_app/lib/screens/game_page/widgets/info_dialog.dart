@@ -20,7 +20,7 @@ class _InfoDialog extends StatelessWidget {
   const _InfoDialog();
 
   String _infoText(BuildContext context) {
-    final MillController controller = MillController();
+    final GameController controller = GameController();
     final StringBuffer buffer = StringBuffer();
     final Position pos = controller.position;
 
@@ -78,7 +78,7 @@ class _InfoDialog extends StatelessWidget {
 
     buffer.writePeriod(S.of(context).sideToMove(us));
 
-    final String msg = MillController().headerTipNotifier.message;
+    final String msg = GameController().headerTipNotifier.message;
 
     // the tip
     if (DB().generalSettings.screenReaderSupport &&
