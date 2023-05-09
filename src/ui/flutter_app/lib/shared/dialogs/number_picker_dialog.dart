@@ -24,41 +24,41 @@ import '../themes/app_theme.dart';
 class NumberPickerDialog extends StatelessWidget {
   const NumberPickerDialog({
     super.key,
-    this.start = 1,
-    required this.end,
-    required this.newTitle,
-    required this.showMoveString,
+    this.startNumber = 1,
+    required this.endNumber,
+    required this.dialogTitle,
+    required this.displayMoveText,
   });
 
-  final int start;
-  final int end;
-  final String newTitle;
-  final bool showMoveString;
+  final int startNumber;
+  final int endNumber;
+  final String dialogTitle;
+  final bool displayMoveText;
 
   @override
   Widget build(BuildContext context) {
-    final double size = Theme.of(context).textTheme.bodyLarge!.fontSize!;
-    int selectValue = start;
+    final double fontSize = Theme.of(context).textTheme.bodyLarge!.fontSize!;
+    int selectedValue = startNumber;
 
-    final List<Widget> items = List<Widget>.generate(
-      end,
-      (int index) => Text(showMoveString
-          ? S.of(context).moveNumber(start + index)
-          : (start + index).toString()),
+    final List<Widget> numberItems = List<Widget>.generate(
+      endNumber,
+      (int index) => Text(displayMoveText
+          ? S.of(context).moveNumber(startNumber + index)
+          : (startNumber + index).toString()),
     );
 
     return AlertDialog(
       title: Text(
-        newTitle,
+        dialogTitle,
         style: AppTheme.dialogTitleTextStyle,
         textScaleFactor: DB().displaySettings.fontScale,
       ),
       content: ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 150),
         child: CupertinoPicker(
-          itemExtent: size + 12,
-          children: items,
-          onSelectedItemChanged: (int numb) => selectValue = numb + 1,
+          itemExtent: fontSize + 12,
+          children: numberItems,
+          onSelectedItemChanged: (int number) => selectedValue = number + 1,
         ),
       ),
       actions: <Widget>[
@@ -74,7 +74,7 @@ class NumberPickerDialog extends StatelessWidget {
             S.of(context).confirm,
             textScaleFactor: DB().displaySettings.fontScale,
           ),
-          onPressed: () => Navigator.pop(context, selectValue),
+          onPressed: () => Navigator.pop(context, selectedValue),
         ),
       ],
     );

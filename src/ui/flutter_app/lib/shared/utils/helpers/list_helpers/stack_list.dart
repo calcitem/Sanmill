@@ -22,27 +22,27 @@ import '../../../services/logger.dart';
 class StackList<T> {
   /// Default constructor sets the maximum stack size to 'no limit.'
   StackList() {
-    _sizeMax = noLimit;
+    _maxStackSize = _noLimit;
   }
 
   /// Constructor in which you can specify maximum number of entries.
   /// This maximum is a limit that is enforced as entries are pushed on to the stack
   /// to prevent stack growth beyond a maximum size. There is no pre-allocation of
   /// slots for entries at any time in this library.
-  StackList.sized(int sizeMax) {
-    if (sizeMax < 2) {
+  StackList.sized(int maxStackSize) {
+    if (maxStackSize < 2) {
       throw Exception('Error: stack size must be 2 entries or more ');
     } else {
-      _sizeMax = sizeMax;
+      _maxStackSize = maxStackSize;
     }
   }
 
   final ListQueue<T> _list = ListQueue<T>();
 
-  final int noLimit = -1;
+  final int _noLimit = -1;
 
   /// The maximum number of entries allowed on the stack. -1 = no limit.
-  int _sizeMax = 0;
+  int _maxStackSize = 0;
 
   /// Returns a list of T elements contained in the Stack
   List<T> toList() => _list.toList();
@@ -54,12 +54,12 @@ class StackList<T> {
   bool get isNotEmpty => _list.isNotEmpty;
 
   /// Push element in top of the stack.
-  void push(T e) {
-    if (_sizeMax == noLimit || _list.length < _sizeMax) {
-      _list.addLast(e);
+  void push(T element) {
+    if (_maxStackSize == _noLimit || _list.length < _maxStackSize) {
+      _list.addLast(element);
     } else {
       throw Exception(
-          'Error: Cannot add element. Stack already at maximum size of: $_sizeMax elements');
+          'Error: Cannot add element. Stack already at maximum size of: $_maxStackSize elements');
     }
   }
 
@@ -71,9 +71,9 @@ class StackList<T> {
         'checking for size or isEmpty before calling pop',
       );
     }
-    final T res = _list.last;
+    final T poppedElement = _list.last;
     _list.removeLast();
-    return res;
+    return poppedElement;
   }
 
   /// Get the top of the stack without deleting it.
@@ -96,8 +96,8 @@ class StackList<T> {
   int get length => size();
 
   /// Returns true if element is found in the stack
-  bool contains(T x) {
-    return _list.contains(x);
+  bool contains(T searchElement) {
+    return _list.contains(searchElement);
   }
 
   /// Removes all elements from the stack

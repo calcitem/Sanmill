@@ -52,7 +52,7 @@ class CustomDrawerItem<T> extends StatelessWidget {
               color: color,
             );
 
-    final Size titleSize = TextSizeHelper.boundingTextSize(
+    final Size titleSize = TextSizeHelper.getBoundingTextSize(
       context,
       title,
       titleStyle,

@@ -35,7 +35,7 @@ Future<void> _initCatcher(Catcher catcher) async {
     }
   }
 
-  final String path = "$externalDirStr/${Constants.crashLogsFileName}";
+  final String path = "$externalDirStr/${Constants.crashLogsFile}";
   logger.v("[env] ExternalStorageDirectory: $externalDirStr");
 
   final CatcherOptions debugOptions = CatcherOptions(
@@ -45,7 +45,7 @@ Future<void> _initCatcher(Catcher catcher) async {
       <ReportHandler>[
         ConsoleHandler(),
         FileHandler(File(path), printLogs: true),
-        EmailManualHandler(Constants.recipients, printLogs: true)
+        EmailManualHandler(Constants.recipientEmails, printLogs: true)
       ],
       customParameters: customParameters);
 
@@ -58,7 +58,7 @@ Future<void> _initCatcher(Catcher catcher) async {
           : PageReportMode(),
       <ReportHandler>[
         FileHandler(File(path), printLogs: true),
-        EmailManualHandler(Constants.recipients, printLogs: true)
+        EmailManualHandler(Constants.recipientEmails, printLogs: true)
       ],
       customParameters: customParameters);
 
@@ -67,7 +67,7 @@ Future<void> _initCatcher(Catcher catcher) async {
       <ReportHandler>[
         ConsoleHandler(),
         FileHandler(File(path), printLogs: true),
-        EmailManualHandler(Constants.recipients, printLogs: true)
+        EmailManualHandler(Constants.recipientEmails, printLogs: true)
       ],
       customParameters: customParameters);
 

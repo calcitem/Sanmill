@@ -38,8 +38,8 @@ void _initUI() {
   }
 }
 
-void _initOrientation(BuildContext context) {
-  if (!isPad(context)) {
+void _initializeScreenOrientation(BuildContext context) {
+  if (!isTablet(context)) {
     SystemChrome.setPreferredOrientations(
       <DeviceOrientation>[
         DeviceOrientation.portraitUp,

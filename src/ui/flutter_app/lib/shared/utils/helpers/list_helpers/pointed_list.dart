@@ -28,15 +28,15 @@ class PointedList<E> extends DelegatingList<E> {
   /// The [globalIterator] will be set to the last element by default.
   PointedList.from(List<E> elements) : this._(elements);
 
-  PointedList._(List<E> l)
-      : _l = l,
-        globalIterator = PointedListIterator<E>(l),
-        super(l) {
-    if (l.isNotEmpty) {
+  PointedList._(List<E> list)
+      : _list = list,
+        globalIterator = PointedListIterator<E>(list),
+        super(list) {
+    if (list.isNotEmpty) {
       globalIterator.moveToLast();
     }
   }
-  late final List<E> _l;
+  late final List<E> _list;
 
   /// The [PointedListIterator] used to navigate through the list.
   late final PointedListIterator<E> globalIterator;
@@ -45,7 +45,7 @@ class PointedList<E> extends DelegatingList<E> {
   ///
   /// This is equivalent to `removeRange(globalIterator.index + 1, this.length)`.
   void prune() {
-    if (_l.isEmpty) {
+    if (_list.isEmpty) {
       return;
     }
     if (!globalIterator.hasNext) {
@@ -53,16 +53,16 @@ class PointedList<E> extends DelegatingList<E> {
     }
 
     if (globalIterator.index == null) {
-      _l.removeRange(0, _l.length);
+      _list.removeRange(0, _list.length);
     } else {
-      _l.removeRange(globalIterator.index! + 1, _l.length);
+      _list.removeRange(globalIterator.index! + 1, _list.length);
     }
   }
 
   @override
   void add(E value) {
     prune();
-    _l.add(value);
+    _list.add(value);
     globalIterator.moveNext();
   }
 
@@ -91,14 +91,14 @@ class PointedList<E> extends DelegatingList<E> {
     }
 
     for (int i = 0; i <= index!; i++) {
-      f(_l[i]);
+      f(_list[i]);
     }
   }
 
   /// Check if there is still part that can be pruned.
   bool get isClean =>
-      (globalIterator.index == _l.length - 1) ||
-      (globalIterator.index == null && _l.isEmpty);
+      (globalIterator.index == _list.length - 1) ||
+      (globalIterator.index == null && _list.isEmpty);
 
   /// Whether the list has another element previous to the iterator.
   ///
@@ -115,28 +115,28 @@ class PointedList<E> extends DelegatingList<E> {
   ///
   /// Copied from Iterable.
   PointedListIterator<E> get bidirectionalIterator =>
-      PointedListIterator<E>(_l);
+      PointedListIterator<E>(_list);
 }
 
 /// Pointed List Iterator.
 class PointedListIterator<E> {
-  PointedListIterator(this._base) {
-    if (_base.isNotEmpty) {
-      _index = 0;
+  PointedListIterator(this._sourceList) {
+    if (_sourceList.isNotEmpty) {
+      _currentIndex = 0;
     }
   }
-  final List<E> _base;
-  int? _index;
+  final List<E> _sourceList;
+  int? _currentIndex;
 
   bool moveNext() {
     if (!hasNext) {
       return false;
     }
 
-    if (_index == null) {
-      _index = 0;
+    if (_currentIndex == null) {
+      _currentIndex = 0;
     } else {
-      _index = _index! + 1;
+      _currentIndex = _currentIndex! + 1;
     }
 
     //assert(current != prev);
@@ -149,10 +149,10 @@ class PointedListIterator<E> {
       return false;
     }
 
-    if (_index == 0) {
-      _index = null;
+    if (_currentIndex == 0) {
+      _currentIndex = null;
     } else {
-      _index = _index! - 1;
+      _currentIndex = _currentIndex! - 1;
     }
 
     return true;
@@ -160,8 +160,8 @@ class PointedListIterator<E> {
 
   /// Move to the given element.
   void moveTo(int index) {
-    if (_base.isNotEmpty) {
-      _index = index;
+    if (_sourceList.isNotEmpty) {
+      _currentIndex = index;
     }
   }
 
@@ -178,48 +178,48 @@ class PointedListIterator<E> {
   /// Move to the head.
   ///
   /// Head is a list node that contains no actual data.
-  void moveToHead() => _index = null;
+  void moveToHead() => _currentIndex = null;
 
   /// The currently selected index.
-  int? get index => _index;
+  int? get index => _currentIndex;
 
   /// The last valid index.
-  int get lastIndex => _base.length - 1;
+  int get lastIndex => _sourceList.length - 1;
 
   /// Whether the list has another element next to the iterator.
   ///
   /// This has the benefit of not altering the iterator while still being able to check it.
-  bool get hasNext => _base.isNotEmpty && _index != lastIndex;
+  bool get hasNext => _sourceList.isNotEmpty && _currentIndex != lastIndex;
 
   /// Whether the list has another element previous to the iterator.
   ///
   /// This has the benefit of not altering the iterator while still being able to check it.
-  bool get hasPrevious => _base.isNotEmpty && _index != null;
+  bool get hasPrevious => _sourceList.isNotEmpty && _currentIndex != null;
 
   E? get current {
-    if (_index == null) {
+    if (_currentIndex == null) {
       return null;
     }
 
-    return _base[_index!];
+    return _sourceList[_currentIndex!];
   }
 
   E? get prev {
-    if (_index == null || index == 0 || _base[_index! - 1] == null) {
+    if (_currentIndex == null || index == 0 || _sourceList[_currentIndex! - 1] == null) {
       return null;
     }
 
-    return _base[_index! - 1];
+    return _sourceList[_currentIndex! - 1];
   }
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
   bool operator ==(Object other) =>
       other is PointedListIterator &&
-      _base == other._base &&
-      _index == other._index;
+      _sourceList == other._sourceList &&
+      _currentIndex == other._currentIndex;
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
-  int get hashCode => Object.hash(_base, _index);
+  int get hashCode => Object.hash(_sourceList, _currentIndex);
 }

@@ -36,7 +36,7 @@ class BoardPainter extends CustomPainter {
     final double boardBorderLineWidth =
         DB().displaySettings.boardBorderLineWidth;
     paint.strokeWidth =
-        boardBorderLineWidth * (isPad(context) ? size.width ~/ 256 : 1);
+        boardBorderLineWidth * (isTablet(context) ? size.width ~/ 256 : 1);
     paint.color = Color.lerp(
       colorSettings.boardBackgroundColor,
       colorSettings.boardLineColor,
@@ -87,7 +87,7 @@ class BoardPainter extends CustomPainter {
 
     final double boardInnerLineWidth = DB().displaySettings.boardInnerLineWidth;
     paint.strokeWidth =
-        boardInnerLineWidth * (isPad(context) ? size.width ~/ 256 : 1);
+        boardInnerLineWidth * (isTablet(context) ? size.width ~/ 256 : 1);
 
     final Path path = Path();
     // File B

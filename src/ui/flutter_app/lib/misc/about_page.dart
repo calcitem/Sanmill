@@ -50,7 +50,7 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> children = <Widget>[
+    final List<Widget> settingsItems = <Widget>[
       FutureBuilder<PackageInfo>(
         future: PackageInfo.fromPlatform(),
         builder: (_, AsyncSnapshot<PackageInfo> data) {
@@ -75,7 +75,7 @@ class AboutPage extends StatelessWidget {
               context: context,
               barrierDismissible: true,
               builder: (_) => _VersionDialog(
-                version: version,
+                appVersion: version,
               ),
             ),
           );
@@ -91,7 +91,7 @@ class AboutPage extends StatelessWidget {
           Platform.isLinux)
         SettingsListTile(
           titleString: S.of(context).eula,
-          onTap: () => _launchURL(context, Constants.eulaURL),
+          onTap: () => _launchURL(context, Constants.endUserLicenseAgreementUrl),
         ),
       SettingsListTile(
         titleString: S.of(context).license,
@@ -106,12 +106,12 @@ class AboutPage extends StatelessWidget {
       ),
       SettingsListTile(
         titleString: S.of(context).sourceCode,
-        onTap: () => _launchURL(context, Constants.repoURL),
+        onTap: () => _launchURL(context, Constants.repositoryUrl),
       ),
       if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
         SettingsListTile(
           titleString: S.of(context).privacyPolicy,
-          onTap: () => _launchURL(context, Constants.privacyPolicyURL),
+          onTap: () => _launchURL(context, Constants.privacyPolicyUrl),
         ),
       SettingsListTile(
         titleString: S.of(context).ossLicenses,
@@ -139,25 +139,25 @@ class AboutPage extends StatelessWidget {
           title: Text(S.of(context).about),
         ),
         body: ListView.separated(
-          itemBuilder: (_, int index) => children[index],
+          itemBuilder: (_, int index) => settingsItems[index],
           separatorBuilder: (_, __) => const Divider(),
-          itemCount: children.length,
+          itemCount: settingsItems.length,
         ),
       ),
     );
   }
 
-  Future<void> _launchURL(BuildContext context, URL url) async {
+  Future<void> _launchURL(BuildContext context, UrlHelper url) async {
     if (EnvironmentConfig.test) {
       return;
     }
 
-    final String s =
+    final String urlString =
         Localizations.localeOf(context).languageCode.startsWith("zh_")
-            ? url.url.substring("https://".length)
-            : url.urlZh.substring("https://".length);
-    final String authority = s.substring(0, s.indexOf('/'));
-    final String unencodedPath = s.substring(s.indexOf('/'));
+            ? url.base.substring("https://".length)
+            : url.baseChinese.substring("https://".length);
+    final String authority = urlString.substring(0, urlString.indexOf('/'));
+    final String unencodedPath = urlString.substring(urlString.indexOf('/'));
     final Uri uri = Uri.https(authority, unencodedPath);
 
     await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -166,10 +166,10 @@ class AboutPage extends StatelessWidget {
 
 class _VersionDialog extends StatelessWidget {
   const _VersionDialog({
-    required this.version,
+    required this.appVersion,
   });
 
-  final String version;
+  final String appVersion;
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +184,7 @@ class _VersionDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            S.of(context).version(version),
+            S.of(context).version(appVersion),
             textScaleFactor: DB().displaySettings.fontScale,
           ),
           const CustomSpacer(),
@@ -253,20 +253,20 @@ class FlutterVersionAlert extends StatefulWidget {
 }
 
 class FlutterVersionAlertState extends State<FlutterVersionAlert> {
-  String flutterVersionStr = "";
+  String formattedFlutterVersion = "";
   int tapCount = 0;
   DateTime startTime = DateTime.now();
 
   @override
   void initState() {
     super.initState();
-    flutterVersionStr = flutterVersion.toString();
-    flutterVersionStr = flutterVersionStr
+    formattedFlutterVersion = flutterVersion.toString();
+    formattedFlutterVersion = formattedFlutterVersion
         .replaceAll("{", "")
         .replaceAll("}", "")
         .replaceAll(", ", "\n");
-    flutterVersionStr = flutterVersionStr.substring(
-        0, flutterVersionStr.indexOf("flutterRoot"));
+    formattedFlutterVersion = formattedFlutterVersion.substring(
+        0, formattedFlutterVersion.indexOf("flutterRoot"));
   }
 
   @override
@@ -293,7 +293,7 @@ class FlutterVersionAlertState extends State<FlutterVersionAlert> {
               });
             },
             child: Text(
-              flutterVersionStr,
+              formattedFlutterVersion,
             ),
           ),
         ],

@@ -41,7 +41,7 @@ import '../rule_settings/models/rule_settings.dart';
 import '../rule_settings/widgets/rule_settings_page.dart';
 import '../shared/config/constants.dart';
 import '../shared/database/database.dart';
-import '../shared/dialogs/privacy_dialog.dart';
+import '../shared/dialogs/privacy_policy_dialog.dart';
 import '../shared/services/environment_config.dart';
 import '../shared/services/logger.dart';
 import '../shared/themes/app_theme.dart';
@@ -371,7 +371,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) =>
-            PrivacyDialog(onConfirm: _showTutorialDialog),
+            PrivacyPolicyDialog(onConfirm: _showTutorialDialog),
       );
     } else {
       _showTutorialDialog();
@@ -402,7 +402,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       subject: Constants.feedbackSubjectPrefix +
           version +
           Constants.feedbackSubjectSuffix,
-      recipients: Constants.recipients,
+      recipients: Constants.recipientEmails,
       attachmentPaths: <String>[screenshotFilePath],
     );
     await FlutterEmailSender.send(email);

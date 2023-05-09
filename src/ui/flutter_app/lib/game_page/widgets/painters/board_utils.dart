@@ -120,6 +120,6 @@ double deviceWidth(BuildContext context) {
       : MediaQuery.of(context).size.height;
 }
 
-bool isPad(BuildContext context) {
+bool isTablet(BuildContext context) {
   return deviceWidth(context) >= 600;
 }

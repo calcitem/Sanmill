@@ -102,7 +102,7 @@ class SanmillApp extends StatelessWidget {
         darkTheme: AppTheme.darkThemeData,
         debugShowCheckedModeBanner: EnvironmentConfig.devMode,
         builder: (BuildContext context, Widget? child) {
-          _initOrientation(context);
+          _initializeScreenOrientation(context);
           return MediaQuery(
             data: MediaQuery.of(context).copyWith(),
             child: child!,
@@ -147,7 +147,7 @@ class SanmillApp extends StatelessWidget {
       /// It will be used to navigate user to report page or to show dialog.
       navigatorKey: (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
           ? Catcher.navigatorKey
-          : navigatorKey,
+          : navigatorStateKey,
       key: GlobalKey<ScaffoldState>(),
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       localizationsDelegates: S.localizationsDelegates,
@@ -157,7 +157,7 @@ class SanmillApp extends StatelessWidget {
       darkTheme: AppTheme.darkThemeData,
       debugShowCheckedModeBanner: EnvironmentConfig.devMode,
       builder: (BuildContext context, Widget? child) {
-        _initOrientation(context);
+        _initializeScreenOrientation(context);
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
             textScaleFactor: displaySettings.fontScale,

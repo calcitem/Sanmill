@@ -27,12 +27,12 @@ import '../database/database.dart';
 import '../services/logger.dart';
 import '../widgets/link_text_span.dart';
 
-class PrivacyDialog extends StatelessWidget {
-  const PrivacyDialog({super.key, this.onConfirm});
+class PrivacyPolicyDialog extends StatelessWidget {
+  const PrivacyPolicyDialog({super.key, this.onConfirm});
 
   final VoidCallback? onConfirm;
 
-  void _setPrivacyPolicyAccepted() {
+  void _acceptPrivacyPolicy() {
     DB().generalSettings =
         DB().generalSettings.copyWith(isPrivacyPolicyAccepted: true);
 
@@ -50,10 +50,10 @@ class PrivacyDialog extends StatelessWidget {
       "The privacy policy must not be accepted",
     );
 
-    final ThemeData themeData = Theme.of(context);
-    final TextStyle aboutTextStyle = themeData.textTheme.bodyLarge!;
-    final TextStyle linkStyle =
-        aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
+    final ThemeData currentTheme = Theme.of(context);
+    final TextStyle bodyLargeTextStyle = currentTheme.textTheme.bodyLarge!;
+    final TextStyle linkTextStyle =
+        bodyLargeTextStyle.copyWith(color: currentTheme.colorScheme.secondary);
 
     return AlertDialog(
       title: Text(S.of(context).privacyPolicy),
@@ -61,25 +61,25 @@ class PrivacyDialog extends StatelessWidget {
         text: TextSpan(
           children: <TextSpan>[
             TextSpan(
-              style: aboutTextStyle,
+              style: bodyLargeTextStyle,
               text: S.of(context).privacyPolicy_Detail_1,
             ),
             LinkTextSpan(
-              style: linkStyle,
+              style: linkTextStyle,
               text: S.of(context).eula,
-              url: Constants.eulaURL.urlZh,
+              url: Constants.endUserLicenseAgreementUrl.baseChinese,
             ),
             TextSpan(
-              style: aboutTextStyle,
+              style: bodyLargeTextStyle,
               text: S.of(context).and,
             ),
             LinkTextSpan(
-              style: linkStyle,
+              style: linkTextStyle,
               text: S.of(context).privacyPolicy,
-              url: Constants.privacyPolicyURL.urlZh,
+              url: Constants.privacyPolicyUrl.baseChinese,
             ),
             TextSpan(
-              style: aboutTextStyle,
+              style: bodyLargeTextStyle,
               text: S.of(context).privacyPolicy_Detail_2,
             ),
           ],
@@ -89,7 +89,7 @@ class PrivacyDialog extends StatelessWidget {
         TextButton(
           child: Text(S.of(context).accept),
           onPressed: () {
-            _setPrivacyPolicyAccepted();
+            _acceptPrivacyPolicy();
             Navigator.pop(context);
             onConfirm?.call();
           },
@@ -115,11 +115,11 @@ Future<void> showPrivacyDialog(BuildContext context) async {
       aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
 
   final String eulaURL = !kIsWeb && (Platform.isIOS || Platform.isMacOS)
-      ? Constants.appleStdEulaURL
-      : Constants.eulaURL.urlZh;
-  final String privacyPolicyURL = Constants.privacyPolicyURL.urlZh;
+      ? Constants.appleStandardEulaUrl
+      : Constants.endUserLicenseAgreementUrl.baseChinese;
+  final String privacyPolicyURL = Constants.privacyPolicyUrl.baseChinese;
 
-  Future<void> setPrivacyPolicyAccepted({required bool value}) async {
+  Future<void> setPrivacyPolicyAcceptance({required bool value}) async {
     DB().generalSettings =
         DB().generalSettings.copyWith(isPrivacyPolicyAccepted: value);
 
@@ -163,7 +163,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
         TextButton(
           child: Text(S.of(context).accept),
           onPressed: () {
-            setPrivacyPolicyAccepted(value: true);
+            setPrivacyPolicyAcceptance(value: true);
             Navigator.pop(context);
           },
         ),
@@ -171,7 +171,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
           TextButton(
             child: Text(S.of(context).exit),
             onPressed: () {
-              setPrivacyPolicyAccepted(value: false);
+              setPrivacyPolicyAcceptance(value: false);
               SystemChannels.platform.invokeMethod("SystemNavigator.pop");
             },
           ),

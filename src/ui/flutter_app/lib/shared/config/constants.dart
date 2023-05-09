@@ -18,19 +18,19 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 
-class URL {
-  const URL({
-    required this.url,
-    required this.urlZh,
+class UrlHelper {
+  const UrlHelper({
+    required this.base,
+    required this.baseChinese,
   });
 
-  final String url;
-  final String urlZh;
+  final String base;
+  final String baseChinese;
 
-  URL fromSubPath(String path, [String? pathZh]) {
-    return URL(
-      url: "$url/$path",
-      urlZh: "$urlZh/${pathZh ?? path}",
+  UrlHelper fromSubPath(String path, [String? pathChinese]) {
+    return UrlHelper(
+      base: "$base/$path",
+      baseChinese: "$baseChinese/${pathChinese ?? path}",
     );
   }
 }
@@ -41,45 +41,45 @@ class Constants {
   static const String authorAccount = "calcitem";
   static const String projectName = "Sanmill";
   static String projectNameLower = projectName.toLowerCase();
-  static const List<String> recipients = <String>["$authorAccount@outlook.com"];
+  static const List<String> recipientEmails = <String>["$authorAccount@outlook.com"];
 
-  static String settingsFilename = "${projectNameLower}_settings.json";
-  static const String crashLogsFileName = "$projectName-crash-logs.txt";
+  static String settingsFile = "${projectNameLower}_settings.json";
+  static const String crashLogsFile = "$projectName-crash-logs.txt";
 
   static const String feedbackSubjectPrefix = "[$appName] $projectName ";
   static const String feedbackSubjectSuffix = " Feedback";
 
-  static const String fullRepoName = "$authorAccount/$projectName";
+  static const String fullRepositoryName = "$authorAccount/$projectName";
 
-  static const URL scmURL = URL(
-    url: "https://github.com",
-    urlZh: "https://gitee.com",
+  static const UrlHelper sourceControlUrl = UrlHelper(
+    base: "https://github.com",
+    baseChinese: "https://gitee.com",
   );
 
-  static final URL repoURL = scmURL.fromSubPath(fullRepoName);
-  static final URL issuesURL = repoURL.fromSubPath("issues");
-  static final URL wikiURL = repoURL.fromSubPath("wiki", "wikis");
-  static final URL eulaURL = wikiURL.fromSubPath("EULA", "EULA_zh");
-  static const String appleStdEulaURL =
+  static final UrlHelper repositoryUrl = sourceControlUrl.fromSubPath(fullRepositoryName);
+  static final UrlHelper issuesURL = repositoryUrl.fromSubPath("issues");
+  static final UrlHelper wikiURL = repositoryUrl.fromSubPath("wiki", "wikis");
+  static final UrlHelper endUserLicenseAgreementUrl = wikiURL.fromSubPath("EULA", "EULA_zh");
+  static const String appleStandardEulaUrl =
       "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/";
-  static final URL thirdPartyNoticesURL =
+  static final UrlHelper thirdPartyNoticesURL =
       wikiURL.fromSubPath("third-party_notices");
-  static final URL privacyPolicyURL =
+  static final UrlHelper privacyPolicyUrl =
       wikiURL.fromSubPath("privacy_policy", "privacy_policy_zh");
-  static final URL helpImproveTranslateURL =
+  static final UrlHelper helpImproveTranslateURL =
       wikiURL.fromSubPath("Translation-and-Localization");
-  static final URL thanksURL = wikiURL.fromSubPath("thanks");
+  static final UrlHelper thanksURL = wikiURL.fromSubPath("thanks");
 
   static final double _windowWidth = window.physicalSize.width;
   static final double _windowHeight = window.physicalSize.height;
   static final double windowAspectRatio = _windowHeight / _windowWidth;
 
-  static const int screenThreshold = 800;
-  static bool get isSmallScreen => _windowHeight <= screenThreshold;
+  static const int screenSizeThreshold = 800;
+  static bool get isSmallScreen => _windowHeight <= screenSizeThreshold;
   static bool get isLargeScreen => !isSmallScreen;
 
-  static const int topSkillLevel = 30;
+  static const int highestSkillLevel = 30;
 }
 
 // TODO: Move to navigation folder
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+final GlobalKey<NavigatorState> navigatorStateKey = GlobalKey();

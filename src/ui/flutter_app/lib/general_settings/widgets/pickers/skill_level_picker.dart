@@ -61,7 +61,7 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
             child: CupertinoPicker(
               scrollController: _controller,
               itemExtent: 44,
-              children: List<Widget>.generate(Constants.topSkillLevel,
+              children: List<Widget>.generate(Constants.highestSkillLevel,
                   (int level) => Center(child: Text('${level + 1}'))),
               onSelectedItemChanged: (int value) {
                 _level = value + 1;

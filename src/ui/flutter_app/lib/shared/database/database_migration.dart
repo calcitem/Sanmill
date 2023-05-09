@@ -177,7 +177,7 @@ class _DatabaseV1 {
   static const String _tag = "[KV store Migration]";
 
   static Future<File?> _getFile() async {
-    final String fileName = Constants.settingsFilename;
+    final String fileName = Constants.settingsFile;
     final Directory docDir = await getApplicationDocumentsDirectory();
 
     final File file = File("${docDir.path}/$fileName");
