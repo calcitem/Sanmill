@@ -90,7 +90,9 @@ class _MoveListDialog extends StatelessWidget {
     final int? selectValue = await showDialog<int?>(
       context: context,
       builder: (BuildContext context) => NumberPickerDialog(
-          endNumber: end, dialogTitle: S.of(context).pleaseSelect, displayMoveText: true),
+          endNumber: end,
+          dialogTitle: S.of(context).pleaseSelect,
+          displayMoveText: true),
     );
 
     if (selectValue == null) {

@@ -41,7 +41,9 @@ class Constants {
   static const String authorAccount = "calcitem";
   static const String projectName = "Sanmill";
   static String projectNameLower = projectName.toLowerCase();
-  static const List<String> recipientEmails = <String>["$authorAccount@outlook.com"];
+  static const List<String> recipientEmails = <String>[
+    "$authorAccount@outlook.com"
+  ];
 
   static String settingsFile = "${projectNameLower}_settings.json";
   static const String crashLogsFile = "$projectName-crash-logs.txt";
@@ -56,10 +58,12 @@ class Constants {
     baseChinese: "https://gitee.com",
   );
 
-  static final UrlHelper repositoryUrl = sourceControlUrl.fromSubPath(fullRepositoryName);
+  static final UrlHelper repositoryUrl =
+      sourceControlUrl.fromSubPath(fullRepositoryName);
   static final UrlHelper issuesURL = repositoryUrl.fromSubPath("issues");
   static final UrlHelper wikiURL = repositoryUrl.fromSubPath("wiki", "wikis");
-  static final UrlHelper endUserLicenseAgreementUrl = wikiURL.fromSubPath("EULA", "EULA_zh");
+  static final UrlHelper endUserLicenseAgreementUrl =
+      wikiURL.fromSubPath("EULA", "EULA_zh");
   static const String appleStandardEulaUrl =
       "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/";
   static final UrlHelper thirdPartyNoticesURL =

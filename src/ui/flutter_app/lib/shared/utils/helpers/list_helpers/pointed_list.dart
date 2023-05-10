@@ -205,7 +205,9 @@ class PointedListIterator<E> {
   }
 
   E? get prev {
-    if (_currentIndex == null || index == 0 || _sourceList[_currentIndex! - 1] == null) {
+    if (_currentIndex == null ||
+        index == 0 ||
+        _sourceList[_currentIndex! - 1] == null) {
       return null;
     }
 
