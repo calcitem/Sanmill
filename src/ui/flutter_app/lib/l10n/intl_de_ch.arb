@@ -44,7 +44,7 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "Züg",
+  "move": "Ziehen",
   "@move": {
     "description": "Move"
   },
@@ -56,7 +56,7 @@
   "@moveList": {
     "description": "Move list"
   },
-  "noGameRecord": "Kei Rekord",
+  "noGameRecord": "Kein Rekord",
   "@noGameRecord": {
     "description": "No record"
   },
@@ -64,143 +64,143 @@
   "@ok": {
     "description": "OK"
   },
-  "confirm": "Bestätige",
+  "confirm": "Bestätigen",
   "@confirm": {
     "description": "Confirm"
   },
-  "cancel": "Abbräche",
+  "cancel": "Abbrechen",
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Falscher Stei usgwählt.",
+  "tipSelectWrong": "Falscher Stein ausgewählt.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Setz dini Stei.",
+  "tipPlace": "Setze deinen Stein.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "Da chasch nid hinsitze.",
+  "tipBanPlace": "Hier kannst du nicht hinsetzen.",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Gsätzt.",
+  "tipPlaced": "Gesetzt.",
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "Nimm en Stei wäg.",
+  "tipRemove": "Nimm einen Stein weg.",
   "@tipRemove": {
     "description": "Remove a piece."
   },
-  "tipBanRemove": "Chan nid wägne.",
+  "tipBanRemove": "Kann nicht wegnehmen.",
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Wäggnommen.",
+  "tipRemoved": "Weggenommen.",
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipMove": "Züg en Stei.",
+  "tipMove": "Ziehe einen Stein.",
   "@tipMove": {
     "description": "Move a piece."
   },
-  "tipCannotPlace": "Du chasch din Stei nid do hinsitze.",
+  "tipCannotPlace": "Du kannst deinen Stein nicht dahin setzen.",
   "@tipCannotPlace": {
     "description": "You can't place your piece here."
   },
-  "tipCannotMove": "Du chasch din Stei nid do züg.",
+  "tipCannotMove": "Du kannst deinen Stein nicht dahin ziehen.",
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Mühle! Nimm en gegnerische Stei.",
+  "tipMill": "Mühle! Nimm einen gegnerischen Stein.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
-  "tipContinueMill": "Nimm no ene gegnerische Stei.",
+  "tipContinueMill": "Nimm noch einen gegnerischen Stein.",
   "@tipContinueMill": {
     "description": "Continue to take your opponent's piece."
   },
-  "tipSelectOpponentsPiece": "Wähl ene gegnerische Stei.",
+  "tipSelectOpponentsPiece": "Wähle einen gegnerischen Stein.",
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
-  "tipCannotRemovePieceFromMill": "Du chasch kei Stei us enere Mühle neh.",
+  "tipCannotRemovePieceFromMill": "Du kannst keinen Stein aus einer Mühle nehmen.",
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
   },
-  "tipCanMoveOnePoint": "En Stei cha nume 1 Feld wit zoge werde.",
+  "tipCanMoveOnePoint": "Ein Stein kann nur 1 Feld weit gezogen werden.",
   "@tipCanMoveOnePoint": {
     "description": "A piece can move 1 point."
   },
-  "tipCannotMoveOpponentsPieces": "Du chasch kei gegnerische Steine neh.",
+  "tipCannotMoveOpponentsPieces": "Du kannst keine gegnerischen Steine nehmen.",
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipSelectPieceToMove": "Wähl din Stei zum Züg.",
+  "tipSelectPieceToMove": "Wähle deinen Stein zum Ziehen.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "Du hesch no 3 Stei übrig.",
+  "tipHaveThreePiecesLeft": "Du hast noch 3 Steine übrig.",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "Du chasch a jedi beliebige Position springe.",
+  "tipCanMoveToAnyPoint": "Du kannst an jede beliebige Position springen.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "{player} isch dra sich z bewege.",
+  "tipToMove": "{player} ist an der Reihe sich zu bewegen.",
   "@tipToMove": {
     "description": " to move."
   },
-  "whiteWin": "Spieler 1 gwünnt!",
+  "whiteWin": "Spieler 1 gewinnt!",
   "@whiteWin": {
     "description": "Player 1 wins!"
   },
-  "blackWin": "Spieler 2 gwünnt!",
+  "blackWin": "Spieler 2 gewinnt!",
   "@blackWin": {
     "description": "Player 2 wins!"
   },
-  "won": "Gwonnen",
+  "won": "Gewonnen",
   "@won": {
     "description": "Won"
   },
-  "lost": "Verlore",
+  "lost": "Verloren",
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Am Überlege…",
+  "thinking": "Denke nach…",
   "@thinking": {
     "description": "Thinking..."
   },
-  "newGame": "Nöis Spiel",
+  "newGame": "Neues Spiel",
   "@newGame": {
     "description": "New game"
   },
-  "importGame": "Spiel importiere",
+  "importGame": "Spiel importieren",
   "@importGame": {
     "description": "Import game"
   },
-  "exportGame": "Spiel exportiere",
+  "exportGame": "Spiel exportieren",
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Spiel us der Zwüscheablag importiert.",
+  "gameImported": "Spiel aus der Zwischenablage importiert.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Cha {invalidMove} nid importiere",
+  "cannotImport": "Kann {invalidMove} nicht importieren",
   "@cannotImport": {
     "description": "Cannot import"
   },
-  "movesAndRulesNotMatch": "Regle und Züg stimme nid überei.",
+  "movesAndRulesNotMatch": "Regeln und Züge stimmen nicht überein.",
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
-  "pleaseWait": "Bitte wart...",
+  "pleaseWait": "Warten Sie mal...",
   "@pleaseWait": {
     "description": "Please wait..."
   },
-  "restartGame": "Spiel neu aafange?",
+  "restartGame": "Spiel neu beginnen?",
   "@restartGame": {
     "description": "Restart current game?"
   },
@@ -208,23 +208,23 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Spiel aagfange, bitte Stei platziere.",
+  "gameStarted": "Spiel begonnen, bitte Stein platzieren.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Am analysiere…",
+  "analyzing": "Analysiere…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Fähler: {message}",
+  "error": "Fehler: {message}",
   "@error": {
     "description": "Error"
   },
-  "winRate": "Gwinnquote",
+  "winRate": "Gewinnquote",
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Punkt:",
+  "score": "Punkte:",
   "@score": {
     "description": "Score"
   },
@@ -236,55 +236,55 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "{player} Stückzahl isch chliner als drei.",
+  "loseReasonlessThanThree": "{player} Stückzahl ist kleiner als drei.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} het ufgeh.",
+  "loseReasonResign": "{player} hat aufgegeben.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "{player} het kei Möglichkeit z go.",
+  "loseReasonNoWay": "{player} hat keine Möglichkeit zu gehen.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Ds Board isch voll und {player} het kei Möglichkeit sich z bewege.",
+  "loseReasonBoardIsFull": "Das Board ist voll und {player} hat keine Möglichkeit sich zu bewegen.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "D Ziit isch um, {player} het verlore.",
+  "loseReasonTimeOver": "Die Zeit ist vorbei, {player} hat verloren.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
-  "drawReasonRule50": "In dr Bewegigsphas isch in dr letschte bestimmte Aazahl vo Züg kei Stei entfernt worde.",
+  "drawReasonRule50": "In der Bewegungsphase wurde in der letzten bestimmten Anzahl von Zügen kein Stein entfernt.",
   "@drawReasonRule50": {
     "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
-  "drawReasonBoardIsFull": "Unentschiede will ds Brett voll isch.",
+  "drawReasonBoardIsFull": "Unentschieden weil das Brett voll ist.",
   "@drawReasonBoardIsFull": {
     "description": "It is a Draw because the board is full"
   },
-  "drawReasonThreefoldRepetition": "Unentschieden wege dreimaliger Wiederholig.",
+  "drawReasonThreefoldRepetition": "Unentschieden wegen dreimaliger Wiederholung.",
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
-  "gameOverUnknownReason": "Spiel verbi! Unbekannte Grund.",
+  "gameOverUnknownReason": "Spiel vorbei! Unbekannter Grund.",
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
-  "gameOver": "Spiel verbi",
+  "gameOver": "Spiel vorbei",
   "@gameOver": {
     "description": "Game Over"
   },
-  "youWin": "Gratulation, du hesch gwunne!",
+  "youWin": "Glückwunsch, du hast gewonnen!",
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Wötsch e schwierigers Level wähle? S neue Level wird Level {level} sii!",
+  "challengeHarderLevel": "Willst du ein schwierigeres Level wählen? Das neue Level wird Level {level} sein!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
-  "youLose": "Du hesch verlore!",
+  "youLose": "Du hast verloren!",
   "@youLose": {
     "description": "You Lose!"
   },
@@ -300,19 +300,19 @@
   "@version": {
     "description": "Version"
   },
-  "thanks": "Danksagig",
+  "thanks": "Danksagung",
   "@thanks": {
     "description": "Thanks"
   },
-  "settings": "Istellige",
+  "settings": "Einstellungen",
   "@settings": {
     "description": "Settings"
   },
-  "options": "Optione",
+  "options": "Optionen",
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "Allgemeini Istellige",
+  "generalSettings": "Allgemeine Einstellungen",
   "@generalSettings": {
     "description": "General Settings"
   },
@@ -320,7 +320,7 @@
   "@skillLevel": {
     "description": "Difficulty level"
   },
-  "moveTime": "Bedenkziit Computer",
+  "moveTime": "Bedenkzeit Computer",
   "@moveTime": {
     "description": "AI thinking time"
   },
@@ -332,11 +332,11 @@
   "@playSounds": {
     "description": "Sound effects"
   },
-  "playSoundsInTheGame": "Töne bim Spiele abspiele",
+  "playSoundsInTheGame": "Töne beim Spielen abspielen",
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
-  "keepMuteWhenTakingBack": "Bim Zurückneh stumm blibe",
+  "keepMuteWhenTakingBack": "Beim Zurücknehmen stumm bleiben",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"
   },
@@ -344,7 +344,7 @@
   "@tone": {
     "description": "Tone"
   },
-  "whoMovesFirst": "Erschte Zug",
+  "whoMovesFirst": "Erster Zug",
   "@whoMovesFirst": {
     "description": "First move"
   },
@@ -356,155 +356,155 @@
   "@ai": {
     "description": "AI"
   },
-  "alternate": "Abwechsle",
+  "alternate": "Abwechselnd",
   "@alternate": {
     "description": "Alternate"
   },
-  "isAutoRestart": "Nach Spiilendi automatisch neustarte",
+  "isAutoRestart": "Nach Spielende automatisch neustarten",
   "@isAutoRestart": {
     "description": "Auto-restart game when game over"
   },
-  "isAutoChangeFirstMove": "Erschte Zug automatisch ändere",
+  "isAutoChangeFirstMove": "Ersten Zug automatisch ändern",
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "shufflingEnabled": "Zuefallszüg",
+  "shufflingEnabled": "Zufallszüge",
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "misc": "Verschidenes",
+  "misc": "Verschiedenes",
   "@misc": {
     "description": "Miscellaneous"
   },
-  "rules": "Regle",
+  "rules": "Regeln",
   "@rules": {
     "description": "Rules"
   },
-  "piecesCount": "Aazahl Steine für jede Spieler",
+  "piecesCount": "Anzahl Steine für jeden Spieler",
   "@piecesCount": {
     "description": "The number of pieces each player has"
   },
-  "piecesCount_Detail": "Wie viil Steine het jede Spieler?",
+  "piecesCount_Detail": "Wie viele Steine hat jeder Spieler?",
   "@piecesCount_Detail": {
     "description": "How many pieces does each player have?"
   },
-  "flyPieceCount": "Aazahl vo de flügende Steine",
+  "flyPieceCount": "Anzahl der fliegenden Steine",
   "@flyPieceCount": {
     "description": "The number of the flying piece"
   },
-  "flyPieceCount_Detail": "Wänn Flüüge aktiviert isch und en Spieler uf e bstimmte Aazahl Steine reduziert wird, chönd sini Steine frei zu jedem unbesetzte Punkt bewege, statt wie im Rescht vom Spiil uf benachbarti Punkt bschränkt z'sii.",
+  "flyPieceCount_Detail": "Wenn Fliegen aktiviert ist und ein Spieler auf eine bestimmte Steinzahl reduziert wird, können sich seine Steine frei zu jedem unbesetzten Punkt bewegen, anstatt wie im Rest des Spiels auf benachbarte Punkte beschränkt zu sein.",
   "@flyPieceCount_Detail": {
     "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
-  "piecesAtLeastCount": "Steine mindeschtens",
+  "piecesAtLeastCount": "Steine mindestens",
   "@piecesAtLeastCount": {
     "description": "Pieces At Least"
   },
-  "hasDiagonalLines": "Diagonal Linie",
+  "hasDiagonalLines": "Diagonale Linien",
   "@hasDiagonalLines": {
     "description": "Diagonal lines"
   },
-  "hasDiagonalLines_Detail": "Vier diagonal Linie zum Brätt dezuefüege.",
+  "hasDiagonalLines_Detail": "Vier diagonale Linien zum Brett hinzufügen.",
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Punkt vo entfernte Steine sperre",
+  "hasBannedLocations": "Punkte entfernter Steine sperren",
   "@hasBannedLocations": {
     "description": "Mark and delay removing pieces"
   },
-  "hasBannedLocations_Detail": "I de Setzphase chönd kei Steine uf Punkt vo entfernte Steine gsetzt werde.",
+  "hasBannedLocations_Detail": "In der Setzphase können keine Steine auf Punkte von entfernten Steinen gesetzt werden.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
   },
-  "isDefenderMoveFirst": "De zweit Spieler zieht zerscht",
+  "isDefenderMoveFirst": "Der zweite Spieler zieht zuerst",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"
   },
-  "isDefenderMoveFirst_Detail": "De i de Setzphase zweite Spieler zieht i de Zugphase zerscht.",
+  "isDefenderMoveFirst_Detail": "Der in der Setzphase zweite Spieler zieht in der Zugphase zuerst.",
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
   },
-  "mayRemoveMultiple": "Mehrfaachs Entferne",
+  "mayRemoveMultiple": "Mehrfaches Entfernen",
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
-  "mayRemoveMultiple_Detail": "Wänn en Spieler meh als eini Mühle glichziitig schliesst, derf er entsprächend viil Steine entferne.",
+  "mayRemoveMultiple_Detail": "Wenn ein Spieler mehr als eine Mühle gleichzeitig schliesst, darf er entsprechend viele Steine entfernen.",
   "@mayRemoveMultiple_Detail": {
     "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
-  "mayRemoveFromMillsAlways": "Mühle zerstöre",
+  "mayRemoveFromMillsAlways": "Mühlen zerstören",
   "@mayRemoveFromMillsAlways": {
     "description": "Destroy mills"
   },
-  "mayRemoveFromMillsAlways_Detail": "Normalerwiis müesse Spieler alli freie Steine entferne, bevor Steine us ere Mühle entfernt werde dörfe. Die Option hebt die Bschränkig uf.",
+  "mayRemoveFromMillsAlways_Detail": "Normalerweise müssen Spieler alle freien Steine entfernen, bevor Steine aus einer Mühle entfernt werden dürfen. Diese Option hebt diese Beschränkung auf.",
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "Zweit Spieler verliert wenn s'Brett voll isch",
+  "isWhiteLoseButNotDrawWhenBoardFull": "Zweiter Spieler verliert wenn das Brett voll ist",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Wänn s'Brett am Ändi vo de Setzphase voll isch, verliert de Spieler, wo zerscht zoge het. Suscht unentschide.",
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Wenn das Brett am Ende der Setzphase voll ist, verliert der Spieler, der zuerst gezogen hat. Sonst unentschieden.",
   "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
     "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
   },
-  "isLoseButNotChangeSideWhenNoWay": "Verliere wenn kei Zug möglich isch",
+  "isLoseButNotChangeSideWhenNoWay": "Verlieren wenn kein Zug möglich ist",
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose when no legal moves"
   },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "De Spieler verliert, wenn de Gegner ihn so blockiert, dass er keini Steine meh bewege cha. Wenn d'Option deaktiviert isch wird d'Siite gwechslet.",
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Der Spieler verliert, wenn der Gegner ihn so blockiert, dass er keinen Steine mehr bewegen kann. Wenn die Option deaktiviert ist wird die Seite gewechselt.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
     "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
   },
-  "mayFly": "Flüüge",
+  "mayFly": "Fliegen",
   "@mayFly": {
     "description": "Flying"
   },
-  "mayFly_Detail": "Wenn en Spieler nume no drüü Steine het, derf en Stei a beliebige Pünkt zoge werde.",
+  "mayFly_Detail": "Wenn ein Spieler nur noch drei Steine hat, darf ein Stein an beliebige Punkte gezogen werden.",
   "@mayFly_Detail": {
     "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
-  "nMoveRule": "N-Züg-Regel",
+  "nMoveRule": "N-Züge-Regel",
   "@nMoveRule": {
     "description": "N-move rule"
   },
-  "nMoveRule_Detail": "S'Spiel isch unentschide, wenn in ere bestimmte Aazahl vo Züg vo jedm Spieler kei Entfernig erfolgt isch.",
+  "nMoveRule_Detail": "Das Spiel ist unentschieden, wenn in einer bestimmten Anzahl von Zügen von jedem Spieler keine Entfernung erfolgt ist.",
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
-  "rollback": "Zruggsetze",
+  "rollback": "Zurücksetzen",
   "@rollback": {
     "description": "Rollback"
   },
-  "pleaseSelect": "Bitte uswähle",
+  "pleaseSelect": "Bitte auswählen",
   "@pleaseSelect": {
     "description": "Please select"
   },
-  "copy": "Kopiere",
+  "copy": "Kopieren",
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Zugverlauf isch i d'Zwischeablag kopiert worde.",
+  "moveHistoryCopied": "Zugverlauf wurde in die Zwischenablage kopiert.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
-  "help": "Hilf",
+  "help": "Hilfe",
   "@help": {
     "description": "Help"
   },
-  "feedback": "Rückmäldig",
+  "feedback": "Rückmeldung",
   "@feedback": {
     "description": "Feedback"
   },
-  "exit": "Beände",
+  "exit": "Beenden",
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Regle",
+  "ruleSettings": "Regeln",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
-  "color": "Farbe",
+  "color": "Farben",
   "@color": {
     "description": "Color"
   },
@@ -516,55 +516,55 @@
   "@pieceColor": {
     "description": "Piece color"
   },
-  "backgroundColor": "Hintergrundfarb",
+  "backgroundColor": "Hintergrundfarbe",
   "@backgroundColor": {
     "description": "Background color"
   },
-  "lineColor": "Liniefarb",
+  "lineColor": "Linienfarbe",
   "@lineColor": {
     "description": "Board line color"
   },
-  "whitePieceColor": "Steinfarb Spieler 1",
+  "whitePieceColor": "Steinfarbe Spieler 1",
   "@whitePieceColor": {
     "description": "Player 1 piece color"
   },
-  "blackPieceColor": "Steinfarb Spieler 2",
+  "blackPieceColor": "Steinfarbe Spieler 2",
   "@blackPieceColor": {
     "description": "Player 2 piece color"
   },
-  "messageColor": "Nachrichtefarb",
+  "messageColor": "Nachrichtenfarbe",
   "@messageColor": {
     "description": "Message color"
   },
-  "isPieceCountInHandShown": "Aazahl vo Steine uf de Hand zeige",
+  "isPieceCountInHandShown": "Anzahl an Steinen auf der Hand anzeigen",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
   },
-  "isNotationsShown": "Notize uf em Brett zeige",
+  "isNotationsShown": "Notizen auf dem Brett anzeigen",
   "@isNotationsShown": {
     "description": "Show notations on board"
   },
-  "isHistoryNavigationToolbarShown": "Symbolleischte für d'Verlaufsnavigation zeige",
+  "isHistoryNavigationToolbarShown": "Symbolleiste für die Verlaufsnavigation anzeigen",
   "@isHistoryNavigationToolbarShown": {
     "description": "Show history navigation toolbar"
   },
-  "display": "Darstellig",
+  "display": "Darstellung",
   "@display": {
     "description": "Display"
   },
-  "boardBorderLineWidth": "Liniebreiti Spielbrettrand",
+  "boardBorderLineWidth": "Linienbreite Spielbrettrand",
   "@boardBorderLineWidth": {
     "description": "Board borderline width"
   },
-  "boardInnerLineWidth": "Inneri Liniebreiti vom Spielbrett",
+  "boardInnerLineWidth": "Innere Linienbreite des Spielbrettes",
   "@boardInnerLineWidth": {
     "description": "Board inner line width"
   },
-  "pieceWidth": "Steigrössi",
+  "pieceWidth": "Steingrösse",
   "@pieceWidth": {
     "description": "Piece width"
   },
-  "fontSize": "Schriftgrössi",
+  "fontSize": "Schriftgrösse",
   "@fontSize": {
     "description": "Font size"
   },
@@ -572,15 +572,15 @@
   "@standardNotation": {
     "description": "Standard notation"
   },
-  "restore": "Wiederherstelle",
+  "restore": "Wiederherstellen",
   "@restore": {
     "description": "Restore"
   },
-  "restoreDefaultSettings": "Standardeinstellige wiederherstelle",
+  "restoreDefaultSettings": "Standardeinstellungen wiederherstellen",
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "{element} näh",
+  "pick": "{element} nehmen",
   "@pick": {
     "description": "Pick "
   },
@@ -588,59 +588,59 @@
   "@info": {
     "description": "Info"
   },
-  "hint": "Hinwys",
+  "hint": "Hinweis",
   "@hint": {
     "description": "Hint"
   },
-  "player": "Spiiler",
+  "player": "Spieler",
   "@player": {
     "description": "player"
   },
-  "player1": "Spiiler 1",
+  "player1": "Spieler 1",
   "@player1": {
     "description": "Player 1"
   },
-  "player2": "Spiiler 2",
+  "player2": "Spieler 2",
   "@player2": {
     "description": "Player 2"
   },
-  "howToPlay": "Spielaleitig",
+  "howToPlay": "Spielanleitung",
   "@howToPlay": {
     "description": "How to play"
   },
-  "toPlacePiece": "Tippe uf ene freie Punkt, um de Stei z'setze.",
+  "toPlacePiece": "Tippe auf einen freien Punkt, um den Stein zu setzen.",
   "@toPlacePiece": {
     "description": "Tap on any available point to place the piece."
   },
-  "toSelectPiece": "Tippe uf ene Stei, um ihn z'zieh.",
+  "toSelectPiece": "Tippe auf einen Stein, um ihn zu ziehen.",
   "@toSelectPiece": {
     "description": "Tap on a piece to move it."
   },
-  "toMovePiece": "Tippe uf ene mit em Stei verbundene Punkt, um ihn z'zieh.",
+  "toMovePiece": "Tippe auf einen mit einem Stein verbundenen Punkt, um ihn zu ziehen.",
   "@toMovePiece": {
     "description": "Tap on point connected to piece to move it."
   },
-  "toRemovePiece": "Tippe uf ene gegnerische Stei, um ihn z'entferne.",
+  "toRemovePiece": "Tippe auf einen gegnerischen Stein, um ihn zu entfernen.",
   "@toRemovePiece": {
     "description": "Tap on the opponent's one piece to remove."
   },
-  "needToCreateMillFirst": "Du muesch zerscht e Mühli mache, bevor du en Stei chasch entferne.",
+  "needToCreateMillFirst": "Du musst erst eine Mühle machen, bevor du einen Stein entfernen kannst.",
   "@needToCreateMillFirst": {
     "description": "You need to create a mill first before you can remove a piece."
   },
-  "needToPlayWithOwnPieces": "Du muesch mit dine eigete Steine spiele.",
+  "needToPlayWithOwnPieces": "Du musst mit deinen eigenen Steinen spielen.",
   "@needToPlayWithOwnPieces": {
     "description": "You need to play with your pieces."
   },
-  "statistics": "Statistike",
+  "statistics": "Statistiken",
   "@statistics": {
     "description": "Statistics"
   },
-  "totalGames": "Gesamtzahl Spiil",
+  "totalGames": "Gesamtzahl Spiele",
   "@totalGames": {
     "description": "Total games"
   },
-  "results": "Ergäbnis",
+  "results": "Ergebnisse",
   "@results": {
     "description": "Results"
   },
@@ -648,29 +648,29 @@
   "@left": {
     "description": "left"
   },
-  "privacyPolicy": "Dateschutzerklärig",
+  "privacyPolicy": "Datenschutzerklärung",
   "@privacyPolicy": {
     "description": "Privacy Policy"
   },
-  "privacyPolicy_Detail_1": "Bitte lies sorgfältig und stelle sicher, dass du alles verstande hesch und zuestimmst ",
+  "privacyPolicy_Detail_1": "Bitte lies sorgfältig und stelle sicher, dass du alles verstanden hast und zustimmst ",
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
-  "privacyPolicy_Detail_2": ". Wänn du de Bestimmige nöd zuestimmst, dörfsch du die App nöd bruuche. D'Benützig vo de App impliziert, dass du dene Bestimmige zuestimmst.",
+  "privacyPolicy_Detail_2": ". Wenn du den Bestimmungen nicht zustimmst, darfst du diese App nicht benutzen. Die Benutzung der App impliziert, dass du diesen Bestimmungen zustimmst.",
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
   "and": " und ",
   "@and": {},
-  "accept": "Akzeptiere",
+  "accept": "Akzeptieren",
   "@accept": {
     "description": "Accept"
   },
-  "takeBack": "Zruggnäh",
+  "takeBack": "Zurücknehmen",
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Nähme zrugg…",
+  "takingBack": "Nehme zurück…",
   "@takingBack": {
     "description": "Taking back..."
   },
@@ -682,15 +682,15 @@
   "@stepForward": {
     "description": "Step forward"
   },
-  "takeBackAll": "Alles zruggnäh",
+  "takeBackAll": "Alles zurücknehmen",
   "@takeBackAll": {
     "description": "Take back all"
   },
-  "stepForwardAll": "Alles widerhole",
+  "stepForwardAll": "Alles wiederholen",
   "@stepForwardAll": {
     "description": "Step forward all"
   },
-  "moveNow": "Jetzt zieh",
+  "moveNow": "Jetzt ziehen",
   "@moveNow": {
     "description": "Move now"
   },
@@ -698,19 +698,19 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "Crack-Mühli",
+  "crackMill": "Crack-Mühle",
   "@crackMill": {
     "description": "Crack-mill"
   },
-  "crackMill_Detail": "Wänn en Spiiler nume Steine in Mühle het, chönd die Steine entfernt werde.",
+  "crackMill_Detail": "Wenn ein Spieler nur Steine in Mühlen hat, können diese Steine entfernt werden.",
   "@crackMill_Detail": {
     "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
   },
-  "animationDuration": "Animationsduur",
+  "animationDuration": "Animationsdauer",
   "@animationDuration": {
     "description": "Animation duration"
   },
-  "none": "Keis",
+  "none": "Kein",
   "@none": {
     "description": "None"
   },
@@ -722,7 +722,7 @@
   "@helpContent": {
     "description": "Help Content"
   },
-  "versionInfo": "Versionsinformatione",
+  "versionInfo": "Versionsinformationen",
   "@versionInfo": {
     "description": "Version info"
   },
@@ -730,7 +730,7 @@
   "@eula": {
     "description": "EULA"
   },
-  "license": "Lizänz",
+  "license": "Lizenz",
   "@license": {
     "description": "License"
   },
@@ -742,7 +742,7 @@
   "@appVersion": {
     "description": "App Version"
   },
-  "general": "Allgemein",
+  "general": "Generell",
   "@general": {
     "description": "General"
   },
@@ -750,19 +750,19 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "Platzieren",
+  "placing": "Setze",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Bewegen",
+  "moving": "Bewege",
   "@moving": {
     "description": "Moving"
   },
-  "removing": "Entfernen",
+  "removing": "Entferne",
   "@removing": {
     "description": "Removing"
   },
-  "gameOverCondition": "Spielende-Bedingung",
+  "gameOverCondition": "Spielendebedingung",
   "@gameOverCondition": {
     "description": "Game over condition"
   },
@@ -786,19 +786,19 @@
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"
   },
-  "considerMobility": "Beweglichkeit der Steine verbessern",
+  "considerMobility": "Verbessern Sie die Beweglichkeit von Steinen",
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
   "pieceCount": "Anzahl Steine:",
   "@pieceCount": {
-    "description": "Anzahl Steine"
+    "description": "Piece count"
   },
   "inHand": "{player} in der Hand: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "{player} auf dem Brett: {count}",
+  "onBoard": "{player} auf dem Bord: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -834,7 +834,7 @@
   "@experiments": {
     "description": "Experiments"
   },
-  "ossLicenses": "Open-Source-Lizenzen",
+  "ossLicenses": "Quelloffene Lizenzen",
   "@ossLicenses": {
     "description": "Open source licenses"
   },
@@ -894,7 +894,7 @@
   "@top": {
     "description": "Top"
   },
-  "bottom": "Unten",
+  "bottom": "Unterseite",
   "@bottom": {
     "description": "Bottom"
   },
@@ -978,7 +978,7 @@
   "@threads": {
     "description": "Threads"
   },
-  "getInvolved": "Mitmachen",
+  "getInvolved": "Machen Sie mit",
   "@getInvolved": {
     "description": "Get Involved"
   },
@@ -1018,7 +1018,7 @@
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
     "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
   },
-  "close": "Schliessen",
+  "close": "Schliessen Sie",
   "@close": {
     "description": "Close"
   },
@@ -1078,7 +1078,7 @@
   "@isDraw": {
     "description": "It is a Draw!"
   },
-  "draw": "Unentschieden",
+  "draw": "Zeichnen",
   "@draw": {
     "description": "Draw"
   },
@@ -1134,7 +1134,7 @@
   "@solid": {
     "description": "Solid"
   },
-  "hollow": "Hohl",
+  "hollow": "Hohle",
   "@hollow": {
     "description": "Hollow"
   },
@@ -1144,7 +1144,7 @@
   },
   "moveNumber": "{count,plural, =0{Zug}=1{{count} Zug}other{{count} Züge}}",
   "@moveNumber": {
-    "description": "Züge zurücknehmen",
+    "description": "Moves to take back",
     "placeholders": {
       "count": {
         "description": "Number of Moves",
@@ -1220,7 +1220,7 @@
   },
   "pieceCountNeedToRemove": "{count,plural, =0{Stein}=1{{count} Stein}other{{count} Steine}} müssen entfernt werden.",
   "@pieceCountNeedToRemove": {
-    "description": "Stücke, die entfernt werden müssen.",
+    "description": "Pieces need to remove.",
     "placeholders": {
       "count": {
         "description": "Number of pieces.",
@@ -1230,7 +1230,7 @@
   },
   "hasPlacedPieceCount": "Der aktuelle Spieler hat {count} Steine platziert.",
   "@hasPlacedPieceCount": {
-    "description": "Der aktuelle Spieler hat {count} Steine platziert.",
+    "description": "The current player has placed {count} pieces.",
     "placeholders": {
       "count": {
         "description": "Number of pieces placed.",
@@ -1262,7 +1262,7 @@
   "@fullScreen": {
     "description": "Full screen"
   },
-  "reopenToTakeEffect": "Die App beenden und erneut öffnen, damit die Einstellungen wirksam werden.",
+  "reopenToTakeEffect": "Die App beenden und erneut Öffnen, damit die Einstellungen wirksam werden.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
   },
