@@ -9,7 +9,7 @@ class TapHandler {
 
   //final position = MillController().position;
 
-  static const String _tag = "[Tap Handler]";
+  static const String _logTag = "[Tap Handler]";
 
   final BuildContext context;
 
@@ -44,24 +44,24 @@ class TapHandler {
   }
 
   Future<EngineResponse> onBoardTap(int sq) async {
-    if (!GameController().isReady) {
-      logger.i("$_tag Not ready, ignore tapping.");
+    if (!GameController().isControllerReady) {
+      logger.i("$_logTag Not ready, ignore tapping.");
       return const EngineResponseSkip();
     }
 
     if (GameController().gameInstance.gameMode == GameMode.setupPosition) {
-      logger.v("$_tag Setup position.");
+      logger.v("$_logTag Setup position.");
       await setupPosition(sq);
       return const EngineResponseSkip();
     }
 
     if (GameController().gameInstance.gameMode == GameMode.testViaLAN) {
-      logger.v("$_tag Engine type is no human, ignore tapping.");
+      logger.v("$_logTag Engine type is no human, ignore tapping.");
       return const EngineResponseSkip();
     }
 
     if (GameController().position.phase == Phase.gameOver) {
-      logger.v("$_tag Phase is gameOver, ignore tapping.");
+      logger.v("$_logTag Phase is gameOver, ignore tapping.");
       return const EngineResponseSkip();
     }
 
@@ -87,14 +87,14 @@ class TapHandler {
       //controller.reset();
 
       if (isAiToMove) {
-        logger.i("$_tag AI is not thinking. AI is to move.");
+        logger.i("$_logTag AI is not thinking. AI is to move.");
 
         return GameController().engineToGo(context, isMoveNow: false);
       }
     }
 
     if (isAiToMove) {
-      logger.i("$_tag AI's turn, skip tapping.");
+      logger.i("$_logTag AI's turn, skip tapping.");
       return const EngineResponseSkip();
     }
 
@@ -141,10 +141,10 @@ class TapHandler {
             }
           }
           ret = true;
-          logger.v("$_tag putPiece: [$sq]");
+          logger.v("$_logTag putPiece: [$sq]");
           break;
         } else {
-          logger.v("$_tag putPiece: skip [$sq]");
+          logger.v("$_logTag putPiece: skip [$sq]");
           if (!(GameController().position.phase == Phase.moving &&
               GameController().position._board[sq] ==
                   GameController().position.sideToMove)) {
@@ -170,7 +170,7 @@ class TapHandler {
             SoundManager().playTone(Sound.select);
             controller.gameInstance._select(squareToIndex[sq]!);
             ret = true;
-            logger.v("$_tag selectPiece: [$sq]");
+            logger.v("$_logTag selectPiece: [$sq]");
 
             final int? pieceOnBoardCount = GameController()
                 .position
@@ -179,7 +179,7 @@ class TapHandler {
                 DB().ruleSettings.mayFly &&
                 (pieceOnBoardCount! <= DB().ruleSettings.flyPieceCount &&
                     pieceOnBoardCount >= 3)) {
-              logger.v("$_tag May fly.");
+              logger.v("$_logTag May fly.");
               showTip(S.of(context).tipCanMoveToAnyPoint);
             } else {
               showTip(S.of(context).tipPlace, snackBar: false);
@@ -204,7 +204,7 @@ class TapHandler {
             break;
           default:
             SoundManager().playTone(Sound.illegal);
-            logger.v("$_tag selectPiece: skip [$sq]");
+            logger.v("$_logTag selectPiece: skip [$sq]");
             break;
         }
 
@@ -220,7 +220,7 @@ class TapHandler {
         switch (removeRet) {
           case GameResponseOK():
             ret = true;
-            logger.v("$_tag removePiece: [$sq]");
+            logger.v("$_logTag removePiece: [$sq]");
             if (GameController().position.pieceToRemoveCount[
                     GameController().position.sideToMove]! >=
                 1) {
@@ -260,23 +260,24 @@ class TapHandler {
             }
             break;
           case CanNotRemoveSelf():
-            logger.i("$_tag removePiece: Cannot Remove our pieces, skip [$sq]");
+            logger.i(
+                "$_logTag removePiece: Cannot Remove our pieces, skip [$sq]");
             showTip(S.of(context).tipSelectOpponentsPiece);
             break;
           case CanNotRemoveMill():
             logger.i(
-              "$_tag removePiece: Cannot remove piece from Mill, skip [$sq]",
+              "$_logTag removePiece: Cannot remove piece from Mill, skip [$sq]",
             );
             showTip(S.of(context).tipCannotRemovePieceFromMill);
             break;
           case CanNotRemoveNonadjacent():
             logger.i(
-              "$_tag removePiece: Cannot remove piece nonadjacent, skip [$sq]",
+              "$_logTag removePiece: Cannot remove piece nonadjacent, skip [$sq]",
             );
             showTip(S.of(context).tipCanNotRemoveNonadjacent);
             break;
           default:
-            logger.v("$_tag removePiece: skip [$sq]");
+            logger.v("$_logTag removePiece: skip [$sq]");
             if (GameController().position.phase != Phase.gameOver) {
               showTip(S.of(context).tipBanRemove);
             }
@@ -313,10 +314,10 @@ class TapHandler {
       }
 
       if (GameController().position._record != null) {
-        controller.recorder
+        controller.gameRecorder
             .addAndDeduplicate(GameController().position._record!);
         if (GameController().position._record!.type == MoveType.remove) {
-          controller.recorder.lastPositionWithRemove =
+          controller.gameRecorder.lastPositionWithRemove =
               GameController().position.fen;
         }
 
@@ -324,7 +325,7 @@ class TapHandler {
         if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
           final CatcherOptions options = catcher.getCurrentConfig()!;
           options.customParameters["MoveList"] =
-              GameController().recorder.moveHistoryText;
+              GameController().gameRecorder.moveHistoryText;
         }
       }
 

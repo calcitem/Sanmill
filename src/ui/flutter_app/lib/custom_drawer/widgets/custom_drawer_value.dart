@@ -21,7 +21,7 @@ part of '../../custom_drawer/custom_drawer.dart';
 /// The different states at the [CustomDrawer] can be in
 class CustomDrawerValue {
   const CustomDrawerValue({
-    this.visible = false,
+    this.isDrawerVisible = false,
   });
 
   /// Creates a value with hidden state
@@ -29,9 +29,9 @@ class CustomDrawerValue {
 
   /// Creates a value with visible state
   factory CustomDrawerValue.visible() => const CustomDrawerValue(
-        visible: true,
+        isDrawerVisible: true,
       );
 
   /// Indicates whether drawer visible or not
-  final bool visible;
+  final bool isDrawerVisible;
 }

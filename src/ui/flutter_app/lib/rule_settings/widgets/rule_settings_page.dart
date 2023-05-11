@@ -401,7 +401,7 @@ class RuleSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     visitedRuleSettingsPage = true;
 
-    GameController().isActive = false;
+    GameController().isControllerActive = false;
     GameController().reset();
 
     //MillController().engine.shutdown();
@@ -411,7 +411,7 @@ class RuleSettingsPage extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         backgroundColor: AppTheme.lightBackgroundColor,
         appBar: AppBar(
-          leading: CustomDrawerIcon.of(context)?.icon,
+          leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(S.of(context).ruleSettings),
         ),
         body: ValueListenableBuilder<Box<RuleSettings>>(

@@ -19,42 +19,42 @@ part of '../../custom_drawer/custom_drawer.dart';
 class CustomDrawerItem<T> extends StatelessWidget {
   const CustomDrawerItem({
     super.key,
-    required this.groupValue,
-    required this.onChanged,
-    required this.value,
-    required this.title,
-    required this.icon,
+    required this.currentSelectedValue,
+    required this.onSelectionChanged,
+    required this.itemValue,
+    required this.itemTitle,
+    required this.itemIcon,
   });
 
-  final T groupValue;
-  final Function(T) onChanged;
-  final T value;
-  final String title;
-  final Icon icon;
+  final T currentSelectedValue;
+  final Function(T) onSelectionChanged;
+  final T itemValue;
+  final String itemTitle;
+  final Icon itemIcon;
 
-  bool get selected => groupValue == value;
+  bool get isSelected => currentSelectedValue == itemValue;
 
   @override
   Widget build(BuildContext context) {
     // TODO: drawerHighlightTextColor
-    final Color color = selected
+    final Color color = isSelected
         ? DB().colorSettings.drawerTextColor
         : DB().colorSettings.drawerTextColor;
 
     final Icon listItemIcon = Icon(
-      icon.icon,
+      itemIcon.icon,
       color: color,
     );
 
     final TextStyle titleStyle =
         Theme.of(context).textTheme.titleLarge!.copyWith(
-              fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
+              fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
               color: color,
             );
 
     final Size titleSize = TextSizeHelper.getBoundingTextSize(
       context,
-      title,
+      itemTitle,
       titleStyle,
       maxLines: 1,
     );
@@ -68,16 +68,16 @@ class CustomDrawerItem<T> extends StatelessWidget {
         listItemIcon,
         const Padding(padding: EdgeInsets.all(4.0)),
         Expanded(
-          child: isExpand || !selected
+          child: isExpand || !isSelected
               ? Text(
-                  title,
+                  itemTitle,
                   maxLines: 1,
                   style: titleStyle,
                 )
               : SizedBox(
                   height: AppTheme.drawerItemHeight,
                   child: Marquee(
-                    text: title,
+                    text: itemTitle,
                     style: titleStyle,
                   ),
                 ),
@@ -88,7 +88,7 @@ class CustomDrawerItem<T> extends StatelessWidget {
     return InkWell(
       splashColor: AppTheme.drawerSplashColor,
       highlightColor: Colors.transparent,
-      onTap: () => onChanged(value),
+      onTap: () => onSelectionChanged(itemValue),
       child: drawerItem,
     );
   }

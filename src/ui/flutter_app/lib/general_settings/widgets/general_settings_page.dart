@@ -43,7 +43,7 @@ part 'sliders/move_time_slider.dart';
 
 class GeneralSettingsPage extends StatelessWidget {
   const GeneralSettingsPage({super.key});
-  static const String _tag = "[general_settings_page]";
+  static const String _logTag = "[general_settings_page]";
 
   // Restore
   void _restoreFactoryDefaultSettings(BuildContext context) => showDialog(
@@ -69,13 +69,13 @@ class GeneralSettingsPage extends StatelessWidget {
 
     Position.resetScore();
 
-    logger.v("$_tag aiMovesFirst: $value");
+    logger.v("$_logTag aiMovesFirst: $value");
   }
 
   void _setAiIsLazy(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(aiIsLazy: value);
 
-    logger.v("$_tag aiIsLazy: $value");
+    logger.v("$_logTag aiIsLazy: $value");
   }
 
   void _setAlgorithm(BuildContext context, GeneralSettings generalSettings) {
@@ -106,7 +106,7 @@ class GeneralSettingsPage extends StatelessWidget {
           break;
       }
 
-      logger.v("$_tag algorithm = $searchAlgorithm");
+      logger.v("$_logTag algorithm = $searchAlgorithm");
     }
 
     showModalBottomSheet(
@@ -122,31 +122,31 @@ class GeneralSettingsPage extends StatelessWidget {
     DB().generalSettings =
         generalSettings.copyWith(drawOnHumanExperience: value);
 
-    logger.v("$_tag drawOnHumanExperience: $value");
+    logger.v("$_logTag drawOnHumanExperience: $value");
   }
 
   void _setConsiderMobility(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(considerMobility: value);
 
-    logger.v("$_tag considerMobility: $value");
+    logger.v("$_logTag considerMobility: $value");
   }
 
   void _setIsAutoRestart(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(isAutoRestart: value);
 
-    logger.v("$_tag isAutoRestart: $value");
+    logger.v("$_logTag isAutoRestart: $value");
   }
 
   void _setShufflingEnabled(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(shufflingEnabled: value);
 
-    logger.v("$_tag shufflingEnabled: $value");
+    logger.v("$_logTag shufflingEnabled: $value");
   }
 
   void _setTone(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(toneEnabled: value);
 
-    logger.v("$_tag toneEnabled: $value");
+    logger.v("$_logTag toneEnabled: $value");
   }
 
   void _setKeepMuteWhenTakingBack(
@@ -156,13 +156,13 @@ class GeneralSettingsPage extends StatelessWidget {
     DB().generalSettings =
         generalSettings.copyWith(keepMuteWhenTakingBack: value);
 
-    logger.v("$_tag keepMuteWhenTakingBack: $value");
+    logger.v("$_logTag keepMuteWhenTakingBack: $value");
   }
 
   void _setScreenReaderSupport(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(screenReaderSupport: value);
 
-    logger.v("$_tag screenReaderSupport: $value");
+    logger.v("$_logTag screenReaderSupport: $value");
   }
 
   void _setGameScreenRecorderSupport(
@@ -170,7 +170,7 @@ class GeneralSettingsPage extends StatelessWidget {
     DB().generalSettings =
         generalSettings.copyWith(gameScreenRecorderSupport: value);
 
-    logger.v("$_tag gameScreenRecorderSupport: $value");
+    logger.v("$_logTag gameScreenRecorderSupport: $value");
   }
 
   void _setGameScreenRecorderDuration(
@@ -410,7 +410,7 @@ class GeneralSettingsPage extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         backgroundColor: AppTheme.lightBackgroundColor,
         appBar: AppBar(
-          leading: CustomDrawerIcon.of(context)?.icon,
+          leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(S.of(context).generalSettings),
         ),
         body: ValueListenableBuilder<Box<GeneralSettings>>(

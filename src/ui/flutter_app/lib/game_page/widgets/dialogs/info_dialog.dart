@@ -50,7 +50,7 @@ class _InfoDialog extends StatelessWidget {
       buffer.writeln();
     }
 
-    final String? n1 = controller.recorder.current?.notation;
+    final String? n1 = controller.gameRecorder.current?.notation;
     // Last Move information
     if (n1 != null) {
       // $them is only shown with the screen reader. It is convenient for
@@ -62,14 +62,16 @@ class _InfoDialog extends StatelessWidget {
       );
 
       if (n1.startsWith("x")) {
-        if (controller.recorder.length == 1) {
+        if (controller.gameRecorder.length == 1) {
           // TODO: Right? (Issue #686)
           buffer.writeln(
-            controller.recorder[controller.recorder.length - 1].notation,
+            controller
+                .gameRecorder[controller.gameRecorder.length - 1].notation,
           );
-        } else if (controller.recorder.length >= 2) {
+        } else if (controller.gameRecorder.length >= 2) {
           buffer.writeln(
-            controller.recorder[controller.recorder.length - 2].notation,
+            controller
+                .gameRecorder[controller.gameRecorder.length - 2].notation,
           );
         }
       }

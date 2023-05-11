@@ -20,12 +20,12 @@ part of 'package:sanmill/appearance_settings/widgets/appearance_settings_page.da
 
 class _LanguagePicker extends StatelessWidget {
   const _LanguagePicker({
-    required this.currentLocale,
-    required this.onChanged,
+    required this.currentLanguageLocale,
+    required this.onLanguageChange,
   });
 
-  final Locale? currentLocale;
-  final Function(Locale?) onChanged;
+  final Locale? currentLanguageLocale;
+  final Function(Locale?) onLanguageChange;
 
   @override
   Widget build(BuildContext context) {
@@ -37,20 +37,20 @@ class _LanguagePicker extends StatelessWidget {
             S.of(context).defaultLanguage,
             textScaleFactor: DB().displaySettings.fontScale,
           ),
-          groupValue: currentLocale,
+          groupValue: currentLanguageLocale,
           value: null,
-          onChanged: onChanged,
+          onChanged: onLanguageChange,
         ),
         const Divider(),
-        for (Locale i in localeToLanguageName.keys)
+        for (Locale locale in localeToLanguageName.keys)
           RadioListTile<Locale>(
             title: Text(
-              localeToLanguageName[i]!,
+              localeToLanguageName[locale]!,
               textScaleFactor: DB().displaySettings.fontScale,
             ),
-            groupValue: currentLocale,
-            value: i,
-            onChanged: onChanged,
+            groupValue: currentLanguageLocale,
+            value: locale,
+            onChanged: onLanguageChange,
           ),
       ],
     );

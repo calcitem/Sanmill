@@ -59,7 +59,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
           GameController().position.phase == Phase.placing) {
         newPhase = Phase.placing;
       } else if (GameController().position.phase == Phase.gameOver) {
-        if (GameController().recorder.length >
+        if (GameController().gameRecorder.length >
             DB().ruleSettings.piecesCount * 2) {
           newPhase = Phase.moving;
         } else {
@@ -384,7 +384,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       buffer.writeln();
     }
 
-    final String? n1 = controller.recorder.current?.notation;
+    final String? n1 = controller.gameRecorder.current?.notation;
     // Last Move information
     if (n1 != null) {
       // $them is only shown with the screen reader. It is convenient for
@@ -397,7 +397,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
       if (n1.startsWith("x")) {
         buffer.writeln(
-          controller.recorder[controller.recorder.length - 2].notation,
+          controller.gameRecorder[controller.gameRecorder.length - 2].notation,
         );
       }
       buffer.writeComma(n1);
@@ -573,7 +573,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     //MillController().recorder.clear(); // TODO: Set and parse fen.
     final String fen = position.fen;
-    GameController().recorder =
+    GameController().gameRecorder =
         GameRecorder(lastPositionWithRemove: fen, setupPosition: fen);
 
     GameController().headerIconsNotifier.showIcons();

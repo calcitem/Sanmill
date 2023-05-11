@@ -22,16 +22,16 @@ part of '../../custom_drawer/custom_drawer.dart';
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({
     super.key,
-    required this.child,
-    required this.items,
-    required this.header,
+    required this.mainScreenWidget,
+    required this.drawerItems,
+    required this.drawerHeader,
     this.controller,
     this.disabledGestures = false,
     required this.orientation,
   });
 
   /// Child widget. (Usually a widget that represents the main screen)
-  final Widget child;
+  final Widget mainScreenWidget;
 
   /// Controller that controls the widget state. By default a new controller will be generated.
   final CustomDrawerController? controller;
@@ -41,10 +41,10 @@ class CustomDrawer extends StatefulWidget {
 
   /// Items the drawer holds
   // ignore: always_specify_types
-  final List<CustomDrawerItem<dynamic>> items;
+  final List<CustomDrawerItem<dynamic>> drawerItems;
 
   /// Header widget of the drawer
-  final Widget header;
+  final Widget drawerHeader;
 
   final Orientation orientation;
 
@@ -54,48 +54,48 @@ class CustomDrawer extends StatefulWidget {
 
 class CustomDrawerState extends State<CustomDrawer>
     with SingleTickerProviderStateMixin {
-  late final CustomDrawerController _controller;
-  late final AnimationController _animationController;
-  late Animation<Offset> _childSlideAnimation;
-  late final Animation<Offset> _overlaySlideAnimation;
-  late double _offsetValue;
-  late Offset _freshPosition;
-  late Offset _startPosition;
-  bool _captured = false;
+  late final CustomDrawerController _drawerController;
+  late final AnimationController _drawerAnimationController;
+  late Animation<Offset> _mainScreenSlideAnimation;
+  late final Animation<Offset> _drawerOverlaySlideAnimation;
+  late double _gestureOffsetValue;
+  late Offset _gestureCurrentPosition;
+  late Offset _gestureStartPosition;
+  bool _isGestureCaptured = false;
 
   static const Duration _duration = Duration(milliseconds: 250);
   static const double _slideThreshold = 0.25;
   static const int _slideVelocityThreshold = 1300;
-  late double _openRatio;
+  late double _drawerOpenRatio;
   static const double _overlayRadius = 28.0;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = widget.controller ?? CustomDrawerController();
-    _controller.addListener(_handleControllerChanged);
+    _drawerController = widget.controller ?? CustomDrawerController();
+    _drawerController.addListener(_handleControllerChanged);
 
-    _animationController = AnimationController(
+    _drawerAnimationController = AnimationController(
       vsync: this,
       duration: _duration,
-      value: _controller.value.visible ? 1 : 0,
+      value: _drawerController.value.isDrawerVisible ? 1 : 0,
     );
 
-    _overlaySlideAnimation = Tween<Offset>(
+    _drawerOverlaySlideAnimation = Tween<Offset>(
       begin: const Offset(-1, 0),
       end: Offset.zero,
     ).animate(
-      _animationController,
+      _drawerAnimationController,
     );
 
-    _openRatio = widget.orientation == Orientation.portrait ? 0.75 : 0.45;
+    _drawerOpenRatio = widget.orientation == Orientation.portrait ? 0.75 : 0.45;
 
-    _childSlideAnimation = Tween<Offset>(
+    _mainScreenSlideAnimation = Tween<Offset>(
       begin: Offset.zero,
-      end: Offset(_openRatio, 0),
+      end: Offset(_drawerOpenRatio, 0),
     ).animate(
-      _animationController,
+      _drawerAnimationController,
     );
   }
 
@@ -106,7 +106,7 @@ class CustomDrawerState extends State<CustomDrawer>
         padding: const EdgeInsets.only(top: 4.0),
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
-        itemCount: widget.items.length,
+        itemCount: widget.drawerItems.length,
         itemBuilder: _buildItem,
       ),
     );
@@ -116,13 +116,14 @@ class CustomDrawerState extends State<CustomDrawer>
   void didUpdateWidget(covariant CustomDrawer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.orientation != widget.orientation) {
-      _openRatio = widget.orientation == Orientation.portrait ? 0.75 : 0.45;
+      _drawerOpenRatio =
+          widget.orientation == Orientation.portrait ? 0.75 : 0.45;
 
-      _childSlideAnimation = Tween<Offset>(
+      _mainScreenSlideAnimation = Tween<Offset>(
         begin: Offset.zero,
-        end: Offset(_openRatio, 0),
+        end: Offset(_drawerOpenRatio, 0),
       ).animate(
-        _animationController,
+        _drawerAnimationController,
       );
       setState(() {});
     }
@@ -130,10 +131,10 @@ class CustomDrawerState extends State<CustomDrawer>
 
   @override
   Widget build(BuildContext context) {
-    final Align drawer = Align(
+    final Align drawerWidget = Align(
       alignment: AlignmentDirectional.topStart,
       child: FractionallySizedBox(
-        widthFactor: _openRatio,
+        widthFactor: _drawerOpenRatio,
         child: Material(
           color: DB().colorSettings.drawerColor,
           child: CustomScrollView(
@@ -142,7 +143,7 @@ class CustomDrawerState extends State<CustomDrawer>
                 child: Container(
                     decoration:
                         BoxDecoration(color: DB().colorSettings.drawerColor),
-                    child: widget.header),
+                    child: widget.drawerHeader),
               ),
               buildListMenus()
             ],
@@ -152,27 +153,27 @@ class CustomDrawerState extends State<CustomDrawer>
     );
 
     /// Menu and arrow icon animation overlay
-    final IconButton drawerOverlay = IconButton(
+    final IconButton drawerOverlayButton = IconButton(
       icon: AnimatedIcon(
         icon: AnimatedIcons.arrow_menu,
-        progress: ReverseAnimation(_animationController),
+        progress: ReverseAnimation(_drawerAnimationController),
         color: Colors.white,
       ),
       tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-      onPressed: () => _controller.toggleDrawer(),
+      onPressed: () => _drawerController.toggleDrawer(),
     );
 
-    final SlideTransition mainView = SlideTransition(
-      position: _childSlideAnimation,
+    final SlideTransition mainScreenView = SlideTransition(
+      position: _mainScreenSlideAnimation,
       textDirection: Directionality.of(context),
       child: ValueListenableBuilder<CustomDrawerValue>(
-        valueListenable: _controller,
+        valueListenable: _drawerController,
         // TODO: [Leptopoda] Why isn't it working with GestureDetector?
         builder: (_, CustomDrawerValue value, Widget? child) => InkWell(
-          onTap: _controller.hideDrawer,
+          onTap: _drawerController.hideDrawer,
           focusColor: Colors.transparent,
           child: IgnorePointer(
-            ignoring: value.visible,
+            ignoring: value.isDrawerVisible,
             child: child,
           ),
         ),
@@ -185,7 +186,7 @@ class CustomDrawerState extends State<CustomDrawer>
               ),
             ],
           ),
-          child: widget.child,
+          child: widget.mainScreenWidget,
         ),
       ),
     );
@@ -199,10 +200,10 @@ class CustomDrawerState extends State<CustomDrawer>
           widget.disabledGestures ? null : _handleDragCancel,
       child: Stack(
         children: <Widget>[
-          drawer,
+          drawerWidget,
           CustomDrawerIcon(
-            icon: drawerOverlay,
-            child: mainView,
+            drawerIcon: drawerOverlayButton,
+            child: mainScreenView,
           ),
         ],
       ),
@@ -211,20 +212,20 @@ class CustomDrawerState extends State<CustomDrawer>
 
   Widget _buildItem(BuildContext context, int index) {
     // ignore: always_specify_types
-    final CustomDrawerItem<dynamic> item = widget.items[index];
+    final CustomDrawerItem<dynamic> item = widget.drawerItems[index];
 
     final double itemPadding = window.physicalSize.height >= 1080
         ? AppTheme.drawerItemPadding
         : AppTheme.drawerItemPaddingSmallScreen;
 
-    final Widget child;
+    final Widget drawerItemWidget;
 
-    if (item.selected) {
-      final SlideTransition overlay = SlideTransition(
-        position: _overlaySlideAnimation,
+    if (item.isSelected) {
+      final SlideTransition selectedItemOverlay = SlideTransition(
+        position: _drawerOverlaySlideAnimation,
         textDirection: Directionality.of(context),
         child: Container(
-          width: MediaQuery.of(context).size.width * _openRatio * 0.9,
+          width: MediaQuery.of(context).size.width * _drawerOpenRatio * 0.9,
           height: AppTheme.drawerItemHeight +
               (DB().displaySettings.fontScale - 1) * 12,
           decoration: BoxDecoration(
@@ -236,83 +237,83 @@ class CustomDrawerState extends State<CustomDrawer>
         ),
       );
 
-      child = Stack(
+      drawerItemWidget = Stack(
         children: <Widget>[
-          overlay,
+          selectedItemOverlay,
           item,
         ],
       );
     } else {
-      child = item;
+      drawerItemWidget = item;
     }
     return Padding(
       padding: EdgeInsets.symmetric(vertical: itemPadding),
-      child: child,
+      child: drawerItemWidget,
     );
   }
 
   void _handleControllerChanged() {
-    _controller.value.visible
-        ? _animationController.forward()
-        : _animationController.reverse();
+    _drawerController.value.isDrawerVisible
+        ? _drawerAnimationController.forward()
+        : _drawerAnimationController.reverse();
   }
 
   void _handleDragStart(DragStartDetails details) {
-    _captured = true;
-    _startPosition = details.globalPosition;
-    _offsetValue = _animationController.value;
+    _isGestureCaptured = true;
+    _gestureStartPosition = details.globalPosition;
+    _gestureOffsetValue = _drawerAnimationController.value;
   }
 
   void _handleDragUpdate(DragUpdateDetails details) {
-    if (!_captured) {
+    if (!_isGestureCaptured) {
       return;
     }
 
     final Size screenSize = MediaQuery.of(context).size;
     final bool rtl = Directionality.of(context) == TextDirection.rtl;
 
-    _freshPosition = details.globalPosition;
+    _gestureCurrentPosition = details.globalPosition;
 
-    final double diff = (_freshPosition - _startPosition).dx;
+    final double diff = (_gestureCurrentPosition - _gestureStartPosition).dx;
 
-    _animationController.value = _offsetValue +
-        (diff / (screenSize.width * _openRatio)) * (rtl ? -1 : 1);
+    _drawerAnimationController.value = _gestureOffsetValue +
+        (diff / (screenSize.width * _drawerOpenRatio)) * (rtl ? -1 : 1);
   }
 
   void _handleDragEnd(DragEndDetails details) {
-    if (!_captured) {
+    if (!_isGestureCaptured) {
       return;
     }
 
-    _captured = false;
+    _isGestureCaptured = false;
 
-    if (_controller.value.visible) {
-      if (_animationController.value <= 1 - _slideThreshold ||
+    if (_drawerController.value.isDrawerVisible) {
+      if (_drawerAnimationController.value <= 1 - _slideThreshold ||
           details.primaryVelocity! <= -_slideVelocityThreshold) {
-        _controller.hideDrawer();
+        _drawerController.hideDrawer();
       } else {
-        _animationController.forward();
+        _drawerAnimationController.forward();
       }
     } else {
-      if (_animationController.value >= _slideThreshold ||
+      if (_drawerAnimationController.value >= _slideThreshold ||
           details.primaryVelocity! >= _slideVelocityThreshold) {
-        _controller.showDrawer();
+        _drawerController.showDrawer();
       } else {
-        _animationController.reverse();
+        _drawerAnimationController.reverse();
       }
     }
   }
 
   void _handleDragCancel() {
-    _captured = false;
+    _isGestureCaptured = false;
   }
 
   @override
   void dispose() {
-    _controller.removeListener(_handleControllerChanged);
-    _animationController.dispose();
+    _drawerController.removeListener(_handleControllerChanged);
+    _drawerAnimationController.dispose();
 
-    _controller.dispose();
+    _drawerController.dispose();
 
     super.dispose();
   }

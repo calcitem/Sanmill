@@ -19,14 +19,14 @@ part of '../../custom_drawer/custom_drawer.dart';
 class CustomDrawerHeader extends StatelessWidget {
   const CustomDrawerHeader({
     super.key,
-    required this.title,
+    required this.headerTitle,
   });
 
-  final String title;
+  final String headerTitle;
 
   @override
   Widget build(BuildContext context) {
-    final List<Color> animatedTextsColors = <Color>[
+    final List<Color> drawerHeaderAnimationColors = <Color>[
       DB().colorSettings.drawerTextColor,
       Colors.black,
       Colors.blue,
@@ -37,14 +37,14 @@ class CustomDrawerHeader extends StatelessWidget {
       DB().colorSettings.drawerHighlightItemColor,
     ];
 
-    final AnimatedTextKit animatedTitle = AnimatedTextKit(
+    final AnimatedTextKit animatedHeaderText = AnimatedTextKit(
       animatedTexts: <ColorizeAnimatedText>[
         ColorizeAnimatedText(
-          title,
+          headerTitle,
           textStyle: Theme.of(context).textTheme.headlineMedium!.copyWith(
                 fontWeight: FontWeight.w600,
               ),
-          colors: animatedTextsColors,
+          colors: drawerHeaderAnimationColors,
           speed: const Duration(seconds: 3),
           textDirection: Directionality.of(context),
         ),
@@ -54,7 +54,7 @@ class CustomDrawerHeader extends StatelessWidget {
       stopPauseOnTap: true,
     );
 
-    final EdgeInsets padding = EdgeInsets.only(
+    final EdgeInsets drawerHeaderPadding = EdgeInsets.only(
       bottom: 16.0,
       top: 16.0 + (Constants.isLargeScreen ? 30.0 : 8.0),
       left: 20.0,
@@ -62,8 +62,8 @@ class CustomDrawerHeader extends StatelessWidget {
     );
 
     return Padding(
-      padding: padding,
-      child: ExcludeSemantics(child: animatedTitle),
+      padding: drawerHeaderPadding,
+      child: ExcludeSemantics(child: animatedHeaderText),
     );
   }
 }

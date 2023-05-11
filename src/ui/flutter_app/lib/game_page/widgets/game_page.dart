@@ -81,7 +81,7 @@ class GamePage extends StatelessWidget {
                     ? Alignment.center
                     : Alignment.topCenter,
             child: FutureBuilder<void>(
-              future: controller.start(),
+              future: controller.startController(),
               builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -124,7 +124,7 @@ class GamePage extends StatelessWidget {
           ),
           Align(
             alignment: AlignmentDirectional.topStart,
-            child: SafeArea(child: CustomDrawerIcon.of(context)!.icon),
+            child: SafeArea(child: CustomDrawerIcon.of(context)!.drawerIcon),
           ),
         ],
       ),

@@ -24,7 +24,7 @@ part of 'game_page.dart';
 class GameBoard extends StatefulWidget {
   const GameBoard({super.key});
 
-  static const String _tag = "[board]";
+  static const String _logTag = "[board]";
 
   @override
   State<GameBoard> createState() => _GameBoardState();
@@ -32,7 +32,7 @@ class GameBoard extends StatefulWidget {
 
 class _GameBoardState extends State<GameBoard>
     with SingleTickerProviderStateMixin {
-  static const String _tag = "[board]";
+  static const String _logTag = "[board]";
 
   @override
   void initState() {
@@ -46,7 +46,7 @@ class _GameBoardState extends State<GameBoard>
     }
 
     // ignore: unnecessary_statements
-    GameController().isReady == false;
+    GameController().isControllerReady == false;
 
     GameController().engine.startup();
 
@@ -70,11 +70,11 @@ class _GameBoardState extends State<GameBoard>
   }
 
   Future<void> _setReadyState() async {
-    logger.i("$_tag Check if need to set Ready state...");
+    logger.i("$_logTag Check if need to set Ready state...");
     // TODO: v1 has "&& mounted && Config.settingsLoaded"
-    if (GameController().isReady == false) {
-      logger.i("$_tag Set Ready State...");
-      GameController().isReady = true;
+    if (GameController().isControllerReady == false) {
+      logger.i("$_logTag Set Ready State...");
+      GameController().isControllerReady = true;
     }
   }
 
@@ -126,11 +126,11 @@ class _GameBoardState extends State<GameBoard>
 
                   if (square == null) {
                     return logger.v(
-                      "${GameBoard._tag} Tap not on a square $square (ignored).",
+                      "${GameBoard._logTag} Tap not on a square $square (ignored).",
                     );
                   }
 
-                  logger.v("${GameBoard._tag} Tap on square <$square>");
+                  logger.v("${GameBoard._logTag} Tap on square <$square>");
 
                   final String strTimeout = S.of(context).timeout;
                   final String strNoBestMoveErr =
@@ -159,7 +159,7 @@ class _GameBoardState extends State<GameBoard>
                       break;
                   }
 
-                  GameController().disposed = false;
+                  GameController().isDisposed = false;
                 },
               ),
             );
@@ -206,7 +206,7 @@ class _GameBoardState extends State<GameBoard>
 
   @override
   void dispose() {
-    GameController().disposed = true;
+    GameController().isDisposed = true;
     GameController().engine.stopSearching();
     //MillController().engine.shutdown();
     GameController().animationController.dispose();

@@ -31,5 +31,5 @@ class CustomDrawerController extends ValueNotifier<CustomDrawerValue> {
   void hideDrawer() => value = CustomDrawerValue.hidden();
 
   /// Toggles the drawer visibility
-  void toggleDrawer() => value.visible ? hideDrawer() : showDrawer();
+  void toggleDrawer() => value.isDrawerVisible ? hideDrawer() : showDrawer();
 }

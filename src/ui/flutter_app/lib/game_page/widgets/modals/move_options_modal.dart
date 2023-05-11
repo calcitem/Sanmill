@@ -57,7 +57,7 @@ class _MoveOptionsModal extends StatelessWidget {
           ),
           const CustomSpacer(),
         ],
-        if (GameController().recorder.hasPrevious ||
+        if (GameController().gameRecorder.hasPrevious ||
             GameController().isPositionSetup == true) ...<Widget>[
           SimpleDialogOption(
             onPressed: () => _showMoveList(context),

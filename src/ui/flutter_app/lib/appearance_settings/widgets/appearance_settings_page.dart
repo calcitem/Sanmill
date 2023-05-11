@@ -72,7 +72,7 @@ class AppearanceSettingsPage extends StatelessWidget {
       context: context,
       builder: (_) => _PointPaintingStyleModal(
         pointPaintingStyle: displaySettings.pointPaintingStyle,
-        onChanged: callback,
+        onPointPaintingStyleChanged: callback,
       ),
     );
   }
@@ -283,8 +283,8 @@ class AppearanceSettingsPage extends StatelessWidget {
           onTap: () => showDialog(
             context: context,
             builder: (_) => _LanguagePicker(
-              currentLocale: displaySettings.locale,
-              onChanged: (Locale? locale) =>
+              currentLanguageLocale: displaySettings.locale,
+              onLanguageChange: (Locale? locale) =>
                   langCallback(context, displaySettings, locale),
             ),
           ),
@@ -373,7 +373,7 @@ class AppearanceSettingsPage extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         backgroundColor: AppTheme.lightBackgroundColor,
         appBar: AppBar(
-          leading: CustomDrawerIcon.of(context)?.icon,
+          leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(S.of(context).appearance),
         ),
         body: SettingsList(

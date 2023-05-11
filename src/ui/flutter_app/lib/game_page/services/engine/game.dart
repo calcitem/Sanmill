@@ -27,7 +27,7 @@ class Game {
     this.gameMode = gameMode;
   }
 
-  static const String _tag = "[game]";
+  static const String _logTag = "[game]";
 
   PieceColor sideToMove = PieceColor.white;
 
@@ -75,7 +75,7 @@ class Game {
   set gameMode(GameMode type) {
     _gameMode = type;
 
-    logger.i("$_tag Engine type: $type");
+    logger.i("$_logTag Engine type: $type");
 
     final Map<PieceColor, bool> whoIsAi = type.whoIsAI;
     for (final Player player in players) {
@@ -83,8 +83,8 @@ class Game {
     }
 
     logger.i(
-      "$_tag White is AI? ${getPlayerByColor(PieceColor.white).isAi}\n"
-      "$_tag Black is AI? ${getPlayerByColor(PieceColor.black).isAi}\n",
+      "$_logTag White is AI? ${getPlayerByColor(PieceColor.white).isAi}\n"
+      "$_logTag Black is AI? ${getPlayerByColor(PieceColor.black).isAi}\n",
     );
   }
 
@@ -97,13 +97,13 @@ class Game {
   bool doMove(ExtMove extMove) {
     assert(GameController().position.phase != Phase.ready);
 
-    logger.i("$_tag AI do move: $extMove");
+    logger.i("$_logTag AI do move: $extMove");
 
     if (GameController().position.doMove(extMove.move) == false) {
       return false;
     }
 
-    GameController().recorder.add(extMove);
+    GameController().gameRecorder.add(extMove);
 
     if (GameController().position.phase != Phase.gameOver) {
       GameController().gameResultNotifier.showResult(force: false);
@@ -115,7 +115,7 @@ class Game {
     if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
       final CatcherOptions options = catcher.getCurrentConfig()!;
       options.customParameters["MoveList"] =
-          GameController().recorder.moveHistoryText;
+          GameController().gameRecorder.moveHistoryText;
     }
 
     sideToMove = GameController().position.sideToMove;
@@ -143,6 +143,6 @@ class Game {
     final String scoreInfo = "Score: ${position.scoreString}\ttotal:"
         " $total\n$whiteWinRate% : $blackWinRate% : $drawRate%\n";
 
-    logger.i("$_tag $scoreInfo");
+    logger.i("$_logTag $scoreInfo");
   }
 }

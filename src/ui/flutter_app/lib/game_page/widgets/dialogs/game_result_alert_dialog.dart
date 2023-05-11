@@ -25,7 +25,7 @@ class GameResultAlertDialog extends StatelessWidget {
   final GameMode gameMode = GameController().gameInstance.gameMode;
   final PieceColor winner;
 
-  static const String _tag = "[Game Over Alert]";
+  static const String _logTag = "[Game Over Alert]";
 
   GameResult? get _gameResult {
     if (gameMode == GameMode.aiVsAi || gameMode == GameMode.setupPosition) {
@@ -52,7 +52,7 @@ class GameResultAlertDialog extends StatelessWidget {
 
     final StringBuffer content = StringBuffer(reason);
 
-    logger.v("$_tag Game over reason string: $content");
+    logger.v("$_logTag Game over reason string: $content");
 
     final List<Widget> actions;
     if (_gameResult == GameResult.win &&

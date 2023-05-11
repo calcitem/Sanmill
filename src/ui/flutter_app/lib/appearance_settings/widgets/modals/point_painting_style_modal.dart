@@ -19,11 +19,11 @@ part of 'package:sanmill/appearance_settings/widgets/appearance_settings_page.da
 class _PointPaintingStyleModal extends StatelessWidget {
   const _PointPaintingStyleModal({
     required this.pointPaintingStyle,
-    required this.onChanged,
+    required this.onPointPaintingStyleChanged,
   });
 
   final PointPaintingStyle? pointPaintingStyle;
-  final Function(PointPaintingStyle?) onChanged;
+  final Function(PointPaintingStyle?) onPointPaintingStyleChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +36,13 @@ class _PointPaintingStyleModal extends StatelessWidget {
             title: Text(S.of(context).none),
             groupValue: pointPaintingStyle,
             value: PointPaintingStyle.none,
-            onChanged: onChanged,
+            onChanged: onPointPaintingStyleChanged,
           ),
           RadioListTile<PointPaintingStyle>(
             title: Text(S.of(context).solid),
             groupValue: pointPaintingStyle,
             value: PointPaintingStyle.fill,
-            onChanged: onChanged,
+            onChanged: onPointPaintingStyleChanged,
           ),
         ],
       ),

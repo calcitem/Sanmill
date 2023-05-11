@@ -25,7 +25,7 @@ part of '../mill.dart';
 class HistoryNavigator {
   const HistoryNavigator._();
 
-  static const String _tag = "[HistoryNavigator]";
+  static const String _logTag = "[HistoryNavigator]";
 
   static String importFailedStr = "";
 
@@ -43,13 +43,13 @@ class HistoryNavigator {
       Navigator.pop(context);
     }
 
-    if (GameController().isEngineDelaying == true) {
+    if (GameController().isEngineInDelay == true) {
       rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).aiIsDelaying);
       return const HistoryOK();
     }
 
-    GameController().isActive = false;
+    GameController().isControllerActive = false;
     GameController().engine.stopSearching();
 
     final GameController controller = GameController();
@@ -63,7 +63,7 @@ class HistoryNavigator {
 
     if (_isGoingToHistory) {
       logger.i(
-        "$_tag Is going to history, ignore Take Back button press.",
+        "$_logTag Is going to history, ignore Take Back button press.",
       );
 
       return const HistoryOK();
@@ -78,7 +78,7 @@ class HistoryNavigator {
 
     switch (resp) {
       case HistoryOK():
-        final ExtMove? lastEffectiveMove = controller.recorder.current;
+        final ExtMove? lastEffectiveMove = controller.gameRecorder.current;
         if (lastEffectiveMove != null) {
           GameController().headerTipNotifier.showTip(
                 S.of(context).lastMove(lastEffectiveMove.notation),
@@ -183,16 +183,16 @@ class HistoryNavigator {
     final GameMode gameModeBackup = GameController().gameInstance.gameMode;
     GameController().gameInstance.gameMode = GameMode.humanVsHuman;
 
-    if (GameController().newRecorder == null) {
-      GameController().newRecorder = GameController().recorder;
+    if (GameController().newGameRecorder == null) {
+      GameController().newGameRecorder = GameController().gameRecorder;
     }
 
     GameController().reset();
 
-    GameController().newRecorder!.forEachVisible((ExtMove extMove) async {
+    GameController().newGameRecorder!.forEachVisible((ExtMove extMove) async {
       if (GameController().gameInstance.doMove(extMove) == false) {
-        if (GameController().newRecorder != null) {
-          GameController().newRecorder!.prune();
+        if (GameController().newGameRecorder != null) {
+          GameController().newGameRecorder!.prune();
           importFailedStr = extMove.notation;
           ret = false;
         }
@@ -202,10 +202,11 @@ class HistoryNavigator {
     // Restore context
     GameController().gameInstance.gameMode = gameModeBackup;
     final String? lastPositionWithRemove =
-        GameController().recorder.lastPositionWithRemove;
-    GameController().recorder = GameController().newRecorder!;
-    GameController().recorder.lastPositionWithRemove = lastPositionWithRemove;
-    GameController().newRecorder = null;
+        GameController().gameRecorder.lastPositionWithRemove;
+    GameController().gameRecorder = GameController().newGameRecorder!;
+    GameController().gameRecorder.lastPositionWithRemove =
+        lastPositionWithRemove;
+    GameController().newGameRecorder = null;
 
     return ret ? const HistoryOK() : const HistoryRule();
   }
@@ -224,9 +225,9 @@ extension HistoryNavModeExtension on HistoryNavMode {
   ///
   /// Throws [HistoryResponse] When trying to access a value outside of the bounds.
   HistoryResponse gotoHistory([int? number]) {
-    final int? cur = GameController().recorder.index;
+    final int? cur = GameController().gameRecorder.index;
     final PointedListIterator<ExtMove> it =
-        GameController().recorder.globalIterator;
+        GameController().gameRecorder.globalIterator;
 
     switch (this) {
       case HistoryNavMode.stepForwardAll:

@@ -136,7 +136,7 @@ class AboutPage extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         backgroundColor: AppTheme.aboutPageBackgroundColor,
         appBar: AppBar(
-          leading: CustomDrawerIcon.of(context)?.icon,
+          leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(S.of(context).about),
         ),
         body: ListView.separated(

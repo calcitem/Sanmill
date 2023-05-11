@@ -19,11 +19,11 @@ part of '../../custom_drawer/custom_drawer.dart';
 class CustomDrawerIcon extends InheritedWidget {
   const CustomDrawerIcon({
     super.key,
-    required this.icon,
+    required this.drawerIcon,
     required super.child,
   });
 
-  final Widget icon;
+  final Widget drawerIcon;
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => false;

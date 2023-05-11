@@ -38,7 +38,8 @@ void main() {
       // Import a game
       ImportService.import(testMill.moveList);
 
-      expect(GameController().recorder.toString(), testMill.recorderToString);
+      expect(
+          GameController().gameRecorder.toString(), testMill.recorderToString);
     });
 
     test("export standard notation", () async {
@@ -53,7 +54,7 @@ void main() {
       // Import a game
       ImportService.import(testMill.moveList);
 
-      expect(controller.recorder.moveHistoryText, testMill.moveList);
+      expect(controller.gameRecorder.moveHistoryText, testMill.moveList);
     });
   });
 }

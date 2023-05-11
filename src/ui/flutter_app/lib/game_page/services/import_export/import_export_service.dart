@@ -23,14 +23,14 @@ part of '../mill.dart';
 class ImportService {
   const ImportService._();
 
-  static const String _tag = "[Importer]";
+  static const String _logTag = "[Importer]";
 
   /// Exports the game to the devices clipboard.
   static Future<void> exportGame(BuildContext context) async {
     Navigator.pop(context);
 
     await Clipboard.setData(
-      ClipboardData(text: GameController().recorder.moveHistoryText),
+      ClipboardData(text: GameController().gameRecorder.moveHistoryText),
     );
 
     rootScaffoldMessengerKey.currentState!
@@ -86,7 +86,7 @@ class ImportService {
       }
     } else if ((wmd.length == 8 && wmd[2] == "-" && wmd[5] == "x") ||
         (wmd.length == 5 && wmd[2] == "x")) {
-      logger.w("$_tag Not support parsing format oo-ooxo notation.");
+      logger.w("$_logTag Not support parsing format oo-ooxo notation.");
       throw ImportFormatException(wmd);
     }
     throw ImportFormatException(wmd);
@@ -140,7 +140,7 @@ class ImportService {
       }
     }
 
-    logger.w("$_tag Not support parsing format oo-ooxo PlayOK notation.");
+    logger.w("$_logTag Not support parsing format oo-ooxo PlayOK notation.");
     throw ImportFormatException(playOk);
   }
 
@@ -392,13 +392,13 @@ class ImportService {
 
     // TODO: Is this judge necessary?
     if (newHistory.isNotEmpty || setupFen != "") {
-      GameController().newRecorder = newHistory;
+      GameController().newGameRecorder = newHistory;
     }
 
     // TODO: Just a patch. Let status is setupPosition.
     //  The judgment of whether it is in the setupPosition state is based on this, not newRecorder.
     if (setupFen != "") {
-      GameController().recorder.setupPosition = setupFen;
+      GameController().gameRecorder.setupPosition = setupFen;
     }
   }
 
@@ -444,7 +444,7 @@ class ImportService {
     }
 
     if (newHistory.isNotEmpty) {
-      GameController().newRecorder = newHistory;
+      GameController().newGameRecorder = newHistory;
     }
   }
 }

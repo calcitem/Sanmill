@@ -22,7 +22,7 @@ part of '../mill.dart';
 class LoadService {
   LoadService._();
 
-  static const String _tag = "[Loader]";
+  static const String _logTag = "[Loader]";
 
   /// Retrieves the file path.
   static Future<String?> getFilePath(BuildContext context) async {
@@ -77,7 +77,7 @@ class LoadService {
 
     Navigator.pop(context);
 
-    if (!(GameController().recorder.hasPrevious == true ||
+    if (!(GameController().gameRecorder.hasPrevious == true ||
         GameController().isPositionSetup == true)) {
       return;
     }
@@ -90,8 +90,8 @@ class LoadService {
 
     final File file = File(filename);
 
-    file.writeAsString(
-        ImportService.addTagPairs(GameController().recorder.moveHistoryText!));
+    file.writeAsString(ImportService.addTagPairs(
+        GameController().gameRecorder.moveHistoryText!));
 
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear("$strGameSavedTo $filename");
@@ -122,7 +122,7 @@ class LoadService {
       return;
     }
 
-    logger.v('$_tag File Content: $fileContent');
+    logger.v('$_logTag File Content: $fileContent');
 
     try {
       ImportService.import(

@@ -82,7 +82,7 @@ class ExtMove {
     to = makeSquare(toFile, toRank);
   }
 
-  static const String _tag = "[Move]";
+  static const String _logTag = "[Move]";
 
   // Square
   int get from => type == MoveType.move
@@ -157,14 +157,14 @@ class ExtMove {
 
     if (move.length > "(3,1)->(2,1)".length) {
       throw FormatException(
-        "$_tag Invalid Move: move representation is too long",
+        "$_logTag Invalid Move: move representation is too long",
         move,
       );
     }
 
     if (!(move.startsWith("(") || move.startsWith("-"))) {
       throw FormatException(
-        "$_tag Invalid Move: invalid first char. Expected '(' or '-' but got a ${move.characters.first}",
+        "$_logTag Invalid Move: invalid first char. Expected '(' or '-' but got a ${move.characters.first}",
         move,
         0,
       );
@@ -172,7 +172,7 @@ class ExtMove {
 
     if (!move.endsWith(")")) {
       throw FormatException(
-        "$_tag Invalid Move: invalid last char. Expected a ')' but got a ${move.characters.last}",
+        "$_logTag Invalid Move: invalid last char. Expected a ')' but got a ${move.characters.last}",
         move,
         move.length - 1,
       );
@@ -183,7 +183,7 @@ class ExtMove {
     for (int i = 0; i < move.length; i++) {
       if (!range.contains(move[i])) {
         throw FormatException(
-          "$_tag Invalid Move: invalid char at pos $i. Expected one of '$range' but got ${move[i]}",
+          "$_logTag Invalid Move: invalid char at pos $i. Expected one of '$range' but got ${move[i]}",
           move,
           i,
         );
@@ -193,7 +193,7 @@ class ExtMove {
     if (move.length == "(3,1)->(2,1)".length) {
       if (move.substring(0, 4) == move.substring(7, 11)) {
         // ignore: only_throw_errors
-        throw "Error: $_tag Invalid Move: move to the same place";
+        throw "Error: $_logTag Invalid Move: move to the same place";
       }
     }
   }

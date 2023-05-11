@@ -47,13 +47,13 @@ class SoundManager {
   final Map<Sound, int> _soundIds = <Sound, int>{};
   bool _isTemporaryMute = false;
 
-  static const String _tag = "[audio]";
+  static const String _logTag = "[audio]";
 
   Future<void> loadSounds() async {
     assert(!GameController().initialized);
 
     if (kIsWeb) {
-      logger.w("$_tag Audio Player does not support Web.");
+      logger.w("$_logTag Audio Player does not support Web.");
       return;
     }
 

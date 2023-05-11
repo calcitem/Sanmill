@@ -333,7 +333,7 @@ class Position {
           return false;
         }
 
-        GameController().recorder.lastPositionWithRemove =
+        GameController().gameRecorder.lastPositionWithRemove =
             GameController().position.fen;
 
         break;
@@ -1045,7 +1045,7 @@ class Position {
 
   @visibleForTesting
   String? get movesSinceLastRemove {
-    final GameRecorder recorder = GameController().recorder;
+    final GameRecorder recorder = GameController().gameRecorder;
     if (recorder.isEmpty) {
       return null;
     }

@@ -54,7 +54,7 @@ void main() {
       const Key iconKey = Key("DrawerIcon");
 
       final CustomDrawerIcon screen = CustomDrawerIcon(
-        icon: IconButton(
+        drawerIcon: IconButton(
           icon: const Icon(
             Icons.menu,
             key: iconKey,

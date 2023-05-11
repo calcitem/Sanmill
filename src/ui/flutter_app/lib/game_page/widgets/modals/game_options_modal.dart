@@ -21,7 +21,7 @@ part of '../game_page.dart';
 class _GameOptionsModal extends StatelessWidget {
   const _GameOptionsModal();
 
-  static const String _tag = "[GameOptionsModal]";
+  static const String _logTag = "[GameOptionsModal]";
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +40,15 @@ class _GameOptionsModal extends StatelessWidget {
 
             if (GameController().position.phase == Phase.ready ||
                 (GameController().position.phase == Phase.placing &&
-                    (GameController().recorder.index != null &&
-                        GameController().recorder.index! <= 3)) ||
+                    (GameController().gameRecorder.index != null &&
+                        GameController().gameRecorder.index! <= 3)) ||
                 GameController().position.phase == Phase.gameOver) {
               // TODO: This part of the code is repetitive.
               // ignore: unnecessary_statements
-              GameController().isActive == false;
+              GameController().isControllerActive == false;
 
               // TODO: Called stopSearching(); so isEngineGoing is always false?
-              if (GameController().isEngineGoing == false) {
+              if (GameController().isEngineRunning == false) {
                 GameController().reset(force: true);
 
                 GameController()
@@ -57,7 +57,7 @@ class _GameOptionsModal extends StatelessWidget {
                 GameController().headerIconsNotifier.showIcons();
 
                 if (GameController().gameInstance.isAiToMove) {
-                  logger.i("$_tag New game, AI to move.");
+                  logger.i("$_logTag New game, AI to move.");
 
                   GameController().engineToGo(context, isMoveNow: false);
 
@@ -78,14 +78,14 @@ class _GameOptionsModal extends StatelessWidget {
         ),
         const CustomSpacer(),
         if (!kIsWeb &&
-            (GameController().recorder.hasPrevious == true ||
+            (GameController().gameRecorder.hasPrevious == true ||
                 GameController().isPositionSetup == true))
           SimpleDialogOption(
             onPressed: () => GameController.save(context),
             child: Text(S.of(context).saveGame),
           ),
         if (!kIsWeb &&
-            (GameController().recorder.hasPrevious == true ||
+            (GameController().gameRecorder.hasPrevious == true ||
                 GameController().isPositionSetup == true))
           const CustomSpacer(),
         if (!kIsWeb)
@@ -100,11 +100,11 @@ class _GameOptionsModal extends StatelessWidget {
             child: Text(S.of(context).importGame),
           ),
         if (!kIsWeb &&
-            (GameController().recorder.hasPrevious == true ||
+            (GameController().gameRecorder.hasPrevious == true ||
                 GameController().isPositionSetup == true))
           const CustomSpacer(),
         if (!kIsWeb &&
-            (GameController().recorder.hasPrevious == true ||
+            (GameController().gameRecorder.hasPrevious == true ||
                 GameController().isPositionSetup == true))
           SimpleDialogOption(
             onPressed: () => GameController.export(context),
@@ -138,10 +138,10 @@ class _GameOptionsModal extends StatelessWidget {
         ),
         onPressed: () {
           // ignore: unnecessary_statements
-          GameController().isActive == false;
+          GameController().isControllerActive == false;
 
           // TODO: Called stopSearching(); so isEngineGoing is always false?
-          if (GameController().isEngineGoing == false) {
+          if (GameController().isEngineRunning == false) {
             GameController().reset(force: true);
 
             GameController()
@@ -150,7 +150,7 @@ class _GameOptionsModal extends StatelessWidget {
             GameController().headerIconsNotifier.showIcons();
 
             if (GameController().gameInstance.isAiToMove) {
-              logger.i("$_tag New game, AI to move.");
+              logger.i("$_logTag New game, AI to move.");
 
               GameController().engineToGo(context, isMoveNow: false);
 

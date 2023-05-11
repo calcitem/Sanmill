@@ -24,7 +24,7 @@ class Engine {
 
   bool get _isPlatformChannelAvailable => !kIsWeb;
 
-  static const String _tag = "[engine]";
+  static const String _logTag = "[engine]";
 
   Future<void> startup() async {
     await setOptions();
@@ -42,7 +42,7 @@ class Engine {
       return;
     }
 
-    logger.v("$_tag send: $command");
+    logger.v("$_logTag send: $command");
     await _platform.invokeMethod("send", command);
   }
 
@@ -115,7 +115,7 @@ class Engine {
       await _send(_getPositionFen());
       await _send("go");
     } else {
-      logger.v("$_tag Move now");
+      logger.v("$_logTag Move now");
     }
 
     final String? response =
@@ -126,7 +126,7 @@ class Engine {
       throw const EngineTimeOut();
     }
 
-    logger.v("$_tag response: $response");
+    logger.v("$_logTag response: $response");
 
     if (response.startsWith("bestmove")) {
       String best = response.substring("bestmove".length + 1);
@@ -163,7 +163,7 @@ class Engine {
     }
 
     if (times > timeLimit) {
-      logger.v("$_tag Timeout. sleep = $sleep, times = $times");
+      logger.v("$_logTag Timeout. sleep = $sleep, times = $times");
 
       // Note:
       // Do not throw exception in the production environment here.
@@ -171,7 +171,7 @@ class Engine {
       // But we have to test timeout in devMode to identify anomalies under shallow search.
       // What method is user-friendly is to be discussed.
       if (EnvironmentConfig.devMode) {
-        throw TimeoutException("$_tag waitResponse timeout.");
+        throw TimeoutException("$_logTag waitResponse timeout.");
       }
       return null;
     }
@@ -183,7 +183,7 @@ class Engine {
         if (response.startsWith(prefix)) {
           return response;
         } else {
-          logger.w("$_tag Unexpected engine response: $response");
+          logger.w("$_logTag Unexpected engine response: $response");
         }
       }
     }
@@ -195,7 +195,7 @@ class Engine {
   }
 
   Future<void> stopSearching() async {
-    logger.w("$_tag Stop current thinking...");
+    logger.w("$_logTag Stop current thinking...");
     await _send("stop");
   }
 
@@ -279,7 +279,7 @@ class Engine {
   }
 
   Future<void> setOptions() async {
-    logger.i("$_tag reloaded engine options");
+    logger.i("$_logTag reloaded engine options");
 
     await setGeneralOptions();
     await setRuleOptions();
@@ -288,7 +288,7 @@ class Engine {
   String _getPositionFen() {
     // TODO: Check position
     final String? startPosition =
-        GameController().recorder.lastPositionWithRemove;
+        GameController().gameRecorder.lastPositionWithRemove;
     final String? moves = GameController().position.movesSinceLastRemove;
 
     final StringBuffer posFenStr = StringBuffer("position fen $startPosition");
@@ -300,8 +300,8 @@ class Engine {
     String ret = posFenStr.toString();
 
     // WAR
-    if (GameController().recorder.lastPositionWithRemove ==
-        GameController().recorder.setupPosition) {
+    if (GameController().gameRecorder.lastPositionWithRemove ==
+        GameController().gameRecorder.setupPosition) {
       if (GameController().position.action == Act.remove) {
         ret = ret.replaceFirst(" s ", " r ");
       }

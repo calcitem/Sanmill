@@ -24,7 +24,7 @@ part of 'database.dart';
 class _DatabaseMigration {
   const _DatabaseMigration._();
 
-  static const String _tag = "[Database Migration]";
+  static const String _logTag = "[Database Migration]";
 
   /// The newest DB version.
   static const int _newVersion = 2;
@@ -73,7 +73,7 @@ class _DatabaseMigration {
       } else if (DB().generalSettings.usesHiveDB) {
         _currentVersion = 1;
       }
-      logger.v("$_tag: Current version is $_currentVersion");
+      logger.v("$_logTag: Current version is $_currentVersion");
 
       if (_currentVersion != null) {
         for (int i = _currentVersion!; i < _newVersion; i++) {
@@ -99,7 +99,7 @@ class _DatabaseMigration {
     assert(_currentVersion! <= 0);
 
     await _DatabaseV1.migrateDB();
-    logger.i("$_tag Migrated from KV to DB");
+    logger.i("$_logTag Migrated from KV to DB");
   }
 
   /// Migration 1 - Sanmill version 1.x.x
@@ -136,7 +136,7 @@ class _DatabaseMigration {
       )?.withAlpha(0xFF),
     );
 
-    logger.v("$_tag Migrated from v1");
+    logger.v("$_logTag Migrated from v1");
   }
 
   /// Migration  - Sanmill version 3.3.2+
@@ -164,7 +164,7 @@ class _DatabaseMigration {
           );
     }
 
-    logger.v("$_tag Migrated from deprecation");
+    logger.v("$_logTag Migrated from deprecation");
   }
 }
 
@@ -174,7 +174,7 @@ class _DatabaseMigration {
 class _DatabaseV1 {
   const _DatabaseV1._();
 
-  static const String _tag = "[KV store Migration]";
+  static const String _logTag = "[KV store Migration]";
 
   static Future<File?> _getFile() async {
     final String fileName = Constants.settingsFile;
@@ -191,14 +191,14 @@ class _DatabaseV1 {
   /// Checks whether the current DB is still the old KV store by checking the availability of the json file
   static Future<bool> get usesV1 async {
     final File? file = await _getFile();
-    logger.i("$_tag still uses v1: ${file != null}");
+    logger.i("$_logTag still uses v1: ${file != null}");
     return file != null;
   }
 
   /// Loads the generalSettings from the old data store
   static Future<Map<String, dynamic>?> _loadFile(File file) async {
     assert(await usesV1);
-    logger.v("$_tag Loading $file ...");
+    logger.v("$_logTag Loading $file ...");
 
     try {
       final String contents = await file.readAsString();
@@ -207,7 +207,7 @@ class _DatabaseV1 {
       logger.v(values.toString());
       return values;
     } catch (e) {
-      logger.e("$_tag error loading file $e");
+      logger.e("$_logTag error loading file $e");
     }
     return null;
   }
@@ -215,7 +215,7 @@ class _DatabaseV1 {
   /// Migrates the deprecated Settings to the new [LocalDatabaseService]
   /// TODO: it won't do anything if the
   static Future<void> migrateDB() async {
-    logger.i("$_tag migrate from KV to DB");
+    logger.i("$_logTag migrate from KV to DB");
     final File? file = await _getFile();
     assert(file != null);
 
@@ -232,9 +232,9 @@ class _DatabaseV1 {
   /// Deletes the old settings file
   static Future<void> _deleteFile(File file) async {
     assert(await usesV1);
-    logger.v("$_tag Deleting old settings file...");
+    logger.v("$_logTag Deleting old settings file...");
 
     await file.delete();
-    logger.i("$_tag $file Deleted");
+    logger.i("$_logTag $file Deleted");
   }
 }

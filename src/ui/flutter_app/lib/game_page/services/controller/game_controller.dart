@@ -45,14 +45,14 @@ class GameController {
     _init();
   }
 
-  static const String _tag = "[Controller]";
+  static const String _logTag = "[Controller]";
 
-  bool disposed = false;
-  bool isReady = false;
-  bool isActive = false;
-  bool isEngineGoing = false;
-  bool isEngineDelaying = false;
-  bool isPositionSetupBanPiece = false;
+  bool isDisposed = false;
+  bool isControllerReady = false;
+  bool isControllerActive = false;
+  bool isEngineRunning = false;
+  bool isEngineInDelay = false;
+  bool isPositionSetupBanPiece = false; // TODO: isPieceBannedInPositionSetup?
 
   late Game gameInstance;
   late Position position;
@@ -66,31 +66,31 @@ class GameController {
   final BoardSemanticsNotifier boardSemanticsNotifier =
       BoardSemanticsNotifier();
 
-  late GameRecorder recorder;
-  GameRecorder? newRecorder;
+  late GameRecorder gameRecorder;
+  GameRecorder? newGameRecorder;
 
   late AnimationController animationController;
   late Animation<double> animation;
 
-  bool _initialized = false;
-  bool get initialized => _initialized;
+  bool _isInitialized = false;
+  bool get initialized => _isInitialized;
 
-  bool get isPositionSetup => recorder.setupPosition != null;
-  void clearPositionSetupFlag() => recorder.setupPosition = null;
+  bool get isPositionSetup => gameRecorder.setupPosition != null;
+  void clearPositionSetupFlag() => gameRecorder.setupPosition = null;
 
   @visibleForTesting
   static GameController instance = GameController._();
 
   /// Starts up the controller. It will initialize the audio subsystem and heat the engine.
-  Future<void> start() async {
-    if (_initialized) {
+  Future<void> startController() async {
+    if (_isInitialized) {
       return;
     }
 
     await SoundManager().loadSounds();
 
-    _initialized = true;
-    logger.i("$_tag initialized");
+    _isInitialized = true;
+    logger.i("$_logTag initialized");
   }
 
   /// Resets the controller.
@@ -104,14 +104,14 @@ class GameController {
     GameController().engine.stopSearching();
 
     if (isPositionSetup == true && force == false) {
-      fen = GameController().recorder.setupPosition;
+      fen = GameController().gameRecorder.setupPosition;
     }
 
     _init();
 
     if (isPositionSetup == true && force == false) {
-      GameController().recorder.setupPosition = fen;
-      GameController().recorder.lastPositionWithRemove = fen;
+      GameController().gameRecorder.setupPosition = fen;
+      GameController().gameRecorder.lastPositionWithRemove = fen;
       GameController().position.setFen(fen!);
     }
 
@@ -132,7 +132,7 @@ class GameController {
     position = Position();
     gameInstance = Game(gameMode: GameMode.humanVsAi);
     engine = Engine();
-    recorder = GameRecorder(lastPositionWithRemove: position.fen);
+    gameRecorder = GameRecorder(lastPositionWithRemove: position.fen);
 
     _startGame();
   }
@@ -159,7 +159,7 @@ class GameController {
         return const EngineResponseSkip();
       }
 
-      if (!GameController().recorder.isClean) {
+      if (!GameController().gameRecorder.isClean) {
         return const EngineResponseSkip();
       }
     } else {
@@ -175,16 +175,16 @@ class GameController {
       }
     }
 
-    if (GameController().isEngineGoing == true && isMoveNow == false) {
+    if (GameController().isEngineRunning == true && isMoveNow == false) {
       // TODO: Monkey test trigger
       logger.v("$tag engineToGo() is still running, skip.");
       //assert(false);
       return const EngineResponseSkip();
     }
 
-    GameController().isEngineGoing = true;
+    GameController().isEngineRunning = true;
 
-    GameController().isActive = true;
+    GameController().isControllerActive = true;
 
     // TODO
     logger.v("$tag engine type is $gameMode");
@@ -213,7 +213,7 @@ class GameController {
 
     while ((gameInstance.isAiToMove &&
             (isGameRunning || DB().generalSettings.isAutoRestart)) &&
-        GameController().isActive) {
+        GameController().isControllerActive) {
       if (gameMode == GameMode.aiVsAi) {
         GameController()
             .headerTipNotifier
@@ -234,31 +234,31 @@ class GameController {
 
         if (GameController().position.pieceOnBoardCount[PieceColor.black]! >
             0) {
-          isEngineDelaying = true;
+          isEngineInDelay = true;
           await Future<void>.delayed(Duration(
               seconds: DB().displaySettings.aiResponseDelayTime.toInt()));
-          isEngineDelaying = false;
+          isEngineInDelay = false;
         }
 
         final ExtMove extMove = await controller.engine
             // ignore: avoid_bool_literals_in_conditional_expressions
             .search(moveNow: loopIsFirst ? isMoveNow : false);
 
-        if (GameController().isActive == false) {
+        if (GameController().isControllerActive == false) {
           break;
         }
 
         // TODO: Unify return and throw
         if (controller.gameInstance.doMove(extMove) == false) {
           // TODO: Should catch it and throw.
-          GameController().isEngineGoing = false;
+          GameController().isEngineRunning = false;
           return const EngineNoBestMove();
         }
 
         loopIsFirst = false;
         searched = true;
 
-        if (GameController().disposed == false) {
+        if (GameController().isDisposed == false) {
           GameController().animationController.reset();
           GameController().animationController.animateTo(1.0);
         }
@@ -271,11 +271,11 @@ class GameController {
         }
       } on EngineTimeOut {
         logger.i("$tag Engine response type: timeout");
-        GameController().isEngineGoing = false;
+        GameController().isEngineRunning = false;
         return const EngineTimeOut();
       } on EngineNoBestMove {
         logger.i("$tag Engine response type: nobestmove");
-        GameController().isEngineGoing = false;
+        GameController().isEngineRunning = false;
         return const EngineNoBestMove();
       }
 
@@ -283,7 +283,7 @@ class GameController {
         if (DB().generalSettings.isAutoRestart == true) {
           GameController().reset();
         } else {
-          GameController().isEngineGoing = false;
+          GameController().isEngineRunning = false;
           if (GameController().gameInstance.gameMode == GameMode.aiVsAi) {
             GameController().headerTipNotifier.showTip(
                 GameController().position.scoreString,
@@ -296,7 +296,7 @@ class GameController {
       }
     }
 
-    GameController().isEngineGoing = false;
+    GameController().isEngineRunning = false;
 
     // TODO: Why need not update tip and icons?
     GameController().boardSemanticsNotifier.updateSemantics();
@@ -308,7 +308,7 @@ class GameController {
     const String tag = "[engineToGo]";
     bool reversed = false;
 
-    if (isEngineDelaying == true) {
+    if (isEngineInDelay == true) {
       return rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).aiIsDelaying);
     }
@@ -338,16 +338,16 @@ class GameController {
       reversed = true;
     }
 
-    if (!GameController().recorder.isClean) {
+    if (!GameController().gameRecorder.isClean) {
       logger.i("$tag History is not clean. Prune, and think now.");
-      GameController().recorder.prune();
+      GameController().gameRecorder.prune();
     }
 
     final String strTimeout = S.of(context).timeout;
     final String strNoBestMoveErr = S.of(context).error(S.of(context).noMove);
 
     switch (await GameController()
-        .engineToGo(context, isMoveNow: GameController().isEngineGoing)) {
+        .engineToGo(context, isMoveNow: GameController().isEngineRunning)) {
       case EngineResponseOK():
         GameController().gameResultNotifier.showResult(force: true);
         break;
@@ -374,7 +374,7 @@ class GameController {
   }
 
   void showSnakeBarHumanNotation(String humanStr) {
-    final String? n = recorder.lastF?.notation;
+    final String? n = gameRecorder.lastF?.notation;
 
     if (DB().generalSettings.screenReaderSupport &&
         GameController().position.action != Act.remove &&
