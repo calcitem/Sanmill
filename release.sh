@@ -22,6 +22,9 @@ if [ "$(uname)" == "Linux" ]; then
 	EDITOR=vi
 fi
 
+# Format source code
+./format.sh
+
 # Update Build Number
 ./version.sh
 
