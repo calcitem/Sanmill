@@ -62,51 +62,50 @@ import '../../generated/intl/l10n_vi.dart';
 import '../../generated/intl/l10n_zh.dart';
 
 Map<Locale, String> localeToLanguageName = <Locale, String>{
-  const Locale("ar"): SAr().languageName,
-  const Locale("bg"): SBg().languageName,
-  const Locale("bn"): SBn().languageName,
-  const Locale("cs"): SCs().languageName,
-  const Locale("da"): SDa().languageName,
-  const Locale("de"): SDe().languageName,
-  const Locale("de", "CH"): SDeCh().languageName,
-  const Locale("el"): SEl().languageName,
-  const Locale("en"): SEn().languageName,
-  const Locale("es"): SEs().languageName,
-  const Locale("et"): SEt().languageName,
-  const Locale("fa"): SFa().languageName,
-  const Locale("fi"): SFi().languageName,
-  const Locale("fr"): SFr().languageName,
-  const Locale("gu"): SGu().languageName,
-  const Locale("hi"): SHi().languageName,
-  const Locale("hr"): SHr().languageName,
-  const Locale("hu"): SHu().languageName,
-  const Locale("id"): SId().languageName,
-  const Locale("it"): SIt().languageName,
-  const Locale("ja"): SJa().languageName,
-  const Locale("kn"): SKn().languageName,
-  const Locale("ko"): SKo().languageName,
-  const Locale("lt"): SLt().languageName,
-  const Locale("lv"): SLv().languageName,
-  const Locale("mk"): SMk().languageName,
-  const Locale("ms"): SMs().languageName,
-  const Locale("nl"): SNl().languageName,
-  const Locale("nb"): SNb().languageName,
-  const Locale("pl"): SPl().languageName,
-  const Locale("pt"): SPt().languageName,
-  const Locale("ro"): SRo().languageName,
-  const Locale("ru"): SRu().languageName,
-  const Locale("sk"): SSk().languageName,
-  const Locale("sl"): SSl().languageName,
-  const Locale("sq"): SSq().languageName,
-  const Locale("sr"): SSr().languageName,
-  const Locale("sv"): SSv().languageName,
-  const Locale("te"): STe().languageName,
-  const Locale("th"): STh().languageName,
-  const Locale("tr"): STr().languageName,
-  const Locale("uk"): SUk().languageName,
-  const Locale("uz"): SUz().languageName,
-  const Locale("vi"): SVi().languageName,
-  const Locale("zh"): SZh().languageName,
-  const Locale.fromSubtags(languageCode: "zh", scriptCode: "Hant"):
-      SZhHant().languageName,
+  const Locale("ar"): SAr().languageName, // Arabic
+  const Locale("bg"): SBg().languageName, // Bulgarian
+  const Locale("bn"): SBn().languageName, // Bengali
+  const Locale("cs"): SCs().languageName, // Czech
+  const Locale("da"): SDa().languageName, // Danish
+  const Locale("de"): SDe().languageName, // German
+  const Locale("de", "CH"): SDeCh().languageName, // Swiss German
+  const Locale("el"): SEl().languageName, // Greek
+  const Locale("en"): SEn().languageName, // English
+  const Locale("es"): SEs().languageName, // Spanish
+  const Locale("et"): SEt().languageName, // Estonian
+  const Locale("fa"): SFa().languageName, // Persian (Farsi)
+  const Locale("fi"): SFi().languageName, // Finnish
+  const Locale("fr"): SFr().languageName, // French
+  const Locale("gu"): SGu().languageName, // Gujarati
+  const Locale("hi"): SHi().languageName, // Hindi
+  const Locale("hr"): SHr().languageName, // Croatian
+  const Locale("hu"): SHu().languageName, // Hungarian
+  const Locale("id"): SId().languageName, // Indonesian
+  const Locale("it"): SIt().languageName, // Italian
+  const Locale("ja"): SJa().languageName, // Japanese
+  const Locale("kn"): SKn().languageName, // Kannada
+  const Locale("ko"): SKo().languageName, // Korean
+  const Locale("lt"): SLt().languageName, // Lithuanian
+  const Locale("lv"): SLv().languageName, // Latvian
+  const Locale("mk"): SMk().languageName, // Macedonian
+  const Locale("ms"): SMs().languageName, // Malay
+  const Locale("nl"): SNl().languageName, // Dutch
+  const Locale("nb"): SNb().languageName, // Norwegian Bokmål
+  const Locale("pl"): SPl().languageName, // Polish
+  const Locale("pt"): SPt().languageName, // Portuguese
+  const Locale("ro"): SRo().languageName, // Romanian
+  const Locale("ru"): SRu().languageName, // Russian
+  const Locale("sk"): SSk().languageName, // Slovak
+  const Locale("sl"): SSl().languageName, // Slovenian
+  const Locale("sq"): SSq().languageName, // Albanian
+  const Locale("sr"): SSr().languageName, // Serbian
+  const Locale("sv"): SSv().languageName, // Swedish
+  const Locale("te"): STe().languageName, // Telugu
+  const Locale("th"): STh().languageName, // Thai
+  const Locale("tr"): STr().languageName, // Turkish
+  const Locale("uk"): SUk().languageName, // Ukrainian
+  const Locale("uz"): SUz().languageName, // Uzbek
+  const Locale("vi"): SVi().languageName, // Vietnamese
+  const Locale("zh"): SZh().languageName, // Chinese (Simplified)
+  const Locale.fromSubtags(languageCode: "zh", scriptCode: "Hant"): SZhHant().languageName, // Chinese (Traditional)
 };
