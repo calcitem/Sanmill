@@ -1138,7 +1138,7 @@
   "@hollow": {
     "description": "Hollow"
   },
-  "languageName": "Deutsch",
+  "languageName": "Schweizer Hochdeutsch",
   "@languageName": {
     "description": "The name of the current language"
   },
