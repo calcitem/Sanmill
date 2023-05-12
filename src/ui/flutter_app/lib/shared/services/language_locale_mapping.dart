@@ -107,5 +107,6 @@ Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("uz"): SUz().languageName, // Uzbek
   const Locale("vi"): SVi().languageName, // Vietnamese
   const Locale("zh"): SZh().languageName, // Chinese (Simplified)
-  const Locale.fromSubtags(languageCode: "zh", scriptCode: "Hant"): SZhHant().languageName, // Chinese (Traditional)
+  const Locale.fromSubtags(languageCode: "zh", scriptCode: "Hant"):
+      SZhHant().languageName, // Chinese (Traditional)
 };
