@@ -17,6 +17,8 @@ jobs:
       uses: actions/checkout@v3
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.7.12'
     - run: bash -x ./flutter-init.sh
     - run: cp -f ./src/ui/flutter_app/analysis_options.yaml ./
     - name: Analyze Flutter
