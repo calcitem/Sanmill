@@ -171,7 +171,7 @@ class _GameState extends State<_Game> {
   void _showMoveModalBottomSheet(BuildContext context) => showModalBottomSheet(
         context: context,
         backgroundColor: AppTheme.modalBottomSheetBackgroundColor,
-        builder: (_) => const _MoveOptionsModal(),
+        builder: (_) => _MoveOptionsModal(mainContext: context),
       );
 
   void _showInfoDialog(BuildContext context) => showDialog(
