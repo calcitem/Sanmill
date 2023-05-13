@@ -32,12 +32,19 @@ class HistoryNavigator {
   static bool _isGoingToHistory = false;
 
   static Future<HistoryResponse?> _gotoHistory(
-    BuildContext context,
-    HistoryNavMode navMode, {
-    bool pop = true,
-    int? number,
-  }) async {
+      BuildContext context,
+      HistoryNavMode navMode, {
+        bool pop = true,
+        int? number,
+      }) async {
     assert(navMode != HistoryNavMode.takeBackN || number != null);
+
+    final S? localizations = S.of(context);
+    if (localizations == null) {
+      // 处理 'localizations' 为空的情况，例如：显示错误信息、返回，或者提供默认值
+    } else {
+      // 'localizations' 非空，你可以安全地使用它
+    }
 
     if (pop) {
       Navigator.pop(context);
@@ -45,7 +52,7 @@ class HistoryNavigator {
 
     if (GameController().isEngineInDelay == true) {
       rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).aiIsDelaying);
+          .showSnackBarClear(localizations.aiIsDelaying);
       return const HistoryOK();
     }
 
@@ -54,8 +61,7 @@ class HistoryNavigator {
 
     final GameController controller = GameController();
 
-    GameController().headerTipNotifier.showTip(S
-        .of(context)
+    GameController().headerTipNotifier.showTip(localizations
         .atEnd); // TODO: Move to the end of this function. Or change to S.of(context).waiting?
 
     GameController().headerIconsNotifier.showIcons(); // TODO: See above.
@@ -74,28 +80,28 @@ class HistoryNavigator {
     SoundManager().mute();
 
     final HistoryResponse resp =
-        await doEachMove(navMode, number); // doMove() to index
+    await doEachMove(navMode, number); // doMove() to index
 
     switch (resp) {
       case HistoryOK():
         final ExtMove? lastEffectiveMove = controller.gameRecorder.current;
         if (lastEffectiveMove != null) {
           GameController().headerTipNotifier.showTip(
-                S.of(context).lastMove(lastEffectiveMove.notation),
-              );
+            localizations.lastMove(lastEffectiveMove.notation),
+          );
           GameController().headerIconsNotifier.showIcons();
           GameController().boardSemanticsNotifier.updateSemantics();
         }
         break;
       case HistoryRange(): // TODO: Impossible resp
         rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).atEnd);
+            .showSnackBarClear(localizations.atEnd);
         logger.i(HistoryRange);
         break;
       case HistoryRule():
       default:
         rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).movesAndRulesNotMatch);
+            .showSnackBarClear(localizations.movesAndRulesNotMatch);
         logger.i(HistoryRule);
         break;
     }
@@ -118,9 +124,9 @@ class HistoryNavigator {
   }
 
   static Future<HistoryResponse?> stepForward(
-    BuildContext context, {
-    bool pop = true,
-  }) async {
+      BuildContext context, {
+        bool pop = true,
+      }) async {
     return _gotoHistory(
       context,
       HistoryNavMode.stepForward,
@@ -129,9 +135,9 @@ class HistoryNavigator {
   }
 
   static Future<HistoryResponse?> takeBackAll(
-    BuildContext context, {
-    bool pop = true,
-  }) async {
+      BuildContext context, {
+        bool pop = true,
+      }) async {
     return _gotoHistory(
       context,
       HistoryNavMode.takeBackAll,
@@ -140,9 +146,9 @@ class HistoryNavigator {
   }
 
   static Future<HistoryResponse?> stepForwardAll(
-    BuildContext context, {
-    bool pop = true,
-  }) async {
+      BuildContext context, {
+        bool pop = true,
+      }) async {
     return _gotoHistory(
       context,
       HistoryNavMode.stepForwardAll,
@@ -151,10 +157,10 @@ class HistoryNavigator {
   }
 
   static Future<HistoryResponse?> takeBackN(
-    BuildContext context,
-    int n, {
-    bool pop = true,
-  }) async {
+      BuildContext context,
+      int n, {
+        bool pop = true,
+      }) async {
     return _gotoHistory(
       context,
       HistoryNavMode.takeBackN,
@@ -173,7 +179,7 @@ class HistoryNavigator {
     bool ret = true;
 
     final HistoryResponse resp =
-        navMode.gotoHistory(number); // Only change index
+    navMode.gotoHistory(number); // Only change index
 
     if (resp != const HistoryOK()) {
       return resp;

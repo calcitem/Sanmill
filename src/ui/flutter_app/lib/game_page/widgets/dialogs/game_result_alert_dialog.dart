@@ -54,7 +54,9 @@ class GameResultAlertDialog extends StatelessWidget {
 
     logger.v("$_logTag Game over reason string: $content");
 
+    final S localizations = S.of(context);
     final List<Widget> actions;
+
     if (_gameResult == GameResult.win &&
         !isTopLevel &&
         gameMode == GameMode.humanVsAi) {
@@ -84,16 +86,17 @@ class GameResultAlertDialog extends StatelessWidget {
             );
 
             Navigator.pop(context);
+
             GameController().reset(force: true);
             GameController()
                 .headerTipNotifier
-                .showTip(S.of(context).gameStarted);
+                .showTip(localizations.gameStarted);
             GameController().headerIconsNotifier.showIcons();
           },
         ),
         TextButton(
           child: Text(
-            S.of(context).no,
+            localizations.no,
             textScaleFactor: DB().displaySettings.fontScale,
           ),
           onPressed: () {
@@ -101,13 +104,13 @@ class GameResultAlertDialog extends StatelessWidget {
             GameController().reset(force: true);
             GameController()
                 .headerTipNotifier
-                .showTip(S.of(context).gameStarted);
+                .showTip(localizations.gameStarted);
             GameController().headerIconsNotifier.showIcons();
           },
         ),
         TextButton(
           child: Text(
-            S.of(context).cancel,
+            localizations.cancel,
             textScaleFactor: DB().displaySettings.fontScale,
           ),
           onPressed: () => Navigator.pop(context),
@@ -117,7 +120,7 @@ class GameResultAlertDialog extends StatelessWidget {
       actions = <Widget>[
         TextButton(
           child: Text(
-            S.of(context).restart,
+            localizations.restart,
             textScaleFactor: DB().displaySettings.fontScale,
           ),
           onPressed: () {
@@ -125,13 +128,13 @@ class GameResultAlertDialog extends StatelessWidget {
             GameController().reset(force: true);
             GameController()
                 .headerTipNotifier
-                .showTip(S.of(context).gameStarted);
+                .showTip(localizations.gameStarted);
             GameController().headerIconsNotifier.showIcons();
           },
         ),
         TextButton(
           child: Text(
-            S.of(context).cancel,
+            localizations.cancel,
             textScaleFactor: DB().displaySettings.fontScale,
           ),
           onPressed: () => Navigator.pop(context),

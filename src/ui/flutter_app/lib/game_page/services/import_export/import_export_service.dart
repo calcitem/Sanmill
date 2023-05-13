@@ -39,7 +39,10 @@ class ImportService {
 
   /// Tries to import the game saved in the device's clipboard.
   static Future<void> importGame(BuildContext context) async {
+    final S localizations = S.of(context);
+
     Navigator.pop(context);
+
     rootScaffoldMessengerKey.currentState!.clearSnackBars();
 
     final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
@@ -51,20 +54,20 @@ class ImportService {
     try {
       import(data!.text!); // MillController().newRecorder = newHistory;
     } catch (exception) {
-      final String tip = S.of(context).cannotImport(data!.text!);
+      final String tip = localizations.cannotImport(data!.text!);
       GameController().headerTipNotifier.showTip(tip);
       //MillController().animationController.forward();
       return;
     }
 
-    await HistoryNavigator.takeBackAll(context, pop: false);
+    await HistoryNavigator.takeBackAll(context, pop: false); // TODO: pop ctx
 
     if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
         const HistoryOK()) {
-      GameController().headerTipNotifier.showTip(S.of(context).gameImported);
+      GameController().headerTipNotifier.showTip(localizations.gameImported);
     } else {
       final String tip =
-          S.of(context).cannotImport(HistoryNavigator.importFailedStr);
+      localizations.cannotImport(HistoryNavigator.importFailedStr);
       GameController().headerTipNotifier.showTip(tip);
       HistoryNavigator.importFailedStr = "";
     }
