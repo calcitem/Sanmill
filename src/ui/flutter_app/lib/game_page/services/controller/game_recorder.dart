@@ -50,7 +50,7 @@ class GameRecorder extends PointedList<ExtMove> {
     return n;
   }
 
-  String? get moveHistoryText {
+  String get moveHistoryText {
     String buildTagPairs() {
       if (GameController().gameRecorder.setupPosition != null) {
         return '[FEN "${GameController().gameRecorder.setupPosition!}"]\r\n[SetUp "1"]\r\n\r\n';
@@ -62,7 +62,7 @@ class GameRecorder extends PointedList<ExtMove> {
       if (GameController().isPositionSetup == true) {
         return buildTagPairs();
       } else {
-        return null;
+        return "";
       }
     }
 

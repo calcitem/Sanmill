@@ -80,9 +80,9 @@ class ImportService {
         return wmdNotationToMove[wmd]!;
       }
     } else if (wmd.length == 5 && wmd[2] == "-") {
-      if (wmdNotationToMove[(wmd.substring(0, 2))] != null &&
-          wmdNotationToMove[(wmd.substring(3, 5))] != null) {
-        return "${wmdNotationToMove[(wmd.substring(0, 2))]!}->${wmdNotationToMove[(wmd.substring(3, 5))]!}";
+      if (wmdNotationToMove[wmd.substring(0, 2)] != null &&
+          wmdNotationToMove[wmd.substring(3, 5)] != null) {
+        return "${wmdNotationToMove[wmd.substring(0, 2)]!}->${wmdNotationToMove[wmd.substring(3, 5)]!}";
       }
     } else if ((wmd.length == 8 && wmd[2] == "-" && wmd[5] == "x") ||
         (wmd.length == 5 && wmd[2] == "x")) {

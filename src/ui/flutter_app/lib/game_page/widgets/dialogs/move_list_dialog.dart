@@ -23,7 +23,7 @@ class _MoveListDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final GameController controller = GameController();
 
-    final String moveHistoryText = controller.gameRecorder.moveHistoryText!;
+    final String moveHistoryText = controller.gameRecorder.moveHistoryText;
     final int end = controller.gameRecorder.length - 1;
 
     final TextStyle titleTextStyle = Theme.of(context)

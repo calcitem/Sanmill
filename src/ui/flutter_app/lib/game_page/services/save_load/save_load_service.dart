@@ -91,7 +91,7 @@ class LoadService {
     final File file = File(filename);
 
     file.writeAsString(ImportService.addTagPairs(
-        GameController().gameRecorder.moveHistoryText!));
+        GameController().gameRecorder.moveHistoryText));
 
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear("$strGameSavedTo $filename");
