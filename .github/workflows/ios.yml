@@ -36,9 +36,10 @@ jobs:
       - name: Build iOS
         run: cd src/ui/flutter_app; flutter build ios -v --release --no-codesign
 
-      # Archive ipa
-      - name: Archive ipa
-        uses: actions/upload-artifact@v3
+      # Sign and Upload to App Store
+      - name: Sign and Upload to App Store
+        uses: codemagic-ci-cd/actions-apple-app-store-connect@v2
         with:
-          name: ios-app-release
-          path: src/ui/flutter_app/build/ios/iphoneos/Runner.app
+          api_key: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          application_id: com.calcitem.sanmill
+          app_path: src/ui/flutter_app/build/ios/iphoneos/Runner.app

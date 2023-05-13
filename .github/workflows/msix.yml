@@ -2,7 +2,7 @@ name: MSIX
 
 on:
   push:
-    branches: [build]
+    branches: [release]
 
 jobs:
   build:

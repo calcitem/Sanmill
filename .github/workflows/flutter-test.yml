@@ -2,7 +2,7 @@ name: Flutter Test
 
 on:
   push:
-    branches: [test]
+    branches: [release]
 
 jobs:
   build:

@@ -2,7 +2,7 @@ name: Flutter
 
 on:
   push:
-    branches: [master, dev]
+    branches: [release]
   pull_request:
     types: [review_requested, ready_for_review]
     paths:

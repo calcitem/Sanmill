@@ -2,7 +2,7 @@ name: CUI
 
 on:
   push:
-    branches: [master, dev]
+    branches: [release]
     paths:
       - 'src/*.cpp'
   pull_request:
