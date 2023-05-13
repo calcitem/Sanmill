@@ -43,7 +43,8 @@ enum PointPaintingStyle {
 @immutable
 class DisplaySettings {
   const DisplaySettings({
-    @Deprecated("Use [locale] instead.") this.languageCode = "Default",
+    @Deprecated("Use [locale] instead.")
+        this.languageCode = "Default",
     this.locale,
     this.isFullScreen = false,
     @Deprecated("Until other export options are implemented this setting shouldn't be used.")
@@ -54,11 +55,13 @@ class DisplaySettings {
     this.isHistoryNavigationToolbarShown = false,
     this.boardBorderLineWidth = 2.0,
     this.boardInnerLineWidth = 2.0,
-    @Deprecated("Use [pointPaintingStyle] instead.") this.pointStyle = 0,
+    @Deprecated("Use [pointPaintingStyle] instead.")
+        this.pointStyle = 0,
     this.pointPaintingStyle = PointPaintingStyle.none,
     this.pointWidth = 10.0,
     this.pieceWidth = 0.9,
-    @Deprecated("Use [fontScale] instead.") this.fontSize = 16.0,
+    @Deprecated("Use [fontScale] instead.")
+        this.fontSize = 16.0,
     this.fontScale = 1.0,
     this.boardTop = kToolbarHeight,
     this.animationDuration = 0.0,
