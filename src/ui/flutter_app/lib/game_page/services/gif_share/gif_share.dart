@@ -68,27 +68,23 @@ class GifShare {
       return false;
     }
 
-    final img.PngDecoder decoder = img.PngDecoder();
-
     if (pngs.isNotEmpty) {
       pngs.removeRange(0, 1); // TODO: WAR
     }
 
+    final img.GifEncoder encoder = img.GifEncoder(
+      repeat: DB().generalSettings.gameScreenRecorderDuration,
+      samplingFactor: 160,
+    );
+
     for (final Uint8List data in pngs) {
-      final img.Image? decodeImage = decoder.decodeImage(data);
+      final img.Image? decodeImage = img.decodeImage(data);
       if (decodeImage != null) {
-        images.add(decodeImage);
+        encoder.addFrame(decodeImage);
       }
     }
 
-    final img.Animation animation = img.Animation();
-    // ignore: prefer_foreach
-    for (final img.Image image in images) {
-      image.duration = DB().generalSettings.gameScreenRecorderDuration * 1000;
-      animation.addFrame(image);
-    }
-    final List<int>? gifData =
-        img.encodeGifAnimation(animation, samplingFactor: 160); // TODO: 160
+    final Uint8List? gifData = encoder.finish();
     if (gifData != null) {
       return _writeGifToFile(gifData);
     } else {
