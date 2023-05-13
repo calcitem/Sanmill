@@ -79,17 +79,17 @@ class SanmillApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DB(window.platformDispatcher.locale);
+    DB(PlatformDispatcher.instance.views.first.platformDispatcher.locale);
 
     if (kIsWeb) {
       Locale? locale;
 
-      if (WidgetsBinding.instance.window.locale == const Locale('und') ||
+      if (PlatformDispatcher.instance.locale == const Locale('und') ||
           !S.supportedLocales.contains(
-              Locale(WidgetsBinding.instance.window.locale.languageCode))) {
+              Locale(PlatformDispatcher.instance.locale.languageCode))) {
         locale = const Locale('en');
       } else {
-        locale = WidgetsBinding.instance.window.locale;
+        locale = PlatformDispatcher.instance.locale;
       }
 
       return MaterialApp(
@@ -129,14 +129,14 @@ class SanmillApp extends StatelessWidget {
     Locale? locale;
 
     if (displaySettings.locale == null) {
-      if (WidgetsBinding.instance.window.locale == const Locale('und') ||
+      if (PlatformDispatcher.instance.locale == const Locale('und') ||
           !S.supportedLocales.contains(
-              Locale(WidgetsBinding.instance.window.locale.languageCode))) {
+              Locale(PlatformDispatcher.instance.locale.languageCode))) {
         DB().displaySettings =
             displaySettings.copyWith(locale: const Locale('en'));
         locale = const Locale('en');
       } else {
-        locale = WidgetsBinding.instance.window.locale;
+        locale = PlatformDispatcher.instance.locale;
       }
     } else {
       locale = displaySettings.locale;

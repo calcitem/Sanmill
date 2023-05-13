@@ -214,7 +214,7 @@ class CustomDrawerState extends State<CustomDrawer>
     // ignore: always_specify_types
     final CustomDrawerItem<dynamic> item = widget.drawerItems[index];
 
-    final double itemPadding = window.physicalSize.height >= 1080
+    final double itemPadding = PlatformDispatcher.instance.views.first.physicalSize.height >= 1080
         ? AppTheme.drawerItemPadding
         : AppTheme.drawerItemPaddingSmallScreen;
 

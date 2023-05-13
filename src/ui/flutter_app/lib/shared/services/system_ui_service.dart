@@ -18,7 +18,7 @@ part of 'package:sanmill/main.dart';
 
 /// Initializes the given [SystemChrome] ui
 void _initUI() {
-  logger.v(window.physicalSize.toString());
+  logger.v(PlatformDispatcher.instance.views.first.physicalSize.toString());
   logger.v(Constants.windowAspectRatio.toString());
 
   // TODO: [Leptopoda] Use layoutBuilder to add adaptiveness

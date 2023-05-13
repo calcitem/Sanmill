@@ -74,8 +74,8 @@ class Constants {
       wikiURL.fromSubPath("Translation-and-Localization");
   static final UrlHelper thanksURL = wikiURL.fromSubPath("thanks");
 
-  static final double _windowWidth = window.physicalSize.width;
-  static final double _windowHeight = window.physicalSize.height;
+  static final double _windowWidth = PlatformDispatcher.instance.views.first.physicalSize.width;
+  static final double _windowHeight = PlatformDispatcher.instance.views.first.physicalSize.height;
   static final double windowAspectRatio = _windowHeight / _windowWidth;
 
   static const int screenSizeThreshold = 800;
