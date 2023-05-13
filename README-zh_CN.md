@@ -21,6 +21,8 @@
 
 [![snapcraft](https://snapcraft.io/mill/badge.svg)](https://snapcraft.io/mill)
 
+[![Codemagic build status](https://api.codemagic.io/apps/5fafbd77605096975ff9d1ba/5fafbd77605096975ff9d1b9/status_badge.svg)](https://codemagic.io/apps/5fafbd77605096975ff9d1ba/5fafbd77605096975ff9d1b9/latest_build)
+
 [Sanmill](https://gitee.com/calcitem/Sanmill) 是一个直棋程序，具有命令行、移动端 Flutter 和 PC 端 Qt 三个界面。
 
 直棋为棋规简单、老少皆宜的双人游戏，通常棋盘为同心的数个正方形，并用直线或斜线将不同的正方形相连结。直棋普遍以消灭对方吃子能力，或困毙对方为胜。规则可用 “**先摆后移，成三吃子，余三飞子，无路者负。**” 简述之。

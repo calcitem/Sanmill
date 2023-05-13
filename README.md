@@ -27,7 +27,11 @@
 <img src="src/ui/flutter_app/assets/badges/get-it-on-cafebazaar.png" alt="Get it on CafeBazaar" height="54"/></a>
 
 [![snapcraft](https://snapcraft.io/mill/badge.svg)](https://snapcraft.io/mill)
+
+[![Codemagic build status](https://api.codemagic.io/apps/5fafbd77605096975ff9d1ba/5fafbd77605096975ff9d1b9/status_badge.svg)](https://codemagic.io/apps/5fafbd77605096975ff9d1ba/5fafbd77605096975ff9d1b9/latest_build)
+
 [![Translation status](https://hosted.weblate.org/widgets/sanmill/-/svg-badge.svg)](https://hosted.weblate.org/engage/sanmill/)
+
 [![Readme-Chinese](https://img.shields.io/badge/README-简体中文-red.svg)](README-zh_CN.md)
 
 [Sanmill](https://github.com/calcitem/Sanmill) is a free, powerful UCI-like N men's morris program with CUI, Flutter GUI and Qt GUI.
