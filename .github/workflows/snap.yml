@@ -1,0 +1,20 @@
+name: Snapcraft
+
+on:
+  push:
+    branches: [release]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Snapcraft Build
+    steps:
+    - uses: actions/checkout@v3
+    - uses: snapcore/action-build@v1
+      id: snapcraft
+    - uses: actions/upload-artifact@v3
+      with:
+        name: snap
+        path: ${{ steps.snapcraft.outputs.snap }}
+    - run: |
+        sudo snap install --dangerous ${{ steps.snapcraft.outputs.snap }}
