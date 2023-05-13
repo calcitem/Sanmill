@@ -3,4 +3,4 @@
 ./flutter-init.sh
 
 flutter config --enable-windows-desktop
-flutter create --platforms=windows .
+#flutter create --platforms=windows .

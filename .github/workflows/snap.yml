@@ -2,7 +2,7 @@ name: Snapcraft
 
 on:
   push:
-    branches: [release]
+    branches: [build]
 
 jobs:
   build:

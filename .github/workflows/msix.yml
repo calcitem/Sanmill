@@ -1,0 +1,45 @@
+name: MSIX
+
+on:
+  push:
+    branches: [build]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Set Git to use LF
+        run: |
+          git config --global core.autocrlf input
+          git config --global core.eol lf
+
+      - uses: actions/checkout@v3
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.10.0'
+
+      - name: Export environment valuables
+        run: export
+
+      - name: Create App version
+        run: git fetch --tags; git tag; git log -n1; bash -x ./version.sh
+
+      - name: Print Flutter SDK version
+        run: flutter --version
+
+      - name: Install dependencies
+        run: bash -x ./flutter-windows-init.sh
+
+      - name: Build msix
+        run: cd src/ui/flutter_app; dart run msix:create
+
+      - name: Archive msix
+        uses: actions/upload-artifact@v3
+        with:
+          name: sanmill-msix
+          path: src/ui/flutter_app/build/windows/runner/Release/sanmill.msix
