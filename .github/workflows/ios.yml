@@ -1,0 +1,44 @@
+name: iOS
+
+on:
+  push:
+    branches: [release]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.10.0'
+
+      - name: Export environment valuables
+        run: export
+        
+      - name: Install gsed
+        run: brew install gnu-sed
+
+      - name: Create App version
+        run: git fetch --tags; git tag; git log -n1; bash -x ./version.sh
+
+      - name: Print Flutter SDK version
+        run: flutter --version
+
+      - name: Install dependencies
+        run: bash -x ./flutter-init.sh
+
+      # Build
+      - name: Build iOS
+        run: cd src/ui/flutter_app; flutter build ios -v --release --no-codesign
+
+      # Archive ipa
+      - name: Archive ipa
+        uses: actions/upload-artifact@v3
+        with:
+          name: ios-app-release
+          path: src/ui/flutter_app/build/ios/iphoneos/Runner.app
