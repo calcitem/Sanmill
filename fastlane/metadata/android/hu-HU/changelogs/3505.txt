@@ -1,0 +1,3 @@
+v3.5.3
+
+Ez a frissítés különféle fejlesztéseket és hibajavításokat tartalmaz az alkalmazás jobbá tétele érdekében.

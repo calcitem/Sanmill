@@ -1,0 +1,3 @@
+v3.5.2
+
+Melhore a tradução Schweizerdeutsch.
