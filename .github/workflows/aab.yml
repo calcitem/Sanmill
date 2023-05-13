@@ -1,0 +1,80 @@
+name: AAB
+
+on:
+  push:
+    branches: [release]
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    name: Lint flutter code
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.10.0'
+    - run: bash -x ./flutter-init.sh
+    - run: cp -f ./src/ui/flutter_app/analysis_options.yaml ./
+    - name: Analyze Flutter
+      uses: ValentinVignal/action-dart-analyze@v0.14
+      with:
+        fail-on: 'format'
+        working-directory: src/ui/flutter_app
+
+  build:
+    runs-on: ubuntu-latest
+    needs: linter
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11.0.16+101'
+      - run: echo $SIGNING_KEY | base64 -d > src/ui/flutter_app/android/app/key.jks
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.10.0'
+
+      - name: Export environment valuables
+        run: export
+
+      - name: Create App version
+        run: git fetch --tags; git tag; git log -n1; bash -x ./version.sh
+
+      - name: Print Flutter SDK version
+        run: flutter --version
+
+      - name: Install dependencies
+        run: bash -x ./flutter-init.sh
+
+
+      # Build
+      - name: Build apk
+        run: cd src/ui/flutter_app; rm android/app/build.gradle; mv android/app/build.gradle_github android/app/build.gradle; flutter build apk -v; flutter build appbundle -v
+        env:
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          ALIAS: ${{ secrets.ALIAS }}
+          KEY_PATH: key.jks
+
+      # Archive apk
+      - name: Archive apk
+        uses: actions/upload-artifact@v3
+        with:
+          name: sanmill-flutter-apk-release
+          path: src/ui/flutter_app/build/app/outputs/flutter-apk/app-release.apk
+
+      # Archive aab
+      - name: Archive aab
+        uses: actions/upload-artifact@v3
+        with:
+          name: sanmill-flutter-aab-release
+          path: src/ui/flutter_app/build/app/outputs/bundle/release/app-release.aab
