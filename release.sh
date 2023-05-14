@@ -6,7 +6,6 @@ SNAP_DESKTOP_FILE=snap/gui/mill.desktop
 QT_RC_FILE=src/ui/qt/mill-pro.rc
 
 EN_CHANGLOG_DIR=fastlane/metadata/android/en-US/changelogs
-DE_CHANGLOG_DIR=fastlane/metadata/android/de-DE/changelogs
 ZH_CHANGLOG_DIR=fastlane/metadata/android/zh-CN/changelogs
 
 SED=sed
@@ -110,17 +109,14 @@ echo "v$NEW_VERSION" >> ${BUILD_NUMBER}.txt
 echo >> ${BUILD_NUMBER}.txt
 
 cp ${BUILD_NUMBER}.txt $EN_CHANGLOG_DIR
-cp ${BUILD_NUMBER}.txt $DE_CHANGLOG_DIR
 cp ${BUILD_NUMBER}.txt $ZH_CHANGLOG_DIR
 rm -f ${BUILD_NUMBER}.txt
 
 echo "This update includes various improvements and bug fixes to make the app better for you." >> $EN_CHANGLOG_DIR/${BUILD_NUMBER}.txt
-echo "Dieses Update enthält verschiedene Verbesserungen und Fehlerbehebungen, um die App für Sie zu verbessern." >> $DE_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 echo "此更新包括各种改进和错误修复，以使本 App 更好用。" >> $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 
 
 $EDITOR $EN_CHANGLOG_DIR/${BUILD_NUMBER}.txt
-$EDITOR $DE_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 $EDITOR $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
 
 # Git commit
