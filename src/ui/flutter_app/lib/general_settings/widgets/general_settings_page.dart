@@ -80,7 +80,7 @@ class GeneralSettingsPage extends StatelessWidget {
 
   void _setAlgorithm(BuildContext context, GeneralSettings generalSettings) {
     void callback(SearchAlgorithm? searchAlgorithm) {
-       DB().generalSettings =
+      DB().generalSettings =
           generalSettings.copyWith(searchAlgorithm: searchAlgorithm);
 
       switch (searchAlgorithm) {
