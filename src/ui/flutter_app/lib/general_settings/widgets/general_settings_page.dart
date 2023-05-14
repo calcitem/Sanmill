@@ -80,9 +80,7 @@ class GeneralSettingsPage extends StatelessWidget {
 
   void _setAlgorithm(BuildContext context, GeneralSettings generalSettings) {
     void callback(SearchAlgorithm? searchAlgorithm) {
-      Navigator.pop(context);
-
-      DB().generalSettings =
+       DB().generalSettings =
           generalSettings.copyWith(searchAlgorithm: searchAlgorithm);
 
       switch (searchAlgorithm) {
@@ -107,6 +105,8 @@ class GeneralSettingsPage extends StatelessWidget {
       }
 
       logger.v("$_logTag algorithm = $searchAlgorithm");
+
+      Navigator.pop(context);
     }
 
     showModalBottomSheet(

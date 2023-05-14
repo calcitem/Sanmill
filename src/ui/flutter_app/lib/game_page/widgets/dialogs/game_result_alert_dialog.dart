@@ -83,12 +83,12 @@ class GameResultAlertDialog extends StatelessWidget {
               "[config] skillLevel: ${DB().generalSettings.skillLevel}",
             );
 
-            Navigator.pop(context);
             GameController().reset(force: true);
             GameController()
                 .headerTipNotifier
                 .showTip(S.of(context).gameStarted);
             GameController().headerIconsNotifier.showIcons();
+            Navigator.pop(context);
           },
         ),
         TextButton(
@@ -97,12 +97,12 @@ class GameResultAlertDialog extends StatelessWidget {
             textScaleFactor: DB().displaySettings.fontScale,
           ),
           onPressed: () {
-            Navigator.pop(context);
             GameController().reset(force: true);
             GameController()
                 .headerTipNotifier
                 .showTip(S.of(context).gameStarted);
             GameController().headerIconsNotifier.showIcons();
+            Navigator.pop(context);
           },
         ),
         TextButton(
@@ -121,12 +121,12 @@ class GameResultAlertDialog extends StatelessWidget {
             textScaleFactor: DB().displaySettings.fontScale,
           ),
           onPressed: () {
-            Navigator.pop(context);
             GameController().reset(force: true);
             GameController()
                 .headerTipNotifier
                 .showTip(S.of(context).gameStarted);
             GameController().headerIconsNotifier.showIcons();
+            Navigator.pop(context);
           },
         ),
         TextButton(

@@ -175,15 +175,15 @@ class _InfoDialog extends StatelessWidget {
                     textScaleFactor: DB().displaySettings.fontScale,
                   ),
                   onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-
                     Clipboard.setData(
                       ClipboardData(text: content),
                     );
 
                     rootScaffoldMessengerKey.currentState!
                         .showSnackBarClear(S.of(context).done);
+
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                 );
 

@@ -27,24 +27,24 @@ class ImportService {
 
   /// Exports the game to the devices clipboard.
   static Future<void> exportGame(BuildContext context) async {
-    Navigator.pop(context);
-
     await Clipboard.setData(
       ClipboardData(text: GameController().gameRecorder.moveHistoryText),
     );
 
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear(S.of(context).moveHistoryCopied);
+
+    Navigator.pop(context);
   }
 
   /// Tries to import the game saved in the device's clipboard.
   static Future<void> importGame(BuildContext context) async {
-    Navigator.pop(context);
     rootScaffoldMessengerKey.currentState!.clearSnackBars();
 
     final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
 
     if (data?.text == null) {
+      Navigator.pop(context);
       return;
     }
 
@@ -54,6 +54,7 @@ class ImportService {
       final String tip = S.of(context).cannotImport(data!.text!);
       GameController().headerTipNotifier.showTip(tip);
       //MillController().animationController.forward();
+      Navigator.pop(context);
       return;
     }
 
@@ -68,6 +69,8 @@ class ImportService {
       GameController().headerTipNotifier.showTip(tip);
       HistoryNavigator.importFailedStr = "";
     }
+
+    Navigator.pop(context);
   }
 
   static String _wmdNotationToMoveString(String wmd) {

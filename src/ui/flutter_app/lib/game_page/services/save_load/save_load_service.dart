@@ -75,16 +75,16 @@ class LoadService {
 
     final String strGameSavedTo = S.of(context).gameSavedTo;
 
-    Navigator.pop(context);
-
     if (!(GameController().gameRecorder.hasPrevious == true ||
         GameController().isPositionSetup == true)) {
+      Navigator.pop(context);
       return;
     }
 
     final String? filename = await getFilePath(context);
 
     if (filename == null) {
+      Navigator.pop(context);
       return;
     }
 
@@ -95,6 +95,8 @@ class LoadService {
 
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear("$strGameSavedTo $filename");
+
+    Navigator.pop(context);
   }
 
   /// Read the game from the file.

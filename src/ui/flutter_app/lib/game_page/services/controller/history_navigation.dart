@@ -39,13 +39,12 @@ class HistoryNavigator {
   }) async {
     assert(navMode != HistoryNavMode.takeBackN || number != null);
 
-    if (pop) {
-      Navigator.pop(context);
-    }
-
     if (GameController().isEngineInDelay == true) {
       rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).aiIsDelaying);
+      if (pop) {
+        Navigator.pop(context);
+      }
       return const HistoryOK();
     }
 
@@ -65,6 +64,10 @@ class HistoryNavigator {
       logger.i(
         "$_logTag Is going to history, ignore Take Back button press.",
       );
+
+      if (pop) {
+        Navigator.pop(context);
+      }
 
       return const HistoryOK();
     }
@@ -104,6 +107,10 @@ class HistoryNavigator {
     await navMode.gotoHistoryPlaySound();
 
     _isGoingToHistory = false;
+
+    if (pop) {
+      Navigator.pop(context);
+    }
 
     return resp;
   }

@@ -226,13 +226,13 @@ class _VersionDialog extends StatelessWidget {
             textScaleFactor: DB().displaySettings.fontScale,
           ),
           onPressed: () {
-            Navigator.pop(context);
-
             showDialog(
               context: context,
               barrierDismissible: true,
               builder: (_) => const FlutterVersionAlert(),
             );
+
+            Navigator.pop(context);
           },
         ),
         TextButton(

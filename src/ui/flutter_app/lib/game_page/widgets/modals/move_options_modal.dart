@@ -22,12 +22,13 @@ class _MoveOptionsModal extends StatelessWidget {
   final BuildContext mainContext;
 
   void _showMoveList(BuildContext context) {
-    Navigator.pop(context);
     showDialog(
       context: context,
       barrierDismissible: true,
       builder: (_) => const _MoveListDialog(),
     );
+
+    Navigator.pop(context);
   }
 
   @override

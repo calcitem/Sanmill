@@ -90,8 +90,8 @@ class PrivacyPolicyDialog extends StatelessWidget {
           child: Text(S.of(context).accept),
           onPressed: () {
             _acceptPrivacyPolicy();
-            Navigator.pop(context);
             onConfirm?.call();
+            Navigator.pop(context);
           },
         ),
         if (!kIsWeb && Platform.isAndroid)

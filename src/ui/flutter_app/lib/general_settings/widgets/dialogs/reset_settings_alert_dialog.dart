@@ -22,8 +22,6 @@ class _ResetSettingsAlertDialog extends StatelessWidget {
   void _cancel(BuildContext context) => Navigator.pop(context);
 
   Future<void> _restore(BuildContext context) async {
-    Navigator.pop(context);
-
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear(S.of(context).reopenToTakeEffect);
 
@@ -31,6 +29,8 @@ class _ResetSettingsAlertDialog extends StatelessWidget {
     await DB.reset();
 
     GameController().reset(force: true);
+
+    Navigator.pop(context);
   }
 
   @override

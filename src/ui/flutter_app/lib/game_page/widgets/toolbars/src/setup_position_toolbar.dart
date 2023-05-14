@@ -448,7 +448,6 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     void callback(int? placed) {
       newPlaced = placed!;
       updateSetupPositionPiecesCount();
-      Navigator.pop(context);
       setState(() {});
       GameController().headerTipNotifier.showTip(
           S.of(context).hasPlacedPieceCount(newPlaced),
@@ -457,6 +456,8 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       rootScaffoldMessengerKey.currentState!.showSnackBar(CustomSnackBar(
           _infoText(context),
           duration: const Duration(seconds: 6)));
+
+      Navigator.pop(context);
     }
 
     if (newPhase != Phase.placing) {
