@@ -121,9 +121,9 @@ class AppearanceSettingsPage extends StatelessWidget {
 
   void _setTheme(BuildContext context, ColorSettings colorSettings) {
     void callback(ColorTheme? theme) {
+      Navigator.pop(context);
 
       if (theme == ColorTheme.current) {
-        Navigator.pop(context);
         return;
       }
 
@@ -156,8 +156,6 @@ class AppearanceSettingsPage extends StatelessWidget {
         onChanged: callback,
       ),
     );
-
-    Navigator.pop(context);
   }
 
   Widget _buildColorSettings(BuildContext context, Box<ColorSettings> box, _) {
