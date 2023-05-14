@@ -25,12 +25,12 @@ class _ResetSettingsAlertDialog extends StatelessWidget {
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear(S.of(context).reopenToTakeEffect);
 
+    Navigator.pop(context);
+
     // TODO: Seems to need to close and reopen the program for it to work.
     await DB.reset();
 
     GameController().reset(force: true);
-
-    Navigator.pop(context);
   }
 
   @override
