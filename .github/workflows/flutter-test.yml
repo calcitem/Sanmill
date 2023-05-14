@@ -2,18 +2,11 @@ name: Flutter Test
 
 on:
   push:
-    branches: [release]
+    branches: [test]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    # Note that this workflow uses the latest stable version of the Dart SDK.
-    # Docker images for other release channels - like dev and beta - are also
-    # available. See https://hub.docker.com/r/google/dart/ for the available
-    # images.
-    #container:
-    #  image:  google/dart:latest
 
     steps:
       - uses: actions/checkout@v3
@@ -26,7 +19,7 @@ jobs:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.7.12'
+          flutter-version: '3.10.0'
 
       - name: Export environment valuables
         run: export
@@ -39,16 +32,6 @@ jobs:
 
       - name: Install dependencies
         run: bash -x ./flutter-init.sh
-
-      # Uncomment this step to verify the use of 'dart format' on each commit.
-      # - name: Verify formatting
-      #   run: dart format --output=none --set-exit-if-changed .
-
-      # Your project will need to have tests in test/ and a dependency on
-      # package:test for this step to succeed. Note that Flutter projects will
-      # want to change this to 'flutter test'.
-      #- name: Run tests
-      #  run: dart test
 
       # Build
       - name: Build apk
