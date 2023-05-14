@@ -86,7 +86,7 @@
   "@duration": {},
   "noTimeLimitForThinking": "AI 思考時間を 0 に設定すると、思考の時間制限がなくなります。",
   "@noTimeLimitForThinking": {},
-  "appName": "工場",
+  "appName": "モリス",
   "@appName": {
     "description": "The app name"
   },
