@@ -90,7 +90,7 @@ Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("mk"): SMk().languageName, // Macedonian
   const Locale("ms"): SMs().languageName, // Malay
   const Locale("nl"): SNl().languageName, // Dutch
-  const Locale("nb"): SNb().languageName, // Norwegian Bokmål
+  const Locale("nb"): SNb().languageName, // Norwegian
   const Locale("pl"): SPl().languageName, // Polish
   const Locale("pt"): SPt().languageName, // Portuguese
   const Locale("ro"): SRo().languageName, // Romanian
