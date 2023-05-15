@@ -1,0 +1,3 @@
+v3.5.6
+
+Risolto il problema dell'impossibilità di importare l'elenco delle mosse al primo avvio dopo l'installazione.
