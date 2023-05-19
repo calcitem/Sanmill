@@ -246,11 +246,13 @@ int perfect_init()
 {
     hModule = LoadLibrary("MalomAPI.dll");
     if (hModule == NULL) {
+        assert(0);
         return -1;
     }
 
     GetBestMove = (GETBESTMOVE_FUNC)GetProcAddress(hModule, "GetBestMoveNoException");
     if (GetBestMove == NULL) {
+        assert(0);
         return -1;
     }
 
@@ -350,20 +352,29 @@ Move perfect_search(Position *pos)
     // The black stones on the board.
     int blackBitboard = 0;
 
+    for (int i = 0; i < 24; i++) {
+        auto c = color_of(pos->board[from_perfect_sq(i)]);
+        if (c == WHITE) {
+            whiteBitboard |= 1 << i;
+        } else if (c == BLACK) {
+            blackBitboard |= 1 << i;
+        }
+    }
+
     // The number of stones the white player can still place on the board.
-    int whiteStonesToPlace = 0;
+    int whiteStonesToPlace = pos->piece_in_hand_count(WHITE);
 
     // The number of stones the black player can still place on the board.
-    int blackStonesToPlace = 0;
+    int blackStonesToPlace = pos->piece_in_hand_count(BLACK);
 
     // 0 if white is to move, 1 if black is to move.
-    int playerToMove = 0;
+    int playerToMove = pos->side_to_move() == WHITE ? 0 : 1;
 
     // Always set this to false if you want to handle
     // mill-closing and stone-removal as a single move.
     // If you set it to true, it is assumed that a mill was just closed
     // and only the stone to be removed is returned.
-    bool onlyStoneTaking = 0;
+    bool onlyStoneTaking = (pos->piece_to_remove_count(pos->side_to_move()) > 0);
 
     // Return value:
     // The move is returned as a bitboard,
