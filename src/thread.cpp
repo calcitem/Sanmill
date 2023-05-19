@@ -137,7 +137,7 @@ void Thread::idle_loop()
 
 #if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(MALOM_PERFECT_AI)
         if (gameOptions.getPerfectAiEnabled()) {
-            bestMove = perfect_search();
+            bestMove = perfect_search(rootPos);
             assert(bestMove != MOVE_NONE);
             strCommand = next_move();
             if (strCommand != "" && strCommand != "error!") {
