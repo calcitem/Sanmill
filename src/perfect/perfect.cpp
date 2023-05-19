@@ -8,11 +8,13 @@
 
 #include "config.h"
 
-#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(MALOM_PERFECT_AI)
 
 #include "misc.h"
 #include "perfect.h"
 #include "position.h"
+
+#if 0
 
 // Perfect AI
 Mill *mill = nullptr;
@@ -229,4 +231,28 @@ bool perfect_command(const char *cmd)
 // mill->getWinner() == 0
 // mill->getCurPlayer() == fieldStruct::playerTwo
 
-#endif // MADWEASEL_MUEHLE_PERFECT_AI
+#else
+
+int perfect_exit()
+{
+    return 0;
+}
+
+int perfect_reset()
+{
+    return 0;
+}
+
+Move perfect_search()
+{
+    return MOVE_NONE;
+}
+
+bool perfect_command(const char *cmd)
+{
+    return true;
+}
+
+#endif
+
+#endif // MADWEASEL_MUEHLE_PERFECT_AI || MALOM_PERFECT_AI

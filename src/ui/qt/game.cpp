@@ -39,7 +39,7 @@
 #include "option.h"
 #include "server.h"
 
-#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(MALOM_PERFECT_AI)
 #include "perfect/perfect.h"
 #endif
 
@@ -248,7 +248,7 @@ void Game::gameReset()
         moveHistory.emplace_back(bak);
     }
 
-#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(MALOM_PERFECT_AI)
     if (gameOptions.getPerfectAiEnabled()) {
         perfect_reset();
     }
@@ -709,7 +709,7 @@ void Game::setPerfectAi(bool enabled) const
     gameOptions.setPerfectAiEnabled(enabled);
     settings->setValue("Options/PerfectAI", enabled);
 
-#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(MALOM_PERFECT_AI)
     if (enabled) {
         perfect_reset();
     } else {
@@ -1039,7 +1039,7 @@ bool Game::actionPiece(QPointF p)
     }
 
     if (result) {
-#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(MALOM_PERFECT_AI)
         if (gameOptions.getPerfectAiEnabled()) {
             perfect_command(position.record);
         }

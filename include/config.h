@@ -64,10 +64,14 @@
 #ifdef _MSC_VER
 #ifndef __clang__
 // #define MADWEASEL_MUEHLE_PERFECT_AI
+#define MALOM_PERFECT_AI
 #endif
 #ifdef MADWEASEL_MUEHLE_PERFECT_AI
 #define MADWEASEL_MUEHLE_RULE
 #define PERFECT_AI_DATABASE_DIR "D:\\Muehle\\Muehle"
+#endif
+#if defined(MALOM_PERFECT_AI)
+#define PERFECT_AI_DATABASE_DIR "D:\\Malom"
 #endif
 #endif
 #endif

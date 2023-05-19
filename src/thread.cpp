@@ -22,7 +22,7 @@
 #include "thread.h"
 #include "uci.h"
 
-#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(MALOM_PERFECT_AI)
 #include "perfect/perfect.h"
 #endif
 
@@ -135,7 +135,7 @@ void Thread::idle_loop()
             continue;
         }
 
-#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(MALOM_PERFECT_AI)
         if (gameOptions.getPerfectAiEnabled()) {
             bestMove = perfect_search();
             assert(bestMove != MOVE_NONE);
@@ -144,7 +144,7 @@ void Thread::idle_loop()
                 emitCommand();
             }
         } else {
-#endif // MADWEASEL_MUEHLE_PERFECT_AI
+#endif // MADWEASEL_MUEHLE_PERFECT_AI || MALOM_PERFECT_AI
 #ifdef OPENING_BOOK
             // gameOptions.getOpeningBook()
             if (!openingBookDeque.empty()) {
@@ -174,9 +174,9 @@ void Thread::idle_loop()
 #ifdef OPENING_BOOK
             }
 #endif
-#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(MALOM_PERFECT_AI)
         }
-#endif // MADWEASEL_MUEHLE_PERFECT_AI
+#endif // MADWEASEL_MUEHLE_PERFECT_AI || MALOM_PERFECT_AI
     }
 }
 
