@@ -1,0 +1,6 @@
+#ifndef MALOM_API_H_INCLUDED
+#define MALOM_API_H_INCLUDED
+
+
+
+#endif // MALOM_API_H_INCLUDED
