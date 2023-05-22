@@ -1,0 +1,3 @@
+v3.5.8
+
+Correction du problème de l'écran grisé lorsqu'une partie se termine par un match nul.
