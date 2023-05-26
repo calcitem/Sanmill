@@ -79,7 +79,12 @@ class SanmillApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DB(PlatformDispatcher.instance.views.first.platformDispatcher.locale);
+    DB(View.of(context)
+        .platformDispatcher
+        .views
+        .first
+        .platformDispatcher
+        .locale);
 
     if (kIsWeb) {
       Locale? locale;

@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 
 class UrlHelper {
@@ -74,15 +72,19 @@ class Constants {
       wikiURL.fromSubPath("Translation-and-Localization");
   static final UrlHelper thanksURL = wikiURL.fromSubPath("thanks");
 
-  static final double _windowWidth =
-      PlatformDispatcher.instance.views.first.physicalSize.width;
-  static final double _windowHeight =
-      PlatformDispatcher.instance.views.first.physicalSize.height;
-  static final double windowAspectRatio = _windowHeight / _windowWidth;
+  static double _getWindowHeight(BuildContext context) {
+    return View.of(context).platformDispatcher.views.first.physicalSize.height;
+  }
 
   static const int screenSizeThreshold = 800;
-  static bool get isSmallScreen => _windowHeight <= screenSizeThreshold;
-  static bool get isLargeScreen => !isSmallScreen;
+
+  static bool isSmallScreen(BuildContext context) {
+    return _getWindowHeight(context) <= screenSizeThreshold;
+  }
+
+  static bool isLargeScreen(BuildContext context) {
+    return !isSmallScreen(context);
+  }
 
   static const int highestSkillLevel = 30;
 }

@@ -275,7 +275,8 @@ class _GameState extends State<_Game> {
     return <Widget>[
       Expanded(child: takeBackAllButton),
       Expanded(child: takeBackButton),
-      if (Constants.isSmallScreen == false) Expanded(child: moveNowButton),
+      if (Constants.isSmallScreen(context) == false)
+        Expanded(child: moveNowButton),
       Expanded(child: stepForwardButton),
       Expanded(child: stepForwardAllButton),
     ];
@@ -312,7 +313,7 @@ class _GameState extends State<_Game> {
                 if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
                         GameController().gameInstance.gameMode ==
                             GameMode.setupPosition) &&
-                    !(Constants.isSmallScreen == true &&
+                    !(Constants.isSmallScreen(context) == true &&
                         DB().ruleSettings.piecesCount > 9))
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -372,7 +373,7 @@ class _GameState extends State<_Game> {
                 if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
                         GameController().gameInstance.gameMode ==
                             GameMode.setupPosition) &&
-                    !(Constants.isSmallScreen == true &&
+                    !(Constants.isSmallScreen(context) == true &&
                         DB().ruleSettings.piecesCount > 9))
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

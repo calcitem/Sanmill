@@ -15,9 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /// Although marked as a library this package is tightly integrated into the app
-library custom_drawer;
 
-import 'dart:ui';
+library custom_drawer;
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:extended_sliver/extended_sliver.dart';

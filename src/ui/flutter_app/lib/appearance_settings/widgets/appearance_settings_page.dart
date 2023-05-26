@@ -306,7 +306,7 @@ class AppearanceSettingsPage extends StatelessWidget {
               displaySettings.copyWith(isPieceCountInHandShown: val),
           titleString: S.of(context).isPieceCountInHandShown,
         ),
-        if (!(Constants.isSmallScreen == true &&
+        if (!(Constants.isSmallScreen(context) == true &&
             DB().ruleSettings.piecesCount > 9))
           SettingsListTile.switchTile(
             value: displaySettings.isUnplacedAndRemovedPiecesShown,
@@ -382,7 +382,7 @@ class AppearanceSettingsPage extends StatelessWidget {
               valueListenable: DB().listenDisplaySettings,
               builder: _buildDisplaySettings,
             ),
-            if (Constants.isSmallScreen == false)
+            if (Constants.isSmallScreen(context) == false)
               ValueListenableBuilder<Box<ColorSettings>>(
                 valueListenable: DB().listenColorSettings,
                 builder: _buildColorSettings,
