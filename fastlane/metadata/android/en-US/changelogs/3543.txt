@@ -1,0 +1,3 @@
+v3.5.9
+
+Fixed the issue where the 'Move Now' button on the Navigation Toolbar disappears when switching to the 'Setup Position' page and then switching back.
