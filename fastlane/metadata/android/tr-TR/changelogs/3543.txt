@@ -1,0 +1,3 @@
+v3.5.9
+
+Gezinme Araç Çubuğundaki 'Şimdi Taşı' düğmesinin 'Kurulum Konumu' sayfasına geçildiğinde ve ardından geri dönüldüğünde kaybolma sorunu düzeltildi.

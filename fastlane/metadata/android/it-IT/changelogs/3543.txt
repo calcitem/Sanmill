@@ -1,0 +1,3 @@
+v3.5.9
+
+Risolto il problema per cui il pulsante "Sposta ora" sulla barra degli strumenti di navigazione scompare quando si passa alla pagina "Imposta posizione" e poi si torna indietro.

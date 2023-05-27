@@ -1,0 +1,3 @@
+v3.5.9
+
+Naprawiono problem polegający na tym, że przycisk „Przenieś teraz” na pasku narzędzi nawigacji znikał po przełączeniu na stronę „Pozycja ustawień”, a następnie przełączeniu z powrotem.
