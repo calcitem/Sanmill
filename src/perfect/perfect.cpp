@@ -1,10 +1,17 @@
-/*********************************************************************
-    MiniMaxAI.cpp
-    Copyright (c) Thomas Weber. All rights reserved.
-    Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
-    Licensed under the GPLv3 License.
-    https://github.com/madweasel/Muehle
-\*********************************************************************/
+// Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
+//
+// Sanmill is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Sanmill is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "config.h"
 
@@ -247,10 +254,10 @@ bool perfect_command(const char *cmd)
 
 #else
 
-const LPCWSTR malomApiDllPath = L"E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted\\MalomAPI.dll";
-//const LPCWSTR malomApiDllPath = L"D:"
-//                                L"\\Repo\\malom\\MalomAPI\\bin\\Debug\\MalomAPI"
-//                                L".dll";
+//const LPCWSTR malomApiDllPath = L"E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted\\MalomAPI.dll";
+const LPCWSTR malomApiDllPath = L"D:"
+                                L"\\Repo\\malom\\MalomAPI\\bin\\Debug\\MalomAPI"
+                                L".dll";
 
 ICLRRuntimeHost *pHost = NULL;
 
@@ -258,6 +265,8 @@ ICLRRuntimeHost *pHost = NULL;
 
 HMODULE hModule = NULL;
 //GETBESTMOVE_FUNC GetBestMove = NULL;
+
+static Move remove_move = MOVE_NONE;
 
 void check_hresult(HRESULT hr, const char *operation)
 {
@@ -318,6 +327,7 @@ int GetBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
 
 int perfect_init()
 {
+    remove_move = MOVE_NONE;
     start_dotnet();
 
     return 0;
@@ -325,6 +335,7 @@ int perfect_init()
 
 int perfect_exit()
 {
+    remove_move = MOVE_NONE;
     stop_dotnet();
 
     return 0;
@@ -410,10 +421,10 @@ int countBits(int n)
     return count;
 }
 
-std::vector<int> convertBitboardMove(int whiteBitboard, int blackBitboard,
+std::vector<Move> convertBitboardMove(int whiteBitboard, int blackBitboard,
                                      int playerToMove, int moveBitboard)
 {
-    std::vector<int> moves;
+    std::vector<Move> moves;
     int usBitboard = playerToMove == 0 ? whiteBitboard : blackBitboard;
     int themBitboard = playerToMove == 1 ? whiteBitboard : blackBitboard;
     int count = countBits(moveBitboard);
@@ -434,12 +445,12 @@ std::vector<int> convertBitboardMove(int whiteBitboard, int blackBitboard,
             if (count == 1) {
                 if (noPiece) {
                     // The stone is placed here
-                    moves.push_back(from_perfect_sq(i));
+                    moves.push_back(Move(from_perfect_sq(i)));
                     return moves;
                 } else if (hasPiece) {
                     if (themHasPiece) {
                         // Only remove their piece
-                        moves.push_back(-from_perfect_sq(i));
+                        moves.push_back(Move(-from_perfect_sq(i)));
                         return moves;
                     } else if (usHasPiece) {
                         // Only remove our piece, not move
@@ -469,12 +480,12 @@ std::vector<int> convertBitboardMove(int whiteBitboard, int blackBitboard,
             moves.push_back(make_move(from_perfect_sq(from), from_perfect_sq(to)));
         } else if (from == -1 && to != -1 && removed != -1) {
             // Place and remove piece
-            moves.push_back(from_perfect_sq(to));
-            moves.push_back(-from_perfect_sq(removed));
+            moves.push_back(Move(from_perfect_sq(to)));
+            moves.push_back(Move(-from_perfect_sq(removed)));
         }
     } else if (count == 3) {
         moves.push_back(make_move(from_perfect_sq(from), from_perfect_sq(to)));
-        moves.push_back(-from_perfect_sq(removed));
+        moves.push_back(Move(-from_perfect_sq(removed)));
     } else {
         assert(false);
     }
@@ -484,6 +495,12 @@ std::vector<int> convertBitboardMove(int whiteBitboard, int blackBitboard,
 
 Move perfect_search(Position *pos)
 {
+    if (remove_move != MOVE_NONE) {
+        Move ret = remove_move;
+        remove_move = MOVE_NONE;
+        return ret;
+    }
+
     // The white stones on the board, encoded as a bitboard:
     // Each of the first 24 bits corresponds to one place on the board.
     // For the mapping between bits, see Bitboard.png.
@@ -535,9 +552,12 @@ Move perfect_search(Position *pos)
                                    whiteStonesToPlace, blackStonesToPlace,
                                    playerToMove, onlyStoneTaking);
 
-    std::vector<int> moves = convertBitboardMove(whiteBitboard, blackBitboard,
+    std::vector<Move> moves = convertBitboardMove(whiteBitboard, blackBitboard,
                                                  playerToMove, moveBitboard);
 
+    if (moves.size() == 2) {
+        remove_move = moves.at(1);
+    }
 
     return Move(moves.at(0));
 }
