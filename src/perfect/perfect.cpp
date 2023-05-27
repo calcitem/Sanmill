@@ -421,7 +421,8 @@ std::vector<int> convertBitboardMove(int whiteBitboard, int blackBitboard,
                     if ((playerBitboard & (1 << j)) &&
                         !(moveBitboard & (1 << j))) {
                         // Combine the new and old position to a single move
-                        moves.push_back((j << 8) + i);
+                        moves.push_back((from_perfect_sq(j) << 8) +
+                                        from_perfect_sq(i));
                         break;
                     }
                 }
@@ -429,7 +430,7 @@ std::vector<int> convertBitboardMove(int whiteBitboard, int blackBitboard,
                 // If no such position is found, it means the stone is placed
                 // here
                 if (moves.empty() || (moves.back() & 0xFF) != i) {
-                    moves.push_back(i);
+                    moves.push_back(from_perfect_sq(i));
                 }
             }
             // If a stone disappears, it's either taken or moved away
@@ -445,7 +446,7 @@ std::vector<int> convertBitboardMove(int whiteBitboard, int blackBitboard,
 
                 // If no such position is found, it means the stone is taken
                 if (moves.empty() || (moves.back() >> 8) != i) {
-                    moves.push_back(-i);
+                    moves.push_back(-from_perfect_sq(i));
                 }
             }
         }
@@ -511,7 +512,7 @@ Move perfect_search(Position *pos)
                                                  playerToMove, moveBitboard);
 
 
-    return MOVE_NONE;
+    return Move(moves.at(0));
 }
 
 #if 0
