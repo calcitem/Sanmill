@@ -400,58 +400,85 @@ unsigned to_perfect_sq(Square sq)
     return map[sq];
 }
 
+int countBits(int n)
+{
+    int count = 0;
+    while (n) {
+        n &= (n - 1);
+        count++;
+    }
+    return count;
+}
+
 std::vector<int> convertBitboardMove(int whiteBitboard, int blackBitboard,
                                      int playerToMove, int moveBitboard)
 {
     std::vector<int> moves;
-    int playerBitboard = playerToMove == 0 ? whiteBitboard : blackBitboard;
+    int usBitboard = playerToMove == 0 ? whiteBitboard : blackBitboard;
+    int themBitboard = playerToMove == 1 ? whiteBitboard : blackBitboard;
+    int count = countBits(moveBitboard);
+
+    int from = -1;
+    int to = -1;
+    int removed = -1;
 
     for (int i = 0; i < 24; ++i) {
         int mask = 1 << i;
-        bool oldState = playerBitboard & mask;
-        bool newState = moveBitboard & mask;
+        bool usHasPiece = usBitboard & mask;
+        bool themHasPiece = themBitboard & mask;
+        bool noPiece = !usHasPiece && !themHasPiece;
+        bool hasPiece = !noPiece;
+        bool changed = moveBitboard & mask;   
 
-        // Check if there is a change in the state of this position
-        if (oldState != newState) {
-            // If a stone appears, it's either placed or moved here
-            if (newState) {
-                // The stone is moved here if there is another position where a
-                // stone disappeared
-                for (int j = 0; j < 24; ++j) {
-                    if ((playerBitboard & (1 << j)) &&
-                        !(moveBitboard & (1 << j))) {
-                        // Combine the new and old position to a single move
-                        moves.push_back((from_perfect_sq(j) << 8) +
-                                        from_perfect_sq(i));
-                        break;
-                    }
-                }
-
-                // If no such position is found, it means the stone is placed
-                // here
-                if (moves.empty() || (moves.back() & 0xFF) != i) {
+        if (changed) {
+            if (count == 1) {
+                if (noPiece) {
+                    // The stone is placed here
                     moves.push_back(from_perfect_sq(i));
-                }
-            }
-            // If a stone disappears, it's either taken or moved away
-            else {
-                // The stone is moved away if there is another position where a
-                // stone appeared
-                for (int j = 0; j < 24; ++j) {
-                    if (!(playerBitboard & (1 << j)) &&
-                        (moveBitboard & (1 << j))) {
-                        break;
+                    return moves;
+                } else if (hasPiece) {
+                    if (themHasPiece) {
+                        // Only remove their piece
+                        moves.push_back(-from_perfect_sq(i));
+                        return moves;
+                    } else if (usHasPiece) {
+                        // Only remove our piece, not move
+                        assert(false);
                     }
                 }
-
-                // If no such position is found, it means the stone is taken
-                if (moves.empty() || (moves.back() >> 8) != i) {
-                    moves.push_back(-from_perfect_sq(i));
+            } else if (count == 2 || count == 3) {
+                if (hasPiece) {
+                    if (usHasPiece) {
+                        from = i;
+                    } else if (themHasPiece) {
+                        // Remove their piece
+                        removed = i;
+                    }
+                } else if (noPiece) {
+                    to = i;
                 }
+            } else {
+                assert(false);
             }
         }
     }
 
+    if (count == 2) {
+        if (from != -1 && to != -1 && removed == -1) {
+            // Move
+            moves.push_back(make_move(from_perfect_sq(from), from_perfect_sq(to)));
+        } else if (from == -1 && to != -1 && removed != -1) {
+            // Place and remove piece
+            moves.push_back(from_perfect_sq(to));
+            moves.push_back(-from_perfect_sq(removed));
+        }
+    } else if (count == 3) {
+        moves.push_back(make_move(from_perfect_sq(from), from_perfect_sq(to)));
+        moves.push_back(-from_perfect_sq(removed));
+    } else {
+        assert(false);
+    }
+    
     return moves;
 }
 
