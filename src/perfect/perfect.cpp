@@ -21,6 +21,8 @@
 #include <cstdio>
 #include <sstream>
 #include <string>
+#include <bitset>
+#include <vector>
 
 #pragma comment(lib, "mscoree.lib")
 
@@ -398,6 +400,60 @@ unsigned to_perfect_sq(Square sq)
     return map[sq];
 }
 
+std::vector<int> convertBitboardMove(int whiteBitboard, int blackBitboard,
+                                     int playerToMove, int moveBitboard)
+{
+    std::vector<int> moves;
+    int playerBitboard = playerToMove == 0 ? whiteBitboard : blackBitboard;
+
+    for (int i = 0; i < 24; ++i) {
+        int mask = 1 << i;
+        bool oldState = playerBitboard & mask;
+        bool newState = moveBitboard & mask;
+
+        // Check if there is a change in the state of this position
+        if (oldState != newState) {
+            // If a stone appears, it's either placed or moved here
+            if (newState) {
+                // The stone is moved here if there is another position where a
+                // stone disappeared
+                for (int j = 0; j < 24; ++j) {
+                    if ((playerBitboard & (1 << j)) &&
+                        !(moveBitboard & (1 << j))) {
+                        // Combine the new and old position to a single move
+                        moves.push_back((j << 8) + i);
+                        break;
+                    }
+                }
+
+                // If no such position is found, it means the stone is placed
+                // here
+                if (moves.empty() || (moves.back() & 0xFF) != i) {
+                    moves.push_back(i);
+                }
+            }
+            // If a stone disappears, it's either taken or moved away
+            else {
+                // The stone is moved away if there is another position where a
+                // stone appeared
+                for (int j = 0; j < 24; ++j) {
+                    if (!(playerBitboard & (1 << j)) &&
+                        (moveBitboard & (1 << j))) {
+                        break;
+                    }
+                }
+
+                // If no such position is found, it means the stone is taken
+                if (moves.empty() || (moves.back() >> 8) != i) {
+                    moves.push_back(-i);
+                }
+            }
+        }
+    }
+
+    return moves;
+}
+
 Move perfect_search(Position *pos)
 {
     // The white stones on the board, encoded as a bitboard:
@@ -447,8 +503,12 @@ Move perfect_search(Position *pos)
     //   and that stone is being slided or jumped to a different place.)
     // If this increases the number of stones the player to move has,
     // then that player will have one less stone to place after the move.
-    int result = GetBestMove(whiteBitboard, blackBitboard, whiteStonesToPlace,
-                             blackStonesToPlace, playerToMove, onlyStoneTaking);
+    int moveBitboard = GetBestMove(whiteBitboard, blackBitboard,
+                                   whiteStonesToPlace, blackStonesToPlace,
+                                   playerToMove, onlyStoneTaking);
+
+    std::vector<int> moves = convertBitboardMove(whiteBitboard, blackBitboard,
+                                                 playerToMove, moveBitboard);
 
 
     return MOVE_NONE;
