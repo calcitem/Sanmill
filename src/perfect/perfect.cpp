@@ -10,11 +10,19 @@
 
 #if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(MALOM_PERFECT_AI)
 
+#define USE_DEPRECATED_CLR_API_WITHOUT_WARNING
+
 #include "misc.h"
 #include "perfect.h"
 #include "position.h"
 
 #include <windows.h>
+#include <mscoree.h>
+#include <cstdio>
+#include <sstream>
+#include <string>
+
+#pragma comment(lib, "mscoree.lib")
 
 typedef int(__cdecl *GETBESTMOVE_FUNC)(int, int, int, int, int, bool);
 
@@ -237,35 +245,85 @@ bool perfect_command(const char *cmd)
 
 #else
 
-typedef int(__cdecl *GETBESTMOVE_FUNC)(int, int, int, int, int, bool);
+const LPCWSTR malomApiDllPath = L"E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted\\MalomAPI.dll";
+//const LPCWSTR malomApiDllPath = L"D:"
+//                                L"\\Repo\\malom\\MalomAPI\\bin\\Debug\\MalomAPI"
+//                                L".dll";
+
+ICLRRuntimeHost *pHost = NULL;
+
+//typedef int(__cdecl *GETBESTMOVE_FUNC)(int, int, int, int, int, bool);
 
 HMODULE hModule = NULL;
-GETBESTMOVE_FUNC GetBestMove = NULL;
+//GETBESTMOVE_FUNC GetBestMove = NULL;
+
+void check_hresult(HRESULT hr, const char *operation)
+{
+    if (hr != S_OK) {
+        fprintf(stderr, "Unknown error during %s, code: 0x%x\n", operation, hr);
+        exit(hr);
+    }
+}
+
+void start_dotnet()
+{
+    if (pHost != nullptr) {
+        return;
+    }
+
+    HRESULT hr = CorBindToRuntimeEx(L"v4.0.30319", L"wks", 0,
+                                    CLSID_CLRRuntimeHost, IID_ICLRRuntimeHost,
+                                    (PVOID *)&pHost);
+    check_hresult(hr, "CorBindToRuntimeEx");
+    hr = pHost->Start();
+    check_hresult(hr, "ICLRRuntimeHost::Start");
+}
+
+void stop_dotnet()
+{
+    if (pHost == nullptr) {
+        return;
+    }
+
+    HRESULT hr = pHost->Stop();
+    check_hresult(hr, "ICLRRuntimeHost::Stop");
+    pHost->Release();
+}
+
+int GetBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
+                int blackStonesToPlace, int playerToMove, bool onlyStoneTaking)
+{
+    std::ostringstream ss;
+    ss << whiteBitboard << " " << blackBitboard << " " << whiteStonesToPlace
+       << " " << blackStonesToPlace << " " << playerToMove << " "
+       << (onlyStoneTaking ? 1 : 0);
+    std::string cppstr = ss.str();
+    std::wstring cppwstr = std::wstring(cppstr.begin(), cppstr.end());
+    LPCWSTR lpcwstr = cppwstr.c_str();
+    DWORD dwRet = 0;
+    HRESULT hr = pHost->ExecuteInDefaultAppDomain(
+        malomApiDllPath, L"MalomAPI.MalomSolutionAccess", L"GetBestMoveStr",
+        lpcwstr, &dwRet);
+    check_hresult(hr, "ICLRRuntimeHost::ExecuteInDefaultAppDomain "
+                      "GetBestMoveStr");
+    if (dwRet == 0) {
+        fprintf(stderr, ".Net exception, see printed above by "
+                        "GetBestMoveStr\n");
+        exit(-1);
+    }
+    return dwRet;
+}
 
 int perfect_init()
 {
-    hModule = LoadLibrary("MalomAPI.dll");
-    if (hModule == NULL) {
-        assert(0);
-        return -1;
-    }
-
-    GetBestMove = (GETBESTMOVE_FUNC)GetProcAddress(hModule, "GetBestMoveNoException");
-    if (GetBestMove == NULL) {
-        assert(0);
-        return -1;
-    }
+    start_dotnet();
 
     return 0;
 }
 
 int perfect_exit()
 {
-    if (hModule != NULL) {
-        FreeLibrary(hModule);
-        hModule = NULL;
-        GetBestMove = NULL;
-    }
+    stop_dotnet();
 
     return 0;
 }

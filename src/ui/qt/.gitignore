@@ -18,3 +18,7 @@ JSON/
 *.vcxproj*
 
 mill-pro
+
+*.secval
+*.statistics
+*.sec2
