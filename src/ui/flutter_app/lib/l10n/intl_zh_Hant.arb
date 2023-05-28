@@ -1383,5 +1383,7 @@
   "darkMystery": "暗谜",
   "@darkMystery": {},
   "whatIsRetrogradeAnalysis": "逆行分析算法使用多值逆行分析從不同的開始局面構建殘局數據庫，然後應用此數據庫優化遊戲玩法。這種方法屬於超強解決方案的範疇。",
-  "@whatIsRetrogradeAnalysis": {}
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "您想查看此算法的用戶指南嗎？",
+  "@viewAlgorithmGuide": {}
 }
