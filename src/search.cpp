@@ -18,6 +18,7 @@
 #include "evaluate.h"
 #include "mcts.h"
 #include "option.h"
+#include "perfect.h"
 #include "thread.h"
 
 using Eval::evaluate;
@@ -161,6 +162,11 @@ int Thread::search()
                 value = MTDF(rootPos, ss, value, i, i, bestMove);
             } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
                 value = monte_carlo_tree_search(rootPos, bestMove);
+            } else if (gameOptions.getAlgorithm() == 4 /* RA */) {
+#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
+                bestMove = perfect_search(rootPos);
+                value = VALUE_ZERO;
+#endif // MADWEASEL_MUEHLE_PERFECT_AI || GABOR_MALOM_PERFECT_AI
             } else {
                 value = qsearch(rootPos, ss, i, i, alpha, beta, bestMove);
             }
@@ -199,6 +205,11 @@ int Thread::search()
         value = MTDF(rootPos, ss, value, originDepth, originDepth, bestMove);
     } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
         value = monte_carlo_tree_search(rootPos, bestMove);
+    } else if (gameOptions.getAlgorithm() == 4 /* RA */) {
+#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
+        bestMove = perfect_search(rootPos);
+        value = VALUE_ZERO;
+#endif // MADWEASEL_MUEHLE_PERFECT_AI || GABOR_MALOM_PERFECT_AI
     } else {
         value = qsearch(rootPos, ss, d, originDepth, alpha, beta, bestMove);
     }
