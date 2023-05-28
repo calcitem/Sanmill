@@ -1382,6 +1382,6 @@
   "@playfulGarden": {},
   "darkMystery": "暗谜",
   "@darkMystery": {},
-  "whatIsRetrogradeAnalysis": "逆行分析算法使用多值逆行分析从不同的开始位置构建残局数据库，然后应用此数据库优化游戏玩法。这种方法属于超强解决方案的范畴。",
+  "whatIsRetrogradeAnalysis": "逆行分析算法使用多值逆行分析从不同的开始局面构建残局数据库，然后应用此数据库优化游戏玩法。这种方法属于超强解决方案的范畴。",
   "@whatIsRetrogradeAnalysis": {}
 }
