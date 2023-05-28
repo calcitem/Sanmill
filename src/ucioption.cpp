@@ -211,7 +211,7 @@ void init(OptionsMap &o)
     o["UCI_Elo"] << Option(1350, 1350, 2850);
 
     o["Shuffling"] << Option(true, on_random_move);
-    o["Algorithm"] << Option(2, 0, 3, on_algorithm);
+    o["Algorithm"] << Option(2, 0, 4, on_algorithm);
     o["PerfectDatabase"] << Option(".", on_perfectDatabase);
     o["DrawOnHumanExperience"] << Option(true, on_drawOnHumanExperience);
     o["ConsiderMobility"] << Option(true, on_considerMobility);
