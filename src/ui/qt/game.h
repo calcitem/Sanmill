@@ -37,6 +37,7 @@
 #include <QTime>
 
 #include "client.h"
+#include "database.h"
 #include "gamescene.h"
 #include "mills.h"
 #include "pieceitem.h"
@@ -219,6 +220,9 @@ public slots:
     void setMctsAlgorithm(bool enabled) const;
     void setAlgorithm(int val) const;
 
+    // Perfect Database
+    void setPerfectDatabase(string val) const;
+
     // Draw on human experience
     void setDrawOnHumanExperience(bool enabled) const;
 
@@ -243,7 +247,7 @@ public slots:
     // Does AI record the game library
     void setLearnEndgame(bool enabled) const;
 
-    // Does Perfect AI (See https://www.mad-weasel.de/morris.html)
+    // Does Perfect AI
     void setPerfectAi(bool enabled) const;
 
     // Does alpha beta search deepen iteratively
@@ -373,9 +377,14 @@ public slots:
     // Show engine vs. window
     void showTestWindow() const;
 
+    // Show Perfect Database dialog
+    void showDatabaseDialog() const;
+
     void saveScore();
 
     [[nodiscard]] Test *getTest() const { return gameTest; }
+
+    [[nodiscard]] DatabaseDialog *getDatabaseDialog() const { return databaseDialog; }
 
 protected:
     // bool eventFilter(QObject * watched, QEvent * event);
@@ -390,6 +399,9 @@ private:
 
     // Testing
     Test *gameTest;
+
+    // Perfect Database Dialog
+    DatabaseDialog *databaseDialog {nullptr};
 
     // 2 AI threads
     Thread *aiThread[COLOR_NB];

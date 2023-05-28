@@ -17,17 +17,13 @@
 
 #include "misc.h"
 #include "perfect.h"
+#include "option.h"
 #include "position.h"
 
 #ifdef GABOR_MALOM_PERFECT_AI
 #define USE_DEPRECATED_CLR_API_WITHOUT_WARNING
 #include <mscoree.h>
 #pragma comment(lib, "mscoree.lib")
-
-static const LPCWSTR malomApiDllPath = L"D:"
-                                       L"\\Repo\\malom\\MalomAPI\\bin\\Debug\\M"
-                                       L"alomAPI"
-                                       L".dll";
 
 static ICLRRuntimeHost *pHost = NULL;
 
@@ -66,12 +62,18 @@ static void stop_dotnet()
     HRESULT hr = pHost->Stop();
     check_hresult(hr, "ICLRRuntimeHost::Stop");
     pHost->Release();
+    pHost = nullptr;
 }
 
+// TODO: Use gameOptions.getPerfectDatabase() as path
 static int GetBestMove(int whiteBitboard, int blackBitboard,
                        int whiteStonesToPlace, int blackStonesToPlace,
                        int playerToMove, bool onlyStoneTaking)
 {
+    std::string strPath = gameOptions.getPerfectDatabase() + "\\MalomAPI.dll";
+    std::wstring wstrPath(strPath.begin(), strPath.end());
+    LPCWSTR malomApiDllPath = wstrPath.c_str();
+
     std::ostringstream ss;
     ss << whiteBitboard << " " << blackBitboard << " " << whiteStonesToPlace
        << " " << blackStonesToPlace << " " << playerToMove << " "
