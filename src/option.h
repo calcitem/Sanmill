@@ -178,6 +178,18 @@ public:
         return algorithm == 3;
     }
 
+    void setRetrogradeAnalysisAlgorithm(bool enabled) noexcept
+    {
+        if (enabled) {
+            algorithm = 4;
+        }
+    }
+
+    [[nodiscard]] bool getRetrogradeAnalysisAlgorithm() const noexcept
+    {
+        return algorithm == 4;
+    }
+
     void setAlgorithm(int val) noexcept
     {
         algorithm = val;
@@ -225,6 +237,15 @@ public:
 
     [[nodiscard]] int getAlgorithm() const noexcept { return algorithm; }
 
+    // Perfect Database
+
+    void setPerfectDatabase(std::string val) noexcept { perfectDatabase = val; }
+
+    [[nodiscard]] std::string getPerfectDatabase() const noexcept
+    {
+        return perfectDatabase;
+    }
+
     // DrawOnHumanExperience
 
     void setDrawOnHumanExperience(bool enabled) noexcept
@@ -256,15 +277,6 @@ public:
     [[nodiscard]] bool getDeveloperMode() const noexcept
     {
         return developerMode;
-    }
-
-    // Perfect Database
-
-    void setPerfectDatabase(std::string val) noexcept { perfectDatabase = val; }
-
-    [[nodiscard]] std::string getPerfectDatabase() const noexcept
-    {
-        return perfectDatabase;
     }
 
 private:
