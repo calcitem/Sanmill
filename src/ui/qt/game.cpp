@@ -62,6 +62,8 @@ Game::Game(GameScene &scene, QObject *parent)
     // resetAiPlayers();
     createAiThreads();
 
+    databaseDialog = new DatabaseDialog();
+
     loadSettings();
 
     gameReset();
@@ -126,6 +128,8 @@ void Game::loadSettings()
     setSkillLevel(empty ? 1 : settings->value("Options/SkillLevel").toInt());
     setMoveTime(empty ? 1 : settings->value("Options/MoveTime").toInt());
     setAlgorithm(empty ? 2 : settings->value("Options/Algorithm").toInt());
+    setPerfectDatabase(
+        empty ? "." : settings->value("Options/PerfectDatabase").toString().toStdString());
     setDrawOnHumanExperience(
         empty ? true :
                 settings->value("Options/DrawOnHumanExperience").toBool());
@@ -704,8 +708,20 @@ void Game::setLearnEndgame(bool enabled) const
 #endif
 }
 
+void Game::setPerfectDatabase(string val) const
+{
+    gameOptions.setPerfectDatabase(val);
+    settings->setValue("Options/PerfectDatabase", QString::fromStdString(val));
+}
+
 void Game::setPerfectAi(bool enabled) const
 {
+    // TODO: Show dialog twice when launching
+    if (enabled && databaseDialog->exec() == QDialog::Accepted) {
+        std::string path = databaseDialog->getPath().toStdString();
+        setPerfectDatabase(path);
+    }
+
     gameOptions.setPerfectAiEnabled(enabled);
     settings->setValue("Options/PerfectAI", enabled);
 
@@ -1597,6 +1613,11 @@ void Game::showNetworkWindow()
 void Game::showTestWindow() const
 {
     gameTest->show();
+}
+
+void Game::showDatabaseDialog() const
+{
+    databaseDialog->show();
 }
 
 void Game::humanResign()
