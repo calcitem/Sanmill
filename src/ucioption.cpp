@@ -74,6 +74,11 @@ static void on_algorithm(const Option &o)
     gameOptions.setAlgorithm(static_cast<int>(o));
 }
 
+static void on_perfectDatabase(const Option &o)
+{
+    gameOptions.setPerfectDatabase(static_cast<std::string>(o));
+}
+
 static void on_drawOnHumanExperience(const Option &o)
 {
     gameOptions.setDrawOnHumanExperience(o);
@@ -207,6 +212,7 @@ void init(OptionsMap &o)
 
     o["Shuffling"] << Option(true, on_random_move);
     o["Algorithm"] << Option(2, 0, 3, on_algorithm);
+    o["PerfectDatabase"] << Option(".", on_perfectDatabase);
     o["DrawOnHumanExperience"] << Option(true, on_drawOnHumanExperience);
     o["ConsiderMobility"] << Option(true, on_considerMobility);
     o["DeveloperMode"] << Option(true, on_developerMode);

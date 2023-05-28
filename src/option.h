@@ -258,6 +258,15 @@ public:
         return developerMode;
     }
 
+    // Perfect Database
+
+    void setPerfectDatabase(std::string val) noexcept { perfectDatabase = val; }
+
+    [[nodiscard]] std::string getPerfectDatabase() const noexcept
+    {
+        return perfectDatabase;
+    }
+
 private:
     int skillLevel {1};
     int moveTime {1};
@@ -279,6 +288,7 @@ private:
     bool drawOnHumanExperience {true};
     bool considerMobility {true};
     bool developerMode {false};
+    std::string perfectDatabase {"."};
 };
 
 extern GameOptions gameOptions;
