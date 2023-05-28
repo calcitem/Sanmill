@@ -215,6 +215,9 @@ void MillGameWindow::initialize()
     connect(ui.actionMctsAlgorithm, SIGNAL(toggled(bool)), game,
             SLOT(setMctsAlgorithm(bool)));
 
+    connect(ui.actionPerfect_AI, SIGNAL(toggled(bool)), game,
+            SLOT(setPerfectAi(bool)));
+
     connect(ui.actionDrawOnHumanExperience, SIGNAL(toggled(bool)), game,
             SLOT(setDrawOnHumanExperience(bool)));
 
@@ -238,9 +241,6 @@ void MillGameWindow::initialize()
 
     connect(ui.actionLearnEndgame_E, SIGNAL(toggled(bool)), game,
             SLOT(setLearnEndgame(bool)));
-
-    connect(ui.actionPerfect_AI, SIGNAL(toggled(bool)), game,
-            SLOT(setPerfectAi(bool)));
 
     connect(ui.actionIDS_I, SIGNAL(toggled(bool)), game, SLOT(setIDS(bool)));
 
@@ -451,7 +451,7 @@ void MillGameWindow::initialize()
         ui.actionMtdfAlgorithm->setChecked(false);
         ui.actionMctsAlgorithm->setChecked(false);
         ui.actionPerfect_AI->setChecked(true);
-        debugPrintf("Algorithm is other.\n");
+        debugPrintf("Algorithm is Retrograde Analysis.\n");
         break;
     }
 

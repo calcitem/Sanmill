@@ -648,10 +648,48 @@ void Game::setMctsAlgorithm(bool enabled) const
     }
 }
 
+void Game::setRetrogradeAnalysisAlgorithm(bool enabled) const
+{
+    if (enabled) {
+        gameOptions.setAlgorithm(4);
+        settings->setValue("Options/Algorithm", 4);
+        debugPrintf("Algorithm is changed to Retrograde Analysis.\n");
+    }
+}
+
 void Game::setAlgorithm(int val) const
 {
     gameOptions.setAlgorithm(val);
     settings->setValue("Options/Algorithm", val);
+}
+
+void Game::setPerfectDatabase(string val) const
+{
+    gameOptions.setPerfectDatabase(val);
+    settings->setValue("Options/PerfectDatabase", QString::fromStdString(val));
+}
+
+void Game::setPerfectAi(bool enabled) const
+{
+#if 0
+    // TODO: Show dialog twice when launching
+
+    if (enabled && databaseDialog->exec() == QDialog::Accepted) {
+        std::string path = databaseDialog->getPath().toStdString();
+        setPerfectDatabase(path);
+    }
+#endif
+
+    gameOptions.setPerfectAiEnabled(enabled);
+    settings->setValue("Options/PerfectAI", enabled);
+
+#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
+    if (enabled) {
+        perfect_reset();
+    } else {
+        perfect_exit();
+    }
+#endif
 }
 
 void Game::setDrawOnHumanExperience(bool enabled) const
@@ -704,32 +742,6 @@ void Game::setLearnEndgame(bool enabled) const
 #ifdef ENDGAME_LEARNING
     if (gameOptions.isEndgameLearningEnabled()) {
         Thread::loadEndgameFileToHashMap();
-    }
-#endif
-}
-
-void Game::setPerfectDatabase(string val) const
-{
-    gameOptions.setPerfectDatabase(val);
-    settings->setValue("Options/PerfectDatabase", QString::fromStdString(val));
-}
-
-void Game::setPerfectAi(bool enabled) const
-{
-    // TODO: Show dialog twice when launching
-    if (enabled && databaseDialog->exec() == QDialog::Accepted) {
-        std::string path = databaseDialog->getPath().toStdString();
-        setPerfectDatabase(path);
-    }
-
-    gameOptions.setPerfectAiEnabled(enabled);
-    settings->setValue("Options/PerfectAI", enabled);
-
-#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
-    if (enabled) {
-        perfect_reset();
-    } else {
-        perfect_exit();
     }
 #endif
 }
