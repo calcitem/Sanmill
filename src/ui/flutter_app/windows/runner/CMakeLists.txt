@@ -7,6 +7,7 @@ INCLUDE_DIRECTORIES(
   ../../../../
   ../../../../../include
   ../../command
+  ../../../../perfect
 )
 
 # Define the application target. To change its name, change BINARY_NAME in the
@@ -23,7 +24,7 @@ add_executable(${BINARY_NAME} WIN32
   "../../command/command_channel.cpp"
   "../../command/command_queue.cpp"
   "../../command/engine_main.cpp"
-  "../../command/mill_engine.cpp"
+  "../../command/mill_engine.cpp" 
   "../../../../bitboard.cpp"
   "../../../../endgame.cpp"
   "../../../../evaluate.cpp"
@@ -41,6 +42,7 @@ add_executable(${BINARY_NAME} WIN32
   "../../../../tt.cpp"
   "../../../../uci.cpp"
   "../../../../ucioption.cpp"
+  "../../../../perfect/perfect.cpp"
 
   "${FLUTTER_MANAGED_DIR}/generated_plugin_registrant.cc"
   "Runner.rc"

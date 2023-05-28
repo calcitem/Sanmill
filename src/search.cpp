@@ -18,8 +18,11 @@
 #include "evaluate.h"
 #include "mcts.h"
 #include "option.h"
-#include "perfect.h"
 #include "thread.h"
+
+#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
+#include "perfect.h"
+#endif
 
 using Eval::evaluate;
 using std::string;

@@ -16,14 +16,14 @@
 #include "config.h"
 
 #include "misc.h"
-#include "perfect.h"
 #include "option.h"
+#include "perfect.h"
 #include "position.h"
 
 #include <condition_variable>
 #include <mutex>
-#include <stdexcept>
 #include <sstream>
+#include <stdexcept>
 
 #ifdef GABOR_MALOM_PERFECT_AI
 #define USE_DEPRECATED_CLR_API_WITHOUT_WARNING
@@ -81,6 +81,7 @@ static void stop_dotnet()
     check_hresult(hr, "ICLRRuntimeHost::Stop");
     pHost->Release();
     pHost = nullptr;
+    isHostStarted = false;
 }
 
 // TODO: Use gameOptions.getPerfectDatabase() as path
@@ -90,17 +91,18 @@ int GetBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
     std::unique_lock<std::mutex> lock(mtx);
     cv.wait(lock, [] { return isHostStarted; });
 
-    char buffer[MAX_PATH] = {0};
-    DWORD result = GetModuleFileName(NULL, buffer, MAX_PATH);
+    WCHAR buffer[MAX_PATH] = {0};
+    DWORD result = GetModuleFileNameW(NULL, buffer, MAX_PATH);
     if (result == 0 || result == MAX_PATH) {
         throw std::runtime_error("Failed to retrieve module filename");
     }
 
-    std::string strPath = std::string(buffer).substr(
-                              0, std::string(buffer).find_last_of("\\/")) +
-                          "\\MalomAPI.dll";
-    //std::string strPath = gameOptions.getPerfectDatabase() + "\\MalomAPI.dll";
-    std::wstring wstrPath(strPath.begin(), strPath.end());
+    // std::string strPath = gameOptions.getPerfectDatabase() +
+    // "\\MalomAPI.dll";
+
+    std::wstring wstrPath(buffer);
+    wstrPath = wstrPath.substr(0, wstrPath.find_last_of(L"\\/")) + L"\\MalomAPI"
+                                                                   L".dll";
     LPCWSTR malomApiDllPath = wstrPath.c_str();
 
     std::ostringstream ss;
