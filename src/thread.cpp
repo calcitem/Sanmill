@@ -135,48 +135,36 @@ void Thread::idle_loop()
             continue;
         }
 
-#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
-        if (gameOptions.getPerfectAiEnabled()) {
-            bestMove = perfect_search(rootPos);
-            assert(bestMove != MOVE_NONE);
-            strCommand = next_move();
-            if (strCommand != "" && strCommand != "error!") {
-                emitCommand();
-            }
-        } else {
-#endif // MADWEASEL_MUEHLE_PERFECT_AI || GABOR_MALOM_PERFECT_AI
 #ifdef OPENING_BOOK
-            // gameOptions.getOpeningBook()
-            if (!openingBookDeque.empty()) {
-                char obc[16] = {0};
-                sq2str(obc);
-                strCommand = obc;
-                emitCommand();
-            } else {
+        // gameOptions.getOpeningBook()
+        if (!openingBookDeque.empty()) {
+            char obc[16] = {0};
+            sq2str(obc);
+            strCommand = obc;
+            emitCommand();
+        } else {
 #endif
-                const int ret = search();
+            const int ret = search();
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-                nnueTrainingDataBestValue = rootPos->sideToMove == WHITE ? bestvalue :
-                                                              -bestvalue;
+            nnueTrainingDataBestValue = rootPos->sideToMove == WHITE ?
+                                            bestvalue :
+                                            -bestvalue;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
-                if (ret == 3 || ret == 50 || ret == 10) {
-                    debugPrintf("Draw\n\n");
-                    strCommand = "draw";
+            if (ret == 3 || ret == 50 || ret == 10) {
+                debugPrintf("Draw\n\n");
+                strCommand = "draw";
+                emitCommand();
+            } else {
+                strCommand = next_move();
+                if (strCommand != "" && strCommand != "error!") {
                     emitCommand();
-                } else {
-                    strCommand = next_move();
-                    if (strCommand != "" && strCommand != "error!") {
-                        emitCommand();
-                    }
                 }
-#ifdef OPENING_BOOK
             }
-#endif
-#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
+#ifdef OPENING_BOOK
         }
-#endif // MADWEASEL_MUEHLE_PERFECT_AI || GABOR_MALOM_PERFECT_AI
+#endif
     }
 }
 
