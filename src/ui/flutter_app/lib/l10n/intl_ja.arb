@@ -1481,5 +1481,7 @@
   "playfulGarden": "遊び心のある庭",
   "@playfulGarden": {},
   "whatIsRetrogradeAnalysis": "逆行分析アルゴリズムは、多値逆行分析を使用してさまざまな開始位置からエンドゲーム データベースを構築し、このデータベースを適用してゲームプレイを最適化します。このアプローチは、超強力ソリューションのカテゴリーに分類されます。",
-  "@whatIsRetrogradeAnalysis": {}
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "このアルゴリズムのユーザー ガイドを参照しますか?",
+  "@viewAlgorithmGuide": {}
 }
