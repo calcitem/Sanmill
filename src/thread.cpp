@@ -136,16 +136,6 @@ void Thread::idle_loop()
             continue;
         }
 
-#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
-        if (gameOptions.getPerfectAiEnabled()) {
-            bestMove = perfect_search(rootPos);
-            assert(bestMove != MOVE_NONE);
-            bestMoveString = next_move();
-            if (bestMoveString != "" && bestMoveString != "error!") {
-                emitCommand();
-            }
-        } else {
-#endif // MADWEASEL_MUEHLE_PERFECT_AI || GABOR_MALOM_PERFECT_AI
 #ifdef OPENING_BOOK
             // gameOptions.getOpeningBook()
             if (!openingBookDeque.empty()) {
@@ -155,7 +145,7 @@ void Thread::idle_loop()
                 emitCommand();
             } else {
 #endif
-                const int ret = search();
+            const int ret = search();
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
                 nnueTrainingDataBestValue = rootPos->sideToMove == WHITE ?
@@ -173,12 +163,10 @@ void Thread::idle_loop()
                         emitCommand();
                     }
                 }
-#ifdef OPENING_BOOK
             }
-#endif
-#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
+#ifdef OPENING_BOOK
         }
-#endif // MADWEASEL_MUEHLE_PERFECT_AI || GABOR_MALOM_PERFECT_AI
+#endif
     }
 }
 

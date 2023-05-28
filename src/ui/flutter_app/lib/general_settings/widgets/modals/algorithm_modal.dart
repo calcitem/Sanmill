@@ -58,11 +58,11 @@ class _AlgorithmModal extends StatelessWidget {
           ),
           if (Platform.isWindows)
             RadioListTile<SearchAlgorithm>(
-            title: Text(SearchAlgorithm.mcts.name),
-            groupValue: algorithm,
-            value: SearchAlgorithm.retrogradeAnalysis,
-            onChanged: onChanged,
-          ),
+              title: Text(SearchAlgorithm.mcts.name),
+              groupValue: algorithm,
+              value: SearchAlgorithm.retrogradeAnalysis,
+              onChanged: onChanged,
+            ),
         ],
       ),
     );
