@@ -1381,5 +1381,9 @@
   "playfulGarden": "Giardino giocoso",
   "@playfulGarden": {},
   "darkMystery": "Mistero oscuro",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "L'algoritmo di analisi retrograda utilizza l'analisi retrograda multivalore per creare un database finale da diverse posizioni di partenza, quindi applica questo database per ottimizzare il gioco. Questo approccio rientra nella categoria delle soluzioni Ultra-Strong.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Vuoi visualizzare la guida per l'utente di questo algoritmo?",
+  "@viewAlgorithmGuide": {}
 }

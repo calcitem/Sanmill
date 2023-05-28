@@ -1381,5 +1381,9 @@
   "playfulGarden": "Žaismingas sodas",
   "@playfulGarden": {},
   "darkMystery": "Tamsioji paslaptis",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Retrogradinės analizės algoritmas naudoja kelių reikšmių retrogradinę analizę, kad sukurtų žaidimo pabaigos duomenų bazę iš skirtingų pradžios pozicijų, tada pritaiko šią duomenų bazę, kad optimizuotų žaidimą. Šis metodas priklauso ypač stiprių sprendimų kategorijai.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Ar norėtumėte peržiūrėti šio algoritmo vartotojo vadovą?",
+  "@viewAlgorithmGuide": {}
 }

@@ -1381,5 +1381,7 @@
   "playfulGarden": "花園",
   "@playfulGarden": {},
   "darkMystery": "暗谜",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "逆行分析算法使用多值逆行分析從不同的開始位置構建殘局數據庫，然後應用此數據庫優化遊戲玩法。這種方法屬於超強解決方案的範疇。",
+  "@whatIsRetrogradeAnalysis": {}
 }

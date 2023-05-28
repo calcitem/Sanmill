@@ -1381,5 +1381,9 @@
   "playfulGarden": "Játékos kert",
   "@playfulGarden": {},
   "darkMystery": "Sötét rejtély",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "A Retrográd Analysis algoritmus többértékű retrográd elemzést használ a végjáték-adatbázis felépítéséhez különböző kezdőpozíciókból, majd ezt az adatbázist alkalmazza a játékmenet optimalizálására. Ez a megközelítés az Ultra-Strong megoldások kategóriájába tartozik.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Szeretné megtekinteni az algoritmus felhasználói útmutatóját?",
+  "@viewAlgorithmGuide": {}
 }

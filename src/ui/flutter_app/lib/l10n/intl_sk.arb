@@ -1381,5 +1381,9 @@
   "playfulGarden": "Hravá záhrada",
   "@playfulGarden": {},
   "darkMystery": "Temná záhada",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Algoritmus retrográdnej analýzy využíva retrográdnu analýzu s viacerými hodnotami na zostavenie databázy konca hry z rôznych počiatočných pozícií a potom túto databázu použije na optimalizáciu hry. Tento prístup patrí do kategórie ultrasilných riešení.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Chcete si pozrieť používateľskú príručku pre tento algoritmus?",
+  "@viewAlgorithmGuide": {}
 }
