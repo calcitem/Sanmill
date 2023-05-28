@@ -25,7 +25,7 @@
 #include "option.h"
 #include "test.h"
 
-#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect/perfect.h"
 #endif
 
@@ -219,7 +219,7 @@ void Test::readFromMemory()
             sharedMemory.unlock();
             readStr = str;
 
-#ifdef MADWEASEL_MUEHLE_PERFECT_AI
+#if defined(MADWEASEL_MUEHLE_PERFECT_AI)
             if (gameOptions.getPerfectAiEnabled()) {
                 perfect_command(str.toStdString().c_str());
             }
