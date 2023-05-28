@@ -174,7 +174,7 @@ public slots:
     // Set rules
 
     void setRule(int ruleNo,
-                 int stepLimited = std::numeric_limits<uint16_t>::max(),
+                 int stepLimited = 100,
                  int timeLimited = 0);
 
     // The game begins
