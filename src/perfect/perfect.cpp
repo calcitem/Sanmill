@@ -70,7 +70,11 @@ static int GetBestMove(int whiteBitboard, int blackBitboard,
                        int whiteStonesToPlace, int blackStonesToPlace,
                        int playerToMove, bool onlyStoneTaking)
 {
-    std::string strPath = gameOptions.getPerfectDatabase() + "\\MalomAPI.dll";
+    char buffer[MAX_PATH];
+    GetModuleFileName(NULL, buffer, MAX_PATH);
+    std::string::size_type pos = std::string(buffer).find_last_of("\\/");
+    std::string strPath = std::string(buffer).substr(0, pos) + "\\MalomAPI.dll";
+    //std::string strPath = gameOptions.getPerfectDatabase() + "\\MalomAPI.dll";
     std::wstring wstrPath(strPath.begin(), strPath.end());
     LPCWSTR malomApiDllPath = wstrPath.c_str();
 
