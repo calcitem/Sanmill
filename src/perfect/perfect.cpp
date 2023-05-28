@@ -20,28 +20,43 @@
 #include "option.h"
 #include "position.h"
 
+#include <condition_variable>
+#include <mutex>
+#include <stdexcept>
+#include <sstream>
+
 #ifdef GABOR_MALOM_PERFECT_AI
 #define USE_DEPRECATED_CLR_API_WITHOUT_WARNING
 #include <mscoree.h>
 #pragma comment(lib, "mscoree.lib")
 
 static ICLRRuntimeHost *pHost = NULL;
+bool isHostStarted = false;
 
 static HMODULE hModule = NULL;
 
 static Move malom_remove_move = MOVE_NONE;
 
-static void check_hresult(HRESULT hr, const char *operation)
+static std::mutex mtx;
+static std::condition_variable cv;
+
+void check_hresult(HRESULT hr, const char *operation)
 {
     if (hr != S_OK) {
-        fprintf(stderr, "Unknown error during %s, code: 0x%x\n", operation, hr);
-        exit(hr);
+        std::ostringstream err_msg;
+        err_msg << "Unknown error during " << operation << ", code: 0x"
+                << std::hex << hr;
+        throw std::runtime_error(err_msg.str());
     }
 }
 
 static void start_dotnet()
 {
+    std::lock_guard<std::mutex> lock(mtx);
+
     if (pHost != nullptr) {
+        isHostStarted = true;
+        cv.notify_all();
         return;
     }
 
@@ -51,6 +66,9 @@ static void start_dotnet()
     check_hresult(hr, "CorBindToRuntimeEx");
     hr = pHost->Start();
     check_hresult(hr, "ICLRRuntimeHost::Start");
+
+    isHostStarted = true;
+    cv.notify_all();
 }
 
 static void stop_dotnet()
@@ -66,14 +84,21 @@ static void stop_dotnet()
 }
 
 // TODO: Use gameOptions.getPerfectDatabase() as path
-static int GetBestMove(int whiteBitboard, int blackBitboard,
-                       int whiteStonesToPlace, int blackStonesToPlace,
-                       int playerToMove, bool onlyStoneTaking)
+int GetBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
+                int blackStonesToPlace, int playerToMove, bool onlyStoneTaking)
 {
-    char buffer[MAX_PATH];
-    GetModuleFileName(NULL, buffer, MAX_PATH);
-    std::string::size_type pos = std::string(buffer).find_last_of("\\/");
-    std::string strPath = std::string(buffer).substr(0, pos) + "\\MalomAPI.dll";
+    std::unique_lock<std::mutex> lock(mtx);
+    cv.wait(lock, [] { return isHostStarted; });
+
+    char buffer[MAX_PATH] = {0};
+    DWORD result = GetModuleFileName(NULL, buffer, MAX_PATH);
+    if (result == 0 || result == MAX_PATH) {
+        throw std::runtime_error("Failed to retrieve module filename");
+    }
+
+    std::string strPath = std::string(buffer).substr(
+                              0, std::string(buffer).find_last_of("\\/")) +
+                          "\\MalomAPI.dll";
     //std::string strPath = gameOptions.getPerfectDatabase() + "\\MalomAPI.dll";
     std::wstring wstrPath(strPath.begin(), strPath.end());
     LPCWSTR malomApiDllPath = wstrPath.c_str();
@@ -92,10 +117,10 @@ static int GetBestMove(int whiteBitboard, int blackBitboard,
     check_hresult(hr, "ICLRRuntimeHost::ExecuteInDefaultAppDomain "
                       "GetBestMoveStr");
     if (dwRet == 0) {
-        fprintf(stderr, ".Net exception, see printed above by "
-                        "GetBestMoveStr\n");
-        exit(-1);
+        throw std::runtime_error(".Net exception, see printed above by "
+                                 "GetBestMoveStr");
     }
+
     return dwRet;
 }
 
