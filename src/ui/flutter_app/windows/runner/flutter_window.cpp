@@ -21,6 +21,9 @@
 #include <sstream>
 #include <string>
 
+// TODO
+#include "perfect.h"
+
 #include "flutter/generated_plugin_registrant.h"
 
 FlutterWindow::FlutterWindow(RunLoop *run_loop,
@@ -71,6 +74,9 @@ bool FlutterWindow::OnCreate()
 
     run_loop_->RegisterFlutterInstance(flutter_controller_->engine());
     SetChildContent(flutter_controller_->view()->GetNativeWindow());
+
+    perfect_reset();  // TODO
+
     return true;
 }
 
@@ -104,6 +110,8 @@ void FlutterWindow::OnDestroy()
         run_loop_->UnregisterFlutterInstance(flutter_controller_->engine());
         flutter_controller_ = nullptr;
     }
+
+    perfect_exit();  // TODO
 
     Win32Window::OnDestroy();
 }

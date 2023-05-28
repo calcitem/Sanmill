@@ -19,6 +19,8 @@
 
 #include "config.h"
 
+#include <string>
+
 class GameOptions
 {
 public:
