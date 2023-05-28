@@ -1381,5 +1381,9 @@
   "playfulGarden": "Verspielter Garten",
   "@playfulGarden": {},
   "darkMystery": "Dunkles Geheimnis",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Der Retrograde-Analyse-Algorithmus verwendet eine mehrwertige Retrograde-Analyse, um eine Endspieldatenbank aus verschiedenen Startpositionen zu erstellen, und wendet diese Datenbank dann an, um das Gameplay zu optimieren. Dieser Ansatz fällt in die Kategorie der ultrastarken Lösungen.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Möchten Sie das Benutzerhandbuch für diesen Algorithmus anzeigen?",
+  "@viewAlgorithmGuide": {}
 }

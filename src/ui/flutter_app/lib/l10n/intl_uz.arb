@@ -1381,5 +1381,9 @@
   "playfulGarden": "O'yin bog'i",
   "@playfulGarden": {},
   "darkMystery": "Qorong'u sir",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Retrograd tahlil algoritmi turli boshlang'ich pozitsiyalardan o'yin oxiri ma'lumotlar bazasini yaratish uchun ko'p qiymatli retrograd tahlildan foydalanadi, so'ngra o'yinni optimallashtirish uchun ushbu ma'lumotlar bazasini qo'llaydi. Ushbu yondashuv Ultra-kuchli yechimlar toifasiga kiradi.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Ushbu algoritm uchun foydalanuvchi qo'llanmasini ko'rishni xohlaysizmi?",
+  "@viewAlgorithmGuide": {}
 }

@@ -1381,5 +1381,9 @@
   "playfulGarden": "Jardin ludique",
   "@playfulGarden": {},
   "darkMystery": "Sombre mystère",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "L'algorithme d'analyse rétrograde utilise une analyse rétrograde à plusieurs valeurs pour créer une base de données de fin de partie à partir de différentes positions de départ, puis applique cette base de données pour optimiser le gameplay. Cette approche entre dans la catégorie des solutions Ultra-Fortes.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Souhaitez-vous consulter le guide d'utilisation de cet algorithme ?",
+  "@viewAlgorithmGuide": {}
 }

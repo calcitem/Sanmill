@@ -1381,5 +1381,9 @@
   "playfulGarden": "Leken hage",
   "@playfulGarden": {},
   "darkMystery": "Dark Mystery",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Algoritmen for retrograd analyse bruker retrograd analyse med flere verdier for å bygge en sluttspilldatabase fra forskjellige startposisjoner, og bruker deretter denne databasen for å optimalisere spillingen. Denne tilnærmingen faller inn under kategorien Ultra-Strong-løsninger.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Vil du se brukerveiledningen for denne algoritmen?",
+  "@viewAlgorithmGuide": {}
 }

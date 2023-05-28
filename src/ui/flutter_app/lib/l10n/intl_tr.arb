@@ -1381,5 +1381,9 @@
   "playfulGarden": "eğlenceli bahçe",
   "@playfulGarden": {},
   "darkMystery": "Karanlık Gizem",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Geriye Dönük Analiz algoritması, farklı başlangıç konumlarından bir oyunsonu veritabanı oluşturmak için çok değerli geriye dönük analizi kullanır ve ardından oyunu optimize etmek için bu veritabanını uygular. Bu yaklaşım, Ultra Güçlü çözümler kategorisine girer.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Bu algoritmanın kullanım kılavuzunu görüntülemek ister misiniz?",
+  "@viewAlgorithmGuide": {}
 }

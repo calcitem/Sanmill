@@ -1381,5 +1381,9 @@
   "playfulGarden": "figlarny ogród",
   "@playfulGarden": {},
   "darkMystery": "Mroczna tajemnica",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Algorytm analizy wstecznej wykorzystuje wielowartościową analizę wsteczną do zbudowania bazy danych gier końcowych z różnych pozycji początkowych, a następnie stosuje tę bazę danych w celu optymalizacji rozgrywki. Takie podejście należy do kategorii rozwiązań Ultra-Strong.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Czy chcesz zobaczyć instrukcję obsługi tego algorytmu?",
+  "@viewAlgorithmGuide": {}
 }

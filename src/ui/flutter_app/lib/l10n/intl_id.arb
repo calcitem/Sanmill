@@ -1381,5 +1381,9 @@
   "playfulGarden": "Taman Bermain",
   "@playfulGarden": {},
   "darkMystery": "Misteri Gelap",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Algoritme Analisis Retrograde menggunakan analisis retrograde multi-nilai untuk membangun database endgame dari berbagai posisi awal, lalu menerapkan database ini untuk mengoptimalkan gameplay. Pendekatan ini termasuk dalam kategori solusi Ultra-Kuat.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Apakah Anda ingin melihat panduan pengguna untuk algoritme ini?",
+  "@viewAlgorithmGuide": {}
 }

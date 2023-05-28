@@ -1479,5 +1479,7 @@
   "violetDream": "Giấc mơ màu tím",
   "@violetDream": {},
   "playfulGarden": "Khu vườn vui tươi",
-  "@playfulGarden": {}
+  "@playfulGarden": {},
+  "whatIsRetrogradeAnalysis": "Thuật toán Phân tích ngược dòng sử dụng phân tích ngược dòng đa giá trị để xây dựng cơ sở dữ liệu kết thúc trò chơi từ các vị trí bắt đầu khác nhau, sau đó áp dụng cơ sở dữ liệu này để tối ưu hóa lối chơi. Cách tiếp cận này thuộc danh mục Giải pháp siêu mạnh.",
+  "@whatIsRetrogradeAnalysis": {}
 }

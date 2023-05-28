@@ -1381,5 +1381,9 @@
   "playfulGarden": "장난스러운 정원",
   "@playfulGarden": {},
   "darkMystery": "다크 미스터리",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "역행 분석 알고리즘은 다중 값 역행 분석을 사용하여 다양한 시작 위치에서 최종 게임 데이터베이스를 구축한 다음 이 데이터베이스를 적용하여 게임 플레이를 최적화합니다. 이 접근 방식은 Ultra-Strong 솔루션 범주에 속합니다.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "이 알고리즘에 대한 사용자 가이드를 보시겠습니까?",
+  "@viewAlgorithmGuide": {}
 }

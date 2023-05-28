@@ -1381,5 +1381,9 @@
   "playfulGarden": "Rotaļīgs dārzs",
   "@playfulGarden": {},
   "darkMystery": "Tumšais noslēpums",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Retrogrādās analīzes algoritms izmanto daudzvērtīgu retrogrādo analīzi, lai izveidotu beigu datu bāzi no dažādām sākuma pozīcijām, un pēc tam izmanto šo datu bāzi, lai optimizētu spēli. Šī pieeja ietilpst īpaši spēcīgu risinājumu kategorijā.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Vai vēlaties skatīt šī algoritma lietotāja rokasgrāmatu?",
+  "@viewAlgorithmGuide": {}
 }

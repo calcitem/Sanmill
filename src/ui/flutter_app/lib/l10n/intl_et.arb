@@ -1381,5 +1381,9 @@
   "playfulGarden": "Mänguline aed",
   "@playfulGarden": {},
   "darkMystery": "Tume müsteerium",
-  "@darkMystery": {}
+  "@darkMystery": {},
+  "whatIsRetrogradeAnalysis": "Retrograadse analüüsi algoritm kasutab mitme väärtusega retrograadset analüüsi, et luua erinevatest alguspositsioonidest lõppmängu andmebaas, seejärel rakendab see andmebaas mängu optimeerimiseks. See lähenemisviis kuulub ülitugevate lahenduste kategooriasse.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Kas soovite vaadata selle algoritmi kasutusjuhendit?",
+  "@viewAlgorithmGuide": {}
 }

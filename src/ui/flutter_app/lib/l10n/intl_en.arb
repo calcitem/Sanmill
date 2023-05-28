@@ -1479,5 +1479,9 @@
   "skyBlue": "Sky Blue",
   "@skyBlue": {},
   "playfulGarden": "Playful Garden",
-  "@playfulGarden": {}
+  "@playfulGarden": {},
+  "whatIsRetrogradeAnalysis": "The Retrograde Analysis algorithm uses multi-valued retrograde analysis to build an endgame database from different start positions, then applies this database to optimize gameplay. This approach falls under the category of Ultra-Strong solutions.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Would you like to view the user guide for this algorithm?",
+  "@viewAlgorithmGuide": {}
 }
