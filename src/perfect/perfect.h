@@ -11,6 +11,7 @@
 
 #include "mill.h"
 #include "perfectAI.h"
+#include "position.h"
 #include "types.h"
 
 extern Mill *mill;
@@ -24,7 +25,7 @@ Square from_perfect_sq(uint32_t sq);
 Move from_perfect_move(uint32_t from, uint32_t to);
 unsigned to_perfect_sq(Square sq);
 void to_perfect_move(Move move, uint32_t &from, uint32_t &to);
-Move perfect_search();
+Move perfect_search(Position *pos);
 bool perfect_do_move(Move move);
 bool perfect_command(const char *cmd);
 
