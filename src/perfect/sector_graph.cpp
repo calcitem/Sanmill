@@ -46,8 +46,8 @@ vector<id> std_mora_graph_func(id u)
 
     vector<id> r;
     for (auto it = v.begin(); it != v.end(); it++)
-        if (it->B + it->BF >= 3 && it->B >= 0) // ez tulajdonkeppen csak a
-                                               // kezdoallast kezeli, ld. doc
+        // this actually only handles the initial part, cf. doc
+        if (it->B + it->BF >= 3 && it->B >= 0)
             r.push_back(*it);
 
     return r;
@@ -83,8 +83,8 @@ vector<id> lask_graph_func(id u)
 
     vector<id> r;
     for (auto it = v.begin(); it != v.end(); it++)
-        if (it->B + it->BF >= 3 && it->B >= 0) // ez tulajdonkeppen csak a
-                                               // kezdoallast kezeli, ld. doc
+        // This actually only handles the initial part, cf. doc
+        if (it->B + it->BF >= 3 && it->B >= 0)
             r.push_back(*it);
 
     return r;
@@ -97,9 +97,9 @@ vector<id> graph_func(id u, bool elim_loops)
     for (auto it = r0.begin(); it != r0.end(); it++)
         it->negate();
 
-    set<id> sr(r0.begin(), r0.end()); // parhuzamos elek kiszurese
+    set<id> sr(r0.begin(), r0.end()); // parallel electric discharge
     if (elim_loops)
-        sr.erase(u); // hurokel kiszurese
+        sr.erase(u); // kizurese of hurokel
 
     return vector<id>(sr.begin(), sr.end());
 }
@@ -152,15 +152,16 @@ void init_sector_graph()
 
 unordered_map<id, wu *> wus;
 
-// elintezi a wu egyik szektoranak a szomszedainak a wu.adj-hoz valo hozzaadasat
+// manages the addition of neighbors of a sector of wu to wu.adj
 void add_adj(wu &wu, id id)
 {
     auto &e = sector_graph_t[id];
     for (auto it = e.begin(); it != e.end(); ++it)
-        if (wus[*it] != &wu) // hurokelek kiszurese (vigyazzunk, hogy csak
-                             // pointer szerint masolgassuk a wu-kat!)
-            if (wu.parents.insert(wus[*it]).second) // kiszurodnek a parhuzamos
-                                                    // elek
+        // small size of loops (make sure that we only count the wu's according
+        // to the pointer!)
+        if (wus[*it] != &wu)
+            // the parallel elements are squeezed out
+            if (wu.parents.insert(wus[*it]).second) 
                 wus[*it]->child_count++;
 }
 
@@ -168,28 +169,14 @@ set<id> wu_ids;
 
 void init_wu_graph()
 {
-    // a sector_list-beli sorrend hatarozza meg, hogy a wu-k ket szektora kozul
-    // melyik az elsodleges, tehat mindig a kisebb id-ju
+    // the order in the sector_list determines which of the wu's sectors is
+    // primary, it can always have the smaller ID
     for (auto it = sector_list.begin(); it != sector_list.end(); ++it)
         wus[*it] = new wu(*it);
 
     int n = (int)sector_list.size();
     for (int i = 0; i < n - 1; i++) {
-        /*for(int j = i + 1; j < n; j++){
-                id s1 = sector_list[i], s2 = sector_list[j];
-                auto &e1 = sector_graph[s1];
-                if(find(e1.begin(), e1.end(), s2) != e1.end()){
-                        auto &e2 = sector_graph[s2];
-                        if(find(e2.begin(), e2.end(), s1) != e2.end()){
-                                assert(s1 == -s2);
-                                wus[s1]->twine = true;
-                                wus[s2] = wus[s1];
-                        }
-                }
-        }*/
-
-        //
-        //(nem baj, hogy ketszer talaljuk meg a wu-kat)
+        // (it's okay to hit the wu's twice)
         id s1 = sector_list[i];
         for (id s2 : sector_graph[s1]) {
             vector<id> &e2 = sector_graph[s2];
@@ -202,9 +189,8 @@ void init_wu_graph()
         //
     }
 
-    for (auto it = wus.begin(); it != wus.end(); ++it) { //(nem baj, hogy
-                                                         // ketszer megyunk a
-                                                         // twineken)
+    for (auto it = wus.begin(); it != wus.end(); ++it) {
+        // (it's okay to go on the twines twice)
         auto &wu = *(it->second);
 
         add_adj(wu, wu.id);

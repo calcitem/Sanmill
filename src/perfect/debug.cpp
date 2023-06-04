@@ -43,8 +43,6 @@ const char *toclp(board b)
     stringstream ss;
     for (int i = 0; i < 24; i++)
         ss << kit[i] << ",";
-    // ss<<"0,0,0,2,9,9,3,3,False,0,0,malom";
-    // ss<<"0,0,0,2,9,9,3,3,False,60,-1000,0,3,malom2";
     ss << "0,0,0,2,9,9," << __popcnt((unsigned int)(b & mask24)) << ","
        << __popcnt((unsigned int)((b & (mask24 << 24)) >> 24))
        << ",False,60,-1000,0,3,malom2";
@@ -70,7 +68,6 @@ string toclp2(board b)
     stringstream ss;
     for (int i = 0; i < 24; i++)
         ss << kit[i] << ",";
-    // ss<<"0,0,0,2,9,9,3,3,False,0,0,malom";
     ss << "0,0,0,2,9,9,3,3,False,60,-1000,0,3,malom2";
 
     return ss.str();

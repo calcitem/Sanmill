@@ -51,7 +51,7 @@ public:
 
     int hash_count {0};
 
-    unsigned short f_sym_lookup2[1 << 24]; ///
+    unsigned short f_sym_lookup2[1 << 24];
 
     void check_hash_init_consistency();
 

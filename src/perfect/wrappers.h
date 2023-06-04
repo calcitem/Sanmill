@@ -249,9 +249,10 @@ public:
     }
 
     static gui_eval_elem2 virt_loss_val()
-    { // vigyazat: csak KLE-ben mukodik jol, mert ugye ahhoz, hogy jol mukodjon,
-      // valami ertelmeset kene kivonni, de mi mindig virt_unique_sec_val-t
-      // vonunk ki
+    {
+        // Attention: it works well only in KLE because, in order to work
+        // correctly, something meaningful should be subtracted, but we always
+        // subtract virt_unique_sec_val from it.
         assert(::virt_loss_val);
         return gui_eval_elem2 {
             static_cast<sec_val>(::virt_loss_val - virt_unique_sec_val()), 0,
@@ -259,7 +260,8 @@ public:
     }
 
     static sec_val virt_unique_sec_val()
-    { // azert kell, hogy a KLE-s allasokban ne resetelodjon a tavolsag
+    {
+        // It is necessary so that the distance is not reset in KLE positions.
         assert(::virt_loss_val);
 #ifdef DD
         return ::virt_loss_val - 1;
@@ -284,7 +286,7 @@ public:
 
         if (key1 == 0)
 #ifdef DD
-            s2 = "C"; // az akey2 itt mindig 0
+            s2 = "C"; // The value of akey2 is always 0 here.
 #else
             s2 = "";
 #endif

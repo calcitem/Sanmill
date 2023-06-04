@@ -34,12 +34,13 @@
 #include "move.h"
 #include "rules.h"
 
-class Player;    // forward declaration, implement this
-class GameState; // forward declaration, implement this
-class CMove;      // forward declaration, implement this
+class Player;
+class GameState;
+class CMove;
 
 GameState &Game::s() const
-{ // wrapper of current.value
+{
+    // wrapper of current.value
     return *current;
 }
 
@@ -57,19 +58,23 @@ Player **Game::plys()
 }
 
 Player *Game::ply(int i) const
-{ // get players in the game
+{
+    // get players in the game
     return _ply[i];
 }
 
 void Game::set_ply(int i, Player *p)
-{ // set players in the game
+{
+    // set players in the game
     if (p == nullptr) {
         _ply[i] = nullptr;
         return;
     }
 
-    p->quit(); // we exit p to see if it was in a game (e.g. NewGame in the
-               // previous one)
+    // we exit p to see if it was in a game (e.g. NewGame in the
+    // previous one)
+    p->quit();
+
     if (_ply[i] != nullptr)
         _ply[i]->quit(); // the player replaced by p is kicked out
     _ply[i] = p;

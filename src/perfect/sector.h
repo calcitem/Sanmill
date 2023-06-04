@@ -36,41 +36,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 class Hash;
 class Sector;
 
-#ifndef WRAPPER
-struct short_id
-{
-    char sid;
-
-    short_id();
-    short_id(char sid);
-    short_id(Sector *s);
-    operator Sector *();
-    operator id();
-
-    bool operator==(const short_id &o) const { return sid == o.sid; }
-    bool operator>=(const short_id &o) const { return sid >= o.sid; }
-};
-#endif
-
 class Sector
 {
     char fname[255] {0};
 
-#ifndef WRAPPER
-    bool file_existed;
-
-    void init();
-
-    unsigned char *eval;
-#endif
     int eval_size;
 
     map<int, int> em_set;
 
-// TODO:
-#if 1
     FILE* f { nullptr };
-#endif
+
 
 #ifdef DD
     static const int header_size = 64;
@@ -98,34 +73,10 @@ public:
     void intract(int i, pair<sec_val, field2_t> x);
 #endif
 
-#ifndef WRAPPER
-    char sid; // a bucketek altal hasznalt id
-
-    signed char wms;
-
-#ifdef DD
-    void set_eval(int i, eval_elem2 r);
-    void set_eval_inner(int h, eval_elem_sym2 r);
-#else
-    void set_eval(int i, eval_elem2 r);
-    void set_eval_inner(int h, eval_elem_sym r);
-    void set_eval_inner(int h, eval_elem_sym2 r);
-#endif
-
-    void save();
-
-    void check_consis();
-#endif
-
-    // statisztikak:
+    // Statistics:
     int max_val, max_count;
 
     Hash *hash {nullptr};
-
-#ifndef WRAPPER
-    void allocate(bool doinit, ::id parent = id::null());
-    void release();
-#endif
 
     void allocate_hash();
     void release_hash();

@@ -219,7 +219,8 @@ std::vector<ExtMove> PerfectPlayer::withTakingMoves(const GameState &s,
 }
 
 std::vector<ExtMove> PerfectPlayer::onlyTakingMoves(const GameState &s)
-{ // there's some copy-paste code here
+{
+    // there's some copy-paste code here
     std::vector<ExtMove> r;
     bool everythingInMill = true;
     for (int i = 0; i < 24; ++i) {
@@ -280,18 +281,12 @@ GameState PerfectPlayer::makeMoveInState(const GameState &s, ExtMove &m)
     GameState s2(s);
     if (!m.onlyTaking) {
         if (m.moveType == CMoveType::SetMove) {
-            s2.makeMove(new SetKorong(m.hov)); // Assuming the definition of
-                                               // SetKorong class is available
+            s2.makeMove(new SetKorong(m.hov));
         } else {
-            s2.makeMove(new MoveKorong(m.hon, m.hov)); // Assuming the
-                                                       // definition of
-                                                       // MoveKorong class is
-                                                       // available
+            s2.makeMove(new MoveKorong(m.hon, m.hov));
         }
         if (m.withTaking)
-            s2.makeMove(new LeveszKorong(m.takeHon)); // Assuming the definition
-                                                      // of LeveszKorong class
-                                                      // is available
+            s2.makeMove(new LeveszKorong(m.takeHon));
     } else {
         s2.makeMove(new LeveszKorong(m.takeHon));
     }
@@ -340,8 +335,7 @@ std::vector<ExtMove> PerfectPlayer::goodMoves(const GameState &s)
 
 int PerfectPlayer::NGMAfterMove(const GameState &s, ExtMove &m)
 {
-    return numGoodMoves(makeMoveInState(s, m)); // Assuming numGoodMoves
-                                                // function is defined
+    return numGoodMoves(makeMoveInState(s, m)); 
 }
 
 template <typename T>
@@ -357,18 +351,12 @@ void PerfectPlayer::sendMoveToGUI(ExtMove m)
 {
     if (!m.onlyTaking) {
         if (m.moveType == CMoveType::SetMove) {
-            g->makeMove(new SetKorong(m.hov)); // Assuming the definition of
-                                               // SetKorong class is available
+            g->makeMove(new SetKorong(m.hov));
         } else {
-            g->makeMove(new MoveKorong(m.hon, m.hov)); // Assuming the
-                                                       // definition of
-                                                       // MoveKorong class is
-                                                       // available
+            g->makeMove(new MoveKorong(m.hon, m.hov));
         }
     } else {
-        g->makeMove(new LeveszKorong(m.takeHon)); // Assuming the definition of
-                                                  // LeveszKorong class is
-                                                  // available
+        g->makeMove(new LeveszKorong(m.takeHon)); 
     }
 }
 

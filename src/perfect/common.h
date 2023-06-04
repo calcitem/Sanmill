@@ -144,17 +144,20 @@ const int max_ksz = 12;
 
 extern string sec_val_path;
 extern string sec_val_fname;
+
+// This file is created by the solver
+// with the -writemovegenlookups switch.
+// The Controller automatically makes
+// this, if the file doesn't exist.
 const string movegen_file = (string) "C:\\malom_data_aux\\" + VARIANT_NAME +
-                            ".movegen"; // This file is created by the solver
-                                        // with the -writemovegenlookups switch.
-                                        // The Controller automatically makes
-                                        // this, if the file doesn't exist.
+                            ".movegen";
 
 typedef __int64 board;
 
-const board mask24 = (1 << 24) - 1; // azert nem lehet int, mert van olyan
-                                    // hasznalata, hogy pl. mask24<<cps (amugy
-                                    // ez sehol sem lassit valszeg)
+// azert nem lehet int, mert van olyan
+// hasznalata, hogy pl. mask24<<cps (amugy
+// ez sehol sem lassit valszeg)
+const board mask24 = (1 << 24) - 1;
 
 enum modes { uninit = -1, solution_mode, verification_mode, analyze_mode };
 extern modes mode;
@@ -213,7 +216,7 @@ struct val
         : key1(key1)
         , key2(key2)
     {
-        assert(key1); /*nem count*/
+        assert(key1); /* nem count */
     }
 
     bool operator==(const val &o) const
@@ -221,10 +224,6 @@ struct val
         return key1 == o.key1 && key2 == o.key2;
     }
 
-    // tuple<sec_val, signed char, int> tr() const { return
-    // make_tuple(-abs(key1), key1 >= 0 ? -1 : 1, key2); } tuple<sec_val, int,
-    // signed char> tr() const { return make_tuple(-abs(key1), key2, key1 <= 0 ?
-    // -1 : 1); } //ezzel az a gond, hogy a bucketekbe rakasnal kulonbozo
     // iranyokba korrigalunk a key2 elojeletol fuggoen
     tuple<sec_val, int> tr() const { return make_tuple(-abs(key1), key2); }
     bool operator<(const val &o) const
@@ -325,12 +324,7 @@ struct hash<id>
     }
 };
 
-//#ifndef WRAPPER
-//	#define WRAPPER
-//	#pragma message ("Warning : WRAPPER defined manually!")
-//#endif
-
-// ennek a WRAPPER define-olasa utan kell lennie
+// this must be in the define path of WRAPPER
 #include "log.h"
 
 template <class T>

@@ -31,6 +31,6 @@ void init_sym_lookuptables();
 board sym24(int op, board a);
 board sym48(int op, board a);
 
-extern int inv[]; // ezt at lehet irni extern-re talan???
+extern int inv[];
 
 #endif // SYMMETRIES_H_INCLUDED

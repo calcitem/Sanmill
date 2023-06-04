@@ -28,7 +28,7 @@
 #include "rules.h"
 
 class CMove
-{ // Step
+{
 public:
     virtual std::vector<int> getMezok() = 0; // Returns the fields included in
                                              // the step

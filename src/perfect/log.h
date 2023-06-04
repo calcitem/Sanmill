@@ -28,24 +28,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <string>
 
-// TODO: Revert
-#if 1
 struct Log
-{ // ez azert nincs a masik agban, mert a wrapper projektben nincs benne a
-  // log.cpp (de amugy semmi akadalya nem lenne belerakni)
+{
+    // This is not in the other branch because log.cpp is not included in the
+    // wrapper project (but there would be no obstacle to adding it)
     static bool log_to_file;
     static FILE *logfile;
     static void setup_logfile(std::string fname, std::string extension);
     static std::string fname, fnamelogging, donefname;
     static void close();
 };
-#endif
 
 template <typename... Args>
 void LOG(const char *format, Args... args)
 {
-    // TODO: Revert
-#if 1
 #if defined(_WIN32)
     printf_s(format, args...);
     fflush(stdout);
@@ -60,11 +56,6 @@ void LOG(const char *format, Args... args)
         fprintf(Log::logfile, format, args...);
         fflush(Log::logfile);
     }
-#endif
-#else
-    char buf[255];
-    snprintf(buf, sizeof(buf), format, args...);
-    std::cerr << buf;
 #endif
 }
 

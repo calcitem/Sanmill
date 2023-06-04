@@ -207,9 +207,10 @@ eval_elem_sym2::eval_elem_sym2(const eval_elem2 &o)
 eval_elem2 eval_elem2::corr(int corr)
 {
     sec_val new_key1 = key1 + corr;
+
+    // magic, don't touch!
     return eval_elem2 {new_key1,
-                       sign((long long)new_key1 * key1) * key2}; // magic, don't
-                                                                 // touch!
+                       sign((long long)new_key1 * key1) * key2}; 
 }
 
 bool eval_elem2::operator<(const eval_elem2 &b) const
@@ -239,7 +240,3 @@ bool eval_elem2::operator>=(const eval_elem2 &b) const
     auto &a = *this;
     return !(a < b);
 }
-
-// eval_elem2 eval_elem2::min_value(){
-//	return eval_elem2{ numeric_limits<sec_val>::min(), 0 };
-// }

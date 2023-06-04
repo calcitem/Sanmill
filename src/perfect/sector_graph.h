@@ -29,8 +29,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <set>
 #include <unordered_map>
 
-#define HAS_SECTOR_GRAPH //(the Analyzer doesn't have the sector graph
-                         //(init_sec_vals() has an ifdef for this))
+// (the Analyzer doesn't have the sector graph
+// (init_sec_vals() has an ifdef for this))
+#define HAS_SECTOR_GRAPH
 
 extern unordered_map<id, vector<id>> sector_graph_t;
 vector<id> graph_func(id u, bool elim_loops = true);
@@ -58,7 +59,7 @@ extern unordered_map<id, wu *> wus;
 
 extern vector<id> sector_list;
 
-extern set<id> wu_ids; // azok az id-k, amelyekre van olyan wu, aminek ez az
-                       // id-je
+// the ids for which there is a wu with this id
+extern set<id> wu_ids; 
 
 #endif // SECTOR_GRAPH_H_INCLUDED

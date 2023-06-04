@@ -115,57 +115,53 @@ Hash::Hash(int W, int B, Sector *s)
                 f_sym_lookup2[sw] |= 1 << inv[i];
             }
             /*
-            Azt nevezzuk kanonikus allapotnak, amely kijohet hash-bol (azaz az
-            inv_hash eredmenyul adhatja). Egy particio az, amelyeknek a hash-e
-            megegyezik. Az f_sym_lookup-ban neha ugyanarra a helyre tobbszor ir
-            az elobbi ciklus. Ez annak felel meg, hogy egy tablat tobbfele
-            kanonikus allapotba is symezhetunk. (marmint ezek a feher reszen
-            egyeznek, de a fekete reszen terhetnek el) (a tobbfele
-            szimmetriamuvelet (amelyek ugyanazt irjak felul) a fehereket
-            ugyanabba az allapotba viszi, de a feketeket majd esetleg nem) A
-            lenyeg, hogy az f_sym_lookup mindig egy kanonikus alakba vigyen.
-            Tobbnyire mindegy, hogy melyikbe, kiveve, ha mar kanonikusban
-            vagyunk, mert akkor csak sajat magaba szabad. (mert a particiok csak
-            ugy nezhetnek ki, hogy van egy kanonikus tagjuk, es mindegyik a
-            kanonikus allapotba mutat) A lentebbi sor azert kell, mert ha
-            valamelyik szimmetriamuvelet sajat magaba vitte a fehereket, akkor a
-            felulirassal a kanonikust masik kanonikusba viheti az f_sym_lookup.
-            A lenti sor rendbe teszi a kanonikushoz tartozo f_sym erteket.
-            A tobbinel azert nem kell korrigalni, mert azok mindenkepp egy
-            kanonikusba visznek (ami eleg is), hiszen a ciklusmag harmadik
-            soraban levo inv[i] mindenkepp w-be visz, ami kanonikus lesz.
-                    (felallast nevezzunk kanonikusnak, ha egy rendes
-            kanonikusnak a fele (ekkor az is teljesul, hogy csak kanonikusoknak
-            a fele)) Igy egy particiobol az elsonek elert az biztosan kanonikus
-            lesz, mert egy oda-vissza hash-elest vegiggondolva visszakapjuk az
-            ilyen allasokat. (ehhez kell az alabbi sor)
+            We call a state canonical that can be hashed (i.e., the inv_hash may
+            return it). A partition is one that has a matching hash. The
+            previous loop sometimes writes to the same place in f_sym_lookup
+            more than once. This corresponds to a table that can be symmetrized
+            into several canonical states (that is, they match on the white
+            part, but may vary on the black part) (several symmetry operations
+            (that overwrite the same) bring the whites into the same state, but
+            not necessarily the blacks). The point is that f_sym_lookup should
+            always lead to a canonical form. It usually doesn't matter which
+            one, except when we are already in a canonical form, because then it
+            is only allowed to lead into itself. (because partitions can only
+            look like they have one canonical member, and each points to the
+            canonical state) The line below is needed because if a symmetry
+            operation led the whites into itself, then the overwrite can lead
+            the canonical into another canonical with f_sym_lookup. The line
+            below corrects the f_sym value associated with the canonical. It
+            doesn't need to be corrected for the others, because they definitely
+            lead to a canonical (which is enough), since the inv[i] in the third
+            line of the loop body necessarily leads into w, which will be
+            canonical. (We call a position canonical if it is half of a proper
+            canonical (then it also fulfills that it is only half of
+            canonicals)) Thus, the first reached of a partition will certainly
+            be canonical, because thinking through a forward-backward hashing,
+            we get back such positions. (this is what the line below is for)
 
-            Orbitnak nevezzuk a fentebbi ciklus alapjan kapott halmazokat. (az
-            allasoknak csak a feher reszet nezzuk) Lentebb a ws megfoditas azert
-            kell, mert annak a halmaznak, amit ugy kapunk, hogy egy orbitot
-            kiegeszitunk feketekkel (mindenhol azonos modon (collapse-olt
-            ertelemben)) , a kulonbozo elemei lehetnek kulonbozo particioban.
-                    Ennek az az oka, hogy a hash-elesnel a g-s tag kulonbozhet,
-            mert annal a tagnal mas lehet az f_sym_lookup ertek.
+            We call the sets obtained based on the above loop orbits. (we only
+            look at the white part of the positions) Below, the ws flip is
+            needed because the different elements of the set we get by
+            supplementing an orbit with blacks (everywhere in the same way (in a
+            collapsed sense)), may be in different partitions. The reason for
+            this is that the hash value at the g-s tag may differ because the
+            value of f_sym_lookup can be different at that tag.
 
-            Uj megoldas:
-            Az alabbi sort kivaltjuk azzal, hogy a szimmetriamuveletek tombjeben
-            az identikust a vegere tesszuk. Ugyanis ekkor ha az identikus
-            utkozik vmivel, akkor az f_sym_lookupba 0 kerul.  //Marmint ez el
-            van irva, ugye? tehat nem "0 kerul", hanem identikus kerul
+            New solution:
+            We replace the line below by putting the identical into the end of
+            the array of symmetry operations. Because then if the identical
+            collides with something, 0 will get into f_sym_lookup. // I mean,
+            this is written, right? So it's not "0 gets in", but identical gets
+            in.
             */
             // f_sym_lookup[w]=0;
             c++;
         }
 
     f_count = c;
-    // cout<<"f_count: "<<f_count<<" (W="<<W<<")"<<endl;
     f_inv_lookup = new int[f_count];
 
-    // for(int w=(1<<W)-1; w<1<<24; w=next_choose(w))
-    //	f_inv_lookup[f_lookup[w]]=w; //ez igy nem jo, ld. a fentebbi komment
-    // veget
-    //
     vector<int> ws;
     for (int w = (1 << W) - 1; w < 1 << 24; w = next_choose(w))
         ws.push_back(w);
@@ -245,10 +241,11 @@ board uncollapse(board a)
     return ((board)r << 24) | w;
 }
 
-// eredeti valtozat
-//~83 cc, ha egyesevel inkrementalgatjuk a hash-t (valszeg ilyenkor jo a branch
-// predicition, mivel hasonlitanak egymashoz az allasok)
-//__declspec(noinline)
+// Original version
+// ~83 clock cycles if we increment the hash one by one (probably the branch
+// prediction is good at this time, since the positions are similar to each
+// other)
+// __declspec(noinline)
 #ifdef WRAPPER
 int collapse(board a)
 {
@@ -291,47 +288,3 @@ void init_collapse_lookup()
 
     // LOG(".\n");
 }
-
-#ifndef WRAPPER
-//__declspec(noinline)
-int collapse(board a)
-{
-    int w = (int)(a & mask24), b = (int)(a >> 24);
-    int r = 0;
-    int ir = 0;
-    const int mask = (1 << sl) - 1;
-
-    static_assert(sl == 8, "");
-    {
-        board wcur = w & mask, bcur = b & mask;
-        int cl = collapse_lookup[wcur][bcur];
-
-        r |= cl << ir;
-
-        int rincr = sl - (int)__popcnt((unsigned int)wcur);
-        ir += rincr;
-
-        w >>= sl;
-        b >>= sl;
-    }
-    {
-        board wcur = w & mask, bcur = b & mask;
-        int cl = collapse_lookup[wcur][bcur];
-
-        r |= cl << ir;
-
-        int rincr = sl - (int)__popcnt((unsigned int)wcur);
-        ir += rincr;
-
-        w >>= sl;
-        b >>= sl;
-    }
-    {
-        board wcur = w & mask, bcur = b & mask;
-        int cl = collapse_lookup[wcur][bcur];
-
-        r |= cl << ir;
-    }
-    return r;
-}
-#endif
