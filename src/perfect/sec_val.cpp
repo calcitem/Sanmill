@@ -36,7 +36,7 @@ void init_sec_vals()
 {
 #ifdef DD
 #ifndef STONE_DIFF
-    FILE *f = nullptr;  // TODO: Right?
+    FILE *f = nullptr;
     sec_val_fname = sec_val_path + "/" + (string)VARIANT_NAME + ".secval";
     fopen_s(&f, sec_val_fname.c_str(), "rt");
     if (!f)
@@ -66,9 +66,9 @@ void init_sec_vals()
     virt_win_val = max_ksz + 1;
     virt_loss_val = -max_ksz - 1;
 #endif
-    // azert kell, mert egyreszt korrigalas, masreszt levonunk belole egyet a
-    // gui_eval_elem2-ben a kle-s szektorok ertekenel (a -5 csak biztonsagi,
-    // lehet, hogy eleg lenne -1 is)
+    // It is needed for two reasons: one is for correction, and the other is to
+    // subtract one from it at the value of the kle sectors in gui_eval_elem2
+    // (the -5 is just for safety, maybe -1 would be enough)
     assert(2 * virt_loss_val - 5 > sec_val_min_value);
 #else
     virt_loss_val = -1;

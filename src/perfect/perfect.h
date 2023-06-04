@@ -20,7 +20,6 @@
 #include "position.h"
 #include "types.h"
 
-// Perfect AI
 int perfect_init();
 int perfect_exit();
 int perfect_reset();

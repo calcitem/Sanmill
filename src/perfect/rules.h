@@ -31,9 +31,6 @@
 
 class GameState;
 
-// Define byte as unsigned char
-// typedef unsigned char byte;
-
 class Rules
 {
 public:
@@ -64,8 +61,6 @@ public:
     static const int lastIrrevLimit = 50;
 
 public:
-    // Add your public methods here
-
     static void initRules();
     static void cleanup();
 

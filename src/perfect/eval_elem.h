@@ -56,8 +56,8 @@ class Sector;
 
 struct eval_elem2
 {
-    // azert nem lehet val, mert az nem tarolhat countot (a ctoranak az assertje
-    // szerint)
+    // azert cannot be valid, because it cannot contain a count (as asserted by
+    // the ctor)
     sec_val key1;
     int key2;
 
@@ -93,8 +93,8 @@ public:
 
 struct eval_elem_sym2
 {
-    // azert nem lehet val, mert az nem tarolhat countot (a ctoranak az assertje
-    // szerint)
+    // azert cannot be valid, because it cannot contain a count (as asserted by
+    // the ctor)
     sec_val key1;
     int key2;
 

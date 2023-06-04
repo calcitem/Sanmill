@@ -33,12 +33,12 @@
 #include "move.h"
 #include "rules.h"
 
-class Player;    // forward declaration, implement this
-class GameState; // forward declaration, implement this
-class CMove;      // forward declaration, implement this
+class Player;
+class GameState;
+class CMove;
 
 GameState::GameState(const GameState &s)
-{ // copy constructor
+{
     T = s.T;
     phase = s.phase;
     setStoneCount = s.setStoneCount;

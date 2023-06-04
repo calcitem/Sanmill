@@ -25,10 +25,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "symmetries.h"
 #include "symmetries_slow.h"
 
-// int (*slow[16])(int) = {id, rot90, rot180, rot270, tt_fuggoleges,
-// tt_vizszintes, tt_bslash, tt_slash, swap, swap_rot90, swap_rot180,
-// swap_rot270, swap_tt_fuggoleges, swap_tt_vizszintes, swap_tt_bslash,
-// swap_tt_slash};
 int (*slow[16])(int) = {rot90,
                         rot180,
                         rot270,
@@ -46,14 +42,10 @@ int (*slow[16])(int) = {rot90,
                         swap_tt_slash,
                         id};
 
-// const int patsize = 6, patc = 1<<patsize;
-// const int patsize = 6, patc = 1 << patsize, patn = 24 / patsize;
 const int patsize = 8, patc = 1 << patsize;
 static_assert(24 % patsize == 0, "");
 
-// int table1[16][patc], table2[16][patc], table3[16][patc], table4[16][patc];
-// //osszesen 16 KB int table[patn][16][patc];
-int table1[16][patc], table2[16][patc], table3[16][patc]; // osszesen 64 KB
+int table1[16][patc], table2[16][patc], table3[16][patc]; // 64 KB in total
 
 void init_sym_lookuptables()
 {
@@ -92,14 +84,6 @@ board sym24(int op, board a)
     int mask = (1 << patsize) - 1;
     board b = 0;
 
-    /*b |= table1[op][(a>>0)&mask];
-    b |= table2[op][(a>>6)&mask];
-    b |= table3[op][(a>>12)&mask];
-    b |= table4[op][(a>>18)&mask];*/
-
-    /*for(int k = 0; k < patn; k++)
-            b |= table[k][op][(a >> k*patsize)&mask];*/
-
     b |= table1[op][(a >> 0) & mask];
     b |= table2[op][(a >> 8) & mask];
     b |= table3[op][(a >> 16) & mask];
@@ -109,12 +93,7 @@ board sym24(int op, board a)
 
 board sym48(int op, board a)
 {
-    return sym24(op, a & mask24) | (sym24(op, a >> 24) << 24); //|
-                                                               //(a&(1LL<<48));
-                                                               ////ez talan nem
-                                                               // kell ide,
-                                                               // ugye?
+    return sym24(op, a & mask24) | (sym24(op, a >> 24) << 24);
 }
 
-// int inv[]={0, 3, 2, 1, 4, 5, 6, 7, 8, 11, 10, 9, 12, 13, 14, 15};
 int inv[] = {2, 1, 0, 3, 4, 5, 6, 7, 10, 9, 8, 11, 12, 13, 14, 15};

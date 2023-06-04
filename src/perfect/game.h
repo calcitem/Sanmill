@@ -34,16 +34,17 @@
 #include "move.h"
 #include "rules.h"
 
-class Player; // forward declaration, implement this
-class CMove;   // forward declaration, implement this
+class Player;
+class CMove;
 
 class Game
 {
 private:
     Player *_ply[2];              // players in the game
     std::list<GameState> history; // GameStates in this (and previous) games
-    std::list<GameState>::iterator current; // the node of the current GameState
-                                            // in history
+
+    // the node of the current GameState in history
+    std::list<GameState>::iterator current; 
 
 public:
     GameState &s() const;

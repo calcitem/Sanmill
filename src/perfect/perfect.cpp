@@ -35,7 +35,6 @@ static Move malom_remove_move = MOVE_NONE;
 static std::mutex mtx;
 static std::condition_variable cv;
 
-// TODO: Use gameOptions.getPerfectDatabase() as path
 int GetBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
                 int blackStonesToPlace, int playerToMove, bool onlyStoneTaking)
 {
