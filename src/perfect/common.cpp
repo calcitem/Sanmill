@@ -24,26 +24,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "common.h"
 #include <unordered_map>
 
-#include <codecvt>
 #include <iostream>
-#include <locale>
 #include <string>
 
 using namespace std;
 
 std::string sec_val_path = ".";
 std::string sec_val_fname = "";
-FILE *f = {nullptr};
-
-wstring str2wstr(const string &s)
-{
-    wstring_convert<codecvt_utf8<wchar_t>> converter;
-    return converter.from_bytes(s.c_str());
-}
+FILE *f = nullptr;
 
 void failwith(string s)
 {
-    wcout << str2wstr(VARIANT_NAME).c_str() << ": " << str2wstr(s).c_str()
-          << endl;
+    cout << VARIANT_NAME << ": " << s << endl;
     exit(7);
 }
