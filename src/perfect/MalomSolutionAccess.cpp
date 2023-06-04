@@ -99,7 +99,7 @@ int MalomSolutionAccess::getBestMove(int whiteBitboard, int blackBitboard,
 
     try {
         ret = pp->chooseRandom(pp->goodMoves(s)).toBitBoard();
-    } catch (std::out_of_range &e) {
+    } catch (std::out_of_range &) {
         throw std::runtime_error("We don't have a database entry for this "
                                  "position. This can happen either if the "
                                  "database is corrupted (missing files), or "

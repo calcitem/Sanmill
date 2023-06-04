@@ -30,13 +30,13 @@ bool Log::log_to_file = false;
 FILE *Log::logfile = stdout;
 string Log::fname, Log::fnamelogging, Log::donefname;
 
-void Log::setup_logfile(string fname, string extension)
+void Log::setup_logfile(string filename, string extension)
 {
-    Log::fname = fname;
+    Log::fname = filename;
     log_to_file = true;
-    fnamelogging = fname + ".logging" + FNAME_SUFFIX;
+    fnamelogging = filename + ".logging" + FNAME_SUFFIX;
 
-    donefname = fname + "." + extension + FNAME_SUFFIX;
+    donefname = filename + "." + extension + FNAME_SUFFIX;
 
     remove(donefname.c_str());
     errno_t r = fopen_s(&logfile, fnamelogging.c_str(), "w");

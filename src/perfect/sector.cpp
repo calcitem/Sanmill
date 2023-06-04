@@ -34,7 +34,7 @@ Sector *sectors[max_ksz + 1][max_ksz + 1][max_ksz + 1][max_ksz + 1];
 vector<Sector *> sector_objs;
 
 const int sbufsize = 1024 * 1024;
-char sbuf[sbufsize]; // vigyazat
+char sbuf[sbufsize]; // Caution
 
 Sector::Sector(::id id)
     : W(id.W)
@@ -45,19 +45,18 @@ Sector::Sector(::id id)
     , max_val(-1)
     , max_count(-1)
     , hash(nullptr)
-    ,
-#ifdef DD
-    sval((assert(sec_vals.count(id)), sec_vals[id]))
-#else
-    sval(0)
-#endif
-#ifndef WRAPPER
-    , sid((char)sector_objs.size())
-    , wms(-1)
-#endif
 #ifdef WRAPPER
-,f(nullptr)
+    , f(nullptr)
+    , sval(
+#else
+    , sval(
 #endif
+#ifdef DD
+          (assert(sec_vals.count(id)), sec_vals[id])
+#else
+          0
+#endif
+      )
 {
     sector_objs.push_back(this);
 
@@ -70,24 +69,24 @@ Sector::Sector(::id id)
 }
 
 template <class T>
-size_t fread1(T &x, FILE *f)
+size_t fread1(T &x, FILE *file)
 {
-    return fread(&x, sizeof(x), 1, f);
+    return fread(&x, sizeof(x), 1, file);
 }
 template <class T>
-size_t fwrite1(T &x, FILE *f)
+size_t fwrite1(T &x, FILE *file)
 {
-    return fwrite(&x, sizeof(x), 1, f);
+    return fwrite(&x, sizeof(x), 1, file);
 }
-void Sector::read_header(FILE *f)
+void Sector::read_header(FILE *file)
 {
 #ifdef DD
     int _version, _eval_struct_size, _field2_offset;
     char _stone_diff_flag;
-    fread1(_version, f);
-    fread1(_eval_struct_size, f);
-    fread1(_field2_offset, f);
-    fread1(_stone_diff_flag, f);
+    fread1(_version, file);
+    fread1(_eval_struct_size, file);
+    fread1(_field2_offset, file);
+    fread1(_stone_diff_flag, file);
     REL_ASSERT(_version == version);
     REL_ASSERT(_eval_struct_size == eval_struct_size);
     REL_ASSERT(_field2_offset == field2_offset);
@@ -95,32 +94,31 @@ void Sector::read_header(FILE *f)
     fseek(f, header_size, SEEK_SET);
 #endif
 }
-void Sector::write_header(FILE *f)
+void Sector::write_header(FILE *file)
 {
 #ifdef DD
-    fwrite1(version, f);
-    fwrite1(eval_struct_size, f);
-    fwrite1(field2_offset, f);
-    fwrite1(stone_diff_flag, f);
-    int ffu_size = header_size - ftell(f);
+    fwrite1(version, file);
+    fwrite1(eval_struct_size, file);
+    fwrite1(field2_offset, file);
+    fwrite1(stone_diff_flag, file);
+    int ffu_size = header_size - ftell(file);
     char *dummy = new char[ffu_size];
     memset(dummy, 0, ffu_size);
-    fwrite(dummy, 1, ffu_size, f);
+    fwrite(dummy, 1, ffu_size, file);
     delete[] dummy;
 #endif
 }
 
-void Sector::read_em_set(FILE *f)
+void Sector::read_em_set(FILE *file)
 {
-    auto start = std::chrono::steady_clock::now(); // Record the start time
-    auto last_update = std::chrono::steady_clock::now(); // Record the last
-                                                         // update time
+    auto start = std::chrono::steady_clock::now();
+    auto last_update = std::chrono::steady_clock::now(); 
 
     int em_set_size = 0;
-    fread(&em_set_size, 4, 1, f);
+    fread(&em_set_size, 4, 1, file);
     for (int i = 0; i < em_set_size; i++) {
         int e[2];
-        fread(e, 4, 2, f);
+        fread(e, 4, 2, file);
         em_set[e[0]] = e[1];
 
         auto now = std::chrono::steady_clock::now();
@@ -137,7 +135,7 @@ void Sector::read_em_set(FILE *f)
             auto elapsed_seconds =
                 std::chrono::duration_cast<std::chrono::seconds>(now - start)
                     .count();
-            int hours = elapsed_seconds / 3600;
+            auto hours = elapsed_seconds / 3600;
             int minutes = (elapsed_seconds % 3600) / 60;
             int seconds = elapsed_seconds % 60;
 
@@ -146,7 +144,7 @@ void Sector::read_em_set(FILE *f)
             auto avg_seconds_per_iteration = elapsed_seconds / (float)(i + 1);
             auto remaining_seconds = remaining_iterations *
                                      avg_seconds_per_iteration;
-            int remaining_hours = remaining_seconds / 3600;
+            auto remaining_hours = remaining_seconds / 3600;
             int remaining_minutes = ((unsigned int)remaining_seconds % 3600) /
                                     60;
             int remaining_secs = (unsigned int)remaining_seconds % 60;
@@ -155,24 +153,32 @@ void Sector::read_em_set(FILE *f)
                 printf("\rProgress: %.2f%%, Memory Usage: %.2fMB, Elapsed "
                        "time: %02d:%02d:%02d, Remaining time: %02d:%02d:%02d",
                        ((float)(i + 1) / em_set_size) * 100, memoryUsageMB,
-                       hours, minutes, seconds, remaining_hours,
-                       remaining_minutes, remaining_secs);
+                       static_cast<int>(hours), static_cast<int>(minutes),
+                       static_cast<int>(seconds),
+                       static_cast<int>(remaining_hours),
+                       static_cast<int>(remaining_minutes),
+                       static_cast<int>(remaining_secs));
             } else {
                 printf("\rProgress: %.2f%%, Memory Usage: %.2fGB, Elapsed "
                        "time: %02d:%02d:%02d, Remaining time: %02d:%02d:%02d",
                        ((float)(i + 1) / em_set_size) * 100,
-                       memoryUsageMB / 1024, hours, minutes, seconds,
-                       remaining_hours, remaining_minutes, remaining_secs);
+                       memoryUsageMB / 1024.0, static_cast<int>(hours),
+                       static_cast<int>(minutes), static_cast<int>(seconds),
+                       static_cast<int>(remaining_hours),
+                       static_cast<int>(remaining_minutes),
+                       static_cast<int>(remaining_secs));
             }
 
-            fflush(stdout); // Flush the output buffer to immediately update the
-                            // output
+            // Flush the output buffer to immediately update the output
+            fflush(stdout);
 
             last_update = now;
         }
     }
-    printf("\n"); // Print a new line after the loop ends to avoid subsequent
-                  // outputs on the same line
+
+    // Print a new line after the loop ends to avoid subsequent outputs
+    // on the same line
+    printf("\n"); 
 }
 
 #ifdef DD
@@ -235,12 +241,14 @@ T sign_extend(T x)
 pair<sec_val, field2_t> Sector::extract(int i)
 {
     unsigned int a = 0;
-    static_assert(sizeof(a) >= eval_struct_size, "vedd nagyobbra az a-t is! "
-                                                 "(meg az intractnal is) (es "
-                                                 "nezd meg a literal 1-ek "
-                                                 "tipusait (az extendben is))) "
-                                                 "(meg minden intte castolast "
-                                                 "is)");
+    static_assert(sizeof(a) >= eval_struct_size, "Increase the size of 'a'! "
+                                                 "(Also consider in 'intract') "
+                                                 "(And "
+                                                 "check the types of literal "
+                                                 "1s "
+                                                 "(in 'extend' as well))) "
+                                                 "(And also check all int type "
+                                                 "casts)");
 #ifndef WRAPPER
     for (int j = 0; j < eval_struct_size; j++)
         a |= (int)eval[eval_struct_size * i + j] << 8 * j;
@@ -251,19 +259,20 @@ pair<sec_val, field2_t> Sector::extract(int i)
     for (int j = 0; j < eval_struct_size; j++)
         a |= (int)read[j] << 8 * j;
 #endif
-    auto r = make_pair(
-        sign_extend<field1_size, sec_val>(a & ((1 << field1_size) - 1)),
-        sign_extend<field2_size, field2_t>(a >> field2_offset));
-    //#if VARIANT != STANDARD
-    //	r.first -= sval;
-    //#endif
+
+    auto r = make_pair(sign_extend<field1_size, sec_val>(
+                           static_cast<sec_val>(a & ((1 << field1_size) - 1))),
+                       sign_extend<field2_size, field2_t>(
+                           static_cast<field2_t>(a >> field2_offset)));
+
     return r;
 }
 
 #endif
 
 void Sector::allocate_hash()
-{ // and read em_set (should be renamed)
+{
+    // and read em_set (should be renamed)
     hash = new Hash(W, B, this);
 #ifdef DD
     eval_size = hash->hash_count * eval_struct_size;
@@ -286,7 +295,8 @@ void Sector::allocate_hash()
 }
 
 void Sector::release_hash()
-{ // and clear em_set (should be renamed)
+{
+    // and clear em_set (should be renamed)
     delete hash;
     hash = nullptr;
 

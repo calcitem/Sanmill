@@ -206,7 +206,7 @@ eval_elem_sym2::eval_elem_sym2(const eval_elem2 &o)
 
 eval_elem2 eval_elem2::corr(int corr)
 {
-    sec_val new_key1 = key1 + corr;
+    sec_val new_key1 = static_cast<int16_t>(key1 + corr);
 
     // magic, don't touch!
     return eval_elem2 {new_key1,

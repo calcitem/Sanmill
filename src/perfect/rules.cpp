@@ -136,7 +136,7 @@ void Rules::initRules()
     }
     // Fill the rest of the graph
     for (int i = 0; i <= 23; i++) {
-        for (int j = 0; j <= 23; j++) {
+        for (uint8_t j = 0; j <= 23; j++) {
             if (stdLaskerBoardGraph[i][j] == true) {
                 stdLaskerALBoardGraph[i][stdLaskerALBoardGraph[i][0] + 1] = j;
                 stdLaskerALBoardGraph[i][0] += 1;
@@ -158,8 +158,8 @@ int Rules::malome(int m, GameState s)
 {
     int result = -1;
     // Use the stored length instead of sizeof
-    int length = invMillPosLengths[m]; // TODO: Right?
-    for (int i = 0; i < length; i++) {
+    size_t length = invMillPosLengths[m]; // TODO: Right?
+    for (size_t i = 0; i < length; i++) {
         if (s.T[millPos[invMillPos[m][i]][0]] == s.T[m] &&
             s.T[millPos[invMillPos[m][i]][1]] == s.T[m] &&
             s.T[millPos[invMillPos[m][i]][2]] == s.T[m]) {
@@ -206,6 +206,8 @@ bool Rules::alphaBetaAvailable()
            !Wrappers::Constants::extended;
 }
 
+#pragma warning(push)
+#pragma warning(disable : 4127)
 void Rules::setVariant()
 {
     // Part of this is copy-pasted in MalomAPI
@@ -249,3 +251,4 @@ void Rules::setVariant()
         maxKSZ = 12;
     }
 }
+#pragma warning(pop)

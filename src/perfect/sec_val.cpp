@@ -39,16 +39,19 @@ void init_sec_vals()
     FILE *f = nullptr;
     sec_val_fname = sec_val_path + "/" + (string)VARIANT_NAME + ".secval";
     fopen_s(&f, sec_val_fname.c_str(), "rt");
-    if (!f)
+    if (f == nullptr) {
         failwith(VARIANT_NAME ".secval file not found.");
+        return;
+    }
     fscanf_s(f, "virt_loss_val: %hd\nvirt_win_val: %hd\n", &virt_loss_val,
              &virt_win_val);
     assert(virt_win_val == -virt_loss_val);
     int n;
     fscanf_s(f, "%d\n", &n);
     for (int i = 0; i < n; i++) {
-        int w, b, wf, bf, v;
-        fscanf_s(f, "%d %d %d %d  %d\n", &w, &b, &wf, &bf, &v);
+        int w, b, wf, bf;
+        int16_t v;
+        fscanf_s(f, "%d %d %d %d  %hd\n", &w, &b, &wf, &bf, &v);
         sec_vals[id(w, b, wf, bf)] = v;
     }
     fclose(f);
@@ -76,7 +79,7 @@ void init_sec_vals()
 #endif
 
 #ifndef STONE_DIFF
-    for (auto sv : sec_vals) {
+    for (const auto &sv : sec_vals) {
         if (sv.second) { // not NTREKS if DD  (if not DD, then only the virt
                          // sectors (which btw don't get here) are non-0)
             assert(!inv_sec_vals.count(sv.second)); // non-NTREKS sec_vals

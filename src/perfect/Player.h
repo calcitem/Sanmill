@@ -32,9 +32,13 @@
 class Player
 {
 protected:
-    Game *g; // Assuming Game is a pre-defined class
+    Game *g {nullptr}; // Assuming Game is a pre-defined class
 
 public:
+    Player()
+        : g(nullptr)
+    { }
+
     // The object is informed to enter the specified game
     virtual void enter(Game *_g);
 

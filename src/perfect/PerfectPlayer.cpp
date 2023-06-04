@@ -143,7 +143,6 @@ std::string PerfectPlayer::toHumanReadableEval(Wrappers::gui_eval_elem2 e)
                   << ex.what() << std::endl;
         std::exit(1);
     }
-    return "";
 }
 
 int PerfectPlayer::futureKorongCount(const GameState &s)
@@ -238,6 +237,10 @@ std::vector<ExtMove> PerfectPlayer::onlyTakingMoves(const GameState &s)
     return r;
 }
 
+#pragma warning(push)
+#pragma warning(disable : 4127)
+#pragma warning(push)
+#pragma warning(disable : 6285)
 std::vector<ExtMove> PerfectPlayer::getMoveList(const GameState &s)
 {
     std::vector<ExtMove> ms0, ms;
@@ -275,6 +278,8 @@ std::vector<ExtMove> PerfectPlayer::getMoveList(const GameState &s)
     }
     return ms;
 }
+#pragma warning(pop)
+#pragma warning(pop)
 
 GameState PerfectPlayer::makeMoveInState(const GameState &s, ExtMove &m)
 {
@@ -343,7 +348,7 @@ T PerfectPlayer::chooseRandom(const std::vector<T> &l)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, l.size() - 1);
+    std::uniform_int_distribution<> dis(0, static_cast<int>(l.size() - 1));
     return l[dis(gen)];
 }
 
@@ -452,6 +457,5 @@ Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState s)
 
 int64_t PerfectPlayer::boardNegate(int64_t a)
 {
-    const int64_t mask24 = (1ll << 24) - 1;
     return ((a & mask24) << 24) | ((a & (mask24 << 24)) >> 24);
 }
