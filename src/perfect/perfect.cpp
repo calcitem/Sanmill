@@ -1,3 +1,4 @@
+// This file is part of Sanmill.
 // Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
@@ -19,6 +20,7 @@
 #include "option.h"
 #include "perfect.h"
 #include "position.h"
+#include "MalomSolutionAccess.h"
 
 #include <condition_variable>
 #include <mutex>
@@ -27,109 +29,25 @@
 
 #ifdef GABOR_MALOM_PERFECT_AI
 #define USE_DEPRECATED_CLR_API_WITHOUT_WARNING
-#include <mscoree.h>
-#pragma comment(lib, "mscoree.lib")
-
-static ICLRRuntimeHost *pHost = NULL;
-bool isHostStarted = false;
-
-static HMODULE hModule = NULL;
 
 static Move malom_remove_move = MOVE_NONE;
 
 static std::mutex mtx;
 static std::condition_variable cv;
 
-void check_hresult(HRESULT hr, const char *operation)
-{
-    if (hr != S_OK) {
-        std::ostringstream err_msg;
-        err_msg << "Unknown error during " << operation << ", code: 0x"
-                << std::hex << hr;
-        throw std::runtime_error(err_msg.str());
-    }
-}
-
-static void start_dotnet()
-{
-    std::lock_guard<std::mutex> lock(mtx);
-
-    if (pHost != nullptr) {
-        isHostStarted = true;
-        cv.notify_all();
-        return;
-    }
-
-    HRESULT hr = CorBindToRuntimeEx(L"v4.0.30319", L"wks", 0,
-                                    CLSID_CLRRuntimeHost, IID_ICLRRuntimeHost,
-                                    (PVOID *)&pHost);
-    check_hresult(hr, "CorBindToRuntimeEx");
-    hr = pHost->Start();
-    check_hresult(hr, "ICLRRuntimeHost::Start");
-
-    isHostStarted = true;
-    cv.notify_all();
-}
-
-static void stop_dotnet()
-{
-    if (pHost == nullptr) {
-        return;
-    }
-
-    HRESULT hr = pHost->Stop();
-    check_hresult(hr, "ICLRRuntimeHost::Stop");
-    pHost->Release();
-    pHost = nullptr;
-    isHostStarted = false;
-}
-
 // TODO: Use gameOptions.getPerfectDatabase() as path
 int GetBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
                 int blackStonesToPlace, int playerToMove, bool onlyStoneTaking)
 {
-    std::unique_lock<std::mutex> lock(mtx);
-    cv.wait(lock, [] { return isHostStarted; });
-
-    WCHAR buffer[MAX_PATH] = {0};
-    DWORD result = GetModuleFileNameW(NULL, buffer, MAX_PATH);
-    if (result == 0 || result == MAX_PATH) {
-        throw std::runtime_error("Failed to retrieve module filename");
-    }
-
-    // std::string strPath = gameOptions.getPerfectDatabase() +
-    // "\\MalomAPI.dll";
-
-    std::wstring wstrPath(buffer);
-    wstrPath = wstrPath.substr(0, wstrPath.find_last_of(L"\\/")) + L"\\MalomAPI"
-                                                                   L".dll";
-    LPCWSTR malomApiDllPath = wstrPath.c_str();
-
-    std::ostringstream ss;
-    ss << whiteBitboard << " " << blackBitboard << " " << whiteStonesToPlace
-       << " " << blackStonesToPlace << " " << playerToMove << " "
-       << (onlyStoneTaking ? 1 : 0);
-    std::string cppstr = ss.str();
-    std::wstring cppwstr = std::wstring(cppstr.begin(), cppstr.end());
-    LPCWSTR lpcwstr = cppwstr.c_str();
-    DWORD dwRet = 0;
-    HRESULT hr = pHost->ExecuteInDefaultAppDomain(
-        malomApiDllPath, L"MalomAPI.MalomSolutionAccess", L"GetBestMoveStr",
-        lpcwstr, &dwRet);
-    check_hresult(hr, "ICLRRuntimeHost::ExecuteInDefaultAppDomain "
-                      "GetBestMoveStr");
-    if (dwRet == 0) {
-        throw std::runtime_error(".Net exception, see printed above by "
-                                 "GetBestMoveStr");
-    }
-
-    return dwRet;
+    return MalomSolutionAccess::getBestMove(whiteBitboard, blackBitboard,
+                                            whiteStonesToPlace,
+                                            blackStonesToPlace, playerToMove,
+                                            onlyStoneTaking);
 }
 
 int perfect_init()
 {
     malom_remove_move = MOVE_NONE;
-    start_dotnet();
 
     return 0;
 }
@@ -137,16 +55,14 @@ int perfect_init()
 int perfect_exit()
 {
     malom_remove_move = MOVE_NONE;
-    stop_dotnet();
 
     return 0;
 }
 
 int perfect_reset()
 {
-    if (hModule == NULL) {
-        perfect_init();
-    }
+    
+    perfect_init();
 
     return 0;
 }
@@ -332,222 +248,3 @@ Move perfect_search(Position *pos)
 }
 
 #endif // GABOR_MALOM_PERFECT_AI
-
-#ifdef MADWEASEL_MUEHLE_PERFECT_AI
-
-// Perfect AI
-Mill *mill = nullptr;
-PerfectAI *ai = nullptr;
-
-int perfect_init()
-{
-    if (mill != nullptr || ai != nullptr) {
-        return 0;
-    }
-
-    mill = new Mill();
-    ai = new PerfectAI(PERFECT_AI_DATABASE_DIR);
-    ai->setDatabasePath(PERFECT_AI_DATABASE_DIR);
-    mill->beginNewGame(ai, ai, fieldStruct::playerOne);
-
-    return 0;
-}
-
-int perfect_exit()
-{
-    if (mill != nullptr) {
-        delete mill;
-        mill = nullptr;
-    }
-
-    if (ai != nullptr) {
-        delete ai;
-        ai = nullptr;
-    }
-
-    return 0;
-}
-
-int perfect_reset()
-{
-    if (mill == nullptr || ai == nullptr) {
-        perfect_init();
-    } else {
-        mill->resetGame();
-    }
-
-    return 0;
-}
-
-Square from_perfect_sq(uint32_t sq)
-{
-    constexpr Square map[] = {SQ_31, SQ_24, SQ_25, SQ_23, SQ_16, SQ_17, SQ_15,
-                              SQ_8,  SQ_9,  SQ_30, SQ_22, SQ_14, SQ_10, SQ_18,
-                              SQ_26, SQ_13, SQ_12, SQ_11, SQ_21, SQ_20, SQ_19,
-                              SQ_29, SQ_28, SQ_27, SQ_0};
-
-    return map[sq];
-}
-
-Move from_perfect_move(uint32_t from, uint32_t to)
-{
-    Move ret;
-
-    if (to == 24)
-        ret = static_cast<Move>(-from_perfect_sq(from));
-    else if (from == 24)
-        ret = static_cast<Move>(from_perfect_sq(to));
-    else
-        ret = make_move(from_perfect_sq(from), from_perfect_sq(to));
-
-    if (ret == MOVE_NONE) {
-        assert(false);
-    }
-
-    return ret;
-}
-
-unsigned to_perfect_sq(Square sq)
-{
-    constexpr int map[] = {
-        -1, -1, -1, -1, -1, -1, -1, -1,
-        7,  8,  12, 17, 16, 15, 11, 6, /* 8 - 15 */
-        4,  5,  13, 20, 19, 18, 10, 3, /* 16 - 23 */
-        1,  2,  14, 23, 22, 21, 9,  0, /* 24 - 31 */
-        -1, -1, -1, -1, -1, -1, -1, -1,
-    };
-
-    return map[sq];
-}
-
-void to_perfect_move(Move move, uint32_t &from, uint32_t &to)
-{
-    const Square f = from_sq(move);
-    const Square t = to_sq(move);
-    const MoveType type = type_of(move);
-
-    if (type == MOVETYPE_REMOVE) {
-        from = to_perfect_sq(t);
-        to = SQUARE_NB;
-    } else if (type == MOVETYPE_PLACE) {
-        from = SQUARE_NB;
-        to = to_perfect_sq(t);
-    } else {
-        from = to_perfect_sq(f);
-        to = to_perfect_sq(t);
-    }
-}
-
-Move perfect_search(Position *pos)
-{
-    uint32_t from = 24, to = 24;
-    // sync_cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << sync_endl;
-    // mill->printBoard();
-    // sync_cout << "========================" << sync_endl;
-
-    mill->getComputersChoice(&from, &to);
-
-    mill->doMove(from, to);
-
-    mill->printBoard();
-    // sync_cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << sync_endl;
-
-    sync_cout << "\nlast move was from "
-              << static_cast<char>(mill->getLastMoveFrom() + 'a') << " to "
-              << static_cast<char>(mill->getLastMoveTo() + 'a') << sync_endl;
-    // sync_cout << "\nlast move was from " << (char)(from + 'a') << " to " <<
-    // (char)(to + 'a') << sync_endl;
-
-    // ret = mill->doMove(mill->getLastMoveFrom(), mill->getLastMoveTo());
-
-    // return from_perfect_move(from, to);
-    return from_perfect_move(mill->getLastMoveFrom(), mill->getLastMoveTo());
-
-    // cout << "\nlast move was from " << (char)(mill->getLastMoveFrom() + 'a')
-    // << " to " << (char)(mill->getLastMoveTo() + 'a') << "\n\n";
-    // return from_perfect_move(mill->getLastMoveFrom(), mill->getLastMoveTo());
-}
-
-bool perfect_do_move(Move move)
-{
-    uint32_t from, to;
-
-    to_perfect_move(move, from, to);
-
-    return mill->doMove(from, to);
-}
-
-bool perfect_command(const char *cmd)
-{
-    uint32_t ruleNo = 0;
-    unsigned t = 0;
-    int step = 0;
-    File file1 = FILE_A, file2 = FILE_A;
-    Rank rank1 = RANK_1, rank2 = RANK_1;
-    Move move;
-
-    if (sscanf(cmd, "r%1u s%3d t%2u", &ruleNo, &step, &t) == 3) {
-        if (set_rule(ruleNo - 1) == false) {
-            return false;
-        }
-
-        return perfect_reset();
-    }
-
-    int args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)",
-                      reinterpret_cast<unsigned *>(&file1),
-                      reinterpret_cast<unsigned *>(&rank1),
-                      reinterpret_cast<unsigned *>(&file2),
-                      reinterpret_cast<unsigned *>(&rank2));
-
-    if (args >= 4) {
-        move = make_move(make_square(file1, rank1), make_square(file2, rank2));
-        return perfect_do_move(move);
-    }
-
-    args = sscanf(cmd, "-(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
-                  reinterpret_cast<unsigned *>(&rank1));
-    if (args >= 2) {
-        move = static_cast<Move>(-make_move(SQ_0, make_square(file1, rank1)));
-        return perfect_do_move(move);
-    }
-
-    args = sscanf(cmd, "(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
-                  reinterpret_cast<unsigned *>(&rank1));
-    if (args >= 2) {
-        move = make_move(SQ_0, make_square(file1, rank1));
-        return perfect_do_move(move);
-    }
-
-    return false;
-
-#if 0
-    args = sscanf(cmd, "Player%1u give up!", &t);
-
-    //     if (args == 1) {
-    //         return resign((Color)t);
-    //     }
-
-    if (rule.threefoldRepetitionRule) {
-        if (!strcmp(cmd, drawReasonThreefoldRepetitionStr)) {
-            return true;
-        }
-
-        if (!strcmp(cmd, "draw")) {
-            phase = Phase::gameOver;
-            winner = DRAW;
-            score_draw++;
-            gameOverReason = GameOverReason::drawThreefoldRepetition;
-            //snprintf(record, RECORD_LEN_MAX, drawReasonThreefoldRepetitionStr);
-            return true;
-        }
-    }
-
-    return false;
-#endif
-}
-
-// mill->getWinner() == 0
-// mill->getCurPlayer() == fieldStruct::playerTwo
-
-#endif // MADWEASEL_MUEHLE_PERFECT_AI
