@@ -171,6 +171,8 @@ void GameState::checkInvariants()
                           setStoneCount[1] == Rules::maxKSZ));
 }
 
+#pragma warning(push)
+#pragma warning(disable : 4127)
 // Called when applying a free setup. It sets over and checks whether the
 // position is valid. Returns "" if valid, reason str otherwise. Also called
 // when pasting a position.
@@ -204,7 +206,7 @@ std::string GameState::setOverAndCheckValidSetup()
         !Wrappers::Constants::extended) {
         if (phase == 1) {
             if (toBePlaced0 !=
-                toBePlaced1 - ((sideToMove == 0) ^ kle ? 0 : 1)) {
+                toBePlaced1 - (((sideToMove == 0) ^ kle) ? 0 : 1)) {
                 return "If Black is to move in the placement phase, then the "
                        "number of black stones to be placed should be one more "
                        "than the number of white stones to placed. If White is "
@@ -217,8 +219,12 @@ std::string GameState::setOverAndCheckValidSetup()
                        "by the \"Switch STM\" button in position setup mode.";
             }
         } else {
-            assert(phase == 2);
-            assert(toBePlaced0 == 0 && toBePlaced1 == 0);
+            if (phase != 2) {
+                throw std::runtime_error("Phase is not 2");
+            }
+            if (toBePlaced0 != 0 || toBePlaced1 != 0) {
+                throw std::runtime_error("toBePlaced0 or toBePlaced1 is not 0");
+            }
         }
     }
 
@@ -270,6 +276,7 @@ std::string GameState::setOverAndCheckValidSetup()
 
     return "";
 }
+#pragma warning(pop)
 
 // to paste from clipboard
 GameState::GameState(const std::string &s)
@@ -303,8 +310,8 @@ GameState::GameState(const std::string &s)
                             0;
 
             // ensure correct count of stones
-            int count0 = std::count(T.begin(), T.end(), 0);
-            int count1 = std::count(T.begin(), T.end(), 1);
+            ptrdiff_t count0 = std::count(T.begin(), T.end(), 0);
+            ptrdiff_t count1 = std::count(T.begin(), T.end(), 1);
             if (stoneCount[0] != count0 || stoneCount[1] != count1) {
                 throw InvalidGameStateException("Number of stones is "
                                                 "incorrect.");
@@ -314,7 +321,7 @@ GameState::GameState(const std::string &s)
         }
     } catch (InvalidGameStateException &ex) {
         throw ex;
-    } catch (std::exception &ex) {
+    } catch (std::exception &) {
         throw std::invalid_argument("Invalid Format");
     }
 }

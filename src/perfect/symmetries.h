@@ -31,6 +31,6 @@ void init_sym_lookuptables();
 board sym24(int op, board a);
 board sym48(int op, board a);
 
-extern int inv[];
+extern int8_t inv[];
 
 #endif // SYMMETRIES_H_INCLUDED

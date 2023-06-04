@@ -115,7 +115,7 @@ struct eval_elem_sym2
     eval_elem_sym2(const eval_elem2 &o);
 
 #ifdef DD
-    static const field2_t spec_field2 = -1 << (field2_size - 1);
+    static const field2_t spec_field2 = -(1 << (field2_size - 1));
     static const field2_t max_field2 = -(spec_field2 + 1);
 #endif
 };

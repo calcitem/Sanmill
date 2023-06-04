@@ -78,7 +78,7 @@ const int field2_offset = 6;    // bit
 #endif
 const int field1_size = field2_offset;
 const int field2_size = 8 * eval_struct_size - field2_offset;
-using field2_t = short int;
+using field2_t = int16_t;
 #endif
 
 #ifdef STONE_DIFF
@@ -93,7 +93,7 @@ const char stone_diff_flag = 0;
 #define FNAME_SUFFIX ""
 #endif
 
-using sec_val = short int;
+using sec_val = int16_t;
 
 #ifdef DD
 const sec_val sec_val_min_value = -(1 << (field1_size - 1));
@@ -205,11 +205,11 @@ inline unsigned int manual_popcnt(unsigned int x)
 #endif
 #endif
 
-// nem szabad benne countot tarolni
+// You must not store count in it
 struct val
 {
-    sec_val key1;
-    int key2;
+    sec_val key1 {0};
+    int key2 {0};
 
     val() { }
     val(sec_val key1, int key2)
@@ -224,12 +224,12 @@ struct val
         return key1 == o.key1 && key2 == o.key2;
     }
 
-    // iranyokba korrigalunk a key2 elojeletol fuggoen
+    // We correct towards directions depending on the sign of key2.
     tuple<sec_val, int> tr() const { return make_tuple(-abs(key1), key2); }
     bool operator<(const val &o) const
     {
         return tr() < o.tr();
-    } // a feldolgozas sorrendje
+    }
     bool operator<=(const val &o) const { return tr() <= o.tr(); }
     bool operator>(const val &o) const { return tr() > o.tr(); }
     bool operator>=(const val &o) const { return tr() >= o.tr(); }
@@ -239,14 +239,20 @@ struct val
 
 struct id
 {
-    int W, B, WF, BF;
+    int W {0};
+    int B {0};
+    int WF {0};
+    int BF {0};
+
     id(int W, int B, int WF, int BF)
         : W(W)
         , B(B)
         , WF(WF)
         , BF(BF)
     { }
+
     id() { }
+
     static id null() { return id {-1, -1, -1, -1}; }
 
     void negate()
@@ -320,7 +326,9 @@ struct hash<id>
 {
     size_t operator()(const id &k) const
     {
-        return k.W | (k.B << 4) | (k.WF << 8) | (k.BF << 12);
+        return static_cast<size_t>(k.W) | (static_cast<size_t>(k.B) << 4) |
+               (static_cast<size_t>(k.WF) << 8) |
+               (static_cast<size_t>(k.BF) << 12);
     }
 };
 
@@ -361,6 +369,5 @@ int sign(T x)
 }
 
 void failwith(string s);
-wstring str2wstr(const string &s);
 
 #endif // COMMON_H_INCLUDED

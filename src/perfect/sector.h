@@ -52,9 +52,9 @@ class Sector
 #else
     static const int header_size = 0;
 #endif
-    void read_header(FILE *f);
-    void write_header(FILE *f);
-    void read_em_set(FILE *f);
+    void read_header(FILE *file);
+    void write_header(FILE *file);
+    void read_em_set(FILE *file);
 
 public:
     int W {0};

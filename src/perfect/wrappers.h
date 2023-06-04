@@ -145,18 +145,18 @@ public:
 struct gui_eval_elem2
 {
 private:
-    // azert nem lehet val, mert az nem tarolhat countot (a ctoranak az assertje
-    // szerint)
+    // azert cannot be valid, because it cannot contain a count (as asserted by
+    // the ctor)
     sec_val key1;
     int key2;
-    ::Sector *s; // ez akkor null, ha virtualis nyeres/vesztes vagy KLE
+    ::Sector *s; // this is zero if there is a virtual win/loss or KLE
 
     enum class Cas { Val, Count };
 
     eval_elem2 to_eval_elem2() const { return eval_elem2 {key1, key2}; }
 
 public:
-    // A key1 nezopontja az s. Viszont ha az s null, akkor meg a
+    // The nezo point of key1 is s. However, if s is null, then
     // virt_unique_sec_val.
     gui_eval_elem2(sec_val key1, int key2, Sector *s)
         : key1 {key1}
@@ -167,15 +167,15 @@ public:
         : gui_eval_elem2 {e.key1, e.key2, s}
     { }
 
-    gui_eval_elem2 undo_negate(WSector *s)
+    gui_eval_elem2 undo_negate(WSector *sector)
     {
         auto a = this->to_eval_elem2().corr(
-            (s ? s->sval() : virt_unique_sec_val()) +
+            (sector ? sector->sval() : virt_unique_sec_val()) +
             (this->s ? this->s->sval : virt_unique_sec_val()));
         a.key1 *= -1;
-        if (s) // ha s null, akkor KLE-be negalunk
+        if (sector) // if sector is null, we go to KLE
             a.key2++;
-        return gui_eval_elem2(a, s ? s->s : nullptr);
+        return gui_eval_elem2(a, sector ? sector->s : nullptr);
     }
 
     inline static const bool ignore_DD = false;
@@ -191,7 +191,7 @@ private:
         // absolute viewpoint
         assert(e.key1 >= abs_min_value());
         assert(e.key1 <= ::virt_win_val);
-        assert(e.key1 != ::virt_loss_val - 1); // kiszedheto
+        assert(e.key1 != ::virt_loss_val - 1); // You can take it out
         if (e.key1 != virt_win_val && e.key1 != ::virt_loss_val &&
             e.key1 != abs_min_value())
             e.key1 = 0;

@@ -170,11 +170,14 @@ Hash::Hash(int W, int B, Sector *s)
         auto w = *it;
         f_inv_lookup[f_lookup[w]] = w;
     }
-    //
 
     g_inv_lookup = new int[binom[24 - W][B]];
     c = 0;
     for (int b = (1 << B) - 1; b < 1 << (24 - W); b = next_choose(b)) {
+        if (c >= binom[24 - W][B]) {
+            assert(false);
+            break;
+        }
         g_lookup[b] = c;
         g_inv_lookup[c] = b;
         c++;
@@ -218,8 +221,7 @@ pair<int, eval_elem2> Hash::hash(board a)
         int h2 = f_lookup[a & mask24] * binom[24 - W][B] +
                  g_lookup[collapse(a)];
         assert(s->get_eval_inner(h2).cas() != eval_elem_sym2::Sym);
-        eval_elem2 e = s->get_eval(h2);
-        return make_pair(h2, e);
+        return make_pair(h2, s->get_eval(h2));
     }
 }
 
@@ -283,7 +285,7 @@ void init_collapse_lookup()
                 } else
                     b >>= 1;
             }
-            collapse_lookup[w][bl] = r;
+            collapse_lookup[w][bl] = static_cast<uint8_t>(r);
         }
 
     // LOG(".\n");
