@@ -25,8 +25,8 @@
 #include "option.h"
 #include "database.h"
 
-#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
-#include "perfect/perfect.h"
+#if defined(GABOR_MALOM_PERFECT_AI)
+#include "perfect/perfect_adaptor.h"
 #endif
 
 extern QString APP_FILENAME_DEFAULT;

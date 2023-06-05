@@ -25,8 +25,8 @@
 #include "option.h"
 #include "test.h"
 
-#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
-#include "perfect/perfect.h"
+#if defined(GABOR_MALOM_PERFECT_AI)
+#include "perfect/perfect_adaptor.h"
 #endif
 
 #ifdef QT_UI_TEST_MODE

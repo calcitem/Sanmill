@@ -21,7 +21,7 @@
 #include "thread.h"
 
 #if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
-#include "perfect.h"
+#include "perfect_adaptor.h"
 #endif
 
 using Eval::evaluate;
