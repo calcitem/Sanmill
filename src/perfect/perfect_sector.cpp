@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <chrono>
 #include <cstdio>
+#include <vector>
 
 #include "perfect_common.h"
 #include "perfect_hash.h"
@@ -60,7 +61,7 @@ Sector::Sector(::id id)
 {
     sector_objs.push_back(this);
 
-    strcpy_s(fname, id.file_name().c_str());
+    STRCPY(fname, sizeof(fname), id.file_name().c_str());
     LOG("Creating sector object for %s\n", fname);
 
 #ifndef WRAPPER
@@ -87,10 +88,10 @@ void Sector::read_header(FILE *file)
     fread1(_eval_struct_size, file);
     fread1(_field2_offset, file);
     fread1(_stone_diff_flag, file);
-    REL_ASSERT(_version == version);
-    REL_ASSERT(_eval_struct_size == eval_struct_size);
-    REL_ASSERT(_field2_offset == field2_offset);
-    REL_ASSERT(_stone_diff_flag == stone_diff_flag);
+    assert(_version == version);
+    assert(_eval_struct_size == eval_struct_size);
+    assert(_field2_offset == field2_offset);
+    assert(_stone_diff_flag == stone_diff_flag);
     fseek(f, header_size, SEEK_SET);
 #endif
 }
@@ -283,10 +284,16 @@ void Sector::allocate_hash()
 #ifdef WRAPPER
     if (!f) {
         std::string filename = std::string(fname);
+#ifdef _WIN32
         filename = sec_val_path + "\\" + filename;
-        
-        fopen_s(&f, filename.c_str(), "rb"); // the vb code has checked that it
-                                            // exists
+#else
+        filename = sec_val_path + "/" + filename;
+#endif
+
+        if (FOPEN(&f, filename.c_str(), "rb") == -1) {
+            std::cerr << "Failed to open file " << filename << '\n';
+            return;
+        }
         read_header(f);
     }
     fseek(f, header_size + eval_size, SEEK_SET);

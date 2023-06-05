@@ -25,8 +25,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "perfect_sec_val.h"
 
-map<id, sec_val> sec_vals; // vigyazat: STONE_DIFF esetben vannak benne nagyon
-                           // nem letezo szektorok is
+// Be careful: In the case of STONE_DIFF,
+// there are also sectors that do not exist at all.
+map<id, sec_val> sec_vals;
+
 #ifndef STONE_DIFF
 map<sec_val, id> inv_sec_vals;
 #endif
@@ -37,21 +39,24 @@ void init_sec_vals()
 #ifdef DD
 #ifndef STONE_DIFF
     FILE *f = nullptr;
+#ifdef _WIN32
+    sec_val_fname = sec_val_path + "\\" + (string)VARIANT_NAME + ".secval";
+#else
     sec_val_fname = sec_val_path + "/" + (string)VARIANT_NAME + ".secval";
-    fopen_s(&f, sec_val_fname.c_str(), "rt");
-    if (f == nullptr) {
+#endif
+    if (FOPEN(&f, sec_val_fname.c_str(), "rt") == -1) {
         failwith(VARIANT_NAME ".secval file not found.");
         return;
     }
-    fscanf_s(f, "virt_loss_val: %hd\nvirt_win_val: %hd\n", &virt_loss_val,
-             &virt_win_val);
+    FSCANF(f, "virt_loss_val: %hd\nvirt_win_val: %hd\n", &virt_loss_val,
+           &virt_win_val);
     assert(virt_win_val == -virt_loss_val);
     int n;
-    fscanf_s(f, "%d\n", &n);
+    FSCANF(f, "%d\n", &n);
     for (int i = 0; i < n; i++) {
         int w, b, wf, bf;
         int16_t v;
-        fscanf_s(f, "%d %d %d %d  %hd\n", &w, &b, &wf, &bf, &v);
+        FSCANF(f, "%d %d %d %d  %hd\n", &w, &b, &wf, &bf, &v);
         sec_vals[id(w, b, wf, bf)] = v;
     }
     fclose(f);

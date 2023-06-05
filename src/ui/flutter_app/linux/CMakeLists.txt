@@ -132,6 +132,7 @@ add_executable(${BINARY_NAME}
   "../../../../perfect/perfect_player.cpp"
   "../../../../perfect/perfect_rules.cpp"
   "../../../../perfect/perfect_sec_val.cpp"
+  "../../../../perfect/perfect_sector.cpp"
   "../../../../perfect/perfect_sector_graph.cpp"
   "../../../../perfect/perfect_symmetries.cpp"
   "../../../../perfect/perfect_symmetries_slow.cpp"

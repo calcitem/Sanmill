@@ -25,10 +25,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PERFECT_COMMON_H_INCLUDED
 
 #include <cassert>
+#include <cstdio>
 #include <sstream>
 #include <string>
 #include <tuple>
 #include <unordered_map>
+
+#include "perfect_platform.h"
 
 using namespace std;
 
@@ -152,7 +155,7 @@ extern string sec_val_fname;
 const string movegen_file = (string) "C:\\malom_data_aux\\" + VARIANT_NAME +
                             ".movegen";
 
-typedef __int64 board;
+typedef int64_t board;
 
 // azert nem lehet int, mert van olyan
 // hasznalata, hogy pl. mask24<<cps (amugy
@@ -184,17 +187,6 @@ struct manual_popcnt
 
 #if __cplusplus
 #define WRAPPER
-#endif
-
-#ifdef WRAPPER
-#define __popcnt manual_popcnt
-inline unsigned int manual_popcnt(unsigned int x)
-{
-    unsigned int r = 0;
-    for (int i = 0; i < 32; i++)
-        r += 1 & (x >> i);
-    return r;
-}
 #endif
 
 //#define STATISTICS
@@ -284,12 +276,12 @@ struct id
         return !eks() && !transient();
     }
 
-    string file_name()
+    std::string file_name()
     {
         char b[255];
-        sprintf_s(b, "%s_%d_%d_%d_%d.sec%s", VARIANT_NAME, W, B, WF, BF,
-                  FNAME_SUFFIX);
-        string r = string(b);
+        SPRINTF(b, sizeof(b), "%s_%d_%d_%d_%d.sec%s", VARIANT_NAME, W, B, WF,
+                BF, FNAME_SUFFIX);
+        std::string r = std::string(b);
         return r;
     }
 
@@ -313,11 +305,11 @@ struct id
         return !(*this == o);
     }
 
-    string to_string()
+    std::string to_string()
     {
         char buf[255];
-        sprintf_s(buf, "%s_%d_%d_%d_%d", VARIANT_NAME, W, B, WF, BF);
-        return string(buf);
+        SPRINTF(buf, sizeof(buf), "%s_%d_%d_%d_%d", VARIANT_NAME, W, B, WF, BF);
+        return std::string(buf);
     }
 };
 
@@ -342,25 +334,6 @@ string tostring(T x)
     ss << x;
     return ss.str();
 }
-
-#ifdef NDEBUG
-#define REL_ASSERT(_Expression) \
-    (void)((!!(_Expression)) || (LOG("REL_ASSERT failure: %s\n", \
-                                     ((string) #_Expression + "  " + \
-                                      __FILE__ + "  " + tostring(__LINE__)) \
-                                         .c_str()), \
-                                 abort(), 0))
-
-#else
-#define REL_ASSERT(_Expression) \
-    (void)((!!(_Expression)) || \
-           (LOG("REL_ASSERT failure: %s\n", \
-                ((string) #_Expression + "  " + __FILE__ + "  " + \
-                 tostring(__LINE__)) \
-                    .c_str()), \
-            _wassert(_CRT_WIDE(#_Expression), _CRT_WIDE(__FILE__), __LINE__), \
-            0))
-#endif
 
 template <class T>
 int sign(T x)

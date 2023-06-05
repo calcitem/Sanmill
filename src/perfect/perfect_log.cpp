@@ -30,7 +30,7 @@ bool Log::log_to_file = false;
 FILE *Log::logfile = stdout;
 string Log::fname, Log::fnamelogging, Log::donefname;
 
-void Log::setup_logfile(string filename, string extension)
+void Log::setup_logfile(std::string filename, std::string extension)
 {
     Log::fname = filename;
     log_to_file = true;
@@ -39,11 +39,12 @@ void Log::setup_logfile(string filename, string extension)
     donefname = filename + "." + extension + FNAME_SUFFIX;
 
     remove(donefname.c_str());
-    errno_t r = fopen_s(&logfile, fnamelogging.c_str(), "w");
-    if (r) {
+    if (FOPEN(&logfile, fnamelogging.c_str(), "w") == -1) {
         printf("Fatal error: Unable to open log file. (Another instance is "
                "probably running with the same parameters.)\n");
+#if defined(_WIN32) || defined(_WIN64)
         system("pause");
+#endif
         exit(1);
     }
     setvbuf(logfile, 0, _IONBF, 0);
