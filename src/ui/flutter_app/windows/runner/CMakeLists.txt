@@ -56,6 +56,7 @@ add_executable(${BINARY_NAME} WIN32
   "../../../../perfect/perfect_player.cpp"
   "../../../../perfect/perfect_rules.cpp"
   "../../../../perfect/perfect_sec_val.cpp"
+  "../../../../perfect/perfect_sector.cpp"
   "../../../../perfect/perfect_sector_graph.cpp"
   "../../../../perfect/perfect_symmetries.cpp"
   "../../../../perfect/perfect_symmetries_slow.cpp"
@@ -87,3 +88,14 @@ target_include_directories(${BINARY_NAME} PRIVATE "${CMAKE_SOURCE_DIR}")
 
 # Run the Flutter tool portions of the build. This must not be removed.
 add_dependencies(${BINARY_NAME} flutter_assemble)
+
+# Check if the Microsoft Visual C++ compiler is being used
+#if(MSVC)
+  # If it is, then add compile options for the target ${BINARY_NAME}, using /wd4244 to disable
+  # warning 4244
+  # /wd4244 is a MSVC specific compiler option used to disable warning 4244
+  # This warning generally occurs during potential numeric conversions, where a variable is
+  # converted from a larger numeric type (like double or float) to a smaller numeric type
+  # (like int)
+# target_compile_options(${BINARY_NAME} PRIVATE /wd4244)
+#endif()

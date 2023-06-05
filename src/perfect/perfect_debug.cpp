@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 const char *toclp(board b)
 {
     board mask = 1;
-    vector<int> kit(24, -1);
+    std::vector<int> kit(24, -1);
     for (int i = 0; i < 24; i++) {
         if ((mask << i) & b)
             kit[i] = 0;
@@ -40,15 +40,15 @@ const char *toclp(board b)
             kit[i - 24] = 1;
     }
 
-    stringstream ss;
+    std::stringstream ss;
     for (int i = 0; i < 24; i++)
         ss << kit[i] << ",";
-    ss << "0,0,0,2,9,9," << __popcnt((unsigned int)(b & mask24)) << ","
-       << __popcnt((unsigned int)((b & (mask24 << 24)) >> 24))
+    ss << "0,0,0,2,9,9," << POPCNT((unsigned int)(b & mask24)) << ","
+       << POPCNT((unsigned int)((b & (mask24 << 24)) >> 24))
        << ",False,60,-1000,0,3,malom2";
 
     char *ret = new char[1024];
-    strcpy_s(ret, 1024, ss.str().c_str());
+    STRCPY(ret, 1024, ss.str().c_str());
     return ret;
 }
 

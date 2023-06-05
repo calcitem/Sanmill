@@ -49,13 +49,16 @@ void LOG(const char *format, Args... args)
         fprintf_s(Log::logfile, format, args...);
         fflush(Log::logfile);
     }
-#elif defined(__linux__)
+#else
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-security"
     printf(format, args...);
     fflush(stdout);
     if (Log::log_to_file) {
         fprintf(Log::logfile, format, args...);
         fflush(Log::logfile);
     }
+#pragma GCC diagnostic pop
 #endif
 }
 
