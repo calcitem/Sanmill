@@ -17,7 +17,7 @@ add_library( # Sets the name of the library.
         ../../../../endgame.cpp
         ../../../../evaluate.cpp
         ../../../../main.cpp
-		../../../../mcts.cpp
+	../../../../mcts.cpp
         ../../../../mills.cpp
         ../../../../misc.cpp
         ../../../../movegen.cpp
@@ -29,7 +29,25 @@ add_library( # Sets the name of the library.
         ../../../../thread.cpp
         ../../../../tt.cpp
         ../../../../uci.cpp
-        ../../../../ucioption.cpp)
+        ../../../../ucioption.cpp
+        ../../../../perfect/perfect_adaptor.cpp
+        ../../../../perfect/perfect_api.cpp
+        ../../../../perfect/perfect_adaptor.cpp
+        ../../../../perfect/perfect_common.cpp
+        ../../../../perfect/perfect_debug.cpp
+        ../../../../perfect/perfect_eval_elem.cpp
+        ../../../../perfect/perfect_game.cpp
+        ../../../../perfect/perfect_game_state.cpp
+        ../../../../perfect/perfect_hash.cpp
+        ../../../../perfect/perfect_log.cpp
+        ../../../../perfect/perfect_move.cpp
+        ../../../../perfect/perfect_player.cpp
+        ../../../../perfect/perfect_rules.cpp
+        ../../../../perfect/perfect_sec_val.cpp
+        ../../../../perfect/perfect_sector_graph.cpp
+        ../../../../perfect/perfect_symmetries.cpp
+        ../../../../perfect/perfect_symmetries_slow.cpp
+        ../../../../perfect/perfect_wrappers.cpp)
 
 #target_compile_options(sanmill PUBLIC -fsanitize=hwaddress -fno-omit-frame-pointer)
 #set_target_properties(sanmill PROPERTIES LINK_FLAGS -fsanitize=hwaddress)
@@ -41,6 +59,7 @@ include_directories(
         ../../command
         ../../../../../include
         ../../../../
+        ../../../../perfect
 )
 
 find_library( # Sets the name of the path variable.

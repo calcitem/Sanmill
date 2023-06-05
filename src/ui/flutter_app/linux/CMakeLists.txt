@@ -85,6 +85,7 @@ add_definitions(-D FLUTTER_UI)
 
 INCLUDE_DIRECTORIES(
   ../../../
+  ../../../perfect
   ../../../../include
   ../command
 )
@@ -117,6 +118,24 @@ add_executable(${BINARY_NAME}
   "../../../tt.cpp"
   "../../../uci.cpp"
   "../../../ucioption.cpp"
+  "../../../../perfect/perfect_adaptor.cpp"
+  "../../../../perfect/perfect_api.cpp"
+  "../../../../perfect/perfect_adaptor.cpp"
+  "../../../../perfect/perfect_common.cpp"
+  "../../../../perfect/perfect_debug.cpp"
+  "../../../../perfect/perfect_eval_elem.cpp"
+  "../../../../perfect/perfect_game.cpp"
+  "../../../../perfect/perfect_game_state.cpp"
+  "../../../../perfect/perfect_hash.cpp"
+  "../../../../perfect/perfect_log.cpp"
+  "../../../../perfect/perfect_move.cpp"
+  "../../../../perfect/perfect_player.cpp"
+  "../../../../perfect/perfect_rules.cpp"
+  "../../../../perfect/perfect_sec_val.cpp"
+  "../../../../perfect/perfect_sector_graph.cpp"
+  "../../../../perfect/perfect_symmetries.cpp"
+  "../../../../perfect/perfect_symmetries_slow.cpp"
+  "../../../../perfect/perfect_wrappers.cpp"
   "${FLUTTER_MANAGED_DIR}/generated_plugin_registrant.cc"
 )
 
