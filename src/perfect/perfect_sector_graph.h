@@ -33,8 +33,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // (init_sec_vals() has an ifdef for this))
 #define HAS_SECTOR_GRAPH
 
-extern unordered_map<id, vector<id>> sector_graph_t;
-vector<id> graph_func(id u, bool elim_loops = true);
+extern std::unordered_map<id, std::vector<id>> sector_graph_t;
+std::vector<id> graph_func(id u, bool elim_loops = true);
 
 void init_sector_graph();
 
@@ -42,7 +42,7 @@ struct wu
 {
     id id;
     bool twine;
-    set<wu *> parents;
+    std::set<wu *> parents;
     int child_count;
 
     wu(::id id)
@@ -55,11 +55,11 @@ struct wu
     wu &operator=(const wu &o) = delete;
 };
 
-extern unordered_map<id, wu *> wus;
+extern std::unordered_map<id, wu *> wus;
 
-extern vector<id> sector_list;
+extern std::vector<id> sector_list;
 
 // the ids for which there is a wu with this id
-extern set<id> wu_ids; 
+extern std::set<id> wu_ids; 
 
 #endif // PERFECT_SECTOR_GRAPH_H_INCLUDED

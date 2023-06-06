@@ -27,14 +27,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <string>
 
-using namespace std;
-
 std::string sec_val_path = ".";
 std::string sec_val_fname = "";
 FILE *f = nullptr;
 
-void failwith(string s)
+void failwith(std::string s)
 {
-    cout << VARIANT_NAME << ": " << s << endl;
+    std::cout << VARIANT_NAME << ": " << s << std::endl;
     exit(7);
 }

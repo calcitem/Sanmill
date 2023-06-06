@@ -28,12 +28,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "perfect_common.h"
 
-using namespace std;
-
 const char *toclp(board b);
 
-string toclp2(board b);
+std::string toclp2(board b);
 
-string toclp3(board b, id id);
+std::string toclp3(board b, id id);
 
 #endif // PERFECT_DEBUG_H_INCLUDED

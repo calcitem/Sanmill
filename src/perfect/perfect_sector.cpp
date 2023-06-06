@@ -32,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Sector *sectors[max_ksz + 1][max_ksz + 1][max_ksz + 1][max_ksz + 1];
 
-vector<Sector *> sector_objs;
+std::vector<Sector *> sector_objs;
 
 const int sbufsize = 1024 * 1024;
 char sbuf[sbufsize]; // Caution
@@ -190,7 +190,7 @@ eval_elem2 Sector::get_eval(int i)
 
 eval_elem_sym2 Sector::get_eval_inner(int i)
 {
-    pair<sec_val, field2_t> resi = extract(i);
+    std::pair<sec_val, field2_t> resi = extract(i);
     if (resi.second == eval_elem_sym2::spec_field2) {
         assert(em_set.count(i));
         return eval_elem_sym2 {resi.first, em_set[i]};
@@ -239,7 +239,7 @@ T sign_extend(T x)
         return x;
 }
 
-pair<sec_val, field2_t> Sector::extract(int i)
+std::pair<sec_val, field2_t> Sector::extract(int i)
 {
     unsigned int a = 0;
     static_assert(sizeof(a) >= eval_struct_size, "Increase the size of 'a'! "
@@ -261,7 +261,7 @@ pair<sec_val, field2_t> Sector::extract(int i)
         a |= (int)read[j] << 8 * j;
 #endif
 
-    auto r = make_pair(sign_extend<field1_size, sec_val>(
+    auto r = std::make_pair(sign_extend<field1_size, sec_val>(
                            static_cast<sec_val>(a & ((1 << field1_size) - 1))),
                        sign_extend<field2_size, field2_t>(
                            static_cast<field2_t>(a >> field2_offset)));

@@ -27,9 +27,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "perfect_sector_graph.h"
 
-vector<id> std_mora_graph_func(id u)
+std::vector<id> std_mora_graph_func(id u)
 {
-    vector<id> v;
+    std::vector<id> v;
     v.push_back(u);
     v.push_back(u);
 
@@ -44,7 +44,7 @@ vector<id> std_mora_graph_func(id u)
         v[1].B--;
     }
 
-    vector<id> r;
+    std::vector<id> r;
     for (auto it = v.begin(); it != v.end(); it++)
         // this actually only handles the initial part, cf. doc
         if (it->B + it->BF >= 3 && it->B >= 0)
@@ -53,9 +53,9 @@ vector<id> std_mora_graph_func(id u)
     return r;
 }
 
-vector<id> lask_graph_func(id u)
+std::vector<id> lask_graph_func(id u)
 {
-    vector<id> v;
+    std::vector<id> v;
 
     if (u.WF != 0) {
         id a = u;
@@ -81,7 +81,7 @@ vector<id> lask_graph_func(id u)
         v.push_back(b);
     }
 
-    vector<id> r;
+    std::vector<id> r;
     for (auto it = v.begin(); it != v.end(); it++)
         // This actually only handles the initial part, cf. doc
         if (it->B + it->BF >= 3 && it->B >= 0)
@@ -90,33 +90,33 @@ vector<id> lask_graph_func(id u)
     return r;
 }
 
-vector<id> graph_func(id u, bool elim_loops)
+std::vector<id> graph_func(id u, bool elim_loops)
 {
-    vector<id> r0 = GRAPH_FUNC_NOTNEG(u);
+    std::vector<id> r0 = GRAPH_FUNC_NOTNEG(u);
 
     for (auto it = r0.begin(); it != r0.end(); it++)
         it->negate();
 
-    set<id> sr(r0.begin(), r0.end()); // parallel electric discharge
+    std::set<id> sr(r0.begin(), r0.end()); // parallel electric discharge
     if (elim_loops)
         sr.erase(u); // kizurese of hurokel
 
-    return vector<id>(sr.begin(), sr.end());
+    return std::vector<id>(sr.begin(), sr.end());
 }
 
-unordered_map<id, vector<id>> sector_graph;
-unordered_map<id, vector<id>> sector_graph_t;
+std::unordered_map<id, std::vector<id>> sector_graph;
+std::unordered_map<id, std::vector<id>> sector_graph_t;
 
 void init_wu_graph();
 
-vector<id> sector_list;
+std::vector<id> sector_list;
 
 void init_sector_graph()
 {
     LOG("init_sector_graph %s", VARIANT_NAME);
 
-    queue<id> q;
-    set<id> volt;
+    std::queue<id> q;
+    std::set<id> volt;
 #ifndef FULL_SECTOR_GRAPH
     q.push(id(0, 0, max_ksz, max_ksz));
     volt.insert(q.front());
@@ -132,7 +132,7 @@ void init_sector_graph()
     while (!q.empty()) {
         id u = q.front();
         q.pop();
-        vector<id> v = graph_func(u);
+        std::vector<id> v = graph_func(u);
         for (auto it = v.begin(); it != v.end(); it++) {
             if (!volt.count(*it)) {
                 q.push(*it);
@@ -143,14 +143,14 @@ void init_sector_graph()
         }
     }
 
-    sector_list = vector<id>(volt.begin(), volt.end());
+    sector_list = std::vector<id>(volt.begin(), volt.end());
 
     init_wu_graph();
 
     LOG(".\n");
 }
 
-unordered_map<id, wu *> wus;
+std::unordered_map<id, wu *> wus;
 
 // manages the addition of neighbors of a sector of wu to wu.adj
 void add_adj(wu &wu, id id)
@@ -165,7 +165,7 @@ void add_adj(wu &wu, id id)
                 wus[*it]->child_count++;
 }
 
-set<id> wu_ids;
+std::set<id> wu_ids;
 
 void init_wu_graph()
 {
@@ -179,8 +179,8 @@ void init_wu_graph()
         // (it's okay to hit the wu's twice)
         id s1 = sector_list[i];
         for (id s2 : sector_graph[s1]) {
-            vector<id> &e2 = sector_graph[s2];
-            if (find(e2.begin(), e2.end(), s1) != e2.end()) {
+            std::vector<id> &e2 = sector_graph[s2];
+            if (std::find(e2.begin(), e2.end(), s1) != e2.end()) {
                 assert(s1 == -s2);
                 wus[s1]->twine = true;
                 wus[s2] = wus[s1];

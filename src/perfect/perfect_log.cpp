@@ -28,7 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 bool Log::log_to_file = false;
 FILE *Log::logfile = stdout;
-string Log::fname, Log::fnamelogging, Log::donefname;
+std::string Log::fname, Log::fnamelogging, Log::donefname;
 
 void Log::setup_logfile(std::string filename, std::string extension)
 {
@@ -55,6 +55,7 @@ void Log::close()
     if (log_to_file) {
         fclose(logfile);
         if (rename(fnamelogging.c_str(), donefname.c_str()))
-            cout << "Renaming logfile failed; errno: " << errno << endl;
+            std::cout << "Renaming logfile failed; errno: " << errno
+                      << std::endl;
     }
 }
