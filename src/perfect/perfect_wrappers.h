@@ -331,7 +331,7 @@ public:
 class Constants
 {
 public:
-    static const int variant = VARIANT;
+    static const int variant = RULE_VARIANT;
     inline static const std::string fname_suffix = FNAME_SUFFIX;
     const std::string movegenFname = movegen_file;
 

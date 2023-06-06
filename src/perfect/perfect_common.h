@@ -40,7 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //-------------------------------------
 // Settings:
 
-#define VARIANT STANDARD // STANDARD, MORABARABA, or LASKER
+#define RULE_VARIANT STANDARD // STANDARD, MORABARABA, or LASKER
 
 #define FULL_BOARD_IS_DRAW 1 // 0 or 1
 
@@ -68,7 +68,7 @@ static_assert(false, "sec_val range");
 #ifdef DD
 #ifndef STONE_DIFF
 const int eval_struct_size = 3; // byte
-#if VARIANT == STANDARD
+#if RULE_VARIANT == STANDARD
 const int field2_offset = 12; // bit
 #else
 const int field2_offset = 14; // bit
@@ -111,7 +111,7 @@ const sec_val sec_val_min_value = -(1 << (field1_size - 1));
 
 const int version = 2;
 
-#if VARIANT == STANDARD
+#if RULE_VARIANT == STANDARD
 #define VARIANT_NAME "std"
 #define GRAPH_FUNC_NOTNEG std_mora_graph_func
 #define MILL_POS_CNT 16
@@ -120,7 +120,7 @@ const int max_ksz = 9;
 #endif
 #endif
 
-#if VARIANT == LASKER
+#if RULE_VARIANT == LASKER
 #define VARIANT_NAME "lask"
 #define GRAPH_FUNC_NOTNEG lask_graph_func
 #define MILL_POS_CNT 16
@@ -129,7 +129,7 @@ const int max_ksz = 10;
 #endif
 #endif
 
-#if VARIANT == MORABARABA
+#if RULE_VARIANT == MORABARABA
 #define VARIANT_NAME "mora"
 #define GRAPH_FUNC_NOTNEG std_mora_graph_func
 #define MILL_POS_CNT 20
@@ -263,7 +263,7 @@ struct id
 
     bool transient() const
     {
-#if VARIANT == STANDARD || VARIANT == MORABARABA
+#if RULE_VARIANT == STANDARD || RULE_VARIANT == MORABARABA
         return !(WF == 0 && BF == 0);
 #else
         return !(W != 0 && B != 0);
