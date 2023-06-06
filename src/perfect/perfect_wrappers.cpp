@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "perfect_wrappers.h"
 
-unordered_map<id, int> sector_sizes;
+std::unordered_map<id, int> sector_sizes;
 
 // This manages the lookup tables of the hash function: it keeps them in memory
 // for a few most recently accessed sectors.

@@ -19,16 +19,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <algorithm>
-#include <cassert>
-#include <iostream>
-#include <vector>
-
 #include "perfect_api.h"
 #include "perfect_player.h"
 #include "perfect_game_state.h"
 #include "perfect_move.h"
 #include "perfect_rules.h"
+
+#include <algorithm>
+#include <cassert>
+#include <iostream>
+#include <vector>
 
 uint8_t Rules::millPos[20][3];
 uint8_t Rules::stdLaskerMillPos[16][3];

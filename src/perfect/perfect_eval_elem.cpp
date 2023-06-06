@@ -21,11 +21,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cassert>
-
 #include "perfect_common.h"
 #include "perfect_eval_elem.h"
-#include "perfect_sector.h"
+
+#include <cassert>
 
 eval_elem_sym::eval_elem_sym(cas c, int x)
     : c(c)

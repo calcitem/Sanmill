@@ -24,9 +24,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef PERFECT_DEBUG_H_INCLUDED
 #define PERFECT_DEBUG_H_INCLUDED
 
-#include <string>
-
 #include "perfect_common.h"
+
+#include <string>
 
 const char *toclp(board b);
 

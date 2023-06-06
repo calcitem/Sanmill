@@ -24,14 +24,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef PERFECT_COMMON_H_INCLUDED
 #define PERFECT_COMMON_H_INCLUDED
 
-#include <cassert>
-#include <cstdio>
-#include <sstream>
-#include <string>
-#include <tuple>
-#include <unordered_map>
-
 #include "perfect_platform.h"
+
+#include <cassert>
 
 #define STANDARD 1
 #define MORABARABA 2
@@ -216,7 +211,11 @@ struct val
     }
 
     // We correct towards directions depending on the sign of key2.
-    std::tuple<sec_val, int> tr() const { return std::make_tuple(-abs(key1), key2); }
+    std::tuple<sec_val, int> tr() const
+    {
+        return std::make_tuple(static_cast<sec_val>(-abs(key1)), key2);
+    }
+
     bool operator<(const val &o) const
     {
         return tr() < o.tr();

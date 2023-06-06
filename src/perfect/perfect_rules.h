@@ -22,12 +22,12 @@
 #ifndef PERFECT_RULES_H_INCLUDED
 #define PERFECT_RULES_H_INCLUDED
 
+#include "perfect_wrappers.h"
+
 #include <algorithm>
 #include <cassert>
 #include <iostream>
 #include <vector>
-
-#include "perfect_wrappers.h"
 
 class GameState;
 

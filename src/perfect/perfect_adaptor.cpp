@@ -14,6 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+#include <condition_variable>
+#include <mutex>
+#include <sstream>
+#include <stdexcept>
+
 #include "config.h"
 
 #include "misc.h"
@@ -21,11 +27,6 @@
 #include "perfect_adaptor.h"
 #include "position.h"
 #include "perfect_api.h"
-
-#include <condition_variable>
-#include <mutex>
-#include <sstream>
-#include <stdexcept>
 
 #ifdef GABOR_MALOM_PERFECT_AI
 #define USE_DEPRECATED_CLR_API_WITHOUT_WARNING
