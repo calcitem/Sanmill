@@ -42,7 +42,7 @@ class Sector
 
     int eval_size;
 
-    map<int, int> em_set;
+    std::map<int, int> em_set;
 
     FILE* f { nullptr };
 
@@ -69,8 +69,8 @@ public:
     eval_elem_sym2 get_eval_inner(int i);
 
 #ifdef DD
-    pair<sec_val, field2_t> extract(int i);
-    void intract(int i, pair<sec_val, field2_t> x);
+    std::pair<sec_val, field2_t> extract(int i);
+    void intract(int i, std::pair<sec_val, field2_t> x);
 #endif
 
     // Statistics:
@@ -88,6 +88,6 @@ public:
 extern Sector *sectors[max_ksz + 1][max_ksz + 1][max_ksz + 1][max_ksz + 1];
 #define sectors(id) (sectors[(id).W][(id).B][(id).WF][(id).BF])
 
-extern vector<Sector *> sector_objs;
+extern std::vector<Sector *> sector_objs;
 
 #endif // PERFECT_SECTOR_H_INCLUDED

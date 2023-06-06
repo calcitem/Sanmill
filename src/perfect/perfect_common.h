@@ -33,8 +33,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "perfect_platform.h"
 
-using namespace std;
-
 #define STANDARD 1
 #define MORABARABA 2
 #define LASKER 3
@@ -145,14 +143,15 @@ const int max_ksz = 12;
 //#pragma message ("Warning: max_ksz leveve")
 #endif
 
-extern string sec_val_path;
-extern string sec_val_fname;
+extern std::string sec_val_path;
+extern std::string sec_val_fname;
 
 // This file is created by the solver
 // with the -writemovegenlookups switch.
 // The Controller automatically makes
 // this, if the file doesn't exist.
-const string movegen_file = (string) "C:\\malom_data_aux\\" + VARIANT_NAME +
+const std::string movegen_file = (std::string) "C:\\malom_data_aux\\" +
+                                 VARIANT_NAME +
                             ".movegen";
 
 typedef int64_t board;
@@ -217,7 +216,7 @@ struct val
     }
 
     // We correct towards directions depending on the sign of key2.
-    tuple<sec_val, int> tr() const { return make_tuple(-abs(key1), key2); }
+    std::tuple<sec_val, int> tr() const { return std::make_tuple(-abs(key1), key2); }
     bool operator<(const val &o) const
     {
         return tr() < o.tr();
@@ -249,8 +248,8 @@ struct id
 
     void negate()
     {
-        swap(W, B);
-        swap(WF, BF);
+        std::swap(W, B);
+        std::swap(WF, BF);
     }
 
     id operator-() const
@@ -287,13 +286,13 @@ struct id
 
     bool operator<(const id &o) const
     {
-        return make_pair(make_pair(W, B), make_pair(WF, BF)) <
-               make_pair(make_pair(o.W, o.B), make_pair(o.WF, o.BF));
+        return std::make_pair(std::make_pair(W, B), std::make_pair(WF, BF)) <
+               std::make_pair(std::make_pair(o.W, o.B), std::make_pair(o.WF, o.BF));
     }
     bool operator>(const id &o) const
     {
-        return make_pair(make_pair(W, B), make_pair(WF, BF)) >
-               make_pair(make_pair(o.W, o.B), make_pair(o.WF, o.BF));
+        return std::make_pair(std::make_pair(W, B), std::make_pair(WF, BF)) >
+               std::make_pair(std::make_pair(o.W, o.B), std::make_pair(o.WF, o.BF));
     }
 
     bool operator==(const id &o) const
@@ -314,7 +313,7 @@ struct id
 };
 
 template <>
-struct hash<id>
+struct std::hash<id>
 {
     size_t operator()(const id &k) const
     {
@@ -328,9 +327,9 @@ struct hash<id>
 #include "perfect_log.h"
 
 template <class T>
-string tostring(T x)
+std::string tostring(T x)
 {
-    stringstream ss;
+    std::stringstream ss;
     ss << x;
     return ss.str();
 }
@@ -341,6 +340,6 @@ int sign(T x)
     return x < 0 ? -1 : (x > 0 ? 1 : 0);
 }
 
-void failwith(string s);
+void failwith(std::string s);
 
 #endif // PERFECT_COMMON_H_INCLUDED

@@ -27,10 +27,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Be careful: In the case of STONE_DIFF,
 // there are also sectors that do not exist at all.
-map<id, sec_val> sec_vals;
+std::map<id, sec_val> sec_vals;
 
 #ifndef STONE_DIFF
-map<sec_val, id> inv_sec_vals;
+std::map<sec_val, id> inv_sec_vals;
 #endif
 sec_val virt_loss_val = 0, virt_win_val = 0;
 
@@ -40,7 +40,7 @@ void init_sec_vals()
 #ifndef STONE_DIFF
     FILE *f = nullptr;
 #ifdef _WIN32
-    sec_val_fname = sec_val_path + "\\" + (string)VARIANT_NAME + ".secval";
+    sec_val_fname = sec_val_path + "\\" + (std::string)VARIANT_NAME + ".secval";
 #else
     sec_val_fname = sec_val_path + "/" + (string)VARIANT_NAME + ".secval";
 #endif
@@ -104,7 +104,7 @@ void init_sec_vals()
 #endif
 }
 
-string sec_val_to_sec_name(sec_val v)
+std::string sec_val_to_sec_name(sec_val v)
 {
     if (v == 0)
 #ifdef DD
@@ -125,7 +125,7 @@ string sec_val_to_sec_name(sec_val v)
         return to_string(v);
 #else
         assert(inv_sec_vals.count(v));
-        return to_string(v) + " (" + inv_sec_vals[v].to_string() + ")";
+        return std::to_string(v) + " (" + inv_sec_vals[v].to_string() + ")";
 #endif
     }
 }

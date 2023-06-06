@@ -162,7 +162,7 @@ Hash::Hash(int W, int B, Sector *s)
     f_count = c;
     f_inv_lookup = new int[f_count];
 
-    vector<int> ws;
+    std::vector<int> ws;
     for (int w = (1 << W) - 1; w < 1 << 24; w = next_choose(w))
         ws.push_back(w);
     reverse(ws.begin(), ws.end());
@@ -209,19 +209,19 @@ Hash::~Hash()
     delete [] g_inv_lookup;
 }
 
-pair<int, eval_elem2> Hash::hash(board a)
+std::pair<int, eval_elem2> Hash::hash(board a)
 {
     a = sym48(f_sym_lookup[a & mask24], a);
     int h1 = f_lookup[a & mask24] * binom[24 - W][B] + g_lookup[collapse(a)];
     eval_elem_sym2 e = s->get_eval_inner(h1);
     if (e.cas() != eval_elem_sym2::Sym)
-        return make_pair(h1, e);
+        return std::make_pair(h1, e);
     else {
         a = sym48(e.sym(), a);
         int h2 = f_lookup[a & mask24] * binom[24 - W][B] +
                  g_lookup[collapse(a)];
         assert(s->get_eval_inner(h2).cas() != eval_elem_sym2::Sym);
-        return make_pair(h2, s->get_eval(h2));
+        return std::make_pair(h2, s->get_eval(h2));
     }
 }
 

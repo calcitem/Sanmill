@@ -41,13 +41,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <unordered_map>
 #include <vector>
 
-using namespace std;
-
 namespace Wrappers {
 
 class WSector;
 
-extern unordered_map<id, int> sector_sizes;
+extern std::unordered_map<id, int> sector_sizes;
 static int f_inv_count[] {1,     4,     30,    158,    757,    2830,  8774,
                           22188, 46879, 82880, 124124, 157668, 170854};
 
@@ -70,7 +68,7 @@ struct WID
     void negate();
     WID operator-(WID s);
 
-    string ToString() { return this->tonat().to_string(); }
+    std::string ToString() { return this->tonat().to_string(); }
 
     int GetHashCode() { return (W << 0) | (B << 4) | (WF << 8) | (BF << 12); }
 

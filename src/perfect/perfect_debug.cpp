@@ -52,10 +52,10 @@ const char *toclp(board b)
     return ret;
 }
 
-string toclp2(board b)
+std::string toclp2(board b)
 {
     board mask = 1;
-    vector<int> kit(24, -1);
+    std::vector<int> kit(24, -1);
     for (int i = 0; i < 24; i++) {
         if ((mask << i) & b)
             kit[i] = 0;
@@ -65,7 +65,7 @@ string toclp2(board b)
             kit[i - 24] = 1;
     }
 
-    stringstream ss;
+    std::stringstream ss;
     for (int i = 0; i < 24; i++)
         ss << kit[i] << ",";
     ss << "0,0,0,2,9,9,3,3,False,60,-1000,0,3,malom2";
@@ -73,10 +73,10 @@ string toclp2(board b)
     return ss.str();
 }
 
-string toclp3(board b, id id)
+std::string toclp3(board b, id id)
 {
     board mask = 1;
-    vector<int> kit(24, -1);
+    std::vector<int> kit(24, -1);
     for (int i = 0; i < 24; i++) {
         if ((mask << i) & b)
             kit[i] = 0;
@@ -86,7 +86,7 @@ string toclp3(board b, id id)
             kit[i - 24] = 1;
     }
 
-    stringstream ss;
+    std::stringstream ss;
     for (int i = 0; i < 24; i++)
         ss << kit[i] << ",";
 
