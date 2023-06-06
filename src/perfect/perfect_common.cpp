@@ -22,10 +22,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "perfect_common.h"
-#include <unordered_map>
-
-#include <iostream>
-#include <string>
 
 std::string sec_val_path = ".";
 std::string sec_val_fname = "";

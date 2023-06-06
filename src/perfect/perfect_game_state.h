@@ -22,16 +22,7 @@
 #ifndef PERFECT_GAME_STATE_H_INCLUDED
 #define PERFECT_GAME_STATE_H_INCLUDED
 
-#include <cassert>
-#include <list>
 #include <sstream>
-#include <stdexcept>
-#include <string>
-#include <vector>
-
-#include "perfect_player.h"
-#include "perfect_move.h"
-#include "perfect_rules.h"
 
 class CMove; // forward declaration, implement this
 

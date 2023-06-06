@@ -19,18 +19,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <filesystem>
-#include <iostream>
-#include <stdexcept>
-#include <string>
-#include <unordered_map>
-
 #include "perfect_api.h"
 #include "perfect_player.h"
 #include "perfect_game_state.h"
-#include "perfect_move.h"
-#include "perfect_rules.h"
 #include "option.h"
+
+#include <filesystem>
 
 PerfectPlayer *MalomSolutionAccess::pp = nullptr;
 std::exception *MalomSolutionAccess::lastError = nullptr;

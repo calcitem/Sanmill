@@ -21,9 +21,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cassert>
-
 #include "perfect_sec_val.h"
+
+#include <cassert>
 
 // Be careful: In the case of STONE_DIFF,
 // there are also sectors that do not exist at all.

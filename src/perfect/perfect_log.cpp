@@ -21,10 +21,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-
 #include "perfect_common.h"
 #include "perfect_log.h"
+
+#include <iostream>
 
 bool Log::log_to_file = false;
 FILE *Log::logfile = stdout;

@@ -21,11 +21,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <vector>
-
 #include "perfect_common.h"
 #include "perfect_hash.h"
 #include "perfect_symmetries.h"
+
+#include <vector>
 
 const int binom[25][25] = {
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},

@@ -21,14 +21,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <chrono>
-#include <cstdio>
-#include <vector>
-
 #include "perfect_common.h"
 #include "perfect_hash.h"
 #include "perfect_sector.h"
 #include "perfect_symmetries.h"
+
+#include <chrono>
+#include <cstdio>
+#include <vector>
 
 Sector *sectors[max_ksz + 1][max_ksz + 1][max_ksz + 1][max_ksz + 1];
 

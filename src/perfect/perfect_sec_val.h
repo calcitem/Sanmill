@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PERFECT_SEV_VAL_H_INCLUDED
 
 #include "perfect_common.h"
+
 #include <map>
 #include <string>
 

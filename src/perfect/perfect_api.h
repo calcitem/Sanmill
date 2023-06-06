@@ -22,14 +22,7 @@
 #ifndef PERFECT_MALOM_SOLUTION_H_INCLUDED
 #define PERFECT_MALOM_SOLUTION_H_INCLUDED
 
-#include <iostream>
-#include <stdexcept>
-#include <string>
-#include <unordered_map>
-
 #include "perfect_player.h"
-#include "perfect_move.h"
-#include "perfect_rules.h"
 
 class MalomSolutionAccess
 {

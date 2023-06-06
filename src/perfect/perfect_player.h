@@ -22,6 +22,13 @@
 #ifndef PERFECT_PERFECT_PLAYER_H_INCLUDED
 #define PERFECT_PERFECT_PLAYER_H_INCLUDED
 
+#include "perfect_common.h"
+#include "perfect_game.h"
+#include "perfect_move.h"
+#include "perfect_rules.h"
+#include "perfect_sector.h"
+#include "perfect_wrappers.h"
+
 #include <bitset>
 #include <cassert>   // for assert
 #include <cstdint>   // for int64_t
@@ -37,13 +44,6 @@
 #include <stdexcept> // for std::out_of_range
 #include <string>
 #include <vector>
-
-#include "perfect_common.h"
-#include "perfect_game.h"
-#include "perfect_move.h"
-#include "perfect_rules.h"
-#include "perfect_sector.h"
-#include "perfect_wrappers.h"
 
 enum class CMoveType {
     SetMove,

@@ -21,11 +21,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <queue>
-
 #include "perfect_common.h"
 
 #include "perfect_sector_graph.h"
+
+#include <queue>
 
 std::vector<id> std_mora_graph_func(id u)
 {

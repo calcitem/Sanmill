@@ -19,6 +19,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "perfect_api.h"
+#include "perfect_player.h"
+#include "perfect_game_state.h"
+#include "perfect_move.h"
+#include "perfect_rules.h"
+
+#include "perfect_wrappers.h"
+
 #include <bitset>
 #include <cassert>   // for assert
 #include <cstdint>   // for int64_t
@@ -34,14 +42,6 @@
 #include <stdexcept> // for std::out_of_range
 #include <string>
 #include <vector>
-
-#include "perfect_api.h"
-#include "perfect_player.h"
-#include "perfect_game_state.h"
-#include "perfect_move.h"
-#include "perfect_rules.h"
-
-#include "perfect_wrappers.h"
 
 class GameState;
 
