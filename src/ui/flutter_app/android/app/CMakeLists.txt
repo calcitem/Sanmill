@@ -17,7 +17,7 @@ add_library( # Sets the name of the library.
         ../../../../endgame.cpp
         ../../../../evaluate.cpp
         ../../../../main.cpp
-	../../../../mcts.cpp
+	    ../../../../mcts.cpp
         ../../../../mills.cpp
         ../../../../misc.cpp
         ../../../../movegen.cpp

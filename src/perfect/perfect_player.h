@@ -134,6 +134,7 @@ public:
     std::map<Wrappers::WID, Wrappers::WSector> secs;
 
     PerfectPlayer();
+    virtual ~PerfectPlayer() {}
 
     void enter(Game *_g) override;
 

@@ -42,7 +42,7 @@ void init_sec_vals()
 #ifdef _WIN32
     sec_val_fname = sec_val_path + "\\" + (std::string)VARIANT_NAME + ".secval";
 #else
-    sec_val_fname = sec_val_path + "/" + (string)VARIANT_NAME + ".secval";
+    sec_val_fname = sec_val_path + "/" + (std::string)VARIANT_NAME + ".secval";
 #endif
     if (FOPEN(&f, sec_val_fname.c_str(), "rt") == -1) {
         failwith(VARIANT_NAME ".secval file not found.");

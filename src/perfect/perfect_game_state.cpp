@@ -160,8 +160,10 @@ void GameState::checkInvariants()
                           setStoneCount[1] == Rules::maxKSZ));
 }
 
+#if defined(_WIN32)
 #pragma warning(push)
 #pragma warning(disable : 4127)
+#endif
 // Called when applying a free setup. It sets over and checks whether the
 // position is valid. Returns "" if valid, reason str otherwise. Also called
 // when pasting a position.
@@ -265,7 +267,9 @@ std::string GameState::setOverAndCheckValidSetup()
 
     return "";
 }
+#if defined(_WIN32)
 #pragma warning(pop)
+#endif
 
 // to paste from clipboard
 GameState::GameState(const std::string &s)

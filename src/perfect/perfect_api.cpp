@@ -127,31 +127,6 @@ std::string MalomSolutionAccess::getLastError()
     return lastError->what();
 }
 
-int MalomSolutionAccess::getBestMoveStr(std::string args)
-{
-    try {
-        std::istringstream iss(args);
-        std::vector<std::string> argsSplit(
-            (std::istream_iterator<std::string>(iss)),
-            std::istream_iterator<std::string>());
-
-        const int numArgs = 6;
-        if (argsSplit.size() != numArgs)
-            throw std::invalid_argument("Invalid number of arguments after "
-                                        "splitting the string. Instead of " +
-                                        std::to_string(numArgs) + ", got " +
-                                        std::to_string(argsSplit.size()) +
-                                        " arguments.");
-
-        return getBestMove(std::stoi(argsSplit[0]), std::stoi(argsSplit[1]),
-                           std::stoi(argsSplit[2]), std::stoi(argsSplit[3]),
-                           std::stoi(argsSplit[4]), argsSplit[5] != "0");
-    } catch (std::exception &e) {
-        std::cerr << "Fatal exception: " << e.what() << std::endl;
-        return 0;
-    }
-}
-
 void MalomSolutionAccess::initializeIfNeeded()
 {
     if (pp != nullptr) {

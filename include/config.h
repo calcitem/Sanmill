@@ -61,16 +61,7 @@
 // #define UCT_DEMO
 
 #ifndef DISABLE_PERFECT_AI
-#ifdef _MSC_VER
-#ifndef __clang__
 #define GABOR_MALOM_PERFECT_AI
-//#define MADWEASEL_MUEHLE_PERFECT_AI
-#endif
-#ifdef MADWEASEL_MUEHLE_PERFECT_AI
-#define MADWEASEL_MUEHLE_RULE
-#define PERFECT_AI_DATABASE_DIR "D:\\Muehle\\Muehle"
-#endif
-#endif
 #endif
 
 // #define MADWEASEL_MUEHLE_PERFECT_AI_TEST
