@@ -26,6 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "perfect_sector.h"
 
+#include <cstring>
+
 // void init_hash_lookuptables();
 
 class Hash

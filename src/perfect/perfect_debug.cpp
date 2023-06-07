@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "perfect_debug.h"
 #include "perfect_common.h"
 
+#include <cstring>
 #include <sstream>
 #include <vector>
 

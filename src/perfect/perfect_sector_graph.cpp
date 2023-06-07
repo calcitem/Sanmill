@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "perfect_sector_graph.h"
 
+#include <algorithm>
 #include <queue>
 
 std::vector<id> std_mora_graph_func(id u)
@@ -161,7 +162,7 @@ void add_adj(wu &wu, id id)
         // to the pointer!)
         if (wus[*it] != &wu)
             // the parallel elements are squeezed out
-            if (wu.parents.insert(wus[*it]).second) 
+            if (wu.parents.insert(wus[*it]).second)
                 wus[*it]->child_count++;
 }
 

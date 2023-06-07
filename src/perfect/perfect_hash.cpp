@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "perfect_hash.h"
 #include "perfect_symmetries.h"
 
+#include <algorithm>
 #include <vector>
 
 const int binom[25][25] = {

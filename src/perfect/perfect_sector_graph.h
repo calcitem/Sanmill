@@ -28,6 +28,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <set>
 #include <unordered_map>
+#include <vector>
 
 // (the Analyzer doesn't have the sector graph
 // (init_sec_vals() has an ifdef for this))
@@ -60,6 +61,6 @@ extern std::unordered_map<id, wu *> wus;
 extern std::vector<id> sector_list;
 
 // the ids for which there is a wu with this id
-extern std::set<id> wu_ids; 
+extern std::set<id> wu_ids;
 
 #endif // PERFECT_SECTOR_GRAPH_H_INCLUDED

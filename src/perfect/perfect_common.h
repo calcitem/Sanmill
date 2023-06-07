@@ -27,6 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "perfect_platform.h"
 
 #include <cassert>
+#include <sstream>
+#include <tuple>
 
 #define STANDARD 1
 #define MORABARABA 2

@@ -25,6 +25,8 @@
 #include "perfect_player.h"
 #include "perfect_rules.h"
 
+#include <list>
+
 class Player;
 class CMove;
 
