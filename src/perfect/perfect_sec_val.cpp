@@ -44,7 +44,7 @@ void init_sec_vals()
 #else
     sec_val_fname = sec_val_path + "/" + (std::string)VARIANT_NAME + ".secval";
 #endif
-    if (FOPEN(&f, sec_val_fname.c_str(), "rt") == -1) {
+    if (FOPEN(&f, sec_val_fname.c_str(), "rt") != 0) {
         failwith(VARIANT_NAME ".secval file not found.");
         return;
     }

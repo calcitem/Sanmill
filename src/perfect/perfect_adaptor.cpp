@@ -185,6 +185,8 @@ Move perfect_search(Position *pos)
         return ret;
     }
 
+    std::vector<Move> moves;
+
     // The white stones on the board, encoded as a bitboard:
     // Each of the first 24 bits corresponds to one place on the board.
     // For the mapping between bits, see Bitboard.png.
@@ -233,15 +235,18 @@ Move perfect_search(Position *pos)
     //   and that stone is being slided or jumped to a different place.)
     // If this increases the number of stones the player to move has,
     // then that player will have one less stone to place after the move.
-    int moveBitboard = GetBestMove(whiteBitboard, blackBitboard,
-                                   whiteStonesToPlace, blackStonesToPlace,
-                                   playerToMove, onlyStoneTaking);
+    try {
+        int moveBitboard = GetBestMove(whiteBitboard, blackBitboard,
+                                       whiteStonesToPlace, blackStonesToPlace,
+                                       playerToMove, onlyStoneTaking);
+        moves = convertBitboardMove(
+            whiteBitboard, blackBitboard, playerToMove, moveBitboard);
 
-    std::vector<Move> moves = convertBitboardMove(whiteBitboard, blackBitboard,
-                                                  playerToMove, moveBitboard);
-
-    if (moves.size() == 2) {
-        malom_remove_move = moves.at(1);
+        if (moves.size() == 2) {
+            malom_remove_move = moves.at(1);
+        }
+    } catch (const std::exception &) {
+        return MOVE_NONE;
     }
 
     return Move(moves.at(0));
