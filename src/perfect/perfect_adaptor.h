@@ -26,6 +26,6 @@ int perfect_reset();
 Square from_perfect_sq(uint32_t sq);
 unsigned to_perfect_sq(Square sq);
 
-Move perfect_search(Position *pos);
+Value perfect_search(Position *pos, Move &bestMove);
 
 #endif // PERFECT_H_INCLUDED

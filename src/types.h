@@ -177,6 +177,7 @@ enum Value : int8_t {
 #ifdef ENDGAME_LEARNING
     VALUE_KNOWN_WIN = 25,
 #endif
+    VALUE_MOVE_PERFECT = 1,
     VALUE_MATE = 80,
     VALUE_UNIQUE = 100,
     VALUE_INFINITE = 125,
