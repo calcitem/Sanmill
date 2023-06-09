@@ -86,9 +86,10 @@ std::map<Wrappers::WID, Wrappers::WSector> Sectors::getSectors()
         if (dynamic_cast<std::out_of_range *>(&ex)) {
             throw;
         }
-        std::cerr << "An error happened in getSectors\n"
+        std::cerr << "An error happened in " << __func__ << "\n"
                   << ex.what() << std::endl;
-        exit(1);
+        throw std::runtime_error(std::string("An error happened in ") +
+                                 __func__ + ": " + ex.what());
     }
 }
 
@@ -146,8 +147,10 @@ Wrappers::WSector *PerfectPlayer::getSec(GameState s)
     } catch (std::exception &ex) {
         if (typeid(ex) == typeid(std::out_of_range))
             throw;
-        std::cerr << "An error happened in getSec\n" << ex.what() << std::endl;
-        std::exit(1);
+        std::cerr << "An error happened in " << __func__ << "\n"
+                  << ex.what() << std::endl;
+        throw std::runtime_error(std::string("An error happened in ") +
+                                 __func__ + ": " + ex.what());
     }
     return nullptr;
 }
@@ -157,9 +160,10 @@ std::string PerfectPlayer::toHumanReadableEval(Wrappers::gui_eval_elem2 e)
     try {
         return e.toString();
     } catch (std::exception &ex) {
-        std::cerr << "An error happened in toHumanReadableEval\n"
+        std::cerr << "An error happened in " << __func__ << "\n"
                   << ex.what() << std::endl;
-        std::exit(1);
+        throw std::runtime_error(std::string("An error happened in ") +
+                                 __func__ + ": " + ex.what());
     }
 }
 
@@ -323,8 +327,10 @@ Wrappers::gui_eval_elem2 PerfectPlayer::moveValue(const GameState &s,
     try {
         return eval(makeMoveInState(s, m)).undo_negate(getSec(s));
     } catch (const std::exception &ex) {
-        std::cerr << "Exception in MoveValue\n" << ex.what() << std::endl;
-        std::exit(1);
+        std::cerr << "An error happened in " << __func__ << "\n"
+                  << ex.what() << std::endl;
+        throw std::runtime_error(std::string("An error happened in ") +
+                                 __func__ + ": " + ex.what());
     }
 }
 
@@ -391,8 +397,10 @@ void PerfectPlayer::toMove(const GameState &s)
     } catch (const std::out_of_range &) {
         sendMoveToGUI(chooseRandom(getMoveList(s)));
     } catch (const std::exception &ex) {
-        std::cerr << "Exception in toMove\n" << ex.what() << std::endl;
-        std::exit(1);
+        std::cerr << "An error happened in " << __func__ << "\n"
+                  << ex.what() << std::endl;
+        throw std::runtime_error(std::string("An error happened in ") +
+                                 __func__ + ": " + ex.what());
     }
 }
 
@@ -468,8 +476,10 @@ Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState s)
     } catch (const std::exception &ex) {
         if (typeid(ex) == typeid(std::out_of_range))
             throw;
-        std::cerr << "Exception in Eval\n" << ex.what() << std::endl;
-        std::exit(1);
+        std::cerr << "An error happened in " << __func__ << "\n"
+                  << ex.what() << std::endl;
+        throw std::runtime_error(std::string("An error happened in ") +
+                                 __func__ + ": " + ex.what());
     }
 }
 

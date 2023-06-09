@@ -40,12 +40,18 @@ void Log::setup_logfile(std::string filename, std::string extension)
 
     remove(donefname.c_str());
     if (FOPEN(&logfile, fnamelogging.c_str(), "w") == -1) {
-        printf("Fatal error: Unable to open log file. (Another instance is "
-               "probably running with the same parameters.)\n");
+        std::string errMsg = "Fatal error: Unable to open log file. (Another "
+                             "instance is "
+                             "probably running with the same parameters.)";
+        std::cerr << errMsg << std::endl;
 #if defined(_WIN32) || defined(_WIN64)
         system("pause");
 #endif
-        exit(1);
+        throw std::runtime_error(errMsg);
+    }
+    if (logfile == nullptr) {
+        throw std::runtime_error("Failed to set buffer for the log file "
+                                 "because it is null.");
     }
     setvbuf(logfile, 0, _IONBF, 0);
 }

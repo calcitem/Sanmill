@@ -23,12 +23,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "perfect_common.h"
 
+#include <stdexcept>
+
 std::string sec_val_path = ".";
 std::string sec_val_fname = "";
 FILE *f = nullptr;
 
 void failwith(std::string s)
 {
-    std::cout << VARIANT_NAME << ": " << s << std::endl;
-    exit(7);
+    throw std::runtime_error(std::string(VARIANT_NAME) + ": " + s);
 }
