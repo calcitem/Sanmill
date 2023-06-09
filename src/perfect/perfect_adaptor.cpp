@@ -177,12 +177,13 @@ std::vector<Move> convertBitboardMove(int whiteBitboard, int blackBitboard,
     return moves;
 }
 
-Move perfect_search(Position *pos)
+Value perfect_search(Position *pos, Move &move)
 {
     if (malom_remove_move != MOVE_NONE) {
         Move ret = malom_remove_move;
         malom_remove_move = MOVE_NONE;
-        return ret;
+        move = ret;
+        return VALUE_MOVE_PERFECT;
     }
 
     std::vector<Move> moves;
@@ -246,10 +247,12 @@ Move perfect_search(Position *pos)
             malom_remove_move = moves.at(1);
         }
     } catch (const std::exception &) {
-        return MOVE_NONE;
+        move = MOVE_NONE;
+        return VALUE_UNKNOWN;
     }
 
-    return Move(moves.at(0));
+   move = Move(moves.at(0));
+   return VALUE_MOVE_PERFECT;
 }
 
 #endif // GABOR_MALOM_PERFECT_AI

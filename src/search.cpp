@@ -20,7 +20,7 @@
 #include "option.h"
 #include "thread.h"
 
-#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
+#if defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect_adaptor.h"
 #endif
 
@@ -166,10 +166,13 @@ int Thread::search()
             } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
                 value = monte_carlo_tree_search(rootPos, bestMove);
             } else if (gameOptions.getAlgorithm() == 4 /* RA */) {
-#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
-                bestMove = perfect_search(rootPos);
-                value = VALUE_ZERO;
-#endif // MADWEASEL_MUEHLE_PERFECT_AI || GABOR_MALOM_PERFECT_AI
+#if defined(GABOR_MALOM_PERFECT_AI)
+                value = perfect_search(rootPos, bestMove);
+                if (value == VALUE_UNKNOWN) {
+                    // Fall back
+                    value = MTDF(rootPos, ss, VALUE_ZERO, i, i, bestMove);
+                }
+#endif // GABOR_MALOM_PERFECT_AI
             } else {
                 value = qsearch(rootPos, ss, i, i, alpha, beta, bestMove);
             }
@@ -209,10 +212,16 @@ int Thread::search()
     } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
         value = monte_carlo_tree_search(rootPos, bestMove);
     } else if (gameOptions.getAlgorithm() == 4 /* RA */) {
-#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
-        bestMove = perfect_search(rootPos);
-        value = VALUE_ZERO;
-#endif // MADWEASEL_MUEHLE_PERFECT_AI || GABOR_MALOM_PERFECT_AI
+#if defined(GABOR_MALOM_PERFECT_AI)
+        Value v = perfect_search(rootPos, bestMove);
+        if (v == VALUE_UNKNOWN) {
+            // Fall back
+            value = MTDF(rootPos, ss, value, originDepth, originDepth,
+                         bestMove);
+        } else {
+            value = v;
+        }
+#endif // GABOR_MALOM_PERFECT_AI
     } else {
         value = qsearch(rootPos, ss, d, originDepth, alpha, beta, bestMove);
     }
