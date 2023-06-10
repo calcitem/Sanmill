@@ -122,6 +122,13 @@ class GeneralSettingsPage extends StatelessWidget {
     );
   }
 
+  void _setUseBook(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings =
+        generalSettings.copyWith(useBook: value);
+
+    logger.v("$_logTag useBook: $value");
+  }
+
   void _setDrawOnHumanExperience(GeneralSettings generalSettings, bool value) {
     DB().generalSettings =
         generalSettings.copyWith(drawOnHumanExperience: value);
@@ -280,6 +287,17 @@ class GeneralSettingsPage extends StatelessWidget {
               titleString: S.of(context).algorithm,
               trailingString: generalSettings.searchAlgorithm!.name,
               onTap: () => _setAlgorithm(context, generalSettings),
+            ),
+            SettingsListTile.switchTile(
+              value: generalSettings.useBook,
+              onChanged: (bool val) {
+                _setUseBook(generalSettings, val);
+                if (val == true) {
+                  //rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                  //    S.of(context).useBookDetail);
+                }
+              },
+              titleString: S.of(context).useBook,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.drawOnHumanExperience,

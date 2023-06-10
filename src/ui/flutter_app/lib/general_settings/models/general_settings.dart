@@ -82,6 +82,7 @@ class GeneralSettings {
         'This only represents the old algorithm type. Use [searchAlgorithm] instead')
     this.algorithm = 2,
     this.searchAlgorithm = SearchAlgorithm.mtdf,
+    this.useBook = false,
     this.drawOnHumanExperience = true,
     this.considerMobility = true,
     @Deprecated(
@@ -190,6 +191,9 @@ class GeneralSettings {
 
   @HiveField(26, defaultValue: false)
   final bool remindedOpponentMayFly;
+
+  @HiveField(27, defaultValue: false)
+  final bool useBook;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);
