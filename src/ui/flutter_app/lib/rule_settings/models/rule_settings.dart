@@ -91,10 +91,10 @@ class RuleSettings {
     this.mayRemoveFromMillsAlways = false,
     this.mayOnlyRemoveUnplacedPieceInPlacingPhase = false,
     @Deprecated('Use [boardFullAction] instead')
-        this.isWhiteLoseButNotDrawWhenBoardFull = true,
+    this.isWhiteLoseButNotDrawWhenBoardFull = true,
     this.boardFullAction = BoardFullAction.firstPlayerLose,
     @Deprecated('Use [StalemateAction] instead')
-        this.isLoseButNotChangeSideWhenNoWay = true,
+    this.isLoseButNotChangeSideWhenNoWay = true,
     this.stalemateAction = StalemateAction.endWithStalemateLoss,
     this.mayFly = true,
     this.nMoveRule = 100,

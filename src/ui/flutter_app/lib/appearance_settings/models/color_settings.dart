@@ -43,7 +43,7 @@ class ColorSettings {
     this.messageColor = Colors.white,
     this.drawerColor = Colors.white,
     @Deprecated("Use [drawerColor] instead.")
-        this.drawerBackgroundColor = Colors.white,
+    this.drawerBackgroundColor = Colors.white,
     this.drawerTextColor = UIColors.mediumJungleGreen,
     this.drawerHighlightItemColor = UIColors.highlighterGreen20,
     this.mainToolbarBackgroundColor = UIColors.burlyWood,

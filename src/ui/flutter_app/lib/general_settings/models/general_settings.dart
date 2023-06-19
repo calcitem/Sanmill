@@ -58,8 +58,9 @@ extension SearchAlgorithmName on SearchAlgorithm {
 class GeneralSettings {
   const GeneralSettings({
     this.isPrivacyPolicyAccepted = false,
-    @Deprecated("As this is not a user facing preference we migrated it into another box")
-        this.usesHiveDB = false,
+    @Deprecated(
+        "As this is not a user facing preference we migrated it into another box")
+    this.usesHiveDB = false,
     this.toneEnabled = true,
     this.keepMuteWhenTakingBack = true,
     this.screenReaderSupport = false,
@@ -73,15 +74,17 @@ class GeneralSettings {
     this.shufflingEnabled = true,
     this.learnEndgame = false,
     this.openingBook = false,
-    @Deprecated('This only represents the old algorithm type. Use [searchAlgorithm] instead')
-        this.algorithm = 2,
+    @Deprecated(
+        'This only represents the old algorithm type. Use [searchAlgorithm] instead')
+    this.algorithm = 2,
     this.searchAlgorithm = SearchAlgorithm.mtdf,
     this.drawOnHumanExperience = true,
     this.considerMobility = true,
-    @Deprecated("We won't export the developer settings anymore. People should use the EnvironmentConfig.devMode")
-        this.developerMode = false,
+    @Deprecated(
+        "We won't export the developer settings anymore. People should use the EnvironmentConfig.devMode")
+    this.developerMode = false,
     @Deprecated("Use [EnvironmentConfig.devMode] instead")
-        this.experimentsEnabled = false,
+    this.experimentsEnabled = false,
     this.firstRun = true,
     this.gameScreenRecorderSupport = false,
     this.gameScreenRecorderDuration = 2,
