@@ -26,4 +26,4 @@ echo ";" >>"$FLUTTER_VERSION_FILE"
 
 flutter pub global deactivate build_runner
 flutter pub global activate build_runner
-flutter pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
