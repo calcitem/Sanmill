@@ -1,0 +1,3 @@
+v3.5.13
+
+Solve the problem that sometimes tapping the Move List button does not respond.
