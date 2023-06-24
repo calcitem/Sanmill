@@ -22,13 +22,13 @@ class _MoveOptionsModal extends StatelessWidget {
   final BuildContext mainContext;
 
   void _showMoveList(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (_) => const _MoveListDialog(),
-    );
-
     Navigator.pop(context);
+    Future<void>.delayed(const Duration(milliseconds: 100), () {
+      showDialog<void>(
+        context: context,
+        builder: (BuildContext context) => const _MoveListDialog(),
+      );
+    });
   }
 
   @override
