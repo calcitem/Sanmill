@@ -1,0 +1,3 @@
+v3.5.13
+
+Riješite problem da ponekad ne reagira dodirivanje gumba Premjesti popis.

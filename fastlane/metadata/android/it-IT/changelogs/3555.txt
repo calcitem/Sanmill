@@ -1,0 +1,3 @@
+v3.5.12
+
+Migliora la traduzione croata.

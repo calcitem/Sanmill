@@ -1,0 +1,3 @@
+v3.5.12
+
+Förbättra den kroatiska översättningen.

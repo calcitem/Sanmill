@@ -1,0 +1,3 @@
+v3.5.13
+
+Resolva o problema que às vezes não responde ao tocar no botão Mover lista.

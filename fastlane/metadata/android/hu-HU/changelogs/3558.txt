@@ -1,0 +1,3 @@
+v3.5.13
+
+Oldja meg azt a problémát, hogy néha a Lista áthelyezése gomb megérintése nem reagál.
