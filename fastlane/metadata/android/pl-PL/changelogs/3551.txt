@@ -1,0 +1,3 @@
+v3.5.10
+
+Zaktualizuj tłumaczenia chorwackie.

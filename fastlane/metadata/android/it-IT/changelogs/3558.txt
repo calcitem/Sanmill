@@ -1,0 +1,3 @@
+v3.5.13
+
+Risolvi il problema che a volte toccando il pulsante Sposta elenco non risponde.

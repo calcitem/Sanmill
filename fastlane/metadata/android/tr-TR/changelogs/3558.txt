@@ -1,0 +1,3 @@
+v3.5.13
+
+Bazen Listeyi Taşı düğmesine dokunmanın yanıt vermemesine neden olan sorunu çözün.

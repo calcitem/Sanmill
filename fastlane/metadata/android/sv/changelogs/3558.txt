@@ -1,0 +1,3 @@
+v3.5.13
+
+Lös problemet att ibland inte reagerar på knappen Flytta lista.
