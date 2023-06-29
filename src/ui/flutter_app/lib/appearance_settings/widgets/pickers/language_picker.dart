@@ -18,14 +18,25 @@
 
 part of 'package:sanmill/appearance_settings/widgets/appearance_settings_page.dart';
 
-class _LanguagePicker extends StatelessWidget {
+class _LanguagePicker extends StatefulWidget {
   const _LanguagePicker({
     required this.currentLanguageLocale,
-    required this.onLanguageChange,
   });
 
   final Locale? currentLanguageLocale;
-  final Function(Locale?) onLanguageChange;
+
+  @override
+  _LanguagePickerState createState() => _LanguagePickerState();
+}
+
+class _LanguagePickerState extends State<_LanguagePicker> {
+  Locale? _selectedLocale;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedLocale = widget.currentLanguageLocale;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +48,14 @@ class _LanguagePicker extends StatelessWidget {
             S.of(context).defaultLanguage,
             textScaleFactor: DB().displaySettings.fontScale,
           ),
-          groupValue: currentLanguageLocale,
+          groupValue: _selectedLocale,
           value: null,
-          onChanged: onLanguageChange,
+          onChanged: (Locale? locale) {
+            setState(() {
+              _selectedLocale = locale;
+            });
+            Navigator.pop(context, _selectedLocale);
+          },
         ),
         const Divider(),
         for (Locale locale in localeToLanguageName.keys)
@@ -48,9 +64,14 @@ class _LanguagePicker extends StatelessWidget {
               localeToLanguageName[locale]!,
               textScaleFactor: DB().displaySettings.fontScale,
             ),
-            groupValue: currentLanguageLocale,
+            groupValue: _selectedLocale,
             value: locale,
-            onChanged: onLanguageChange,
+            onChanged: (Locale? locale) {
+              setState(() {
+                _selectedLocale = locale;
+              });
+              Navigator.pop(context, _selectedLocale);
+            },
           ),
       ],
     );
