@@ -99,7 +99,7 @@ class Engine {
     }
   }
 
-  Future<ExtMove> search({bool moveNow = false}) async {
+  Future<EngineRet> search({bool moveNow = false}) async {
     if (await isThinking()) {
       await stopSearching();
     } else if (moveNow) {
@@ -128,18 +128,21 @@ class Engine {
 
     logger.v("$_logTag response: $response");
 
-    if (response.startsWith("bestmove")) {
-      String best = response.substring("bestmove".length + 1);
+    if (response.contains("bestmove")) {
+      final RegExp regex = RegExp(r"info score (-?\d+) bestmove (.*)");
+      final Match? match = regex.firstMatch(response);
+      String value = "";
+      String best = "";
 
-      final int pos = best.indexOf(" ");
-      if (pos > -1) {
-        best = best.substring(0, pos);
+      if (match != null) {
+        value = match.group(1)!;
+        best = match.group(2)!;
       }
 
-      return ExtMove(best);
+      return EngineRet(value, ExtMove(best));
     }
 
-    if (response.startsWith("nobestmove")) {
+    if (response.contains("nobestmove")) {
       // ignore: only_throw_errors
       throw const EngineNoBestMove();
     }
@@ -180,7 +183,7 @@ class Engine {
 
     if (response != null) {
       for (final String prefix in prefixes) {
-        if (response.startsWith(prefix)) {
+        if (response.contains(prefix)) {
           return response;
         } else {
           logger.w("$_logTag Unexpected engine response: $response");

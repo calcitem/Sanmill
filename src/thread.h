@@ -72,7 +72,7 @@ public:
 
     // Mill Game
 
-    string strCommand;
+    string bestMoveString;
 
     void pause();
 
@@ -80,6 +80,7 @@ public:
     void setAi(Position *p, int time);
 
     [[nodiscard]] string next_move() const;
+    [[nodiscard]] string get_value() const;
     [[nodiscard]] Depth get_depth() const;
 
     [[nodiscard]] int getTimeLimit() const { return timeLimit; }

@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iomanip>
+#include <sstream>
 #include <utility>
 
 #include "mills.h"
@@ -139,8 +140,8 @@ void Thread::idle_loop()
         if (gameOptions.getPerfectAiEnabled()) {
             bestMove = perfect_search();
             assert(bestMove != MOVE_NONE);
-            strCommand = next_move();
-            if (strCommand != "" && strCommand != "error!") {
+            bestMoveString = next_move();
+            if (bestMoveString != "" && bestMoveString != "error!") {
                 emitCommand();
             }
         } else {
@@ -150,7 +151,7 @@ void Thread::idle_loop()
             if (!openingBookDeque.empty()) {
                 char obc[16] = {0};
                 sq2str(obc);
-                strCommand = obc;
+                bestMoveString = obc;
                 emitCommand();
             } else {
 #endif
@@ -163,11 +164,11 @@ void Thread::idle_loop()
 
                 if (ret == 3 || ret == 50 || ret == 10) {
                     debugPrintf("Draw\n\n");
-                    strCommand = "draw";
+                    bestMoveString = "draw";
                     emitCommand();
                 } else {
-                    strCommand = next_move();
-                    if (strCommand != "" && strCommand != "error!") {
+                    bestMoveString = next_move();
+                    if (bestMoveString != "" && bestMoveString != "error!") {
                         emitCommand();
                     }
                 }
@@ -204,21 +205,27 @@ void Thread::setAi(Position *p, int time)
 
 void Thread::emitCommand()
 {
+    std::ostringstream ss;
+    if (rootPos->sideToMove == BLACK) {
+        bestvalue = -bestvalue;
+    }
+    ss << "info score " << (int)bestvalue << " bestmove " << bestMoveString;
+
 #ifdef QT_GUI_LIB
-    emit command(strCommand);
+    emit command(ss.str());
 #else
-    sync_cout << "bestmove " << strCommand.c_str();
+    sync_cout << ss.str();
     std::cout << sync_endl;
 
 #ifdef FLUTTER_UI
-    println("bestmove %s", strCommand.c_str());
+    println(ss.str().c_str());
 #endif
 
 #ifdef UCI_DO_BEST_MOVE
-    rootPos->command(strCommand.c_str());
+    rootPos->command(ss.str());
     us = rootPos->side_to_move();
 
-    if (strCommand.size() > strlen("-(1,2)")) {
+    if (bestMoveString.size() > strlen("-(1,2)")) {
         posKeyHistory.push_back(rootPos->key());
     } else {
         posKeyHistory.clear();
@@ -429,6 +436,12 @@ void Thread::analyze(Color c) const
 Depth Thread::get_depth() const
 {
     return Mills::get_search_depth(rootPos);
+}
+
+string Thread::get_value() const
+{
+    string value = std::to_string(bestvalue);
+    return value;
 }
 
 string Thread::next_move() const

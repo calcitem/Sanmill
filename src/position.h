@@ -217,6 +217,7 @@ public:
 
     int score[COLOR_NB] {0};
     int score_draw {0};
+    int bestvalue {0};
 
     // Relate to Rule
     static Bitboard millTableBB[SQUARE_EXT_NB][LD_NB];

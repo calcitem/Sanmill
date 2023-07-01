@@ -64,6 +64,7 @@ class DisplaySettings {
     this.boardTop = kToolbarHeight,
     this.animationDuration = 0.0,
     this.aiResponseDelayTime = 0.0,
+    this.isPositionalAdvantageIndicatorShown = false,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -136,6 +137,9 @@ class DisplaySettings {
 
   @HiveField(18, defaultValue: 0.0)
   final double aiResponseDelayTime;
+
+  @HiveField(19, defaultValue: false)
+  final bool isPositionalAdvantageIndicatorShown;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

@@ -1875,6 +1875,8 @@ void Game::setTips()
     case Phase::none:
         break;
     }
+
+    tips = to_string(position.bestvalue) + " | " + tips;
 }
 
 time_t Game::get_elapsed_time(int us) const

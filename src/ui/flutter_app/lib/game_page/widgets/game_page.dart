@@ -27,6 +27,7 @@ import 'package:hive/hive.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
+import '../../game_page/services/mill.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
 import '../../generated/intl/l10n.dart';
@@ -41,7 +42,6 @@ import '../../shared/themes/app_theme.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/widgets/custom_spacer.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
-import '../services/mill.dart';
 import 'painters/painters.dart';
 import 'toolbars/game_toolbar.dart';
 

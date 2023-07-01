@@ -1041,13 +1041,16 @@ bool Position::resign(Color loser)
 
 bool Position::command(const char *cmd)
 {
+    char moveStr[64] = {0};
     unsigned int ruleNo = 0;
     unsigned t = 0;
     int step = 0;
     File file1 = FILE_A, file2 = FILE_A;
     Rank rank1 = RANK_1, rank2 = RANK_1;
 
-    if (sscanf(cmd, "r%1u s%3d t%2u", &ruleNo, &step, &t) == 3) {
+    sscanf(cmd, "info score %d bestmove %s", &bestvalue, moveStr, 32);
+
+    if (sscanf(moveStr, "r%1u s%3d t%2u", &ruleNo, &step, &t) == 3) {
         if (set_rule(ruleNo - 1) == false) {
             return false;
         }
@@ -1055,7 +1058,7 @@ bool Position::command(const char *cmd)
         return reset();
     }
 
-    int args = sscanf(cmd, "(%1u,%1u)->(%1u,%1u)",
+    int args = sscanf(moveStr, "(%1u,%1u)->(%1u,%1u)",
                       reinterpret_cast<unsigned *>(&file1),
                       reinterpret_cast<unsigned *>(&rank1),
                       reinterpret_cast<unsigned *>(&file2),
@@ -1065,30 +1068,30 @@ bool Position::command(const char *cmd)
         return move_piece(file1, rank1, file2, rank2);
     }
 
-    args = sscanf(cmd, "-(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
+    args = sscanf(moveStr, "-(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
                   reinterpret_cast<unsigned *>(&rank1));
     if (args >= 2) {
         return remove_piece(file1, rank1);
     }
 
-    args = sscanf(cmd, "(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
+    args = sscanf(moveStr, "(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
                   reinterpret_cast<unsigned *>(&rank1));
     if (args >= 2) {
         return put_piece(file1, rank1);
     }
 
-    args = sscanf(cmd, "Player%1u give up!", &t);
+    args = sscanf(moveStr, "Player%1u give up!", &t);
 
     if (args == 1) {
         return resign(static_cast<Color>(t));
     }
 
     if (rule.threefoldRepetitionRule) {
-        if (!strcmp(cmd, drawReasonThreefoldRepetitionStr)) {
+        if (!strcmp(moveStr, drawReasonThreefoldRepetitionStr)) {
             return true;
         }
 
-        if (!strcmp(cmd, "draw")) {
+        if (!strcmp(moveStr, "draw")) {
             set_gameover(DRAW, GameOverReason::drawThreefoldRepetition);
             // snprintf(record, RECORD_LEN_MAX,
             // drawReasonThreefoldRepetitionStr);

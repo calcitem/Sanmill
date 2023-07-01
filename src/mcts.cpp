@@ -352,9 +352,17 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
 
     bestMove = mp.moves[best_move_index].move;
 
-    double win_score = static_cast<double>(max_visits) /
-                       (max_iterations / num_threads);
-    Value best_value = static_cast<Value>(win_score * 2.0 - 1.0);
+    //double win_score = static_cast<double>(
+    //                       shared_visits.wins(best_move_index)) /
+    //                   shared_visits.visits(best_move_index);
+    //Value best_value = static_cast<Value>(win_score * 100.0 - 50.0);
+    //double win_score = static_cast<double>(max_visits) /
+    //                   (max_iterations / num_threads);
+    Value best_value = (pos->piece_on_board_count(pos->sideToMove) +
+                        pos->piece_in_hand_count(pos->sideToMove) -
+                        pos->piece_on_board_count(~pos->sideToMove) -
+                        pos->piece_in_hand_count(~pos->sideToMove)) *
+                       VALUE_EACH_PIECE;
 
 #ifdef MCTS_PRINT_STAT
     print_stats(mp, shared_visits, bestMove, best_value, win_score);

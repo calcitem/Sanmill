@@ -70,15 +70,68 @@ class _GameHeaderState extends State<GameHeader> {
 
   @override
   Widget build(BuildContext context) {
-    final Container divider = Container(
-      height: 2,
-      width: 180,
-      margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
-      decoration: BoxDecoration(
-        color: DB().colorSettings.boardBackgroundColor,
-        borderRadius: BorderRadius.circular(2),
-      ),
-    );
+    Widget divider;
+
+    if (DB().displaySettings.isPositionalAdvantageIndicatorShown) {
+      const int valueLimit = 100;
+
+      int value = GameController().value == null
+          ? 0
+          : int.parse(GameController().value!);
+
+      // TODO: Modify engine to return suitable value
+      if ((value == valueUnique || value == -valueUnique) ||
+          GameController().gameInstance.gameMode == GameMode.humanVsHuman) {
+        value = valueEachPiece * GameController().position.pieceCountDiff();
+      }
+
+      value *= 2;
+
+      if (value > valueLimit) {
+        value = valueLimit;
+      }
+
+      if (value < -valueLimit) {
+        value = -valueLimit;
+      }
+
+      final num dividerWhiteLength = valueLimit + value;
+      final num dividerBlackLength = valueLimit - value;
+
+      divider = Container(
+        height: 2,
+        width: valueLimit * 2,
+        margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(2),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: 2,
+              width: dividerWhiteLength.toDouble(),
+              color: DB().colorSettings.whitePieceColor,
+            ),
+            Container(
+              height: 2,
+              width: dividerBlackLength.toDouble(),
+              color: DB().colorSettings.blackPieceColor,
+            ),
+          ],
+        ),
+      );
+    } else {
+      divider = Container(
+        height: 2,
+        width: 180,
+        margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
+        decoration: BoxDecoration(
+          color: DB().colorSettings.boardBackgroundColor,
+          borderRadius: BorderRadius.circular(2),
+        ),
+      );
+    }
 
     final BlockSemantics appBar = BlockSemantics(
       child: Center(

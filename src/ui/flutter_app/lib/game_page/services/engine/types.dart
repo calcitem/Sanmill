@@ -332,6 +332,9 @@ extension GameResultExtension on GameResult {
   }
 }
 
+const int valueUnique = 100;
+const int valueEachPiece = 5;
+
 const int sqBegin = 8;
 const int sqEnd = 32;
 const int sqNumber = 40;

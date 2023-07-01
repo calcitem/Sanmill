@@ -96,8 +96,8 @@
 
     if ([line isEqualToString:@"readyok"] ||
         [line isEqualToString:@"uciok"] ||
-        [line hasPrefix:@"bestmove"] ||
-        [line hasPrefix:@"nobestmove"]) {
+        [line rangeOfString:@"bestmove"].location != NSNotFound ||
+        [line rangeOfString:@"nobestmove"].location != NSNotFound) {
 
         state = ENGINE_STATE_READY;
     }

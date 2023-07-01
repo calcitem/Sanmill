@@ -52,7 +52,8 @@ class _StalemateActionModal extends StatelessWidget {
               onChanged: onChanged,
             ),
             RadioListTile<StalemateAction>(
-              title: Text(S.of(context).removeOpponentsPieceAndChangeSideToMove),
+              title:
+                  Text(S.of(context).removeOpponentsPieceAndChangeSideToMove),
               groupValue: stalemateAction,
               value: StalemateAction.removeOpponentsPieceAndChangeSideToMove,
               onChanged: onChanged,

@@ -54,6 +54,8 @@ class GameController {
   bool isEngineInDelay = false;
   bool isPositionSetupBanPiece = false; // TODO: isPieceBannedInPositionSetup?
 
+  String? value;
+
   late Game gameInstance;
   late Position position;
   late Position setupPosition;
@@ -101,6 +103,8 @@ class GameController {
     String? fen = "";
     final bool isPositionSetup = GameController().isPositionSetup;
 
+    value = "0";
+
     GameController().engine.stopSearching();
 
     if (isPositionSetup == true && force == false) {
@@ -142,6 +146,8 @@ class GameController {
   Future<EngineResponse> engineToGo(BuildContext context,
       {required bool isMoveNow}) async {
     const String tag = "[engineToGo]";
+
+    late EngineRet engineRet;
 
     bool searched = false;
     bool loopIsFirst = true;
@@ -240,7 +246,7 @@ class GameController {
           isEngineInDelay = false;
         }
 
-        final ExtMove extMove = await controller.engine
+        engineRet = await controller.engine
             // ignore: avoid_bool_literals_in_conditional_expressions
             .search(moveNow: loopIsFirst ? isMoveNow : false);
 
@@ -249,7 +255,7 @@ class GameController {
         }
 
         // TODO: Unify return and throw
-        if (controller.gameInstance.doMove(extMove) == false) {
+        if (controller.gameInstance.doMove(engineRet.extMove!) == false) {
           // TODO: Should catch it and throw.
           GameController().isEngineRunning = false;
           return const EngineNoBestMove();
@@ -266,7 +272,7 @@ class GameController {
         // TODO: Do not use BuildContexts across async gaps.
         if (DB().generalSettings.screenReaderSupport) {
           rootScaffoldMessengerKey.currentState!.showSnackBar(
-            CustomSnackBar("$aiStr: ${extMove.notation}"),
+            CustomSnackBar("$aiStr: ${engineRet.extMove!.notation}"),
           );
         }
       } on EngineTimeOut {
@@ -278,6 +284,8 @@ class GameController {
         GameController().isEngineRunning = false;
         return const EngineNoBestMove();
       }
+
+      GameController().value = engineRet.value;
 
       if (GameController().position.winner != PieceColor.nobody) {
         if (DB().generalSettings.isAutoRestart == true) {

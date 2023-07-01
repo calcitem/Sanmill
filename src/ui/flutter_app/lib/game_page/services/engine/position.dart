@@ -50,6 +50,13 @@ class Position {
     PieceColor.black: 0,
   };
 
+  int pieceCountDiff() {
+    return pieceOnBoardCount[PieceColor.white]! +
+        pieceInHandCount[PieceColor.white]! -
+        pieceOnBoardCount[PieceColor.black]! -
+        pieceInHandCount[PieceColor.black]!;
+  }
+
   bool isNeedStalemateRemoval = false;
   bool isStalemateRemoving = false;
 

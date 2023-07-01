@@ -204,3 +204,9 @@ class ExtMove {
   @override
   bool operator ==(Object other) => other is ExtMove && other.move == move;
 }
+
+class EngineRet {
+  EngineRet(this.value, this.extMove);
+  String? value;
+  ExtMove? extMove;
+}

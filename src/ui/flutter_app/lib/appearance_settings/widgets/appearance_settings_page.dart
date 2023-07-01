@@ -49,14 +49,14 @@ class AppearanceSettingsPage extends StatelessWidget {
   const AppearanceSettingsPage({super.key});
 
   void setBoardBorderLineWidth(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (_) => const _BoardBorderLineWidthSlider(),
-  );
+        context: context,
+        builder: (_) => const _BoardBorderLineWidthSlider(),
+      );
 
   void setBoardInnerLineWidth(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (_) => const _BoardInnerLineWidthSlider(),
-  );
+        context: context,
+        builder: (_) => const _BoardInnerLineWidthSlider(),
+      );
 
   void setPointPaintingStyle(
       BuildContext context, DisplaySettings displaySettings) {
@@ -78,40 +78,40 @@ class AppearanceSettingsPage extends StatelessWidget {
   }
 
   void setPointWidth(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (_) => const _PointWidthSlider(),
-  );
+        context: context,
+        builder: (_) => const _PointWidthSlider(),
+      );
 
   void setPieceWidth(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (_) => const _PieceWidthSlider(),
-  );
+        context: context,
+        builder: (_) => const _PieceWidthSlider(),
+      );
 
   void setFontSize(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (_) => const _FontSizeSlider(),
-  );
+        context: context,
+        builder: (_) => const _FontSizeSlider(),
+      );
 
   void setBoardTop(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (_) => const _BoardTopSlider(),
-  );
+        context: context,
+        builder: (_) => const _BoardTopSlider(),
+      );
 
   void setAnimationDuration(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (_) => const _AnimationDurationSlider(),
-  );
+        context: context,
+        builder: (_) => const _AnimationDurationSlider(),
+      );
 
   void setAiResponseDelayTime(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (_) => const _AiResponseDelayTimeSlider(),
-  );
+        context: context,
+        builder: (_) => const _AiResponseDelayTimeSlider(),
+      );
 
   void langCallback(
-      BuildContext context,
-      DisplaySettings displaySettings, [
-        Locale? locale,
-      ]) {
+    BuildContext context,
+    DisplaySettings displaySettings, [
+    Locale? locale,
+  ]) {
     DB().displaySettings = displaySettings.copyWith(locale: locale);
 
     logger.v("[config] locale = $locale");
@@ -136,14 +136,14 @@ class AppearanceSettingsPage extends StatelessWidget {
         drawerColor: AppTheme.colorThemes[theme]!.drawerColor,
         drawerTextColor: AppTheme.colorThemes[theme]!.drawerTextColor,
         drawerHighlightItemColor:
-        AppTheme.colorThemes[theme]!.drawerHighlightItemColor,
+            AppTheme.colorThemes[theme]!.drawerHighlightItemColor,
         mainToolbarBackgroundColor:
-        AppTheme.colorThemes[theme]!.mainToolbarBackgroundColor,
+            AppTheme.colorThemes[theme]!.mainToolbarBackgroundColor,
         mainToolbarIconColor: AppTheme.colorThemes[theme]!.mainToolbarIconColor,
         navigationToolbarBackgroundColor:
-        AppTheme.colorThemes[theme]!.navigationToolbarBackgroundColor,
+            AppTheme.colorThemes[theme]!.navigationToolbarBackgroundColor,
         navigationToolbarIconColor:
-        AppTheme.colorThemes[theme]!.navigationToolbarIconColor,
+            AppTheme.colorThemes[theme]!.navigationToolbarIconColor,
       );
     }
 
@@ -185,19 +185,19 @@ class AppearanceSettingsPage extends StatelessWidget {
           titleString: S.of(context).lineColor,
           value: DB().colorSettings.boardLineColor,
           onChanged: (Color val) =>
-          DB().colorSettings = colorSettings.copyWith(boardLineColor: val),
+              DB().colorSettings = colorSettings.copyWith(boardLineColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).whitePieceColor,
           value: DB().colorSettings.whitePieceColor,
           onChanged: (Color val) =>
-          DB().colorSettings = colorSettings.copyWith(whitePieceColor: val),
+              DB().colorSettings = colorSettings.copyWith(whitePieceColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).blackPieceColor,
           value: DB().colorSettings.blackPieceColor,
           onChanged: (Color val) =>
-          DB().colorSettings = colorSettings.copyWith(blackPieceColor: val),
+              DB().colorSettings = colorSettings.copyWith(blackPieceColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).pieceHighlightColor,
@@ -209,19 +209,19 @@ class AppearanceSettingsPage extends StatelessWidget {
           titleString: S.of(context).messageColor,
           value: DB().colorSettings.messageColor,
           onChanged: (Color val) =>
-          DB().colorSettings = colorSettings.copyWith(messageColor: val),
+              DB().colorSettings = colorSettings.copyWith(messageColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).drawerColor,
           value: DB().colorSettings.drawerColor,
           onChanged: (Color val) =>
-          DB().colorSettings = colorSettings.copyWith(drawerColor: val),
+              DB().colorSettings = colorSettings.copyWith(drawerColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).drawerTextColor,
           value: DB().colorSettings.drawerTextColor,
           onChanged: (Color val) =>
-          DB().colorSettings = colorSettings.copyWith(drawerTextColor: val),
+              DB().colorSettings = colorSettings.copyWith(drawerTextColor: val),
         ),
         SettingsListTile.color(
           titleString: S.of(context).drawerHighlightItemColor,
@@ -275,10 +275,10 @@ class AppearanceSettingsPage extends StatelessWidget {
   }
 
   Widget _buildDisplaySettings(
-      BuildContext context,
-      Box<DisplaySettings> box,
-      _,
-      ) {
+    BuildContext context,
+    Box<DisplaySettings> box,
+    _,
+  ) {
     final DisplaySettings displaySettings = box.get(
       DB.displaySettingsKey,
       defaultValue: const DisplaySettings(),
@@ -293,7 +293,6 @@ class AppearanceSettingsPage extends StatelessWidget {
               : null,
           onTap: () => _selectLanguage(context, displaySettings),
         ),
-
         if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
           SettingsListTile.switchTile(
             value: displaySettings.isFullScreen,
@@ -330,6 +329,12 @@ class AppearanceSettingsPage extends StatelessWidget {
           onChanged: (bool val) => DB().displaySettings =
               displaySettings.copyWith(isHistoryNavigationToolbarShown: val),
           titleString: S.of(context).isHistoryNavigationToolbarShown,
+        ),
+        SettingsListTile.switchTile(
+          value: displaySettings.isPositionalAdvantageIndicatorShown,
+          onChanged: (bool val) => DB().displaySettings = displaySettings
+              .copyWith(isPositionalAdvantageIndicatorShown: val),
+          titleString: S.of(context).showPositionalAdvantageIndicator,
         ),
         SettingsListTile(
           titleString: S.of(context).boardBorderLineWidth,
