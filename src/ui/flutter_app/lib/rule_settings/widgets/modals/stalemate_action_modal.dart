@@ -29,40 +29,42 @@ class _StalemateActionModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       label: S.of(context).whenStalemate,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          RadioListTile<StalemateAction>(
-            title: Text(S.of(context).endWithStalemateLoss),
-            groupValue: stalemateAction,
-            value: StalemateAction.endWithStalemateLoss,
-            onChanged: onChanged,
-          ),
-          RadioListTile<StalemateAction>(
-            title: Text(S.of(context).changeSideToMove),
-            groupValue: stalemateAction,
-            value: StalemateAction.changeSideToMove,
-            onChanged: onChanged,
-          ),
-          RadioListTile<StalemateAction>(
-            title: Text(S.of(context).removeOpponentsPieceAndMakeNextMove),
-            groupValue: stalemateAction,
-            value: StalemateAction.removeOpponentsPieceAndMakeNextMove,
-            onChanged: onChanged,
-          ),
-          RadioListTile<StalemateAction>(
-            title: Text(S.of(context).removeOpponentsPieceAndChangeSideToMove),
-            groupValue: stalemateAction,
-            value: StalemateAction.removeOpponentsPieceAndChangeSideToMove,
-            onChanged: onChanged,
-          ),
-          RadioListTile<StalemateAction>(
-            title: Text(S.of(context).endWithStalemateDraw),
-            groupValue: stalemateAction,
-            value: StalemateAction.endWithStalemateDraw,
-            onChanged: onChanged,
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            RadioListTile<StalemateAction>(
+              title: Text(S.of(context).endWithStalemateLoss),
+              groupValue: stalemateAction,
+              value: StalemateAction.endWithStalemateLoss,
+              onChanged: onChanged,
+            ),
+            RadioListTile<StalemateAction>(
+              title: Text(S.of(context).changeSideToMove),
+              groupValue: stalemateAction,
+              value: StalemateAction.changeSideToMove,
+              onChanged: onChanged,
+            ),
+            RadioListTile<StalemateAction>(
+              title: Text(S.of(context).removeOpponentsPieceAndMakeNextMove),
+              groupValue: stalemateAction,
+              value: StalemateAction.removeOpponentsPieceAndMakeNextMove,
+              onChanged: onChanged,
+            ),
+            RadioListTile<StalemateAction>(
+              title: Text(S.of(context).removeOpponentsPieceAndChangeSideToMove),
+              groupValue: stalemateAction,
+              value: StalemateAction.removeOpponentsPieceAndChangeSideToMove,
+              onChanged: onChanged,
+            ),
+            RadioListTile<StalemateAction>(
+              title: Text(S.of(context).endWithStalemateDraw),
+              groupValue: stalemateAction,
+              value: StalemateAction.endWithStalemateDraw,
+              onChanged: onChanged,
+            ),
+          ],
+        ),
       ),
     );
   }
