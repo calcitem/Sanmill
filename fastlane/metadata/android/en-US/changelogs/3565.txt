@@ -1,0 +1,3 @@
+v3.6.0
+
+Support showing positional advantage indicator.
