@@ -1484,6 +1484,6 @@
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "このアルゴリズムのユーザー ガイドを参照しますか?",
   "@viewAlgorithmGuide": {},
-  "showPositionalAdvantageIndicator": "位置的優位性インジケーターを表示",
+  "showPositionalAdvantageIndicator": "局面の有利不利インジケーターを表示",
   "@showPositionalAdvantageIndicator": {}
 }
