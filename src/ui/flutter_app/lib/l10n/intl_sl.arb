@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "Algoritem retrogradne analize uporablja večvrednostno retrogradno analizo, da iz različnih začetnih položajev zgradi zbirko podatkov o končni igri, nato pa to zbirko podatkov uporabi za optimizacijo igranja. Ta pristop spada v kategorijo ultra-močnih rešitev.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Ali si želite ogledati uporabniški priročnik za ta algoritem?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Prikaži indikator položajne prednosti",
+  "@showPositionalAdvantageIndicator": {}
 }

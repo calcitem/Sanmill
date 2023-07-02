@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "Algoritmus retrográdní analýzy využívá retrográdní analýzu s více hodnotami k vytvoření databáze konce hry z různých počátečních pozic a poté tuto databázi použije k optimalizaci hry. Tento přístup spadá do kategorie Ultra-Strong řešení.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Chcete zobrazit uživatelskou příručku pro tento algoritmus?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Zobrazit indikátor poziční výhody",
+  "@showPositionalAdvantageIndicator": {}
 }

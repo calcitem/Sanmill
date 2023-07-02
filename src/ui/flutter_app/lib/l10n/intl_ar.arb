@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "تستخدم خوارزمية التحليل الرجعي تحليلًا رجعيًا متعدد القيم لبناء قاعدة بيانات نهاية اللعبة من مواقع بدء مختلفة ، ثم تطبق قاعدة البيانات هذه لتحسين طريقة اللعب. يندرج هذا النهج ضمن فئة الحلول فائقة القوة.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "هل ترغب في عرض دليل المستخدم لهذه الخوارزمية؟",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "أظهر مؤشر الميزة الموضعية",
+  "@showPositionalAdvantageIndicator": {}
 }

@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "রেট্রোগ্রেড অ্যানালাইসিস অ্যালগরিদম বিভিন্ন স্টার্ট পজিশন থেকে একটি এন্ডগেম ডাটাবেস তৈরি করতে বহু-মূল্যবান রেট্রোগ্রেড বিশ্লেষণ ব্যবহার করে, তারপর গেমপ্লে অপ্টিমাইজ করতে এই ডাটাবেসটি প্রয়োগ করে। এই পদ্ধতিটি আল্ট্রা-স্ট্রং সমাধানের বিভাগে পড়ে।",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "আপনি কি এই অ্যালগরিদমের জন্য ব্যবহারকারীর নির্দেশিকা দেখতে চান?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "অবস্থানগত সুবিধা নির্দেশক দেখান",
+  "@showPositionalAdvantageIndicator": {}
 }

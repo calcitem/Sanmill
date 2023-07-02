@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "Retrogradanalysealgoritmen bruger retrogradanalyse med flere værdier til at bygge en slutspilsdatabase fra forskellige startpositioner og anvender derefter denne database til at optimere gameplayet. Denne tilgang falder ind under kategorien Ultra-Strong-løsninger.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Vil du se brugervejledningen til denne algoritme?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Vis positionel fordelsindikator",
+  "@showPositionalAdvantageIndicator": {}
 }

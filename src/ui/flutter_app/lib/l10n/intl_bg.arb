@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "Алгоритъмът за ретрограден анализ използва ретрограден анализ с множество стойности, за да изгради база данни за края на играта от различни начални позиции, след което прилага тази база данни за оптимизиране на играта. Този подход попада в категорията на Ultra-Strong решения.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Искате ли да видите ръководството за потребителя за този алгоритъм?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Показване на индикатор за позиционно предимство",
+  "@showPositionalAdvantageIndicator": {}
 }

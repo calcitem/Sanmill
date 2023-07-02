@@ -1483,5 +1483,7 @@
   "whatIsRetrogradeAnalysis": "Thuật toán Phân tích ngược dòng sử dụng phân tích ngược dòng đa giá trị để xây dựng cơ sở dữ liệu kết thúc trò chơi từ các vị trí bắt đầu khác nhau, sau đó áp dụng cơ sở dữ liệu này để tối ưu hóa lối chơi. Cách tiếp cận này thuộc danh mục Giải pháp siêu mạnh.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Bạn có muốn xem hướng dẫn sử dụng thuật toán này không?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Hiển thị chỉ báo lợi thế vị trí",
+  "@showPositionalAdvantageIndicator": {}
 }

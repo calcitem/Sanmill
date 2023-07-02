@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "Algoritma Analisis Retrogred menggunakan analisis retrogred berbilang nilai untuk membina pangkalan data permainan akhir daripada kedudukan permulaan yang berbeza, kemudian menggunakan pangkalan data ini untuk mengoptimumkan permainan. Pendekatan ini termasuk dalam kategori penyelesaian Ultra-Kuat.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Adakah anda ingin melihat panduan pengguna untuk algoritma ini?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Tunjukkan penunjuk kelebihan kedudukan",
+  "@showPositionalAdvantageIndicator": {}
 }

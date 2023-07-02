@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "逆行分析算法使用多值逆行分析从不同的开始局面构建残局数据库，然后应用此数据库优化游戏玩法。这种方法属于超强解决方案的范畴。",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "您想查看此算法的用户指南吗？",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "显示位置优势指标",
+  "@showPositionalAdvantageIndicator": {}
 }

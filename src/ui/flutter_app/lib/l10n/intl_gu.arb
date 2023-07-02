@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "રેટ્રોગ્રેડ એનાલિસિસ એલ્ગોરિધમ વિવિધ સ્ટાર્ટ પોઝિશનમાંથી એન્ડગેમ ડેટાબેઝ બનાવવા માટે બહુ-મૂલ્યવાળું રેટ્રોગ્રેડ એનાલિસિસનો ઉપયોગ કરે છે, પછી ગેમપ્લેને ઑપ્ટિમાઇઝ કરવા માટે આ ડેટાબેઝને લાગુ કરે છે. આ અભિગમ અલ્ટ્રા-સ્ટ્રોંગ સોલ્યુશન્સની શ્રેણીમાં આવે છે.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "શું તમે આ અલ્ગોરિધમ માટે વપરાશકર્તા માર્ગદર્શિકા જોવા માંગો છો?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "સ્થિતિકીય લાભ સૂચક બતાવો",
+  "@showPositionalAdvantageIndicator": {}
 }

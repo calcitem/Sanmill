@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "Retrograde Analysis -algoritmi käyttää moniarvoista retrogradista analyysiä loppupelitietokannan rakentamiseen eri aloituspaikoista ja käyttää sitten tätä tietokantaa pelin optimoimiseksi. Tämä lähestymistapa kuuluu Ultra-Strong-ratkaisujen luokkaan.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Haluatko nähdä tämän algoritmin käyttöoppaan?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Näytä sijaintiedun osoitin",
+  "@showPositionalAdvantageIndicator": {}
 }
