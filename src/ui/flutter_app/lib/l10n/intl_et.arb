@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "Retrograadse analüüsi algoritm kasutab mitme väärtusega retrograadset analüüsi, et luua erinevatest alguspositsioonidest lõppmängu andmebaas, seejärel rakendab see andmebaas mängu optimeerimiseks. See lähenemisviis kuulub ülitugevate lahenduste kategooriasse.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Kas soovite vaadata selle algoritmi kasutusjuhendit?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Näita positsioonieelise indikaatorit",
+  "@showPositionalAdvantageIndicator": {}
 }

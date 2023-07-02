@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "الگوریتم تحلیل رتروگراد از تحلیل رتروگراد چند ارزشی برای ساخت یک پایگاه داده پایان بازی از موقعیت های مختلف شروع استفاده می کند، سپس این پایگاه داده را برای بهینه سازی گیم پلی اعمال می کند. این رویکرد در دسته راه حل های فوق العاده قوی قرار می گیرد.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "آیا می خواهید راهنمای کاربر این الگوریتم را مشاهده کنید؟",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "نشانگر مزیت موقعیتی را نشان دهید",
+  "@showPositionalAdvantageIndicator": {}
 }

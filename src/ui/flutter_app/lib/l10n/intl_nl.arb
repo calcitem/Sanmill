@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "Het algoritme voor retrograde-analyse maakt gebruik van meerwaardige retrograde-analyse om een eindspel-database op te bouwen vanuit verschillende startposities en past deze database vervolgens toe om de gameplay te optimaliseren. Deze aanpak valt onder de categorie Ultrasterke oplossingen.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Wilt u de gebruikershandleiding van dit algoritme bekijken?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Toon positionele voordeelindicator",
+  "@showPositionalAdvantageIndicator": {}
 }

@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "Algoritmi i Analizës Retrograde përdor analizën retrograde me shumë vlera për të ndërtuar një bazë të dhënash të fundit të lojës nga pozicione të ndryshme fillestare, më pas e aplikon këtë bazë të dhënash për të optimizuar lojën. Kjo qasje bie në kategorinë e zgjidhjeve ultra të forta.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Dëshironi të shikoni udhëzuesin e përdoruesit për këtë algoritëm?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Trego treguesin e avantazhit pozicional",
+  "@showPositionalAdvantageIndicator": {}
 }

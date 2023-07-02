@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "O algoritmo Retrograde Analysis usa análise retrógrada de vários valores para construir um banco de dados de final de jogo a partir de diferentes posições iniciais e, em seguida, aplica esse banco de dados para otimizar a jogabilidade. Essa abordagem se enquadra na categoria de soluções ultrafortes.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Gostaria de ver o guia do usuário para este algoritmo?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Mostrar indicador de vantagem posicional",
+  "@showPositionalAdvantageIndicator": {}
 }

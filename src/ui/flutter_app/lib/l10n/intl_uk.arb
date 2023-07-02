@@ -1483,5 +1483,7 @@
   "whatIsRetrogradeAnalysis": "Алгоритм ретроградного аналізу використовує багатозначний ретроградний аналіз для створення бази даних ендшпілю з різних початкових позицій, а потім застосовує цю базу даних для оптимізації ігрового процесу. Цей підхід відноситься до категорії надміцних рішень.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Бажаєте переглянути посібник користувача для цього алгоритму?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Показати індикатор позиційної переваги",
+  "@showPositionalAdvantageIndicator": {}
 }

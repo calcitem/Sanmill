@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "Algoritmul de analiză retrogradă utilizează analiza retrogradă cu mai multe valori pentru a construi o bază de date finală din diferite poziții de început, apoi aplică această bază de date pentru a optimiza jocul. Această abordare se încadrează în categoria soluțiilor Ultra-Strong.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Doriți să vedeți ghidul utilizatorului pentru acest algoritm?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Afișați indicatorul de avantaj pozițional",
+  "@showPositionalAdvantageIndicator": {}
 }

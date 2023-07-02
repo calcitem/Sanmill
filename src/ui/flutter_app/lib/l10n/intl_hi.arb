@@ -1385,5 +1385,7 @@
   "whatIsRetrogradeAnalysis": "रेट्रोग्रेड एनालिसिस एल्गोरिथम अलग-अलग स्टार्ट पोजीशन से एंडगेम डेटाबेस बनाने के लिए मल्टी-वैल्यूड रेट्रोग्रेड एनालिसिस का उपयोग करता है, फिर गेमप्ले को ऑप्टिमाइज़ करने के लिए इस डेटाबेस को लागू करता है। यह दृष्टिकोण अल्ट्रा-स्ट्रॉन्ग सॉल्यूशंस की श्रेणी में आता है।",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "क्या आप इस एल्गोरिथ्म के लिए उपयोगकर्ता मार्गदर्शिका देखना चाहेंगे?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "स्थितीय लाभ सूचक दिखाएँ",
+  "@showPositionalAdvantageIndicator": {}
 }
