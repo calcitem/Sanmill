@@ -1,0 +1,3 @@
+v3.6.0
+
+Support montrant l'indicateur d'avantage positionnel.

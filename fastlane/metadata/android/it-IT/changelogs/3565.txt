@@ -1,0 +1,3 @@
+v3.6.0
+
+Supporto che mostra l'indicatore di vantaggio di posizione.
