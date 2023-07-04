@@ -21,11 +21,11 @@ class _MoveOptionsModal extends StatelessWidget {
 
   final BuildContext mainContext;
 
-  void _showMoveList(BuildContext context) {
-    Navigator.pop(context);
+  void _showMoveList() {
+    Navigator.pop(mainContext);
     Future<void>.delayed(const Duration(milliseconds: 100), () {
       showDialog<void>(
-        context: context,
+        context: mainContext,
         builder: (BuildContext context) => const _MoveListDialog(),
       );
     });
@@ -61,7 +61,7 @@ class _MoveOptionsModal extends StatelessWidget {
         if (GameController().gameRecorder.hasPrevious ||
             GameController().isPositionSetup == true) ...<Widget>[
           SimpleDialogOption(
-            onPressed: () => _showMoveList(context),
+            onPressed: () => _showMoveList(),
             child: Text(S.of(context).showMoveList),
           ),
           const CustomSpacer(),
