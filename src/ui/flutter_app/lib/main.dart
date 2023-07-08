@@ -144,7 +144,7 @@ class SanmillApp extends StatelessWidget {
         locale = PlatformDispatcher.instance.locale;
       }
     } else {
-      locale = displaySettings.locale;
+        locale = displaySettings.locale;
     }
 
     final MaterialApp materialApp = MaterialApp(
