@@ -264,7 +264,7 @@
   "@drawReasonBoardIsFull": {
     "description": "It is a Draw because the board is full"
   },
-  "drawReasonThreefoldRepetition": "É um sorteio por causa da tripla repetição.",
+  "drawReasonThreefoldRepetition": "Empate por causa da tripla repetição.",
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
@@ -420,7 +420,7 @@
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"
   },
-  "isDefenderMoveFirst_Detail": "O jogador que se move em segundo lugar na fase de colocação se move em primeiro lugar na fase de movimentação.",
+  "isDefenderMoveFirst_Detail": "O jogador que se move em segundo lugar na fase de colocação se move primeiro na fase de movimentação.",
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
   },
@@ -444,7 +444,7 @@
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "No final da fase de colocação, quando o tabuleiro está cheio, o lado que coloca primeiro perde o jogo, caso contrário, o jogo é um empate.",
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "No final da fase de colocação, quando o tabuleiro está cheio, o lado que coloca primeiro perde o jogo, caso contrário, o jogo empata.",
   "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
     "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
   },
@@ -480,7 +480,7 @@
   "@pleaseSelect": {
     "description": "Please select"
   },
-  "copy": "Cópia",
+  "copy": "Copiar",
   "@copy": {
     "description": "Copy"
   },
@@ -950,7 +950,7 @@
   "@loadGame": {
     "description": "Load game"
   },
-  "setupPosition": "Posição de instalação",
+  "setupPosition": "Configurar posicionamento",
   "@setupPosition": {
     "description": "Setup position"
   },
