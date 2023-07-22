@@ -61,7 +61,7 @@
   "@none": {
     "description": "None"
   },
-  "theme": "Mandhari",
+  "theme": "Mada",
   "@theme": {
     "description": "Theme"
   },
@@ -865,7 +865,7 @@
   "@general": {
     "description": "General"
   },
-  "advanced": "Advanced",
+  "advanced": "Iliyoendelea",
   "@advanced": {
     "description": "Advanced"
   },
@@ -1057,7 +1057,7 @@
   "@dark": {
     "description": "Dark"
   },
-  "themes": "Mandhari",
+  "themes": "Mada",
   "@themes": {
     "description": "Themes"
   },
@@ -1229,7 +1229,7 @@
   "@pieceHighlightColor": {
     "description": "Piece highlight color"
   },
-  "algorithm": "Algorithm",
+  "algorithm": "Algorithmi",
   "@algorithm": {
     "description": "Algorithm"
   },
@@ -1277,7 +1277,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{Move}=1{{count} Sogeza}nyingine{{count} Moves}}",
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Sogeza}other{{count} Moves}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
@@ -1331,7 +1331,7 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} kipande}vipande vingine{{count}}} vinahitaji kuondolewa.",
+  "pieceCountNeedToRemove": "{count,plural, =0{Kipande}=1{{count} kipande}other{{count} vipande}} vinahitaji kuondolewa.",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
@@ -1403,7 +1403,7 @@
   "@noTimeLimitForThinking": {},
   "whatIsMtdf": "MTD(f) ni aina iliyorekebishwa ya algoriti ya utafutaji ya alpha-beta ambayo inalenga kuboresha ufanisi kwa kutumia tena matokeo ya kati ya utafutaji na kutumia ubashiri mzuri wa awali ili kupunguza nafasi ya utafutaji.",
   "@whatIsMtdf": {},
-  "noteAiThinkingTimeMayNotBePrecise": "Tafadhali fahamu kuwa marekebisho ya wakati wa kufikiri ya AI yanaweza yasiwe sahihi kabisa. Wakati halisi wa kufikiria unaweza kuwa mfupi wakati kiwango cha ugumu kimewekwa kwa thamani ya chini na inaweza kuwa ndefu wakati AI iko katikati ya mawazo wakati wakati unaisha.",
+  "noteAiThinkingTimeMayNotBePrecise": "Tafadhali kumbuka kuwa marekebisho ya muda wa kufikiria ya AI huenda sio sahihi kabisa. Muda halisi wa kufikiria unaweza kuwa mfupi zaidi wakati kiwango cha ugumu kimepunguzwa na kinaweza kuwa kirefu zaidi wakati AI iko katikati ya mawazo wakati muda unakwisha.",
   "@noteAiThinkingTimeMayNotBePrecise": {},
   "noteActualDifficultyLevelMayBeLimited": "Ukiweka kiwango cha ugumu juu lakini usiongeze muda wa kufikiri wa AI, kiwango cha ugumu halisi kinaweza kuwa mdogo kwa thamani ya chini kutokana na kikwazo cha muda wa kufikiri. Thamani halisi inaweza kutofautiana kulingana na utendaji wa mashine.",
   "@noteActualDifficultyLevelMayBeLimited": {},
@@ -1459,7 +1459,7 @@
   "@whatIsMcts": {},
   "goldenJade": "Jade ya dhahabu",
   "@goldenJade": {},
-  "forestWood": "Wood Wood",
+  "forestWood": "Msitu wa Miti",
   "@forestWood": {},
   "darkMystery": "Siri ya Giza",
   "@darkMystery": {},

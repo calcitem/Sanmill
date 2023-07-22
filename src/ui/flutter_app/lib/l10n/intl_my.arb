@@ -3,7 +3,7 @@
   "@appName": {
     "description": "The app name"
   },
-  "welcome": "ကြိုဆိုပါတယ်။",
+  "welcome": "ကြိုဆိုပါတယ်",
   "@welcome": {
     "description": "Welcome"
   },
@@ -35,7 +35,7 @@
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
-  "testViaLAN": "LAN မှတဆင့်စမ်းသပ်ပါ။",
+  "testViaLAN": "LAN မှတဆင့်စမ်းသပ်ပါ",
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
@@ -43,15 +43,15 @@
   "@move": {
     "description": "Move"
   },
-  "showMoveList": "စာရင်းကို ရွှေ့ပါ။",
+  "showMoveList": "စာရင်းကို ရွှေ့ပါ",
   "@showMoveList": {
     "description": "Move list"
   },
-  "moveList": "စာရင်းကို ရွှေ့ပါ။",
+  "moveList": "စာရင်းကို ရွှေ့ပါ",
   "@moveList": {
     "description": "Move list"
   },
-  "noGameRecord": "မှတ်တမ်းမရှိပါ။",
+  "noGameRecord": "မှတ်တမ်းမရှိပါ",
   "@noGameRecord": {
     "description": "No record"
   },
@@ -59,7 +59,7 @@
   "@ok": {
     "description": "OK"
   },
-  "confirm": "အတည်ပြုပါ။",
+  "confirm": "အတည်ပြုပါ",
   "@confirm": {
     "description": "Confirm"
   },
@@ -75,7 +75,7 @@
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "မင်းဒီမှာထားလို့မရဘူး။",
+  "tipBanPlace": "သင့်ကို ဒီနေရာမှာ ထားမရပါ။",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
@@ -99,7 +99,7 @@
   "@tipMove": {
     "description": "Move a piece."
   },
-  "tipCannotPlace": "မင်းရဲ့ အပိုင်းကို ဒီမှာ ထားလို့မရဘူး။",
+  "tipCannotPlace": "သင့်ကို ဒီနေရာမှာ သင့်ပစ္စည်းကို ထားမရပါ။",
   "@tipCannotPlace": {
     "description": "You can't place your piece here."
   },
@@ -127,7 +127,7 @@
   "@tipCanMoveOnePoint": {
     "description": "A piece can move 1 point."
   },
-  "tipCannotMoveOpponentsPieces": "မင်းရဲ့ပြိုင်ဘက်ရဲ့အပိုင်းတွေကို ရွှေ့လို့မရဘူး။",
+  "tipCannotMoveOpponentsPieces": "သင့်ကို သင့်အနိုင်ယူဆခြင်းရဲ့ ပစ္စည်းများကို ရွေ့မရပါ။",
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
@@ -139,7 +139,7 @@
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "blackWin": "ကစားသမား 2 ဦး အနိုင်ရသည်။",
+  "blackWin": "ကစားသမား ၂ အောင်မြင်သည်!",
   "@blackWin": {
     "description": "Player 2 wins!"
   },
@@ -155,7 +155,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "ရွှေ့ရန် {player}",
+  "tipToMove": "{player}ကစားသည့်အခါကိုလှမ်းဆန်။",
   "@tipToMove": {
     "description": "The tip that the given player is to move.",
     "placeholders": {
@@ -165,7 +165,7 @@
       }
     }
   },
-  "whiteWin": "ကစားသမား 1 က အနိုင်ရတယ်။",
+  "whiteWin": "ကစားသမား ၁ မြင်သွားပြီ!",
   "@whiteWin": {
     "description": "Player 1 wins!"
   },
@@ -293,11 +293,11 @@
   "@gameOver": {
     "description": "Game Over"
   },
-  "youWin": "မင်းအနိုင်ရ။ ဂုဏ်ယူပါသည်။",
+  "youWin": "သင့်အောင်မြင်ပါတယ်! ကျေးဇူးတင်ပါတယ်!",
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "ပိုခက်တဲ့အဆင့်ကို စိန်ခေါ်မလား။ အဆင့်အသစ်သည် အဆင့် {level} ဖြစ်လိမ့်မည်။",
+  "challengeHarderLevel": "အကြီးအကြယ်ပိုများသော အဆင့်ကို ဖန်တီးမလား? အသစ်တစ်ခုမှာ အဆင့် {level} ဖြစ်ပါလိမ့်မည်!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?",
     "placeholders": {
@@ -311,7 +311,7 @@
   "@youLose": {
     "description": "You Lose!"
   },
-  "analyze": "ခွဲခြမ်းစိတ်ဖြာပါ။",
+  "analyze": "ခွဲခြမ်းစိတ်ဖြာပါ",
   "@analyze": {
     "description": "Analyze"
   },
@@ -343,7 +343,7 @@
   "@playSounds": {
     "description": "Sound effects"
   },
-  "playSoundsInTheGame": "ဂိမ်းတွင် အသံများကို ကစားပါ။",
+  "playSoundsInTheGame": "ဂိမ်းတွင် အသံများကို ကစားပါ",
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
@@ -359,15 +359,15 @@
   "@alternate": {
     "description": "Alternate"
   },
-  "isAutoRestart": "ဂိမ်းပြီးသွားသောအခါ ဂိမ်းကို အလိုအလျောက် ပြန်လည်စတင်ပါ။",
+  "isAutoRestart": "ဂိမ်းပြီးသွားသောအခါ ဂိမ်းကို အလိုအလျောက် ပြန်လည်စတင်ပါ",
   "@isAutoRestart": {
     "description": "Auto-restart game when game over"
   },
-  "isAutoChangeFirstMove": "Auto Change First Move",
+  "isAutoChangeFirstMove": "ပထမအောင်မြင်ခြင်းကိုအလိုအလျောက်ပြောင်းလဲ",
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "shufflingEnabled": "ကျပန်းရွှေ့ပါ။",
+  "shufflingEnabled": "ကျပန်းရွှေ့ပါ",
   "@shufflingEnabled": {
     "description": "Random move"
   },
@@ -395,7 +395,7 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "အပိုင်းများကို အမှတ်အသားပြုပြီး နှောင့်နှေးစေပါသည်။",
+  "hasBannedLocations": "အပိုင်းများကို အမှတ်အသားပြုပြီး နှောင့်နှေးစေပါသည်",
   "@hasBannedLocations": {
     "description": "Mark and delay removing pieces"
   },
@@ -407,7 +407,7 @@
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
   },
-  "mayRemoveMultiple": "မျိုးစုံကို ဖယ်ရှားပါ။",
+  "mayRemoveMultiple": "မျိုးစုံကို ဖယ်ရှားပါ",
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
@@ -419,7 +419,7 @@
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "ဘုတ်အဖွဲ့ပြည့်သောအခါ ဒုတိယကစားသမားသည် ရှုံးသည်။",
+  "isWhiteLoseButNotDrawWhenBoardFull": "ဘုတ်အဖွဲ့ပြည့်သောအခါ ဒုတိယကစားသမားသည် ရှုံးသည်",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -427,7 +427,7 @@
   "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
     "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
   },
-  "isLoseButNotChangeSideWhenNoWay": "တရားဥပဒေအရ ရွေ့လျားမှုမရှိတဲ့အခါ ရှုံးတယ်။",
+  "isLoseButNotChangeSideWhenNoWay": "တရားဥပဒေအရ ရွေ့လျားမှုမရှိတဲ့အခါ ရှုံးတယ်",
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose when no legal moves"
   },
@@ -451,7 +451,7 @@
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
-  "pleaseSelect": "ကျေးဇူးပြု၍ ရွေးချယ်ပါ။",
+  "pleaseSelect": "ကျေးဇူးပြု၍ ရွေးချယ်ပါ",
   "@pleaseSelect": {
     "description": "Please select"
   },
@@ -491,15 +491,15 @@
   "@messageColor": {
     "description": "Message color"
   },
-  "isPieceCountInHandShown": "နေရာမရှိသောအပိုင်းများ အရေအတွက်ကို ပြပါ။",
+  "isPieceCountInHandShown": "နေရာမရှိသောအပိုင်းများ အရေအတွက်ကို ပြပါ",
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
   },
-  "isNotationsShown": "ဘုတ်ပေါ်တွင် အမှတ်အသားများကို ပြပါ။",
+  "isNotationsShown": "ဘုတ်ပေါ်တွင် အမှတ်အသားများကို ပြပါ",
   "@isNotationsShown": {
     "description": "Show notations on board"
   },
-  "display": "ပြသခြင်း။",
+  "display": "ပြသခြင်း",
   "@display": {
     "description": "Display"
   },
@@ -523,11 +523,11 @@
   "@standardNotation": {
     "description": "Standard notation"
   },
-  "restore": "ပြန်ယူပါ။",
+  "restore": "ပြန်ယူပါ",
   "@restore": {
     "description": "Restore"
   },
-  "restoreDefaultSettings": "မူရင်းဆက်တင်များကို ပြန်လည်ရယူပါ။",
+  "restoreDefaultSettings": "မူရင်းဆက်တင်များကို ပြန်လည်ရယူပါ",
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
@@ -607,11 +607,11 @@
   },
   "and": " နှင့် ",
   "@and": {},
-  "accept": "လက်ခံပါတယ်။",
+  "accept": "လက်ခံပါတယ်",
   "@accept": {
     "description": "Accept"
   },
-  "takeBack": "ပြန်ယူပါ။",
+  "takeBack": "ပြန်ယူပါ",
   "@takeBack": {
     "description": "Take back"
   },
@@ -623,19 +623,19 @@
   "@waiting": {
     "description": "Waiting..."
   },
-  "stepForward": "ရှေ့သို့လှမ်းပါ။",
+  "stepForward": "ရှေ့သို့လှမ်းပါ",
   "@stepForward": {
     "description": "Step forward"
   },
-  "takeBackAll": "အားလုံးကို ပြန်ယူပါ။",
+  "takeBackAll": "အားလုံးကို ပြန်ယူပါ",
   "@takeBackAll": {
     "description": "Take back all"
   },
-  "stepForwardAll": "အားလုံး ရှေ့ကို လှမ်းပါ။",
+  "stepForwardAll": "အားလုံး ရှေ့ကို လှမ်းပါ",
   "@stepForwardAll": {
     "description": "Step forward all"
   },
-  "moveNow": "ယခုရွှေ့ပါ။",
+  "moveNow": "ယခုရွှေ့ပါ",
   "@moveNow": {
     "description": "Move now"
   },
@@ -691,7 +691,7 @@
   "@general": {
     "description": "General"
   },
-  "advanced": "အဆင့်မြင့်သည်။",
+  "advanced": "အဆင့်မြင့်သည",
   "@advanced": {
     "description": "Advanced"
   },
@@ -703,7 +703,7 @@
   "@moving": {
     "description": "Moving"
   },
-  "removing": "ဖယ်ရှားခြင်း။",
+  "removing": "ဖယ်ရှားခြင်း",
   "@removing": {
     "description": "Removing"
   },
@@ -715,7 +715,7 @@
   "@aisPlayStyle": {
     "description": "AI's playstyle"
   },
-  "passive": "Passive",
+  "passive": "ပိုင်းကန့်သတ်မှု",
   "@passive": {
     "description": "Passive"
   },
@@ -727,15 +727,15 @@
   "@appearance": {
     "description": "Appearance"
   },
-  "drawOnHumanExperience": "လူ့အတွေ့အကြုံကို ဆွဲပါ။",
+  "drawOnHumanExperience": "လူ့အတွေ့အကြုံကို ဆွဲပါ",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"
   },
-  "considerMobility": "အပိုင်းအစများ ရွေ့လျားမှုကို ဆင်ခြင်ပါ။",
+  "considerMobility": "အပိုင်းအစများ ရွေ့လျားမှုကို ဆင်ခြင်ပါ",
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "အပိုင်းအရေအတွက်-",
+  "pieceCount": "ပစ္စည်းအရေအတွက်:",
   "@pieceCount": {
     "description": "Piece count"
   },
@@ -767,15 +767,15 @@
       }
     }
   },
-  "boardTop": "ဘုတ်ပေါ်ကနေ နှိမ်တယ်။",
+  "boardTop": "ဘုတ်ပေါ်ကနေ နှိမ်တယ်",
   "@boardTop": {
     "description": "Board offset from the top"
   },
-  "notAIsTurn": "ဒါဟာ AI ရဲ့အလှည့်မဟုတ်ပါဘူး။",
+  "notAIsTurn": "အီးအိုင်းအတွက် လှည့်ကြားခြင်းမဟုတ်ပါ။",
   "@notAIsTurn": {
     "description": "It is not the AI's turn."
   },
-  "aiIsNotThinking": "AI က မတွေးဘူး။",
+  "aiIsNotThinking": "AI သင်ယူနေသည်မဟုတ်။",
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
@@ -815,11 +815,11 @@
   "@defaultLanguage": {
     "description": "Default language"
   },
-  "mayMoveInPlacingPhase": "အပိုင်းအစများသည် နေရာယူသည့်အဆင့်တွင် ရွေ့လျားနိုင်သည်။",
+  "mayMoveInPlacingPhase": "အပိုင်းအစများသည် နေရာယူသည့်အဆင့်တွင် ရွေ့လျားနိုင်သည်",
   "@mayMoveInPlacingPhase": {
     "description": "The pieces can move in the placing phase"
   },
-  "mayMoveInPlacingPhase_Detail": "နေရာယူခြင်းနှင့် ရွေ့လျားခြင်းအဆင့်များ ကွဲပြားမှုမရှိပါ၊ ဆိုလိုသည်မှာ ကစားသမားများသည် ဘုတ်ပေါ်တွင် အပိုင်းတစ်ပိုင်းတင်လိုခြင်းရှိ၊",
+  "mayMoveInPlacingPhase_Detail": "ထားသည်နှင့်ရွှေ့သည့် အဆင့်များသည် မသန်စွဲရှိပါ၊ ရုဏ်သိမ်းစရာကစားပွဲတစ်ခုချင်းစီတွင် ကစားသမားများသည် ကစားသမားတစ်ယောက်ကိုရွှေ့ရန် သို့မဟုတ် ကစားပွဲပေါ်တွင်ထားရန် အဆင့်များကိုရွေးချယ်နိုင်ပါသည် (ထားရန်ကစားသမားများကျန်ရှိပါက)။",
   "@mayMoveInPlacingPhase_Detail": {
     "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
   },
@@ -847,7 +847,7 @@
   "@navigationToolbarIconColor": {
     "description": "Navigation toolbar icon color"
   },
-  "autoHideToolbar": "ကိရိယာဘားကို အလိုအလျောက်ဖျောက်ပါ။",
+  "autoHideToolbar": "ကိရိယာဘားကို အလိုအလျောက်ဖျောက်ပါ",
   "@autoHideToolbar": {
     "description": "Automatically hide the toolbar"
   },
@@ -875,7 +875,7 @@
   "@picture": {
     "description": "Picture"
   },
-  "chooseYourPicture": "သင့်ပုံကို ရွေးပါ။",
+  "chooseYourPicture": "သင့်ပုံကို ရွေးပါ",
   "@chooseYourPicture": {
     "description": "Choose your picture"
   },
@@ -895,11 +895,11 @@
   "@currentTheme": {
     "description": "Current theme"
   },
-  "saveTheme": "အပြင်အဆင်ကို သိမ်းဆည်းပါ။",
+  "saveTheme": "အပြင်အဆင်ကို သိမ်းဆည်းပါ",
   "@saveTheme": {
     "description": "Save theme"
   },
-  "showAnalysisGraph": "ခွဲခြမ်းစိတ်ဖြာမှုဂရပ်ကို ပြပါ။",
+  "showAnalysisGraph": "ခွဲခြမ်းစိတ်ဖြာမှုဂရပ်ကို ပြပါ",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
   },
@@ -907,11 +907,11 @@
   "@analysis": {
     "description": "Analysis"
   },
-  "saveGame": "ဂိမ်းကိုသိမ်းဆည်းပါ။",
+  "saveGame": "ဂိမ်းကိုသိမ်းဆည်းပါ",
   "@saveGame": {
     "description": "Save game"
   },
-  "loadGame": "ဂိမ်းကိုဖွင့်ပါ။",
+  "loadGame": "ဂိမ်းကိုဖွင့်ပါ",
   "@loadGame": {
     "description": "Load game"
   },
@@ -919,15 +919,15 @@
   "@setupPosition": {
     "description": "Setup position"
   },
-  "showLegalMoves": "ဥပဒေရေးရာလှုပ်ရှားမှုများကိုပြသပါ။",
+  "showLegalMoves": "ဥပဒေရေးရာလှုပ်ရှားမှုများကိုပြသပါ",
   "@showLegalMoves": {
     "description": "Show legal moves"
   },
-  "showLastMove": "နောက်ဆုံးအရွေ့ကိုပြပါ။",
+  "showLastMove": "နောက်ဆုံးအရွေ့ကိုပြပါ",
   "@showLastMove": {
     "description": "Show last move"
   },
-  "showArrows": "မြှားပြပါ။",
+  "showArrows": "မြှားပြပါ",
   "@showArrows": {
     "description": "Show arrows"
   },
@@ -935,7 +935,7 @@
   "@pieces": {
     "description": "Pieces"
   },
-  "showAnalysis": "ခွဲခြမ်းစိတ်ဖြာပြပါ။",
+  "showAnalysis": "ခွဲခြမ်းစိတ်ဖြာပြပါ",
   "@showAnalysis": {
     "description": "Show analysis"
   },
@@ -943,11 +943,11 @@
   "@threads": {
     "description": "Threads"
   },
-  "getInvolved": "ပါဝင်လိုက်ပါ။",
+  "getInvolved": "ပါဝင်လိုက်ပါ",
   "@getInvolved": {
     "description": "Get Involved"
   },
-  "helpImproveTranslate": "ဘာသာပြန်ခြင်း တိုးတက်အောင် ကူညီပေးပါ။",
+  "helpImproveTranslate": "ဘာသာပြန်ခြင်း တိုးတက်အောင် ကူညီပေးပါ",
   "@helpImproveTranslate": {
     "description": "Help improve translate"
   },
@@ -967,7 +967,7 @@
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
-  "mayBreakAndRemakeMillRepeatedly": "ကြိတ်ကွဲပြီး ထပ်ခါထပ်ခါ ပြန်လုပ်နိုင်ပါတယ်။",
+  "mayBreakAndRemakeMillRepeatedly": "ကြိတ်ကွဲပြီး ထပ်ခါထပ်ခါ ပြန်လုပ်နိုင်ပါတယ်",
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
@@ -975,7 +975,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "ကစားသမားတစ်ဦးတွင် အပိုင်းသုံးပိုင်းရှိပြီး ဆယ်ကြိမ်ရွှေ့ပြီးနောက် ကစားသမားသည် ပြိုင်ဘက်၏အပိုင်းအစများကို မဖယ်ရှားပါက ဂိမ်းကို ရေးဆွဲမည်ဖြစ်သည်။",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "ကစားသမားတစ်ဦးတွင် အပိုင်းသုံးပိုင်းရှိပြီး ဆယ်ကြိမ်ရွှေ့ပြီးနောက် ကစားသမားသည် ပြိုင်ဘက်၏အပိုင်းအစများကို မဖယ်ရှားပါက ဂိမ်းကို ရေးဆွဲမည်ဖြစ်သည်",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
@@ -1003,7 +1003,7 @@
   "@banPoint": {
     "description": "Ban point"
   },
-  "noPoint": "အမှတ်မရှိ။",
+  "noPoint": "အမှတ်မရှိ",
   "@noPoint": {
     "description": "No point"
   },
@@ -1039,7 +1039,7 @@
       }
     }
   },
-  "selected": "ရွေးချယ်ခဲ့သည်။",
+  "selected": "ရွေးချယ်ခဲ့သည်",
   "@selected": {
     "description": "Selected"
   },
@@ -1051,7 +1051,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "သရေပွဲတစ်ခုဖြစ်သည်။",
+  "isDraw": "အတူတူနေသည်!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1063,11 +1063,11 @@
   "@pieceHighlightColor": {
     "description": "Piece highlight color"
   },
-  "algorithm": "Algorithm",
+  "algorithm": "အယ်လ်ဂိုရစ်ထမ်",
   "@algorithm": {
     "description": "Algorithm"
   },
-  "removeUnplacedPiece": "နေရာလွတ်မရှိသောအပိုင်းကိုဖယ်ရှားပါ။",
+  "removeUnplacedPiece": "နေရာလွတ်မရှိသောအပိုင်းကိုဖယ်ရှားပါ",
   "@removeUnplacedPiece": {
     "description": "Remove unplaced piece"
   },
@@ -1111,7 +1111,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{Move}=1{{count} Move}အခြား{{count} Moves}}",
+  "moveNumber": "{count,plural, =0{ရွေ့မည်}=1{{count} ရွေ့မည်}other{{count} ရွေ့မည်}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
@@ -1157,7 +1157,7 @@
   "@cleanedUp": {
     "description": "Cleaned up."
   },
-  "remove": "ဖယ်ရှားပါ။",
+  "remove": "ဖယ်ရှားပါ",
   "@remove": {
     "description": "Remove"
   },
@@ -1165,7 +1165,7 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}အခြား{{count} pieces}} ကို ဖယ်ရှားရန် လိုအပ်သည်။",
+  "pieceCountNeedToRemove": "{count} ပိုင်း ဖယ်ရှားရန် လိုအပ်သည်。",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
@@ -1215,7 +1215,7 @@
   "@cannotPaste": {
     "description": "Cannot paste."
   },
-  "isUnplacedAndRemovedPiecesShown": "နေရာလွတ်နှင့် ဖယ်ရှားထားသောအပိုင်းများကို ပြပါ။",
+  "isUnplacedAndRemovedPiecesShown": "နေရာလွတ်နှင့် ဖယ်ရှားထားသောအပိုင်းများကို ပြပါ",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
   },
@@ -1233,9 +1233,9 @@
   "@forest": {},
   "desktopImage": "ဒက်စတော့ပုံ",
   "@desktopImage": {},
-  "invalidPosition": "မမှန်ကန်သောအနေအထား။",
+  "invalidPosition": "တည်နေရာမမှန်ကန်။",
   "@invalidPosition": {},
-  "shareGIF": "GIF ကိုမျှဝေပါ။",
+  "shareGIF": "GIF ကိုမျှဝေပါ",
   "@shareGIF": {},
   "pixelRatio": "Pixel အချိုး",
   "@pixelRatio": {},
@@ -1333,7 +1333,7 @@
   "@turquoiseSea": {},
   "violetDream": "ခရမ်းရောင်အိပ်မက်",
   "@violetDream": {},
-  "mintChocolate": "Mint Chocolate",
+  "mintChocolate": "မင်းတျချောကလက်",
   "@mintChocolate": {},
   "skyBlue": "ကောင်းကင်ပြာ",
   "@skyBlue": {},
@@ -1343,7 +1343,7 @@
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "ဤအယ်လဂိုရီသမ်အတွက် အသုံးပြုသူလမ်းညွှန်ကို သင်ကြည့်ရှုလိုပါသလား။",
   "@viewAlgorithmGuide": {},
-  "showPositionalAdvantageIndicator": "အနေအထားအရ အားသာချက်ညွှန်ပြချက်ကို ပြပါ။",
+  "showPositionalAdvantageIndicator": "အနေအထားအရ အားသာချက်ညွှန်ပြချက်ကို ပြပါ",
   "@showPositionalAdvantageIndicator": {},
   "no": "မရှိ",
   "@no": {
@@ -1361,7 +1361,7 @@
   "@restart": {
     "description": "Restart"
   },
-  "winRate": "Win Rate ပါ။",
+  "winRate": "အနိုင်ရရှိမှုရာခိုင်နှုန်း",
   "@winRate": {
     "description": "Win Rate"
   },
@@ -1385,7 +1385,7 @@
       }
     }
   },
-  "thanks": "ကျေးဇူးပါ။",
+  "thanks": "ကျေးဇူးပါ",
   "@thanks": {
     "description": "Thanks"
   },
@@ -1393,7 +1393,7 @@
   "@difficulty": {
     "description": "Difficulty"
   },
-  "keepMuteWhenTakingBack": "ပြန်ယူသည့်အခါ အသံတိတ်ထားပါ။",
+  "keepMuteWhenTakingBack": "ပြန်ယူသည့်အခါ အသံတိတ်ထားပါ",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"
   },
@@ -1401,7 +1401,7 @@
   "@tone": {
     "description": "Tone"
   },
-  "whoMovesFirst": "ပထမဆုံး ရွှေ့ပါ။",
+  "whoMovesFirst": "ပထမဆုံး ရွှေ့ပါ",
   "@whoMovesFirst": {
     "description": "First move"
   },
@@ -1417,11 +1417,11 @@
   "@hasDiagonalLines": {
     "description": "Diagonal lines"
   },
-  "isDefenderMoveFirst": "ဒုတိယကစားသမားက အရင်ရွှေ့တယ်။",
+  "isDefenderMoveFirst": "ဒုတိယကစားသမားက အရင်ရွှေ့တယ်",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"
   },
-  "mayRemoveFromMillsAlways": "ဆန်စက်များကို ဖျက်ဆီးပါ။",
+  "mayRemoveFromMillsAlways": "ဆန်စက်များကို ဖျက်ဆီးပါ",
   "@mayRemoveFromMillsAlways": {
     "description": "Destroy mills"
   },
@@ -1449,7 +1449,7 @@
   "@color": {
     "description": "Color"
   },
-  "isHistoryNavigationToolbarShown": "မှတ်တမ်း လမ်းညွှန်ကိရိယာဘားကို ပြပါ။",
+  "isHistoryNavigationToolbarShown": "မှတ်တမ်း လမ်းညွှန်ကိရိယာဘားကို ပြပါ",
   "@isHistoryNavigationToolbarShown": {
     "description": "Show history navigation toolbar"
   },
@@ -1473,7 +1473,7 @@
   "@solid": {
     "description": "Solid"
   },
-  "gameSavedTo": "ဂိမ်းကို သိမ်းထားသည်။",
+  "gameSavedTo": "ဂိမ်းကို သိမ်းထားသည်",
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
