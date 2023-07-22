@@ -269,7 +269,7 @@
   "@pleaseWait": {
     "description": "Please wait..."
   },
-  "restartGame": "Վերագործարկե՞լ ընթացիկ խաղը:",
+  "restartGame": "Վերսկսե՞լ ընթացիկ խաղը։",
   "@restartGame": {
     "description": "Restart current game?"
   },
@@ -497,7 +497,7 @@
   "@piecesCount": {
     "description": "The number of pieces each player has"
   },
-  "piecesCount_Detail": "Քանի՞ կտոր ունի յուրաքանչյուր խաղացող:",
+  "piecesCount_Detail": "Քանի հատ էլեմենտներ ունի յուրաքանչյուր խաղացողը՞:",
   "@piecesCount_Detail": {
     "description": "How many pieces does each player have?"
   },
@@ -885,7 +885,7 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Կտորների քանակը.",
+  "pieceCount": "Կտորների քանակը՝",
   "@pieceCount": {
     "description": "Piece count"
   },
@@ -1073,7 +1073,7 @@
   "@showAnalysis": {
     "description": "Show analysis"
   },
-  "threads": "Թեմաներ",
+  "threads": "Թերեւներ",
   "@threads": {
     "description": "Threads"
   },
@@ -1245,7 +1245,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count, plural, =0{Տեղափոխել}=1{{count} Տեղափոխել}այլ{{count} Շարժումներ}}",
+  "moveNumber": "{count, plural, =0{Տեղափոխել}=1{{count} Տեղափոխել}other{{count} Շարժումներ}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
@@ -1303,7 +1303,7 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} կտոր}այլ{{count} կտոր}} պետք է հեռացնել:",
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} կտոր}other{{count} կտոր}} պետք է հեռացնել:",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
@@ -1461,7 +1461,7 @@
   "@forestWood": {},
   "darkMystery": "Մութ առեղծված",
   "@darkMystery": {},
-  "midnightBlue": "Midnight Blue",
+  "midnightBlue": "կեսգիշերային կապույտ",
   "@midnightBlue": {},
   "greenForest": "Կանաչ անտառ",
   "@greenForest": {},

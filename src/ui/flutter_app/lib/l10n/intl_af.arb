@@ -67,7 +67,7 @@
   "@yes": {
     "description": "Yes"
   },
-  "no": "Geen",
+  "no": "Nee",
   "@no": {
     "description": "No"
   },
@@ -99,7 +99,7 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "Beweeg",
+  "move": "Trek",
   "@move": {
     "description": "Move"
   },
@@ -845,7 +845,7 @@
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Beweeg",
+  "moving": "Skuiffase",
   "@moving": {
     "description": "Moving"
   },
@@ -1257,7 +1257,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{Beweeg}=1{{count} Beweeg}ander{{count} Beweeg}}",
+  "moveNumber": "{count,plural, =0{Beweeg}=1{{count} Beweeg}other{{count} Bewegings}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
@@ -1315,7 +1315,7 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Stuk}=1{{count} stuk}ander{{count} stukke}} moet verwyder word.",
+  "pieceCountNeedToRemove": "{count,plural, =0{Stuk}=1{{count} stuk}other{{count} stukke}} moet verwyder word.",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
