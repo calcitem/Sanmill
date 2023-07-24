@@ -1271,7 +1271,7 @@
   "@hollow": {
     "description": "Hollow"
   },
-  "languageName": "אנגלית",
+  "languageName": "עברית",
   "@languageName": {
     "description": "The name of the current language"
   },

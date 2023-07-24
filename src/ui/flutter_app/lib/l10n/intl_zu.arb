@@ -1247,7 +1247,7 @@
   "@hollow": {
     "description": "Hollow"
   },
-  "languageName": "IsiNgisi",
+  "languageName": "isiZulu",
   "@languageName": {
     "description": "The name of the current language"
   },

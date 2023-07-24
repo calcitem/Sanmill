@@ -1441,7 +1441,7 @@
   "@whatIsPvs": {},
   "whatIsAlphaBeta": "Alfa-beta alqoritmi ən yaxşı hərəkəti tapmaq üçün axtarış alqoritmidir. Axtarış ağacını budamaq və səmərəliliyi artırmaq üçün minimax prinsipindən və iki dəyərdən, alfa və betadan istifadə edir. Alpha kompüterin əldə edə biləcəyi minimum balı, beta isə rəqibinin ala biləcəyi maksimum balı təmsil edir. Alqoritm kompüterə oyunda ağıllı, səmərəli qərarlar qəbul etməyə kömək edir.",
   "@whatIsAlphaBeta": {},
-  "appName": "dəyirman",
+  "appName": "Dəyirman",
   "@appName": {
     "description": "The app name"
   },
@@ -1481,7 +1481,7 @@
   "@endgameNMoveRule": {
     "description": "Endgame N-Move rule"
   },
-  "languageName": "İngilis dili",
+  "languageName": "Azərbaycan",
   "@languageName": {
     "description": "The name of the current language"
   }

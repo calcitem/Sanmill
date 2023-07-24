@@ -18,6 +18,8 @@ import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n_af.dart';
 import '../../generated/intl/l10n_ar.dart';
+import '../../generated/intl/l10n_az.dart';
+import '../../generated/intl/l10n_be.dart';
 import '../../generated/intl/l10n_bg.dart';
 import '../../generated/intl/l10n_bn.dart';
 import '../../generated/intl/l10n_cs.dart';
@@ -31,6 +33,7 @@ import '../../generated/intl/l10n_fa.dart';
 import '../../generated/intl/l10n_fi.dart';
 import '../../generated/intl/l10n_fr.dart';
 import '../../generated/intl/l10n_gu.dart';
+import '../../generated/intl/l10n_he.dart';
 import '../../generated/intl/l10n_hi.dart';
 import '../../generated/intl/l10n_hr.dart';
 import '../../generated/intl/l10n_hu.dart';
@@ -64,10 +67,13 @@ import '../../generated/intl/l10n_uk.dart';
 import '../../generated/intl/l10n_uz.dart';
 import '../../generated/intl/l10n_vi.dart';
 import '../../generated/intl/l10n_zh.dart';
+import '../../generated/intl/l10n_zu.dart';
 
 Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("af"): SAf().languageName, // Afrikaans
   const Locale("ar"): SAr().languageName, // Arabic
+  const Locale("az"): SAz().languageName, // Azerbaijani
+  const Locale("be"): SBe().languageName, // Belarusian
   const Locale("bg"): SBg().languageName, // Bulgarian
   const Locale("bn"): SBn().languageName, // Bengali
   const Locale("cs"): SCs().languageName, // Czech
@@ -82,6 +88,7 @@ Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("fi"): SFi().languageName, // Finnish
   const Locale("fr"): SFr().languageName, // French
   const Locale("gu"): SGu().languageName, // Gujarati
+  const Locale("he"): SHe().languageName, // Hebrew
   const Locale("hi"): SHi().languageName, // Hindi
   const Locale("hr"): SHr().languageName, // Croatian
   const Locale("hu"): SHu().languageName, // Hungarian
@@ -116,5 +123,6 @@ Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("vi"): SVi().languageName, // Vietnamese
   const Locale("zh"): SZh().languageName, // Chinese (Simplified)
   const Locale.fromSubtags(languageCode: "zh", scriptCode: "Hant"):
-      SZhHant().languageName, // Chinese (Traditional)
+      SZhHant().languageName, // Chinese (Traditional),
+  const Locale("zu"): SZu().languageName, // Zulu
 };
