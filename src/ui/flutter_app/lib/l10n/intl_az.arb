@@ -887,7 +887,7 @@
   "@removing": {
     "description": "Removing"
   },
-  "gameOverCondition": "Oyun bitdi",
+  "gameOverCondition": "Oyunun bitmə şərti",
   "@gameOverCondition": {
     "description": "Game over condition"
   },
@@ -1111,7 +1111,7 @@
   "@showAnalysis": {
     "description": "Show analysis"
   },
-  "threads": "Mövzular",
+  "threads": "Qollu",
   "@threads": {
     "description": "Threads"
   },
@@ -1147,7 +1147,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Əgər oyunçuda üç fiqur varsa və on hərəkətdən sonra heç bir oyunçu rəqibin fiqurlarını çıxarmazsa, oyun heç-heçə sayılır.",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Əgər oyunçuda üç fiqur varsa və on hərəkətdən sonra heç bir oyunçu rəqibin fiqurlarını çıxarmazsa, oyun heç-heçə sayılır",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
@@ -1275,11 +1275,11 @@
   "@solid": {
     "description": "Solid"
   },
-  "hollow": "Boş",
+  "hollow": "Boş dairə",
   "@hollow": {
     "description": "Hollow"
   },
-  "moveNumber": "{count,cəm, =0{Move}=1{{count} Move}digər{{count} Hərəkətlər}}",
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Move}other{{count} Hərəkətlər}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
@@ -1313,7 +1313,7 @@
   "@ban": {
     "description": "Ban point, used in setup position toolbar."
   },
-  "empty": "Boş",
+  "empty": "Boş nöqtə",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
   },
@@ -1341,7 +1341,7 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} parça}digər{{count} ədəd}} çıxarmaq lazımdır.",
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} parça}other{{count} ədəd}} çıxarmaq lazımdır.",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
