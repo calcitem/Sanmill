@@ -1,1 +1,1488 @@
-{}
+{
+  "aiResponseDelayTime": "AI cavab gecikmə vaxtı",
+  "@aiResponseDelayTime": {},
+  "stonyPath": "Daşlı yol",
+  "@stonyPath": {},
+  "drawOnTheHumanExperienceDetail": "İnsan təcrübəsinə görə, qalib gəlməyə çalışsan, uduzacaqsan. Bunun əvəzinə, hədəfiniz kimi heç-heçəni hədəfləyin və oyunu uduzmaqdan çəkinin. Rəqibinizi müşahidə edin və yumşaq bir şəkildə səhv edə biləcəkləri bir vəziyyətə gətirin. Zəiflik göstərdikdə, fürsətdən istifadə edin və qələbə üçün yumşaq bir şəkildə itələyin. Bu şəkildə oyunda qalib gələ bilərsiniz.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "firstMoveDetail": "Bu oyunda birinci oyunçu ilə müqayisədə ikinci oyunçunun qalib gəlməsi daha asandır.",
+  "@firstMoveDetail": {},
+  "passiveDetail": "Passiv seçimini aktivləşdirmək, aqressiv şəkildə mümkün qədər tez qalib gəlməyə çalışmaq əvəzinə, mövqedə üstünlüyə malik olduqda AI-nin rahatlamasına səbəb olacaq.",
+  "@passiveDetail": {},
+  "moveRandomlyDetail": "Bu seçimi aktivləşdirmək oyunun təsadüfiliyini və əyləncəsini artırır, onu söndürmək isə süni intellektə qalib gəlməyin yollarını öyrənməyə kömək edə bilər.",
+  "@moveRandomlyDetail": {},
+  "considerMobilityOfPiecesDetail": "Süni intellekt öz fiqurlarının hərəkətliliyini nəzərə alırsa, o, nəinki rəqibin fiqurlarını mümkün qədər tez tutmağı hədəfləyəcək, həm də rəqibin hərəkətlərinin qarşısını almağı və eyni şeyi etməsinə mane olmağı da düşünəcək.",
+  "@considerMobilityOfPiecesDetail": {},
+  "whenBoardIsFull": "Lövhə dolu olduqda",
+  "@whenBoardIsFull": {},
+  "whenBoardIsFull_Detail": "Yerləşdirmə mərhələsinin sonunda, hərəkət mərhələsi başlamazdan əvvəl, lövhə parçalarla doludursa, hərəkət davam edir.",
+  "@whenBoardIsFull_Detail": {},
+  "sideToMoveRemovePiece": "Hərəkət mərhələsində ilk hərəkət edən oyunçu rəqibin fiqurlarından birini çıxarır.",
+  "@sideToMoveRemovePiece": {},
+  "agreeToDraw": "Hər iki tərəf heç-heçəyə razıdır.",
+  "@agreeToDraw": {},
+  "takeOpponentsPiece": "Rəqibinizin parçalarından birini götürün.",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "İlk oyunçu oyunu itirir.",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "Birinci və ikinci oyunçular rəqibin fiqurlarından birini çıxarırlar.",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "İkinci və birinci oyunçular rəqibin fiqurlarından birini çıxarırlar.",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "İndi uçma mərhələsinə girdi, rəqibin fiqurları lövhədə istənilən boş nöqtəyə atlaya bilər. Uçuş qaydasını \"Qayda Parametrləri\"ndə söndürə bilərsiniz.",
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Durğunlaşanda",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Heç bir parça köçürülə bilməyəndə hansı hərəkəti izləyir?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Tıxanmış tərəf üçün çıxılmaz itki ilə başa çatın.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Hərəkət etmək üçün tərəfi dəyişdirin.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Rəqibin fiqurlarından birini çıxarın və növbəti hərəkəti edin.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Durğun heç-heçə ilə bitir.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Rəqibin fiqurlarından birini çıxarın və hərəkət etmək üçün tərəfi dəyişdirin.",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiIsDelaying": "AI hazırda gecikmiş cavab mərhələsindədir. Davam etməzdən əvvəl bir az gözləyin.",
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "Siz bitişik olmayan parçanı silə bilməzsiniz.",
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "Durğun olarsa, dəyirmanın formalaşmasından asılı olmayaraq, rəqibin sizə bitişik fiqurları çıxarıla bilər.",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS simulyasiyalar vasitəsilə müxtəlif hərəkətləri araşdıraraq və qiymətləndirərək qərarlar qəbul edən yeni başlayanlar üçün əlverişli alqoritmdir.",
+  "@whatIsMcts": {},
+  "goldenJade": "Qızıl Jade",
+  "@goldenJade": {},
+  "forestWood": "Meşə ağacı",
+  "@forestWood": {},
+  "darkMystery": "Qaranlıq sirr",
+  "@darkMystery": {},
+  "midnightBlue": "Gecə yarısı Mavi",
+  "@midnightBlue": {},
+  "greenForest": "Yaşıl Meşə",
+  "@greenForest": {},
+  "greenMeadow": "Yaşıl çəmən",
+  "@greenMeadow": {},
+  "pastelPink": "Pastel Çəhrayı",
+  "@pastelPink": {},
+  "turquoiseSea": "Firuzəyi dəniz",
+  "@turquoiseSea": {},
+  "violetDream": "Bənövşəyi yuxu",
+  "@violetDream": {},
+  "mintChocolate": "Nanəli şokolad",
+  "@mintChocolate": {},
+  "skyBlue": "Göy Mavi",
+  "@skyBlue": {},
+  "playfulGarden": "Oynaq bağçası",
+  "@playfulGarden": {},
+  "whatIsRetrogradeAnalysis": "Retrograd Analiz alqoritmi müxtəlif başlanğıc mövqelərindən oyun sonu verilənlər bazası yaratmaq üçün çox dəyərli retrograd analizdən istifadə edir, sonra oyunu optimallaşdırmaq üçün bu verilənlər bazasını tətbiq edir. Bu yanaşma Ultra Güclü həllər kateqoriyasına aiddir.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Bu alqoritm üçün istifadəçi təlimatına baxmaq istərdinizmi?",
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Mövqe üstünlüyü göstəricisini göstərin",
+  "@showPositionalAdvantageIndicator": {},
+  "yes": "Bəli",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "Yox",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Oyun",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "İnsan Vs. AI",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "İnsan Vs. İnsan",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "AI Vs. AI",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "İnsan Vs. Bulud",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "İnsan Vs. LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "LAN vasitəsilə test edin",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Hərəkət edin",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Siyahını köçürün",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Siyahını köçürün",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Rekord yoxdur",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "tamam",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Təsdiq edin",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Ləğv et",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Yanlış parça seçin.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Parçalarınızı yerləşdirin.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "Siz onu burada yerləşdirə bilməzsiniz.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "yerləşdirdiniz.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Bir parça çıxarın.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "Siz onu silə bilməzsiniz.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "sildiniz.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Bir parça köçürün.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Siz öz parçanızı bura yerləşdirə bilməzsiniz.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "Parçanı bura köçürə bilməzsən.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Mill! Rəqibinizin parçasını götürün.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Rəqibinizin parçasını almağa davam edin.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Rəqibinizin parçalarından birini seçin.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "Siz dəyirmandan bir parça çıxara bilməzsiniz.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Bir parça 1 nöqtə hərəkət edə bilər.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "Rəqibinizin fiqurlarını hərəkət etdirə bilməzsiniz.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Hərəkət etmək üçün parçanızı seçin.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Üç parçanız qalıb.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "İstədiyiniz nöqtəyə keçə bilərsiniz.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "hərəkət etmək üçün {player}.",
+  "@tipToMove": {
+    "description": "The tip that the given player is to move.",
+    "placeholders": {
+      "player": {
+        "description": "The player whose turn it is.",
+        "example": "Player 1"
+      }
+    }
+  },
+  "whiteWin": "Oyunçu 1 qalib gəlir!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Oyunçu 2 qazanır!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Qazandı",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "İtirilmiş",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Düşünür…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Yeni oyun",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "İdxal oyun",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "İxrac oyun",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "Oyun buferdən idxal edildi.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "{invalidMove} idxal edilə bilməz",
+  "@cannotImport": {
+    "description": "Cannot import",
+    "placeholders": {
+      "invalidMove": {
+        "description": "Invalid move",
+        "example": "x1-y2"
+      }
+    }
+  },
+  "movesAndRulesNotMatch": "Hərəkətlər və qaydalar uyğun gəlmir.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Zəhmət olmasa, gözləyin.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Cari oyun yenidən başlasın?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Yenidən başlamaq",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "Oyun başladı, yerləşdirin.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "Təhlil edilir…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Xəta: {message}",
+  "@error": {
+    "description": "Error",
+    "placeholders": {
+      "message": {
+        "description": "The Error message",
+        "example": "Unknown error"
+      }
+    }
+  },
+  "score": "Xal:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Oyunçu 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Oyunçu 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} parça sayı üçdən azdır.",
+  "@loseReasonlessThanThree": {
+    "description": "Indicate that the player lost because they had less than three pieces left.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonResign": "{player} istefa verdi.",
+  "@loseReasonResign": {
+    "description": "Indicate that the player resigned.",
+    "placeholders": {
+      "player": {
+        "description": "The player who resigned",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonNoWay": "{player}-in getməyə yolu yoxdur.",
+  "@loseReasonNoWay": {
+    "description": "Indicate that the player has no way to go.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonBoardIsFull": "Lövhə doludur və {player}-in getməyə yolu yoxdur.",
+  "@loseReasonBoardIsFull": {
+    "description": "Indicate that the player has no way to go because the board is full.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonTimeOver": "Vaxt bitdi, {player} itirildi.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "drawReasonRule50": "Hərəkət mərhələsində, son konkret sayda hərəkətdə heç bir parça çıxarılmadı.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "Püşkatmadır, çünki lövhə doludur.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "Üç dəfə təkrarlandığı üçün heç-heçədir.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Oyun bitdi! Naməlum səbəb.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Oyun bitdi",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Sən qalibsən! Təbrik edirik!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Daha çətin səviyyəyə meydan oxuyun? Yeni səviyyə {level} səviyyəsi olacaq!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?",
+    "placeholders": {
+      "level": {
+        "description": "The new level",
+        "example": "5"
+      }
+    }
+  },
+  "youLose": "Siz itirdiniz!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Təhlil edin",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Haqqında",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Versiya: {versionNumber}",
+  "@version": {
+    "description": "Version",
+    "placeholders": {
+      "versionNumber": {
+        "description": "The current version",
+        "example": "1.1.38"
+      }
+    }
+  },
+  "thanks": "təşəkkürlər",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Parametrlər",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Seçimlər",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Ümumi Parametrlər",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Çətinlik səviyyəsi",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI düşünmə vaxtı",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Çətinlik",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Səs effektləri",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Oyunda səsləri çalın",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Geri götürərkən səssiz saxlayın",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "Ton",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "İlk hərəkət",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "İnsan",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Alternativ",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Oyun bitdikdə oyunu avtomatik yenidən başladın",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "İlk Hərəkəti avtomatik dəyişdirin",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Təsadüfi hərəkət edin",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Müxtəlif",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Qaydalar",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "Hər oyunçunun sahib olduğu ədədlərin sayı",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Hər oyunçuda neçə ədəd var?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "Uçan parçanın nömrəsi",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Uçuş aktivləşdirilibsə, oyunçu müəyyən bir parça sayına endirildikdə, onun fiqurları oyunun qalan hissəsində olduğu kimi bitişik nöqtələrlə məhdudlaşdırılmaq əvəzinə istənilən boş nöqtəyə keçə bilər.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Ən azı Parçalar",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Diaqonal xətlər",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Lövhəyə dörd diaqonal xətt əlavə edin.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "hasBannedLocations": "Parçaların çıxarılmasını qeyd edin və gecikdirin",
+  "@hasBannedLocations": {
+    "description": "Mark and delay removing pieces"
+  },
+  "hasBannedLocations_Detail": "Yerləşdirmə mərhələsində, çıxarılan parçaların nöqtələri artıq yerləşdirilə bilməyəcək.",
+  "@hasBannedLocations_Detail": {
+    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
+  },
+  "isDefenderMoveFirst_Detail": "Yerləşdirmə mərhələsində ikinci hərəkət edən oyunçu hərəkət mərhələsində birinci olur.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Çoxlu sil",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Oyunçu bir anda birdən çox dəyirmanı bağlasa, bağladığı dəyirmanların sayını siləcək.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Dəyirmanları məhv edin",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Varsayılan olaraq, oyunçular formalaşmış dəyirmandan bir parça çıxarmazdan əvvəl hər hansı digər parçaları çıxarmalıdırlar. Məhdudiyyəti aradan qaldırmaq üçün bu seçimi aktivləşdirin.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "Lövhə dolu olduqda ikinci oyunçu itirir",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Yerləşdirmə mərhələsinin sonunda lövhə dolu olduqda, ilk yeri tutan tərəf oyunu uduzur. Əks halda oyun heç-heçə olacaq.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Heç bir qanuni hərəkət olmadığı zaman itirmək",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Rəqibi onları hərəkət etdirə bilməmək üçün blok edərsə, oyunçu itirəcək. Bu seçim deaktivdirsə, hərəkət etmək üçün tərəfi dəyişdirin.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "Uçan",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Əgər oyunçuda yalnız üç və ya dörd (konfiqurasiya edilə bilən) parça qalırsa, o, parçanı istənilən boş nöqtəyə daşıya bilər.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N-hərəkət qaydası",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "Müəyyən sayda hərəkətdə heç bir silinmə olmadıqda oyun çəkilir.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Geriyə qaytarmaq",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Zəhmət olmasa seçin",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Kopyalayın",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "Tarixçəni mübadilə buferinə köçürün.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Kömək edin",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Əlaqə",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Çıx",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Qayda Parametrləri",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Rəng",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Lövhənin rəngi",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Parça rəngi",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Fon rəngi",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Lövhə xətti rəngi",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Oyunçu 1 ədəd rəng",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Oyunçu 2 parça rəng",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Mesaj rəngi",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Yerləşdirilməmiş parçaların sayını göstərin",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Bortda qeydləri göstərin",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Tarixçə naviqasiya alətlər panelini göstərin",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Ekran",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Lövhənin sərhəd xəttinin eni",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Lövhənin daxili xəttinin eni",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Parça eni",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Şrift ölçüsü",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD qeydi",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Bərpa et",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Defolt parametrləri bərpa edin",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "{element} seçin",
+  "@pick": {
+    "description": "Used in the color picker.",
+    "placeholders": {
+      "element": {
+        "description": "The element to pick the color for.",
+        "example": "Background color"
+      }
+    }
+  },
+  "info": "Məlumat",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "İpucu",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "oyunçu",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Oyunçu 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Oyunçu 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Necə oynamalı",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Parçanı yerləşdirmək üçün istənilən mövcud nöqtəyə toxunun.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Bir parçanı hərəkət etdirmək üçün üzərinə toxunun.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Parçanı hərəkət etdirmək üçün ona qoşulmuş nöqtəyə toxunun.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Çıxarmaq üçün rəqibin bir parçasına toxunun.",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "Bir parçanı çıxarmazdan əvvəl əvvəlcə dəyirman yaratmalısınız.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Parçalarınızla oynamaq lazımdır.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Statistika",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Ümumi oyunlar",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Nəticələr",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "sol",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Gizlilik Siyasəti",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Zəhmət olmasa diqqətlə oxuyun və bunu tam başa düşdüyünüzə və razılaşdığınızdan əmin olun ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Bu Siyasətlə razı deyilsinizsə, bu tətbiqdən istifadə etməyin. Tətbiqdən istifadə bu şərtləri qəbul etdiyiniz deməkdir.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " və ",
+  "@and": {},
+  "accept": "Qəbul edin",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Geri götür",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Geri götürülür…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Gözlənir…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "İrəli addımlayın",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Hamısını geri götür",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Hamısını irəli apar",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "İndi köçün",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Bitdi.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Çatlayan dəyirman",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Əgər oyunçunun dəyirmanlarda yalnız parçaları varsa, dəyirmanlardakı parçalar çıxarmaq üçün kilidlənməyəcək.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Animasiya müddəti",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "helpContent": "Oyun üçdən az fiqurla və ya qanuni hərəkətsiz rəqibi tərk etmək məqsədi daşıyır.\n\nBir mövqe üçüncü dəfə baş verərsə və ya son 100 (konfiqurasiya edilə bilən) hərəkətdə heç bir silmə etməzsə, oyun avtomatik olaraq heç-heçə edir.\n\nOyun üç mərhələdə davam edir:\n\n1. Boş yerlərə parçaların yerləşdirilməsi\n2. Parçaların bitişik nöqtələrə köçürülməsi\n3. (isteğe bağlı mərhələ) Oyunçunu üç ədədə endirərkən parçaları istənilən boş yerə köçürmək\n\nYerləşdirmə\n\nOyun iyirmi dörd xal olan bir şəbəkədən ibarət boş bir lövhə ilə başlayır. Oyunçular növbə ilə öz hissələrini boş nöqtələrə yerləşdirirlər, ta ki hər bir oyunçu bütün parçaları lövhəyə yerləşdirənə qədər. Əgər oyunçu üç fiqurunu düz qoya bilirsə, onun \"dəyirmanı\" var və rəqibinin fiqurlarından birini lövhədən çıxara bilər.\n\nBəzi qaydalarda oyunçular formalaşmış dəyirmandan bir parça çıxarmazdan əvvəl hər hansı digər parçaları çıxarmalıdırlar.\n\nBəzi qaydalarda yerləşdirmə mərhələsində parçaları çıxarılan parçaların nöqtələrinə yenidən yerləşdirə bilməzsiniz.\n\nBütün parçaları istifadə etdikdən sonra oyunçular növbə ilə hərəkət edirlər.\n\nHərəkət edir\n\nHərəkət etmək üçün oyunçu öz parçalarından birini taxta xətti boyunca boş bitişik nöqtəyə aparır. Əgər bunu edə bilmirsə, oyunu uduzmuşdur. Üç fiqurunu taxta xəttinə düzən oyunçunun dəyirmanı var və yerləşdirmə mərhələsində olduğu kimi rəqibinin fiqurlarından birini çıxara bilər. İstənilən oyunçu iki hissəyə enir, yeni dəyirmanlar yaratmaq imkanı yoxdur və beləliklə oyunu itirir. Rəqibi onların hərəkətinə mane olarsa, oyunçu üçdən çox fiqur qazandıqda da itirə bilər.\n\nUçan\n\nQaydaların bəzi variantlarında, oyunçuda yalnız üç fiqur qaldıqdan sonra, onun fiqurları yalnız bitişik olanlara deyil, istənilən boş nöqtələrə uça, atlaya və ya atlaya bilər.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Versiya məlumatı",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Lisenziya",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Mənbə kodu",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Proqram Versiyası",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "General",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Qabaqcıl",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Yerləşdirmə",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Hərəkət edir",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Silinir",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Oyun bitdi",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI-nin oyun tərzi",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "Passiv",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Vaxt",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Görünüş",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "İnsan təcrübəsindən istifadə edin",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Parçaların hərəkətliliyini nəzərə alın",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Parça sayı:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} əlində: {count}",
+  "@inHand": {
+    "description": "The pieces a player has in his hand.",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "Player 1"
+      },
+      "count": {
+        "description": "The count of pieces in hand",
+        "example": "5"
+      }
+    }
+  },
+  "onBoard": "{player} göyərtədə: {count}",
+  "@onBoard": {
+    "description": "The pieces a player has on the board",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "White"
+      },
+      "count": {
+        "description": "The count of pieces on board",
+        "example": "5"
+      }
+    }
+  },
+  "boardTop": "Lövhə yuxarıdan ofset",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "Süni intellektin növbəsi deyil.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI düşünmür.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Siz köçürmə siyahısının sonundasınız.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Çıxmaq üçün yenidən klikləyin.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "Daha çox",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Bu eksperimental xüsusiyyətdir.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Təcrübələr",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Açıq mənbə lisenziyaları",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "defaultLanguage": "Defolt dil",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase_Detail": "Ayrı-ayrı yerləşdirmə və hərəkət mərhələləri yoxdur, yəni oyunçular hər bir hərəkətdə taxtaya bir parça yerləşdirmək və ya özlərindən birini hərəkət etdirmək (yerləşdirmək üçün qalan hissələri olduğu müddətcə) qərar verə bilərlər.",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Menyu rəngi",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Menyu mətn rəngi",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Menyu elementinin rəngini vurğulamaq",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Əsas alətlər panelinin fon rəngi",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Əsas alətlər panelinin ikona rəngi",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Naviqasiya alətlər paneli fon rəngi",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Naviqasiya alətlər paneli işarəsi rəngi",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Alətlər panelini avtomatik gizlədin",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Ekranda alətlər panelinin yeri",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "Üst",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "Aşağı",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Mərkəz",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Düz rəng",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Şəkil",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Şəkilinizi seçin",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "İşıq",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Qaranlıq",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Mövzular",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Cari mövzu",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Mövzunu yadda saxla",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Təhlil qrafikini göstərin",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Təhlil",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Oyun saxlamaq",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Oyun yükləyin",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Quraşdırma mövqeyi",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Qanuni hərəkətləri göstərin",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Son hərəkəti göstərin",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Oxları göstərin",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Parçalar",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Təhlil göstərin",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Mövzular",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "İşə cəlb olun",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Tərcüməni təkmilləşdirməyə kömək edin",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Dərslik",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Klassik dəyirman",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Qarışıq dəyirman",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Seylon dəyirmanı",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "Dəyirman dəfələrlə qırıla və yenidən düzəldilə bilər",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Əgər oyunçu dərhal yeni dəyirman yaratmaq üçün dəyirmanı sındırarsa, belə oyunçu yeni dəyirman edərsə, növbəti hərəkətində belə parçanı orijinal qovşağına köçürə bilər.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Əgər oyunçuda üç fiqur varsa və on hərəkətdən sonra heç bir oyunçu rəqibin fiqurlarını çıxarmazsa, oyun heç-heçə sayılır.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Əgər oyunçu üç fiqurdan az olarsa və heç bir oyunçu on hərəkət ərzində rəqibin fiqurunu çıxara bilmirsə, oyun heç-heçə sayılır.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Yaxın",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Ağ parça",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Qara parça",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "banPoint": "Qadağa nöqtəsi",
+  "@banPoint": {
+    "description": "Ban point"
+  },
+  "emptyPoint": "Boş nöqtə",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Məntiq yoxdur",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Yerləşdirmə mərhələsi",
+  "@placingPhase": {
+    "placingPhase": "Placing phase"
+  },
+  "movingPhase": "Hərəkət mərhələsi",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "sideToMove": "Hərəkət ediləcək tərəf: {player}",
+  "@sideToMove": {
+    "description": "The player whose turn it is.",
+    "placeholders": {
+      "player": {
+        "description": "The player to move",
+        "example": "Player 1"
+      }
+    }
+  },
+  "lastMove": "Son hərəkət: {move}",
+  "@lastMove": {
+    "description": "Last move",
+    "placeholders": {
+      "move": {
+        "description": "The last move",
+        "example": "d2-d3"
+      }
+    }
+  },
+  "selected": "Seçildi",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Əlçatanlıq",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Ekran oxuyucu dəstəyi",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "Bu heç-heçədir!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "çəkmək",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Parçanın vurğu rəngi",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Alqoritm",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "removeUnplacedPiece": "Yerləşdirməmiş parçanı çıxarın",
+  "@removeUnplacedPiece": {
+    "description": "Remove unplaced piece"
+  },
+  "removeUnplacedPiece_Detail": "Əgər oyunçu yerləşdirmə mərhələsində dəyirmanı təşkil edərsə, o, rəqibin qoyulmamış parçasını çıxaracaq və hərəkət etməyə davam edəcək.",
+  "@removeUnplacedPiece_Detail": {
+    "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
+  },
+  "endgameNMoveRule_Detail": "Hər iki oyunçuda yalnız üç fiqur varsa və heç bir oyunçu müəyyən hərəkətlər çərçivəsində bir parça çıxarmazsa, oyun çəkilir.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Hər iki oyunçuda yalnız üç fiqur var və heç bir oyunçu müəyyən hərəkətlər çərçivəsində bir parça çıxarmır.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Üçqat təkrarlama qaydası",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "Bir mövqe üçüncü dəfə baş verərsə, oyun heç-heçə sayılır.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Mill! Hərəkət etməyə davam edin.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Nöqtə üslubu",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Nöqtə eni",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Möhkəm",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Boş",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "moveNumber": "{count,cəm, =0{Move}=1{{count} Move}digər{{count} Hərəkətlər}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
+  },
+  "loadFailed": "Yükləmə uğursuz oldu.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Fayl adı",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Baxın…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Oyun faylları",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "Oyun saxlanılır",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "ban": "Qadağa",
+  "@ban": {
+    "description": "Ban point, used in setup position toolbar."
+  },
+  "empty": "Boş",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "Hərəkət yoxdur.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "İlkin mövqe bərpa edildi.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Təmiz",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Təmizlənmiş.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Sil",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "Heç bir parça çıxarıla bilməz.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} parça}digər{{count} ədəd}} çıxarmaq lazımdır.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "Yerləşdirildi ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Yerləşdirmə mərhələsində yerləşdirilmiş parçaların sayı.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "Cari oyunçu {count} fiqurları yerləşdirdi.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "Faza yerləşdirməyin, onu dəyişdirə bilməz.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Yapışdır",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "Pasta hazırdır.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "Yapışdırmaq mümkün deyil.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Yerləşdirilməmiş və çıxarılan parçaları göstərin",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Tam ekran",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Parametrlərin qüvvəyə minməsi üçün proqramdan çıxın və yenidən açın.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "forest": "Meşə",
+  "@forest": {},
+  "desktopImage": "Masaüstü Şəkli",
+  "@desktopImage": {},
+  "invalidPosition": "Yanlış mövqe.",
+  "@invalidPosition": {},
+  "shareGIF": "GIF paylaşın",
+  "@shareGIF": {},
+  "pixelRatio": "Piksel nisbəti",
+  "@pixelRatio": {},
+  "duration": "Müddət",
+  "@duration": {},
+  "gameScreenRecorder": "Oyun ekran yazıcı",
+  "@gameScreenRecorder": {},
+  "previous": "Əvvəlki",
+  "@previous": {},
+  "next": "Sonrakı",
+  "@next": {},
+  "skip": "Keç",
+  "@skip": {},
+  "gotIt": "Anladım",
+  "@gotIt": {},
+  "youCanModifyRules": "Oyunun qaydalarını qayda parametrlərində dəyişə bilərsiniz.",
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Seçicidəki dəyəri dəyişdirmək üçün siçan təkərindən istifadə edə bilərsiniz.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI Düşünmə vaxtı 0 olaraq təyin olundu, o deməkdir ki, düşünmək üçün vaxt məhdudiyyəti yoxdur.",
+  "@noTimeLimitForThinking": {},
+  "whatIsMtdf": "MTD(f) alfa-beta axtarış alqoritminin dəyişdirilmiş formasıdır ki, onun məqsədi aralıq axtarış nəticələrindən təkrar istifadə etməklə və axtarış məkanını daraltmaq üçün yaxşı ilkin təxmindən istifadə etməklə səmərəliliyi artırmaqdır.",
+  "@whatIsMtdf": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Nəzərə alın ki, AI düşünmə vaxtının tənzimlənməsi tamamilə dəqiq olmaya bilər. Çətinlik səviyyəsi aşağı qiymətə təyin edildikdə faktiki düşünmə vaxtı daha qısa ola bilər və vaxt bitdikdə AI orta hesabla olduqda daha uzun ola bilər.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Çətinlik səviyyəsini yüksək təyin etsəniz, lakin AI düşünmə vaxtını artırmasanız, düşünmə vaxtı məhdudiyyətinə görə faktiki çətinlik səviyyəsi aşağı qiymətlə məhdudlaşdırıla bilər. Faktiki dəyər maşının performansına görə dəyişə bilər.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsPvs": "PVS (Principal Variation Search) müəyyən bir mövqedə ən yaxşı hərəkəti tapmaq üçün axtarış alqoritmidir. Bu, alfa-beta alqoritminin təkmilləşdirilməsidir və hərəkətin əsas variasiyanın onsuz da təhlükəsiz hesabından daha pis və ya pis olmadığını təsdiqləmək üçün sıfır və ya sıfır pəncərə axtarışlarından istifadə edir. PVS ən perspektivli hərəkətlərə diqqət yetirir və axtarışın səmərəliliyini artırmağa kömək edən suboptimal filialların lazımsız axtarışlarının qarşısını alır.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "Alfa-beta alqoritmi ən yaxşı hərəkəti tapmaq üçün axtarış alqoritmidir. Axtarış ağacını budamaq və səmərəliliyi artırmaq üçün minimax prinsipindən və iki dəyərdən, alfa və betadan istifadə edir. Alpha kompüterin əldə edə biləcəyi minimum balı, beta isə rəqibinin ala biləcəyi maksimum balı təmsil edir. Alqoritm kompüterə oyunda ağıllı, səmərəli qərarlar qəbul etməyə kömək edir.",
+  "@whatIsAlphaBeta": {},
+  "appName": "dəyirman",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Xoş gəldiniz",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "winRate": "Qazanma dərəcəsi",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "isDefenderMoveFirst": "İkinci oyunçu əvvəlcə hərəkət edir",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "none": "Heç biri",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Mövzu",
+  "@theme": {
+    "description": "Theme"
+  },
+  "language": "Dil",
+  "@language": {
+    "description": "Languages"
+  },
+  "mayMoveInPlacingPhase": "Parçalar yerləşdirmə mərhələsində hərəkət edə bilər",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "flyingPhase": "Uçuş mərhələsi",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "endgameNMoveRule": "Endgame N-Move qaydası",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "languageName": "İngilis dili",
+  "@languageName": {
+    "description": "The name of the current language"
+  }
+}
