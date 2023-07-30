@@ -255,7 +255,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{Move}=1{{count} Færa}annað{{count} Moves}}",
+  "moveNumber": "{count,plural, =0{Move}=1{{count} Færa}other{{count} Moves}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
@@ -1231,7 +1231,7 @@
   "@mixedMill": {
     "description": "Mixed Mill"
   },
-  "ceylonMill": "Ceylon Mill",
+  "ceylonMill": "Ceylon Mjöl",
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
@@ -1243,7 +1243,7 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Leikurinn er jafntefli ef leikmaður er með þrjú stykki og eftir tíu hreyfingar tekur hvorugur leikmaður stykki andstæðingsins.",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Leikurinn er jafntefli ef leikmaður er með þrjú stykki og eftir tíu hreyfingar tekur hvorugur leikmaður stykki andstæðingsins",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
@@ -1359,7 +1359,7 @@
   "@pointWidth": {
     "description": "Point width"
   },
-  "solid": "Solid",
+  "solid": "þéttur hringur",
   "@solid": {
     "description": "Solid"
   },
@@ -1465,11 +1465,11 @@
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS er byrjendavænt reiknirit sem tekur ákvarðanir með því að kanna og meta mismunandi hreyfingar í gegnum uppgerð.",
   "@whatIsMcts": {},
-  "goldenJade": "Golden Jade",
+  "goldenJade": "Gullin Jade",
   "@goldenJade": {},
-  "forestWood": "Forest Wood",
+  "forestWood": "Skógartre",
   "@forestWood": {},
-  "darkMystery": "Dark Mystery",
+  "darkMystery": "Dökk Leynd",
   "@darkMystery": {},
   "midnightBlue": "Miðnæturblár",
   "@midnightBlue": {},

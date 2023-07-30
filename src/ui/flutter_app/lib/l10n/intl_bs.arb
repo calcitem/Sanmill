@@ -51,7 +51,7 @@
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
-  "rollback": "Rollback",
+  "rollback": "Povratak unazad",
   "@rollback": {
     "description": "Rollback"
   },
@@ -197,11 +197,11 @@
   "@pointWidth": {
     "description": "Point width"
   },
-  "solid": "Solid",
+  "solid": "Čvrsto",
   "@solid": {
     "description": "Solid"
   },
-  "hollow": "Hollow",
+  "hollow": "Prazno",
   "@hollow": {
     "description": "Hollow"
   },
@@ -209,7 +209,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{Pokret}=1{{count} Pomjeri}drugi{{count} Pokreti}}",
+  "moveNumber": "{count,plural, =0{Pokret}=1{{count} Pomjeri}other{{count} Pokreti}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
@@ -231,7 +231,7 @@
   "@browse": {
     "description": "Browse…"
   },
-  "pastelPink": "Pastel Pink",
+  "pastelPink": "Pastelno roza",
   "@pastelPink": {},
   "turquoiseSea": "Tirkizno more",
   "@turquoiseSea": {},
@@ -251,7 +251,7 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Human Vs. AI",
+  "humanVsAi": "Čovjek nasuprot AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
@@ -263,11 +263,11 @@
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Human Vs. Cloud",
+  "humanVsCloud": "Čovjek nasuprot Oblaka",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": "Human Vs. LAN",
+  "humanVsLAN": "Čovjek nasuprot LAN",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
@@ -551,7 +551,7 @@
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
-  "gameOver": "Game Over",
+  "gameOver": "Kraj igre",
   "@gameOver": {
     "description": "Game Over"
   },
@@ -573,7 +573,7 @@
   "@youLose": {
     "description": "You Lose!"
   },
-  "analyze": "Analiza",
+  "analyze": "Analizirati",
   "@analyze": {
     "description": "Analyze"
   },
@@ -619,7 +619,7 @@
   "@difficulty": {
     "description": "Difficulty"
   },
-  "tone": "Tone",
+  "tone": "Ton",
   "@tone": {
     "description": "Tone"
   },
@@ -671,7 +671,7 @@
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
   },
-  "mayRemoveMultiple": "Multi-remove",
+  "mayRemoveMultiple": "Višestruko uklanjanje",
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
@@ -767,7 +767,7 @@
   "@isHistoryNavigationToolbarShown": {
     "description": "Show history navigation toolbar"
   },
-  "display": "Display",
+  "display": "Prikaz",
   "@display": {
     "description": "Display"
   },
@@ -857,7 +857,7 @@
   "@statistics": {
     "description": "Statistics"
   },
-  "totalGames": "Total games",
+  "totalGames": "Ukupne igre",
   "@totalGames": {
     "description": "Total games"
   },
@@ -1091,11 +1091,11 @@
   "@chooseYourPicture": {
     "description": "Choose your picture"
   },
-  "light": "Light",
+  "light": "Svjetlo",
   "@light": {
     "description": "Light"
   },
-  "dark": "Dark",
+  "dark": "Tamno",
   "@dark": {
     "description": "Dark"
   },
@@ -1159,7 +1159,7 @@
   "@mixedMill": {
     "description": "Mixed Mill"
   },
-  "ceylonMill": "Ceylon Mill",
+  "ceylonMill": "Ceylon Mlin",
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
@@ -1221,7 +1221,7 @@
   "@isDraw": {
     "description": "It is a Draw!"
   },
-  "draw": "Draw",
+  "draw": "Remi",
   "@draw": {
     "description": "Draw"
   },
@@ -1305,7 +1305,7 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Komad}=1{{count} komad}ostali{{count} komada}} treba ukloniti.",
+  "pieceCountNeedToRemove": "{count,plural, =0{Komad}=1{{count} komad}other{{count} komada}} treba ukloniti.",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
@@ -1385,7 +1385,7 @@
   "@previous": {},
   "next": "Sljedeći",
   "@next": {},
-  "skip": "Skip",
+  "skip": "Preskočiti",
   "@skip": {},
   "gotIt": "Shvatio sam",
   "@gotIt": {},
@@ -1457,11 +1457,11 @@
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS je algoritam prilagođen početnicima koji donosi odluke istražujući i procjenjujući različite poteze kroz simulacije.",
   "@whatIsMcts": {},
-  "goldenJade": "Golden Jade",
+  "goldenJade": "Zlatni žad",
   "@goldenJade": {},
-  "forestWood": "Forest Wood",
+  "forestWood": "Šumska drva",
   "@forestWood": {},
-  "darkMystery": "Dark Mystery",
+  "darkMystery": "Tamna tajna",
   "@darkMystery": {},
   "midnightBlue": "Ponoćno plavo",
   "@midnightBlue": {},
@@ -1469,15 +1469,15 @@
   "@greenForest": {},
   "greenMeadow": "Green Meadow",
   "@greenMeadow": {},
-  "stonyPath": "Stony Path",
+  "stonyPath": "Stenovita staza",
   "@stonyPath": {},
-  "violetDream": "Violet Dream",
+  "violetDream": "Ljubičasti San",
   "@violetDream": {},
-  "mintChocolate": "Mint Chocolate",
+  "mintChocolate": "Menta Čokolada",
   "@mintChocolate": {},
   "skyBlue": "Nebo plavo",
   "@skyBlue": {},
-  "playfulGarden": "Playful Garden",
+  "playfulGarden": "Igrački Vrt",
   "@playfulGarden": {},
   "whatIsRetrogradeAnalysis": "Algoritam retrogradne analize koristi viševrijednu retrogradnu analizu kako bi napravio bazu podataka kraj igre s različitih početnih pozicija, a zatim primjenjuje ovu bazu podataka za optimizaciju igranja. Ovaj pristup spada u kategoriju ultra-jakih rješenja.",
   "@whatIsRetrogradeAnalysis": {},
