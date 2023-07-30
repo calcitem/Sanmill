@@ -531,7 +531,7 @@
       }
     }
   },
-  "challengeHarderLevel": "مشکل سطح کو چیلنج کریں؟ نئی سطح سطح {level} ہوگی!",
+  "challengeHarderLevel": "کیا مشکل سطح کا مقابلہ کریں؟ نیا سطح {level} ہو گا!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?",
     "placeholders": {
