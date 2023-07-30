@@ -974,7 +974,7 @@
   "@showAnalysis": {
     "description": "Show analysis"
   },
-  "threads": "Themen",
+  "threads": "Threads",
   "@threads": {
     "description": "Threads"
   },
@@ -1288,13 +1288,13 @@
   "@skip": {},
   "gotIt": "Ich habs",
   "@gotIt": {},
-  "youCanModifyRules": "Sie können die Spielregeln in den Regeleinstellungen ändern.",
+  "youCanModifyRules": "Du kannst die Spielregeln in den Regeleinstellungen ändern.",
   "@youCanModifyRules": {},
-  "youCanUseMouseWheelInPicker": "Sie können das Mausrad verwenden, um den Wert in der Auswahl zu ändern.",
+  "youCanUseMouseWheelInPicker": "Du kannst den Wert in der Auswahl mit dem Mausrad ändern.",
   "@youCanUseMouseWheelInPicker": {},
   "noTimeLimitForThinking": "KI-Denkzeit auf 0 gesetzt bedeutet, dass es keine Zeitbegrenzung für das Denken gibt.",
   "@noTimeLimitForThinking": {},
-  "noteAiThinkingTimeMayNotBePrecise": "Bitte beachten Sie, dass die Anpassung der KI-Denkzeit möglicherweise nicht ganz genau ist. Die tatsächliche Bedenkzeit kann kürzer sein, wenn der Schwierigkeitsgrad auf einen niedrigeren Wert eingestellt ist, und kann länger sein, wenn die KI mitten im Denken ist, wenn die Zeit abläuft.",
+  "noteAiThinkingTimeMayNotBePrecise": "Bitte beachte, dass die Anpassung der KI-Denkzeit möglicherweise nicht ganz genau ist. Die tatsächliche Bedenkzeit kann kürzer sein, wenn der Schwierigkeitsgrad auf einen niedrigeren Wert eingestellt ist, und kann länger sein, wenn die KI mitten im Denken ist, wenn die Zeit abläuft.",
   "@noteAiThinkingTimeMayNotBePrecise": {},
   "noteActualDifficultyLevelMayBeLimited": "Wenn Sie den Schwierigkeitsgrad hoch einstellen, aber die KI-Denkzeit nicht erhöhen, kann der tatsächliche Schwierigkeitsgrad aufgrund der Bedenkzeitbeschränkung auf einen niedrigeren Wert begrenzt werden. Der tatsächliche Wert kann je nach Leistung der Maschine variieren.",
   "@noteActualDifficultyLevelMayBeLimited": {},
