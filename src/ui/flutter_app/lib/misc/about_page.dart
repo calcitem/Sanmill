@@ -124,7 +124,12 @@ class AboutPage extends StatelessWidget {
       ),
       SettingsListTile(
         titleString: S.of(context).helpImproveTranslate,
-        onTap: () => _launchURL(context, Constants.helpImproveTranslateURL),
+        onTap: () {
+          final String locale = Localizations.localeOf(context).languageCode;
+          final UrlHelper url =
+              Constants.helpImproveTranslateURL.fromSubPath(locale);
+          _launchURL(context, url);
+        },
       ),
       SettingsListTile(
         titleString: S.of(context).thanks,

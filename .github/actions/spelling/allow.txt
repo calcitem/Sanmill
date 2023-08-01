@@ -52,6 +52,7 @@ USHORT
 UShort
 var
 wchar
+weblate
 wikis
 xor
 mcts

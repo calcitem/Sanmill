@@ -31,10 +31,10 @@ class CustomFeedbackLocalizationsDelegate
 
   /// Returns the default instance of a [CustomFeedbackLocalizationsDelegate].
   static const LocalizationsDelegate<FeedbackLocalizations> delegate =
-  CustomFeedbackLocalizationsDelegate();
+      CustomFeedbackLocalizationsDelegate();
 
   static final Map<Locale, FeedbackLocalizations> _supportedLocales =
-  <Locale, FeedbackLocalizations>{
+      <Locale, FeedbackLocalizations>{
     const Locale("af"): const AfFeedbackLocalizations(), // Afrikaans
     const Locale("ar"): const ArFeedbackLocalizations(), // Arabic
     const Locale("az"): const AzFeedbackLocalizations(), // Azerbaijani
@@ -100,7 +100,7 @@ class CustomFeedbackLocalizationsDelegate
     }
     logger.w(
       'The locale $locale is not supported, '
-          'falling back to english translations',
+      'falling back to english translations',
     );
     return true;
   }
@@ -1257,7 +1257,8 @@ class ZuFeedbackLocalizations extends FeedbackLocalizations {
   String get submitButtonText => 'Thumela'; // 'Submit' in Zulu
 
   @override
-  String get feedbackDescriptionText => 'Kuyini okungalungile?'; // 'What's wrong?' in Zulu
+  String get feedbackDescriptionText =>
+      'Kuyini okungalungile?'; // 'What's wrong?' in Zulu
 
   @override
   String get draw => 'Thinta'; // 'Draw' in Zulu

@@ -56,6 +56,11 @@ class Constants {
     baseChinese: "https://gitee.com",
   );
 
+  static const UrlHelper weblateUrl = UrlHelper(
+    base: "https://hosted.weblate.org",
+    baseChinese: "https://hosted.weblate.org",
+  );
+
   static final UrlHelper repositoryUrl =
       sourceControlUrl.fromSubPath(fullRepositoryName);
   static final UrlHelper issuesURL = repositoryUrl.fromSubPath("issues");
@@ -69,7 +74,7 @@ class Constants {
   static final UrlHelper privacyPolicyUrl =
       wikiURL.fromSubPath("privacy_policy", "privacy_policy_zh");
   static final UrlHelper helpImproveTranslateURL =
-      wikiURL.fromSubPath("Translation-and-Localization");
+      weblateUrl.fromSubPath("projects/$projectNameLower/flutter");
   static final UrlHelper thanksURL = wikiURL.fromSubPath("thanks");
 
   static double _getWindowHeight(BuildContext context) {
