@@ -1191,13 +1191,13 @@ class UzFeedbackLocalizations extends FeedbackLocalizations {
   String get submitButtonText => 'Yuborish';
 
   @override
-  String get feedbackDescriptionText => 'Nima noto\'g\'ri?';
+  String get feedbackDescriptionText => "Nima noto'g'ri?";
 
   @override
   String get draw => 'Chizmoq';
 
   @override
-  String get navigate => 'Yo\'l hidi';
+  String get navigate => "Yo'l hidi";
 
   static Future<FeedbackLocalizations> load(Locale locale) {
     return SynchronousFuture<FeedbackLocalizations>(
