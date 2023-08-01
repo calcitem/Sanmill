@@ -78,8 +78,8 @@ Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("az"): SAz().languageName, // Azerbaijani
   const Locale("be"): SBe().languageName, // Belarusian
   const Locale("bg"): SBg().languageName, // Bulgarian
-  const Locale("bs"): SBs().languageName, // Bosnian
   const Locale("bn"): SBn().languageName, // Bengali
+  const Locale("bs"): SBs().languageName, // Bosnian
   const Locale("cs"): SCs().languageName, // Czech
   const Locale("da"): SDa().languageName, // Danish
   const Locale("de"): SDe().languageName, // German
