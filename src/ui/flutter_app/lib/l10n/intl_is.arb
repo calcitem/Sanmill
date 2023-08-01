@@ -251,7 +251,7 @@
   "@removeUnplacedPiece": {
     "description": "Remove unplaced piece"
   },
-  "languageName": "Enska",
+  "languageName": "íslenskur",
   "@languageName": {
     "description": "The name of the current language"
   },

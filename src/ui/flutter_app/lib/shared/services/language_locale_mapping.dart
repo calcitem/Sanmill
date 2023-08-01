@@ -22,6 +22,7 @@ import '../../generated/intl/l10n_az.dart';
 import '../../generated/intl/l10n_be.dart';
 import '../../generated/intl/l10n_bg.dart';
 import '../../generated/intl/l10n_bn.dart';
+import '../../generated/intl/l10n_bs.dart';
 import '../../generated/intl/l10n_cs.dart';
 import '../../generated/intl/l10n_da.dart';
 import '../../generated/intl/l10n_de.dart';
@@ -39,6 +40,7 @@ import '../../generated/intl/l10n_hr.dart';
 import '../../generated/intl/l10n_hu.dart';
 import '../../generated/intl/l10n_hy.dart';
 import '../../generated/intl/l10n_id.dart';
+import '../../generated/intl/l10n_is.dart';
 import '../../generated/intl/l10n_it.dart';
 import '../../generated/intl/l10n_ja.dart';
 import '../../generated/intl/l10n_kn.dart';
@@ -64,6 +66,7 @@ import '../../generated/intl/l10n_te.dart';
 import '../../generated/intl/l10n_th.dart';
 import '../../generated/intl/l10n_tr.dart';
 import '../../generated/intl/l10n_uk.dart';
+import '../../generated/intl/l10n_ur.dart';
 import '../../generated/intl/l10n_uz.dart';
 import '../../generated/intl/l10n_vi.dart';
 import '../../generated/intl/l10n_zh.dart';
@@ -75,6 +78,7 @@ Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("az"): SAz().languageName, // Azerbaijani
   const Locale("be"): SBe().languageName, // Belarusian
   const Locale("bg"): SBg().languageName, // Bulgarian
+  const Locale("bs"): SBs().languageName, // Bosnian
   const Locale("bn"): SBn().languageName, // Bengali
   const Locale("cs"): SCs().languageName, // Czech
   const Locale("da"): SDa().languageName, // Danish
@@ -94,6 +98,7 @@ Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("hu"): SHu().languageName, // Hungarian
   const Locale("hy"): SHy().languageName, // Armenian
   const Locale("id"): SId().languageName, // Indonesian
+  const Locale("is"): SIs().languageName, // Icelandic
   const Locale("it"): SIt().languageName, // Italian
   const Locale("ja"): SJa().languageName, // Japanese
   const Locale("kn"): SKn().languageName, // Kannada
@@ -119,6 +124,7 @@ Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("th"): STh().languageName, // Thai
   const Locale("tr"): STr().languageName, // Turkish
   const Locale("uk"): SUk().languageName, // Ukrainian
+  const Locale("ur"): SUr().languageName, // Urdu
   const Locale("uz"): SUz().languageName, // Uzbek
   const Locale("vi"): SVi().languageName, // Vietnamese
   const Locale("zh"): SZh().languageName, // Chinese (Simplified)

@@ -205,7 +205,7 @@
   "@hollow": {
     "description": "Hollow"
   },
-  "languageName": "engleski",
+  "languageName": "bosanski",
   "@languageName": {
     "description": "The name of the current language"
   },
