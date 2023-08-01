@@ -31,13 +31,17 @@ class CustomFeedbackLocalizationsDelegate
 
   /// Returns the default instance of a [CustomFeedbackLocalizationsDelegate].
   static const LocalizationsDelegate<FeedbackLocalizations> delegate =
-      CustomFeedbackLocalizationsDelegate();
+  CustomFeedbackLocalizationsDelegate();
 
   static final Map<Locale, FeedbackLocalizations> _supportedLocales =
-      <Locale, FeedbackLocalizations>{
+  <Locale, FeedbackLocalizations>{
+    const Locale("af"): const AfFeedbackLocalizations(), // Afrikaans
     const Locale("ar"): const ArFeedbackLocalizations(), // Arabic
+    const Locale("az"): const AzFeedbackLocalizations(), // Azerbaijani
+    const Locale("be"): const BeFeedbackLocalizations(), // Belarusian
     const Locale("bg"): const BgFeedbackLocalizations(), // Bulgarian
     const Locale("bn"): const BnFeedbackLocalizations(), // Bengali
+    const Locale("bs"): const BsFeedbackLocalizations(), // Bosnian
     const Locale("cs"): const CsFeedbackLocalizations(), // Czech
     const Locale("da"): const DaFeedbackLocalizations(), // Danish
     const Locale("de"): const DeFeedbackLocalizations(), // German
@@ -45,21 +49,27 @@ class CustomFeedbackLocalizationsDelegate
     const Locale("en"): const EnFeedbackLocalizations(), // English
     const Locale("es"): const EsFeedbackLocalizations(), // Spanish
     const Locale("et"): const EtFeedbackLocalizations(), // Estonian
-    const Locale("fa"): const FaFeedbackLocalizations(), // Persian
+    const Locale("fa"): const FaFeedbackLocalizations(), // Persian (Farsi)
     const Locale("fi"): const FiFeedbackLocalizations(), // Finnish
     const Locale("fr"): const FrFeedbackLocalizations(), // French
     const Locale("gu"): const GuFeedbackLocalizations(), // Gujarati
+    const Locale("he"): const HeFeedbackLocalizations(), // Hebrew
     const Locale("hi"): const HiFeedbackLocalizations(), // Hindi
     const Locale("hr"): const HrFeedbackLocalizations(), // Croatian
     const Locale("hu"): const HuFeedbackLocalizations(), // Hungarian
+    const Locale("hy"): const HyFeedbackLocalizations(), // Armenian
     const Locale("id"): const IdFeedbackLocalizations(), // Indonesian
+    const Locale("is"): const IsFeedbackLocalizations(), // Icelandic
     const Locale("it"): const ItFeedbackLocalizations(), // Italian
     const Locale("ja"): const JaFeedbackLocalizations(), // Japanese
+    const Locale("kn"): const KnFeedbackLocalizations(), // Kannada
     const Locale("ko"): const KoFeedbackLocalizations(), // Korean
     const Locale("lt"): const LtFeedbackLocalizations(), // Lithuanian
     const Locale("lv"): const LvFeedbackLocalizations(), // Latvian
     const Locale("mk"): const MkFeedbackLocalizations(), // Macedonian
     const Locale("ms"): const MsFeedbackLocalizations(), // Malay
+    const Locale("my"): const MyFeedbackLocalizations(), // Burmese
+    const Locale("nb"): const NbFeedbackLocalizations(), // Norwegian
     const Locale("nl"): const NlFeedbackLocalizations(), // Dutch
     const Locale("pl"): const PlFeedbackLocalizations(), // Polish
     const Locale("pt"): const PtFeedbackLocalizations(), // Portuguese
@@ -70,11 +80,16 @@ class CustomFeedbackLocalizationsDelegate
     const Locale("sq"): const SqFeedbackLocalizations(), // Albanian
     const Locale("sr"): const SrFeedbackLocalizations(), // Serbian
     const Locale("sv"): const SvFeedbackLocalizations(), // Swedish
+    const Locale("sw"): const SwFeedbackLocalizations(), // Swahili
     const Locale("te"): const TeFeedbackLocalizations(), // Telugu
     const Locale("th"): const ThFeedbackLocalizations(), // Thai
     const Locale("tr"): const TrFeedbackLocalizations(), // Turkish
     const Locale("uk"): const UkFeedbackLocalizations(), // Ukrainian
+    const Locale("ur"): const UrFeedbackLocalizations(), // Urdu
+    const Locale("uz"): const UzFeedbackLocalizations(), // Uzbek
+    const Locale("vi"): const ViFeedbackLocalizations(), // Vietnamese
     const Locale("zh"): const ZhFeedbackLocalizations(), // Chinese
+    const Locale("zu"): const ZuFeedbackLocalizations(), // Zulu
   };
 
   @override
@@ -85,7 +100,7 @@ class CustomFeedbackLocalizationsDelegate
     }
     logger.w(
       'The locale $locale is not supported, '
-      'falling back to english translations',
+          'falling back to english translations',
     );
     return true;
   }
@@ -108,6 +123,28 @@ class CustomFeedbackLocalizationsDelegate
   String toString() => 'DefaultFeedbackLocalizations.delegate(en_EN)';
 }
 
+class AfFeedbackLocalizations extends FeedbackLocalizations {
+  const AfFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Indien';
+
+  @override
+  String get feedbackDescriptionText => 'Wat is verkeerd?';
+
+  @override
+  String get draw => 'Teken';
+
+  @override
+  String get navigate => 'Navigeer';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const AfFeedbackLocalizations(),
+    );
+  }
+}
+
 class ArFeedbackLocalizations extends FeedbackLocalizations {
   const ArFeedbackLocalizations();
 
@@ -126,6 +163,50 @@ class ArFeedbackLocalizations extends FeedbackLocalizations {
   static Future<FeedbackLocalizations> load(Locale locale) {
     return SynchronousFuture<FeedbackLocalizations>(
       const ArFeedbackLocalizations(),
+    );
+  }
+}
+
+class AzFeedbackLocalizations extends FeedbackLocalizations {
+  const AzFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Göndər';
+
+  @override
+  String get feedbackDescriptionText => 'Nə yalnışdır?';
+
+  @override
+  String get draw => 'Çək';
+
+  @override
+  String get navigate => 'Naviqasiya et';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const AzFeedbackLocalizations(),
+    );
+  }
+}
+
+class BeFeedbackLocalizations extends FeedbackLocalizations {
+  const BeFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Адправіць';
+
+  @override
+  String get feedbackDescriptionText => 'Што не так?';
+
+  @override
+  String get draw => 'Цягніць';
+
+  @override
+  String get navigate => 'Навігаваць';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const BeFeedbackLocalizations(),
     );
   }
 }
@@ -170,6 +251,28 @@ class BnFeedbackLocalizations extends FeedbackLocalizations {
   static Future<FeedbackLocalizations> load(Locale locale) {
     return SynchronousFuture<FeedbackLocalizations>(
       const BnFeedbackLocalizations(),
+    );
+  }
+}
+
+class BsFeedbackLocalizations extends FeedbackLocalizations {
+  const BsFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Poslati';
+
+  @override
+  String get feedbackDescriptionText => 'Što možemo učiniti bolje?';
+
+  @override
+  String get draw => 'Obojati';
+
+  @override
+  String get navigate => 'Navigacija';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const BsFeedbackLocalizations(),
     );
   }
 }
@@ -351,6 +454,28 @@ class GuFeedbackLocalizations extends FeedbackLocalizations {
   }
 }
 
+class HeFeedbackLocalizations extends FeedbackLocalizations {
+  const HeFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'שלח';
+
+  @override
+  String get feedbackDescriptionText => 'מה לא בסדר?';
+
+  @override
+  String get draw => 'צייר';
+
+  @override
+  String get navigate => 'נווט';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const HeFeedbackLocalizations(),
+    );
+  }
+}
+
 class HiFeedbackLocalizations extends FeedbackLocalizations {
   const HiFeedbackLocalizations();
 
@@ -417,6 +542,28 @@ class HuFeedbackLocalizations extends FeedbackLocalizations {
   }
 }
 
+class HyFeedbackLocalizations extends FeedbackLocalizations {
+  const HyFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Ներկայացնել';
+
+  @override
+  String get feedbackDescriptionText => 'Ի՞նչ է սխալ։';
+
+  @override
+  String get draw => 'Նկարել';
+
+  @override
+  String get navigate => 'Ցույցադրել';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const HyFeedbackLocalizations(),
+    );
+  }
+}
+
 class IdFeedbackLocalizations extends FeedbackLocalizations {
   const IdFeedbackLocalizations();
 
@@ -436,6 +583,28 @@ class IdFeedbackLocalizations extends FeedbackLocalizations {
   static Future<FeedbackLocalizations> load(Locale locale) {
     return SynchronousFuture<FeedbackLocalizations>(
       const IdFeedbackLocalizations(),
+    );
+  }
+}
+
+class IsFeedbackLocalizations extends FeedbackLocalizations {
+  const IsFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Leggja fram';
+
+  @override
+  String get feedbackDescriptionText => 'Hvað er rangt?';
+
+  @override
+  String get draw => 'Teikna';
+
+  @override
+  String get navigate => 'Stjórna';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const IsFeedbackLocalizations(),
     );
   }
 }
@@ -482,6 +651,28 @@ class JaFeedbackLocalizations extends FeedbackLocalizations {
 
   @override
   String get navigate => 'ナビゲーター';
+}
+
+class KnFeedbackLocalizations extends FeedbackLocalizations {
+  const KnFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'ಸಲ್ಲಿಸಿ';
+
+  @override
+  String get feedbackDescriptionText => 'ಏನು ತಪ್ಪು?';
+
+  @override
+  String get draw => 'ಗೀಚು';
+
+  @override
+  String get navigate => 'ಸಂಚಾರ';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const KnFeedbackLocalizations(),
+    );
+  }
 }
 
 class KoFeedbackLocalizations extends FeedbackLocalizations {
@@ -595,6 +786,28 @@ class MsFeedbackLocalizations extends FeedbackLocalizations {
   }
 }
 
+class MyFeedbackLocalizations extends FeedbackLocalizations {
+  const MyFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'တင်သွင်းပါ';
+
+  @override
+  String get feedbackDescriptionText => 'ဘာဖြစ်နေသလဲ?';
+
+  @override
+  String get draw => 'ဆွဲပါ';
+
+  @override
+  String get navigate => 'လမ်းညွှန်ပါ';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const MyFeedbackLocalizations(),
+    );
+  }
+}
+
 class NlFeedbackLocalizations extends FeedbackLocalizations {
   const NlFeedbackLocalizations();
 
@@ -613,6 +826,28 @@ class NlFeedbackLocalizations extends FeedbackLocalizations {
   static Future<FeedbackLocalizations> load(Locale locale) {
     return SynchronousFuture<FeedbackLocalizations>(
       const NlFeedbackLocalizations(),
+    );
+  }
+}
+
+class NbFeedbackLocalizations extends FeedbackLocalizations {
+  const NbFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Send inn';
+
+  @override
+  String get feedbackDescriptionText => 'Hva er galt?';
+
+  @override
+  String get draw => 'Tegne';
+
+  @override
+  String get navigate => 'Navigere';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const NbFeedbackLocalizations(),
     );
   }
 }
@@ -817,6 +1052,28 @@ class SvFeedbackLocalizations extends FeedbackLocalizations {
   }
 }
 
+class SwFeedbackLocalizations extends FeedbackLocalizations {
+  const SwFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Tuma';
+
+  @override
+  String get feedbackDescriptionText => 'Nini kibaya?';
+
+  @override
+  String get draw => 'Chora';
+
+  @override
+  String get navigate => 'Elekeza';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const SwFeedbackLocalizations(),
+    );
+  }
+}
+
 class TeFeedbackLocalizations extends FeedbackLocalizations {
   const TeFeedbackLocalizations();
 
@@ -905,6 +1162,72 @@ class UkFeedbackLocalizations extends FeedbackLocalizations {
   String get navigate => 'Навігація';
 }
 
+class UrFeedbackLocalizations extends FeedbackLocalizations {
+  const UrFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'جمع کرائیں';
+
+  @override
+  String get feedbackDescriptionText => 'کیا خراب ہے؟';
+
+  @override
+  String get draw => 'ڈرا';
+
+  @override
+  String get navigate => 'رہنمائی کریں';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const UrFeedbackLocalizations(),
+    );
+  }
+}
+
+class UzFeedbackLocalizations extends FeedbackLocalizations {
+  const UzFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Yuborish';
+
+  @override
+  String get feedbackDescriptionText => 'Nima noto\'g\'ri?';
+
+  @override
+  String get draw => 'Chizmoq';
+
+  @override
+  String get navigate => 'Yo\'l hidi';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const UzFeedbackLocalizations(),
+    );
+  }
+}
+
+class ViFeedbackLocalizations extends FeedbackLocalizations {
+  const ViFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Gửi đi';
+
+  @override
+  String get feedbackDescriptionText => 'Có gì không ổn?';
+
+  @override
+  String get draw => 'Vẽ';
+
+  @override
+  String get navigate => 'Điều hướng';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const ViFeedbackLocalizations(),
+    );
+  }
+}
+
 class ZhFeedbackLocalizations extends FeedbackLocalizations {
   const ZhFeedbackLocalizations();
 
@@ -918,11 +1241,33 @@ class ZhFeedbackLocalizations extends FeedbackLocalizations {
   String get submitButtonText => '提交';
 
   @override
-  String get feedbackDescriptionText => '敬请留​下您宝贵的意见和建议：';
+  String get feedbackDescriptionText => '敬请留下您宝贵的意见和建议：';
 
   @override
   String get draw => '涂鸦';
 
   @override
   String get navigate => '导航';
+}
+
+class ZuFeedbackLocalizations extends FeedbackLocalizations {
+  const ZuFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Thumela'; // 'Submit' in Zulu
+
+  @override
+  String get feedbackDescriptionText => 'Kuyini okungalungile?'; // 'What's wrong?' in Zulu
+
+  @override
+  String get draw => 'Thinta'; // 'Draw' in Zulu
+
+  @override
+  String get navigate => 'Hamba'; // 'Navigate' in Zulu
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const ZuFeedbackLocalizations(),
+    );
+  }
 }
