@@ -1,6 +1,6 @@
 {
   "@@locale": "sr",
-  "appName": "Милл",
+  "appName": "Мице",
   "@appName": {
     "description": "The app name"
   },
@@ -8,7 +8,7 @@
   "@welcome": {
     "description": "Welcome"
   },
-  "yes": "да",
+  "yes": "Да",
   "@yes": {
     "description": "Yes"
   },
@@ -20,15 +20,15 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Хуман Вс. АИ",
+  "humanVsAi": "Човек - Рачунар",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "Хуман Вс. Људски",
+  "humanVsHuman": "Човек - човек",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "АИ Вс. АИ",
+  "aiVsAi": "Рачунар - рачунар",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
@@ -48,11 +48,11 @@
   "@move": {
     "description": "Move"
   },
-  "showMoveList": "Листа померања",
+  "showMoveList": "Списак потеза",
   "@showMoveList": {
     "description": "Move list"
   },
-  "moveList": "Листа померања",
+  "moveList": "Списак потеза",
   "@moveList": {
     "description": "Move list"
   },
@@ -68,19 +68,19 @@
   "@confirm": {
     "description": "Confirm"
   },
-  "cancel": "Поништити, отказати",
+  "cancel": "Поништи",
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Изаберите погрешан комад.",
+  "tipSelectWrong": "Изаберите погрешну фигуру.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Ставите своје комаде.",
+  "tipPlace": "Поставите своје фигуре.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "Не можете га поставити овде.",
+  "tipBanPlace": "Не можете да је ставите овде.",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
@@ -152,11 +152,11 @@
   "@tipToMove": {
     "description": " to move."
   },
-  "whiteWin": "Победник играч 1!",
+  "whiteWin": "Играч 1 је победио!",
   "@whiteWin": {
     "description": "Player 1 wins!"
   },
-  "blackWin": "Победник играча 2!",
+  "blackWin": "Играч 2 је победио!",
   "@blackWin": {
     "description": "Player 2 wins!"
   },
@@ -164,7 +164,7 @@
   "@won": {
     "description": "Won"
   },
-  "lost": "Изгубљено",
+  "lost": "Изгубио",
   "@lost": {
     "description": "Lost"
   },
@@ -180,7 +180,7 @@
   "@importGame": {
     "description": "Import game"
   },
-  "exportGame": "Извоз игре",
+  "exportGame": "Извези игру",
   "@exportGame": {
     "description": "Export game"
   },
@@ -200,19 +200,19 @@
   "@pleaseWait": {
     "description": "Please wait..."
   },
-  "restartGame": "Желите ли поново покренути тренутну игру?",
+  "restartGame": "Поново покренути тренутну игру?",
   "@restartGame": {
     "description": "Restart current game?"
   },
-  "restart": "Поново покренути",
+  "restart": "Покрени поново",
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Игра је започела, молим вас.",
+  "gameStarted": "Игра је почела, поставите фигуру.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Анализира се…",
+  "analyzing": "Анализирање…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
@@ -220,39 +220,39 @@
   "@error": {
     "description": "Error"
   },
-  "winRate": "Вин Рате",
+  "winRate": "Стопа победа",
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Сцоре:",
+  "score": "Резултат:",
   "@score": {
     "description": "Score"
   },
-  "white": "Плаиер 1",
+  "white": "Играч 1",
   "@white": {
     "description": "Player 1"
   },
-  "black": "Плаиер 2",
+  "black": "Играч 2",
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "{player} број комада је мањи од три.",
+  "loseReasonlessThanThree": "{player} има мање од 3 фигуре.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} је поднео оставку.",
+  "loseReasonResign": "{player} се предао.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "{player} нема начина да оде.",
+  "loseReasonNoWay": "{player} не може да помери ниједну фигуру.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Плоча је пуна, а {player}нема начина да оде.",
+  "loseReasonBoardIsFull": "Табла је пуна, а {player} нема где да помери фигуру.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Време је прошло, {player} изгубљено.",
+  "loseReasonTimeOver": "Време је истекло, {player} је изгубио.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
