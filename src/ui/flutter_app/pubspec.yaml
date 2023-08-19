@@ -22,7 +22,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_colorpicker: ^1.0.3
-  flutter_email_sender: ^5.2.0
+  flutter_email_sender:
+    git:
+      url: https://github.com/calcitem/flutter_email_sender.git
   flutter_localizations:
     sdk: flutter
   flutter_platform_alert: ^0.3.0
@@ -30,13 +32,13 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   image: ^4.0.17
-  intl: 0.18.0
+  intl: 0.18.1
   json_annotation: ^4.8.1
   logger: ^1.1.0
   marquee: ^2.2.3
   package_info_plus: ^4.0.0
   path_provider: ^2.0.11
-  share_plus: ^7.0.0
+  share_plus: 7.1.0
   sliver_tools: ^0.2.8
   soundpool: ^2.3.0
   soundpool_windux:
