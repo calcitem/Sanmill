@@ -58,7 +58,7 @@ class _LanguagePickerState extends State<_LanguagePicker> {
           },
         ),
         const Divider(),
-        for (Locale locale in localeToLanguageName.keys)
+        for (final Locale locale in localeToLanguageName.keys)
           RadioListTile<Locale>(
             title: Text(
               localeToLanguageName[locale]!,
