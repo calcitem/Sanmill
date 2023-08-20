@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '11.0.16+101'
+          java-version: '17'
       - run: echo $SIGNING_KEY | base64 -d > src/ui/flutter_app/android/app/key.jks
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}

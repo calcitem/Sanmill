@@ -41,6 +41,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 33
+    namespace "com.calcitem.sanmill"
 
     lintOptions {
         disable 'InvalidPackage'

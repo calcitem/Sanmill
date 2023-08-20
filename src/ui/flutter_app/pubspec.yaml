@@ -27,7 +27,10 @@ dependencies:
       url: https://github.com/calcitem/flutter_email_sender.git
   flutter_localizations:
     sdk: flutter
-  flutter_platform_alert: ^0.3.0
+  flutter_platform_alert:
+    git:
+      url: https://github.com/calcitem/flutter_platform_alert.git
+      ref: main
   flutter_picker: ^2.0.5
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -40,13 +43,17 @@ dependencies:
   path_provider: ^2.0.11
   share_plus: 7.1.0
   sliver_tools: ^0.2.8
-  soundpool: ^2.3.0
+  soundpool:
+    git:
+      url: https://gitlab.com/calcitem/soundpool.git
+      ref: master
+      path: soundpool
   soundpool_windux:
     git:
       url: https://gitlab.com/calcitem/soundpool.git
       ref: windows_linux_support
       path: soundpool_windux
-  url_launcher: ^6.1.7
+  url_launcher: ^6.1.12
   uuid: ^3.0.7
 
 dev_dependencies:

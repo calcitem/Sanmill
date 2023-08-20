@@ -1,15 +1,15 @@
 buildscript {
-    ext.kotlin_version = '1.8.10'
+    ext.kotlin_version = '1.8.22'
     repositories {
 	    // Gradle 4.1 and higher include support for Google's Maven repo using
         // the google() method. And you need to include this repo to download
         // Android Gradle plugin 3.0.0 or higher.
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.1.0'
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     }
@@ -20,19 +20,11 @@ allprojects {
         google()
         jcenter()
     }
-
-    configurations.all {
-        resolutionStrategy {
-            force "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-        }
-    }
 }
 
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
     project.evaluationDependsOn(':app')
 }
 
