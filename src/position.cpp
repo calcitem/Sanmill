@@ -175,8 +175,8 @@ void Position::nnueGenerateTrainingFen()
     nnueTrainingDataIndex++;
 
     nnueTrainingDataStringStream.emplace_back(
-        fen() + " " + std::to_string((int)nnueTrainingDataBestValue) + " " + nnueTrainingDataBestMove +
-        " " + std::to_string(nnueTrainingDataIndex));
+        fen() + " " + std::to_string((int)nnueTrainingDataBestValue) + " " +
+        nnueTrainingDataBestMove + " " + std::to_string(nnueTrainingDataIndex));
 }
 
 string Position::nnueGetOpponentGameResult()
@@ -211,7 +211,8 @@ void Position::nnueWriteTrainingData()
         return;
     }
 
-    string tail = nnueTrainingDataStringStream[nnueTrainingDataStringStream.size() - 1];
+    string tail =
+        nnueTrainingDataStringStream[nnueTrainingDataStringStream.size() - 1];
     char lastSide = tail[27];
 
     std::ofstream file;
@@ -1607,8 +1608,9 @@ int Position::total_mills_count(Color c)
 
     int n = 0;
 
-        for (int i  = 0; i < 16; i++) {
-        if (color_on(static_cast<Square>(horizontalAndVerticalLines[i][0])) == c &&
+    for (int i = 0; i < 16; i++) {
+        if (color_on(static_cast<Square>(horizontalAndVerticalLines[i][0])) ==
+                c &&
             color_on(static_cast<Square>(horizontalAndVerticalLines[i][1])) ==
                 c &&
             color_on(static_cast<Square>(horizontalAndVerticalLines[i][2])) ==

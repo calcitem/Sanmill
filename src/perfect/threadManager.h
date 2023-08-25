@@ -53,12 +53,12 @@ private:
     };
 
     // Variables
-    uint32_t threadCount {0};  // number of threads
-    HANDLE *hThread {nullptr}; // array of size 'threadCount' containing the
-                               // thread
-                               // handles
-    DWORD *threadId {nullptr}; // array of size 'threadCount' containing the
-                               // thread ids
+    uint32_t threadCount {0};   // number of threads
+    HANDLE *hThread {nullptr};  // array of size 'threadCount' containing the
+                                // thread
+                                // handles
+    DWORD *threadId {nullptr};  // array of size 'threadCount' containing the
+                                // thread ids
     bool termineAllThreads {false};
     bool execPaused {false};    // switch for the
     bool execCancelled {false}; // true when cancelExec() was called

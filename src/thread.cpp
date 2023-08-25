@@ -158,8 +158,9 @@ void Thread::idle_loop()
                 const int ret = search();
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-                nnueTrainingDataBestValue = rootPos->sideToMove == WHITE ? bestvalue :
-                                                              -bestvalue;
+                nnueTrainingDataBestValue = rootPos->sideToMove == WHITE ?
+                                                bestvalue :
+                                                -bestvalue;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
                 if (ret == 3 || ret == 50 || ret == 10) {

@@ -20,7 +20,7 @@
 #include "position.h"
 #include "types.h"
 
-//#define MCTS_PRINT_STAT
+// #define MCTS_PRINT_STAT
 
 // The role of exploration_parameter in Monte Carlo Tree Search (MCTS) is to
 // balance exploration and utilization. During the search,
@@ -61,7 +61,7 @@ static constexpr int ALPHA_BETA_DEPTH = 6;
 // fewer moves being considered, potentially speeding up the search
 // at the cost of search accuracy. The value should be adjusted
 // according to the specific problem and performance requirements.
-//static constexpr int SEARCH_PRUNING_FACTOR = 1;
+// static constexpr int SEARCH_PRUNING_FACTOR = 1;
 
 // Check time limit every N iterations
 static constexpr int CHECK_TIME_FREQUENCY = 128;

@@ -86,7 +86,7 @@ public:
         : position(pos)
         , move(m)
         , parent(prt)
-        , move_index(idx) 
+        , move_index(idx)
     { }
 
     double win_score() const
@@ -232,11 +232,11 @@ void print_stats(const MovePicker &mp, ThreadSafeNodeVisits &shared_visits,
 
     // Iterate through all moves and print their statistics
     std::cout << "\n";
-    std::cout << std::setw(5) << "Move" << "    " << std::setw(9) << std::fixed << std::setprecision(6)
+    std::cout << std::setw(5) << "Move"
+              << "    " << std::setw(9) << std::fixed << std::setprecision(6)
               << "Win Rate"
               << "    " << std::setw(6) << "Wins"
-              << "    " << std::setw(6) << "Visits"
-              << '\n';
+              << "    " << std::setw(6) << "Visits" << '\n';
     std::cout << "----------------------------------------\n";
     for (int i = 0; i < mp.move_count(); ++i) {
         uint32_t visits = shared_visits.visits(i);
@@ -352,12 +352,12 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
 
     bestMove = mp.moves[best_move_index].move;
 
-    //double win_score = static_cast<double>(
-    //                       shared_visits.wins(best_move_index)) /
-    //                   shared_visits.visits(best_move_index);
-    //Value best_value = static_cast<Value>(win_score * 100.0 - 50.0);
-    //double win_score = static_cast<double>(max_visits) /
-    //                   (max_iterations / num_threads);
+    // double win_score = static_cast<double>(
+    //                        shared_visits.wins(best_move_index)) /
+    //                    shared_visits.visits(best_move_index);
+    // Value best_value = static_cast<Value>(win_score * 100.0 - 50.0);
+    // double win_score = static_cast<double>(max_visits) /
+    //                    (max_iterations / num_threads);
     Value best_value = (pos->piece_on_board_count(pos->sideToMove) +
                         pos->piece_in_hand_count(pos->sideToMove) -
                         pos->piece_on_board_count(~pos->sideToMove) -

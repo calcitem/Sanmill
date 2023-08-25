@@ -25,7 +25,7 @@
 #include <QDebug>
 #endif
 
-//#define QT_NO_DEBUG_OUTPUT
+// #define QT_NO_DEBUG_OUTPUT
 
 #define CSTYLE_DEBUG_OUTPUT
 

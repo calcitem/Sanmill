@@ -36,7 +36,7 @@ constexpr size_t HASH_SIZE_DEFAULT = 1031; // A prime number as key size gives a
                                            // better distribution of values in
                                            // buckets
 
-namespace CTSL // Concurrent Thread Safe Library
+namespace CTSL                             // Concurrent Thread Safe Library
 {
 // The class representing the key map.
 // It is expected for user defined types, the key function will be provided.

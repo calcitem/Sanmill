@@ -73,7 +73,8 @@ Value Evaluation::value() const
         case Action::place:
             break;
         case Action::remove:
-            value += VALUE_EACH_PIECE_PLACING_NEEDREMOVE * pieceToRemoveDiffCount;
+            value += VALUE_EACH_PIECE_PLACING_NEEDREMOVE *
+                     pieceToRemoveDiffCount;
             break;
         case Action::none:
             break;
@@ -95,7 +96,8 @@ Value Evaluation::value() const
         case Action::place:
             break;
         case Action::remove:
-            value += VALUE_EACH_PIECE_MOVING_NEEDREMOVE * pieceToRemoveDiffCount;
+            value += VALUE_EACH_PIECE_MOVING_NEEDREMOVE *
+                     pieceToRemoveDiffCount;
             break;
         case Action::none:
             break;
@@ -141,11 +143,18 @@ Value Evaluation::value() const
         int piece_on_board_count_future_black = pos.piece_on_board_count(BLACK);
 
         if (pos.side_to_move() == WHITE) {
-            piece_on_board_count_future_black -= pos.piece_to_remove_count(WHITE) - pos.piece_to_remove_count(BLACK);
+            piece_on_board_count_future_black -= pos.piece_to_remove_count(
+                                                     WHITE) -
+                                                 pos.piece_to_remove_count(
+                                                     BLACK);
         }
 
         if (pos.side_to_move() == BLACK) {
-            piece_on_board_count_future_white -= pos.piece_to_remove_count(BLACK) - pos.piece_to_remove_count(WHITE);;
+            piece_on_board_count_future_white -= pos.piece_to_remove_count(
+                                                     BLACK) -
+                                                 pos.piece_to_remove_count(
+                                                     WHITE);
+            ;
         }
 
         // TODO(calcitem): flyPieceCount?

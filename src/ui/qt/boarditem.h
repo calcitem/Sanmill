@@ -58,7 +58,7 @@ public:
     [[nodiscard]] bool pos2polar(QPointF pos, File &f, Rank &r) const;
 
 private:
-    int size; // board size
+    int size;                    // board size
     int sizeShadow {5};
     QPointF position[SQUARE_NB]; // 24 points
     bool hasDiagonalLine {false};

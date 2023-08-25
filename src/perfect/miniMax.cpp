@@ -65,13 +65,13 @@ MiniMax::MiniMax()
     const unsigned char skvPerspectiveMatrixTmp[4][2] = {
         //  PL_TO_MOVE_UNCHANGED    PL_TO_MOVE_CHANGED
         SKV_VALUE_INVALID,
-        SKV_VALUE_INVALID, // SKV_VALUE_INVALID
+        SKV_VALUE_INVALID,    // SKV_VALUE_INVALID
         SKV_VALUE_GAME_WON,
-        SKV_VALUE_GAME_LOST, // SKV_VALUE_GAME_LOST
+        SKV_VALUE_GAME_LOST,  // SKV_VALUE_GAME_LOST
         SKV_VALUE_GAME_DRAWN,
         SKV_VALUE_GAME_DRAWN, // SKV_VALUE_GAME_DRAWN
         SKV_VALUE_GAME_LOST,
-        SKV_VALUE_GAME_WON // SKV_VALUE_GAME_WON
+        SKV_VALUE_GAME_WON    // SKV_VALUE_GAME_WON
     };
 
     memcpy(skvPerspectiveMatrix, skvPerspectiveMatrixTmp, 4 * 2);

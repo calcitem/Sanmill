@@ -33,7 +33,7 @@ constexpr auto MOVE_COUNT_MAX = 10000;
 #define SAFE_DELETE_ARRAY(p) \
     { \
         if (p) { \
-            delete[](p); \
+            delete[] (p); \
             (p) = nullptr; \
         } \
     }

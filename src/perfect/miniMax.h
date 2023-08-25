@@ -30,7 +30,7 @@
 
 #pragma intrinsic(_rotl8, _rotr8) // for shifting bits
 
-using std::iostream; // use standard library namespace
+using std::iostream;              // use standard library namespace
 
 /*** Wiki
 ********************************************************************************
@@ -168,7 +168,7 @@ enum MmAction {
 #define SAFE_DELETE_ARRAY(p) \
     { \
         if (p) { \
-            delete[](p); \
+            delete[] (p); \
             (p) = nullptr; \
         } \
     }

@@ -461,7 +461,7 @@ inline void MiniMax::measureIops(int64_t &nOps, LARGE_INTEGER &interval,
         interval.QuadPart += curTimeAfter.QuadPart -
                              curTimeBefore.QuadPart; // ... not thread-safe !!!
         double totalTimeGone = static_cast<double>(interval.QuadPart) /
-                               frequency.QuadPart; // ... not thread-safe !!!
+                               frequency.QuadPart;   // ... not thread-safe !!!
         if (totalTimeGone >= 5.0) {
             PRINT(0, this,
                   text << "operations per second for last interval: "
