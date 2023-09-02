@@ -133,7 +133,7 @@ void MalomSolutionAccess::initializeIfNeeded()
         return;
     }
 
-    sec_val_path = gameOptions.getPerfectDatabase();
+    sec_val_path = gameOptions.getPerfectDatabasePath();
 
     Rules::initRules();
     setVariantStripped();

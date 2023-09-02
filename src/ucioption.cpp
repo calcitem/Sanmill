@@ -74,9 +74,14 @@ static void on_algorithm(const Option &o)
     gameOptions.setAlgorithm(static_cast<int>(o));
 }
 
-static void on_perfectDatabase(const Option &o)
+static void on_usePerfectDatabase(const Option &o)
 {
-    gameOptions.setPerfectDatabase(static_cast<std::string>(o));
+    gameOptions.setUsePerfectDatabase(static_cast<bool>(o));
+}
+
+static void on_perfectDatabasePath(const Option &o)
+{
+    gameOptions.setPerfectDatabasePath(static_cast<std::string>(o));
 }
 
 static void on_drawOnHumanExperience(const Option &o)
@@ -212,7 +217,8 @@ void init(OptionsMap &o)
 
     o["Shuffling"] << Option(true, on_random_move);
     o["Algorithm"] << Option(2, 0, 4, on_algorithm);
-    o["PerfectDatabase"] << Option(".", on_perfectDatabase);
+    o["UsePerfectDatabase"] << Option(false, on_usePerfectDatabase);
+    o["PerfectDatabasePath"] << Option(".", on_perfectDatabasePath);
     o["DrawOnHumanExperience"] << Option(true, on_drawOnHumanExperience);
     o["ConsiderMobility"] << Option(true, on_considerMobility);
     o["DeveloperMode"] << Option(true, on_developerMode);
