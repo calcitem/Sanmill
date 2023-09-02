@@ -76,6 +76,8 @@ class Constants {
   static final UrlHelper helpImproveTranslateURL =
       weblateUrl.fromSubPath("projects/$projectNameLower/flutter");
   static final UrlHelper thanksURL = wikiURL.fromSubPath("thanks");
+  static final UrlHelper perfectDatabaseUrl =
+      wikiURL.fromSubPath("Perfect-Database");
 
   static double _getWindowHeight(BuildContext context) {
     return View.of(context).platformDispatcher.views.first.physicalSize.height;

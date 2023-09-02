@@ -23,18 +23,44 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
     Navigator.pop(context);
   }
 
+  Future<void> _launchURL() async {
+    final String url = Constants.perfectDatabaseUrl.base;
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw Exception('Could not launch $url');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        S.of(context).usePerfectDatabase,
+        S.of(context).appName,
         style: AppTheme.dialogTitleTextStyle,
         textScaleFactor: DB().displaySettings.fontScale,
       ),
       content: SingleChildScrollView(
-        child: Text(
-          S.of(context).perfectDatabaseDescription,
-          textScaleFactor: DB().displaySettings.fontScale,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              S.of(context).perfectDatabaseDescription,
+              textScaleFactor: DB().displaySettings.fontScale,
+            ),
+            const SizedBox(height: 16),
+            InkWell(
+              onTap: _launchURL,
+              child: Text(
+                S.of(context).usePerfectDatabase,
+                style: const TextStyle(
+                  decoration: TextDecoration.underline,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       actions: <Widget>[
