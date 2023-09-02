@@ -92,7 +92,11 @@ struct Tie final : streambuf
         , logBuf(lb)
     { }
 
-    int sync() override { return logBuf->pubsync(), buf->pubsync(); }
+    int sync() override
+    {
+        logBuf->pubsync();
+        return buf->pubsync();
+    }
 
     int overflow(int c) override
     {
