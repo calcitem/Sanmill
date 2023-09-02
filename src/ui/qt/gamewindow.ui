@@ -227,7 +227,7 @@
      <x>0</x>
      <y>0</y>
      <width>685</width>
-     <height>26</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -326,6 +326,7 @@
     <addaction name="actionMctsAlgorithm"/>
     <addaction name="actionPerfect_AI"/>
     <addaction name="separator"/>
+    <addaction name="actionUsePerfectDatabase"/>
     <addaction name="actionDrawOnHumanExperience"/>
     <addaction name="actionConsiderMobility"/>
     <addaction name="actionIDS_I"/>
@@ -1316,7 +1317,7 @@
     <string>Opening Book (WIP)</string>
    </property>
   </action>
-    <action name="actionAlphaBetaAlgorithm">
+  <action name="actionAlphaBetaAlgorithm">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1327,7 +1328,7 @@
     <string>Alpha-Beta Algorithm </string>
    </property>
   </action>
-    <action name="actionPvsAlgorithm">
+  <action name="actionPvsAlgorithm">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1338,7 +1339,7 @@
     <string>PVS Algorithm</string>
    </property>
   </action>
-    <action name="actionMtdfAlgorithm">
+  <action name="actionMtdfAlgorithm">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1410,6 +1411,14 @@
    </property>
    <property name="text">
     <string>Developer Mode</string>
+   </property>
+  </action>
+  <action name="actionUsePerfectDatabase">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Use Perfect Database</string>
    </property>
   </action>
  </widget>
