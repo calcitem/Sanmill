@@ -101,16 +101,6 @@ public:
 #endif
     }
 
-    void setPerfectAiEnabled(bool enabled) noexcept
-    {
-        perfectAiEnabled = enabled;
-    }
-
-    [[nodiscard]] bool getPerfectAiEnabled() const noexcept
-    {
-        return perfectAiEnabled;
-    }
-
     void setIDSEnabled(bool enabled) noexcept { IDSEnabled = enabled; }
 
     [[nodiscard]] bool getIDSEnabled() const noexcept { return IDSEnabled; }
@@ -241,9 +231,19 @@ public:
 
     // Perfect Database
 
-    void setPerfectDatabase(std::string val) noexcept { perfectDatabase = val; }
+    void setUsePerfectDatabase(bool enabled) noexcept
+    {
+        usePerfectDatabase = enabled;
+    }
 
-    [[nodiscard]] std::string getPerfectDatabase() const noexcept
+    [[nodiscard]] bool getUsePerfectDatabase() const noexcept
+    {
+        return usePerfectDatabase;
+    }
+
+    void setPerfectDatabasePath(std::string val) noexcept { perfectDatabase = val; }
+
+    [[nodiscard]] std::string getPerfectDatabasePath() const noexcept
     {
         return perfectDatabase;
     }
@@ -295,7 +295,7 @@ private:
     bool learnEndgame {false};
 #endif
     int algorithm {2};
-    bool perfectAiEnabled {false};
+    bool usePerfectDatabase {false};
     bool IDSEnabled {false};
     bool depthExtension {true};
     bool openingBook {false};

@@ -160,23 +160,25 @@ int Thread::search()
 #endif
 #endif
 
+#if defined(GABOR_MALOM_PERFECT_AI)
+            if (gameOptions.getUsePerfectDatabase() == true) {
+                value = perfect_search(rootPos, bestMove);
+                if (value != VALUE_UNKNOWN) {
+                    goto next;
+                }
+            }
+#endif // GABOR_MALOM_PERFECT_AI
+
             if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
                 // debugPrintf("Algorithm: MTD(f).\n");
                 value = MTDF(rootPos, ss, value, i, i, bestMove);
             } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
                 value = monte_carlo_tree_search(rootPos, bestMove);
-            } else if (gameOptions.getAlgorithm() == 4 /* RA */) {
-#if defined(GABOR_MALOM_PERFECT_AI)
-                value = perfect_search(rootPos, bestMove);
-                if (value == VALUE_UNKNOWN) {
-                    // Fall back
-                    value = MTDF(rootPos, ss, VALUE_ZERO, i, i, bestMove);
-                }
-#endif // GABOR_MALOM_PERFECT_AI
             } else {
                 value = qsearch(rootPos, ss, i, i, alpha, beta, bestMove);
             }
 
+next:
             debugPrintf("%d(%d) ", value, value - lastValue);
 
             lastValue = value;
@@ -201,6 +203,15 @@ int Thread::search()
 #endif
 #endif
 
+#if defined(GABOR_MALOM_PERFECT_AI)
+    if (gameOptions.getUsePerfectDatabase() == true) {
+        value = perfect_search(rootPos, bestMove);
+        if (value != VALUE_UNKNOWN) {
+            goto out;
+        }
+    }
+#endif // GABOR_MALOM_PERFECT_AI
+
     if (gameOptions.getAlgorithm() != 2 /* !MTD(f) */
         && gameOptions.getIDSEnabled()) {
         alpha = -VALUE_INFINITE;
@@ -211,17 +222,6 @@ int Thread::search()
         value = MTDF(rootPos, ss, value, originDepth, originDepth, bestMove);
     } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
         value = monte_carlo_tree_search(rootPos, bestMove);
-    } else if (gameOptions.getAlgorithm() == 4 /* RA */) {
-#if defined(GABOR_MALOM_PERFECT_AI)
-        Value v = perfect_search(rootPos, bestMove);
-        if (v == VALUE_UNKNOWN) {
-            // Fall back
-            value = MTDF(rootPos, ss, value, originDepth, originDepth,
-                         bestMove);
-        } else {
-            value = v;
-        }
-#endif // GABOR_MALOM_PERFECT_AI
     } else {
         value = qsearch(rootPos, ss, d, originDepth, alpha, beta, bestMove);
     }
