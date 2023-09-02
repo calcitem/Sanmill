@@ -1387,5 +1387,9 @@
   "viewAlgorithmGuide": "Möchten Sie das Benutzerhandbuch für diesen Algorithmus anzeigen?",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Anzeige des Positionsvorteilsindikators",
-  "@showPositionalAdvantageIndicator": {}
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Verwenden Sie die perfekte Datenbank",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Aktivieren Sie diese Option, um eine fehlerfreie Spiel-Datenbank zu nutzen, die durch modernste Algorithmen generiert wurde. Diese Funktion integriert sowohl Eröffnungs- als auch Endspielstrategien, um optimale Züge vorzuschlagen. Sie ist die bevorzugte Wahl für Spieler, die das höchste Maß an Präzision im Spiel anstreben. Durch akribische Berechnungstechniken erstellt, ist die Datenbank darauf ausgelegt, nahezu perfekte Spiellösungen anzubieten.\n\nHinweis: Sollte die KI keinen Zugriff auf die Datenbank haben, wird sie auf herkömmliche Algorithmen für Spielentscheidungen zurückgreifen. Ist die Datenbank verfügbar, wird der 'Schwierigkeitsgrad' praktisch unschlagbar und die 'Denkzeit der KI' erheblich reduziert. Viele Einstellungen im Bereich 'Spielstil der KI' werden überschrieben, da die Ergebnisse der Datenbank höchste Priorität haben.\n\nFür Anleitungen zur optimalen Nutzung dieser fehlerfreien Datenbank klicken Sie bitte hier.",
+  "@perfectDatabaseDescription": {}
 }

@@ -1387,5 +1387,9 @@
   "viewAlgorithmGuide": "Ali si želite ogledati uporabniški priročnik za ta algoritem?",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Prikaži indikator položajne prednosti",
-  "@showPositionalAdvantageIndicator": {}
+  "@showPositionalAdvantageIndicator": {},
+  "perfectDatabaseDescription": "Omogočite to možnost, če želite uporabljati brezhibno zbirko podatkov o igrah, ustvarjeno z najsodobnejšimi algoritmi. Ta funkcija združuje uvodne in končne strategije za predlaganje optimalnih potez. To je najprimernejša izbira za igralce, ki iščejo najvišjo stopnjo natančnosti igranja. Baza podatkov, ustvarjena z natančnimi računalniškimi tehnikami, je zasnovana tako, da ponuja skoraj popolne rešitve za igre.\n\nOpomba: če AI ne uspe dostopati do baze podatkov, se bo za odločitve glede igranja obrnil na običajne algoritme. Ko je zbirka podatkov na voljo, postane 'Stopnja težavnosti' praktično nepremagljiva, 'Čas za razmišljanje AI' pa se drastično skrajša. Veliko nastavitev v možnostih 'AI's Playstyle' bo preglasenih, saj imajo rezultati baze podatkov najvišjo prednost.\n\nZa navodila o tem, kako kar najbolje izkoristiti to brezhibno bazo podatkov, kliknite tukaj.",
+  "@perfectDatabaseDescription": {},
+  "usePerfectDatabase": "Uporabite popolno bazo podatkov",
+  "@usePerfectDatabase": {}
 }

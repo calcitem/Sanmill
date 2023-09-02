@@ -1387,5 +1387,9 @@
   "viewAlgorithmGuide": "Gostaria de ver o guia do usuário para este algoritmo?",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Mostrar indicador de vantagem posicional",
-  "@showPositionalAdvantageIndicator": {}
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Utilize o banco de dados perfeito",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Ative essa opção para utilizar um banco de dados de jogo impecável, gerado através de algoritmos de ponta. Este recurso integra estratégias de abertura e de final de jogo para sugerir os melhores movimentos. É a opção preferida para jogadores que buscam o mais alto nível de precisão durante o jogo. Criado através de técnicas computacionais meticulosas, o banco de dados é projetado para oferecer soluções de jogo quase perfeitas.\n\nNota: Caso a IA falhe ao acessar o banco de dados, ela recorrerá a algoritmos convencionais para tomar decisões de jogo. Quando o banco de dados está disponível, o 'Nível de Dificuldade' torna-se praticamente imbatível, e o 'Tempo de Pensamento da IA' sofre uma redução drástica. Muitas configurações dentro das opções de 'Estilo de Jogo da IA' serão substituídas, já que os resultados do banco de dados têm a maior prioridade.\n\nPara orientações sobre como aproveitar ao máximo este banco de dados impecável, clique aqui.",
+  "@perfectDatabaseDescription": {}
 }

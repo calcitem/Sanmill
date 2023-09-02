@@ -1387,5 +1387,9 @@
   "viewAlgorithmGuide": "Haluatko nähdä tämän algoritmin käyttöoppaan?",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Näytä sijaintiedun osoitin",
-  "@showPositionalAdvantageIndicator": {}
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Käytä täydellistä tietokantaa",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Ota tämä vaihtoehto käyttöön, jos haluat käyttää virheetöntä pelitietokantaa, joka on luotu huippuluokan algoritmeilla. Tämä ominaisuus integroi sekä avaus- että lopetusstrategiat optimaalisten liikkeiden ehdottamiseksi. Tämä on suositeltu valinta pelaajille, jotka etsivät korkeinta tarkkuutta pelaamisessa. Huolellisen laskentatekniikan avulla luotu tietokanta on suunniteltu tarjoamaan lähes täydellisiä peliratkaisuja.\n\nHuomautus: Jos tekoäly ei pääse käsiksi tietokantaan, se käyttää tavanomaisia algoritmeja pelipäätöksissä. Kun tietokanta on saatavilla, \"Vaikeustaso\" muuttuu käytännössä lyömättömäksi, ja \"AI Thinking Time\" kokee rajusti lyhenemisen. Monet 'AI's Playstyle' -asetusten asetukset ohitetaan, koska tietokannan tuloksilla on korkein prioriteetti.\n\nNapsauta tästä saadaksesi ohjeita tämän virheettömän tietokannan hyödyntämiseen.",
+  "@perfectDatabaseDescription": {}
 }

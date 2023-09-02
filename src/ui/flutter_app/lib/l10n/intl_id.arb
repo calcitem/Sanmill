@@ -1387,5 +1387,9 @@
   "viewAlgorithmGuide": "Apakah Anda ingin melihat panduan pengguna untuk algoritme ini?",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Tampilkan indikator keunggulan posisi",
-  "@showPositionalAdvantageIndicator": {}
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Gunakan basis data yang sempurna",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Aktifkan opsi ini untuk menggunakan database game sempurna yang dihasilkan melalui algoritma mutakhir. Fitur ini mengintegrasikan strategi pembukaan dan akhir permainan untuk menyarankan gerakan optimal. Ini adalah pilihan yang lebih disukai bagi pemain yang mencari tingkat presisi tertinggi dalam gameplay. Dibuat melalui teknik komputasi yang cermat, database ini dirancang untuk menawarkan solusi permainan yang hampir sempurna.\n\nCatatan: Jika AI gagal mengakses database, AI akan beralih ke algoritma konvensional untuk mengambil keputusan gameplay. Ketika database tersedia, 'Tingkat Kesulitan' menjadi tidak ada duanya, dan 'Waktu Berpikir AI' mengalami pengurangan drastis. Banyak pengaturan dalam opsi 'Gaya Bermain AI' akan diganti, karena hasil database memiliki prioritas tertinggi.\n\nUntuk panduan tentang cara memanfaatkan database sempurna ini, klik di sini.",
+  "@perfectDatabaseDescription": {}
 }

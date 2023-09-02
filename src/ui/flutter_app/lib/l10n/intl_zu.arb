@@ -1484,5 +1484,9 @@
   "whatIsRetrogradeAnalysis": "I-algorithm ye-Retrograde Analysis isebenzisa ukuhlaziya okunenani eliningi lokubuyisela emuva ukuze kwakhiwe isizindalwazi somdlalo wokugcina kusuka ezindaweni ezihlukene zokuqala, bese isebenzisa le sizindalwazi ukuze kulungiselelwe ukudlala umdlalo. Le ndlela ingena ngaphansi kwesigaba sezixazululo ze-Ultra-Strong.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Ungathanda ukubuka umhlahlandlela womsebenzisi wale algorithm?",
-  "@viewAlgorithmGuide": {}
+  "@viewAlgorithmGuide": {},
+  "usePerfectDatabase": "Sebenzisa i-database ephelele",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Nika amandla le nketho ukuze usebenzise isizindalwazi segeyimu esingenasici esikhiqizwe ngama-algorithms asezingeni eliphezulu. Lesi sici sihlanganisa kokubili amasu okuvula nawokuqeda ukuphakamisa umnyakazo olungile. Lokhu ukukhetha okuncanyelwayo kwabadlali abafuna ileveli ephezulu yokunemba ekudlalweni kwegeyimu. Idalwe ngamasu ekhompyutha ahlakaniphile, isizindalwazi siklanyelwe ukunikeza izixazululo zegeyimu ezicishe ziphelele.\n\nQaphela: Uma i-AI ihluleka ukufinyelela kusizindalwazi, izophendukela kuma-algorithms avamile ezinqumweni zokudlala umdlalo. Uma isizindalwazi sitholakala, 'Izinga Lobunzima' licishe lingehluleki, futhi 'Isikhathi Sokucabanga Se-AI' sithola ukuncipha okukhulu. Izilungiselelo eziningi ezingaphakathi kwezinketho ze-'AI's Playstyle' zizokhishwa, njengoba imiphumela yesizindalwazi ibambe phezulu kakhulu.\n\nUkuze uthole umhlahlandlela wokuthi ungayisebenzisa kanjani ngokugcwele le database engenasici, chofoza lapha.",
+  "@perfectDatabaseDescription": {}
 }
