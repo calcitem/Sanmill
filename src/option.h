@@ -302,7 +302,13 @@ private:
     bool drawOnHumanExperience {true};
     bool considerMobility {true};
     bool developerMode {false};
+
+    // TODO: Set this to the correct path
+#ifdef _DEBUG
+    std::string perfectDatabase {"E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted"};
+#else
     std::string perfectDatabase {"."};
+#endif
 };
 
 extern GameOptions gameOptions;
