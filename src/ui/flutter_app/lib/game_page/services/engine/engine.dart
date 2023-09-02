@@ -218,8 +218,8 @@ class Engine {
         generalSettings.searchAlgorithm?.index ??
             SearchAlgorithm.mtdf.index); // TODO: enum
     await _sendOptions(
-      "UseBook",
-      generalSettings.useBook,
+      "UsePerfectDatabase",
+      generalSettings.usePerfectDatabase,
     );
     await _sendOptions(
       "DrawOnHumanExperience",
