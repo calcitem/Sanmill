@@ -128,8 +128,10 @@ void Game::loadSettings()
     setSkillLevel(empty ? 1 : settings->value("Options/SkillLevel").toInt());
     setMoveTime(empty ? 1 : settings->value("Options/MoveTime").toInt());
     setAlgorithm(empty ? 2 : settings->value("Options/Algorithm").toInt());
-    setPerfectDatabase(
-        empty ? "." : settings->value("Options/PerfectDatabase").toString().toStdString());
+    setUsePerfectDatabase(
+        empty ? false : settings->value("Options/UsePerfectDatabase").toBool());
+    setPerfectDatabasePath(
+        empty ? "." : settings->value("Options/PerfectDatabasePath").toString().toStdString());
     setDrawOnHumanExperience(
         empty ? true :
                 settings->value("Options/DrawOnHumanExperience").toBool());
@@ -253,7 +255,7 @@ void Game::gameReset()
     }
 
 #if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
-    if (gameOptions.getPerfectAiEnabled()) {
+    if (gameOptions.getUsePerfectDatabase()) {
         perfect_reset();
     }
 #endif
@@ -663,9 +665,15 @@ void Game::setAlgorithm(int val) const
     settings->setValue("Options/Algorithm", val);
 }
 
-void Game::setPerfectDatabase(string val) const
+void Game::setUsePerfectDatabase(bool arg) noexcept
 {
-    gameOptions.setPerfectDatabase(val);
+    gameOptions.setUsePerfectDatabase(arg);
+    settings->setValue("Options/UsePerfectDatabase", arg);
+}
+
+void Game::setPerfectDatabasePath(string val) const
+{
+    gameOptions.setPerfectDatabasePath(val);
     settings->setValue("Options/PerfectDatabase", QString::fromStdString(val));
 }
 
@@ -680,7 +688,7 @@ void Game::setPerfectAi(bool enabled) const
     }
 #endif
 
-    gameOptions.setPerfectAiEnabled(enabled);
+    gameOptions.setUsePerfectDatabase(enabled);
     settings->setValue("Options/PerfectAI", enabled);
 
 #if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
@@ -1381,7 +1389,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 #endif
 
 #ifdef ANALYZE_POSITION
-    if (!gameOptions.getPerfectAiEnabled()) {
+    if (!gameOptions.getUsePerfectDatabase()) {
         if (isAiPlayer[WHITE]) {
             aiThread[WHITE]->analyze(WHITE);
         } else if (isAiPlayer[BLACK]) {

@@ -222,7 +222,8 @@ public slots:
     void setAlgorithm(int val) const;
 
     // Perfect Database
-    void setPerfectDatabase(string val) const;
+    void setUsePerfectDatabase(bool arg) noexcept;
+    void setPerfectDatabasePath(string val) const;
 
     // Draw on human experience
     void setDrawOnHumanExperience(bool enabled) const;
