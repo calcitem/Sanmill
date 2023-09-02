@@ -122,11 +122,10 @@ class GeneralSettingsPage extends StatelessWidget {
     );
   }
 
-  void _setUseBook(GeneralSettings generalSettings, bool value) {
-    DB().generalSettings =
-        generalSettings.copyWith(useBook: value);
+  void _setUsePerfectDatabase(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(usePerfectDatabase: value);
 
-    logger.v("$_logTag useBook: $value");
+    logger.v("$_logTag usePerfectDatabase: $value");
   }
 
   void _setDrawOnHumanExperience(GeneralSettings generalSettings, bool value) {
@@ -289,15 +288,16 @@ class GeneralSettingsPage extends StatelessWidget {
               onTap: () => _setAlgorithm(context, generalSettings),
             ),
             SettingsListTile.switchTile(
-              value: generalSettings.useBook,
+              value: generalSettings.usePerfectDatabase,
               onChanged: (bool val) {
-                _setUseBook(generalSettings, val);
+                _setUsePerfectDatabase(generalSettings, val);
                 if (val == true) {
+                  // TODO: Show dialog
                   //rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                  //    S.of(context).useBookDetail);
+                  //    S.of(context).usePerfectDatabaseDescription);
                 }
               },
-              titleString: "Use Book~",
+              titleString: S.of(context).usePerfectDatabase,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.drawOnHumanExperience,
