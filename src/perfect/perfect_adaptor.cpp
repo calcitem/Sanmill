@@ -252,6 +252,8 @@ Value perfect_search(Position *pos, Move &move)
     }
 
    move = Move(moves.at(0));
+
+   // TODO: Return the value of the position
    return VALUE_MOVE_PERFECT;
 }
 
