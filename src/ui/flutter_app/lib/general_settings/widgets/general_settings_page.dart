@@ -35,6 +35,7 @@ import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../models/general_settings.dart';
 
 part 'dialogs/reset_settings_alert_dialog.dart';
+part 'dialogs/use_perfect_database_dialog.dart';
 part 'modals/algorithm_modal.dart';
 part 'modals/duration_modal.dart';
 part 'modals/ratio_modal.dart';
@@ -123,6 +124,11 @@ class GeneralSettingsPage extends StatelessWidget {
 
     logger.v("$_logTag usePerfectDatabase: $value");
   }
+
+  void _showUsePerfectDatabaseDialog(BuildContext context) => showDialog(
+    context: context,
+    builder: (_) => const _UsePerfectDatabaseDialog(),
+  );
 
   void _setDrawOnHumanExperience(GeneralSettings generalSettings, bool value) {
     DB().generalSettings =
@@ -288,9 +294,7 @@ class GeneralSettingsPage extends StatelessWidget {
               onChanged: (bool val) {
                 _setUsePerfectDatabase(generalSettings, val);
                 if (val == true) {
-                  // TODO: Show dialog
-                  //rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                  //    S.of(context).usePerfectDatabaseDescription);
+                  _showUsePerfectDatabaseDialog(context);
                 }
               },
               titleString: S.of(context).usePerfectDatabase,
