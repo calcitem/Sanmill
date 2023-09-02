@@ -460,7 +460,7 @@ void MillGameWindow::initialize()
     ui.actionConsiderMobility->setChecked(gameOptions.getConsiderMobility());
     ui.actionAiIsLazy->setChecked(gameOptions.getAiIsLazy());
     ui.actionShuffling_R->setChecked(gameOptions.getShufflingEnabled());
-    ui.actionPerfect_AI->setChecked(gameOptions.getPerfectAiEnabled());
+    ui.actionPerfect_AI->setChecked(gameOptions.getUsePerfectDatabase());
     ui.actionIDS_I->setChecked(gameOptions.getIDSEnabled());
     ui.actionDepthExtension_D->setChecked(gameOptions.getDepthExtension());
     ui.actionResignIfMostLose_G->setChecked(gameOptions.getResignIfMostLose());
