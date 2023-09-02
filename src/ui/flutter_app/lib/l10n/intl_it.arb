@@ -1387,5 +1387,9 @@
   "viewAlgorithmGuide": "Vuoi visualizzare la guida per l'utente di questo algoritmo?",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Mostra l'indicatore del vantaggio di posizione",
-  "@showPositionalAdvantageIndicator": {}
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Utilizza il database perfetto",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Abilita questa opzione per utilizzare un database di giochi impeccabile generato tramite algoritmi all'avanguardia. Questa funzionalità integra sia le strategie di apertura che quelle di fine gioco per suggerire le mosse ottimali. Questa è la scelta preferita per i giocatori che cercano il massimo livello di precisione nel gioco. Creato attraverso meticolose tecniche computazionali, il database è progettato per offrire soluzioni di gioco quasi perfette.\n\nNota: se l'IA non riesce ad accedere al database, si rivolgerà ad algoritmi convenzionali per le decisioni di gioco. Quando il database è disponibile, il \"Livello di difficoltà\" diventa praticamente imbattibile e il \"Tempo di riflessione dell'IA\" subisce una drastica riduzione. Molte impostazioni all'interno delle opzioni \"Stile di gioco dell'IA\" verranno sovrascritte, poiché i risultati del database hanno la massima priorità.\n\nPer indicazioni su come sfruttare al meglio questo database impeccabile, fare clic qui.",
+  "@perfectDatabaseDescription": {}
 }

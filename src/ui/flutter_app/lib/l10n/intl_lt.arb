@@ -1387,5 +1387,9 @@
   "viewAlgorithmGuide": "Ar norėtumėte peržiūrėti šio algoritmo vartotojo vadovą?",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Rodyti padėties pranašumo indikatorių",
-  "@showPositionalAdvantageIndicator": {}
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Naudokite tobulą duomenų bazę",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Įjunkite šią parinktį, kad galėtumėte naudoti nepriekaištingą žaidimų duomenų bazę, sukurtą naudojant pažangiausius algoritmus. Ši funkcija integruoja ir žaidimo pradžios, ir pabaigos strategijas, kad pasiūlytų optimalius judesius. Tai yra tinkamiausias pasirinkimas žaidėjams, kurie siekia aukščiausio lygio žaidimo tikslumo. Sukurta naudojant kruopščius skaičiavimo metodus, duomenų bazė skirta pasiūlyti beveik tobulus žaidimo sprendimus.\n\nPastaba: jei AI nepavyks pasiekti duomenų bazės, jis priims įprastinius žaidimo sprendimų algoritmus. Kai duomenų bazė yra prieinama, „Sunkumo lygis“ tampa beveik neįveikiamas, o „AI mąstymo laikas“ smarkiai sumažėja. Daugelis „AI's Playstyle“ parinkčių nustatymų bus nepaisyti, nes duomenų bazės rezultatai turi didžiausią prioritetą.\n\nNorėdami gauti patarimų, kaip maksimaliai išnaudoti šią nepriekaištingą duomenų bazę, spustelėkite čia.",
+  "@perfectDatabaseDescription": {}
 }

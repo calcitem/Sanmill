@@ -1387,5 +1387,9 @@
   "viewAlgorithmGuide": "Dëshironi të shikoni udhëzuesin e përdoruesit për këtë algoritëm?",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Trego treguesin e avantazhit pozicional",
-  "@showPositionalAdvantageIndicator": {}
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Përdorni bazën e të dhënave të përsosur",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Aktivizo këtë opsion për të përdorur një bazë të dhënash të përsosur lojërash të krijuar përmes algoritmeve të fundit. Kjo veçori integron si strategjinë e hapjes ashtu edhe atë të fundit të lojës për të sugjeruar lëvizje optimale. Kjo është zgjedhja e preferuar për lojtarët që kërkojnë nivelin më të lartë të saktësisë në lojë. E krijuar përmes teknikave të përpikta llogaritëse, baza e të dhënave është krijuar për të ofruar zgjidhje pothuajse perfekte të lojës.\n\nShënim: Nëse AI nuk arrin të aksesojë bazën e të dhënave, ajo do të kthehet në algoritme konvencionale për vendimet e lojës. Kur baza e të dhënave është e disponueshme, 'Niveli i Vështirësisë' bëhet praktikisht i pamposhtur dhe 'Koha e Mendimit AI' përjeton një reduktim drastik. Shumë cilësime brenda opsioneve të \"Stilit të luajtjes së AI\" do të anashkalohen, pasi rezultatet e bazës së të dhënave kanë përparësinë më të lartë.\n\nPër udhëzime se si të shfrytëzoni sa më shumë këtë bazë të dhënash të përsosur, klikoni këtu.",
+  "@perfectDatabaseDescription": {}
 }

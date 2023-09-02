@@ -1387,5 +1387,9 @@
   "viewAlgorithmGuide": "Vil du se brugervejledningen til denne algoritme?",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Vis positionel fordelsindikator",
-  "@showPositionalAdvantageIndicator": {}
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Brug perfekt database",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Aktiver denne mulighed for at bruge en fejlfri spildatabase, der er genereret gennem banebrydende algoritmer. Denne funktion integrerer både åbnings- og slutspilsstrategier for at foreslå optimale træk. Dette er det foretrukne valg for spillere, der søger det højeste niveau af præcision i gameplay. Databasen er skabt gennem omhyggelige beregningsteknikker og er designet til at tilbyde næsten perfekte spilløsninger.\n\nBemærk: Hvis AI'en ikke får adgang til databasen, vil den vende sig til konventionelle algoritmer til gameplay-beslutninger. Når databasen er tilgængelig, bliver 'Sværhedsgraden' stort set uovertruffen, og 'AI Thinking Time' oplever en drastisk reduktion. Mange indstillinger inden for 'AI's Playstyle' muligheder vil blive tilsidesat, da databaseresultaterne har højeste prioritet.\n\nFor vejledning om, hvordan du får mest muligt ud af denne fejlfri database, klik her.",
+  "@perfectDatabaseDescription": {}
 }

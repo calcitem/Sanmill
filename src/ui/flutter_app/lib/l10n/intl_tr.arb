@@ -1387,5 +1387,9 @@
   "viewAlgorithmGuide": "Bu algoritmanın kullanım kılavuzunu görüntülemek ister misiniz?",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Konumsal avantaj göstergesini göster",
-  "@showPositionalAdvantageIndicator": {}
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Mükemmel Veritabanını Kullanın",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Bu seçeneği etkinleştirerek, keskin algoritmalar aracılığıyla üretilen kusursuz bir oyun veritabanı kullanın. Bu özellik, hem açılış hem de oyun sonu stratejilerini bütünleştirerek en uygun hamleleri önerir. Bu, oyun içinde en yüksek düzeyde hassasiyet arayan oyuncular için tercih edilen seçimdir. Titiz hesaplama teknikleri ile oluşturulan veritabanı, neredeyse mükemmel oyun çözümleri sunmayı amaçlar.\n\nNot: Eğer yapay zeka veritabanına erişemiyorsa, oyun kararları için geleneksel algoritmalara başvuracaktır. Veritabanı mevcut olduğunda, 'Zorluk Seviyesi' neredeyse yenilmez hale gelir ve 'Yapay Zeka Düşünme Süresi' büyük ölçüde azalır. 'Yapay Zeka'nın Oyun Tarzı' seçeneklerindeki birçok ayar, veritabanı sonuçlarının en yüksek önceliğe sahip olması nedeniyle geçersiz kılınacaktır.\n\nBu kusursuz veritabanından en iyi şekilde nasıl yararlanabileceğiniz konusunda rehberlik için buraya tıklayın.",
+  "@perfectDatabaseDescription": {}
 }

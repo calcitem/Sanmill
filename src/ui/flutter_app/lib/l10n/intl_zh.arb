@@ -1387,5 +1387,9 @@
   "viewAlgorithmGuide": "您想查看此算法的用户指南吗？",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "显示局面优劣指示器",
-  "@showPositionalAdvantageIndicator": {}
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "使用完美数据库",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "开启此选项以使用由尖端算法生成的完美游戏数据库。该功能集成了开局和残局策略以推荐最佳着法，是寻求游戏中最高精确度的玩家的首选。数据库通过精密的计算技术创建，旨在提供接近完美的游戏解决方案。\n\n注意：如果机器无法访问数据库，那么将转向传统算法进行游戏决策。当数据库可用时，“难度等级”实际上变得极高，而“机器思考时间”将大幅缩短。“机器的棋风”选项中的许多设置也将被覆盖，因为数据库结果具有最高优先级。\n\n如需了解如何使用该完美数据库，请点击这里。",
+  "@perfectDatabaseDescription": {}
 }

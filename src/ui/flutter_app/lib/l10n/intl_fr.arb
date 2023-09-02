@@ -1387,5 +1387,9 @@
   "viewAlgorithmGuide": "Souhaitez-vous consulter le guide d'utilisation de cet algorithme ?",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Afficher l'indicateur d'avantage positionnel",
-  "@showPositionalAdvantageIndicator": {}
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Utilisez la base de données parfaite",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Activez cette option pour utiliser une base de données de jeu impeccable générée par des algorithmes de pointe. Cette fonctionnalité intègre à la fois des stratégies d'ouverture et de fin de partie pour suggérer les meilleurs mouvements. C'est le choix préféré pour les joueurs qui recherchent le plus haut niveau de précision dans le gameplay. Créée grâce à des techniques de calcul minutieuses, la base de données est conçue pour offrir des solutions de jeu pratiquement parfaites.\n\nNote : Si l'IA ne parvient pas à accéder à la base de données, elle se tournera vers des algorithmes conventionnels pour les décisions de jeu. Lorsque la base de données est disponible, le 'Niveau de difficulté' devient pratiquement imbattable, et le 'Temps de réflexion de l'IA' connaît une réduction drastique. De nombreux paramètres dans les options 'Style de jeu de l'IA' seront également écrasés, car les résultats de la base de données ont la priorité la plus élevée.\n\nPour des conseils sur la façon d'exploiter au mieux cette base de données impeccable, cliquez ici.",
+  "@perfectDatabaseDescription": {}
 }
