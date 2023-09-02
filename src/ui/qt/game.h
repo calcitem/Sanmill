@@ -249,8 +249,8 @@ public slots:
     // Does AI record the game library
     void setLearnEndgame(bool enabled) const;
 
-    // Does Perfect AI
-    void setPerfectAi(bool enabled) const;
+    // Use Perfect Database
+    void setUsePerfectDatabase(bool enabled) const;
 
     // Does alpha beta search deepen iteratively
     void setIDS(bool enabled) const;

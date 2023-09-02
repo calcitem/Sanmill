@@ -215,8 +215,8 @@ void MillGameWindow::initialize()
     connect(ui.actionMctsAlgorithm, SIGNAL(toggled(bool)), game,
             SLOT(setMctsAlgorithm(bool)));
 
-    connect(ui.actionPerfect_AI, SIGNAL(toggled(bool)), game,
-            SLOT(setPerfectAi(bool)));
+    connect(ui.actionUsePerfectDatabase, SIGNAL(toggled(bool)), game,
+            SLOT(setUsePerfectDatabase(bool)));
 
     connect(ui.actionDrawOnHumanExperience, SIGNAL(toggled(bool)), game,
             SLOT(setDrawOnHumanExperience(bool)));
@@ -410,7 +410,6 @@ void MillGameWindow::initialize()
     alignmentGroup->addAction(ui.actionPvsAlgorithm);
     alignmentGroup->addAction(ui.actionMtdfAlgorithm);
     alignmentGroup->addAction(ui.actionMctsAlgorithm);
-    alignmentGroup->addAction(ui.actionPerfect_AI);
 
     switch (gameOptions.getAlgorithm()) {
     case 0:
@@ -418,7 +417,6 @@ void MillGameWindow::initialize()
         ui.actionPvsAlgorithm->setChecked(false);
         ui.actionMtdfAlgorithm->setChecked(false);
         ui.actionMctsAlgorithm->setChecked(false);
-        ui.actionPerfect_AI->setChecked(false);
         debugPrintf("Algorithm is Alpha-Beta.\n");
         break;
     case 1:
@@ -426,7 +424,6 @@ void MillGameWindow::initialize()
         ui.actionPvsAlgorithm->setChecked(true);
         ui.actionMtdfAlgorithm->setChecked(false);
         ui.actionMctsAlgorithm->setChecked(false);
-        ui.actionPerfect_AI->setChecked(false);
         debugPrintf("Algorithm is PVS.\n");
         break;
     case 2:
@@ -434,7 +431,6 @@ void MillGameWindow::initialize()
         ui.actionPvsAlgorithm->setChecked(false);
         ui.actionMtdfAlgorithm->setChecked(true);
         ui.actionMctsAlgorithm->setChecked(false);
-        ui.actionPerfect_AI->setChecked(false);
         debugPrintf("Algorithm is MTD(f).\n");
         break;
     case 3:
@@ -442,16 +438,10 @@ void MillGameWindow::initialize()
         ui.actionPvsAlgorithm->setChecked(false);
         ui.actionMtdfAlgorithm->setChecked(false);
         ui.actionMctsAlgorithm->setChecked(true);
-        ui.actionPerfect_AI->setChecked(false);
         debugPrintf("Algorithm is MCTS.\n");
         break;
     default:
-        ui.actionAlphaBetaAlgorithm->setChecked(false);
-        ui.actionPvsAlgorithm->setChecked(false);
-        ui.actionMtdfAlgorithm->setChecked(false);
-        ui.actionMctsAlgorithm->setChecked(false);
-        ui.actionPerfect_AI->setChecked(true);
-        debugPrintf("Algorithm is Retrograde Analysis.\n");
+        assert(false);
         break;
     }
 
@@ -460,7 +450,8 @@ void MillGameWindow::initialize()
     ui.actionConsiderMobility->setChecked(gameOptions.getConsiderMobility());
     ui.actionAiIsLazy->setChecked(gameOptions.getAiIsLazy());
     ui.actionShuffling_R->setChecked(gameOptions.getShufflingEnabled());
-    ui.actionPerfect_AI->setChecked(gameOptions.getUsePerfectDatabase());
+    ui.actionUsePerfectDatabase->setChecked(
+        gameOptions.getUsePerfectDatabase());
     ui.actionIDS_I->setChecked(gameOptions.getIDSEnabled());
     ui.actionDepthExtension_D->setChecked(gameOptions.getDepthExtension());
     ui.actionResignIfMostLose_G->setChecked(gameOptions.getResignIfMostLose());

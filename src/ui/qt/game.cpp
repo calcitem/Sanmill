@@ -146,7 +146,6 @@ void Game::loadSettings()
     setLearnEndgame(
         empty ? false :
                 settings->value("Options/LearnEndgameEnabled").toBool());
-    setPerfectAi(empty ? false : settings->value("Options/PerfectAI").toBool());
     setIDS(empty ? false : settings->value("Options/IDS").toBool());
     setDepthExtension(
         empty ? true : settings->value("Options/DepthExtension").toBool());
@@ -677,7 +676,7 @@ void Game::setPerfectDatabasePath(string val) const
     settings->setValue("Options/PerfectDatabase", QString::fromStdString(val));
 }
 
-void Game::setPerfectAi(bool enabled) const
+void Game::setUsePerfectDatabase(bool enabled) const
 {
 #if 0
     // TODO: Show dialog twice when launching
@@ -689,7 +688,7 @@ void Game::setPerfectAi(bool enabled) const
 #endif
 
     gameOptions.setUsePerfectDatabase(enabled);
-    settings->setValue("Options/PerfectAI", enabled);
+    settings->setValue("Options/UsePerfectDatabase", enabled);
 
 #if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
     if (enabled) {

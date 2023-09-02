@@ -227,7 +227,7 @@
      <x>0</x>
      <y>0</y>
      <width>685</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -324,8 +324,8 @@
     <addaction name="actionPvsAlgorithm"/>
     <addaction name="actionMtdfAlgorithm"/>
     <addaction name="actionMctsAlgorithm"/>
-    <addaction name="actionPerfect_AI"/>
     <addaction name="separator"/>
+    <addaction name="actionUsePerfectDatabase"/>
     <addaction name="actionDrawOnHumanExperience"/>
     <addaction name="actionConsiderMobility"/>
     <addaction name="actionIDS_I"/>
@@ -1316,7 +1316,7 @@
     <string>Opening Book (WIP)</string>
    </property>
   </action>
-    <action name="actionAlphaBetaAlgorithm">
+  <action name="actionAlphaBetaAlgorithm">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1327,7 +1327,7 @@
     <string>Alpha-Beta Algorithm </string>
    </property>
   </action>
-    <action name="actionPvsAlgorithm">
+  <action name="actionPvsAlgorithm">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1338,7 +1338,7 @@
     <string>PVS Algorithm</string>
    </property>
   </action>
-    <action name="actionMtdfAlgorithm">
+  <action name="actionMtdfAlgorithm">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1358,17 +1358,6 @@
    </property>
    <property name="text">
     <string>MCTS Algorithm</string>
-   </property>
-  </action>
-  <action name="actionPerfect_AI">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Perfect AI</string>
    </property>
   </action>
   <action name="actionAiIsLazy">
@@ -1410,6 +1399,14 @@
    </property>
    <property name="text">
     <string>Developer Mode</string>
+   </property>
+  </action>
+  <action name="actionUsePerfectDatabase">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Use Perfect Database</string>
    </property>
   </action>
  </widget>
