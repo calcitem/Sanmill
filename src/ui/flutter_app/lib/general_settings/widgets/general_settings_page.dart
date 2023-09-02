@@ -290,16 +290,17 @@ class GeneralSettingsPage extends StatelessWidget {
               trailingString: generalSettings.searchAlgorithm!.name,
               onTap: () => _setAlgorithm(context, generalSettings),
             ),
-            SettingsListTile.switchTile(
-              value: generalSettings.usePerfectDatabase,
-              onChanged: (bool val) {
-                _setUsePerfectDatabase(generalSettings, val);
-                if (val == true) {
-                  _showUsePerfectDatabaseDialog(context);
-                }
-              },
-              titleString: S.of(context).usePerfectDatabase,
-            ),
+            if (Platform.isWindows || Platform.isMacOS || Platform.isLinux)
+              SettingsListTile.switchTile(
+                value: generalSettings.usePerfectDatabase,
+                onChanged: (bool val) {
+                  _setUsePerfectDatabase(generalSettings, val);
+                  if (val == true) {
+                    _showUsePerfectDatabaseDialog(context);
+                  }
+                },
+                titleString: S.of(context).usePerfectDatabase,
+              ),
             SettingsListTile.switchTile(
               value: generalSettings.drawOnHumanExperience,
               onChanged: (bool val) {
