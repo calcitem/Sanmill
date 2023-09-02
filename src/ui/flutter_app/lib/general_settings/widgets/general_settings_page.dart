@@ -297,7 +297,7 @@ class GeneralSettingsPage extends StatelessWidget {
                   //    S.of(context).useBookDetail);
                 }
               },
-              titleString: S.of(context).useBook,
+              titleString: "Use Book~",
             ),
             SettingsListTile.switchTile(
               value: generalSettings.drawOnHumanExperience,
