@@ -21,9 +21,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "perfect_sector.h"
 #include "perfect_common.h"
 #include "perfect_hash.h"
-#include "perfect_sector.h"
 #include "perfect_symmetries.h"
 
 #include <chrono>
@@ -123,7 +123,7 @@ void Sector::write_header(FILE *file)
 void Sector::read_em_set(FILE *file)
 {
     auto start = std::chrono::steady_clock::now();
-    auto last_update = std::chrono::steady_clock::now(); 
+    auto last_update = std::chrono::steady_clock::now();
 
     int em_set_size = 0;
     size_t ret = fread(&em_set_size, 4, 1, file);
@@ -196,7 +196,7 @@ void Sector::read_em_set(FILE *file)
 
     // Print a new line after the loop ends to avoid subsequent outputs
     // on the same line
-    printf("\n"); 
+    printf("\n");
 }
 
 #ifdef DD
@@ -287,10 +287,11 @@ std::pair<sec_val, field2_t> Sector::extract(int i)
         a |= (int)read[j] << 8 * j;
 #endif
 
-    auto r = std::make_pair(sign_extend<field1_size, sec_val>(
-                           static_cast<sec_val>(a & ((1 << field1_size) - 1))),
-                       sign_extend<field2_size, field2_t>(
-                           static_cast<field2_t>(a >> field2_offset)));
+    auto r = std::make_pair(
+        sign_extend<field1_size, sec_val>(
+            static_cast<sec_val>(a & ((1 << field1_size) - 1))),
+        sign_extend<field2_size, field2_t>(
+            static_cast<field2_t>(a >> field2_offset)));
 
     return r;
 }

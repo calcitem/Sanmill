@@ -894,9 +894,8 @@ bool Position::remove_piece(Square s, bool updateRecord)
             return false;
         }
     } else if (!rule.mayRemoveFromMillsAlways &&
-               potential_mills_count(s, NOBODY)
-               && !is_all_in_mills(~sideToMove)
-    ) {
+               potential_mills_count(s, NOBODY) &&
+               !is_all_in_mills(~sideToMove)) {
         return false;
     }
 

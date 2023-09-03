@@ -37,9 +37,9 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
-#include <iostream> // for std::cerr
+#include <iostream>  // for std::cerr
 #include <map>
-#include <mutex> // for std::mutex and std::lock_guard
+#include <mutex>     // for std::mutex and std::lock_guard
 #include <stdexcept>
 #include <stdexcept> // for std::out_of_range
 #include <string>
@@ -84,7 +84,6 @@ public:
 
     static bool hasDatabase();
 };
-
 
 class Player
 {
@@ -134,7 +133,7 @@ public:
     std::map<Wrappers::WID, Wrappers::WSector> secs;
 
     PerfectPlayer();
-    virtual ~PerfectPlayer() {}
+    virtual ~PerfectPlayer() { }
 
     void enter(Game *_g) override;
 
@@ -157,7 +156,8 @@ public:
     // m has a withTaking step, where takeHon is not filled out. This function
     // creates a list, the elements of which are copies of m supplemented with
     // one possible removal each.
-    std::vector<AdvancedMove> withTakingMoves(const GameState &s, AdvancedMove &m);
+    std::vector<AdvancedMove> withTakingMoves(const GameState &s,
+                                              AdvancedMove &m);
 
     std::vector<AdvancedMove> onlyTakingMoves(const GameState &s);
 

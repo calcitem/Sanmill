@@ -25,11 +25,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PERFECT_WRAPPER_H_INCLUDED
 
 #include "perfect_common.h"
-#include "perfect_hash.h"
-#include "perfect_symmetries.h"
 #include "perfect_debug.h"
+#include "perfect_hash.h"
 #include "perfect_sector.h"
 #include "perfect_sector_graph.h"
+#include "perfect_symmetries.h"
 
 #include <cassert>
 #include <cmath> // for factorial function
@@ -268,10 +268,7 @@ public:
 #endif
     }
 
-    sec_val akey1()
-    {
-        return key1 + (s ? s->sval : virt_unique_sec_val());
-    }
+    sec_val akey1() { return key1 + (s ? s->sval : virt_unique_sec_val()); }
 
     std::string toString()
     {

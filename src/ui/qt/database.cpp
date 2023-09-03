@@ -21,9 +21,9 @@
 #include <QtCore>
 
 #include "config.h"
+#include "database.h"
 #include "misc.h"
 #include "option.h"
-#include "database.h"
 
 #if defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect/perfect_adaptor.h"
@@ -42,13 +42,11 @@ DatabaseDialog::DatabaseDialog(QWidget *parent, QString p)
 
     pathCombo->setEditable(true);
 
-    
     pathCombo->addItem(".");
     pathCombo->addItem("%USERPROFILE%\\Documents");
     pathCombo->addItem("E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_"
-                      "89adjusted");
+                       "89adjusted");
     pathCombo->addItem("D:\\Repo\\malom\\MalomAPI\\bin\\Debug");
-    
 
     // TODO: Use database path, not only dll
     const auto pathLabel = new QLabel(tr("&Path of MalomAPI.dll:"));
@@ -98,10 +96,7 @@ DatabaseDialog::DatabaseDialog(QWidget *parent, QString p)
     setWindowTitle(QGuiApplication::applicationDisplayName());
 }
 
-DatabaseDialog::~DatabaseDialog()
-{
-
-}
+DatabaseDialog::~DatabaseDialog() { }
 
 void DatabaseDialog::okAction()
 {

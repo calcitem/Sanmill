@@ -31,6 +31,7 @@ public:
     virtual std::vector<int> getMezok() = 0; // Returns the fields included in
                                              // the step
     virtual ~CMove() = default;
+
 protected:
     std::string mezoToString[24] = {"a4", "a7", "d7", "g7", "g4", "g1",
                                     "d1", "a1", "b4", "b6", "d6", "f6",

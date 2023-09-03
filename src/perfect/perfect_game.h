@@ -37,7 +37,7 @@ private:
     std::list<GameState> history; // GameStates in this (and previous) games
 
     // the node of the current GameState in history
-    std::list<GameState>::iterator current; 
+    std::list<GameState>::iterator current;
 
 public:
     GameState &s() const;

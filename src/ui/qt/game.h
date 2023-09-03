@@ -173,9 +173,7 @@ public slots:
 
     // Set rules
 
-    void setRule(int ruleNo,
-                 int stepLimited = 100,
-                 int timeLimited = 0);
+    void setRule(int ruleNo, int stepLimited = 100, int timeLimited = 0);
 
     // The game begins
     void gameStart();
@@ -385,7 +383,10 @@ public slots:
 
     [[nodiscard]] Test *getTest() const { return gameTest; }
 
-    [[nodiscard]] DatabaseDialog *getDatabaseDialog() const { return databaseDialog; }
+    [[nodiscard]] DatabaseDialog *getDatabaseDialog() const
+    {
+        return databaseDialog;
+    }
 
 protected:
     // bool eventFilter(QObject * watched, QEvent * event);

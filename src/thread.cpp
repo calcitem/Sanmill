@@ -137,32 +137,32 @@ void Thread::idle_loop()
         }
 
 #ifdef OPENING_BOOK
-            // gameOptions.getOpeningBook()
-            if (!openingBookDeque.empty()) {
-                char obc[16] = {0};
-                sq2str(obc);
-                bestMoveString = obc;
-                emitCommand();
-            } else {
+        // gameOptions.getOpeningBook()
+        if (!openingBookDeque.empty()) {
+            char obc[16] = {0};
+            sq2str(obc);
+            bestMoveString = obc;
+            emitCommand();
+        } else {
 #endif
-                const int ret = search();
+            const int ret = search();
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-                nnueTrainingDataBestValue = rootPos->sideToMove == WHITE ?
+            nnueTrainingDataBestValue = rootPos->sideToMove == WHITE ?
                                             bestvalue :
                                             -bestvalue;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
-                if (ret == 3 || ret == 50 || ret == 10) {
-                    debugPrintf("Draw\n\n");
-                    bestMoveString = "draw";
+            if (ret == 3 || ret == 50 || ret == 10) {
+                debugPrintf("Draw\n\n");
+                bestMoveString = "draw";
+                emitCommand();
+            } else {
+                bestMoveString = next_move();
+                if (bestMoveString != "" && bestMoveString != "error!") {
                     emitCommand();
-                } else {
-                    bestMoveString = next_move();
-                    if (bestMoveString != "" && bestMoveString != "error!") {
-                        emitCommand();
-                    }
                 }
+            }
 #ifdef OPENING_BOOK
         }
 #endif

@@ -21,8 +21,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "perfect_common.h"
 #include "perfect_symmetries.h"
+#include "perfect_common.h"
 #include "perfect_symmetries_slow.h"
 
 int (*slow[16])(int) = {rot90,

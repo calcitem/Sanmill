@@ -56,7 +56,7 @@ std::pair<int, Wrappers::gui_eval_elem2> Wrappers::WSector::hash(board a)
     }
     loaded_hashes.insert(std::make_pair(timestamp, tmp));
     // s doesn't work here, which is probably a compiler bug!
-    loaded_hashes_inv[tmp] = timestamp; 
+    loaded_hashes_inv[tmp] = timestamp;
 
     timestamp++;
 

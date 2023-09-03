@@ -127,9 +127,9 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   void _showUsePerfectDatabaseDialog(BuildContext context) => showDialog(
-    context: context,
-    builder: (_) => const _UsePerfectDatabaseDialog(),
-  );
+        context: context,
+        builder: (_) => const _UsePerfectDatabaseDialog(),
+      );
 
   void _setDrawOnHumanExperience(GeneralSettings generalSettings, bool value) {
     DB().generalSettings =

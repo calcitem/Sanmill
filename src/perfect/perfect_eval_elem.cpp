@@ -21,8 +21,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "perfect_common.h"
 #include "perfect_eval_elem.h"
+#include "perfect_common.h"
 
 #include <cassert>
 
@@ -208,8 +208,7 @@ eval_elem2 eval_elem2::corr(int corr)
     sec_val new_key1 = static_cast<int16_t>(key1 + corr);
 
     // magic, don't touch!
-    return eval_elem2 {new_key1,
-                       sign((long long)new_key1 * key1) * key2}; 
+    return eval_elem2 {new_key1, sign((long long)new_key1 * key1) * key2};
 }
 
 bool eval_elem2::operator<(const eval_elem2 &b) const

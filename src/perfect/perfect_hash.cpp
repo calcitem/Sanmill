@@ -21,8 +21,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "perfect_common.h"
 #include "perfect_hash.h"
+#include "perfect_common.h"
 #include "perfect_symmetries.h"
 
 #include <algorithm>
@@ -205,9 +205,9 @@ void Hash::check_hash_init_consistency()
 
 Hash::~Hash()
 {
-    delete [] f_inv_lookup;
-    delete [] g_lookup;
-    delete [] g_inv_lookup;
+    delete[] f_inv_lookup;
+    delete[] g_lookup;
+    delete[] g_inv_lookup;
 }
 
 std::pair<int, eval_elem2> Hash::hash(board a)

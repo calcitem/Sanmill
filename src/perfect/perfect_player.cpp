@@ -36,7 +36,7 @@
 #include <iostream>
 #include <iostream> // for std::cerr
 #include <map>
-#include <mutex> // for std::mutex and std::lock_guard
+#include <mutex>    // for std::mutex and std::lock_guard
 #include <random>
 #include <stdexcept>
 #include <stdexcept> // for std::out_of_range
@@ -111,7 +111,6 @@ void Player::quit()
         return;
     g = nullptr;
 }
-
 
 PerfectPlayer::PerfectPlayer()
 {
@@ -193,8 +192,8 @@ std::vector<AdvancedMove> PerfectPlayer::setMoves(const GameState &s)
     std::vector<AdvancedMove> r;
     for (int i = 0; i < 24; ++i) {
         if (s.T[i] == -1) {
-            r.push_back(AdvancedMove {i, i, CMoveType::SetMove, makesMill(s, -1, i),
-                                 false, 0});
+            r.push_back(AdvancedMove {i, i, CMoveType::SetMove,
+                                      makesMill(s, -1, i), false, 0});
         }
     }
     return r;
@@ -208,7 +207,7 @@ std::vector<AdvancedMove> PerfectPlayer::slideMoves(const GameState &s)
             if (s.T[i] == s.sideToMove && s.T[j] == -1 &&
                 (futureKorongCount(s) == 3 || Rules::boardGraph[i][j])) {
                 r.push_back(AdvancedMove {i, j, CMoveType::SlideMove,
-                                     makesMill(s, i, j), false, 0});
+                                          makesMill(s, i, j), false, 0});
             }
         }
     }
@@ -219,7 +218,7 @@ std::vector<AdvancedMove> PerfectPlayer::slideMoves(const GameState &s)
 // creates a list, the elements of which are copies of m supplemented with one
 // possible removal each.
 std::vector<AdvancedMove> PerfectPlayer::withTakingMoves(const GameState &s,
-                                                    AdvancedMove &m)
+                                                         AdvancedMove &m)
 {
     std::vector<AdvancedMove> r;
     bool everythingInMill = true;
@@ -253,7 +252,8 @@ std::vector<AdvancedMove> PerfectPlayer::onlyTakingMoves(const GameState &s)
     for (int i = 0; i < 24; ++i) {
         if (s.T[i] == 1 - s.sideToMove && (!isMill(s, i) || everythingInMill)) {
             r.push_back(AdvancedMove {0, 0, CMoveType::SlideMove, false, true,
-                                 i}); // Assuming default values for hon and hov
+                                      i}); // Assuming default values for hon
+                                           // and hov
         }
     }
     return r;
@@ -292,8 +292,8 @@ std::vector<AdvancedMove> PerfectPlayer::getMoveList(const GameState &s)
             if (!ms0[i].withTaking) {
                 ms.push_back(ms0[i]);
             } else {
-                std::vector<AdvancedMove> withTakingMovesResult = withTakingMoves(
-                    s, ms0[i]);
+                std::vector<AdvancedMove> withTakingMovesResult =
+                    withTakingMoves(s, ms0[i]);
                 ms.insert(ms.end(), withTakingMovesResult.begin(),
                           withTakingMovesResult.end());
             }
@@ -370,7 +370,7 @@ std::vector<AdvancedMove> PerfectPlayer::goodMoves(const GameState &s)
 
 int PerfectPlayer::NGMAfterMove(const GameState &s, AdvancedMove &m)
 {
-    return numGoodMoves(makeMoveInState(s, m)); 
+    return numGoodMoves(makeMoveInState(s, m));
 }
 
 template <typename T>
@@ -391,7 +391,7 @@ void PerfectPlayer::sendMoveToGUI(AdvancedMove m)
             g->makeMove(new MoveKorong(m.hon, m.hov));
         }
     } else {
-        g->makeMove(new LeveszKorong(m.takeHon)); 
+        g->makeMove(new LeveszKorong(m.takeHon));
     }
 }
 

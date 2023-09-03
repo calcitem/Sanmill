@@ -39,14 +39,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define RULE_VARIANT STANDARD // STANDARD, MORABARABA, or LASKER
 
-#define FULL_BOARD_IS_DRAW 1 // 0 or 1
+#define FULL_BOARD_IS_DRAW 1  // 0 or 1
 
-//#define FULL_SECTOR_GRAPH //extended solution //comment or uncomment
+// #define FULL_SECTOR_GRAPH //extended solution //comment or uncomment
 
 #define DD // distinguish draws (ultra) //comment or uncomment
 
-//#define STONE_DIFF //value of sectors is the stone difference (otherwise, get
-// values from the .secval file) //comment or uncomment
+// #define STONE_DIFF //value of sectors is the stone difference (otherwise, get
+//  values from the .secval file) //comment or uncomment
 
 //-------------------------------------
 
@@ -66,7 +66,7 @@ static_assert(false, "sec_val range");
 #ifndef STONE_DIFF
 const int eval_struct_size = 3; // byte
 #if RULE_VARIANT == STANDARD
-const int field2_offset = 12; // bit
+const int field2_offset = 12;   // bit
 #else
 const int field2_offset = 14; // bit
 #endif
@@ -137,7 +137,7 @@ const int max_ksz = 12;
 
 #ifdef FULL_SECTOR_GRAPH
 const int max_ksz = 12;
-//#pragma message ("Warning: max_ksz leveve")
+// #pragma message ("Warning: max_ksz leveve")
 #endif
 
 extern std::string sec_val_path;
@@ -148,8 +148,7 @@ extern std::string sec_val_fname;
 // The Controller automatically makes
 // this, if the file doesn't exist.
 const std::string movegen_file = (std::string) "C:\\malom_data_aux\\" +
-                                 VARIANT_NAME +
-                            ".movegen";
+                                 VARIANT_NAME + ".movegen";
 
 typedef int64_t board;
 
@@ -185,7 +184,7 @@ struct manual_popcnt
 #define WRAPPER
 #endif
 
-//#define STATISTICS
+// #define STATISTICS
 
 #ifdef STATISTICS
 #ifdef DD
@@ -218,10 +217,7 @@ struct val
         return std::make_tuple(static_cast<sec_val>(-abs(key1)), key2);
     }
 
-    bool operator<(const val &o) const
-    {
-        return tr() < o.tr();
-    }
+    bool operator<(const val &o) const { return tr() < o.tr(); }
     bool operator<=(const val &o) const { return tr() <= o.tr(); }
     bool operator>(const val &o) const { return tr() > o.tr(); }
     bool operator>=(const val &o) const { return tr() >= o.tr(); }
@@ -271,10 +267,7 @@ struct Id
 #endif
     }
 
-    bool twine() const
-    {
-        return !eks() && !transient();
-    }
+    bool twine() const { return !eks() && !transient(); }
 
     std::string file_name()
     {
@@ -288,22 +281,21 @@ struct Id
     bool operator<(const Id &o) const
     {
         return std::make_pair(std::make_pair(W, B), std::make_pair(WF, BF)) <
-               std::make_pair(std::make_pair(o.W, o.B), std::make_pair(o.WF, o.BF));
+               std::make_pair(std::make_pair(o.W, o.B),
+                              std::make_pair(o.WF, o.BF));
     }
     bool operator>(const Id &o) const
     {
         return std::make_pair(std::make_pair(W, B), std::make_pair(WF, BF)) >
-               std::make_pair(std::make_pair(o.W, o.B), std::make_pair(o.WF, o.BF));
+               std::make_pair(std::make_pair(o.W, o.B),
+                              std::make_pair(o.WF, o.BF));
     }
 
     bool operator==(const Id &o) const
     {
         return W == o.W && B == o.B && WF == o.WF && BF == o.BF;
     }
-    bool operator!=(const Id &o) const
-    {
-        return !(*this == o);
-    }
+    bool operator!=(const Id &o) const { return !(*this == o); }
 
     std::string to_string()
     {

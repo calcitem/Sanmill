@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 #include <condition_variable>
 #include <mutex>
 #include <sstream>
@@ -25,8 +24,8 @@
 #include "misc.h"
 #include "option.h"
 #include "perfect_adaptor.h"
-#include "position.h"
 #include "perfect_api.h"
+#include "position.h"
 
 #ifdef GABOR_MALOM_PERFECT_AI
 #define USE_DEPRECATED_CLR_API_WITHOUT_WARNING
@@ -61,7 +60,6 @@ int perfect_exit()
 
 int perfect_reset()
 {
-    
     perfect_init();
 
     return 0;
@@ -241,8 +239,8 @@ Value perfect_search(const Position *pos, Move &move)
         int moveBitboard = GetBestMove(whiteBitboard, blackBitboard,
                                        whiteStonesToPlace, blackStonesToPlace,
                                        playerToMove, onlyStoneTaking);
-        moves = convertBitboardMove(
-            whiteBitboard, blackBitboard, playerToMove, moveBitboard);
+        moves = convertBitboardMove(whiteBitboard, blackBitboard, playerToMove,
+                                    moveBitboard);
 
         if (moves.size() == 2) {
             malom_remove_move = moves.at(1);
@@ -252,10 +250,10 @@ Value perfect_search(const Position *pos, Move &move)
         return VALUE_UNKNOWN;
     }
 
-   move = Move(moves.at(0));
+    move = Move(moves.at(0));
 
-   // TODO: Return the value of the position
-   return VALUE_MOVE_PERFECT;
+    // TODO: Return the value of the position
+    return VALUE_MOVE_PERFECT;
 }
 
 #endif // GABOR_MALOM_PERFECT_AI

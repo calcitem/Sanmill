@@ -38,7 +38,7 @@ int perfect_test(int argc, char *argv[])
         sec_val_path = argv[1];
     }
 
-    //int res = MalomSolutionAccess::getBestMove(0, 0, 9, 9, 0, false);
+    // int res = MalomSolutionAccess::getBestMove(0, 0, 9, 9, 0, false);
     int res = MalomSolutionAccess::getBestMove(1, 2, 8, 8, 0, false); // Correct
                                                                       // output:
                                                                       // 16384

@@ -218,7 +218,7 @@ next:
         }
     }
     value = VALUE_ZERO;
-#endif // GABOR_MALOM_PERFECT_AI
+#endif                                  // GABOR_MALOM_PERFECT_AI
 
     if (gameOptions.getAlgorithm() != 2 /* !MTD(f) */
         && gameOptions.getIDSEnabled()) {

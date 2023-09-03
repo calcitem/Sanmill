@@ -130,8 +130,12 @@ void Game::loadSettings()
     setAlgorithm(empty ? 2 : settings->value("Options/Algorithm").toInt());
     setUsePerfectDatabase(
         empty ? false : settings->value("Options/UsePerfectDatabase").toBool());
-    setPerfectDatabasePath(
-        empty ? "." : settings->value("Options/PerfectDatabasePath").toString().toStdString());
+    setPerfectDatabasePath(empty ? "." :
+                                   settings
+                                       ->value("Options/"
+                                               "PerfectDatabasePath")
+                                       .toString()
+                                       .toStdString());
     setDrawOnHumanExperience(
         empty ? true :
                 settings->value("Options/DrawOnHumanExperience").toBool());
@@ -309,7 +313,7 @@ void Game::gameReset()
     }
 
     timeLimit = 0;
-     // gameOptions.getMoveTime();
+    // gameOptions.getMoveTime();
 
     // If the rule does not require timing, time1 and time2 represent the time
     // used
@@ -665,7 +669,8 @@ void Game::setUsePerfectDatabase(bool arg) noexcept
 void Game::setPerfectDatabasePath(string val) const
 {
     gameOptions.setPerfectDatabasePath(val);
-    settings->setValue("Options/PerfectDatabasePath", QString::fromStdString(val));
+    settings->setValue("Options/PerfectDatabasePath",
+                       QString::fromStdString(val));
 }
 
 void Game::setUsePerfectDatabase(bool enabled) const

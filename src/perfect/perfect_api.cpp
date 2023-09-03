@@ -20,9 +20,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "perfect_api.h"
-#include "perfect_player.h"
-#include "perfect_game_state.h"
 #include "option.h"
+#include "perfect_game_state.h"
+#include "perfect_player.h"
 
 #include <filesystem>
 
