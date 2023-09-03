@@ -450,7 +450,7 @@ Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState s)
         std::lock_guard<std::mutex> lock(evalLock);
         assert(!s.kle); // Assuming s has a boolean member kle
 
-        Wrappers::WID id(s.stoneCount[0], s.stoneCount[1],
+        Wrappers::WID Id(s.stoneCount[0], s.stoneCount[1],
                          Rules::maxKSZ - s.setStoneCount[0],
                          Rules::maxKSZ - s.setStoneCount[1]);
 
@@ -468,10 +468,10 @@ Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState s)
 
         if (s.sideToMove == 1) {
             a = boardNegate(a);
-            id.negate();
+            Id.negate();
         }
 
-        auto it = secs.find(id);
+        auto it = secs.find(Id);
         if (it == secs.end()) {
             throw std::runtime_error("Key not found in map");
         }

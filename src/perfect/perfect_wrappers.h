@@ -45,7 +45,7 @@ namespace Wrappers {
 
 class WSector;
 
-extern std::unordered_map<id, int> sector_sizes;
+extern std::unordered_map<Id, int> sector_sizes;
 static int f_inv_count[] {1,     4,     30,    158,    757,    2830,  8774,
                           22188, 46879, 82880, 124124, 157668, 170854};
 
@@ -58,13 +58,13 @@ struct WID
         , WF(wf)
         , BF(bf)
     { }
-    WID(id id)
-        : W(id.W)
-        , B(id.B)
-        , WF(id.WF)
-        , BF(id.BF)
+    WID(Id Id)
+        : W(Id.W)
+        , B(Id.B)
+        , WF(Id.WF)
+        , BF(Id.BF)
     { }
-    ::id tonat() { return ::id(W, B, WF, BF); }
+    ::Id tonat() { return ::Id(W, B, WF, BF); }
     void negate();
     WID operator-(WID s);
 
@@ -131,8 +131,8 @@ class WSector
 {
 public:
     ::Sector *s;
-    WSector(WID id)
-        : s(new ::Sector(id.tonat()))
+    WSector(WID Id)
+        : s(new ::Sector(Id.tonat()))
     { }
 
     std::pair<int, Wrappers::gui_eval_elem2> hash(board a);

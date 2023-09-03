@@ -29,8 +29,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <map>
 #include <string>
 
-extern std::map<id, sec_val> sec_vals;
-extern std::map<sec_val, id> inv_sec_vals;
+extern std::map<Id, sec_val> sec_vals;
+extern std::map<sec_val, Id> inv_sec_vals;
 extern sec_val virt_loss_val, virt_win_val;
 
 std::string sec_val_to_sec_name(sec_val v);

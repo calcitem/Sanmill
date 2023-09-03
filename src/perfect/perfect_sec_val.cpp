@@ -27,10 +27,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Be careful: In the case of STONE_DIFF,
 // there are also sectors that do not exist at all.
-std::map<id, sec_val> sec_vals;
+std::map<Id, sec_val> sec_vals;
 
 #ifndef STONE_DIFF
-std::map<sec_val, id> inv_sec_vals;
+std::map<sec_val, Id> inv_sec_vals;
 #endif
 sec_val virt_loss_val = 0, virt_win_val = 0;
 
@@ -57,7 +57,7 @@ void init_sec_vals()
         int w, b, wf, bf;
         int16_t v;
         FSCANF(f, "%d %d %d %d  %hd\n", &w, &b, &wf, &bf, &v);
-        sec_vals[id(w, b, wf, bf)] = v;
+        sec_vals[Id(w, b, wf, bf)] = v;
     }
     fclose(f);
 #else
@@ -65,7 +65,7 @@ void init_sec_vals()
         for (int WF = 0; WF <= max_ksz; WF++) {
             for (int B = 0; B <= max_ksz; B++) {
                 for (int BF = 0; BF <= max_ksz; BF++) {
-                    id s = id {W, WF, B, BF};
+                    Id s = Id {W, WF, B, BF};
                     sec_vals[s] = s.W + s.WF - s.B - s.BF;
                 }
             }
@@ -89,7 +89,7 @@ void init_sec_vals()
                          // sectors (which btw don't get here) are non-0)
             assert(!inv_sec_vals.count(sv.second)); // non-NTREKS sec_vals
                                                     // should be unique
-            inv_sec_vals[sv.second] = id(sv.first);
+            inv_sec_vals[sv.second] = Id(sv.first);
         }
     }
 #endif

@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "perfect_wrappers.h"
 
-std::unordered_map<id, int> sector_sizes;
+std::unordered_map<Id, int> sector_sizes;
 
 // This manages the lookup tables of the hash function: it keeps them in memory
 // for a few most recently accessed sectors.
@@ -77,7 +77,7 @@ void Wrappers::WID::negate()
 
 Wrappers::WID operator-(Wrappers::WID s)
 {
-    id r = s.tonat();
+    Id r = s.tonat();
     r.negate();
     return Wrappers::WID(r);
 }

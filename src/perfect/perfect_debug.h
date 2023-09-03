@@ -32,6 +32,6 @@ const char *toclp(board b);
 
 std::string toclp2(board b);
 
-std::string toclp3(board b, id id);
+std::string toclp3(board b, Id Id);
 
 #endif // PERFECT_DEBUG_H_INCLUDED

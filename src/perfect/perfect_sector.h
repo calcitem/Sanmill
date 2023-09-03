@@ -58,9 +58,9 @@ public:
     int B {0};
     int WF {0};
     int BF {0};
-    id id;
+    Id id;
 
-    Sector(::id the_id);
+    Sector(::Id the_id);
 
     eval_elem2 get_eval(int i);
     eval_elem_sym2 get_eval_inner(int i);
@@ -84,7 +84,7 @@ public:
 };
 
 extern Sector *sectors[max_ksz + 1][max_ksz + 1][max_ksz + 1][max_ksz + 1];
-#define sectors(id) (sectors[(id).W][(id).B][(id).WF][(id).BF])
+#define sectors(Id) (sectors[(Id).W][(Id).B][(Id).WF][(Id).BF])
 
 extern std::vector<Sector *> sector_objs;
 

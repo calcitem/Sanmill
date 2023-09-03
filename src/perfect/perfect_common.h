@@ -229,23 +229,23 @@ struct val
     val undo_negate() { return val(-key1, key2 + 1); }
 };
 
-struct id
+struct Id
 {
     int W {0};
     int B {0};
     int WF {0};
     int BF {0};
 
-    id(int w, int b, int wf, int bf)
+    Id(int w, int b, int wf, int bf)
         : W(w)
         , B(b)
         , WF(wf)
         , BF(bf)
     { }
 
-    id() { }
+    Id() { }
 
-    static id null() { return id {-1, -1, -1, -1}; }
+    static Id null() { return Id {-1, -1, -1, -1}; }
 
     void negate()
     {
@@ -253,9 +253,9 @@ struct id
         std::swap(WF, BF);
     }
 
-    id operator-() const
+    Id operator-() const
     {
-        id r = *this;
+        Id r = *this;
         r.negate();
         return r;
     }
@@ -285,22 +285,22 @@ struct id
         return r;
     }
 
-    bool operator<(const id &o) const
+    bool operator<(const Id &o) const
     {
         return std::make_pair(std::make_pair(W, B), std::make_pair(WF, BF)) <
                std::make_pair(std::make_pair(o.W, o.B), std::make_pair(o.WF, o.BF));
     }
-    bool operator>(const id &o) const
+    bool operator>(const Id &o) const
     {
         return std::make_pair(std::make_pair(W, B), std::make_pair(WF, BF)) >
                std::make_pair(std::make_pair(o.W, o.B), std::make_pair(o.WF, o.BF));
     }
 
-    bool operator==(const id &o) const
+    bool operator==(const Id &o) const
     {
         return W == o.W && B == o.B && WF == o.WF && BF == o.BF;
     }
-    bool operator!=(const id &o) const
+    bool operator!=(const Id &o) const
     {
         return !(*this == o);
     }
@@ -314,9 +314,9 @@ struct id
 };
 
 template <>
-struct std::hash<id>
+struct std::hash<Id>
 {
-    size_t operator()(const id &k) const
+    size_t operator()(const Id &k) const
     {
         return static_cast<size_t>(k.W) | (static_cast<size_t>(k.B) << 4) |
                (static_cast<size_t>(k.WF) << 8) |
