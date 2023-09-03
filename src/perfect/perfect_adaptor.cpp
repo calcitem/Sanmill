@@ -177,7 +177,7 @@ std::vector<Move> convertBitboardMove(int whiteBitboard, int blackBitboard,
     return moves;
 }
 
-Value perfect_search(Position *pos, Move &move)
+Value perfect_search(const Position *pos, Move &move)
 {
     if (malom_remove_move != MOVE_NONE) {
         Move ret = malom_remove_move;
