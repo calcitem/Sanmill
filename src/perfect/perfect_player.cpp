@@ -259,10 +259,13 @@ std::vector<AdvancedMove> PerfectPlayer::onlyTakingMoves(const GameState &s)
     return r;
 }
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4127)
 #pragma warning(push)
 #pragma warning(disable : 6285)
+#endif
+
 std::vector<AdvancedMove> PerfectPlayer::getMoveList(const GameState &s)
 {
     std::vector<AdvancedMove> ms0, ms;
@@ -300,8 +303,11 @@ std::vector<AdvancedMove> PerfectPlayer::getMoveList(const GameState &s)
     }
     return ms;
 }
+
+#ifdef _MSC_VER
 #pragma warning(pop)
 #pragma warning(pop)
+#endif
 
 GameState PerfectPlayer::makeMoveInState(const GameState &s, AdvancedMove &m)
 {

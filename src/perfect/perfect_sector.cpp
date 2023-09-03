@@ -37,12 +37,12 @@ std::vector<Sector *> sector_objs;
 const int sbufsize = 1024 * 1024;
 char sbuf[sbufsize]; // Caution
 
-Sector::Sector(::id id)
-    : W(id.W)
-    , B(id.B)
-    , WF(id.WF)
-    , BF(id.BF)
-    , id(id)
+Sector::Sector(::id the_id)
+    : W(the_id.W)
+    , B(the_id.B)
+    , WF(the_id.WF)
+    , BF(the_id.BF)
+    , id(the_id)
     , max_val(-1)
     , max_count(-1)
     , hash(nullptr)

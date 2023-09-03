@@ -96,10 +96,10 @@ int next_choose(int x)
 
 void init_collapse_lookup();
 
-Hash::Hash(int W, int B, Sector *s)
-    : W(W)
-    , B(B)
-    , s(s)
+Hash::Hash(int the_w, int the_b, Sector *sec)
+    : W(the_w)
+    , B(the_b)
+    , s(sec)
 {
     g_lookup = new int[1LL << (24 - W)];
 

@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "perfect_symmetries_slow.h"
 
-int id(int a)
+int func_id(int a)
 {
     return a;
 }

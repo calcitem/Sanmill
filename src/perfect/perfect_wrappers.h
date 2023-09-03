@@ -52,11 +52,11 @@ static int f_inv_count[] {1,     4,     30,    158,    757,    2830,  8774,
 struct WID
 {
     int W, B, WF, BF;
-    WID(int W, int B, int WF, int BF)
-        : W(W)
-        , B(B)
-        , WF(WF)
-        , BF(BF)
+    WID(int w, int b, int wf, int bf)
+        : W(w)
+        , B(b)
+        , WF(wf)
+        , BF(bf)
     { }
     WID(id id)
         : W(id.W)
@@ -115,9 +115,9 @@ struct eval_elem
     cas c;
     int x;
 
-    eval_elem(cas c, int x)
-        : c(c)
-        , x(x)
+    eval_elem(cas the_c, int the_x)
+        : c(the_c)
+        , x(the_x)
     { }
     eval_elem(::eval_elem e)
         : c(static_cast<cas>(e.c))
@@ -156,13 +156,13 @@ private:
 public:
     // The nezo point of key1 is s. However, if s is null, then
     // virt_unique_sec_val.
-    gui_eval_elem2(sec_val key1, int key2, Sector *s)
-        : key1 {key1}
-        , key2 {key2}
-        , s {s}
+    gui_eval_elem2(sec_val key_1, int key_2, Sector *sec)
+        : key1 {key_1}
+        , key2 {key_2}
+        , s {sec}
     { }
-    gui_eval_elem2(::eval_elem2 e, ::Sector *s)
-        : gui_eval_elem2 {e.key1, e.key2, s}
+    gui_eval_elem2(::eval_elem2 e, ::Sector *sec)
+        : gui_eval_elem2 {e.key1, e.key2, sec}
     { }
 
     gui_eval_elem2 undo_negate(WSector *sector)

@@ -205,8 +205,11 @@ bool Rules::alphaBetaAvailable()
            !Wrappers::Constants::extended;
 }
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4127)
+#endif
+
 void Rules::setVariant()
 {
     // Part of this is copy-pasted in MalomAPI
@@ -250,4 +253,7 @@ void Rules::setVariant()
         maxKSZ = 12;
     }
 }
+
+#ifdef _MSC_VER
 #pragma warning(pop)
+#endif

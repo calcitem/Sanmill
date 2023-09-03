@@ -44,9 +44,6 @@ class Sector
 
     std::map<int, int> em_set;
 
-    FILE* f { nullptr };
-
-
 #ifdef DD
     static const int header_size = 64;
 #else
@@ -63,20 +60,21 @@ public:
     int BF {0};
     id id;
 
-    Sector(::id id);
+    Sector(::id the_id);
 
     eval_elem2 get_eval(int i);
     eval_elem_sym2 get_eval_inner(int i);
 
 #ifdef DD
     std::pair<sec_val, field2_t> extract(int i);
-    void intract(int i, std::pair<sec_val, field2_t> x);
 #endif
 
     // Statistics:
     int max_val, max_count;
 
     Hash *hash {nullptr};
+
+    FILE *f {nullptr};
 
     void allocate_hash();
     void release_hash();

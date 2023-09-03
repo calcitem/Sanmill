@@ -46,8 +46,8 @@ struct wu
     std::set<wu *> parents;
     int child_count;
 
-    wu(::id id)
-        : id(id)
+    wu(::id myId)
+        : id(myId)
         , twine(false)
         , child_count(0) {};
 

@@ -26,9 +26,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <cassert>
 
-eval_elem_sym::eval_elem_sym(cas c, int x)
-    : c(c)
-    , x(x)
+eval_elem_sym::eval_elem_sym(cas the_c, int the_x)
+    : c(the_c)
+    , x(the_x)
 { }
 bool eval_elem_sym::operator==(const eval_elem_sym &o) const
 {
@@ -39,9 +39,9 @@ eval_elem_sym::eval_elem_sym(const eval_elem &o)
     , x(o.x)
 { }
 
-eval_elem::eval_elem(cas c, int x)
-    : c(c)
-    , x(x)
+eval_elem::eval_elem(cas the_c, int the_x)
+    : c(the_c)
+    , x(the_x)
 { }
 bool eval_elem::operator==(const eval_elem &o) const
 {
@@ -139,9 +139,9 @@ eval_elem_sym2::eval_elem_sym2(int c)
     : key1(0)
     , key2(c)
 { }
-eval_elem_sym2::eval_elem_sym2(sec_val key1, int key2)
-    : key1 {key1}
-    , key2 {key2}
+eval_elem_sym2::eval_elem_sym2(sec_val key_1, int key_2)
+    : key1 {key_1}
+    , key2 {key_2}
 { }
 
 eval_elem_sym2 eval_elem_sym2::make_sym(int s)

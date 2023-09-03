@@ -46,7 +46,7 @@ struct eval_elem
     enum cas { val, count };
     cas c;
     int x;
-    eval_elem(cas c, int x);
+    eval_elem(cas the_c, int the_x);
     bool operator==(const eval_elem &o) const;
     eval_elem(const eval_elem_sym &o);
     eval_elem(const eval_elem2 &o);
@@ -66,9 +66,9 @@ struct eval_elem2
     eval_elem2(val v);
     eval_elem2(int c);
     eval_elem2(eval_elem ee);
-    eval_elem2(sec_val key1, int key2)
-        : key1 {key1}
-        , key2 {key2}
+    eval_elem2(sec_val key_1, int key_2)
+        : key1 {key_1}
+        , key2 {key_2}
     { }
 
     val value() const;
@@ -104,7 +104,7 @@ struct eval_elem_sym2
     eval_elem_sym2(int c);
     static eval_elem_sym2 make_sym(int s);
     eval_elem_sym2(eval_elem_sym ee);
-    eval_elem_sym2(sec_val key1, int key2);
+    eval_elem_sym2(sec_val key_1, int key_2);
 
     val value() const;
     int count() const;

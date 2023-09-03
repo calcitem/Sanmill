@@ -40,7 +40,7 @@ int (*slow[16])(int) = {rot90,
                         swap_tt_vizszintes,
                         swap_tt_bslash,
                         swap_tt_slash,
-                        id};
+                        func_id};
 
 const int patsize = 8, patc = 1 << patsize;
 static_assert(24 % patsize == 0, "");

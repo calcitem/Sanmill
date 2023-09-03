@@ -200,9 +200,9 @@ struct val
     int key2 {0};
 
     val() { }
-    val(sec_val key1, int key2)
-        : key1(key1)
-        , key2(key2)
+    val(sec_val key_1, int key_2)
+        : key1(key_1)
+        , key2(key_2)
     {
         assert(key1); /* nem count */
     }
@@ -236,11 +236,11 @@ struct id
     int WF {0};
     int BF {0};
 
-    id(int W, int B, int WF, int BF)
-        : W(W)
-        , B(B)
-        , WF(WF)
-        , BF(BF)
+    id(int w, int b, int wf, int bf)
+        : W(w)
+        , B(b)
+        , WF(wf)
+        , BF(bf)
     { }
 
     id() { }

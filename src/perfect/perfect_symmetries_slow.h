@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef PERFECT_SYMMETRIES_SLOW_H_INCLUDED
 #define PERFECT_SYMMETRIES_SLOW_H_INCLUDED
 
-int id(int a);
+int func_id(int a);
 int rot90(int a);
 int rot180(int a);
 int rot270(int a);

@@ -46,7 +46,7 @@ class Hash
     Sector *s {nullptr};
 
 public:
-    Hash(int W, int B, Sector *s);
+    Hash(int the_w, int the_b, Sector *sec);
 
     std::pair<int, eval_elem2> hash(board a);
     board inv_hash(int h);
