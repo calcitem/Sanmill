@@ -24,7 +24,11 @@
 #include "perfect_game_state.h"
 #include "perfect_player.h"
 
+#if defined(__APPLE__)
+#include <unistd.h>
+#else
 #include <filesystem>
+#endif
 
 PerfectPlayer *MalomSolutionAccess::pp = nullptr;
 std::exception *MalomSolutionAccess::lastError = nullptr;
@@ -137,11 +141,24 @@ void MalomSolutionAccess::initializeIfNeeded()
 
     Rules::initRules();
     setVariantStripped();
+
     if (!Sectors::hasDatabase()) {
+        std::string currentPath;
+
+#if defined(__APPLE__)
+        char buffer[PATH_MAX];
+        if (getcwd(buffer, sizeof(buffer)) != NULL) {
+            currentPath = buffer;
+        } else {
+            currentPath = "Unknown";
+        }
+#else
+        currentPath = std::filesystem::current_path().string();
+#endif
+
         throw std::runtime_error("Database files not found in the current "
                                  "working directory (" +
-                                 std::filesystem::current_path().string() +
-                                 ")");
+                                 currentPath + ")");
     }
     pp = new PerfectPlayer();
 }
