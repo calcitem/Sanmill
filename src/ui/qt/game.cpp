@@ -673,7 +673,7 @@ void Game::setUsePerfectDatabase(bool arg) noexcept
 void Game::setPerfectDatabasePath(string val) const
 {
     gameOptions.setPerfectDatabasePath(val);
-    settings->setValue("Options/PerfectDatabase", QString::fromStdString(val));
+    settings->setValue("Options/PerfectDatabasePath", QString::fromStdString(val));
 }
 
 void Game::setUsePerfectDatabase(bool enabled) const

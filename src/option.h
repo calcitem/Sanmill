@@ -241,11 +241,11 @@ public:
         return usePerfectDatabase;
     }
 
-    void setPerfectDatabasePath(std::string val) noexcept { perfectDatabase = val; }
+    void setPerfectDatabasePath(std::string val) noexcept { perfectDatabasePath = val; }
 
     [[nodiscard]] std::string getPerfectDatabasePath() const noexcept
     {
-        return perfectDatabase;
+        return perfectDatabasePath;
     }
 
     // DrawOnHumanExperience
@@ -305,9 +305,9 @@ private:
 
     // TODO: Set this to the correct path
 #ifdef _DEBUG
-    std::string perfectDatabase {"E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted"};
+    std::string perfectDatabasePath {"E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted"};
 #else
-    std::string perfectDatabase {"."};
+    std::string perfectDatabasePath {"."};
 #endif
 };
 
