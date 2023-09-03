@@ -72,13 +72,23 @@ Sector::Sector(::Id the_id)
 template <class T>
 size_t fread1(T &x, FILE *file)
 {
-    return fread(&x, sizeof(x), 1, file);
+    size_t ret = fread(&x, sizeof(x), 1, file);
+    if (ret != 1) {
+        throw std::runtime_error("fread1 failed");
+    }
+    return ret;
 }
+
 template <class T>
 size_t fwrite1(T &x, FILE *file)
 {
-    return fwrite(&x, sizeof(x), 1, file);
+    size_t ret = fwrite(&x, sizeof(x), 1, file);
+    if (ret != 1) {
+        throw std::runtime_error("fwrite1 failed");
+    }
+    return ret;
 }
+
 void Sector::read_header(FILE *file)
 {
 #ifdef DD
@@ -116,10 +126,17 @@ void Sector::read_em_set(FILE *file)
     auto last_update = std::chrono::steady_clock::now(); 
 
     int em_set_size = 0;
-    fread(&em_set_size, 4, 1, file);
+    size_t ret = fread(&em_set_size, 4, 1, file);
+    if (ret != 1) {
+        throw std::runtime_error("Failed to read em_set_size");
+    }
+
     for (int i = 0; i < em_set_size; i++) {
         int e[2];
-        fread(e, 4, 2, file);
+        ret = fread(e, 4, 2, file);
+        if (ret != 2) {
+            throw std::runtime_error("Failed to read array 'e'");
+        }
         em_set[e[0]] = e[1];
 
         auto now = std::chrono::steady_clock::now();
@@ -206,25 +223,31 @@ eval_elem2 Sector::get_eval(int i)
 
 eval_elem_sym2 Sector::get_eval_inner(int i)
 {
+    size_t ret;
 #ifndef WRAPPER
     int resi = eval[i];
 #else
     fseek(f, i, SEEK_SET);
     unsigned char read;
-    fread(&read, 1, 1, f);
+    ret = fread(&read, 1, 1, f);
+    if (ret != 1) {
+        throw std::runtime_error("Failed to read 'read' variable");
+    }
     int resi = read;
 #endif
+
     if (resi == SPEC) {
         assert(em_set.count(i));
         int x = em_set[i];
         return x >= 0 ? eval_elem_sym(eval_elem_sym::val, x) :
                         eval_elem_sym(eval_elem_sym::count, -x);
-    } else
+    } else {
         return resi <= MAX_VAL ?
                    eval_elem_sym(eval_elem_sym::val, resi) :
                    (resi <= MAX_VAL + 16 ?
                         eval_elem_sym(eval_elem_sym::sym, resi - SPEC - 1) :
                         eval_elem_sym(eval_elem_sym::count, 255 - resi));
+    }
 }
 #endif
 
@@ -256,7 +279,10 @@ std::pair<sec_val, field2_t> Sector::extract(int i)
 #else
     fseek(f, header_size + eval_struct_size * i, SEEK_SET);
     unsigned char read[eval_struct_size];
-    fread(&read, 1, eval_struct_size, f);
+    size_t ret = fread(&read, 1, eval_struct_size, f);
+    if (ret != eval_struct_size) {
+        throw std::runtime_error("Failed to read the expected number of bytes");
+    }
     for (int j = 0; j < eval_struct_size; j++)
         a |= (int)read[j] << 8 * j;
 #endif
