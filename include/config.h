@@ -68,7 +68,7 @@
 
 // #define DEBUG_MODE
 
-constexpr auto DEFAULT_RULE_NUMBER = 2;
+constexpr auto DEFAULT_RULE_NUMBER = 0;
 
 constexpr auto DEPTH_ADJUST = 0;
 
