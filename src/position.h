@@ -147,12 +147,7 @@ public:
     void surrounded_pieces_count(Square s, int &ourPieceCount,
                                  int &theirPieceCount, int &bannedCount,
                                  int &emptyCount) const;
-    [[nodiscard]] bool is_all_surrounded(Color c
-#ifdef MADWEASEL_MUEHLE_RULE
-                                         ,
-                                         Square from = SQ_0, Square to = SQ_0
-#endif // MADWEASEL_MUEHLE_RULE
-    ) const;
+    [[nodiscard]] bool is_all_surrounded(Color c) const;
 
     static void print_board();
 

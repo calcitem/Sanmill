@@ -166,6 +166,5 @@
         "*.vcxproj": "cpp",
         "qgraphicsscenemouseevent": "cpp",
         "qvboxlayout": "cpp"
-    },
-    "cmake.sourceDirectory": "${workspaceFolder}/src/ui/flutter_app/linux"
+    }
 }

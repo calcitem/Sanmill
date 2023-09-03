@@ -170,18 +170,6 @@ public:
         return algorithm == 3;
     }
 
-    void setRetrogradeAnalysisAlgorithm(bool enabled) noexcept
-    {
-        if (enabled) {
-            algorithm = 4;
-        }
-    }
-
-    [[nodiscard]] bool getRetrogradeAnalysisAlgorithm() const noexcept
-    {
-        return algorithm == 4;
-    }
-
     void setAlgorithm(int val) noexcept
     {
         algorithm = val;

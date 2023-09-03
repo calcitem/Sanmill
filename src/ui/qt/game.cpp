@@ -253,7 +253,7 @@ void Game::gameReset()
         moveHistory.emplace_back(bak);
     }
 
-#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
+#if defined(GABOR_MALOM_PERFECT_AI)
     if (gameOptions.getUsePerfectDatabase()) {
         perfect_reset();
     }
@@ -649,15 +649,6 @@ void Game::setMctsAlgorithm(bool enabled) const
     }
 }
 
-void Game::setRetrogradeAnalysisAlgorithm(bool enabled) const
-{
-    if (enabled) {
-        gameOptions.setAlgorithm(4);
-        settings->setValue("Options/Algorithm", 4);
-        debugPrintf("Algorithm is changed to Retrograde Analysis.\n");
-    }
-}
-
 void Game::setAlgorithm(int val) const
 {
     gameOptions.setAlgorithm(val);
@@ -690,7 +681,7 @@ void Game::setUsePerfectDatabase(bool enabled) const
     gameOptions.setUsePerfectDatabase(enabled);
     settings->setValue("Options/UsePerfectDatabase", enabled);
 
-#if defined(MADWEASEL_MUEHLE_PERFECT_AI) || defined(GABOR_MALOM_PERFECT_AI)
+#if defined(GABOR_MALOM_PERFECT_AI)
     if (enabled) {
         perfect_reset();
     } else {
@@ -1074,12 +1065,6 @@ bool Game::actionPiece(QPointF p)
     }
 
     if (result) {
-#if defined(MADWEASEL_MUEHLE_PERFECT_AI)
-        if (gameOptions.getPerfectAiEnabled()) {
-            perfect_command(position.record);
-        }
-#endif
-
         moveHistory.emplace_back(position.record);
 
         if (strlen(position.record) > strlen("-(1,2)")) {
@@ -1217,29 +1202,22 @@ bool Game::command(const string &cmd, bool update /* = true */)
         gameStart();
     }
 
-#ifdef MADWEASEL_MUEHLE_RULE
-    if (position.get_phase() != Phase::gameOver) {
-#endif // MADWEASEL_MUEHLE_RULE
+    debugPrintf("Computer: %s\n\n", cmd.c_str());
 
-        debugPrintf("Computer: %s\n\n", cmd.c_str());
-
-        moveHistory.emplace_back(cmd);
+    moveHistory.emplace_back(cmd);
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-        nnueTrainingDataBestMove = cmd;
+    nnueTrainingDataBestMove = cmd;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
-        if (cmd.size() > strlen("-(1,2)")) {
-            posKeyHistory.push_back(position.key());
-        } else {
-            posKeyHistory.clear();
-        }
-
-        if (!position.command(cmd.c_str()))
-            return false;
-#ifdef MADWEASEL_MUEHLE_RULE
+    if (cmd.size() > strlen("-(1,2)")) {
+        posKeyHistory.push_back(position.key());
+    } else {
+        posKeyHistory.clear();
     }
-#endif // MADWEASEL_MUEHLE_RULE
+
+    if (!position.command(cmd.c_str()))
+        return false;
 
     sideToMove = position.side_to_move();
 
@@ -1873,13 +1851,6 @@ void Game::setTips()
         case GameOverReason::loseLessThanThree:
             break;
         case GameOverReason::loseNoWay:
-#ifdef MADWEASEL_MUEHLE_RULE
-            if (!isInverted) {
-                turnStr = char_to_string(color_to_char(~p.sideToMove));
-            } else {
-                turnStr = char_to_string(color_to_char(p.sideToMove));
-            }
-#endif
             reasonStr = turnStr + " is blocked.";
             break;
         case GameOverReason::loseBoardIsFull:

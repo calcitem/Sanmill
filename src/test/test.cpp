@@ -218,13 +218,6 @@ void Test::readFromMemory()
             memset(to, 0, SHARED_MEMORY_SIZE);
             sharedMemory.unlock();
             readStr = str;
-
-#if defined(MADWEASEL_MUEHLE_PERFECT_AI)
-            if (gameOptions.getPerfectAiEnabled()) {
-                perfect_command(str.toStdString().c_str());
-            }
-#endif
-
             emit command(str.toStdString());
         }
     }
