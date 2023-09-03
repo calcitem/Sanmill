@@ -1035,7 +1035,7 @@ void MillGameWindow::on_actionEngine_E_triggered()
 
 void MillGameWindow::on_actionViewHelp_V_triggered()
 {
-    QDesktopServices::openUrl(QUrl("https://github.com/calcitem/SanMill/"));
+    QDesktopServices::openUrl(QUrl("https://github.com/calcitem/Sanmill/wiki/Perfect-Database"));
 }
 
 void MillGameWindow::on_actionWeb_W_triggered()
