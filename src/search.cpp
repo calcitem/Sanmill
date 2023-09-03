@@ -164,9 +164,13 @@ int Thread::search()
             if (gameOptions.getUsePerfectDatabase() == true) {
                 value = perfect_search(rootPos, bestMove);
                 if (value != VALUE_UNKNOWN) {
+                    debugPrintf("perfect_search OK.\n");
                     goto next;
+                } else {
+                    debugPrintf("perfect_search failed.\n");
                 }
             }
+            value = VALUE_ZERO;
 #endif // GABOR_MALOM_PERFECT_AI
 
             if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
@@ -207,9 +211,13 @@ next:
     if (gameOptions.getUsePerfectDatabase() == true) {
         value = perfect_search(rootPos, bestMove);
         if (value != VALUE_UNKNOWN) {
+            debugPrintf("perfect_search OK.\n");
             goto out;
+        } else {
+            debugPrintf("perfect_search failed.\n");
         }
     }
+    value = VALUE_ZERO;
 #endif // GABOR_MALOM_PERFECT_AI
 
     if (gameOptions.getAlgorithm() != 2 /* !MTD(f) */
