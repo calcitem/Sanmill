@@ -26,22 +26,40 @@
 #include <string>
 
 #if defined(_WIN32)
+
 #define SPRINTF(buffer, buffer_size, format, ...) \
     sprintf_s(buffer, buffer_size, format, ##__VA_ARGS__)
+
 #define FOPEN(file, filename, mode) fopen_s(file, filename, mode)
+
 #define FSCANF(file, format, ...) fscanf_s(file, format, ##__VA_ARGS__)
+
 #define STRCPY(destination, destination_size, source) \
     strcpy_s(destination, destination_size, source)
+
 #define POPCNT(x) __popcnt(x)
+
 #else // _WIN32
+
 #define SPRINTF(buffer, buffer_size, format, ...) \
     snprintf(buffer, buffer_size, format, ##__VA_ARGS__)
+
 #define FOPEN(file, filename, mode) \
     ((*file = fopen(filename, mode)) != NULL ? 0 : -1)
-#define FSCANF(file, format, ...) fscanf(file, format, ##__VA_ARGS__)
+
+#define FSCANF(file, format, ...) \
+    do { \
+        int ret = fscanf(file, format, ##__VA_ARGS__); \
+        if (ret == EOF) { \
+            assert(false); \
+        } \
+    } while (0)
+
 #define STRCPY(destination, destination_size, source) \
     strncpy(destination, source, destination_size)
+
 #define POPCNT(x) __builtin_popcount(x)
+
 #endif // _WIN32
 
 #endif // PERFECT_PLATFORM_H_INCLUDED
