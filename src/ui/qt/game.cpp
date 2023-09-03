@@ -1204,13 +1204,19 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
     debugPrintf("Computer: %s\n\n", cmd.c_str());
 
-    moveHistory.emplace_back(cmd);
+    // TODO: Distinguish these two cmds,
+    // one starts with info and the other starts with (
+    if (cmd[0] != 'i') {
+        moveHistory.emplace_back(cmd);
+    }
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
     nnueTrainingDataBestMove = cmd;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
-    if (cmd.size() > strlen("-(1,2)")) {
+    // TODO: Distinguish these two cmds,
+    // one starts with info and the other starts with (
+    if (cmd[0] != 'i' && cmd.size() > strlen("-(1,2)")) {
         posKeyHistory.push_back(position.key());
     } else {
         posKeyHistory.clear();
@@ -1358,7 +1364,9 @@ bool Game::command(const string &cmd, bool update /* = true */)
 #endif
     }
 
-    gameTest->writeToMemory(QString::fromStdString(cmd));
+    if (cmd[0] != 'i') {
+        gameTest->writeToMemory(QString::fromStdString(cmd));
+    }
 
 #ifdef NET_FIGHT_SUPPORT
     // Network: put the method in the server's send list

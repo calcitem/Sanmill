@@ -200,7 +200,7 @@ void Thread::emitCommand()
     ss << "info score " << (int)bestvalue << " bestmove " << bestMoveString;
 
 #ifdef QT_GUI_LIB
-    emit command(ss.str());
+    emit command(ss.str()); // Origin: bestMoveString
 #else
     sync_cout << ss.str();
     std::cout << sync_endl;
