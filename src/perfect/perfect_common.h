@@ -39,7 +39,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define RULE_VARIANT STANDARD // STANDARD, MORABARABA, or LASKER
 
-#define FULL_BOARD_IS_DRAW 1  // 0 or 1
+#define FULL_BOARD_IS_DRAW 1 // 0 or 1
 
 // #define FULL_SECTOR_GRAPH //extended solution //comment or uncomment
 
@@ -66,7 +66,7 @@ static_assert(false, "sec_val range");
 #ifndef STONE_DIFF
 const int eval_struct_size = 3; // byte
 #if RULE_VARIANT == STANDARD
-const int field2_offset = 12;   // bit
+const int field2_offset = 12; // bit
 #else
 const int field2_offset = 14; // bit
 #endif
