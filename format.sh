@@ -1,20 +1,17 @@
 #!/bin/bash
 
-cd src/
-find -name "*.h" | xargs clang-format -i
-find -name "*.cpp" | xargs clang-format -i
+clang-format -i src/*.h
+clang-format -i src/*.cpp
 
-cd perfect
-find -name "*.h" | xargs clang-format -i
-find -name "*.cpp" | xargs clang-format -i
+clang-format -i src/perfect/*.h
+clang-format -i src/perfect/*.cpp
 
-cd ..
+clang-format -i include/*.h
 
-cd ../include
-find -name "*.h" | xargs clang-format -i
-find -name "*.template" | xargs clang-format -i
+clang-format -i src/ui/qt/*.h
+clang-format -i src/ui/qt/*.cpp
 
-cd ../src/ui/flutter_app/lib
+cd src/ui/flutter_app/lib
 find -name "*.dart" |  xargs dart format --fix
 
 cd ../test
@@ -24,3 +21,4 @@ cd ../../../../
 
 git add .
 git commit -m "Format"
+
