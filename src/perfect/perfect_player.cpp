@@ -188,26 +188,26 @@ bool PerfectPlayer::isMill(const GameState &s, int m)
     return -1 != Rules::malome(m, s);
 }
 
-std::vector<ExtMove> PerfectPlayer::setMoves(const GameState &s)
+std::vector<AdvancedMove> PerfectPlayer::setMoves(const GameState &s)
 {
-    std::vector<ExtMove> r;
+    std::vector<AdvancedMove> r;
     for (int i = 0; i < 24; ++i) {
         if (s.T[i] == -1) {
-            r.push_back(ExtMove {i, i, CMoveType::SetMove, makesMill(s, -1, i),
+            r.push_back(AdvancedMove {i, i, CMoveType::SetMove, makesMill(s, -1, i),
                                  false, 0});
         }
     }
     return r;
 }
 
-std::vector<ExtMove> PerfectPlayer::slideMoves(const GameState &s)
+std::vector<AdvancedMove> PerfectPlayer::slideMoves(const GameState &s)
 {
-    std::vector<ExtMove> r;
+    std::vector<AdvancedMove> r;
     for (int i = 0; i < 24; ++i) {
         for (int j = 0; j < 24; ++j) {
             if (s.T[i] == s.sideToMove && s.T[j] == -1 &&
                 (futureKorongCount(s) == 3 || Rules::boardGraph[i][j])) {
-                r.push_back(ExtMove {i, j, CMoveType::SlideMove,
+                r.push_back(AdvancedMove {i, j, CMoveType::SlideMove,
                                      makesMill(s, i, j), false, 0});
             }
         }
@@ -218,10 +218,10 @@ std::vector<ExtMove> PerfectPlayer::slideMoves(const GameState &s)
 // m has a withTaking step, where takeHon is not filled out. This function
 // creates a list, the elements of which are copies of m supplemented with one
 // possible removal each.
-std::vector<ExtMove> PerfectPlayer::withTakingMoves(const GameState &s,
-                                                    ExtMove &m)
+std::vector<AdvancedMove> PerfectPlayer::withTakingMoves(const GameState &s,
+                                                    AdvancedMove &m)
 {
-    std::vector<ExtMove> r;
+    std::vector<AdvancedMove> r;
     bool everythingInMill = true;
     for (int i = 0; i < 24; ++i) {
         if (s.T[i] == 1 - s.sideToMove && !isMill(s, i)) {
@@ -231,7 +231,7 @@ std::vector<ExtMove> PerfectPlayer::withTakingMoves(const GameState &s,
 
     for (int i = 0; i < 24; ++i) {
         if (s.T[i] == 1 - s.sideToMove && (!isMill(s, i) || everythingInMill)) {
-            ExtMove m2 = m;
+            AdvancedMove m2 = m;
             m2.takeHon = i;
             r.push_back(m2);
         }
@@ -239,10 +239,10 @@ std::vector<ExtMove> PerfectPlayer::withTakingMoves(const GameState &s,
     return r;
 }
 
-std::vector<ExtMove> PerfectPlayer::onlyTakingMoves(const GameState &s)
+std::vector<AdvancedMove> PerfectPlayer::onlyTakingMoves(const GameState &s)
 {
     // there's some copy-paste code here
-    std::vector<ExtMove> r;
+    std::vector<AdvancedMove> r;
     bool everythingInMill = true;
     for (int i = 0; i < 24; ++i) {
         if (s.T[i] == 1 - s.sideToMove && !isMill(s, i)) {
@@ -252,7 +252,7 @@ std::vector<ExtMove> PerfectPlayer::onlyTakingMoves(const GameState &s)
 
     for (int i = 0; i < 24; ++i) {
         if (s.T[i] == 1 - s.sideToMove && (!isMill(s, i) || everythingInMill)) {
-            r.push_back(ExtMove {0, 0, CMoveType::SlideMove, false, true,
+            r.push_back(AdvancedMove {0, 0, CMoveType::SlideMove, false, true,
                                  i}); // Assuming default values for hon and hov
         }
     }
@@ -263,9 +263,9 @@ std::vector<ExtMove> PerfectPlayer::onlyTakingMoves(const GameState &s)
 #pragma warning(disable : 4127)
 #pragma warning(push)
 #pragma warning(disable : 6285)
-std::vector<ExtMove> PerfectPlayer::getMoveList(const GameState &s)
+std::vector<AdvancedMove> PerfectPlayer::getMoveList(const GameState &s)
 {
-    std::vector<ExtMove> ms0, ms;
+    std::vector<AdvancedMove> ms0, ms;
     if (!s.kle) {
         if (Wrappers::Constants::variant ==
                 (int)Wrappers::Constants::Variants::std ||
@@ -279,7 +279,7 @@ std::vector<ExtMove> PerfectPlayer::getMoveList(const GameState &s)
         } else { // Lasker
             ms0 = slideMoves(s);
             if (s.setStoneCount[s.sideToMove] < Rules::maxKSZ) {
-                std::vector<ExtMove> setMovesResult = setMoves(s);
+                std::vector<AdvancedMove> setMovesResult = setMoves(s);
                 ms0.insert(ms0.end(), setMovesResult.begin(),
                            setMovesResult.end());
             }
@@ -289,7 +289,7 @@ std::vector<ExtMove> PerfectPlayer::getMoveList(const GameState &s)
             if (!ms0[i].withTaking) {
                 ms.push_back(ms0[i]);
             } else {
-                std::vector<ExtMove> withTakingMovesResult = withTakingMoves(
+                std::vector<AdvancedMove> withTakingMovesResult = withTakingMoves(
                     s, ms0[i]);
                 ms.insert(ms.end(), withTakingMovesResult.begin(),
                           withTakingMovesResult.end());
@@ -303,7 +303,7 @@ std::vector<ExtMove> PerfectPlayer::getMoveList(const GameState &s)
 #pragma warning(pop)
 #pragma warning(pop)
 
-GameState PerfectPlayer::makeMoveInState(const GameState &s, ExtMove &m)
+GameState PerfectPlayer::makeMoveInState(const GameState &s, AdvancedMove &m)
 {
     GameState s2(s);
     if (!m.onlyTaking) {
@@ -322,7 +322,7 @@ GameState PerfectPlayer::makeMoveInState(const GameState &s, ExtMove &m)
 
 // Assuming gui_eval_elem2 and getSec functions are defined somewhere
 Wrappers::gui_eval_elem2 PerfectPlayer::moveValue(const GameState &s,
-                                                  ExtMove &m)
+                                                  AdvancedMove &m)
 {
     try {
         return eval(makeMoveInState(s, m)).undo_negate(getSec(s));
@@ -354,15 +354,15 @@ std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f,
 }
 
 // Assuming the definition of gui_eval_elem2::min_value function
-std::vector<ExtMove> PerfectPlayer::goodMoves(const GameState &s)
+std::vector<AdvancedMove> PerfectPlayer::goodMoves(const GameState &s)
 {
-    return allMaxBy(std::function<Wrappers::gui_eval_elem2(ExtMove)>(
-                        [this, &s](ExtMove m) { return moveValue(s, m); }),
+    return allMaxBy(std::function<Wrappers::gui_eval_elem2(AdvancedMove)>(
+                        [this, &s](AdvancedMove m) { return moveValue(s, m); }),
                     getMoveList(s),
                     Wrappers::gui_eval_elem2::min_value(getSec(s)));
 }
 
-int PerfectPlayer::NGMAfterMove(const GameState &s, ExtMove &m)
+int PerfectPlayer::NGMAfterMove(const GameState &s, AdvancedMove &m)
 {
     return numGoodMoves(makeMoveInState(s, m)); 
 }
@@ -376,7 +376,7 @@ T PerfectPlayer::chooseRandom(const std::vector<T> &l)
     return l[dis(gen)];
 }
 
-void PerfectPlayer::sendMoveToGUI(ExtMove m)
+void PerfectPlayer::sendMoveToGUI(AdvancedMove m)
 {
     if (!m.onlyTaking) {
         if (m.moveType == CMoveType::SetMove) {
@@ -392,7 +392,7 @@ void PerfectPlayer::sendMoveToGUI(ExtMove m)
 void PerfectPlayer::toMove(const GameState &s)
 {
     try {
-        ExtMove mh = chooseRandom(goodMoves(s));
+        AdvancedMove mh = chooseRandom(goodMoves(s));
         sendMoveToGUI(mh);
     } catch (const std::out_of_range &) {
         sendMoveToGUI(chooseRandom(getMoveList(s)));
@@ -411,7 +411,7 @@ int PerfectPlayer::numGoodMoves(const GameState &s)
     auto ma = Wrappers::gui_eval_elem2::min_value(getSec(s)); // Assuming getSec
                                                               // function is
                                                               // defined
-    ExtMove mh;
+    AdvancedMove mh;
     int c = 0;
     for (auto &m : getMoveList(s)) {
         auto e = moveValue(s, m);
@@ -430,7 +430,7 @@ int cp;
 
 struct MoveValuePair
 {
-    ExtMove m;
+    AdvancedMove m;
     double val;
 };
 

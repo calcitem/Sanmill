@@ -50,7 +50,7 @@ enum class CMoveType {
     SlideMove // should be renamed to SlideOrJumpMove
 };
 
-struct ExtMove
+struct AdvancedMove
 {
     int hon, hov;
     CMoveType moveType;
@@ -150,37 +150,37 @@ public:
 
     bool isMill(const GameState &s, int m);
 
-    std::vector<ExtMove> setMoves(const GameState &s);
+    std::vector<AdvancedMove> setMoves(const GameState &s);
 
-    std::vector<ExtMove> slideMoves(const GameState &s);
+    std::vector<AdvancedMove> slideMoves(const GameState &s);
 
     // m has a withTaking step, where takeHon is not filled out. This function
     // creates a list, the elements of which are copies of m supplemented with
     // one possible removal each.
-    std::vector<ExtMove> withTakingMoves(const GameState &s, ExtMove &m);
+    std::vector<AdvancedMove> withTakingMoves(const GameState &s, AdvancedMove &m);
 
-    std::vector<ExtMove> onlyTakingMoves(const GameState &s);
+    std::vector<AdvancedMove> onlyTakingMoves(const GameState &s);
 
-    std::vector<ExtMove> getMoveList(const GameState &s);
+    std::vector<AdvancedMove> getMoveList(const GameState &s);
 
-    GameState makeMoveInState(const GameState &s, ExtMove &m);
+    GameState makeMoveInState(const GameState &s, AdvancedMove &m);
 
     // Assuming gui_eval_elem2 and getSec functions are defined somewhere
-    Wrappers::gui_eval_elem2 moveValue(const GameState &s, ExtMove &m);
+    Wrappers::gui_eval_elem2 moveValue(const GameState &s, AdvancedMove &m);
 
     template <typename T, typename K>
     std::vector<T> allMaxBy(std::function<K(T)> f, const std::vector<T> &l,
                             K minValue);
 
     // Assuming the definition of gui_eval_elem2::min_value function
-    std::vector<ExtMove> goodMoves(const GameState &s);
+    std::vector<AdvancedMove> goodMoves(const GameState &s);
 
-    int NGMAfterMove(const GameState &s, ExtMove &m);
+    int NGMAfterMove(const GameState &s, AdvancedMove &m);
 
     template <typename T>
     T chooseRandom(const std::vector<T> &l);
 
-    void sendMoveToGUI(ExtMove m);
+    void sendMoveToGUI(AdvancedMove m);
 
     void toMove(const GameState &s) override;
 
@@ -190,7 +190,7 @@ public:
 
     struct MoveValuePair
     {
-        ExtMove m;
+        AdvancedMove m;
         double val;
     };
 

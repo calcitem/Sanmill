@@ -236,6 +236,7 @@ Value perfect_search(const Position *pos, Move &move)
     //   and that stone is being slided or jumped to a different place.)
     // If this increases the number of stones the player to move has,
     // then that player will have one less stone to place after the move.
+    // TODO: Do not use -fexceptions
     try {
         int moveBitboard = GetBestMove(whiteBitboard, blackBitboard,
                                        whiteStonesToPlace, blackStonesToPlace,

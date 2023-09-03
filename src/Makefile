@@ -34,11 +34,12 @@ BINDIR = $(PREFIX)/bin
 PGOBENCH = ./$(EXE) bench
 
 ### Source and object files
-SRCS = bitboard.cpp endgame.cpp evaluate.cpp main.cpp mcts.cpp \
+PERFECT_SRCS = $(wildcard perfect/*.cpp)
+SRCS = $(PERFECT_SRCS) bitboard.cpp endgame.cpp evaluate.cpp main.cpp mcts.cpp \
 	mills.cpp misc.cpp movegen.cpp movepick.cpp option.cpp position.cpp rule.cpp \
 	search.cpp thread.cpp tt.cpp uci.cpp ucioption.cpp
 
-OBJS = $(notdir $(SRCS:.cpp=.o))
+OBJS = $(SRCS:.cpp=.o)
 
 VPATH = syzygy:nnue:nnue/features
 
@@ -298,7 +299,7 @@ DEPENDFLAGS += -std=c++17
 LDFLAGS += $(EXTRALDFLAGS)
 
 # For Sanmill
-CXXFLAGS += -I../include -I.
+CXXFLAGS += -I../include -Iperfect -I.
 
 ifeq ($(COMP),)
 	COMP=gcc
@@ -307,7 +308,7 @@ endif
 ifeq ($(COMP),gcc)
 	comp=gcc
 	CXX=g++
-	CXXFLAGS += -pedantic -Wextra -Wshadow
+	CXXFLAGS += -pedantic -Wextra -Wshadow -fexceptions
 	CXXFLAGS += -Wno-class-memaccess
 
 	ifeq ($(arch),$(filter $(arch),armv7 armv8))
@@ -350,7 +351,7 @@ ifeq ($(COMP),mingw)
 		CXX=g++
 	endif
 
-	CXXFLAGS += -Wextra -Wshadow
+	CXXFLAGS += -Wextra -Wshadow -fexceptions
 	LDFLAGS += -static
 endif
 
@@ -363,7 +364,7 @@ endif
 ifeq ($(COMP),clang)
 	comp=clang
 	CXX=clang++
-	CXXFLAGS += -pedantic -Wextra -Wshadow
+	CXXFLAGS += -pedantic -Wextra -Wshadow -fexceptions
 
 	ifneq ($(KERNEL),Darwin)
 	ifneq ($(KERNEL),OpenBSD)
@@ -744,7 +745,7 @@ clean: objclean profileclean
 
 # clean binaries and objects
 objclean:
-	@rm -f $(EXE) *.o ./syzygy/*.o ./nnue/*.o ./nnue/features/*.o
+	@rm -f $(EXE) *.o ./syzygy/*.o ./nnue/*.o ./nnue/features/*.o ./perfect/*.o
 
 # clean auxiliary profiling files
 profileclean:
