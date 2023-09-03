@@ -4,11 +4,13 @@ on:
   push:
     branches: [release]
     paths:
-      - 'src/*.cpp'
+      - 'src/**/*.cpp'
+      - 'src/**/*.h'
   pull_request:
     types: [review_requested, ready_for_review]
     paths:
-      - 'src/*.cpp'
+      - 'src/**/*.cpp'
+      - 'src/**/*.h'
 
 jobs:
   cygwin-gcc:
