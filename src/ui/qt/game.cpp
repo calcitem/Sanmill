@@ -48,7 +48,7 @@ using std::to_string;
 Game::Game(GameScene &scene, QObject *parent)
     : QObject(parent)
     , scene(scene)
-    , timeLimit(gameOptions.getMoveTime())
+    , timeLimit(0 /* gameOptions.getMoveTime() */)
 {
     // The background has been added to the style sheet of view, but not to
     // scene The difference is that the background in view does not change with
@@ -308,7 +308,8 @@ void Game::gameReset()
         scene.addItem(newP);
     }
 
-    timeLimit = gameOptions.getMoveTime();
+    timeLimit = 0;
+     // gameOptions.getMoveTime();
 
     // If the rule does not require timing, time1 and time2 represent the time
     // used
