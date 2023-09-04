@@ -669,6 +669,7 @@
 					"COCOAPODS=1",
 					FLUTTER_UI,
 					"TARGET_OS_OSX=0",
+					"DISABLE_PERFECT_AI=1",
 				);
 				INFOPLIST_FILE = "Runner/Info-$(CONFIGURATION).plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Mill;
@@ -821,6 +822,7 @@
 					"COCOAPODS=1",
 					FLUTTER_UI,
 					"TARGET_OS_OSX=0",
+					"DISABLE_PERFECT_AI=1",
 				);
 				INFOPLIST_FILE = "Runner/Info-$(CONFIGURATION).plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Mill;
@@ -858,6 +860,7 @@
 					"COCOAPODS=1",
 					FLUTTER_UI,
 					"TARGET_OS_OSX=0",
+					"DISABLE_PERFECT_AI=1",
 				);
 				INFOPLIST_FILE = "Runner/Info-$(CONFIGURATION).plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Mill;
