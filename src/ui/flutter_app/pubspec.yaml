@@ -24,12 +24,12 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   flutter_email_sender:
     git:
-      url: https://github.com/calcitem/flutter_email_sender.git
+      url: https://gitlab.com/calcitem/flutter_email_sender.git
   flutter_localizations:
     sdk: flutter
   flutter_platform_alert:
     git:
-      url: https://github.com/calcitem/flutter_platform_alert.git
+      url: https://gitlab.com/calcitem/flutter_platform_alert.git
       ref: main
   flutter_picker: ^2.0.5
   hive: ^2.2.3
