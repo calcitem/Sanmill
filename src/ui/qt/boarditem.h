@@ -19,6 +19,7 @@
 
 #include <QGraphicsItem>
 
+#include "graphicsconst.h"
 #include "config.h"
 #include "types.h"
 
@@ -58,7 +59,12 @@ public:
     [[nodiscard]] bool pos2polar(QPointF pos, File &f, Rank &r) const;
 
 private:
-    int size;                    // board size
+    void initializePositions();
+    void drawBoard(QPainter *painter);
+    void drawLines(QPainter *painter);
+    void drawSeatNumbers(QPainter *painter);
+
+    int size {BOARD_SIZE};
     int sizeShadow {5};
     QPointF position[SQUARE_NB]; // 24 points
     bool hasDiagonalLine {false};

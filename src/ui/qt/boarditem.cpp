@@ -28,21 +28,7 @@ BoardItem::BoardItem(const QGraphicsItem *parent)
     // Put center of the board in the center of the scene
     setPos(0, 0);
 
-    // Initialize 24 points
-    for (int f = 0; f < FILE_NB; f++) {
-        // The first position is the 12 o'clock direction of the inner ring,
-        // which is sorted clockwise Then there is the middle ring and the outer
-        // ring
-        const int p = (f + 1) * LINE_INTERVAL;
-
-        const int pt[][2] = {{0, -p}, {p, -p}, {p, 0},  {p, p},
-                             {0, p},  {-p, p}, {-p, 0}, {-p, -p}};
-
-        for (int r = 0; r < RANK_NB; r++) {
-            position[f * RANK_NB + r].rx() = pt[r][0];
-            position[f * RANK_NB + r].ry() = pt[r][1];
-        }
-    }
+    initializePositions();
 }
 
 BoardItem::~BoardItem() = default;
@@ -60,19 +46,44 @@ QPainterPath BoardItem::shape() const
     return path;
 }
 
-void BoardItem::setDiagonal(bool arg)
-{
-    hasDiagonalLine = arg;
-    update(boundingRect());
-}
-
 void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                       QWidget *widget)
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
 
-    // Fill shadow
+    drawBoard(painter);
+    drawLines(painter);
+#ifdef PLAYER_DRAW_SEAT_NUMBER
+    drawSeatNumbers(painter);
+#endif
+}
+
+void BoardItem::setDiagonal(bool arg)
+{
+    hasDiagonalLine = arg;
+    update(boundingRect());
+}
+
+void BoardItem::initializePositions()
+{
+    // Initialize 24 points
+    for (int f = 0; f < FILE_NB; f++) {
+        // The first position is the 12 o'clock direction of the inner ring,
+        // which is sorted clockwise Then there is the middle ring and the outer
+        // ring
+        const int p = (f + 1) * LINE_INTERVAL;
+        const int pt[][2] = {{0, -p}, {p, -p}, {p, 0},  {p, p},
+                             {0, p},  {-p, p}, {-p, 0}, {-p, -p}};
+        for (int r = 0; r < RANK_NB; r++) {
+            position[f * RANK_NB + r].rx() = pt[r][0];
+            position[f * RANK_NB + r].ry() = pt[r][1];
+        }
+    }
+}
+
+void BoardItem::drawBoard(QPainter *painter)
+{
 #ifndef QT_MOBILE_APP_UI
     QColor shadowColor(128, 42, 42);
     shadowColor.setAlphaF(0.3);
@@ -88,7 +99,10 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->drawPixmap(-size / 2, -size / 2, size, size,
                         QPixmap(":/image/resources/image/board.png"));
 #endif /* QT_MOBILE_APP_UI */
+}
 
+void BoardItem::drawLines(QPainter *painter)
+{
     // Solid line brush
 #ifdef QT_MOBILE_APP_UI
     QPen pen(QBrush(QColor(241, 156, 159)), LINE_WEIGHT, Qt::SolidLine,
@@ -119,9 +133,10 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                               position[(FILE_NB - 1) * RANK_NB + r]);
         }
     }
+}
 
-#ifdef PLAYER_DRAW_SEAT_NUMBER
-    // Draw the seat number
+void BoardItem::drawSeatNumbers(QPainter *painter)
+{
     QPen fontPen(QBrush(Qt::white), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap,
                  Qt::BevelJoin);
     painter->setPen(fontPen);
@@ -136,7 +151,6 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
         QString strSeat(cSeat);
         painter->drawText(position[(FILE_NB - 1) * RANK_NB + i], strSeat);
     }
-#endif // PLAYER_DRAW_SEAT_NUMBER
 }
 
 QPointF BoardItem::nearestPosition(const QPointF pos)
