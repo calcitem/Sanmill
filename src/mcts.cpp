@@ -109,6 +109,11 @@ public:
     uint32_t num_visits {0};
     uint32_t num_wins {0};
     int move_index {0};
+#ifdef MCTS_ALPHA_BETA
+    Depth alpha_beta_depth {1};
+    Node *best_alpha_beta_child {nullptr};
+    double last_bonus_given {0.0};
+#endif // MCTS_ALPHA_BETA
 };
 
 // Recursively delete tree starting from the given node
@@ -224,6 +229,20 @@ void backpropagate(Node *node, bool win)
     }
 }
 
+#ifdef MCTS_ALPHA_BETA
+bool should_use_alpha_beta(const Node *node)
+{
+    // Use alpha-beta search if the node's alpha-beta search depth is less than
+    // a threshold Or the node has been visited more than a certain number of
+    // times
+    const int alpha_beta_depth_threshold = 10;
+    const int visit_count_threshold = 0;
+
+    return node->alpha_beta_depth < alpha_beta_depth_threshold ||
+           node->num_visits > visit_count_threshold;
+}
+#endif // MCTS_ALPHA_BETA
+
 #ifdef MCTS_PRINT_STAT
 void print_stats(const MovePicker &mp, ThreadSafeNodeVisits &shared_visits,
                  Move bestMove, Value best_value, double win_score)
@@ -271,6 +290,13 @@ void mcts_worker(Position *pos, int max_iterations,
     Node *root = new Node(new Position(*pos), MOVE_NONE, nullptr, 0);
 
     int iteration = 0;
+
+#ifdef MCTS_ALPHA_BETA
+    Move bestMove {MOVE_NONE};
+    const int max_alpha_beta_depth = 15; // set a max depth according to your
+                                         // needs
+#endif // MCTS_ALPHA_BETA
+
     const int check_time_mask = CHECK_TIME_FREQUENCY - 1;
 
     // Add time limit (no limit if gameOptions.getMoveTime() returns 0)
@@ -283,9 +309,28 @@ void mcts_worker(Position *pos, int max_iterations,
 
     while (iteration < max_iterations) {
         Node *node = select(root, EXPLORATION_PARAMETER);
-        Node *expanded_node = expand(node);
-        bool win = simulate(expanded_node, ss);
-        backpropagate(expanded_node, win);
+#ifdef MCTS_ALPHA_BETA
+        if (should_use_alpha_beta(node)) { // Check if alpha-beta search should
+                                           // be used
+            Value value = qsearch(pos, ss, node->alpha_beta_depth,
+                                  node->alpha_beta_depth, -VALUE_INFINITE,
+                                  VALUE_INFINITE, bestMove);
+            node->num_visits++;
+            if (value > 0) {
+                node->num_wins++;
+            }
+            if (node->alpha_beta_depth < max_alpha_beta_depth) {
+                node->alpha_beta_depth++; // Increase the depth for the next
+                                          // alpha-beta search
+            }
+        } else {
+#endif // MCTS_ALPHA_BETA
+            Node *expanded_node = expand(node);
+            bool win = simulate(expanded_node, ss);
+            backpropagate(expanded_node, win);
+#ifdef MCTS_ALPHA_BETA
+        }
+#endif // MCTS_ALPHA_BETA
 
         iteration++;
 
@@ -352,12 +397,6 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
 
     bestMove = mp.moves[best_move_index].move;
 
-    // double win_score = static_cast<double>(
-    //                        shared_visits.wins(best_move_index)) /
-    //                    shared_visits.visits(best_move_index);
-    // Value best_value = static_cast<Value>(win_score * 100.0 - 50.0);
-    // double win_score = static_cast<double>(max_visits) /
-    //                    (max_iterations / num_threads);
     Value best_value = (pos->piece_on_board_count(pos->sideToMove) +
                         pos->piece_in_hand_count(pos->sideToMove) -
                         pos->piece_on_board_count(~pos->sideToMove) -
@@ -365,6 +404,13 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
                        VALUE_EACH_PIECE;
 
 #ifdef MCTS_PRINT_STAT
+     double win_score = static_cast<double>(
+                            shared_visits.wins(best_move_index)) /
+                        shared_visits.visits(best_move_index);
+    // Value best_value = static_cast<Value>(win_score * 100.0 - 50.0);
+    // double win_score = static_cast<double>(max_visits) /
+    //                    (max_iterations / num_threads);
+
     print_stats(mp, shared_visits, bestMove, best_value, win_score);
 #endif // MCTS_PRINT_STAT
 
