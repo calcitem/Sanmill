@@ -29,6 +29,7 @@
 #include <map>
 #include <vector>
 
+#include <QParallelAnimationGroup>
 #include <QModelIndex>
 #include <QPointF>
 #include <QSettings>
@@ -136,6 +137,71 @@ public:
     Client *getClient() { return client; }
 #endif
 
+private:
+    void initializeSceneBackground();
+    void initializeAIThreads();
+    void initializeDatabaseDialog();
+    void initializeSettings();
+    void initializeGameTest();
+    void initializeMetaTypes();
+    void initializeAICommandConnections();
+    void initializeNetworkComponents();
+    void initializeEndgameLearning();
+
+    void terminateTimer();
+    void terminateThreads();
+    void finalizeEndgameLearning();
+    void clearMoveHistory();
+    void destroySettings();
+
+    static std::pair<int, QStringList> createRuleEntry(int index);
+
+    void stopOngoingActivities();
+    void resetTimer();
+    void resetGameState();
+    void resetUIElements();
+    void resetAndUpdateTime();
+    void Game::updateMoveHistory();
+    void Game::updateStatusBar();
+    void Game::updateLcdDisplay();
+    void updateMiscellaneous();
+
+    void resetMoveHistory();
+    void resetPerfectAi();
+    void resetPositionState();
+
+    bool updateRuleIndex(int ruleNo);
+    void updateLimits(int stepLimited, int timeLimited);
+    void resetElapsedSeconds();
+    void recordRuleInfo(int ruleNo);
+    void saveRuleSetting(int ruleNo);
+
+    static std::string buildSoundFilename(GameSound soundType, Color c);
+    static void performSoundPlay(const std::string &filename);
+
+    void executeTransform(
+        std::function<void(Position &, std::vector<std::string> &)> transform);
+
+    bool validateClick(QPointF p, File &f, Rank &r);
+    bool isRepentancePhase();
+    void initiateGameIfReady();
+    bool performAction(File f, Rank r, QPointF p);
+    void updateState(bool result);
+
+    void animatePieceMovement(const Position &p, const Piece *board,
+                              QParallelAnimationGroup *animationGroup,
+                              PieceItem *&deletedPiece);
+    void handleBannedLocations(const Position &p, const Piece *board,
+                               int &nTotalPieces);
+    void handleDeletedPiece(const Position &p, PieceItem *piece, int key,
+                            QParallelAnimationGroup *animationGroup,
+                            PieceItem *&deletedPiece);
+    void updateLCDDisplays(const Position &p);
+    void selectCurrentAndDeletedPieces(const Piece *board, const Position &p,
+                                       int nTotalPieces,
+                                       PieceItem *deletedPiece);
+
+
 signals:
 
     // Signal of total disk number change
@@ -185,7 +251,7 @@ public slots:
     void setEditing(bool arg = true) noexcept;
 
     // Set white and black inversion state
-    void setInvert(bool arg = true);
+    void invertPieceColor(bool arg = true);
 
     // If Id is 1, let the computer take the lead; if Id is 2, let the computer
     // take the second place
