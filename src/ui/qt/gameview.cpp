@@ -24,24 +24,46 @@ GameView::GameView(QWidget *parent)
 
 GameView::~GameView() = default;
 
+void GameView::applyTransform(TransformType type)
+{
+    QTransform newTransform;
+
+    switch (type) {
+    case TransformType::Flip:
+        newTransform = QTransform(1, 0, 0, -1, 0, 0);
+        break;
+    case TransformType::Mirror:
+        newTransform = QTransform(-1, 0, 0, 1, 0, 0);
+        break;
+    case TransformType::TurnRight:
+        newTransform = QTransform(0, 1, -1, 0, 0, 0);
+        break;
+    case TransformType::TurnLeft:
+        newTransform = QTransform(0, -1, 1, 0, 0, 0);
+        break;
+    }
+
+    setTransform(transform() * newTransform);
+}
+
 void GameView::flip()
 {
-    setTransform(transform() * QTransform(1, 0, 0, -1, 0, 0));
+    applyTransform(TransformType::Flip);
 }
 
 void GameView::mirror()
 {
-    setTransform(transform() * QTransform(-1, 0, 0, 1, 0, 0));
+    applyTransform(TransformType::Mirror);
 }
 
 void GameView::turnRight()
 {
-    setTransform(transform() * QTransform(0, 1, -1, 0, 0, 0));
+    applyTransform(TransformType::TurnRight);
 }
 
 void GameView::turnLeft()
 {
-    setTransform(transform() * QTransform(0, -1, 1, 0, 0, 0));
+    applyTransform(TransformType::TurnLeft);
 }
 
 void GameView::resizeEvent(QResizeEvent *event)
