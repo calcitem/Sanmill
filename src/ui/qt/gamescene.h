@@ -31,7 +31,6 @@ class GameScene : public QGraphicsScene
 
 public:
     explicit GameScene(QObject *parent = nullptr);
-    ~GameScene() override;
 
     [[nodiscard]] QPointF polar2pos(File f, Rank r) const;
 
@@ -57,7 +56,9 @@ signals:
     void mouseReleased(QPointF);
 
 private:
-    BoardItem *board {nullptr};
+    std::unique_ptr<BoardItem> board;
+    void handleBoardClick(QGraphicsSceneMouseEvent *mouseEvent);
+    void handlePieceClick(QGraphicsSceneMouseEvent *mouseEvent);
 };
 
 #endif // GAMESCENE_H_INCLUDED

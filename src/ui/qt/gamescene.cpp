@@ -27,15 +27,10 @@
 
 GameScene::GameScene(QObject *parent)
     : QGraphicsScene(parent)
+    , board(std::make_unique<BoardItem>())
 {
-    board = new BoardItem;
     board->setDiagonal(false);
-    addItem(board);
-}
-
-GameScene::~GameScene()
-{
-    delete board;
+    addItem(board.get());
 }
 
 void GameScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -62,18 +57,29 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     const QGraphicsItem *item = itemAt(mouseEvent->scenePos(), QTransform());
 
     if (!item || item->type() == BoardItem::Type) {
-        QPointF p = mouseEvent->scenePos();
-        p = board->nearestPosition(p);
-        if (p != QPointF(0, 0))
-            // Send the nearest drop point of the mouse point
-            emit mouseReleased(p);
+        handleBoardClick(mouseEvent);
     } else if (item->type() == PieceItem::Type) {
-        // If it's a piece
-        // Send out the position of the current piece in the scene
-        emit mouseReleased(item->scenePos());
+        handlePieceClick(mouseEvent);
     }
 
     mouseEvent->accept();
+}
+
+void GameScene::handleBoardClick(QGraphicsSceneMouseEvent *mouseEvent)
+{
+    QPointF p = mouseEvent->scenePos();
+    p = board->nearestPosition(p);
+    if (p != QPointF(0, 0)) {
+        // Send the nearest drop point of the mouse point
+        emit mouseReleased(p);
+    }
+}
+
+void GameScene::handlePieceClick(QGraphicsSceneMouseEvent *mouseEvent)
+{
+    // If it's a piece
+    // Send out the position of the current piece in the scene
+    emit mouseReleased(mouseEvent->scenePos());
 }
 
 QPointF GameScene::polar2pos(File f, Rank r) const
