@@ -16,6 +16,7 @@
 
 #include <iomanip>
 #include <map>
+#include <unordered_map>
 #include <string>
 
 #include <QAbstractButton>
@@ -45,110 +46,73 @@
 
 using std::to_string;
 
+// Helper function to build sound filename
+static std::string buildFilename(GameSound soundType,
+                                 const std::string &sideStr,
+                                 const std::string &opponentStr)
+{
+    std::string filename;
+
+    // Map for handling sound types
+    std::unordered_map<GameSound, std::string> soundMap = {
+        {GameSound::blockMill, "BlockMill_" + sideStr},
+        {GameSound::remove, "Remove_" + opponentStr},
+        {GameSound::select, "Select"},
+        {GameSound::draw, "Draw"},
+        {GameSound::drag, "drag"},
+        {GameSound::banned, "forbidden"},
+        {GameSound::gameStart, "GameStart"},
+        {GameSound::resign, "Resign_" + sideStr},
+        {GameSound::loss, "loss"},
+        {GameSound::mill, "Mill_" + sideStr},
+        {GameSound::millRepeatedly, "MillRepeatedly_" + sideStr},
+        {GameSound::move, "move"},
+        {GameSound::newGame, "newgame"},
+        {GameSound::nextMill, "NextMill_" + sideStr},
+        {GameSound::obvious, "Obvious"},
+        {GameSound::repeatThreeDraw, "RepeatThreeDraw"},
+        {GameSound::side, "Side_" + sideStr},
+        {GameSound::star, "Star_" + sideStr},
+        {GameSound::suffocated, "Suffocated_" + sideStr},
+        {GameSound::vantage, "Vantage"},
+        {GameSound::very, "Very"},
+        {GameSound::warning, "warning"},
+        {GameSound::win, (sideStr == "DRAW" ? "Draw" : "Win_" + sideStr)},
+        {GameSound::winAndLossesAreObvious, "WinsAndLossesAreObvious"},
+        {GameSound::none, ""}};
+
+    // Try to find filename using map, if not, use a default empty string
+    filename = soundMap.find(soundType) != soundMap.end() ?
+                   soundMap[soundType] :
+                   "";
+
+    return filename + ".wav";
+}
+
+// Function to set sound setting
 void Game::setSound(bool arg) const noexcept
 {
     hasSound = arg;
     settings->setValue("Options/Sound", arg);
 }
 
+// Function to play a particular sound based on game state
 void Game::playSound(GameSound soundType, Color c)
 {
-    std::string filename = buildSoundFilename(soundType, c);
+    std::string sideStr = (c == WHITE) ? "W" : "B";
+    std::string opponentStr = (c == BLACK) ? "W" : "B";
+
+    std::string filename = buildFilename(soundType, sideStr, opponentStr);
     performSoundPlay(filename);
 }
 
-std::string Game::buildSoundFilename(GameSound soundType, Color c)
-{
-    std::string sideStr = c == WHITE ? "W" : "B";
-    std::string opponentStr = c == BLACK ? "W" : "B";
-    std::string filename;
-
-    switch (soundType) {
-    case GameSound::blockMill:
-        filename = "BlockMill_" + sideStr + ".wav";
-        break;
-    case GameSound::remove:
-        filename = "Remove_" + opponentStr + ".wav";
-        break;
-    case GameSound::select:
-        filename = "Select.wav";
-        break;
-    case GameSound::draw:
-        filename = "Draw.wav";
-        break;
-    case GameSound::drag:
-        filename = "drag.wav";
-        break;
-    case GameSound::banned:
-        filename = "forbidden.wav";
-        break;
-    case GameSound::gameStart:
-        filename = "GameStart.wav";
-        break;
-    case GameSound::resign:
-        filename = "Resign_" + sideStr + ".wav";
-        break;
-    case GameSound::loss:
-        filename = "loss.wav";
-        break;
-    case GameSound::mill:
-        filename = "Mill_" + sideStr + ".wav";
-        break;
-    case GameSound::millRepeatedly:
-        filename = "MillRepeatedly_" + sideStr + ".wav";
-        break;
-    case GameSound::move:
-        filename = "move.wav";
-        break;
-    case GameSound::newGame:
-        filename = "newgame.wav";
-        break;
-    case GameSound::nextMill:
-        filename = "NextMill_" + sideStr + ".wav";
-        break;
-    case GameSound::obvious:
-        filename = "Obvious.wav";
-        break;
-    case GameSound::repeatThreeDraw:
-        filename = "RepeatThreeDraw.wav";
-        break;
-    case GameSound::side:
-        filename = "Side_" + sideStr + ".wav";
-        break;
-    case GameSound::star:
-        filename = "Star_" + sideStr + ".wav";
-        break;
-    case GameSound::suffocated:
-        filename = "Suffocated_" + sideStr + ".wav";
-        break;
-    case GameSound::vantage:
-        filename = "Vantage.wav";
-        break;
-    case GameSound::very:
-        filename = "Very.wav";
-        break;
-    case GameSound::warning:
-        filename = "warning.wav";
-        break;
-    case GameSound::win:
-        filename = c == DRAW ? "Draw.wav" : "Win_" + sideStr + ".wav";
-        break;
-    case GameSound::winAndLossesAreObvious:
-        filename = "WinsAndLossesAreObvious.wav";
-        break;
-    case GameSound::none:
-        filename = "";
-        break;
-    }
-
-    return filename;
-}
-
+// Function to actually perform the sound play operation
 void Game::performSoundPlay(const std::string &filename)
 {
 #ifndef DO_NOT_PLAY_SOUND
-    if (filename.empty())
+    if (filename.empty()) {
         return;
+    }
 
     if (hasSound) {
         auto *effect = new QSoundEffect;
