@@ -117,7 +117,7 @@ void Game::updateLcdDisplay()
     emit winningRateDrawChanged(QString::number(winningRate_draw, 10));
 }
 
-void Game::updateMoveHistory()
+void Game::reinitMoveListModel()
 {
     moveListModel.removeRows(0, moveListModel.rowCount());
     moveListModel.insertRow(0);

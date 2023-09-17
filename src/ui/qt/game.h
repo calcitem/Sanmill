@@ -169,9 +169,9 @@ private:
     void resetGameState();
     void resetUIElements();
     void resetAndUpdateTime();
-    void Game::updateMoveHistory();
-    void Game::updateStatusBar();
-    void Game::updateLcdDisplay();
+    void updateMoveHistory();
+    void updateStatusBar();
+    void updateLcdDisplay();
     void updateMiscellaneous();
 
     void resetMoveHistoryReserveFirst();
@@ -180,11 +180,18 @@ private:
     void resetPositionState();
 
     bool isValidRuleIndex(int ruleNo);
-    bool updateRuleIndex(int ruleNo);
     void updateLimits(int stepLimited, int timeLimited);
     void resetElapsedSeconds();
     void recordRuleInfo(int ruleNo);
     void saveRuleSetting(int ruleNo);
+
+    static void createRuleEntries(std::map<int, QStringList> &actions);
+    void reinitMoveListModel();
+    void updateMoveListModelFromHistory(); // TODO
+    void handleGameOutcome();
+    void handleWinOrLoss();
+    void performAutoRestartActions();
+    void setEnginesForAiPlayers();
 
     QString Game::createSavePath() const;
     void Game::writePlayerType(QTextStream &textStream, const QString &color,

@@ -45,89 +45,106 @@
 
 using std::to_string;
 
+// Function to obtain actions, encapsulates the insertion logic into
+// createRuleEntries
 std::map<int, QStringList> Game::getActions()
 {
     // Main window update menu bar
     // The reason why we don't use the mode of signal and slot is that
     // it's too late for the slot to be associated when the signal is sent
     std::map<int, QStringList> actions;
-
-    // The key of map stores int index value, and value stores rule name and
-    // rule prompt
-    for (int i = 0; i < N_RULES; ++i) {
-        actions.insert(createRuleEntry(i));
-    }
-
+    createRuleEntries(actions);
     return actions;
 }
 
+// Helper function to populate the rule entries in the actions map
+void Game::createRuleEntries(std::map<int, QStringList> &actions)
+{
+    for (int i = 0; i < N_RULES; ++i) {
+        actions.insert(createRuleEntry(i));
+    }
+}
+
+// Function to update game state, broken down into smaller, more focused
+// functions
 void Game::updateState(bool result)
 {
     if (!result)
         return;
 
+    updateMoveHistory();
+    updateStatusBar();
+    updateMoveListModelFromHistory();
+    handleGameOutcome();
+    sideToMove = position.side_to_move();
+    updateScene();
+}
+
+// Update move and position history
+void Game::updateMoveHistory()
+{
     moveHistory.emplace_back(position.record);
     if (strlen(position.record) > strlen("-(1,2)")) {
         posKeyHistory.push_back(position.key());
     } else {
         posKeyHistory.clear();
     }
+}
 
-    // Signal update status bar
-    updateScene();
-    message = QString::fromStdString(getTips());
-    emit statusBarChanged(message);
-
-    // Insert the new score line into list model
+// Update the list model that holds the moves
+void Game::updateMoveListModelFromHistory()
+{
     currentRow = moveListModel.rowCount() - 1;
     int k = 0;
-
-    // Output command line
     for (const auto &i : *move_history()) {
-        // Skip added because the standard list container has no subscripts
         if (k++ <= currentRow)
             continue;
         moveListModel.insertRow(++currentRow);
         moveListModel.setData(moveListModel.index(currentRow), i.c_str());
     }
+}
 
-    // Play win or lose sound
-#ifndef DO_NOT_PLAY_WIN_SOUND
+// Handle game outcome and restart logic
+void Game::handleGameOutcome()
+{
     const Color winner = position.get_winner();
-    if (winner != NOBODY &&
-        moveListModel.data(moveListModel.index(currentRow - 1))
-            .toString()
-            .contains("Time over."))
-        playSound(GameSound::win, winner);
-#endif
-
-    // AI settings
-    // If it's not decided yet
-    if (position.get_winner() == NOBODY) {
-        resumeAiThreads(position.sideToMove);
+    if (winner != NOBODY) {
+        handleWinOrLoss();
     } else {
-        // If it's decided
-        if (gameOptions.getAutoRestart()) {
+        resumeAiThreads(position.sideToMove);
+    }
+}
+
+// Specific handler for win or lose
+void Game::handleWinOrLoss()
+{
+    if (gameOptions.getAutoRestart()) {
+        performAutoRestartActions();
+    } else {
+        pauseThreads();
+    }
+}
+
+// Actions to perform if auto-restart is enabled
+void Game::performAutoRestartActions()
+{
 #ifdef NNUE_GENERATE_TRAINING_DATA
-            position.nnueWriteTrainingData();
+    position.nnueWriteTrainingData();
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
-            saveScore();
+    saveScore();
+    gameReset();
+    gameStart();
+    setEnginesForAiPlayers();
+}
 
-            gameReset();
-            gameStart();
-
-            if (isAiPlayer[WHITE]) {
-                setEngine(WHITE, true);
-            }
-            if (isAiPlayer[BLACK]) {
-                setEngine(BLACK, true);
-            }
-        } else {
-            pauseThreads();
-        }
+// Sets the engines for AI players
+void Game::setEnginesForAiPlayers()
+{
+    if (isAiPlayer[WHITE]) {
+        setEngine(WHITE, true);
     }
-
-    sideToMove = position.side_to_move();
-    updateScene();
+    if (isAiPlayer[BLACK]) {
+        setEngine(BLACK, true);
+    }
 }
