@@ -132,7 +132,7 @@ void Game::gameReset()
     // Stop any ongoing activities
     stopOngoingActivities();
     resetComponents();
-
+    resetElapsedSeconds();
 }
 
 void Game::initializeSceneBackground()

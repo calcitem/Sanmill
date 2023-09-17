@@ -45,35 +45,13 @@
 
 using std::to_string;
 
-void Game::setRule(int ruleNo, int stepLimited, int timeLimited)
+// Validate the rule index.
+bool Game::isValidRuleIndex(int ruleNo)
 {
-    rule.nMoveRule = stepLimited;
-
-    // TODO(calcitem)
-
-    if (!updateRuleIndex(ruleNo))
-        return;
-    updateLimits(stepLimited, timeLimited);
-
-    // Set model rules, reset game
-    if (set_rule(ruleNo) == false) {
-        return;
-    }
-
-    resetElapsedSeconds();
-    recordRuleInfo(ruleNo);
-    gameReset();
-    saveRuleSetting(ruleNo);
+    return (ruleNo >= 0 && ruleNo < N_RULES);
 }
 
-bool Game::updateRuleIndex(int ruleNo)
-{
-    if (ruleNo < 0 || ruleNo >= N_RULES)
-        return false;
-    ruleIndex = ruleNo;
-    return true;
-}
-
+// Update limited steps and time.
 void Game::updateLimits(int stepLimited, int timeLimited)
 {
     if (stepLimited != INT_MAX && timeLimited != 0) {
@@ -82,20 +60,48 @@ void Game::updateLimits(int stepLimited, int timeLimited)
     }
 }
 
+// Record the rule info in move history.
 void Game::recordRuleInfo(int ruleNo)
 {
     constexpr int bufferLen = 64;
     char record[bufferLen] = {0};
-    int r = ruleNo;
-    if (snprintf(record, bufferLen, "r%1d s%03u t%02d", r + 1, rule.nMoveRule,
-                 0) <= 0) {
-        assert(false); // Replace with a proper error handling strategy
+    if (snprintf(record, bufferLen, "r%1d s%03u t%02d", ruleNo + 1,
+                 rule.nMoveRule, 0) <= 0) {
+        assert(false); // Replace with proper error handling.
     }
-    string cmd(record);
     moveHistory.clear();
-    moveHistory.emplace_back(cmd);
+    moveHistory.emplace_back(string(record));
 }
 
+// Set a new game rule.
+void Game::setRule(int ruleNo, int stepLimited, int timeLimited)
+{
+    // Validate the rule number.
+    if (!isValidRuleIndex(ruleNo))
+        return;
+
+    // Update rule index.
+    ruleIndex = ruleNo;
+
+    // Update move rule.
+    rule.nMoveRule = stepLimited;
+
+    // Update other game settings.
+    updateLimits(stepLimited, timeLimited);
+
+    // Reset the model and the game.
+    if (!set_rule(ruleNo))
+        return;
+
+    // Update internal game state.
+    gameReset();
+
+    // Record and save the new rule setting.
+    recordRuleInfo(ruleNo);
+    saveRuleSetting(ruleNo);
+}
+
+// Create a list entry for the game rule.
 std::pair<int, QStringList> Game::createRuleEntry(int index)
 {
     QStringList strList;

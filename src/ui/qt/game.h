@@ -179,6 +179,7 @@ private:
     void resetPerfectAi();
     void resetPositionState();
 
+    bool isValidRuleIndex(int ruleNo);
     bool updateRuleIndex(int ruleNo);
     void updateLimits(int stepLimited, int timeLimited);
     void resetElapsedSeconds();
