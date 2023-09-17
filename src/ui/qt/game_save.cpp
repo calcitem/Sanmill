@@ -45,17 +45,51 @@
 
 using std::to_string;
 
-void Game::saveScore()
+// Helper function to create the save path
+QString Game::createSavePath() const
 {
     const QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
     const qint64 pid = QCoreApplication::applicationPid();
+    return QDir::currentPath() + "/" + tr("Score-MillPro_") + strDate + "_" +
+           QString::number(pid) + ".txt";
+}
 
-    const QString path = QDir::currentPath() + "/" + tr("Score-MillPro_") +
-                         strDate + "_" + QString::number(pid) + ".txt";
+// Helper function to write player type
+void Game::writePlayerType(QTextStream &textStream, const QString &color,
+                           bool isAi) const
+{
+    textStream << color << ":\t" << (isAi ? "AI Player" : "Human Player")
+               << "\n";
+}
 
-    QFile file;
+// Helper function to write game statistics
+void Game::writeGameStats(QTextStream &textStream) const
+{
+    qint64 gamesPlayedCount = position.score[WHITE] + position.score[BLACK] +
+                              position.score_draw;
 
-    file.setFileName(path);
+    if (gamesPlayedCount == 0) {
+        return;
+    }
+
+    textStream << "Sum\t" + QString::number(gamesPlayedCount) << "\n";
+    textStream << "White\t" + QString::number(position.score[WHITE]) + "\t" +
+                      QString::number(position.score[WHITE] * 10000 /
+                                      gamesPlayedCount)
+               << "\n";
+    textStream << "Black\t" + QString::number(position.score[BLACK]) + "\t" +
+                      QString::number(position.score[BLACK] * 10000 /
+                                      gamesPlayedCount)
+               << "\n";
+    textStream << "Draw\t" + QString::number(position.score_draw) + "\t" +
+                      QString::number(position.score_draw * 10000 /
+                                      gamesPlayedCount)
+               << "\n";
+}
+
+void Game::saveScore()
+{
+    QFile file(createSavePath());
 
     if (file.isOpen()) {
         file.close();
@@ -66,54 +100,16 @@ void Game::saveScore()
     }
 
     QTextStream textStream(&file);
+    textStream << QCoreApplication::applicationFilePath() << "\n\n";
+    textStream << gameTest->getKey() << "\n\n";
 
-    textStream << QCoreApplication::applicationFilePath() << "\n"
-               << "\n";
+    writePlayerType(textStream, "White", isAiPlayer[WHITE]);
+    writePlayerType(textStream, "Black", isAiPlayer[BLACK]);
 
-    textStream << gameTest->getKey() << "\n"
-               << "\n";
+    textStream << "\n";
 
-    if (isAiPlayer[WHITE]) {
-        textStream << "White:\tAI Player"
-                   << "\n";
-    } else {
-        textStream << "White:\tHuman Player"
-                   << "\n";
-    }
+    writeGameStats(textStream);
 
-    if (isAiPlayer[BLACK]) {
-        textStream << "Black:\tAI Player"
-                   << "\n";
-    } else {
-        textStream << "Black:\tHuman Player"
-                   << "\n";
-    }
-
-    textStream << ""
-               << "\n";
-
-    position.gamesPlayedCount = position.score[WHITE] + position.score[BLACK] +
-                                position.score_draw;
-
-    if (position.gamesPlayedCount == 0) {
-        goto out;
-    }
-
-    textStream << "Sum\t" + QString::number(position.gamesPlayedCount) << "\n";
-    textStream << "White\t" + QString::number(position.score[WHITE]) + "\t" +
-                      QString::number(position.score[WHITE] * 10000 /
-                                      position.gamesPlayedCount)
-               << "\n";
-    textStream << "Black\t" + QString::number(position.score[BLACK]) + "\t" +
-                      QString::number(position.score[BLACK] * 10000 /
-                                      position.gamesPlayedCount)
-               << "\n";
-    textStream << "Draw\t" + QString::number(position.score_draw) + "\t" +
-                      QString::number(position.score_draw * 10000 /
-                                      position.gamesPlayedCount)
-               << "\n";
-
-out:
     file.flush();
     file.close();
 }

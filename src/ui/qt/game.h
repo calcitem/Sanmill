@@ -186,6 +186,11 @@ private:
     void recordRuleInfo(int ruleNo);
     void saveRuleSetting(int ruleNo);
 
+    QString Game::createSavePath() const;
+    void Game::writePlayerType(QTextStream &textStream, const QString &color,
+                               bool isAi) const;
+    void Game::writeGameStats(QTextStream &textStream) const;
+
     static std::string buildSoundFilename(GameSound soundType, Color c);
     static void performSoundPlay(const std::string &filename);
 
