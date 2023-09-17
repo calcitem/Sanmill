@@ -45,81 +45,113 @@
 
 using std::to_string;
 
-void Game::invertPieceColor(bool arg)
+// Toggle piece color
+void Game::togglePieceColor()
 {
-    isInverted = arg;
+    isInverted = !isInverted;
+    updatePieceColor();
+}
 
-    // For all pieces
+// Update piece color based on the value of 'isInverted'
+void Game::updatePieceColor()
+{
+    // Iterate through all pieces
     for (PieceItem *pieceItem : pieceList) {
         if (pieceItem) {
-            // White -> Black
-            if (pieceItem->getModel() == PieceItem::Models::whitePiece)
-                pieceItem->setModel(PieceItem::Models::blackPiece);
-
-            // Black -> White
-            else if (pieceItem->getModel() == PieceItem::Models::blackPiece)
-                pieceItem->setModel(PieceItem::Models::whitePiece);
-
-            // Refresh board display
-            pieceItem->update();
+            swapColor(pieceItem);
         }
     }
 }
 
-
-void Game::executeTransform(
-    std::function<void(Position &, std::vector<std::string> &)> transform)
+// Swap the color of a single piece
+void Game::swapColor(PieceItem *pieceItem)
 {
+    auto model = pieceItem->getModel();
+    if (model == PieceItem::Models::whitePiece)
+        pieceItem->setModel(PieceItem::Models::blackPiece);
+    else if (model == PieceItem::Models::blackPiece)
+        pieceItem->setModel(PieceItem::Models::whitePiece);
+
+    // Update display
+    pieceItem->update();
+}
+
+// Execute a transformation on the board
+void Game::executeTransform(const TransformFunc &transform)
+{
+    // Stop AI threads before transformation
     stopAndWaitAiThreads();
 
+    // Apply transformation
     transform(position, moveHistory);
 
-    // Update move history
+    // Update UI components
+    updateUIComponents();
+
+    // Restart AI threads after transformation
+    startAiThreads();
+}
+
+// Update UI components like move history and scene
+void Game::updateUIComponents()
+{
     int row = 0;
     for (const auto &str : *move_history()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
+    syncScene(row - 1);
+}
 
-    // Update display
-    if (currentRow == row - 1) {
+// Synchronize the current scene based on move history
+void Game::syncScene(int row)
+{
+    if (currentRow == row) {
         updateScene();
     } else {
         phaseChange(currentRow, true);
     }
-
-    threadsSetAi(&position);
-    startAiThreads();
 }
 
+// Transformation function implementations
+void Game::mirrorAndRotate(Position &position,
+                           std::vector<std::string> &moveHistory)
+{
+    position.mirror(moveHistory);
+    position.rotate(moveHistory, 180);
+}
+
+
+// Define transformation functions
 void Game::flip()
 {
-    executeTransform(
-        [](Position &position, std::vector<std::string> &moveHistory) {
-            position.mirror(moveHistory);
-            position.rotate(moveHistory, 180);
-        });
+    executeTransform(mirrorAndRotate);
 }
-
 void Game::mirror()
 {
-    executeTransform(
-        [](Position &position, std::vector<std::string> &moveHistory) {
-            position.mirror(moveHistory);
-        });
+    executeTransform(applyMirror);
 }
-
 void Game::turnRight()
 {
-    executeTransform(
-        [](Position &position, std::vector<std::string> &moveHistory) {
-            position.rotate(moveHistory, -90);
-        });
+    executeTransform(rotateRight);
 }
-
 void Game::turnLeft()
 {
-    executeTransform(
-        [](Position &position, std::vector<std::string> &moveHistory) {
-            position.rotate(moveHistory, 90);
-        });
+    executeTransform(rotateLeft);
+}
+
+void Game::applyMirror(Position &position,
+                       std::vector<std::string> &moveHistory)
+{
+    position.mirror(moveHistory);
+}
+
+void Game::rotateRight(Position &position,
+                       std::vector<std::string> &moveHistory)
+{
+    position.rotate(moveHistory, -90);
+}
+
+void Game::rotateLeft(Position &position, std::vector<std::string> &moveHistory)
+{
+    position.rotate(moveHistory, 90);
 }

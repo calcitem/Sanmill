@@ -802,7 +802,8 @@ void MillGameWindow::on_actionInvert_I_toggled(bool arg1) const
     }
 
     // Let the controller change the color of the pieces
-    game->invertPieceColor(arg1);
+    //game->invertPieceColor(arg1);
+    game->togglePieceColor();   // TODO: Right?
 }
 
 void MillGameWindow::on_actionRowChange() const

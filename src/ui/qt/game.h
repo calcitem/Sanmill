@@ -26,6 +26,7 @@
 #ifndef GAME_H_INCLUDED
 #define GAME_H_INCLUDED
 
+#include <functional>
 #include <map>
 #include <vector>
 
@@ -88,6 +89,9 @@ class Game : public QObject
 public:
     explicit Game(GameScene &scene, QObject *parent = nullptr);
     ~Game() override;
+
+    using TransformFunc =
+        std::function<void(Position &, std::vector<std::string> &)>;
 
     //  Main window menu bar details
     static map<int, QStringList> getActions();
@@ -184,9 +188,6 @@ private:
     static std::string buildSoundFilename(GameSound soundType, Color c);
     static void performSoundPlay(const std::string &filename);
 
-    void executeTransform(
-        std::function<void(Position &, std::vector<std::string> &)> transform);
-
     bool validateClick(QPointF p, File &f, Rank &r);
     bool isRepentancePhase();
     void initiateGameIfReady();
@@ -256,7 +257,7 @@ public slots:
     void setEditing(bool arg = true) noexcept;
 
     // Set white and black inversion state
-    void invertPieceColor(bool arg = true);
+    //void invertPieceColor(bool arg = true);
 
     // If Id is 1, let the computer take the lead; if Id is 2, let the computer
     // take the second place
@@ -332,17 +333,39 @@ public slots:
     //  DeveloperMode
     void setDeveloperMode(bool enabled) const;
 
-    // Flip up and down
+    // Function to toggle piece color
+    void togglePieceColor();
+
+    // Function to update piece color based on 'isInverted'
+    void updatePieceColor();
+
+    // Function to swap the color of a single piece
+    void swapColor(PieceItem *pieceItem);
+
+    // Function to execute a board transformation
+    void executeTransform(const TransformFunc &transform);
+
+    // Function to update UI components
+    void updateUIComponents();
+
+    // Function to synchronize the current scene based on move history
+    void syncScene(int row);
+
+    // Transformation functions
     void flip();
-
-    // Left and right mirror images
     void mirror();
-
-    // The view must be rotated 90 degree clockwise
     void turnRight();
-
-    // View rotated 90 degree counterclockwise
     void turnLeft();
+
+    // Implementation of the transformation functions
+    static void mirrorAndRotate(Position &position,
+                                std::vector<std::string> &moveHistory);
+    static void applyMirror(Position &position,
+                            std::vector<std::string> &moveHistory);
+    static void rotateRight(Position &position,
+                            std::vector<std::string> &moveHistory);
+    static void rotateLeft(Position &position,
+                           std::vector<std::string> &moveHistory);
 
     [[nodiscard]] bool isAIsTurn() const;
 
