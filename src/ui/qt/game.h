@@ -138,6 +138,10 @@ public:
 #endif
 
 private:
+    void initializeComponents();
+    void terminateComponents();
+    void resetComponents();
+
     void initializeSceneBackground();
     void initializeAIThreads();
     void initializeDatabaseDialog();

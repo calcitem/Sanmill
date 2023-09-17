@@ -48,8 +48,18 @@ using std::to_string;
 Game::Game(GameScene &scene, QObject *parent)
     : QObject(parent)
     , scene(scene)
-    , timeLimit(0 /* gameOptions.getMoveTime() */)
+    , timeLimit(0 /* TODO: gameOptions.getMoveTime() */)
     , moveHistory(256)
+{
+    initializeComponents();
+}
+
+Game::~Game()
+{
+    terminateComponents();
+}
+
+void Game::initializeComponents()
 {
     initializeSceneBackground();
     initializeAIThreads();
@@ -62,13 +72,37 @@ Game::Game(GameScene &scene, QObject *parent)
     initializeEndgameLearning();
 }
 
-Game::~Game()
+void Game::terminateComponents()
 {
     terminateTimer();
     terminateThreads();
     finalizeEndgameLearning();
     clearMoveHistory();
     destroySettings();
+}
+
+void Game::resetComponents()
+{
+    // Reset timer
+    resetTimer();
+
+    // Reset game state
+    resetGameState();
+
+    // Reset AI Players and Threads (if needed)
+    if (!gameOptions.getAutoRestart()) {
+        pauseThreads();
+        // resetAiPlayers(); // Uncomment if needed
+    }
+
+    // Reset UI Elements
+    resetUIElements();
+
+    // Reset Time Limit and Update Time Display
+    resetAndUpdateTime();
+
+    // Miscellaneous Updates
+    updateMiscellaneous();
 }
 
 void Game::gameStart()
@@ -97,27 +131,8 @@ void Game::gameReset()
 {
     // Stop any ongoing activities
     stopOngoingActivities();
+    resetComponents();
 
-    // Reset timer
-    resetTimer();
-
-    // Reset game state
-    resetGameState();
-
-    // Reset AI Players and Threads (if needed)
-    if (!gameOptions.getAutoRestart()) {
-        pauseThreads();
-        // resetAiPlayers(); // Uncomment if needed
-    }
-
-    // Reset UI Elements
-    resetUIElements();
-
-    // Reset Time Limit and Update Time Display
-    resetAndUpdateTime();
-
-    // Miscellaneous Updates
-    updateMiscellaneous();
 }
 
 void Game::initializeSceneBackground()
