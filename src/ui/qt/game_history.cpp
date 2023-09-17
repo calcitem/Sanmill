@@ -50,14 +50,17 @@ void Game::appendRecordToMoveHistory(const char *format, ...)
 {
     char record[64] = {0};
     va_list args;
+
     va_start(args, format);
     vsnprintf(record, Position::RECORD_LEN_MAX, format, args);
     va_end(args);
+
     debugPrintf("%s\n", record);
+
     moveHistory.emplace_back(record);
 }
 
-void Game::resetMoveHistory()
+void Game::resetMoveHistoryReserveFirst()
 {
     // Reset game history
     // WAR

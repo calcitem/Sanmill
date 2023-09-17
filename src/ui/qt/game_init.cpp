@@ -62,12 +62,12 @@ Game::~Game()
 void Game::initializeComponents()
 {
     initializeSceneBackground();
-    initializeAIThreads();
+    initializeAiThreads();
     initializeDatabaseDialog();
     initializeSettings();
     initializeGameTest();
     initializeMetaTypes();
-    initializeAICommandConnections();
+    initializeAiCommandConnections();
     initializeNetworkComponents();
     initializeEndgameLearning();
 }
@@ -129,8 +129,7 @@ void Game::gameStart()
 
 void Game::gameReset()
 {
-    // Stop any ongoing activities
-    stopOngoingActivities();
+    waitForAiSearchCompletion();
     resetComponents();
     resetElapsedSeconds();
 }
@@ -147,7 +146,7 @@ void Game::initializeSceneBackground()
 #endif /* QT_MOBILE_APP_UI */
 }
 
-void Game::initializeAIThreads()
+void Game::initializeAiThreads()
 {
     // resetAiPlayers();
     createAiThreads();
@@ -166,7 +165,7 @@ void Game::initializeSettings()
 
 void Game::initializeGameTest()
 {
-    gameTest = new Test();
+    gameTest = new AiSharedMemoryDialog();
 }
 
 void Game::initializeMetaTypes()
@@ -174,7 +173,7 @@ void Game::initializeMetaTypes()
     qRegisterMetaType<std::string>("string");
 }
 
-void Game::initializeAICommandConnections()
+void Game::initializeAiCommandConnections()
 {
 #ifdef QT_GUI_LIB
     // The command line of AI and controller
@@ -231,7 +230,7 @@ void Game::resetPositionState()
 
 void Game::resetGameState()
 {
-    resetMoveHistory();
+    resetMoveHistoryReserveFirst();
     resetPerfectAi();
     resetPositionState();
 }

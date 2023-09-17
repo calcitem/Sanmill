@@ -23,7 +23,7 @@
 #include "config.h"
 #include "misc.h"
 #include "option.h"
-#include "test.h"
+#include "ai_shared_memory_dialog.h"
 
 #if defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect/perfect_adaptor.h"
@@ -37,7 +37,7 @@ QString getAppFileName();
 
 extern QString APP_FILENAME_DEFAULT;
 
-Test::Test(QWidget *parent, QString k)
+AiSharedMemoryDialog::AiSharedMemoryDialog(QWidget *parent, QString k)
     : QDialog(parent)
     , keyCombo(new QComboBox)
     , startButton(new QPushButton(tr("Start")))
@@ -82,8 +82,8 @@ Test::Test(QWidget *parent, QString k)
     buttonBox->addButton(stopButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(closeButton, QDialogButtonBox::RejectRole);
 
-    connect(startButton, &QAbstractButton::clicked, this, &Test::startAction);
-    connect(stopButton, &QAbstractButton::clicked, this, &Test::stopAction);
+    connect(startButton, &QAbstractButton::clicked, this, &AiSharedMemoryDialog::startAction);
+    connect(stopButton, &QAbstractButton::clicked, this, &AiSharedMemoryDialog::stopAction);
     connect(closeButton, &QAbstractButton::clicked, this, &QWidget::close);
 
     QGridLayout *mainLayout;
@@ -118,20 +118,20 @@ Test::Test(QWidget *parent, QString k)
     setWindowTitle(QGuiApplication::applicationDisplayName());
 }
 
-Test::~Test()
+AiSharedMemoryDialog::~AiSharedMemoryDialog()
 {
     detach();
     readMemoryTimer->stop();
 }
 
-void Test::stop()
+void AiSharedMemoryDialog::stop()
 {
     detach();
     isTestMode = false;
     readMemoryTimer->stop();
 }
 
-void Test::attach()
+void AiSharedMemoryDialog::attach()
 {
     sharedMemory.setKey(key);
 
@@ -153,7 +153,7 @@ void Test::attach()
     assert(uuidSize == 38);
 }
 
-void Test::detach()
+void AiSharedMemoryDialog::detach()
 {
     if (sharedMemory.isAttached()) {
         if (sharedMemory.detach()) {
@@ -162,7 +162,7 @@ void Test::detach()
     }
 }
 
-void Test::writeToMemory(const QString &record)
+void AiSharedMemoryDialog::writeToMemory(const QString &record)
 {
     if (!isTestMode) {
         return;
@@ -197,7 +197,7 @@ void Test::writeToMemory(const QString &record)
     }
 }
 
-void Test::readFromMemory()
+void AiSharedMemoryDialog::readFromMemory()
 {
     if (!isTestMode) {
         return;
@@ -223,12 +223,12 @@ void Test::readFromMemory()
     }
 }
 
-QString Test::createUuidString()
+QString AiSharedMemoryDialog::createUuidString()
 {
     return QUuid::createUuid().toString();
 }
 
-void Test::startAction()
+void AiSharedMemoryDialog::startAction()
 {
     key = keyCombo->currentText();
 
@@ -242,7 +242,7 @@ void Test::startAction()
     stopButton->setEnabled(true);
 }
 
-void Test::stopAction()
+void AiSharedMemoryDialog::stopAction()
 {
     stop();
 
@@ -250,7 +250,7 @@ void Test::stopAction()
     stopButton->setEnabled(false);
 }
 
-void Test::onTimeOut()
+void AiSharedMemoryDialog::onTimeOut()
 {
     readFromMemory();
 }

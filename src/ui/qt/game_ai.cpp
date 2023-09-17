@@ -45,7 +45,7 @@
 
 using std::to_string;
 
-bool Game::isAIsTurn() const
+bool Game::isAiTurn() const
 {
     return isAiPlayer[sideToMove];
 }
@@ -59,7 +59,7 @@ void Game::resetPerfectAi()
 #endif
 }
 
-void Game::stopOngoingActivities()
+void Game::waitForAiSearchCompletion()
 {
     while (aiThread[WHITE]->searching || aiThread[BLACK]->searching) {
         debugPrintf(".");

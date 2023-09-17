@@ -30,13 +30,13 @@
 
 using std::string;
 
-class Test : public QDialog
+class AiSharedMemoryDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Test(QWidget *parent = nullptr, QString k = "Key0");
-    ~Test() override;
+    explicit AiSharedMemoryDialog(QWidget *parent = nullptr, QString k = "Key0");
+    ~AiSharedMemoryDialog() override;
 
     void setKey(const QString &k) noexcept { key = k; }
 

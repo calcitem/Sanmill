@@ -46,7 +46,7 @@
 #include "position.h"
 #include "server.h"
 #include "stopwatch.h"
-#include "test.h"
+#include "ai_shared_memory_dialog.h"
 #include "thread.h"
 
 using std::cout;
@@ -147,12 +147,12 @@ private:
     void resetComponents();
 
     void initializeSceneBackground();
-    void initializeAIThreads();
+    void initializeAiThreads();
     void initializeDatabaseDialog();
     void initializeSettings();
     void initializeGameTest();
     void initializeMetaTypes();
-    void initializeAICommandConnections();
+    void initializeAiCommandConnections();
     void initializeNetworkComponents();
     void initializeEndgameLearning();
 
@@ -164,7 +164,7 @@ private:
 
     static std::pair<int, QStringList> createRuleEntry(int index);
 
-    void stopOngoingActivities();
+    void waitForAiSearchCompletion();
     void resetTimer();
     void resetGameState();
     void resetUIElements();
@@ -174,7 +174,7 @@ private:
     void Game::updateLcdDisplay();
     void updateMiscellaneous();
 
-    void resetMoveHistory();
+    void resetMoveHistoryReserveFirst();
     void appendRecordToMoveHistory(const char *format, ...);
     void resetPerfectAi();
     void resetPositionState();
@@ -373,7 +373,7 @@ public slots:
     static void rotateLeft(Position &position,
                            std::vector<std::string> &moveHistory);
 
-    [[nodiscard]] bool isAIsTurn() const;
+    [[nodiscard]] bool isAiTurn() const;
 
     void threadsSetAi(Position *p) const
     {
@@ -481,7 +481,7 @@ public slots:
 
     void saveScore();
 
-    [[nodiscard]] Test *getTest() const { return gameTest; }
+    [[nodiscard]] AiSharedMemoryDialog *getTest() const { return gameTest; }
 
     [[nodiscard]] DatabaseDialog *getDatabaseDialog() const
     {
@@ -503,7 +503,7 @@ private:
     Color sideToMove;
 
     // Testing
-    Test *gameTest;
+    AiSharedMemoryDialog *gameTest;
 
     // Perfect Database Dialog
     DatabaseDialog *databaseDialog {nullptr};
