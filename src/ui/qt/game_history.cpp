@@ -45,6 +45,18 @@
 
 using std::to_string;
 
+// Helper function to handle snprintf and append to moveHistory
+void Game::appendRecordToMoveHistory(const char *format, ...)
+{
+    char record[64] = {0};
+    va_list args;
+    va_start(args, format);
+    vsnprintf(record, Position::RECORD_LEN_MAX, format, args);
+    va_end(args);
+    debugPrintf("%s\n", record);
+    moveHistory.emplace_back(record);
+}
+
 void Game::resetMoveHistory()
 {
     // Reset game history
@@ -62,50 +74,42 @@ void Game::appendGameOverReasonToMoveHistory()
         return;
     }
 
-    char record[64] = {0};
     switch (position.gameOverReason) {
     case GameOverReason::loseNoWay:
-        snprintf(record, Position::RECORD_LEN_MAX, loseReasonNoWayStr,
-                 position.sideToMove, position.winner);
+        appendRecordToMoveHistory(loseReasonNoWayStr, position.sideToMove,
+                                  position.winner);
         break;
     case GameOverReason::loseTimeOver:
-        snprintf(record, Position::RECORD_LEN_MAX, loseReasonTimeOverStr,
-                 position.winner);
+        appendRecordToMoveHistory(loseReasonTimeOverStr, position.winner);
         break;
     case GameOverReason::drawThreefoldRepetition:
-        snprintf(record, Position::RECORD_LEN_MAX,
-                 drawReasonThreefoldRepetitionStr);
+        appendRecordToMoveHistory(drawReasonThreefoldRepetitionStr);
         break;
     case GameOverReason::drawRule50:
-        snprintf(record, Position::RECORD_LEN_MAX, drawReasonRule50Str);
+        appendRecordToMoveHistory(drawReasonRule50Str);
         break;
     case GameOverReason::drawEndgameRule50:
-        snprintf(record, Position::RECORD_LEN_MAX, drawReasonEndgameRule50Str);
+        appendRecordToMoveHistory(drawReasonEndgameRule50Str);
         break;
     case GameOverReason::loseBoardIsFull:
-        snprintf(record, Position::RECORD_LEN_MAX, loseReasonBoardIsFullStr);
+        appendRecordToMoveHistory(loseReasonBoardIsFullStr);
         break;
     case GameOverReason::drawBoardIsFull:
-        snprintf(record, Position::RECORD_LEN_MAX, drawReasonBoardIsFullStr);
+        appendRecordToMoveHistory(drawReasonBoardIsFullStr);
         break;
     case GameOverReason::drawNoWay:
-        snprintf(record, Position::RECORD_LEN_MAX, drawReasonNoWayStr);
+        appendRecordToMoveHistory(drawReasonNoWayStr);
         break;
     case GameOverReason::loseLessThanThree:
-        snprintf(record, Position::RECORD_LEN_MAX, loseReasonlessThanThreeStr,
-                 position.winner);
+        appendRecordToMoveHistory(loseReasonlessThanThreeStr, position.winner);
         break;
     case GameOverReason::loseResign:
-        snprintf(record, Position::RECORD_LEN_MAX, loseReasonResignStr,
-                 ~position.winner);
+        appendRecordToMoveHistory(loseReasonResignStr, ~position.winner);
         break;
     case GameOverReason::none:
         debugPrintf("No Game Over Reason");
         break;
     }
-
-    debugPrintf("%s\n", record);
-    moveHistory.emplace_back(record);
 }
 
 void Game::clearMoveHistory()

@@ -167,6 +167,7 @@ private:
     void updateMiscellaneous();
 
     void resetMoveHistory();
+    void appendRecordToMoveHistory(const char *format, ...);
     void resetPerfectAi();
     void resetPositionState();
 
